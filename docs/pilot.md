@@ -134,6 +134,14 @@ manamap pilot simulate <slug> --vs A [--vs B…] [--games N] [--jobs J] [--detec
 manamap pilot simulate <slug> --list | --dry-run | --analyze <run-id>   # `--list` names each run's VERSION
 manamap pilot forge-install [--verify] [--revert] [--generate]   # THE HARNESS, INSTALLED
 manamap pilot forge-telemetry [--build]                           # THE LOG FORMATTER: declared vs carried; build the patched jar
+manamap pilot forge-seat-audit <pod> [--run RUN_ID] [--write]   # CAN THE AI PILOT EVERY SEAT (2026-10-21): per seat, ours and the
+                                        #   opponents', the cards it will not cast after overrides, the unfound
+                                        #   scripts, the NeedsToPlay gates; with a run's logs, the commander
+                                        #   resolved rate and held/never-cast per seat, our wheel timing. Writes
+                                        #   data/pods/<name>.audit.json under the overrides sha; `simulate --pod`
+                                        #   REFUSES without a PILOTABLE audit under the current harness (--anyway =
+                                        #   a screen the record stamps)
+manamap pilot validate-seat-audit <pod>  # form-check the audit: the harness stamp, a verdict per seat with a reason where it fails
 manamap pilot forge-cast-check <slug> --card "<name>" | --branch <b> --adds [--write] [--jobs N]
                                         # PROVE THE AI PLAYS A CARD BEFORE A NIGHT IS SPENT ON IT.
                                         #   A two-seat shell — the deck's commander, N copies of the

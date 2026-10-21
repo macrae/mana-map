@@ -112,3 +112,42 @@ The AI still decides *whether* to cast, *when*, and what to attack with. This na
 one decision, on eleven of the fifteen spells that wanted it — and not on the four the
 engine cannot be told about (above). A rate from an overridden run is still Forge's AI flying the deck — just
 no longer throwing the deck's best spells at the wrong creature.
+
+## EVERY SEAT, NOT JUST OURS (2026-10-21)
+
+The pilot's gate: "it has to be able to pilot every single deck that is playing." The
+sharknado audit found the AI holding Windfall on 75 castable turns against 23 casts, casting
+Reforge the Soul twice in 38 games, never casting March of Swirling Mist — and Araumi of the
+Dead Tide, Oliver's commander, `AI:RemoveDeck:All`, so his seat played with no commander.
+Three things changed here:
+
+- **`manamap pilot forge-seat-audit <pod> [--run ID] [--write]`** (`sim/seat_audit.py`): per
+  seat, ours and the opponents', the cards the AI will not cast after overrides, the unfound
+  scripts and the `NeedsToPlay` gates; with a run's logs, the commander resolved rate and the
+  held/never-cast lists per seat (the corpus now gives an opponent its mana values). It writes
+  `data/pods/<name>.audit.json` under the overrides sha; `simulate --pod` refuses without a
+  PILOTABLE audit under the current harness (`--anyway` runs a screen the record stamps).
+  `forge-install --generate` prints the unflag candidates of every pod's opponents too.
+- **Opponent hints**: `data/opponents/<slug>/forge_hints.json`, the same file as a deck's,
+  read by `forge-install --generate` and `validate-forge-hints <slug>`.
+- **Two hint kinds and a flag**:
+  - `svars: {"Name": "value"}` writes `SVar:Name:value` before the Oracle line. Two uses: a
+    HOLD the engine honours for any spell or ability — `NeedsToPlay:
+    Creature.IsCommander+YouCtrl` is "hold the wheel until a commander is out"
+    (`ComputerUtilCard.checkNeedsToPlayReqs`, read from `AiController.saSideEffects`, 2.0.14);
+    and `PlayMain1:TRUE`, which the permanent AI reads to cast a rock before combat
+    (1,435 shipped scripts carry it; Torbran does). A hold is one-directional: it stops a
+    cast and never causes one — `DiscardAi` then fires a hand-wheel in the first Main 2 it
+    can afford, with no look at hand size.
+  - `drop_svars: ["NeedsToPlayVar"]` removes the author's SVar lines that would AND against
+    a hint (Reforge the Soul's hand-of-one gate).
+  - `replace: true` on an `ai_logic` hint swaps the author's `AILogic$` (Silence:
+    `BeginningOfOppTurn` → `Main1`, our own turn).
+  - A top-level `floors` list names the cards the engine has no logic for and the pilot keeps
+    anyway (March of Swirling Mist: `PhasesAi` never sets X). The audit reports a floor and
+    never fails a seat for it.
+
+Every one of these is a HARNESS change: the overrides sha moves, every run under the old
+sha is a different instrument, and `pods --calibration` still excludes overridden runs
+(known-issue 17) — so a null for a table whose seats need overrides to be playable at all
+does not exist yet.

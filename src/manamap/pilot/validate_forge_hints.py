@@ -18,7 +18,8 @@ def validate(slug, doc):
 
 def main(args=None):
     slug = getattr(args, "slug", None)
-    path = deck_dir(slug) / forge_pilot.HINTS_FILE
+    # A deck's file, or an OPPONENT seat's (2026-10-21): the same gate for both.
+    path = forge_pilot._hints_path(slug)
     if not path.is_file():
         print(f"{slug}: no {forge_pilot.HINTS_FILE} — Forge plays the deck's cards with its own "
               f"logic (absent means absent; this is the normal state)")

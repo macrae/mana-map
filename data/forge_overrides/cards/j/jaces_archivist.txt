@@ -6,4 +6,5 @@ A:AB$ Discard | Cost$ U T | Defined$ Player | RememberDiscarded$ True | Mode$ Ha
 SVar:WindfallDraw:DB$ Draw | Defined$ Player | NumCards$ X | SubAbility$ WindfallCleanup
 SVar:WindfallCleanup:DB$ Cleanup | ClearRemembered$ True
 SVar:X:PlayerCountPlayers$HighestValidGraveyard,Library,Exile Card.IsRemembered+YouOwn
+SVar:NeedsToPlay:Creature.IsCommander+YouCtrl
 Oracle:{U}, {T}: Each player discards their hand, then draws cards equal to the greatest number of cards a player discarded this way.

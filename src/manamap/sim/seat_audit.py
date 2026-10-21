@@ -198,12 +198,14 @@ def _verdict(seat, static, dynamic, ours):
     return ("PILOTABLE" if not why else "NOT"), why
 
 
-def audit(pod, run_id=None):
-    """The whole table. `run_id` adds the games half from that run's logs."""
+def audit(pod, run_id=None, ours=None):
+    """The whole table. `run_id` adds the games half from that run's logs and names
+    our seat from the record; without a run, `ours` names the deck that would sit
+    down, so the static half covers every chair."""
     from manamap.sim import forge, pods
     doc = pods.load(pod)
     engine_by_slug = {s["slug"]: s.get("engine") for s in doc["seats"] if s.get("engine")}
-    rec, texts, ours = None, [], None
+    rec, texts = None, []
     if run_id:
         path = _find_run(run_id)
         rec = json.loads(path.read_text(encoding="utf-8"))
@@ -320,7 +322,7 @@ def _print(doc):
 
 def main(args):
     pod = args.pod
-    doc = audit(pod, run_id=getattr(args, "run", None))
+    doc = audit(pod, run_id=getattr(args, "run", None), ours=getattr(args, "ours", None))
     if getattr(args, "as_json", False):
         print(json.dumps(doc, indent=2, ensure_ascii=False))
     else:

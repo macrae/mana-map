@@ -68,7 +68,8 @@ def available():
     """Every pod on disk, by name."""
     if not PODS_DIR.exists():
         return []
-    return sorted(p.stem for p in PODS_DIR.glob("*.json"))
+    # `<name>.audit.json` is the seat audit beside a pod (2026-10-21), never a pod.
+    return sorted(p.stem for p in PODS_DIR.glob("*.json") if not p.stem.endswith(".audit"))
 
 
 def load(name):

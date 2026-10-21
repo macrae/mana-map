@@ -510,17 +510,45 @@ def unflag_candidates(include_pods=False):
 #: that line, is refused rather than guessed. `validate-forge-hints` is the gate; the
 #: override lands in the same fingerprint as everything else.
 HINTS_FILE = "forge_hints.json"
-HINT_KEYS = frozenset({"card", "ability", "ai_logic", "ai_preference", "ability_params", "why", "cites"})
+#: Two kinds added 2026-10-21 for the seat audit: `svars` writes `SVar:Name:value` lines
+#: (the hold Forge reads for ANY spell or ability: `NeedsToPlay:Creature.IsCommander+YouCtrl`
+#: is "hold the wheel until a commander is out", `PlayMain1:TRUE` casts a rock before combat),
+#: `drop_svars` removes the card author's SVar lines that would AND against them (Reforge
+#: the Soul's `NeedsToPlayVar:X LE2` — hand of one — would never meet a commander gate), and
+#: `replace: true` lets `ai_logic` swap an existing `AILogic$` (Silence: `BeginningOfOppTurn`
+#: → `Main1`, our own turn). A top-level `floors` list names the cards the engine has no
+#: logic for and the pilot keeps anyway — reported by the audit, never a failure.
+HINT_KEYS = frozenset({"card", "ability", "ai_logic", "ai_preference", "ability_params", "why", "cites",
+                       "svars", "drop_svars", "replace"})
+
+
+def _hints_path(slug):
+    """A deck's or an OPPONENT seat's hints file (2026-10-21: Oliver's Araumi needs
+    one as much as Edgar's Vish Kal did)."""
+    from manamap.pilot.common import decks_root
+    if (decks_root() / slug).is_dir():
+        return decks_root() / slug / HINTS_FILE
+    # BESIDE THE DECK TREE, so a test that points DECKS_DIR at a temporary tree
+    # sees no real opponent's hints either.
+    return decks_root().parent / "opponents" / slug / HINTS_FILE
+
+
+def _hints_doc(slug):
+    import json
+    path = _hints_path(slug)
+    if not path.is_file():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8")) or {}
 
 
 def hints_for(slug):
-    """The deck's hints, or []."""
-    import json
-    from manamap.pilot.common import deck_dir
-    path = deck_dir(slug) / HINTS_FILE
-    if not path.is_file():
-        return []
-    return list((json.loads(path.read_text(encoding="utf-8")) or {}).get("hints") or [])
+    """The seat's hints, or []."""
+    return list(_hints_doc(slug).get("hints") or [])
+
+
+def floors_for(slug):
+    """The cards the seat's hints file names as floors, or []."""
+    return list(_hints_doc(slug).get("floors") or [])
 
 
 def validate_hints(slug, doc):
@@ -529,13 +557,30 @@ def validate_hints(slug, doc):
     from manamap.pilot.common import deck_dir
     errors = []
     hints = (doc or {}).get("hints")
-    if not isinstance(hints, list) or not hints:
-        return ["no `hints` list — a file that hints nothing should not exist"]
+    if not isinstance(hints, list) or (not hints and not (doc or {}).get("floors")):
+        return ["no `hints` list — a file that hints nothing should not exist "
+                "(a `floors` list alone is allowed: it names what the engine cannot play)"]
     names = set()
-    cj = deck_dir(slug) / "cards.json"
-    if cj.is_file():
+    try:
+        cj = deck_dir(slug) / "cards.json"
+    except FileNotFoundError:
+        cj = None                                   # an opponent seat: the decklist names it
+    if cj is not None and cj.is_file():
         names = {c["name"] for c in json.loads(cj.read_text(encoding="utf-8")).get("cards", [])}
-        names |= {n.split(" // ")[0] for n in names}
+    else:
+        from manamap.sim import forge
+        names = set(forge._seat_names(slug))
+    names |= {n.split(" // ")[0] for n in names}
+    # THE FLOORS (2026-10-21): cards the engine has no logic for, kept on purpose; each
+    # must be in the list, and a floor needs no hint — that is the point of naming it.
+    floors = (doc or {}).get("floors")
+    if floors is not None:
+        if not isinstance(floors, list) or not all(isinstance(f, str) and f for f in floors):
+            errors.append("`floors` is a list of card names")
+        else:
+            for f in floors:
+                if names and f not in names:
+                    errors.append(f"floors: {f!r} is not in the list")
     seen = set()
     for i, h in enumerate(hints):
         where = f"hints[{i}]"
@@ -554,10 +599,24 @@ def validate_hints(slug, doc):
         seen.add((card, h.get("ability")))
         if not h.get("why"):
             errors.append(f"{where}: {card}: no `why` — a hint is a piloting decision and says so")
-        if not (h.get("ai_logic") or h.get("ai_preference") or h.get("ability_params")):
-            errors.append(f"{where}: {card}: neither ai_logic, ai_preference nor ability_params — nothing to hint")
+        if not (h.get("ai_logic") or h.get("ai_preference") or h.get("ability_params")
+                or h.get("svars") or h.get("drop_svars")):
+            errors.append(f"{where}: {card}: neither ai_logic, ai_preference, ability_params, svars "
+                          f"nor drop_svars — nothing to hint")
         if h.get("ai_logic") and not h.get("ability"):
             errors.append(f"{where}: {card}: ai_logic needs `ability`, the API prefix of the line it goes on")
+        if h.get("replace") is not None and (not isinstance(h["replace"], bool) or not h.get("ai_logic")):
+            errors.append(f"{where}: {card}: `replace` is true/false and goes with `ai_logic`")
+        sv = h.get("svars")
+        if sv is not None and (not isinstance(sv, dict) or not sv
+                               or not all(isinstance(k, str) and k.isidentifier() and isinstance(v, str) and v
+                                          for k, v in sv.items())):
+            errors.append(f"{where}: {card}: svars is a mapping of SVar name -> value, "
+                          f"e.g. {{\"NeedsToPlay\": \"Creature.IsCommander+YouCtrl\"}}")
+        ds = h.get("drop_svars")
+        if ds is not None and (not isinstance(ds, list) or not ds
+                               or not all(isinstance(k, str) and k.isidentifier() for k in ds)):
+            errors.append(f"{where}: {card}: drop_svars is a list of SVar names")
         params = h.get("ability_params")
         if params is not None:
             if not h.get("ability"):
@@ -598,6 +657,12 @@ def generate_hints(slug, out_dir=None):
             base = dest.read_text(encoding="utf-8") if dest.is_file() \
                 else zf.read(entry).decode("utf-8", "replace")
             lines = base.splitlines()
+            # DROP FIRST (2026-10-21): an author's SVar that would AND against the hint.
+            for name in (h.get("drop_svars") or []):
+                before = len(lines)
+                lines = [ln for ln in lines if not ln.startswith(f"SVar:{name}:")]
+                if len(lines) == before and not any(ln.startswith(f"SVar:{name}:") for ln in base.splitlines()):
+                    raise ValueError(f"{h['card']}: drop_svars names {name!r} and {stem}.txt has no such SVar")
             if h.get("ai_logic"):
                 prefix = "A:" + h["ability"]
                 idx = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
@@ -605,13 +670,30 @@ def generate_hints(slug, out_dir=None):
                     raise ValueError(f"{h['card']}: `{h['ability']}` matches {len(idx)} line(s) of {stem}.txt; "
                                      f"a hint goes on exactly one")
                 if "AILogic$" in lines[idx[0]]:
-                    if lines[idx[0]].endswith(f"| AILogic$ {h['ai_logic']}"):
+                    if lines[idx[0]].endswith(f"| AILogic$ {h['ai_logic']}") \
+                            or f"| AILogic$ {h['ai_logic']} |" in lines[idx[0]]:
                         pass                                    # already hinted: idempotent
+                    elif h.get("replace"):
+                        # THE AUTHOR'S CHOICE, OVERRIDDEN ON PURPOSE AND SAID SO (`replace`):
+                        # Silence ships `BeginningOfOppTurn`, cast at an opponent's upkeep,
+                        # which protects nothing of ours; `Main1` is the wheel turn.
+                        lines[idx[0]] = re.sub(r"\| AILogic\$ \S+", f"| AILogic$ {h['ai_logic']}",
+                                               lines[idx[0]], count=1)
                     else:
                         raise ValueError(f"{h['card']}: that line already carries an AILogic$ — the card "
-                                         f"author's decision, left be")
+                                         f"author's decision, left be (`replace: true` overrides it)")
                 else:
                     lines[idx[0]] = lines[idx[0]] + f" | AILogic$ {h['ai_logic']}"
+            for name, value in sorted((h.get("svars") or {}).items()):
+                key = f"SVar:{name}:"
+                have = [ln for ln in lines if ln.startswith(key)]
+                if have:
+                    if have == [key + value]:
+                        continue                                # already hinted: idempotent
+                    raise ValueError(f"{h['card']}: {stem}.txt already states {key}… — the card "
+                                     f"author's decision, left be (drop it with `drop_svars` first)")
+                at = next((i for i, ln in enumerate(lines) if ln.startswith("Oracle:")), len(lines))
+                lines.insert(at, key + value)
             for key, val in (h.get("ability_params") or {}).items():
                 prefix = "A:" + h["ability"]
                 idx = [i for i, ln in enumerate(lines) if ln.startswith(prefix)]
@@ -642,11 +724,15 @@ def generate_hints(slug, out_dir=None):
 
 
 def hinted_decks():
-    """Every live deck with a hints file."""
+    """Every live deck with a hints file, then every opponent seat with one."""
     from manamap.pilot.common import deck_is_apart
     out = []
     for d in sorted(config.DECKS_DIR.iterdir()) if config.DECKS_DIR.is_dir() else []:
         if (d / HINTS_FILE).is_file() and not deck_is_apart(d.name):
+            out.append(d.name)
+    opp = config.DECKS_DIR.parent / "opponents"
+    for d in sorted(opp.iterdir()) if opp.is_dir() else []:
+        if d.is_dir() and (d / HINTS_FILE).is_file() and d.name not in out:
             out.append(d.name)
     return out
 

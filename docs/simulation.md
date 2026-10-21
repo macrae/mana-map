@@ -612,6 +612,45 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
 - **Toughness is tracked but nothing reads it yet.** It exists for a line that damages
   your own board and cashes the deaths; that channel is not built.
 
+## Can the AI pilot this seat? The gate before a pod run (2026-10-21)
+
+The pilot: "it has to be able to pilot every single deck that is playing... we cannot
+continue this until our forge simulation is working." A run where any seat cannot play its
+plan measures a different table, counts and rates alike, so a pod run is gated on a per-seat
+audit of OURS AND EVERY OPPONENT.
+
+**The definition** (written into every audit, `seat_audit.DEFINITION`, tighten there):
+static — no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's
+overrides, and every card has a script; dynamic, from a run's logs — the commander resolved
+in at least 80% of games, no card the pod names as the seat's `engine` was never cast or held
+while castable, and for our wheel deck the wheels fired with a commander out at least 90% of
+the time with at least one wheel a game. A card named in the seat's hints as a FLOOR is
+reported and never fails the seat.
+
+**The command.** `manamap pilot forge-seat-audit <pod> [--run RUN_ID] [--write]` prints one
+row per seat and, with `--write`, `data/pods/<name>.audit.json` under the overrides sha
+(`validate-seat-audit`). `simulate <seat> --pod <name>` refuses without a PILOTABLE audit
+under the current sha; `--anyway` runs a screen and the record carries `seat_audit`.
+`pods <name> --power` shows the verdict per seat. The static half costs seconds; the dynamic
+half parses the run's logs (every seat gets its mana values from the corpus now, so
+held-while-castable reads for an opponent too).
+
+**What the first audits said.** Oliver's table: Araumi herself flagged, thirteen more across
+the three seats; the calibrated `standard-v3` table was not clean either — sythis seven
+(Fertile Ground, Wild Growth, Utopia Sprawl, Darksteel Mutation…), jarad four, abaddon two —
+so the fleet's null was read on a table whose seats could not cast their own ramp. Both are
+unflagged now (`unflag.txt`), with opponent hints where a shipped logic fits
+(`data/opponents/<slug>/forge_hints.json`).
+
+**The mechanism for our seat.** There is no "Wheel" AI logic in Forge. `AI:RemoveDeck:All`
+drops a card entirely; once unflagged, `DiscardAi` casts a hand-wheel in the first Main 2 it
+can afford with no look at hand size; the only hand-size teaching in the card library is a
+per-card `NeedsToPlayVar`. The pilot's rule — a wheel is a finisher dropped onto a commander
+— is therefore one `SVar:NeedsToPlay:Creature.IsCommander+YouCtrl` per wheel, a hold the
+engine honours for any spell or ability; `data/decks/sharknado/forge_hints.json` carries it,
+with `PlayMain1` on the rocks the wheel turn needs and `Main1` on Silence. Every hint is a
+harness change (`data/forge_overrides/README.md`).
+
 ## Scenario slices: one board, a few turns (2026-10-08, PRD v2)
 
 A pod run asks "who wins this table", a 400-game question. A **slice** asks "on THIS

@@ -3,7 +3,7 @@
   "at": "2026-10-21",
   "since": "2026-10-21",
   "harness": {
-    "overrides": "ade33bac5dca",
+    "overrides": "b8e1e37eadd9",
     "telemetry": ""
   },
   "run": null,
@@ -21,18 +21,59 @@
   },
   "seats": [
     {
+      "slug": "sharknado",
+      "ours": true,
+      "static": {
+        "cards": 100,
+        "nonland": 64,
+        "flagged": [],
+        "unfound": [],
+        "gated": {
+          "Echo of Eons": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
+          "Jace's Archivist": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
+          "Khorvath's Fury": [
+            "NeedsToPlayVar:Z GE4"
+          ],
+          "Magus of the Wheel": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
+          "Molten Psyche": [
+            "NeedsToPlayVar:Z LE2"
+          ],
+          "Psychosis Crawler": [
+            "NeedsToPlayVar:X GE3"
+          ],
+          "Reforge the Soul": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
+          "Tolarian Winds": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
+          "Windfall": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ]
+        },
+        "floors": [
+          "March of Swirling Mist"
+        ],
+        "source": "cards.json",
+        "clean": true
+      },
+      "dynamic": null,
+      "verdict": "PILOTABLE",
+      "why": []
+    },
+    {
       "slug": "araumi-edict",
       "ours": false,
       "static": {
         "cards": 80,
         "nonland": 63,
-        "flagged": [
-          "Araumi of the Dead Tide",
-          "Dimir Signet",
-          "Perpetual Timepiece",
-          "Teferi's Veil",
-          "Vizier of Tumbling Sands"
-        ],
+        "flagged": [],
         "unfound": [],
         "gated": {
           "Accursed Marauder": [
@@ -46,17 +87,20 @@
           ],
           "Plaguecrafter": [
             "NeedsToPlay:Creature.OppCtrl,Planeswalker.OppCtrl"
+          ],
+          "Windfall": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
           ]
         },
-        "floors": [],
+        "floors": [
+          "Araumi of the Dead Tide"
+        ],
         "source": "corpus",
-        "clean": false
+        "clean": true
       },
       "dynamic": null,
-      "verdict": "NOT",
-      "why": [
-        "5 card(s) the AI will not cast: Araumi of the Dead Tide, Dimir Signet, Perpetual Timepiece, Teferi's Veil …"
-      ]
+      "verdict": "PILOTABLE",
+      "why": []
     },
     {
       "slug": "teval-graveyard",
@@ -64,21 +108,18 @@
       "static": {
         "cards": 91,
         "nonland": 64,
-        "flagged": [
-          "Nyx Weaver",
-          "Tortured Existence"
-        ],
+        "flagged": [],
         "unfound": [],
         "gated": {},
-        "floors": [],
+        "floors": [
+          "Tortured Existence"
+        ],
         "source": "corpus",
-        "clean": false
+        "clean": true
       },
       "dynamic": null,
-      "verdict": "NOT",
-      "why": [
-        "2 card(s) the AI will not cast: Nyx Weaver, Tortured Existence"
-      ]
+      "verdict": "PILOTABLE",
+      "why": []
     },
     {
       "slug": "purphoros-pingers",
@@ -86,29 +127,26 @@
       "static": {
         "cards": 73,
         "nonland": 65,
-        "flagged": [
-          "Firecat Blitz",
-          "Goblin Recruiter",
-          "Grinning Ignus"
-        ],
+        "flagged": [],
         "unfound": [],
         "gated": {
           "Goblin Recruiter": [
             "NeedsToPlayVar:Z GE4"
           ]
         },
-        "floors": [],
+        "floors": [
+          "Grinning Ignus",
+          "Firecat Blitz"
+        ],
         "source": "corpus",
-        "clean": false
+        "clean": true
       },
       "dynamic": null,
-      "verdict": "NOT",
-      "why": [
-        "3 card(s) the AI will not cast: Firecat Blitz, Goblin Recruiter, Grinning Ignus"
-      ]
+      "verdict": "PILOTABLE",
+      "why": []
     }
   ],
-  "verdict": "NOT",
+  "verdict": "PILOTABLE",
   "limits": [
     "STATIC reads the installed scripts: a card that is castable but that the AI holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
     "DYNAMIC castable counts are lands-only (colours ignored), the engine_casts floor.",

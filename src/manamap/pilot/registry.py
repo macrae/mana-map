@@ -1260,6 +1260,8 @@ def add_pilot_parser(subparsers):
         if name == "forge-seat-audit":
             cmd.add_argument("--run", default=None, metavar="RUN_ID",
                              help="a pod run with its logs on disk: adds the games half per seat")
+            cmd.add_argument("--ours", default=None, metavar="SLUG",
+                             help="without --run: the deck that would sit down, so the static half covers our seat too")
             cmd.add_argument("--write", action="store_true",
                              help="write data/pods/<name>.audit.json (the gate `simulate --pod` reads)")
             cmd.add_argument("--json", action="store_true", dest="as_json")

@@ -1571,6 +1571,14 @@ standard-v3, pod-1 and pod-2 under `8bf04cfcdb21` — the calibration campaign, 
 pilot's act to plan; (b) `pods.calibration` buckets by harness sha and reports the null
 FOR THE HARNESS ASKED, with the plain one kept for the records that were made under it.
 
+**2026-10-21, worse and clearer.** The seat audit (`forge-seat-audit`) found `standard-v3`'s
+own seats carrying `AI:RemoveDeck:All` cards — sythis seven (its ramp enchantments), jarad
+four, abaddon two — so the plain-harness null was measured on a table whose seats could not
+cast their own ramp; the 0.292 null describes an instrument nobody wants back. All are
+unflagged now (sha `b8e1e37eadd9`), every table needs overrides to be playable at all, and
+(b) is the only honest resolution: a null per harness sha, pooled from runs under THAT sha,
+and "no null yet" said out loud until the first runs land.
+
 ## 18. An `experiment` or `campaign` record never reaches `net_change.forge` (2026-09-30)
 
 `net_change._forge` globs `data/decks/<slug>/sim/*.json` and
