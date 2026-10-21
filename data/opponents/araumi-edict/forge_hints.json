@@ -1,5 +1,5 @@
 {
-  "_note": "OLIVER'S SEAT AT THE 2026-10-20 TABLE. Araumi herself shipped AI:RemoveDeck:All, so the seat played without its commander until unflagged (unflag.txt, 2026-10-21). The hints below are the nearest shapes in the card library and are UNTESTED on these cards until the seat audit's dynamic half reads them.",
+  "_note": "OLIVER'S SEAT AT THE 2026-10-20 TABLE. Araumi herself shipped AI:RemoveDeck:All, so the seat played without its commander until unflagged (unflag.txt, 2026-10-21). The hints below are the nearest shapes in the card library and are UNTESTED on these cards until the seat audit's dynamic half reads them. 2026-10-21: the ReplaySpell trial on Araumi's encore grant fired in none of 19 games she resolved at olivers-table (n20, ov86dd61c1) — removed; she is a FLOOR: the seat casts her and never grants encore, so this seat plays below Oliver's.",
   "hints": [
     {
       "card": "Perpetual Timepiece",
@@ -18,16 +18,9 @@
       "cites": [
         "seat audit 2026-10-21"
       ]
-    },
-    {
-      "card": "Araumi of the Dead Tide",
-      "ability": "AB$ Pump",
-      "ai_logic": "ReplaySpell",
-      "why": "TRIAL (2026-10-21): unflagged, she resolved in seven of eight games and activated in none; ReplaySpell is the nearest shipped logic (Archmage's Newt grants a graveyard keyword) and is untested on an encore grant — read the next run's activations before trusting it",
-      "cites": [
-        "olivers-table n8 e9cc7abe"
-      ]
     }
   ],
-  "floors": []
+  "floors": [
+    "Araumi of the Dead Tide"
+  ]
 }
