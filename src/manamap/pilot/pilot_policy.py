@@ -33,6 +33,15 @@ NOTHING with no other creature out, and that no single card fixes it because the
 trigger resolves before the spell that caused it (603.3/603.3b). So a token-copy
 spell cast into an empty board is two mana for one token, and the play is to hold it.
 `hold_until.other_creatures` is that sentence as a policy.
+
+THE SECOND RULE IS THE PILOT'S OWN, from a game (sharknado log 002, 2026-10-20). The
+simulator fired a wheel whenever the hand was thin OR any discard/draw payoff was out —
+early tempo, exactly the play he said was wrong: "those should be finisher kind of
+things ... Shabraz and Brallin are already out, they're kind of big, and I drop a wheel
+on them". `hold_until.commanders_out` on the `wheel` channel is that sentence. A HOLD IS
+AN AND-GATE LAYERED ON THE BUILT-IN RULE, never a replacement: every threshold of zero
+is byte-identical to no policy (the control), and `commanders_out >= 1` makes the
+thin-hand clause unreachable by algebra, which is "payoff-only" without a switch.
 """
 
 import hashlib
@@ -42,7 +51,7 @@ from manamap.pilot.common import deck_file, load_json
 
 #: What a rule may key on. A `when.channel` names a profile field the simulator
 #: already computes, so a policy can never invent a card property.
-CHANNELS = ("spell_token_copy",)
+CHANNELS = ("spell_token_copy", "wheel")
 
 #: What a rule may DO. One verb for now, deliberately: a hold threshold is the
 #: decision the evidence supports, and a vocabulary that grows one proven verb at a
@@ -53,7 +62,19 @@ CHANNELS = ("spell_token_copy",)
 VERBS = ("hold_until", "forge")
 
 #: What `hold_until` may count.
-COUNTERS = ("other_creatures",)
+COUNTERS = ("other_creatures", "event_payoffs", "commanders_out")
+
+#: WHICH COUNTER EACH CHANNEL'S GATE CAN READ. A wheel held "until
+#: other_creatures >= 2" would validate against the flat lists above and then be
+#: ignored by the turn loop, which only consults the counters its gate computes —
+#: a rule that changes nothing and says it did. `validate` refuses the pairing.
+#:   spell_token_copy: `other_creatures` — creatures on the battlefield besides the
+#:       one the spell targets (the copies).
+#:   wheel: `event_payoffs` — discard/draw payoff permanents on the battlefield,
+#:       commanders included (any tax collector); `commanders_out` — commanders on
+#:       the battlefield, 0–2 (the pilot's literal sentence).
+CHANNEL_COUNTERS = {"spell_token_copy": ("other_creatures",),
+                    "wheel": ("event_payoffs", "commanders_out")}
 
 
 class PolicyError(ValueError):
@@ -127,6 +148,11 @@ def validate(doc):
             if counter not in COUNTERS:
                 raise PolicyError(f"{rid}: hold_until.{counter} is not countable; "
                                   f"pick one of {list(COUNTERS)}")
+            if counter not in CHANNEL_COUNTERS[chan]:
+                raise PolicyError(
+                    f"{rid}: a {chan} cannot be held until {counter} — its gate "
+                    f"reads {list(CHANNEL_COUNTERS[chan])}; the rule would validate "
+                    f"and change nothing")
             if not isinstance(value, int) or value < 0:
                 raise PolicyError(f"{rid}: hold_until.{counter} must be a "
                                   f"non-negative integer, not {value!r}")

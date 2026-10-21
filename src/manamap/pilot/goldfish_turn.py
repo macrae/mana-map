@@ -355,6 +355,59 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     commander_counters_by_turn = []
     commander_event_objs = []
     partner_turn = None
+
+    # THE PILOT'S POLICY ON A WHEEL (sharknado log 002, 2026-10-20). The built-in
+    # rule fires a wheel when the hand is thin OR any discard/draw payoff is out —
+    # early tempo, which the pilot says is the wrong play: a wheel is a finisher
+    # dropped onto a commander. `hold_until.wheel` is an AND-GATE LAYERED ON THAT
+    # RULE, never a replacement: thresholds of zero are byte-identical to no
+    # policy (the control), and `commanders_out >= 1` makes the thin-hand clause
+    # unreachable by algebra. Both wheel doors (the spell in the draw loop, the
+    # activated engine) ask this one closure, so the two can never disagree.
+    _hold_wheel = (hold_until or {}).get("wheel") or {}
+
+    def _cmd_out():
+        return (commander_turn is not None) + (partner_turn is not None)
+
+    def _wheel_castable(nonlands_in_hand):
+        if not (nonlands_in_hand <= WHEEL_MIN_HAND or event_payoff_permanents):
+            return False          # the hand is worth more than seven fresh cards
+        return (len(event_payoff_permanents) >= _hold_wheel.get("event_payoffs", 0)
+                and _cmd_out() >= _hold_wheel.get("commanders_out", 0))
+
+    # WHAT THE WHEELS DID, observed and never decided on. The model was firing
+    # wheels and throwing the timing away; the pilot's thesis is ABOUT the timing.
+    # A FINISHER is a wheel that resolved with a COMMANDER (not merely any payoff)
+    # on the battlefield AND with a hand the thin-hand clause alone would not have
+    # thrown away — the complement of the built-in gate, so no new authored
+    # constant. `_note_wheel` is called at both fire sites with the hand as it
+    # stands when the wheel resolves (the spell has already left it, which is the
+    # same `- 1` the gate applies; an activated engine sits on the battlefield).
+    wheels_cast = 0
+    wheels_with_payoff = 0
+    first_wheel_turn = None
+    finisher_wheel_turn = None
+    wheels_cast_by_turn = []
+    dead_wheels_in_hand_by_turn = []
+
+    def _note_wheel():
+        nonlocal wheels_cast, wheels_with_payoff, first_wheel_turn, finisher_wheel_turn
+        thin = sum(1 for c in hand if not c["is_land"]) <= WHEEL_MIN_HAND
+        wheels_cast += 1
+        if first_wheel_turn is None:
+            first_wheel_turn = turn
+        if event_payoff_permanents:
+            wheels_with_payoff += 1
+        if finisher_wheel_turn is None and not thin and _cmd_out() >= 1:
+            finisher_wheel_turn = turn
+
+    def _dead_wheels():
+        """Wheel cards held with nothing on the battlefield to pay — the clog the
+        pilot described as "one playable creature and a bunch of wheels"."""
+        if event_payoff_permanents:
+            return 0
+        return sum(1 for c in hand if not c["is_land"]
+                   and (c["draw"]["wheel_draws"] or c["draw"]["activated_wheel"]))
     arrival_draw_used = set()     # ids of `once each turn` engines, per turn
     etb_damage = 0                # noncombat damage dealt this turn by those
     etb_chain_hits = 0            # times the chain guard stopped a cascade
@@ -1120,6 +1173,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 opponent_draws_this_turn += card["draw"]["spell_each_player_draws"]
             if card["draw"]["wheel_draws"]:
                 held = len(hand)
+                _note_wheel()
                 discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
                 _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
                 draw_n(_n + card["draw"]["wheel_plus"])
@@ -2266,13 +2320,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if model_draw and model_discard and wheel_engines:
             for _we in list(wheel_engines):
                 _wp = _we["draw"]
-                if not (sum(1 for c in hand if not c["is_land"]) <= WHEEL_MIN_HAND
-                        or event_payoff_permanents):
+                if not _wheel_castable(sum(1 for c in hand if not c["is_land"])):
                     continue
                 if not spend(_wp["activated_wheel_cost"],
                              _wp["activated_wheel_pips"]):
                     continue
                 _held = len(hand)
+                _note_wheel()
                 discard_n(0, everything=True,
                           shuffled=_wp["activated_wheel_shuffles"])
                 _an = _held if _wp["activated_wheel"] < 0 else _wp["activated_wheel"]
@@ -2383,9 +2437,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # discarded is not here to cast.
                 if card not in hand:
                     continue
-                if card["draw"]["wheel_draws"] and not (
-                        sum(1 for c in hand if not c["is_land"]) - 1 <= WHEEL_MIN_HAND
-                        or event_payoff_permanents):
+                if card["draw"]["wheel_draws"] and not _wheel_castable(
+                        sum(1 for c in hand if not c["is_land"]) - 1):
                     continue          # the hand is worth more than seven fresh cards
                 if card["draw"]["spell_draw_greatest_power"] and not battlefield:
                     continue          # draws nothing with no creature; held
@@ -3023,6 +3076,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         blood_by_turn.append(blood)
         artifact_sacs_by_turn.append(artifact_sacs)
         discarded_by_turn.append(discarded)
+        wheels_cast_by_turn.append(wheels_cast)      # cumulative, like its neighbour
         # CUMULATIVE, like `discarded_by_turn` beside it: the size the pair has
         # reached, not what they gained this turn.
         commander_counters_by_turn.append(commander_counters)
@@ -3635,14 +3689,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # through the counter replacements like every other counter event.
             # Applied here, after combat, so this turn's gains grow next turn's
             # swing — a floor where a wheel resolved before combat.
-            _cmd_out = (commander_turn is not None) + (partner_turn is not None)
+            _cmd_out_now = _cmd_out()
             for d in drain_permanents:
                 if d["gain_team_counters"] and gain_events:
                     _k = apply_counter_mod(d["gain_team_counters"], counter_plus,
                                            counter_times) * gain_events
                     for _i, _c in enumerate(battlefield):
                         battlefield[_i] = (_c[0] + _k,) + _c[1:]
-                    commander_counters += _k * _cmd_out
+                    commander_counters += _k * _cmd_out_now
                 if d["gain_self_counter"] and gain_events:
                     counter_power += apply_counter_mod(d["gain_self_counter"], counter_plus,
                                                        counter_times) * gain_events
@@ -3672,6 +3726,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if _rs in sources:
                 sources.remove(_rs)
         hand_size_by_turn.append(len(hand))
+        dead_wheels_in_hand_by_turn.append(_dead_wheels())
         # AT THE END OF THE TURN, because the sacrifice step runs inside combat.
         # This was recorded BEFORE the combat step, so every entry held the
         # total as it stood at the START of its turn — the series was shifted by
@@ -3726,6 +3781,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "discarded_by_turn": discarded_by_turn,
         "event_damage_by_turn": event_damage_by_turn,
         "partner_turn": partner_turn,
+        # The wheels' timing: observed at the fire sites, decided on by nothing.
+        "wheels_cast_by_turn": wheels_cast_by_turn,
+        "wheels_with_payoff": wheels_with_payoff,
+        "first_wheel_turn": first_wheel_turn,
+        "finisher_wheel_turn": finisher_wheel_turn,
+        "dead_wheels_in_hand_by_turn": dead_wheels_in_hand_by_turn,
         "sacrifices_by_turn": sacrifices_by_turn,
         "sac_cap_hits": sac_cap_hits,
         "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
