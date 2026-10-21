@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=fda57c5a3750 at=2026-10-19 -->
+<!-- ctx:written-for version=v1.3.0 sha=fda57c5a3750 at=2026-10-21 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
@@ -43,6 +43,8 @@ On 2026-10-19 the Torbran branch was merged (v1.3.0) and Sean plays it on printe
 **One commander first, the second later.** Sean's piloting pattern after game 001: one commander can do the work alone. Land whichever one the hand suits, grow it with the draws and discards, bring the second out later, and save the big wheel for when both are on the table. That is a plan the pilot is forming, not yet a rule.
 
 **The nine-mana unit.** Played together, the two commanders are a four-drop and a five-drop. Brallin was removed more than once and the commander tax came on, so the pair felt like a nine-mana unit, a lot like the Ur-Dragon problem. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) carried the protection in that game and were the best cards in it. Campfire and Command Beacon are the new way to buy a commander back.
+
+**Wheels are the finish, not the opening.** After game 002 Sean's working view is that the wheels should wait for [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) and [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) to be on the table, then hit one after another to end the game. Cast early they cost him cards, can leave him with a hand that does nothing, and wear on the table. This is Sean's read of how the deck should be played, and it points at the number of wheels in the list. It is not yet tested. Open questions has it as a claim.
 
 **Wheeling your own good cards.** A wheel throws away your hand too. Sean discarded useful cards just to fire one. Check what you are giving up before you fire.
 
@@ -167,9 +169,9 @@ Goldfish, 10,000 seeded games, measured on v1.3.0 (V8), 2026-10-19. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **1 game(s):** 0 won, 0 lost · 2026-10-06 to 2026-10-06
-- **How games ended:** won 1
-- **Not yet read:** 001
+- **2 game(s):** 0 won, 1 lost · 2026-10-06 to 2026-10-20
+- **How games ended:** combo 1, won 1
+- **Not yet read:** 001, 002
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -184,13 +186,25 @@ Goldfish, 10,000 seeded games, measured on v1.3.0 (V8), 2026-10-19. Each group b
 
 His words: "it's fun, it's doing what it's supposed to do, but it definitely needs some finesse." He is not itching to change anything. Many cards have not been played yet, and he wants a couple more games before locking anything. He asked for hypotheses to test, not swaps.
 
-After the merge: the list in this file's notes (Echo of Eons, Mana Geyser and the rest) is the v1.2.0 list. Game 001 was played on it. No game has been logged on v1.3.0 yet. Of the things Sean said he missed, the branch adds removal and answers, wheels that do something else, and a way to buy a commander back. Ramp is the one it did not add to.
+**002 (2026-10-20, four-person pod at Oliver's, the second game and the first on v1.3.0).** Same pod as before: Oliver, Tom and Ryan. No result is recorded. Sean said the wheels with the commanders out "went pretty well", and that the deck is actually good, but it needs calibrating.
+
+- **The kept hand.** He mulliganed, and still isn't sure he should have kept what he had: one playable creature and a pile of wheels. A hand of wheels with nothing to cash them in on is a hand that does nothing.
+- **Too many wheels.** His read: "there might be too many wheels in the wheel deck." This is the first time he has said the count itself is wrong, not just the mix.
+- **Two commander taxes.** Two commanders mean two taxes on the board. [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) is the red four-drop, so he arrives late and costs more each time he is removed.
+- **The table does not enjoy it.** Making people discard their hand is not fun for them. Oliver was already discarding creatures off the board and more besides. Sean's point: you are trying to set up, you hold cards, and someone keeps taking them. If the whole deck is built on that, it is annoying politically, and that matters in a pod you play again.
+- **His thesis: wheels are finishers.** "The wheels need to be few and far between; they need to come in and hit when Brallin or Shabraz are on the table." The picture he painted: both commanders already out and big, a wheel lands, the table discards and Brallin pings everyone, everyone draws and Shabraz grows and he gains life, then a second wheel, then red mana for trample, and a flying trampling commander shark swings. Wheels as the turn you win on, not as early tempo.
+- **A note on the goldfish.** He said this is a reminder to downweight those metrics. The goldfish has no removal and no opposing interaction, so it pushes the deck the wrong way. The Numbers section is a ceiling for how often things line up, never a verdict on the table.
+
+Read together with 001: the shape that works is one or both commanders on the table first, then the wheels. Three games' worth of notes now say the same thing in different words (hold the second commander, save the big wheel, wheels as finishers). It is a pattern the pilot is converging on, not a rule yet, and no list change has been agreed.
+
+Of the things Sean said he missed after 001, the v1.3.0 branch added removal and answers, wheels that do something else, and a way to buy a commander back. Ramp is the one it did not add to. Game 002 is the first look at that list, and its main finding is about how many wheels there are, not which.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.3.0 · V8** (2026-10-19) — in: Alhammarret's Archive, Big Score, Boros Charm, Campfire, Collective Defiance, Command Beacon, Fateful Showdown, Fevered Visions …; out: Adarkar Wastes, Calciform Pools, Containment Construct, Currency Converter, Drake Haven, Exotic Orchard, Improbable Alliance, Mana Geyser …. _torbran-v1 merged 2026-10-19: Torbran, three wheels that do something else (Collective Defiance, Fateful Showdown, Incendiary Command), Spider-Man, Lae'zel, Alhammarret's Archive, the answers (Silence_
   - merge `torbran-v1`: objective kill_by_6 read **met** — played on printed proxies from 2026-10-19; the unowned cards are on the order list (the pilot's call)
+  - played 1: 0W 1L
 - **v1.2.0 · V7** (2026-10-06) — in: Faerie Mastermind, Jeska's Will, Mana Geyser, Razorkin Needlehead, Scrawling Crawler, Teferi's Protection; out: Enduring Curiosity, Generous Plunderer, Kefnet the Mindful, Silent Hallcreeper, Treasure Map, Waterbender Ascension. _merged and sleeved 2026-10-06_
   - merge `momentum-v1`: objective forge.win_rate read **not resolvable** — Sleeved in paper 2026-10-06 by the pilot: Mana Geyser in hand; the other five ordered (ManaPool, 2026-10-06) and played as proxies until they arrive.
   - played 1: 0W 0L
@@ -217,13 +231,16 @@ The generated list above has every version. The story in short: the first list w
 - 4 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list has just changed, so these are things to test, not swaps.
+The list has just changed and one game has been played on it, so these are things to test, not swaps.
 
 - Torbran: does the bonus on every ping turn the wheel turn into a kill more often in real games than the old list? The goldfish can see it; the table's removal on a four-mana Dwarf it cannot.
 - Answers: do Silence, Snapback and March of Swirling Mist get cast, or do they sit because a blue card is never spare when you want one? Needs real games.
 - Ramp: the branch did not add ramp and the hoard fell. Does the commanders' arrival slip? Needs the goldfish to read Treasure makers and burst mana, which it does not yet.
 - Untapped lands: do the swapped duals make the commanders arrive on time, or did giving up Reliquary Tower's hand-size help hurt the seven-card wheels?
 - One commander first: does leading with a single commander and holding the other for the wheel beat casting both as soon as possible? Open, and the goldfish cannot see the table's removal.
+- Too many wheels: with fewer wheels and the freed slots going to bodies, ramp or the cheap draw that does not empty the hand, does a kept seven more often have a creature to play and a commander to cast by the turn the first wheel is cast? The goldfish can see the hand and the curve. It cannot see whether the table minds.
+- Wheel timing: does holding every full-hand wheel until a commander is on the table beat firing it as soon as it is castable? Needs real games and Sean's own count of what he discarded each time. The goldfish can price the delay, not the removal or the politics.
+- The kept hand: is one playable creature and a handful of wheels a mulligan? A keep rule for this deck (a commander, or a way to cast one, plus a wheel at most) is something to test against hands drawn by the goldfish and against the next few games.
 - Which good cards are being discarded to fire a wheel, and is there a way to play them out first?
 
 ## Context changelog
@@ -232,3 +249,4 @@ The list has just changed, so these are things to test, not swaps.
 - 2026-10-07 · Keeper · log: folded game 001 into Pilot notes and How it plays; replaced the pre-log quote; reset Open questions
 - 2026-10-07 · Keeper · pilot log 001 (2026-10-06, first game): piloting pattern, ramp, removal, wheel momentum; no list changes yet
 - 2026-10-19 · Keeper · deck change: torbran-v1 merged as v1.3.0 (22 swaps; Torbran, the wheels that do something else, the answers)
+- 2026-10-21 · Keeper · pilot log 002: game two at Oliver's 2026-10-20 — too many wheels, wheels as finishers

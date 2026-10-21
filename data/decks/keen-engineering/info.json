@@ -12,14 +12,13 @@
   "size": 100,
   "lands": 40,
   "status": {
-    "complete": 15,
+    "complete": 16,
     "of": 19,
     "stale": [],
     "invalid": [],
     "verified": true,
     "missing": [
       "tutors",
-      "log",
       "issue",
       "sim"
     ],
@@ -28,11 +27,6 @@
         "stage": "tutors",
         "what": "the tutor guide — `tutor-guide`",
         "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
-      },
-      {
-        "stage": "log",
-        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
-        "how": "manamap pilot deck-notes keen-engineering add \"<what happened>\" --result win|loss --opponents 3"
       },
       {
         "stage": "issue",
@@ -439,13 +433,15 @@
     "release": "v1.0.0"
   },
   "record": {
-    "games": 0,
+    "games": 1,
     "win": 0,
-    "loss": 0,
+    "loss": 1,
     "draw": 0,
-    "last_played": null,
-    "first_played": null,
-    "undebriefed": [],
+    "last_played": "2026-10-20",
+    "first_played": "2026-10-20",
+    "undebriefed": [
+      "001"
+    ],
     "causes": {},
     "cause_counts": {},
     "feel": {},
@@ -815,7 +811,7 @@
   "experiments": null,
   "decisions": null,
   "next": [
-    "nothing in the captain's log — play it, then `deck-notes keen-engineering add \"…\" --result win|loss --opponents N`",
+    "1 logged game(s) not yet debriefed (001) — `/debrief keen-engineering`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×5",
     "try a swap in seconds — `try keen-engineering --out \"A\" --in \"B\"`"
   ],

@@ -1,6 +1,6 @@
 # Sai, Master Thopterist — Deck Context
 
-<!-- ctx:written-for version=v1.0.0 sha=63568a51718f at=2026-10-19 -->
+<!-- ctx:written-for version=v1.0.0 sha=63568a51718f at=2026-10-21 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Sai, Master Thopterist](https://manamap.seanmacrae.com/viz/index.html?cards=Sai%2C+Master+Thopterist)
@@ -81,15 +81,28 @@ Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- No games logged yet (`manamap pilot deck-notes keen-engineering add …`).
+- **1 game(s):** 0 won, 1 lost · 2026-10-20 to 2026-10-20
+- **Not yet read:** 001
 <!-- /ctx:gen record -->
 
-No games are logged yet, so there is nothing to say about how it plays at the table. The first few games should settle whether the Thopter swarm or the one big body ends games, and whether the table lets the board build.
+One game so far (log 001, a loss, four at Oliver's, the first time out). Sean plays this as a stock precon and will not modify it, so these notes are about piloting, not about the list.
+
+He felt like a threat and held his own through most of the game, in his words: "I definitely felt like I was a threat and holding my own throughout most of the game." He did not win.
+
+- **[Sai, Master Thopterist](https://manamap.seanmacrae.com/viz/index.html?cards=Sai%2C+Master+Thopterist) is cheap and it works.** At three mana he comes down early, and nearly every card behind him mints a Thopter. Sean had "some nice large things out there that were buffed by the number of artifacts I control."
+- **The cost reducers never showed.** "I didn't draw into any artifact discount cards." [Etherium Sculptor](https://manamap.seanmacrae.com/viz/index.html?cards=Etherium+Sculptor) and [Foundry Inspector](https://manamap.seanmacrae.com/viz/index.html?cards=Foundry+Inspector) stayed in the library, so the board came on at the speed of mana alone. The Numbers section says how often the fuel shows up by turn six.
+- **The wide boards were the problem.** He had "a couple of things that felt win-condition-y" but did not know how to get past wider boards, "because there's no trample." Plenty of flyers, though. The Thopters and the big bodies that fly are the way over.
+- **He never got to cast his flying dragon.** "I didn't get to play Steel Kite Dragon, which is a cool card, I wanted to." No card of that name is in the 99; the closest is [Steel Hellkite](https://manamap.seanmacrae.com/viz/index.html?cards=Steel+Hellkite), a big flyer, so it is probably that card (an open question asks Sean). Either way, the finisher that flies stayed in the library.
+- **Scalers pump, they do not punch through.** [Steel Overseer](https://manamap.seanmacrae.com/viz/index.html?cards=Steel+Overseer) and the other scalers make the crowd bigger, but nothing on the ground gets past a wall of blockers. Plan the finish in the air, or with [Whirler Rogue](https://manamap.seanmacrae.com/viz/index.html?cards=Whirler+Rogue) making one attacker unblockable.
+- **It is slow.** The game ran long, like most precon games. A deck that wins by building up will always be in a long game at this table.
+
+Pattern to watch as games come in: does the Thopter crowd get through in the air before the table's wide boards get big?
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.0.0 · V1** (2026-10-19) — first list, 100 cards. _the Foundations Commander precon as printed; checked in 2026-10-19_
+  - played 1: 0W 1L
 <!-- /ctx:gen history -->
 
 The list is the printed precon with no changes. Nothing has been tried yet, so there is nothing to look back on.
@@ -100,7 +113,10 @@ The list is the printed precon with no changes. Nothing has been tried yet, so t
 - Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
 <!-- /ctx:gen queue -->
 
-- There is no captain's log, engine model, strategic frame or proved stack for this deck yet. Nothing here is proved by a stack.
+- There is one game in the captain's log (001) and no engine model, strategic frame or proved stack. Nothing here is proved by a stack.
+- Sean said "Steel Kite Dragon". Is that [Steel Hellkite](https://manamap.seanmacrae.com/viz/index.html?cards=Steel+Hellkite)? The log should name the card he meant.
+- Claim to test at the table: if the Thopters and flyers are protected until a finisher is down, the deck gets past the wider boards in the air. Expected effect: games like 001 end with a flying win instead of a stall on the ground.
+- Claim to test: when the cost reducers ([Etherium Sculptor](https://manamap.seanmacrae.com/viz/index.html?cards=Etherium+Sculptor), [Foundry Inspector](https://manamap.seanmacrae.com/viz/index.html?cards=Foundry+Inspector)) do not show, the board stays behind the table's. Expected effect: the games where the fuel is slow are the ones lost, the ones where it shows are not. Needs more games to say.
 - Sai's cast trigger and his sacrifice-draw are not modelled by the goldfish, so we cannot yet say how much the Thopters add. `model-coverage` names what is dark.
 - Combo data lists a few lines one card short, each needing a card that is not in the deck. For a low-bracket deck these are things to avoid adding, not to chase.
 - Does it kill with the wide board or with one big body? Play will tell us, and the first games should record which.
@@ -109,3 +125,4 @@ The list is the printed precon with no changes. Nothing has been tried yet, so t
 
 - 2026-10-19 · scaffolded by `manamap pilot context`
 - 2026-10-19 · Keeper · seed: the precon as printed, checked in 2026-10-19
+- 2026-10-21 · Keeper · pilot log 001: first game, Oliver's 2026-10-20 — a loss; piloting notes only, list stays stock
