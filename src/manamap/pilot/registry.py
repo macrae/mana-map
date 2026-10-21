@@ -877,7 +877,9 @@ def add_pilot_parser(subparsers):
                                       "stage", "unstage", "commit", "log",
                                       "propose", "withdraw", "reject", "merge", "delete",
                                       # the branch in plain words, written by Jarvis (2026-10-20)
-                                      "summary"],
+                                      "summary",
+                                      # re-aim an OPEN branch's objective (2026-10-21); refused once proposed
+                                      "objective"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / stage: one card out, one in / "
                                   "source: where every added card comes from / "

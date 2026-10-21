@@ -2078,6 +2078,18 @@ def _dispatch(args):
         print("  Recorded in decisions.jsonl; the branch stays on disk and measured, "
               "and a later `propose` reopens it.")
         return
+    if action == "objective":
+        got = reaim(slug, branch, getattr(args, "objective", None), why=getattr(args, "why", None))
+        o = got["objective"]
+        print(f"{slug}/{branch}: objective is now {o['axis']} {o['op']} {o['value']}"
+              + (f" @{o['pod']}" if o.get("pod") else ""))
+        prev = got["was"]
+        if prev:
+            print(f"  was {prev['axis']} {prev['op']} {prev['value']} — kept in branch.json's "
+                  f"objective_history; `net-change --write` re-grades against the new line")
+        for line in champion_reading(slug, o):
+            print(line)
+        return
     if action == "summary":
         got = summary(slug, branch, title=getattr(args, "title", None), blurb=getattr(args, "blurb", None))
         print(f"{slug}/{branch}: \"{got['title']}\" — {got['blurb']}")
@@ -2185,7 +2197,39 @@ def _dispatch(args):
 #: `merge` is absent on purpose — it already runs `regen.run(slug=…)`, which
 #: includes the `deck-info` stage.
 MUTATES_THE_DOSSIER = frozenset(
-    {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete", "summary"})
+    {"new", "stage", "unstage", "commit", "propose", "withdraw", "reject", "delete", "summary",
+     "objective"})
+
+
+def reaim(slug, branch, raw, why=None):
+    """RE-AIM AN OPEN BRANCH (2026-10-21). `new` fixes the objective on the day the
+    branch opens, and the day sharknado's finisher-v1 was staged the row it aimed at
+    moved the wrong way BY CONSTRUCTION — "finisher wheel by T8" counts games where a
+    wheel landed on a commander, so cutting wheels lowers it even when every wheel
+    left is a better one. A pre-registered line is still the rule: this is refused
+    once a proposal exists (the pilot accepted that line) or the branch merged, the
+    previous line is kept in `objective_history` with the date, and `net-change
+    --write` must be re-run to grade against the new one. Never on a decided branch.
+    """
+    doc = meta(slug, branch)
+    if not doc:
+        raise SystemExit(f"{slug}: no branch {branch!r}")
+    if doc.get("merged"):
+        raise SystemExit(f"{slug}/{branch} is merged — its objective is history")
+    if doc.get("proposal"):
+        raise SystemExit(f"{slug}/{branch} is proposed against its current objective — "
+                         f"`withdraw` first if the line is wrong")
+    if not raw:
+        raise SystemExit("`--objective \"<axis> <op> <n>[ @pod]\"` is required")
+    objective = parse_objective(raw)
+    if why:
+        objective["why"] = why
+    was = doc.get("objective")
+    doc.setdefault("objective_history", []).append(
+        {**(was or {}), "replaced_at": datetime.date.today().isoformat()})
+    doc["objective"] = objective
+    _write_meta(slug, branch, doc)
+    return {"objective": objective, "was": was}
 
 
 def refresh_dossier(slug):

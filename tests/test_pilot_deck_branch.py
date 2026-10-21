@@ -851,3 +851,33 @@ def test_jarvis_can_put_a_branch_into_plain_words_and_the_row_carries_it(modern_
     row = deck_branch.one("md", "b")
     assert row["summary"]["title"] == "A faster clock"
     assert row["summary"]["blurb"] == "Two burn spells for two blockers."
+
+
+# ── Re-aiming an open branch (2026-10-21) ────────────────────────────────────
+
+
+def test_an_open_branch_can_be_re_aimed_and_a_proposed_or_merged_one_cannot(modern_deck):
+    """The day sharknado's finisher-v1 was staged, the row it aimed at fell BY
+    CONSTRUCTION (finisher wheel by T8 counts wheels landing on a commander, so
+    cutting wheels lowers it). `objective` rewrites an OPEN branch's line, keeps
+    the old one dated in `objective_history`, and is refused once a proposal
+    exists or the branch merged — a pre-registered line is still the rule."""
+    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE, objective=deck_branch.parse_objective("land_drop >= 0.8"))
+    got = deck_branch.reaim("md", "b", "stall <= 0.1", why="the hand, not the clock")
+    assert got["was"]["axis"] == "land_drop"
+    doc = deck_branch.meta("md", "b")
+    assert doc["objective"]["axis"] == "stall" and doc["objective"]["op"] == "<="
+    assert doc["objective"]["value"] == 0.1 and doc["objective"]["why"] == "the hand, not the clock"
+    assert doc["objective_history"][0]["axis"] == "land_drop"
+    assert doc["objective_history"][0]["replaced_at"]
+    with pytest.raises(SystemExit, match="required"):
+        deck_branch.reaim("md", "b", None)
+    doc["proposal"] = {"as_version": "v1.1.0"}
+    deck_branch._write_meta("md", "b", doc)
+    with pytest.raises(SystemExit, match="proposed"):
+        deck_branch.reaim("md", "b", "stall <= 0.2")
+    doc.pop("proposal"); doc["merged"] = {"at": "2026-10-21"}
+    deck_branch._write_meta("md", "b", doc)
+    with pytest.raises(SystemExit, match="merged"):
+        deck_branch.reaim("md", "b", "stall <= 0.2")
+    assert "objective" in deck_branch.MUTATES_THE_DOSSIER

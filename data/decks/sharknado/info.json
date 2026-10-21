@@ -931,9 +931,9 @@
       ],
       "has_cards": true,
       "objective": {
-        "axis": "finisher_wheel_8",
-        "op": ">=",
-        "value": 0.82
+        "axis": "dead_wheels_5",
+        "op": "<=",
+        "value": 0.05
       },
       "summary": {
         "title": "Wheels as the finish, not the opening",
@@ -941,8 +941,95 @@
         "by": "jarvis",
         "at": "2026-10-21"
       },
+      "verdict": {
+        "state": "a trade",
+        "rose": 6,
+        "fell": 5,
+        "no_call": 5
+      },
+      "objective_grade": {
+        "state": "met",
+        "reading": 0.0216,
+        "shortfall": null
+      },
+      "measured": true,
+      "blind_spots": [
+        "Ledger Shredder",
+        "Loran's Escape",
+        "Mind's Eye",
+        "Prismari Command",
+        "Queen Kayla bin-Kroog"
+      ],
+      "impact": {
+        "state": "a trade",
+        "rose": [
+          "board power @T6",
+          "killed by T10",
+          "interaction affordable @T6",
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
+        ],
+        "fell": [
+          "damage @T10",
+          "stall, 2 in a row",
+          "extra cards by T8",
+          "finisher wheel by T8",
+          "wheels cast by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -19.791,
+            "ci95_diff": [
+              -21.0081,
+              -18.5739
+            ],
+            "mde": 1.7397,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0138,
+            "ci95_diff": [
+              0.0112,
+              0.0164
+            ],
+            "mde": 0.0038,
+            "verdict": "better",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 1.0264,
+            "ci95_diff": [
+              0.9784,
+              1.0744
+            ],
+            "mde": 0.0686,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -6.2465,
+            "ci95_diff": [
+              -6.5089,
+              -5.9841
+            ],
+            "mde": 0.375,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      },
       "cast_proofs": {
-        "played": 7,
+        "played": 11,
         "held": 0,
         "unplayed": 0,
         "as_of": "2026-10-21",
