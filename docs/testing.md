@@ -44,11 +44,19 @@ tiers those areas can break:
 | **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression, without the fleet regen | 10 min |
 | **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
 
-**The fleet regen is CI's, not the push's** (2026-10-09). Every scope runs
+**The fleet regen is not the push's** (2026-10-09, corrected 2026-10-21). Every scope runs
 `make regression-prepush` — the regression tier's parallel half — and leaves
-`test_the_fleet_regenerates_byte_identically` (marker `regen`, 7-15 min serial) to CI,
-which runs it on every push beside `make manuals` and `git diff --exit-code`. A local
-push paid for that check twice. `make regression` and `make prepush-full` still run it.
+`test_the_fleet_regenerates_byte_identically` (marker `regen`, 7-15 min serial) to
+`make regression` and `make prepush-full`. **CI does not run it**, whatever its workflow
+says: the test is `requires_data` (`data/embeddings.npy`, gitignored, built by no job), so
+it and every other recomputation test SKIP there (run 39503405826), and CI's one
+determinism gate that fires is `make manuals` followed by `git diff --exit-code` over
+`manuals/ data/decks/ data/fleet/`. Since 2026-10-21 the model-stamp equality test
+(`test_the_fleet_is_stamped_with_the_model_that_is_running`) carries the `regen` marker
+too, so a model edit no longer reds the python area: locally an older stamp is a STATE
+(`deck-status`, the workbench chip), the deck being iterated is re-read with
+`regen --slug`, and the fleet catches up with `regen --fleet` at a release. A merged or
+rejected branch is excluded from every gate that recomputes (`deck_branch.is_decided`).
 
 A mixed diff is the union (`python+viz` is the full set; a decklist beside a pilot
 edit is `python`, since the regression tier already holds the deck checks). The

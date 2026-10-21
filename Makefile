@@ -90,9 +90,11 @@ regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer 
 	$(PYTEST) $(REGRESSION_SERIAL) $(PYTEST_ARGS)
 
 # What `make prepush` runs: the parallel half alone. The fleet regen (~7-15 min,
-# serial) is the same rebuild-and-compare CI runs on every push (`make regression`,
-# then `make manuals` + `git diff --exit-code`), so a local push no longer waits on
-# it (2026-10-09, cycle time). `make regression` and `prepush-full` still run it.
+# serial) belongs to `make regression` and `prepush-full` (2026-10-09, cycle time).
+# CI does NOT run it — the test is `requires_data` and skips there; CI's determinism
+# gate is `make manuals` + `git diff --exit-code` (docs/testing.md, 2026-10-21). The
+# model-stamp equality test rides the same `regen` marker since 2026-10-21, so a
+# model edit in the pilot's loop never reds the push: an older stamp is a state.
 regression-prepush:  ## the regression tier WITHOUT the fleet regen (CI runs that on every push)
 	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
 

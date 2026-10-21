@@ -109,7 +109,7 @@ manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents 
 manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot validate-log <slug>                   # log.jsonl on FORM: ids in order, result/opponents/tags, the survey's vocabulary and range
 manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
-manamap pilot regen [--only STAGE] [--slug S] [--jobs N] [--dry-run]   # REBUILD THE FLEET after a model change, in dependency order, parallel across targets
+manamap pilot regen --slug S | --fleet [--only STAGE] [--jobs N] [--dry-run]   # LAZY since 2026-10-21: --slug re-reads the deck you are iterating (and its OPEN branches; a merged or rejected one is never re-measured), --fleet is the explicit fleet-wide rebuild at a release or on the pilot's word, a bare regen refuses; dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot context <slug> [--slice SECTION…|--check|--scaffold|--refresh [--all]|--install DRAFT --note "…"]
                                                               # THE DECK CONTEXT (CONTEXT.md, PRD v2): the document /jarvis reads first

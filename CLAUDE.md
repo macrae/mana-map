@@ -143,9 +143,12 @@ manamap pilot check-in <slug> --from <file>  # a PAPER list -> decklist.txt; ref
 manamap pilot deck-version <slug> [list|show|tag|restore|paper] # `paper` marks what is SLEEVED
 manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
 manamap pilot deck-notes <slug> add "…" --result win|loss --cause <code> [--feel power=4 …]   # the captain's log (+ the pilot's 1-5 survey)
-manamap pilot regen [--only STAGE] [--slug S] [--jobs 8]
-                              # rebuild the fleet after a MODEL change, in dependency order;
-                              # then `make manuals`. Bit-identical across --jobs.
+manamap pilot regen --slug S | --fleet [--only STAGE] [--jobs 8]
+                              # LAZY (2026-10-21): --slug re-reads the deck you are iterating
+                              # (its OPEN branches too; a decided one never); --fleet is the
+                              # pilot's explicit fleet-wide rebuild at a release; a bare regen
+                              # refuses. `make manuals` is release-time only. Bit-identical
+                              # across --jobs.
 
 # ── FORGE: THE PROBE ──────────────────────────────────────────────────────
 manamap pilot forge-cast-check <slug> --card "<name>"   # does the AI PLAY it? (two-seat shell)
@@ -235,7 +238,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **A creature that may not attack does not attack** — Defender and "can't attack unless" gate it (`attack_gate`); Kefnet was a free 5/5 flyer every turn. → `docs/simulation.md`
 - **A flag the model sets is a claim the model must ACT ON** (`tests/test_metric_hygiene.py`).
 - **A one-turn grant is not a permanent doubler; a channel placed where it cannot fire is not a channel.** → `docs/gotchas-bench.md`
-- **A model change makes every derived artifact stale.** `meta.model_version` hashes all five simulator files BYTE FOR BYTE (the four goldfish files and `pilot_policy.py`) — a comment edit there means `manamap pilot regen --jobs 8 && make manuals`. → `docs/gotchas-bench.md`
+- **A model change stales the fleet's STAMP, and that is a state, not a rebuild** (2026-10-21). `meta.model_version` hashes all five simulator files BYTE FOR BYTE (the four goldfish files and `pilot_policy.py`). Locally an older stamp is reported — `deck-status` says OLDER MODEL, the workbench shows a chip — and no test reds on it in `make prepush`; re-read the deck you are iterating with `regen --slug <slug>`; the fleet catches up with `regen --fleet` at a release or on the pilot's word; `make manuals` is release-time only. A merged or rejected branch is never re-measured. → `docs/gotchas-bench.md`
 - **The goldfish cannot rank two lands that make the same colours**; `mana-analysis` and `mana-fit` are the evidence for a land swap. → `docs/gotchas-bench.md`
 - **Adding a metric requires re-running the independence check** (`pytest -m fleet`; one pair is over the line today — known-issues 9b).
 
