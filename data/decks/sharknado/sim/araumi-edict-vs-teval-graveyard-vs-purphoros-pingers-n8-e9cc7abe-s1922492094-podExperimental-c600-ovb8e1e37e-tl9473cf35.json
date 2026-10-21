@@ -6658,40 +6658,40 @@
     ],
     "first_wheel_turn": {
       "mean_ci": {
-        "mean": 7.0,
+        "mean": 7.33,
         "median": 7,
         "min": 6,
         "max": 9,
-        "n": 5,
+        "n": 3,
         "ci95": [
-          5.93,
-          8.07
+          5.6,
+          9.06
         ]
       },
-      "games_with_a_wheel": 5,
-      "never": 3
+      "games_with_a_wheel": 3,
+      "never": 5
     },
     "wheels_cast": {
       "mean_ci": {
-        "mean": 0.62,
-        "median": 1.0,
+        "mean": 0.38,
+        "median": 0.0,
         "min": 0,
         "max": 1,
         "n": 8,
         "ci95": [
-          0.27,
-          0.98
+          0.02,
+          0.73
         ]
       },
-      "total": 5
+      "total": 3
     },
     "wheels_with_commander": {
       "k": 2,
-      "n": 5,
-      "rate": 0.4,
+      "n": 3,
+      "rate": 0.6667,
       "ci95": [
-        0.1176,
-        0.7693
+        0.2077,
+        0.9385
       ]
     },
     "per_game": [
@@ -6716,8 +6716,13 @@
         "wheels_with_commander": 0
       },
       {
-        "first_wheel_turn": 7,
-        "wheels_cast": 1,
+        "first_wheel_turn": null,
+        "wheels_cast": 0,
+        "wheels_with_commander": 0
+      },
+      {
+        "first_wheel_turn": null,
+        "wheels_cast": 0,
         "wheels_with_commander": 0
       },
       {
@@ -6728,16 +6733,11 @@
       {
         "first_wheel_turn": 6,
         "wheels_cast": 1,
-        "wheels_with_commander": 0
-      },
-      {
-        "first_wheel_turn": 6,
-        "wheels_cast": 1,
         "wheels_with_commander": 1
       }
     ],
     "limits": [
-      "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card by the face that wheels); a discard wheel those readers cannot parse is not counted. Activated wheels (Kayla, Magus, Archivist) are not casts and are in engine_casts.",
+      "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card by the face that wheels); a discard wheel those readers cannot parse is not counted, and a cast counts only when our seat DISCARDED before it resolved (a modal card cast for its burn modes is not a wheel). Activated wheels (Kayla, Magus, Archivist) are not casts and are in engine_casts.",
       "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander cast after the wheel on the same turn reads as present, one removed on the same turn reads as absent — the log has no mid-turn board. A floor, labelled one.",
       "The kept seven is NOT in the log: the telemetry's zone lines start with turn 1's draw. The pilot's marks carry the keep question.",
       "Forge's AI fires a wheel on its own rule, so these are counts about the LIST at this table, never about the pilot's hold."

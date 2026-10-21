@@ -37,7 +37,9 @@ SINCE = "2026-10-21"
 LIMITS = [
     "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card "
     "by the face that wheels); a discard wheel those readers cannot parse is not "
-    "counted. Activated wheels (Kayla, Magus, Archivist) are not casts and are in "
+    "counted, and a cast counts only when our seat DISCARDED before it resolved (a "
+    "modal card cast for its burn modes is not a wheel). Activated wheels (Kayla, "
+    "Magus, Archivist) are not casts and are in "
     "engine_casts.",
     "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander "
     "cast after the wheel on the same turn reads as present, one removed on the same "
@@ -85,14 +87,41 @@ def _clean(name):
     return sim_parse._CARD_ID_TAIL.sub("", name or "").split(" (")[0].strip()
 
 
+def _wheeled(events, i, label, name):
+    """Did the cast at `events[i]` make OUR seat discard or shuffle away its hand? A modal card (Collective
+    Defiance, Incendiary Command) cast for its burn modes is not a wheel: on the
+    twenty-game run at olivers-table (2026-10-21) Collective Defiance was cast seven
+    times and chose its wheel mode in none. Forge logs the discards BEFORE the card's
+    own `resolve` line, so the window is cast -> that resolve, or the card leaving
+    the stack (countered)."""
+    for ev in events[i + 1:]:
+        k = ev.get("kind")
+        if k == "discard" and ev.get("seat") == label:
+            return True
+        if (k == "zone" and ev.get("owner") == label and ev.get("from") == "Hand"
+                and ev.get("to") in ("Library", "Graveyard") and _clean(ev.get("card")) != name):
+            return True                          # a SHUFFLE wheel (Echo, Molten Psyche,
+            #                                      Time Reversal) logs no discard line
+        if k == "resolve" and _clean((ev.get("text") or "").split(" - ")[0]) == name:
+            return False
+        if k == "zone" and ev.get("from") == "Stack" and _clean(ev.get("card")) == name:
+            return False                         # countered, or left the stack unresolved
+    return False
+
+
 def per_game(game, commanders, label, wheels):
     """One row for our seat in one parsed game."""
     rows = board_series.series(game, commanders).get(label) or []
     own = {r["global_turn"]: r for r in rows}
     own_turn = {r["global_turn"]: r["own_turn"] for r in rows}
-    cast_turns = [ev["turn"] for ev in game["events"]
-                  if ev.get("kind") == "cast" and ev.get("seat") == label
-                  and _clean(ev.get("what")) in wheels]
+    cast_turns = []
+    events = game["events"]
+    for i, ev in enumerate(events):
+        if not (ev.get("kind") == "cast" and ev.get("seat") == label
+                and _clean(ev.get("what")) in wheels):
+            continue
+        if _wheeled(events, i, label, _clean(ev.get("what"))):
+            cast_turns.append(ev["turn"])
     with_cmd = sum(1 for t in cast_turns if own.get(t, {}).get("commander_on_battlefield"))
     first = min(cast_turns) if cast_turns else None
     return {"first_wheel_turn": own_turn.get(first) if first is not None else None,

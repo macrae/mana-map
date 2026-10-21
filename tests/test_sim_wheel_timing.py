@@ -34,11 +34,12 @@ def test_wheel_names_come_from_the_goldfishs_own_readers():
     assert wt.from_logs([], {}, "x", {"cards": doc["cards"][1:]}) is None, "no wheel, no block"
 
 
-def test_a_cast_on_a_turn_with_the_commander_out_counts_and_one_without_does_not():
+def test_a_cast_on_a_turn_with_the_commander_out_counts_and_one_without_does_not(monkeypatch):
     """The fixture seat cast two distinct spells; call the second one a wheel and
     the first the commander, and the share follows the cleanup board. Proven by
     reading the START-of-turn board instead: a commander cast that turn then reads
     as absent and the count drops."""
+    monkeypatch.setattr(wt, "_wheeled", lambda *a: True)   # the stand-in never discards
     text, game, label, ours = _fixture_game()
     casts = []
     for ev in game["events"]:
@@ -60,7 +61,8 @@ def test_a_cast_on_a_turn_with_the_commander_out_counts_and_one_without_does_not
     assert wt.per_game(game, {}, label, {wt._clean(wheel)})["wheels_with_commander"] == 0
 
 
-def test_the_block_aggregates_and_validates_and_absent_means_absent():
+def test_the_block_aggregates_and_validates_and_absent_means_absent(monkeypatch):
+    monkeypatch.setattr(wt, "_wheeled", lambda *a: True)   # the stand-in never discards
     text, game, label, ours = _fixture_game()
     casts = [ev["what"] for ev in game["events"] if ev.get("kind") == "cast" and ev.get("seat") == label]
     wheel = wt._clean(casts[-1])
@@ -116,3 +118,34 @@ def test_a_split_card_counts_only_the_face_that_wheels():
             {"name": "Memory", "oracle_text": "Each player shuffles their hand and graveyard into their library, then draws seven cards."}]}]}
     names = wt.wheel_names(doc)
     assert "Memory" in names and "Commit" not in names, names
+
+
+def test_a_modal_wheel_cast_for_its_burn_is_not_a_wheel():
+    """Collective Defiance cast seven times at olivers-table (2026-10-21) and never
+    chose the wheel mode. Proven by deleting the discard requirement: the burn cast
+    then counts and `wheels_cast` reads 2."""
+    L = "Ai(1)-mm-x"
+    game = {"seats": [L], "events": [
+        {"kind": "cast", "seat": L, "what": "Collective Defiance", "turn": 3},
+        {"kind": "damage", "turn": 3},
+        {"kind": "resolve", "seat": L, "text": "Collective Defiance (8) - Choose one or more", "turn": 3},
+        {"kind": "discard", "seat": L, "card": "Grunt", "turn": 3},
+        {"kind": "cast", "seat": L, "what": "Collective Defiance", "turn": 5},
+        {"kind": "discard", "seat": L, "card": "Grunt", "turn": 5},
+        {"kind": "resolve", "seat": L, "text": "Collective Defiance (8) - Choose one or more", "turn": 5},
+    ], "turns_by_seat": {}, "outcome": {}}
+    from unittest import mock
+    with mock.patch.object(wt.board_series, "series", return_value={L: [
+            {"global_turn": 3, "own_turn": 2, "commander_on_battlefield": False},
+            {"global_turn": 5, "own_turn": 3, "commander_on_battlefield": True}]}):
+        row = wt.per_game(game, {}, L, {"Collective Defiance"})
+    assert row["wheels_cast"] == 1 and row["first_wheel_turn"] == 3
+    assert row["wheels_with_commander"] == 1
+    # a shuffle wheel logs zone moves, no discard line (Echo of Eons, 2026-10-21)
+    shuffle = {"seats": [L], "events": [
+        {"kind": "cast", "seat": L, "what": "Echo of Eons", "turn": 5},
+        {"kind": "zone", "card": "Grunt", "from": "Hand", "to": "Library", "owner": L, "turn": 5},
+        {"kind": "resolve", "seat": L, "text": "Echo of Eons (46) - Each player", "turn": 5}]}
+    with mock.patch.object(wt.board_series, "series", return_value={L: [
+            {"global_turn": 5, "own_turn": 3, "commander_on_battlefield": True}]}):
+        assert wt.per_game(shuffle, {}, L, {"Echo of Eons"})["wheels_cast"] == 1
