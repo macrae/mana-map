@@ -228,7 +228,8 @@ The generated list above has every version. The story in short: the first list w
 <!-- ctx:gen queue -->
 - **Q002** decided — What a Jeskai-identity (W/U/R) card-search returns for cards that discard the whole hand and also counter, bounce, destroy or exile, split by whether they discard (pay Brallin) or shuffle/bottom (pay only Shabraz). The output is the list; no premise about its length. → _supported: 25 WUR cards outside the 99 wheel AND interact; the best fits for both commanders (YOUR discard pays Brallin, YOUR draw pays Shabraz) are Fateful Showdown, Collective Defiance, Incendiary Command and The Elder Dragon War; Rites of Refusal and Null Brooch are discard-as-counter (Brallin only); Snort and Moonveil Regent are wheel momentum, not answers_
 - **Q004** promoted — Break-even: a protection piece (Greaves 2, Boots 2 + equip, Teferi's Protection one-shot) beats a ramp piece only if P(removal lands on a commander by T6) exceeds a threshold set by the recast tax (CR 903.8: Brallin 4 then 6 then 8; Shabraz 5 then 7 then 9) over the protection piece's own deploy cost, and Greaves/Boots-style permanent protection is the case where it does.
-- 4 dropped or killed: `manamap pilot queue list --deck sharknado --all`
+- **Q007** challenged — A wheel cast with both Shabraz and Brallin on the battlefield takes more life off the table than the same wheel with Shabraz still in the command zone — a wheel is a finisher dropped onto both commanders, not onto one.
+- 5 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
 The list has just changed and one game has been played on it, so these are things to test, not swaps.
