@@ -9488,3 +9488,60 @@ def test_the_workbench_says_older_model_as_a_state_and_links_the_rebuild(browser
         assert cards.nth(1).locator(".wb-chip.wb-older").count() == 0
     finally:
         page.close()
+
+
+# ── The pilot's marks on the pages (2026-10-21) ─────────────────────────────
+
+
+def _marked_info(slug):
+    import json as _json
+    from manamap.config import DECKS_DIR
+    info = _json.loads((DECKS_DIR / slug / "info.json").read_text())
+    rec = info.setdefault("record", {})
+    rec["marks_n"] = 3
+    rec["marks"] = {"first_wheel_turn": {"n": 3, "min": 0, "max": 6, "never": 1, "mean": 5.0},
+                    "both_turn": {"n": 3, "min": 0, "max": 7, "never": 1, "mean": 6.0},
+                    "wheel_with_commander_rate": 0.5, "kept_hand_passes_rule_rate": 0.5,
+                    "commander_removed": {"n": 2, "min": 0, "max": 2, "mean": 1.0}}
+    return info
+
+
+@pytest.mark.browser
+@requires_deck
+def test_the_pages_show_the_pilots_marks_as_the_table_instrument(browser, viz_server):
+    """The deck page's status panel and the branch page's 'At the table' block
+    read `record.marks` off info.json and print them in words; a deck with no
+    marked game shows neither. The page computes nothing."""
+    import json as _json
+    slug, branch = "sharknado", "finisher-v1"
+    from manamap.config import DECKS_DIR
+    if not (DECKS_DIR / slug / "branches" / branch / "branch.json").exists():
+        pytest.skip(f"{slug}@{branch} is not on disk")
+    info = _marked_info(slug)
+    page = browser.new_page()
+    page.route(f"**/data/decks/{slug}/info.json", lambda route: route.fulfill(
+        status=200, content_type="application/json", body=_json.dumps(info)))
+    try:
+        page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
+        page.wait_for_timeout(2500)
+        status = page.locator("#panel-status").text_content()
+        assert "At the table" in status and "first wheel T5" in status and "never in 1" in status
+        assert "landed on a commander in 50%" in status and "3 marked games" in status
+        page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
+        page.wait_for_timeout(2500)
+        block = page.locator("#table-marks")
+        assert block.count() == 1
+        text = block.text_content()
+        assert "3 marked games" in text and "not this branch" in text
+        assert "first wheel resolved: turn 5 on average, never in 1" in text
+        assert "kept seven passed the keep rule: 50%" in text
+    finally:
+        page.close()
+    # The control: the tracked info.json has no marked game, and no block renders.
+    page = browser.new_page()
+    try:
+        page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
+        page.wait_for_timeout(2000)
+        assert page.locator("#table-marks").count() == 0
+    finally:
+        page.close()
