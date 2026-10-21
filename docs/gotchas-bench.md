@@ -3560,6 +3560,58 @@ measure again, then cut. The three death paths now fire every payload through on
 Opportunist for a Swamp moved from nothing to a positive interval. The remaining gap is
 named in `docs/simulation.md`: a granted self-death draw (Clavileño) needs a combat death.
 
+## 2026-10-21 — The model flew the deck by a hand the pilot disagrees with, and the figure it changed was not the one he was arguing about
+
+sharknado's captain's log 002 (Oliver's, a bracket-3 list at a bracket-4 table): "the wheels
+need to be few and far between ... they need to come in and hit when Brallin or Shabraz are
+on the table ... those should be finisher kind of things". The goldfish had fired a wheel
+whenever the hand was thin OR any discard/draw payoff was out — early tempo, the exact play
+he called wrong — and every sharknado figure, the v1.3.0 objective included, was measured
+under that hand. **A piloting decision the pilot disagrees with is a measurement of a
+different deck**, the Zada lesson (2026-09-28) again, one channel over.
+
+The fix is the policy layer, not a new heuristic: `pilot_policy.json` gains a `wheel`
+channel (`hold_until.commanders_out` or `.event_payoffs`), consulted by both wheel doors
+through one closure. **A hold is an AND-gate layered on the built-in rule, never a
+replacement**, so a declared threshold of zero is byte-identical to no policy and is the
+control; the fleet regen after the engine change moved `meta.model_version` on every deck
+and nothing else. The wheels' timing is now observed per game — count, first wheel,
+FINISHER (a wheel resolved with a COMMANDER out and a hand the thin-hand clause alone would
+not have thrown away), wheels held with nothing to pay — and the pilot's keep rule (`keep`:
+at most one wheel, a body or a ramp piece) is REPORTED on the hand the model kept and never
+used to mulligan, the `keep_can_act_by_t3` contract.
+
+Then the reading, paired on 10,000 games, policy off against on:
+
+| measure | off | on | delta | MDE | verdict |
+|---|---|---|---|---|---|
+| wheels fired with a payoff out (over wheels) | 0.9905 | 1.0000 | — | — | by construction |
+| first wheel by T4 | 0.139 | 0.056 | | | |
+| finisher wheel by T8 | 0.7681 | 0.7974 | +0.0293 | 0.0059 | better |
+| wheels cast by T10 | 3.29 | 3.24 | −0.049 | 0.016 | worse |
+| dead wheels in hand @T5 | 0.0866 | 0.0857 | −0.0009 | 0.0009 | noise |
+| damage @T10 | 95.27 | 96.01 | +0.74 | 0.56 | better |
+| killed by T6 | 0.2884 | 0.3039 | +0.0155 | 0.0042 | better |
+| extra cards by T8 | 19.36 | 19.15 | −0.21 | 0.13 | worse |
+| kept hand passes the pilot's keep rule | — | 0.7196 | | | reported |
+
+Two things the table says that the argument did not. **The model was already wheeling onto a
+payoff 99% of the time**, because the deck carries so many non-commander payoffs (Glint-Horn
+Buccaneer, Spider-Man, Chasm Skulker, the Crawlers) that one is almost always out before a
+hand goes thin; the hold moved under 2% of wheels and the finisher row by three points. So
+the pilot's complaint is not about what the goldfish does with a wheel. **It is about what
+the goldfish cannot see**: the hand he kept (28% of kept sevens fail his own rule; on turn
+two a wheel sits in hand with nothing to pay in 97% of games), the table's removal on the
+commander the wheel was waiting for, and the politics of discarding four people's hands.
+The first is now a figure. The other two are a Forge probe and a captain's log, and the
+branch's profile says so rather than letting `damage @T10` stand in for them.
+
+Rule: **when a pilot's note contradicts a simulator decision, declare the pilot's rule as a
+policy and re-read the deck under it BEFORE opening a branch** — the threshold a branch is
+anchored on must come from the champion flown by the same hand that will fly the branch —
+and then read the whole profile, because the row the argument was about may be the one that
+barely moved.
+
 ## CLAUDE.md's rule digest, verbatim as of 2026-10-05
 
 > Moved here VERBATIM when CLAUDE.md was compacted on 2026-10-05: CLAUDE.md now carries

@@ -142,25 +142,25 @@ Colours come from duals, triomes and utility lands. A few are special: [Gemstone
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v1.3.0 (V8), 2026-10-19. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **84%**
+- share of seeded games where the commander was CAST by turn six: **83%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 5.308**
+- mean turn the commander is first cast: **turn 5.344**
 - A WHEEL drawn — the ignition; nothing else in the deck starts itself: **96%**
 - A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **89%**
-- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **50%**
-- A per-draw DAMAGE source drawn (taxes the refill half): **50%**
-- A discard converted to board or cards (the non-damage half of the tax): **60%**
+- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **49%**
+- A per-draw DAMAGE source drawn (taxes the refill half): **49%**
+- A discard converted to board or cards (the non-damage half of the tax): **59%**
 - A per-draw BOARD source drawn (the air force the commanders fly with): **60%**
-- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **67%**
-- THE AIR KILL — a wheel plus a flying body that grows on every card: **48%**
-- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **58%**
+- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **66%**
+- THE AIR KILL — a wheel plus a flying body that grows on every card: **47%**
+- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **57%**
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **59%**
 - A real answer drawn — a counter, a sweeper or a tax: **80%**
-- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **37%**
-- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **66%**
+- Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step: **36%**
+- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **65%**
 - share of opening sevens the model would keep: **80%**
 - Engine online by turn 5: **94%** (95% CI 94%–95%) — exceptional
-- A win route assembled by turn 6: **82%** (95% CI 81%–82%)
+- A win route assembled by turn 6: **81%** (95% CI 81%–82%)
 - A win route assembled by turn 8: **94%** (95% CI 93%–94%)
 - Colour on curve (lands + rocks): W 88%, U 86%, R 84%
 - Forge (an optional probe, not a gate): last run 2026-10-03, 15/200 won (10% (95% CI 6%–15%)) on V6 — on an older list

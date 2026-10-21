@@ -22,7 +22,7 @@
       "prose"
     ],
     "invalid": [
-      "rating.json"
+      "CONTEXT.md"
     ],
     "verified": true,
     "missing": [
@@ -893,11 +893,11 @@
         "state": "merge",
         "rose": 0,
         "fell": 0,
-        "no_call": 12
+        "no_call": 16
       },
       "objective_grade": {
         "state": "met",
-        "reading": 0.2884,
+        "reading": 0.3039,
         "shortfall": null
       },
       "measured": true,
@@ -1984,8 +1984,8 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 5,
-        "fell": 5,
+        "rose": 7,
+        "fell": 7,
         "no_call": 2
       },
       "objective_grade": {
@@ -2029,60 +2029,64 @@
           "hoard @T6",
           "board power @T6",
           "killed by T10",
-          "hand can act by T3"
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
         ],
         "fell": [
           "damage @T10",
           "killed by T6",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -21.8394,
+            "delta": -21.5922,
             "ci95_diff": [
-              -23.0602,
-              -20.6186
+              -22.808,
+              -20.3764
             ],
-            "mde": 1.7449,
+            "mde": 1.7379,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0056,
+            "delta": 0.0055,
             "ci95_diff": [
-              0.0023,
-              0.0089
+              0.002,
+              0.009
             ],
-            "mde": 0.0048,
+            "mde": 0.005,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.8339,
+            "delta": 0.8369,
             "ci95_diff": [
-              0.7778,
-              0.89
+              0.781,
+              0.8928
             ],
-            "mde": 0.0802,
+            "mde": 0.08,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -1.9401,
+            "delta": -1.93,
             "ci95_diff": [
-              -2.242,
-              -1.6382
+              -2.234,
+              -1.626
             ],
-            "mde": 0.4316,
+            "mde": 0.4345,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -4071,14 +4075,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 5,
-        "fell": 5,
-        "no_call": 2
+        "rose": 6,
+        "fell": 7,
+        "no_call": 3
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4078,
-        "shortfall": 0.3922
+        "reading": 0.3998,
+        "shortfall": 0.4002
       },
       "measured": true,
       "blind_spots": [
@@ -4121,60 +4125,63 @@
           "hoard @T6",
           "board power @T6",
           "killed by T10",
-          "hand can act by T3"
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule"
         ],
         "fell": [
           "damage @T10",
           "killed by T6",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -24.2668,
+            "delta": -24.208,
             "ci95_diff": [
-              -25.5262,
-              -23.0074
+              -25.4613,
+              -22.9547
             ],
-            "mde": 1.8002,
+            "mde": 1.7915,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0053,
+            "delta": 0.0064,
             "ci95_diff": [
-              0.0019,
-              0.0087
+              0.0028,
+              0.01
             ],
-            "mde": 0.0049,
+            "mde": 0.0051,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.9519,
+            "delta": 0.9684,
             "ci95_diff": [
-              0.8881,
-              1.0157
+              0.9048,
+              1.032
             ],
-            "mde": 0.0913,
+            "mde": 0.0909,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -3.0501,
+            "delta": -3.003,
             "ci95_diff": [
-              -3.3536,
-              -2.7466
+              -3.3074,
+              -2.6986
             ],
-            "mde": 0.4338,
+            "mde": 0.4351,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -5195,13 +5202,13 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 5,
-        "fell": 5,
-        "no_call": 2
+        "rose": 6,
+        "fell": 7,
+        "no_call": 3
       },
       "objective_grade": {
         "state": "met",
-        "reading": 37.1572,
+        "reading": 37.8287,
         "shortfall": null
       },
       "measured": true,
@@ -5247,46 +5254,49 @@
           "hoard @T6",
           "board power @T6",
           "killed by T10",
-          "hand can act by T3"
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule"
         ],
         "fell": [
           "damage @T10",
           "killed by T6",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -23.964,
+            "delta": -23.9788,
             "ci95_diff": [
-              -25.2249,
-              -22.7031
+              -25.2385,
+              -22.7191
             ],
-            "mde": 1.8023,
+            "mde": 1.8006,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0053,
+            "delta": 0.0067,
             "ci95_diff": [
-              0.0019,
-              0.0087
+              0.0032,
+              0.0102
             ],
-            "mde": 0.0049,
+            "mde": 0.0051,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.9434,
+            "delta": 0.9479,
             "ci95_diff": [
-              0.881,
-              1.0058
+              0.8855,
+              1.0103
             ],
             "mde": 0.0892,
             "verdict": "better",
@@ -5295,12 +5305,12 @@
           },
           {
             "measure": "extra cards by T8",
-            "delta": -3.0704,
+            "delta": -3.0092,
             "ci95_diff": [
-              -3.3752,
-              -2.7656
+              -3.3158,
+              -2.7026
             ],
-            "mde": 0.4356,
+            "mde": 0.4382,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -6322,13 +6332,13 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 5,
-        "fell": 5,
-        "no_call": 2
+        "rose": 6,
+        "fell": 6,
+        "no_call": 4
       },
       "objective_grade": {
         "state": "met",
-        "reading": 37.3687,
+        "reading": 38.0443,
         "shortfall": null
       },
       "measured": true,
@@ -6380,60 +6390,62 @@
           "hoard @T6",
           "board power @T6",
           "killed by T10",
-          "hand can act by T3"
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule"
         ],
         "fell": [
           "damage @T10",
           "killed by T6",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "finisher wheel by T8"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -23.805,
+            "delta": -23.7662,
             "ci95_diff": [
-              -25.1051,
-              -22.5049
+              -25.0712,
+              -22.4612
             ],
-            "mde": 1.8583,
+            "mde": 1.8654,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0053,
+            "delta": 0.0062,
             "ci95_diff": [
-              0.0018,
-              0.0088
+              0.0025,
+              0.0099
             ],
-            "mde": 0.0051,
+            "mde": 0.0053,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.9917,
+            "delta": 1.0043,
             "ci95_diff": [
-              0.9294,
-              1.054
+              0.942,
+              1.0666
             ],
-            "mde": 0.0891,
+            "mde": 0.089,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -3.0528,
+            "delta": -3.0174,
             "ci95_diff": [
-              -3.375,
-              -2.7306
+              -3.3428,
+              -2.692
             ],
-            "mde": 0.4605,
+            "mde": 0.4651,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -6587,74 +6599,74 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.4487,
+          "rate": 0.4461,
           "ci95": [
-            0.439,
-            0.4585
+            0.4364,
+            0.4559
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5382,
+          "rate": 0.5231,
           "ci95": [
-            0.5284,
-            0.548
+            0.5133,
+            0.5329
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.6189,
+          "rate": 0.6047,
           "ci95": [
-            0.6093,
-            0.6284
+            0.5951,
+            0.6142
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.7045,
+          "rate": 0.6928,
           "ci95": [
-            0.6955,
-            0.7134
+            0.6837,
+            0.7018
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.8171,
+          "rate": 0.8129,
           "ci95": [
-            0.8094,
-            0.8246
+            0.8051,
+            0.8204
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8906,
+          "rate": 0.8886,
           "ci95": [
-            0.8843,
-            0.8966
+            0.8823,
+            0.8946
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9395,
+          "rate": 0.9386,
           "ci95": [
-            0.9347,
-            0.944
+            0.9337,
+            0.9431
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9651,
+          "rate": 0.9645,
           "ci95": [
-            0.9613,
-            0.9685
+            0.9607,
+            0.968
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9788,
+          "rate": 0.9785,
           "ci95": [
-            0.9758,
-            0.9814
+            0.9755,
+            0.9812
           ],
           "n": 10000
         }
@@ -6683,42 +6695,42 @@
           "n": 10000
         },
         "2": {
-          "rate": 0.2024,
+          "rate": 0.1997,
           "ci95": [
-            0.1946,
-            0.2104
+            0.192,
+            0.2077
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0429,
+          "rate": 0.0383,
           "ci95": [
-            0.0391,
-            0.0471
+            0.0347,
+            0.0422
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0142,
+          "rate": 0.0111,
           "ci95": [
-            0.0121,
-            0.0167
+            0.0092,
+            0.0133
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0098,
+          "rate": 0.0091,
           "ci95": [
-            0.008,
-            0.0119
+            0.0074,
+            0.0112
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0171,
+          "rate": 0.0167,
           "ci95": [
-            0.0147,
-            0.0198
+            0.0144,
+            0.0194
           ],
           "n": 10000
         },
@@ -6731,103 +6743,103 @@
           "n": 10000
         },
         "8": {
-          "rate": 0.0509,
+          "rate": 0.0507,
           "ci95": [
-            0.0468,
-            0.0554
+            0.0466,
+            0.0552
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0901,
+          "rate": 0.0911,
           "ci95": [
-            0.0846,
-            0.0959
+            0.0856,
+            0.0969
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1732,
+          "rate": 0.1743,
           "ci95": [
-            0.1659,
-            0.1807
+            0.167,
+            0.1819
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1183,
+        "rate": 0.1169,
         "ci95": [
-          0.1121,
-          0.1248
+          0.1107,
+          0.1233
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6315,
-        "hand_empty": 1732,
-        "mana_short": 4583
+        "stall_turns": 6219,
+        "hand_empty": 1748,
+        "mana_short": 4471
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 3451,
-        "hand_empty": 1722,
-        "mana_short": 1729,
+        "stall_turns": 3470,
+        "hand_empty": 1738,
+        "mana_short": 1732,
         "stall_rate": {
-          "rate": 0.0863,
+          "rate": 0.0867,
           "ci95": [
-            0.0836,
-            0.0891
+            0.084,
+            0.0895
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 5,
-          "floor_rate": 0.0098,
-          "diff": 0.0765,
+          "floor_rate": 0.0091,
+          "diff": 0.0776,
           "ci95": [
-            0.073,
-            0.0798
+            0.0742,
+            0.0809
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 7.1471,
+            "rate": 7.274,
             "ci95": [
-              7.0549,
-              7.2393
+              7.1807,
+              7.3673
             ],
-            "sd": 4.706,
+            "sd": 4.7614,
             "n": 10000
           },
           "8": {
-            "rate": 8.2178,
+            "rate": 8.3099,
             "ci95": [
-              8.081,
-              8.3546
+              8.1734,
+              8.4464
             ],
-            "sd": 6.9801,
+            "sd": 6.9642,
             "n": 10000
           },
           "9": {
-            "rate": 9.1221,
+            "rate": 9.124,
             "ci95": [
-              8.9539,
-              9.2903
+              8.9579,
+              9.2901
             ],
-            "sd": 8.5811,
+            "sd": 8.4735,
             "n": 10000
           },
           "10": {
-            "rate": 8.4074,
+            "rate": 8.328,
             "ci95": [
-              8.2423,
-              8.5725
+              8.1665,
+              8.4895
             ],
-            "sd": 8.4219,
+            "sd": 8.2419,
             "n": 10000
           }
         },
@@ -6837,14 +6849,14 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4056,
+        "rate": 0.4062,
         "ci95": [
-          0.396,
-          0.4153
+          0.3966,
+          0.4159
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1374,
+      "missed_land_drop_rate": 0.1412,
       "mulliganed": {
         "rate": 0.2074,
         "ci95": [
@@ -6856,18 +6868,18 @@
       "mean_mana_by_turn": {
         "1": 0.999,
         "2": 2.157,
-        "3": 3.166,
-        "4": 3.991,
-        "5": 4.752,
-        "6": 5.516,
-        "7": 6.438,
-        "8": 7.477,
-        "9": 8.558,
-        "10": 9.695
+        "3": 3.167,
+        "4": 3.987,
+        "5": 4.736,
+        "6": 5.489,
+        "7": 6.398,
+        "8": 7.433,
+        "9": 8.515,
+        "10": 9.651
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0431
+      "mana_stdev_turn_five": 1.0589
     },
     "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
   },
@@ -6998,7 +7010,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 84,
+          "value": 83,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -7016,7 +7028,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.308,
+          "value": 5.344,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -7040,7 +7052,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 50,
+          "value": 49,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
@@ -7048,7 +7060,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw DAMAGE source drawn (taxes the refill half)": {
-          "value": 50,
+          "value": 49,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw DAMAGE source drawn (taxes the refill half)' by turn six",
@@ -7056,7 +7068,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 60,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -7072,7 +7084,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
-          "value": 67,
+          "value": 66,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
@@ -7080,7 +7092,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE AIR KILL — a wheel plus a flying body that grows on every card": {
-          "value": 48,
+          "value": 47,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE AIR KILL — a wheel plus a flying body that grows on every card' by turn six",
@@ -7088,7 +7100,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading": {
-          "value": 58,
+          "value": 57,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading' by turn six",
@@ -7112,7 +7124,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step": {
-          "value": 37,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step\" by turn six",
@@ -7120,7 +7132,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
-          "value": 66,
+          "value": 65,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
@@ -7177,6 +7189,7 @@
             "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw a card' -- is paid for out of whatever mana the casting loops did not want, and a cost that eats its own source fires once. Energy and {X} activation costs are REFUSED and named, never priced at zero.",
             "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
             "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+            "WHEEL TIMING (2026-10-21): the turn of every wheel is observed and decided on by nothing. A FINISHER is a wheel resolved with a COMMANDER on the battlefield and a hand the thin-hand clause alone would not have thrown away. A deck's pilot_policy.json may HOLD a wheel (`hold_until` on the wheel channel: event_payoffs, commanders_out) — an AND-gate on the rule above, so a threshold of zero changes nothing; the policy is stamped on the artifact as meta.pilot_policy. A `keep` rule in the same file is read on the hand the model kept and reported as a pass rate, never enforced.",
             "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. DAMAGE IS ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent, which is the right per-seat clock. WHAT WE GAIN off their draws is paid by every opponent and scales with GOLDFISH_OPPONENTS (3): Faerie Mastermind's card on each opponent's second draw, Consecrated Sphinx's two per opponent draw, a Blood per opponent (2026-10-04; at one seat Hallcreeper -> Mastermind read -0.17 cards by T8, at three +0.62). WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
             "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
             "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
@@ -7198,15 +7211,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 9.681,
+            "10": 9.629,
             "2": 2.139,
             "3": 3.144,
-            "4": 3.977,
-            "5": 4.729,
-            "6": 5.496,
-            "7": 6.412,
-            "8": 7.449,
-            "9": 8.54
+            "4": 3.973,
+            "5": 4.711,
+            "6": 5.468,
+            "7": 6.374,
+            "8": 7.405,
+            "9": 8.492
           },
           "tier": "data",
           "weight": "detail",
@@ -7217,15 +7230,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.886,
+            "10": 0.882,
             "2": 0.997,
             "3": 0.896,
-            "4": 0.793,
-            "5": 0.731,
-            "6": 0.737,
-            "7": 0.821,
-            "8": 0.869,
-            "9": 0.898
+            "4": 0.79,
+            "5": 0.719,
+            "6": 0.727,
+            "7": 0.815,
+            "8": 0.865,
+            "9": 0.892
           },
           "tier": "data",
           "weight": "detail",
@@ -7236,15 +7249,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.048,
-            "10": 4.566,
-            "2": 0.23,
-            "3": 0.634,
-            "4": 0.766,
-            "5": 0.945,
-            "6": 1.341,
-            "7": 1.936,
-            "8": 2.674,
-            "9": 3.543
+            "10": 4.585,
+            "2": 0.231,
+            "3": 0.658,
+            "4": 0.809,
+            "5": 0.999,
+            "6": 1.403,
+            "7": 1.986,
+            "8": 2.714,
+            "9": 3.569
           },
           "tier": "data",
           "weight": "detail",
@@ -7270,13 +7283,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 224,
+            "10": 242,
             "4": 4,
-            "5": 375,
-            "6": 2401,
-            "7": 4222,
-            "8": 1982,
-            "9": 605
+            "5": 377,
+            "6": 2555,
+            "7": 4179,
+            "8": 1823,
+            "9": 600
           },
           "tier": "data",
           "weight": "detail",
@@ -7292,8 +7305,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.308,
-    "commander_cast_by_turn_6_pct": 84,
+    "commander_mean_cast_turn": 5.344,
+    "commander_cast_by_turn_6_pct": 83,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
@@ -7305,15 +7318,15 @@
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 50
+        "by_turn_6_pct": 49
       },
       {
         "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
-        "by_turn_6_pct": 50
+        "by_turn_6_pct": 49
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 59
       },
       {
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
@@ -7321,15 +7334,15 @@
       },
       {
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "by_turn_6_pct": 67
+        "by_turn_6_pct": 66
       },
       {
         "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
-        "by_turn_6_pct": 48
+        "by_turn_6_pct": 47
       },
       {
         "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 57
       },
       {
         "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
@@ -7341,28 +7354,28 @@
       },
       {
         "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
-        "by_turn_6_pct": 37
+        "by_turn_6_pct": 36
       },
       {
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "by_turn_6_pct": 66
+        "by_turn_6_pct": 65
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.071,
+      "mean_kill_turn": 7.044,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 28,
-      "kill_by_turn_8_pct": 90,
+      "kill_by_turn_6_pct": 29,
+      "kill_by_turn_8_pct": 89,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 224,
+        "10": 242,
         "4": 4,
-        "5": 375,
-        "6": 2401,
-        "7": 4222,
-        "8": 1982,
-        "9": 605
+        "5": 377,
+        "6": 2555,
+        "7": 4179,
+        "8": 1823,
+        "9": 600
       }
     }
   },
@@ -7644,7 +7657,7 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",

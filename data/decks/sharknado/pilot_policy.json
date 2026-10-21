@@ -1,0 +1,15 @@
+{
+  "rules": [
+    {
+      "id": "wheel-is-a-finisher",
+      "why": "Sean, captain's log 002 (2026-10-20, Oliver's): \"the wheels need to be few and far between ... they need to come in and hit when Brallin or when Shabraz are on the table ... those should be finisher kind of things where it's like Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them.\" The model had been firing a wheel on any thin hand, which is early tempo — the play he says is wrong. Hold every wheel, spell or activated, until a commander is on the battlefield; the thin-hand clause then never fires on its own.",
+      "when": {"channel": "wheel"},
+      "hold_until": {"commanders_out": 1}
+    },
+    {
+      "id": "keep-needs-a-body",
+      "why": "Sean, captain's log 002: \"I don't even know if I should have held the hand that I had, because I only had one playable creature in it and a bunch of wheels.\" A keep has at most one wheel and at least one body or one ramp piece. Reported as a pass rate on the hand the model kept — the model still mulligans by its own 2-5-land rule, so every other figure stays comparable.",
+      "keep": {"max": {"wheel": 1}, "needs_any": ["body", "ramp"]}
+    }
+  ]
+}

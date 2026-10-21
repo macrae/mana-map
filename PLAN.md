@@ -105,6 +105,18 @@ with their reasons; mean-v1 is its one open branch (`viz/branch.html?deck=edgar-
 
 **Edgar v2.1.0 (2026-10-20).** The sleeved list was scanned and checked in first (three cards of drift, v2.0.1), then mean-v2 — the profile package, four proactive-denial Vampires (Anowon, Drana and Linvala, Captivating Vampire; Charismatic Conqueror was already sleeved), Bloodghast, a land pass — merged on printed proxies via `/release-branch`. DeckCheck's read moved 28 → 46 of 96 (Proactive Denial F → B, Critical Onset B → A); the rating stayed C (61.8) at the code score, because no game has been played on the list and the goldfish cannot see a lock, a tax, an edict or a steal. Rule proposed and applied here: a paper lock is written only after a scan is checked in.
 
+**Sharknado's harness (2026-10-21).** Game 002 (Oliver's, a bracket-3 list at a bracket-4
+table, lost to an infinite) brought the first piloting read on v1.3.0: too many wheels, a
+kept hand of one creature and wheels, wheels as FINISHERS once a commander is down. The
+goldfish had been firing a wheel on any thin hand, so the pilot's rule is now a declared
+policy (`pilot_policy.json`: hold a wheel until a commander is out; a keep has at most one
+wheel and a body or ramp, reported never enforced), the wheels' timing is a figure (finisher
+wheel by T8, wheels cast by T10, dead wheels in hand @T5), and a branch aims at the finisher
+row by his choice, with the whole profile watched. The policy moved under 2% of wheels: the
+complaint lives in what the goldfish cannot see (the table's removal, the politics) and in
+the hand it is dealt (28% of keeps fail his rule). Forge is a later probe, on his word. No
+handbook rebuild while the deck is iterating.
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by

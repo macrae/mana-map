@@ -111,12 +111,20 @@
       "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw a card' -- is paid for out of whatever mana the casting loops did not want, and a cost that eats its own source fires once. Energy and {X} activation costs are REFUSED and named, never priced at zero.",
       "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
       "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+      "WHEEL TIMING (2026-10-21): the turn of every wheel is observed and decided on by nothing. A FINISHER is a wheel resolved with a COMMANDER on the battlefield and a hand the thin-hand clause alone would not have thrown away. A deck's pilot_policy.json may HOLD a wheel (`hold_until` on the wheel channel: event_payoffs, commanders_out) — an AND-gate on the rule above, so a threshold of zero changes nothing; the policy is stamped on the artifact as meta.pilot_policy. A `keep` rule in the same file is read on the hand the model kept and reported as a pass rate, never enforced.",
       "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. DAMAGE IS ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent, which is the right per-seat clock. WHAT WE GAIN off their draws is paid by every opponent and scales with GOLDFISH_OPPONENTS (3): Faerie Mastermind's card on each opponent's second draw, Consecrated Sphinx's two per opponent draw, a Blood per opponent (2026-10-04; at one seat Hallcreeper -> Mastermind read -0.17 cards by T8, at three +0.62). WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
       "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "ddec1ff58e1d",
+    "model_version": "4196386ec818",
     "partner": "Brallin, Skyshark Rider",
+    "pilot_policy": {
+      "rules": [
+        "keep-needs-a-body",
+        "wheel-is-a-finisher"
+      ],
+      "sha": "5d384a42c7a8"
+    },
     "seed": 42,
     "treasure_sources_not_modelled": [
       "Currency Converter",
@@ -128,50 +136,50 @@
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.986,
+        "10": 0.984,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
-        "5": 0.026,
-        "6": 0.203,
-        "7": 0.633,
-        "8": 0.886,
-        "9": 0.963
+        "5": 0.027,
+        "6": 0.215,
+        "7": 0.663,
+        "8": 0.891,
+        "9": 0.961
       },
       "kill_turn_histogram": {
-        "10": 227,
+        "10": 229,
         "4": 1,
-        "5": 264,
-        "6": 1763,
-        "7": 4301,
-        "8": 2531,
-        "9": 769
+        "5": 268,
+        "6": 1879,
+        "7": 4481,
+        "8": 2284,
+        "9": 695
       },
       "mean_board_power_by_turn": {
-        "1": 0.16,
-        "10": 17.059,
-        "2": 0.698,
-        "3": 2.099,
-        "4": 4.589,
-        "5": 6.912,
-        "6": 8.575,
-        "7": 10.378,
-        "8": 12.377,
-        "9": 14.613
+        "1": 0.161,
+        "10": 17.085,
+        "2": 0.706,
+        "3": 2.149,
+        "4": 4.667,
+        "5": 7.0,
+        "6": 8.633,
+        "7": 10.413,
+        "8": 12.397,
+        "9": 14.643
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 70.903,
-        "2": 0.16,
-        "3": 0.726,
-        "4": 2.416,
-        "5": 6.148,
-        "6": 14.922,
-        "7": 24.684,
-        "8": 37.061,
-        "9": 52.653
+        "10": 71.883,
+        "2": 0.161,
+        "3": 0.736,
+        "4": 2.46,
+        "5": 6.251,
+        "6": 15.448,
+        "7": 25.365,
+        "8": 37.866,
+        "9": 53.511
       },
-      "mean_kill_turn": 7.249,
+      "mean_kill_turn": 7.198,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -185,73 +193,126 @@
         "9": 0.0
       },
       "median_kill_turn": 7,
-      "no_kill_by_max_turn_rate": 0.014
+      "no_kill_by_max_turn_rate": 0.016
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.871,
+      "cast_by_turn_6_rate": 0.869,
       "cast_turn_histogram": {
-        "10": 58,
-        "3": 701,
-        "4": 1475,
-        "5": 4982,
-        "6": 1547,
-        "7": 691,
-        "8": 313,
-        "9": 160,
-        "not_by_max_turn": 73
+        "10": 82,
+        "3": 698,
+        "4": 1474,
+        "5": 5073,
+        "6": 1442,
+        "7": 642,
+        "8": 309,
+        "9": 178,
+        "not_by_max_turn": 102
       },
-      "mean_cast_turn": 5.194,
+      "mean_cast_turn": 5.192,
       "median_cast_turn": 5
     },
     "discard": {
+      "finisher_wheel_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.867,
+        "2": 0.0,
+        "3": 0.002,
+        "4": 0.033,
+        "5": 0.154,
+        "6": 0.503,
+        "7": 0.658,
+        "8": 0.76,
+        "9": 0.824
+      },
       "mean_cards_discarded_by_turn": {
-        "1": 0.204,
-        "10": 16.112,
-        "2": 0.459,
-        "3": 0.738,
-        "4": 0.942,
-        "5": 1.482,
-        "6": 3.176,
-        "7": 5.263,
-        "8": 8.013,
-        "9": 11.63
+        "1": 0.205,
+        "10": 16.179,
+        "2": 0.361,
+        "3": 0.515,
+        "4": 0.671,
+        "5": 1.195,
+        "6": 3.009,
+        "7": 5.16,
+        "8": 7.981,
+        "9": 11.643
       },
       "mean_commander_counters_by_turn": {
         "1": 0.0,
-        "10": 48.919,
+        "10": 49.791,
         "2": 0.0,
         "3": 0.079,
-        "4": 0.607,
-        "5": 2.507,
-        "6": 8.206,
-        "7": 15.349,
-        "8": 24.609,
-        "9": 36.031
+        "4": 0.611,
+        "5": 2.558,
+        "6": 8.642,
+        "7": 15.949,
+        "8": 25.363,
+        "9": 36.848
       },
       "mean_cumulative_event_damage_by_turn": {
         "1": 0.0,
-        "10": 21.095,
+        "10": 21.61,
         "2": 0.0,
         "3": 0.009,
-        "4": 0.15,
-        "5": 0.696,
-        "6": 2.578,
-        "7": 5.11,
-        "8": 8.734,
-        "9": 13.938
+        "4": 0.14,
+        "5": 0.692,
+        "6": 2.733,
+        "7": 5.36,
+        "8": 9.076,
+        "9": 14.363
+      },
+      "mean_dead_wheels_in_hand_by_turn": {
+        "1": 1.001,
+        "10": 0.004,
+        "2": 1.027,
+        "3": 0.692,
+        "4": 0.168,
+        "5": 0.081,
+        "6": 0.042,
+        "7": 0.022,
+        "8": 0.013,
+        "9": 0.008
       },
       "mean_event_damage_by_turn": {
         "1": 0.0,
-        "10": 7.157,
+        "10": 7.246,
         "2": 0.0,
         "3": 0.009,
-        "4": 0.141,
-        "5": 0.546,
-        "6": 1.882,
-        "7": 2.532,
-        "8": 3.624,
-        "9": 5.204
-      }
+        "4": 0.13,
+        "5": 0.553,
+        "6": 2.04,
+        "7": 2.627,
+        "8": 3.716,
+        "9": 5.288
+      },
+      "mean_first_wheel_turn": {
+        "mean": 6.516,
+        "n": 9525
+      },
+      "mean_wheels_cast_by_turn": {
+        "1": 0.0,
+        "10": 3.188,
+        "2": 0.0,
+        "3": 0.002,
+        "4": 0.04,
+        "5": 0.192,
+        "6": 0.662,
+        "7": 1.156,
+        "8": 1.745,
+        "9": 2.419
+      },
+      "wheel_cast_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.953,
+        "2": 0.0,
+        "3": 0.002,
+        "4": 0.04,
+        "5": 0.178,
+        "6": 0.574,
+        "7": 0.747,
+        "8": 0.859,
+        "9": 0.92
+      },
+      "wheel_with_payoff_rate": 1.0
     },
     "drain": {
       "mean_cumulative_drain_by_turn": {
@@ -283,75 +344,75 @@
     "interaction_castable_by_turn": {
       "1": 0.0,
       "10": 0.112,
-      "2": 0.067,
-      "3": 0.045,
+      "2": 0.068,
+      "3": 0.047,
       "4": 0.024,
       "5": 0.031,
-      "6": 0.059,
+      "6": 0.062,
       "7": 0.076,
-      "8": 0.088,
-      "9": 0.101
+      "8": 0.09,
+      "9": 0.103
     },
     "interaction_in_hand_by_turn": {
-      "1": 0.575,
-      "10": 0.407,
-      "2": 0.605,
-      "3": 0.597,
+      "1": 0.573,
+      "10": 0.408,
+      "2": 0.603,
+      "3": 0.593,
       "4": 0.63,
-      "5": 0.631,
-      "6": 0.553,
-      "7": 0.498,
-      "8": 0.456,
-      "9": 0.438
+      "5": 0.633,
+      "6": 0.549,
+      "7": 0.495,
+      "8": 0.457,
+      "9": 0.44
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
       "10": 0.887,
       "2": 0.997,
-      "3": 0.903,
-      "4": 0.797,
-      "5": 0.731,
+      "3": 0.906,
+      "4": 0.802,
+      "5": 0.73,
       "6": 0.72,
-      "7": 0.82,
-      "8": 0.858,
-      "9": 0.886
+      "7": 0.823,
+      "8": 0.86,
+      "9": 0.887
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.583,
+      "10": 9.595,
       "2": 2.138,
-      "3": 3.146,
-      "4": 3.985,
-      "5": 4.738,
+      "3": 3.148,
+      "4": 3.989,
+      "5": 4.74,
       "6": 5.492,
       "7": 6.41,
-      "8": 7.425,
-      "9": 8.488
+      "8": 7.432,
+      "9": 8.498
     },
     "mean_bodies_by_turn": {
-      "1": 0.178,
-      "10": 7.907,
-      "2": 0.49,
-      "3": 1.007,
-      "4": 1.204,
-      "5": 1.518,
-      "6": 2.27,
-      "7": 3.317,
-      "8": 4.641,
-      "9": 6.166
+      "1": 0.179,
+      "10": 7.928,
+      "2": 0.496,
+      "3": 1.028,
+      "4": 1.227,
+      "5": 1.541,
+      "6": 2.309,
+      "7": 3.35,
+      "8": 4.667,
+      "9": 6.196
     },
     "mean_extra_cards_drawn_by_turn": {
-      "1": 0.273,
-      "10": 30.69,
-      "2": 0.731,
-      "3": 1.318,
-      "4": 1.835,
-      "5": 3.04,
-      "6": 6.453,
-      "7": 10.711,
-      "8": 16.343,
-      "9": 23.208
+      "1": 0.205,
+      "10": 30.623,
+      "2": 0.525,
+      "3": 0.886,
+      "4": 1.323,
+      "5": 2.509,
+      "6": 6.144,
+      "7": 10.501,
+      "8": 16.238,
+      "9": 23.134
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -375,171 +436,172 @@
         "5": 641,
         "6": 4
       },
-      "mean_mulligans": 0.244
+      "mean_mulligans": 0.244,
+      "pilot_keep_rule_pass_rate": 0.779
     },
     "partner": {
       "both_online_by_turn": {
         "1": 0.0,
-        "10": 0.992,
+        "10": 0.989,
         "2": 0.0,
         "3": 0.052,
-        "4": 0.159,
-        "5": 0.692,
-        "6": 0.862,
-        "7": 0.935,
-        "8": 0.968,
-        "9": 0.985
+        "4": 0.16,
+        "5": 0.703,
+        "6": 0.86,
+        "7": 0.928,
+        "8": 0.961,
+        "9": 0.98
       },
-      "both_online_by_turn_6_rate": 0.862,
-      "cast_by_turn_6_rate": 0.95,
-      "mean_both_online_turn": 5.308,
-      "mean_cast_turn": 4.187,
+      "both_online_by_turn_6_rate": 0.86,
+      "cast_by_turn_6_rate": 0.945,
+      "mean_both_online_turn": 5.304,
+      "mean_cast_turn": 4.191,
       "median_both_online_turn": 5,
-      "never_both_online_rate": 0.008
+      "never_both_online_rate": 0.011
     },
     "targets": [
       {
         "assembled_rate": 0.994,
         "assembled_rate_assisted": 0.994,
-        "by_turn_6_rate": 0.938,
-        "by_turn_6_rate_assisted": 0.938,
+        "by_turn_6_rate": 0.937,
+        "by_turn_6_rate_assisted": 0.937,
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "mean_turn": 1.937,
-        "mean_turn_assisted": 1.937
+        "mean_turn": 1.959,
+        "mean_turn_assisted": 1.959
       },
       {
-        "assembled_rate": 0.97,
-        "assembled_rate_assisted": 0.97,
-        "by_turn_6_rate": 0.83,
-        "by_turn_6_rate_assisted": 0.83,
+        "assembled_rate": 0.969,
+        "assembled_rate_assisted": 0.969,
+        "by_turn_6_rate": 0.828,
+        "by_turn_6_rate_assisted": 0.828,
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "mean_turn": 2.96,
-        "mean_turn_assisted": 2.96
+        "mean_turn": 2.998,
+        "mean_turn_assisted": 2.998
       },
       {
-        "assembled_rate": 0.724,
-        "assembled_rate_assisted": 0.724,
-        "by_turn_6_rate": 0.359,
-        "by_turn_6_rate_assisted": 0.359,
+        "assembled_rate": 0.723,
+        "assembled_rate_assisted": 0.723,
+        "by_turn_6_rate": 0.356,
+        "by_turn_6_rate_assisted": 0.356,
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "mean_turn": 5.822,
-        "mean_turn_assisted": 5.822
+        "mean_turn": 5.867,
+        "mean_turn_assisted": 5.867
       },
       {
-        "assembled_rate": 0.838,
-        "assembled_rate_assisted": 0.838,
-        "by_turn_6_rate": 0.503,
-        "by_turn_6_rate_assisted": 0.503,
+        "assembled_rate": 0.837,
+        "assembled_rate_assisted": 0.837,
+        "by_turn_6_rate": 0.499,
+        "by_turn_6_rate_assisted": 0.499,
         "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
-        "mean_turn": 5.11,
-        "mean_turn_assisted": 5.11
+        "mean_turn": 5.166,
+        "mean_turn_assisted": 5.166
       },
       {
-        "assembled_rate": 0.734,
-        "assembled_rate_assisted": 0.734,
-        "by_turn_6_rate": 0.367,
-        "by_turn_6_rate_assisted": 0.367,
+        "assembled_rate": 0.732,
+        "assembled_rate_assisted": 0.732,
+        "by_turn_6_rate": 0.362,
+        "by_turn_6_rate_assisted": 0.362,
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "mean_turn": 5.803,
-        "mean_turn_assisted": 5.803
+        "mean_turn": 5.852,
+        "mean_turn_assisted": 5.852
       },
       {
         "assembled_rate": 0.835,
         "assembled_rate_assisted": 0.835,
-        "by_turn_6_rate": 0.493,
-        "by_turn_6_rate_assisted": 0.493,
+        "by_turn_6_rate": 0.487,
+        "by_turn_6_rate_assisted": 0.487,
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "mean_turn": 5.161,
-        "mean_turn_assisted": 5.161
-      },
-      {
-        "assembled_rate": 0.911,
-        "assembled_rate_assisted": 0.911,
-        "by_turn_6_rate": 0.572,
-        "by_turn_6_rate_assisted": 0.572,
-        "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "mean_turn": 5.212,
-        "mean_turn_assisted": 5.212
-      },
-      {
-        "assembled_rate": 0.831,
-        "assembled_rate_assisted": 0.831,
-        "by_turn_6_rate": 0.464,
-        "by_turn_6_rate_assisted": 0.464,
-        "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
-        "mean_turn": 5.546,
-        "mean_turn_assisted": 5.546
-      },
-      {
-        "assembled_rate": 0.831,
-        "assembled_rate_assisted": 0.831,
-        "by_turn_6_rate": 0.48,
-        "by_turn_6_rate_assisted": 0.48,
-        "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
         "mean_turn": 5.232,
         "mean_turn_assisted": 5.232
       },
       {
-        "assembled_rate": 0.72,
-        "assembled_rate_assisted": 0.72,
-        "by_turn_6_rate": 0.367,
-        "by_turn_6_rate_assisted": 0.367,
+        "assembled_rate": 0.911,
+        "assembled_rate_assisted": 0.911,
+        "by_turn_6_rate": 0.567,
+        "by_turn_6_rate_assisted": 0.567,
+        "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
+        "mean_turn": 5.289,
+        "mean_turn_assisted": 5.289
+      },
+      {
+        "assembled_rate": 0.831,
+        "assembled_rate_assisted": 0.831,
+        "by_turn_6_rate": 0.459,
+        "by_turn_6_rate_assisted": 0.459,
+        "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
+        "mean_turn": 5.619,
+        "mean_turn_assisted": 5.619
+      },
+      {
+        "assembled_rate": 0.829,
+        "assembled_rate_assisted": 0.829,
+        "by_turn_6_rate": 0.473,
+        "by_turn_6_rate_assisted": 0.473,
+        "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
+        "mean_turn": 5.293,
+        "mean_turn_assisted": 5.293
+      },
+      {
+        "assembled_rate": 0.718,
+        "assembled_rate_assisted": 0.718,
+        "by_turn_6_rate": 0.362,
+        "by_turn_6_rate_assisted": 0.362,
         "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-        "mean_turn": 5.731,
-        "mean_turn_assisted": 5.731
+        "mean_turn": 5.779,
+        "mean_turn_assisted": 5.779
       },
       {
-        "assembled_rate": 0.726,
-        "assembled_rate_assisted": 0.726,
-        "by_turn_6_rate": 0.371,
-        "by_turn_6_rate_assisted": 0.371,
+        "assembled_rate": 0.725,
+        "assembled_rate_assisted": 0.725,
+        "by_turn_6_rate": 0.365,
+        "by_turn_6_rate_assisted": 0.365,
         "label": "A real answer drawn — a counter, a sweeper or a tax",
-        "mean_turn": 5.677,
-        "mean_turn_assisted": 5.677
+        "mean_turn": 5.735,
+        "mean_turn_assisted": 5.735
       },
       {
-        "assembled_rate": 0.719,
-        "assembled_rate_assisted": 0.719,
-        "by_turn_6_rate": 0.359,
-        "by_turn_6_rate_assisted": 0.359,
+        "assembled_rate": 0.716,
+        "assembled_rate_assisted": 0.716,
+        "by_turn_6_rate": 0.355,
+        "by_turn_6_rate_assisted": 0.355,
         "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
-        "mean_turn": 5.754,
-        "mean_turn_assisted": 5.754
+        "mean_turn": 5.793,
+        "mean_turn_assisted": 5.793
       },
       {
-        "assembled_rate": 0.795,
-        "assembled_rate_assisted": 0.795,
-        "by_turn_6_rate": 0.471,
-        "by_turn_6_rate_assisted": 0.471,
+        "assembled_rate": 0.793,
+        "assembled_rate_assisted": 0.793,
+        "by_turn_6_rate": 0.465,
+        "by_turn_6_rate_assisted": 0.465,
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "mean_turn": 5.076,
-        "mean_turn_assisted": 5.076
+        "mean_turn": 5.126,
+        "mean_turn_assisted": 5.126
       }
     ],
     "treasure": {
       "engine_online_rate_by_turn": {
         "1": 0.0,
-        "10": 0.307,
+        "10": 0.306,
         "2": 0.0,
         "3": 0.038,
-        "4": 0.069,
-        "5": 0.081,
-        "6": 0.097,
-        "7": 0.139,
-        "8": 0.187,
-        "9": 0.246
+        "4": 0.07,
+        "5": 0.082,
+        "6": 0.099,
+        "7": 0.141,
+        "8": 0.188,
+        "9": 0.247
       },
       "mean_treasures_in_hoard_by_turn": {
         "1": 0.0,
-        "10": 1.71,
+        "10": 1.715,
         "2": 0.0,
-        "3": 0.045,
+        "3": 0.046,
         "4": 0.1,
-        "5": 0.164,
+        "5": 0.165,
         "6": 0.292,
         "7": 0.479,
-        "8": 0.757,
-        "9": 1.154
+        "8": 0.754,
+        "9": 1.15
       }
     }
   }
