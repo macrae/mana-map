@@ -134,27 +134,65 @@
       "base_moved": null,
       "proposal": null,
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Izzet Signet"
+          },
+          {
+            "name": "Ledger Shredder"
+          },
+          {
+            "name": "Prismari Command"
+          },
+          {
+            "name": "Surly Badgersaur"
+          },
+          {
+            "name": "Talisman of Creativity"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Talisman of Conviction",
+            "where": [
+              "edgar-vampires"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Thought Vessel",
+            "where": [
+              "Mystery Booster 2",
+              "Zur Parts"
+            ]
+          }
+        ],
+        "blocking": 6,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 7,
+      "out": 7,
       "counts": {
-        "in_deck": 100,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
+        "in_deck": 93,
+        "box": 1,
+        "elsewhere": 1,
+        "buy": 5,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Izzet Signet",
+        "Ledger Shredder",
+        "Prismari Command",
+        "Surly Badgersaur",
+        "Talisman of Conviction",
+        "Talisman of Creativity"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -173,13 +211,6 @@
         },
         {
           "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Arjun, the Shifting Flame",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -208,13 +239,6 @@
         },
         {
           "name": "Brallin, Skyshark Rider",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Burning Inquiry",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -264,13 +288,6 @@
         },
         {
           "name": "Command Tower",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Commit // Memory",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -424,6 +441,13 @@
           "is_new": false
         },
         {
+          "name": "Izzet Signet",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Jace's Archivist",
           "state": "in_deck",
           "where": [],
@@ -445,18 +469,18 @@
           "is_new": false
         },
         {
-          "name": "Khorvath's Fury",
+          "name": "Lae'zel, Vlaakith's Champion",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
         },
         {
-          "name": "Lae'zel, Vlaakith's Champion",
-          "state": "in_deck",
+          "name": "Ledger Shredder",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Library of Leng",
@@ -502,13 +526,6 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mind's Eye",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -571,14 +588,14 @@
           "is_new": false
         },
         {
-          "name": "Psychosis Crawler",
-          "state": "in_deck",
+          "name": "Prismari Command",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
-          "name": "Queen Kayla bin-Kroog",
+          "name": "Psychosis Crawler",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -767,6 +784,13 @@
           "is_new": false
         },
         {
+          "name": "Surly Badgersaur",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Swiftfoot Boots",
           "state": "in_deck",
           "where": [],
@@ -779,6 +803,28 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Talisman of Conviction",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Talisman of Creativity",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Talon Gates of Madara",
@@ -816,14 +862,23 @@
           "is_new": false
         },
         {
-          "name": "Thundering Falls",
-          "state": "in_deck",
-          "where": [],
+          "name": "Thought Vessel",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
-          "name": "Time Reversal",
+          "name": "Thundering Falls",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -866,7 +921,7 @@
       },
       "summary": {
         "title": "Wheels as the finish, not the opening",
-        "blurb": "After game two at Oliver's: too many wheels, fired too early. Keep the wheels that also do something, question the bare seven-for-sevens, and give the freed slots to bodies, ramp or cheap draw, measured with every wheel held until a commander is out. Nothing is staged until the pilot picks each swap.",
+        "blurb": "After game two at Oliver's: too many wheels, fired too early. Seven swaps staged by argument, not the goldfish: four bare wheels and two slow five-drops out, four mana rocks and three bodies that pay off a wheel in. Measured at the table by the pilot's marks, by scenario slices, and by Forge counts at Oliver's table.",
         "by": "jarvis",
         "at": "2026-10-21"
       }
@@ -8411,6 +8466,7 @@
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
+    "branch `finisher-v1` needs 6 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
