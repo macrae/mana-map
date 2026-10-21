@@ -117,6 +117,18 @@ complaint lives in what the goldfish cannot see (the table's removal, the politi
 the hand it is dealt (28% of keeps fail his rule). Forge is a later probe, on his word. No
 handbook rebuild while the deck is iterating.
 
+**Measuring finisher-v1 without the goldfish (2026-10-21, later).** The pilot: "fuck the
+goldfish … we need a way to measure it, and goldfish isn't it". Three instruments, built
+cheapest first: his MARKS (per-game counts logged after a game — when the commanders
+landed, when the first wheel fired and onto what, what the kept seven held — on the deck
+page and the branch page as "At the table"); scenario SLICES on the branch list against
+Oliver's Araumi and Ryan's Teval (the finisher wheel with both commanders out vs one in
+the zone; his one-creature-plus-wheels keep vs a rocks hand); and Forge COUNTS at
+`olivers-table` (board series reads both partners now; a `wheel_timing` block; axes for
+commander uptime, wheels fired with a commander out, first wheel turn, mulligans; never a
+win-rate verdict). The seven-swap package stands in words, unstaged, until he calls the
+slots; the Forge runs wait on his word per run.
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
