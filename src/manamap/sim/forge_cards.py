@@ -95,10 +95,36 @@ def _zip(installed_copy=False):
     return zips[0] if zips else None
 
 
+@functools.lru_cache(maxsize=1)
+def _name_index():
+    """{`Name:` line -> member path} over the SHIPPED archive, built once. The
+    filename guess in `script` misses a file Forge misspelled (Fallaji
+    Archaeologist is `fallaji_archeologist.txt`) and a card filed under both faces
+    when the list names one (Ojer Axonil, Deepest Might); both were read as
+    "no script" on 2026-10-21 and would have failed a seat audit for our own
+    lookup's sake. Empty when Forge is absent."""
+    z = _zip(False)
+    if z is None:
+        return {}
+    out = {}
+    with zipfile.ZipFile(z) as zf:
+        for info in zf.infolist():
+            if not info.filename.endswith(".txt"):
+                continue
+            try:
+                head = zf.read(info).decode("utf-8", errors="replace")[:400]
+            except Exception:                        # pragma: no cover - defensive
+                continue
+            for m in _NAME_RE.finditer(head):
+                out.setdefault(m.group(1).strip(), info.filename)
+    return out
+
+
 def script(name, installed_copy=False):
     """A card's Forge script text, or None when Forge is absent or the card has no
     script. `installed_copy=True` reads what the engine PLAYS (overrides included);
-    the default reads what Forge SHIPPED. A DFC is its front face's stem."""
+    the default reads what Forge SHIPPED. A DFC is its front face's stem; a name
+    the filename guess misses is found through the `Name:` index."""
     z = _zip(installed_copy)
     if z is None:
         return None
@@ -109,10 +135,15 @@ def script(name, installed_copy=False):
     if " // " in name:
         whole = re.sub(r"[^a-z0-9]+", "_", re.sub(r"[',]", "", name.lower())).strip("_")
         stems.append(whole)
+    members = [f"{s[0]}/{s}.txt" for s in stems]
+    idx = _name_index()
+    for face in [name] + [f.strip() for f in str(name).split(" // ")]:
+        if face in idx and idx[face] not in members:
+            members.append(idx[face])
     with zipfile.ZipFile(z) as zf:
-        for s in stems:
+        for member in members:
             try:
-                return zf.read(f"{s[0]}/{s}.txt").decode("utf-8", errors="replace")
+                return zf.read(member).decode("utf-8", errors="replace")
             except KeyError:
                 continue
     return None

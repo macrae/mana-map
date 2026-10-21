@@ -512,11 +512,45 @@ def clock_tag(clock=None):
     return f"-c{int(clock)}" if clock and int(clock) != SIM_CLOCK_ID_BASELINE else ""
 
 
+def _seat_names(slug):
+    """The names in a seat's decklist.txt (commander included, `*CMDR*` stripped by
+    the parser), or [] — for a seat with no cards.json, the corpus is read by name."""
+    from manamap.pilot.fetch_deck import parse_decklist
+    try:
+        text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
+    except (SystemExit, OSError, FileNotFoundError):
+        return []
+    return [e["name"] for e in parse_decklist(text) if e.get("board", "main") == "main"]
+
+
+def _corpus_doc(slug):
+    """A cards.json-shaped doc for an OPPONENT seat, read from the corpus by name
+    (2026-10-21): mana value, type line and keywords, so `held_while_castable` and
+    the castable counts exist for every seat at a table and a seat audit can read
+    them. None when the corpus is not on disk — absent, never guessed."""
+    from manamap.pilot import card_pool
+    pool = card_pool.load_pool()
+    if not pool:
+        return None
+    kws = card_pool.card_keywords()
+    cards = []
+    for name in _seat_names(slug):
+        row = pool.get(name) or pool.get(name.split(" // ")[0])
+        if not row:
+            continue
+        cards.append({"name": name, "cmc": row["cmc"], "type_line": row["type_line"],
+                      "keywords": (kws.get(name) or kws.get(name.split(" // ")[0]) or {}).get("keywords", [])})
+    return {"cards": cards, "source": "corpus"} if cards else None
+
+
 def keyword_map(slug, doc=None):
     """Our deck's card name -> its `keywords` list (front face), for the combat damage
-    split. `{}` for a seat with no cards.json — the split is then absent, never zero.
-    `doc`: the cards of the list a record PLAYED (`played_doc`)."""
+    split. For a seat with no cards.json (an opponent) the corpus answers by name
+    since 2026-10-21; `{}` only when neither exists — the split is then absent, never
+    zero. `doc`: the cards of the list a record PLAYED (`played_doc`)."""
     doc = _deck_doc(slug, doc)
+    if doc is None:
+        doc = _corpus_doc(slug)
     if doc is None:
         return {}
     out = {}
@@ -592,10 +626,14 @@ def played_doc(slug, rec):
 
 def cmc_map(slug, doc=None):
     """Our deck's card name -> mana value, front face, from cards.json — the input
-    `parse.hand_facts` needs to say whether a held card was castable. `{}` for a seat
-    with no cards.json (an opponent), which turns the measurement off rather than
-    guessing. `doc`: the cards of the list a record PLAYED (`played_doc`)."""
+    `parse.hand_facts` needs to say whether a held card was castable. For a seat with
+    no cards.json (an opponent) the corpus answers by name since 2026-10-21, so the
+    measurement exists for every seat at a table; `{}` only when neither exists,
+    which turns it off rather than guessing. `doc`: the cards of the list a record
+    PLAYED (`played_doc`)."""
     doc = _deck_doc(slug, doc)
+    if doc is None:
+        doc = _corpus_doc(slug)
     if doc is None:
         return {}
     out = {}
