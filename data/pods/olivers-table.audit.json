@@ -6,7 +6,11 @@
     "overrides": "b8e1e37eadd9",
     "telemetry": ""
   },
-  "run": null,
+  "run": {
+    "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n8-e9cc7abe-s1922492094-podExperimental-c600-ovb8e1e37e-tl9473cf35",
+    "games": 8,
+    "logs_read": 4
+  },
   "definition": {
     "static": [
       "no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's overrides",
@@ -63,9 +67,58 @@
         "source": "cards.json",
         "clean": true
       },
-      "dynamic": null,
-      "verdict": "PILOTABLE",
-      "why": []
+      "dynamic": {
+        "games": 8,
+        "commander_resolved_rate": 0.875,
+        "commander_resolved_games": 7,
+        "held_while_castable": [
+          "Arcane Signet",
+          "Faerie Mastermind",
+          "Irencrag Pyromancer",
+          "Ivora, Insatiable Heir",
+          "Magmakin Artillerist",
+          "Magus of the Wheel",
+          "Marauding Mako",
+          "March of Swirling Mist",
+          "Mind's Eye",
+          "Molten Psyche",
+          "Negate",
+          "Nimble Obstructionist",
+          "Razorkin Needlehead",
+          "Sorcerer Class",
+          "Teferi's Ageless Insight",
+          "Tolarian Winds",
+          "Windfall"
+        ],
+        "never_cast": [
+          "City of Brass",
+          "Faerie Mastermind",
+          "Fateful Showdown",
+          "Floodfarm Verge",
+          "Irencrag Pyromancer",
+          "Ivora, Insatiable Heir",
+          "Magmakin Artillerist",
+          "Mana Confluence",
+          "March of Swirling Mist",
+          "Mind's Eye",
+          "Molten Psyche",
+          "Nimble Obstructionist",
+          "Steam Vents",
+          "Teferi's Ageless Insight",
+          "Time Reversal",
+          "Windfall"
+        ],
+        "engine": {},
+        "wheel_timing": {
+          "wheels_per_game": 0.62,
+          "with_commander": 0.4,
+          "first_wheel_turn": 7.0
+        }
+      },
+      "verdict": "NOT",
+      "why": [
+        "wheels fired with a commander out 40% of the time (< 90%)"
+      ]
     },
     {
       "slug": "araumi-edict",
@@ -92,13 +145,42 @@
             "NeedsToPlay:Creature.IsCommander+YouCtrl"
           ]
         },
-        "floors": [
-          "Araumi of the Dead Tide"
-        ],
+        "floors": [],
         "source": "corpus",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 8,
+        "commander_resolved_rate": 0.875,
+        "commander_resolved_games": 7,
+        "held_while_castable": [
+          "Accursed Marauder",
+          "Altar of Dementia",
+          "Arcane Denial",
+          "Arcane Signet",
+          "Baleful Strix",
+          "Cemetery Tampering",
+          "Counterspell",
+          "Demon's Disciple",
+          "Fallaji Archaeologist",
+          "Hedron Crab",
+          "Mire Triton",
+          "Plaguecrafter",
+          "Solemn Simulacrum",
+          "Syr Konrad, the Grim",
+          "Windfall"
+        ],
+        "never_cast": [
+          "Archon of Cruelty",
+          "Choked Estuary",
+          "Island",
+          "Solemn Simulacrum",
+          "Sunken Hollow",
+          "Swamp",
+          "Watery Grave"
+        ],
+        "engine": {}
+      },
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -117,7 +199,45 @@
         "source": "corpus",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 8,
+        "commander_resolved_rate": 0.875,
+        "commander_resolved_games": 7,
+        "held_while_castable": [
+          "Conduit of Worlds",
+          "Counterspell",
+          "Floral Evoker",
+          "Grapple with the Past",
+          "Icetill Explorer",
+          "Insidious Roots",
+          "Jarad, Golgari Lich Lord",
+          "Life from the Loam",
+          "Living Death",
+          "Meren of Clan Nel Toth",
+          "Nyx Weaver",
+          "Ob Nixilis, the Fallen",
+          "Phyrexian Reclamation",
+          "Putrefy",
+          "River Kelpie",
+          "The Scarab God",
+          "Tortured Existence",
+          "Welcome the Dead"
+        ],
+        "never_cast": [
+          "Colossal Grave-Reaver",
+          "Conduit of Worlds",
+          "Fetid Pools",
+          "Forest",
+          "Grapple with the Past",
+          "Hinterland Harbor",
+          "Icetill Explorer",
+          "Jarad, Golgari Lich Lord",
+          "Muldrotha, the Gravetide",
+          "Overgrown Tomb",
+          "Swamp"
+        ],
+        "engine": {}
+      },
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -141,12 +261,30 @@
         "source": "corpus",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 8,
+        "commander_resolved_rate": 0.875,
+        "commander_resolved_games": 7,
+        "held_while_castable": [
+          "Brightstone Ritual",
+          "Fellwar Stone",
+          "Hordeling Outburst",
+          "Krenko, Tin Street Kingpin",
+          "Loyal Apprentice",
+          "Solphim, Mayhem Dominus",
+          "Witty Roastmaster"
+        ],
+        "never_cast": [
+          "Den of the Bugbear",
+          "Mountain"
+        ],
+        "engine": {}
+      },
       "verdict": "PILOTABLE",
       "why": []
     }
   ],
-  "verdict": "PILOTABLE",
+  "verdict": "NOT",
   "limits": [
     "STATIC reads the installed scripts: a card that is castable but that the AI holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
     "DYNAMIC castable counts are lands-only (colours ignored), the engine_casts floor.",

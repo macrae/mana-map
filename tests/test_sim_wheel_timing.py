@@ -84,7 +84,7 @@ def test_sharknados_telemetry_logs_yield_wheel_timing_for_both_partners():
     partners count toward "a commander was out"."""
     from manamap.config import DECKS_DIR
     from manamap.pilot.common import load_deck_cards
-    logs = sorted((DECKS_DIR / "sharknado" / "sim" / "logs").glob("*tl9473cf35*/part-00.log"))
+    logs = sorted((DECKS_DIR / "sharknado" / "sim" / "logs").glob("*n200*tl9473cf35*/part-00.log"))
     if not logs:
         pytest.skip("no telemetry log on disk for sharknado")
     text = logs[0].read_text(encoding="utf-8", errors="replace")
@@ -101,3 +101,18 @@ def test_sharknados_telemetry_logs_yield_wheel_timing_for_both_partners():
     brallin_only = wt.from_logs([text], one, "sharknado", doc)
     assert block["wheels_with_commander"]["k"] >= brallin_only["wheels_with_commander"]["k"], (
         "a commander out means EITHER partner; reading Brallin alone can only lose counts")
+
+
+def test_a_split_card_counts_only_the_face_that_wheels():
+    """Forge logs `cast Commit` and `cast Memory` as two names; Commit (a bounce)
+    was read as a wheel on the eight-game test of 2026-10-21. Only the face whose
+    own text wheels is a wheel name. Proven by adding the front face unconditionally."""
+    doc = {"cards": [{
+        "name": "Commit // Memory", "type_line": "Instant // Sorcery", "cmc": 6,
+        "mana_cost": "{3}{U} // {4}{U}{U}",
+        "oracle_text": "Put target spell or nonland permanent into its owner's library second from the top.\n//\nEach player shuffles their hand and graveyard into their library, then draws seven cards.",
+        "card_faces": [
+            {"name": "Commit", "oracle_text": "Put target spell or nonland permanent into its owner's library second from the top."},
+            {"name": "Memory", "oracle_text": "Each player shuffles their hand and graveyard into their library, then draws seven cards."}]}]}
+    names = wt.wheel_names(doc)
+    assert "Memory" in names and "Commit" not in names, names

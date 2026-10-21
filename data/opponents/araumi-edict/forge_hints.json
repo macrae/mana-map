@@ -1,12 +1,33 @@
 {
   "_note": "OLIVER'S SEAT AT THE 2026-10-20 TABLE. Araumi herself shipped AI:RemoveDeck:All, so the seat played without its commander until unflagged (unflag.txt, 2026-10-21). The hints below are the nearest shapes in the card library and are UNTESTED on these cards until the seat audit's dynamic half reads them.",
   "hints": [
-    {"card": "Perpetual Timepiece", "ability": "AB$ Mill", "ai_logic": "AtOppEOT",
-     "why": "unflagged, its mill has no timing; Drowner of Secrets' logic mills at an opponent's end step, which is when a graveyard deck wants it",
-     "cites": ["seat audit 2026-10-21"]},
-    {"card": "Vizier of Tumbling Sands", "ability": "AB$ Untap", "ai_logic": "PoolExtraMana",
-     "why": "unflagged, the untap has no logic; Arbor Elf's logic untaps a mana source for extra mana",
-     "cites": ["seat audit 2026-10-21"]}
+    {
+      "card": "Perpetual Timepiece",
+      "ability": "AB$ Mill",
+      "ai_logic": "AtOppEOT",
+      "why": "unflagged, its mill has no timing; Drowner of Secrets' logic mills at an opponent's end step, which is when a graveyard deck wants it",
+      "cites": [
+        "seat audit 2026-10-21"
+      ]
+    },
+    {
+      "card": "Vizier of Tumbling Sands",
+      "ability": "AB$ Untap",
+      "ai_logic": "PoolExtraMana",
+      "why": "unflagged, the untap has no logic; Arbor Elf's logic untaps a mana source for extra mana",
+      "cites": [
+        "seat audit 2026-10-21"
+      ]
+    },
+    {
+      "card": "Araumi of the Dead Tide",
+      "ability": "AB$ Pump",
+      "ai_logic": "ReplaySpell",
+      "why": "TRIAL (2026-10-21): unflagged, she resolved in seven of eight games and activated in none; ReplaySpell is the nearest shipped logic (Archmage's Newt grants a graveyard keyword) and is untested on an encore grant — read the next run's activations before trusting it",
+      "cites": [
+        "olivers-table n8 e9cc7abe"
+      ]
+    }
   ],
-  "floors": ["Araumi of the Dead Tide"]
+  "floors": []
 }

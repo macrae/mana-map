@@ -449,8 +449,9 @@ measured at a table and not by the goldfish ("fuck the goldfish"):
   were re-analysed (`simulate --analyze`), a decided branch's record is left as written.
 - **`wheel_timing`** (`src/manamap/sim/wheel_timing.py`), a top-level block beside
   `board_series`, absent when the list holds no card the goldfish's readers call a wheel:
-  per game `first_wheel_turn` (own turn, None = never), `wheels_cast` (cast wheels only;
-  activations are in `engine_casts`) and `wheels_with_commander` (cast on an own turn whose
+  per game `first_wheel_turn` (own turn, None = never), `wheels_cast` (wheel SPELLS only,
+  a split card by the face that wheels — 2026-10-21, after Commit and Queen Kayla's own
+  cast were read as wheels; activated wheels are in `engine_casts`) and `wheels_with_commander` (cast on an own turn whose
   CLEANUP board held a commander — a floor: the log has no mid-turn board). Aggregated with
   intervals, `wheels_with_commander` as a Wilson rate over wheels. **The kept seven is not
   in the log**: the telemetry's zone lines begin with turn 1's draw, so the keep question is

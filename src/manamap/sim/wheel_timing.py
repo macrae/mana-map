@@ -35,9 +35,9 @@ from manamap.sim.parse import mean_ci
 SINCE = "2026-10-21"
 
 LIMITS = [
-    "A wheel is a card the goldfish's readers call one (wheel_draws or an activated "
-    "wheel); a discard wheel those readers cannot parse is not counted, and the "
-    "declaration names which. Only CAST wheels are counted here; activations are in "
+    "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card "
+    "by the face that wheels); a discard wheel those readers cannot parse is not "
+    "counted. Activated wheels (Kayla, Magus, Archivist) are not casts and are in "
     "engine_casts.",
     "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander "
     "cast after the wheel on the same turn reads as present, one removed on the same "
@@ -50,16 +50,34 @@ LIMITS = [
 
 
 def wheel_names(deck_doc):
-    """The names the goldfish's own readers call a wheel in a deck's cards.json —
-    front faces — so the two instruments cannot disagree about what a wheel is."""
-    from manamap.pilot.goldfish_library import KEEP_CLASS_PREDICATES, classify
+    """The names the goldfish's own readers call a wheel SPELL in a deck's cards.json,
+    so the two instruments cannot disagree about what a wheel is. An activated wheel
+    (Queen Kayla, Magus, Jace's Archivist) is excluded: casting the creature is not
+    the wheel, and the eight-game test read Kayla's turn-3 cast as a wheel with no
+    commander out. A SPLIT CARD counts
+    only the face whose own text wheels: Forge logs `cast Memory` and `cast Commit`
+    as two names, and Commit — a bounce — was read as a wheel on 2026-10-21's
+    eight-game test until this read the faces apart."""
+    from manamap.pilot.goldfish_library import classify
+    from manamap.pilot.goldfish_profiles import _WHEEL_RE
     out = set()
     for card in (deck_doc or {}).get("cards") or []:
         try:
-            if KEEP_CLASS_PREDICATES["wheel"](classify(card)):
-                out.add(card["name"].split(" // ")[0].strip())
+            c = classify(card)
+            if c["is_land"] or not c["draw"]["wheel_draws"]:
+                continue                         # an activated wheel is not a CAST wheel
         except Exception:                        # pragma: no cover - a malformed entry
             continue
+        name = card["name"]
+        faces = card.get("card_faces") or []
+        if " // " in name and len(faces) >= 2:
+            for face in faces:
+                if _WHEEL_RE.search(face.get("oracle_text") or ""):
+                    out.add(str(face.get("name") or "").split(" // ")[0].strip())
+            if not any(_WHEEL_RE.search(f.get("oracle_text") or "") for f in faces):
+                out.add(name.split(" // ")[0].strip())
+        else:
+            out.add(name.split(" // ")[0].strip())
     return out
 
 
