@@ -82,6 +82,7 @@ Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group b
 
 <!-- ctx:gen record -->
 - **1 game(s):** 0 won, 1 lost · 2026-10-20 to 2026-10-20
+- **How games ended:** stalled 1
 - **Not yet read:** 001
 <!-- /ctx:gen record -->
 

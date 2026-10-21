@@ -213,10 +213,8 @@ STALE_XFAIL = {
     "edgar-vampires/tutor_guide.json": (
         "written for v1.1.1 (no entry for Demonic Tutor, added in v2.0.0); "
         "re-run /write-manual edgar-vampires"),
-    "sharknado/build_plan.json": (
-        "the deck-architect's plan for v1.1.0 (bracket floor 3); v1.2.0 measures 4 "
-        "(Jeska's Will / Teferi's Protection) — a new plan comes from /build-deck, "
-        "not a hand edit"),
+    # `sharknado/build_plan.json` came off 2026-10-21: v1.3.0 reads floor 3 again
+    # and the plan validates — the strict xfail said so (XPASS), as designed.
     "sharknado/engine.json": (
         "written for v1.1.0 (stages name the cut Treasure Map); re-run "
         "/analyze-engine sharknado against v1.2.0"),

@@ -205,8 +205,11 @@ def test_the_opted_in_set_is_named_not_counted():
         declared = json.loads(targets.read_text()) if targets.exists() else {}
         if any(v for k, v in declared.items() if k.startswith("model_")):
             opted.append(slug)
+    # keen-engineering 2026-10-19: the Foundations precon's first declaration,
+    # measured from scratch (no earlier baseline to move).
     assert sorted(opted) == ["edgar-vampires", "gishath", "goblin-storm", "heliod",
-                             "meren-recursion", "sharknado", "ur-dragon"], (
+                             "keen-engineering", "meren-recursion", "sharknado",
+                             "ur-dragon"], (
         f"the opted-in set changed to {sorted(opted)}. Add a deck here only with "
         f"its re-baseline, and say which in the docstring.")
 

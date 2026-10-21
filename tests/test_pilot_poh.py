@@ -44,7 +44,7 @@ def _rendered(slug=SLUG):
 #: /poh-procedures after playing v2. Agent prose is re-run, never hand-edited.
 #: Strict: current procedures fail until the entry is removed.
 PROCEDURES_AWAITING_RERUN = {
-    "edgar-vampires": "written for v1.1.1; re-run /poh-procedures edgar-vampires on v2.0.0",
+    # edgar-vampires came off 2026-10-21: its procedures were rewritten for v2.1.0.
 }
 
 def test_the_stage_vocabulary_is_the_engines_and_not_a_second_one():

@@ -1670,6 +1670,13 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # read stale forever — `goldfish_metrics.json` and `mana_analysis.json` stamp
     # the decklist sha. `check_in.apply` has run it since it shipped; merge
     # printed "next: fetch-deck" and hoped.
+    # THE READING THE DECISION RESTED ON, read BEFORE anything rebuilds it. The
+    # chain below re-measures the deck's branches against the new list, and this
+    # branch IS the new list, so its net_change would read every delta as zero
+    # (known-issue 28, closed 2026-10-21); regen skips it, and the ledger's
+    # prediction is frozen from the file as it stood when the pilot said merge.
+    # Read here, outside the chain, so a merge that runs no chain still has it.
+    _nc_at_merge = load_json(deck_dir(slug, branch) / "net_change.json") or None
     if run_chain:
         from types import SimpleNamespace
         from manamap.pilot import fetch_deck, goldfish, mana_analysis
@@ -1690,12 +1697,6 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
         # so a merge left `diagnostic.json`, `benchmark.json` and `info.json`
         # describing the PREVIOUS 99 — and the way anyone found out was a failing
         # test hours later. Reusing `regen` means this order has one home.
-        # THE READING THE DECISION RESTED ON, read BEFORE anything rebuilds it.
-        # The regen below re-measures the deck's branches against the new list,
-        # and this branch IS the new list, so its net_change would read every
-        # delta as zero (known-issue 28); it is skipped below, and the ledger's
-        # prediction is frozen from the file as it stood when the pilot said merge.
-        _nc_at_merge = load_json(deck_dir(slug, branch) / "net_change.json") or None
         if not out.get("chain_failed"):
             try:
                 from manamap.pilot import regen
