@@ -179,6 +179,14 @@ def test_the_axis_registry_and_its_flag_map_agree():
             assert axis in candidates.AXIS_NEEDS, axis
     for axis in candidates.AXIS_NEEDS:
         assert axis in candidates.AXES, axis
+    # The aimable-only axes keep their own map, so a branch aimed at a measure
+    # its deck has not opted into is told which flag to set rather than
+    # "absent" — every objective axis read from an opt-in block declares it.
+    for axis, (block, _key, _sub) in candidates.OBJECTIVE_AXES.items():
+        if block in ("output", "wheels") or axis == "extra_cards_8":
+            assert axis in candidates.OBJECTIVE_NEEDS, axis
+    for axis in candidates.OBJECTIVE_NEEDS:
+        assert axis in candidates.OBJECTIVE_AXES, axis
 
 
 # ── The model's version, after the 2026-09-13 split ─────────────────────────

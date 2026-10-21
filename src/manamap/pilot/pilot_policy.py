@@ -59,7 +59,19 @@ CHANNELS = ("spell_token_copy", "wheel")
 #: `forge`: the rule EXPLAINS AiProps keys the document's `forge` section sets — each
 #: key it names must be there with the same value, so the reason and the knob cannot
 #: drift apart. Such a rule needs no goldfish channel: the goldfish never reads it.
-VERBS = ("hold_until", "forge")
+VERBS = ("hold_until", "forge", "keep")
+
+#: What a `keep` rule may count in an opening seven. REPORTED, NEVER ENFORCED:
+#: the simulator mulligans by `goldfish_library.keepable` (2–5 lands) whatever
+#: this says, and reports how often the hand it kept would have passed the
+#: pilot's own rule — the same contract `keep_can_act_by_t3` keeps. Enforcing it
+#: would restate every figure on the deck under a free-redraw mulligan that
+#: flatters any stricter rule, and would classify "wheel" by the model's reading,
+#: which misses the discard wheels it cannot parse.
+#:   wheel: a card the model reads as a wheel (spell or activated engine)
+#:   body:  a card that puts a creature on the battlefield
+#:   ramp:  a nonland card that produces mana
+KEEP_CLASSES = ("wheel", "body", "ramp")
 
 #: What `hold_until` may count.
 COUNTERS = ("other_creatures", "event_payoffs", "commanders_out")
@@ -130,6 +142,25 @@ def validate(doc):
         verbs = [v for v in VERBS if v in r]
         if len(verbs) != 1:
             raise PolicyError(f"{rid}: exactly one of {list(VERBS)} is required")
+        if "keep" in r:
+            k = r["keep"]
+            if not isinstance(k, dict) or not k:
+                raise PolicyError(f"{rid}: `keep` is a mapping with `max` and/or `needs_any`")
+            for cls, cap in (k.get("max") or {}).items():
+                if cls not in KEEP_CLASSES:
+                    raise PolicyError(f"{rid}: keep.max.{cls} is not a class a hand is "
+                                      f"read by; pick from {list(KEEP_CLASSES)}")
+                if not isinstance(cap, int) or cap < 0:
+                    raise PolicyError(f"{rid}: keep.max.{cls} must be a non-negative "
+                                      f"integer, not {cap!r}")
+            for cls in (k.get("needs_any") or []):
+                if cls not in KEEP_CLASSES:
+                    raise PolicyError(f"{rid}: keep.needs_any names {cls!r}; pick from "
+                                      f"{list(KEEP_CLASSES)}")
+            if not (k.get("max") or k.get("needs_any")):
+                raise PolicyError(f"{rid}: a keep rule with neither `max` nor "
+                                  f"`needs_any` passes every hand")
+            continue
         if "forge" in r:
             knobs = r["forge"]
             if not isinstance(knobs, dict) or not knobs:
@@ -183,6 +214,28 @@ def hold_thresholds(doc):
     return out
 
 
+def keep_rule(doc):
+    """The pilot's keep rule as one mapping, or None when the policy has none.
+
+    Several `keep` rules fold into one the way `hold_thresholds` folds holds:
+    the STRICTEST cap per class wins and the `needs_any` lists union, so two
+    rules can never let a hand through that either alone would have shipped.
+    Read by the simulator to REPORT a pass rate, never to mulligan.
+    """
+    out = None
+    for r in (doc.get("rules") or []):
+        if "keep" not in r:
+            continue
+        out = out or {"max": {}, "needs_any": []}
+        for cls, cap in (r["keep"].get("max") or {}).items():
+            prev = out["max"].get(cls)
+            out["max"][cls] = cap if prev is None else min(prev, cap)
+        for cls in (r["keep"].get("needs_any") or []):
+            if cls not in out["needs_any"]:
+                out["needs_any"].append(cls)
+    return out
+
+
 def render(doc):
     """The policy as the pilot wrote it, for a record or a report."""
     if not doc:
@@ -192,6 +245,12 @@ def render(doc):
         if "forge" in r:
             what = ", ".join(f"{k}={v}" for k, v in sorted(r["forge"].items()))
             lines.append(f"{r['id']}: Forge AI knobs {what}")
+        elif "keep" in r:
+            k = r["keep"]
+            parts = [f"at most {v} {c}" for c, v in sorted((k.get("max") or {}).items())]
+            if k.get("needs_any"):
+                parts.append("one of " + "/".join(k["needs_any"]))
+            lines.append(f"{r['id']}: a keep has {', '.join(parts)} (reported, never enforced)")
         else:
             hold = r.get("hold_until") or {}
             what = ", ".join(f"{k} >= {v}" for k, v in sorted(hold.items()))

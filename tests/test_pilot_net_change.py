@@ -1661,7 +1661,8 @@ def test_a_row_over_the_mde_but_not_holm_significant_is_noise(monkeypatch):
         sd = 1.0
         se = sd * (2 / n) ** 0.5
         # 2.82 clears the MDE (2.8016 se) and fails Holm's rank-2 threshold
-        # z(0.05/11) = 2.838, so the walk stops there and eleven rows are noise.
+        # z(0.05/(k-1)) for k rows — 2.838 at twelve rows, 2.935 at sixteen —
+        # so the walk stops there and every other row is noise.
         z = 3.5 if i == 0 else 2.82
         cells_a.append({"rate": 5.0, "sd": sd, "n": n})
         cells_b.append({"rate": round(5.0 + z * se * (1 if want > 0 else -1), 6), "sd": sd, "n": n})
@@ -1682,9 +1683,10 @@ def test_a_row_over_the_mde_but_not_holm_significant_is_noise(monkeypatch):
     doc = net_change.build("x", "b")
     verdicts = [r["verdict"] for r in doc["table"]]
     assert verdicts[0] == "better" and set(verdicts[1:]) == {"noise"}, verdicts
-    # every row over the MDE, so the OLD rule would have ranked all twelve
+    # every row over the MDE, so the OLD rule would have ranked every row
     assert all(abs(r["delta"]) > r["mde"] for r in doc["table"])
-    assert doc["design"]["primary"] is None and doc["design"]["exploratory_rows"] == 12
+    assert doc["design"]["primary"] is None
+    assert doc["design"]["exploratory_rows"] == len(net_change.ROWS)
     assert doc["table"][0]["holm"]["rank"] == 1 and doc["table"][1]["holm"]["significant"] is False
     # and every row carries the interval on its own difference, agreeing with itself
     for r in doc["table"]:

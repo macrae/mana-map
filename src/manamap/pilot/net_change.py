@@ -2,7 +2,7 @@
 what it set out to do.
 
 MAP OF THIS FILE (in order):
-  ROWS / METRICS / DERIVED   the twelve goldfish rows with direction, each row's
+  ROWS / METRICS / DERIVED   the sixteen goldfish rows with direction, each row's
                     definition, and the non-row figures — the registry.
   _null_block .. champion_at  one Forge arm's endpoints and the pod's null;
                     `champion_at` is the anchor `deck-branch new` prints.
@@ -95,6 +95,13 @@ ROWS = (
     ("extra cards by T8", "steam", "extra_cards_by_turn", "8", +1),
     ("interaction affordable @T6", "steam", "castable_given_in_hand_by_turn", "6", +1),
     ("hand can act by T3", "steam", "keep_can_act_by_t3", None, +1),
+    # THE PILOT'S KEEP RULE AND THE WHEELS' TIMING (2026-10-21, sharknado log
+    # 002). Absent on a deck that wrote no keep rule / has not opted into
+    # `model_discard`: `compare_readings` skips a row absent on both arms.
+    ("kept hand passes the pilot's keep rule", "steam", "kept_hand_passes_pilot_rule", None, +1),
+    ("finisher wheel by T8", "wheels", "finisher_by_turn", "8", +1),
+    ("wheels cast by T10", "wheels", "wheels_cast_by_turn", "10", +1),
+    ("dead wheels in hand @T5", "wheels", "dead_in_hand_by_turn", "5", -1),
 )
 
 #: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
@@ -114,6 +121,61 @@ IMPACT_MEASURES = ("damage @T10", "killed by T10", "board power @T6", "extra car
 #: says what they are. `scale` is the yardstick the number is only meaningful
 #: against — 40 life for damage, the fleet band for the three consistency rows.
 METRICS = {
+    "finisher wheel by T8": {
+        "unit": "rate",
+        "scale": "against the games themselves — one finisher per game counts, "
+                 "however many wheels followed it",
+        "what": "The share of games in which, by the end of turn 8, a wheel "
+                "resolved with a COMMANDER on the battlefield and a hand the "
+                "model's thin-hand rule would not have thrown away on its own. "
+                "Spell wheels and activated wheels both count; the discard "
+                "wheels the model cannot parse are named in the goldfish "
+                "declaration and are in no figure here.",
+        "why": "The pilot's thesis as an output the deck produces (sharknado log "
+               "002): a wheel is a finisher dropped onto Brallin or Shabraz, "
+               "never early tempo. Under a hold policy every wheel waits for a "
+               "commander, so this row is when the first one LANDS — the clock "
+               "the thesis sets — and a list that cannot get a commander down "
+               "with a wheel in hand by turn 8 reads low here before it reads "
+               "low anywhere else.",
+    },
+    "wheels cast by T10": {
+        "unit": "mean",
+        "scale": "against the wheel-shaped cards the declaration names",
+        "what": "Wheels resolved — spell or activated — cumulative to the end "
+                "of turn 10, averaged over every game.",
+        "why": "The engine's trigger count: every payoff in this deck is a tax "
+               "collector with nothing to tax until a hand empties. Reported "
+               "with a direction for the report's sake, but the table's dislike "
+               "of a wheel is in no figure here — this counts what the model "
+               "fired, not what a pod forgave — so read it beside the finisher "
+               "row, never alone.",
+    },
+    "dead wheels in hand @T5": {
+        "unit": "mean",
+        "scale": "against the cards in hand at the end of turn 5",
+        "what": "Wheel cards held at the end of turn 5 while no discard or draw "
+                "payoff is on the battlefield, averaged over every game; zero "
+                "whenever a payoff is out.",
+        "why": "The clog: \"one playable creature and a bunch of wheels\" as a "
+               "number. It rises with the wheel count and with a hold policy, "
+               "which is the point — a branch that cuts wheels is graded here, "
+               "and a branch that cannot land a commander shows up here before "
+               "it shows up in damage.",
+    },
+    "kept hand passes the pilot's keep rule": {
+        "unit": "rate",
+        "scale": "against the keep rate itself — a property of the seven cards "
+                 "kept, assuming no draws",
+        "what": "The share of kept opening hands that the pilot's own keep rule "
+                "(`pilot_policy.json`, verb `keep`: a cap per class, one card "
+                "of a needed class) would also have kept.",
+        "why": "REPORTED and never enforced, so it cannot restate a figure on "
+               "any deck, and absent on a deck that has written no rule. It "
+               "prices the question the log raises about a hand of one creature "
+               "and four wheels: how often does the list deal the pilot a seven "
+               "he would ship?",
+    },
     "extra cards by T8": {
         "unit": "mean",
         "scale": "against the 8 cards every deck draws for free by then",
@@ -276,7 +338,7 @@ DERIVED = (
      "underneath the base — which is why the GAP is the figure and not the "
      "source count."),
     ("PRIMARY AND EXPLORATORY",
-     "The objective is the one pre-registered test. The twelve rows are a "
+     "The objective is the one pre-registered test. The sixteen rows are a "
      "family of looks, each with an interval on its difference, and a row's "
      "verdict is Holm-corrected across the family.",
      "Twelve rows at alpha 0.05 with no correction is one false 'better' in "
@@ -1444,7 +1506,7 @@ def compare_readings(a, b):
         row["holm"] = h
     for row, good, mde in pending:
         # A verdict needs both: a difference the run could resolve (the MDE)
-        # AND one that survives being one of twelve looks (Holm). `noise` keeps
+        # AND one that survives being one of the family's looks (Holm). `noise` keeps
         # its meaning — "unresolved", never "no change".
         clears = abs(row["delta"]) > mde and row["holm"]["significant"]
         row["verdict"] = ("better" if good else "worse") if clears else "noise"
@@ -1478,7 +1540,8 @@ def build(slug, branch, iterations=None, seed=None):
                            keep_games=True, align=True)
         bar.advance(1)
 
-    # ONE PRIMARY, TWELVE EXPLORATORY. Twelve rows each given an independent
+    # ONE PRIMARY, THE REST EXPLORATORY (sixteen rows since 2026-10-21, and a
+    # deck sees only the rows it measures). Rows each given an independent
     # verdict at alpha = 0.05 is roughly one false "better" every two reports,
     # and `experiment.py` had already solved the identical problem by
     # pre-registering `win_rate` and calling the other ten descriptive. Here the

@@ -447,9 +447,13 @@ manamap pilot validate-poh-procedures <slug>     # and over the JSON, which had 
                                         #   honest and never an error
 manamap pilot validate-pilot-policy <slug>       # the declared piloting rules: every rule
                                         #   named, reasoned, keyed on a channel the
-                                        #   simulator computes, and — for a `forge` section
-                                        #   — on an AiProps key Forge reads whose MASTER
-                                        #   TOGGLE is on. No deck has a policy yet
+                                        #   simulator computes (`spell_token_copy`, `wheel`)
+                                        #   and a counter that channel's gate reads, and —
+                                        #   for a `forge` section — on an AiProps key Forge
+                                        #   reads whose MASTER TOGGLE is on. A `keep` rule
+                                        #   (2026-10-21) is REPORTED, never enforced.
+                                        #   edgar-vampires holds a `forge` rule; sharknado
+                                        #   holds the wheel hold and a keep rule
 manamap pilot install-agent <slug> --routine R   # an agent's whole-file handoff becomes
                                         #   the tracked artifact, STAMPED with the decklist
                                         #   sha. THE ONE PLACE that happens: a `cp` cannot

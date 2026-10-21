@@ -171,6 +171,36 @@ CATALOG = {
                "(library_to_hand - one natural draw per own turn, none for turn 1 on the "
                "play) / own turns. " + FORGE_ZONE_LIMIT),
 
+    "wheel timing": _m(
+        "card_flow",
+        "When the wheels fire and onto what: games with a wheel by turn t, wheels "
+        "cast by turn t, the share fired with a payoff out, and games with a "
+        "FINISHER (a wheel resolved with a commander on the battlefield and a "
+        "hand the thin-hand rule would not have thrown away) by turn t.",
+        OPT_IN, "goldfish",
+        "goldfish_metrics.json → metrics.discard.{wheel_cast_rate_by_turn, "
+        "mean_wheels_cast_by_turn, wheel_with_payoff_rate, finisher_wheel_rate_by_turn}; "
+        "diagnostic.json → wheels.*; net_change rows 'finisher wheel by T8', "
+        "'wheels cast by T10'",
+        caveat="OPT-IN behind `model_discard` (one tracked deck). A wheel is a card "
+               "the model reads as one; the discard wheels it cannot parse are named "
+               "in the declaration and are in none of these figures. Under a "
+               "`hold_until` policy on the wheel channel the with-payoff share is "
+               "1.0 by construction — that figure is the policy-on vs policy-off "
+               "reading, never a branch row. The table's dislike of a wheel is in "
+               "no figure here."),
+
+    "dead wheels in hand": _m(
+        "card_flow",
+        "Wheel cards held at the end of turn t while no discard or draw payoff is "
+        "on the battlefield — the clog of a hand of wheels with nothing to pay.",
+        OPT_IN, "goldfish",
+        "goldfish_metrics.json → metrics.discard.mean_dead_wheels_in_hand_by_turn; "
+        "diagnostic.json → wheels.dead_in_hand_by_turn; net_change row "
+        "'dead wheels in hand @T5'",
+        caveat="OPT-IN behind `model_discard`. Rises with the wheel count AND with a "
+               "hold policy, which is the point; lower is better."),
+
     "turns with empty hand": _m(
         "card_flow",
         "Count of turns ending with zero cards in hand.",

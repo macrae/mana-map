@@ -300,6 +300,31 @@ def keepable(hand):
     return GOLDFISH_MULLIGAN_MIN_LANDS <= lands <= GOLDFISH_MULLIGAN_MAX_LANDS
 
 
+#: How a sim card is read against each class a `keep` rule may name. The keys
+#: are held to `pilot_policy.KEEP_CLASSES` by a test, so a class the policy
+#: accepts and this cannot read is impossible.
+KEEP_CLASS_PREDICATES = {
+    "wheel": lambda c: (not c["is_land"]) and bool(
+        c["draw"]["wheel_draws"] or c["draw"]["activated_wheel"]),
+    "body": lambda c: (not c["is_land"]) and c["bodies"] > 0,
+    "ramp": lambda c: (not c["is_land"]) and c["produces"] > 0,
+}
+
+
+def keep_rule_passes(hand, rule):
+    """Would the pilot's own rule have kept this seven? REPORTED, NEVER ENFORCED
+    — `keepable` above is the rule the model mulligans by; this reads the hand it
+    kept against the pilot's `keep` policy (`pilot_policy.keep_rule`): every
+    `max` cap respected and at least one card of any `needs_any` class."""
+    counts = {cls: sum(1 for c in hand if pred(c))
+              for cls, pred in KEEP_CLASS_PREDICATES.items()}
+    for cls, cap in (rule.get("max") or {}).items():
+        if counts[cls] > cap:
+            return False
+    needs = rule.get("needs_any") or []
+    return (not needs) or any(counts[cls] > 0 for cls in needs)
+
+
 def _target_met(target, names_in_hand, commander_cast, tutors=0):
     """Is this target assembled, allowing `tutors` wildcards to fill holes?
 

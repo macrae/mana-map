@@ -175,10 +175,33 @@ OBJECTIVE_AXES = dict(AXES, **{
     "kill_by_10": ("output", "kill_by_turn", "10"),
     "board_power_6": ("output", "board_power_by_turn", "6"),
     "hoard_8": ("output", "hoard_by_turn", "8"),
+    # THE WHEELS' TIMING (2026-10-21), aimable and not rankable for the reason
+    # `extra_cards_8` gives: one deck opts into `model_discard`, so there is no
+    # fleet to check their independence against. `finisher_wheel_8` is the
+    # pilot's thesis as an output (sharknado log 002: a wheel is a finisher
+    # dropped onto a commander); `dead_wheels_5` is the clog it names.
+    "finisher_wheel_8": ("wheels", "finisher_by_turn", "8"),
+    "wheels_cast_10": ("wheels", "wheels_cast_by_turn", "10"),
+    "dead_wheels_5": ("wheels", "dead_in_hand_by_turn", "5"),
 })
 
 #: Axes where DOWN is better, so the ranking does not reward a worse deck.
-LOWER_IS_BETTER = {"stall", "land_drop"}
+LOWER_IS_BETTER = {"stall", "land_drop", "dead_wheels_5"}
+
+#: Which OBJECTIVE axes need a deck to have opted into a model, and the flag to
+#: name when it has not — `AXIS_NEEDS` for the aimable-only axes. Kept apart
+#: because two tests pin `AXIS_NEEDS` to `AXES` in both directions (a ranking
+#: axis must declare its flag; a flag entry must be a ranking axis), and these
+#: are not ranking axes. `deck_branch.champion_reading` names the flag from here
+#: when a branch aims at an axis its deck's diagnostic has no cell for.
+OBJECTIVE_NEEDS = dict(AXIS_NEEDS,
+                       damage_10="model_combat", kill_by_6="model_combat",
+                       kill_by_8="model_combat", kill_by_10="model_combat",
+                       board_power_6="model_combat", hoard_8="model_treasures",
+                       extra_cards_8="model_draw",
+                       finisher_wheel_8="model_discard",
+                       wheels_cast_10="model_discard",
+                       dead_wheels_5="model_discard")
 
 #: FORGE ENDPOINTS A BRANCH MAY AIM AT — the real table in the objective grammar,
 #: `forge.<axis> <op> <n> @<pod>`. A goldfish axis is a property of the list; a

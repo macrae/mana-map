@@ -658,8 +658,10 @@ def champion_reading(slug, objective):
         return [f"  champion: could not be read ({exc.__class__.__name__}) — "
                 f"the line is unanchored"]
     if not cell:
+        needs = candidates.OBJECTIVE_NEEDS.get(axis)
         return [f"  champion: {axis} is absent from this deck's diagnostic — "
-                f"the line is unanchored"]
+                f"the line is unanchored"
+                + (f" (it needs \"{needs}\": true in goldfish_targets.json)" if needs else "")]
     now, mde = cell["rate"], diagnostic.mde(cell)
     gap = objective["value"] - now
     lines = [f"  champion:  {axis} reads {now:.4f} right now "

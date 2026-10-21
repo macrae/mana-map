@@ -38,7 +38,14 @@ RATE_BLOCKS = (("stall", "by_turn"), ("stall", "two_in_a_row"),
                ("engine", "online_by_turn"), ("engine", "any_route_by_turn"),
                ("mana", "missed_land_drop_by_five"), ("mana", "mulliganed"),
                ("output", "hoard_by_turn"), ("output", "damage_by_turn"),
-               ("output", "board_power_by_turn"), ("output", "kill_by_turn"))
+               ("output", "board_power_by_turn"), ("output", "kill_by_turn"),
+               # The wheels' timing (2026-10-21), present only on a deck that
+               # opts into `model_discard`; the pilot's keep rule, only on a
+               # deck whose policy writes one.
+               ("wheels", "first_wheel_by_turn"), ("wheels", "wheels_cast_by_turn"),
+               ("wheels", "with_payoff"), ("wheels", "finisher_by_turn"),
+               ("wheels", "dead_in_hand_by_turn"),
+               ("steam", "kept_hand_passes_pilot_rule"))
 
 
 def _cells(value):

@@ -379,7 +379,7 @@ def test_the_zone_limit_is_quoted_from_one_constant():
 def test_the_net_change_registry_is_still_the_branch_reports_own():
     """One catalog, and one report-row registry, deliberately not merged.
 
-    `net_change.METRICS` defines the THIRTEEN ROWS of a branch report, keyed by
+    `net_change.METRICS` defines the ROWS of a branch report, keyed by
     the label the report prints. This catalog defines the figures a simulation
     measures, keyed by PRD §14's names. Collapsing them would force one key
     space on two questions; what matters is that both exist and both are

@@ -511,6 +511,12 @@ def steam(rows, got):
         "castable_given_in_hand_by_turn": conditional,
         "keep_can_act_by_t3": _rate(
             sum(1 for r in rows if r["keep_can_act_by_t3"]), n),
+        # THE PILOT'S OWN KEEP RULE (`pilot_policy.json`, verb `keep`), read on
+        # the hand the model kept and never used to mulligan. Absent on a deck
+        # that wrote no rule — a pass rate against nothing is not a figure.
+        **({"kept_hand_passes_pilot_rule": _rate(
+            sum(1 for r in rows if r.get("keep_rule_pass")), n)}
+           if any(r.get("keep_rule_pass") is not None for r in rows) else {}),
         "basis": (
             "`castable` is the mana left at the END OF THE MAIN PHASE — the "
             "moment the decision is made, before combat. Extra combat phases "
@@ -520,6 +526,53 @@ def steam(rows, got):
             "the model casts everything it can afford every turn, so a pilot "
             "choosing to hold up two mana would score higher. A low figure is a "
             "real finding; a high one is unambiguous good news."),
+    }
+
+
+def wheels(rows, got):
+    """WHEN THE WHEELS FIRE, AND ONTO WHAT (2026-10-21).
+
+    sharknado log 002: "those should be finisher kind of things — Shabraz and
+    Brallin are already out, they're kind of big, and I drop a wheel on them".
+    The model had been firing wheels on any thin hand and recording nothing
+    about the turn. These cells are the timing: when the first wheel resolves,
+    how many resolve, how many resolve with a payoff out, when the first
+    FINISHER lands (a wheel with a COMMANDER on the battlefield and a hand the
+    thin-hand clause alone would not have thrown away), and the clog — wheel
+    cards held with nothing on the battlefield to pay.
+
+    ABSENT unless the deck opts into `model_discard`: without it no wheel is
+    modelled, and a block of zeros would read as "never wheels".
+    """
+    if not rows or not ((got.get("metrics") or {}).get("discard")):
+        return None
+    n = len(rows)
+    turns = len(rows[0]["wheels_cast_by_turn"])
+    T = range(turns)
+    cast = sum(r["wheels_cast_by_turn"][-1] for r in rows)
+    paid = sum(r["wheels_with_payoff"] for r in rows)
+    return {
+        "first_wheel_by_turn": {str(t + 1): _rate(
+            sum(1 for r in rows if r["first_wheel_turn"] is not None
+                and r["first_wheel_turn"] <= t + 1), n) for t in T},
+        "wheels_cast_by_turn": {str(t + 1): _mean_cell(
+            [r["wheels_cast_by_turn"][t] for r in rows]) for t in T},
+        # Pooled over WHEELS, so its n is the wheels fired, not the games, and
+        # it has no clean per-game pairing. Under a hold policy it is 1.0 by
+        # construction: this cell is the policy-on vs policy-off reading.
+        "with_payoff": _rate(paid, cast),
+        "finisher_by_turn": {str(t + 1): _rate(
+            sum(1 for r in rows if r["finisher_wheel_turn"] is not None
+                and r["finisher_wheel_turn"] <= t + 1), n) for t in T},
+        "dead_in_hand_by_turn": {str(t + 1): _mean_cell(
+            [r["dead_wheels_in_hand_by_turn"][t] for r in rows]) for t in T},
+        "basis": (
+            "a wheel is a card the model reads as one (spell or activated "
+            "engine); the discard wheels it cannot parse are named in the "
+            "goldfish declaration and are in none of these figures. A finisher "
+            "needs a COMMANDER out, not merely any payoff. The table's dislike "
+            "of a wheel is in no figure here: this counts what the model "
+            "fired, not what a pod forgave."),
     }
 
 
@@ -641,6 +694,18 @@ PER_GAME = {
     ("mana", "mulliganed", None): lambda r: 1 if r.get("mulligans") else 0,
     ("steam", "extra_cards_by_turn", "8"): _at("drawn_extra_by_turn", 7),
     ("steam", "keep_can_act_by_t3", None): lambda r: 1 if r.get("keep_can_act_by_t3") else 0,
+    # The pilot's keep rule: None on a deck with no rule, so the paired reading
+    # is absent there rather than a column of zeros.
+    ("steam", "kept_hand_passes_pilot_rule", None):
+        lambda r: None if r.get("keep_rule_pass") is None else (1 if r["keep_rule_pass"] else 0),
+    # The wheels' timing (2026-10-21). Absent on a deck that has not opted into
+    # `model_discard` — the series is missing there, and `_at` returns None.
+    ("wheels", "wheels_cast_by_turn", "10"): _at("wheels_cast_by_turn", 9),
+    ("wheels", "finisher_by_turn", "8"):
+        lambda r: (None if r.get("wheels_cast_by_turn") is None else
+                   1 if r["finisher_wheel_turn"] is not None and r["finisher_wheel_turn"] <= 8
+                   else 0),
+    ("wheels", "dead_in_hand_by_turn", "5"): _at("dead_wheels_in_hand_by_turn", 4),
 }
 
 
@@ -733,6 +798,8 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "engine": engine(rows, targets, missing),
         "mana": mana(rows),
         "steam": steam(rows, got),
+        # ABSENT unless the deck opts into `model_discard`, like `commanders`.
+        **({"wheels": _w} if (_w := wheels(rows, got)) else {}),
         "output": output(got),
         # Per-game values for paired comparison — only on request, so the
         # tracked diagnostic.json never carries ten thousand numbers per row.
@@ -991,7 +1058,7 @@ GAIN, COST, FLAT, UNSEEN, LIMIT, CAVEAT = (
 
 #: Which direction is an improvement, per measure. Without this a lower stall
 #: reads as a loss.
-LOWER_IS_BETTER = ("stall", "missed", "mulligan")
+LOWER_IS_BETTER = ("stall", "missed", "mulligan", "dead wheels")
 
 
 def _better_when_lower(label):
@@ -1132,6 +1199,19 @@ def _print(doc):
                   "PRODUCED, which is what")
             print("      separates them. Means over a skewed sample: compare "
                   "differences, not levels.")
+    w = doc.get("wheels") or {}
+    if w:
+        print("\n  WHEELS  (when they fire, and onto what)")
+        for key, label in (("first_wheel_by_turn", "first wheel by"),
+                           ("finisher_by_turn", "finisher wheel by"),
+                           ("wheels_cast_by_turn", "wheels cast by"),
+                           ("dead_in_hand_by_turn", "dead wheels in hand")):
+            series = w.get(key) or {}
+            cells = "   ".join(f"T{t} {series[t]['rate']:>6.2f}"
+                               for t in ("5", "8", "10") if series.get(t))
+            print(f"    {label:20} {cells}")
+        if w.get("with_payoff"):
+            print(f"    fired with a payoff out  {_fmt(w['with_payoff'])}  (over wheels, not games)")
     m = doc.get("mana") or {}
     if m:
         print("\n  MANA")

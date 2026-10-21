@@ -285,7 +285,7 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
 # the split is about where code LIVES. Proved by re-measuring all 39 tracked
 # metric files and diffing them byte for byte.
 from manamap.pilot.goldfish_library import (  # noqa: F401
-    X_DRAW_MIN, _target_met, build_library, classify, keepable,
+    X_DRAW_MIN, _target_met, build_library, classify, keep_rule_passes, keepable,
 )
 from manamap.pilot.goldfish_turn import simulate_once  # noqa: F401
 
@@ -626,6 +626,14 @@ DISCARD_ASSUMPTIONS = [
     "that sacrifices its own source fires once and takes the body off the "
     "board. An ability activated from the graveyard (Runehorn Hellkite) is a "
     "zone this model does not have and is refused rather than fired.",
+    "WHEEL TIMING (2026-10-21): the turn of every wheel is observed and decided "
+    "on by nothing. A FINISHER is a wheel resolved with a COMMANDER on the "
+    "battlefield and a hand the thin-hand clause alone would not have thrown "
+    "away. A deck's pilot_policy.json may HOLD a wheel (`hold_until` on the "
+    "wheel channel: event_payoffs, commanders_out) — an AND-gate on the rule "
+    "above, so a threshold of zero changes nothing; the policy is stamped on "
+    "the artifact as meta.pilot_policy. A `keep` rule in the same file is read "
+    "on the hand the model kept and reported as a pass rate, never enforced.",
     "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX "
     "ON IT. A symmetrical wheel refills the opponent too, so `whenever an "
     "opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, "
@@ -839,6 +847,13 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             # THE STRICTER THRESHOLD, beside the loose one it does not replace.
             "keep_can_act_by_t3_rate": _round(
                 sum(1 for r in results if r["keep_can_act_by_t3"]) / n),
+            # THE PILOT'S OWN KEEP RULE (`pilot_policy.json`, verb `keep`), read on
+            # the hand the model kept. ABSENT when the deck wrote no rule — the
+            # key is a pass rate against a sentence somebody wrote, never a
+            # default. Reported, never enforced, like the row above it.
+            **({"pilot_keep_rule_pass_rate": _round(
+                sum(1 for r in results if r["keep_rule_pass"]) / n)}
+               if any(r.get("keep_rule_pass") is not None for r in results) else {}),
             "mean_mulligans": _round(sum(r["mulligans"] for r in results) / n),
         },
         # THE FREE CAST — Discover's and Cascade's hits (2026-10-11). Absent
@@ -969,6 +984,35 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             # here, because the question is how large the commanders are.
             "mean_commander_counters_by_turn": {
                 str(t): _round(sum(r["commander_counters_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            # THE WHEELS' TIMING (2026-10-21). The model fired wheels and threw
+            # the turn away; the pilot's thesis is about the turn. A FINISHER is
+            # a wheel resolved with a COMMANDER out and a hand the thin-hand
+            # clause alone would not have thrown away (the complement of the
+            # built-in gate). `wheel_with_payoff_rate` is pooled over WHEELS,
+            # not games, and reads 1.0 by construction under a hold policy —
+            # it is the policy-on vs policy-off reading, not a branch row.
+            "wheel_cast_rate_by_turn": {
+                str(t): _round(sum(1 for r in results
+                                   if r["wheels_cast_by_turn"][t - 1] > 0) / n)
+                for t in turns},
+            "mean_wheels_cast_by_turn": {
+                str(t): _round(sum(r["wheels_cast_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            "mean_first_wheel_turn": (lambda got: {
+                "mean": _round(sum(got) / len(got)) if got else None,
+                "n": len(got)})([r["first_wheel_turn"] for r in results
+                                 if r["first_wheel_turn"] is not None]),
+            "wheel_with_payoff_rate": (lambda cast, paid: _round(paid / cast) if cast else None)(
+                sum(r["wheels_cast_by_turn"][-1] for r in results),
+                sum(r["wheels_with_payoff"] for r in results)),
+            "finisher_wheel_rate_by_turn": {
+                str(t): _round(sum(1 for r in results
+                                   if r["finisher_wheel_turn"] is not None
+                                   and r["finisher_wheel_turn"] <= t) / n)
+                for t in turns},
+            "mean_dead_wheels_in_hand_by_turn": {
+                str(t): _round(sum(r["dead_wheels_in_hand_by_turn"][t - 1] for r in results) / n)
                 for t in turns},
         }} if model_discard else {}),
         # THE PARTNER, cast on its own curve. `commander` above stays the first
@@ -1286,6 +1330,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     from manamap.pilot import pilot_policy as _pp
     _policy = _pp.load(slug, branch)
     _hold_until = _pp.hold_thresholds(_policy)
+    _keep_rule = _pp.keep_rule(_policy)        # reported per game, never enforced
     if _policy and not quiet:
         for _ln in _pp.render(_policy):
             print("  POLICY " + _ln if not _ln.startswith("    ") else "  " + _ln)
@@ -1544,7 +1589,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_drain=model_drain,
                               model_deaths=model_deaths,
                               commander_copy=commander_copy,
-                              hold_until=_hold_until,
+                              hold_until=_hold_until, keep_rule=_keep_rule,
                               interaction_names=interaction_names,
                               model_colors=model_colors,
                               commander_pips=commander_pips,

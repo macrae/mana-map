@@ -170,3 +170,174 @@ def test_under_the_hold_the_clog_rises_and_the_payoff_share_is_total(monkeypatch
     assert sum(r["wheels_with_payoff"] for r in off) < sum(r["wheels_cast_by_turn"][-1] for r in off), (
         "without a policy the built-in rule fires some wheels on a thin hand alone; "
         "if this fails the control no longer exercises the clause the hold removes")
+
+
+# ------------------------------------------------------------------ a finisher
+
+def _wheel_deck(commander_cmc):
+    """A synthetic 99 with a wheel spell and a Glint-Horn-style discard payoff,
+    and a commander whose text pays nothing. `commander_cmc=99` is a commander
+    that is never cast; 3 is one that lands on curve."""
+    from test_pilot_goldfish import card
+    return {"cards": [
+        card("Quiet Commander", "Legendary Creature — Human", cmc=commander_cmc,
+             is_commander=True),
+        card("Mountain", "Basic Land — Mountain", cmc=0, quantity=38),
+        card("Buccaneer", "Creature — Pirate", cmc=3, quantity=12,
+             oracle="Whenever you discard a card, this creature deals 1 damage to each opponent."),
+        # A wheel needs a MANA COST to be read as one (a free wheel is excluded).
+        dict(card("Wheel", "Sorcery", cmc=3, quantity=12,
+                  oracle="Each player discards their hand, then draws seven cards."),
+             mana_cost="{2}{R}"),
+        card("Grunt", "Creature — Human", cmc=2, quantity=20),
+        card("Cantrip", "Instant", cmc=1, oracle="Draw a card.", quantity=17),
+    ]}
+
+
+def _sim(doc, games=150, seed=5):
+    import random
+    library, commanders = goldfish.build_library(doc)
+    rng = random.Random(seed)
+    return [goldfish.simulate_once(rng, library, int(commanders[0]["cmc"]), [], 10,
+                                   model_discard=True, model_draw=True)
+            for _ in range(games)]
+
+
+def test_a_finisher_needs_a_commander_not_merely_a_payoff():
+    """With the Buccaneer out a wheel is PAID (`wheels_with_payoff`), but with no
+    commander on the battlefield it is never a FINISHER. Land the commander and
+    finishers appear. Proven by counting any payoff in `_note_wheel`: the
+    99-mana commander's games then report finishers."""
+    never = _sim(_wheel_deck(99))
+    assert sum(r["wheels_with_payoff"] for r in never) > 0, "the payoff must fire wheels"
+    assert all(r["finisher_wheel_turn"] is None for r in never)
+    assert all(r["commander_turn"] is None for r in never)
+    on_curve = _sim(_wheel_deck(3))
+    assert any(r["finisher_wheel_turn"] is not None for r in on_curve)
+    for r in on_curve:
+        if r["finisher_wheel_turn"] is not None:
+            assert r["commander_turn"] is not None
+            assert r["finisher_wheel_turn"] >= r["commander_turn"]
+
+
+# ------------------------------------------------------------------ the clog
+
+@requires_deck
+def test_dead_wheels_fall_when_wheels_leave_the_list(monkeypatch):
+    """Two wheel spells become a Mountain and the clog at turn five falls.
+    Direction only — no figure pinned. Proven by counting every nonland in
+    `_dead_wheels`: the swap then moves the figure the wrong way or not at all."""
+    import copy
+    from manamap.pilot.common import load_json, deck_file
+    doc = load_json(deck_file(SLUG, "cards.json"))
+    monkeypatch.setattr(pp, "load", lambda slug, branch=None: {})
+    base = goldfish.run(SLUG, iterations=200, seed=3, max_turn=10, doc=doc,
+                        with_results=True, quiet=True, _band=False)
+    fewer = copy.deepcopy(doc)
+    out = {"Windfall", "Time Reversal"}
+    fewer["cards"] = [c for c in fewer["cards"] if c["name"] not in out]
+    for c in fewer["cards"]:
+        if c["name"] == "Mountain":
+            c["quantity"] = int(c.get("quantity") or 1) + len(out)
+    assert len([c for c in doc["cards"] if c["name"] in out]) == 2, "both must be in the list"
+    less = goldfish.run(SLUG, iterations=200, seed=3, max_turn=10, doc=fewer,
+                        with_results=True, quiet=True, _band=False)
+    d5 = lambda got: got["metrics"]["discard"]["mean_dead_wheels_in_hand_by_turn"]["5"]
+    assert d5(less) < d5(base), (d5(less), d5(base))
+
+
+# ------------------------------------------------------------------ absent means absent
+
+def test_a_deck_outside_the_discard_channel_has_no_wheel_figures():
+    """`metrics.discard` is the only home of the wheel figures and it is absent
+    off the channel; the diagnostic's `wheels` block follows it."""
+    from manamap.pilot import diagnostic
+    from test_pilot_goldfish import synthetic_deck
+    import random
+    library, commanders = goldfish.build_library(synthetic_deck())
+    rows = [goldfish.simulate_once(random.Random(i), library, 4, [], 8) for i in range(20)]
+    got = goldfish.aggregate(rows, [], 8)
+    assert "discard" not in got
+    assert diagnostic.wheels(rows, {"metrics": got}) is None
+    assert diagnostic.per_game(rows)["wheels|finisher_by_turn|8"] == [None] * 20
+
+
+# ------------------------------------------------------------------ the keep rule
+
+def _keep_policy():
+    return {"rules": [{"id": "keep-needs-a-body", "why": "log 002",
+                       "keep": {"max": {"wheel": 1}, "needs_any": ["body", "ramp"]}}]}
+
+
+def test_the_keep_vocabulary_is_closed_and_folds_strictest():
+    from manamap.pilot import goldfish_library as gl
+    assert set(gl.KEEP_CLASS_PREDICATES) == set(pp.KEEP_CLASSES)
+    with pytest.raises(pp.PolicyError, match="keep.max.land"):
+        pp.validate({"rules": [{"id": "k", "why": "w", "keep": {"max": {"land": 2}}}]})
+    with pytest.raises(pp.PolicyError, match="passes every hand"):
+        pp.validate({"rules": [{"id": "k", "why": "w", "keep": {"max": {}}}]})
+    two = {"rules": [{"id": "a", "why": "w", "keep": {"max": {"wheel": 2}, "needs_any": ["body"]}},
+                     {"id": "b", "why": "w", "keep": {"max": {"wheel": 1}, "needs_any": ["ramp"]}}]}
+    assert pp.validate(two)
+    assert pp.keep_rule(two) == {"max": {"wheel": 1}, "needs_any": ["body", "ramp"]}
+    assert pp.keep_rule({}) is None and pp.keep_rule(_hold(1)) is None
+    assert any("reported, never enforced" in ln for ln in pp.render(_keep_policy()))
+
+
+def test_a_hand_of_one_body_and_four_wheels_fails_the_rule_but_is_still_kept():
+    """The pilot's doubt in his own words, as a hand: the model keeps it (three
+    lands) and the rule says ship it. Proven by routing `keepable` through the
+    rule: the first assertion then flips."""
+    from manamap.pilot import goldfish_library as gl
+    from test_pilot_goldfish import card
+    land = gl.classify(card("Mountain", "Basic Land — Mountain", cmc=0))
+    body = gl.classify(card("Grunt", "Creature — Human", cmc=2))
+    wheel = gl.classify(dict(card("Wheel", "Sorcery", cmc=3,
+                                  oracle="Each player discards their hand, then draws seven cards."),
+                             mana_cost="{2}{R}"))
+    assert wheel["draw"]["wheel_draws"], "the fixture must be read as a wheel"
+    rock = gl.classify(card("Rock", "Artifact", cmc=2, oracle="{T}: Add {R}."))
+    rule = pp.keep_rule(_keep_policy())
+    hand = [land, land, land, body, wheel, wheel, wheel]
+    assert gl.keepable(hand) and not gl.keep_rule_passes(hand, rule)
+    assert gl.keep_rule_passes([land, land, land, body, wheel, rock, rock], rule)
+    assert not gl.keep_rule_passes([land, land, land, wheel, land, land, land], rule), "no body or ramp"
+    assert gl.keep_rule_passes([land, land, land, rock, land, land, land], rule), "ramp counts"
+
+
+@requires_deck
+def test_the_keep_rule_is_reported_and_never_enforced(monkeypatch):
+    """With a keep rule the per-game mulligans are byte-identical to without,
+    the pass rate appears, and without a rule it is absent rather than 1.0.
+    Proven by making `keepable` consult the rule."""
+    off = _run(monkeypatch, {})
+    on = _run(monkeypatch, _keep_policy())
+    assert ([r["mulligans"] for r in off["_results"]]
+            == [r["mulligans"] for r in on["_results"]])
+    assert all(r["keep_rule_pass"] is None for r in off["_results"])
+    assert all(r["keep_rule_pass"] in (True, False) for r in on["_results"])
+    assert "pilot_keep_rule_pass_rate" not in off["metrics"]["opening_hand"]
+    rate = on["metrics"]["opening_hand"]["pilot_keep_rule_pass_rate"]
+    assert 0.0 < rate < 1.0, rate
+    from manamap.pilot import diagnostic
+    assert "kept_hand_passes_pilot_rule" not in diagnostic.steam(off["_results"], off)
+    cell = diagnostic.steam(on["_results"], on)["kept_hand_passes_pilot_rule"]
+    assert cell["n"] == len(on["_results"]) and abs(cell["rate"] - rate) < 1e-3
+
+
+# ------------------------------------------------------------------ the diagnostic
+
+@requires_deck
+def test_the_diagnostic_carries_the_wheels_block_and_validates():
+    from manamap.pilot import diagnostic
+    from manamap.pilot.validate_diagnostic import validate
+    doc = diagnostic.run(SLUG, iterations=120, seed=7, quiet=True, keep_games=True)
+    w = doc["wheels"]
+    for key in ("first_wheel_by_turn", "wheels_cast_by_turn", "finisher_by_turn",
+                "dead_in_hand_by_turn"):
+        assert set(w[key]) >= {"5", "8", "10"}, key
+        for cell in w[key].values():
+            assert {"rate", "ci95", "n"} <= set(cell)
+    assert w["with_payoff"]["n"] > 0
+    assert len(doc["_games"]["wheels|finisher_by_turn|8"]) == 120
+    assert not validate(doc), validate(doc)

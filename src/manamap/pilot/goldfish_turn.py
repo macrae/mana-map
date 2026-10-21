@@ -93,7 +93,8 @@ from manamap.pilot.goldfish_profiles import (
     apply_counter_mod,
     bonus_for,
 )
-from manamap.pilot.goldfish_library import X_DRAW_MIN, _target_met, keepable
+from manamap.pilot.goldfish_library import (X_DRAW_MIN, _target_met, keep_rule_passes,
+                                            keepable)
 
 
 def simulate_once(rng, library, commander_cmc, targets, max_turn,
@@ -108,7 +109,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   attack_tutor=None, model_discard=False, partner=None,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None,
-                  commander_copy=False, hold_until=None):
+                  commander_copy=False, hold_until=None, keep_rule=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -171,6 +172,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     _reach = min(kept_hand_lands, 3)
     keep_can_act_by_t3 = any(
         (not c["is_land"]) and c["cmc"] <= _reach for c in hand)
+    # THE PILOT'S OWN KEEP RULE, the same contract: read on the hand the model
+    # kept, never used to mulligan. None when the deck declares no rule, so the
+    # figure is absent rather than a pass rate nobody wrote.
+    keep_rule_pass = keep_rule_passes(hand, keep_rule) if keep_rule else None
     seen = {c["name"] for c in hand}
 
     lands_in_play = 0
@@ -3782,11 +3787,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "event_damage_by_turn": event_damage_by_turn,
         "partner_turn": partner_turn,
         # The wheels' timing: observed at the fire sites, decided on by nothing.
-        "wheels_cast_by_turn": wheels_cast_by_turn,
-        "wheels_with_payoff": wheels_with_payoff,
-        "first_wheel_turn": first_wheel_turn,
-        "finisher_wheel_turn": finisher_wheel_turn,
-        "dead_wheels_in_hand_by_turn": dead_wheels_in_hand_by_turn,
+        # ABSENT (None) off the discard channel: no wheel is modelled there, and
+        # a series of zeros would read as "never wheels".
+        "wheels_cast_by_turn": wheels_cast_by_turn if model_discard else None,
+        "wheels_with_payoff": wheels_with_payoff if model_discard else None,
+        "first_wheel_turn": first_wheel_turn if model_discard else None,
+        "finisher_wheel_turn": finisher_wheel_turn if model_discard else None,
+        "dead_wheels_in_hand_by_turn": dead_wheels_in_hand_by_turn if model_discard else None,
+        "keep_rule_pass": keep_rule_pass,
         "sacrifices_by_turn": sacrifices_by_turn,
         "sac_cap_hits": sac_cap_hits,
         "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
