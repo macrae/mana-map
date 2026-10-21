@@ -1036,7 +1036,8 @@ def _profiles_for(rotation, subject, profile, pod):
 
 def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOCK_SECONDS,
         seed=None, force=False, dry_run=False, home=None, decks_dir=None,
-        profile=None, vs_profile=None, pod_name=None, plain_jar=False, cast_proofs=None):
+        profile=None, vs_profile=None, pod_name=None, plain_jar=False, cast_proofs=None,
+        seat_audit=None):
     """Run the games and write the run record. Returns (record_path, record)."""
     if not opponents:
         raise SystemExit("simulate needs at least one opponent: --vs <slug> (repeatable)")
@@ -1329,6 +1330,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # were PLAYED / HELD / CAST-LATE / unproven under this harness, and whether the
         # pilot ran it anyway. None on a deck seat and on every earlier record.
         "cast_proofs": cast_proofs,
+        # THE SEAT AUDIT the gate read before a pod run (2026-10-21): the table's
+        # verdict under this harness, and whether the pilot ran it anyway. None on a
+        # `--vs` run and on every earlier record.
+        "seat_audit": seat_audit,
         "games": [sim_parse.compact(f, label) for f in facts],
         "assumptions": ASSUMPTIONS + ([f"{slug}'s strategic frame calls it "
                                        f"{frame.get('archetype')!r} — read the AI caveat "
@@ -1635,11 +1640,20 @@ def main(args):
         from manamap.sim import cast_check as _cc
         _cp = _cc.gate(_base, _branch, profile=getattr(args, "profile", None),
                        anyway=getattr(args, "anyway", False))
+    # EVERY SEAT, NOT JUST OUR ADDS (2026-10-21): a pod run is refused unless the
+    # table's seat audit reads PILOTABLE under this harness — "it has to be able to
+    # pilot every single deck that is playing". `--anyway` runs a screen and the
+    # record carries the verdict it ran under.
+    _sa = None
+    if getattr(args, "pod", None) and not getattr(args, "list", False) \
+            and not getattr(args, "dry_run", False):
+        from manamap.sim import seat_audit as _seat_audit
+        _sa = _seat_audit.gate(args.pod, anyway=getattr(args, "anyway", False))
     path, rec = run(slug, opponents, games=games, jobs=args.jobs,
                     clock=args.clock or SIM_GAME_CLOCK_SECONDS, seed=getattr(args, "seed", None),
                     force=getattr(args, "force", False), dry_run=getattr(args, "dry_run", False),
                     profile=getattr(args, "profile", None),
-                    pod_name=getattr(args, "pod", None), cast_proofs=_cp,
+                    pod_name=getattr(args, "pod", None), cast_proofs=_cp, seat_audit=_sa,
                     vs_profile=getattr(args, "vs_profile", None) or seat_profiles)
     if getattr(args, "dry_run", False):
         print(f"would run {rec['games_per_job']} games across {rec['jobs']} JVM(s), seeds "

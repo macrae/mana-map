@@ -51,7 +51,9 @@ PODS_DIR = DATA_DIR / "pods"
 #: `pods <name> --power` reads their actual Threat Index and computes a floor from
 #: their actual cards instead of the EDHREC stand-in under `slug`. Optional, and
 #: used by nothing else — a Forge run still seats the stand-in's decklist.
-SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note", "deckcheck"})
+#: `engine` (2026-10-21): the cards the seat's plan depends on, by name, so the seat
+#: audit can say whether the AI played the deck rather than merely cast cards from it.
+SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note", "deckcheck", "engine"})
 
 
 class PodError(ValueError):

@@ -153,6 +153,12 @@ PILOT_STEPS = [
      "drawn / cast / activated / held-while-castable counted. Unflagged is not castable (Toxic Deluge: 28 drawn, 0 cast)"),
     ("validate-cast-proofs", "manamap.pilot.validate_cast_proofs",
      "Form-check a branch's cast_proofs.json: the harness stamp, every row's counts and a verdict in the vocabulary"),
+    ("forge-seat-audit", "manamap.sim.seat_audit",
+     "CAN THE AI PILOT EVERY SEAT at a pod (2026-10-21): per seat, ours and the opponents', the cards it will not "
+     "cast and the ones without a script; with --run, from a run's logs, the commander resolving and what was held. "
+     "`simulate --pod` refuses without a PILOTABLE audit under the current harness"),
+    ("validate-seat-audit", "manamap.pilot.validate_seat_audit",
+     "Form-check a pod's seat audit: the harness stamp, one row per seat with a verdict and a reason where it fails"),
     ("forge-telemetry", "manamap.sim.telemetry",
      "The patched log formatter (every zone change, by name and owner): what the repo declares, what the jar carries, --build to compile it"),
     ("metrics", "manamap.metrics",
@@ -1248,6 +1254,14 @@ def add_pilot_parser(subparsers):
                              help="run just this entry (repeatable)")
             cmd.add_argument("--dry-run", action="store_true", dest="dry_run",
                              help="plan without writing; run without starting Forge")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name in ("forge-seat-audit", "validate-seat-audit"):
+            cmd.add_argument("pod", help="the pod (data/pods/<name>.json)")
+        if name == "forge-seat-audit":
+            cmd.add_argument("--run", default=None, metavar="RUN_ID",
+                             help="a pod run with its logs on disk: adds the games half per seat")
+            cmd.add_argument("--write", action="store_true",
+                             help="write data/pods/<name>.audit.json (the gate `simulate --pod` reads)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "pods":
             cmd.add_argument("name", nargs="?", default=None,

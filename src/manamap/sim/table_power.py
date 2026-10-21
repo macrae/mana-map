@@ -171,6 +171,11 @@ def table(name, *, today=None, fetch=None, reference=None, calibration=None):
     cal = calibration if calibration is not None else pods.calibration(name)
     by_seat = {r["seat"]: r for r in (cal.get("seats") or [])} if cal.get("measured") else {}
     ref = reference
+    # CAN THE AI PILOT THE SEAT (2026-10-21): from the pod's seat audit where one is
+    # on disk; absent, not "fine", where none is.
+    from manamap.sim import seat_audit as _sa
+    _audit = _sa.load(name)
+    _pilot = {r["slug"]: r for r in (_audit or {}).get("seats", [])}
     rows = []
     for seat in pod["seats"]:
         entries, source, doc = seat_entries(seat, fetch=fetch)
@@ -184,7 +189,10 @@ def table(name, *, today=None, fetch=None, reference=None, calibration=None):
                      "floor": floor, "dti": d,
                      "share_of_fair": (crow or {}).get("share_of_fair"),
                      "ci95": (crow or {}).get("ci95"), "games": (crow or {}).get("games"),
-                     "flags": _flags(seat, floor, d, today)})
+                     "flags": _flags(seat, floor, d, today),
+                     "pilot": ({"verdict": _pilot[seat["slug"]]["verdict"],
+                                "why": _pilot[seat["slug"]]["why"], "at": _audit["at"]}
+                               if seat["slug"] in _pilot else None)})
     scores = [r["dti"]["score"] for r in rows if r["dti"] and r["dti"].get("score") is not None]
     matched = {"within": (max(scores) - min(scores)) if len(scores) >= 2 else None,
                "seats_with_dti": len(scores), "seats": len(rows)}

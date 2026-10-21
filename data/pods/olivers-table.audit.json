@@ -1,0 +1,117 @@
+{
+  "pod": "olivers-table",
+  "at": "2026-10-21",
+  "since": "2026-10-21",
+  "harness": {
+    "overrides": "ade33bac5dca",
+    "telemetry": ""
+  },
+  "run": null,
+  "definition": {
+    "static": [
+      "no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's overrides",
+      "every card in the list has a Forge script"
+    ],
+    "dynamic": [
+      "the commander resolved in at least 80% of the games the seat played",
+      "no card the pod names as the seat's `engine` was never cast or held while castable",
+      "our seat: wheels fired with a commander out at least 90% of the time, and at least one wheel a game (a wheel deck only)"
+    ],
+    "floors": "a card named in the seat's hints as a floor is reported and never fails the seat"
+  },
+  "seats": [
+    {
+      "slug": "araumi-edict",
+      "ours": false,
+      "static": {
+        "cards": 80,
+        "nonland": 63,
+        "flagged": [
+          "Araumi of the Dead Tide",
+          "Dimir Signet",
+          "Perpetual Timepiece",
+          "Teferi's Veil",
+          "Vizier of Tumbling Sands"
+        ],
+        "unfound": [],
+        "gated": {
+          "Accursed Marauder": [
+            "NeedsToPlay:Creature.!token+OppCtrl"
+          ],
+          "Demon's Disciple": [
+            "NeedsToPlayVar:X GE1"
+          ],
+          "Fleshbag Marauder": [
+            "NeedsToPlay:Creature.OppCtrl"
+          ],
+          "Plaguecrafter": [
+            "NeedsToPlay:Creature.OppCtrl,Planeswalker.OppCtrl"
+          ]
+        },
+        "floors": [],
+        "source": "corpus",
+        "clean": false
+      },
+      "dynamic": null,
+      "verdict": "NOT",
+      "why": [
+        "5 card(s) the AI will not cast: Araumi of the Dead Tide, Dimir Signet, Perpetual Timepiece, Teferi's Veil …"
+      ]
+    },
+    {
+      "slug": "teval-graveyard",
+      "ours": false,
+      "static": {
+        "cards": 91,
+        "nonland": 64,
+        "flagged": [
+          "Nyx Weaver",
+          "Tortured Existence"
+        ],
+        "unfound": [],
+        "gated": {},
+        "floors": [],
+        "source": "corpus",
+        "clean": false
+      },
+      "dynamic": null,
+      "verdict": "NOT",
+      "why": [
+        "2 card(s) the AI will not cast: Nyx Weaver, Tortured Existence"
+      ]
+    },
+    {
+      "slug": "purphoros-pingers",
+      "ours": false,
+      "static": {
+        "cards": 73,
+        "nonland": 65,
+        "flagged": [
+          "Firecat Blitz",
+          "Goblin Recruiter",
+          "Grinning Ignus"
+        ],
+        "unfound": [],
+        "gated": {
+          "Goblin Recruiter": [
+            "NeedsToPlayVar:Z GE4"
+          ]
+        },
+        "floors": [],
+        "source": "corpus",
+        "clean": false
+      },
+      "dynamic": null,
+      "verdict": "NOT",
+      "why": [
+        "3 card(s) the AI will not cast: Firecat Blitz, Goblin Recruiter, Grinning Ignus"
+      ]
+    }
+  ],
+  "verdict": "NOT",
+  "limits": [
+    "STATIC reads the installed scripts: a card that is castable but that the AI holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
+    "DYNAMIC castable counts are lands-only (colours ignored), the engine_casts floor.",
+    "An opponent seat is an EDHREC average list unless its decklist was pasted over."
+  ]
+}

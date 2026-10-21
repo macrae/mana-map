@@ -438,9 +438,11 @@ def generate_unflag(stems, out_dir=None):
     return written
 
 
-def unflag_candidates():
+def unflag_candidates(include_pods=False):
     """Every `RemoveDeck:All` non-land card in a LIVE deck that `unflag.txt` does not
-    name — the sweep behind the list. `[(slug, card name, stem)]`."""
+    name — the sweep behind the list. `[(slug, card name, stem)]`. With
+    `include_pods`, every pod's OPPONENT seats too (2026-10-21), which is what
+    `forge-install --generate` prints and the seat audit reads."""
     import json
     from manamap.pilot import formats
     from manamap.pilot.common import deck_is_apart
@@ -460,6 +462,29 @@ def unflag_candidates():
             stem = forge_cards.stem(c["name"])
             if stem not in listed:
                 out.append((d.name, c["name"], stem))
+    # EVERY POD'S OPPONENT SEATS TOO (2026-10-21): Araumi of the Dead Tide — Oliver's
+    # commander — was `All` and this sweep never saw it, because it only walked our
+    # decks. A seat the AI cannot pilot is a table nobody checked.
+    if not include_pods:
+        return out
+    from manamap.sim import forge, pods
+    seen = {(s, n) for s, n, _ in out}
+    for pod in pods.available():
+        try:
+            seat_slugs = pods.seats(pod)
+        except Exception:                            # pragma: no cover - a bad pod file
+            continue
+        for s in seat_slugs:
+            if (config.DECKS_DIR / s / "cards.json").is_file():
+                continue                             # one of ours: the loop above read it
+            doc = forge._corpus_doc(s) or {"cards": [{"name": n} for n in forge._seat_names(s)]}
+            for c in doc.get("cards", []):
+                if forge_cards.ai_flag(c["name"]) != "All" or "Land" in (c.get("type_line") or ""):
+                    continue
+                stem = forge_cards.stem(c["name"])
+                if stem not in listed and (s, c["name"]) not in seen:
+                    out.append((s, c["name"], stem))
+                    seen.add((s, c["name"]))
     return out
 
 
@@ -710,7 +735,7 @@ def main(args=None):
                 raise SystemExit(f"{slug}/{HINTS_FILE}: " + "; ".join(errs))
             hinted = generate_hints(slug)
             print(f"hinted {len(hinted)} card(s) for {slug} ({HINTS_FILE}): {', '.join(hinted)}")
-        missing = unflag_candidates()
+        missing = unflag_candidates(include_pods=True)
         if missing:
             print(f"  NOT YET UNFLAGGED — RemoveDeck:All cards in live decks the AI will not cast:")
             for slug, name, stem in missing:
