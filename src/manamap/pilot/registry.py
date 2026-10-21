@@ -692,16 +692,20 @@ def add_pilot_parser(subparsers):
         if name == "model-coverage":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "regen":
-            # `--slug` is a FLAG, not a positional: regen's normal subject is the
-            # whole fleet, and a required slug would make the common case the
-            # awkward one.
+            # DECK-SCOPED BY DEFAULT (2026-10-21): one of `--slug` or `--fleet`
+            # is required, and a bare `regen` refuses with both spellings. The
+            # fleet-wide rebuild is the pilot's explicit act, never a model
+            # edit's side effect in his loop.
             cmd.add_argument("--slug", default=None,
-                             help="just this deck (and its branches)")
+                             help="just this deck and its OPEN branches (a merged "
+                                  "or rejected branch is never re-measured)")
+            cmd.add_argument("--fleet", action="store_true",
+                             help="every live deck — a release, or the pilot's word")
             cmd.add_argument("--only", action="append", default=None,
                              metavar="STAGE",
-                             help="just this stage (repeatable): goldfish, "
-                                  "mana-analysis, net-change, diagnose, "
-                                  "benchmark, deck-info")
+                             help="just this stage (repeatable): bracket, goldfish, "
+                                  "mana-analysis, deck-combos, net-change, diagnose, "
+                                  "benchmark, deck-info, context, fleet-analytics")
             cmd.add_argument("--jobs", type=int, default=None,
                              help="parallel workers (default: one per core). "
                                   "Targets run in parallel; the GAMES inside one "

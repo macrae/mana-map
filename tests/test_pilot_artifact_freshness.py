@@ -26,6 +26,8 @@ from manamap.pilot import (
     bracket, deck_combos, deck_info, diagnostic, goldfish, mana_analysis,
     net_change)
 
+from manamap.pilot import deck_branch
+
 from conftest import is_retired, module_closure, requires_deck, requires_data
 
 # ── The code half of the key: DERIVED, never hand-traced ────────────────────
@@ -96,8 +98,14 @@ def _slugs(artifact):
         if (d / artifact).exists():
             out.append((d.name, None))
         for b in sorted((d / "branches").glob("*")):
-            if b.is_dir() and (b / artifact).exists():
-                out.append((d.name, b.name))
+            if not (b.is_dir() and (b / artifact).exists()):
+                continue
+            # A DECIDED BRANCH'S FILES ARE THE RECORD OF THE DECISION (2026-10-21):
+            # merged or rejected, nothing regenerates them and nothing recomputes
+            # them here — the same predicate `regen.targets` reads.
+            if deck_branch.is_decided(d.name, b.name):
+                continue
+            out.append((d.name, b.name))
     return out
 
 
@@ -237,7 +245,7 @@ def test_the_fleet_regenerates_byte_identically(unchanged):
     assert len(tracked) >= 100, f"only {len(tracked)} tracked deck files to compare"
     before = {f: f.read_bytes() for f in tracked if f.exists()}
     try:
-        result = regen.run(echo=lambda *a, **k: None)
+        result = regen.run(fleet=True, echo=lambda *a, **k: None)
         stale = sorted(str(f.relative_to(root)) for f, b in before.items()
                        if f.read_bytes() != b)
     finally:

@@ -23,6 +23,17 @@ RETIRED DECKS ARE SKIPPED, matching the freshness gates: their artifacts are
 history, not claims, and regenerating a document about a deck nobody will
 shuffle only churns the tree.
 
+DECIDED BRANCHES ARE SKIPPED TOO, AND A BARE `regen` IS DECK-SCOPED (2026-10-21).
+Builds are LAZY: the deck the pilot is iterating is the only thing that rebuilds
+in his loop (`--slug`); a merged or rejected branch is history and its
+measurement is the ledger's record (`deck_branch.is_decided`); the fleet catches
+up with `--fleet` at a release or on his word; a stale model stamp elsewhere is a
+state `deck-status` reports, never a reason to rebuild. Measured the morning it
+changed: a model edit regenerated 182 targets in 8 minutes, about 100 of them
+re-measuring experiments already decided, and the pilot killed the handbook
+rebuild chained onto it — "every single change kicking off a full build is too
+intensive ... severely impacts cycle time".
+
 A 60-CARD DECK SKIPS THE GOLDFISH STAGES AND SAYS SO (2026-10-09). The goldfish
 and everything read off it are Commander-only (`COMMANDER_ONLY_STAGES`); a
 Modern deck still gets `mana-analysis`, `deck-combos`, `deck-info` and its Deck
@@ -165,12 +176,17 @@ def is_pinned(slug):
     return bool(deck_versions.paper(slug))
 
 
-def targets(artifact, slug=None, include_branches=True):
-    """`(slug, branch)` for every place this artifact is tracked, branches too.
+def targets(artifact, slug=None, include_branches=True, skip_branches=()):
+    """`(slug, branch)` for every place this artifact is tracked, OPEN branches too.
 
     `include_branches=False` leaves the branches out — the in-place edit's
     rebuild (`deck_edit.rebuild`), where the deck's own list moved and its
-    branches' measurements are the save's job, not every edit's.
+    branches' measurements are the save's job, not every edit's. A DECIDED
+    branch (merged or rejected, `deck_branch.is_decided`) is never a target:
+    its measurement is the record of the decision, and re-measuring a merged
+    one against the list it became reads every delta as zero (known-issue 28).
+    `skip_branches` names branches the caller knows are decided before their
+    file says so — `merge` writes `merged` after the chain runs.
 
     EVERY LIVE DECK IS REFRESHED; ONLY A SLEEVED ONE IS BOOTSTRAPPED. Those are
     two questions and this function used to answer them with one gate:
@@ -220,22 +236,31 @@ def targets(artifact, slug=None, include_branches=True):
         for branch in (sorted((deck / "branches").glob("*")) if include_branches else ()):
             # NOT bootstrapped on a branch. A branch is a candidate list, and
             # creating a measurement it never asked for is work nobody ordered.
-            if branch.is_dir() and (branch / artifact).exists():
-                out.append((deck.name, branch.name))
+            if not (branch.is_dir() and (branch / artifact).exists()):
+                continue
+            if branch.name in skip_branches or _decided(deck.name, branch.name):
+                continue
+            out.append((deck.name, branch.name))
     return out
 
 
-def plan(only=None, slug=None, include_branches=True, skip=()):
+def _decided(slug, branch):
+    """`deck_branch.is_decided`, imported late: `deck_branch` imports this module."""
+    from manamap.pilot import deck_branch
+    return deck_branch.is_decided(slug, branch)
+
+
+def plan(only=None, slug=None, include_branches=True, skip=(), skip_branches=()):
     """`[(stage, module, kwargs, [(slug, branch), …]), …]` — what would run.
 
     `slug` is passed THROUGH to `targets`, not just used to filter its result.
-    That is the whole of the sleeved-only rule: without a slug the sweep is
-    automatic and sees sleeved decks only; with one it is a manual trigger and
-    sees whatever deck was named. Filtering afterwards would have made
-    `regen --slug heliod` return nothing at all on a bench deck, which is the
-    opposite of what naming a deck means.
+    Without a slug the PLAN covers every live deck (planning is free; `run`
+    needs `fleet=True` to execute that); with one it sees whatever deck was
+    named. Filtering afterwards would have made `regen --slug heliod` return
+    nothing at all on a bench deck, which is the opposite of what naming a deck
+    means.
     """
-    return _plan(only, slug, include_branches, tuple(skip))[0]
+    return _plan(only, slug, include_branches, tuple(skip), tuple(skip_branches))[0]
 
 
 def skipped(only=None, slug=None):
@@ -245,7 +270,7 @@ def skipped(only=None, slug=None):
     return _plan(only, slug)[1]
 
 
-def _plan(only, slug, include_branches=True, skip=()):
+def _plan(only, slug, include_branches=True, skip=(), skip_branches=()):
     """`(rows, skipped)`. One walk, because the skips are the rows' complement.
 
     A commander-only stage is SKIPPED for every live deck in scope whose format
@@ -264,7 +289,8 @@ def _plan(only, slug, include_branches=True, skip=()):
         # and the Deck Context last; `deck-branch merge` runs its chain first.
         if stage in skip:
             continue
-        found = [t for t in targets(artifact, slug=slug, include_branches=include_branches)
+        found = [t for t in targets(artifact, slug=slug, include_branches=include_branches,
+                                    skip_branches=skip_branches)
                  if not (branch_only and t[1] is None)]
         if commander_only:
             for deck_slug in _live_decks(slug):
@@ -305,24 +331,50 @@ def _one(job):
         return (slug, branch, f"{type(exc).__name__}: {exc}", time.time() - started)
 
 
+class ScopeError(ValueError):
+    """A bare `regen` with no deck named and no `--fleet`: refused, with the spellings."""
+
+
 def run(only=None, slug=None, jobs=None, dry_run=False, echo=print,
-        include_branches=True, skip=()):
+        include_branches=True, skip=(), skip_branches=(), fleet=False):
     """Regenerate, stage by stage. Returns `{"failures": [...], "seconds": n}`.
 
     `include_branches=False` refreshes the deck alone, never its branches;
-    `skip` leaves out stages the caller runs itself. Both refresh only
-    artifacts that already exist, like every slug-scoped run (`targets`)."""
+    `skip` leaves out stages the caller runs itself; `skip_branches` names
+    branches the caller knows are decided. All refresh only artifacts that
+    already exist, like every slug-scoped run (`targets`).
+
+    DECK-SCOPED BY DEFAULT (2026-10-21). No `slug` and no `fleet` is refused:
+    the fleet-wide rebuild is the pilot's explicit act (`regen --fleet`), at a
+    release or on his word, never the side effect of a model edit in his loop.
+    `--only fleet-analytics` alone is the one bare spelling that still means
+    something (the fleet artifact is one file) and is allowed through.
+    """
     unknown = sorted(set(skip) - set(STAGE_NAMES))
     if unknown:
         raise ValueError(f"skip: unknown stage(s) {', '.join(unknown)}")
-    rows, skips = _plan(only, slug, include_branches, tuple(skip))
-    # THE FLEET STAGE runs when nothing narrowed it out: a bare regen, a --slug
-    # regen (that deck's row moved), or `--only fleet-analytics`. Only when the
+    only_fleet_stage = bool(only) and set(only) <= set(FLEET_STAGE_NAMES)
+    # A DRY RUN IS A PLAN, and planning the fleet is free: `regen --dry-run`
+    # with nothing named prints what `--fleet` would do and writes nothing.
+    if slug is None and not fleet and not only_fleet_stage and not dry_run:
+        live = ", ".join(_live_decks()) or "none"
+        raise ScopeError(
+            "regen is deck-scoped: name the deck you are iterating with "
+            "`--slug <deck>`, or `--fleet` to rebuild every live deck (a release, "
+            f"or the pilot's word — never a model edit's side effect). Live: {live}")
+    rows, skips = _plan(only, slug, include_branches, tuple(skip), tuple(skip_branches))
+    # THE FLEET STAGE runs on a `--fleet` regen or when asked for by name
+    # (`--only fleet-analytics`). A deck-scoped run leaves it alone and says so:
+    # the fleet artifact is one file over every deck, and rebuilding it for one
+    # deck's row is the eager habit this module stopped having. Only when the
     # tracked artifact already exists — REFRESH, never BOOTSTRAP, like every
     # other stage — and never from a caller's `skip`.
     fleet_rows = [(stage, module, kwargs) for stage, _art, module, kwargs in FLEET_STAGES
-                  if (not only or stage in only) and stage not in skip
+                  if (fleet or (only and stage in only)) and stage not in skip
                   and config.FLEET_ANALYTICS_PATH.exists()]
+    if not fleet_rows and slug is not None and not only and config.FLEET_ANALYTICS_PATH.exists():
+        echo("  fleet analytics not rebuilt — `regen --fleet`, or "
+             "`manamap pilot fleet-analytics --write`")
     # A stage a deck's format cannot have, said out loud. Not a failure and not
     # a target: a 60-card deck is not incomplete for lacking a goldfish.
     for stage, s, fmt in skips:
@@ -410,10 +462,14 @@ def main(args):
             raise SystemExit(
                 f"--only: unknown stage(s) {', '.join(unknown)}. Pick from: "
                 + ", ".join(STAGE_NAMES))
-    result = run(only=only,
-                 slug=getattr(args, "slug", None),
-                 jobs=getattr(args, "jobs", None),
-                 dry_run=bool(getattr(args, "dry_run", False)))
+    try:
+        result = run(only=only,
+                     slug=getattr(args, "slug", None),
+                     jobs=getattr(args, "jobs", None),
+                     dry_run=bool(getattr(args, "dry_run", False)),
+                     fleet=bool(getattr(args, "fleet", False)))
+    except ScopeError as exc:
+        raise SystemExit(str(exc))
     if result["failures"]:
         raise SystemExit(1)
 

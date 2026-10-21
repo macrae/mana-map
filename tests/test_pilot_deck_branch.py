@@ -548,6 +548,14 @@ def test_merge_runs_the_whole_build_not_three_commands():
 
     src = inspect.getsource(deck_branch)
     assert "regen.run(slug=slug" in src, "merge no longer runs the build"
+    # KNOWN-ISSUE 28, CLOSED 2026-10-21: the ledger's prediction is frozen from
+    # the branch's net_change.json BEFORE the chain re-measures the deck, and the
+    # merging branch names itself in `skip_branches` because its `merged` key is
+    # written after the chain runs.
+    merge_src = inspect.getsource(deck_branch.merge)
+    assert merge_src.index("_nc_at_merge = load_json") < merge_src.index("regen.run(slug=slug"), (
+        "the merge reads its prediction after the regen that zeroes it")
+    assert "skip_branches=(branch,)" in merge_src
     assert "regen.STAGE_NAMES" in src, (
         "the post-merge stage list is hand-written again — it will drift from "
         "regen's, which is the order that is actually correct")

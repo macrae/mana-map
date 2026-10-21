@@ -1847,6 +1847,12 @@ commit's message, which is where `/release-branch` says to quote it from. The fi
 `regen` rule — skip `net-change` on a branch whose `branch.json` has `merged` — and a
 freshness test that asserts a merged branch's file is left alone; neither exists yet.
 
+**CLOSED 2026-10-21.** `regen.targets` skips every DECIDED branch (merged or rejected,
+`deck_branch.is_decided`), `merge` freezes the ledger's prediction from the file as it stood
+before its chain runs and names its own branch in `skip_branches`, and the freshness and
+validator gates leave decided branches' files as written. A merged branch's `net_change.json`
+is the reading the decision rested on, from now on.
+
 ## 29. `card_state` reports a card as "seen" while its death payload is unreadable (2026-10-19)
 
 `model_coverage.card_state` has four states — seen, partial, dark, invisible — and

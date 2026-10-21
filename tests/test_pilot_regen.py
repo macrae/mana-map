@@ -425,3 +425,114 @@ def test_regen_and_deck_status_agree_the_goldfish_is_commander_only():
     assert "goldfish" in regen.COMMANDER_ONLY_STAGES
     assert "goldfish" in deck_status.COMMANDER_ONLY_STAGES
     assert "benchmark" in regen.COMMANDER_ONLY_STAGES and "benchmark" in deck_status.COMMANDER_ONLY_STAGES
+
+
+# ── lazy builds (2026-10-21): decided branches frozen, deck-scoped by default ──
+
+
+def _tree(tmp_path, monkeypatch):
+    """A deck with four branches — open, proposed, merged, rejected — each holding
+    a goldfish artifact, under a temporary deck tree. `decks_root()` reads
+    `config.DECKS_DIR` at call time, so one patch reaches every module."""
+    from manamap import config
+
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(regen, "is_retired", lambda _slug: False)
+    monkeypatch.setattr(regen, "is_pinned", lambda _slug: False)
+    deck = tmp_path / "lazy-deck"
+    deck.mkdir()
+    (deck / "cards.json").write_text("{}")
+    (deck / "goldfish_metrics.json").write_text("{}")
+    metas = {
+        "open-v1": {"slug": "lazy-deck", "branch": "open-v1"},
+        "proposed-v1": {"slug": "lazy-deck", "branch": "proposed-v1",
+                        "proposal": {"as_version": "v9.9.9"}},
+        "merged-v1": {"slug": "lazy-deck", "branch": "merged-v1",
+                      "merged": {"at": "2026-10-20"}},
+        "rejected-v1": {"slug": "lazy-deck", "branch": "rejected-v1"},
+    }
+    for name, meta in metas.items():
+        b = deck / "branches" / name
+        b.mkdir(parents=True)
+        (b / "decklist.txt").write_text("1 Mountain\n")
+        (b / "goldfish_metrics.json").write_text("{}")
+        (b / "branch.json").write_text(json.dumps(meta))
+    (deck / "decisions.jsonl").write_text(json.dumps(
+        {"id": "001", "kind": "reject", "branch": "rejected-v1",
+         "at": "2026-10-21T10:00:00", "reason": "a September experiment"}) + "\n")
+    return deck
+
+
+def test_a_decided_branch_is_never_a_regen_target(tmp_path, monkeypatch):
+    """A MERGED OR REJECTED BRANCH IS HISTORY. Its measurement is the record the
+    decision rested on, and re-measuring a merged one against the list it became
+    reads every delta as zero (known-issue 28). Open and proposed branches ride
+    along as before. Proven by dropping the `_decided` check in `targets`: all
+    four branches are then planned."""
+    from manamap.pilot import deck_branch
+
+    _tree(tmp_path, monkeypatch)
+    assert deck_branch.is_decided("lazy-deck", "merged-v1")
+    assert deck_branch.is_decided("lazy-deck", "rejected-v1")
+    assert not deck_branch.is_decided("lazy-deck", "open-v1")
+    assert not deck_branch.is_decided("lazy-deck", "proposed-v1")
+    got = regen.targets("goldfish_metrics.json", slug="lazy-deck")
+    assert got == [("lazy-deck", None), ("lazy-deck", "open-v1"),
+                   ("lazy-deck", "proposed-v1")], got
+    # The caller can name a branch it knows is decided before its file says so —
+    # `merge` writes `merged` after its chain runs.
+    got = regen.targets("goldfish_metrics.json", slug="lazy-deck", skip_branches=("open-v1",))
+    assert ("lazy-deck", "open-v1") not in got and ("lazy-deck", "proposed-v1") in got
+
+
+def test_a_bare_regen_is_refused_and_names_both_spellings(tmp_path, monkeypatch):
+    """DECK-SCOPED BY DEFAULT. The fleet-wide rebuild is the pilot's explicit act
+    (`--fleet`), never a model edit's side effect in his loop. A dry run is a
+    plan and still prints the fleet; `--only fleet-analytics` is one file and is
+    allowed through."""
+    _tree(tmp_path, monkeypatch)
+    with pytest.raises(regen.ScopeError, match="--fleet"):
+        regen.run(echo=lambda *a, **k: None)
+    with pytest.raises(SystemExit, match="--slug <deck>"):
+        regen.main(type("A", (), {"only": None, "slug": None, "jobs": None,
+                                  "dry_run": False, "fleet": False})())
+    lines = []
+    assert regen.run(dry_run=True, echo=lines.append)["ran"] == 0
+    assert regen.run(slug="lazy-deck", dry_run=True, echo=lines.append)["ran"] == 0
+    assert regen.run(fleet=True, dry_run=True, echo=lines.append)["ran"] == 0
+
+
+def test_a_deck_scoped_regen_leaves_the_fleet_artifact_alone(tmp_path, monkeypatch):
+    """The fleet artifact is one file over every deck; rebuilding it for one
+    deck's row is the eager habit this module stopped having. It is rebuilt by
+    `--fleet` or by name, and a scoped run says what it did not do."""
+    from manamap import config
+
+    _tree(tmp_path, monkeypatch)
+    fleet = tmp_path / "fleet" / "analytics.json"
+    fleet.parent.mkdir()
+    fleet.write_text("{}")
+    monkeypatch.setattr(config, "FLEET_ANALYTICS_PATH", fleet)
+    lines = []
+    regen.run(slug="lazy-deck", dry_run=True, echo=lines.append)
+    assert any("fleet analytics not rebuilt" in ln for ln in lines), lines
+    assert not any("fleet-analytics" in ln and "lazy-deck" not in ln and "not rebuilt" not in ln
+                   for ln in lines)
+    lines = []
+    regen.run(fleet=True, dry_run=True, echo=lines.append)
+    assert any("fleet-analytics" in ln for ln in lines), lines
+
+
+def test_the_only_flag_advertises_every_stage():
+    """The help text named six of ten stages for a month; a test holds it to
+    `STAGE_NAMES` plus the fleet stage."""
+    from manamap.cli import build_parser
+
+    parser = build_parser()
+    pilot = next(a for a in parser._actions if getattr(a, "choices", None) and "pilot" in a.choices)
+    regen_parser = next(a for a in pilot.choices["pilot"]._actions
+                        if getattr(a, "choices", None) and "regen" in a.choices).choices["regen"]
+    only = next(a for a in regen_parser._actions if "--only" in a.option_strings)
+    for stage in list(regen.STAGE_NAMES) + list(regen.FLEET_STAGE_NAMES):
+        assert stage in only.help, stage
+    assert any("--fleet" in a.option_strings for a in regen_parser._actions)

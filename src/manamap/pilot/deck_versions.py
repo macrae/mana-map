@@ -737,9 +737,13 @@ def _refresh_dossiers_the_lock_changed(slug):
     # four `net_change.json` files stale the same afternoon — the branch BILL
     # embeds the identical per-card `where[].locked` verdict, so a lock moves it
     # too. `regen.STAGES` runs them in dependency order.
+    # FLEET-WIDE ON PURPOSE, and said so: a lock is the one cross-deck input, so
+    # the other decks' dossiers are the ones that moved. Cheap since 2026-10-21 —
+    # `targets` drops every decided branch, so the net-change half is the OPEN
+    # branches only, and the two stages are named rather than the whole chain.
     try:
         for stage in ("net-change", "deck-info"):
-            regen.run(only=stage, jobs=None, echo=lambda *a, **k: None)
+            regen.run(only=stage, jobs=None, echo=lambda *a, **k: None, fleet=True)
     except Exception as exc:                     # pragma: no cover - env
         print(f"  could not refresh the sleeved dossiers: {exc}")
         return

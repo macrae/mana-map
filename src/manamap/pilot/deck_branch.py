@@ -1172,6 +1172,29 @@ BRANCH_STATES = (OPEN, PROPOSED_BLOCKED, PROPOSED_READY, PROPOSED_STALE,
                  PROPOSED_OUTRUN, MERGED, REJECTED)
 
 
+def is_decided(slug, branch, doc=None):
+    """MERGED or REJECTED — a branch whose question has been answered.
+
+    A DECIDED BRANCH IS HISTORY, NOT AN EXPERIMENT. Its measurement is the record
+    the decision rested on (the ledger's `prediction` carries the same figures),
+    so nothing regenerates it: `regen.targets` skips it, and the freshness gates
+    leave its files as written. Re-measuring a merged branch against the list it
+    became reads every delta as zero and overwrites the reading (known-issue 28,
+    closed 2026-10-21); re-measuring a rejected one spends minutes on a list
+    nobody will sleeve. The derivation is `branch_state`'s own for the two
+    states, factored here so the two cannot disagree. A withdrawn branch is OPEN
+    and stays measurable, as `withdraw` documents.
+    """
+    doc = meta(slug, branch) if doc is None else doc
+    if doc.get("merged"):
+        return True
+    if doc.get("proposal"):
+        return False
+    from manamap.pilot import decisions
+    last = decisions.latest_for(slug, branch, base=deck_dir(slug))
+    return bool(last and last.get("kind") == "reject")
+
+
 def branch_state(slug, branch, doc=None, src=None):
     """Which of `BRANCH_STATES`, and one sentence saying why.
 
@@ -1667,18 +1690,27 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
         # so a merge left `diagnostic.json`, `benchmark.json` and `info.json`
         # describing the PREVIOUS 99 — and the way anyone found out was a failing
         # test hours later. Reusing `regen` means this order has one home.
+        # THE READING THE DECISION RESTED ON, read BEFORE anything rebuilds it.
+        # The regen below re-measures the deck's branches against the new list,
+        # and this branch IS the new list, so its net_change would read every
+        # delta as zero (known-issue 28); it is skipped below, and the ledger's
+        # prediction is frozen from the file as it stood when the pilot said merge.
+        _nc_at_merge = load_json(deck_dir(slug, branch) / "net_change.json") or None
         if not out.get("chain_failed"):
             try:
                 from manamap.pilot import regen
                 # `slug=` scopes it to this deck, and `regen` fans out across the
-                # deck's BRANCHES too — which is required, not incidental: main
-                # just moved underneath every open branch, so each one's diff and
-                # net_change describe a base that no longer exists. Doing this by
-                # hand after the last two merges is what this line replaces.
-                # `skip`: the chain above just ran the goldfish and
+                # deck's OPEN BRANCHES too — which is required, not incidental:
+                # main just moved underneath every open branch, so each one's
+                # diff and net_change describe a base that no longer exists.
+                # Doing this by hand after the last two merges is what this line
+                # replaces. `skip`: the chain above just ran the goldfish and
                 # mana-analysis on the deck; regen ran them a second time.
+                # `skip_branches`: this branch's `merged` key is written AFTER
+                # the chain, so `targets` cannot yet see it is decided.
                 regen.run(slug=slug, jobs=None, echo=lambda *a, **k: None,
-                          skip=("goldfish", "mana-analysis"))
+                          skip=("goldfish", "mana-analysis"),
+                          skip_branches=(branch,))
                 ran.extend(n for n in regen.STAGE_NAMES if n not in ran)
             except Exception as exc:                    # pragma: no cover - env
                 out.setdefault("chain_failed", []).append(f"regen: {exc}")
@@ -1749,7 +1781,7 @@ def merge(slug, branch, write=False, force=False, reason=None, proxy=False,
     # THE LEDGER LINE, with the report's prediction frozen — the figure the
     # merged list's own runs will later be read against by `decisions outcome`.
     from manamap.pilot import decisions
-    _nc = load_json(deck_dir(slug, branch) / "net_change.json") or None
+    _nc = _nc_at_merge
     _pred = decisions.prediction_from(_nc)
     # ABSENT MEANS ABSENT, WITH A STATED REASON. A merge normally freezes the
     # report's figures so `decisions outcome` has something to close against.

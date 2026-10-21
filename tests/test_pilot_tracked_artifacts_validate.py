@@ -42,6 +42,8 @@ from manamap.pilot import (
     validate_edhrec_cards,
 )
 
+from manamap.pilot import deck_branch
+
 from conftest import is_retired, module_closure, requires_branch, requires_deck
 
 # Everything a validator in GATED can read. The CODE half is DERIVED from the
@@ -154,6 +156,11 @@ def _cases():
                 out.append((d.name, None, art))
         for b in sorted((d / "branches").glob("*")):
             if not b.is_dir():
+                continue
+            # A decided branch's files are the record of the decision, written
+            # once and never regenerated (2026-10-21) — the validators that read
+            # the CURRENT list against them would fire on history.
+            if deck_branch.is_decided(d.name, b.name):
                 continue
             for art in sorted(set(GATED) & BRANCH_AWARE):
                 if (b / art).exists():
