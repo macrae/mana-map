@@ -216,6 +216,10 @@ PER_GAME = {
     # the objective named one of them. This is the sum: every point of life this seat
     # removed from opponents, however it left them.
     "noncombat_damage_dealt_to_players": lambda p: p.get("noncombat_damage_dealt_to_players"),
+    # MULLIGANS TAKEN (2026-10-21): Forge gives the first free, so this is the count
+    # of `mulliganed down to` lines, never the kept size. A branch aimed at a better
+    # keep reads it as `forge.mulligans`, lower is better.
+    "mulligans": lambda p: p.get("mulligans_taken"),
     "life_removed_total": lambda p: (
         None if p.get("combat_damage_dealt_to_players") is None else
         (p.get("combat_damage_dealt_to_players") or 0)

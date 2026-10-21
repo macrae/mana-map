@@ -194,6 +194,11 @@ def validate(rec, slug, logs_text=None):
     if bser is not None:
         from manamap.sim import board_series as _bs
         errors += _bs.validate(bser, n)
+    # THE WHEEL TIMING (2026-10-21), checked only where PRESENT — the same rule.
+    wtim = rec.get("wheel_timing")
+    if wtim is not None:
+        from manamap.sim import wheel_timing as _wt
+        errors += _wt.validate(wtim, n)
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
         from manamap.sim.forge import cmc_map, keyword_map, played_doc
@@ -214,6 +219,13 @@ def validate(rec, slug, logs_text=None):
             from manamap.sim.forge import deck_meta_name
             if _bs.from_logs(logs_text, record_commanders(rec), deck_meta_name(slug)) != bser:
                 errors.append(f"board_series does not match what the logs derive — "
+                              f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
+        if wtim is not None:
+            from manamap.sim import wheel_timing as _wt
+            from manamap.sim.forge import _deck_doc, deck_meta_name
+            if _wt.from_logs(logs_text, record_commanders(rec), deck_meta_name(slug),
+                             doc or _deck_doc(slug)) != wtim:
+                errors.append(f"wheel_timing does not match what the logs derive — "
                               f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
     return errors
 

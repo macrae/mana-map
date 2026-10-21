@@ -1195,6 +1195,9 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
                 "game_in_job": gi + 1})
     texts = [log.read_text(encoding="utf-8", errors="replace") for log, _ in results]
     cmd_by_slug = {s: sorted(c) for s, c in _commanders_by_slug(seats).items()}
+    # THE WHEEL TIMING (2026-10-21), a top-level block like `board_series`: absent
+    # when the list holds no wheel, so a deck without one carries no zeros.
+    _wt_doc = _deck_doc(slug)
     # Every seat index for every deck, same reason as `_seat_label`: the decks
     # rotate, so a commander keyed to one position would credit commander damage
     # to whichever deck later sat there.
@@ -1282,6 +1285,8 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # bridge already reads. Top-level beside `engine_casts` for the same
         # reason: validated only where present, so no older record reddens.
         "board_series": _board_series().from_logs(texts, commanders, deck_meta_name(slug)),
+        **({"wheel_timing": _wt} if (_wt := _wheel_timing().from_logs(
+            texts, commanders, deck_meta_name(slug), _wt_doc)) else {}),
         # THE CAST PROOFS the gate read before this arm (a branch seat only): which adds
         # were PLAYED / HELD / CAST-LATE / unproven under this harness, and whether the
         # pilot ran it anyway. None on a deck seat and on every earlier record.
@@ -1344,6 +1349,13 @@ def analyze(slug, run_id_or_path):
         [l.read_text(encoding="utf-8", errors="replace") for l in logs],
         record_commanders(rec), deck_meta_name(slug))
     rec["games"] = [sim_parse.compact(f, label) for f in facts]
+    _wt = _wheel_timing().from_logs(
+        [l.read_text(encoding="utf-8", errors="replace") for l in logs],
+        record_commanders(rec), deck_meta_name(slug), played_doc(slug, rec) or _deck_doc(slug))
+    if _wt:
+        rec["wheel_timing"] = _wt
+    else:
+        rec.pop("wheel_timing", None)
     # THE POD, BACKFILLED — and marked `named: false`, because a record written
     # before pods existed faced a table nobody named and this is a reading of
     # today's files rather than a fact about the run. A stamp made by `--pod`
@@ -1415,6 +1427,12 @@ def _board_series():
     which imports from this module — a cycle the first install tripped on."""
     from manamap.sim import board_series
     return board_series
+
+
+def _wheel_timing():
+    """Same cycle, same remedy: `wheel_timing` imports `board_series`."""
+    from manamap.sim import wheel_timing
+    return wheel_timing
 
 
 def list_runs(slug):

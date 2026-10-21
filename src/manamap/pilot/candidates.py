@@ -325,6 +325,40 @@ FORGE_OBJECTIVE_AXES = {
                 "it lost",
         "why": "survival; conditional on losing, so a deck that wins more can "
                "read worse here for dying faster in the games it still loses"},
+    # THE TABLE INSTRUMENT FOR A WHEEL DECK (2026-10-21, sharknado finisher-v1): the
+    # pilot does not trust the goldfish, so the branch is read at a Forge table as
+    # COUNTS — did the commanders land and stay, did the wheels the AI fired land on
+    # them, did the deck keep its seven. Counts are readable without an A/A; a win
+    # rate is not (docs/gotchas-bench.md, the A/A). `board_series` and
+    # `wheel_timing` are the record blocks these read; absent on an older record.
+    "forge.commander_uptime": {
+        "kind": "mean", "lower_is_better": False, "conditional": True,
+        "per_game": "commander_uptime",
+        "what": "per game: of the own turns after a commander first resolved, the share "
+                "on which one was still on the battlefield (either partner), from the "
+                "board series' cleanup snapshots; conditional on a commander resolving",
+        "why": "the deck cannot start until a commander is out and cannot finish if "
+               "the table keeps removing it — the recast-tax question as a figure"},
+    "forge.wheels_with_commander_share": {
+        "kind": "proportion", "lower_is_better": False, "conditional": False,
+        "counts": ("wheels_with_commander", "wheels_cast_total"),
+        "what": "of the wheel spells our seat cast, the share cast on an own turn whose "
+                "cleanup board held a commander, pooled over every game (`wheel_timing`)",
+        "why": "the pilot's thesis at a table: a wheel is a finisher dropped onto Brallin "
+               "or Shabraz. Forge's AI fires on its own rule, so this reads whether the "
+               "LIST gets a commander down before the AI's wheels fire, never the hold"},
+    "forge.first_wheel_turn": {
+        "kind": "mean", "lower_is_better": False, "conditional": True,
+        "per_game": "first_wheel_turn",
+        "what": "the own turn our seat's first wheel spell resolved, over games with one",
+        "why": "later is the thesis (a finisher, not an opening); read beside the share "
+               "above, since a deck that never wheels reads nothing here"},
+    "forge.mulligans": {
+        "kind": "mean", "lower_is_better": True, "conditional": False,
+        "per_game": "mulligans",
+        "what": "mulligans our seat took per game (Forge gives the first free)",
+        "why": "the kept-hand question at a table: a list the AI ships more often is one "
+               "the pilot would too"},
 }
 
 

@@ -115,3 +115,35 @@ def test_a_double_faced_commander_is_matched_by_its_front_face():
     dfc = bs.from_logs([text], {label: {f"{cast} // Some Back Face"}}, ours)
     assert plain["per_game"][0]["commander_uptime"] is not None
     assert dfc["per_game"][0]["commander_uptime"] == plain["per_game"][0]["commander_uptime"]
+
+
+def test_a_partner_pair_reads_the_commander_as_out_when_either_is(monkeypatch):
+    """SHARKNADO IS THE PARTNER DECK (2026-10-21). `from_logs` took the first
+    name sorted — Brallin — so a game Shabraz carried alone read "never
+    resolved". Both names are kept: the series reconstructs once per partner and
+    the flag is true when either is on the battlefield. Re-introduce by taking
+    `sorted(v)[0]` again and the pair reads exactly like its first name."""
+    text = FIXTURE.read_text(encoding="utf-8", errors="replace")
+    game = sim_parse.parse_games(text)[0]
+    label = game["seats"][0]
+    ours = label.split("-", 1)[1]
+    casts = []
+    for ev in game["events"]:
+        if ev.get("kind") == "cast" and ev.get("seat") == label and ev["what"] not in casts:
+            casts.append(ev["what"])
+    assert len(casts) >= 2, "the fixture seat cast fewer than two distinct spells"
+    first, second = casts[0], casts[1]
+    one = bs.from_logs([text], {label: {second}}, ours)["per_game"][0]
+    pair = bs.from_logs([text], {label: {first, second}}, ours)["per_game"][0]
+    on_one = [t for t, r in one["by_turn"].items() if r["commander_on_battlefield"]]
+    on_pair = [t for t, r in pair["by_turn"].items() if r["commander_on_battlefield"]]
+    assert set(on_one) <= set(on_pair), "a turn the single commander was out must stay out for the pair"
+    assert pair["commander_uptime"] is not None
+    # the pair's first-resolve turn is the EARLIER of the two partners'
+    other = bs.from_logs([text], {label: {first}}, ours)["per_game"][0]
+    on_other = [t for t, r in other["by_turn"].items() if r["commander_on_battlefield"]]
+    if on_other and on_one:
+        assert min(on_pair, key=int) == min(min(on_one, key=int), min(on_other, key=int), key=int)
+    assert bs._variants({label: {first, second}}) == [{label: sorted([first, second])[0]},
+                                                      {label: sorted([first, second])[1]}]
+    assert bs._variants({label: first}) == [{label: first}]

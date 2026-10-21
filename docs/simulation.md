@@ -436,6 +436,35 @@ is productionised the goldfish is the only
 place card advantage is measured — and the goldfish has no blockers, so a Forge
 result must never be read as a verdict on a draw engine.
 
+### Both partners, and when the wheels fired (2026-10-21)
+
+Two record blocks changed for sharknado's `finisher-v1`, the branch the pilot wants
+measured at a table and not by the goldfish ("fuck the goldfish"):
+
+- **`board_series` reads BOTH partners.** `from_logs` took the first name sorted —
+  "Brallin, Skyshark Rider" — so a game Shabraz carried alone read "never resolved"
+  (V6: 190 games resolved a commander, 170 had an uptime reading). `series` now
+  reconstructs once per partner (`_variants`) and `commander_on_battlefield` is true when
+  either is. Every other field is unchanged; the two sharknado records with logs on disk
+  were re-analysed (`simulate --analyze`), a decided branch's record is left as written.
+- **`wheel_timing`** (`src/manamap/sim/wheel_timing.py`), a top-level block beside
+  `board_series`, absent when the list holds no card the goldfish's readers call a wheel:
+  per game `first_wheel_turn` (own turn, None = never), `wheels_cast` (cast wheels only;
+  activations are in `engine_casts`) and `wheels_with_commander` (cast on an own turn whose
+  CLEANUP board held a commander — a floor: the log has no mid-turn board). Aggregated with
+  intervals, `wheels_with_commander` as a Wilson rate over wheels. **The kept seven is not
+  in the log**: the telemetry's zone lines begin with turn 1's draw, so the keep question is
+  the pilot's marks (`deck-notes mark`) and the goldfish's keep-rule row, never this block.
+  `validate-sim` checks it on form where present and re-derives it where the logs exist.
+- **Four Forge axes** a branch may aim at or watch (`candidates.FORGE_OBJECTIVE_AXES`):
+  `forge.commander_uptime` (mean of the board series' per-game uptime, conditional),
+  `forge.wheels_with_commander_share` (a proportion over pooled counts — the first axis read
+  from counts rather than per-seat values), `forge.first_wheel_turn` (conditional),
+  `forge.mulligans` (lower is better). `net-change` pools them from the record blocks and
+  the experiment's `mulligans` reader; an older record without the blocks pools nothing.
+  **Counts are readable without an A/A; a win rate is not** — the branch's Forge report is
+  these counts with intervals and the A/A line, never a verdict.
+
 ### Still open
 
 - **Our seat's AI profile rests on six games.** `mde_proportion(0.5, 6, 6)`

@@ -95,19 +95,47 @@ def own_turns(game):
     return out
 
 
+def _variants(commanders):
+    """One name-per-label map per PARTNER index. The bridge reads a commander as
+    one card; a partner pair is two, so the series reconstructs once per partner
+    and a commander is "on the battlefield" when EITHER is (2026-10-21 — sharknado
+    is the fleet's partner deck, and its uptime had read Brallin alone)."""
+    names = {}
+    for k, v in (commanders or {}).items():
+        if isinstance(v, (set, list, tuple)):
+            v = sorted(x for x in v if x)
+        else:
+            v = [v] if v else []
+        names[k] = v
+    width = max((len(v) for v in names.values()), default=0) or 1
+    return [{k: (v[min(i, len(v) - 1)] if v else None) for k, v in names.items()}
+            for i in range(width)]
+
+
 def series(game, commanders):
     """Per seat, per OWN turn: the board at the start of that turn's cleanup.
 
-    One `reconstruct` per global turn — measured at ~0.4 ms a cut, so a
-    100-game run costs about a second and a half. Returns
+    One `reconstruct` per global turn per PARTNER — measured at ~0.4 ms a cut,
+    so a 100-game run costs about a second and a half (three on a partner deck).
+    A label's commanders may be one name or a set of partner names; the
+    `commander_on_battlefield` flag is true when any of them is. Returns
     `{seat: [{"own_turn": k, "global_turn": G, **snapshot}, ...]}`.
     """
     turns = own_turns(game)
     max_turn = max((ev["turn"] for ev in game["events"]), default=0)
+    variants = _variants(commanders)
     boards = {}
     for g in range(1, max_turn + 1):
-        states, _notes, _a, _p, _s = reconstruct(game, g, "ending", "cleanup", commanders)
-        boards[g] = {s: snapshot(st) for s, st in states.items()}
+        snaps = []
+        for cmd in variants:
+            states, _notes, _a, _p, _s = reconstruct(game, g, "ending", "cleanup", cmd)
+            snaps.append({s: snapshot(st) for s, st in states.items()})
+        merged = snaps[0]
+        for other in snaps[1:]:
+            for s, snap in other.items():
+                if snap["commander_on_battlefield"]:
+                    merged.setdefault(s, snap)["commander_on_battlefield"] = True
+        boards[g] = merged
     out = {}
     for seat, gts in turns.items():
         out[seat] = [{"own_turn": k + 1, "global_turn": g, **boards[g][seat]}
@@ -134,17 +162,19 @@ def from_logs(log_texts, commanders_by_label, ours):
     label, so the first is taken (a partner pair is two names, and the bridge
     already reads the commander as one card).
     """
-    # ONE NAME PER LABEL, AND THE FRONT FACE. `record_commanders` carries a
-    # double-faced commander as `Front // Back`, and Forge's resolve line
-    # prints the front face — so heliod's uptime read None on every run until
-    # the name was split. A partner pair is two names; the bridge reads the
-    # commander as one card and the first is taken, which `limits` should say
-    # if a partner deck ever joins the fleet.
-    def _front(v):
-        if isinstance(v, (set, list, tuple)):
-            v = sorted(v)[0] if v else None
-        return v.split(" // ")[0].strip() if isinstance(v, str) else v
-    cmd = {k: _front(v) for k, v in (commanders_by_label or {}).items()}
+    # THE FRONT FACE OF EVERY NAME. `record_commanders` carries a double-faced
+    # commander as `Front // Back`, and Forge's resolve line prints the front
+    # face — so heliod's uptime read None on every run until the name was
+    # split. A PARTNER PAIR IS TWO NAMES and both are kept (2026-10-21): `series`
+    # reconstructs once per partner and reads a commander as on the battlefield
+    # when either is. Until then the first name sorted was taken — "Brallin,
+    # Skyshark Rider" — and sharknado's uptime missed every game Shabraz
+    # carried alone (190 games resolved a commander, 170 had a reading).
+    def _fronts(v):
+        if not isinstance(v, (set, list, tuple)):
+            v = [v] if v else []
+        return [x.split(" // ")[0].strip() for x in sorted(v) if isinstance(x, str)]
+    cmd = {k: _fronts(v) for k, v in (commanders_by_label or {}).items()}
     per_game = []
     for text in log_texts:
         for game in sim_parse.parse_games(text):

@@ -367,7 +367,11 @@ _PER_GAME = {k: _EXP_PER_GAME[k] for k in
              ("combat_damage_dealt_to_players", "first_attack_turn", "eliminated_turn",
               "drain_dealt", "biggest_hit", "evasive_damage_share", "kills_by_ability", "life_gained",
               "extra_draw_per_turn", "empty_hand_turns", "noncombat_damage_dealt_to_players",
-              "life_removed_total")}
+              "life_removed_total", "mulligans")}
+#: PER-GAME VALUES THAT LIVE OUTSIDE `games[].per_seat` (2026-10-21): the board
+#: series' uptime and the wheel timing's rows, both top-level record blocks that
+#: are absent on an older record — pooled beside the per-seat readers, never zero.
+_RECORD_PER_GAME = ("commander_uptime", "first_wheel_turn", "wheels_cast")
 
 
 def _null_block(pod):
@@ -400,6 +404,14 @@ def _arm_summary(row):
     out["forge.commander_resolved_rate"] = (
         {"k": row["resolved"], "n": rg, "value": round(row["resolved"] / rg, 4)}
         if rg else {"k": None, "n": 0, "value": None})
+    # A PROPORTION OVER COUNTS THE ROW POOLS (2026-10-21): the axis names its
+    # numerator and denominator keys, so a new count needs no new branch here.
+    for axis, spec in candidates.FORGE_OBJECTIVE_AXES.items():
+        if spec["kind"] == "proportion" and spec.get("counts"):
+            k_key, n_key = spec["counts"]
+            k, n = row.get(k_key) or 0, row.get(n_key) or 0
+            out[axis] = ({"k": k, "n": n, "value": round(k / n, 4)} if n
+                         else {"k": None, "n": 0, "value": None})
     for axis, spec in candidates.FORGE_OBJECTIVE_AXES.items():
         if spec["kind"] != "mean":
             continue
@@ -1065,8 +1077,13 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
             row = by_pod.setdefault((pod, ov, prof, tl), {"wins": 0, "decided": 0,
                                                  "games": 0, "runs": 0,
                                                  "by_route": {},
-                                                 "per_game": {n: [] for n in _PER_GAME},
+                                                 "per_game": {n: [] for n in
+                                                              (*_PER_GAME, *_RECORD_PER_GAME)},
                                                  "resolved": 0, "resolved_games": 0,
+                                                 # THE WHEEL COUNTS (2026-10-21): wheels
+                                                 # cast with a commander out, over wheels
+                                                 # cast — pooled like the resolved games.
+                                                 "wheels_with_commander": 0, "wheels_cast_total": 0,
                                                  "run_ids": []})
             row["wins"] += seat["wins"]
             # A clock-out has NO winner and is excluded from the rate — the same
@@ -1096,6 +1113,19 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
                     v = fn(ps)
                     if v is not None:
                         row["per_game"][name].append(v)
+            # THE RECORD-LEVEL BLOCKS (2026-10-21), absent on an older record and
+            # then simply not pooled: the board series' per-game commander uptime
+            # (both partners since today) and the wheel timing's rows.
+            for g in ((doc.get("board_series") or {}).get("per_game") or []):
+                if g.get("commander_uptime") is not None:
+                    row["per_game"]["commander_uptime"].append(g["commander_uptime"])
+            wt = doc.get("wheel_timing") or {}
+            for g in (wt.get("per_game") or []):
+                if g.get("first_wheel_turn") is not None:
+                    row["per_game"]["first_wheel_turn"].append(g["first_wheel_turn"])
+                row["per_game"]["wheels_cast"].append(g.get("wheels_cast") or 0)
+                row["wheels_with_commander"] += g.get("wheels_with_commander") or 0
+                row["wheels_cast_total"] += g.get("wheels_cast") or 0
         return by_pod
 
 
