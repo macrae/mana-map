@@ -1121,6 +1121,19 @@ BAND_ROWS = {
 }
 
 
+def _targets_sha(slug, branch=None):
+    """sha256 of the deck's `goldfish_targets.json` as this run read it (a branch
+    inherits the deck's through `deck_file`), or None when there is none."""
+    import hashlib
+    try:
+        path = deck_file(slug, "goldfish_targets.json", branch)
+    except FileNotFoundError:
+        return None
+    if not path.exists():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def run(slug, iterations=None, seed=None, max_turn=None,
         model_treasures=None, model_combat=None, model_draw=None,
         model_sacrifice=None, with_results=False, branch=None, model_discard=None,
@@ -1612,6 +1625,10 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         "meta": {
             "deck": slug,
             "decklist_sha256": doc.get("decklist_sha256"),
+            # THE DECLARATION THAT SHAPED THE RUN (2026-10-21): the targets file
+            # is an input nothing stamped, so a group edit left a figure that
+            # looked current. Absent when the deck has no declaration.
+            **({"targets_sha256": _ts} if (_ts := _targets_sha(slug, branch)) else {}),
             "seed": seed,
             "model_version": model_version(),
             # WHICH POLICY FLEW IT. `model_version` covers the policy ENGINE; this covers

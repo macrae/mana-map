@@ -230,6 +230,9 @@ def measure(slug):
         "slug": slug,
         "harness": dict(HARNESS),
         "decklist_sha256": cards.get("decklist_sha256"),
+        # WHICH SIMULATOR (2026-10-21): the benchmark is a goldfish run under a
+        # frozen harness, so it carries the goldfish's stamp; a state, not a gate.
+        "model_version": (doc.get("meta") or {}).get("model_version"),
         "metrics": {
             "mana_screw": mana_screw(metrics),
             "speed": speed(metrics),

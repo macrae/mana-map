@@ -15,9 +15,12 @@
     "complete": 17,
     "of": 19,
     "stale": [],
+    "older_model": [
+      "goldfish",
+      "mana"
+    ],
     "invalid": [
-      "engine",
-      "CONTEXT.md"
+      "engine"
     ],
     "verified": true,
     "missing": [
@@ -3990,7 +3993,8 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (engine, CONTEXT.md) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (engine) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug goblin-storm` re-reads them when you want, never on its own",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"

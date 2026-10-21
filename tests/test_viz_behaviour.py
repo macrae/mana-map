@@ -9466,3 +9466,25 @@ def test_the_deck_page_lands_on_its_branches_rack_from_a_deep_link(browser, viz_
         assert page.evaluate("window.scrollY") > 0, "the page did not scroll to #panel-branches after its render"
     finally:
         page.close()
+
+
+@pytest.mark.browser
+def test_the_workbench_says_older_model_as_a_state_and_links_the_rebuild(browser, viz_server):
+    """MEASURED UNDER AN OLDER SIMULATOR IS A CHIP, NOT A REBUILD (2026-10-21).
+    `info.status.older_model` names the artifacts; the chip names the command
+    that re-reads them when the pilot wants. A deck with nothing older shows no
+    chip. Read off info.json; the page computes nothing."""
+    page = _workbench(browser, viz_server,
+                      [_deck("alpha"), _deck("beta")],
+                      infos={"alpha": {"status": {"older_model": ["goldfish", "mana"]}},
+                             "beta": {"status": {"older_model": []}}})
+    try:
+        cards = page.locator(".wb-card")
+        chip = cards.nth(0).locator(".wb-chip.wb-older")
+        assert chip.text_content() == "older model"
+        title = chip.get_attribute("title")
+        assert "goldfish, mana" in title and "regen --slug alpha" in title
+        assert "wb-warn" in chip.get_attribute("class")
+        assert cards.nth(1).locator(".wb-chip.wb-older").count() == 0
+    finally:
+        page.close()

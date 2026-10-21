@@ -516,6 +516,9 @@ def compose(slug, verify=False, ladder=True, today=None):
         "status": {"complete": sum(1 for r in stage_rows if r["state"] == "present"),
                    "of": len(stage_rows),
                    "stale": [_name(r) for r in rows if r["state"] == "STALE"],
+                   # MEASURED UNDER AN OLDER SIMULATOR (2026-10-21): a state the
+                   # page shows, never a reason the dossier rebuilt anything.
+                   "older_model": [_name(r) for r in rows if r.get("older_model")],
                    # None, not [] — see `compose`'s docstring.
                    "invalid": ([_name(r) for r in rows if r["state"] == "INVALID"]
                                if verify else None),
@@ -837,6 +840,11 @@ def _next(info, today=None):
     if info["status"]["stale"]:
         nxt.append(f"stale: {', '.join(info['status']['stale'])} — regenerate against the "
                    f"current list (`/publish-deck` sequences it)")
+    if info["status"].get("older_model"):
+        nxt.append(f"measured under an older simulator: "
+                   f"{', '.join(info['status']['older_model'])} — the figures were right "
+                   f"when taken; `manamap pilot regen --slug {slug}` re-reads them when "
+                   f"you want, never on its own")
     if info["version"]["uncommitted"]:
         nxt.append("decklist.txt differs from every committed version — commit it so the "
                    "log can stamp games against a version (`deck-version` will then show it)")

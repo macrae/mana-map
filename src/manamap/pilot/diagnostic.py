@@ -790,6 +790,10 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "harness": dict(HARNESS, iterations=iterations or HARNESS["iterations"],
                         seed=seed if seed is not None else HARNESS["seed"]),
         "decklist_sha256": (got.get("meta") or {}).get("decklist_sha256"),
+        # WHICH SIMULATOR (2026-10-21): a diagnostic is a goldfish run read into
+        # cells, so it carries the goldfish's stamp; `deck-status` reads it as a
+        # STATE (older model), never as a reason to rebuild.
+        "model_version": (got.get("meta") or {}).get("model_version"),
         "stall": stall(rows),
         # ABSENT unless the deck has a partner — `commanders` returns None and
         # the key is dropped rather than carrying a null, so a reader cannot

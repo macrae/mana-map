@@ -49,10 +49,12 @@ def note(slug, artifact_doc, branch=None):
     current = goldfish.model_version()
     figures = stamp_of(slug, branch)
     if figures and figures != current:
-        return (f"\n     THE DECK'S FIGURES ARE STALE — goldfish_metrics.json was "
-                f"produced by model {figures}, the simulator is now {current}. "
-                f"Re-run `manamap pilot goldfish {slug}` before trusting any "
-                f"number quoted from it.")
+        # A STATE, NOT AN ORDER (2026-10-21): the figures were right when they
+        # were taken, and the pilot decides when a deck is re-read.
+        return (f"\n     THE DECK'S FIGURES WERE MEASURED UNDER AN OLDER MODEL — "
+                f"goldfish_metrics.json was produced by model {figures}, the "
+                f"simulator is now {current}. They were right when taken; "
+                f"`manamap pilot regen --slug {slug}` re-reads them when you want.")
     written = (artifact_doc or {}).get("model_version")
     if written is None:
         return ""            # predates stamping: unknown, not stale

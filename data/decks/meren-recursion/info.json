@@ -25,6 +25,10 @@
     "complete": 11,
     "of": 19,
     "stale": [],
+    "older_model": [
+      "goldfish",
+      "mana"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -1444,6 +1448,7 @@
   "experiments": null,
   "decisions": null,
   "next": [
+    "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug meren-recursion` re-reads them when you want, never on its own",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 2 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

@@ -279,6 +279,10 @@ def analyze(slug, branch=None, deck_doc=None):
         notes.append(f"the goldfish is Commander-only; not run for {spec.name}")
 
     head = {"slug": slug, "decklist_sha256": deck_doc.get("decklist_sha256")}
+    # WHICH SIMULATOR (2026-10-21): this file embeds goldfish figures, so it
+    # carries the goldfish's stamp; `deck-status` reads it as a state.
+    if metrics:
+        head["model_version"] = (goldfish.get("meta") or {}).get("model_version")
     # `format` only when it is not the default, by `formats.format_key`'s
     # contract: the tracked Commander files carry no such key and must not
     # grow one.

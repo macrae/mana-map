@@ -76,11 +76,19 @@ def test_every_tracked_goldfish_carries_the_stamp():
     assert stamped >= 8, f"only {stamped} artifacts checked"
 
 
+@pytest.mark.regen
 @requires_data
 @requires_deck
 def test_the_fleet_is_stamped_with_the_model_that_is_running():
     """If this fails the fleet needs regenerating — which is the whole point of
-    having the stamp, and was undecidable before it."""
+    having the stamp, and was undecidable before it.
+
+    MARKED `regen` SINCE 2026-10-21, so it runs with `make regression` and
+    `prepush-full` and never with `make prepush`: a model edit in the pilot's
+    loop no longer reds the python area and forces a fleet rebuild. Locally an
+    older stamp is a STATE `deck-status` and the workbench report; the fleet
+    catches up with `regen --fleet` at a release or on his word.
+    """
     current = goldfish.model_version()
     checked, stale = 0, []
     for path in sorted(DECKS_DIR.glob("*/goldfish_metrics.json")):
@@ -97,13 +105,17 @@ def test_the_fleet_is_stamped_with_the_model_that_is_running():
 
 @requires_data
 @requires_deck
-def test_prose_written_against_an_older_model_is_REPORTED_not_failed():
+def test_prose_written_against_an_older_model_is_REPORTED_not_failed(monkeypatch):
     """The three states, and only one of them is evidence.
 
     A document with no stamp predates stamping — unknown, not stale — and
     saying otherwise would redden every agent artifact in the repo on day one.
     """
     current = goldfish.model_version()
+    # THE DOC'S THREE STATES, with the deck's own figures held current: since
+    # 2026-10-21 the fleet is routinely behind the running model between
+    # releases (lazy builds), and that is the FIGURES' note, tested below.
+    monkeypatch.setattr(model_staleness, "stamp_of", lambda slug, branch=None: current)
     assert model_staleness.note("heliod", {"model_version": current}) == ""
     assert model_staleness.note("heliod", {}) == "", "an unstamped doc is not stale"
     note = model_staleness.note("heliod", {"model_version": "0" * 12})

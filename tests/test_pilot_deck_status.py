@@ -284,3 +284,43 @@ def test_a_bracket_built_against_another_list_reads_stale(tmp_path, monkeypatch)
     rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
     assert rows["bracket"]["state"] != "STALE"
     assert "unstamped" in rows["bracket"]["detail"]
+
+
+def test_an_older_model_is_reported_as_a_state_and_never_as_an_error(tmp_path, monkeypatch, capsys):
+    """A FIGURE MEASURED UNDER AN OLDER SIMULATOR WAS RIGHT WHEN IT WAS TAKEN
+    (2026-10-21). `deck-status` says so on the row and once below the board,
+    names `regen --slug`, and exits 0 — the pilot decides when a deck is
+    re-read. Until this, the only check on the model stamp was a fleet-wide
+    test, and every model edit forced an 8-minute regen in his loop. Proven by
+    turning `older_model` into a STALE state: the exit code goes non-zero."""
+    import json
+
+    from manamap.pilot import deck_status, goldfish
+
+    base = tmp_path / "decks" / "scratch"
+    base.mkdir(parents=True)
+    (base / "decklist.txt").write_text("1 Sol Ring\n")
+    (base / "cards.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "cards": [{"name": "Sol Ring"}]}))
+    (base / "goldfish_metrics.json").write_text(json.dumps(
+        {"meta": {"decklist_sha256": "b" * 64, "model_version": "0" * 12}, "metrics": {}}))
+    (base / "mana_analysis.json").write_text(json.dumps(
+        {"decklist_sha256": "b" * 64, "model_version": goldfish.model_version()}))
+    monkeypatch.setattr(deck_status, "deck_dir", lambda slug, branch=None: base)
+
+    rows = {r["stage"]: r for r in deck_status.status("scratch", validate=False)}
+    assert rows["goldfish"]["state"] == "present"
+    assert rows["goldfish"]["older_model"] == {"stamp": "0" * 12, "current": goldfish.model_version()}
+    assert "OLDER MODEL" in rows["goldfish"]["detail"]
+    assert "older_model" not in rows["mana"], "the current stamp is not reported"
+
+    monkeypatch.setattr(deck_status, "status", lambda slug, validate=True: list(rows.values()))
+    from manamap.pilot import validate_pending
+    monkeypatch.setattr(validate_pending, "summarise",
+                        lambda slug: {"entries": [], "open": 0, "partial": 0, "applied": 0})
+    # `main` raises SystemExit only through `report_errors` on an error; an
+    # older model must not reach it.
+    deck_status.main(type("A", (), {"slug": "scratch", "all_decks": False, "as_json": False})())
+    out = capsys.readouterr().out
+    assert "measured under an older simulator: goldfish" in out
+    assert "regen --slug scratch" in out

@@ -155,6 +155,16 @@
     // bracket the deck is built for, with the floor and DeckCheck's read in the
     // title; then the rating's grade where a rating.json is on file.
     out += bracketChip(info) + ratingChip(rt);
+    /* MEASURED UNDER AN OLDER SIMULATOR (2026-10-21). A state, said on the card,
+     * never a rebuild: the pilot re-reads a deck with `regen --slug` when he
+     * wants to, and a model edit no longer kicks off the fleet. The figures
+     * were right when taken. */
+    var om = (info && info.status && info.status.older_model) || [];
+    if (om.length) {
+      out += '<span class="wb-chip wb-warn wb-older" title="' + esc(om.join(', ')
+             + ' measured under an older simulator; `manamap pilot regen --slug ' + e.slug
+             + '` re-reads them when you want') + '">older model</span>';
+    }
     var r = (info && info.record) || {};
     if (r.games) {
       // THE RECORD LEADS WITH W–L (2026-10-20): "2–1" is what the pilot reads;

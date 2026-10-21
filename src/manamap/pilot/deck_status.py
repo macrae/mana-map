@@ -40,6 +40,16 @@ from manamap.pilot.common import deck_dir, load_json, presentable, report_errors
 # A stage advanced by an agent names its SKILL (`/analyze-engine`), because that
 # is the honest instruction — there is no subcommand that writes an engine model.
 # A stage that is authored says so instead of naming a command that cannot exist.
+#: WHICH SIMULATOR WROTE IT (2026-10-21): the stage's path to the goldfish model
+#: stamp, for the artifacts that are a goldfish run or embed one. Read as a
+#: STATE (`older_model` on the row, "OLDER MODEL" in the detail), never as an
+#: error — a figure measured under an older model was right when it was taken,
+#: and the pilot decides when a deck is re-read (`regen --slug`). This is what
+#: lets a model edit stop forcing the whole fleet to rebuild in his loop.
+MODEL_STAMPED = {"goldfish": "meta.model_version",
+                 "mana": "model_version",
+                 "benchmark": "model_version"}
+
 STAGES = [
     ("brief",      "brief.json",             None,  False, "the written intent a build starts from",
      "manamap pilot brew {slug} --commander \"<name>\" --theme <style>"),
@@ -324,6 +334,7 @@ def status(slug, validate=True):
 
         doc = load_json(path) if name.endswith(".json") else {}
         detail, state = "", "present"
+        older_model = None
 
         if key == "log":
             # One line per game; `detail` says how many the debrief has read.
@@ -354,6 +365,21 @@ def status(slug, validate=True):
                 # gone stale under a re-baseline with the row reading OK.
                 detail = detail or "unstamped — staleness cannot be checked"
 
+        # WHICH SIMULATOR PRODUCED IT — A STATE, NEVER AN ERROR (2026-10-21). A
+        # figure measured under an older model was correct when it was taken;
+        # reporting it is what lets the pilot choose when to re-read a deck
+        # (`regen --slug`) instead of a red test forcing the whole fleet to
+        # rebuild on every model edit. The row stays `present`; the stamps ride
+        # on it for `deck-info` and the pages.
+        model_path = MODEL_STAMPED.get(key)
+        if model_path and doc and state == "present":
+            from manamap.pilot import goldfish as _gf
+            written = _dig(doc, model_path)
+            running = _gf.model_version()
+            if written and written != running:
+                older_model = {"stamp": written, "current": running}
+                detail = (detail + " · " if detail else "") + \
+                    f"OLDER MODEL {str(written)[:12]} → {running[:12]}"
         # THE ENGINE'S CRITIC VERDICT, ADDED TO the staleness read rather than
         # replacing it.
         #
@@ -391,7 +417,8 @@ def status(slug, validate=True):
         rows.append({"stage": key, "artifact": name, "what": what,
                          "how": how.format(slug=slug), "state": state,
                      "detail": detail, "required": required,
-                     "new": key in ADDED_2026_08})
+                     "new": key in ADDED_2026_08,
+                     **({"older_model": older_model} if older_model else {})})
 
     # GATED ARTIFACTS THAT ARE NOT LIFECYCLE STAGES.
     #
@@ -777,6 +804,19 @@ def main(args):
         if pend["applied"]:
             bits.append(f"{pend['applied']} APPLIED (delete the entry)")
         print(f"  pending.json: {', '.join(bits)}")
+
+    # AN OLDER MODEL IS A STATE, NOT AN ERROR (2026-10-21): said once, with the
+    # command that re-reads the deck when the pilot wants it, and the exit code
+    # untouched. A red board here is what used to force a fleet regen on every
+    # model edit.
+    older = [r for r in rows if r.get("older_model")]
+    if older:
+        om = older[0]["older_model"]
+        print(f"  ! measured under an older simulator: "
+              f"{', '.join(r['stage'] for r in older)} — model {om['stamp'][:12]}, "
+              f"the simulator is {om['current'][:12]}. The figures were right when "
+              f"taken; `manamap pilot regen --slug {args.slug}` re-reads them when "
+              f"you want, never on its own.")
 
     # Staleness is an ERROR; incompleteness is a state. A half-built deck is a
     # deck in progress; a deck whose artifacts disagree about which decklist they

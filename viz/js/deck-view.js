@@ -1411,6 +1411,10 @@
     var st = info.status, b = info.bracket || {};
     var rows = [['Stages complete', st.complete + ' / ' + st.of]];
     if (st.stale && st.stale.length) rows.push(['STALE', st.stale.join(', ')]);
+    // Measured under an older simulator (2026-10-21): a state, not a rebuild.
+    if (st.older_model && st.older_model.length) {
+      rows.push(['OLDER MODEL', st.older_model.join(', ') + ' — the figures were right when taken; `regen --slug` re-reads them when you want']);
+    }
     if (st.invalid && st.invalid.length) rows.push(['INVALID', st.invalid.join(', ')]);
     if (st.missing && st.missing.length) rows.push(['Missing', st.missing.join(', ')]);
     if (b.floor) rows.push(['Bracket floor', b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : '')]);
