@@ -1425,6 +1425,30 @@
     var r = info.record || {};
     rows.push(['Games logged', r.games || 0]);
     if (r.games) rows.push(['Record', r.win + 'W ' + r.loss + 'L' + (r.draw ? ' ' + r.draw + 'D' : '')]);
+    /* AT THE TABLE (2026-10-21): the pilot's own per-game counts, the instrument
+     * he trusts where the goldfish is blind. Read off `record.marks`; the page
+     * computes nothing. Shown only when a game was marked. */
+    var mk = r.marks || {};
+    if (r.marks_n) {
+      var tbl = [];
+      function turn(key, label) {
+        var c = mk[key];
+        if (!c) return;
+        tbl.push(label + ' ' + (c.mean == null ? 'never' : 'T' + c.mean)
+          + (c.never ? ' (never in ' + c.never + ')' : '') + ' · n ' + c.n);
+      }
+      turn('commander_turn', 'first commander');
+      turn('both_turn', 'both commanders');
+      turn('first_wheel_turn', 'first wheel');
+      if (mk.wheel_with_commander_rate != null) {
+        tbl.push('first wheel landed on a commander in ' + Math.round(mk.wheel_with_commander_rate * 100) + '%');
+      }
+      if (mk.kept_hand_passes_rule_rate != null) {
+        tbl.push('kept seven passed the keep rule in ' + Math.round(mk.kept_hand_passes_rule_rate * 100) + '%');
+      }
+      if (mk.commander_removed) tbl.push('a commander removed ' + mk.commander_removed.mean + ' times a game');
+      rows.push(['At the table', tbl.join(' · ') + ' (' + r.marks_n + ' marked game' + (r.marks_n === 1 ? '' : 's') + ')']);
+    }
     return panel('status', 'Where it stands',
       'Lifecycle, gates and the record.', ['data'], 'var(--tier-data)', facts(rows));
   }

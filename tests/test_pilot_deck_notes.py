@@ -373,3 +373,96 @@ def test_add_says_nothing_without_a_baseline(deck, capsys):
     list could be "edited since", so no warning rather than a false one."""
     deck_notes.main(_args(action="add", text="a brew nobody saved", cause=None))
     assert "warning" not in capsys.readouterr().err
+
+
+# ── The marks (2026-10-21): the pilot's counts, a sidecar like the cause ──
+
+
+def test_marks_are_a_sidecar_merged_per_game_and_absent_until_given(deck):
+    """The log is append-only and the games came before the field, so the marks
+    live beside it keyed by id, like the causes; a later `mark` MERGES over an
+    earlier one for the same game. An unmarked game has no row — absent means
+    absent, never zero. Proven by writing `new` over `prev` without the merge:
+    the kept_wheels mark then vanishes when first_wheel_turn arrives."""
+    a = _add("one", result="loss")
+    _add("two", result="win")
+    assert deck_notes.marks(SLUG) == {}
+    row = deck_notes.set_marks(SLUG, a["id"], {"kept_wheels": 4, "kept_bodies": 1})
+    assert row["marks"] == {"kept_bodies": 1, "kept_wheels": 4}
+    deck_notes.set_marks(SLUG, a["id"], {"first_wheel_turn": 6, "wheel_with_commander": 1})
+    got = deck_notes.marks(SLUG)
+    assert set(got) == {a["id"]}
+    assert got[a["id"]]["marks"] == {"first_wheel_turn": 6, "kept_bodies": 1,
+                                     "kept_wheels": 4, "wheel_with_commander": 1}
+    assert (deck / "log_marks.json").exists() and not any(
+        "marks" in json.loads(l) for l in (deck / "log.jsonl").read_text().splitlines())
+    with pytest.raises(SystemExit, match="no log entry"):
+        deck_notes.set_marks(SLUG, "099", {"kept_wheels": 1})
+
+
+@pytest.mark.parametrize("items", [
+    ["mood=4"], ["kept_wheels=four"], ["kept_wheels=8"], ["wheel_with_commander=2"],
+    ["game_turns=0"], ["kept_wheels=1", "kept_wheels=2"], ["kept_wheels"],
+])
+def test_parse_marks_refuses_each_bad_form(items):
+    with pytest.raises(SystemExit):
+        deck_notes.parse_marks(items)
+    assert deck_notes.parse_marks([]) is None and deck_notes.parse_marks(None) is None
+    assert deck_notes.check_marks({"kept_wheels": True}) is not None
+
+
+def test_the_summary_reads_never_as_a_count_and_the_two_rates_from_the_marks(deck):
+    """`0 = never` keys report the mean over the games where it happened and
+    carry `never` beside it; the keep-rule rate is the pilot's own rule (at most
+    one wheel, a body or ramp) counted over his marked hands."""
+    ids = [_add(f"game {i}", result="loss")["id"] for i in range(4)]
+    deck_notes.set_marks(SLUG, ids[0], {"first_wheel_turn": 6, "wheel_with_commander": 1,
+                                        "kept_wheels": 1, "kept_bodies": 2, "both_turn": 5})
+    deck_notes.set_marks(SLUG, ids[1], {"first_wheel_turn": 0, "kept_wheels": 4, "kept_bodies": 1,
+                                        "both_turn": 0})
+    deck_notes.set_marks(SLUG, ids[2], {"first_wheel_turn": 4, "wheel_with_commander": 0,
+                                        "both_turn": 7})
+    s = deck_notes.marks_summary(deck_notes.read_log(SLUG), deck_notes.marks(SLUG))
+    assert s["first_wheel_turn"] == {"n": 3, "min": 0, "max": 6, "never": 1, "mean": 5.0}
+    assert s["both_turn"]["mean"] == 6.0 and s["both_turn"]["never"] == 1
+    assert s["wheel_with_commander_rate"] == 0.5
+    assert s["kept_hand_passes_rule_rate"] == 0.5
+    assert "commander_removed" not in s, "a key nobody marked is absent"
+    assert deck_notes.marks_summary(deck_notes.read_log(SLUG), {}) == {}
+
+
+def test_the_cli_marks_a_logged_game_and_add_takes_marks_too(deck, capsys):
+    e = _add("logged last night", result="loss")
+    deck_notes.main(_args(action="mark", text=e["id"],
+                          mark=["first_wheel_turn=6", "wheel_with_commander=1"]))
+    assert "first_wheel_turn 6" in capsys.readouterr().out
+    deck_notes.main(_args(action="add", text="tonight", result="win",
+                          mark=["kept_wheels=1", "kept_bodies=3"]))
+    got = deck_notes.marks(SLUG)
+    assert got[e["id"]]["marks"]["first_wheel_turn"] == 6
+    assert got["002"]["marks"] == {"kept_bodies": 3, "kept_wheels": 1}
+    with pytest.raises(SystemExit):
+        deck_notes.main(_args(action="mark", text=e["id"], mark=[]))
+
+
+def test_the_cli_mark_choices_are_the_config_vocabulary():
+    from manamap import config
+    from manamap.pilot import registry
+    assert set(registry._mark_keys()) == set(config.PILOT_MARK_KEYS) == set(deck_notes.MARKS)
+    for k, (what, lo, hi) in deck_notes.MARKS.items():
+        assert what and isinstance(lo, int) and isinstance(hi, int) and lo < hi, k
+
+
+def test_validate_log_holds_the_marks_sidecar_to_the_log(deck, capsys):
+    from manamap.pilot import validate_log
+    e = _add("a game", result="loss")
+    deck_notes.set_marks(SLUG, e["id"], {"kept_wheels": 2})
+    validate_log.main(type("A", (), {"slug": SLUG})())
+    assert "OK" in capsys.readouterr().out
+    doc = json.loads((deck / "log_marks.json").read_text())
+    doc["entries"]["077"] = {"marks": {"kept_wheels": 9}, "at": "x"}
+    (deck / "log_marks.json").write_text(json.dumps(doc))
+    with pytest.raises(SystemExit):
+        validate_log.main(type("A", (), {"slug": SLUG})())
+    err = capsys.readouterr()
+    assert "077" in err.out + err.err

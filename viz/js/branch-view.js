@@ -573,6 +573,36 @@
       }
       var panels = document.getElementById('panels');
       if (!panels) return;
+      /* AT THE TABLE (2026-10-21). The pilot's own per-game counts for this deck
+       * — when the commanders landed, when the first wheel fired and whether a
+       * commander was there to be paid, what the kept seven held — read off
+       * `info.record.marks`. They are the deck's games, not this branch's (a
+       * branch is not sleeved), and the page says so; they sit ABOVE the goldfish
+       * table because they are the instrument the pilot trusts. Absent, absent. */
+      var rec = (info && info.record) || {};
+      var mk = rec.marks || {};
+      if (rec.marks_n && !document.getElementById('table-marks')) {
+        function turn(key, label) {
+          var c = mk[key];
+          if (!c) return '';
+          return '<li>' + esc(label) + ': ' + (c.mean == null ? 'never' : 'turn ' + esc(String(c.mean)) + ' on average')
+            + (c.never ? ', never in ' + esc(String(c.never)) : '') + ' <span class="ev">(n ' + esc(String(c.n)) + ')</span></li>';
+        }
+        var items = turn('commander_turn', 'first commander resolved')
+          + turn('both_turn', 'both commanders out')
+          + turn('first_wheel_turn', 'first wheel resolved')
+          + (mk.wheel_with_commander_rate != null
+             ? '<li>first wheel landed with a commander out: ' + esc(String(Math.round(mk.wheel_with_commander_rate * 100))) + '%</li>' : '')
+          + (mk.kept_hand_passes_rule_rate != null
+             ? '<li>kept seven passed the keep rule: ' + esc(String(Math.round(mk.kept_hand_passes_rule_rate * 100))) + '%</li>' : '')
+          + (mk.commander_removed
+             ? '<li>a commander removed ' + esc(String(mk.commander_removed.mean)) + ' times a game</li>' : '');
+        panels.insertAdjacentHTML('afterbegin',
+          '<section class="panel" id="table-marks"><h2>At the table</h2>'
+          + '<p class="ev">The pilot’s own counts over ' + esc(String(rec.marks_n)) + ' marked game'
+          + (rec.marks_n === 1 ? '' : 's') + ' on the deck as sleeved — not this branch’s list. '
+          + 'Authored after each game; nothing here is simulated.</p><ul>' + items + '</ul></section>');
+      }
       // PROVEN ON THIS BRANCH: the stacks whose scenario names a card only the
       // branch brings (`deck_branch.review`), with the checker's verdict.
       if (row && row.stacks && row.stacks.length && !document.getElementById('branchStacks')) {

@@ -56,7 +56,8 @@ from manamap.pilot import deck_status as status_mod
 from manamap.pilot import deck_versions as versions_mod
 from manamap.pilot import promote as promote_mod
 from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_dir, deck_lifecycle, load_deck_cards, load_json
-from manamap.pilot.deck_notes import annotations, causes, feel_summary, read_log
+from manamap.pilot.deck_notes import (annotations, causes, feel_summary, marks,
+                                      marks_summary, read_log)
 from manamap.pilot.prescribe import list_all as prescriptions_of
 from manamap.sim.experiment import list_all as experiments_of
 from manamap.sim.forge import list_runs as sim_runs
@@ -450,6 +451,14 @@ def compose(slug, verify=False, ladder=True, today=None):
     # AUTHORED: a figure here is what the pilot said, not a measurement.
     record["feel"] = feel_summary(log)
     record["feel_n"] = sum(1 for e in log if e.get("feel"))
+    # THE MARKS (2026-10-21) — the pilot's per-game COUNTS (when the commanders
+    # landed, when the first wheel fired and onto what, what the kept seven held),
+    # summarised with n, min, max and `never` beside each mean. AUTHORED, the
+    # instrument he trusts where the goldfish is blind; absent keys are absent.
+    _marks = marks(slug)
+    record["marks"] = marks_summary(log, _marks)
+    record["marks_n"] = sum(1 for e in log if e["id"] in _marks)
+    record["marked"] = {e["id"]: _marks[e["id"]]["marks"] for e in log if e["id"] in _marks}
     lines = engine.get("lines") or []
     # A GATE ROW IS NOT A STAGE, and its `stage` is the literal "—". A stage the
     # deck's format cannot have reads `n/a` (`deck_status.applies`) and is not

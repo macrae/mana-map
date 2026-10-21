@@ -47,6 +47,11 @@ RESULTS = ("win", "loss", "draw")
 #: choices from one place (the `CAUSES` discipline).
 FEEL = config.PILOT_FEEL_KEYS
 FEEL_RANGE = config.PILOT_FEEL_RANGE
+#: THE MARKS (2026-10-21) — `config.PILOT_MARK_KEYS`: per-game counts the pilot
+#: writes, kept in a sidecar like the causes (the log is append-only and the games
+#: were logged before the field existed). `{key: (what, lo, hi)}`.
+MARKS = config.PILOT_MARK_KEYS
+MARKS_FILE = "log_marks.json"
 
 #: HOW THE GAME ENDED, from a closed vocabulary.
 #:
@@ -275,6 +280,123 @@ def set_cause(slug, entry_id, cause, note=None):
     return doc["entries"][entry_id]
 
 
+# ── The marks: the pilot's counts, a sidecar like the cause ──────────────
+#
+# WHY COUNTS AND NOT A SURVEY. The feel is a mood on a scale; a mark is a FACT about
+# one game the goldfish cannot see — the turn Shabraz and Brallin were both out, the
+# turn the first wheel fired and whether a commander was there to be paid, what the
+# seven he kept held, how often a commander was removed. Authored by the pilot, never
+# inferred from his prose (the debrief may quote a mark, never write one), and the
+# instrument he trusts when he does not trust the goldfish (sharknado, 2026-10-21).
+
+
+def parse_marks(items):
+    """`["first_wheel_turn=6", "kept_wheels=4"]` -> `{key: int}`, or a SystemExit
+    naming the first thing wrong. `None` or `[]` -> `None` (no marks)."""
+    if not items:
+        return None
+    marks = {}
+    for item in items:
+        key, sep, raw = str(item).partition("=")
+        key = key.strip()
+        if not sep or key not in MARKS:
+            raise SystemExit(
+                f"--mark takes KEY=N with KEY one of: " + ", ".join(sorted(MARKS))
+                + f" (got {item!r})\n  "
+                + "\n  ".join(f"{k:22s} {v[0]} [{v[1]}-{v[2]}]" for k, v in MARKS.items()))
+        what, lo, hi = MARKS[key]
+        try:
+            val = int(raw.strip())
+        except ValueError:
+            raise SystemExit(f"--mark {key}: N must be a whole number {lo}-{hi} (got {raw!r})")
+        if not lo <= val <= hi:
+            raise SystemExit(f"--mark {key}: N must be {lo}-{hi} (got {val}) — {what}")
+        if key in marks:
+            raise SystemExit(f"--mark {key} given twice")
+        marks[key] = val
+    return marks
+
+
+def check_marks(marks):
+    """The shape the sidecar holds and `validate-log` re-checks. First problem
+    as a string, or None."""
+    if not isinstance(marks, dict) or not marks:
+        return "marks must be a non-empty object"
+    for k, v in marks.items():
+        if k not in MARKS:
+            return f"mark key {k!r} is not one of {', '.join(sorted(MARKS))}"
+        _what, lo, hi = MARKS[k]
+        if isinstance(v, bool) or not isinstance(v, int) or not lo <= v <= hi:
+            return f"mark {k} must be a whole number {lo}-{hi} (got {v!r})"
+    return None
+
+
+def marks(slug):
+    """`{entry_id: {"marks": {key: int}, "at": iso}}`. Authored."""
+    doc = load_json(deck_dir(slug) / MARKS_FILE) or {}
+    return doc.get("entries") or {}
+
+
+def set_marks(slug, entry_id, new):
+    """Record the pilot's counts for one logged game — ONE WRITER for `add --mark`
+    and the `mark` verb. Marks given later MERGE over earlier ones for the same
+    game (a count he adds the morning after is not a retraction of the ones he
+    gave at the table)."""
+    why = check_marks(new)
+    if why:
+        raise SystemExit(why)
+    ids = {e["id"] for e in read_log(slug)}
+    if entry_id not in ids:
+        raise SystemExit(
+            f"{slug}: no log entry {entry_id!r} — "
+            f"`manamap pilot deck-notes {slug} list` shows the ids")
+    path = deck_dir(slug) / MARKS_FILE
+    doc = load_json(path) or {"slug": slug, "entries": {}}
+    doc.setdefault("slug", slug)
+    doc.setdefault("entries", {})
+    prev = (doc["entries"].get(entry_id) or {}).get("marks") or {}
+    doc["entries"][entry_id] = {
+        "marks": {k: v for k, v in sorted({**prev, **new}.items())},
+        "at": datetime.now().astimezone().isoformat(timespec="seconds"),
+    }
+    doc["entries"] = dict(sorted(doc["entries"].items()))
+    path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
+    return doc["entries"][entry_id]
+
+
+def marks_summary(entries, sidecar):
+    """Per key with at least one mark: `{mean, n, min, max}` over the entries
+    given, plus two derived rates the thesis is about. A mean is not a result, so
+    n, min and max ride beside it; keys nobody marked are absent. `0 = never` keys
+    (`commander_turn`, `both_turn`, `first_wheel_turn`) report their mean over the
+    games where it happened and carry `never` as a count beside it."""
+    rows = [(e["id"], (sidecar.get(e["id"]) or {}).get("marks") or {}) for e in entries]
+    out = {}
+    for key, (_what, lo, hi) in MARKS.items():
+        vals = [m[key] for _id, m in rows if isinstance(m.get(key), int)]
+        if not vals:
+            continue
+        cell = {"n": len(vals), "min": min(vals), "max": max(vals)}
+        if key in ("commander_turn", "both_turn", "first_wheel_turn"):
+            hit = [v for v in vals if v > 0]
+            cell["never"] = len(vals) - len(hit)
+            cell["mean"] = round(sum(hit) / len(hit), 2) if hit else None
+        else:
+            cell["mean"] = round(sum(vals) / len(vals), 2)
+        out[key] = cell
+    fired = [m for _id, m in rows if isinstance(m.get("wheel_with_commander"), int)]
+    if fired:
+        out["wheel_with_commander_rate"] = round(
+            sum(1 for m in fired if m["wheel_with_commander"] == 1) / len(fired), 3)
+    kept = [m for _id, m in rows
+            if isinstance(m.get("kept_wheels"), int) and isinstance(m.get("kept_bodies"), int)]
+    if kept:
+        # The pilot's own keep rule as a count: at most one wheel and a body or ramp.
+        out["kept_hand_passes_rule_rate"] = round(
+            sum(1 for m in kept if m["kept_wheels"] <= 1 and m["kept_bodies"] >= 1) / len(kept), 3)
+    return out
+
+
 def _fmt(entry, annotated, width=72):
     head = (f"{entry['id']}  {entry['at'][:16]}  "
             f"{(entry.get('result') or '—'):<4}  "
@@ -314,8 +436,26 @@ def main(args):
         if getattr(args, "cause", None):
             row = set_cause(slug, entry["id"], args.cause)
             print(f"  cause: {row['cause']} — {CAUSES[row['cause']]}")
+        # THE MARKS, through the one writer the `mark` verb uses.
+        _m = parse_marks(getattr(args, "mark", None))
+        if _m:
+            row = set_marks(slug, entry["id"], _m)
+            print("  marks: " + ", ".join(f"{k} {v}" for k, v in row["marks"].items()))
         print("  next: `manamap pilot deck-notes "
               f"{slug} list`, or spawn `debrief` to annotate it")
+        return
+
+    if action == "mark":
+        # `deck-notes <slug> mark <id> --mark KEY=N …`: the pilot's counts for a
+        # game already logged. `text` is the id, as `show` and `cause` read it.
+        _m = parse_marks(getattr(args, "mark", None))
+        if not _m:
+            print("The pilot's counts for one game. `--mark KEY=N`, repeatable, KEY one of:\n  "
+                  + "\n  ".join(f"{k:22s} {v[0]} [{v[1]}-{v[2]}]" for k, v in MARKS.items()))
+            raise SystemExit(2)
+        row = set_marks(slug, args.text, _m)
+        print(f"{slug}: entry {args.text} — "
+              + ", ".join(f"{k} {v}" for k, v in row["marks"].items()))
         return
 
     if action == "cause":

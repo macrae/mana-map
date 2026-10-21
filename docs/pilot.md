@@ -103,7 +103,7 @@ manamap pilot build <slug> [--brief "…"] [--commander "<name>"] [--theme SLUG]
                                         #   is ~20 games, whose MDE is 42 points. `simulate` is the pod.
 manamap pilot validate-recon <slug>                 # form-check deck_recon.json: cards real, legal, in identity
 manamap pilot deck-history <slug> [--json]  # applied swaps (from git) + the pending ten
-manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T] [--feel KEY=1-5 …]
+manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents N] [--tag T] [--feel KEY=1-5 …] [--mark KEY=N …]
                                         #   the captain's log: AUTHORED, append-only, sha-stamped; --feel is the
                                         #   pilot's own 1-5 survey (power, resilience, consistency, fun, interaction)
 manamap pilot deck-notes <slug> list [--since D] | show <id>
@@ -244,6 +244,16 @@ manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
 manamap pilot deck-delete <slug>                    # never sleeved, never played, never published
 manamap pilot validate-deck-versions <slug>         # the lifecycle, the lock, and the contradiction
 manamap pilot deck-notes <slug> cause <id> --cause <code>   # how one logged game ended
+manamap pilot deck-notes <slug> mark <id> --mark KEY=N …   # THE PILOT'S COUNTS for one logged game (2026-10-21):
+                                        #   config.PILOT_MARK_KEYS — commander_turn, both_turn,
+                                        #   first_wheel_turn (0 = never), wheel_with_commander (1/0),
+                                        #   kept_wheels, kept_bodies, commander_removed, game_turns.
+                                        #   A sidecar (log_marks.json) like the cause; later marks
+                                        #   merge over earlier ones; summarised in info.json's
+                                        #   record.marks with n/min/max/never beside each mean and
+                                        #   two rates (wheel_with_commander, kept_hand_passes_rule).
+                                        #   AUTHORED — the instrument the pilot trusts where the
+                                        #   goldfish is blind; an agent may quote a mark, never write one
 manamap pilot validate-log-causes <slug>            # the cause vocabulary, its ids, and result clashes
 manamap pilot deck-branch <slug> [list] | new <name> --from <file> [--why …]
 manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>

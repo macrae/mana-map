@@ -1911,6 +1911,26 @@ PILOT_FEEL_KEYS = {
 }
 PILOT_FEEL_RANGE = (1, 5)
 
+# ── THE PILOT'S MARKS (2026-10-21) ────────────────────────────────────────
+# Per-game COUNTS the pilot writes after a game (`deck-notes <slug> add … --mark
+# first_wheel_turn=6`, or `deck-notes <slug> mark <id> --mark …` later), kept in the
+# sidecar `log_marks.json` like the causes. They exist because the goldfish cannot
+# see the table and the pilot does not trust it to ("fuck the goldfish"): the turn
+# the commanders landed, when the first wheel fired and onto what, what the kept
+# seven held, what removal hit. AUTHORED, never derived, never inferred from prose;
+# each key names what it counts and its range, and a 0 means "never" where the
+# definition says so. A closed vocabulary for the same reason the feel keys are one.
+PILOT_MARK_KEYS = {
+    "commander_turn": ("the turn the FIRST commander resolved (0 = never)", 0, 30),
+    "both_turn": ("the turn BOTH commanders were on the battlefield (0 = never)", 0, 30),
+    "first_wheel_turn": ("the turn the first wheel resolved (0 = never)", 0, 30),
+    "wheel_with_commander": ("1 if a commander was on the battlefield when the first wheel resolved, else 0", 0, 1),
+    "kept_wheels": ("wheels in the kept seven", 0, 7),
+    "kept_bodies": ("creatures and ramp pieces in the kept seven", 0, 7),
+    "commander_removed": ("times a commander left the battlefield to an opponent's card", 0, 20),
+    "game_turns": ("the game's length in your own turns", 1, 40),
+}
+
 # ── THE FLEET ARTIFACT (2026-10-18) ───────────────────────────────────────
 # `manamap pilot fleet-analytics --write` -> one tracked file of profiles, bands
 # and comparisons across every live deck (never a score; `fleet_analytics.py`).

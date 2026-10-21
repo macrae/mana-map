@@ -82,6 +82,18 @@ def main(args=None):
         print(f"{slug}: no {deck_notes.LOG_FILE} — nothing logged yet (absent means absent)")
         return
     errors, entries = validate_lines(p.read_text(encoding="utf-8").splitlines())
+    # THE MARKS SIDECAR (2026-10-21), held to the log the way the causes are: every
+    # id must be a logged game, every key from the vocabulary, every value in range.
+    mp = deck_dir(slug) / deck_notes.MARKS_FILE
+    if mp.is_file():
+        ids = {e["id"] for e in entries}
+        mdoc = deck_notes.load_json(mp) or {}
+        for eid, row in sorted((mdoc.get("entries") or {}).items()):
+            if eid not in ids:
+                errors.append(f"{deck_notes.MARKS_FILE}: entry {eid!r} is not in the log")
+            why = deck_notes.check_marks((row or {}).get("marks"))
+            if why:
+                errors.append(f"{deck_notes.MARKS_FILE} {eid}: {why}")
     report_errors(f"{slug} — {deck_notes.LOG_FILE}", errors)
     feel = deck_notes.feel_summary(entries)
     surveyed = sum(1 for e in entries if e.get("feel"))

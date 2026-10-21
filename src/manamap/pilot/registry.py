@@ -386,6 +386,13 @@ def _feel_keys():
     return PILOT_FEEL_KEYS
 
 
+def _mark_keys():
+    """`config.PILOT_MARK_KEYS`, the pilot's counts — one home, derived here."""
+    from manamap.config import PILOT_MARK_KEYS
+
+    return PILOT_MARK_KEYS
+
+
 def add_pilot_parser(subparsers):
     """Attach the `pilot` subcommand group to the top-level subparsers."""
     pilot = subparsers.add_parser("pilot", help="The pilot bench: decks, log, versions, sim, evidence")
@@ -606,11 +613,11 @@ def add_pilot_parser(subparsers):
                              help="the deck's format (default: what brief.json / "
                                   "cards.json already say, else commander)")
         if name == "deck-notes":
-            cmd.add_argument("action", choices=["add", "list", "show", "cause"],
+            cmd.add_argument("action", choices=["add", "list", "show", "cause", "mark"],
                              help="add a note / list the log / show one entry / "
-                                  "record how a game ended")
+                                  "record how a game ended / record the pilot's counts")
             cmd.add_argument("text", nargs="?", default=None,
-                             help="the note (add), or the entry id (show, cause)")
+                             help="the note (add), or the entry id (show, cause, mark)")
             cmd.add_argument("--file", default=None,
                              help="read the note from this file (`-` for stdin) instead")
             cmd.add_argument("--result", default=None, choices=["win", "loss", "draw"])
@@ -638,6 +645,12 @@ def add_pilot_parser(subparsers):
                              help="add: a 1-5 score, repeatable — KEY one of "
                                   + " | ".join(sorted(_feel_keys()))
                                   + " (e.g. --feel power=4 --feel fun=5)")
+            # THE MARKS (2026-10-21): per-game counts the goldfish cannot see,
+            # keys from `config.PILOT_MARK_KEYS`, parsed by `deck_notes.parse_marks`.
+            cmd.add_argument("--mark", action="append", default=[], metavar="KEY=N",
+                             help="add / mark: a count for this game, repeatable — KEY one of "
+                                  + " | ".join(sorted(_mark_keys()))
+                                  + " (e.g. --mark first_wheel_turn=6 --mark wheel_with_commander=1)")
             cmd.add_argument("--since", default=None,
                              help="list: only entries at or after this ISO date")
             cmd.add_argument("--json", action="store_true", dest="as_json")
