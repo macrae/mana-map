@@ -1,0 +1,24 @@
+{
+  "name": "olivers-table",
+  "note": "OLIVER'S TABLE AS IT SAT ON 2026-10-20 (captain's log sharknado 002, keen-engineering 001): four players -- Sean, Oliver, Tom, Ryan; no Alex that night. Built for sharknado's finisher-v1, the branch the pilot wants measured at a table as COUNTS (commander uptime, wheels fired with a commander out, first wheel turn, mulligans) and never as a win-rate verdict (docs/simulation.md, 2026-10-21). Every seat is an EDHREC average list, so each bracket is a reading of the average list's contents or the pilot's word, never of anyone's real cards: Ryan's Teval reads bracket 4 on DeckCheck and went infinite that night; Tom's deck reads bracket 3 on DeckCheck and its commander is unknown ('crazy creatures in cheaply, double-double damage'), so purphoros-pingers stands in from pod-1 by the pilot's choice; Oliver brought Araumi ('had me sacrificing creatures left and right'), fetched 2026-10-21 -- paste his real list over data/opponents/araumi-edict/decklist.txt when he shares it. NEVER PLAYED in simulation; it has no null until `pods olivers-table --calibration` has deck-level games, and those exclude runs under card overrides. pod-1 is the same table as described on 2026-09-30, five chairs.",
+  "seats": [
+    {
+      "slug": "araumi-edict",
+      "archetype": "dimir edicts / encore reanimation",
+      "bracket": 4,
+      "note": "Oliver, 2026-10-20. Typed from the pilot's read of the table (a bracket-4 table), not from DeckCheck; `pods olivers-table --power` prints the average list's floor beside it."
+    },
+    {
+      "slug": "teval-graveyard",
+      "archetype": "sultai self-mill / graveyard value",
+      "bracket": 4,
+      "note": "Ryan. Bracket 4 on DeckCheck per the pilot (2026-10-20); won game 002 on an infinite. The EDHREC average stands in for his modified precon."
+    },
+    {
+      "slug": "purphoros-pingers",
+      "archetype": "mono-red ping / non-combat damage",
+      "bracket": 3,
+      "note": "Tom's stand-in, by the pilot's choice 2026-10-21: his real deck reads bracket 3 on DeckCheck and its commander is unknown. Replace when he names it (`fetch-opponent`)."
+    }
+  ]
+}
