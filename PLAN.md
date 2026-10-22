@@ -162,6 +162,10 @@ stopping rule is on win rate (the experiment's one primary); the BRANCH OBJECTIV
 net-change, is `forge.commander_damage_max_on_one_defender >= 10` (deck 5.69 under the old
 harness); beside it, games reaching 21 commander damage, and the same Holm-corrected profile
 as finisher-v1 (answers, interaction, resilience, consistency, wheels with a commander out).
+STOPPED at look 1 on the pilot's word (2026-10-22): wins 10/75 -> 6/75, commander damage max
+5.79 -> 6.28 [-2.8, +3.8], answers +0.43 and protection +0.51 (both excluding zero, uncorrected).
+The AI put 39 of 84 equips on non-commanders and Shabraz attacked under once a game. He likes
+the direction: voltron-v1 is the base for further iterations.
 
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
