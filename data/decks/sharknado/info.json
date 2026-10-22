@@ -178,6 +178,9 @@
             "name": "Idyllic Tutor"
           },
           {
+            "name": "Inspiring Vantage"
+          },
+          {
             "name": "Inti, Seneschal of the Sun"
           },
           {
@@ -202,6 +205,9 @@
             "name": "Loran's Escape"
           },
           {
+            "name": "Needleverge Pathway // Pillarverge Pathway"
+          },
+          {
             "name": "Prismari Command"
           },
           {
@@ -223,6 +229,13 @@
             "where": [
               "edgar-vampires",
               "gishath"
+            ]
+          },
+          {
+            "name": "Battlefield Forge",
+            "where": [
+              "edgar-vampires",
+              "ur-dragon"
             ]
           },
           {
@@ -269,24 +282,25 @@
             ]
           }
         ],
-        "blocking": 30,
+        "blocking": 33,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 34,
-      "out": 34,
+      "add": 39,
+      "out": 39,
       "counts": {
-        "in_deck": 66,
+        "in_deck": 61,
         "box": 3,
-        "elsewhere": 3,
-        "buy": 27,
+        "elsewhere": 4,
+        "buy": 29,
         "free": 1
       },
       "unsourced": [
         "Akroma's Will",
         "Ashling's Command",
         "Bard, King of Dale",
+        "Battlefield Forge",
         "Blade Historian",
         "Brotherhood Regalia",
         "Champion's Helm",
@@ -300,6 +314,7 @@
         "Genji Glove",
         "Gratuitous Violence",
         "Idyllic Tutor",
+        "Inspiring Vantage",
         "Inti, Seneschal of the Sun",
         "Iroh's Demonstration",
         "Izzet Signet",
@@ -308,6 +323,7 @@
         "Knowledge Is Power",
         "Lizard Blades",
         "Loran's Escape",
+        "Needleverge Pathway // Pillarverge Pathway",
         "Prismari Command",
         "Stoneforge Mystic",
         "Talisman of Conviction",
@@ -384,6 +400,28 @@
           "name": "Bard, King of Dale",
           "state": "buy",
           "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Battlefield Forge",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -618,13 +656,6 @@
           "is_new": true
         },
         {
-          "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Glittering Massif",
           "state": "in_deck",
           "where": [],
@@ -667,6 +698,13 @@
           "is_new": false
         },
         {
+          "name": "Inspiring Vantage",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Inti, Seneschal of the Sun",
           "state": "buy",
           "where": [],
@@ -679,20 +717,6 @@
           "where": [],
           "free": false,
           "is_new": true
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
         },
         {
           "name": "Izzet Signet",
@@ -827,6 +851,13 @@
           "is_new": false
         },
         {
+          "name": "Needleverge Pathway // Pillarverge Pathway",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Negate",
           "state": "in_deck",
           "where": [],
@@ -891,13 +922,6 @@
         },
         {
           "name": "Sacred Foundry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sea of Clouds",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1052,13 +1076,6 @@
           "is_new": true
         },
         {
-          "name": "Temple of Epiphany",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Thundering Falls",
           "state": "in_deck",
           "where": [],
@@ -1108,12 +1125,12 @@
         "at": "2026-10-22"
       },
       "cast_proofs": {
-        "played": 34,
+        "played": 32,
         "held": 0,
         "unplayed": 0,
         "as_of": "2026-10-22",
         "harness": {
-          "overrides": "0d181d59f51f",
+          "overrides": "0ed1ecfa5e1b",
           "patches": "9473cf359146",
           "forge": {
             "version": "2.0.14",
@@ -9602,7 +9619,8 @@
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
-    "branch `voltron-v1` needs 30 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
+    "branch `voltron-v1`: 2 cast-late add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch voltron-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `voltron-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
     "branch `finisher-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",

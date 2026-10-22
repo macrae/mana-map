@@ -11,7 +11,13 @@
   "pod": "olivers-table",
   "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters)."
  },
- "commits": [],
+ "commits": [
+  {
+   "at": "2026-10-22",
+   "decklist_sha256": "8f9ea06a71b1b5eb0b0d4c3ded5d085b553bce7b90fcf72e484d22ecd6fb7cbe",
+   "message": "sharknado voltron-v1 mana pass: five land swaps toward red (Glacial Fortress->Battlefield Forge, Irrigated Farmland->Inspiring Vantage, Island->Mountain, Sea of Clouds->Needleverge Pathway, Temple of Epiphany->Mountain); land sources R 28->32, U 30->25, W 19; on curve lands-only R 0.785->0.855; always tapped 7->5. 300/arm A/B stopped before look 1 on the pilot's word for this pass"
+  }
+ ],
  "base_version": 8,
  "base_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
  "summary": {
@@ -97,6 +103,41 @@
    "in": "Karlach, Fury of Avernus",
    "strength": null,
    "why": "the extra combat as a trigger: whenever you attack, untap the attackers, first strike, another combat; the AI held Relentless Assault castable 22 turns and never cast it (UntapAllAi plays it only after combat with a tapped attacker)"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Island",
+   "in": "Mountain",
+   "strength": null,
+   "why": "try: no call \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Irrigated Farmland",
+   "in": "Inspiring Vantage",
+   "strength": null,
+   "why": "try: no call \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Glacial Fortress",
+   "in": "Battlefield Forge",
+   "strength": null,
+   "why": "try: no call \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Sea of Clouds",
+   "in": "Needleverge Pathway // Pillarverge Pathway",
+   "strength": null,
+   "why": "try: no call \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Temple of Epiphany",
+   "in": "Mountain",
+   "strength": null,
+   "why": "try: no call \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
   }
  ]
 }
