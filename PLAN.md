@@ -129,6 +129,24 @@ commander uptime, wheels fired with a commander out, first wheel turn, mulligans
 win-rate verdict). The seven-swap package stands in words, unstaged, until he calls the
 slots; the Forge runs wait on his word per run.
 
+**The finisher-v1 A/B (launched 2026-10-21, on his word).** "We need a true A/B test of the
+previous deck against this deck … enough games to get a statistically significant delta …
+controlling for how the AI pilots it." `experiment sharknado --a working --b @finisher-v1
+--pod olivers-table --games 300 --looks 4 --detect 0.10` (O'Brien-Fleming at 75/150/225/300
+games per arm, ~14 h; 81% power for +0.10 on a 0.20 baseline; smaller is INCONCLUSIVE, not
+"no effect"). Both arms on ONE harness: every wheel in either list holds for a commander,
+every rock in either list is cast in Main 1, all eleven adds PLAYED in a shell. It ran
+`--anyway` against an audit one game short on commander access (15/20); arm A's 300 games
+write the table's dynamic audit afterwards. PRE-REGISTERED before any look: the PRIMARY is
+win rate (the design's alpha); the PROFILE is read whole, Holm-corrected, never a gate —
+faster (commander resolved rate, first attack turn, first wheel turn), stronger (life
+removed per game, biggest hit), answers (`interaction_cast`, and `sim/answers.py`'s answers
+/ counterspells / protection cast, wired in after the run and re-derived with `--analyze`),
+resilience (commander uptime, the turn eliminated, `interaction_received` beside it),
+consistency (mulligans, empty-hand turns, extra draw per turn), and the branch's own
+mechanism (wheels with a commander out, dead wheels never fired). An A/A at 300 is the
+rule's price for grading a Forge figure and follows on his word.
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
