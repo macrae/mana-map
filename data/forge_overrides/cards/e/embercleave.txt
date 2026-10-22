@@ -10,4 +10,5 @@ SVar:TrigAttach:DB$ Attach | ValidTgts$ Creature.YouCtrl | TgtPrompt$ Select tar
 SVar:NeedsToPlay:Creature.YouCtrl
 S:Mode$ Continuous | Affected$ Creature.EquippedBy | AddPower$ 1 | AddToughness$ 1 | AddKeyword$ Double Strike & Trample | Description$ Equipped creature gets +1/+1 and has double strike and trample.
 K:Equip:3
+SVar:AttachAi:AITgts$ Card.IsCommander+YouCtrl
 Oracle:Flash\nThis spell costs {1} less to cast for each attacking creature you control.\nWhen Embercleave enters, attach it to target creature you control.\nEquipped creature gets +1/+1 and has double strike and trample.\nEquip {3}

@@ -1,5 +1,5 @@
 {
-  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one.",
+  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one. 2026-10-22: equip-on-commander and attack hints (EquipMe, HasAttackEffect, AttachAi) for the voltron branch; Brotherhood Regalia (a restricted second Equip keyword) and Lizard Blades (Reconfigure ignores AttachAi) rely on the commanders' EquipMe.",
   "hints": [
     {
       "card": "Windfall",
@@ -183,6 +183,118 @@
       "why": "finisher-v1 adds it (2026-10-21): the A/B of the deck against the branch must pilot both arms under the same rules, and the champion's Arcane Signet and Sol Ring carry PlayMain1 — a rock is cast before combat",
       "cites": [
         "branch finisher-v1"
+      ]
+    },
+    {
+      "card": "Shabraz, the Skyshark",
+      "svars": {
+        "EquipMe": "Multiple",
+        "HasAttackEffect": "TRUE"
+      },
+      "why": "the deck kills with 21 commander damage from one commander; EquipMe makes Forge's attach AI choose this creature before any other scoring (46 shipped scripts carry it), HasAttackEffect makes the attack AI count it as an effective attacker",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Brallin, Skyshark Rider",
+      "svars": {
+        "EquipMe": "Multiple",
+        "HasAttackEffect": "TRUE"
+      },
+      "why": "the deck kills with 21 commander damage from one commander; EquipMe makes Forge's attach AI choose this creature before any other scoring (46 shipped scripts carry it), HasAttackEffect makes the attack AI count it as an effective attacker",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Champion's Helm",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Embercleave",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Fireshrieker",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Genji Glove",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Lightning Greaves",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Mask of Memory",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Swiftfoot Boots",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
+      ]
+    },
+    {
+      "card": "Zephyr Boots",
+      "svars": {
+        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
+      },
+      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
+      "cites": [
+        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
+        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
       ]
     }
   ],
