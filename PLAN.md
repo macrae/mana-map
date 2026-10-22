@@ -179,6 +179,10 @@ look: the stopping rule is on win rate; the BRANCH OBJECTIVE, graded by net-chan
 `forge.commander_damage_max_on_one_defender >= 10`; beside it, games reaching 21, Shabraz and
 Brallin attacks per game, equips landing on a commander, and the same Holm-corrected profile
 (answers, interaction, resilience, consistency, draw, wheels with a commander out).
+STOPPED before look 1 on the pilot's word for a mana pass (949f31fb: five land swaps toward red,
+R land sources 28 -> 32, on curve lands-only 0.785 -> 0.855). RELAUNCHED the same day, same
+command, same harness and same pre-registration, against the list as checked in; seed 80897283.
+finisher-v1 rejected (2c9dc003); voltron-v1 is the one open branch.
 
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
