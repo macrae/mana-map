@@ -465,6 +465,20 @@ measured at a table and not by the goldfish ("fuck the goldfish"):
   the experiment's `mulligans` reader; an older record without the blocks pools nothing.
   **Counts are readable without an A/A; a win rate is not** — the branch's Forge report is
   these counts with intervals and the A/A line, never a verdict.
+- **`answers`** (`src/manamap/sim/answers.py`, 2026-10-22), a top-level block beside
+  `wheel_timing`: per game, the answers (removal, bounce, sweeper, edict, fight, tax;
+  damage removal only on a noncreature card), counterspells and protection our seat cast
+  or activated, classed by `card_roles.json`; absent when the roles artifact is not on
+  disk. Five more axes read it and parse's targeting channel: `forge.answers_cast`,
+  `forge.counters_cast`, `forge.protection_cast`, `forge.interaction_cast` and
+  `forge.interaction_received` (lower is better).
+- **An experiment is two runs, and `net-change` reads it as two** (2026-10-22). Each arm's
+  per-game rows carry the answers and wheel values (`experiment._enrich`), `delta` reports
+  them beside the win rate with an interval on the difference, and `net-change`'s Forge
+  block pools an arm whose ref is `@<branch>` as the branch's run and an arm on the list on
+  disk as the deck's — an A/A never. `experiment --analyze` scores through the run's own
+  rotation-safe seat map; until 2026-10-22 it knew only `Ai(1)` and re-derived a rotated
+  300-a-side A/B as 0.04 a side.
 
 ### Still open
 

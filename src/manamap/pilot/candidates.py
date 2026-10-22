@@ -359,6 +359,40 @@ FORGE_OBJECTIVE_AXES = {
         "what": "mulligans our seat took per game (Forge gives the first free)",
         "why": "the kept-hand question at a table: a list the AI ships more often is one "
                "the pilot would too"},
+    # ANSWERS AND INTERACTION (2026-10-22, the finisher-v1 A/B): the pilot asked whether
+    # a list "has answers, interactions, resolve" — these are the table's readings of it.
+    # `answers` classes the list's own cards by corpus role; `interaction_*` is parse's
+    # targeting channel, a floor at ~59% attribution.
+    "forge.answers_cast": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "answers_cast",
+        "what": "removal, bounce, sweepers, edicts, fight and tax effects our seat cast or "
+                "activated per game, by the card's corpus role (damage removal only on a "
+                "noncreature card)",
+        "why": "whether the list answers the table, read from what the AI actually cast"},
+    "forge.counters_cast": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "counters_cast",
+        "what": "counterspells our seat cast per game (corpus role `counterspell`)",
+        "why": "the held-up answer; the AI under-uses it, so a difference is a floor"},
+    "forge.protection_cast": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "protection_cast",
+        "what": "protection pieces our seat cast or activated per game (any `protection*` role)",
+        "why": "resolve: keeping the commanders and the engine on the table"},
+    "forge.interaction_cast": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "interaction_cast",
+        "what": "stack objects our seat cast or activated that targeted an opponent or an "
+                "opponent's permanent, once per opposing seat per object — a floor, since a "
+                "permanent nobody attacked or blocked with cannot be attributed",
+        "why": "interaction aimed at the table, of any kind; not a removal count"},
+    "forge.interaction_received": {
+        "kind": "mean", "lower_is_better": True, "conditional": False,
+        "per_game": "interaction_received",
+        "what": "stack objects opponents aimed at our seat or our permanents, per game, by "
+                "the same rule",
+        "why": "how much of the table's interaction the list draws; lower is better"},
 }
 
 

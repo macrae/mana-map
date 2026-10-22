@@ -69,6 +69,7 @@ percentage, a hoard read as mana. All three have happened here.
 
 import glob
 import math
+import re
 import hashlib
 import json
 
@@ -367,7 +368,8 @@ _PER_GAME = {k: _EXP_PER_GAME[k] for k in
              ("combat_damage_dealt_to_players", "first_attack_turn", "eliminated_turn",
               "drain_dealt", "biggest_hit", "evasive_damage_share", "kills_by_ability", "life_gained",
               "extra_draw_per_turn", "empty_hand_turns", "noncombat_damage_dealt_to_players",
-              "life_removed_total", "mulligans")}
+              "life_removed_total", "mulligans", "interaction_cast", "interaction_received",
+              "answers_cast", "counters_cast", "protection_cast")}
 #: PER-GAME VALUES THAT LIVE OUTSIDE `games[].per_seat` (2026-10-21): the board
 #: series' uptime and the wheel timing's rows, both top-level record blocks that
 #: are absent on an older record — pooled beside the per-seat readers, never zero.
@@ -1019,6 +1021,57 @@ def forge(slug, branch, pod=None):
     return _forge(slug, branch, pod, rows_for)
 
 
+_SIM_GLOB = re.compile(r"^data/decks/(?P<slug>[^/]+)/(?:branches/(?P<branch>[^/]+)/)?sim/\*\.json$")
+
+
+def _records(pattern, want, live_sha):
+    """`(path, record)` for every run record the pattern names — and, since
+    2026-10-22, EVERY EXPERIMENT ARM that played the same list: an experiment is two
+    runs at one table under one harness, and net-change never read it, so a 300-a-side
+    A/B of a branch against the deck reached no report. A branch arm is the one whose
+    ref is `@<branch>`; a deck arm is a non-branch ref whose list is the one on disk.
+    An A/A is skipped (both arms are one list, and pooling it counts the list twice).
+    Each arm is re-keyed to `want` so the reader below needs no second spelling."""
+    for path in sorted(glob.glob(pattern)):
+        if "logs" not in path:
+            yield path, json.load(open(path))
+    m = _SIM_GLOB.match(pattern)
+    if not m:
+        return
+    slug, branch = m.group("slug"), m.group("branch")
+    for path in sorted(glob.glob(f"data/decks/{slug}/experiments/*.json")):
+        try:
+            doc = json.load(open(path))
+        except (OSError, ValueError):
+            continue
+        if (doc.get("design") or {}).get("aa"):
+            continue
+        for letter, arm in sorted((doc.get("arms") or {}).items()):
+            ref = str(arm.get("ref") or "")
+            if branch:
+                if ref != f"@{branch}":
+                    continue
+            elif ref.startswith("@") or (live_sha and arm.get("decklist_sha256") != live_sha):
+                continue
+            games = []
+            for g in arm.get("games_detail") or []:
+                ps = (g.get("per_seat") or {})
+                games.append({**g, "per_seat": {want: ps[slug]} if slug in ps else {},
+                              "winner": want if g.get("winner") == slug else g.get("winner")})
+            an = dict(arm.get("analysis") or {})
+            an["seats"] = {want: (an.get("seats") or {}).get(slug) or {}}
+            yield f"{path}#{letter}", {
+                "run_id": f"{doc.get('experiment_id')}#{letter}",
+                "analysis": an, "games": games, "pod": doc.get("pod"),
+                "card_overrides": doc.get("card_overrides"),
+                "profiles": doc.get("profiles_b") if letter == "b" and doc.get("profiles_b")
+                else doc.get("profiles"),
+                "telemetry": doc.get("telemetry"),
+                "seats": [{"slug": want, "decklist_sha256": arm.get("decklist_sha256")}],
+                "wheel_timing": {"per_game": [g["per_seat"][want] for g in games
+                                              if "wheels_cast" in g["per_seat"].get(want, {})]}}
+
+
 def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
         """A RUN DESCRIBES THE LIST IT PLAYED, NOT THE LIST ON DISK.
 
@@ -1035,10 +1088,7 @@ def _rows_for_public(pattern, want, live_sha, dropped, strict=True):
         the block on every historical run.
         """
         by_pod = {}
-        for path in sorted(glob.glob(pattern)):
-            if "logs" in path:
-                continue
-            doc = json.load(open(path))
+        for path, doc in _records(pattern, want, live_sha):
             a = doc.get("analysis") or {}
             pod = doc.get("pod")
             pod = (pod.get("name") if isinstance(pod, dict) else pod) or "unnamed"

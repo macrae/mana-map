@@ -199,6 +199,11 @@ def validate(rec, slug, logs_text=None):
     if wtim is not None:
         from manamap.sim import wheel_timing as _wt
         errors += _wt.validate(wtim, n)
+    # THE ANSWERS (2026-10-22), the same rule.
+    ans = rec.get("answers")
+    if ans is not None:
+        from manamap.sim import answers as _an
+        errors += _an.validate(ans, n)
     if logs_text:
         label = _seat_label([s["forge_name"] for s in seats])
         from manamap.sim.forge import cmc_map, keyword_map, played_doc
@@ -226,6 +231,12 @@ def validate(rec, slug, logs_text=None):
             if _wt.from_logs(logs_text, record_commanders(rec), deck_meta_name(slug),
                              doc or _deck_doc(slug)) != wtim:
                 errors.append(f"wheel_timing does not match what the logs derive — "
+                              f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
+        if ans is not None:
+            from manamap.sim import answers as _an
+            from manamap.sim.forge import _deck_doc, deck_meta_name
+            if _an.from_logs(logs_text, deck_meta_name(slug), doc or _deck_doc(slug)) != ans:
+                errors.append(f"answers does not match what the logs derive — "
                               f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
     return errors
 

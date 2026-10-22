@@ -228,7 +228,28 @@ PER_GAME = {
     # THE DRAW AXIS (2026-09-30): the telemetry patch's hand facts, per own turn.
     "extra_draw_per_turn": lambda p: _extra_draw_per_turn(p.get("hand")),
     "empty_hand_turns": lambda p: (p.get("hand") or {}).get("empty_own_turns"),
+    # WHAT THE SEAT AIMED AT THE TABLE, AND WHAT THE TABLE AIMED AT IT (parse's
+    # targeting channel, a floor at ~59% attribution — its `limits` say so).
+    "interaction_cast": lambda p: p.get("interaction_cast"),
+    "interaction_received": lambda p: p.get("interaction_received"),
+    # ANSWERS AND WHEELS (2026-10-22): written into each arm's per-game rows by
+    # `_enrich` from `answers` and `wheel_timing`, so the readers here and in
+    # net-change are one definition; absent on an arm scored before it.
+    "answers_cast": lambda p: p.get("answers_cast"),
+    "counters_cast": lambda p: p.get("counters_cast"),
+    "protection_cast": lambda p: p.get("protection_cast"),
+    "wheels_cast": lambda p: p.get("wheels_cast"),
+    "wheels_with_commander": lambda p: p.get("wheels_with_commander"),
+    "first_wheel_turn": lambda p: p.get("first_wheel_turn"),
 }
+
+#: Rows `delta` reads from the per-game values alone — no aggregate in `analysis`
+#: carries them, so each arm's figure is the mean of its own per-game values.
+PER_GAME_ROWS = ("life_removed_total", "noncombat_damage_dealt_to_players", "biggest_hit",
+                 "extra_draw_per_turn", "empty_hand_turns", "mulligans",
+                 "interaction_cast", "interaction_received", "answers_cast",
+                 "counters_cast", "protection_cast", "wheels_cast",
+                 "wheels_with_commander", "first_wheel_turn")
 
 # Counts out of games, not means — so they get Newcombe rather than Welch.
 PROPORTIONS = ("win_rate", "commander_damage_games_reaching_21")
@@ -334,6 +355,26 @@ def delta(analysis_a, analysis_b, slug, games_a=None, games_b=None):
                 # must never read as a narrow one.
                 row["method"] = "no per-game values available; difference is unbounded"
 
+        out[name] = row
+
+    for name in PER_GAME_ROWS:
+        xs = _per_game_values(games_a, slug, name)
+        ys = _per_game_values(games_b, slug, name)
+        if not (xs and ys):
+            continue
+        ma, mb = sum(xs) / len(xs), sum(ys) / len(ys)
+        row = {"a": round(ma, 3), "b": round(mb, 3), "n_a": len(xs), "n_b": len(ys),
+               "diff": round(mb - ma, 3)}
+        d = stats.diff_means(xs, ys)
+        if d:
+            row.update({"ci95_diff": d["ci95"], "excludes_zero": d["excludes_zero"],
+                        "df": d.get("df"), "method": d["method"],
+                        "permutation_p": stats.permutation_p(xs, ys, seed=n_a)})
+            if name in SKEWED:
+                m = stats.diff_medians(xs, ys, seed=n_a)
+                if m:
+                    row["median_diff"] = m["diff"]
+                    row["median_ci95_diff"] = m["ci95"]
         out[name] = row
 
     # Power, on the primary endpoint only.
@@ -464,7 +505,58 @@ def _score_arm(texts, meta_name, opp_names, slug, arm, opponents):
             if opp_cmd.get(o):
                 cmd[f"Ai({k})-{opp_names[i]}"] = opp_cmd[o]
     facts, analysis = sim_parse.analyze_logs(texts, label, cmd)
-    return facts, analysis, [sim_parse.compact(f, label) for f in facts]
+    games = [sim_parse.compact(f, label) for f in facts]
+    _enrich(games, texts, slug, arm, meta_name, mine)
+    return facts, analysis, games
+
+
+def _arm_deck_doc(slug, arm):
+    """The cards.json an arm PLAYED, or None: a branch arm reads the branch's, an arm
+    whose list is the one on disk reads the deck's, and a git version has none on disk
+    (its answers and wheels are then absent, never guessed from today's list)."""
+    from manamap.pilot.common import deck_dir as _dd
+    ref = str(arm.get("ref") or "")
+    try:
+        if ref.startswith("@"):
+            return load_json(_dd(slug, ref[1:]) / "cards.json")
+        here = (deck_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
+        if hashlib.sha256(here.encode()).hexdigest() == arm.get("decklist_sha256"):
+            return load_json(deck_dir(slug) / "cards.json")
+    except (OSError, ValueError):
+        return None
+    return None
+
+
+def _enrich(games, texts, slug, arm, meta_name, commanders):
+    """Write each game's answers and wheel values into our seat's per-game row, in
+    the order the parser yields games. A count that disagrees with `games` writes
+    nothing: a misaligned row would put one game's figures on another."""
+    from manamap.sim import answers as _an, wheel_timing as _wt
+    doc = _arm_deck_doc(slug, arm)
+    if doc is None:
+        return
+    cls = _an.classes(doc)
+    wheels = _wt.wheel_names(doc)
+    cmd = sorted(str(c).split(" // ")[0].strip() for c in (commanders or ()))
+    rows = []
+    for text in texts:
+        for g in sim_parse.parse_games(text):
+            label = next((s for s in g["seats"] if s.endswith(f"-{meta_name}")), None)
+            if label is None:
+                rows.append(None)
+                continue
+            row = {}
+            if cls:
+                row.update(_an.per_game(g, label, cls))
+            if wheels:
+                row.update(_wt.per_game(g, {label: cmd}, label, wheels))
+            rows.append(row)
+    if len(rows) != len(games):
+        return
+    for g, row in zip(games, rows):
+        seat = (g.get("per_seat") or {}).get(slug)
+        if seat is not None and row:
+            seat.update(row)
 
 
 def _look(analysis_a, analysis_b, slug, z, until_mde=None):
@@ -851,24 +943,21 @@ def analyze(slug, experiment_id_or_path):
     log_dir = base / "logs" / path.stem
     opponents = [o["slug"] for o in doc["opponents"]]
     opp_names = [f"{SIM_DECK_PREFIX}{o}" for o in opponents]
-    opp_cmd = _commanders_by_slug(opponents)
     for letter in ("a", "b"):
         logs = sorted(log_dir.glob(f"{letter}-part-*.log"))
         if not logs:
             raise SystemExit(f"{slug}: no {letter}-part-*.log under {log_dir} — an "
                              f"experiment's logs are gitignored and only exist where it ran")
-        meta = f"mm-x-{slug}-{letter}"
-        label = _seat_label([meta, *opp_names]); label[f"Ai(1)-{meta}"] = slug
-        cmd = {f"Ai(1)-{meta}": commanders_from_text(doc["arms"][letter]["decklist_text"])}
-        for i, o in enumerate(opponents):
-            if opp_cmd.get(o):
-                cmd[f"Ai({i + 2})-{opp_names[i]}"] = opp_cmd[o]
+        # THE RUN'S OWN SCORER, rotation-safe. This path used to map OUR seat to
+        # Ai(1) alone, and an experiment rotates the seats every job, so on
+        # 2026-10-22 it re-derived the finisher-v1 A/B as 0.04 a side — three games in
+        # four scored some other seat as ours — where the run had read 0.151 / 0.111.
         texts = [l.read_text(encoding="utf-8", errors="replace") for l in logs]
-        facts, analysis = sim_parse.analyze_logs(texts, label,
-                                                 {k: v for k, v in cmd.items() if v})
+        _facts, analysis, games = _score_arm(texts, f"mm-x-{slug}-{letter}", opp_names,
+                                             slug, doc["arms"][letter], opponents)
         doc["arms"][letter]["analysis"] = analysis
         doc["arms"][letter]["games"] = analysis.get("games")
-        doc["arms"][letter]["games_detail"] = [sim_parse.compact(f, label) for f in facts]
+        doc["arms"][letter]["games_detail"] = games
     doc["delta"] = delta(doc["arms"]["a"]["analysis"], doc["arms"]["b"]["analysis"], slug,
                          doc["arms"]["a"].get("games_detail"),
                          doc["arms"]["b"].get("games_detail"))

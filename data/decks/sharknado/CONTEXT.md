@@ -163,7 +163,7 @@ Goldfish, 10,000 seeded games, measured on v1.3.0 (V8), 2026-10-19. Each group b
 - A win route assembled by turn 6: **81%** (95% CI 81%–82%)
 - A win route assembled by turn 8: **94%** (95% CI 93%–94%)
 - Colour on curve (lands + rocks): W 88%, U 86%, R 84%
-- Forge (an optional probe, not a gate): last run 2026-10-03, 15/200 won (10% (95% CI 6%–15%)) on V6 — on an older list
+- Forge (an optional probe, not a gate): last run 2026-10-21, 4/20 won (20% (95% CI 8%–42%)) on V8
 <!-- /ctx:gen numbers -->
 
 ## Pilot notes

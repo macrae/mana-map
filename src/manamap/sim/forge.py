@@ -1326,6 +1326,10 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         "board_series": _board_series().from_logs(texts, commanders, deck_meta_name(slug)),
         **({"wheel_timing": _wt} if (_wt := _wheel_timing().from_logs(
             texts, commanders, deck_meta_name(slug), _wt_doc)) else {}),
+        # THE ANSWERS (2026-10-22): removal, counterspells and protection our seat
+        # cast, by corpus role; absent when the roles artifact is not on disk.
+        **({"answers": _an} if (_an := _answers().from_logs(
+            texts, deck_meta_name(slug), _wt_doc)) else {}),
         # THE CAST PROOFS the gate read before this arm (a branch seat only): which adds
         # were PLAYED / HELD / CAST-LATE / unproven under this harness, and whether the
         # pilot ran it anyway. None on a deck seat and on every earlier record.
@@ -1399,6 +1403,13 @@ def analyze(slug, run_id_or_path):
         rec["wheel_timing"] = _wt
     else:
         rec.pop("wheel_timing", None)
+    _an = _answers().from_logs(
+        [l.read_text(encoding="utf-8", errors="replace") for l in logs],
+        deck_meta_name(slug), played_doc(slug, rec) or _deck_doc(slug))
+    if _an:
+        rec["answers"] = _an
+    else:
+        rec.pop("answers", None)
     # THE POD, BACKFILLED — and marked `named: false`, because a record written
     # before pods existed faced a table nobody named and this is a reading of
     # today's files rather than a fact about the run. A stamp made by `--pod`
@@ -1476,6 +1487,12 @@ def _wheel_timing():
     """Same cycle, same remedy: `wheel_timing` imports `board_series`."""
     from manamap.sim import wheel_timing
     return wheel_timing
+
+
+def _answers():
+    """Imported late like `_wheel_timing`, for the same import cycle."""
+    from manamap.sim import answers
+    return answers
 
 
 def list_runs(slug):

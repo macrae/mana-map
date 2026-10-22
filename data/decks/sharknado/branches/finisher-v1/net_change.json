@@ -1061,6 +1061,14 @@
    }
   ],
   "forge_endpoints": {
+   "forge.answers_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "answers_cast",
+    "what": "removal, bounce, sweepers, edicts, fight and tax effects our seat cast or activated per game, by the card's corpus role (damage removal only on a noncreature card)",
+    "why": "whether the list answers the table, read from what the AI actually cast"
+   },
    "forge.biggest_hit": {
     "conditional": false,
     "kind": "mean",
@@ -1091,6 +1099,14 @@
     "per_game": "commander_uptime",
     "what": "per game: of the own turns after a commander first resolved, the share on which one was still on the battlefield (either partner), from the board series' cleanup snapshots; conditional on a commander resolving",
     "why": "the deck cannot start until a commander is out and cannot finish if the table keeps removing it \u2014 the recast-tax question as a figure"
+   },
+   "forge.counters_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "counters_cast",
+    "what": "counterspells our seat cast per game (corpus role `counterspell`)",
+    "why": "the held-up answer; the AI under-uses it, so a difference is a floor"
    },
    "forge.drain_dealt": {
     "conditional": false,
@@ -1148,6 +1164,22 @@
     "what": "the own turn our seat's first wheel spell resolved, over games with one",
     "why": "later is the thesis (a finisher, not an opening); read beside the share above, since a deck that never wheels reads nothing here"
    },
+   "forge.interaction_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "interaction_cast",
+    "what": "stack objects our seat cast or activated that targeted an opponent or an opponent's permanent, once per opposing seat per object \u2014 a floor, since a permanent nobody attacked or blocked with cannot be attributed",
+    "why": "interaction aimed at the table, of any kind; not a removal count"
+   },
+   "forge.interaction_received": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "interaction_received",
+    "what": "stack objects opponents aimed at our seat or our permanents, per game, by the same rule",
+    "why": "how much of the table's interaction the list draws; lower is better"
+   },
    "forge.kills_by_ability": {
     "conditional": false,
     "kind": "mean",
@@ -1187,6 +1219,14 @@
     "per_game": "noncombat_damage_dealt_to_players",
     "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
     "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+   },
+   "forge.protection_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "protection_cast",
+    "what": "protection pieces our seat cast or activated per game (any `protection*` role)",
+    "why": "resolve: keeping the commanders and the engine on the table"
    },
    "forge.wheels_with_commander_share": {
     "conditional": false,
@@ -1311,7 +1351,735 @@
   "rule": "a row is better/worse only if its delta clears the MDE AND its |z| survives Holm across the family; the objective is graded on its own, uncorrected, because it was declared before the measurement"
  },
  "forge": {
-  "available": false,
+  "available": true,
+  "basis": "wins over DECIDED games (clock-outs have no winner and are excluded), each arm pooled across every run of it at this one table",
+  "branch": {
+   "all_games": 300,
+   "games": 297,
+   "rate": 0.1111,
+   "runs": 1,
+   "wins": 33,
+   "won_by": {
+    "all opponents have lost": 33
+   }
+  },
+  "card_overrides": "b8d7e50fbbd3",
+  "cast_proofs": {
+   "adds": [
+    "Hobgoblin, Mantled Marauder",
+    "Izzet Signet",
+    "Ledger Shredder",
+    "Loran's Escape",
+    "Mischievous Mystic",
+    "Prismari Command",
+    "Scrounging Skyray",
+    "Surly Badgersaur",
+    "Talisman of Conviction",
+    "Talisman of Creativity",
+    "Thought Vessel"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
+  "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
+  "champion": {
+   "all_games": 300,
+   "games": 299,
+   "rate": 0.1505,
+   "runs": 1,
+   "wins": 45,
+   "won_by": {
+    "all opponents have lost": 45
+   }
+  },
+  "ci95": [
+   -0.0939,
+   0.0151
+  ],
+  "delta": -0.0394,
+  "endpoints": {
+   "forge.answers_cast": {
+    "branch": {
+     "max": 6,
+     "median": 1,
+     "min": 0,
+     "n": 300,
+     "sd": 0.9902,
+     "value": 0.9467
+    },
+    "champion": {
+     "max": 4,
+     "median": 1,
+     "min": 0,
+     "n": 300,
+     "sd": 0.9306,
+     "value": 0.94
+    },
+    "ci95": [
+     -0.1471,
+     0.1605
+    ],
+    "conditional": false,
+    "delta": 0.0067,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.2198,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.biggest_hit": {
+    "branch": {
+     "max": 31,
+     "median": 3,
+     "min": 0,
+     "n": 300,
+     "sd": 4.9536,
+     "value": 4.3367
+    },
+    "champion": {
+     "max": 37,
+     "median": 3,
+     "min": 0,
+     "n": 300,
+     "sd": 5.8718,
+     "value": 4.8367
+    },
+    "ci95": [
+     -1.3693,
+     0.3693
+    ],
+    "conditional": false,
+    "delta": -0.5,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 1.2426,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.combat_damage_dealt_to_players": {
+    "branch": {
+     "max": 200,
+     "median": 6,
+     "min": 0,
+     "n": 300,
+     "sd": 21.9178,
+     "value": 12.5167
+    },
+    "champion": {
+     "max": 199,
+     "median": 5,
+     "min": 0,
+     "n": 300,
+     "sd": 20.1567,
+     "value": 12.4967
+    },
+    "ci95": [
+     -3.3496,
+     3.3896
+    ],
+    "conditional": false,
+    "delta": 0.02,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 4.8165,
+    "median": {
+     "ci95": [
+      -2.0,
+      2.0
+     ],
+     "diff": 1.0,
+     "excludes_zero": false,
+     "method": "percentile bootstrap, 10000 resamples, seed 0"
+    },
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.commander_resolved_rate": {
+    "branch": {
+     "k": 273,
+     "n": 300,
+     "value": 0.91
+    },
+    "champion": {
+     "k": 255,
+     "n": 300,
+     "value": 0.85
+    },
+    "ci95": [
+     0.0078,
+     0.1125
+    ],
+    "conditional": false,
+    "delta": 0.06,
+    "excludes_zero": true,
+    "kind": "proportion",
+    "lower_is_better": false,
+    "mde": 0.075,
+    "method": "Newcombe score interval on the difference of proportions"
+   },
+   "forge.commander_uptime": {
+    "branch": {
+     "n": 0,
+     "value": null
+    },
+    "champion": {
+     "n": 0,
+     "value": null
+    },
+    "ci95": null,
+    "conditional": true,
+    "delta": null,
+    "excludes_zero": null,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": null,
+    "method": null,
+    "why": "no reading on one arm (absent, not zero)"
+   },
+   "forge.counters_cast": {
+    "branch": {
+     "max": 2,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.3178,
+     "value": 0.0967
+    },
+    "champion": {
+     "max": 2,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.3637,
+     "value": 0.1467
+    },
+    "ci95": [
+     -0.1047,
+     0.0047
+    ],
+    "conditional": false,
+    "delta": -0.05,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.0781,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.drain_dealt": {
+    "branch": {
+     "max": 29,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 3.2315,
+     "value": 0.84
+    },
+    "champion": {
+     "max": 24,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 2.9312,
+     "value": 0.8267
+    },
+    "ci95": [
+     -0.4804,
+     0.507
+    ],
+    "conditional": false,
+    "delta": 0.0133,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.7057,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.eliminated_turn": {
+    "branch": {
+     "max": 49,
+     "median": 30,
+     "min": 16,
+     "n": 261,
+     "sd": 5.7568,
+     "value": 30.3985
+    },
+    "champion": {
+     "max": 48,
+     "median": 30,
+     "min": 16,
+     "n": 253,
+     "sd": 5.6085,
+     "value": 30.3399
+    },
+    "ci95": [
+     -0.924,
+     1.0412
+    ],
+    "conditional": true,
+    "delta": 0.0586,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 1.4045,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.empty_hand_turns": {
+    "branch": {
+     "max": 4,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.6902,
+     "value": 0.3767
+    },
+    "champion": {
+     "max": 4,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.5581,
+     "value": 0.23
+    },
+    "ci95": [
+     0.0463,
+     0.2471
+    ],
+    "conditional": false,
+    "delta": 0.1467,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 0.1436,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.evasive_damage_share": {
+    "branch": {
+     "n": 0,
+     "value": null
+    },
+    "champion": {
+     "n": 0,
+     "value": null
+    },
+    "ci95": null,
+    "conditional": true,
+    "delta": null,
+    "excludes_zero": null,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": null,
+    "method": null,
+    "why": "no reading on one arm (absent, not zero)"
+   },
+   "forge.extra_draw_per_turn": {
+    "branch": {
+     "max": 6.1429,
+     "median": 1.6,
+     "min": 0.0,
+     "n": 300,
+     "sd": 0.8151,
+     "value": 1.6876
+    },
+    "champion": {
+     "max": 13.5714,
+     "median": 1.75,
+     "min": 0.0,
+     "n": 300,
+     "sd": 1.4053,
+     "value": 2.082
+    },
+    "ci95": [
+     -0.5782,
+     -0.2106
+    ],
+    "conditional": false,
+    "delta": -0.3944,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.2628,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.first_attack_turn": {
+    "branch": {
+     "max": 40,
+     "median": 15,
+     "min": 5,
+     "n": 246,
+     "sd": 7.0028,
+     "value": 15.0732
+    },
+    "champion": {
+     "max": 39,
+     "median": 17,
+     "min": 5,
+     "n": 234,
+     "sd": 6.8082,
+     "value": 17.094
+    },
+    "ci95": [
+     -3.2564,
+     -0.7852
+    ],
+    "conditional": true,
+    "delta": -2.0208,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 1.7662,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.first_wheel_turn": {
+    "branch": {
+     "max": 13,
+     "median": 7,
+     "min": 2,
+     "n": 75,
+     "sd": 1.7959,
+     "value": 6.8667
+    },
+    "champion": {
+     "max": 12,
+     "median": 7,
+     "min": 3,
+     "n": 110,
+     "sd": 1.8823,
+     "value": 6.7909
+    },
+    "ci95": [
+     -0.4617,
+     0.6133
+    ],
+    "conditional": true,
+    "delta": 0.0758,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.7683,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.interaction_cast": {
+    "branch": {
+     "max": 3,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.4981,
+     "value": 0.2633
+    },
+    "champion": {
+     "max": 3,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.5815,
+     "value": 0.36
+    },
+    "ci95": [
+     -0.1833,
+     -0.0101
+    ],
+    "conditional": false,
+    "delta": -0.0967,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.1238,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.interaction_received": {
+    "branch": {
+     "max": 7,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 1.0391,
+     "value": 0.6433
+    },
+    "champion": {
+     "max": 5,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.8571,
+     "value": 0.5667
+    },
+    "ci95": [
+     -0.0758,
+     0.229
+    ],
+    "conditional": false,
+    "delta": 0.0766,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 0.2179,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.kills_by_ability": {
+    "branch": {
+     "max": 2,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.2602,
+     "value": 0.05
+    },
+    "champion": {
+     "max": 1,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.1614,
+     "value": 0.0267
+    },
+    "ci95": [
+     -0.0113,
+     0.0579
+    ],
+    "conditional": false,
+    "delta": 0.0233,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.0495,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.life_gained": {
+    "branch": {
+     "max": 55,
+     "median": 1,
+     "min": 0,
+     "n": 300,
+     "sd": 7.3804,
+     "value": 3.76
+    },
+    "champion": {
+     "max": 220,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 16.0884,
+     "value": 5.1233
+    },
+    "ci95": [
+     -3.3663,
+     0.6397
+    ],
+    "conditional": false,
+    "delta": -1.3633,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 2.8631,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.life_removed_total": {
+    "branch": {
+     "max": 215,
+     "median": 12,
+     "min": 0,
+     "n": 300,
+     "sd": 27.9682,
+     "value": 22.1367
+    },
+    "champion": {
+     "max": 202,
+     "median": 14,
+     "min": 0,
+     "n": 300,
+     "sd": 29.6028,
+     "value": 24.7033
+    },
+    "ci95": [
+     -7.1751,
+     2.0419
+    ],
+    "conditional": false,
+    "delta": -2.5666,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 6.5873,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.mulligans": {
+    "branch": {
+     "max": 3,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.6222,
+     "value": 0.29
+    },
+    "champion": {
+     "max": 3,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 0.5834,
+     "value": 0.29
+    },
+    "ci95": [
+     -0.0965,
+     0.0965
+    ],
+    "conditional": false,
+    "delta": 0.0,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "mde": 0.138,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.noncombat_damage_dealt_to_players": {
+    "branch": {
+     "max": 111,
+     "median": 4,
+     "min": 0,
+     "n": 300,
+     "sd": 13.2164,
+     "value": 8.78
+    },
+    "champion": {
+     "max": 103,
+     "median": 4,
+     "min": 0,
+     "n": 300,
+     "sd": 16.1947,
+     "value": 11.38
+    },
+    "ci95": [
+     -4.9654,
+     -0.2346
+    ],
+    "conditional": false,
+    "delta": -2.6,
+    "excludes_zero": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 3.3811,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.protection_cast": {
+    "branch": {
+     "max": 6,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 1.1982,
+     "value": 0.7433
+    },
+    "champion": {
+     "max": 8,
+     "median": 0,
+     "min": 0,
+     "n": 300,
+     "sd": 1.32,
+     "value": 0.9
+    },
+    "ci95": [
+     -0.3584,
+     0.045
+    ],
+    "conditional": false,
+    "delta": -0.1567,
+    "excludes_zero": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "mde": 0.2884,
+    "method": "Welch t interval on the difference of means"
+   },
+   "forge.wheels_with_commander_share": {
+    "branch": {
+     "k": 70,
+     "n": 87,
+     "value": 0.8046
+    },
+    "champion": {
+     "k": 118,
+     "n": 150,
+     "value": 0.7867
+    },
+    "ci95": [
+     -0.0937,
+     0.1183
+    ],
+    "conditional": false,
+    "delta": 0.0179,
+    "excludes_zero": false,
+    "kind": "proportion",
+    "lower_is_better": false,
+    "mde": 0.135,
+    "method": "Newcombe score interval on the difference of proportions"
+   },
+   "forge.win_rate": {
+    "branch": {
+     "k": 33,
+     "n": 297,
+     "value": 0.1111
+    },
+    "champion": {
+     "k": 45,
+     "n": 299,
+     "value": 0.1505
+    },
+    "ci95": [
+     -0.0939,
+     0.0151
+    ],
+    "conditional": false,
+    "delta": -0.0394,
+    "excludes_zero": false,
+    "kind": "proportion",
+    "lower_is_better": false,
+    "mde": 0.095,
+    "method": "Newcombe score interval on the difference of proportions"
+   }
+  },
+  "engine_casts": {
+   "branch": null,
+   "champion": {
+    "covered": false,
+    "never_cast": [
+     "Echo of Eons"
+    ],
+    "played": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+    "run": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n8-e9cc7abe-s1922492094-podExperimental-c600-ovb8e1e37e-tl9473cf35"
+   }
+  },
+  "excludes_zero": false,
+  "list_mismatch": null,
+  "mde": 0.095,
+  "null": null,
+  "null_why": "olivers-table has no measured subject null",
+  "other_tables": {
+   "olivers-table (overrides 83896c030c27, patches 9473cf359146)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "olivers-table (overrides 86dd61c16971, patches 9473cf359146)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   },
+   "olivers-table (overrides b8e1e37eadd9, patches 9473cf359146)": {
+    "branch_runs": 0,
+    "champion_runs": 1
+   }
+  },
+  "pod": "olivers-table",
+  "run_ids": {
+   "branch": [
+    "working-vs-@finisher-v1-x-araumi-edict-teval-graveyard-purphoros-pingers-n300-42a80ed8-s1868964164-podExperimental-ovb8d7e50f-tl9473cf35-k4#b"
+   ],
+   "champion": [
+    "working-vs-@finisher-v1-x-araumi-edict-teval-graveyard-purphoros-pingers-n300-42a80ed8-s1868964164-podExperimental-ovb8d7e50f-tl9473cf35-k4#a"
+   ]
+  },
   "superseded": {
    "champion": [
     {
@@ -1327,11 +2095,30 @@
      "run": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-a0874c33-s693221427-podExperimental-c600-ov8c347642-tl9473cf35"
     }
    ]
-  },
-  "why": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@finisher-v1 --vs <pod>` puts it at a table and writes where this reads"
+  }
  },
  "harness": {
-  "cast_proofs": null,
+  "cast_proofs": {
+   "adds": [
+    "Hobgoblin, Mantled Marauder",
+    "Izzet Signet",
+    "Ledger Shredder",
+    "Loran's Escape",
+    "Mischievous Mystic",
+    "Prismari Command",
+    "Scrounging Skyray",
+    "Surly Badgersaur",
+    "Talisman of Conviction",
+    "Talisman of Creativity",
+    "Thought Vessel"
+   ],
+   "anyway": false,
+   "floor": false,
+   "gated_runs": [],
+   "held": [],
+   "late": [],
+   "reads_as": "every add the branch stages was played in its arms"
+  },
   "iterations": 10000,
   "model_version": "d4d357389cfd",
   "seed": 20260826
@@ -1536,7 +2323,9 @@
    "missed drop by T5",
    "mulliganed"
   ],
-  "notes": [],
+  "notes": [
+   "Forge, against a real pod: -0.039 win rate, CI [-0.094, +0.015] \u2014 this run cannot separate the two lists."
+  ],
   "reward": [
    {
     "measure": "board power @T6",
@@ -1644,9 +2433,9 @@
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "no Forge run on the branch \u2014 `manamap pilot simulate sharknado@finisher-v1 --vs <pod>` puts it at a table and writes where this reads",
+    "detail": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
     "kind": "structural",
-    "what": "no game has been played at a real table",
+    "what": "Forge is a weak pilot",
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, damage measured against one seat at 40 life who does nothing (three seats only for what we gain off their draws)"
    }
   ],

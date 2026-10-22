@@ -1034,7 +1034,7 @@
         "unplayed": 0,
         "as_of": "2026-10-21",
         "harness": {
-          "overrides": "ade33bac5dca",
+          "overrides": "b8d7e50fbbd3",
           "patches": "9473cf359146",
           "forge": {
             "version": "2.0.14",
@@ -8407,57 +8407,73 @@
     }
   ],
   "simulation": {
-    "runs": 2,
-    "latest": "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n200-a0874c33-s693221427-podExperimental-c600-ov8c347642-tl9473cf35",
-    "at": "2026-10-03",
-    "stale": true,
-    "ran_on_decklist_sha256": "6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c",
-    "ran_on_version": 6,
+    "runs": 5,
+    "latest": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35",
+    "at": "2026-10-21",
+    "stale": false,
+    "ran_on_decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+    "ran_on_version": 8,
     "current_version": 8,
-    "runs_on_current_list": 0,
-    "games": 200,
-    "wins": 15,
-    "decided": 154,
+    "runs_on_current_list": 3,
+    "games": 20,
+    "wins": 4,
+    "decided": 20,
     "vs": [
-      "sythis-enchantress",
-      "jarad-graveyard",
-      "abaddon"
+      "araumi-edict",
+      "teval-graveyard",
+      "purphoros-pingers"
     ],
-    "win_rate": 0.097,
+    "win_rate": 0.2,
     "win_rate_ci95": [
-      0.06,
-      0.154
+      0.081,
+      0.416
     ],
     "piloting": {
       "comparable": true,
-      "lands_ratio": 0.909,
-      "casts_ratio": 0.665,
+      "lands_ratio": 0.963,
+      "casts_ratio": 0.839,
       "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "engine_casts": {
       "covered": false,
       "never_cast": [
-        "Alhammarret's Archive",
-        "Big Score",
-        "Boros Charm",
-        "Campfire",
-        "Collective Defiance",
+        "March of Swirling Mist",
+        "Mind's Eye",
+        "Sorcerer Class",
         "Faerie Mastermind",
-        "Fateful Showdown",
-        "Fevered Visions"
+        "Rielle, the Everwise",
+        "Teferi's Ageless Insight",
+        "Tolarian Winds"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Big Score, Collective Defiance, Faerie Mastermind, Fateful Showdown, Fevered Visions, Incendiary Command …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Mind's Eye, Sorcerer Class, Faerie Mastermind, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Faerie Mastermind sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 14 own turns (+14 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
-      "sythis-enchantress": 73,
-      "jarad-graveyard": 20,
-      "abaddon": 31
+      "purphoros-pingers": 11,
+      "araumi-edict": 2,
+      "teval-graveyard": 1
     },
-    "mean_round": 20.3,
-    "token_damage_share": 0.05,
-    "tokens_observed": 0.53
+    "mean_round": 16.2,
+    "token_damage_share": 0.13,
+    "tokens_observed": 0.5
   },
-  "experiments": null,
+  "experiments": {
+    "count": 1,
+    "latest": {
+      "question": "working copy  vs  branch finisher-v1, same table",
+      "at": "2026-10-22",
+      "stale": false,
+      "games_per_arm": 300,
+      "win_a": 0.151,
+      "win_b": 0.111,
+      "win_diff_ci95": [
+        -0.0939,
+        0.0151
+      ],
+      "differs": false,
+      "minimum_detectable_difference": 0.095,
+      "reading": "the 95% interval on the win-rate difference is [-0.094, +0.015] and CONTAINS zero. At [299, 297] games per arm this experiment could only have detected a difference of +0.095 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
+    }
+  },
   "decisions": {
     "count": 9,
     "awaiting_outcome": [
