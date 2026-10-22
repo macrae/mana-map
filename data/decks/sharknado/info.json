@@ -148,6 +148,9 @@
             "name": "Champion's Helm"
           },
           {
+            "name": "Clifftop Retreat"
+          },
+          {
             "name": "Collector's Vault"
           },
           {
@@ -206,6 +209,9 @@
           },
           {
             "name": "Stoneforge Mystic"
+          },
+          {
+            "name": "Sunbillow Verge"
           },
           {
             "name": "Talisman of Creativity"
@@ -270,18 +276,18 @@
             ]
           }
         ],
-        "blocking": 31,
+        "blocking": 33,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 38,
+      "out": 38,
       "counts": {
-        "in_deck": 64,
+        "in_deck": 62,
         "box": 2,
         "elsewhere": 4,
-        "buy": 27,
+        "buy": 29,
         "free": 1
       },
       "unsourced": [
@@ -291,6 +297,7 @@
         "Blade Historian",
         "Brotherhood Regalia",
         "Champion's Helm",
+        "Clifftop Retreat",
         "Collector's Vault",
         "Embercleave",
         "Fiery Emancipation",
@@ -312,6 +319,7 @@
         "Needleverge Pathway // Pillarverge Pathway",
         "Prismari Command",
         "Stoneforge Mystic",
+        "Sunbillow Verge",
         "Talisman of Conviction",
         "Talisman of Creativity",
         "Teferi, Master of Time",
@@ -468,6 +476,13 @@
           "is_new": false
         },
         {
+          "name": "Clifftop Retreat",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Collective Defiance",
           "state": "in_deck",
           "where": [],
@@ -581,13 +596,6 @@
           "is_new": true
         },
         {
-          "name": "Floodfarm Verge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Frantic Search",
           "state": "buy",
           "where": [],
@@ -635,13 +643,6 @@
           "where": [],
           "free": false,
           "is_new": true
-        },
-        {
-          "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -998,6 +999,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Sunbillow Verge",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -9610,7 +9618,7 @@
     "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
     "branch `voltron-v1`: 2 cast-late add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch voltron-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `voltron-v1` needs 31 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
+    "branch `voltron-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
     "branch `finisher-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",

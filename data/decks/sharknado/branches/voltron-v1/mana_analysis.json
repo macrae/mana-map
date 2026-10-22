@@ -1,13 +1,13 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "81e11f86e8a2afb636fafa74f785b37653f98949f22c84de19741139996c5b8a",
+  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
   "model_version": "4196386ec818",
   "lands": {
     "total": 36,
     "entries": 34,
     "life": {
       "recurring_per_tap_cycle": 6,
-      "one_time_on_entry": 6
+      "one_time_on_entry": 4
     },
     "enters_tapped": 14,
     "enters_tapped_always": 5,
@@ -58,6 +58,17 @@
         ]
       },
       {
+        "name": "Clifftop Retreat",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Command Beacon",
         "copies": 1,
         "classes": [
@@ -102,17 +113,6 @@
         ]
       },
       {
-        "name": "Floodfarm Verge",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Frostboil Snarl",
         "copies": 1,
         "classes": [
@@ -145,17 +145,6 @@
         ],
         "produces": [
           "R",
-          "W"
-        ]
-      },
-      {
-        "name": "Hallowed Fountain",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "U",
           "W"
         ]
       },
@@ -383,6 +372,17 @@
         ]
       },
       {
+        "name": "Sunbillow Verge",
+        "copies": 1,
+        "classes": [
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Talon Gates of Madara",
         "copies": 1,
         "classes": [
@@ -422,9 +422,9 @@
   "sources": {
     "lands": {
       "W": 19,
-      "U": 25,
+      "U": 23,
       "B": 0,
-      "R": 32,
+      "R": 34,
       "G": 0
     },
     "nonland": {
@@ -436,9 +436,9 @@
     },
     "total": {
       "W": 22,
-      "U": 30,
+      "U": 28,
       "B": 0,
-      "R": 38,
+      "R": 40,
       "G": 0
     },
     "gated": {
@@ -548,11 +548,11 @@
   "shares": {
     "R": {
       "pip_share": 0.514,
-      "source_share": 0.421
+      "source_share": 0.447
     },
     "U": {
       "pip_share": 0.278,
-      "source_share": 0.329
+      "source_share": 0.303
     },
     "W": {
       "pip_share": 0.208,
@@ -567,18 +567,18 @@
   "on_curve_probability": {
     "lands_only": {
       "W": 0.866,
-      "U": 0.936,
-      "R": 0.855
+      "U": 0.918,
+      "R": 0.882
     },
     "with_rocks_and_dorks": {
       "W": 0.907,
-      "U": 0.967,
-      "R": 0.925
+      "U": 0.957,
+      "R": 0.942
     },
     "lands_only_ungated": {
       "W": 0.831,
-      "U": 0.907,
-      "R": 0.804
+      "U": 0.881,
+      "R": 0.839
     }
   },
   "ramp": {
@@ -619,7 +619,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 38.",
+    "R: 34 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 40.",
     "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
     "14 of 36 lands enter tapped (39%) — over the one-in-three budget the deck builder allows itself."
   ]
