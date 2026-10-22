@@ -123,3 +123,29 @@ def test_the_standard_table_reads_every_seat_from_sharknados_run():
         assert isinstance(r["dynamic"]["held_while_castable"], list)
     assert seat_audit.validate(doc) == []
     assert doc["verdict"] == "NOT", "at least one opponent seat at standard-v3 is flagged today"
+
+
+def test_an_experiment_at_a_pod_is_gated_like_simulate(monkeypatch):
+    """`experiment --pod` bypassed the seat audit until 2026-10-21; it now calls the
+    same gate and the record carries the verdict. Proven by deleting the gate call:
+    `run` then receives no seat_audit and the refusal never happens."""
+    import argparse
+    from manamap.sim import experiment, seat_audit
+    seen = {}
+    monkeypatch.setattr(experiment, "forge_resolve_table", lambda args: (["o"], None))
+    def fake_gate(pod, anyway=False):
+        if not anyway:
+            raise SystemExit("refused")
+        return {"verdict": "NOT", "anyway": True}
+    monkeypatch.setattr(seat_audit, "gate", fake_gate)
+    def fake_run(*a, **k):
+        seen.update(k); raise SystemExit("ran")
+    monkeypatch.setattr(experiment, "run", fake_run)
+    args = argparse.Namespace(slug="d", a="working", b="@x", pod="p", games=1, jobs=1, clock=None,
+                              list=False, analyze=None, dry_run=False, anyway=False)
+    with pytest.raises(SystemExit, match="refused"):
+        experiment.main(args)
+    args.anyway = True
+    with pytest.raises(SystemExit, match="ran"):
+        experiment.main(args)
+    assert seen["seat_audit"] == {"verdict": "NOT", "anyway": True}

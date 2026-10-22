@@ -491,7 +491,8 @@ def _look(analysis_a, analysis_b, slug, z, until_mde=None):
 def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False,
         vs_profile=None, detect=None, anyway=False, looks=1, until_mde=None,
-        aa=False, resume=False, boundary="obf", profile_b=None, pod_name=None):
+        aa=False, resume=False, boundary="obf", profile_b=None, pod_name=None,
+        seat_audit=None):
     if not opponents:
         raise SystemExit("experiment needs at least one opponent: --vs <slug> (repeatable)")
     import os
@@ -709,6 +710,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
                         games_a, games_b, looks, boundary, bounds, schedule, until_mde,
                         jobs, aa, looks_out, status, pod_name)
         doc["telemetry"] = tl        # the formatter both arms flew under, beside card_overrides
+        doc["seat_audit"] = seat_audit   # the table's pilotability verdict it ran under
         out_dir.mkdir(exist_ok=True)
         path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
         if status != "running":
@@ -962,6 +964,13 @@ def main(args):
     # about what a table is; they already disagreed about its AI profile, and
     # that made every controlled A/B controlled against the wrong pod.
     opponents, seat_profiles = forge_resolve_table(args)
+    # EVERY SEAT PILOTABLE (2026-10-21), the gate `simulate --pod` already has: an
+    # A/B at a table the AI cannot pilot measures two lists played by a broken
+    # harness. `--anyway` runs it as a screen and the record carries the verdict.
+    _sa = None
+    if getattr(args, "pod", None) and not getattr(args, "dry_run", False):
+        from manamap.sim import seat_audit as _seat_audit
+        _sa = _seat_audit.gate(args.pod, anyway=getattr(args, "anyway", False))
     path, doc = run(slug, args.a, args.b, opponents, games=args.games or SIM_DEFAULT_GAMES,
                     jobs=args.jobs, clock=args.clock or SIM_GAME_CLOCK_SECONDS,
                     seed=getattr(args, "seed", None), profile=getattr(args, "profile", None),
@@ -975,7 +984,7 @@ def main(args):
                     resume=getattr(args, "resume", False),
                     boundary=getattr(args, "boundary", None) or "obf",
                     profile_b=getattr(args, "profile_b", None),
-                    pod_name=getattr(args, "pod", None))
+                    pod_name=getattr(args, "pod", None), seat_audit=_sa)
     if getattr(args, "dry_run", False):
         dz = doc.get("design") or {}
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")
