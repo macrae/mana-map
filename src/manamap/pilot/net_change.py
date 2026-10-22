@@ -369,7 +369,8 @@ _PER_GAME = {k: _EXP_PER_GAME[k] for k in
               "drain_dealt", "biggest_hit", "evasive_damage_share", "kills_by_ability", "life_gained",
               "extra_draw_per_turn", "empty_hand_turns", "noncombat_damage_dealt_to_players",
               "life_removed_total", "mulligans", "interaction_cast", "interaction_received",
-              "answers_cast", "counters_cast", "protection_cast")}
+              "answers_cast", "counters_cast", "protection_cast",
+              "commander_damage_max_on_one_defender")}
 #: PER-GAME VALUES THAT LIVE OUTSIDE `games[].per_seat` (2026-10-21): the board
 #: series' uptime and the wheel timing's rows, both top-level record blocks that
 #: are absent on an older record — pooled beside the per-seat readers, never zero.

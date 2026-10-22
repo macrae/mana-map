@@ -1,0 +1,46 @@
+{
+ "slug": "sharknado",
+ "branch": "voltron-v1",
+ "v": 2,
+ "opened": "2026-10-22",
+ "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters).",
+ "objective": {
+  "axis": "forge.commander_damage_max_on_one_defender",
+  "op": ">=",
+  "value": 10.0,
+  "pod": "olivers-table",
+  "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters)."
+ },
+ "commits": [],
+ "base_version": 8,
+ "base_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+ "summary": {
+  "title": "Commander damage: either shark, built to hit for twenty-one",
+  "blurb": "Wins by commander damage from whichever partner the board favours: Shabraz grows on every draw with counter and draw doublers, Brallin hits through Torbran, a damage doubler and double strike. Each line has a backup and a tutor; Khorvath's Fury returns.",
+  "by": "jarvis",
+  "at": "2026-10-22"
+ },
+ "staged": [
+  {
+   "at": "2026-10-22",
+   "out": "Yoshimaru, Beloved Companion",
+   "in": "Fiery Emancipation",
+   "strength": null,
+   "why": "Forge 2.0.14 has no script for Yoshimaru; Fiery Emancipation triples damage from any source we control, a backup for both commander lines"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Temur Battle Rage",
+   "in": "Fireshrieker",
+   "strength": null,
+   "why": "Forge's AI held Temur Battle Rage castable on 8 turns and never cast it; Fireshrieker is double strike the AI equips"
+  },
+  {
+   "at": "2026-10-22",
+   "out": "Bulk Up",
+   "in": "Genji Glove",
+   "strength": null,
+   "why": "Forge's AI held Bulk Up castable on 9 turns and never cast it; Genji Glove is double strike plus an extra combat"
+  }
+ ]
+}

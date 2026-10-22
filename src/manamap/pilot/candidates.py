@@ -359,6 +359,16 @@ FORGE_OBJECTIVE_AXES = {
         "what": "mulligans our seat took per game (Forge gives the first free)",
         "why": "the kept-hand question at a table: a list the AI ships more often is one "
                "the pilot would too"},
+    # THE COMMANDER-DAMAGE KILL (2026-10-22, sharknado voltron-v1): 21 from ONE
+    # commander on ONE opponent, so the figure is the per-defender maximum, never the
+    # total — 60 spread over three seats kills nobody.
+    "forge.commander_damage_max_on_one_defender": {
+        "kind": "mean", "lower_is_better": False, "conditional": False,
+        "per_game": "commander_damage_max_on_one_defender",
+        "what": "per game, the most combat damage one of our commanders dealt to any single "
+                "opponent (21 is lethal); 0 in a game where no commander connected",
+        "why": "the voltron clock: how close the deck gets to a commander kill, readable "
+               "before the kills themselves are frequent enough to count"},
     # ANSWERS AND INTERACTION (2026-10-22, the finisher-v1 A/B): the pilot asked whether
     # a list "has answers, interactions, resolve" — these are the table's readings of it.
     # `answers` classes the list's own cards by corpus role; `interaction_*` is parse's
