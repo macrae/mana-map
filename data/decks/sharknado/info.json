@@ -136,9 +136,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Ashling's Command"
-          },
-          {
             "name": "Bard, King of Dale"
           },
           {
@@ -149,9 +146,6 @@
           },
           {
             "name": "Champion's Helm"
-          },
-          {
-            "name": "Coldsteel Heart"
           },
           {
             "name": "Collector's Vault"
@@ -270,41 +264,33 @@
             ]
           },
           {
-            "name": "Commander's Sphere",
-            "where": [
-              "Zur Parts"
-            ]
-          },
-          {
             "name": "Mask of Memory",
             "where": [
               "Zur Parts"
             ]
           }
         ],
-        "blocking": 33,
+        "blocking": 31,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 39,
-      "out": 39,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 61,
-        "box": 3,
+        "in_deck": 64,
+        "box": 2,
         "elsewhere": 4,
-        "buy": 29,
+        "buy": 27,
         "free": 1
       },
       "unsourced": [
         "Akroma's Will",
-        "Ashling's Command",
         "Bard, King of Dale",
         "Battlefield Forge",
         "Blade Historian",
         "Brotherhood Regalia",
         "Champion's Helm",
-        "Coldsteel Heart",
         "Collector's Vault",
         "Embercleave",
         "Fiery Emancipation",
@@ -376,13 +362,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Ashling's Command",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -489,13 +468,6 @@
           "is_new": false
         },
         {
-          "name": "Coldsteel Heart",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Collective Defiance",
           "state": "in_deck",
           "where": [],
@@ -522,18 +494,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Commander's Sphere",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Embercleave",
@@ -656,6 +616,13 @@
           "is_new": true
         },
         {
+          "name": "Glint-Horn Buccaneer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Glittering Massif",
           "state": "in_deck",
           "where": [],
@@ -724,6 +691,13 @@
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Jace's Archivist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Jeska's Will",
@@ -886,6 +860,13 @@
           "is_new": false
         },
         {
+          "name": "Reforge the Soul",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Rhystic Study",
           "state": "in_deck",
           "where": [],
@@ -929,13 +910,6 @@
         },
         {
           "name": "Shabraz, the Skyshark",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Shark Typhoon",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -1077,6 +1051,13 @@
         },
         {
           "name": "Thundering Falls",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Tolarian Winds",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -9474,21 +9455,21 @@
     "tokens_observed": 0.5
   },
   "experiments": {
-    "count": 2,
+    "count": 3,
     "latest": {
       "question": "working copy  vs  branch voltron-v1, same table",
       "at": "2026-10-22",
       "stale": false,
       "games_per_arm": 300,
       "win_a": 0.133,
-      "win_b": 0.08,
+      "win_b": 0.149,
       "win_diff_ci95": [
-        -0.1575,
-        0.0493
+        -0.099,
+        0.1301
       ],
       "differs": false,
-      "minimum_detectable_difference": 0.19,
-      "reading": "the 95% interval on the win-rate difference is [-0.158, +0.049] and CONTAINS zero. At 75 games per arm this experiment could only have detected a difference of +0.190 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
+      "minimum_detectable_difference": 0.195,
+      "reading": "the 95% interval on the win-rate difference is [-0.099, +0.130] and CONTAINS zero. At [75, 74] games per arm this experiment could only have detected a difference of +0.195 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
     }
   },
   "decisions": {
@@ -9629,7 +9610,7 @@
     "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
     "branch `voltron-v1`: 2 cast-late add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch voltron-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `voltron-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
+    "branch `voltron-v1` needs 31 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
     "branch `finisher-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
