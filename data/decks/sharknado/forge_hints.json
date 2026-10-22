@@ -189,9 +189,10 @@
       "card": "Shabraz, the Skyshark",
       "svars": {
         "EquipMe": "Multiple",
-        "HasAttackEffect": "TRUE"
+        "HasAttackEffect": "TRUE",
+        "PlayMain1": "TRUE"
       },
-      "why": "the deck kills with 21 commander damage from one commander; EquipMe makes Forge's attach AI choose this creature before any other scoring (46 shipped scripts carry it), HasAttackEffect makes the attack AI count it as an effective attacker",
+      "why": "the deck kills with 21 commander damage from one commander; EquipMe makes Forge's attach AI choose this creature before any other scoring (46 shipped scripts carry it), HasAttackEffect makes the attack AI count it as an effective attacker; PlayMain1 because the AI held him castable on 13 own turns in 40 games at olivers-table (ov432fdd58) while casting Brallin first",
       "cites": [
         "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
         "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
