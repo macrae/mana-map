@@ -167,6 +167,19 @@ STOPPED at look 1 on the pilot's word (2026-10-22): wins 10/75 -> 6/75, commande
 The AI put 39 of 84 equips on non-commanders and Shabraz attacked under once a game. He likes
 the direction: voltron-v1 is the base for further iterations.
 
+**The iterated voltron-v1 A/B (launched 2026-10-22, on his word).** "launch the 300-game A/B
+overnight." `experiment sharknado --a working --b @voltron-v1 --pod olivers-table --games 300
+--looks 4 --detect 0.10 --anyway`, seed 1357020477, both arms replayed under ov0ed1ecfa5e1b
+(the equip/attack hints, PlayMain1 on Shabraz and Teferi), so arm A is a fresh control. The
+branch is the look-1 list plus the both-out pass (seven swaps) and Relentless Assault ->
+Karlach. Static seat audit PILOTABLE under this harness; 32 of 34 adds PLAYED, Flawless Maneuver
+and Loran's Escape CAST-LATE (known blind spots, hence `--anyway`). Three unpaired 40-game
+screens read wins 5, 4, 8 and commander damage max 7.33, 10.18, 9.95. PRE-REGISTERED before any
+look: the stopping rule is on win rate; the BRANCH OBJECTIVE, graded by net-change, stays
+`forge.commander_damage_max_on_one_defender >= 10`; beside it, games reaching 21, Shabraz and
+Brallin attacks per game, equips landing on a commander, and the same Holm-corrected profile
+(answers, interaction, resilience, consistency, draw, wheels with a commander out).
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by
