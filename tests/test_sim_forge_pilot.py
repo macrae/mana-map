@@ -501,3 +501,21 @@ def test_an_ability_param_hint_lands_on_the_named_line_and_a_card_may_carry_two_
         {"card": "Test Two", "ability": "AB$ Pump", "ability_params": {"NumAtt": "-1"}, "why": "w"}]}))
     with pytest.raises(ValueError):
         fp.generate_hints("d")
+
+
+def test_a_hint_may_name_an_open_branchs_card_but_not_a_decided_ones(tmp_path, monkeypatch):
+    """An A/B of the deck against a branch pilots both arms under the same rules, so
+    the branch's own adds may be hinted (2026-10-21: finisher-v1's rocks). Proven by
+    reading cards.json alone: the branch card is then refused."""
+    import json
+    from manamap import config
+    from manamap.pilot import deck_branch
+    decks = tmp_path / "decks"; (decks / "d" / "branches" / "b").mkdir(parents=True)
+    (decks / "d" / "cards.json").write_text(json.dumps({"cards": [{"name": "Deck Card"}]}))
+    (decks / "d" / "branches" / "b" / "cards.json").write_text(json.dumps({"cards": [{"name": "Branch Card"}]}))
+    monkeypatch.setattr(config, "DECKS_DIR", decks); monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    hints = {"hints": [{"card": "Branch Card", "svars": {"PlayMain1": "TRUE"}, "why": "w"}]}
+    monkeypatch.setattr(deck_branch, "is_decided", lambda slug, b, doc=None: False)
+    assert fp.validate_hints("d", hints) == []
+    monkeypatch.setattr(deck_branch, "is_decided", lambda slug, b, doc=None: True)
+    assert any("not in the 99 or an open branch" in e for e in fp.validate_hints("d", hints))

@@ -552,7 +552,7 @@ def floors_for(slug):
 
 
 def validate_hints(slug, doc):
-    """Form: every hint names a card in the 99, says why, and carries at least one hint."""
+    """Form: every hint names a card in the 99 (or an open branch's), says why, and carries at least one hint."""
     import json
     from manamap.pilot.common import deck_dir
     errors = []
@@ -567,6 +567,14 @@ def validate_hints(slug, doc):
         cj = None                                   # an opponent seat: the decklist names it
     if cj is not None and cj.is_file():
         names = {c["name"] for c in json.loads(cj.read_text(encoding="utf-8")).get("cards", [])}
+        # A BRANCH'S adds may be hinted too (2026-10-21): an A/B of the deck against a
+        # branch must pilot both arms under the same rules, and a rock the branch adds
+        # with no PlayMain1 would be played worse than the champion's own. A decided
+        # branch is not an arm, so only an open one widens the list.
+        from manamap.pilot import deck_branch
+        for bj in sorted((cj.parent / "branches").glob("*/cards.json")):
+            if not deck_branch.is_decided(slug, bj.parent.name):
+                names |= {c["name"] for c in json.loads(bj.read_text(encoding="utf-8")).get("cards", [])}
     else:
         from manamap.sim import forge
         names = set(forge._seat_names(slug))
@@ -593,7 +601,7 @@ def validate_hints(slug, doc):
         if not card:
             errors.append(f"{where}: no card"); continue
         if names and card not in names:
-            errors.append(f"{where}: {card!r} is not in the 99")
+            errors.append(f"{where}: {card!r} is not in the 99 or an open branch")
         if (card, h.get("ability")) in seen:
             errors.append(f"{where}: {card!r} hinted twice — one hint per card and ability")
         seen.add((card, h.get("ability")))
