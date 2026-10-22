@@ -147,6 +147,22 @@ consistency (mulligans, empty-hand turns, extra draw per turn), and the branch's
 mechanism (wheels with a commander out, dead wheels never fired). An A/A at 300 is the
 rule's price for grading a Forge figure and follows on his word.
 
+**The finisher-v1 result (2026-10-22).** 300/arm, complete: win rate 45/299 -> 33/297, delta
+-0.039 [-0.094, +0.015]; under Holm across 21 Forge rows the branch draws less (extra draw per
+turn 2.08 -> 1.69) and attacks sooner (first attack ~2 global turns earlier). It traded the
+draw/discard/burn engine for a smoother start, and the table did not pay it back.
+
+**The voltron-v1 A/B (launched 2026-10-22, on his word).** "I want the main win cons in this
+deck to be 21 commander damage." `experiment sharknado --a working --b @voltron-v1 --pod
+olivers-table --games 300 --looks 4 --detect 0.10`, both arms replayed under ovdf27290367
+(Embercleave unflagged), so last night's arm A is NOT this one's control. Static seat audit
+PILOTABLE under that harness; arm A's logs write the dynamic half afterwards. All 29 adds
+proven (28 PLAYED, Loran's Escape CAST-LATE). PRE-REGISTERED before any look: the design's
+stopping rule is on win rate (the experiment's one primary); the BRANCH OBJECTIVE, graded by
+net-change, is `forge.commander_damage_max_on_one_defender >= 10` (deck 5.69 under the old
+harness); beside it, games reaching 21 commander damage, and the same Holm-corrected profile
+as finisher-v1 (answers, interaction, resilience, consistency, wheels with a commander out).
+
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
 arrive and play it; then Edgar gets the next round of attention (mean-v1, discussed slot by

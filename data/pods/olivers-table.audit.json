@@ -1,16 +1,12 @@
 {
   "pod": "olivers-table",
-  "at": "2026-10-21",
+  "at": "2026-10-22",
   "since": "2026-10-21",
   "harness": {
-    "overrides": "83896c030c27",
+    "overrides": "df27290367fc",
     "telemetry": ""
   },
-  "run": {
-    "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35",
-    "games": 20,
-    "logs_read": 4
-  },
+  "run": null,
   "definition": {
     "static": [
       "no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's overrides",
@@ -24,122 +20,6 @@
     "floors": "a card named in the seat's hints as a floor is reported and never fails the seat"
   },
   "seats": [
-    {
-      "slug": "sharknado",
-      "ours": true,
-      "static": {
-        "cards": 100,
-        "nonland": 64,
-        "flagged": [],
-        "unfound": [],
-        "gated": {
-          "Echo of Eons": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Fateful Showdown": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Jace's Archivist": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Khorvath's Fury": [
-            "NeedsToPlayVar:Z GE4",
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Magus of the Wheel": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Molten Psyche": [
-            "NeedsToPlayVar:Z LE2",
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Psychosis Crawler": [
-            "NeedsToPlayVar:X GE3"
-          ],
-          "Reforge the Soul": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Tolarian Winds": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ],
-          "Windfall": [
-            "NeedsToPlay:Creature.IsCommander+YouCtrl"
-          ]
-        },
-        "floors": [
-          "March of Swirling Mist"
-        ],
-        "source": "cards.json",
-        "clean": true
-      },
-      "dynamic": {
-        "games": 20,
-        "commander_resolved_rate": 0.75,
-        "commander_resolved_games": 15,
-        "held_while_castable": [
-          "Big Score",
-          "Boros Charm",
-          "Burning Inquiry",
-          "Faerie Mastermind",
-          "Irencrag Pyromancer",
-          "Khorvath's Fury",
-          "Magmakin Artillerist",
-          "March of Swirling Mist",
-          "Mind's Eye",
-          "Molten Psyche",
-          "Negate",
-          "Nimble Obstructionist",
-          "Niv-Mizzet, Parun",
-          "Razorkin Needlehead",
-          "Rielle, the Everwise",
-          "Sorcerer Class",
-          "Teferi's Ageless Insight",
-          "Tolarian Winds",
-          "Windfall"
-        ],
-        "never_cast": [
-          "Burning Inquiry",
-          "Cascade Bluffs",
-          "City of Brass",
-          "Faerie Mastermind",
-          "Ferrous Lake",
-          "Floodfarm Verge",
-          "Hengegate Pathway",
-          "Magmakin Artillerist",
-          "Mana Confluence",
-          "March of Swirling Mist",
-          "Mind's Eye",
-          "Molten Psyche",
-          "Mountain",
-          "Nimble Obstructionist",
-          "Opal Palace",
-          "Raugrin Triome",
-          "Rielle, the Everwise",
-          "Rugged Prairie",
-          "Sacred Foundry",
-          "Shivan Reef",
-          "Sorcerer Class",
-          "Spire of Industry",
-          "Steam Vents",
-          "Sulfur Falls",
-          "Teferi's Ageless Insight",
-          "Thundering Falls",
-          "Time Reversal",
-          "Tolarian Winds",
-          "Training Center"
-        ],
-        "engine": {},
-        "wheel_timing": {
-          "wheels_per_game": 0.55,
-          "with_commander": 1.0,
-          "first_wheel_turn": 7.57
-        }
-      },
-      "verdict": "NOT",
-      "why": [
-        "the commander resolved in 75% of games (< 80%)"
-      ]
-    },
     {
       "slug": "araumi-edict",
       "ours": false,
@@ -171,42 +51,7 @@
         "source": "corpus",
         "clean": true
       },
-      "dynamic": {
-        "games": 20,
-        "commander_resolved_rate": 0.95,
-        "commander_resolved_games": 19,
-        "held_while_castable": [
-          "An Offer You Can't Refuse",
-          "Archaeomancer",
-          "Baleful Strix",
-          "Cloud of Faeries",
-          "Counterspell",
-          "Demon's Disciple",
-          "Living Death",
-          "Peregrine Drake",
-          "Reef Worm",
-          "Songs of the Damned",
-          "Victimize"
-        ],
-        "never_cast": [
-          "Bojuka Bog",
-          "Choked Estuary",
-          "Cloud of Faeries",
-          "Demon's Disciple",
-          "Dimir Aqueduct",
-          "Island",
-          "Living Death",
-          "Massacre Wurm",
-          "Morphic Pool",
-          "Peregrine Drake",
-          "Shipwreck Marsh",
-          "Songs of the Damned",
-          "Swamp",
-          "Victimize",
-          "Watery Grave"
-        ],
-        "engine": {}
-      },
+      "dynamic": null,
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -225,51 +70,7 @@
         "source": "corpus",
         "clean": true
       },
-      "dynamic": {
-        "games": 20,
-        "commander_resolved_rate": 0.85,
-        "commander_resolved_games": 17,
-        "held_while_castable": [
-          "Cauldron of Essence",
-          "Counterspell",
-          "Crawling Sensation",
-          "Dread Return",
-          "Grapple with the Past",
-          "Grisly Salvage",
-          "Hedge Shredder",
-          "Icetill Explorer",
-          "Lethal Scheme",
-          "Living Death",
-          "Meren of Clan Nel Toth",
-          "Ob Nixilis, the Fallen",
-          "Springbloom Druid",
-          "Steward of the Harvest",
-          "Victimize"
-        ],
-        "never_cast": [
-          "Breeding Pool",
-          "Command Tower",
-          "Crawling Sensation",
-          "Crypt of Agadeem",
-          "Exotic Orchard",
-          "Fetid Pools",
-          "Forest",
-          "Grapple with the Past",
-          "Hedge Shredder",
-          "Icetill Explorer",
-          "Island",
-          "Ob Nixilis, the Fallen",
-          "Opulent Palace",
-          "Overgrown Tomb",
-          "Steward of the Harvest",
-          "Sunken Hollow",
-          "Swamp",
-          "Watery Grave",
-          "Wonder",
-          "Zagoth Triome"
-        ],
-        "engine": {}
-      },
+      "dynamic": null,
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -293,39 +94,12 @@
         "source": "corpus",
         "clean": true
       },
-      "dynamic": {
-        "games": 20,
-        "commander_resolved_rate": 0.95,
-        "commander_resolved_games": 19,
-        "held_while_castable": [
-          "Battle Hymn",
-          "Blood Moon",
-          "Brightstone Ritual",
-          "Fire Diamond",
-          "Goblin Recruiter",
-          "Krenko's Command",
-          "Krenko, Tin Street Kingpin",
-          "Legion Warboss",
-          "Panharmonicon",
-          "Seething Song",
-          "Skullclamp",
-          "Song of Totentanz",
-          "Thrill of Possibility"
-        ],
-        "never_cast": [
-          "Battle Hymn",
-          "Den of the Bugbear",
-          "Dwarven Mine",
-          "Goblin Recruiter",
-          "Mountain"
-        ],
-        "engine": {}
-      },
+      "dynamic": null,
       "verdict": "PILOTABLE",
       "why": []
     }
   ],
-  "verdict": "NOT",
+  "verdict": "PILOTABLE",
   "limits": [
     "STATIC reads the installed scripts: a card that is castable but that the AI holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
     "DYNAMIC castable counts are lands-only (colours ignored), the engine_casts floor.",
