@@ -188,6 +188,14 @@ STOPPED after look 1 on the pilot's word (wins 10/75 vs 11/74; commander damage 
 line (4e7916ae: Tolarian Winds, Reforge the Soul, Jace's Archivist, Glint-Horn Buccaneer back) and a
 second mana pass (7a0bc402: R land sources 34, on curve lands-only 0.882). Proofs 292e1e6e (30/31 PLAYED,
 Flawless Maneuver HELD). RELAUNCHED 2026-10-22, same command, harness and pre-registration.
+COMPLETE (2026-10-22, 300/arm, efc8d719): win rate 49/296 -> 45/299, diff -0.015 [-0.074, +0.044]
+(net-change, pooling arm A of c0427724 at the same list and harness: 59/371 -> 45/299, -0.009
+[-0.063, +0.048], MDE 0.09) — a tie, the downside bounded. OBJECTIVE 6.60 -> 9.36, +2.76 [+0.89, +4.63]
+against MDE 2.67: a real gain, 0.64 short of the pre-registered 10 (net-change: not resolvable). Games
+taking an opponent to 21 commander damage 31 -> 52; combat damage +5.8, protection cast +0.56,
+first attack ~1 turn sooner; interaction cast -0.21, counterspells -0.06, noncombat damage -3.0, extra
+draw per turn -0.20, empty-hand turns +0.12. Purphoros wins ~72% of both arms' losses. Next, the
+pilot's call: a second table (standard-v3) before any merge, then play it.
 
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
