@@ -1,25 +1,37 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
-  "model_version": "4196386ec818",
+  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+  "model_version": "d4d357389cfd",
   "lands": {
     "total": 36,
-    "entries": 36,
+    "entries": 34,
     "life": {
-      "recurring_per_tap_cycle": 5,
-      "one_time_on_entry": 6
+      "recurring_per_tap_cycle": 6,
+      "one_time_on_entry": 4
     },
-    "enters_tapped": 17,
-    "enters_tapped_always": 7,
+    "enters_tapped": 14,
+    "enters_tapped_always": 5,
     "classes": {
-      "basic": 2,
+      "basic": 3,
       "fixing": 7,
-      "mdfc": 2,
-      "tapped": 17,
-      "untapped-dual": 16,
+      "mdfc": 3,
+      "tapped": 14,
+      "untapped-dual": 18,
       "utility": 9
     },
     "list": [
+      {
+        "name": "Battlefield Forge",
+        "copies": 1,
+        "classes": [
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
       {
         "name": "Cascade Bluffs",
         "copies": 1,
@@ -42,6 +54,17 @@
         "produces": [
           "R",
           "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Clifftop Retreat",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "R",
           "W"
         ]
       },
@@ -90,17 +113,6 @@
         ]
       },
       {
-        "name": "Floodfarm Verge",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Frostboil Snarl",
         "copies": 1,
         "classes": [
@@ -125,17 +137,6 @@
         ]
       },
       {
-        "name": "Glacial Fortress",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Glittering Massif",
         "copies": 1,
         "classes": [
@@ -144,17 +145,6 @@
         ],
         "produces": [
           "R",
-          "W"
-        ]
-      },
-      {
-        "name": "Hallowed Fountain",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "U",
           "W"
         ]
       },
@@ -171,25 +161,14 @@
         ]
       },
       {
-        "name": "Irrigated Farmland",
+        "name": "Inspiring Vantage",
         "copies": 1,
         "classes": [
-          "tapped",
-          "utility"
+          "tapped"
         ],
         "produces": [
-          "U",
+          "R",
           "W"
-        ]
-      },
-      {
-        "name": "Island",
-        "copies": 1,
-        "classes": [
-          "basic"
-        ],
-        "produces": [
-          "U"
         ]
       },
       {
@@ -208,7 +187,7 @@
       },
       {
         "name": "Mountain",
-        "copies": 1,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -225,6 +204,18 @@
         "produces": [
           "R",
           "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Needleverge Pathway // Pillarverge Pathway",
+        "copies": 1,
+        "classes": [
+          "mdfc",
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
           "W"
         ]
       },
@@ -296,17 +287,6 @@
         ],
         "produces": [
           "R",
-          "W"
-        ]
-      },
-      {
-        "name": "Sea of Clouds",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "U",
           "W"
         ]
       },
@@ -392,6 +372,17 @@
         ]
       },
       {
+        "name": "Sunbillow Verge",
+        "copies": 1,
+        "classes": [
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Talon Gates of Madara",
         "copies": 1,
         "classes": [
@@ -402,17 +393,6 @@
           "R",
           "U",
           "W"
-        ]
-      },
-      {
-        "name": "Temple of Epiphany",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "U"
         ]
       },
       {
@@ -442,23 +422,23 @@
   "sources": {
     "lands": {
       "W": 19,
-      "U": 30,
+      "U": 23,
       "B": 0,
-      "R": 28,
+      "R": 34,
       "G": 0
     },
     "nonland": {
-      "W": 1,
-      "U": 2,
+      "W": 3,
+      "U": 5,
       "B": 0,
-      "R": 3,
+      "R": 6,
       "G": 0
     },
     "total": {
-      "W": 20,
-      "U": 32,
+      "W": 22,
+      "U": 28,
       "B": 0,
-      "R": 31,
+      "R": 40,
       "G": 0
     },
     "gated": {
@@ -479,6 +459,24 @@
           "R",
           "U",
           "W"
+        ]
+      },
+      {
+        "name": "Azorius Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Izzet Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "U"
         ]
       },
       {
@@ -503,97 +501,115 @@
           "R",
           "U"
         ]
+      },
+      {
+        "name": "Talisman of Conviction",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Talisman of Creativity",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "U"
+        ]
       }
     ]
   },
   "pips": {
     "R": {
-      "total_pips": 42.0,
-      "max_pips": 3,
-      "cards": 31,
-      "earliest_turn": 1,
-      "effective_pips": 2
-    },
-    "U": {
-      "total_pips": 32.0,
+      "total_pips": 37.0,
       "max_pips": 3,
       "cards": 24,
       "earliest_turn": 1,
       "effective_pips": 2
     },
+    "U": {
+      "total_pips": 20.0,
+      "max_pips": 2,
+      "cards": 17,
+      "earliest_turn": 1,
+      "effective_pips": 1
+    },
     "W": {
-      "total_pips": 7.0,
-      "max_pips": 1,
-      "cards": 7,
+      "total_pips": 15.0,
+      "max_pips": 2,
+      "cards": 14,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "R": {
-      "pip_share": 0.519,
-      "source_share": 0.364
+      "pip_share": 0.514,
+      "source_share": 0.447
     },
     "U": {
-      "pip_share": 0.395,
-      "source_share": 0.39
+      "pip_share": 0.278,
+      "source_share": 0.303
     },
     "W": {
-      "pip_share": 0.086,
-      "source_share": 0.247
+      "pip_share": 0.208,
+      "source_share": 0.25
     }
   },
   "source_targets": {
     "R": 36,
-    "U": 36,
+    "U": 22,
     "W": 22
   },
   "on_curve_probability": {
     "lands_only": {
       "W": 0.866,
-      "U": 0.822,
-      "R": 0.785
+      "U": 0.918,
+      "R": 0.882
     },
     "with_rocks_and_dorks": {
-      "W": 0.881,
-      "U": 0.855,
-      "R": 0.839
+      "W": 0.907,
+      "U": 0.957,
+      "R": 0.942
     },
     "lands_only_ungated": {
       "W": 0.831,
-      "U": 0.764,
-      "R": 0.718
+      "U": 0.881,
+      "R": 0.839
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 2,
+    "ramp:cost-reduction": 3,
     "ramp:ritual": 1,
-    "ramp:rock": 3
+    "ramp:rock": 7
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.882,
+      "10": 0.748,
       "2": 0.997,
-      "3": 0.896,
-      "4": 0.79,
-      "5": 0.719,
-      "6": 0.727,
-      "7": 0.815,
-      "8": 0.865,
-      "9": 0.892
+      "3": 0.903,
+      "4": 0.789,
+      "5": 0.702,
+      "6": 0.7,
+      "7": 0.738,
+      "8": 0.768,
+      "9": 0.766
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 9.629,
-      "2": 2.139,
-      "3": 3.144,
-      "4": 3.973,
-      "5": 4.711,
-      "6": 5.468,
-      "7": 6.374,
-      "8": 7.405,
-      "9": 8.492
+      "10": 10.413,
+      "2": 2.141,
+      "3": 3.546,
+      "4": 4.431,
+      "5": 5.251,
+      "6": 6.119,
+      "7": 7.121,
+      "8": 8.22,
+      "9": 9.305
     }
   },
   "assumptions": [
@@ -603,9 +619,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 31.",
-    "U: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 32.",
-    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 20.",
-    "17 of 36 lands enter tapped (47%) — over the one-in-three budget the deck builder allows itself."
+    "R: 34 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 40.",
+    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
+    "14 of 36 lands enter tapped (39%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

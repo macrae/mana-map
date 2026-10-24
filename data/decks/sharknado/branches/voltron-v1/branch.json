@@ -1,7 +1,7 @@
 {
  "slug": "sharknado",
  "branch": "voltron-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-10-22",
  "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters).",
  "objective": {
@@ -31,8 +31,8 @@
  "base_version": 8,
  "base_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
  "summary": {
-  "title": "Commander damage: either shark, built to hit for twenty-one",
-  "blurb": "Wins by commander damage from whichever partner the board favours: Shabraz grows on every draw with counter and draw doublers, Brallin hits through Torbran, a damage doubler and double strike. Each line has a backup and a tutor; Khorvath's Fury returns.",
+  "title": "Modal voltron: either shark hits for twenty-one, Brallin's wheels burn the table",
+  "blurb": "Wins by commander damage from whichever partner the board favours, with equipment, double strike and protection behind them; Brallin's discard wheels with Torbran burn the whole table and grow him for the swing; the mana leans red under the red-heavy payoffs.",
   "by": "jarvis",
   "at": "2026-10-22"
  },
@@ -191,5 +191,93 @@
    "strength": null,
    "why": "try: worse \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Jeska's Will assumes an opponent holds 4 cards, 7 after a wheel (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-10-24",
+  "as_version": "v2.0.0",
+  "why": "The pilot, 2026-10-24: proxies sleeved. Modal voltron \u2014 either commander wins on 21 commander damage. At olivers-table 300/arm: win rate a tie (-0.009 [-0.063, +0.048]); max commander damage on one defender 6.60 -> 9.36 (+2.76 [+0.89, +4.63]), 0.64 short of 10 and under the MDE; games reaching 21: 31 -> 52.",
+  "base_version": 8,
+  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+  "accepted_on": {
+   "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+   "state": "inconclusive",
+   "objective": {
+    "axis": "forge.commander_damage_max_on_one_defender",
+    "op": ">=",
+    "pod": "olivers-table",
+    "value": 10.0,
+    "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters)."
+   },
+   "grade": "not resolvable",
+   "reading": 9.3633,
+   "harness": {
+    "cast_proofs": {
+     "adds": [
+      "Akroma's Will",
+      "Azorius Signet",
+      "Bard, King of Dale",
+      "Battlefield Forge",
+      "Blade Historian",
+      "Brotherhood Regalia",
+      "Champion's Helm",
+      "Clifftop Retreat",
+      "Collector's Vault",
+      "Embercleave",
+      "Fiery Emancipation",
+      "Fireshrieker",
+      "Flawless Maneuver",
+      "Frantic Search",
+      "Genji Glove",
+      "Gratuitous Violence",
+      "Idyllic Tutor",
+      "Inspiring Vantage",
+      "Inti, Seneschal of the Sun",
+      "Iroh's Demonstration",
+      "Izzet Signet",
+      "Karlach, Fury of Avernus",
+      "Key to the City",
+      "Kitsa, Otterball Elite",
+      "Knowledge Is Power",
+      "Lizard Blades",
+      "Loran's Escape",
+      "Mask of Memory",
+      "Mountain",
+      "Needleverge Pathway // Pillarverge Pathway",
+      "Prismari Command",
+      "Stoneforge Mystic",
+      "Sunbillow Verge",
+      "Talisman of Conviction",
+      "Talisman of Creativity",
+      "Teferi, Master of Time",
+      "Zephyr Boots"
+     ],
+     "anyway": false,
+     "floor": false,
+     "gated_runs": [],
+     "held": [],
+     "late": [],
+     "reads_as": "every add the branch stages was played in its arms"
+    },
+    "iterations": 10000,
+    "model_version": "d4d357389cfd",
+    "seed": 20260826
+   }
+  },
+  "proxy": [
+   "Akroma's Will",
+   "Battlefield Forge",
+   "Flawless Maneuver",
+   "Talisman of Conviction"
+  ],
+  "procurement": {
+   "at": "2026-10-24",
+   "note": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
+  }
+ },
+ "merged": {
+  "at": "2026-10-24",
+  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+  "into_version_before": null,
+  "forced_reason": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
+ }
 }

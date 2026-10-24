@@ -1,22 +1,22 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
   "meta": {
     "space": "embeddings_cardbert.npy",
     "space_digest": "1c7fb3995420711c",
     "projection": "classical MDS + SMACOF, canonically oriented",
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
-    "cards": 100,
+    "cards": 98,
     "unresolved": [],
     "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Shabraz, the Skyshark",
-      "x": -0.04081,
-      "y": 0.79352,
+      "x": 0.06912,
+      "y": -0.91443,
       "city": 2,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "buff:counters",
         "draw:engine",
@@ -28,10 +28,10 @@
     },
     {
       "name": "Brallin, Skyshark Rider",
-      "x": -0.62375,
-      "y": 0.32283,
-      "city": 0,
-      "hood": 0,
+      "x": 0.44323,
+      "y": -0.71981,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "buff:counters",
         "payoff:counters",
@@ -43,11 +43,25 @@
       "commander": true
     },
     {
-      "name": "Alhammarret's Archive",
-      "x": -0.02459,
-      "y": -0.57773,
-      "city": 4,
+      "name": "Akroma's Will",
+      "x": 0.57763,
+      "y": 0.62342,
+      "city": 5,
       "hood": 0,
+      "roles": [
+        "protection:granted",
+        "protection:self",
+        "wincon:combat"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Alhammarret's Archive",
+      "x": 0.22296,
+      "y": 0.37484,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "draw:burst"
       ],
@@ -55,26 +69,11 @@
       "commander": false
     },
     {
-      "name": "Anje's Ravager",
-      "x": -0.5581,
-      "y": -0.41997,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "draw:burst",
-        "draw:engine",
-        "draw:wheel",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Arcane Signet",
-      "x": 0.25585,
-      "y": -0.54215,
-      "city": 5,
-      "hood": 1,
+      "x": -0.24684,
+      "y": 0.55977,
+      "city": 1,
+      "hood": 0,
       "roles": [
         "ramp:rock",
         "utility:activated"
@@ -83,21 +82,9 @@
       "commander": false
     },
     {
-      "name": "Arjun, the Shifting Flame",
-      "x": -0.14242,
-      "y": 0.33195,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Artist's Talent",
-      "x": 0.22066,
-      "y": 0.54585,
+      "x": -0.09401,
+      "y": -0.5409,
       "city": 2,
       "hood": 0,
       "roles": [
@@ -108,25 +95,63 @@
       "commander": false
     },
     {
-      "name": "Big Score",
-      "x": 0.30114,
-      "y": -0.55577,
+      "name": "Azorius Signet",
+      "x": -0.26827,
+      "y": 0.36115,
       "city": 1,
       "hood": 2,
       "roles": [
-        "draw:burst",
-        "ramp:ritual",
-        "ramp:treasure",
+        "ramp:rock",
         "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
+      "name": "Bard, King of Dale",
+      "x": 0.38768,
+      "y": 0.52629,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "doubler:tokens",
+        "draw:burst",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Battlefield Forge",
+      "x": -0.47578,
+      "y": 0.11439,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Blade Historian",
+      "x": 0.37497,
+      "y": 0.35661,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "threat:body",
+        "wincon:combat"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Boros Charm",
-      "x": -0.74501,
-      "y": 0.11848,
-      "city": 6,
+      "x": 0.5345,
+      "y": 0.46259,
+      "city": 5,
       "hood": 0,
       "roles": [
         "protection:self",
@@ -137,23 +162,24 @@
       "commander": false
     },
     {
-      "name": "Burning Inquiry",
-      "x": -0.11651,
-      "y": -0.2111,
-      "city": 1,
-      "hood": 2,
+      "name": "Brotherhood Regalia",
+      "x": 0.86514,
+      "y": 0.25533,
+      "city": 4,
+      "hood": 0,
       "roles": [
-        "draw:burst",
-        "draw:wheel"
+        "buff:attached",
+        "protection:self",
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Campfire",
-      "x": 0.2273,
-      "y": -0.63162,
-      "city": 5,
+      "x": -0.21372,
+      "y": 0.68956,
+      "city": 1,
       "hood": 0,
       "roles": [
         "utility:activated"
@@ -163,10 +189,10 @@
     },
     {
       "name": "Cascade Bluffs",
-      "x": 0.39208,
-      "y": 0.06422,
+      "x": -0.48488,
+      "y": -0.04884,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:untapped-dual"
       ],
@@ -174,11 +200,24 @@
       "commander": false
     },
     {
-      "name": "Chasm Skulker",
-      "x": -0.69456,
-      "y": 0.44728,
+      "name": "Champion's Helm",
+      "x": 0.8453,
+      "y": 0.21154,
       "city": 4,
-      "hood": 1,
+      "hood": 0,
+      "roles": [
+        "buff:attached",
+        "protection:self"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Chasm Skulker",
+      "x": 0.8452,
+      "y": -0.63742,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "buff:counters",
         "draw:engine",
@@ -192,9 +231,9 @@
     },
     {
       "name": "City of Brass",
-      "x": 0.41784,
-      "y": -0.32941,
-      "city": 5,
+      "x": -0.54869,
+      "y": 0.40055,
+      "city": 1,
       "hood": 1,
       "roles": [
         "land:fixing",
@@ -205,11 +244,23 @@
       "commander": false
     },
     {
+      "name": "Clifftop Retreat",
+      "x": -0.55268,
+      "y": 0.06432,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Collective Defiance",
-      "x": -0.30483,
-      "y": -0.26707,
-      "city": 1,
-      "hood": 1,
+      "x": 0.27224,
+      "y": -0.30371,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "removal:damage"
       ],
@@ -217,11 +268,25 @@
       "commander": false
     },
     {
-      "name": "Command Beacon",
-      "x": 0.42561,
-      "y": -0.19318,
-      "city": 5,
+      "name": "Collector's Vault",
+      "x": -0.25996,
+      "y": 0.626,
+      "city": 1,
       "hood": 0,
+      "roles": [
+        "ramp:rock",
+        "ramp:treasure",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Command Beacon",
+      "x": -0.59587,
+      "y": 0.28105,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:utility"
       ],
@@ -230,9 +295,9 @@
     },
     {
       "name": "Command Tower",
-      "x": 0.44623,
-      "y": -0.38462,
-      "city": 5,
+      "x": -0.52278,
+      "y": 0.43473,
+      "city": 1,
       "hood": 1,
       "roles": [
         "land:fixing",
@@ -242,61 +307,26 @@
       "commander": false
     },
     {
-      "name": "Commit // Memory",
-      "x": -0.50196,
-      "y": 0.45368,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "draw:burst"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Curator of Mysteries",
-      "x": 0.00573,
-      "y": 0.53984,
-      "city": 2,
+      "name": "Embercleave",
+      "x": 0.83828,
+      "y": 0.00643,
+      "city": 4,
       "hood": 1,
       "roles": [
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Echo of Eons",
-      "x": -0.23065,
-      "y": 0.1606,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "draw:burst"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Faerie Mastermind",
-      "x": -0.22004,
-      "y": 0.62571,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "draw:wheel",
-        "threat:body"
+        "buff:attached",
+        "ramp:cost-reduction",
+        "value:etb",
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Faithless Looting",
-      "x": 0.08248,
-      "y": -0.54149,
-      "city": 1,
-      "hood": 2,
+      "x": -0.37819,
+      "y": -0.74162,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "draw:burst"
       ],
@@ -305,42 +335,40 @@
     },
     {
       "name": "Fateful Showdown",
-      "x": -0.53194,
-      "y": -0.23643,
-      "city": 1,
-      "hood": 1,
+      "x": 0.52259,
+      "y": -0.48891,
+      "city": 0,
+      "hood": 0,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Ferrous Lake",
-      "x": 0.35969,
-      "y": 0.06057,
+      "x": -0.44237,
+      "y": -0.06233,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Fevered Visions",
-      "x": -0.07593,
-      "y": 0.28772,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "draw:engine"
-      ],
+      "name": "Fiery Emancipation",
+      "x": 0.29215,
+      "y": -0.44546,
+      "city": 0,
+      "hood": 1,
+      "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Fiery Islet",
-      "x": 0.38998,
-      "y": 0.02184,
+      "x": -0.52076,
+      "y": -0.04824,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:untapped-dual",
         "land:utility"
@@ -349,21 +377,47 @@
       "commander": false
     },
     {
-      "name": "Floodfarm Verge",
-      "x": 0.52576,
-      "y": 0.00268,
-      "city": 3,
-      "hood": 2,
+      "name": "Fireshrieker",
+      "x": 0.79555,
+      "y": 0.21132,
+      "city": 4,
+      "hood": 0,
       "roles": [
-        "land:untapped-dual"
+        "buff:attached",
+        "wincon:combat"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Flawless Maneuver",
+      "x": 0.7436,
+      "y": 0.57313,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "protection:granted",
+        "protection:self"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Frantic Search",
+      "x": -0.56584,
+      "y": -0.65428,
+      "city": 6,
+      "hood": 1,
+      "roles": [
+        "draw:burst"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Frostboil Snarl",
-      "x": 0.44264,
-      "y": 0.11387,
+      "x": -0.46996,
+      "y": -0.15165,
       "city": 3,
       "hood": 3,
       "roles": [
@@ -374,9 +428,9 @@
     },
     {
       "name": "Gemstone Caverns",
-      "x": 0.43757,
-      "y": -0.35144,
-      "city": 5,
+      "x": -0.45798,
+      "y": 0.40255,
+      "city": 1,
       "hood": 1,
       "roles": [
         "land:fixing",
@@ -386,23 +440,24 @@
       "commander": false
     },
     {
-      "name": "Glacial Fortress",
-      "x": 0.57625,
-      "y": 0.06493,
-      "city": 3,
-      "hood": 2,
+      "name": "Genji Glove",
+      "x": 0.86331,
+      "y": 0.05529,
+      "city": 4,
+      "hood": 1,
       "roles": [
-        "land:tapped"
+        "buff:attached",
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Glint-Horn Buccaneer",
-      "x": -0.61846,
-      "y": 0.08419,
-      "city": 0,
-      "hood": 0,
+      "x": 0.63969,
+      "y": -0.49176,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "removal:damage",
         "threat:body"
@@ -412,8 +467,8 @@
     },
     {
       "name": "Glittering Massif",
-      "x": 0.5516,
-      "y": 0.06237,
+      "x": -0.6202,
+      "y": -0.10398,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -424,23 +479,23 @@
       "commander": false
     },
     {
-      "name": "Hallowed Fountain",
-      "x": 0.58277,
-      "y": 0.14629,
-      "city": 3,
+      "name": "Gratuitous Violence",
+      "x": 0.46659,
+      "y": -0.40397,
+      "city": 0,
       "hood": 1,
       "roles": [
-        "land:tapped"
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Hengegate Pathway // Mistgate Pathway",
-      "x": 0.52004,
-      "y": 0.00912,
+      "x": -0.58591,
+      "y": 0.11447,
       "city": 3,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "land:mdfc"
       ],
@@ -448,11 +503,23 @@
       "commander": false
     },
     {
-      "name": "Incendiary Command",
-      "x": -0.14517,
-      "y": -0.11384,
-      "city": 1,
+      "name": "Idyllic Tutor",
+      "x": 0.05785,
+      "y": 0.61962,
+      "city": 6,
       "hood": 1,
+      "roles": [
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Incendiary Command",
+      "x": 0.18525,
+      "y": -0.12781,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "removal:damage",
         "removal:spot"
@@ -461,65 +528,63 @@
       "commander": false
     },
     {
-      "name": "Irencrag Pyromancer",
-      "x": -0.348,
-      "y": -0.04089,
-      "city": 0,
-      "hood": 1,
+      "name": "Inspiring Vantage",
+      "x": -0.52445,
+      "y": 0.0753,
+      "city": 3,
+      "hood": 0,
       "roles": [
-        "removal:damage",
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Inti, Seneschal of the Sun",
+      "x": 0.27478,
+      "y": 0.25055,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "buff:counters",
+        "draw:impulse",
+        "payoff:counters",
         "threat:body"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Irrigated Farmland",
-      "x": 0.57483,
-      "y": 0.19991,
-      "city": 3,
-      "hood": 1,
-      "roles": [
-        "land:tapped",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Island",
-      "x": 0.57303,
-      "y": 0.2551,
-      "city": 3,
-      "hood": 1,
-      "roles": [
-        "land:basic"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Ivora, Insatiable Heir",
-      "x": -0.69736,
-      "y": -0.26543,
+      "name": "Iroh's Demonstration",
+      "x": 0.13997,
+      "y": -0.06396,
       "city": 0,
       "hood": 0,
       "roles": [
-        "buff:counters",
-        "payoff:counters",
-        "threat:body",
-        "utility:activated",
-        "value:etb"
+        "removal:damage"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Izzet Signet",
+      "x": -0.21656,
+      "y": -0.02074,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "ramp:rock",
+        "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Jace's Archivist",
-      "x": -0.30701,
-      "y": 0.52367,
-      "city": 0,
-      "hood": 1,
+      "x": 0.20301,
+      "y": 0.67942,
+      "city": 6,
+      "hood": 0,
       "roles": [
         "draw:wheel",
         "threat:body",
@@ -529,24 +594,11 @@
       "commander": false
     },
     {
-      "name": "Jaxis, the Troublemaker",
-      "x": -0.61125,
-      "y": -0.11668,
+      "name": "Jeska's Will",
+      "x": 0.08477,
+      "y": -0.3595,
       "city": 0,
       "hood": 0,
-      "roles": [
-        "threat:body",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Jeska's Will",
-      "x": -0.18145,
-      "y": -0.01682,
-      "city": 1,
-      "hood": 1,
       "roles": [
         "draw:impulse",
         "ramp:ritual"
@@ -555,10 +607,60 @@
       "commander": false
     },
     {
-      "name": "Khorvath's Fury",
-      "x": -0.37398,
-      "y": -0.19236,
+      "name": "Karlach, Fury of Avernus",
+      "x": 0.47583,
+      "y": -0.63332,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Key to the City",
+      "x": -0.10644,
+      "y": 0.69152,
       "city": 1,
+      "hood": 0,
+      "roles": [
+        "draw:engine",
+        "utility:activated",
+        "wincon:combat"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Khorvath's Fury",
+      "x": 0.32207,
+      "y": -0.50949,
+      "city": 0,
+      "hood": 0,
+      "roles": [],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Kitsa, Otterball Elite",
+      "x": 0.42872,
+      "y": 0.02675,
+      "city": 6,
+      "hood": 0,
+      "roles": [
+        "buff:pump",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Knowledge Is Power",
+      "x": -0.13029,
+      "y": -0.39901,
+      "city": 0,
       "hood": 1,
       "roles": [],
       "verified": false,
@@ -566,9 +668,9 @@
     },
     {
       "name": "Lae'zel, Vlaakith's Champion",
-      "x": -0.63784,
-      "y": -0.37199,
-      "city": 0,
+      "x": 0.52459,
+      "y": 0.19068,
+      "city": 2,
       "hood": 0,
       "roles": [
         "doubler:counters",
@@ -578,19 +680,9 @@
       "commander": false
     },
     {
-      "name": "Library of Leng",
-      "x": 0.03692,
-      "y": -0.72761,
-      "city": 4,
-      "hood": 0,
-      "roles": [],
-      "verified": true,
-      "commander": false
-    },
-    {
       "name": "Lightning Greaves",
-      "x": -0.36417,
-      "y": -0.7675,
+      "x": 0.80525,
+      "y": 0.1887,
       "city": 4,
       "hood": 0,
       "roles": [
@@ -601,38 +693,36 @@
       "commander": false
     },
     {
-      "name": "Magmakin Artillerist",
-      "x": -0.47908,
-      "y": 0.02696,
-      "city": 0,
+      "name": "Lizard Blades",
+      "x": 0.75388,
+      "y": -0.07365,
+      "city": 4,
       "hood": 0,
       "roles": [
-        "removal:damage",
-        "threat:body"
+        "buff:attached",
+        "threat:body",
+        "wincon:combat"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Magus of the Wheel",
-      "x": -0.22712,
-      "y": -0.08832,
-      "city": 0,
-      "hood": 1,
+      "name": "Loran's Escape",
+      "x": 0.43333,
+      "y": 0.76911,
+      "city": 5,
+      "hood": 0,
       "roles": [
-        "draw:burst",
-        "draw:wheel",
-        "threat:body",
-        "utility:activated"
+        "protection:self"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Mana Confluence",
-      "x": 0.40087,
-      "y": -0.3466,
-      "city": 5,
+      "x": -0.48506,
+      "y": 0.39501,
+      "city": 1,
       "hood": 1,
       "roles": [
         "land:fixing",
@@ -644,10 +734,10 @@
     },
     {
       "name": "Marauding Mako",
-      "x": -0.70567,
-      "y": -0.18857,
-      "city": 0,
-      "hood": 0,
+      "x": 0.82109,
+      "y": -0.34768,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "threat:body",
         "utility:activated"
@@ -657,9 +747,9 @@
     },
     {
       "name": "March of Swirling Mist",
-      "x": -0.44341,
-      "y": 0.44136,
-      "city": 1,
+      "x": 0.58435,
+      "y": -0.25051,
+      "city": 6,
       "hood": 0,
       "roles": [
         "protection:self",
@@ -669,31 +759,23 @@
       "commander": false
     },
     {
-      "name": "Mind's Eye",
-      "x": -0.08645,
-      "y": -0.52907,
+      "name": "Mask of Memory",
+      "x": 0.82026,
+      "y": 0.29232,
       "city": 4,
       "hood": 1,
       "roles": [
+        "buff:attached",
+        "draw:burst",
         "draw:engine"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Molten Psyche",
-      "x": -0.32497,
-      "y": -0.21299,
-      "city": 1,
-      "hood": 1,
-      "roles": [],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Mountain",
-      "x": 0.60713,
-      "y": 0.05634,
+      "x": -0.64345,
+      "y": -0.24291,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -704,8 +786,8 @@
     },
     {
       "name": "Mystic Monastery",
-      "x": 0.46995,
-      "y": 0.13057,
+      "x": -0.52841,
+      "y": 0.05468,
       "city": 3,
       "hood": 0,
       "roles": [
@@ -715,10 +797,22 @@
       "commander": false
     },
     {
+      "name": "Needleverge Pathway // Pillarverge Pathway",
+      "x": -0.51653,
+      "y": 0.13941,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "land:mdfc"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Negate",
-      "x": -0.54343,
-      "y": 0.69514,
-      "city": 6,
+      "x": 1.0,
+      "y": -0.1836,
+      "city": 5,
       "hood": 0,
       "roles": [
         "counterspell"
@@ -727,51 +821,11 @@
       "commander": false
     },
     {
-      "name": "Nezahal, Primal Tide",
-      "x": -0.08801,
-      "y": 0.72558,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Nimble Obstructionist",
-      "x": -0.13744,
-      "y": 0.6462,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "counterspell",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Niv-Mizzet, Parun",
-      "x": -0.02796,
-      "y": 0.47408,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "removal:damage",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Opal Palace",
-      "x": 0.49483,
-      "y": -0.275,
-      "city": 5,
-      "hood": 0,
+      "x": -0.5982,
+      "y": 0.35065,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -780,37 +834,24 @@
       "commander": false
     },
     {
-      "name": "Psychosis Crawler",
-      "x": -0.46181,
-      "y": -0.71956,
-      "city": 4,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Queen Kayla bin-Kroog",
-      "x": -0.37191,
-      "y": -0.46139,
+      "name": "Prismari Command",
+      "x": 0.19455,
+      "y": -0.21893,
       "city": 0,
-      "hood": 1,
+      "hood": 0,
       "roles": [
-        "recursion",
-        "threat:body",
-        "utility:activated"
+        "draw:burst",
+        "ramp:treasure",
+        "removal:damage",
+        "removal:spot"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Raugrin Triome",
-      "x": 0.49036,
-      "y": 0.1981,
+      "x": -0.56535,
+      "y": -0.21858,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -821,24 +862,11 @@
       "commander": false
     },
     {
-      "name": "Razorkin Needlehead",
-      "x": -0.56957,
-      "y": -0.58193,
+      "name": "Reforge the Soul",
+      "x": 0.25995,
+      "y": -0.62702,
       "city": 0,
       "hood": 0,
-      "roles": [
-        "draw:engine",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Reforge the Soul",
-      "x": -0.38121,
-      "y": -0.25612,
-      "city": 1,
-      "hood": 1,
       "roles": [
         "draw:burst",
         "draw:wheel"
@@ -848,9 +876,9 @@
     },
     {
       "name": "Rhystic Study",
-      "x": 0.06646,
-      "y": 0.41719,
-      "city": 2,
+      "x": -0.25259,
+      "y": -0.64381,
+      "city": 6,
       "hood": 0,
       "roles": [
         "draw:engine"
@@ -860,10 +888,10 @@
     },
     {
       "name": "Rielle, the Everwise",
-      "x": -0.15648,
-      "y": 0.46518,
-      "city": 0,
-      "hood": 1,
+      "x": 0.01608,
+      "y": -0.71282,
+      "city": 2,
+      "hood": 0,
       "roles": [
         "threat:body"
       ],
@@ -872,10 +900,10 @@
     },
     {
       "name": "Riverglide Pathway // Lavaglide Pathway",
-      "x": 0.38245,
-      "y": 0.0547,
+      "x": -0.46623,
+      "y": -0.0496,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:mdfc"
       ],
@@ -884,20 +912,20 @@
     },
     {
       "name": "Riverpyre Verge",
-      "x": 0.40996,
-      "y": 0.06582,
+      "x": -0.50235,
+      "y": -0.05148,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Rugged Prairie",
-      "x": 0.53482,
-      "y": -0.10268,
+      "x": -0.54903,
+      "y": 0.12992,
       "city": 3,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "land:untapped-dual"
       ],
@@ -906,61 +934,22 @@
     },
     {
       "name": "Sacred Foundry",
-      "x": 0.58484,
-      "y": -0.0279,
+      "x": -0.64446,
+      "y": -0.10843,
       "city": 3,
       "hood": 1,
       "roles": [
         "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Scrawling Crawler",
-      "x": -0.36559,
-      "y": -0.6391,
-      "city": 4,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "draw:wheel",
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Sea of Clouds",
-      "x": 0.54469,
-      "y": 0.10078,
-      "city": 3,
-      "hood": 2,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Shark Typhoon",
-      "x": 0.11526,
-      "y": 0.64011,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "threat:tokens"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Shivan Reef",
-      "x": 0.42303,
-      "y": 0.04261,
+      "x": -0.523,
+      "y": -0.03712,
       "city": 3,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "land:untapped-dual",
         "land:utility"
@@ -970,9 +959,9 @@
     },
     {
       "name": "Silence",
-      "x": -0.83099,
-      "y": 0.10721,
-      "city": 6,
+      "x": 0.74321,
+      "y": 0.44371,
+      "city": 5,
       "hood": 0,
       "roles": [],
       "verified": false,
@@ -980,10 +969,10 @@
     },
     {
       "name": "Smothering Tithe",
-      "x": 0.29671,
-      "y": -0.42346,
+      "x": -0.28034,
+      "y": 0.42216,
       "city": 1,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "draw:engine",
         "ramp:rock",
@@ -994,23 +983,11 @@
       "commander": false
     },
     {
-      "name": "Snapback",
-      "x": -0.49756,
-      "y": 0.75115,
-      "city": 6,
-      "hood": 0,
-      "roles": [
-        "removal:bounce"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Sol Ring",
-      "x": 0.17325,
-      "y": -0.42307,
-      "city": 5,
-      "hood": 0,
+      "x": -0.14411,
+      "y": 0.53777,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "ramp:rock",
         "utility:activated"
@@ -1020,8 +997,8 @@
     },
     {
       "name": "Sorcerer Class",
-      "x": 0.24456,
-      "y": 0.50156,
+      "x": -0.26817,
+      "y": -0.51387,
       "city": 2,
       "hood": 0,
       "roles": [
@@ -1035,10 +1012,10 @@
     },
     {
       "name": "Spectator Seating",
-      "x": 0.55407,
-      "y": -0.08556,
+      "x": -0.49056,
+      "y": 0.07429,
       "city": 3,
-      "hood": 2,
+      "hood": 0,
       "roles": [
         "land:tapped"
       ],
@@ -1046,23 +1023,11 @@
       "commander": false
     },
     {
-      "name": "Spider-Man, New Champion",
-      "x": -0.72143,
-      "y": -0.11348,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Spire of Industry",
-      "x": 0.42589,
-      "y": -0.27798,
-      "city": 5,
-      "hood": 0,
+      "x": -0.48728,
+      "y": 0.34778,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1073,8 +1038,8 @@
     },
     {
       "name": "Spirebluff Canal",
-      "x": 0.45413,
-      "y": 0.08268,
+      "x": -0.49659,
+      "y": -0.09926,
       "city": 3,
       "hood": 3,
       "roles": [
@@ -1085,8 +1050,8 @@
     },
     {
       "name": "Steam Vents",
-      "x": 0.4007,
-      "y": 0.17961,
+      "x": -0.51073,
+      "y": -0.27122,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -1096,9 +1061,24 @@
       "commander": false
     },
     {
+      "name": "Stoneforge Mystic",
+      "x": 0.04249,
+      "y": 0.83945,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "tutor:narrow",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Stormcarved Coast",
-      "x": 0.45238,
-      "y": 0.09462,
+      "x": -0.49253,
+      "y": -0.11257,
       "city": 3,
       "hood": 3,
       "roles": [
@@ -1109,8 +1089,8 @@
     },
     {
       "name": "Sulfur Falls",
-      "x": 0.46656,
-      "y": 0.09581,
+      "x": -0.50715,
+      "y": -0.12263,
       "city": 3,
       "hood": 3,
       "roles": [
@@ -1120,23 +1100,20 @@
       "commander": false
     },
     {
-      "name": "Swiftfoot Boots",
-      "x": -0.32512,
-      "y": -0.78506,
-      "city": 4,
+      "name": "Sunbillow Verge",
+      "x": -0.52934,
+      "y": 0.14292,
+      "city": 3,
       "hood": 0,
-      "roles": [
-        "buff:attached",
-        "protection:self"
-      ],
-      "verified": true,
+      "roles": [],
+      "verified": false,
       "commander": false
     },
     {
       "name": "Swords to Plowshares",
-      "x": -1.0,
-      "y": 0.06739,
-      "city": 6,
+      "x": 0.77607,
+      "y": 0.70081,
+      "city": 5,
       "hood": 0,
       "roles": [
         "removal:spot"
@@ -1145,10 +1122,36 @@
       "commander": false
     },
     {
+      "name": "Talisman of Conviction",
+      "x": -0.15983,
+      "y": 0.3007,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "ramp:rock",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Talisman of Creativity",
+      "x": -0.2116,
+      "y": 0.10008,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "ramp:rock",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Talon Gates of Madara",
-      "x": 0.51095,
-      "y": -0.23841,
-      "city": 5,
+      "x": -0.5737,
+      "y": 0.34552,
+      "city": 1,
       "hood": 1,
       "roles": [
         "land:fixing",
@@ -1159,10 +1162,10 @@
     },
     {
       "name": "Teferi's Ageless Insight",
-      "x": 0.13544,
-      "y": 0.33828,
-      "city": 4,
-      "hood": 0,
+      "x": -0.12287,
+      "y": -0.45571,
+      "city": 0,
+      "hood": 1,
       "roles": [
         "draw:burst"
       ],
@@ -1170,45 +1173,21 @@
       "commander": false
     },
     {
-      "name": "Teferi's Puzzle Box",
-      "x": -0.06346,
-      "y": -0.44304,
-      "city": 4,
-      "hood": 1,
-      "roles": [],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Temple of Epiphany",
-      "x": 0.42512,
-      "y": 0.1997,
-      "city": 3,
+      "name": "Teferi, Master of Time",
+      "x": 0.03706,
+      "y": -0.58193,
+      "city": 2,
       "hood": 0,
       "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "The Locust God",
-      "x": -0.18028,
-      "y": 0.61658,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "draw:engine",
-        "threat:body",
-        "threat:tokens"
+        "protection:self"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Thundering Falls",
-      "x": 0.4906,
-      "y": 0.22819,
+      "x": -0.66709,
+      "y": -0.22081,
       "city": 3,
       "hood": 1,
       "roles": [
@@ -1218,33 +1197,21 @@
       "commander": false
     },
     {
-      "name": "Time Reversal",
-      "x": -0.31817,
-      "y": 0.22011,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "draw:burst"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Tolarian Winds",
-      "x": -0.33223,
-      "y": 0.29817,
-      "city": 1,
-      "hood": 0,
+      "x": -0.07587,
+      "y": -0.83442,
+      "city": 6,
+      "hood": 1,
       "roles": [],
       "verified": false,
       "commander": false
     },
     {
       "name": "Torbran, Thane of Red Fell",
-      "x": -0.25459,
-      "y": -0.44297,
-      "city": 0,
-      "hood": 1,
+      "x": 0.36865,
+      "y": -0.22142,
+      "city": 2,
+      "hood": 0,
       "roles": [
         "threat:body"
       ],
@@ -1253,8 +1220,8 @@
     },
     {
       "name": "Training Center",
-      "x": 0.46496,
-      "y": 0.08194,
+      "x": -0.49066,
+      "y": -0.10952,
       "city": 3,
       "hood": 3,
       "roles": [
@@ -1265,14 +1232,27 @@
     },
     {
       "name": "Windfall",
-      "x": -0.37627,
-      "y": 0.23741,
-      "city": 1,
-      "hood": 0,
+      "x": 0.20407,
+      "y": -0.76878,
+      "city": 6,
+      "hood": 1,
       "roles": [
         "draw:wheel"
       ],
       "verified": true,
+      "commander": false
+    },
+    {
+      "name": "Zephyr Boots",
+      "x": 0.90864,
+      "y": 0.13525,
+      "city": 4,
+      "hood": 1,
+      "roles": [
+        "buff:attached",
+        "draw:engine"
+      ],
+      "verified": false,
       "commander": false
     }
   ],
@@ -1281,179 +1261,181 @@
       "id": "city-0",
       "level": 0,
       "label": null,
-      "fallback": "Bodies",
-      "cx": -0.49298,
-      "cy": -0.1043,
-      "count": 16,
+      "fallback": "Card Flow",
+      "cx": 0.18045,
+      "cy": -0.29424,
+      "count": 15,
       "cards": [
-        "Anje's Ravager",
-        "Brallin, Skyshark Rider",
-        "Glint-Horn Buccaneer",
-        "Irencrag Pyromancer",
-        "Ivora, Insatiable Heir",
-        "Jace's Archivist",
-        "Jaxis, the Troublemaker",
-        "Lae'zel, Vlaakith's Champion",
-        "Magmakin Artillerist",
-        "Magus of the Wheel",
-        "Marauding Mako",
-        "Queen Kayla bin-Kroog",
-        "Razorkin Needlehead",
-        "Rielle, the Everwise",
-        "Spider-Man, New Champion",
-        "Torbran, Thane of Red Fell"
+        "Alhammarret's Archive",
+        "Blade Historian",
+        "Collective Defiance",
+        "Faithless Looting",
+        "Fateful Showdown",
+        "Fiery Emancipation",
+        "Gratuitous Violence",
+        "Incendiary Command",
+        "Iroh's Demonstration",
+        "Jeska's Will",
+        "Khorvath's Fury",
+        "Knowledge Is Power",
+        "Prismari Command",
+        "Reforge the Soul",
+        "Teferi's Ageless Insight"
       ],
-      "verified_count": 1
+      "verified_count": 2
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
       "label": null,
-      "fallback": "Bodies",
-      "cx": -0.62225,
-      "cy": -0.16241,
-      "count": 10,
+      "fallback": "Interaction",
+      "cx": 0.17813,
+      "cy": -0.38233,
+      "count": 9,
       "cards": [
-        "Anje's Ravager",
-        "Brallin, Skyshark Rider",
-        "Glint-Horn Buccaneer",
-        "Ivora, Insatiable Heir",
-        "Jaxis, the Troublemaker",
-        "Lae'zel, Vlaakith's Champion",
-        "Magmakin Artillerist",
-        "Marauding Mako",
-        "Razorkin Needlehead",
-        "Spider-Man, New Champion"
+        "Collective Defiance",
+        "Faithless Looting",
+        "Fateful Showdown",
+        "Incendiary Command",
+        "Iroh's Demonstration",
+        "Jeska's Will",
+        "Khorvath's Fury",
+        "Prismari Command",
+        "Reforge the Soul"
       ],
-      "verified_count": 0
+      "verified_count": 2
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
       "label": null,
-      "fallback": "Recursion",
-      "cx": -0.27752,
-      "cy": -0.00745,
+      "fallback": "Card Flow",
+      "cx": 0.18392,
+      "cy": -0.16212,
       "count": 6,
       "cards": [
-        "Irencrag Pyromancer",
-        "Jace's Archivist",
-        "Magus of the Wheel",
-        "Queen Kayla bin-Kroog",
-        "Rielle, the Everwise",
-        "Torbran, Thane of Red Fell"
+        "Alhammarret's Archive",
+        "Blade Historian",
+        "Fiery Emancipation",
+        "Gratuitous Violence",
+        "Knowledge Is Power",
+        "Teferi's Ageless Insight"
       ],
-      "verified_count": 1
+      "verified_count": 0
     },
     {
       "id": "city-1",
       "level": 0,
       "label": null,
-      "fallback": "Card Flow",
-      "cx": -0.22838,
-      "cy": -0.07154,
-      "count": 17,
+      "fallback": "Ramp",
+      "cx": -0.33341,
+      "cy": 0.42449,
+      "count": 19,
       "cards": [
-        "Big Score",
-        "Burning Inquiry",
-        "Collective Defiance",
-        "Commit // Memory",
-        "Echo of Eons",
-        "Faithless Looting",
-        "Fateful Showdown",
-        "Incendiary Command",
-        "Jeska's Will",
-        "Khorvath's Fury",
-        "March of Swirling Mist",
-        "Molten Psyche",
-        "Reforge the Soul",
+        "Arcane Signet",
+        "Azorius Signet",
+        "Campfire",
+        "City of Brass",
+        "Collector's Vault",
+        "Command Beacon",
+        "Command Tower",
+        "Gemstone Caverns",
+        "Izzet Signet",
+        "Key to the City",
+        "Mana Confluence",
+        "Opal Palace",
         "Smothering Tithe",
-        "Time Reversal",
-        "Tolarian Winds",
-        "Windfall"
+        "Sol Ring",
+        "Spire of Industry",
+        "Stoneforge Mystic",
+        "Talisman of Conviction",
+        "Talisman of Creativity",
+        "Talon Gates of Madara"
       ],
-      "verified_count": 4
+      "verified_count": 2
     },
     {
       "id": "city-1-hood-0",
       "level": 1,
       "parent": "city-1",
       "label": null,
-      "fallback": "Insurance",
-      "cx": -0.36711,
-      "cy": 0.30189,
+      "fallback": "Ramp",
+      "cx": -0.17747,
+      "cy": 0.63808,
       "count": 6,
       "cards": [
-        "Commit // Memory",
-        "Echo of Eons",
-        "March of Swirling Mist",
-        "Time Reversal",
-        "Tolarian Winds",
-        "Windfall"
+        "Arcane Signet",
+        "Campfire",
+        "Collector's Vault",
+        "Key to the City",
+        "Smothering Tithe",
+        "Stoneforge Mystic"
       ],
-      "verified_count": 1
+      "verified_count": 2
     },
     {
       "id": "city-1-hood-1",
       "level": 1,
       "parent": "city-1",
       "label": null,
-      "fallback": "Interaction",
-      "cx": -0.32051,
-      "cy": -0.18509,
-      "count": 7,
+      "fallback": "Mana",
+      "cx": -0.49041,
+      "cy": 0.3884,
+      "count": 9,
       "cards": [
-        "Collective Defiance",
-        "Fateful Showdown",
-        "Incendiary Command",
-        "Jeska's Will",
-        "Khorvath's Fury",
-        "Molten Psyche",
-        "Reforge the Soul"
+        "City of Brass",
+        "Command Beacon",
+        "Command Tower",
+        "Gemstone Caverns",
+        "Mana Confluence",
+        "Opal Palace",
+        "Sol Ring",
+        "Spire of Industry",
+        "Talon Gates of Madara"
       ],
-      "verified_count": 1
+      "verified_count": 0
     },
     {
       "id": "city-1-hood-2",
       "level": 1,
       "parent": "city-1",
       "label": null,
-      "fallback": "Card Flow III",
-      "cx": 0.14096,
-      "cy": -0.43296,
+      "fallback": "Ramp II",
+      "cx": -0.21406,
+      "cy": 0.1853,
       "count": 4,
       "cards": [
-        "Big Score",
-        "Burning Inquiry",
-        "Faithless Looting",
-        "Smothering Tithe"
+        "Azorius Signet",
+        "Izzet Signet",
+        "Talisman of Conviction",
+        "Talisman of Creativity"
       ],
-      "verified_count": 2
+      "verified_count": 0
     },
     {
       "id": "city-2",
       "level": 0,
       "label": null,
-      "fallback": "Ramp",
-      "cx": -0.02002,
-      "cy": 0.54969,
+      "fallback": "Bodies",
+      "cx": 0.28428,
+      "cy": -0.36234,
       "count": 13,
       "cards": [
-        "Arjun, the Shifting Flame",
         "Artist's Talent",
-        "Curator of Mysteries",
-        "Faerie Mastermind",
-        "Fevered Visions",
-        "Nezahal, Primal Tide",
-        "Nimble Obstructionist",
-        "Niv-Mizzet, Parun",
-        "Rhystic Study",
+        "Bard, King of Dale",
+        "Brallin, Skyshark Rider",
+        "Glint-Horn Buccaneer",
+        "Inti, Seneschal of the Sun",
+        "Karlach, Fury of Avernus",
+        "Lae'zel, Vlaakith's Champion",
+        "Marauding Mako",
+        "Rielle, the Everwise",
         "Shabraz, the Skyshark",
-        "Shark Typhoon",
         "Sorcerer Class",
-        "The Locust God"
+        "Teferi, Master of Time",
+        "Torbran, Thane of Red Fell"
       ],
       "verified_count": 1
     },
@@ -1462,16 +1444,20 @@
       "level": 1,
       "parent": "city-2",
       "label": null,
-      "fallback": "Value",
-      "cx": 0.1142,
-      "cy": 0.47849,
-      "count": 5,
+      "fallback": "Bodies",
+      "cx": 0.1462,
+      "cy": -0.27976,
+      "count": 9,
       "cards": [
         "Artist's Talent",
-        "Fevered Visions",
-        "Rhystic Study",
-        "Shark Typhoon",
-        "Sorcerer Class"
+        "Bard, King of Dale",
+        "Inti, Seneschal of the Sun",
+        "Lae'zel, Vlaakith's Champion",
+        "Rielle, the Everwise",
+        "Shabraz, the Skyshark",
+        "Sorcerer Class",
+        "Teferi, Master of Time",
+        "Torbran, Thane of Red Fell"
       ],
       "verified_count": 1
     },
@@ -1480,19 +1466,15 @@
       "level": 1,
       "parent": "city-2",
       "label": null,
-      "fallback": "Card Flow",
-      "cx": -0.1039,
-      "cy": 0.59418,
-      "count": 8,
+      "fallback": "Value",
+      "cx": 0.59496,
+      "cy": -0.54814,
+      "count": 4,
       "cards": [
-        "Arjun, the Shifting Flame",
-        "Curator of Mysteries",
-        "Faerie Mastermind",
-        "Nezahal, Primal Tide",
-        "Nimble Obstructionist",
-        "Niv-Mizzet, Parun",
-        "Shabraz, the Skyshark",
-        "The Locust God"
+        "Brallin, Skyshark Rider",
+        "Glint-Horn Buccaneer",
+        "Karlach, Fury of Avernus",
+        "Marauding Mako"
       ],
       "verified_count": 0
     },
@@ -1501,36 +1483,34 @@
       "level": 0,
       "label": null,
       "fallback": "Mana",
-      "cx": 0.4873,
-      "cy": 0.08558,
-      "count": 28,
+      "cx": -0.53079,
+      "cy": -0.04421,
+      "count": 26,
       "cards": [
+        "Battlefield Forge",
         "Cascade Bluffs",
+        "Clifftop Retreat",
         "Ferrous Lake",
         "Fiery Islet",
-        "Floodfarm Verge",
         "Frostboil Snarl",
-        "Glacial Fortress",
         "Glittering Massif",
-        "Hallowed Fountain",
         "Hengegate Pathway // Mistgate Pathway",
-        "Irrigated Farmland",
-        "Island",
+        "Inspiring Vantage",
         "Mountain",
         "Mystic Monastery",
+        "Needleverge Pathway // Pillarverge Pathway",
         "Raugrin Triome",
         "Riverglide Pathway // Lavaglide Pathway",
         "Riverpyre Verge",
         "Rugged Prairie",
         "Sacred Foundry",
-        "Sea of Clouds",
         "Shivan Reef",
         "Spectator Seating",
         "Spirebluff Canal",
         "Steam Vents",
         "Stormcarved Coast",
         "Sulfur Falls",
-        "Temple of Epiphany",
+        "Sunbillow Verge",
         "Thundering Falls",
         "Training Center"
       ],
@@ -1542,18 +1522,19 @@
       "parent": "city-3",
       "label": null,
       "fallback": "Mana II",
-      "cx": 0.40653,
-      "cy": 0.08,
-      "count": 8,
+      "cx": -0.52808,
+      "cy": 0.10108,
+      "count": 9,
       "cards": [
-        "Cascade Bluffs",
-        "Ferrous Lake",
-        "Fiery Islet",
+        "Battlefield Forge",
+        "Clifftop Retreat",
+        "Hengegate Pathway // Mistgate Pathway",
+        "Inspiring Vantage",
         "Mystic Monastery",
-        "Riverglide Pathway // Lavaglide Pathway",
-        "Riverpyre Verge",
-        "Shivan Reef",
-        "Temple of Epiphany"
+        "Needleverge Pathway // Pillarverge Pathway",
+        "Rugged Prairie",
+        "Spectator Seating",
+        "Sunbillow Verge"
       ],
       "verified_count": 0
     },
@@ -1562,15 +1543,12 @@
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Mana",
-      "cx": 0.53954,
-      "cy": 0.14422,
-      "count": 9,
+      "fallback": "Mana III",
+      "cx": -0.60855,
+      "cy": -0.19432,
+      "count": 6,
       "cards": [
         "Glittering Massif",
-        "Hallowed Fountain",
-        "Irrigated Farmland",
-        "Island",
         "Mountain",
         "Raugrin Triome",
         "Sacred Foundry",
@@ -1584,17 +1562,17 @@
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Mana III",
-      "cx": 0.54261,
-      "cy": -0.00179,
+      "fallback": "Mana IIII",
+      "cx": -0.48993,
+      "cy": -0.0496,
       "count": 6,
       "cards": [
-        "Floodfarm Verge",
-        "Glacial Fortress",
-        "Hengegate Pathway // Mistgate Pathway",
-        "Rugged Prairie",
-        "Sea of Clouds",
-        "Spectator Seating"
+        "Cascade Bluffs",
+        "Ferrous Lake",
+        "Fiery Islet",
+        "Riverglide Pathway // Lavaglide Pathway",
+        "Riverpyre Verge",
+        "Shivan Reef"
       ],
       "verified_count": 0
     },
@@ -1603,9 +1581,9 @@
       "level": 1,
       "parent": "city-3",
       "label": null,
-      "fallback": "Mana IIII",
-      "cx": 0.45613,
-      "cy": 0.09379,
+      "fallback": "Mana IIIII",
+      "cx": -0.49138,
+      "cy": -0.11912,
       "count": 5,
       "cards": [
         "Frostboil Snarl",
@@ -1621,56 +1599,54 @@
       "level": 0,
       "label": null,
       "fallback": "Finishers",
-      "cx": -0.22134,
-      "cy": -0.44031,
-      "count": 10,
+      "cx": 0.83285,
+      "cy": 0.1425,
+      "count": 9,
       "cards": [
-        "Alhammarret's Archive",
-        "Chasm Skulker",
-        "Library of Leng",
+        "Brotherhood Regalia",
+        "Champion's Helm",
+        "Embercleave",
+        "Fireshrieker",
+        "Genji Glove",
         "Lightning Greaves",
-        "Mind's Eye",
-        "Psychosis Crawler",
-        "Scrawling Crawler",
-        "Swiftfoot Boots",
-        "Teferi's Ageless Insight",
-        "Teferi's Puzzle Box"
+        "Lizard Blades",
+        "Mask of Memory",
+        "Zephyr Boots"
       ],
-      "verified_count": 3
+      "verified_count": 1
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
       "label": null,
-      "fallback": "Card Flow II",
-      "cx": -0.1083,
-      "cy": -0.50393,
+      "fallback": "Finishers",
+      "cx": 0.81302,
+      "cy": 0.15865,
       "count": 5,
       "cards": [
-        "Alhammarret's Archive",
-        "Library of Leng",
+        "Brotherhood Regalia",
+        "Champion's Helm",
+        "Fireshrieker",
         "Lightning Greaves",
-        "Swiftfoot Boots",
-        "Teferi's Ageless Insight"
+        "Lizard Blades"
       ],
-      "verified_count": 3
+      "verified_count": 1
     },
     {
       "id": "city-4-hood-1",
       "level": 1,
       "parent": "city-4",
       "label": null,
-      "fallback": "Finishers",
-      "cx": -0.33438,
-      "cy": -0.3767,
-      "count": 5,
+      "fallback": "Card Flow II",
+      "cx": 0.85762,
+      "cy": 0.12232,
+      "count": 4,
       "cards": [
-        "Chasm Skulker",
-        "Mind's Eye",
-        "Psychosis Crawler",
-        "Scrawling Crawler",
-        "Teferi's Puzzle Box"
+        "Embercleave",
+        "Genji Glove",
+        "Mask of Memory",
+        "Zephyr Boots"
       ],
       "verified_count": 0
     },
@@ -1678,22 +1654,18 @@
       "id": "city-5",
       "level": 0,
       "label": null,
-      "fallback": "Mana II",
-      "cx": 0.38329,
-      "cy": -0.36304,
-      "count": 11,
+      "fallback": "Interaction",
+      "cx": 0.68691,
+      "cy": 0.48417,
+      "count": 7,
       "cards": [
-        "Arcane Signet",
-        "Campfire",
-        "City of Brass",
-        "Command Beacon",
-        "Command Tower",
-        "Gemstone Caverns",
-        "Mana Confluence",
-        "Opal Palace",
-        "Sol Ring",
-        "Spire of Industry",
-        "Talon Gates of Madara"
+        "Akroma's Will",
+        "Boros Charm",
+        "Flawless Maneuver",
+        "Loran's Escape",
+        "Negate",
+        "Silence",
+        "Swords to Plowshares"
       ],
       "verified_count": 1
     },
@@ -1702,35 +1674,18 @@
       "level": 1,
       "parent": "city-5",
       "label": null,
-      "fallback": "Mana IIIII",
-      "cx": 0.34938,
-      "cy": -0.36017,
-      "count": 5,
+      "fallback": "Insurance",
+      "cx": 0.68691,
+      "cy": 0.48417,
+      "count": 7,
       "cards": [
-        "Campfire",
-        "Command Beacon",
-        "Opal Palace",
-        "Sol Ring",
-        "Spire of Industry"
-      ],
-      "verified_count": 0
-    },
-    {
-      "id": "city-5-hood-1",
-      "level": 1,
-      "parent": "city-5",
-      "label": null,
-      "fallback": "Ramp",
-      "cx": 0.41156,
-      "cy": -0.36544,
-      "count": 6,
-      "cards": [
-        "Arcane Signet",
-        "City of Brass",
-        "Command Tower",
-        "Gemstone Caverns",
-        "Mana Confluence",
-        "Talon Gates of Madara"
+        "Akroma's Will",
+        "Boros Charm",
+        "Flawless Maneuver",
+        "Loran's Escape",
+        "Negate",
+        "Silence",
+        "Swords to Plowshares"
       ],
       "verified_count": 1
     },
@@ -1738,34 +1693,55 @@
       "id": "city-6",
       "level": 0,
       "label": null,
-      "fallback": "Interaction",
-      "cx": -0.7234,
-      "cy": 0.34787,
-      "count": 5,
+      "fallback": "Insurance",
+      "cx": 0.15877,
+      "cy": -0.27371,
+      "count": 9,
       "cards": [
-        "Boros Charm",
-        "Negate",
-        "Silence",
-        "Snapback",
-        "Swords to Plowshares"
+        "Chasm Skulker",
+        "Frantic Search",
+        "Idyllic Tutor",
+        "Jace's Archivist",
+        "Kitsa, Otterball Elite",
+        "March of Swirling Mist",
+        "Rhystic Study",
+        "Tolarian Winds",
+        "Windfall"
       ],
-      "verified_count": 1
+      "verified_count": 2
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
       "label": null,
-      "fallback": "Interaction II",
-      "cx": -0.7234,
-      "cy": 0.34787,
+      "fallback": "Payoffs",
+      "cx": 0.36174,
+      "cy": -0.16511,
       "count": 5,
       "cards": [
-        "Boros Charm",
-        "Negate",
-        "Silence",
-        "Snapback",
-        "Swords to Plowshares"
+        "Chasm Skulker",
+        "Jace's Archivist",
+        "Kitsa, Otterball Elite",
+        "March of Swirling Mist",
+        "Rhystic Study"
+      ],
+      "verified_count": 1
+    },
+    {
+      "id": "city-6-hood-1",
+      "level": 1,
+      "parent": "city-6",
+      "label": null,
+      "fallback": "Tutors",
+      "cx": -0.09495,
+      "cy": -0.40946,
+      "count": 4,
+      "cards": [
+        "Frantic Search",
+        "Idyllic Tutor",
+        "Tolarian Winds",
+        "Windfall"
       ],
       "verified_count": 1
     }
@@ -1773,683 +1749,658 @@
   "edges": [
     {
       "a": 0,
-      "b": 56,
-      "d": 0.382
+      "b": 91,
+      "d": 0.5116
     },
     {
       "a": 0,
-      "b": 93,
-      "d": 0.4006
+      "b": 7,
+      "d": 0.5639
     },
     {
       "a": 1,
-      "b": 40,
-      "d": 0.2357
+      "b": 46,
+      "d": 0.3035
     },
     {
       "a": 1,
-      "b": 30,
-      "d": 0.3922
+      "b": 49,
+      "d": 0.3584
     },
     {
       "a": 2,
+      "b": 29,
+      "d": 0.0833
+    },
+    {
+      "a": 2,
+      "b": 86,
+      "d": 0.2453
+    },
+    {
+      "a": 3,
       "b": 90,
       "d": 0.3276
     },
     {
-      "a": 2,
-      "b": 44,
-      "d": 0.3475
-    },
-    {
       "a": 3,
-      "b": 63,
-      "d": 0.4479
-    },
-    {
-      "a": 3,
-      "b": 30,
-      "d": 0.5274
+      "b": 76,
+      "d": 0.3932
     },
     {
       "a": 4,
-      "b": 48,
+      "b": 19,
+      "d": 0.0799
+    },
+    {
+      "a": 4,
+      "b": 55,
       "d": 0.1392
     },
     {
-      "a": 4,
-      "b": 16,
-      "d": 0.1725
-    },
-    {
       "a": 5,
-      "b": 58,
-      "d": 0.25
-    },
-    {
-      "a": 5,
-      "b": 93,
-      "d": 0.2818
-    },
-    {
-      "a": 6,
-      "b": 79,
+      "b": 77,
       "d": 0.0544
     },
     {
+      "a": 5,
+      "b": 91,
+      "d": 0.3623
+    },
+    {
       "a": 6,
-      "b": 27,
-      "d": 0.4388
+      "b": 43,
+      "d": 0.2269
+    },
+    {
+      "a": 6,
+      "b": 87,
+      "d": 0.2424
     },
     {
       "a": 7,
-      "b": 76,
-      "d": 0.3471
+      "b": 51,
+      "d": 0.1889
     },
     {
       "a": 7,
-      "b": 21,
-      "d": 0.3671
+      "b": 49,
+      "d": 0.3651
     },
     {
       "a": 8,
-      "b": 75,
-      "d": 0.3288
+      "b": 71,
+      "d": 0.0142
     },
     {
       "a": 8,
-      "b": 88,
-      "d": 0.4118
+      "b": 61,
+      "d": 0.038
     },
     {
       "a": 9,
-      "b": 21,
-      "d": 0.221
+      "b": 36,
+      "d": 0.407
     },
     {
       "a": 9,
-      "b": 42,
-      "d": 0.2446
-    },
-    {
-      "a": 4,
-      "b": 10,
-      "d": 0.3174
+      "b": 26,
+      "d": 0.4075
     },
     {
       "a": 10,
-      "b": 78,
-      "d": 0.3528
+      "b": 54,
+      "d": 0.2542
+    },
+    {
+      "a": 10,
+      "b": 29,
+      "d": 0.2727
     },
     {
       "a": 11,
-      "b": 74,
-      "d": 0.0068
+      "b": 14,
+      "d": 0.0133
     },
     {
       "a": 11,
-      "b": 67,
-      "d": 0.0247
+      "b": 52,
+      "d": 0.0305
     },
     {
       "a": 12,
-      "b": 71,
-      "d": 0.316
+      "b": 47,
+      "d": 0.2684
     },
     {
-      "a": 12,
-      "b": 60,
-      "d": 0.4843
+      "a": 4,
+      "b": 12,
+      "d": 0.3174
     },
     {
       "a": 13,
+      "b": 73,
+      "d": 0.0068
+    },
+    {
+      "a": 13,
+      "b": 69,
+      "d": 0.0247
+    },
+    {
+      "a": 14,
+      "b": 52,
+      "d": 0.019
+    },
+    {
+      "a": 15,
+      "b": 44,
+      "d": 0.6496
+    },
+    {
+      "a": 15,
+      "b": 56,
+      "d": 0.6702
+    },
+    {
+      "a": 16,
       "b": 89,
       "d": 0.1044
     },
     {
-      "a": 13,
-      "b": 16,
+      "a": 16,
+      "b": 21,
       "d": 0.1339
     },
     {
-      "a": 14,
-      "b": 34,
+      "a": 17,
+      "b": 78,
+      "d": 0.0065
+    },
+    {
+      "a": 17,
+      "b": 40,
+      "d": 0.0079
+    },
+    {
+      "a": 18,
+      "b": 64,
+      "d": 0.19
+    },
+    {
+      "a": 18,
+      "b": 39,
       "d": 0.2455
     },
     {
-      "a": 14,
-      "b": 52,
-      "d": 0.2517
+      "a": 19,
+      "b": 75,
+      "d": 0.2182
     },
     {
-      "a": 15,
-      "b": 59,
+      "a": 20,
+      "b": 63,
       "d": 0.1021
     },
     {
-      "a": 15,
-      "b": 82,
+      "a": 20,
+      "b": 79,
       "d": 0.1058
     },
     {
-      "a": 16,
-      "b": 48,
+      "a": 21,
+      "b": 55,
       "d": 0.0418
     },
     {
-      "a": 16,
-      "b": 59,
+      "a": 21,
+      "b": 63,
       "d": 0.1142
     },
     {
-      "a": 17,
-      "b": 64,
-      "d": 0.3262
-    },
-    {
-      "a": 17,
-      "b": 50,
-      "d": 0.3711
-    },
-    {
-      "a": 18,
-      "b": 57,
-      "d": 0.2215
-    },
-    {
-      "a": 18,
-      "b": 20,
-      "d": 0.3161
-    },
-    {
-      "a": 19,
-      "b": 95,
-      "d": 0.1419
-    },
-    {
-      "a": 19,
-      "b": 99,
-      "d": 0.1637
-    },
-    {
-      "a": 20,
-      "b": 57,
-      "d": 0.1917
-    },
-    {
-      "a": 20,
-      "b": 93,
-      "d": 0.2857
+      "a": 22,
+      "b": 33,
+      "d": 0.235
     },
     {
       "a": 22,
-      "b": 42,
+      "b": 97,
+      "d": 0.2943
+    },
+    {
+      "a": 23,
+      "b": 30,
+      "d": 0.4836
+    },
+    {
+      "a": 23,
+      "b": 93,
+      "d": 0.4893
+    },
+    {
+      "a": 24,
+      "b": 48,
       "d": 0.1092
     },
     {
-      "a": 9,
-      "b": 22,
-      "d": 0.259
-    },
-    {
-      "a": 23,
-      "b": 67,
-      "d": 0.0228
-    },
-    {
-      "a": 23,
-      "b": 68,
-      "d": 0.0287
-    },
-    {
       "a": 24,
-      "b": 65,
-      "d": 0.1582
-    },
-    {
-      "a": 24,
-      "b": 73,
-      "d": 0.3686
-    },
-    {
-      "a": 23,
-      "b": 25,
-      "d": 0.0341
+      "b": 36,
+      "d": 0.2953
     },
     {
       "a": 25,
-      "b": 67,
+      "b": 69,
+      "d": 0.0228
+    },
+    {
+      "a": 25,
+      "b": 70,
+      "d": 0.0287
+    },
+    {
+      "a": 26,
+      "b": 36,
+      "d": 0.0642
+    },
+    {
+      "a": 26,
+      "b": 48,
+      "d": 0.383
+    },
+    {
+      "a": 25,
+      "b": 27,
+      "d": 0.0341
+    },
+    {
+      "a": 27,
+      "b": 69,
       "d": 0.0579
     },
     {
-      "a": 26,
-      "b": 33,
-      "d": 0.0095
+      "a": 28,
+      "b": 52,
+      "d": 0.014
     },
     {
-      "a": 26,
-      "b": 29,
-      "d": 0.0984
+      "a": 14,
+      "b": 28,
+      "d": 0.0373
     },
     {
-      "a": 27,
-      "b": 86,
+      "a": 29,
+      "b": 74,
+      "d": 0.0943
+    },
+    {
+      "a": 30,
+      "b": 93,
+      "d": 0.2352
+    },
+    {
+      "a": 30,
+      "b": 38,
+      "d": 0.4337
+    },
+    {
+      "a": 31,
+      "b": 84,
       "d": 0.0099
     },
     {
-      "a": 27,
-      "b": 83,
+      "a": 31,
+      "b": 80,
       "d": 0.0145
     },
     {
-      "a": 28,
-      "b": 48,
+      "a": 32,
+      "b": 55,
       "d": 0.1193
     },
     {
-      "a": 28,
-      "b": 82,
+      "a": 32,
+      "b": 79,
       "d": 0.1414
     },
     {
-      "a": 29,
-      "b": 72,
-      "d": 0.0131
-    },
-    {
-      "a": 29,
-      "b": 98,
-      "d": 0.0863
-    },
-    {
-      "a": 30,
-      "b": 46,
-      "d": 0.2465
-    },
-    {
-      "a": 30,
-      "b": 49,
-      "d": 0.3073
-    },
-    {
-      "a": 31,
-      "b": 62,
-      "d": 0.0358
-    },
-    {
-      "a": 31,
-      "b": 36,
-      "d": 0.0773
-    },
-    {
-      "a": 32,
-      "b": 36,
-      "d": 0.0609
-    },
-    {
-      "a": 32,
-      "b": 37,
-      "d": 0.0915
+      "a": 33,
+      "b": 97,
+      "d": 0.0522
     },
     {
       "a": 33,
-      "b": 54,
-      "d": 0.1119
+      "b": 58,
+      "d": 0.2167
     },
     {
       "a": 34,
-      "b": 41,
-      "d": 0.4278
-    },
-    {
-      "a": 35,
-      "b": 47,
-      "d": 0.3778
-    },
-    {
-      "a": 35,
-      "b": 46,
-      "d": 0.4477
-    },
-    {
-      "a": 36,
-      "b": 62,
-      "d": 0.0607
-    },
-    {
-      "a": 37,
-      "b": 53,
-      "d": 0.1194
-    },
-    {
-      "a": 38,
-      "b": 81,
-      "d": 0.2888
+      "b": 56,
+      "d": 0.3073
     },
     {
       "a": 1,
-      "b": 38,
-      "d": 0.517
+      "b": 34,
+      "d": 0.3922
+    },
+    {
+      "a": 35,
+      "b": 65,
+      "d": 0.0358
+    },
+    {
+      "a": 35,
+      "b": 72,
+      "d": 0.0973
+    },
+    {
+      "a": 37,
+      "b": 60,
+      "d": 0.1119
+    },
+    {
+      "a": 37,
+      "b": 61,
+      "d": 0.1213
+    },
+    {
+      "a": 38,
+      "b": 93,
+      "d": 0.2687
+    },
+    {
+      "a": 38,
+      "b": 96,
+      "d": 0.3395
     },
     {
       "a": 39,
-      "b": 47,
-      "d": 0.3045
-    },
-    {
-      "a": 20,
-      "b": 39,
-      "d": 0.4126
+      "b": 42,
+      "d": 0.1045
     },
     {
       "a": 40,
-      "b": 61,
-      "d": 0.4171
+      "b": 78,
+      "d": 0.0098
     },
     {
       "a": 41,
-      "b": 52,
-      "d": 0.1989
+      "b": 68,
+      "d": 0.327
     },
     {
       "a": 41,
-      "b": 64,
-      "d": 0.2445
+      "b": 94,
+      "d": 0.372
     },
     {
-      "a": 42,
-      "b": 52,
-      "d": 0.2178
-    },
-    {
-      "a": 40,
-      "b": 43,
-      "d": 0.4512
+      "a": 10,
+      "b": 42,
+      "d": 0.2968
     },
     {
       "a": 43,
-      "b": 97,
-      "d": 0.4872
+      "b": 88,
+      "d": 0.1214
+    },
+    {
+      "a": 25,
+      "b": 43,
+      "d": 0.154
     },
     {
       "a": 44,
-      "b": 51,
-      "d": 0.4182
+      "b": 49,
+      "d": 0.3691
+    },
+    {
+      "a": 44,
+      "b": 82,
+      "d": 0.534
     },
     {
       "a": 45,
-      "b": 87,
-      "d": 0.0195
+      "b": 66,
+      "d": 0.2445
     },
     {
-      "a": 2,
-      "b": 45,
-      "d": 0.5175
+      "a": 45,
+      "b": 48,
+      "d": 0.2956
     },
     {
       "a": 46,
-      "b": 49,
-      "d": 0.1972
+      "b": 51,
+      "d": 0.4464
     },
     {
       "a": 47,
-      "b": 61,
-      "d": 0.3617
-    },
-    {
-      "a": 48,
       "b": 82,
-      "d": 0.0665
+      "d": 0.3344
     },
     {
       "a": 50,
-      "b": 75,
-      "d": 0.3268
+      "b": 90,
+      "d": 0.1495
     },
     {
-      "a": 51,
-      "b": 91,
-      "d": 0.0464
-    },
-    {
-      "a": 51,
-      "b": 71,
-      "d": 0.2987
+      "a": 3,
+      "b": 50,
+      "d": 0.4193
     },
     {
       "a": 52,
-      "b": 64,
-      "d": 0.0503
+      "b": 53,
+      "d": 0.2422
     },
     {
-      "a": 53,
-      "b": 84,
-      "d": 0.1272
+      "a": 28,
+      "b": 53,
+      "d": 0.2429
     },
     {
       "a": 54,
-      "b": 92,
-      "d": 0.0687
-    },
-    {
-      "a": 26,
-      "b": 54,
-      "d": 0.1028
+      "b": 62,
+      "d": 0.3328
     },
     {
       "a": 55,
-      "b": 77,
-      "d": 0.1341
-    },
-    {
-      "a": 55,
-      "b": 75,
-      "d": 0.5544
-    },
-    {
-      "a": 56,
-      "b": 93,
-      "d": 0.3195
+      "b": 79,
+      "d": 0.0665
     },
     {
       "a": 56,
       "b": 58,
-      "d": 0.3226
+      "d": 0.5177
     },
     {
-      "a": 59,
-      "b": 82,
-      "d": 0.0393
-    },
-    {
-      "a": 60,
-      "b": 71,
-      "d": 0.1971
-    },
-    {
-      "a": 60,
-      "b": 63,
-      "d": 0.5723
-    },
-    {
-      "a": 65,
-      "b": 73,
-      "d": 0.2693
-    },
-    {
-      "a": 5,
-      "b": 66,
-      "d": 0.3041
-    },
-    {
-      "a": 66,
-      "b": 97,
-      "d": 0.3607
-    },
-    {
-      "a": 67,
-      "b": 68,
-      "d": 0.0103
-    },
-    {
-      "a": 26,
-      "b": 69,
-      "d": 0.127
-    },
-    {
-      "a": 69,
+      "a": 57,
       "b": 74,
-      "d": 0.1341
-    },
-    {
-      "a": 32,
-      "b": 70,
-      "d": 0.0932
-    },
-    {
-      "a": 31,
-      "b": 70,
-      "d": 0.0973
-    },
-    {
-      "a": 72,
-      "b": 98,
-      "d": 0.0794
-    },
-    {
-      "a": 67,
-      "b": 74,
-      "d": 0.0291
-    },
-    {
-      "a": 75,
-      "b": 88,
-      "d": 0.2693
-    },
-    {
-      "a": 4,
-      "b": 76,
-      "d": 0.2733
-    },
-    {
-      "a": 48,
-      "b": 76,
-      "d": 0.2859
-    },
-    {
-      "a": 50,
-      "b": 77,
-      "d": 0.5451
-    },
-    {
-      "a": 15,
-      "b": 78,
-      "d": 0.2235
-    },
-    {
-      "a": 78,
-      "b": 82,
-      "d": 0.2302
-    },
-    {
-      "a": 27,
-      "b": 79,
-      "d": 0.386
+      "d": 0.3268
     },
     {
       "a": 29,
-      "b": 80,
-      "d": 0.101
+      "b": 57,
+      "d": 0.4645
     },
     {
-      "a": 80,
-      "b": 98,
-      "d": 0.1129
+      "a": 58,
+      "b": 97,
+      "d": 0.1615
     },
     {
-      "a": 49,
+      "a": 59,
       "b": 81,
-      "d": 0.4296
+      "d": 0.1272
     },
     {
-      "a": 83,
+      "a": 59,
+      "b": 72,
+      "d": 0.1377
+    },
+    {
+      "a": 60,
+      "b": 61,
+      "d": 0.158
+    },
+    {
+      "a": 61,
       "b": 85,
-      "d": 0.0022
+      "d": 0.0089
     },
     {
-      "a": 83,
-      "b": 98,
-      "d": 0.0048
+      "a": 61,
+      "b": 71,
+      "d": 0.025
     },
     {
-      "a": 32,
-      "b": 84,
-      "d": 0.1257
+      "a": 62,
+      "b": 74,
+      "d": 0.5544
     },
     {
-      "a": 85,
-      "b": 98,
-      "d": 0.0063
+      "a": 63,
+      "b": 79,
+      "d": 0.0393
     },
     {
-      "a": 83,
-      "b": 86,
-      "d": 0.007
-    },
-    {
-      "a": 85,
-      "b": 86,
-      "d": 0.0082
-    },
-    {
-      "a": 2,
-      "b": 87,
-      "d": 0.5023
-    },
-    {
-      "a": 82,
-      "b": 89,
-      "d": 0.1274
+      "a": 39,
+      "b": 64,
+      "d": 0.4077
     },
     {
       "a": 65,
+      "b": 92,
+      "d": 0.0913
+    },
+    {
+      "a": 18,
+      "b": 66,
+      "d": 0.3496
+    },
+    {
+      "a": 67,
       "b": 90,
       "d": 0.3703
     },
     {
+      "a": 67,
+      "b": 96,
+      "d": 0.4267
+    },
+    {
+      "a": 68,
+      "b": 94,
+      "d": 0.3607
+    },
+    {
+      "a": 69,
+      "b": 70,
+      "d": 0.0103
+    },
+    {
+      "a": 65,
+      "b": 72,
+      "d": 0.1324
+    },
+    {
+      "a": 69,
+      "b": 73,
+      "d": 0.0291
+    },
+    {
+      "a": 74,
+      "b": 86,
+      "d": 0.2693
+    },
+    {
+      "a": 4,
+      "b": 75,
+      "d": 0.2733
+    },
+    {
+      "a": 20,
+      "b": 76,
+      "d": 0.2235
+    },
+    {
+      "a": 76,
+      "b": 79,
+      "d": 0.2302
+    },
+    {
+      "a": 43,
+      "b": 77,
+      "d": 0.3566
+    },
+    {
+      "a": 80,
+      "b": 83,
+      "d": 0.0022
+    },
+    {
+      "a": 80,
+      "b": 95,
+      "d": 0.0048
+    },
+    {
+      "a": 65,
+      "b": 81,
+      "d": 0.1371
+    },
+    {
+      "a": 83,
+      "b": 95,
+      "d": 0.0063
+    },
+    {
+      "a": 80,
+      "b": 84,
+      "d": 0.007
+    },
+    {
+      "a": 83,
+      "b": 84,
+      "d": 0.0082
+    },
+    {
       "a": 71,
+      "b": 85,
+      "d": 0.0271
+    },
+    {
+      "a": 29,
+      "b": 86,
+      "d": 0.1756
+    },
+    {
+      "a": 87,
+      "b": 88,
+      "d": 0.1719
+    },
+    {
+      "a": 79,
+      "b": 89,
+      "d": 0.1274
+    },
+    {
+      "a": 77,
       "b": 91,
-      "d": 0.3087
+      "d": 0.4176
     },
     {
-      "a": 11,
+      "a": 35,
       "b": 92,
-      "d": 0.1366
+      "d": 0.1142
     },
     {
-      "a": 62,
-      "b": 94,
-      "d": 0.0913
-    },
-    {
-      "a": 36,
-      "b": 94,
-      "d": 0.1052
-    },
-    {
-      "a": 95,
-      "b": 99,
-      "d": 0.1251
-    },
-    {
-      "a": 96,
-      "b": 99,
+      "a": 93,
+      "b": 96,
       "d": 0.1449
     },
     {
-      "a": 19,
+      "a": 48,
       "b": 96,
-      "d": 0.2632
+      "d": 0.3346
     }
   ]
 }

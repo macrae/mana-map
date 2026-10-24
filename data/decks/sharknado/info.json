@@ -21,10 +21,7 @@
       "tutors",
       "prose"
     ],
-    "older_model": [
-      "goldfish",
-      "mana"
-    ],
+    "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -129,226 +126,124 @@
       "name": "voltron-v1",
       "opened": "2026-10-22",
       "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters).",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-24 into the list after VNone",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-10-24",
+        "as_version": "v2.0.0",
+        "why": "The pilot, 2026-10-24: proxies sleeved. Modal voltron — either commander wins on 21 commander damage. At olivers-table 300/arm: win rate a tie (-0.009 [-0.063, +0.048]); max commander damage on one defender 6.60 -> 9.36 (+2.76 [+0.89, +4.63]), 0.64 short of 10 and under the MDE; games reaching 21: 31 -> 52.",
+        "base_version": 8,
+        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+        "accepted_on": {
+          "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+          "state": "inconclusive",
+          "objective": {
+            "axis": "forge.commander_damage_max_on_one_defender",
+            "op": ">=",
+            "pod": "olivers-table",
+            "value": 10.0,
+            "why": "The pilot, 2026-10-22: the main win con is 21 commander damage from EITHER commander, chosen by the board. Branched off finisher-v1 (which lost to the deck at olivers-table, 33/297 vs 45/299, by cutting the draw/discard/burn engine). Shabraz is primary: a flier with a counter per draw, Lae'zel and Yoshimaru add one each, Teferi's Ageless Insight, Bard and the Archive double the draws. Brallin is secondary: Torbran +2 and Gratuitous Violence double his combat damage, with double strike and trample. Each line has a backup and a tutor (Idyllic Tutor, Stoneforge Mystic). Khorvath's Fury back; wheels down to four; one-sided sweepers for the go-wide table; red-capable rocks. Argued by the strategist (frame and one adversarial pass), card-scout (three passes), rules-question (Torbran and doubled damage count as Brallin's commander damage; Lae'zel makes a 7-card wheel 14 counters)."
+          },
+          "grade": "not resolvable",
+          "reading": 9.3633,
+          "harness": {
+            "cast_proofs": {
+              "adds": [
+                "Akroma's Will",
+                "Azorius Signet",
+                "Bard, King of Dale",
+                "Battlefield Forge",
+                "Blade Historian",
+                "Brotherhood Regalia",
+                "Champion's Helm",
+                "Clifftop Retreat",
+                "Collector's Vault",
+                "Embercleave",
+                "Fiery Emancipation",
+                "Fireshrieker",
+                "Flawless Maneuver",
+                "Frantic Search",
+                "Genji Glove",
+                "Gratuitous Violence",
+                "Idyllic Tutor",
+                "Inspiring Vantage",
+                "Inti, Seneschal of the Sun",
+                "Iroh's Demonstration",
+                "Izzet Signet",
+                "Karlach, Fury of Avernus",
+                "Key to the City",
+                "Kitsa, Otterball Elite",
+                "Knowledge Is Power",
+                "Lizard Blades",
+                "Loran's Escape",
+                "Mask of Memory",
+                "Mountain",
+                "Needleverge Pathway // Pillarverge Pathway",
+                "Prismari Command",
+                "Stoneforge Mystic",
+                "Sunbillow Verge",
+                "Talisman of Conviction",
+                "Talisman of Creativity",
+                "Teferi, Master of Time",
+                "Zephyr Boots"
+              ],
+              "anyway": false,
+              "floor": false,
+              "gated_runs": [],
+              "held": [],
+              "late": [],
+              "reads_as": "every add the branch stages was played in its arms"
+            },
+            "iterations": 10000,
+            "model_version": "d4d357389cfd",
+            "seed": 20260826
+          }
+        },
+        "proxy": [
+          "Akroma's Will",
+          "Battlefield Forge",
+          "Flawless Maneuver",
+          "Talisman of Conviction"
+        ],
+        "procurement": {
+          "at": "2026-10-24",
+          "note": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
+        }
+      },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Bard, King of Dale"
-          },
-          {
-            "name": "Blade Historian"
-          },
-          {
-            "name": "Brotherhood Regalia"
-          },
-          {
-            "name": "Champion's Helm"
-          },
-          {
-            "name": "Clifftop Retreat"
-          },
-          {
-            "name": "Collector's Vault"
-          },
-          {
-            "name": "Embercleave"
-          },
-          {
-            "name": "Fiery Emancipation"
-          },
-          {
-            "name": "Fireshrieker"
-          },
-          {
-            "name": "Frantic Search"
-          },
-          {
-            "name": "Genji Glove"
-          },
-          {
-            "name": "Gratuitous Violence"
-          },
-          {
-            "name": "Idyllic Tutor"
-          },
-          {
-            "name": "Inspiring Vantage"
-          },
-          {
-            "name": "Inti, Seneschal of the Sun"
-          },
-          {
-            "name": "Iroh's Demonstration"
-          },
-          {
-            "name": "Izzet Signet"
-          },
-          {
-            "name": "Key to the City"
-          },
-          {
-            "name": "Kitsa, Otterball Elite"
-          },
-          {
-            "name": "Knowledge Is Power"
-          },
-          {
-            "name": "Lizard Blades"
-          },
-          {
-            "name": "Loran's Escape"
-          },
-          {
-            "name": "Needleverge Pathway // Pillarverge Pathway"
-          },
-          {
-            "name": "Prismari Command"
-          },
-          {
-            "name": "Stoneforge Mystic"
-          },
-          {
-            "name": "Sunbillow Verge"
-          },
-          {
-            "name": "Talisman of Creativity"
-          },
-          {
-            "name": "Teferi, Master of Time"
-          },
-          {
-            "name": "Zephyr Boots"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Akroma's Will",
-            "where": [
-              "edgar-vampires",
-              "gishath"
-            ]
-          },
-          {
-            "name": "Battlefield Forge",
-            "where": [
-              "edgar-vampires",
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Flawless Maneuver",
-            "where": [
-              "edgar-vampires",
-              "gishath",
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Talisman of Conviction",
-            "where": [
-              "edgar-vampires"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Karlach, Fury of Avernus",
-            "where": [
-              "ingris-infect"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Azorius Signet",
-            "where": [
-              "Zur Parts"
-            ]
-          },
-          {
-            "name": "Mask of Memory",
-            "where": [
-              "Zur Parts"
-            ]
-          }
-        ],
-        "blocking": 33,
-        "procurement": null
+        "free": [],
+        "box": [],
+        "blocking": 0,
+        "procurement": {
+          "at": "2026-10-24",
+          "note": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
+        }
       },
       "base_version": 8,
       "size": 100,
-      "add": 38,
-      "out": 38,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 62,
-        "box": 2,
-        "elsewhere": 4,
-        "buy": 29,
-        "free": 1
+        "in_deck": 98,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Akroma's Will",
-        "Bard, King of Dale",
-        "Battlefield Forge",
-        "Blade Historian",
-        "Brotherhood Regalia",
-        "Champion's Helm",
-        "Clifftop Retreat",
-        "Collector's Vault",
-        "Embercleave",
-        "Fiery Emancipation",
-        "Fireshrieker",
-        "Flawless Maneuver",
-        "Frantic Search",
-        "Genji Glove",
-        "Gratuitous Violence",
-        "Idyllic Tutor",
-        "Inspiring Vantage",
-        "Inti, Seneschal of the Sun",
-        "Iroh's Demonstration",
-        "Izzet Signet",
-        "Key to the City",
-        "Kitsa, Otterball Elite",
-        "Knowledge Is Power",
-        "Lizard Blades",
-        "Loran's Escape",
-        "Needleverge Pathway // Pillarverge Pathway",
-        "Prismari Command",
-        "Stoneforge Mystic",
-        "Sunbillow Verge",
-        "Talisman of Conviction",
-        "Talisman of Creativity",
-        "Teferi, Master of Time",
-        "Zephyr Boots"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Akroma's Will",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Alhammarret's Archive",
@@ -373,51 +268,31 @@
         },
         {
           "name": "Azorius Signet",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Bard, King of Dale",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Battlefield Forge",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blade Historian",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boros Charm",
@@ -435,10 +310,10 @@
         },
         {
           "name": "Brotherhood Regalia",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Campfire",
@@ -456,10 +331,10 @@
         },
         {
           "name": "Champion's Helm",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Chasm Skulker",
@@ -477,10 +352,10 @@
         },
         {
           "name": "Clifftop Retreat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Collective Defiance",
@@ -491,10 +366,10 @@
         },
         {
           "name": "Collector's Vault",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Beacon",
@@ -512,10 +387,10 @@
         },
         {
           "name": "Embercleave",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faithless Looting",
@@ -540,10 +415,10 @@
         },
         {
           "name": "Fiery Emancipation",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -554,53 +429,24 @@
         },
         {
           "name": "Fireshrieker",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Flawless Maneuver",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Frantic Search",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Frostboil Snarl",
@@ -618,10 +464,10 @@
         },
         {
           "name": "Genji Glove",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -639,10 +485,10 @@
         },
         {
           "name": "Gratuitous Violence",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -653,10 +499,10 @@
         },
         {
           "name": "Idyllic Tutor",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Incendiary Command",
@@ -667,31 +513,31 @@
         },
         {
           "name": "Inspiring Vantage",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Inti, Seneschal of the Sun",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Iroh's Demonstration",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Izzet Signet",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Jace's Archivist",
@@ -709,25 +555,17 @@
         },
         {
           "name": "Karlach, Fury of Avernus",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "ingris-infect",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Key to the City",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Khorvath's Fury",
@@ -738,17 +576,17 @@
         },
         {
           "name": "Kitsa, Otterball Elite",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Knowledge Is Power",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
@@ -766,17 +604,17 @@
         },
         {
           "name": "Lizard Blades",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Loran's Escape",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -801,15 +639,10 @@
         },
         {
           "name": "Mask of Memory",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -827,10 +660,10 @@
         },
         {
           "name": "Needleverge Pathway // Pillarverge Pathway",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Negate",
@@ -848,10 +681,10 @@
         },
         {
           "name": "Prismari Command",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Raugrin Triome",
@@ -981,10 +814,10 @@
         },
         {
           "name": "Stoneforge Mystic",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Stormcarved Coast",
@@ -1002,10 +835,10 @@
         },
         {
           "name": "Sunbillow Verge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Swords to Plowshares",
@@ -1016,25 +849,17 @@
         },
         {
           "name": "Talisman of Conviction",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Creativity",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talon Gates of Madara",
@@ -1052,10 +877,10 @@
         },
         {
           "name": "Teferi, Master of Time",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Thundering Falls",
@@ -1094,10 +919,10 @@
         },
         {
           "name": "Zephyr Boots",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true,
@@ -1112,6 +937,123 @@
         "blurb": "Wins by commander damage from whichever partner the board favours, with equipment, double strike and protection behind them; Brallin's discard wheels with Torbran burn the whole table and grow him for the swing; the mana leans red under the red-heavy payoffs.",
         "by": "jarvis",
         "at": "2026-10-22"
+      },
+      "verdict": {
+        "state": "inconclusive",
+        "rose": 5,
+        "fell": 6,
+        "no_call": 5
+      },
+      "objective_grade": {
+        "state": "not resolvable",
+        "reading": 9.3633,
+        "shortfall": 0.6367
+      },
+      "measured": true,
+      "blind_spots": [
+        "Akroma's Will",
+        "Anje's Ravager",
+        "Battlefield Forge",
+        "Brotherhood Regalia",
+        "Champion's Helm",
+        "Clifftop Retreat",
+        "Faerie Mastermind",
+        "Flawless Maneuver",
+        "Floodfarm Verge",
+        "Glacial Fortress",
+        "Hallowed Fountain",
+        "Inspiring Vantage",
+        "Irencrag Pyromancer",
+        "Iroh's Demonstration",
+        "Irrigated Farmland",
+        "Island",
+        "Key to the City",
+        "Loran's Escape",
+        "Magmakin Artillerist",
+        "Mask of Memory",
+        "Mind's Eye",
+        "Needleverge Pathway // Pillarverge Pathway",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
+        "Niv-Mizzet, Parun",
+        "Prismari Command",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
+        "Sea of Clouds",
+        "Snapback",
+        "Sunbillow Verge",
+        "Swiftfoot Boots",
+        "Teferi, Master of Time",
+        "Temple of Epiphany",
+        "Zephyr Boots"
+      ],
+      "impact": {
+        "state": "inconclusive",
+        "rose": [
+          "killed by T10",
+          "interaction affordable @T6",
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "missed drop by T5",
+          "extra cards by T8",
+          "finisher wheel by T8",
+          "wheels cast by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -18.4265,
+            "ci95_diff": [
+              -20.4744,
+              -16.3786
+            ],
+            "mde": 2.9272,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": 0.0072,
+            "ci95_diff": [
+              0.0034,
+              0.011
+            ],
+            "mde": 0.0054,
+            "verdict": "better",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.6692,
+            "ci95_diff": [
+              -0.7283,
+              -0.6101
+            ],
+            "mde": 0.0845,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -9.0771,
+            "ci95_diff": [
+              -9.4282,
+              -8.726
+            ],
+            "mde": 0.5018,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
       },
       "cast_proofs": {
         "played": 30,
@@ -1142,44 +1084,148 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Curator of Mysteries"
+          },
+          {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Fevered Visions"
+          },
+          {
+            "name": "Floodfarm Verge"
+          },
+          {
             "name": "Hobgoblin, Mantled Marauder"
           },
           {
-            "name": "Izzet Signet"
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
           },
           {
             "name": "Ledger Shredder"
           },
           {
-            "name": "Loran's Escape"
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
           },
           {
             "name": "Mischievous Mystic"
           },
           {
-            "name": "Prismari Command"
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
+          },
+          {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
+            "name": "Razorkin Needlehead"
           },
           {
             "name": "Scrounging Skyray"
           },
           {
+            "name": "Shark Typhoon"
+          },
+          {
+            "name": "Snapback"
+          },
+          {
+            "name": "Spider-Man, New Champion"
+          },
+          {
             "name": "Surly Badgersaur"
           },
           {
-            "name": "Talisman of Creativity"
+            "name": "Temple of Epiphany"
+          },
+          {
+            "name": "The Locust God"
           }
         ],
         "unsleeve": [
           {
-            "name": "Talisman of Conviction",
+            "name": "Faerie Mastermind",
             "where": [
-              "edgar-vampires"
+              "heliod"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Scrawling Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [
+          {
+            "name": "Glacial Fortress",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Island",
+            "where": [
+              "Hobbit"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
+          },
           {
             "name": "Thought Vessel",
             "where": [
@@ -1188,34 +1234,51 @@
             ]
           }
         ],
-        "blocking": 10,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 89,
-        "box": 1,
-        "elsewhere": 1,
-        "buy": 9,
-        "free": 0
+        "in_deck": 65,
+        "box": 7,
+        "elsewhere": 3,
+        "buy": 24,
+        "free": 1
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Curator of Mysteries",
+        "Echo of Eons",
+        "Faerie Mastermind",
+        "Fevered Visions",
+        "Floodfarm Verge",
         "Hobgoblin, Mantled Marauder",
-        "Izzet Signet",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
         "Ledger Shredder",
-        "Loran's Escape",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
         "Mischievous Mystic",
-        "Prismari Command",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
+        "Niv-Mizzet, Parun",
+        "Psychosis Crawler",
+        "Razorkin Needlehead",
+        "Scrawling Crawler",
         "Scrounging Skyray",
+        "Shark Typhoon",
+        "Snapback",
+        "Spider-Man, New Champion",
         "Surly Badgersaur",
-        "Talisman of Conviction",
-        "Talisman of Creativity"
+        "Temple of Epiphany",
+        "The Locust God"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -1226,10 +1289,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -1310,24 +1373,32 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -1352,10 +1423,10 @@
         },
         {
           "name": "Fevered Visions",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fiery Islet",
@@ -1366,10 +1437,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -1387,10 +1458,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -1408,10 +1484,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -1436,38 +1517,57 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Island",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Izzet Signet",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Irrigated Farmland",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Island",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hobbit"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Ivora, Insatiable Heir",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Izzet Signet",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Jace's Archivist",
@@ -1478,10 +1578,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jeska's Will",
@@ -1506,10 +1606,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -1520,24 +1620,24 @@
         },
         {
           "name": "Loran's Escape",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Magmakin Artillerist",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
         },
         {
-          "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -1590,24 +1690,24 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -1618,17 +1718,32 @@
         },
         {
           "name": "Prismari Command",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Psychosis Crawler",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Psychosis Crawler",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -1639,10 +1754,10 @@
         },
         {
           "name": "Razorkin Needlehead",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reforge the Soul",
@@ -1695,10 +1810,25 @@
         },
         {
           "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Scrounging Skyray",
@@ -1709,10 +1839,18 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -1723,10 +1861,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -1751,10 +1889,10 @@
         },
         {
           "name": "Snapback",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -1779,10 +1917,10 @@
         },
         {
           "name": "Spider-Man, New Champion",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -1828,10 +1966,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -1842,25 +1989,17 @@
         },
         {
           "name": "Talisman of Conviction",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talisman of Creativity",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Talon Gates of Madara",
@@ -1878,17 +2017,17 @@
         },
         {
           "name": "Temple of Epiphany",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thought Vessel",
@@ -2050,7 +2189,55 @@
           "profile": null,
           "profile_sha": null
         }
-      }
+      },
+      "stacks": [
+        {
+          "id": "001",
+          "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "002",
+          "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "003",
+          "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
+            "Swiftfoot Boots"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Spider-Man, New Champion",
+            "Swiftfoot Boots"
+          ]
+        }
+      ]
     },
     {
       "name": "torbran-v1",
@@ -2088,28 +2275,217 @@
         ]
       },
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Burning Inquiry"
+          },
+          {
+            "name": "Commit // Memory"
+          },
+          {
+            "name": "Curator of Mysteries"
+          },
+          {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Fevered Visions"
+          },
+          {
+            "name": "Floodfarm Verge"
+          },
+          {
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
+          },
+          {
+            "name": "Molten Psyche"
+          },
+          {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
+          },
+          {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Razorkin Needlehead"
+          },
+          {
+            "name": "Shark Typhoon"
+          },
+          {
+            "name": "Snapback"
+          },
+          {
+            "name": "Spider-Man, New Champion"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "Temple of Epiphany"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Faerie Mastermind",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Scrawling Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
+            ]
+          }
+        ],
         "proxy": [],
-        "free": [],
-        "box": [],
-        "blocking": 0,
+        "free": [
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
+        "box": [
+          {
+            "name": "Big Score",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          },
+          {
+            "name": "Glacial Fortress",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Island",
+            "where": [
+              "Hobbit"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
+          }
+        ],
+        "blocking": 30,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 38,
+      "out": 38,
       "counts": {
-        "in_deck": 100,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "in_deck": 62,
+        "box": 7,
+        "elsewhere": 4,
+        "buy": 26,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
+        "Burning Inquiry",
+        "Commit // Memory",
+        "Curator of Mysteries",
+        "Echo of Eons",
+        "Faerie Mastermind",
+        "Fevered Visions",
+        "Floodfarm Verge",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
+        "Mind's Eye",
+        "Molten Psyche",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
+        "Niv-Mizzet, Parun",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
+        "Razorkin Needlehead",
+        "Scrawling Crawler",
+        "Shark Typhoon",
+        "Snapback",
+        "Spider-Man, New Champion",
+        "Teferi's Puzzle Box",
+        "Temple of Epiphany",
+        "The Locust God",
+        "Time Reversal"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -2120,10 +2496,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -2134,10 +2510,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -2148,10 +2524,15 @@
         },
         {
           "name": "Big Score",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Boros Charm",
@@ -2169,10 +2550,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Campfire",
@@ -2225,31 +2606,39 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -2274,10 +2663,10 @@
         },
         {
           "name": "Fevered Visions",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fiery Islet",
@@ -2288,10 +2677,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -2309,10 +2698,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -2330,10 +2724,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -2351,31 +2750,50 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hobbit"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -2386,10 +2804,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jeska's Will",
@@ -2414,10 +2832,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -2428,17 +2846,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -2463,17 +2881,25 @@
         },
         {
           "name": "Mind's Eye",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -2498,24 +2924,24 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Opal Palace",
@@ -2526,17 +2952,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -2547,10 +2988,10 @@
         },
         {
           "name": "Razorkin Needlehead",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reforge the Soul",
@@ -2603,17 +3044,40 @@
         },
         {
           "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -2624,10 +3088,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -2652,10 +3116,10 @@
         },
         {
           "name": "Snapback",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -2680,10 +3144,10 @@
         },
         {
           "name": "Spider-Man, New Champion",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -2722,10 +3186,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -2750,24 +3223,24 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Temple of Epiphany",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -2778,10 +3251,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -2933,7 +3406,55 @@
           "profile": null,
           "profile_sha": null
         }
-      }
+      },
+      "stacks": [
+        {
+          "id": "001",
+          "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "002",
+          "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "003",
+          "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
+            "Swiftfoot Boots"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Spider-Man, New Champion",
+            "Swiftfoot Boots"
+          ]
+        }
+      ]
     },
     {
       "name": "momentum-v1",
@@ -2989,10 +3510,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Burning Inquiry"
+          },
+          {
             "name": "Calciform Pools"
           },
           {
+            "name": "Commit // Memory"
+          },
+          {
             "name": "Containment Construct"
+          },
+          {
+            "name": "Curator of Mysteries"
           },
           {
             "name": "Currency Converter"
@@ -3001,7 +3537,28 @@
             "name": "Drake Haven"
           },
           {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Floodfarm Verge"
+          },
+          {
             "name": "Improbable Alliance"
+          },
+          {
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
           },
           {
             "name": "Mana Geyser"
@@ -3010,16 +3567,46 @@
             "name": "Mindless Automaton"
           },
           {
+            "name": "Molten Psyche"
+          },
+          {
             "name": "Mystic Gate"
+          },
+          {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
           },
           {
             "name": "Nimbus Maze"
           },
           {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
             "name": "Ominous Seas"
           },
           {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Razorkin Needlehead"
+          },
+          {
+            "name": "Shark Typhoon"
+          },
+          {
             "name": "Sticky Fingers"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
           },
           {
             "name": "Vanguard Suppressor"
@@ -3033,10 +3620,36 @@
         ],
         "unsleeve": [
           {
+            "name": "Faerie Mastermind",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
+            ]
+          },
+          {
             "name": "Reliquary Tower",
             "where": [
               "goblin-storm",
               "heliod"
+            ]
+          },
+          {
+            "name": "Scrawling Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           },
           {
@@ -3061,7 +3674,14 @@
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Adarkar Wastes",
@@ -3077,9 +3697,34 @@
             ]
           },
           {
-            "name": "Mask of Memory",
+            "name": "Glacial Fortress",
             "where": [
-              "Zur Parts"
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Island",
+            "where": [
+              "Hobbit"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
             ]
           },
           {
@@ -3087,44 +3732,77 @@
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 18,
+        "blocking": 44,
         "procurement": null
       },
       "base_version": 6,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 54,
+      "out": 54,
       "counts": {
-        "in_deck": 78,
-        "box": 4,
-        "elsewhere": 4,
-        "buy": 14,
-        "free": 0
+        "in_deck": 46,
+        "box": 9,
+        "elsewhere": 8,
+        "buy": 36,
+        "free": 1
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
+        "Burning Inquiry",
         "Calciform Pools",
+        "Commit // Memory",
         "Containment Construct",
+        "Curator of Mysteries",
         "Currency Converter",
         "Drake Haven",
+        "Echo of Eons",
+        "Faerie Mastermind",
+        "Floodfarm Verge",
         "Improbable Alliance",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
         "Mana Geyser",
+        "Mind's Eye",
         "Mindless Automaton",
+        "Molten Psyche",
         "Mystic Gate",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
         "Nimbus Maze",
+        "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
+        "Razorkin Needlehead",
         "Reliquary Tower",
+        "Scrawling Crawler",
         "Seachrome Coast",
+        "Shark Typhoon",
         "Skycloud Expanse",
         "Sticky Fingers",
         "Teferi's Protection",
+        "Teferi's Puzzle Box",
+        "The Locust God",
+        "Time Reversal",
         "Vanguard Suppressor",
         "Whirlpool Warrior",
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -3140,10 +3818,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -3154,10 +3832,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -3175,10 +3853,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Calciform Pools",
@@ -3217,10 +3895,10 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Containment Construct",
@@ -3231,10 +3909,10 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Currency Converter",
@@ -3252,10 +3930,10 @@
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Exotic Orchard",
@@ -3275,10 +3953,18 @@
         },
         {
           "name": "Faerie Mastermind",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -3303,10 +3989,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gemstone Caverns",
@@ -3317,10 +4003,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -3338,10 +4029,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -3359,31 +4055,50 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hobbit"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -3394,10 +4109,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jeska's Will",
@@ -3415,10 +4130,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -3429,17 +4144,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -3464,22 +4179,25 @@
         },
         {
           "name": "Mask of Memory",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Mind's Eye",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Mind's Eye",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mindless Automaton",
@@ -3490,10 +4208,10 @@
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Gate",
@@ -3518,17 +4236,17 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimbus Maze",
@@ -3539,10 +4257,10 @@
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ominous Seas",
@@ -3560,17 +4278,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -3581,10 +4314,10 @@
         },
         {
           "name": "Razorkin Needlehead",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reforge the Soul",
@@ -3652,17 +4385,40 @@
         },
         {
           "name": "Scrawling Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Seachrome Coast",
@@ -3688,10 +4444,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shelter",
@@ -3785,10 +4541,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -3842,17 +4607,17 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -3863,10 +4628,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -4045,6 +4810,8 @@
           "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -4053,6 +4820,8 @@
           "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -4061,6 +4830,8 @@
           "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -4069,7 +4840,18 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
-            "Sticky Fingers"
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
+            "Sticky Fingers",
+            "Swiftfoot Boots"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Swiftfoot Boots"
           ]
         }
       ]
@@ -4084,10 +4866,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Burning Inquiry"
+          },
+          {
             "name": "Calciform Pools"
           },
           {
+            "name": "Commit // Memory"
+          },
+          {
             "name": "Containment Construct"
+          },
+          {
+            "name": "Curator of Mysteries"
           },
           {
             "name": "Currency Converter"
@@ -4096,28 +4893,76 @@
             "name": "Drake Haven"
           },
           {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Floodfarm Verge"
+          },
+          {
             "name": "Generous Plunderer"
           },
           {
             "name": "Improbable Alliance"
           },
           {
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
+          },
+          {
             "name": "Mindless Automaton"
+          },
+          {
+            "name": "Molten Psyche"
           },
           {
             "name": "Mystic Gate"
           },
           {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
+          },
+          {
             "name": "Nimbus Maze"
           },
           {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
             "name": "Ominous Seas"
+          },
+          {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Shark Typhoon"
           },
           {
             "name": "Silent Hallcreeper"
           },
           {
             "name": "Sticky Fingers"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
           },
           {
             "name": "Treasure Map"
@@ -4140,6 +4985,19 @@
             "name": "Kefnet the Mindful",
             "where": [
               "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           },
           {
@@ -4169,6 +5027,12 @@
             "where": [
               "zur-enchantress"
             ]
+          },
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -4186,9 +5050,34 @@
             ]
           },
           {
-            "name": "Mask of Memory",
+            "name": "Glacial Fortress",
             "where": [
-              "Zur Parts"
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Island",
+            "where": [
+              "Hobbit"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
             ]
           },
           {
@@ -4196,39 +5085,69 @@
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 21,
+        "blocking": 44,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 26,
-      "out": 26,
+      "add": 55,
+      "out": 55,
       "counts": {
-        "in_deck": 74,
-        "box": 4,
-        "elsewhere": 4,
-        "buy": 17,
-        "free": 1
+        "in_deck": 45,
+        "box": 9,
+        "elsewhere": 6,
+        "buy": 38,
+        "free": 2
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
+        "Burning Inquiry",
         "Calciform Pools",
+        "Commit // Memory",
         "Containment Construct",
+        "Curator of Mysteries",
         "Currency Converter",
         "Drake Haven",
+        "Echo of Eons",
+        "Floodfarm Verge",
         "Generous Plunderer",
         "Improbable Alliance",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
+        "Mind's Eye",
         "Mindless Automaton",
+        "Molten Psyche",
         "Mystic Gate",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
         "Nimbus Maze",
+        "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
+        "Shark Typhoon",
         "Silent Hallcreeper",
         "Skycloud Expanse",
         "Sticky Fingers",
+        "Teferi's Puzzle Box",
+        "The Locust God",
+        "Time Reversal",
         "Treasure Map",
         "Vanguard Suppressor",
         "Waterbender Ascension",
@@ -4236,7 +5155,7 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -4252,10 +5171,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -4266,10 +5185,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -4287,10 +5206,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Calciform Pools",
@@ -4329,10 +5248,10 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Containment Construct",
@@ -4343,10 +5262,10 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Currency Converter",
@@ -4364,10 +5283,10 @@
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Enduring Curiosity",
@@ -4423,10 +5342,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gemstone Caverns",
@@ -4444,10 +5363,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -4465,10 +5389,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -4486,31 +5415,50 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hobbit"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -4521,10 +5469,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kefnet the Mindful",
@@ -4550,10 +5498,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -4564,17 +5512,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -4592,22 +5540,25 @@
         },
         {
           "name": "Mask of Memory",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Mind's Eye",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Mind's Eye",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mindless Automaton",
@@ -4618,10 +5569,10 @@
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Gate",
@@ -4646,17 +5597,17 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimbus Maze",
@@ -4667,10 +5618,10 @@
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ominous Seas",
@@ -4688,17 +5639,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -4773,10 +5739,18 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Seachrome Coast",
@@ -4802,10 +5776,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shelter",
@@ -4906,10 +5880,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -4934,17 +5917,17 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -4955,10 +5938,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -5023,6 +6006,8 @@
           "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map"
           ]
@@ -5032,6 +6017,8 @@
           "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map"
           ]
@@ -5041,6 +6028,8 @@
           "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -5049,8 +6038,19 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
             "Sticky Fingers",
+            "Swiftfoot Boots",
             "Treasure Map"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Swiftfoot Boots"
           ]
         }
       ]
@@ -5065,10 +6065,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Burning Inquiry"
+          },
+          {
             "name": "Calciform Pools"
           },
           {
+            "name": "Commit // Memory"
+          },
+          {
             "name": "Containment Construct"
+          },
+          {
+            "name": "Curator of Mysteries"
           },
           {
             "name": "Currency Converter"
@@ -5080,6 +6095,12 @@
             "name": "Drake Haven"
           },
           {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Floodfarm Verge"
+          },
+          {
             "name": "Generous Plunderer"
           },
           {
@@ -5089,19 +6110,52 @@
             "name": "Improbable Alliance"
           },
           {
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
+          },
+          {
             "name": "Marketback Walker"
           },
           {
             "name": "Mindless Automaton"
           },
           {
+            "name": "Molten Psyche"
+          },
+          {
             "name": "Mystic Gate"
+          },
+          {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
           },
           {
             "name": "Nimbus Maze"
           },
           {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
             "name": "Ominous Seas"
+          },
+          {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Shark Typhoon"
           },
           {
             "name": "Silent Hallcreeper"
@@ -5111,6 +6165,15 @@
           },
           {
             "name": "Stromkirk Noble"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
           },
           {
             "name": "Treasure Map // Treasure Cove"
@@ -5133,6 +6196,19 @@
             "name": "Kefnet the Mindful",
             "where": [
               "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           },
           {
@@ -5162,6 +6238,12 @@
             "where": [
               "zur-enchantress"
             ]
+          },
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -5179,47 +6261,108 @@
             ]
           },
           {
+            "name": "Glacial Fortress",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Island",
+            "where": [
+              "Hobbit"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 25,
+        "blocking": 48,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 59,
+      "out": 59,
       "counts": {
-        "in_deck": 71,
-        "box": 3,
-        "elsewhere": 4,
-        "buy": 21,
-        "free": 1
+        "in_deck": 41,
+        "box": 9,
+        "elsewhere": 6,
+        "buy": 42,
+        "free": 2
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
+        "Burning Inquiry",
         "Calciform Pools",
+        "Commit // Memory",
         "Containment Construct",
+        "Curator of Mysteries",
         "Currency Converter",
         "Decree of Silence",
         "Drake Haven",
+        "Echo of Eons",
+        "Floodfarm Verge",
         "Generous Plunderer",
         "Gossip's Talent",
         "Improbable Alliance",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
         "Marketback Walker",
+        "Mind's Eye",
         "Mindless Automaton",
+        "Molten Psyche",
         "Mystic Gate",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
         "Nimbus Maze",
+        "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
+        "Shark Typhoon",
         "Silent Hallcreeper",
         "Skycloud Expanse",
         "Sticky Fingers",
         "Stromkirk Noble",
+        "Teferi's Puzzle Box",
+        "The Locust God",
+        "Time Reversal",
         "Treasure Map // Treasure Cove",
         "Vanguard Suppressor",
         "Waterbender Ascension",
@@ -5227,7 +6370,7 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -5243,10 +6386,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -5257,10 +6400,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -5278,10 +6421,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Calciform Pools",
@@ -5320,10 +6463,10 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Containment Construct",
@@ -5334,10 +6477,10 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Currency Converter",
@@ -5362,10 +6505,10 @@
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Enduring Curiosity",
@@ -5421,10 +6564,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gemstone Caverns",
@@ -5442,10 +6585,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -5470,10 +6618,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -5491,31 +6644,50 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Island",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hobbit"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -5526,10 +6698,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kefnet the Mindful",
@@ -5555,10 +6727,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -5569,17 +6741,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -5597,10 +6769,18 @@
         },
         {
           "name": "Mind's Eye",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mindless Automaton",
@@ -5611,10 +6791,10 @@
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Gate",
@@ -5632,17 +6812,17 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimbus Maze",
@@ -5653,10 +6833,10 @@
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ominous Seas",
@@ -5674,17 +6854,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -5759,10 +6954,18 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Seachrome Coast",
@@ -5788,10 +6991,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shelter",
@@ -5899,10 +7102,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Talon Gates of Madara",
@@ -5920,17 +7132,17 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -5941,10 +7153,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -6123,6 +7335,8 @@
           "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -6132,6 +7346,8 @@
           "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -6141,6 +7357,8 @@
           "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -6149,8 +7367,19 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
             "Sticky Fingers",
+            "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Swiftfoot Boots"
           ]
         }
       ]
@@ -6188,10 +7417,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Burning Inquiry"
+          },
+          {
             "name": "Calciform Pools"
           },
           {
+            "name": "Commit // Memory"
+          },
+          {
             "name": "Containment Construct"
+          },
+          {
+            "name": "Curator of Mysteries"
           },
           {
             "name": "Currency Converter"
@@ -6201,6 +7445,12 @@
           },
           {
             "name": "Drake Haven"
+          },
+          {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Floodfarm Verge"
           },
           {
             "name": "Generous Plunderer"
@@ -6215,19 +7465,52 @@
             "name": "Improbable Alliance"
           },
           {
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
+          },
+          {
             "name": "Marketback Walker"
           },
           {
             "name": "Mindless Automaton"
           },
           {
+            "name": "Molten Psyche"
+          },
+          {
             "name": "Mystic Gate"
+          },
+          {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
           },
           {
             "name": "Nimbus Maze"
           },
           {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
             "name": "Ominous Seas"
+          },
+          {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Shark Typhoon"
           },
           {
             "name": "Silent Hallcreeper"
@@ -6237,6 +7520,15 @@
           },
           {
             "name": "Stromkirk Noble"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
           },
           {
             "name": "Treasure Map // Treasure Cove"
@@ -6259,6 +7551,19 @@
             "name": "Kefnet the Mindful",
             "where": [
               "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           },
           {
@@ -6288,6 +7593,12 @@
             "where": [
               "zur-enchantress"
             ]
+          },
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -6305,48 +7616,103 @@
             ]
           },
           {
+            "name": "Glacial Fortress",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 26,
+        "blocking": 49,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 30,
-      "out": 30,
+      "add": 59,
+      "out": 59,
       "counts": {
-        "in_deck": 70,
-        "box": 3,
-        "elsewhere": 4,
-        "buy": 22,
-        "free": 1
+        "in_deck": 41,
+        "box": 8,
+        "elsewhere": 6,
+        "buy": 43,
+        "free": 2
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
+        "Burning Inquiry",
         "Calciform Pools",
+        "Commit // Memory",
         "Containment Construct",
+        "Curator of Mysteries",
         "Currency Converter",
         "Decree of Silence",
         "Drake Haven",
+        "Echo of Eons",
+        "Floodfarm Verge",
         "Generous Plunderer",
         "Gleaming Bastion",
         "Gossip's Talent",
         "Improbable Alliance",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
         "Marketback Walker",
+        "Mind's Eye",
         "Mindless Automaton",
+        "Molten Psyche",
         "Mystic Gate",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
         "Nimbus Maze",
+        "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
+        "Shark Typhoon",
         "Silent Hallcreeper",
         "Skycloud Expanse",
         "Sticky Fingers",
         "Stromkirk Noble",
+        "Teferi's Puzzle Box",
+        "The Locust God",
+        "Time Reversal",
         "Treasure Map // Treasure Cove",
         "Vanguard Suppressor",
         "Waterbender Ascension",
@@ -6354,7 +7720,7 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -6370,10 +7736,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -6384,10 +7750,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -6405,10 +7771,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Calciform Pools",
@@ -6447,10 +7813,10 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Containment Construct",
@@ -6461,10 +7827,10 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Currency Converter",
@@ -6489,10 +7855,10 @@
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Enduring Curiosity",
@@ -6548,10 +7914,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gemstone Caverns",
@@ -6569,10 +7935,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gleaming Bastion",
@@ -6604,10 +7975,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -6625,24 +8001,38 @@
         },
         {
           "name": "Irencrag Pyromancer",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -6653,10 +8043,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kefnet the Mindful",
@@ -6682,10 +8072,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -6696,17 +8086,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -6724,10 +8114,18 @@
         },
         {
           "name": "Mind's Eye",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mindless Automaton",
@@ -6738,10 +8136,10 @@
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Gate",
@@ -6759,17 +8157,17 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimbus Maze",
@@ -6780,10 +8178,10 @@
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ominous Seas",
@@ -6801,17 +8199,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -6886,10 +8299,18 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Seachrome Coast",
@@ -6915,10 +8336,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shelter",
@@ -7026,10 +8447,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Talon Gates of Madara",
@@ -7047,17 +8477,17 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -7068,10 +8498,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -7252,6 +8682,8 @@
           "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -7261,6 +8693,8 @@
           "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -7270,6 +8704,8 @@
           "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -7278,8 +8714,19 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
             "Sticky Fingers",
+            "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Swiftfoot Boots"
           ]
         }
       ]
@@ -7294,16 +8741,28 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Anje's Ravager"
+          },
+          {
+            "name": "Arjun, the Shifting Flame"
+          },
+          {
             "name": "Astral Drift"
+          },
+          {
+            "name": "Burning Inquiry"
           },
           {
             "name": "Calciform Pools"
           },
           {
-            "name": "Clifftop Retreat"
+            "name": "Commit // Memory"
           },
           {
             "name": "Containment Construct"
+          },
+          {
+            "name": "Curator of Mysteries"
           },
           {
             "name": "Currency Converter"
@@ -7313,6 +8772,12 @@
           },
           {
             "name": "Drake Haven"
+          },
+          {
+            "name": "Echo of Eons"
+          },
+          {
+            "name": "Floodfarm Verge"
           },
           {
             "name": "Generous Plunderer"
@@ -7327,7 +8792,19 @@
             "name": "Improbable Alliance"
           },
           {
-            "name": "Inspiring Vantage"
+            "name": "Irencrag Pyromancer"
+          },
+          {
+            "name": "Jaxis, the Troublemaker"
+          },
+          {
+            "name": "Library of Leng"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "Magus of the Wheel"
           },
           {
             "name": "Marketback Walker"
@@ -7336,13 +8813,31 @@
             "name": "Mindless Automaton"
           },
           {
+            "name": "Molten Psyche"
+          },
+          {
             "name": "Mystic Gate"
+          },
+          {
+            "name": "Nezahal, Primal Tide"
+          },
+          {
+            "name": "Nimble Obstructionist"
           },
           {
             "name": "Nimbus Maze"
           },
           {
+            "name": "Niv-Mizzet, Parun"
+          },
+          {
             "name": "Ominous Seas"
+          },
+          {
+            "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Shark Typhoon"
           },
           {
             "name": "Silent Hallcreeper"
@@ -7352,6 +8847,15 @@
           },
           {
             "name": "Stromkirk Noble"
+          },
+          {
+            "name": "Teferi's Puzzle Box"
+          },
+          {
+            "name": "The Locust God"
+          },
+          {
+            "name": "Time Reversal"
           },
           {
             "name": "Treasure Map // Treasure Cove"
@@ -7371,16 +8875,22 @@
         ],
         "unsleeve": [
           {
-            "name": "Battlefield Forge",
-            "where": [
-              "edgar-vampires",
-              "ur-dragon"
-            ]
-          },
-          {
             "name": "Kefnet the Mindful",
             "where": [
               "heliod"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
             ]
           },
           {
@@ -7410,6 +8920,12 @@
             "where": [
               "zur-enchantress"
             ]
+          },
+          {
+            "name": "Sea of Clouds",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -7425,48 +8941,100 @@
               "Auntie Ool",
               "Shabraz Parts"
             ]
+          },
+          {
+            "name": "Glacial Fortress",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Hallowed Fountain",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Irrigated Farmland",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Ivora, Insatiable Heir",
+            "where": [
+              "Shabraz Parts",
+              "Vampire Cards"
+            ]
+          },
+          {
+            "name": "Swiftfoot Boots",
+            "where": [
+              "Shabraz Parts",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 30,
+        "blocking": 50,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 33,
-      "out": 33,
+      "add": 59,
+      "out": 59,
       "counts": {
-        "in_deck": 67,
-        "box": 2,
-        "elsewhere": 5,
-        "buy": 25,
-        "free": 1
+        "in_deck": 41,
+        "box": 7,
+        "elsewhere": 6,
+        "buy": 44,
+        "free": 2
       },
       "unsourced": [
+        "Anje's Ravager",
+        "Arjun, the Shifting Flame",
         "Astral Drift",
-        "Battlefield Forge",
+        "Burning Inquiry",
         "Calciform Pools",
-        "Clifftop Retreat",
+        "Commit // Memory",
         "Containment Construct",
+        "Curator of Mysteries",
         "Currency Converter",
         "Decree of Silence",
         "Drake Haven",
+        "Echo of Eons",
+        "Floodfarm Verge",
         "Generous Plunderer",
         "Gleaming Bastion",
         "Gossip's Talent",
         "Improbable Alliance",
-        "Inspiring Vantage",
+        "Irencrag Pyromancer",
+        "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Library of Leng",
+        "Magmakin Artillerist",
+        "Magus of the Wheel",
         "Marketback Walker",
+        "Mind's Eye",
         "Mindless Automaton",
+        "Molten Psyche",
         "Mystic Gate",
+        "Nezahal, Primal Tide",
+        "Nimble Obstructionist",
         "Nimbus Maze",
+        "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Psychosis Crawler",
+        "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
+        "Shark Typhoon",
         "Silent Hallcreeper",
         "Skycloud Expanse",
         "Sticky Fingers",
         "Stromkirk Noble",
+        "Teferi's Puzzle Box",
+        "The Locust God",
+        "Time Reversal",
         "Treasure Map // Treasure Cove",
         "Vanguard Suppressor",
         "Waterbender Ascension",
@@ -7474,7 +9042,7 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -7490,10 +9058,10 @@
         },
         {
           "name": "Anje's Ravager",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Arcane Signet",
@@ -7504,10 +9072,10 @@
         },
         {
           "name": "Arjun, the Shifting Flame",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Artist's Talent",
@@ -7525,25 +9093,10 @@
         },
         {
           "name": "Battlefield Forge",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -7554,10 +9107,10 @@
         },
         {
           "name": "Burning Inquiry",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Calciform Pools",
@@ -7589,10 +9142,10 @@
         },
         {
           "name": "Clifftop Retreat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Command Tower",
@@ -7603,10 +9156,10 @@
         },
         {
           "name": "Commit // Memory",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Containment Construct",
@@ -7617,10 +9170,10 @@
         },
         {
           "name": "Curator of Mysteries",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Currency Converter",
@@ -7645,10 +9198,10 @@
         },
         {
           "name": "Echo of Eons",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Enduring Curiosity",
@@ -7690,10 +9243,10 @@
         },
         {
           "name": "Floodfarm Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gemstone Caverns",
@@ -7711,10 +9264,15 @@
         },
         {
           "name": "Glacial Fortress",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gleaming Bastion",
@@ -7746,10 +9304,15 @@
         },
         {
           "name": "Hallowed Fountain",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -7767,31 +9330,45 @@
         },
         {
           "name": "Inspiring Vantage",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Irencrag Pyromancer",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
         },
         {
-          "name": "Irencrag Pyromancer",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Irrigated Farmland",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ivora, Insatiable Heir",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Vampire Cards"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jace's Archivist",
@@ -7802,10 +9379,10 @@
         },
         {
           "name": "Jaxis, the Troublemaker",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kefnet the Mindful",
@@ -7831,10 +9408,10 @@
         },
         {
           "name": "Library of Leng",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -7845,17 +9422,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Magus of the Wheel",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -7873,10 +9450,18 @@
         },
         {
           "name": "Mind's Eye",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mindless Automaton",
@@ -7887,10 +9472,10 @@
         },
         {
           "name": "Molten Psyche",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Gate",
@@ -7908,17 +9493,17 @@
         },
         {
           "name": "Nezahal, Primal Tide",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimble Obstructionist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nimbus Maze",
@@ -7929,10 +9514,10 @@
         },
         {
           "name": "Niv-Mizzet, Parun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Ominous Seas",
@@ -7950,17 +9535,32 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Queen Kayla bin-Kroog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -8028,10 +9628,18 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Seachrome Coast",
@@ -8057,10 +9665,10 @@
         },
         {
           "name": "Shark Typhoon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shivan Reef",
@@ -8156,10 +9764,19 @@
         },
         {
           "name": "Swiftfoot Boots",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Talon Gates of Madara",
@@ -8177,17 +9794,17 @@
         },
         {
           "name": "Teferi's Puzzle Box",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "The Locust God",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Thundering Falls",
@@ -8198,10 +9815,10 @@
         },
         {
           "name": "Time Reversal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Tolarian Winds",
@@ -8387,6 +10004,8 @@
           "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -8396,6 +10015,8 @@
           "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers",
             "Treasure Map // Treasure Cove"
           ]
@@ -8405,6 +10026,8 @@
           "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Library of Leng",
             "Sticky Fingers"
           ]
         },
@@ -8413,8 +10036,19 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Hallowed Fountain",
+            "Magmakin Artillerist",
             "Sticky Fingers",
+            "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40",
+          "checker": "pass",
+          "names": [
+            "Swiftfoot Boots"
           ]
         }
       ]
@@ -8438,164 +10072,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.8004,
+          "rate": 0.4928,
           "ci95": [
-            0.7925,
-            0.8081
+            0.483,
+            0.5026
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.8499,
+          "rate": 0.5421,
           "ci95": [
-            0.8428,
-            0.8568
+            0.5323,
+            0.5518
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.8904,
+          "rate": 0.6088,
           "ci95": [
-            0.8841,
-            0.8964
+            0.5992,
+            0.6183
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.9185,
+          "rate": 0.6581,
           "ci95": [
-            0.913,
-            0.9237
+            0.6487,
+            0.6673
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.9406,
+          "rate": 0.7157,
           "ci95": [
-            0.9358,
-            0.9451
+            0.7068,
+            0.7245
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.9575,
+          "rate": 0.7682,
           "ci95": [
-            0.9534,
-            0.9613
+            0.7598,
+            0.7764
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.9713,
+          "rate": 0.8116,
           "ci95": [
-            0.9678,
-            0.9744
+            0.8038,
+            0.8191
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9826,
+          "rate": 0.8509,
           "ci95": [
-            0.9798,
-            0.985
+            0.8438,
+            0.8577
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9898,
+          "rate": 0.8799,
           "ci95": [
-            0.9876,
-            0.9916
+            0.8734,
+            0.8861
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9938,
+          "rate": 0.9046,
           "ci95": [
-            0.9921,
-            0.9952
+            0.8987,
+            0.9102
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.3653,
+          "rate": 0.0652,
           "ci95": [
-            0.3559,
-            0.3748
+            0.0605,
+            0.0702
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.4461,
+          "rate": 0.084,
           "ci95": [
-            0.4364,
-            0.4559
+            0.0787,
+            0.0896
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5231,
+          "rate": 0.1332,
           "ci95": [
-            0.5133,
-            0.5329
+            0.1267,
+            0.14
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.6047,
+          "rate": 0.1711,
           "ci95": [
-            0.5951,
-            0.6142
+            0.1638,
+            0.1786
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.6928,
+          "rate": 0.2339,
           "ci95": [
-            0.6837,
-            0.7018
+            0.2257,
+            0.2423
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.8129,
+          "rate": 0.3172,
           "ci95": [
-            0.8051,
-            0.8204
+            0.3082,
+            0.3264
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8886,
+          "rate": 0.4025,
           "ci95": [
-            0.8823,
-            0.8946
+            0.3929,
+            0.4121
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9386,
+          "rate": 0.4823,
           "ci95": [
-            0.9337,
-            0.9431
+            0.4725,
+            0.4921
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9645,
+          "rate": 0.5513,
           "ci95": [
-            0.9607,
-            0.968
+            0.5415,
+            0.561
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9785,
+          "rate": 0.6168,
           "ci95": [
-            0.9755,
-            0.9812
+            0.6072,
+            0.6263
           ],
           "n": 10000
         }
@@ -8603,10 +10237,10 @@
       "bottleneck": {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
         "by_turn_three": {
-          "rate": 0.8904,
+          "rate": 0.6088,
           "ci95": [
-            0.8841,
-            0.8964
+            0.5992,
+            0.6183
           ],
           "n": 10000
         }
@@ -8616,159 +10250,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.5607,
+          "rate": 0.5443,
           "ci95": [
-            0.551,
-            0.5704
+            0.5345,
+            0.554
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1997,
+          "rate": 0.0885,
           "ci95": [
-            0.192,
-            0.2077
+            0.0831,
+            0.0942
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0383,
+          "rate": 0.0157,
           "ci95": [
-            0.0347,
-            0.0422
+            0.0134,
+            0.0183
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0111,
+          "rate": 0.0036,
           "ci95": [
-            0.0092,
-            0.0133
+            0.0026,
+            0.005
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0091,
+          "rate": 0.0057,
           "ci95": [
-            0.0074,
-            0.0112
+            0.0044,
+            0.0074
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0167,
+          "rate": 0.0222,
           "ci95": [
-            0.0144,
-            0.0194
+            0.0195,
+            0.0253
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0309,
+          "rate": 0.0493,
           "ci95": [
-            0.0277,
-            0.0345
+            0.0452,
+            0.0537
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0507,
+          "rate": 0.0854,
           "ci95": [
-            0.0466,
-            0.0552
+            0.0801,
+            0.091
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0911,
+          "rate": 0.1156,
           "ci95": [
-            0.0856,
-            0.0969
+            0.1095,
+            0.122
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1743,
+          "rate": 0.1475,
           "ci95": [
-            0.167,
-            0.1819
+            0.1407,
+            0.1546
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1169,
+        "rate": 0.1193,
         "ci95": [
-          0.1107,
-          0.1233
+          0.1131,
+          0.1258
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6219,
-        "hand_empty": 1748,
-        "mana_short": 4471
+        "stall_turns": 5335,
+        "hand_empty": 1622,
+        "mana_short": 3713
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 3470,
-        "hand_empty": 1738,
-        "mana_short": 1732,
+        "stall_turns": 3978,
+        "hand_empty": 1609,
+        "mana_short": 2369,
         "stall_rate": {
-          "rate": 0.0867,
+          "rate": 0.0994,
           "ci95": [
-            0.084,
-            0.0895
+            0.0966,
+            0.1024
           ],
           "n": 40000
         },
         "vs_floor": {
-          "from_turn": 5,
-          "floor_rate": 0.0091,
-          "diff": 0.0776,
+          "from_turn": 4,
+          "floor_rate": 0.0036,
+          "diff": 0.0958,
           "ci95": [
-            0.0742,
-            0.0809
+            0.0926,
+            0.099
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 7.274,
+            "rate": 4.9329,
             "ci95": [
-              7.1807,
-              7.3673
+              4.8699,
+              4.9959
             ],
-            "sd": 4.7614,
+            "sd": 3.212,
             "n": 10000
           },
           "8": {
-            "rate": 8.3099,
+            "rate": 5.0481,
             "ci95": [
-              8.1734,
-              8.4464
+              4.9556,
+              5.1406
             ],
-            "sd": 6.9642,
+            "sd": 4.7208,
             "n": 10000
           },
           "9": {
-            "rate": 9.124,
+            "rate": 5.4416,
             "ci95": [
-              8.9579,
-              9.2901
+              5.3172,
+              5.566
             ],
-            "sd": 8.4735,
+            "sd": 6.3488,
             "n": 10000
           },
           "10": {
-            "rate": 8.328,
+            "rate": 5.786,
             "ci95": [
-              8.1665,
-              8.4895
+              5.641,
+              5.931
             ],
-            "sd": 8.2419,
+            "sd": 7.3972,
             "n": 10000
           }
         },
@@ -8778,39 +10412,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4062,
+        "rate": 0.4276,
         "ci95": [
-          0.3966,
-          0.4159
+          0.4179,
+          0.4373
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1412,
+      "missed_land_drop_rate": 0.1907,
       "mulliganed": {
-        "rate": 0.2074,
+        "rate": 0.2095,
         "ci95": [
-          0.1996,
-          0.2155
+          0.2016,
+          0.2176
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.157,
-        "3": 3.167,
-        "4": 3.987,
-        "5": 4.736,
-        "6": 5.489,
-        "7": 6.398,
-        "8": 7.433,
-        "9": 8.515,
-        "10": 9.651
+        "2": 2.153,
+        "3": 3.549,
+        "4": 4.435,
+        "5": 5.252,
+        "6": 6.112,
+        "7": 7.112,
+        "8": 8.192,
+        "9": 9.255,
+        "10": 10.354
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0589
+      "mana_stdev_turn_five": 1.2288
     },
-    "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793"
+    "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3"
   },
   "bracket": {
     "floor": 3,
@@ -8825,7 +10459,7 @@
     "as_of": "2026-10-19",
     "source_updated_at": "2026-10-19T15:44:54.300248+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 2,
     "omni": {
       "benchmarks": {
@@ -8861,48 +10495,15 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": 1,
-      "included": 2,
+      "highest_bracket": null,
+      "included": 0,
       "infinite": 0,
-      "near": 50,
-      "near_total": 58,
+      "near": 38,
+      "near_total": 38,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
-    "top": [
-      {
-        "id": "790-2384-5042-6833",
-        "cards": [
-          "Psychosis Crawler",
-          "Scrawling Crawler",
-          "Windfall",
-          "Teferi's Ageless Insight"
-        ],
-        "produces": [
-          "Near-infinite lifeloss"
-        ],
-        "infinite": false,
-        "bracket": 1,
-        "popularity": 13198,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "790-2384-4435-6833",
-        "cards": [
-          "Psychosis Crawler",
-          "Scrawling Crawler",
-          "Windfall",
-          "Alhammarret's Archive"
-        ],
-        "produces": [
-          "Near-infinite lifeloss"
-        ],
-        "infinite": false,
-        "bracket": 1,
-        "popularity": 5065,
-        "assumes_other_commander": false
-      }
-    ]
+    "top": []
   },
   "paper": {
     "version": 8,
@@ -8942,7 +10543,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 83,
+          "value": 89,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -8960,7 +10561,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.344,
+          "value": 4.771,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -8968,7 +10569,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
-          "value": 96,
+          "value": 73,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
@@ -8976,7 +10577,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)": {
-          "value": 89,
+          "value": 73,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)' by turn six",
@@ -8984,23 +10585,15 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 49,
+          "value": 17,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A per-draw DAMAGE source drawn (taxes the refill half)": {
-          "value": 49,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'A per-draw DAMAGE source drawn (taxes the refill half)' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 59,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -9008,7 +10601,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
-          "value": 60,
+          "value": 32,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
@@ -9016,7 +10609,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
-          "value": 66,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
@@ -9024,7 +10617,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE AIR KILL — a wheel plus a flying body that grows on every card": {
-          "value": 47,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE AIR KILL — a wheel plus a flying body that grows on every card' by turn six",
@@ -9032,7 +10625,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading": {
-          "value": 57,
+          "value": 74,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading' by turn six",
@@ -9040,7 +10633,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Commander protection drawn — the whole engine is one 4-drop that dies to everything": {
-          "value": 59,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Commander protection drawn — the whole engine is one 4-drop that dies to everything' by turn six",
@@ -9048,23 +10641,15 @@
           "source": "goldfish_metrics.json"
         },
         "target:A real answer drawn — a counter, a sweeper or a tax": {
-          "value": 80,
+          "value": 69,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step": {
-          "value": 36,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling \"Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step\" by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
         "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
-          "value": 65,
+          "value": 72,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
@@ -9143,15 +10728,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 9.629,
-            "2": 2.139,
-            "3": 3.144,
-            "4": 3.973,
-            "5": 4.711,
-            "6": 5.468,
-            "7": 6.374,
-            "8": 7.405,
-            "9": 8.492
+            "10": 10.413,
+            "2": 2.141,
+            "3": 3.546,
+            "4": 4.431,
+            "5": 5.251,
+            "6": 6.119,
+            "7": 7.121,
+            "8": 8.22,
+            "9": 9.305
           },
           "tier": "data",
           "weight": "detail",
@@ -9162,15 +10747,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.882,
+            "10": 0.748,
             "2": 0.997,
-            "3": 0.896,
-            "4": 0.79,
-            "5": 0.719,
-            "6": 0.727,
-            "7": 0.815,
-            "8": 0.865,
-            "9": 0.892
+            "3": 0.903,
+            "4": 0.789,
+            "5": 0.702,
+            "6": 0.7,
+            "7": 0.738,
+            "8": 0.768,
+            "9": 0.766
           },
           "tier": "data",
           "weight": "detail",
@@ -9180,16 +10765,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.048,
-            "10": 4.585,
-            "2": 0.231,
-            "3": 0.658,
-            "4": 0.809,
-            "5": 0.999,
-            "6": 1.403,
-            "7": 1.986,
-            "8": 2.714,
-            "9": 3.569
+            "1": 0.064,
+            "10": 2.603,
+            "2": 0.223,
+            "3": 0.405,
+            "4": 0.504,
+            "5": 0.711,
+            "6": 1.042,
+            "7": 1.409,
+            "8": 1.792,
+            "9": 2.178
           },
           "tier": "data",
           "weight": "detail",
@@ -9199,14 +10784,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 331,
-            "1": 1612,
-            "2": 2885,
-            "3": 2971,
-            "4": 1631,
-            "5": 492,
-            "6": 73,
-            "7": 5
+            "0": 371,
+            "1": 1543,
+            "2": 3017,
+            "3": 2903,
+            "4": 1573,
+            "5": 500,
+            "6": 90,
+            "7": 3
           },
           "tier": "data",
           "weight": "detail",
@@ -9215,13 +10800,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 242,
-            "4": 4,
-            "5": 377,
-            "6": 2555,
-            "7": 4179,
-            "8": 1823,
-            "9": 600
+            "10": 189,
+            "4": 1,
+            "5": 353,
+            "6": 2545,
+            "7": 4251,
+            "8": 1863,
+            "9": 646
           },
           "tier": "data",
           "weight": "detail",
@@ -9237,86 +10822,78 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.344,
-    "commander_cast_by_turn_6_pct": 83,
+    "commander_mean_cast_turn": 4.771,
+    "commander_cast_by_turn_6_pct": 89,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "by_turn_6_pct": 96
+        "by_turn_6_pct": 73
       },
       {
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "by_turn_6_pct": 89
+        "by_turn_6_pct": 73
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 49
-      },
-      {
-        "label": "A per-draw DAMAGE source drawn (taxes the refill half)",
-        "by_turn_6_pct": 49
+        "by_turn_6_pct": 17
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 59
+        "by_turn_6_pct": 45
       },
       {
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 32
       },
       {
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "by_turn_6_pct": 66
+        "by_turn_6_pct": 13
       },
       {
         "label": "THE AIR KILL — a wheel plus a flying body that grows on every card",
-        "by_turn_6_pct": 47
+        "by_turn_6_pct": 13
       },
       {
         "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
-        "by_turn_6_pct": 57
+        "by_turn_6_pct": 74
       },
       {
         "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-        "by_turn_6_pct": 59
+        "by_turn_6_pct": 79
       },
       {
         "label": "A real answer drawn — a counter, a sweeper or a tax",
-        "by_turn_6_pct": 80
-      },
-      {
-        "label": "Hand-size relief drawn — no maximum hand size, so a wheel's seven survives the cleanup step",
-        "by_turn_6_pct": 36
+        "by_turn_6_pct": 69
       },
       {
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "by_turn_6_pct": 65
+        "by_turn_6_pct": 72
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.044,
+      "mean_kill_turn": 7.048,
       "median_kill_turn": 7,
       "kill_by_turn_6_pct": 29,
-      "kill_by_turn_8_pct": 89,
+      "kill_by_turn_8_pct": 90,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 242,
-        "4": 4,
-        "5": 377,
-        "6": 2555,
-        "7": 4179,
-        "8": 1823,
-        "9": 600
+        "10": 189,
+        "4": 1,
+        "5": 353,
+        "6": 2545,
+        "7": 4251,
+        "8": 1863,
+        "9": 646
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.9406,
+    "rate": 0.7157,
     "ci95": [
-      0.9358,
-      0.9451
+      0.7068,
+      0.7245
     ],
     "n": 10000,
     "turn": 5,
@@ -9338,7 +10915,7 @@
         "WEAK"
       ]
     ],
-    "why": "the engine is online by turn 5 in 94% of 10,000 seeded games",
+    "why": "the engine is online by turn 5 in 72% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": {
@@ -9351,13 +10928,13 @@
   "audit": {
     "archetype": null,
     "under": [
-      "colour-sources",
-      "ramp",
       "sweepers",
-      "protection",
       "interaction-breadth"
     ],
-    "over": [],
+    "over": [
+      "ramp",
+      "protection"
+    ],
     "stale": []
   },
   "prescriptions": {
@@ -9416,11 +10993,11 @@
     "runs": 5,
     "latest": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35",
     "at": "2026-10-21",
-    "stale": false,
+    "stale": true,
     "ran_on_decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
     "ran_on_version": 8,
-    "current_version": 8,
-    "runs_on_current_list": 3,
+    "current_version": null,
+    "runs_on_current_list": 0,
     "games": 20,
     "wins": 4,
     "decided": 20,
@@ -9444,14 +11021,12 @@
       "covered": false,
       "never_cast": [
         "March of Swirling Mist",
-        "Mind's Eye",
         "Sorcerer Class",
-        "Faerie Mastermind",
         "Rielle, the Everwise",
         "Teferi's Ageless Insight",
         "Tolarian Winds"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Mind's Eye, Sorcerer Class, Faerie Mastermind, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Faerie Mastermind sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 14 own turns (+14 more) — measured from the hand, not inferred."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Sorcerer Class, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Jace's Archivist sat castable and uncast on 14 own turns, Teferi's Ageless Insight sat castable and uncast on 12 own turns (+5 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
       "purphoros-pingers": 11,
@@ -9463,25 +11038,25 @@
     "tokens_observed": 0.5
   },
   "experiments": {
-    "count": 3,
+    "count": 4,
     "latest": {
       "question": "working copy  vs  branch voltron-v1, same table",
       "at": "2026-10-22",
       "stale": false,
       "games_per_arm": 300,
-      "win_a": 0.133,
-      "win_b": 0.149,
+      "win_a": 0.166,
+      "win_b": 0.151,
       "win_diff_ci95": [
-        -0.099,
-        0.1301
+        -0.074,
+        0.0438
       ],
       "differs": false,
-      "minimum_detectable_difference": 0.195,
-      "reading": "the 95% interval on the win-rate difference is [-0.099, +0.130] and CONTAINS zero. At [75, 74] games per arm this experiment could only have detected a difference of +0.195 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
+      "minimum_detectable_difference": 0.095,
+      "reading": "the 95% interval on the win-rate difference is [-0.074, +0.044] and CONTAINS zero. At [296, 299] games per arm this experiment could only have detected a difference of +0.095 or larger, so it is uninformative about anything smaller — that is not evidence of no effect."
     }
   },
   "decisions": {
-    "count": 10,
+    "count": 12,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -9524,45 +11099,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "012",
+        "branch": "voltron-v1",
+        "pod": "olivers-table",
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "006",
-        "at": "2026-10-04T13:21:18-07:00",
-        "kind": "propose",
-        "branch": "momentum-v1",
-        "as_version": "v1.2.0",
-        "predicted": {
-          "endpoint": "forge.win_rate",
-          "grade": "not resolvable",
-          "forge_delta": 0.0578,
-          "forge_ci95": [
-            -0.0157,
-            0.1295
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
-      {
-        "id": "007",
-        "at": "2026-10-06T15:06:30-07:00",
-        "kind": "merge",
-        "branch": "momentum-v1",
-        "as_version": "v1.2.0",
-        "predicted": {
-          "endpoint": "forge.win_rate",
-          "grade": "not resolvable",
-          "forge_delta": 0.0578,
-          "forge_ci95": [
-            -0.0157,
-            0.1295
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
       {
         "id": "008",
         "at": "2026-10-19T08:29:41-07:00",
@@ -9610,16 +11156,51 @@
           "pod": "olivers-table"
         },
         "realised": null
+      },
+      {
+        "id": "011",
+        "at": "2026-10-24T15:34:19-07:00",
+        "kind": "propose",
+        "branch": "voltron-v1",
+        "as_version": "v2.0.0",
+        "predicted": {
+          "endpoint": "forge.commander_damage_max_on_one_defender",
+          "grade": "not resolvable",
+          "forge_delta": -0.0085,
+          "forge_ci95": [
+            -0.0629,
+            0.0476
+          ],
+          "pod": "olivers-table"
+        },
+        "realised": null
+      },
+      {
+        "id": "012",
+        "at": "2026-10-24T15:35:38-07:00",
+        "kind": "merge",
+        "branch": "voltron-v1",
+        "as_version": "v2.0.0",
+        "predicted": {
+          "endpoint": "forge.commander_damage_max_on_one_defender",
+          "grade": "not resolvable",
+          "forge_delta": -0.0085,
+          "forge_ci95": [
+            -0.0629,
+            0.0476
+          ],
+          "pod": "olivers-table"
+        },
+        "realised": null
       }
     ]
   },
   "next": [
     "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-19) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
-    "branch `voltron-v1`: 1 HELD add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch voltron-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `voltron-v1` needs 33 card(s) sourced — `manamap pilot deck-branch sharknado source voltron-v1`",
-    "branch `finisher-v1` needs 10 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
+    "branch `finisher-v1` needs 27 card(s) sourced — `manamap pilot deck-branch sharknado source finisher-v1`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
     "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
