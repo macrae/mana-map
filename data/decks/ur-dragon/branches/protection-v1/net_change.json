@@ -732,7 +732,7 @@
    },
    {
     "name": "PRIMARY AND EXPLORATORY",
-    "what": "The objective is the one pre-registered test. The twelve rows are a family of looks, each with an interval on its difference, and a row's verdict is Holm-corrected across the family.",
+    "what": "The objective is the one pre-registered test. The sixteen rows are a family of looks, each with an interval on its difference, and a row's verdict is Holm-corrected across the family.",
     "why": "Twelve rows at alpha 0.05 with no correction is one false 'better' in every other report. `experiment.py` pre-registers `win_rate` for the same reason. Measured over 42 tracked reports before shipping: Holm flips no verdict \u2014 the MDE rule was already near Bonferroni at the top rank \u2014 so this is what a verdict means, not which rows carry one."
    },
    {
@@ -747,6 +747,14 @@
    }
   ],
   "forge_endpoints": {
+   "forge.answers_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "answers_cast",
+    "what": "removal, bounce, sweepers, edicts, fight and tax effects our seat cast or activated per game, by the card's corpus role (damage removal only on a noncreature card)",
+    "why": "whether the list answers the table, read from what the AI actually cast"
+   },
    "forge.biggest_hit": {
     "conditional": false,
     "kind": "mean",
@@ -763,12 +771,36 @@
     "what": "combat damage our seat dealt to players, mean per game, with the median beside it because the sample is mostly zeros with a tail",
     "why": "the shape of the kill on a combat deck; the figure that fell 29.07 -> 18.20 when a go-wide refactor cut every lord"
    },
+   "forge.commander_damage_max_on_one_defender": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "commander_damage_max_on_one_defender",
+    "what": "per game, the most combat damage one of our commanders dealt to any single opponent (21 is lethal); 0 in a game where no commander connected",
+    "why": "the voltron clock: how close the deck gets to a commander kill, readable before the kills themselves are frequent enough to count"
+   },
    "forge.commander_resolved_rate": {
     "conditional": false,
     "kind": "proportion",
     "lower_is_better": false,
     "what": "games in which the commander resolved at least once, over games played",
     "why": "a FLOOR on commander access under Forge's AI \u2014 the deck's plan cannot start until it does"
+   },
+   "forge.commander_uptime": {
+    "conditional": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "commander_uptime",
+    "what": "per game: of the own turns after a commander first resolved, the share on which one was still on the battlefield (either partner), from the board series' cleanup snapshots; conditional on a commander resolving",
+    "why": "the deck cannot start until a commander is out and cannot finish if the table keeps removing it \u2014 the recast-tax question as a figure"
+   },
+   "forge.counters_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "counters_cast",
+    "what": "counterspells our seat cast per game (corpus role `counterspell`)",
+    "why": "the held-up answer; the AI under-uses it, so a difference is a floor"
    },
    "forge.drain_dealt": {
     "conditional": false,
@@ -818,6 +850,30 @@
     "what": "the GLOBAL turn of our seat's first declared attack, mean over the games in which it attacked at all",
     "why": "how long the AI sat on the deck; conditional, so a branch that attacks in more games can read WORSE here by attacking late in games it used to skip"
    },
+   "forge.first_wheel_turn": {
+    "conditional": true,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "first_wheel_turn",
+    "what": "the own turn our seat's first wheel spell resolved, over games with one",
+    "why": "later is the thesis (a finisher, not an opening); read beside the share above, since a deck that never wheels reads nothing here"
+   },
+   "forge.interaction_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "interaction_cast",
+    "what": "stack objects our seat cast or activated that targeted an opponent or an opponent's permanent, once per opposing seat per object \u2014 a floor, since a permanent nobody attacked or blocked with cannot be attributed",
+    "why": "interaction aimed at the table, of any kind; not a removal count"
+   },
+   "forge.interaction_received": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "interaction_received",
+    "what": "stack objects opponents aimed at our seat or our permanents, per game, by the same rule",
+    "why": "how much of the table's interaction the list draws; lower is better"
+   },
    "forge.kills_by_ability": {
     "conditional": false,
     "kind": "mean",
@@ -842,6 +898,14 @@
     "what": "every point of life this seat removed from opponents in a game \u2014 combat damage plus noncombat damage plus drain, summed, with the median beside the mean because the sample has a long tail",
     "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 while losing ~17 combat damage, and this row would have said so"
    },
+   "forge.mulligans": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": true,
+    "per_game": "mulligans",
+    "what": "mulligans our seat took per game (Forge gives the first free)",
+    "why": "the kept-hand question at a table: a list the AI ships more often is one the pilot would too"
+   },
    "forge.noncombat_damage_dealt_to_players": {
     "conditional": false,
     "kind": "mean",
@@ -849,6 +913,25 @@
     "per_game": "noncombat_damage_dealt_to_players",
     "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
     "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+   },
+   "forge.protection_cast": {
+    "conditional": false,
+    "kind": "mean",
+    "lower_is_better": false,
+    "per_game": "protection_cast",
+    "what": "protection pieces our seat cast or activated per game (any `protection*` role)",
+    "why": "resolve: keeping the commanders and the engine on the table"
+   },
+   "forge.wheels_with_commander_share": {
+    "conditional": false,
+    "counts": [
+     "wheels_with_commander",
+     "wheels_cast_total"
+    ],
+    "kind": "proportion",
+    "lower_is_better": false,
+    "what": "of the wheel spells our seat cast, the share cast on an own turn whose cleanup board held a commander, pooled over every game (`wheel_timing`)",
+    "why": "the pilot's thesis at a table: a wheel is a finisher dropped onto Brallin or Shabraz. Forge's AI fires on its own rule, so this reads whether the LIST gets a commander down before the AI's wheels fire, never the hold"
    },
    "forge.win_rate": {
     "conditional": false,
@@ -870,11 +953,23 @@
     "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
     "why": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
+   "dead wheels in hand @T5": {
+    "scale": "against the cards in hand at the end of turn 5",
+    "unit": "mean",
+    "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
+    "why": "The clog: \"one playable creature and a bunch of wheels\" as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
+   },
    "extra cards by T8": {
     "scale": "against the 8 cards every deck draws for free by then",
     "unit": "mean",
     "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others. Activated, X-based and priced draw ('you may pay 2 life. If you do') are NOT counted and the cards are named in the goldfish artifact.",
     "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   "finisher wheel by T8": {
+    "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
+    "unit": "rate",
+    "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield and a hand the model's thin-hand rule would not have thrown away on its own. Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
+    "why": "The pilot's thesis as an output the deck produces (sharknado log 002): a wheel is a finisher dropped onto Brallin or Shabraz, never early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS \u2014 the clock the thesis sets \u2014 and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
    },
    "hand can act by T3": {
     "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
@@ -897,6 +992,12 @@
     "unit": "rate",
     "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
     "why": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+   },
+   "kept hand passes the pilot's keep rule": {
+    "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
+    "unit": "rate",
+    "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
+    "why": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices the question the log raises about a hand of one creature and four wheels: how often does the list deal the pilot a seven he would ship?"
    },
    "killed by T10": {
     "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -927,6 +1028,12 @@
     "unit": "rate",
     "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
     "why": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   "wheels cast by T10": {
+    "scale": "against the wheel-shaped cards the declaration names",
+    "unit": "mean",
+    "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
+    "why": "The engine's trigger count: every payoff in this deck is a tax collector with nothing to tax until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
    }
   }
  },
@@ -972,7 +1079,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "ddec1ff58e1d",
+  "model_version": "d4d357389cfd",
   "seed": 20260826
  },
  "limits": [

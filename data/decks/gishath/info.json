@@ -870,13 +870,17 @@
             "name": "Chandra's Ignition"
           },
           {
-            "name": "Clifftop Retreat"
-          },
-          {
             "name": "Commercial District"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Clifftop Retreat",
+            "where": [
+              "sharknado"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [],
@@ -890,8 +894,8 @@
       "counts": {
         "in_deck": 84,
         "box": 0,
-        "elsewhere": 0,
-        "buy": 5,
+        "elsewhere": 1,
+        "buy": 4,
         "free": 0
       },
       "unsourced": [
@@ -1011,8 +1015,16 @@
         },
         {
           "name": "Clifftop Retreat",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
