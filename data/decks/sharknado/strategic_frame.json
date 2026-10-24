@@ -1,0 +1,212 @@
+{
+  "slug": "sharknado",
+  "decklist_sha256_prefix": "c9186bd91308",
+  "archetype": "Jeskai partner MODAL VOLTRON with an each-opponent ping engine riding underneath: two commanders that grow off card flow (Shabraz +1/+1 and 1 life per card drawn, flying; Brallin +1/+1 and 1 damage to each opponent per card discarded), cashed as one double-striking evasive hit for 21 commander damage at ONE seat, chosen by the board. Four wheels plus four wheel-modal spells are finishers cast with a commander out, not ignition. Commander-RELIANT (strategy:deckbuilding.archetype-selection): there is no payoff in the 99 that wins without one of the two. Bracket floor 3 on exactly three Game Changers (Jeska's Will, Rhystic Study, Smothering Tithe; bracket_report.json), zero contained combo lines (deck-facts), so the deck sits at the B3 Game Changer cap with no combo headroom.",
+  "schools": [
+    "strategy:whos-the-beatdown",
+    "strategy:whos-the-beatdown.metagame-clock",
+    "strategy:pivot-point",
+    "strategy:multiplayer",
+    "strategy:multiplayer.asymmetry",
+    "strategy:multiplayer.threat-deflection",
+    "strategy:multiplayer.pivot-window",
+    "strategy:multiplayer.commander-insurance",
+    "strategy:multiplayer.politics",
+    "strategy:multiplayer.pod-management",
+    "strategy:combat-math",
+    "strategy:combat-math.racing",
+    "strategy:conversion.combat-channel",
+    "strategy:conversion.yield",
+    "strategy:conversion.availability",
+    "strategy:conversion.passive-tax",
+    "strategy:critical-mass",
+    "strategy:card-advantage.plan-draw",
+    "strategy:deckbuilding.archetype-selection",
+    "strategy:deckbuilding.redundancy-vs-tutors",
+    "strategy:deckbuilding.interaction-suite",
+    "strategy:deckbuilding.threat-density",
+    "strategy:deckbuilding.curve",
+    "strategy:deckbuilding.mana-base.color-sources",
+    "strategy:deckbuilding.power-level",
+    "strategy:deckbuilding.power-level.barometers",
+    "strategy:mulligans.engine-hands",
+    "strategy:threat-assessment.answer-economy",
+    "strategy:threat-assessment.resource-denial",
+    "strategy:resource-hedging.wrath-math",
+    "strategy:tempo.sequencing"
+  ],
+  "role_assignment": {
+    "default_role": "SEAT-RELATIVE, and it splits by commander (strategy:whos-the-beatdown, Commander correction: 'assign per-threat, not per-game'). Turns 1-4 you are the quiet CONTROL posture: loot, ramp, land a commander, and let the table read 'a draw deck and two creatures' (CONTEXT, 'What the table misreads') — that misread is your deflection budget (strategy:multiplayer.threat-deflection), and it spends down the moment counters pile up on a flyer. From the turn a commander survives a turn cycle you are the BEATDOWN against every seat that owns the long game better than you — and on strategy:whos-the-beatdown.metagame-clock's test ('picture turn 15 ... whoever likes that picture less should be attacking now') that is most tables: the deck's interaction is thin (seven answers, none for an enchantment or a graveyard — see distribution_notes), its engine is two creatures, and its symmetrical wheels refill the control player's grip as fast as yours. The goldfish puts your clock in that frame: median kill turn 7, kill by turn 6 in 29.0% and by turn 8 in 90.1% (goldfish_metrics.json, 10,000 games, sha c9186bd91308, ONE seat at 40, no blockers, no removal, the modal commander-damage plan not modelled) — inside Bracket 3's 'at least six' turns (strategy:deckbuilding.power-level). Commander-damage kills are one of the payoff classes strategy:multiplayer.asymmetry says scale, but each one is still a two-player subgame (strategy:combat-math.racing, Commander correction): every 21 you deal removes one seat, so you are the beatdown against the seat you are hitting and the control deck against the two you are not.",
+    "pivot_trigger": "A concrete event, per strategy:pivot-point ('a resolved engine ... hold the protection spell for the turn you commit, not after'): (1) a commander has survived one turn cycle on the battlefield, AND (2) a double-strike or evasion piece is reachable this turn (seven double-strike sources by oracle text: Blade Historian, Fireshrieker, Genji Glove, Lizard Blades, Embercleave, Akroma's Will, Boros Charm; evasion: Shabraz's own flying, Brotherhood Regalia, Key to the City, Zephyr Boots, Akroma's Will, Inti's trample, and the commanders' cross-grants), AND (3) a size jump is in hand — a wheel, Knowledge Is Power, or an instant wheel to fire after blocks — AND (4) a shield is held: Flawless Maneuver is free with a commander out, Akroma's Will picks both modes with one, Silence shuts the table out of the kill turn (oracle text). strategy:multiplayer.pivot-window sets the bar the table will apply: 'assume every held answer appears the moment you present lethal, and count the table's open mana before committing'. The modal choice is part of the pivot: Shabraz when the draw doublers or Knowledge Is Power are out (Torbran does NOT add to Shabraz — he is a white-blue source, oracle text), Brallin when Torbran, Gratuitous Violence or Fiery Emancipation are out, since each of those also scales his pings at all three seats (candidate line 1). Pilot log 002 is the pivot stated in the pilot's own words: wheels 'need to come in and hit when Brallin or Shabraz are on the table'.",
+    "strategy_ref": "strategy:pivot-point"
+  },
+  "engines": [
+    {
+      "piece": "Shabraz, the Skyshark",
+      "engine": "THE AIR ROAD. Every card drawn is a +1/+1 counter and 1 life on a flyer in the command zone — the strongest availability location the doc names (strategy:conversion.availability: the commander is 'the most reliably repeatable card in the 100 cards'). Draws are the fuel; doublers (Teferi's Ageless Insight, Bard, King of Dale, Alhammarret's Archive — each 'draw two instead' except the first draw-step draw) and Lae'zel (+1 to every counter placement) are the multipliers; Knowledge Is Power converts the same draw turn into +X/+X on the whole team. Stack 001 (pass) is the only proof: Windfall with both commanders out leaves Shabraz 10/10. Goldfish: Shabraz cast by turn 6 in 89.2% (mean turn 4.771, median 5).",
+      "evidence": "verified stack 001; oracle text; goldfish_metrics.json metrics.commander",
+      "strategy_ref": "strategy:conversion.availability"
+    },
+    {
+      "piece": "Brallin, Skyshark Rider",
+      "engine": "THE RIDER ROAD, which is TWO outputs, not one. Each discard is a counter on Brallin (combat commander damage at one seat) AND 1 damage to each opponent (noncombat, so NOT commander damage — CR 903.10a counts combat damage only; that is a rule to cite in a stack, not a claim made here). The ping is an each-opponent count-scaled converter, the scope strategy:conversion.yield prices at 3 life off the table per event against 1 for a targeted one. Stacks 001, 004, 005 (pass): seven Windfall discards = 7 to each opponent; 21 each under Artist's Talent level 3 (004) or Torbran (005). Brallin cast by turn 6 in 96.7%, mean turn 3.927 (goldfish metrics.partner).",
+      "evidence": "verified stacks 001, 004, 005; oracle text; goldfish_metrics.json metrics.partner",
+      "strategy_ref": "strategy:conversion.yield"
+    },
+    {
+      "piece": "Torbran, Thane of Red Fell",
+      "engine": "Damage replacement for RED sources only: +2 per event to an opponent or their permanent. Applies to every Brallin ping (stack 005, pass: seven pings of 3 = 21 per seat) and, by oracle text alone, to each of Brallin's combat-damage events (each strike under double strike). Does NOT apply to Shabraz (white-blue). So Torbran is a Brallin-road card and the modal choice should read it that way.",
+      "evidence": "verified stack 005; oracle text",
+      "strategy_ref": "strategy:conversion.yield"
+    },
+    {
+      "piece": "Gratuitous Violence",
+      "engine": "Doubles damage from any CREATURE you control — which by oracle text includes Brallin's and Glint-Horn Buccaneer's triggered pings, not just combat. engine.json's conversion stage files it as a combat doubler for Brallin only; the oracle text is wider, and that disagreement is itself a finding (candidate line 1). Also doubles Shabraz's combat damage, so unlike Torbran it serves both roads.",
+      "evidence": "oracle text (no passing stack)",
+      "strategy_ref": "strategy:multiplayer.asymmetry"
+    },
+    {
+      "piece": "Fiery Emancipation",
+      "engine": "Triples damage from any source you control: both commanders' combat damage and every ping. The backup doubler for either road; Idyllic Tutor finds it (eight enchantment targets per engine.json).",
+      "evidence": "oracle text (no passing stack)",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Teferi's Ageless Insight / Bard, King of Dale / Alhammarret's Archive",
+      "engine": "Draw doublers: every non-first-draw-step draw becomes two, so a seven-card wheel is fourteen Shabraz triggers. Three copies of one effect class plus Idyllic Tutor for the enchantment = four effective copies (strategy:deckbuilding.redundancy-vs-tutors: 'k tutors plus the card act like k+1 copies'). Whether two doublers compound has no passing stack (candidate line 2).",
+      "evidence": "oracle text; engine.json open_questions[1]",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Windfall / Tolarian Winds / Reforge the Soul / Khorvath's Fury / Jace's Archivist + Collective Defiance / Incendiary Command / Fateful Showdown",
+      "engine": "Finisher fuel: a full-hand discard (Brallin) followed by a full-hand draw (Shabraz). The wheel group is drawn by turn 6 in 72.6% (goldfish targets; mean turn 3.054) and the first wheel is cast at mean turn 6.597 (n 8,066), so the usual problem is HOLDING one, which is the pilot's rule. Two are instants (Tolarian Winds, Fateful Showdown) and can fire after blockers are declared (candidate line 4). The symmetrical ones refill three opponents too: a cost strategy:multiplayer.asymmetry would charge against any effect that is not one-sided.",
+      "evidence": "verified stack 001 (Windfall); goldfish_metrics.json targets and discard; oracle text",
+      "strategy_ref": "strategy:critical-mass"
+    },
+    {
+      "piece": "Faithless Looting / Frantic Search / Sorcerer Class / Artist's Talent / Collector's Vault / Kitsa / Teferi, Master of Time / Rielle / Key to the City / Inti",
+      "engine": "Steady fuel: a loot pays BOTH commanders (a draw for Shabraz, a discard for Brallin) without emptying the hand. This is the 'steady draw' half of strategy:card-advantage.plan-draw — live in the hand where no wheel is safe to cast — and the answer to pilot log 001's complaint about discarding useful cards to a wheel. Key to the City's discard is also an unblockable grant; Inti's attack discard is a counter, trample and an impulse draw.",
+      "evidence": "oracle text; CONTEXT pilot notes 001",
+      "strategy_ref": "strategy:card-advantage.plan-draw"
+    },
+    {
+      "piece": "Lightning Greaves / Champion's Helm / Brotherhood Regalia / Flawless Maneuver / Loran's Escape / March of Swirling Mist / Akroma's Will / Boros Charm / Silence / Negate + Campfire / Command Beacon",
+      "engine": "Commander insurance. strategy:multiplayer.commander-insurance: 'the engine's hub justifies constant protection down plus a held response on the pivot turn'. Constant: Greaves, Helm (hexproof on a legend), Regalia (ward 2). Held: Maneuver (free with a commander), Loran's Escape, March, Akroma's Will, Boros Charm, Silence, Negate. Tax reset: Campfire and Command Beacon return a commander to hand (cast from hand pays no tax). Protection drawn by turn 6 in 79.0% (goldfish target) — that prices drawing it, never using it.",
+      "evidence": "oracle text; goldfish_metrics.json targets; CONTEXT pilot notes 001 (Greaves and Boots 'really good')",
+      "strategy_ref": "strategy:multiplayer.commander-insurance"
+    },
+    {
+      "piece": "Idyllic Tutor / Stoneforge Mystic",
+      "engine": "Two narrow tutors, one per road's missing piece: Idyllic for the enchantment multiplier (Gratuitous Violence, Fiery Emancipation, Knowledge Is Power, Teferi's Ageless Insight, Rhystic Study, Smothering Tithe, Sorcerer Class, Artist's Talent), Stoneforge for any of the nine Equipment, put in for {1}{W}. strategy:deckbuilding.redundancy-vs-tutors: 'tutor only the irreplaceable' and 'a tutor is an enabler only if you can cast it and still deploy' — Stoneforge's 2-mana body passes that test; Idyllic's 3-mana sorcery is a tempo turn.",
+      "evidence": "oracle text; engine.json stage fuel",
+      "strategy_ref": "strategy:deckbuilding.redundancy-vs-tutors"
+    },
+    {
+      "piece": "Smothering Tithe / Jeska's Will",
+      "engine": "Mana that SCALES off your own wheels: every opponent draw under Tithe is a Treasure unless they pay {2}; Jeska's Will adds {R} per card in an opponent's hand, which a symmetrical wheel just set to seven. Both make the post-wheel equip / Embercleave / second-spell turn affordable (candidate line 6). Tithe is the passive each-opponent tax shape strategy:conversion.passive-tax describes, with its warning that taxing the whole table 'makes you everyone's problem at once'.",
+      "evidence": "oracle text (no passing stack)",
+      "strategy_ref": "strategy:conversion.passive-tax"
+    }
+  ],
+  "candidate_missing_lines": [
+    {
+      "title": "The each-opponent kill: Brallin's pings under Gratuitous Violence + Torbran (and Glint-Horn Buccaneer), off one seven-card wheel",
+      "cards": [
+        "Brallin, Skyshark Rider",
+        "Gratuitous Violence",
+        "Torbran, Thane of Red Fell",
+        "Glint-Horn Buccaneer",
+        "Windfall"
+      ],
+      "why_plausible": "Oracle text: Gratuitous Violence doubles damage a CREATURE you control would deal to a player — Brallin and Glint-Horn are both creatures and both deal the ping themselves. With Torbran too, the damaged opponent orders the two replacements (the same ordering engine.json's lines[4] note reads from stack 005's scope notes), so the floor is 1x2+2 = 4 per ping. Seven discards would then be 28 to each opponent from Brallin, 56 with Glint-Horn — a table kill from 40 without a combat step, which is exactly the payoff class strategy:multiplayer.asymmetry and strategy:conversion.yield favour. Fiery Emancipation is the same shape at 1x3+2 = 5 per ping. engine.json files Gratuitous Violence as a combat doubler only, so this line is not in the engine model at all. Arithmetic from oracle text, never a fact.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Shabraz under two draw doublers and Lae'zel: how many counters does one Windfall make",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Teferi's Ageless Insight",
+        "Bard, King of Dale",
+        "Lae'zel, Vlaakith's Champion",
+        "Windfall"
+      ],
+      "why_plausible": "Each doubler replaces a non-first-draw-step draw with two; whether a second doubler applies to the replacement draws (compounding to four) is the open rules question, and Lae'zel turns each Shabraz trigger's one counter into two. engine.json open_questions[1] asks the same thing. The answer decides whether the Shabraz road needs double strike at all.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Shabraz's one-turn 21: a precombat wheel under Knowledge Is Power, then a double-strike swing",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Knowledge Is Power",
+        "Windfall",
+        "Embercleave",
+        "Blade Historian"
+      ],
+      "why_plausible": "Stack 001 leaves Shabraz 10/10 after Windfall; Knowledge Is Power adds +X/+X for cards drawn this turn, so a precombat seven-card wheel makes him at least 17/17 that turn by oracle arithmetic, and double strike doubles it at one seat. No passing stack resolves ANY combat in this deck (engine.json notes), so the deck's stated win condition is entirely unverified. Pairs with engine.json open_questions[2].",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "The instant wheel as a combat trick: Fateful Showdown or Tolarian Winds after blockers are declared",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Brallin, Skyshark Rider",
+        "Fateful Showdown",
+        "Tolarian Winds",
+        "Knowledge Is Power"
+      ],
+      "why_plausible": "Both are instants (oracle text). Cast after blockers with a commander unblocked, the draws put counters on Shabraz and pump the team through Knowledge Is Power, the discards grow Brallin and ping, and Fateful Showdown's own damage (a red source) takes Torbran's +2 — all after the defender has committed. strategy:tempo.sequencing: 'combat tricks want the opponent's mana already spent'. No stack holds a mid-combat wheel.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Two seats in one turn: an extra combat (Genji Glove or Karlach) pointed at a second opponent",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Genji Glove",
+        "Karlach, Fury of Avernus",
+        "Blade Historian"
+      ],
+      "why_plausible": "Commander damage kills one seat per 21 (strategy:conversion.combat-channel: 'an attack chooses one enemy'). Genji Glove and Karlach each add a combat phase, and attacks are declared per combat, so a grown commander could deal 21 to one seat and then attack a different seat. Karlach also untaps attackers and grants first strike, which with Blade Historian's double strike is redundant — the stack should say what each actually adds. Unverified.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Post-wheel mana: Windfall into Jeska's Will (and Smothering Tithe Treasures) funding the equip and the second wheel",
+      "cards": [
+        "Windfall",
+        "Jeska's Will",
+        "Smothering Tithe",
+        "Shabraz, the Skyshark"
+      ],
+      "why_plausible": "A symmetrical wheel leaves each opponent with seven cards, so Jeska's Will with a commander out adds seven {R} and exiles three to play; Tithe makes up to 21 Treasures unless opponents pay {2} per draw. Enough mana to equip Embercleave / Genji Glove and fire a second wheel in the same turn — the 'into another one' turn in pilot log 002. Oracle text only.",
+      "status": "needs a stack scenario"
+    },
+    {
+      "title": "Brallin's commander damage under Torbran and Gratuitous Violence with double strike",
+      "cards": [
+        "Brallin, Skyshark Rider",
+        "Torbran, Thane of Red Fell",
+        "Gratuitous Violence",
+        "Fireshrieker"
+      ],
+      "why_plausible": "engine.json open_questions[0] and lines[4]: each strike is a red-source creature combat-damage event, so both replacements apply per strike and the defender orders them; whether all the replaced damage counts toward 21 (CR 903.10a) has no passing stack even though CONTEXT reports a rules-question agent found yes. Restated here so the frame does not launder it.",
+      "status": "needs a stack scenario"
+    }
+  ],
+  "matchup_frames": {
+    "vs_sweeper_control": "Your two worst seats are combined: sweepers kill the whole engine, and counterspells (pilot log 001: Steven's 'a lot of counterspells' made 'the end grindy') stop the doublers on the way in. You are the BEATDOWN here (strategy:whos-the-beatdown: 'whoever loses the long game must be the beatdown') because your symmetrical wheels refill the control player's hand, which feeds their inevitability as much as yours. strategy:resource-hedging.wrath-math, Commander correction: 'assume the wrath' — commit one commander, keep the other in the command zone as the rebuild, and prefer the indestructible/phasing shields (Flawless Maneuver, Boros Charm, Akroma's Will, March of Swirling Mist) over Greaves, which stops targeted removal but not a wrath. Silence on the kill turn is the one card that beats a held counter. Fire the loot-and-ping line rather than a symmetrical wheel when a control seat is low on cards.",
+    "vs_stax": "strategy:threat-assessment.resource-denial: 'you rarely own the long game under an assembling lock, so you are the beatdown'. Taxes hit this deck less than a storm list — the engine is two creature triggers, not spell count — but equip costs, Idyllic Tutor and wheels all slow down. The breadth problem is concrete: the deck has NO way to remove an enchantment and only Prismari Command for an artifact (enumerated from cards.json), so an enchantment lock piece is answered only by Negate on the way in. Name the out early and race it.",
+    "vs_aggro": "You are the CONTROL deck until a commander is big, then a beatdown that races only the attacking seat (strategy:combat-math.racing, Commander correction: 'races there are two-player subgames'). Shabraz gains 1 life per draw (doubled by Alhammarret's Archive) and Akroma's Will's second mode adds lifelink; Incendiary Command (2 to each creature) and Iroh's Demonstration (1 to each opposing creature) are the one-sided-ish sweeps for a go-wide token seat like log 001's Rock Cleaver zombies. Bard, King of Dale's reach blocks fliers. Commander damage at the aggro seat first: removing the player removes the clock.",
+    "vs_combo": "You are the BEATDOWN and your answers are thin: Negate and Silence are the only stack interaction, Swords to Plowshares the only clean exile. strategy:threat-assessment.answer-economy's exception applies — 'against combo, or lethal already on board, the last profitable moment is now' — so spend Negate on the combo piece, not on protecting your own swing, and lean on the table's interaction (strategy:multiplayer.politics). Your ping engine under Gratuitous Violence or Fiery Emancipation (candidate line 1, unverified) would be the fastest each-opponent clock you own if the stack confirms it.",
+    "vs_counterspell_draw_go": "Specific to the pilot's table (log 001). Resolve the commander when the blue seat is tapped, then win through cards that do not need to resolve on the kill turn: the commanders' own triggers, equipment already attached, Flawless Maneuver cast free. strategy:multiplayer.pivot-window: prefer win attempts that 'leave a rebuilt position if they fail'. Do not wheel a counterspell deck into a fresh seven unless the wheel itself is lethal.",
+    "vs_spot_removal_on_commander": "strategy:multiplayer.commander-insurance: each recast adds {2} and costs a turn; Campfire and Command Beacon put a commander in hand, so the next cast pays no tax. Two commanders means you can bait removal with the first and pivot on the second. Brallin fetches Shabraz to hand on entry, so Shabraz in the library is never lost."
+  },
+  "distribution_notes": "From deck-facts and cards.json (sha c9186bd91308). 100 copies, 36 lands (34 entries, Mountain the only basic), 64 spells; curve by mana value 1:9, 2:20, 3:15, 4:8, 5:9, 6:3 — two-heavy, as strategy:deckbuilding.curve's EDHREC data says the format is, with only 12 spells at 5+. COLOUR: land sources R 34 / U 23 / W 19 against targets R 36 / U 22 / W 22, 14 lands can enter tapped; red carries 37 pips over 24 cards. Red and white both sit under their own targets while blue sits one over, so the red lean has not yet reached red's target (strategy:deckbuilding.mana-base.color-sources); the goldfish's colour-on-curve reads W 91%, U 96%, R 94%. RAMP: the declared ramp group is drawn by turn 6 in 73.5%. VOLTRON COUNTS, enumerated from cards.json: nine Equipment (Brotherhood Regalia, Champion's Helm, Embercleave, Fireshrieker, Genji Glove, Lightning Greaves, Lizard Blades, Mask of Memory, Zephyr Boots) against strategy:deckbuilding.archetype-selection's Voltron band of '12-16 equipment and auras' — low, and correctly so, because the commanders grow themselves; the equipment is for double strike, evasion and protection, not size. Seven double-strike sources (listed under pivot_trigger). Protection: ten cards plus two tax-reset cards, above strategy:deckbuilding.interaction-suite's Voltron band of '6-8'. ANSWERS: seven (Swords to Plowshares, Iroh's Demonstration, Collective Defiance, Incendiary Command, Prismari Command, Fateful Showdown, Negate) plus phasing (Teferi, Master of Time's -3, Talon Gates of Madara). That is under Walser's 'at least 8-10 removal' baseline in the same section, and its breadth fails: there is no enchantment answer and no graveyard answer in the list (oracle sweep of cards.json), against that section's 'cover the classes ... before doubling any'. A SEQUENCING TRAP from oracle text: Lightning Greaves' shroud stops YOU from targeting the commander too, so on a Greaves-wearing commander you cannot equip or attach Embercleave, Fireshrieker, Genji Glove, Helm, Regalia or Zephyr Boots, cast Boros Charm's double strike, put Inti's counter on him, or use the commanders' cross-grants (Shabraz's {W/U} flying to a Human, Brallin's {R} trample to a Shark). Move Greaves off (equip 0 to another creature) or rely on untargeted pieces (Blade Historian, Akroma's Will, Knowledge Is Power, Gratuitous Violence, Lae'zel) on the kill turn; Champion's Helm's hexproof does not have this problem. GOLDFISH (10,000 games, no blockers, no removal, cast-once commanders, modal plan not modelled): both commanders out by turn 6 in 88.7%; mean commander counters 8.8 at turn 6, 20.8 at turn 8; kill median turn 7; opening seven kept 79.9%. FORGE (a probe, never a gate; memory: not trusted for power): the voltron-v1 A/B at olivers-table read 45/299 wins against the champion's 59/371, difference -0.0085 [-0.063, +0.048], and max commander damage on one defender 9.36, +2.76 [0.89, 4.63] over the champion (branches/voltron-v1/net_change.json) — the new list hits harder with a commander and wins no more often under Forge's AI.",
+  "overall_assessment": "Sharknado v2.0.0 plays the commander-damage game with an each-opponent drain engine underneath, and the frame's main finding is that the second matters more than the engine model credits. Per strategy:conversion.availability the deck has put its payoffs in the right place: both payoffs are commanders, so they cannot be kept off the table, only taxed, and the goldfish has both out by turn 6 in 88.7% of games. Per strategy:multiplayer.commander-insurance it has bought the insurance a hub needs, with ten protection cards and two tax resets. What it has NOT bought is the strategy:deckbuilding.interaction-suite breadth: seven answers, none for an enchantment or a graveyard. So it cannot police the long game, and strategy:whos-the-beatdown makes it the beatdown at nearly every table once a commander has survived a turn cycle. Per strategy:conversion.combat-channel, its stated kill has the one-seat-per-attack tax: every 21 commander damage removes one opponent while the other two take free shots. The extra combats (Genji Glove, Karlach) are the only way to take two seats in one turn. Brallin's pings dodge that tax. They hit all three seats, and by oracle text Gratuitous Violence and Fiery Emancipation multiply them as well as his combat damage (candidate line 1). So the Brallin road may hold a no-combat table kill that the engine model files as burn. The modal choice should follow from that. Shabraz is the single-seat assassin when the draw doublers or Knowledge Is Power are out; Torbran never helps him. Brallin is the pick whenever a damage multiplier is out, because each one scales him at every seat. The pilot's rule, 'wheels are finishers', is correct strategy:pivot-point play ('hold the protection spell for the turn you commit'). The loot suite carries the deck between pivots, the steady-draw half of strategy:card-advantage.plan-draw. Nothing about the win is verified yet: no passing stack resolves a combat, a doubler pair or a multiplied ping, and candidate lines 1-3 should come before any further list change.",
+  "gaps": [
+    "A Voltron pillar (missing; proposed slug \"voltron\"): commander-damage kills as a plan. 21 per seat against 40 life, kill order across three seats, extra combats as seat-splitting, evasion versus double strike as the scarcer piece, the equipment-vs-intrinsic-growth split, and the shroud-blocks-your-own-equip sequencing trap. The doc has only the counts in deckbuilding.archetype-selection / interaction-suite and the asymmetry one-liner.",
+    "Wheels as an archetype: symmetrical refill against control (it feeds their inevitability), when to wheel versus loot, and the social cost of hand disruption, which pilot log 002 raises in the pilot's own words ('making people discard their hand is not something people enjoy'). No section covers wheels.",
+    "Partner and two-commander play: which commander to deploy first, baiting removal with one, two taxes, and a modal win-condition choice made at the pivot. strategy:multiplayer.commander-insurance assumes one commander.",
+    "Damage-replacement stacking (Torbran / Gratuitous Violence / Fiery Emancipation / Artist's Talent): the affected player orders the replacements, so the build should price the smaller result. The doc has no section on multiplier ordering or on doublers in general, for damage or for draws.",
+    "Self-discard as a resource (loot / rummage / madness-style payoffs): how many discard outlets a discard-payoff deck needs, and whether to discard lands or spells. Not in the doc.",
+    "Instant-speed pump after blockers (instant wheels as combat tricks): strategy:tempo.sequencing covers the principle but nothing covers it for a voltron deck."
+  ]
+}

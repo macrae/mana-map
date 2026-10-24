@@ -1,15 +1,81 @@
 {
   "slug": "sharknado",
-  "decklist_sha256_prefix": "7d623c5f9cf4",
-  "assessment": "N/A — no wishes. Zero cards in the 99 carry a library search, enumerated over all 100 entries by oracle text: not one contains 'search your library', on either face. `deck-audit`'s tutors axis reads 0 copies of tutor:unrestricted or tutor:narrow and files the axis as informational, and `validate-tutor-guide`'s own `deck_tutors()` returns an empty set for this list. There are no fetch lands either, and a fetch land would not count here in any case — land searching belongs to mana-analysis.\n\nThat is a fact about how the deck is built, not an omission. The engine declaration marks exactly one group `required` — a wheel — and the redundancy that a tutor would buy is already bought in bulk: 17 hand-refill effects in the 99, drawn in 0.990 of games and 0.949 by turn six, mean turn 1.718 (goldfish_metrics, 10,000 games, seed 42). A deck that finds its enabler in 95 games out of 100 by turn six does not need a card that finds it in 100.\n\nWhere a tutor WOULD earn its slot is the half the wheels cannot fix. The second per-discard damage source is a two-card group — Glint-Horn Buccaneer, Magmakin Artillerist — drawn in 0.660 of games and only 0.347 by turn six; commander protection is a two-card group — Lightning Greaves, Swiftfoot Boots — at 0.651 and 0.338, the lowest by-turn-six rate of the twelve declared groups. Those are the two wishes this deck would make if it had one, and both are shortages of REDUNDANCY rather than of searching. Naming them is a finding for the branch bench, not coaching for the table: at the table there is nothing to wish for, so the mulligan does the whole job. See the `mulligan` key.",
-  "tutors": [],
-  "gaps": [
-    "No maindeck library-search tutor exists in this list, so there is no per-tutor coaching to write. The routine returns N/A rather than an empty section.",
-    "Adjacent selection that is NOT a tutor and is deliberately excluded: Curator of Mysteries (scry 1 on cycling), Treasure Map // Treasure Cove (scry 1 per activation), Containment Construct and Currency Converter (replay or buy back a card you discarded, from exile, not from the library), Jaxis, the Troublemaker (copies a creature already on the battlefield). Selection is not searching and none of these reaches the library.",
-    "Brallin's 'Partner with' trigger is the closest thing here to a library fetch and it is a blank in this deck: 'target player may put Shabraz into their hand from their library, then shuffle' cannot find her, because both Brallin and Shabraz are commanders and start in the command zone, not the library. It also says 'put ... from their library' rather than 'search your library', so the validator's tutor detector does not see it either.",
-    "Gemstone Caverns is the one card that changes what your opening seven is, and it is a land with an opening-hand replacement rather than a search. It belongs to the mulligan discussion, not here.",
-    "If a tutor is ever added, the two targets to write first are a second per-discard damage source (0.347 by turn six) and commander protection (0.338 by turn six, the lowest of the twelve declared groups)."
+  "decklist_sha256_prefix": "c9186bd91308",
+  "assessment": "Two narrow tutors, one per kind of missing piece. Idyllic Tutor ({2}{W}, sorcery) finds an enchantment, and the 99 holds eight: Artist's Talent, Fiery Emancipation, Gratuitous Violence, Knowledge Is Power, Rhystic Study, Smothering Tithe, Sorcerer Class, Teferi's Ageless Insight. Stoneforge Mystic ({1}{W}) finds one of nine Equipment: Brotherhood Regalia, Champion's Helm, Embercleave, Fireshrieker, Genji Glove, Lightning Greaves, Lizard Blades, Mask of Memory, Zephyr Boots. She can also put an Equipment from your hand onto the battlefield for {1}{W}, which skips its casting cost. Both cost white, the thinnest colour: 19 land sources against a target of 22. Neither finds a commander, a wheel or a shield spell, so neither replaces a keep. The default for each is the piece that closes on the board you have; every damage figure below that goes past stacks 001, 004 and 005 is oracle arithmetic and needs a stack scenario.",
+  "tutors": [
+    {
+      "card": "Idyllic Tutor",
+      "targets": [
+        {
+          "scenario": "A commander is out and has survived a turn cycle, you hold a double-strike piece or Blade Historian is on the battlefield, and you have no damage multiplier.",
+          "fetch": "Gratuitous Violence",
+          "why": "It doubles damage from any creature you control, so it serves both commanders: Shabraz's swing and Brallin's swing and pings. By oracle arithmetic a 10/10 with double strike under it is 40 to one seat, where the same hit without it is 20. Five mana on the turn after the tutor. Needs a stack scenario: no passing stack resolves combat in this deck."
+        },
+        {
+          "scenario": "Shabraz is out, a wheel is in hand, and you are one turn from swinging with nothing that adds to his size beyond his own counters.",
+          "fetch": "Knowledge Is Power",
+          "why": "Every creature gets +X/+X, X being the cards you drew this turn, so the wheel turn is also the pump turn. Stack 001 leaves Shabraz a 10/10 after Windfall, and double strike on that is 20, one short; this is the card that covers the gap. It costs {3}{W}{U}, so plan Idyllic one turn and Knowledge Is Power plus the wheel the next. The +X arithmetic needs a stack scenario."
+        },
+        {
+          "scenario": "Turn three or four, no commander resolved yet, a symmetrical wheel (Windfall, Reforge the Soul, Jace's Archivist) in hand, and ramp short: the game 001 problem.",
+          "fetch": "Smothering Tithe",
+          "why": "Each opponent draw is a Treasure unless that player pays {2}, and a symmetrical wheel makes every opponent draw seven at once. That is the mana for a commander plus an equip on the same turn. Tithe must be on the battlefield before the wheel. It is a Game Changer and it taxes the whole table, so it draws attention; the payment the table chooses is not modelled anywhere. Oracle text only."
+        },
+        {
+          "scenario": "Brallin is out, Torbran or a level-3 Artist's Talent is not, and the table is at life totals a seven-card wheel cannot reach from pings alone.",
+          "fetch": "Fiery Emancipation",
+          "why": "The one nobody sees. It triples damage from any source you control, Brallin's pings included, so by oracle arithmetic seven discards would be 21 to each opponent: the figure stacks 004 and 005 reach with other cards. It also triples either commander's swing. Six mana with {R}{R}{R}, so it is a two-turn plan. Needs a stack scenario."
+        }
+      ],
+      "notes": "A three-mana sorcery that does nothing to the board the turn you cast it. Cast it on a quiet turn, never on the turn you intend to swing."
+    },
+    {
+      "card": "Stoneforge Mystic",
+      "targets": [
+        {
+          "scenario": "Turn two or three, no commander yet, no protection in hand, and the table has removal up.",
+          "fetch": "Lightning Greaves",
+          "why": "Haste and shroud, equip {0}: the commander lands and can swing the turn it arrives, and opponents cannot target it. Shroud stops your own targeting too, so move Greaves to another creature before you attach anything else. Brallin was removed twice in game 001.",
+          "citations": [
+            {
+              "rule": "702.18a",
+              "quote": "Shroud is a static ability. “Shroud” means “This permanent or player can’t be the target of spells or abilities.”"
+            }
+          ]
+        },
+        {
+          "scenario": "A commander with counters is out without Greaves on it, Stoneforge has been on the battlefield since your turn began, and {1}{W} is open.",
+          "fetch": "Embercleave",
+          "why": "The closer. Stoneforge puts it onto the battlefield for {1}{W} instead of {4}{R}{R}, and its enters trigger attaches it to target creature you control: double strike, trample and +1/+1. Her ability has no timing restriction, so you can do it after blockers are declared. She taps to do it, so not on the turn she arrives. The trigger targets, so it cannot attach to a Greaves-wearing commander.",
+          "citations": [
+            {
+              "rule": "117.1b",
+              "quote": "A player may activate an activated ability any time they have priority."
+            },
+            {
+              "rule": "302.6",
+              "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+            }
+          ]
+        },
+        {
+          "scenario": "Brallin is the commander you are swinging with, the defender has ground blockers, and you have no evasion piece.",
+          "fetch": "Brotherhood Regalia",
+          "why": "Can't be blocked and ward {2}, and equip legendary creature is {1}, so it goes on either commander for one mana. Shabraz already flies; Brallin does not, and Regalia is the one fetch that gives him both evasion and protection. Pair it with a double-strike piece already in hand."
+        },
+        {
+          "scenario": "One opponent is near 21 commander damage from a grown commander, a second seat is also low, and you hold no double-strike piece.",
+          "fetch": "Genji Glove",
+          "why": "Double strike plus an extra combat phase, and Stoneforge puts it in without paying {5}; equip is still {3}. Each combat lets you attack a different seat, so it is the fetch that can take two opponents in one turn. Whether that line kills two seats needs a stack scenario."
+        }
+      ],
+      "notes": "She finds Equipment only. Equip costs still apply to everything except Embercleave's own attach trigger, so count the equip mana before you choose the target."
+    }
   ],
-  "_v101_note": "Restamped for v1.0.1 (Shelter for Astral Drift). The guide is unchanged because its answer is unchanged: the deck still runs ZERO library-search tutors, and neither card in the swap is one. Verified against the current 99 rather than assumed.",
-  "_restamp_note": "Re-stamped 2ca70e243f92 -> 7d623c5f9cf4 for the Gleaming Bastion -> Island swap. NOT a re-write and NOT a gate being satisfied by hand: the CLAIM was re-verified against the new list before the stamp moved — all 100 entries swept for 'search your library' on both faces, zero hits, so the no-wishes assessment is still true. The routine is N/A (nothing to spawn) precisely because a deck with no tutors has no tutor guide to write; only the provenance moved."
+  "gaps": [
+    "No passing stack resolves combat in this deck, so every commander-damage figure here past stacks 001, 004 and 005 is oracle arithmetic.",
+    "The goldfish declares no group for either tutor's targets, so how often a tutor finds its piece in time is unpriced.",
+    "Smothering Tithe's yield depends on how often opponents pay {2}; no figure for this table exists.",
+    "Brallin's partner trigger puts Shabraz into a hand 'from their library'. It is not a library search, and Shabraz starts in the command zone, so it is not covered here."
+  ]
 }

@@ -15,27 +15,16 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 18,
     "of": 19,
-    "stale": [
-      "tutors",
-      "prose"
-    ],
+    "stale": [],
     "older_model": [],
-    "invalid": [
-      "CONTEXT.md"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
-      "frame",
       "issue"
     ],
     "todo": [
-      {
-        "stage": "frame",
-        "what": "the strategist's read — `research-strategy` consult",
-        "how": "/research-strategy — MODE consult, on sharknado"
-      },
       {
         "stage": "issue",
         "what": "authored identity: name and commander (volume/price are legacy fields)",
@@ -10522,10 +10511,7 @@
     "draw": 0,
     "last_played": "2026-10-20",
     "first_played": "2026-10-06",
-    "undebriefed": [
-      "001",
-      "002"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "won",
       "002": "combo"
@@ -10921,14 +10907,14 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
-    "critic": "fail",
-    "lines": 17,
+    "thesis": "Land a commander, turn every draw (Shabraz) and every discard (Brallin) into +1/+1 counters, multiply the counters with draw doublers and Lae'zel and the damage with Torbran, Artist's Talent and Gratuitous Violence, then cash it as one double-striking, evasive hit for 21 commander damage. The wheels are the last fuel, not the key.",
+    "critic": "pass",
+    "lines": 7,
     "verified_lines": 3
   },
   "diagnosis": null,
   "audit": {
-    "archetype": null,
+    "archetype": "voltron",
     "under": [
       "sweepers",
       "interaction-breadth"
@@ -10947,48 +10933,63 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Cracking one Blood token: is the discard (a cost) a Brallin and an Ivora trigger, and is the draw a Shabraz trigger, from the single activation?",
+      "question": "With Brallin attacking under Torbran and Gratuitous Violence (and separately Fiery Emancipation), what damage does the defender take, given they order the replacement effects, and is all of it combat damage from a commander for 704.6c?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Confirm the partner keyword grants are legal: Shabraz's '{W/U}: Target Human gains flying' targeting Brallin (Human Shaman), and Brallin's '{R}: Target Shark gains trample' targeting Shabraz (Shark Bird).",
+      "question": "Windfall for seven with Shabraz out under Teferi's Ageless Insight plus Bard, King of Dale (or Alhammarret's Archive), with Lae'zel: how many cards are drawn and how many counters land on Shabraz?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Stack 003 settled the Brallin half: a cycling cost's discard triggers Brallin and his trigger resolves before the cycle draws. Still open: is the cycle's draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
+      "question": "A combat stack: Shabraz at 10/10 after stack 001's Windfall, wearing Embercleave or under Blade Historian, attacking one defender. Does it deal 21 or more commander damage, and which single extra (Lae'zel, Knowledge Is Power, Embercleave's +1/+1) takes it over?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Is the deck under-built on Blood? Ivora is the only Blood source in the 99; the channel exists and is measured at one card. Sweep the Blood makers available in the identity against the current list.",
+      "question": "How often is a commander-damage kit (a double-strike piece plus an evasion piece) drawn by turn six and eight, and how often does a commander that is out connect with one?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "What does the deck lose by giving three opponents a fresh seven every wheel? Six of this stage's twelve one-shot wheels are symmetric, and the model prices the tax on their refill while explicitly not pricing the cost — it has no opponent turn and no opponent board.",
+      "question": "Does holding every full-hand wheel until a commander is out beat casting it as soon as it is castable, measured as damage to one seat by turn eight?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "On the current list, how often are both commanders (four plus five mana) on the battlefield by turns six to eight, and how often with one tax added after a removal?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:001",
+      "question": "Does the deck carry enough creature and enchantment removal, plus interaction against counterspells, to prune a board and get a wheel through a counterspell seat?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:001",
+      "question": "Which wheel effects in the corpus also counter a spell or remove permanents, the 'align on both axes' cards the pilot asked for?",
       "settled_by": "research-strategy"
     },
     {
-      "from": "engine",
-      "question": "mana_analysis.json credits Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of the three in sources.gated, although each one's blue mode carries 'Activate only if you control' a Plains or an Island (Floodfarm), a Plains (Nimbus Maze) or an Island or a Mountain (Riverpyre). The fourth land this question used to name is settled and out of scope: `manabase.basic_gated_colours` now reads a coloured mode gated on controlling a BASIC land and subtracts it when the deck holds none, and Gleaming Bastion is no longer in the 99 either way. Is the U figure (32 land sources, on-curve 0.785 ungated) still an upper bound by three, and should land_colors(card, pool=...) read a TYPE-ON-THE-BATTLEFIELD gate the way it now reads a basic-land gate?",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "engine",
-      "question": "Does Shelter's protection from a colour actually keep the +1/+1 counters on Brallin and Shabraz? Protection does not remove counters, but a stack scenario should walk one concrete sequence: opponent casts Swords to Plowshares on Brallin holding seven counters, Shelter responds naming white, Swords is countered on resolution for having an illegal target, and the draw resolves as a Shabraz trigger. Also settle whether protection from a colour lets Brallin through a blocker of that colour in the same turn it is cast.",
-      "settled_by": "resolve-stack"
-    },
-    {
-      "from": "engine",
-      "question": "Is deck-audit's interaction-breadth reading of 0 classes a real hole or a role-gate artifact for THIS deck? Enumerated (notes[2]): Commit // Memory answers any nonland permanent and is invisible to the axis because its only role is draw:burst; Irencrag Pyromancer and Niv-Mizzet pass the role gate but say 'any target' rather than 'target creature'; Echo of Eons, Time Reversal and Memory shuffle every graveyard away. Land is the one class with genuinely nothing. The question for the corpus is whether a 5-of-5 breadth target is the right yardstick for a deck whose plan does not contest the board at all — strategy:deckbuilding.interaction-suite is the source the axis quotes.",
+      "from": "log:001",
+      "question": "Is 'one commander first, the second later, wheels only with both out' the right piloting plan for this pair?",
       "settled_by": "research-strategy"
     },
     {
-      "from": "engine",
-      "question": "Mask of Memory's two draws per connection sit in the goldfish's `draw_not_modelled` list, so the V1.0.2 card-flow add contributes to no figure in this file. What do extra cards drawn and damage@T8 read with attack-triggered draw modelled?",
+      "from": "log:002",
+      "question": "On the v2.0.0 list, how often does an opening seven hold at most one creature alongside two or more wheels, and how did that rate move from v1.3.0?",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "log:002",
+      "question": "With both commanders out and grown, does a wheel followed by a second wheel, then a flying, trampling commander attack ('into another one ... flying trample big commander shark coming at you'), kill a seat through commander damage?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:002",
+      "question": "Is the deck's wheel count right for a list where wheels are finishers rather than card flow?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -11028,7 +11029,7 @@
         "Teferi's Ageless Insight",
         "Tolarian Winds"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Sorcerer Class, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Jace's Archivist sat castable and uncast on 14 own turns, Teferi's Ageless Insight sat castable and uncast on 12 own turns (+5 more) — measured from the hand, not inferred."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Sorcerer Class, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Jace's Archivist sat castable and uncast on 14 own turns, Boros Charm sat castable and uncast on 12 own turns (+6 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
       "purphoros-pingers": 11,
@@ -11198,13 +11199,9 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status sharknado` names them; fix before anything else reads them",
-    "stale: tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V8, sleeved is V9 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-19) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "2 logged game(s) not yet debriefed (001, 002) — `/debrief sharknado`",
-    "engine.json's critic verdict is 'fail' — `/analyze-engine sharknado`",
-    "open questions routed: goldfish ×3, research-strategy ×2, resolve-stack ×4",
+    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

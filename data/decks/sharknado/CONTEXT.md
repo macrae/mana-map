@@ -5,7 +5,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-19
+- **Version:** v2.0.0 (V9) · **status:** sleeved since 2026-10-24
 - **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 33/96 → B3 (deckcheck.co, 2026-10-19, 2 readings) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 38 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
@@ -151,7 +151,7 @@ Colours are red and white first, then blue. The special ones: [Gemstone Caverns]
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v2.0.0 (V9), 2026-10-24. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **89%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -182,7 +182,6 @@ These figures were measured on an older list and the goldfish does not model the
 <!-- ctx:gen record -->
 - **2 game(s):** 0 won, 1 lost · 2026-10-06 to 2026-10-20
 - **How games ended:** combo 1, won 1
-- **Not yet read:** 001, 002
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -215,6 +214,8 @@ Of the things Sean said he missed after 001, the v1.3.0 branch added removal and
 ## Change history
 
 <!-- ctx:gen history -->
+- **v2.0.0 · V9** (2026-10-24) — in: Akroma's Will, Azorius Signet, Bard, King of Dale, Battlefield Forge, Blade Historian, Brotherhood Regalia, Champion's Helm, Clifftop Retreat …; out: Anje's Ravager, Arjun, the Shifting Flame, Big Score, Burning Inquiry, Commit // Memory, Curator of Mysteries, Echo of Eons, Faerie Mastermind …. _modal voltron: voltron-v1 merged; either commander wins on 21 commander damage_
+  - merge `voltron-v1`: objective forge.commander_damage_max_on_one_defender read **not resolvable** — played on printed proxies from 2026-10-24; the unowned cards are on the order list
 - **v1.3.0 · V8** (2026-10-19) — in: Alhammarret's Archive, Big Score, Boros Charm, Campfire, Collective Defiance, Command Beacon, Fateful Showdown, Fevered Visions …; out: Adarkar Wastes, Calciform Pools, Containment Construct, Currency Converter, Drake Haven, Exotic Orchard, Improbable Alliance, Mana Geyser …. _torbran-v1 merged 2026-10-19: Torbran, three wheels that do something else (Collective Defiance, Fateful Showdown, Incendiary Command), Spider-Man, Lae'zel, Alhammarret's Archive, the answers (Silence_
   - merge `torbran-v1`: objective kill_by_6 read **met** — played on printed proxies from 2026-10-19; the unowned cards are on the order list (the pilot's call)
   - played 1: 0W 1L
@@ -229,7 +230,7 @@ Of the things Sean said he missed after 001, the v1.3.0 branch added removal and
   - merge `shelter-v1`: objective damage_8 read **not met** — Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive 
 - **v1.0.0 · V3** (2026-09-14) — in: Anje's Ravager, Ferrous Lake, Fiery Islet, Glittering Massif, Irrigated Farmland, Magmakin Artillerist, Queen Kayla bin-Kroog, Riverpyre Verge …; out: Battlefield Forge, Ceremonial Knife, Clifftop Retreat, Inspiring Vantage, Plateau, Tundra, Volcanic Island, Wheel of Fortune …
 - **V2** (2026-09-14) — in: Ivora, Insatiable Heir, Teferi's Ageless Insight; out: Elesh Norn, Goblin Engineer
-- **v0.1.0 · V1** (2026-09-10) — first list, 100 cards. _the build: a 44-card Sharknado core and 24 named lands kept, the builder filled 18 spells and 12 lands_
+- … 1 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
 **v2.0.0, modal voltron (merged 2026-10-24).** A wide change, driven by Sean's 2026-10-22 plan. Most of the wheels and the shuffle-and-bottom refills left: Burning Inquiry, Magus of the Wheel, Anje's Ravager, Queen Kayla bin-Kroog, Molten Psyche, Time Reversal, Echo of Eons, Commit // Memory, Teferi's Puzzle Box. So did the damage-per-draw bodies and the old air force (Niv-Mizzet, Parun, Psychosis Crawler, Razorkin Needlehead, Irencrag Pyromancer, Magmakin Artillerist, Spider-Man, New Champion, The Locust God, Shark Typhoon, Nezahal, Arjun, Ivora, Jaxis, Faerie Mastermind, Scrawling Crawler, Mind's Eye, Fevered Visions, Library of Leng). Also out: Swiftfoot Boots, Snapback, Curator of Mysteries, Nimble Obstructionist, Big Score, Time Reversal, and the blue-heavy lands (Glacial Fortress, Hallowed Fountain, Floodfarm Verge, Irrigated Farmland, Sea of Clouds, Temple of Epiphany, Island). The branch also tried and dropped Yoshimaru, Temur Battle Rage, Bulk Up and Relentless Assault along the way. In came the voltron kit: double strike and trample pieces, Gratuitous Violence and Fiery Emancipation, the two tutors, loots, protection (Flawless Maneuver, Loran's Escape, Akroma's Will), and red-capable rocks and lands. Why: the finisher branch before it lost to the deck by cutting the draw, discard and burn engine that wins, so this one keeps that engine and aims it at commander damage.

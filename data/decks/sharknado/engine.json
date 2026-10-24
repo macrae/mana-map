@@ -1,60 +1,269 @@
 {
   "slug": "sharknado",
-  "thesis": "Two commanders stand at opposite ends of one door — Brallin bills the table for every card that LEAVES your hand and Shabraz pays you for every card that ARRIVES — so the deck is a hand-refill machine whose output is entirely a function of who else is standing at those two doors when a wheel resolves.",
+  "thesis": "Land a commander, turn every draw (Shabraz) and every discard (Brallin) into +1/+1 counters, multiply the counters with draw doublers and Lae'zel and the damage with Torbran, Artist's Talent and Gratuitous Violence, then cash it as one double-striking, evasive hit for 21 commander damage. The wheels are the last fuel, not the key.",
   "stages": [
     {
       "stage": "mana",
-      "label": "THIRTY-SIX LANDS, ONE BASIC, AND THE MONEY FOR THE SECOND WHEEL",
-      "what_it_does": "Thirty-six lands, ONE of them a basic Island — this round's only change, in for Gleaming Bastion — plus Sol Ring, Arcane Signet and Treasure Map // Treasure Cove, plus three Treasure makers the wheel is supposed to pay for. The bill is two things on one turn: a 4- or 5-mana commander AND a 3-to-6-mana wheel on top, then {4} again every turn if the wheel is Queen Kayla. Measured (goldfish_metrics, 10,000 games, seed 42, model_version 4d9205d29b87): mean available mana 4.038 at T4, 5.535 at T6, 9.43 at T10; land-drop hit rate 0.825 at T4, 0.713 at T6. Blue is what binds — 54.1% of the pips on 32 land sources against a 36-source target, on-curve 0.785 ungated (mana_analysis), and 13 of 36 lands can enter tapped, 5 of them always. THE TYPED-LAND TRAP IS THE THING TO KNOW. Eight lands carry a basic land type — Glittering Massif, Hallowed Fountain, Irrigated Farmland, Island, Raugrin Triome, Sacred Foundry, Steam Vents, Thundering Falls — and five read a type off the board: Glacial Fortress and Sulfur Falls enter tapped without one; Floodfarm Verge and Riverpyre Verge make their first colour (W and R) unconditionally but gate their BLUE mode on 'a Plains or an Island' / 'an Island or a Mountain', and Nimbus Maze gates blue on 'a Plains', white on 'an Island', and makes only colourless with neither — so all three withhold blue until the right land is down. THE ISLAND SATISFIES A CLAUSE ON ALL FIVE: both Verges' blue, the Maze's WHITE, and the enters-untapped clause on Glacial Fortress and Sulfur Falls. The one it misses is the Maze's BLUE, which wants a Plains. It is the SIXTH Island-typed land here, not the first, so it adds an enabler rather than unlocking a gate. model_treasures is OFF by declaration, so the three Treasure makers add no mana above.",
+      "label": "RED FIRST, BLUE THIN",
+      "what_it_does": "Thirty-six lands (34 entries; Mountain is the only basic) plus six two-mana-or-less rocks, Smothering Tithe and Jeska's Will pay for a 4- or 5-mana commander and then for equip costs, double-strike tricks and a finishing wheel. The ramp group the goldfish declares (Sol Ring, Arcane Signet, two Signets, two Talismans, Smothering Tithe; 7 cards) is in 41.2% of opening sevens and drawn by turn six in 73.5% of games (deck-audit). deck-facts: land sources R 34 / U 23 / W 19 against targets R 36 / U 22 / W 22, 14 lands can enter tapped, and red carries 37 of the pips over 24 cards. Red and white both sit under their source targets and blue sits one over, so the lean toward red has not yet met red's own target. Opal Palace also puts extra +1/+1 counters on a commander recast with its mana, and Talon Gates of Madara can phase out a blocker; both are filed here because making mana is what they do every game.",
       "cards": [
-        "Adarkar Wastes",
-        "Calciform Pools",
+        "Arcane Signet",
+        "Azorius Signet",
+        "Izzet Signet",
+        "Jeska's Will",
+        "Smothering Tithe",
+        "Sol Ring",
+        "Talisman of Conviction",
+        "Talisman of Creativity",
+        "Battlefield Forge",
         "Cascade Bluffs",
         "City of Brass",
+        "Clifftop Retreat",
         "Command Tower",
-        "Exotic Orchard",
         "Ferrous Lake",
         "Fiery Islet",
-        "Floodfarm Verge",
+        "Frostboil Snarl",
         "Gemstone Caverns",
-        "Glacial Fortress",
-        "Island",
         "Glittering Massif",
-        "Hallowed Fountain",
         "Hengegate Pathway // Mistgate Pathway",
-        "Irrigated Farmland",
+        "Inspiring Vantage",
         "Mana Confluence",
-        "Mystic Gate",
+        "Mountain",
         "Mystic Monastery",
-        "Nimbus Maze",
+        "Needleverge Pathway // Pillarverge Pathway",
         "Opal Palace",
         "Raugrin Triome",
-        "Reliquary Tower",
+        "Riverglide Pathway // Lavaglide Pathway",
         "Riverpyre Verge",
         "Rugged Prairie",
         "Sacred Foundry",
-        "Sea of Clouds",
-        "Seachrome Coast",
         "Shivan Reef",
-        "Skycloud Expanse",
+        "Spectator Seating",
         "Spire of Industry",
         "Spirebluff Canal",
         "Steam Vents",
+        "Stormcarved Coast",
         "Sulfur Falls",
+        "Sunbillow Verge",
         "Talon Gates of Madara",
         "Thundering Falls",
-        "Sol Ring",
-        "Arcane Signet",
-        "Treasure Map // Treasure Cove",
-        "Smothering Tithe",
-        "Generous Plunderer",
-        "Sticky Fingers"
+        "Training Center"
       ],
-      "single_point_of_failure": null,
       "evidence": [
         {
           "kind": "city",
           "id": "city-3",
+          "agreement": "partial"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "partial"
+        },
+        {
+          "kind": "role",
+          "id": "ramp:rock",
+          "note": "Signets, Talismans, Sol Ring, Arcane Signet carry ramp:rock"
+        }
+      ]
+    },
+    {
+      "stage": "ignition",
+      "label": "A COMMANDER ON THE TABLE",
+      "what_it_does": "Nothing in this deck starts itself any more: the engine is the commanders' own triggers, so the first thing that has to resolve is Shabraz (5 mana, flying; +1/+1 counter and 1 life per card you draw) or Brallin (4 mana; +1/+1 counter and 1 damage to each opponent per card you discard). Until one is on the battlefield every loot, wheel and doubler is just card flow. The two commanders also hand each other evasion by oracle text: Brallin's {R} gives a Shark trample and Shabraz is a Shark Bird; Shabraz's {W/U} gives a Human flying and Brallin is a Human Shaman. Two commanders means the ignition is redundant, not single, but each removal adds 2 to that commander's tax. goldfish_metrics.json (current list, 10,000 games) prices it directly. Shabraz is cast by turn six in 89.2% of games (mean turn 4.771, median 5), Brallin in 96.7% (mean 3.927). Both are out by turn four in 34.3% and by turn six in 88.7%. The goldfish casts each commander once and keeps it, with no removal, tax or recast, so read these as a ceiling on the ignition, not its survival. This is the stage the old model got wrong: v1 called the wheel the ignition, and goldfish_targets still marks the wheel `required`.",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Brallin, Skyshark Rider"
+      ],
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "with both commanders out, seven discards are seven Brallin triggers and seven draws seven Shabraz triggers"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "full"
+        }
+      ]
+    },
+    {
+      "stage": "fuel",
+      "label": "EVERY CARD THAT MOVES",
+      "what_it_does": "Each card drawn is a counter on Shabraz, each card discarded a counter on Brallin and a ping to every opponent, so a loot pays both commanders at once. Steady fuel: Faithless Looting, Frantic Search, Sorcerer Class, Collector's Vault, Kitsa, Teferi, Master of Time (a loot on any turn), Rielle, Rhystic Study, Mask of Memory. Bulk fuel is the eight full-hand wheels: four plain ones (Windfall, Tolarian Winds, Reforge the Soul, Jace's Archivist) and four that also deal damage (Collective Defiance, Fateful Showdown, Incendiary Command, Khorvath's Fury), plus Prismari Command's loot. Artist's Talent's loot is fuel too, but the card is filed under conversion, where its only stack-proven ability lives. The pilot's rule is that a wheel is cast with a commander already out, as the finishing turn. The wheel group is in 45.6% of opening sevens and drawn by turn six in 72.6% of games, mean turn 3.054 (deck-audit), so the usual job is holding one, not finding one. Idyllic Tutor is here as aimed card flow: its eight enchantment targets span four stages. There is no fodder stage: the deck eats its own hand, and no card in the 99 exists to be discarded.",
+      "cards": [
+        "Collector's Vault",
+        "Faithless Looting",
+        "Frantic Search",
+        "Idyllic Tutor",
+        "Kitsa, Otterball Elite",
+        "Mask of Memory",
+        "Rhystic Study",
+        "Rielle, the Everwise",
+        "Sorcerer Class",
+        "Teferi, Master of Time",
+        "Collective Defiance",
+        "Fateful Showdown",
+        "Incendiary Command",
+        "Jace's Archivist",
+        "Khorvath's Fury",
+        "Prismari Command",
+        "Reforge the Soul",
+        "Tolarian Winds",
+        "Windfall"
+      ],
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "001",
+          "note": "Windfall for seven: 7 damage to each opponent (40 to 33), both commanders 10/10, 7 life"
+        },
+        {
+          "kind": "stack",
+          "id": "003",
+          "note": "a discard paid as a cost (cycling) is still a discard for Brallin; Raugrin Triome and Marauding Mako cycle"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across"
+        },
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "MAKE EACH CARD WORTH MORE",
+      "what_it_does": "The commanders convert one card into one counter, and these seven raise what each card is worth. Teferi's Ageless Insight, Bard, King of Dale and Alhammarret's Archive each turn an extra draw into two, so a wheel's draws and every loot's draws pay Shabraz twice. Lae'zel adds one to every placement of counters on your creatures, so each Shabraz or Brallin trigger becomes two counters. Knowledge Is Power gives every creature +X/+X for cards drawn this turn, which makes the draw turn the pump turn. Torbran adds 2 to every damage event from a red source to an opponent: each of Brallin's pings becomes 3 (stack 005: seven discards, 21 to each opponent) and by oracle text alone (005 scopes combat out), Brallin's combat damage is a red source too. Artist's Talent at level 3 does the same for noncombat damage, +2 to each ping (stack 004: 21 per seat from seven discards). Its level 1 is a loot per noncreature spell and its level 2 a cost reduction. Whether two draw doublers compound, and how Lae'zel stacks with them, has no passing stack; both are in open_questions.",
+      "cards": [
+        "Alhammarret's Archive",
+        "Artist's Talent",
+        "Bard, King of Dale",
+        "Knowledge Is Power",
+        "Lae'zel, Vlaakith's Champion",
+        "Teferi's Ageless Insight",
+        "Torbran, Thane of Red Fell"
+      ],
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "005",
+          "note": "Torbran's +2 applies to each of Brallin's seven separate pings: 21 to each opponent"
+        },
+        {
+          "kind": "stack",
+          "id": "004",
+          "note": "Artist's Talent level 3 adds 2 to each of Brallin's seven pings, 21 per seat"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "cuts-across"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "THE SIDE DAMAGE AND THE CLEARED LANE",
+      "what_it_does": "What the engine produces besides a large commander. Three bodies collect the same tax: Glint-Horn Buccaneer pings each opponent per discard (a second Brallin), Marauding Mako grows per discard, Chasm Skulker grows per draw and leaves Squids when it dies. deck-audit prices Glint-Horn and Chasm Skulker as single-card components at 7.1% of opening sevens, and Mako sits in the 3-card discard-converter group at 19.9%. None is a plan, only spare damage. Swords to Plowshares and Iroh's Demonstration remove the blocker or the threat that would stop a commander's swing. In the voltron list these are supporting cast; the stage the game turns on is wincon.",
+      "cards": [
+        "Chasm Skulker",
+        "Glint-Horn Buccaneer",
+        "Iroh's Demonstration",
+        "Marauding Mako",
+        "Swords to Plowshares"
+      ],
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across"
+        },
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "cuts-across"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "TWO CREATURES THAT DIE TO ANYTHING",
+      "what_it_does": "The engine lives in two creatures, so the protection is all commander-centred. Permanent: Lightning Greaves (shroud and haste, equip 0) and Champion's Helm (hexproof on a legend). Held up: Flawless Maneuver (free with a commander out), Loran's Escape, March of Swirling Mist, Negate, Silence (stops the table casting on the kill turn). Recovery: Command Beacon puts a commander from the command zone into your hand, and Campfire does so from the command zone and the graveyard. A commander cast from hand pays no commander tax, so this resets the tax that two removed commanders build up. The declared protection group (8 cards, including Akroma's Will, Boros Charm and Brotherhood Regalia, which this model files under wincon) is drawn by turn six in 79.0% of games (deck-audit). That figure prices drawing these cards, not using them. The goldfish has no removal, so no figure prices any protection card saving a commander, and Forge held Flawless Maneuver as a reactive card.",
+      "cards": [
+        "Campfire",
+        "Champion's Helm",
+        "Command Beacon",
+        "Flawless Maneuver",
+        "Lightning Greaves",
+        "Loran's Escape",
+        "March of Swirling Mist",
+        "Negate",
+        "Silence"
+      ],
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "partial"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "ONE HIT FOR TWENTY-ONE",
+      "what_it_does": "The game ends on 21 combat damage from one commander. These cards turn the size the engine built into that hit. Double strike: Blade Historian (every attacker, so both commanders), Fireshrieker, Genji Glove (also an extra combat), Lizard Blades, Embercleave (also trample and flash), Akroma's Will (with a commander out: double strike and flying plus the protection mode), Boros Charm. Extra combat: Karlach, Genji Glove. Damage multipliers: Gratuitous Violence doubles damage from your creatures, Fiery Emancipation triples damage from any source you control. Getting through: Brotherhood Regalia and Key to the City make a commander unblockable, Zephyr Boots gives Brallin flying, Inti puts a counter and trample on an attacker. Stoneforge Mystic finds any of the nine Equipment and can put it onto the battlefield for {1}{W}. Stack 001 leaves Shabraz a 10/10 after a seven-card Windfall; no passing stack covers combat, double strike or whether Torbran's and Gratuitous Violence's extra damage counts as commander damage. Every line into this stage is a claim (open_questions).",
+      "cards": [
+        "Akroma's Will",
+        "Blade Historian",
+        "Boros Charm",
+        "Brotherhood Regalia",
+        "Embercleave",
+        "Fiery Emancipation",
+        "Fireshrieker",
+        "Genji Glove",
+        "Gratuitous Violence",
+        "Inti, Seneschal of the Sun",
+        "Karlach, Fury of Avernus",
+        "Key to the City",
+        "Lizard Blades",
+        "Stoneforge Mystic",
+        "Zephyr Boots"
+      ],
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "partial"
+        },
+        {
+          "kind": "city",
+          "id": "city-0",
           "agreement": "cuts-across"
         },
         {
@@ -63,217 +272,9 @@
           "agreement": "cuts-across"
         },
         {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "partial"
-        }
-      ]
-    },
-    {
-      "stage": "ignition",
-      "label": "THE TWELVE WHEELS YOU SPEND — AND THE SECOND KEY NOBODY DECLARES",
-      "what_it_does": "Nothing here starts itself: every payoff is a tax collector with nothing to tax until a hand empties and refills, which is why a wheel is the one group the declaration marks `required`. These twelve are the wheels you SPEND a card to fire; the five that wheel again and again are permanents and are filed as fuel. READ THE SPLIT INSIDE THIS STAGE BEFORE YOU CAST ONE. Six discard and therefore pay Brallin — Burning Inquiry, Khorvath's Fury, Reforge the Soul, Tolarian Winds, Windfall, and Magus of the Wheel, which sacrifices itself and needs a turn to untap first. Six shuffle or bottom and pay him nothing — Commit // Memory, Echo of Eons, Molten Psyche, Time Reversal, Whirlpool Warrior, Winds of Change — refilling you for the Shabraz half only, and refilling the table with you. Three refill only YOU: Tolarian Winds, Whirlpool Warrior's enters-trigger, and Khorvath's Fury if you call yourself friend. THE IGNITION IS A TWO-KEY DOOR AND ONLY ONE KEY IS DECLARED. The declaration's 17-card wheel group is drawn in 0.991 of games, 0.943 by turn six, mean turn 1.772; the 9-card DISCARD-wheel group 0.948 and 0.809, mean turn 2.946. A wheel is therefore never the thing you are waiting for. What you are waiting for is a payoff standing at the door: both partners on the battlefield is 0.834 by turn six, mean turn 5.395, never-both 0.011. That gap — 1.772 against 5.395 — is the ignition window, and no declared group measures it.",
-      "cards": [
-        "Burning Inquiry",
-        "Khorvath's Fury",
-        "Reforge the Soul",
-        "Tolarian Winds",
-        "Windfall",
-        "Magus of the Wheel",
-        "Commit // Memory",
-        "Echo of Eons",
-        "Molten Psyche",
-        "Time Reversal",
-        "Whirlpool Warrior",
-        "Winds of Change"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-6",
-          "agreement": "partial"
-        },
-        {
           "kind": "role",
-          "id": "draw:wheel",
-          "agreement": "partial"
-        }
-      ]
-    },
-    {
-      "stage": "fuel",
-      "label": "THE WHEELS YOU DO NOT SPEND, AND THE CARDS BETWEEN THEM",
-      "what_it_does": "Five permanents wheel and keep wheeling: Anje's Ravager on every attack (it must attack), Queen Kayla for {4} and a tap at sorcery speed, Arjun on every spell you cast, Jace's Archivist for {U} and a tap, Teferi's Puzzle Box on every player's draw step. THREE OF THE FIVE REFILL ONLY YOU — Ravager, Kayla and Arjun — and that is the axis this deck is being bought on: branches/budget-v1/branch.json records two as the largest single-card gains on the list (+1.739 and +1.102 on damage@T8, MDE 0.695, from an uncommitted slot sweep). Arjun bottoms rather than discards: Shabraz, never Brallin. Around them sit the cards that keep the hand turning between wheels: Faithless Looting and Artist’s Talent move one card at a time; Teferi's Ageless Insight doubles every draw but the first each draw step, so a seven-card refill is fourteen Shabraz triggers; Mind's Eye bills the opponents' half of a symmetric wheel at {1} a card, and the only other card in the 99 that reads an opponent DRAWING is Smothering Tithe — Rhystic Study taxes their CASTS, which a wheel does not cause; Library of Leng puts a wheel's discards on top of your library, not in the graveyard; Sorcerer Class loots two on arrival (four triggers between the pair) and at level 3 turns each instant or sorcery into damage to each opponent, and its level-2 mana cannot pay an ordinary activation (Kayla’s {4}, Jace’s {U}) but it DOES pay a Class level, an activated ability (716.2): its own {3}{U}{R} and Artist’s Talent’s {2}{R}. V1.0.2 adds Mask of Memory here: a connect draws two and discards one, so one hit pays BOTH doors — two Shabraz triggers and a Brallin trigger — the cards-between-wheels job the cut filler slots were not doing. Equip is sorcery speed and its draw is in `draw_not_modelled`, so no figure here counts it.",
-      "cards": [
-        "Anje's Ravager",
-        "Queen Kayla bin-Kroog",
-        "Arjun, the Shifting Flame",
-        "Jace's Archivist",
-        "Teferi's Puzzle Box",
-        "Faithless Looting",
-        "Artist's Talent",
-        "Teferi's Ageless Insight",
-        "Mind's Eye",
-        "Rhystic Study",
-        "Library of Leng",
-        "Sorcerer Class",
-        "Mask of Memory"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-6",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "cuts-across"
-        }
-      ]
-    },
-    {
-      "stage": "conversion",
-      "label": "THE TOLLBOOTHS THAT PAY IN CARDS AND COUNTERS",
-      "what_it_does": "The engine proper on the value side: permanents that stand at the door and take something other than life. Shabraz is the whole draw half — a +1/+1 counter and a life for every card that arrives — and the pair's counters measure 6.811 by T6 and 39.329 by T10 (their own counters only). CADENCE is what to read here, not the count. Rielle fires ONCE on the first discard each turn and draws that many, so a seven-card wheel draws seven more and pays every per-draw tollbooth twice. Ivora takes a counter per discarded card and makes Blood on arrival. Containment Construct lets you replay a discarded card that turn; Currency Converter exiles discards and buys them back later as a Treasure or a 2/2. Curator of Mysteries pays scry 1, which is selection and not advantage. Chasm Skulker grows one counter per draw and is in the declared AIR KILL component despite having no evasion — its death tokens have islandwalk, not flying. Mindless Automaton and Jaxis are the opposite shape: you PAY mana and discard one card at a time, so they do not scale with a wheel at all. V1.0.2 cut Marketback Walker as filler — {4} a counter, cards only if it dies — and Marauding Mako takes the slot in the shape it wanted: {R}, and a counter for EVERY card a wheel discards, so it scales with the ignition, not with spare mana. It is the discard-side mirror of Chasm Skulker and, like Skulker, a GROUND body, so it is not in the AIR KILL either. Its cycling {2} pays Brallin from hand, but a cycled Mako is in the graveyard and takes no counters. Priced from the brief, with Mako added to the declaration this round: the 'discard converted to board or cards' component is seven names, drawn in 0.96 of games, 0.77 by turn six, mean turn 3.531.",
-      "cards": [
-        "Shabraz, the Skyshark",
-        "Rielle, the Everwise",
-        "Ivora, Insatiable Heir",
-        "Containment Construct",
-        "Currency Converter",
-        "Curator of Mysteries",
-        "Chasm Skulker",
-        "Mindless Automaton",
-        "Jaxis, the Troublemaker",
-        "Marauding Mako"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "stack",
-          "id": "001",
-          "note": "the seven Shabraz triggers and the seven Brallin triggers are one batch off one resolution"
-        }
-      ]
-    },
-    {
-      "stage": "output",
-      "label": "THE TOLLBOOTHS THAT PAY IN LIFE TOTALS",
-      "what_it_does": "Brallin is the discard half and the deck's declared clock: 1 damage to EACH opponent per card discarded, plus a counter, so a seven-card wheel is 7 to three seats — PROVED by stack 001. The second per-discard source is a two-card component (Glint-Horn Buccaneer, Magmakin Artillerist) drawn in 0.66 of games and 0.343 by turn six — with commander protection at 0.342 it is the thinnest PAIR of the twelve declared groups, a tie and not a rank (notes[12]). The two are not the same card: Glint-Horn bills PER CARD (seven triggers off a seven-card wheel) and Magmakin bills PER EVENT ('whenever you discard one or more cards, that much damage'), one trigger of seven. Identical totals until Artist's Talent is at level 3, and stack 004 PROVES the difference: its +2 is a replacement on each noncombat damage EVENT, once per event. On the draw half, Psychosis Crawler and Niv-Mizzet bill every card that arrives, while Irencrag Pyromancer bills the SECOND draw each turn, which is once a turn and not once a card. READ THE FIGURE WITH ITS DEFINITION: cumulative event damage against ONE seat is 6.769 at T8 and 15.703 at T10, and that is the whole ping pillar — it does not close a 40-life seat on its own. It IS inside the kill rate: goldfish_turn.py 1899-1904 takes event damage off the same opponent_life the combat step reads and can set kill_turn, so the pings are the minor share — 6.769 cumulative by T8 against 81.741 of combat over the same eight turns (mean_damage_by_turn summed 1-8, the like-for-like figure), 7.6% against 92.4%. Three ignition cards carry their own rider — Khorvath's Fury, Molten Psyche's metalcraft, Sorcerer Class level 3.",
-      "cards": [
-        "Brallin, Skyshark Rider",
-        "Glint-Horn Buccaneer",
-        "Magmakin Artillerist",
-        "Irencrag Pyromancer",
-        "Niv-Mizzet, Parun",
-        "Psychosis Crawler"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "001",
-          "note": "seven discards, seven Brallin triggers, 7 to each seat"
-        },
-        {
-          "kind": "stack",
-          "id": "004",
-          "note": "Artist's Talent at level 3 taxes each damage EVENT, which splits Glint-Horn from Magmakin"
-        },
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across"
-        }
-      ]
-    },
-    {
-      "stage": "protection",
-      "label": "SEVEN WAYS TO KEEP A 3/3 ON THE TABLE, AND WHAT V1.0.2 BOUGHT",
-      "what_it_does": "The engine is two 3/3s costing {3}{R} and {3}{W}{U}, and every figure here assumes they are alive. V1.0.2's swap lands here: Decree of Silence OUT at {6}{U}{U} to cast or {4}{U}{U} to cycle, a cost this deck could not reliably pay; Negate and Swords to Plowshares IN. ENUMERATE THE SEVEN BEFORE READING THE SUPERLATIVE. Lightning Greaves (shroud) and Swiftfoot Boots (hexproof) protect only once attached and EQUIP IS SORCERY SPEED; that two-card declared component is drawn in 0.657 of games and 0.335 by turn six, the LOWEST by-turn-six rate of the twelve declared groups, with the second per-discard source next at 0.346. Nezahal protects only Nezahal, at three discards (three more Brallin triggers to dodge one removal spell). Nimble Obstructionist has flash but counters an ACTIVATED OR TRIGGERED ABILITY only. Negate counters a NONCREATURE spell for {1}{U} — a wrath, a removal spell, a Rift — and nothing for a creature spell or an ability. Swords to Plowshares is REMOVAL, not a shield: {W} exiles a creature of THEIRS, so it answers the blocker walling the air force or the attacker that trades with a 3/3; it cannot save a commander from removal already pointed at it, and its controller gains life equal to that power — damage to deal twice in a 40-life race. So Shelter is not the only instant-speed answer — Negate, Swords and Obstructionist all are — but it is the only card in the 99 that protects a creature at instant speed by TARGETING IT, for {1}{W}, and the only one that draws a card doing it (Talon Gates of Madara also targets one, but on a LAND PLAY). Protection from a colour stops damage, blocking and targeting, not an untargeted wrath. The interaction suite the model counts now holds Negate and Swords: at T6 in hand in 0.587 of games, CASTABLE in 0.134.",
-      "cards": [
-        "Lightning Greaves",
-        "Swiftfoot Boots",
-        "Nezahal, Primal Tide",
-        "Nimble Obstructionist",
-        "Shelter",
-        "Negate",
-        "Swords to Plowshares"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "partial"
-        },
-        {
-          "kind": "role",
-          "id": "protection:granted",
-          "agreement": "partial"
-        }
-      ]
-    },
-    {
-      "stage": "wincon",
-      "label": "THE AIR FORCE THE DRAWS BUILD",
-      "what_it_does": "The declaration names two kills off one ignition, and this is the DOMINANT pillar of the measured kill, not the whole of it: kill_by_turn reads ONE 40-life total that both pillars lower — goldfish_turn.py subtracts event damage from opponent_life and lets it set kill_turn (1899-1904) before the combat step does the same (2133-2136) — so the rates below are combat plus pings. The share only means anything if BOTH halves are cumulative: combat summed over turns 1-8 (mean_damage_by_turn) is 82.32 against 6.976 of cumulative ping damage — 92.2% against 7.8%, which is what makes this the air force's figure. Every card that arrives is a 1/1 flier with haste (The Locust God) or a 1/1 Faerie on the second draw each turn (Improbable Alliance) or a foreshadow counter toward an 8/8 Kraken (Ominous Seas); every card that leaves is a 2/2 Drake for {1} (Drake Haven, on a discard OR a cycle); Shark Typhoon cycles for an X/X flier at instant speed; Vanguard Suppressor squads and draws on connect. Kefnet is indestructible and cannot attack unless you hold seven cards, which is exactly the hand a wheel leaves. Silent Hallcreeper cannot be blocked. Waterbender Ascension is the connect-and-grow support left — V1.0.2 cut Stromkirk Noble and Gossip's Talent as filler slots, and with them went two of the three names in the model's combat blind spot, which now reads combat_effects_not_modelled: Generous Plunderer alone. Enduring Curiosity turns each connection back into a card, which pays Shabraz again. Measured: THE AIR KILL assembles in 0.85 of games, 0.545 by turn six, mean turn 4.965; board power 9.804 at T6 and 19.083 at T10; bodies 2.236 and 7.242; kill rate against one unopposed 40-life seat 0.209 by T6, 0.634 by T7, 0.891 by T8, mean kill turn 7.238.",
-      "cards": [
-        "The Locust God",
-        "Shark Typhoon",
-        "Drake Haven",
-        "Improbable Alliance",
-        "Ominous Seas",
-        "Vanguard Suppressor",
-        "Kefnet the Mindful",
-        "Silent Hallcreeper",
-        "Enduring Curiosity",
-        "Waterbender Ascension"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across"
+          "id": "wincon:combat",
+          "note": "Blade Historian, Fireshrieker, Genji Glove, Embercleave, Akroma's Will, Boros Charm, Brotherhood Regalia, Gratuitous Violence carry wincon:combat"
         }
       ]
     }
@@ -281,429 +282,309 @@
   "lines": [
     {
       "from": "ignition",
-      "to": "output",
+      "to": "fuel",
       "via": [
-        "Windfall",
-        "Brallin, Skyshark Rider"
+        "Brallin, Skyshark Rider",
+        "Shabraz, the Skyshark",
+        "Windfall"
       ],
       "verified_by": "001",
-      "note": "PROVED by stack 001 (checker pass, 2 rounds, 25 citations): Windfall resolved with both commanders on the battlefield and a seven-card hand. Brallin's 'whenever you discard a card' ability triggers SEVEN times, one per card YOU discard (109.5; the opponents' twelve discards do not count); each trigger deals 1 damage to EACH opponent — 7 per seat, 21 pod-wide, every seat 40 -> 33 — and Brallin ends with seven +1/+1 counters. The discard and the draw are ONE resolution (608.2c), no player receives priority inside it, so NONE of the fourteen triggers (seven Brallin, seven Shabraz) is put on the stack until Windfall has finished resolving (603.3): Brallin is a 3/3 with no counters throughout the discard AND while the seven are drawn; then their controller orders all fourteen (603.3b). No figure prices this pair alone — the goldfish accumulates every per-discard and per-draw payoff into one series, and that series reads 15.703 cumulative event damage against ONE seat by turn ten."
+      "note": "Windfall resolved with both commanders out and seven cards in hand: seven Brallin triggers (1 to each opponent each, 40 to 33), seven Shabraz triggers (+7 counters, +7 life), both end 10/10. None of the fourteen triggers goes on the stack until Windfall has finished resolving. The order is the pilot's thesis: commander first, wheel second."
     },
     {
       "from": "ignition",
-      "to": "output",
+      "to": "conversion",
       "via": [
-        "Reforge the Soul",
         "Brallin, Skyshark Rider",
-        "Magmakin Artillerist"
+        "Artist's Talent"
       ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. The same seven discards bill twice, but in two shapes: Brallin seven times at 1, Magmakin once at 7. The second per-discard source is the declaration's thinnest payoff component at 0.66 assembled / 0.343 by turn six, and Magmakin was taken on judgement rather than on a number — branches/budget-v1/branch.json records it 'MEASURED AT -0.134 TO -0.556 ON damage_8 AND TAKEN ANYWAY', bought as insurance against the first source eating a removal spell, which a goldfish with no removal cannot price. CORRECTED THIS ROUND: rounds 1-2 said Magmakin was added THIS round and it was not. `git show 40d4dbab~1:…/decklist.txt` already holds it; it entered at 056de954, the under-$500 round, two decklist commits before this one. This round's decklist diff is one card, Gleaming Bastion out and a basic Island in, and nothing else. The branch figure is still correctly cited and still not a claim about the current 99."
+      "verified_by": "004",
+      "note": "Artist's Talent's level-3 replacement adds 2 to each of Brallin's seven pings separately: 21 to each seat from Brallin. This is the damage-conversion relation, the same shape as Torbran's, which is why the card is now filed under conversion. The stack never exercises Talent's loot. The Magmakin half of the stack has left the deck; the Brallin half stands."
     },
     {
-      "from": "ignition",
+      "from": "fuel",
       "to": "conversion",
       "via": [
         "Windfall",
-        "Rielle, the Everwise",
-        "Shabraz, the Skyshark"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. Rielle reads 'whenever you discard one or more cards for the first time each turn, draw that many' — one trigger sized to the whole wheel, so a seven-card discard draws seven MORE, and those seven pay Shabraz a second time on the same wheel. Cadence is the whole point: Rielle scales with a wheel, Mindless Automaton in the same stage does not. UNPRICED, and the neighbouring lines say so where it applies: Rielle, the Everwise is in goldfish_metrics.meta.card_advantage.draw_not_modelled, so none of her draws sits inside the 38.457 commander counters or the 22.999 extra cards quoted elsewhere on this page. The second Shabraz payment is a reading of her oracle text, not a measured figure."
-    },
-    {
-      "from": "fuel",
-      "to": "output",
-      "via": [
-        "Anje's Ravager",
+        "Torbran, Thane of Red Fell",
         "Brallin, Skyshark Rider"
       ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. The round's direction in one arrow: Ravager discards your hand and draws three every time it attacks, refilling nobody else, so it is a Brallin payment every combat that costs neither a card nor a mana. Recorded at +1.739 on damage@T8 against a stated MDE of 0.695 in branches/budget-v1/branch.json — an uncommitted slot sweep, not the committed run, and not a measurement of this pair."
+      "verified_by": "005",
+      "note": "With Torbran out, each of seven Brallin pings is 1 + 2. Stack 005 stipulates Windfall's seven discards and does not resolve it; that leg rests on stack 001. Result: so 21 to each opponent from Brallin alone, not a kill from 40. The Spider-Man half of that stack has left the deck; the Brallin and Torbran half stands."
     },
     {
       "from": "fuel",
       "to": "conversion",
       "via": [
-        "Queen Kayla bin-Kroog",
-        "Currency Converter",
-        "Rielle, the Everwise"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. Kayla discards the whole hand for {4} and a tap, paying Brallin for every card, then returns an artifact or creature card of mana value 1, 2 and 3 from among what she just discarded — Currency Converter at 1 and Rielle at 3 are both legal targets, so the same activation can rebuild the tollbooths it just pitched. Activate only as a sorcery, and she needs a turn to untap first, which is why she is fuel and not ignition."
-    },
-    {
-      "from": "fuel",
-      "to": "conversion",
-      "via": [
+        "Windfall",
         "Teferi's Ageless Insight",
         "Shabraz, the Skyshark"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. The doubler applies to every draw except the first in each draw step, so a wheel's seven arrives as fourteen and Shabraz takes fourteen counters plus fourteen life. The draw-multiplier channel is live this round and Teferi's Ageless Insight is no longer in meta.draw_not_modelled, so its effect is inside EXTRA cards drawn @T10 (beyond the draw step) of 22.999 and commander counters @T10 of 38.457 — neither figure is this card's share."
-    },
-    {
-      "from": "fuel",
-      "to": "output",
-      "via": [
-        "Artist's Talent",
-        "Brallin, Skyshark Rider"
-      ],
-      "verified_by": "004",
-      "note": "PROVED by stack 004 (checker pass, 3 rounds, 34 citations): eight triggers on the stack after a seven-card Windfall — Magmakin Artillerist's single trigger at the bottom, Brallin's seven above — with Artist's Talent at level 3. Its level-3 ability is a replacement effect (614.1a) that applies to each damage EVENT as the abilities resolve one at a time, and once per event (614.5): each Brallin trigger deals 1 + 2 = 3 to each opponent, 21 per seat over the seven, and Magmakin's one trigger deals 7 + 2 = 9 — 30 per seat, 90 pod-wide, every seat 40 -> 10. Brallin gets one counter per resolution (seven; 608.2c), unaffected by the damage change. The extra 2 is dealt by the original source, Brallin or Magmakin, never by Artist's Talent (120.2b, 120.7). That fixes the build rule the open question named, on the two sources 004 tested: a per-CARD source (Brallin) is taxed by the Talent once per card, a per-EVENT source (Magmakin) once per wheel. Glint-Horn Buccaneer is in no stack; it follows by that class rule plus its identical per-card wording, 'whenever you discard a card, this creature deals 1 damage to each opponent'. It is neither cheap nor fast — {1}{R}, then {2}{R} and {2}{R} at sorcery speed — and Artist's Talent's own loot is in meta.draw_not_modelled, so none of this is priced."
-    },
-    {
-      "from": "fuel",
-      "to": "ignition",
-      "via": [
-        "Library of Leng",
-        "Windfall"
-      ],
-      "verified_by": "002",
-      "note": "WITHDRAWN AND RE-AIMED. Round 1 drew this as fuel -> OUTPUT via Leng + Brallin and cited stack 002 for it; the critic is right and the line's own note said so. Leng's contribution to output is exactly zero — 002 step 2 resolves that 'the replacement changes only the destination of the discarded card, not whether the discard occurs' (614.1a, 701.9c, 614.6), so every point of the 4 per seat / 12 pod-wide / 40 -> 36 in its final_state is produced by Windfall's four discards through Brallin's four triggers. Take Leng off that board and the number does not move; the damage arrow is the one stack 001 already draws (ignition -> output), here on a four-card hand instead of seven. WHAT 002 DOES PROVE IS A FLOW BACK INTO THE IGNITION, and it is a real one: the four cards go on top of your library at the moment of the discard, in an order you choose and unrevealed (401.4), and Windfall's draw for five — five because opponent 2 discarded the most — takes those four straight back plus one card from beneath them (608.2c, 121.1, 121.2). The wheel you spent refunds its own fuel: hand size is the resource the ignition consumes, and under Leng a symmetric wheel costs you nothing but the wheel itself. Two bounds. (i) SCOPE: stack 003 (pass, round 1, 22 citations) proves Leng does NOT reach a COST discard — cycling Raugrin Triome under the same board, a cost paid at activation (601.2h) is not an effect (609.1), so the Triome goes to the graveyard; Brallin still triggers on that cost discard, stacks above the cycling ability and resolves first (603.3, 405.5). A Blood crack and Jaxis follow by that class rule plus their oracle text — each discard sits before the colon (602.1) — not by a stack that tested them. (ii) 002's board carries no Shabraz ('Domain kept: no cost discards, no Shabraz, no responses'), so the four redraws being four Shabraz triggers is not part of what this stack settles. Unpriced either way: the goldfish has no Library of Leng channel, so no figure on this page contains the refund."
+      "note": "CLAIM. Under Teferi's Ageless Insight each of a wheel's draws becomes two, so Shabraz takes two counters per card. No passing stack; how two doublers or Lae'zel stack on top is open."
     },
     {
       "from": "conversion",
-      "to": "output",
+      "to": "wincon",
       "via": [
-        "Ivora, Insatiable Heir",
+        "Torbran, Thane of Red Fell",
+        "Gratuitous Violence",
         "Brallin, Skyshark Rider"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. One Blood token is a discard AND a draw off one activation: a Brallin ping and counter, an Ivora counter, a Shabraz counter and a life. The Blood channel is live this round, and its stated assumptions bound it hard — Blood made by CONNECTING in combat is read and not credited (no blockers in the model), and at most ONE token is cracked per turn, which the module itself calls an authored floor. Ivora is the deck's only Blood source."
-    },
-    {
-      "from": "output",
-      "to": "conversion",
-      "via": [
-        "Brallin, Skyshark Rider",
-        "Shabraz, the Skyshark"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. The partners hand each other the keyword they lack: Shabraz's '{W/U}: Target Human gains flying' and Brallin is a Human Shaman; Brallin's '{R}: Target Shark gains trample' and Shabraz is a Shark Bird. 38.457 counters by turn ten sit on two 3/3s that can each make the other connect. Both online by turn six in 0.834 of games, mean turn 5.395, never both online in 0.011."
+      "note": "CLAIM. Brallin's road: Torbran adds 2 and Gratuitous Violence doubles his combat damage. The damaged player orders the two replacements (a ruling input read in stack 005's scope notes), so the defender picks the smaller result; whether all of it is commander damage has no passing stack."
     },
     {
       "from": "ignition",
-      "to": "mana",
-      "via": [
-        "Windfall",
-        "Smothering Tithe"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. One of the two arguments for a symmetric wheel this deck can bank — Mind's Eye is the other: three opponents drawing seven each is 21 Smothering Tithe triggers, each a Treasure unless that player pays {2}. Entirely unpriced — model_treasures is OFF by declaration, and the flags note says so deliberately."
-    },
-    {
-      "from": "conversion",
       "to": "wincon",
       "via": [
         "Shabraz, the Skyshark",
-        "The Locust God"
+        "Embercleave",
+        "Blade Historian"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. The air kill's bodies are drawn, not cast: every card that arrives is a 1/1 flier with haste off The Locust God AND a counter on Shabraz, so one wheel is a board and a bigger commander at the same time. Declared AIR KILL: 0.848 assembled, 0.540 by turn six, mean turn 4.987."
-    },
-    {
-      "from": "ignition",
-      "to": "wincon",
-      "via": [
-        "Echo of Eons",
-        "Kefnet the Mindful"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. Kefnet cannot attack or block unless you have seven or more cards in hand, and a wheel is what puts seven there — an indestructible 5/5 flier that the refill itself switches on. It is the clearest case of the deck's shape: the wheel is not just fuel, it is a condition several cards read."
-    },
-    {
-      "from": "wincon",
-      "to": "conversion",
-      "via": [
-        "Enduring Curiosity",
-        "Shabraz, the Skyshark"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. Every creature that connects draws a card, and every card drawn is another Shabraz counter and another life — the air force pays the draw tollbooth back. Unpriced: Enduring Curiosity is in meta.draw_not_modelled (attack- and death-triggered draw are not modelled), so board power 9.807 at T6 does not include any cards it would have drawn."
-    },
-    {
-      "from": "mana",
-      "to": "fuel",
-      "via": [
-        "Sol Ring",
-        "Queen Kayla bin-Kroog"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. A repeatable wheel is only repeatable if the mana is there every turn: Kayla asks {4} on top of whatever you cast, Jace's Archivist {U}, and Arjun asks that you cast a spell at all. Mean available mana is 5.535 at T6 and 9.43 at T10, so the second activation is affordable from about turn six and not before."
+      "note": "CLAIM. Shabraz's road: a flyer grown by draws, given double strike. Stack 001 leaves him a 10/10, and double strike on a 10/10 is one point short of 21, so the one-turn kill needs one more counter or pump (Lae'zel, Knowledge Is Power, Embercleave's +1/+1). Needs a combat stack."
     },
     {
       "from": "protection",
-      "to": "conversion",
+      "to": "ignition",
       "via": [
-        "Shelter",
+        "Lightning Greaves",
         "Shabraz, the Skyshark"
       ],
       "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. V4's swap in one arrow, recounted at V1.0.2 (Decree of Silence out, Negate and Swords in). TWO of the seven protection pieces replace themselves and five do not — enumerate rather than call Shelter unique. Shelter draws on CAST at {1}{W}; Nimble Obstructionist draws on CYCLING at {2}{U}, which is a discard and therefore pays Brallin, Ivora and Rielle on the way past. The other five draw nothing for being cast: Lightning Greaves and Swiftfoot Boots are Equipment, Negate and Swords to Plowshares are a counter and a removal spell with no rider, and Nezahal’s draw trigger reads an OPPONENT casting a noncreature spell, not your casting him. Round 1 wrote ‘every protection piece in the 99 that is a spell also draws’, which is false of five of the seven. Shelter is the one that pays only the Shabraz side, and the cheaper of the two at {1}{W} against {2}{U}. Either way the spell that saves the commander is itself a draw trigger — a +1/+1 counter, a life, and a Niv-Mizzet or Psychosis Crawler ping if either is out. Astral Drift, the card it replaced, was gated on CYCLING rather than discarding, so it paid Brallin nothing and it had almost nothing in the 99 worth blinking. Unpriced either way: goldfish models no removal, so it can measure neither the loss Shelter prevents nor the one extra card. The declaration's commander-protection group still names only Lightning Greaves and Swiftfoot Boots, so no measured figure on this page includes Shelter at all — see proposed_goldfish_edits."
-    },
-    {
-      "from": "protection",
-      "to": "output",
-      "via": [
-        "Shelter",
-        "Brallin, Skyshark Rider"
-      ],
-      "verified_by": null,
-      "note": "CLAIM, no passing stack — only the Windfall + Brallin base line (stack 001), the Library of Leng line (stacks 002, 003) and the Artist's Talent line (stack 004) are proved; this arrow is the analyst's reading. Protection from a colour stops damage, enchanting, equipping, blocking and targeting, so for {1}{W} at instant speed Shelter answers a Swords to Plowshares, a targeted burn spell or a chump block aimed at the 3/3 the clock runs through — and it does NOT answer an untargeted wrath, of which the deck holds zero of its own (sweepers axis: 0 copies against a target of 1-3). The declared commander-protection component is 0.661 drawn / 0.342 by turn six. WITHDRAWN THIS ROUND: round 1 called that the LOWEST by-turn-six rate of the twelve declared groups. It is not a rank the data carries — the second per-discard source reads 0.343, and 0.001 is 10 games in 10,000 on a figure this instrument moves by more than ten times that under a change that touches neither group (notes[12]). What survives, and is worth more than the rank: those two ARE the thinnest pair of the twelve, the next-thinnest reads 0.464, and the reason is structural rather than about the cards — they are the only two groups in goldfish_targets.json declared at exactly TWO names. Adding Shelter takes this one to three, which is the single change most likely to move the figure."
+      "note": "CLAIM. Greaves (equip 0) lets a commander land and swing protected on the same turn. Stacks 004 and 005 name Greaves only as a card in hand, so they do not verify this."
     }
   ],
   "map_disagreements": [
     {
-      "component": "THE CLOCK (the output stage)",
+      "component": "fuel (the eight full-hand wheels)",
       "cities": [
-        "Bodies",
-        "Finishers",
-        "Payoffs"
+        "CHURN AND MULTIPLY",
+        "THE BLUE GAS"
       ],
-      "why": "Six cards do ONE job — bill a life total per card that moves — and the map files them by what else they say. Glint-Horn, Magmakin and Irencrag read as red creatures and sit in Bodies (city-1); Niv-Mizzet and Psychosis Crawler read as draw engines and sit in Finishers (city-4); Brallin reads as a counters payoff and sits in Payoffs (city-2). The one function this deck is built on has three addresses because no card in the set says 'per discard' and 'per draw' in the same sentence."
+      "why": "The map splits the wheels by colour: all five red wheels (Reforge the Soul, which does not burn, among them) sit in CHURN AND MULTIPLY, and the three blue ones (Jace's Archivist, Tolarian Winds, Windfall) in THE BLUE GAS. The engine treats all eight as one fuel, because a discard pays Brallin and a draw pays Shabraz whatever colour the card is."
     },
     {
-      "component": "THE WHEELS YOU DO NOT SPEND (the fuel stage)",
+      "component": "conversion and wincon (the doublers)",
       "cities": [
-        "Card Flow",
-        "Bodies",
-        "Finishers"
+        "CHURN AND MULTIPLY",
+        "THE CREW"
       ],
-      "why": "Thirteen cards across THREE cities, and the V5 entry's fourth address no longer exists. The split is one-shot-versus-permanent, which is a property of the TYPE LINE and not of the text: Faithless Looting, Teferi's Puzzle Box, Teferi's Ageless Insight and Jace's Archivist land in Card Flow (city-6) beside the sorcery wheels; Queen Kayla, Arjun, Library of Leng and Sorcerer Class in Bodies (city-1) — Sorcerer Class only because V5's eight-card Ramp city dissolved into Bodies, where its name survives one level down as the neighbourhood city-1-hood-0, and it is the ONLY card in this stage that changed city between the two maps; Anje's Ravager, Artist's Talent, Mind's Eye, Rhystic Study and the new Mask of Memory in Finishers (city-4). CORRECTED HERE: the V5 text put Anje's Ravager in Bodies, and the map has it in Finishers in BOTH layouts — a mis-citation, not a move. A repeatable wheel and a one-shot wheel read identically to a text embedding and behave completely differently at the table: of the five permanents that wheel, Archivist and Puzzle Box are in Card Flow, Kayla and Arjun in Bodies, Ravager in Finishers."
+      "why": "The neighbourhood THE MULTIPLIERS (city-0-hood-1) puts the draw multipliers (Teferi's Ageless Insight, Alhammarret's Archive, Knowledge Is Power) beside the damage multipliers and double strike (Gratuitous Violence, Fiery Emancipation, Blade Historian), and its gloss reads them all as 'the cards that turn one commander hit into 21'. The engine uses them at two different points: the first three multiply the fuel, the last three multiply the hit. Separately, four of the seven conversion cards (Bard, Lae'zel, Torbran, Artist's Talent) sit in THE CREW, whose gloss is 'the creatures that make them bigger'. So the conversion stage has two addresses. The map does not say why each card went where it did, and this model does not claim a cause."
     },
     {
-      "component": "THE PARTNERS",
+      "component": "wincon (the kill kit)",
       "cities": [
-        "Payoffs"
+        "THE ARMOURY",
+        "CHURN AND MULTIPLY",
+        "THE INSURANCE",
+        "THE CREW",
+        "THE HEAD START"
       ],
-      "why": "Brallin and Shabraz sit in the SAME city (city-2, Payoffs), which is the map agreeing — and it agrees for the wrong reason. They cluster with Chasm Skulker, Ivora, Mindless Automaton, Silent Hallcreeper and Waterbender Ascension — every one of them a card that puts a counter on something — i.e. on the half of each commander's text that matters least. The city shed exactly the three counter cards V1.0.2 cut (Gossip's Talent, Marketback Walker, Stromkirk Noble), 10 members to 7, and '+1/+1 counter' is NOT the rule: Marauding Mako, which takes a counter for every card a wheel discards, landed in Bodies (city-1) instead. The damage clause and the life clause, which are the whole deck, are invisible to the clustering."
+      "why": "The kill is one job, 21 from one commander, and it has five addresses on the map. Six Equipment are in THE ARMOURY, and the damage multipliers plus Blade Historian are in THE MULTIPLIERS. Akroma's Will and Boros Charm are in THE INSURANCE, Karlach and Inti in THE CREW, and Key to the City and Stoneforge Mystic in THE HEAD START. That last one is half seen by the map: its neighbourhood ROCKS WITH JOBS (city-1-hood-0) has a gloss that names tutoring equipment and making a commander unblockable. The map places these by what each card is as well as what it does. The engine needs them together on one turn, which is what no city shows."
     },
     {
-      "component": "THE PROTECTION SUITE (was THE V4 SWAP, re-measured at V1.0.2)",
+      "component": "protection",
       "cities": [
-        "Insurance",
-        "Card Flow"
+        "THE INSURANCE",
+        "THE ARMOURY",
+        "THE HEAD START",
+        "THE BLUE GAS"
       ],
-      "why": "THIS DISAGREEMENT RESOLVED, and the regenerated map is what resolved it. The V4 entry said Shelter landed in an 18-card Bodies city (city-0 of the V5 map) where Astral Drift had sat, that every other member was unchanged, and that the map had no way to show what the swap bought. The v1.0.2 map, diffed city-for-city against the V5 one (decklist sha 7d623c5f -> 6e11bf86), grew a city that did not exist before: city-0 Insurance, 9 members, seven of them cards that were in V5's Bodies (Shelter, Lightning Greaves, Swiftfoot Boots, Nimble Obstructionist, Drake Haven, Ominous Seas, Shark Typhoon) plus the two new answers, Negate and Swords to Plowshares. Its three-card neighbourhood city-0-hood-1 is EXACTLY the three instant-speed answers — Negate, Nimble Obstructionist, Swords to Plowshares. So two cheap answers were enough for the text clustering to find the job, and the protection stage now reads six of its seven cards in one city; only ignition is more concentrated (eleven of twelve in Card Flow). WHAT IS LEFT IS SMALLER AND REAL: the seventh piece, Nezahal, sits in Card Flow (city-6) on its draw trigger and its no-maximum-hand-size clause rather than on the three discards that save it, and Insurance also holds Drake Haven, Ominous Seas and Shark Typhoon, which this model reads as wincon."
+      "why": "Shroud on an Equipment (Greaves, Helm) clusters with the other Equipment, recovery on a cheap artifact or land (Campfire, Command Beacon) clusters with the mana, and March of Swirling Mist with the blue cards. THE INSURANCE gets only the held-up instants."
     },
     {
-      "component": "THE LANDBASE (the mana stage)",
+      "component": "output",
       "cities": [
-        "Mana",
-        "Mana II",
-        "Bodies"
+        "THE CREW",
+        "THE BLUE GAS",
+        "CHURN AND MULTIPLY",
+        "THE INSURANCE"
       ],
-      "why": "Thirty-six lands split across two cities, AND THIS ENTRY NO LONGER CLAIMS A RULE FOR THE SPLIT, because enumeration will not support one. WITHDRAWN THIS ROUND: the premise 'city-3 is fixed colour pairs, city-5 is any-colour, colourless or a non-mana ability' was written in V4, survived two revisions of the sentences around it, and is false in both directions. City-1 holds the basic Island (one colour, no pair) and Mystic Monastery ('{T}: Add {U}, {R}, or {W}'); seven of city-5's sixteen make FIXED colours — Adarkar Wastes, Shivan Reef, Fiery Islet, Calciform Pools, Irrigated Farmland, Glittering Massif and Raugrin Triome — and the last three are the very lands this entry's own argument places in Mana II. Colourlessness does not separate them either: Cascade Bluffs, Mystic Gate, Rugged Prairie and Nimbus Maze all read '{T}: Add {C}' and all four are in city-3, and Thundering Falls carries a non-mana enters-trigger (surveil 1) in city-3 too. I tested one replacement rule before dropping the idea — 'city-5 is the lands whose coloured mana carries a cost or a rider' — and it holds for all sixteen of city-5 and ALSO for Ferrous Lake and Skycloud Expanse ({1}, {T}), the three shocklands (2 life), the three filter lands (a hybrid pip) and Thundering Falls, every one of them in city-3. The map is a text embedding and this boundary is not a property a pilot can restate; saying so is the honest version of the disagreement, and the payload below does not rest on it. WHAT THE MAP DOES SPLIT, re-derived this round from deck_map.json and the type lines: round 1 said the five type-gated lands are 'spread across both', and they are not — Glacial Fortress, Sulfur Falls, Floodfarm Verge, Riverpyre Verge and Nimbus Maze are ALL FIVE in city-3, and city-5 holds none of them. The disagreement is real but it is the other way round, and it is sharper: the map splits the LOCK from the KEY. All five gated lands sit in Mana (city-3); the eight lands carrying a basic land type — the only thing that opens those gates — split five in Mana (Hallowed Fountain, Island, Sacred Foundry, Steam Vents, Thundering Falls) and THREE in Mana II (Glittering Massif, Irrigated Farmland, Raugrin Triome). Nimbus Maze is the clearest case: its blue mode needs a Plains, five lands in the 99 carry one, and three of those five are in the other city. A pilot reading city-3 as one homogeneous block of lands sees the conditions and not what satisfies them. THE THIRD CITY NAMED IN V5 NO LONGER EXISTS: Ramp was city-4 with eight members in the V5 map and the regenerated map has no Ramp city at all — all eight are in city-1 Bodies, and the name survives one level down as the neighbourhood city-1-hood-0. The stage/city disagreement itself survives unchanged in kind: Sol Ring, Arcane Signet, Smothering Tithe, Generous Plunderer, Sticky Fingers and Treasure Map // Treasure Cove are the six non-lands of the mana stage and all six are in Bodies, so the map still files the non-land half of the mana base somewhere else entirely — now with the creatures — a duller kind of disagreement than the lock/key one. The ids above are the regenerated map's: Mana was city-1 in V5 and is city-3 now, Mana II was city-6 and is city-5, and both cities' membership is IDENTICAL across the two maps, which is why every enumeration in this entry survived the renumbering unaltered."
+      "why": "The side damage bodies are filed by colour and type, and the two removal spells by colour. None of it is a coherent city because in this list it is supporting cast, not a plan."
     },
     {
-      "component": "THE V5 SWAP",
+      "component": "mana (Jeska's Will)",
       "cities": [
-        "Mana"
+        "THE HEAD START",
+        "CHURN AND MULTIPLY"
       ],
-      "why": "Gleaming Bastion out, a basic Island in, and the constellation did not move. Diffed card-for-card against the pre-swap deck_map.json (sha 2ca70e24): all seven cities had identical membership except Mana — city-1 in both of those maps, city-3 in the regenerated v1.0.2 one — where the Island stands exactly where the Bastion stood, same city, and the same nine-card neighbourhood (it survives in the current map as city-3-hood-1), whose other eight members (Cascade Bluffs, Ferrous Lake, Floodfarm Verge, Mystic Gate, Nimbus Maze, Riverpyre Verge, Rugged Prairie, Skycloud Expanse) are unchanged; the two Mana hood indices traded numbers, which is a relabelling and not a move. The map cannot show what the swap was about, because the swap was entirely a CONDITION: the Bastion's W/U mode read 'you control a basic land', which in a deck holding zero basics meant the turn it entered and no turn after, and the card that replaced it is both an unconditional blue source and the basic that would have switched the gate on. A clause that never fires and a clause that always fires are the same string to a text embedding, so the constellation records a like-for-like land-for-land substitution. `manabase.basic_gated_colours` is the instrument that does see it, and it landed with this swap."
+      "why": "Jeska's Will is a ritual plus exile-three-and-play, and the map reads its card-flow text and colour. Its job is mana for the kill turn."
     }
   ],
   "unassigned": [],
   "open_questions": [
     {
-      "question": "Cracking one Blood token: is the discard (a cost) a Brallin and an Ivora trigger, and is the draw a Shabraz trigger, from the single activation?",
+      "question": "With Brallin attacking under Torbran and Gratuitous Violence (and separately Fiery Emancipation), what damage does the defender take, given they order the replacement effects, and is all of it combat damage from a commander for 704.6c?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Blood is the newest model channel and the only card that feeds it is Ivora. If one token pays three triggers, the deck is under-built on an axis it already reads; if the cost-discard does not trigger, the Blood channel contributes only the draw."
+      "why_it_matters": "It is Brallin's whole road to 21. CONTEXT says a rules question found yes, but no passing stack holds it, so every line into wincon from Brallin is a claim."
     },
     {
-      "question": "Confirm the partner keyword grants are legal: Shabraz's '{W/U}: Target Human gains flying' targeting Brallin (Human Shaman), and Brallin's '{R}: Target Shark gains trample' targeting Shabraz (Shark Bird).",
+      "question": "Windfall for seven with Shabraz out under Teferi's Ageless Insight plus Bard, King of Dale (or Alhammarret's Archive), with Lae'zel: how many cards are drawn and how many counters land on Shabraz?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "38.457 commander counters by turn ten sit on two bodies that can each give the other the keyword it lacks; it is the difference between a big blocker and a kill. Cheap to settle and it underwrites the output-to-conversion line."
+      "why_it_matters": "Whether two doublers compound decides how large a finishing wheel makes Shabraz, and so whether one double-strike hit is enough."
     },
     {
-      "question": "Stack 003 settled the Brallin half: a cycling cost's discard triggers Brallin and his trigger resolves before the cycle draws. Still open: is the cycle's draw a Shabraz trigger — and does Drake Haven's 'whenever you cycle or discard' see it once or twice?",
+      "question": "A combat stack: Shabraz at 10/10 after stack 001's Windfall, wearing Embercleave or under Blade Historian, attacking one defender. Does it deal 21 or more commander damage, and which single extra (Lae'zel, Knowledge Is Power, Embercleave's +1/+1) takes it over?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "NINE cards in the 99 have cycling — Curator of Mysteries, Glittering Massif, Irrigated Farmland, Magmakin Artillerist, Marauding Mako, Nimble Obstructionist, Ominous Seas, Raugrin Triome, Shark Typhoon — three of them lands, none of which arrived this round, and the goldfish models none of it. CORRECTED THIS ROUND: rounds 1-2 said ten, which was true before the V4 merge cut Astral Drift and was carried unchecked afterwards. A text search for 'cycl' in the 99 returns TEN because it also returns Drake Haven, which reads 'whenever you cycle or discard a card' and has no cycling ability of its own — it is a cycling PAYOFF, which is precisely why it is the second half of this question rather than a tenth member of the set. proposed_goldfish_edits[5] already named the correct nine. ALSO CORRECTED THIS ROUND, and it is the provenance clause rather than the count: rounds 1-2 said the three cycling lands were 'added this round', which git refutes card by card — Raugrin Triome has been in the list since the original build (61c0a156), Glittering Massif and Irrigated Farmland entered at 056de954 two decklist commits ago, and this round's diff is one card (Gleaming Bastion out, a basic Island in) which has no cycling. Under no reading of 'this round' is the number three. If cycling pays both commanders, the deck has an instant-speed second engine that no figure in this model counts."
+      "why_it_matters": "It is the deck's primary win and it has no proof at all; stack 001 stops before combat."
     },
     {
-      "question": "Is the deck under-built on Blood? Ivora is the only Blood source in the 99; the channel exists and is measured at one card. Sweep the Blood makers available in the identity against the current list.",
+      "question": "How often is a commander-damage kit (a double-strike piece plus an evasion piece) drawn by turn six and eight, and how often does a commander that is out connect with one?",
       "settled_by": "goldfish",
-      "why_it_matters": "A Blood token is the cheapest single object that pays BOTH commanders from one activation. If the channel moves damage@T8 on a one-card sample, a second and third source is a cheap, in-identity direction; if it does not, the Ivora slot is judged on her counters alone. Worth fixing while the sweep runs: goldfish_turn keeps `blood_by_turn` and `artifact_sacs_by_turn` per game and goldfish_metrics publishes neither, so nobody can read how many tokens this deck made or cracked."
+      "why_it_matters": "The commanders' cast rates are priced (goldfish_metrics: both out by turn six in 88.7%), but the voltron kill has no declared group, so nothing prices the wincon stage (see proposed_goldfish_edits)."
     },
     {
-      "question": "What does the deck lose by giving three opponents a fresh seven every wheel? Six of this stage's twelve one-shot wheels are symmetric, and the model prices the tax on their refill while explicitly not pricing the cost — it has no opponent turn and no opponent board.",
-      "settled_by": "research-strategy",
-      "why_it_matters": "The pilot's own position is that an asymmetric wheel is strictly better unless it buys a discount or another ability, and that a symmetric wheel's DISRUPTION (shuffling graveyards, breaking a stored hand) is real and every metric is blind to it. Both halves of that are unmeasured, and the whole direction of the last two rounds turns on it."
-    },
-    {
-      "question": "mana_analysis.json credits Floodfarm Verge, Nimbus Maze and Riverpyre Verge as unconditional blue sources and lists none of the three in sources.gated, although each one's blue mode carries 'Activate only if you control' a Plains or an Island (Floodfarm), a Plains (Nimbus Maze) or an Island or a Mountain (Riverpyre). The fourth land this question used to name is settled and out of scope: `manabase.basic_gated_colours` now reads a coloured mode gated on controlling a BASIC land and subtracts it when the deck holds none, and Gleaming Bastion is no longer in the 99 either way. Is the U figure (32 land sources, on-curve 0.785 ungated) still an upper bound by three, and should land_colors(card, pool=...) read a TYPE-ON-THE-BATTLEFIELD gate the way it now reads a basic-land gate?",
+      "question": "Does holding every full-hand wheel until a commander is out beat casting it as soon as it is castable, measured as damage to one seat by turn eight?",
       "settled_by": "goldfish",
-      "why_it_matters": "U is the colour already under its target — 34 total sources against 36 — and it is priced on a count that includes three lands whose blue mode needs a named type in play. The deck now holds one basic Island plus seven typed nonbasics, so the condition is more often satisfiable than it was at zero basics: eight lands switch on either Verge, five switch on Nimbus Maze. Satisfiable is not unconditional, and a source that cannot pay a blue pip on curve is exactly what sources.gated exists to report. A land_colors / mana-analysis code fix, not a model change; this model reads the gates off the oracle text and the artifact does not."
-    },
-    {
-      "question": "Does Shelter's protection from a colour actually keep the +1/+1 counters on Brallin and Shabraz? Protection does not remove counters, but a stack scenario should walk one concrete sequence: opponent casts Swords to Plowshares on Brallin holding seven counters, Shelter responds naming white, Swords is countered on resolution for having an illegal target, and the draw resolves as a Shabraz trigger. Also settle whether protection from a colour lets Brallin through a blocker of that colour in the same turn it is cast.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Shelter is the deck's newest card and the only targeted instant-speed shield in the 99; the protection stage rests on it and nothing has proved it on this board."
-    },
-    {
-      "question": "Is deck-audit's interaction-breadth reading of 0 classes a real hole or a role-gate artifact for THIS deck? Enumerated (notes[2]): Commit // Memory answers any nonland permanent and is invisible to the axis because its only role is draw:burst; Irencrag Pyromancer and Niv-Mizzet pass the role gate but say 'any target' rather than 'target creature'; Echo of Eons, Time Reversal and Memory shuffle every graveyard away. Land is the one class with genuinely nothing. The question for the corpus is whether a 5-of-5 breadth target is the right yardstick for a deck whose plan does not contest the board at all — strategy:deckbuilding.interaction-suite is the source the axis quotes.",
-      "settled_by": "research-strategy",
-      "why_it_matters": "The axis reads UNDER by 5 — the largest of the six under-target gaps, against 2 on colour-sources and 1 each on ramp, interaction, sweepers and protection — and a prescription sized off a zero that is really a four would buy removal this deck has no room for."
-    },
-    {
-      "question": "Mask of Memory's two draws per connection sit in the goldfish's `draw_not_modelled` list, so the V1.0.2 card-flow add contributes to no figure in this file. What do extra cards drawn and damage@T8 read with attack-triggered draw modelled?",
-      "settled_by": "goldfish",
-      "why_it_matters": "It is the one new card whose whole job is unmodelled, and it feeds both doors off a single hit (two Shabraz triggers and a Brallin trigger), so the fuel stage's reading of it rests on card text alone."
+      "why_it_matters": "The pilot's 'wheels are finishers' rule is what moved the wheels from ignition to fuel. It is a judgment from two games and has not been measured on v2.0.0."
     }
   ],
   "proposed_goldfish_edits": [
     {
-      "target": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-      "change": "Add 'Shelter' to the component, taking it from 2 cards to 3; not Kefnet or Nezahal, which protect only themselves.",
-      "why": "V4 merged Shelter in and the declaration was not touched, so the deck's only targeted instant-speed shield is priced at zero. At V1.0.2 this group reads 0.335 by turn six, the LOWEST of the twelve declared groups, with the second per-discard source next at 0.346; the whole model rests on it, and it is one of only two groups in this file declared at exactly two names, which is most of why it reads low. Every figure on this page describes a two-card suite the deck no longer has."
+      "target": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+      "change": "Drop `required` from this group and relabel it 'A full-hand wheel drawn — the finishing fuel'. Put `required` on a new group that measures a commander on the battlefield, if the goldfish can measure it.",
+      "why": "Under v2.0.0 the commanders' triggers are the engine, and the pilot casts wheels after a commander is out. The label says the opposite of the deck."
     },
     {
       "target": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-      "change": "Change 'six more' to 'eight more' in the label.",
-      "why": "The label's own count is wrong against its own membership. Seventeen wheels, nine in this component; the eight outside it are Arjun, Commit // Memory, Echo of Eons, Molten Psyche, Teferi's Puzzle Box, Time Reversal, Whirlpool Warrior and Winds of Change — SIX shuffle and TWO bottom, which is eight, not six."
+      "change": "Delete it, or merge it into the wheel group.",
+      "why": "Its membership is identical to the wheel group (same eight cards, same measured rates). The six shuffle-or-bottom wheels its label counts all left in v2.0.0."
     },
     {
-      "target": "THE AIR KILL — a wheel plus a flying body that grows on every card (second component)",
-      "change": "Either drop Chasm Skulker from the component or reword the label to 'an evasive body'.",
-      "why": "Chasm Skulker has no evasion at all; its death tokens have islandwalk, not flying. Three of the four members fly (Shark Typhoon's token, The Locust God's Insects, Vanguard Suppressor); the fourth does not, and the component's 0.848 assembled rate counts it as if it did."
+      "target": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+      "change": "Remove Lae'zel, Vlaakith's Champion (it adds one to each counter placement; it is not a per-draw source) and relabel. Chasm Skulker is the only per-draw body left.",
+      "why": "The air force (Niv-Mizzet, Psychosis Crawler and the rest) was cut; the label and one member are stale."
     },
     {
-      "target": "A real answer drawn — a counter, a sweeper or a tax",
-      "change": "Reword to name what each member answers, or split it. Membership was corrected this round (Decree of Silence out, Negate and Swords to Plowshares in), so the four are: Commit // Memory answers a spell OR any nonland permanent already on the battlefield; Negate answers a noncreature spell; Swords to Plowshares answers a creature; Nimble Obstructionist answers only an activated or triggered ABILITY. There is still no sweeper and no tax in the group.",
-      "why": "The label promises three functions the component does not contain and hides the one that matters — Commit is the only card in the 99 that removes a resolved permanent OUTRIGHT and regardless of its type; Irencrag Pyromancer and Niv-Mizzet can kill a small creature with 'any target' damage, and nothing else in the 99 touches an artifact, an enchantment or a land. With the membership corrected the group reads 0.862 assembled and 0.574 by turn six (it was 0.663 and 0.346 while a card the deck does not have was one of three names), so the label now sits on a rate that reads as generic interaction over four cards that answer four different things."
+      "target": "THE WHEEL KILL / THE AIR KILL (both `route`s)",
+      "change": "Retire both as routes, and add a VOLTRON route: any_of [Blade Historian, Fireshrieker, Genji Glove, Lizard Blades, Embercleave, Akroma's Will, Boros Charm] AND any_of [Brotherhood Regalia, Key to the City, Zephyr Boots, Embercleave, Inti, Seneschal of the Sun, Akroma's Will].",
+      "why": "Each old route rests on a 1-of (Glint-Horn Buccaneer, Chasm Skulker), and the pilot named 21 commander damage as the main win on 2026-10-22. Whether the goldfish reads double strike and equipment is its own question."
     },
     {
-      "target": "the target list as a whole",
-      "change": "Add a group: AN ASYMMETRIC REPEATABLE WHEEL — Anje's Ravager, Arjun the Shifting Flame, Queen Kayla bin-Kroog.",
-      "why": "Three cards refill YOUR hand every turn without refilling the table's, which is the axis the last two rounds of branch work were aimed at, and nothing in the declaration measures it. The nearest group, 'A WHEEL drawn', prices all seventeen wheels together at 0.991 and cannot see the distinction."
+      "target": "new groups",
+      "change": "Add 'A draw doubler drawn' (Teferi's Ageless Insight, Bard, King of Dale, Alhammarret's Archive) and 'A damage multiplier drawn' (Torbran, Thane of Red Fell, Gratuitous Violence, Fiery Emancipation).",
+      "why": "These are the conversion stage and part of the wincon, and nothing declared measures them."
     },
     {
-      "target": "the target list as a whole",
-      "change": "Add a group: A CYCLER — Curator of Mysteries, Glittering Massif, Irrigated Farmland, Magmakin Artillerist, Marauding Mako, Nimble Obstructionist, Ominous Seas, Raugrin Triome, Shark Typhoon. Astral Drift must be removed from any such list; it is no longer in the 99.",
-      "why": "Stack 003 PROVED that a cycling cost's discard triggers Brallin, which makes cycling a second, free ignition the deck can fire without spending a wheel. Nine cards do it and no declared group counts them."
+      "target": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
+      "change": "Relabel (only Smothering Tithe makes Treasure among the seven, and model_treasures is ON) and consider adding Jeska's Will.",
+      "why": "The label describes a cut list."
     }
   ],
   "notes": [
-    "V5 re-model (decklist_sha256 7d623c5f9cf4). ONE CARD MOVED: Gleaming Bastion out of `mana`, the basic Island in — the deck's first basic land. Every other card sits in the stage the V4 model (critic verdict on file) put it in, carried programmatically from engine.json rather than retyped, and `unassigned` is still empty: all 100 entries are placed. stages[0] was REWRITTEN rather than patched. Its opening clause read 'Thirty-six lands and ZERO basics', which the swap makes false; its typed-land enumeration was seven lands and is now eight; and its last gated-land sentence was about Gleaming Bastion, a card no longer in the 99. THE FIGURE REFRESH REACHED HALF THE FILE AND ROUND 1 SAID IT REACHED ALL OF IT. What actually happened: the re-read landed in `stages` and `proposed_goldfish_edits`, where every figure is now the current run's, and `lines` and `open_questions` were left carrying V4's pre-swap numbers — eleven distinct decimals across six entries, listed in notes[12], which is where the correction is recorded. The sentence that stood here asserted a complete refresh and named as re-read the exact categories that had been missed. It is REPLACED, not softened: a note claiming a fix that did not happen is worse than no note, because it tells the next reader not to check. Round 1 also asserted a RANK between the two thinnest declared components (protection LOWEST at 0.342, second per-discard SECOND-LOWEST at 0.343, where they were 0.341 and 0.355). That rank is WITHDRAWN this round — see notes[12]; the pair survives, the order does not.",
-    "NO `fodder` STAGE, and that is a reading rather than an omission. What this engine consumes is CARDS IN HAND — a quantity produced by the ignition stage and destroyed in the same resolution that pays for it. No card in the 99 exists to be eaten: there is no sacrifice outlet feeding a payoff, no token stream being converted. Saying so is the finding; manufacturing a fodder stage out of the discard would double-count the ignition.",
-    "INTERACTION-BREADTH READS ZERO AND THE ZERO IS A TAXONOMY ARTIFACT FOR FOUR OF FIVE CLASSES — but the underlying weakness is real and the audit's own note says to check ('this is a floor on breadth — read the cards before calling a class uncovered'). ENUMERATED FROM cards.json ORACLE TEXT, every card in the 99 that answers a permanent already on the battlefield: CREATURE — Commit // Memory ('put target spell or nonland permanent into its owner's library second from the top', a hard tuck), Irencrag Pyromancer (3 damage to ANY TARGET on your second draw each turn), Niv-Mizzet Parun (1 damage to ANY TARGET per card drawn, so a seven-card wheel is seven damage divisible across creatures), and Talon Gates of Madara, which phases a creature out on entry (temporary, one-shot, sorcery speed). ARTIFACT — Commit // Memory only. ENCHANTMENT — Commit // Memory only. GRAVEYARD — Echo of Eons, Time Reversal and Memory each shuffle EVERY player's graveyard into their library; symmetric, incidental and complete. LAND — nothing. The zero is literally true for one class of five.",
-    "WHY THE AXIS READS ZERO, mechanically. deck_audit.py's `_interaction_breadth` is ROLE-GATED before its oracle heuristic runs, and the module's own comment block (lines 163-193) records this exact failure class on Chaos Warp for goblin-storm and ur-dragon. sharknado is the third instance: Commit // Memory's only role is `draw:burst`, so the card never reaches the patterns — and when the patterns are run over the deck UNGATED it scores creature + artifact + enchantment on `_CATCHALL_NONLAND` and is the only true positive of four hits (Currency Converter matches on 'exile…d with this artifact', Magus of the Wheel and Whirlpool Warrior on sacrificing THEMSELVES). Separately, Irencrag and Niv-Mizzet pass the role gate but the creature pattern requires the word 'creature' within 90 characters of the verb, and both say 'any target'. Neither observation is a proposed code change: the gate's comment says the fix is a corpus-wide ROLE_PATTERNS retag with its own sweep.",
-    "AND THE INTERACTION COUNT OF 7 IS INFLATED IN THE OTHER DIRECTION. The seven are Brallin, Decree of Silence, Glint-Horn Buccaneer, Irencrag Pyromancer, Magmakin Artillerist, Nimble Obstructionist, Niv-Mizzet Parun. Three of them — Brallin, Glint-Horn, Magmakin — deal damage to EACH OPPONENT and can never be pointed at a permanent, so they are clock, not interaction; they carry `removal:damage` because the role taxonomy reads 'deals damage'. The genuinely interactive suite is five: Commit // Memory, Decree of Silence, Irencrag Pyromancer, Nimble Obstructionist, Niv-Mizzet Parun. EXACTLY ONE of the five is a 5-or-6-mana creature — Niv-Mizzet, Parun at {U}{U}{U}{R}{R}{R} — and round 1 said two, which was wrong: Irencrag Pyromancer and Nimble Obstructionist are {2}{R} and {2}{U}, Decree of Silence is an eight-mana ENCHANTMENT, and Commit // Memory is an instant // sorcery. The shape of the suite is what carries the argument, not the cost: the two damage sources (Irencrag, Niv-Mizzet) are payoff creatures whose damage is pointed at faces by default, Decree answers only a spell and Nimble Obstructionist only an activated or triggered ability, which leaves Commit // Memory’s {3}{U} front face as the one card in the 99 that answers a resolved nonland permanent of any type. Against a target of 8 the gap is larger than the axis says.",
-    "THE MAP'S AUTHORED NAMES WERE LOST IN THE V4 MERGE. deck_map.json was regenerated for the new decklist sha and every region's `label` and `gloss` is now null; engine-facts is printing fallback labels (Bodies, Mana, Finishers, Payoffs, Ramp, Card Flow, Mana II). Commit 6d3b1c3f had authored them — PAID TO PITCH, THE PAIRS, THE DRAW TAX, THE THINGS THAT GROW, THE TREASURY, THE WHEELS, MORE THAN MANA — and membership is unchanged apart from Shelter taking Astral Drift's place in city-0 and the basic Island taking Gleaming Bastion's in city-1. `merge-deck-map` should be re-run before the dossier renders. This model's map_disagreements use the CURRENT fallback labels so they join to the artifact as it stands.",
-    "WHERE THERE IS NO EVIDENCE. The captain's log is EMPTY — zero games, zero results, so nothing on this page has been seen at a table. The one Forge record in sim/ is STALE (measured on a list this deck no longer holds) and deck-info flags it 'THE AI NEVER CAST THE ENGINE', which makes its 0.124 win rate a floor and not a reading. Three of seventeen lines are stack-verified (001, 002/003, 004); the other fourteen are the analyst's reading and carry verified_by null. The goldfish models no removal and no blockers, so every protection and interaction claim here is unpriced by construction.",
-    "ROUND 2 (critic verdict fail, 19 findings). The ten non-`supported` findings are all addressed; nothing else in this file was touched and every unrevised entry is carried byte-identical from engine.json. WITHDRAWN: lines[7]'s fuel -> output arrow (re-aimed at ignition, see the line) and stages[4]'s single_point_of_failure. CORRECTED: the model_version string, two per-turn-against-cumulative comparisons, the Sorcerer Class restriction, one stale decimal, one sub-count, one over-scoped superlative, one missing pricing disclaimer. REBUTTED: nothing — every finding checked out against the live artifacts on re-read, including the three the prompt put first.",
-    "THE ENGINE HAS NO SINGLE POINT OF FAILURE, AND THIS MODEL NOW AGREES WITH deck-audit (single_points_of_failure []) AND engine-facts ('single points of fail 0'). Round 1 put Brallin in stages[4] and could not carry it: he is a COMMANDER, recastable from the command zone, and the goldfish reads never_both_online_rate 0.011; the stage's own prose enumerates a second per-discard component (Glint-Horn Buccaneer, Magmakin Artillerist) and three per-draw billers (Irencrag Pyromancer, Niv-Mizzet Parun, Psychosis Crawler); and by the same reasoning stages[3] would have needed one for Shabraz, which it did not have. What is thin on this deck is a COMPONENT, not a card — the second per-discard source at 0.343 by turn six and commander protection at 0.342, which are the thinnest pair of the twelve declared groups and are NOT ranked against each other (notes[12]) — and both are stated where they belong.",
-    "TWO ARTIFACTS DISAGREE WITH THE CARDS, AND NEITHER IS A FIGURE THIS MODEL QUOTES. (a) deck-facts' restricted-mana note reads 'Their RESTRICTED mana pays for spells only, and an activated ability is not a spell: Sorcerer Class', which drops the oracle text's second clause, 'or to gain a Class level'. That mana pays any Class level cost (716.2 — a class level bar is an activated ability), so it funds Sorcerer Class's own {3}{U}{R} to level 3 and Artist's Talent's {2}{R} steps, the card stack 004 rests on. This model follows the card, and stages[2] no longer inherits the omission. (b) mana_analysis credits three type-gated lands as unconditional blue sources and lists none in sources.gated, which open_questions[5] carries, rescoped this round to the three that remain. Both are code-side readings, not decklist facts.",
-    "PROVENANCE IS A FIGURE TOO. Every number restated this round was re-read from the current goldfish_metrics.json (decklist_sha256 7d623c5f, seed 42, 10,000 iterations, meta.model_version 4d9205d29b87) and mana_analysis.json (same sha), plus engine-facts and branches/budget-v1/branch.json for the figures that come from neither. model_version did NOT move across this swap — 4d9205d29b87 before and after — so the figures moved because the decklist did, which is the reading a stale sha would have hidden. The branch figures quoted in stages[2] and lines[1] and lines[3] (+1.739, +1.102, MDE 0.695, −0.134 to −0.556) are from an UNCOMMITTED slot sweep on an older list and are labelled as such wherever they appear; they were not re-measured here and are not claims about the current 99.",
-    "V5 ROUND 1, AND WHAT THE SWAP SETTLED. The previous model's open_questions[5] named four lands that mana_analysis counts as unconditional blue sources; one quarter of it is now closed in CODE rather than by argument. `manabase.basic_gated_colours` detects a coloured mode gated on controlling a basic land, and land_colors(card, pool=...) / land_classes(card, pool=...) subtract it when the deck holds no basic; the corpus sweep behind it read all 1,274 lands, found 10 that mention controlling a basic land, and split them five/five — five gate the COLOURED MODE (Gleaming Bastion, Gathering Place, Dark Fortress, Hidden Lair, Training Compound), five gate only whether the land ENTERS TAPPED (Agna Qel'a, Abandoned Air Temple, Realm of Koh, Ba Sing Se, Fire Nation Palace). Neither half touches this deck any more: the Bastion is out, and the Island means the gate would not have fired against it. The other three lands gate on a TYPE IN PLAY, not on a basic, and no instrument reads that yet — which is why open_questions[5] survives, three-quarters the size it was.",
-    "V5 ROUND 2 (critic verdict fail, 24 findings; 14 supported, 10 not, addressed across 9 entries because notes[0] carried two). COUNT CORRECTED IN ROUND 3 — see notes[13]; as written here in round 2 it read '15 supported, 9 addressed', which double-counted the collapse of notes[0]'s two findings into one path and then took 24 minus 9 for the supported figure. ACCEPTED, THE HEADLINE: the figure refresh stopped before `lines`. ELEVEN DISTINCT DECIMALS across SIX entries were V4's pre-swap values, twelve occurrences in all because 38.377 appears twice: lines[9] (38.377/5.394/0.013 -> 38.457/5.395/0.011), lines[11] (0.845/0.541/4.999 -> 0.848/0.540/4.987), lines[13] (9.773 -> 9.807), lines[14] (5.525/9.41 -> 5.535/9.43), lines[16] (0.659/0.341 -> 0.661/0.342) and open_questions[1] (38.377 -> 38.457). Every one is now the value in goldfish_metrics.json at decklist_sha256 7d623c5f, and each had a corrected twin already sitting in `stages`, so the file was contradicting itself in five places. ONE REFINEMENT TO THE CHECK THE CRITIC PROPOSES, which I verified rather than argued: a check that extracts every decimal from this file and asserts it appears SOMEWHERE in the current goldfish_metrics.json / mana_analysis.json would have PASSED lines[11]'s stale 0.541, because 0.541 is also mana_analysis.shares.U.pip_share in the current run. I ran exactly that pool check and it returned ten of the eleven. The check has to be KEY-SCOPED — the figure must match the metric the sentence names — or it will keep missing the collisions, which are the hard cases. A second pass diffing this file's decimals against the values present in the PRE-swap artifacts and absent from the current ones catches the same ten and is a useful cross-check, not a replacement. WITHDRAWN: the 0.001 ORDERING. Round 1 ranked commander protection (0.342) below the second per-discard source (0.343) and sized prose in four places off that rank. The point estimates are right and the enumeration over all twelve is right; the RANK is not something this instrument carries. Three readings from the brief itself, no computed rate: (i) the two groups are the ONLY TWO of the twelve declared at exactly two names, and by-turn-six rate in this declaration tracks GROUP SIZE, not content — size 2 reads 0.342/0.343, the three size-3 groups read 0.464/0.469/0.471, the two size-6 groups read 0.714/0.724, size 7 reads 0.771, size 9 reads 0.809, size 17 reads 0.943; (ii) the residual spread AMONG same-size groups is 0.007 at size 3 and 0.010 at size 6, seven to ten times the gap being asserted at size 2; (iii) this round's own one-land swap moved the second per-discard source 0.355 -> 0.343 and protection 0.341 -> 0.342 without changing either group's membership — 0.012 of movement on a change that touches neither component. A 0.001 separation is not a rank. WHAT SURVIVES is better than what was withdrawn: the two are the thinnest PAIR of the twelve and the next-thinnest reads 0.464, a gap of 0.121 that no reading above comes near, and the cause is the declaration rather than the deck — both functions are priced at two cards. That is what proposed_goldfish_edits[0] is for. Corrected in stages[4], stages[5], lines[16], notes[8] and proposed_goldfish_edits[0]. ACCEPTED: map_disagreements[4]'s 'the five type-gated lands are spread across both' is false and was false in V4 as 'six'. All five sit in city-1 and city-6 holds none. Rewritten around what the map DOES split, which I re-derived from deck_map.json and the type lines: the five gated lands are all in Mana, and the eight basic-typed lands that open them split five in Mana and three in Mana II. The lesson is the one the critic names — 'six' was changed to 'five' without re-deriving the clause that carried the argument, which is how an edited sentence stays wrong. ACCEPTED: NINE cyclers, not ten, enumerated in open_questions[2]; Drake Haven reads cycling and does not have it, and Astral Drift left in the V4 merge. ALSO CORRECTED, from the critic's non-blocking observations: stages[0] now gives Nimbus Maze's WHITE mode, gated on controlling an Island and switched on unconditionally by the new basic, and a reader given only the blue half was given half the card. THE CLAUSE ROUND 2 ATTACHED TO THAT — 'the only card-level thing the V5 swap unlocked' — IS WITHDRAWN IN ROUND 3 and was the critic's own round-1 phrasing adopted verbatim: the Island satisfies a clause on all FIVE gated lands, and the Maze's white mode is one of them, not the whole of it (notes[13]); and stages[5]'s protection list now reads 'damage, enchanting, equipping, blocking and targeting', agreeing with lines[16] and with the card. REBUTTED: nothing. Every finding held on re-derivation from the artifacts. NOT SETTLED HERE: the critic's own proposed marginal interval (+/-0.0093 at p=0.342, n=10000) is a MARGINAL half-width on two rates measured over the SAME 10,000 seeded games, so it is not the interval on their difference and nothing in the published artifact is. Withdrawing the rank does not need it; publishing one would need per-game discordance the goldfish does not emit, which is a goldfish question and not a modelling one.",
-    "V5 ROUND 3, THE LAST THE LOOP ALLOWS (critic verdict fail, 14 findings: 9 supported, 2 contradicts-artifact, 1 over-claimed, 1 unjustified, 1 miscounted). The five entries carrying the five non-supported findings are the only ones revised; every other entry is carried byte-identical from engine.json, loaded and re-emitted programmatically, and each in-place edit was made under a single-occurrence assert. REBUTTED: NOTHING. Four of the five findings are arithmetic or enumeration with one right answer and I re-derived every one from the artifacts rather than accepting it: (a) the basic Island satisfies a clause on ALL FIVE type-gated lands, read out of data/cards.csv — Glacial Fortress and Sulfur Falls 'enters tapped unless you control … an Island', Floodfarm Verge 'a Plains OR AN ISLAND', Riverpyre Verge 'AN ISLAND or a Mountain', Nimbus Maze '{T}: Add {W}. Activate only if you control an Island' — and the only clause it misses is the Maze's blue, which wants a Plains; the superlative is gone from stages[0]. (b) Magmakin Artillerist and the three cycling lands were not added this round: `git show <sha>:…/decklist.txt` across all five decklist commits puts Magmakin, Glittering Massif and Irrigated Farmland at 056de954 and Raugrin Triome at the original build 61c0a156, while 40d4dbab is exactly '-1 Gleaming Bastion / +1 Island'. (c) map_disagreements[4]'s premise about the two cities is refuted by membership in both directions and is WITHDRAWN rather than replaced, because no candidate rule I tested separates the cities. (d) The round-2 finding count is corrected in notes[12]. WITHDRAWN THIS ROUND: stages[0]'s 'the only card-level thing this swap unlocked', map_disagreements[4]'s fixing-shape split rule, lines[1]'s and open_questions[2]'s 'added this round', and notes[12]'s 15/9 partition.",
-    "A NOTE IN THIS FILE HAS NOW OVER-CLAIMED ABOUT ITS OWN CORRECTIONS TWICE, AND THE COMMON FACTOR IS A COUNT NOBODY RE-DERIVED AT WRITE TIME. Round 1's notes[0] asserted a complete figure refresh that had reached half the file; round 2's notes[12] asserted '15 supported, 9 addressed' against a block that partitions 14/10. Both were recited rather than counted, and both were about the corrections themselves, which is the one class of claim a reader uses to decide NOT to check. THE RULE THIS FILE NOW HOLDS ITSELF TO: a note may state a count only if the count was derived, at write time, from a source present in the same artifact or nameable on disk, and it must name that source. Where the source is gone the count is attributed, not asserted — which is the case for notes[12]'s 24-finding block: it was merged into the working copy and REPLACED by the next round's before anything committed, so `git log -- data/decks/sharknado/engine.json` recovers only the V4 blocks (daaa3025 pass/16, b341fc84 fail/19) and not it. The 14/10 partition is therefore the round-2 critic's re-derivation of a block I cannot re-open, quoted as such. Round 3's own counts in notes[13] were taken from `critic.findings` in this file before the block was stripped for hand-back, and the decklist provenance in lines[1], open_questions[2] and notes[13] was taken from git.",
-    "TWO PROPOSED MECHANICAL CHECKS, CARRIED FORWARD AS PROPOSALS AND NOT AS GATES. Neither has been run against the fleet, and CLAUDE.md's standing rule is that a validator that fires on correct data is worse than none and that the only way to know is to measure it fleet-wide first — six checks have already been prototyped and rejected on exactly that ground, one firing on 27% of correct authored data. (1) THE PROVENANCE CHECK, which the round-2 critic proposed twice because it caught two sites: any card named in engine.json prose as added or cut 'this round' must appear on the correct side of the decklist diff between the current `decklist_sha256` and the previous one. WOULD HAVE CAUGHT both lines[1] (Magmakin) and open_questions[2] (three cycling lands). WOULD NOT CATCH a provenance claim that names no card, dates a change to a version rather than a round, or is wrong about WHY a card came in; and it needs a rule for prose that correctly quotes an older round's record, of which this file now has several. (2) THE FINDING-COUNT CHECK: any count a note states about the critic block must agree with `critic.findings` in the same file, partitioned by `status`. WOULD HAVE CAUGHT notes[12]'s 15/9. WOULD NOT CATCH the round-1 failure it is a cousin of — notes[0]'s claim about which entries had been refreshed, which is not a count of anything in the file — and it goes blind the moment the block being counted is a previous round's, which is precisely the case it was written for. (3) CARRIED FROM ROUND 2 and still the strongest of the three: the figure check must be KEY-SCOPED, the decimal matching the metric the sentence names. I re-ran the pool-membership form this round to confirm the number rather than repeat it: building a value pool from every numeric leaf of the current goldfish_metrics.json and mana_analysis.json and testing round 2's eleven stale decimals against it catches ten (38.377, 5.394, 0.013, 0.845, 4.999, 9.773, 5.525, 9.41, 0.659, 0.341 are all absent) and PASSES 0.541, which is live in the artifacts as mana_analysis.shares.U.pip_share while being stale about a completely different metric in the sentence that used it. The pool form is a cheap second pass, not the check. NONE OF THE THREE WOULD HAVE CAUGHT THIS ROUND'S HARDEST FINDING: map_disagreements[4]'s split rule names no card and states no figure, and it was wrong for three rounds.",
-    "V1.0.2 SCOPED REVISION (decklist_sha256 6e11bf86ad4e815b0a9bf78220dec4e8654658bc5210ab17f088b0c7d8f7b50c). Four paper swaps on 2026-10-01. OUT: Marketback Walker (conversion), Decree of Silence (protection), Stromkirk Noble and Gossip's Talent (wincon). IN: Marauding Mako -> conversion (a +1/+1 counter per card discarded, the discard-side mirror of Chasm Skulker); Mask of Memory -> fuel (a connect draws two and discards one, so one hit pays both doors); Negate and Swords to Plowshares -> protection, Swords as an ANSWER with its limit stated in the stage — it exiles a creature of theirs and cannot shield one of ours. `thesis`, `lines[].via`, `critic` and stages[0], [1] and [4] carry their V5 text; figures inside the edited stages are re-read from the regenerated artifacts for this list. CORRECTION TO THIS NOTE'S FIRST DRAFT: it said the regenerated deck_map.json has FIVE cities, which was read off a truncated dump and is wrong. Both maps have SEVEN, and the renumbering is a permutation plus one substitution, verified by diffing the V5 map (git 40d4dbab) against the current one: V5 was 0 Bodies(18) / 1 Mana(20) / 2 Finishers(12) / 3 Payoffs(10) / 4 Ramp(8) / 5 Card Flow(16) / 6 Mana II(16); v1.0.2 is 0 Insurance(9) / 1 Bodies(19) / 2 Payoffs(7) / 3 Mana(20) / 4 Finishers(13) / 5 Mana II(16) / 6 Card Flow(16). The Ramp CITY dissolved into Bodies (its name survives as city-1-hood-0) and an INSURANCE city appeared, which is why map_disagreements[3] is recorded as RESOLVED rather than renumbered.",
-    "V1.0.2 ROUND 2 — the five stale references the first pass flagged, plus two declaration edits, at the pilot's direction. (1) lines[15].note recounted from six protection pieces to seven and its cost comparison re-pointed from Decree of Silence ({4}{U}{U} cycle) to Nimble Obstructionist ({2}{U} cycle), the only other piece that replaces itself. (2) open_questions[2]'s cycling enumeration swaps Decree for Marauding Mako; the count NINE is unchanged because Mako carries cycling {2}. (3,4) proposed_goldfish_edits: the Decree suggestion dropped from the commander-protection entry (figures re-read to 0.335 / 0.346), and Decree replaced by Marauding Mako in the proposed CYCLER group. (5) Every city id in `stages[].evidence` and `map_disagreements` renumbered against the regenerated deck_map.json; map_disagreements[1] and [4] re-derived card-by-card against both maps, which caught a V5 mis-citation — the entry placed Anje's Ravager in Bodies and the map has it in Finishers in BOTH layouts; the only card in the fuel stage that actually changed city is Sorcerer Class, carried along when the Ramp city dissolved into Bodies; map_disagreements[3] recorded as RESOLVED. DECLARATION EDITS APPLIED to goldfish_targets.json (the two this file had been proposing): 'A real answer drawn' dropped Decree of Silence and gained Negate and Swords to Plowshares, 0.663 assembled / 0.346 by-turn-six / mean turn 5.571 -> 0.862 / 0.574 / 4.570; 'A discard converted to board or cards' gained Marauding Mako, 0.936 / 0.717 / 3.836 -> 0.96 / 0.77 / 3.531. `goldfish` was re-run and those twelve leaves are the ONLY figures in goldfish_metrics.json that moved — a declaration names cards and does not steer the simulation — and `mana-analysis` rewrote its file byte-identical. NOT TOUCHED, deliberately: `critic.findings` and notes[5] / notes[12] quote V5 city ids inside a verifier's record and an earlier round's log, and renumbering them would put a new claim under an old byline; the current ids are stated above. One figure could not be re-read: proposed_goldfish_edits' real-answer entry cited a 0.779 rate for that group which matches nothing in any current artifact, and it was replaced with the measured 0.862 / 0.574 rather than carried."
+    "Full rewrite for v2.0.0 (decklist_sha256 c9186bd91308). Nothing carried from the v1.1.0-era engine.json.",
+    "The 28 verified pairings in engine-facts are mostly incidental cards that sat in a scenario's HAND (Smothering Tithe, Arcane Signet, Negate, Rhystic Study). Each stack's line is about Brallin, Windfall, Torbran or Artist's Talent, and only those are cited as lines here. Stacks 002 and 003 are about Library of Leng, which has left the deck; 003 is cited only for the fact that a cost discard pays Brallin.",
+    "No passing stack resolves combat. The deck's stated win, 21 commander damage, is therefore entirely unverified.",
+    "Round 2 (critic iteration 1): lines[1] re-pointed ignition->conversion and Artist's Talent refiled to conversion (finding 1). Ignition priced from goldfish_metrics with its cast-once caveat, and open_questions[3] narrowed (7, 8). Four burning wheels, not three (9). map_disagreements[1] and [2] causal claims withdrawn and restated from the map's own glosses, and [0] reworded to split by colour (10, 11). 7.1% scoped to its two components (13). Protection: drawn versus used, and the Campfire/Beacon tax mechanic corrected (14). Torbran's combat clause marked oracle-only (18). Thesis: Torbran moved to the damage side (19). The lines[2] note now says the Windfall leg rests on 001."
   ],
   "critic": {
-    "verdict": "fail",
+    "verdict": "pass",
     "findings": [
       {
-        "where": "open_questions[6].why_it_matters",
-        "claim": "Shelter is the deck's newest card and the only targeted instant-speed shield in the 99",
-        "status": "contradicts-artifact",
-        "note": "THE SECOND HALF IS TRUE AND THE FIRST HALF IS FALSE AS OF THIS ROUND, and it is the same defect class the other four entries were revised to fix. Five commits touch decklist.txt; Shelter entered at ed6bcdff ('merge branch shelter-v1 - Shelter for Astral Drift') and the basic Island entered at 40d4dbab, ONE COMMIT LATER, which is this round's swap and which lines[1], open_questions[2], notes[13] and map_disagreements[5] all state correctly elsewhere in the same file. The newest card in the 99 is the Island, not Shelter. This entry was not in the revision scope, which is why it survived: the V5 provenance sweep covered `lines` and open_questions[2] and stopped there. The enumeration behind the second half I re-derived and it holds - searching cards.json oracle text for hexproof / shroud / indestructible / protection from / phases out / can't be the target returns Kefnet (static indestructible), Lightning Greaves (equip {0}, sorcery speed), Swiftfoot Boots (equip {1}, sorcery speed), Talon Gates of Madara (a LAND PLAY, sorcery speed, as stages[5] itself says) and Shelter, so Shelter is indeed the only card in the 99 that shields a creature at instant speed by targeting it. MECHANICALLY CHECKABLE, and a cheap extension of notes[15]'s proposal (1): compute each card's first-appearance commit from the decklist history and assert that any card the prose calls 'newest' or 'latest' is the argmax. notes[15] predicts this exact gap in its own limitations - 'WOULD NOT CATCH a provenance claim that ... dates a change to a version rather than a round' - so the note is right about the check and the file still carries an instance."
+        "where": "lines[0]",
+        "claim": "Windfall with both commanders out: 7 + 7 triggers, 40 to 33, both 10/10, nothing stacked until Windfall resolves",
+        "status": "supported",
+        "note": "Unchanged from round 1 and re-checked against stack 001's steps 2-7 and final_state. Still supported."
       },
       {
-        "where": "map_disagreements[4].why",
-        "claim": "'city-6 is the lands whose coloured mana carries a cost or a rider' - and it holds for all sixteen of city-6",
+        "where": "lines[1]",
+        "claim": "ignition -> conversion via Brallin + Artist's Talent, verified_by 004: level-3 replacement adds 2 to each ping, 21 per seat",
+        "status": "supported",
+        "note": "RESOLVED (round-1 mis-cited). Stack 004 steps 2-4 replace each of Brallin's seven 1-damage events with 3 (final_state damage_by_source Brallin 21 per seat). That is exactly a commander's output (ignition) converted by a damage replacement (conversion). Artist's Talent is now placed in conversion, so the arrow lands on the function 004 proves. The note says outright that the loot is never exercised, and the fuel stage mentions the loot without citing 004 for it. The 8-mana leveling investment is still not priced in the note. That is not a defect of the line, because 004 stipulates level 3."
+      },
+      {
+        "where": "lines[2]",
+        "claim": "fuel -> conversion via Windfall + Torbran + Brallin, verified_by 005; Windfall leg rests on 001",
+        "status": "supported",
+        "note": "RESOLVED caveat. The note now says 005 stipulates the Windfall and does not resolve it. The figures match 005 steps 2-9 and 11. Cosmetic only: 'Result: so 21' has a stray 'so'."
+      },
+      {
+        "where": "lines[3..6]",
+        "claim": "four dashed CLAIM lines (Teferi's Ageless Insight, Torbran + Gratuitous Violence, Shabraz double strike, Greaves)",
+        "status": "supported",
+        "note": "Unchanged from round 1. Each is labelled CLAIM, matches the cards.json oracle text, and defers what is open to open_questions. lines[6] still correctly declines 004/005, where Greaves only sits in hand."
+      },
+      {
+        "where": "stages[1].what_it_does",
+        "claim": "Shabraz cast by T6 89.2% (mean 4.771, median 5), Brallin 96.7% (mean 3.927), both out by T4 34.3% / T6 88.7%; cast once, no removal, tax or recast, a ceiling",
+        "status": "supported",
+        "note": "RESOLVED (round-1 contradicts-artifact). Every figure matches goldfish_metrics.json: metrics.commander.cast_by_turn_6_rate 0.892, mean 4.771, median 5; metrics.partner.cast_by_turn_6_rate 0.967, mean_cast_turn 3.927; both_online_by_turn '4' 0.343 and '6' 0.887. The caveat paraphrases the goldfish's own assumption ('Commander tax, death and recasting are still not modelled'). Reading these as a ceiling is the correct direction. Length 1,190, under the cap. Still worth making permanent: engine-facts should surface metrics.commander and metrics.partner, so the next engineer does not have to find them."
+      },
+      {
+        "where": "open_questions[3]",
+        "claim": "narrowed to the commander-damage kit drawn by T6/T8 and whether an out commander connects",
+        "status": "supported",
+        "note": "RESOLVED. The measured half is now cited (88.7%), and the question is left only for the voltron kit, which has no declared group in goldfish_targets.json."
+      },
+      {
+        "where": "stages[2].what_it_does",
+        "claim": "eight wheels: four plain (Windfall, Tolarian Winds, Reforge the Soul, Jace's Archivist), four that also deal damage (Collective Defiance, Fateful Showdown, Incendiary Command, Khorvath's Fury)",
+        "status": "supported",
+        "note": "RESOLVED (round-1 miscounted). The split matches the cards.json oracle text for all eight. The stage now lists 19 cards, consistent with Artist's Talent's move to conversion."
+      },
+      {
+        "where": "stages[3].what_it_does",
+        "claim": "seven conversion cards; Torbran +2 per ping (005), combat clause oracle-only; Artist's Talent level 3 +2 per ping (004)",
+        "status": "supported",
+        "note": "RESOLVED (round-1 caveat). The combat clause is now explicitly marked as resting on oracle text alone, and 005's scoping is named. The stage holds seven cards, as stated. Evidence cites 004 and 005 for exactly the ping figures each resolves."
+      },
+      {
+        "where": "map_disagreements[0]",
+        "claim": "the map splits the wheels by colour: five red in CHURN (Reforge the Soul, no burn, among them), three blue in BLUE GAS",
+        "status": "supported",
+        "note": "RESOLVED. Matches deck_map.json city-0 and city-6 membership."
+      },
+      {
+        "where": "map_disagreements[1]",
+        "claim": "THE MULTIPLIERS gloss reads draw and damage multipliers together; four conversion cards in THE CREW; no cause claimed",
+        "status": "supported",
+        "note": "RESOLVED (round-1 unjustified). Both glosses are quoted exactly from deck_map.json: city-0-hood-1 'the cards that turn one commander hit into 21', city-2 'the creatures that make them bigger'. Bard, Lae'zel, Torbran and Artist's Talent are in city-2, and the other three conversion cards are in city-0. The causal claim the map contradicted is withdrawn. The entry now says which artifact reads the deck how, and where the engine differs."
+      },
+      {
+        "where": "map_disagreements[2]",
+        "claim": "kill kit at five addresses; six Equipment in ARMOURY; ROCKS WITH JOBS gloss half-sees it",
+        "status": "supported",
+        "note": "RESOLVED. Six wincon Equipment are in city-4: Brotherhood Regalia, Embercleave, Fireshrieker, Genji Glove, Lizard Blades, Zephyr Boots. Gratuitous Violence, Fiery Emancipation and Blade Historian are in city-0-hood-1. The city-1-hood-0 gloss is quoted accurately ('tutor equipment, rebuy a commander or make it unblockable'). 'By what each card is as well as what it does' is a hedge, not a cause, and is acceptable."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "Glint-Horn and Chasm Skulker priced at 7.1% as single-card components; Mako in the 3-card group at 19.9%",
+        "status": "supported",
+        "note": "RESOLVED (round-1 mis-cited). Matches the deck-audit target components exactly."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "79.0% prices drawing, not using; no figure prices a protection card saving a commander",
+        "status": "supported",
+        "note": "RESOLVED (round-1 over-claimed). Correct: the goldfish has no removal (CLAUDE.md, 'The goldfish')."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "A commander cast from hand pays no commander tax, so this resets the tax that two removed commanders build up",
         "status": "over-claimed",
-        "note": "FALSE FOR COMMAND TOWER, AND VACUOUS FOR RELIQUARY TOWER. Enumerated all sixteen city-6 members from deck_map.json against their oracle text in cards.json. Command Tower reads '{T}: Add one mana of any color in your commander's color identity' - no additional mana in the cost, no life, no damage, no enters-tapped clause, no 'activate only if'. Its only qualifier is WHICH colours, which is the any-colour class the withdrawn premise put in city-6, not a cost and not a rider; on a three-colour commander it is an unconditional source of all three. Reliquary Tower ('You have no maximum hand size. {T}: Add {C}') makes no coloured mana at all, so the rule holds of it only vacuously. Fifteen-of-sixteen was generalised to sixteen. THE DIRECTION IS HARMLESS TO THE CONCLUSION - a rule that fails inside city-6 as well as leaking into city-1 is even less of a rule - so the withdrawal the entry performs is correct and if anything under-argued. But the sentence is stated as a completed enumeration ('all sixteen') in an entry whose whole subject is a premise that stayed wrong because nobody re-derived it. The city-1 half of the refutation is exact and I verified it card by card: see the supported finding below."
+        "note": "NEW, low severity, non-blocking. The first clause is right. 'Resets' is wrong: commander tax counts every earlier cast from the command zone, and a cast from hand does not clear that count. Beacon and Campfire skip the tax for that one cast. If the commander later goes back to the command zone, the next cast from there pays the full accumulated tax again. Also, Command Beacon moves 'your commander' (one card), while Campfire moves 'all commanders you own'. So 'two removed commanders' fits Campfire only. Suggested wording: 'skips the tax for that cast'. No line or figure depends on it."
       },
       {
-        "where": "notes[15]",
-        "claim": "TWO PROPOSED MECHANICAL CHECKS ... Neither has been run against the fleet ... (1) ... (2) ... (3) ... NONE OF THE THREE",
-        "status": "miscounted",
-        "note": "THE NOTE'S HEADLINE COUNT DISAGREES WITH THE NOTE'S OWN LIST, in the entry immediately after the one that declares the rule against exactly this. notes[14]: 'a note may state a count only if the count was derived, at write time, from a source present in the same artifact'. notes[15] opens 'TWO PROPOSED MECHANICAL CHECKS' and 'Neither has been run against the fleet', then enumerates (1), (2) and (3), then closes 'NONE OF THE THREE WOULD HAVE CAUGHT'. Reading (3) as carried rather than new does not rescue it: 'Neither has been run against the fleet' then leaves check (3) - the key-scoped figure check, which the note itself calls the strongest of the three - outside the fleet-measurement disclaimer CLAUDE.md requires, and (3) has not been measured fleet-wide either. The fix is one word. Mechanically checkable in the same form as notes[15]'s own proposal (2): a spelled-out count at the head of a note must match the number of enumerated items that follow it."
-      },
-      {
-        "where": "proposed_goldfish_edits[3].why",
-        "claim": "Commit is the only card in the 99 that removes a resolved permanent OUTRIGHT and regardless of its type",
-        "status": "over-claimed",
-        "note": "MINOR, ONE WORD, AND THE ENTRY'S OWN `change` FIELD ALREADY HAS THE RIGHT SCOPE. Commit // Memory reads 'Put target SPELL OR NONLAND PERMANENT into its owner's library second from the top' (cards.json), so it cannot remove a land - 'regardless of its type' is wider than the card. The `change` field two keys earlier states it correctly: 'Commit // Memory answers a spell OR any nonland permanent already on the battlefield'. The neighbouring clause, 'nothing else in the 99 touches an artifact, an enchantment or a land', is a claim about the other 98 cards and is TRUE: I enumerated destroy/exile/return/into-its-owner's-library across cards.json and the only other hits are Kefnet (returns YOUR land to hand as part of its own draw ability) and The Locust God (returns itself), neither of which is removal."
-      },
-      {
-        "where": "stages[0].what_it_does",
-        "claim": "It is the SIXTH Island-typed land here, not the first, so it adds an enabler rather than unlocking a gate",
+        "where": "thesis",
+        "claim": "multiply the counters with draw doublers and Lae'zel and the damage with Torbran, Artist's Talent and Gratuitous Violence",
         "status": "supported",
-        "note": "THE REPLACEMENT SUPERLATIVE IS ENUMERATED AND THE ENUMERATION IS EXACT. Read from type lines in cards.json, not from counts: Island-typed = Hallowed Fountain (Land - Plains Island), Irrigated Farmland (Plains Island), Island (Basic Land - Island), Raugrin Triome (Island Mountain Plains), Steam Vents (Island Mountain), Thundering Falls (Island Mountain) = SIX, the new basic being the sixth. Plains-typed = Glittering Massif, Hallowed Fountain, Irrigated Farmland, Raugrin Triome, Sacred Foundry = FIVE. Their union is exactly the eight lands the sentence before names. The 36-land figure also holds: 37 entries carry 'Land' in the type line, all at quantity 1, and one of them is Treasure Map // Treasure Cove, whose front face is an Artifact and which the same sentence lists separately among the rocks. THE FRAMING IS RIGHT FOR THE RIGHT REASON: every one of the five gates reads a TYPE ON THE BATTLEFIELD, not an untapped source, so a tapped Irrigated Farmland already satisfies them and the basic is an added enabler rather than a key. The stronger claim it could have made and did not - that it is the only Island-typed land guaranteed untapped at no cost, two of the other five being always-tapped and two costing 2 life - is absent, so there is no over-claim to re-scope."
+        "note": "RESOLVED. Torbran is now on the damage side. 'Multiply' is loose for the two +2 replacements (they add, and only Gratuitous Violence doubles). Stage 3 says 'adds 2' precisely, so a reader of the model is not misled."
       },
       {
-        "where": "stages[0].what_it_does",
-        "claim": "THE ISLAND SATISFIES A CLAUSE ON ALL FIVE ... The one it misses is the Maze's BLUE, which wants a Plains",
+        "where": "stages[0], stages[6], proposed_goldfish_edits, notes[1]",
+        "claim": "mana figures, nine Equipment, goldfish edit facts, engine-facts pairings note",
         "status": "supported",
-        "note": "ORACLE-VERIFIED, CLAUSE BY CLAUSE, from cards.json: Floodfarm Verge '{T}: Add {U}. Activate only if you control a Plains or an Island'; Riverpyre Verge '{T}: Add {U}. Activate only if you control an Island or a Mountain'; Nimbus Maze '{T}: Add {W}. Activate only if you control an Island' plus '{T}: Add {U}. Activate only if you control a Plains' plus '{T}: Add {C}'; Glacial Fortress 'enters tapped unless you control a Plains or an Island'; Sulfur Falls 'enters tapped unless you control an Island or a Mountain'. Five satisfied, one missed, and the missed one is the Maze's blue. The round-2 superlative it replaces ('the only card-level thing this swap unlocked') is gone from stages[0], and every surviving occurrence of that phrasing in the file sits inside a withdrawal record."
+        "note": "Unchanged and re-confirmed from round 1. The engine-facts tool gap stands for the orchestrator: verified.by_stack omits scenario.board cards, so Torbran, Artist's Talent and both commanders never appear among its pairings or load_bearing_cards. That is mechanically fixable in engine-facts."
       },
       {
-        "where": "stages[0].what_it_does",
-        "claim": "43 characters cut elsewhere to fit the replacement",
+        "where": "stages[*].what_it_does",
+        "claim": "length",
         "status": "supported",
-        "note": "EXACT, AND CHECKED AT THE BYTE LEVEL RATHER THAN INFERRED. The round-2 bytes are not in git and .agent-out/engine-critic.json was overwritten, but the orchestrator's merge of the round-3 model is recorded as a diff of this file in a local session log and I recovered the pre-merge string from it. Round 2 = 1765 chars, round 3 = 1774, delta +9. The three tightenings: 'the wheel itself is supposed to pay for' -> 'the wheel is supposed to pay for' (-7); 'THE THING A PILOT MUST KNOW' -> 'THE THING TO KNOW' (-10); 'so the three Treasure makers here contribute no mana to any figure above' -> 'so the three Treasure makers add no mana above' (-26). 7 + 10 + 26 = 43, against +52 on the argument segment. 26 characters of headroom under the 1,800 cap. NOTHING TRUE WAS LOST. Two of the three cuts are pure tightening; the third deleted 'the colour that binds', which the sentence four clauses earlier already says ('Blue is what binds'). The one substantive deletion is 'any of the eight for either Verge, but for Nimbus Maze one of the five carrying Plains, which the new Island is not' - TRUE (all eight basic-typed lands carry a Plains or an Island for Floodfarm and an Island or a Mountain for Riverpyre; five carry a Plains for the Maze's blue), its operative half is preserved in the new text ('The one it misses is the Maze's BLUE, which wants a Plains'), and the two counts it drops survive verbatim in open_questions[5].why_it_matters ('eight lands switch on either Verge, five switch on Nimbus Maze'), where I re-derived them independently and they hold."
-      },
-      {
-        "where": "stages[0].what_it_does, stages[*].what_it_does",
-        "claim": "Every measured figure in the mana stage; seven stage bodies under the cap",
-        "status": "supported",
-        "note": "RE-DERIVED KEY BY KEY against goldfish_metrics.json and mana_analysis.json at decklist_sha256 7d623c5f (= sha256 of decklist.txt): mean_available_mana_by_turn 4/6/10 = 4.038 / 5.535 / 9.43; land_drop_hit_rate_by_turn 4/6 = 0.825 / 0.713; meta.seed 42, meta.iterations 10000, meta.model_version 4d9205d29b87; shares.U.pip_share 0.541 rendered as 54.1%; sources.lands.U 32 against source_targets.U 36; on_curve_probability.lands_only_ungated.U 0.785; lands.enters_tapped 13 and enters_tapped_always 5. All seven bodies are under the 1,800 cap (1774 / 1435 / 1734 / 1280 / 1652 / 1704 / 1728); stages[0] is the tightest and is not muddled - the added sentences are three short declaratives, each carrying one fact."
-      },
-      {
-        "where": "map_disagreements[4].why",
-        "claim": "the candidate rule ... ALSO [holds] for Ferrous Lake and Skycloud Expanse ({1}, {T}), the three shocklands (2 life), the three filter lands (a hybrid pip) and Thundering Falls, every one of them in city-1",
-        "status": "supported",
-        "note": "THE CITY-1 HALF OF THE REFUTATION IS EXACT - nine named lands, all nine in city-1 per deck_map.json (20 members), all nine carrying a cost or a rider on their coloured mana per cards.json: Ferrous Lake '{1}, {T}: Add {U}{R}'; Skycloud Expanse '{1}, {T}: Add {W}{U}'; Hallowed Fountain / Steam Vents / Sacred Foundry 'As this land enters, you may pay 2 life. If you don't, it enters tapped'; Mystic Gate '{W/U}, {T}', Rugged Prairie '{R/W}, {T}', Cascade Bluffs '{U/R}, {T}'; Thundering Falls 'This land enters tapped' plus a surveil-1 entry trigger. The rule therefore does not separate the cities and dropping it is correct. The entry's other enumerated refutations of the withdrawn V4 premise also hold: city-1 does contain the basic Island and Mystic Monastery ('{T}: Add {U}, {R}, or {W}'); seven of city-6's sixteen do make fixed colours (Adarkar Wastes, Shivan Reef, Fiery Islet, Calciform Pools, Irrigated Farmland, Glittering Massif, Raugrin Triome), the last three being the very lands the entry's own argument places in Mana II; and Cascade Bluffs, Mystic Gate, Rugged Prairie and Nimbus Maze all read '{T}: Add {C}' and are all in city-1."
-      },
-      {
-        "where": "map_disagreements[4]",
-        "claim": "An entry that states NO rule for the split still earns its place as a map disagreement",
-        "status": "supported",
-        "note": "IT EARNS IT, AND I CHECKED THE PAYLOAD RATHER THAN THE FRAMING. What it publishes is not a split rule but the LOCK/KEY observation, and that is fully re-derived from deck_map.json plus type lines: all five type-gated lands (Glacial Fortress, Sulfur Falls, Floodfarm Verge, Riverpyre Verge, Nimbus Maze) are in city-1 and city-6 holds none of them; the eight basic-typed lands split five in city-1 (Hallowed Fountain, Island, Sacred Foundry, Steam Vents, Thundering Falls) and three in city-6 (Glittering Massif, Irrigated Farmland, Raugrin Triome); five lands carry a Plains for the Maze's blue and three of those five are in city-6. That is a checkable statement about where the map puts a condition relative to what satisfies it, and it does not rest on any rule for the boundary - the entry says so ('the payload below does not rest on it'). 'No rule, and here is the enumeration that refuses one' is a finding, not a hedge: a hedge would assert a disagreement without naming which artifact is wrong about what, and this names deck_map.json, the cards and the direction. THE CITY-4 ADDITION IS CORRECT: city-4 (Ramp, 8 members) contains all six non-land members of the mana stage - Sol Ring, Arcane Signet, Smothering Tithe, Generous Plunderer, Sticky Fingers, Treasure Map // Treasure Cove - which are exactly the six non-lands in stages[0].cards, and stages[0].evidence marks city-4 'partial' consistently with that."
-      },
-      {
-        "where": "notes[14]",
-        "claim": "`git log -- data/decks/sharknado/engine.json` recovers only the V4 blocks (daaa3025 pass/16, b341fc84 fail/19) and not it; the 14/10 partition is therefore the round-2 critic's re-derivation of a block I cannot re-open, quoted as such",
-        "status": "supported",
-        "note": "THE IRRECOVERABILITY CLAIM IS TRUE AS SCOPED, AND THE ATTRIBUTED NUMBER IS ALSO CORRECT - I re-derived it rather than accepting the attribution. (a) The git half is exact: daaa3025's critic block reads verdict `pass` with 16 findings and b341fc84's reads `fail` with 19, and those are the only two commits that touch this file's critic block. No dangling blob in the repo holds an engine.json (I swept `git fsck --lost-found`; the one large dangling blob is a POH HTML page), there is no stash, and .agent-out/engine-critic.json now holds the ROUND-2 block, the round-1 file having been overwritten in place. No deck artifact and no git object can re-open it. (b) I recovered it anyway, from outside the repo: the orchestrator's merge of the round-2 block is recorded as a diff of engine.json in a local Claude Code session log, and the removed side of that hunk reconstructs the round-1 block in full - 24 findings, 24 claims, 24 notes. Counting their statuses gives supported 14, miscounted 7, contradicts-artifact 2, over-claimed 1: FOURTEEN SUPPORTED AND TEN NOT, precisely the partition notes[12] states and notes[14] attributes. The hedge is therefore honest and costless - the only surviving copy is a machine-local conversation log that no artifact could cite and no future reader can be pointed at - and the figure it hedges is right. Treat this as confirmation, not as grounds to drop the attribution."
-      },
-      {
-        "where": "notes[15]",
-        "claim": "NONE OF THE THREE WOULD HAVE CAUGHT THIS ROUND'S HARDEST FINDING: map_disagreements[4]'s split rule names no card and states no figure",
-        "status": "supported",
-        "note": "THE SELF-ASSESSMENT IS TRUE, AND TRUE FOR THE REASON GIVEN. Check (1) keys on a card named in prose as added or cut 'this round' and compares it to the decklist diff; check (2) compares a note's count to `critic.findings`; check (3) matches a decimal to the metric its sentence names. The withdrawn split rule ('city-1 is fixed colour pairs, city-6 is any-colour, colourless or a non-mana ability') makes no provenance claim, states no count about the critic block and quotes no decimal - it is a predicate over a membership list, and only enumeration against deck_map.json refutes it, which is judgement work and not a gate. I also tested the three against THIS round's residue and they go one-for-four at best: none catches map_disagreements[4]'s 'all sixteen of city-6' (no card provenance, no figure, no critic count), none catches proposed_goldfish_edits[3]'s 'regardless of its type', check (2) as stated does not catch notes[15]'s own 'TWO ... three' (that is a count of the note's own list, not of `critic.findings`), and check (1) catches open_questions[6]'s 'newest card' only if widened from 'this round' to superlative provenance - which the note itself anticipates as a gap. THE POOL-MEMBERSHIP FIGURE IS EXACT: rebuilding the value pool from every numeric leaf of the current goldfish_metrics.json and mana_analysis.json and testing round 2's eleven stale decimals, 38.377, 5.394, 0.013, 0.845, 4.999, 9.773, 5.525, 9.41, 0.659 and 0.341 are all absent (ten caught) and 0.541 is present as mana_analysis.shares.U.pip_share (one passed). Ten of eleven, as stated. THE PROPOSAL/GATE DISTINCTION IS CORRECT per CLAUDE.md: none has been measured fleet-wide, the note says so and cites both the rule and the 27%-false-positive precedent, and nothing in the file treats any of the three as passing."
-      },
-      {
-        "where": "notes[13], notes[12]",
-        "claim": "V5 ROUND 3 (critic verdict fail, 14 findings: 9 supported, 2 contradicts-artifact, 1 over-claimed, 1 unjustified, 1 miscounted). The five entries carrying the five non-supported findings are the only ones revised",
-        "status": "supported",
-        "note": "BOTH THE COUNT AND THE SCOPE CHECK OUT. The critic block merged in this file partitions 9 supported / 2 contradicts-artifact / 1 over-claimed / 1 unjustified / 1 miscounted across 14 findings - identical to what notes[13] states, and this one the engineer could and did derive from `critic.findings` in the same artifact. The scope claim I verified at the byte level from the merge diff: exactly five entries changed - stages[0].what_it_does, lines[1].note, map_disagreements[4].why, open_questions[2].why_it_matters, notes[12] - plus three appended notes, and no other byte of the model moved. notes[12]'s corrected '24 findings; 14 supported, 10 not, addressed across 9 entries because notes[0] carried two' matches the reconstructed round-1 block exactly."
-      },
-      {
-        "where": "lines[1].note, open_questions[2].why_it_matters",
-        "claim": "Magmakin Artillerist and the three cycling lands were not added this round; this round's decklist diff is one card",
-        "status": "supported",
-        "note": "RE-DERIVED FROM GIT, not from the engineer's narration. Five commits touch decklist.txt. `git show 40d4dbab -- .../decklist.txt` is exactly '-1 Gleaming Bastion / +1 Island' and nothing else. Magmakin Artillerist, Glittering Massif and Irrigated Farmland are absent at 61c0a156 and present at 056de954, which is two decklist commits before 40d4dbab (056de954 -> ed6bcdff -> 40d4dbab), and Raugrin Triome is present at 61c0a156, the original build. The nine cyclers named in open_questions[2] are the nine cards in the 99 with a real cycling ability, and a bare 'cycl' search returns ten by picking up Drake Haven, exactly as the entry says. Both corrections are right and both cite their shas."
-      },
-      {
-        "where": "lines[*], stages[*].single_point_of_failure",
-        "claim": "Three of seventeen lines are stack-verified; the other fourteen carry verified_by null; no stage prices a single point of failure",
-        "status": "supported",
-        "note": "RE-CHECKED AS A CLASS. lines[0] -> stack 001 (ignition -> output, Windfall + Brallin), lines[6] -> 004 (fuel -> output, Artist's Talent + Brallin), lines[7] -> 002 (fuel -> ignition, Library of Leng + Windfall); all four files in stacks/ read checker.verdict 'pass', and the inference on all three was read against each stack's board, resolution and final_state in earlier rounds and found to be what the stack establishes, including the re-aim of lines[7] from fuel->output to fuel->ignition. None of the three was touched this round. All fourteen unverified notes still open with the literal 'CLAIM, no passing stack' disclaimer naming which three lines are proved, the revised lines[1] included. Every stage's single_point_of_failure is null with the reasoning in notes[8] - no SPOF is priced, so none can be over-priced on a deck whose wheels and payoffs are both redundant."
-      },
-      {
-        "where": "stages[2].what_it_does, stages[5].what_it_does, open_questions[0].why_it_matters, open_questions[3].question",
-        "claim": "The other 'only' claims in the file - the opponent-draw pair, the Shelter shield, the single Blood source",
-        "status": "supported",
-        "note": "SWEPT FOR A SECOND INSTANCE OF THE DUPLICATED-SUPERLATIVE SHAPE AND ENUMERATED EACH SURVIVOR; one failed (open_questions[6], reported above) and these held. (a) stages[2]: 'the only other card in the 99 that reads an opponent DRAWING is Smothering Tithe' - a sweep of cards.json for opponent/player draw triggers returns exactly Mind's Eye ('Whenever an opponent draws a card, you may pay {1}') and Smothering Tithe; Burning Inquiry is an instruction rather than a trigger and Rhystic Study reads casting, which the entry excludes by name. TRUE. (b) stages[5] and lines[15]: the Shelter claims are correctly scoped and the stage enumerates the six protection pieces before the superlative, including the Talon Gates counter-example it then disposes of on speed. TRUE. (c) open_questions[0] and [3]: Ivora, Insatiable Heir is the only card in the 99 whose oracle text creates a Blood token. TRUE. (d) proposed_goldfish_edits[3]'s 'nothing else in the 99 touches an artifact, an enchantment or a land'. TRUE. The remaining 'only'/'every' clauses in stages and lines were enumerated in rounds 1 and 2 and none was touched this round."
+        "note": "Longest is ignition at 1,190 characters, under the 1,800 cap. The round-2 history lives in notes[3], not in the fields, which is the right place."
       }
     ],
-    "iterations": 3
+    "iterations": 2
   }
 }
