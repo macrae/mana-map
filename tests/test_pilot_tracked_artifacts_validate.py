@@ -215,9 +215,8 @@ STALE_XFAIL = {
         "re-run /write-manual edgar-vampires"),
     # `sharknado/build_plan.json` came off 2026-10-21: v1.3.0 reads floor 3 again
     # and the plan validates — the strict xfail said so (XPASS), as designed.
-    "sharknado/engine.json": (
-        "written for v1.1.0 (stages name the cut Treasure Map); re-run "
-        "/analyze-engine sharknado against v1.2.0"),
+    # `sharknado/engine.json` came off 2026-10-24: /analyze-engine re-ran it for
+    # v2.0.0 (critic pass, round 2) and it validates (XPASS).
     # It was EMPTY before, and that was the point. Its one entry was
     # `heliod/considering.json` — the retired Short List, an artifact of
     # the frozen magazine renderer with no author left to re-run it. The

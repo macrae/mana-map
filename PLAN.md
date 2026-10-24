@@ -196,6 +196,11 @@ taking an opponent to 21 commander damage 31 -> 52; combat damage +5.8, protecti
 first attack ~1 turn sooner; interaction cast -0.21, counterspells -0.06, noncombat damage -3.0, extra
 draw per turn -0.20, empty-hand turns +0.12. Purphoros wins ~72% of both arms' losses. Next, the
 pilot's call: a second table (standard-v3) before any merge, then play it.
+MERGED 2026-10-24 as v2.0.0 on printed proxies (the pilot skipped the second table): 75275e4c,
+tagged and paper-locked V9; handbook refreshed end to end (af26fb0c: engine critic PASS r2, frame,
+prose, tutor guide, procedures, debrief, captain's log). No passing stack covers combat — the
+21-damage kill and Gratuitous Violence on Brallin's pings are the next /resolve-stack candidates.
+WAITING: the DeckCheck paste + rescan (the pilot's), then /rate-deck.
 
 **The pilot's calls (2026-10-19):** print the sharknado torbran-v1 proxies, playtest, and
 possibly order the cards for the staged branch; sleeve goblin-storm's v1.1.0 cards as they
