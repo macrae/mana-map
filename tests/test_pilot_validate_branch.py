@@ -136,6 +136,22 @@ def test_an_objective_history_entry_owes_its_three_keys():
     assert any("'why_changed'" in e for e in errors)
 
 
+def test_reaim_writes_a_history_entry_its_own_gate_accepts(monkeypatch):
+    """`reaim` wrote the old line flat with `replaced_at` until 2026-10-25, which
+    this gate refuses — so every re-aimed branch failed `validate` the moment it
+    was re-aimed. Drive the writer, then the gate."""
+    store = {"doc": _doc()}
+    monkeypatch.setattr(deck_branch, "meta", lambda slug, branch: store["doc"])
+    monkeypatch.setattr(deck_branch, "_write_meta",
+                        lambda slug, branch, doc: store.update(doc=doc))
+    deck_branch.reaim("d", "b", "damage_8 >= 41", why="the table moved")
+    hist = store["doc"]["objective_history"]
+    assert hist[0]["was"]["value"] == 40.0 and hist[0]["why_changed"] == "the table moved"
+    assert validate_branch.validate(store["doc"]) == []
+    with pytest.raises(SystemExit):
+        deck_branch.reaim("d", "b", "damage_8 >= 42", why=None)
+
+
 def test_an_objective_history_that_is_not_a_list_is_refused():
     assert any("not a list" in e
                for e in validate_branch.validate(_doc(objective_history={})))

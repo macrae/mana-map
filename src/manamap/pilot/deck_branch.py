@@ -2221,12 +2221,16 @@ def reaim(slug, branch, raw, why=None):
                          f"`withdraw` first if the line is wrong")
     if not raw:
         raise SystemExit("`--objective \"<axis> <op> <n>[ @pod]\"` is required")
+    if not why:
+        raise SystemExit("`--why \"…\"` is required — a moved pre-registered line says why it moved")
     objective = parse_objective(raw)
-    if why:
-        objective["why"] = why
+    objective["why"] = why
     was = doc.get("objective")
+    # The shape `validate_branch` holds the key to: {at, was, why_changed}. Until
+    # 2026-10-25 this wrote the old line flat with `replaced_at`, which the gate
+    # refused, so every re-aimed branch failed its own gate (finisher-v1, answers-v1).
     doc.setdefault("objective_history", []).append(
-        {**(was or {}), "replaced_at": datetime.date.today().isoformat()})
+        {"at": datetime.date.today().isoformat(), "was": was or {}, "why_changed": why})
     doc["objective"] = objective
     _write_meta(slug, branch, doc)
     return {"objective": objective, "was": was}

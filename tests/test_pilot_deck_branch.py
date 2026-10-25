@@ -868,10 +868,13 @@ def test_an_open_branch_can_be_re_aimed_and_a_proposed_or_merged_one_cannot(mode
     doc = deck_branch.meta("md", "b")
     assert doc["objective"]["axis"] == "stall" and doc["objective"]["op"] == "<="
     assert doc["objective"]["value"] == 0.1 and doc["objective"]["why"] == "the hand, not the clock"
-    assert doc["objective_history"][0]["axis"] == "land_drop"
-    assert doc["objective_history"][0]["replaced_at"]
+    assert doc["objective_history"][0]["was"]["axis"] == "land_drop"
+    assert doc["objective_history"][0]["at"]
+    assert doc["objective_history"][0]["why_changed"] == "the hand, not the clock"
     with pytest.raises(SystemExit, match="required"):
         deck_branch.reaim("md", "b", None)
+    with pytest.raises(SystemExit, match="required"):
+        deck_branch.reaim("md", "b", "stall <= 0.2")
     doc["proposal"] = {"as_version": "v1.1.0"}
     deck_branch._write_meta("md", "b", doc)
     with pytest.raises(SystemExit, match="proposed"):

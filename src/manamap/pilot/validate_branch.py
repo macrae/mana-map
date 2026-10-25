@@ -36,10 +36,11 @@ WHAT IT CHECKS is the discipline, not the figures. Nothing here re-measures:
      advertises an unfulfilled proposal reads as pending work that is already
      done.
 
-  6. **`objective_history`, IF PRESENT, HAS A SHAPE.** Nothing in the repo writes
-     or reads it — it was hand-added to `eminence-v3` when that branch's objective
-     moved off an authored axis. An ungated key that only ever arrives by hand is
-     the shape a typo lives in forever, so it is either checked or it is deleted.
+  6. **`objective_history`, IF PRESENT, HAS A SHAPE.** It was hand-added to
+     `eminence-v3` when that branch's objective moved off an authored axis, and
+     since 2026-10-21 `deck_branch.reaim` writes it too (in this shape since
+     2026-10-25; it first wrote one the gate refused). An ungated key is the shape
+     a typo lives in forever, so it is either checked or it is deleted.
 
 WHAT IT DELIBERATELY DOES NOT CHECK is whether the branch is BLOCKED, READY,
 STALE or OUTRUN. Those are derived from the collection and from git on every
