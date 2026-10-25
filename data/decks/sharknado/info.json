@@ -19,7 +19,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "issue"
@@ -972,7 +974,7 @@
         "axis": "forge.interaction_cast",
         "op": ">=",
         "value": 0.38,
-        "pod": "olivers-table"
+        "pod": "olivers-table-3p"
       },
       "summary": {
         "title": "Answers for the holes: enchantments, planeswalkers, graveyards, a second counter",
@@ -12001,52 +12003,46 @@
     }
   ],
   "simulation": {
-    "runs": 5,
-    "latest": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35",
-    "at": "2026-10-21",
-    "stale": true,
-    "ran_on_decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
-    "ran_on_version": 8,
+    "runs": 6,
+    "latest": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n40-c0f7e15a-s1237470554-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
+    "at": "2026-10-25",
+    "stale": false,
+    "ran_on_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+    "ran_on_version": 9,
     "current_version": 9,
-    "runs_on_current_list": 0,
-    "games": 20,
-    "wins": 4,
-    "decided": 20,
+    "runs_on_current_list": 1,
+    "games": 40,
+    "wins": 6,
+    "decided": 40,
     "vs": [
       "araumi-edict",
       "teval-graveyard",
       "purphoros-pingers"
     ],
-    "win_rate": 0.2,
+    "win_rate": 0.15,
     "win_rate_ci95": [
-      0.081,
-      0.416
+      0.071,
+      0.291
     ],
     "piloting": {
       "comparable": true,
-      "lands_ratio": 0.963,
-      "casts_ratio": 0.839,
+      "lands_ratio": 0.927,
+      "casts_ratio": 0.815,
       "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "engine_casts": {
-      "covered": false,
-      "never_cast": [
-        "March of Swirling Mist",
-        "Sorcerer Class",
-        "Rielle, the Everwise",
-        "Teferi's Ageless Insight",
-        "Tolarian Winds"
-      ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Sorcerer Class, Rielle, the Everwise, Teferi's Ageless Insight, Tolarian Winds. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 17 own turns, Jace's Archivist sat castable and uncast on 14 own turns, Boros Charm sat castable and uncast on 12 own turns (+6 more) — measured from the hand, not inferred."
+      "covered": true,
+      "never_cast": [],
+      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck. BUT Teferi's Ageless Insight sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 13 own turns, Boros Charm sat castable and uncast on 12 own turns (+9 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
-      "purphoros-pingers": 11,
-      "araumi-edict": 2,
-      "teval-graveyard": 1
+      "purphoros-pingers": 18,
+      "teval-graveyard": 4,
+      "araumi-edict": 3
     },
-    "mean_round": 16.2,
+    "mean_round": 15.7,
     "token_damage_share": 0.13,
-    "tokens_observed": 0.5
+    "tokens_observed": 0.3
   },
   "experiments": {
     "count": 4,
@@ -12115,8 +12111,8 @@
         "id": "012",
         "branch": "voltron-v1",
         "pod": "olivers-table",
-        "runs_of_merged_list": 0,
-        "closable": false
+        "runs_of_merged_list": 1,
+        "closable": true
       }
     ],
     "latest": [
@@ -12207,10 +12203,12 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status sharknado` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
     "branch `answers-v1`: 8 unproven add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch answers-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `answers-v1` needs 7 card(s) sourced — `manamap pilot deck-branch sharknado source answers-v1`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×4",
+    "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
