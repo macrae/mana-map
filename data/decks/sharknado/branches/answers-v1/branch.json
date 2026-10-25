@@ -1,0 +1,101 @@
+{
+ "slug": "sharknado",
+ "branch": "answers-v1",
+ "v": 2,
+ "opened": "2026-10-25",
+ "why": "The pilot, 2026-10-25: raise DeckCheck's DTI from 41 by fixing the weaknesses found after game 003 and DeckCheck's roast. One clean answer in the 99 (Swords), one counterspell (Negate), nothing for an enchantment, a planeswalker (Narset, Parter of Veils shuts off the wheels) or a graveyard; three basics, all Mountains, with red and white short of their land targets (engine.json mana stage R34/U23/W19 vs R36/U22/W22). Forge read the cost of the voltron merge: interaction cast per game 0.376 -> 0.167, [-0.287, -0.132], olivers-table. Objective: get it back. The DTI is the pilot's aim and is never the grade.",
+ "objective": {
+  "axis": "forge.interaction_cast",
+  "op": ">=",
+  "value": 0.38,
+  "pod": "olivers-table",
+  "why": "The pilot, 2026-10-25: raise DeckCheck's DTI from 41 by fixing the weaknesses found after game 003 and DeckCheck's roast. One clean answer in the 99 (Swords), one counterspell (Negate), nothing for an enchantment, a planeswalker (Narset, Parter of Veils shuts off the wheels) or a graveyard; three basics, all Mountains, with red and white short of their land targets (engine.json mana stage R34/U23/W19 vs R36/U22/W22). Forge read the cost of the voltron merge: interaction cast per game 0.376 -> 0.167, [-0.287, -0.132], olivers-table. Objective: get it back. The DTI is the pilot's aim and is never the grade."
+ },
+ "commits": [
+  {
+   "at": "2026-10-25",
+   "decklist_sha256": "2c484d6650e870a2ca35a436448d78821e78b2ec5d47f32b6bf67120c3b9a61b",
+   "message": "Ten swaps for the holes found after game 003 and DeckCheck's roast: Get Lost, Chaos Warp, Izzet Charm, An Offer You Can't Refuse, Deflecting Swat (answers and protection); Wheel of Fortune for Khorvath's Fury; Lotus Petal and Mystic Remora; Otawara and Hallowed Fountain for two lands that make no colour on time. Restaged from twelve: Force of Negation and Refute (1UU) left the deck eight blue sources short, and cutting Chasm Skulker and Blade Historian cost the keep rule its bodies."
+  }
+ ],
+ "base_version": 9,
+ "base_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+ "summary": {
+  "title": "Answers for the holes: enchantments, planeswalkers, graveyards, a second counter",
+  "blurb": "Swap a few soft slots for real interaction \u2014 any-permanent removal, an enchantment and planeswalker answer, graveyard hate and a looting counterspell \u2014 so the deck can stop a Narset or a stuck board, and fix the all-Mountain basics.",
+  "by": "jarvis",
+  "at": "2026-10-25"
+ },
+ "staged": [
+  {
+   "at": "2026-10-25",
+   "out": "Iroh's Demonstration",
+   "in": "Get Lost",
+   "strength": null,
+   "why": "Real removal for a creature, enchantment or planeswalker (Narset); Iroh's is sorcery-speed and DeckCheck's weakest slot."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Karlach, Fury of Avernus",
+   "in": "Chaos Warp",
+   "strength": null,
+   "why": "Any-permanent answer; the 99 had none."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Genji Glove",
+   "in": "Izzet Charm",
+   "strength": null,
+   "why": "Counter, 2 damage or a loot that pays both commanders; Glove cost 3 + equip 3 and no proven stack used it."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Campfire",
+   "in": "Deflecting Swat",
+   "strength": null,
+   "why": "Free with a commander out: protect the commander instead of recasting it under tax."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Khorvath's Fury",
+   "in": "Wheel of Fortune",
+   "strength": null,
+   "why": "The same discard wheel two mana cheaper; still pays Brallin."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Collector's Vault",
+   "in": "Lotus Petal",
+   "strength": null,
+   "why": "Fast mana toward an earlier commander (Shabraz out by T4 in 0.412 of goldfish games)."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Alhammarret's Archive",
+   "in": "Mystic Remora",
+   "strength": null,
+   "why": "A one-mana draw engine; every draw is a Shabraz counter."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Thundering Falls",
+   "in": "Otawara, Soaring City",
+   "strength": null,
+   "why": "An untapped land with a bounce channel, for an always-tapped one."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Ferrous Lake",
+   "in": "Hallowed Fountain",
+   "strength": null,
+   "why": "Untapped W/U fixing for a land that makes no colour on its own."
+  },
+  {
+   "at": "2026-10-25",
+   "out": "Key to the City",
+   "in": "An Offer You Can't Refuse",
+   "strength": null,
+   "why": "A one-mana counter for noncreature spells; single U keeps blue on target (Force of Negation and Refute at 1UU pushed the blue target 22 -> 36, eight sources short)."
+  }
+ ]
+}
