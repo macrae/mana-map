@@ -1,0 +1,534 @@
+{
+ "id": "006",
+ "slug": "shabraz-kitsa-21-between-strikes",
+ "deck": "sharknado",
+ "title": "Shabraz at 10/10 double strike: a loot between the two damage steps makes 10 + 11 = 21 commander damage",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Shabraz, the Skyshark (3/3 base, seven +1/+1 counters: 10/10, flying; attacking, unblocked; your commander, cast from the command zone)",
+    "Fireshrieker — attached to Shabraz",
+    "Kitsa, Otterball Elite (1/3, untapped, under your control since your most recent turn began; not attacking)",
+    "Command Tower",
+    "Sacred Foundry",
+    "Steam Vents"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5",
+      "no creatures; has taken no combat damage from Shabraz this game"
+     ]
+    }
+   ]
+  },
+  "hand": [
+   "Mountain"
+  ],
+  "mana_available": "{0} (the three lands are tapped; Kitsa's loot costs only {T})",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Kitsa, Otterball Elite's activated ability — '{T}: Draw a card, then discard a card.'",
+    "controller": "you",
+    "note": "activated in the first-strike combat damage step, after Shabraz's first-strike damage (10) has been dealt to the opponent"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn. Combat: Shabraz attacked the one opponent and was not blocked. Because Shabraz has double strike from Fireshrieker there is a first-strike combat damage step; Shabraz has dealt 10 combat damage there. You now hold priority in that step and have activated Kitsa. Brallin is in the command zone and plays no part. The opponent passes on everything.",
+   "assumptions": [
+    "The opponent has no responses.",
+    "The card discarded is the Mountain or the card drawn — either works; nothing in the question depends on which."
+   ]
+  },
+  "question": "Kitsa's ability resolves in the first-strike combat damage step. Does Shabraz's draw trigger make it 11/11 before the regular combat damage step, does Shabraz then deal 11 more combat damage, and does that bring the opponent to 21 combat damage from this commander, so that the opponent loses the game?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Confirm the board and the state as given. It is your turn, combat phase, first-strike combat damage step. Shabraz (3/3 base, seven +1/+1 counters, 10/10, flying) is equipped with Fireshrieker and so has double strike; it attacked the one opponent and is unblocked. Because an attacking creature had double strike as the combat damage step began, this is the first of two combat damage steps and only first-strike/double-strike creatures assigned damage in it. Shabraz assigned 10 (its power) to the player it is attacking, and that damage was dealt.",
+    "effect": "Opponent took 10 combat damage from Shabraz, a commander: life 40 -> 30, commander damage from Shabraz 0 -> 10. 30 > 0 and 10 < 21, so no state-based action applies. Shabraz stays an attacking, unblocked creature for the rest of combat.",
+    "citations": [
+     {
+      "rule": "301.5a",
+      "quote": "The creature an Equipment is attached to is called the “equipped creature.”"
+     },
+     {
+      "rule": "702.4b",
+      "quote": "If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike as the combat damage step begins, the only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of combat step, the phase gets a second combat damage step."
+     },
+     {
+      "rule": "510.1a",
+      "quote": "Each attacking creature and each blocking creature assigns combat damage equal to its power."
+     },
+     {
+      "rule": "510.1b",
+      "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+     },
+     {
+      "rule": "510.2",
+      "quote": "all combat damage that’s been assigned is dealt simultaneously"
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "509.1h",
+      "quote": "This remains unchanged until the creature is removed from combat, an effect says that it becomes blocked or unblocked, or the combat phase ends, whichever comes first."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "After first-strike damage, you (the active player) received priority in the first-strike combat damage step and activated Kitsa's '{T}: Draw a card, then discard a card.' This is legal: Kitsa has been under your control continuously since your most recent turn began, so the {T} cost may be paid, and Kitsa is not attacking (vigilance is irrelevant here). Kitsa's ability is now the only object on the stack (pos 0).",
+    "effect": "Stack: Kitsa's loot (pos 0). Kitsa tapped. Mana available {0}; none needed.",
+    "citations": [
+     {
+      "rule": "510.3",
+      "quote": "Third, the active player gets priority."
+     },
+     {
+      "rule": "117.1b",
+      "quote": "A player may activate an activated ability any time they have priority."
+     },
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "You and the opponent pass priority in succession; Kitsa's ability resolves. Instructions are followed in the order written: you draw a card, then discard a card (the Mountain or the drawn card; the question does not depend on which). The draw matches Shabraz's trigger event 'Whenever you draw a card', so Shabraz's ability triggers during the resolution, but does nothing yet.",
+    "effect": "Hand: Mountain + 1 drawn card, then one of them discarded to the graveyard (hand size 1). Shabraz's draw trigger is waiting to be put on the stack. Stack empty of other objects.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "121.1",
+      "quote": "It may also be done as part of a cost or effect of a spell or ability."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     },
+     {
+      "rule": "117.2a",
+      "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "After Kitsa's ability resolves, you (active player) would receive priority. First, state-based actions are checked (none apply: opponent at 30 life, 10 commander damage from Shabraz); then Shabraz's waiting trigger is put on the stack.",
+    "effect": "Stack: Shabraz's trigger ('put a +1/+1 counter on Shabraz and you gain 1 life'), pos 0. You receive priority, still in the first-strike combat damage step.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Both players pass; Shabraz's trigger resolves: put a +1/+1 counter on Shabraz, and you gain 1 life.",
+    "effect": "Shabraz now has eight +1/+1 counters: 3/3 base + 8/+8 = 11/11. You gain 1 life (your starting total is not given by the scenario, so it is reported as +1). The stack is empty; still the first-strike combat damage step. YES to the first part of the question: Shabraz is 11/11 before the regular combat damage step.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "613.4c",
+      "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+     },
+     {
+      "rule": "119.3",
+      "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "You receive priority with an empty stack (state-based actions checked first; none apply). You and the opponent pass in succession with the stack empty, so the first-strike combat damage step ends. Instead of proceeding to end of combat, the phase gets a second (regular) combat damage step.",
+    "effect": "The game moves to the second combat damage step. Shabraz is still an attacking, unblocked creature and currently has double strike (Fireshrieker still attached), so it is among the creatures that assign combat damage in this step.",
+    "citations": [
+     {
+      "rule": "500.2",
+      "quote": "A phase or step in which players receive priority ends when the stack is empty and all players pass in succession."
+     },
+     {
+      "rule": "510.4",
+      "quote": "After that step, instead of proceeding to the end of combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have double strike."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Second combat damage step, turn-based actions: Shabraz assigns combat damage equal to its CURRENT power, 11, to the opponent it is attacking; the damage is dealt.",
+    "effect": "Opponent loses 11 life: 30 -> 19. Combat damage dealt to the opponent by Shabraz this game: 10 + 11 = 21. YES to the second part: Shabraz deals 11, not 10, because the assignment uses its power at the time this step's damage is assigned.",
+    "citations": [
+     {
+      "rule": "510.1a",
+      "quote": "Each attacking creature and each blocking creature assigns combat damage equal to its power."
+     },
+     {
+      "rule": "510.1b",
+      "quote": "An unblocked creature assigns its combat damage to the player, planeswalker, or battle it’s attacking."
+     },
+     {
+      "rule": "510.2",
+      "quote": "all combat damage that’s been assigned is dealt simultaneously"
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "After damage, the active player would get priority, so state-based actions are checked. Shabraz is your commander (designated as such, cast from the command zone). The opponent has been dealt 21 combat damage by that same commander over the course of the game (10 in the first-strike step + 11 in the regular step). Brallin, your partner commander, is counted separately and contributed nothing. The life-total check (0 or less) does not apply: the opponent is at 19.",
+    "effect": "The opponent loses the game by the commander-damage state-based action, at 19 life. YES to the third part: 21 combat damage from this commander, and the opponent loses.",
+    "citations": [
+     {
+      "rule": "510.3",
+      "quote": "Third, the active player gets priority."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+     },
+     {
+      "rule": "903.3",
+      "quote": "Each deck has a legendary card designated as its commander."
+     },
+     {
+      "rule": "704.6c",
+      "quote": "In a Commander game, a player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
+     },
+     {
+      "rule": "903.10a",
+      "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game. (This is a state-based action. See rule 704.)"
+     },
+     {
+      "rule": "702.124d",
+      "quote": "When determining whether a player has been dealt 21 or more combat damage by the same commander, consider damage from each of your two commanders separately (see rule 903.10a)."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Yes on all three counts. Kitsa's loot resolves in the first-strike combat damage step; the draw triggers Shabraz, whose trigger goes on the stack and resolves before that step ends, making Shabraz 11/11 (eight +1/+1 counters) and gaining you 1 life. The step then ends, the second combat damage step begins, and Shabraz, which still has double strike and is still unblocked, assigns 11 (its power then). The opponent goes 40 -> 30 -> 19 in life and has been dealt 10 + 11 = 21 combat damage by Shabraz, so the 21-commander-damage state-based action (CR 704.6c / 903.10a) makes them lose the game at 19 life. Without the loot, Shabraz would deal 10 + 10 = 20 and the opponent would survive at 20 life.",
+   "you": {
+    "life": "+1 from Shabraz's trigger (starting total not given)",
+    "board": [
+     "Shabraz, the Skyshark (11/11, eight +1/+1 counters, flying, double strike via Fireshrieker; attacking, unblocked)",
+     "Fireshrieker (attached to Shabraz)",
+     "Kitsa, Otterball Elite (1/3, tapped)",
+     "Command Tower (tapped)",
+     "Sacred Foundry (tapped)",
+     "Steam Vents (tapped)"
+    ],
+    "hand": [
+     "one card: the Mountain or the card drawn, whichever was not discarded"
+    ],
+    "graveyard_added": [
+     "the discarded card"
+    ],
+    "stack": [],
+    "mana_available": "{0}"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 19,
+     "combat_damage_from_shabraz": 21,
+     "result": "loses the game (CR 704.6c, commander damage); not by life total"
+    }
+   ]
+  },
+  "scope_notes": [
+   "Shabraz's trigger is not optional and has no target, so nothing about the discard choice matters.",
+   "The opponent was assumed to pass on everything; with five untapped lands they could in practice respond (e.g. remove Fireshrieker or Shabraz before the second damage step), which this scenario excludes.",
+   "Kitsa's official rulings concern only its copy ability; Shabraz's rulings confirm only that a 'draw' is required (Kitsa's ability uses the word draw) — neither is a citation."
+  ]
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "301.5a",
+    "status": "supported",
+    "note": "Defines 'equipped creature'; together with Fireshrieker's oracle text (cards.json: 'Equipped creature has double strike.') it establishes that Shabraz has double strike. The grant itself comes from the card, not the rule; 702.4a would have been the more direct keyword citation, but the claim holds."
+   },
+   {
+    "step": 1,
+    "rule": "702.4b",
+    "status": "supported",
+    "note": "Full text: an attacking double striker as the combat damage step begins means only first/double strikers assign in that step, then a second combat damage step follows. Quote is accurate and in context."
+   },
+   {
+    "step": 1,
+    "rule": "510.1a",
+    "status": "supported",
+    "note": "Shabraz's power is 10 (3/3 + seven counters), so it assigns 10."
+   },
+   {
+    "step": 1,
+    "rule": "510.1b",
+    "status": "supported",
+    "note": "Unblocked, so it assigns to the player it is attacking."
+   },
+   {
+    "step": 1,
+    "rule": "510.2",
+    "status": "supported",
+    "note": "Assigned damage is dealt simultaneously; no stack."
+   },
+   {
+    "step": 1,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "No infect; 40 -> 30. The 0 -> 10 commander-damage tally is 903.10a bookkeeping, which is cited in step 8. Step 1's 'no SBA applies' (10 < 21, 30 > 0) is correct and is the check 510.3/704.3 require before priority in step 2; it is not cited in this step but 704.3 is cited in steps 4 and 8."
+   },
+   {
+    "step": 1,
+    "rule": "509.1h",
+    "status": "supported",
+    "note": "Unblocked status lasts until removal from combat, an effect, or end of combat phase. Continued attacking status is 506.4 (nothing on this board removes it from combat); the claim stands."
+   },
+   {
+    "step": 2,
+    "rule": "510.3",
+    "status": "supported",
+    "note": "Active player gets priority after first-strike damage is dealt."
+   },
+   {
+    "step": 2,
+    "rule": "117.1b",
+    "status": "supported",
+    "note": "Activated ability is legal any time you have priority; Kitsa's loot has no timing restriction (cards.json: '{T}: Draw a card, then discard a card.')."
+   },
+   {
+    "step": 2,
+    "rule": "302.6",
+    "status": "supported",
+    "note": "Scenario stipulates Kitsa under your control since your most recent turn began, so the {T} cost may be paid. Kitsa did not attack, so it is untapped regardless of its vigilance."
+   },
+   {
+    "step": 2,
+    "rule": "117.3c",
+    "status": "supported",
+    "note": "You hold priority after activating, which underwrites step 3's pass-in-succession."
+   },
+   {
+    "step": 3,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "Both pass in succession; top object resolves."
+   },
+   {
+    "step": 3,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Draw, then discard, in order written."
+   },
+   {
+    "step": 3,
+    "rule": "121.1",
+    "status": "supported",
+    "note": "Draw as part of an ability's effect is a draw. Consistent with Shabraz ruling 2020-04-17: 'If a spell or ability causes you to put cards into your hand without specifically using the word \"draw,\" it's not a card drawn.' Kitsa's ability uses 'draw'."
+   },
+   {
+    "step": 3,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": "Discard moves the card from hand to graveyard. Brallin's discard trigger does not function because Brallin is in the command zone (scenario stipulation; 113.6 would be the rule), and the resolution correctly gives it no role."
+   },
+   {
+    "step": 3,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Shabraz's 'Whenever you draw a card' (cards.json) triggers on the draw; it does nothing yet."
+   },
+   {
+    "step": 3,
+    "rule": "117.2a",
+    "status": "supported",
+    "note": "Triggers can fire during resolution; they go on the stack the next time a player would receive priority."
+   },
+   {
+    "step": 4,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Active player receives priority after a non-mana ability resolves."
+   },
+   {
+    "step": 4,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full text: SBAs checked, then waiting triggers put on the stack, then priority. The step follows that order exactly."
+   },
+   {
+    "step": 4,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Trigger goes on the stack the next time a player would receive priority."
+   },
+   {
+    "step": 5,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "Fragment quoted, but the full rule's precondition (all players pass in succession) is stated in the action ('Both players pass'). In context."
+   },
+   {
+    "step": 5,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "Eight +1/+1 counters on a 3/3 base: 11/11. Arithmetic correct."
+   },
+   {
+    "step": 5,
+    "rule": "613.4c",
+    "status": "supported",
+    "note": "Counters apply in layer 7c; no other P/T effects on board."
+   },
+   {
+    "step": 5,
+    "rule": "119.3",
+    "status": "supported",
+    "note": "You gain 1 life. Shabraz ruling 2020-04-17 (life is gained even if the counter cannot be placed) does not contradict this."
+   },
+   {
+    "step": 6,
+    "rule": "500.2",
+    "status": "supported",
+    "note": "With the stack empty, all players pass and the step ends. The step's 'SBA checked first; none apply' is correct but cites no 704.3 here (704.3 is cited in steps 4 and 8)."
+   },
+   {
+    "step": 6,
+    "rule": "510.4",
+    "status": "supported",
+    "note": "Full text: the second step includes 'remaining attackers ... that currently have double strike'. Fireshrieker is still attached, so Shabraz qualifies. Quote accurate."
+   },
+   {
+    "step": 7,
+    "rule": "510.1a",
+    "status": "supported",
+    "note": "Damage is assigned equal to power when this step's turn-based action happens, and Shabraz's power is now 11. Correct that the 11/11 counts."
+   },
+   {
+    "step": 7,
+    "rule": "510.1b",
+    "status": "supported",
+    "note": "Still unblocked and still attacking the same player."
+   },
+   {
+    "step": 7,
+    "rule": "510.2",
+    "status": "supported",
+    "note": "Dealt simultaneously; 30 -> 19."
+   },
+   {
+    "step": 7,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "Life loss 11."
+   },
+   {
+    "step": 8,
+    "rule": "510.3",
+    "status": "supported",
+    "note": "Active player would get priority after damage is dealt."
+   },
+   {
+    "step": 8,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "SBA check before that priority."
+   },
+   {
+    "step": 8,
+    "rule": "903.3",
+    "status": "supported",
+    "note": "Commander designation is an attribute of the card (cards.json marks Shabraz is_commander)."
+   },
+   {
+    "step": 8,
+    "rule": "704.6c",
+    "status": "supported",
+    "note": "10 + 11 = 21 combat damage from the same commander over the game, so the opponent loses. Scenario stipulates no prior Shabraz damage."
+   },
+   {
+    "step": 8,
+    "rule": "903.10a",
+    "status": "supported",
+    "note": "Same rule from the Commander section; SBA."
+   },
+   {
+    "step": 8,
+    "rule": "702.124d",
+    "status": "supported",
+    "note": "Applies to every partner ability; 702.124a lists 'partner with [name]', which is Shabraz's ability. Brallin's damage is tallied separately. Brallin dealt none, so the claim does not depend on this rule."
+   },
+   {
+    "step": 8,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "Correctly cited as NOT applying (19 > 0). The loss comes from commander damage, not from life total."
+   }
+  ],
+  "audit": {
+   "missing_steps_considered": [
+    "SBA after first-strike damage (704.3 via 510.3): stated in step 1 effect, correct, no in-step citation (cosmetic).",
+    "Kitsa's prowess: an activated ability is not a spell cast, so it does not trigger. Correctly omitted.",
+    "Brallin's discard trigger: Brallin is in the command zone, so it does not function. Scenario stipulation, handled.",
+    "Trigger placement before priority (603.3/704.3 order): handled in step 4.",
+    "Double strike second-step eligibility (510.4 'currently have double strike'; 702.4c removal caveat): handled in step 6 and scope_notes.",
+    "Commander-damage SBA with partner separation (704.6c/903.10a/702.124d): handled in step 8.",
+    "Replacement effects (614): none on board.",
+    "Draw from an empty library (704.5b): library size not stated. In a mid-game Commander board it is implicitly nonempty. It is not a finding, but if the library were empty the controller would lose at step 4's SBA check, before the opponent does."
+   ],
+   "sibling_comparisons": "None quoted. The only counterfactual (10 + 10 = 20 without the loot) is internal to this board and correct.",
+   "per_seat_vs_pod": "One opponent; no conflation possible.",
+   "rulings": "Shabraz (2 rulings, 2020-04-17) and Kitsa (8 rulings, 2024-07-26, all about its copy ability). No ruling contradicts any step."
+  },
+  "iterations": 1
+ }
+}

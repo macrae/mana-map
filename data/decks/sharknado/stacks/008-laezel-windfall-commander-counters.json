@@ -1,0 +1,506 @@
+{
+ "id": "008",
+ "slug": "laezel-windfall-commander-counters",
+ "deck": "sharknado",
+ "title": "Windfall with Lae'zel out: two counters per discard on Brallin, two per draw on Shabraz",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Shabraz, the Skyshark (3/3, no counters; your commander)",
+    "Brallin, Skyshark Rider (3/3, no counters; your commander)",
+    "Lae'zel, Vlaakith's Champion (3/3)",
+    "Command Tower",
+    "Steam Vents",
+    "Sacred Foundry",
+    "Sulfur Falls",
+    "Mountain",
+    "Spirebluff Canal",
+    "Shivan Reef"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5"
+     ],
+     "hand_size": 7
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x4"
+     ],
+     "hand_size": 4
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x6"
+     ],
+     "hand_size": 2
+    }
+   ]
+  },
+  "hand": [
+   "Negate",
+   "Silence",
+   "Swords to Plowshares",
+   "Sol Ring",
+   "Mountain"
+  ],
+  "mana_available": "{0} (the three lands used for Windfall are tapped; the other four tapped earlier this turn)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Windfall — 'Each player discards their hand, then draws cards equal to the greatest number of cards a player discarded this way.'",
+    "controller": "you",
+    "note": "cast from your hand; the five cards listed are what remain in your hand"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn, main phase 1. Opponent hand sizes are 7, 4 and 2, so the greatest number discarded is 7. You discard five cards and draw seven. No opponent responds. Your library holds well over seven cards. Brallin's triggers deal damage too; report that damage, but the question is about counters.",
+   "assumptions": [
+    "No player has a replacement effect on drawing or discarding.",
+    "The seven cards you draw are not relevant to the answer."
+   ]
+  },
+  "question": "After Windfall resolves and every trigger it causes has resolved, how many +1/+1 counters are on Brallin and on Shabraz (with Lae'zel's replacement applied to each counter placement), what are their final power and toughness, and how much damage has Brallin dealt to each opponent?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "All players pass priority with Windfall the only object on the stack (no opponent responds, per the scenario); Windfall, a sorcery, begins to resolve.",
+    "effect": "Windfall's two instructions are followed in the order written within one resolution: first every player discards their hand, then every player draws. No player receives priority during the resolution.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "307.2",
+      "quote": "When a sorcery spell resolves, the actions stated in its rules text are followed. Then it’s put into its owner’s graveyard."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "'Each player discards their hand.' All four players discard simultaneously (APNAP order applies only to choices; there are none). You discard your five cards (Negate, Silence, Swords to Plowshares, Sol Ring, Mountain); the opponents discard 7, 4 and 2.",
+    "effect": "Each discarded card moves from hand to its owner's graveyard. The greatest number of cards a player discarded this way is 7 (the first opponent), so the draw count is 7. Your hand is now empty.",
+    "citations": [
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "101.4",
+      "quote": "Then the actions happen simultaneously."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Brallin's ability ('Whenever you discard a card') triggers once for EACH card you discarded: five triggers. The opponents' 13 discards are not 'you discard' and do not trigger it.",
+    "effect": "Five Brallin triggers are waiting; they are not yet on the stack, because no player has received priority. The official Brallin ruling agrees: a card discarded while a spell is resolving means that spell finishes resolving before Brallin's trigger does. Brallin is still a 3/3 with no counters.",
+    "citations": [
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+     },
+     {
+      "rule": "603.2a",
+      "quote": "Because they aren’t cast or activated, triggered abilities can trigger even when it isn’t legal to cast spells and activate abilities."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "'Then draws cards equal to the greatest number of cards a player discarded this way' = 7. Each player draws seven. You are the active player, so you perform all seven of your draws first, one card at a time; then each opponent in turn order draws seven.",
+    "effect": "Your seven draws are seven individual card draws. Your library holds well over seven cards, so no player attempts to draw from an empty library. You now hold seven cards; each opponent holds seven.",
+    "citations": [
+     {
+      "rule": "121.2",
+      "quote": "Cards may only be drawn one at a time. If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "121.2c",
+      "quote": "If more than one player is instructed to draw cards, the active player performs all of their draws first, then each other player in turn order does the same."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Shabraz's ability ('Whenever you draw a card') triggers once for EACH card YOU draw. Under 121.2 your seven draws are seven individual card draws, so they are seven separate trigger events, each a single occurrence — not one event with multiple occurrences. Each event triggers Shabraz once: seven triggers. The opponents' 21 draws are not 'you draw' and do not trigger it.",
+    "effect": "Seven Shabraz triggers (one per individual draw event) join the five Brallin triggers waiting to go on the stack. Shabraz is still a 3/3 with no counters.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs."
+     },
+     {
+      "rule": "121.2",
+      "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Windfall finishes resolving and is put into your graveyard.",
+    "effect": "Windfall leaves the stack; the stack is now empty except for the triggers about to be put on it.",
+    "citations": [
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Before you (the active player) receive priority, state-based actions are checked; none apply (every creature is 3/3 with no damage, every player is at positive life). Then the twelve waiting triggers — all controlled by you, as controller of Brallin and Shabraz — are put on the stack in an order you choose.",
+    "effect": "Twelve abilities on the stack: five Brallin, seven Shabraz, in your chosen order. The order does not change the final count, since each trigger is independent of the others (none counts counters or reads power). You receive priority; all players pass between each resolution.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "603.3a",
+      "quote": "A triggered ability is controlled by the player who controlled its source at the time it triggered"
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Precondition for Lae'zel: establish who puts the counters. You control all twelve triggers, because you controlled their sources (Brallin and Shabraz) when they triggered; the controller of a resolving ability follows its instructions, so when each trigger says 'put a +1/+1 counter on Brallin/Shabraz', it is YOU who would put that counter.",
+    "effect": "Lae'zel's replacement ('If you would put one or more counters on a creature or planeswalker you control ...') applies to every one of these placements: you are the player putting the counters, and Brallin and Shabraz are creatures you control. 608.2c itself notes that replacement effects may modify the actions the controller performs.",
+    "citations": [
+     {
+      "rule": "603.3a",
+      "quote": "A triggered ability is controlled by the player who controlled its source at the time it triggered, unless it’s a delayed triggered ability."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Each of the five Brallin triggers resolves: 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent.' Lae'zel's static ability ('If you would put one or more counters on a creature ... you control ..., put that many plus one ... instead') replaces each placement of one +1/+1 counter with a placement of two.",
+    "effect": "Per Brallin trigger: 2 +1/+1 counters on Brallin (1 + 1) and 1 damage to each of the three opponents (Brallin's ruling: only one counter per resolution regardless of how many opponents are dealt damage — so Lae'zel's replacement sees one placement of one counter per trigger, giving two). Lae'zel's replacement applies once to each event and does not re-apply to its own modified event. Five triggers: Brallin gets 10 counters; each opponent is dealt 5 damage and loses 5 life (40 -> 35); 15 across the pod. This damage is not combat damage, so it does not count toward the 21 commander-damage loss.",
+    "citations": [
+     {
+      "rule": "614.1a",
+      "quote": "Effects that use the word “instead” are replacement effects."
+     },
+     {
+      "rule": "614.6",
+      "quote": "If an event is replaced, it never happens. A modified event occurs instead"
+     },
+     {
+      "rule": "614.5",
+      "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "903.10a",
+      "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "Each of the seven Shabraz triggers resolves: 'put a +1/+1 counter on Shabraz and you gain 1 life.' Lae'zel replaces each one-counter placement with a two-counter placement.",
+    "effect": "Per trigger: 2 +1/+1 counters on Shabraz and you gain 1 life (Lae'zel modifies counters only, not life gain). Seven triggers: Shabraz gets 14 counters; you gain 7 life.",
+    "citations": [
+     {
+      "rule": "614.1",
+      "quote": "Such effects watch for a particular event that would happen and completely or partially replace that event with a different event."
+     },
+     {
+      "rule": "119.3",
+      "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "Between each resolution, and after the last one, state-based actions are checked before a player gets priority. None apply: opponents are at 35 (above 0), no creature has lethal damage or 0 toughness, and only +1/+1 counters exist (no -1/-1 counters to annihilate).",
+    "effect": "No state-based action is performed. The stack is empty and you hold priority in main phase 1 with zero mana available.",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     }
+    ]
+   },
+   {
+    "n": 12,
+    "action": "Final power and toughness are computed from the counters.",
+    "effect": "Brallin: base 3/3 + 10 +1/+1 counters = 13/13. Shabraz: base 3/3 + 14 +1/+1 counters = 17/17 (flying). Lae'zel: 3/3, unchanged.",
+    "citations": [
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Windfall's single resolution discards your five cards (5 Brallin triggers) and then has you draw seven cards as seven separate draws (7 Shabraz triggers); none of the twelve triggers goes on the stack until Windfall has finished resolving, and you choose their order (it does not matter). Lae'zel turns every one-counter placement into a two-counter placement, once per trigger. BRALLIN: 5 x 2 = 10 +1/+1 counters -> 13/13. SHABRAZ: 7 x 2 = 14 +1/+1 counters -> 17/17 flying. Brallin deals 5 damage to EACH opponent (40 -> 35 per seat), 15 across the pod; noncombat, so 0 commander damage. You gain 7 life. Without Lae'zel (sibling 001's shape differs in body count and hand) the counts would be 5 and 7; Lae'zel adds exactly one counter per trigger, not per damage dealt.",
+   "you": {
+    "life": "unstated in the scenario; +7 from Shabraz's seven triggers",
+    "hand": "7 unknown cards drawn off Windfall",
+    "mana_available": "{0}",
+    "battlefield": [
+     "Brallin, Skyshark Rider 13/13 (ten +1/+1 counters)",
+     "Shabraz, the Skyshark 17/17 flying (fourteen +1/+1 counters)",
+     "Lae'zel, Vlaakith's Champion 3/3",
+     "Command Tower, Steam Vents, Sacred Foundry, Sulfur Falls, Mountain, Spirebluff Canal, Shivan Reef (all tapped)"
+    ],
+    "graveyard": [
+     "Windfall",
+     "Negate",
+     "Silence",
+     "Swords to Plowshares",
+     "Sol Ring",
+     "Mountain"
+    ]
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 35,
+     "damage_from_brallin": 5,
+     "hand_size": 7
+    },
+    {
+     "seat": "opponent_2",
+     "life": 35,
+     "damage_from_brallin": 5,
+     "hand_size": 7
+    },
+    {
+     "seat": "opponent_3",
+     "life": 35,
+     "damage_from_brallin": 5,
+     "hand_size": 7
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "117.4",
+    "status": "supported",
+    "note": "All players pass in succession with Windfall on top, so it resolves."
+   },
+   {
+    "step": 1,
+    "rule": "307.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "The discard and then the draw are followed in the order written."
+   },
+   {
+    "step": 2,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "101.4",
+    "status": "supported",
+    "note": "Full rule: choices are made in APNAP order and then the actions happen simultaneously. Discarding a whole hand involves no choice. Hands are 5/7/4/2, so the greatest discarded is 7."
+   },
+   {
+    "step": 3,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Here the second sentence is used correctly: one simultaneous discard of five cards is one event with five occurrences, so there are five triggers. This agrees with the Brallin ruling of 2020-04-17: 'If you discard a card while a spell or ability is resolving, that spell or ability finishes resolving before Brallin's triggered ability does.'"
+   },
+   {
+    "step": 3,
+    "rule": "603.2a",
+    "status": "supported",
+    "note": "Supports a trigger happening while a spell is resolving."
+   },
+   {
+    "step": 3,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "The triggers go on the stack the next time a player would receive priority."
+   },
+   {
+    "step": 4,
+    "rule": "121.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "121.2c",
+    "status": "supported",
+    "note": "The active player draws first. The order does not change the count."
+   },
+   {
+    "step": 5,
+    "rule": "603.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "ROUND-1 FINDING ANSWERED. The step now quotes only the first sentence ('An ability triggers only once each time its trigger event occurs.'). It also says each of the seven draws is its own single-occurrence event under 121.2, not one event with multiple occurrences. That is the correct mechanism: seven triggers."
+   },
+   {
+    "step": 5,
+    "rule": "121.2",
+    "status": "supported",
+    "note": "Seven individual card draws, so seven separate trigger events."
+   },
+   {
+    "step": 6,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full rule: state-based actions are checked first, then the waiting triggers go on the stack, then the check repeats. This matches the step's order."
+   },
+   {
+    "step": 7,
+    "rule": "603.3a",
+    "status": "supported",
+    "note": "You control all twelve triggers."
+   },
+   {
+    "step": 7,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "You choose the order. No trigger reads counters, power or life, so the order does not affect the result."
+   },
+   {
+    "step": 8,
+    "rule": "603.3a",
+    "status": "supported",
+    "note": "ROUND-1 MISSING STEP ANSWERED. You control each trigger because you controlled its source when it triggered."
+   },
+   {
+    "step": 8,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "The full rule says the controller follows the instructions, so the unsubjected 'put a +1/+1 counter on Brallin/Shabraz' is performed by you. That satisfies Lae'zel's 'If you would put'. The second sentence ('replacement effects may modify these actions') is quoted accurately and in context. Lae'zel's rulings (all dated 2022-06-10) cover only Background and two-commander mechanics, and none contradicts this step."
+   },
+   {
+    "step": 9,
+    "rule": "614.1a",
+    "status": "supported",
+    "note": "Lae'zel's oracle text (cards.json) uses 'instead'."
+   },
+   {
+    "step": 9,
+    "rule": "614.6",
+    "status": "supported",
+    "note": "Each one-counter placement is replaced by a two-counter placement."
+   },
+   {
+    "step": 9,
+    "rule": "614.5",
+    "status": "supported",
+    "note": "Lae'zel applies once per placement event, so each trigger gives +1. Five triggers give 10 counters. This agrees with the Brallin ruling of 2020-04-17: 'only one +1/+1 counter each time it resolves, no matter how many opponents are dealt damage.'"
+   },
+   {
+    "step": 9,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "Per seat: 5 damage, 40 -> 35. Pod total: 15 of 120. The two figures are stated separately and correctly, matching the 3 opponents in scenario-facts drain_arithmetic."
+   },
+   {
+    "step": 9,
+    "rule": "903.10a",
+    "status": "supported",
+    "note": "The rule says 'combat damage', so Brallin's noncombat pings add 0 commander damage."
+   },
+   {
+    "step": 10,
+    "rule": "614.1",
+    "status": "supported",
+    "note": "Lae'zel's replacement covers counters only, not life gain."
+   },
+   {
+    "step": 10,
+    "rule": "119.3",
+    "status": "supported",
+    "note": "+7 life. Shabraz's ruling of 2020-04-17 does not bear on this (the cards are drawn with the word 'draw')."
+   },
+   {
+    "step": 11,
+    "rule": "117.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 11,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "Opponents are at 35, so this does not apply."
+   },
+   {
+    "step": 12,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "Brallin 3/3 + 10 = 13/13. Shabraz 3/3 + 14 = 17/17 flying. Base stats match cards.json."
+   }
+  ],
+  "iterations": 2
+ }
+}

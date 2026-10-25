@@ -1,0 +1,441 @@
+{
+ "id": "007",
+ "slug": "brallin-ping-three-replacements",
+ "deck": "sharknado",
+ "title": "One Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation: the opponent orders the replacements",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Brallin, Skyshark Rider (3/3, no counters; your commander)",
+    "Torbran, Thane of Red Fell (2/4)",
+    "Kitsa, Otterball Elite (1/3, tapped; its loot ability has just resolved)",
+    "Gratuitous Violence",
+    "Fiery Emancipation",
+    "Command Tower",
+    "Sacred Foundry",
+    "Steam Vents",
+    "Sulfur Falls",
+    "Mountain",
+    "Mountain"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x4"
+     ]
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x6"
+     ]
+    }
+   ]
+  },
+  "hand": [],
+  "graveyard": [
+   "Mountain (the one card discarded by Kitsa's ability)"
+  ],
+  "mana_available": "{0} (every land is tapped)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Brallin, Skyshark Rider's triggered ability — 'put a +1/+1 counter on Brallin and it deals 1 damage to each opponent' (one card discarded)",
+    "controller": "you",
+    "note": "triggered by the single discard of Kitsa, Otterball Elite's loot, which has finished resolving; this is the only trigger"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn, main phase 1. Kitsa's loot (draw one, then discard one) has just resolved; you discarded exactly one card, so exactly one Brallin trigger is on the stack and nothing else is waiting. Brallin is red; Torbran, Gratuitous Violence and Fiery Emancipation are all on the battlefield under your control. No opponent responds.",
+   "assumptions": [
+    "Each opponent acts in their own interest when given a choice.",
+    "No other replacement or prevention effect applies."
+   ]
+  },
+  "question": "When this one Brallin trigger resolves, three replacement effects apply to the 1 damage dealt to each opponent (Torbran's +2, Gratuitous Violence's double, Fiery Emancipation's triple). Who chooses the order they apply in, what totals are possible, and how much damage does each opponent take if they choose to minimise it?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Kitsa, Otterball Elite's '{T}: Draw a card, then discard a card' ability has resolved: you drew one card and discarded one (the Mountain now in your graveyard). Brallin's 'Whenever you discard a card' triggers once.",
+    "effect": "One discard is one trigger event, so Brallin triggers exactly once. Kitsa's ability finishes resolving before the trigger is put on the stack (the official Brallin ruling on discarding while a spell or ability is resolving agrees); the trigger is put on the stack the next time a player would receive priority, as the only object there (pos 0). No other ability has triggered, so nothing else is waiting.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "All players pass priority with Brallin's trigger (pos 0) the only object on the stack; it resolves.",
+    "effect": "No opponent responds (scenario). The single trigger, already on the stack from one discard, resolves.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "603.3",
+      "quote": "It remains on the stack until it’s countered, it resolves, a rule causes it to be removed from the stack, or an effect moves it elsewhere."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Follow the instructions in order: put one +1/+1 counter on Brallin, then Brallin deals 1 damage to each opponent.",
+    "effect": "Brallin becomes 4/4 (one counter, regardless of how many opponents are dealt damage; the official Brallin ruling agrees). The source of the damage is Brallin itself, a red creature you control (its oracle color is red), not the ability.",
+    "citations": [
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written. However, replacement effects may modify these actions."
+     },
+     {
+      "rule": "608.2h",
+      "quote": "If an ability states that an object does something, it’s the object as it exists—or as it most recently existed—that does it, not the ability."
+     },
+     {
+      "rule": "120.1",
+      "quote": "An object that deals damage is the source of that damage."
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Identify the replacement effects that apply to each 1-damage event to an opponent.",
+    "effect": "Three apply to each opponent's damage event: Torbran (red source you control dealing damage to an opponent: that much plus 2), Gratuitous Violence (creature you control: double), Fiery Emancipation (source you control: triple). All three use 'instead', so all are replacement effects; none is a self-replacement effect or an enters-the-battlefield modifier.",
+    "citations": [
+     {
+      "rule": "614.1a",
+      "quote": "Effects that use the word “instead” are replacement effects."
+     },
+     {
+      "rule": "614.2",
+      "quote": "Some replacement effects apply to damage from a source. See rule 609.7."
+     },
+     {
+      "rule": "120.4b",
+      "quote": "Second, damage is dealt, as modified by replacement and prevention effects that interact with damage."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Determine who chooses the order: the affected player, i.e. each opponent for the damage that would be dealt to them.",
+    "effect": "Not you. Each opponent orders the three effects for their own damage event independently. Because the three opponents make these choices at the same time, they choose in APNAP order (you are the active player but have no choice to make here; the opponents then choose in turn order), and the damage is then dealt simultaneously. The official rulings on Torbran and Fiery Emancipation state the same outcome.",
+    "citations": [
+     {
+      "rule": "616.1",
+      "quote": "If two or more replacement and/or prevention effects are attempting to modify the way an event affects an object or player, the affected object’s controller (or its owner if it has no controller) or the affected player chooses one to apply, following the steps listed below. If two or more players have to make these choices at the same time, choices are made in APNAP order (see rule 101.4)."
+     },
+     {
+      "rule": "101.4",
+      "quote": "Then the actions happen simultaneously."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Walk 616.1a-d: none of the restricted categories applies, so 616.1e lets the opponent pick any of the three first; 616.1f repeats until all have applied.",
+    "effect": "Torbran, Gratuitous Violence and Fiery Emancipation are not self-replacement effects, and none modifies control on entry, copying on entry, or back-face-up entry, so all three are freely orderable. After one applies, the modified event is still damage from a red creature you control to that opponent, so the other two remain applicable and are applied in turn. Each effect applies only once to the event.",
+    "citations": [
+     {
+      "rule": "616.1a",
+      "quote": "If any of the replacement and/or prevention effects are self-replacement effects (see rule 614.15), one of them must be chosen. If not, proceed to rule 616.1b."
+     },
+     {
+      "rule": "616.1e",
+      "quote": "Any of the applicable replacement and/or prevention effects may be chosen."
+     },
+     {
+      "rule": "616.1f",
+      "quote": "Once the chosen effect has been applied, this process is repeated (taking into account only replacement or prevention effects that would now be applicable) until there are no more left to apply."
+     },
+     {
+      "rule": "614.5",
+      "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Enumerate all six orders starting from 1 damage.",
+    "effect": "+2, x2, x3: 1->3->6->18. +2, x3, x2: 1->3->9->18. x2, +2, x3: 1->2->4->12. x3, +2, x2: 1->3->5->10. x2, x3, +2: 1->2->6->8. x3, x2, +2: 1->3->6->8. Possible totals per opponent: 8, 10, 12, 18. The minimum, 8, comes from applying both multipliers before Torbran's +2 (either multiplier first). The maximum, 18, comes from Torbran first.",
+    "citations": [
+     {
+      "rule": "616.1f",
+      "quote": "this process is repeated (taking into account only replacement or prevention effects that would now be applicable) until there are no more left to apply."
+     },
+     {
+      "rule": "614.6",
+      "quote": "If an event is replaced, it never happens. A modified event occurs instead"
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Each opponent, acting in their own interest, chooses a multiplier-first order; the modified damage is dealt and each loses that much life.",
+    "effect": "Each opponent is dealt 8 damage and loses 8 life: 40 -> 32 for each of the three seats. Per-seat 8; pod total 24 (not 8 x 3 quoted as per-seat). This damage is noncombat, so it does not count toward the 21-commander-damage loss condition even though Brallin is a commander.",
+    "citations": [
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "120.4c",
+      "quote": "Third, damage that’s been dealt is processed into its results, as modified by replacement effects that interact with those results (such as life loss or counters)."
+     },
+     {
+      "rule": "903.10a",
+      "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Before anyone receives priority, state-based actions are checked; then the active player receives priority.",
+    "effect": "No player is at 0 or less life (all at 32), no commander-damage threshold is met, so no state-based action is performed. No triggered abilities are waiting: Kitsa's loot discarded exactly one card, so Brallin triggered only once (step 1) and that trigger has now resolved, and no event during this resolution triggered anything. You (active player) receive priority with an empty stack and {0} available.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Each opponent, as the affected player, orders the three replacement effects on the damage dealt to them (CR 616.1), choosing in APNAP order. Possible per-opponent totals from one Brallin ping: 8, 10, 12 or 18. Each opponent minimises by applying both multipliers before Torbran's +2, taking 8 (40 -> 32). Per seat 8, pod total 24. The damage is noncombat, so no commander damage is recorded.",
+   "you": {
+    "life": "unchanged",
+    "board_change": "Brallin, Skyshark Rider is 4/4 with one +1/+1 counter; Kitsa, Otterball Elite remains tapped",
+    "stack": "empty",
+    "mana_available": "{0}",
+    "priority": "you (active player)",
+    "graveyard": [
+     "Mountain (discarded by Kitsa's loot)"
+    ]
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life_before": 40,
+     "damage_taken": 8,
+     "life_after": 32,
+     "order_chosen": "x2/x3 (either order) then +2"
+    },
+    {
+     "seat": "opponent_2",
+     "life_before": 40,
+     "damage_taken": 8,
+     "life_after": 32,
+     "order_chosen": "x2/x3 (either order) then +2"
+    },
+    {
+     "seat": "opponent_3",
+     "life_before": 40,
+     "damage_taken": 8,
+     "life_after": 32,
+     "order_chosen": "x2/x3 (either order) then +2"
+    }
+   ],
+   "possible_totals_per_opponent": {
+    "8": [
+     "x2,x3,+2",
+     "x3,x2,+2"
+    ],
+    "10": [
+     "x3,+2,x2"
+    ],
+    "12": [
+     "x2,+2,x3"
+    ],
+    "18": [
+     "+2,x2,x3",
+     "+2,x3,x2"
+    ]
+   },
+   "pod_total_if_minimised": 24
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Full rule read. One discard matches 'Whenever you discard a card' once (cards.json oracle text). Round-1 null finding on 603.3b is answered: the scenario now has Kitsa's '{T}: Draw a card, then discard a card' (oracle text checked in cards.json), which discards one card, so there is exactly one trigger. The Faithless Looting second-discard problem is gone. The graveyard now lists the discarded Mountain, and an empty hand fits draw one, discard one."
+   },
+   {
+    "step": 1,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "First sentence: put on the stack the next time a player would receive priority, which is after Kitsa's ability finishes resolving. Matches Brallin ruling 2020-04-17: 'If you discard a card while a spell or ability is resolving, that spell or ability finishes resolving before Brallin's triggered ability does.'"
+   },
+   {
+    "step": 2,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Top object resolves when all pass in succession. The trigger is the only object on the stack, and the scenario says no opponent responds."
+   },
+   {
+    "step": 2,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Last sentence: the trigger stays on the stack until it resolves. Weak support, but on topic."
+   },
+   {
+    "step": 3,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Instructions run in the order written: the counter first, then the damage."
+   },
+   {
+    "step": 3,
+    "rule": "608.2h",
+    "status": "supported",
+    "note": "Last sentence: the object named (Brallin) deals the damage, not the ability. cards.json gives Brallin colors ['R'], a red source, so Torbran's condition is met. Agrees with Torbran ruling 2019-10-04: 'The additional 2 damage is dealt by the same source as the original source of damage.'"
+   },
+   {
+    "step": 3,
+    "rule": "120.1",
+    "status": "supported",
+    "note": "'An object that deals damage is the source of that damage.'"
+   },
+   {
+    "step": 3,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "Answers the round-1 finding. A +1/+1 counter adds 1 to power and toughness, and cards.json gives Brallin a base 3/3, so 4/4 is established. The single counter agrees with Brallin ruling 2020-04-17: 'gives it only one +1/+1 counter each time it resolves, no matter how many opponents are dealt damage.'"
+   },
+   {
+    "step": 4,
+    "rule": "614.1a",
+    "status": "supported",
+    "note": "Oracle text in cards.json: Torbran ('red source you control ... to an opponent ... plus 2 instead'), Gratuitous Violence ('creature you control ... double that damage instead') and Fiery Emancipation ('source you control ... triple ... instead'). All use 'instead', and all three conditions are met by red creature Brallin dealing damage to an opponent."
+   },
+   {
+    "step": 4,
+    "rule": "614.2",
+    "status": "supported",
+    "note": "On topic, but adds little beyond 614.1a. Its pointer to 609.7 is about choosing a source, which nothing here does."
+   },
+   {
+    "step": 4,
+    "rule": "120.4b",
+    "status": "supported",
+    "note": "Damage is dealt as modified by replacement effects. No damage triggers exist on this board (oracle text checked), so the rule's 'trigger now' clause adds nothing."
+   },
+   {
+    "step": 5,
+    "rule": "616.1",
+    "status": "supported",
+    "note": "The affected player chooses, and simultaneous choices go in APNAP order. Agrees with Fiery Emancipation ruling 2023-09-01 ('the player or the controller of the permanent chooses the order in which they apply') and Torbran ruling 2019-10-04."
+   },
+   {
+    "step": 5,
+    "rule": "101.4",
+    "status": "supported",
+    "note": "Full rule: the active player chooses, then nonactive players in turn order, then the actions happen simultaneously. The quoted sentence supports the simultaneity claim."
+   },
+   {
+    "step": 6,
+    "rule": "616.1a",
+    "status": "supported",
+    "note": "None of the three is a self-replacement effect: all are static abilities of permanents, not part of the resolving ability. 616.1b-d (control on entry, copy on entry, back face up) do not apply, as the step says."
+   },
+   {
+    "step": 6,
+    "rule": "616.1e",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "616.1f",
+    "status": "supported",
+    "note": "The modified event is still damage from a red creature you control to an opponent, so the remaining effects stay applicable."
+   },
+   {
+    "step": 6,
+    "rule": "614.5",
+    "status": "supported",
+    "note": "Each effect gets one opportunity. The rule's own example (two doublers make 8) is the same chaining pattern."
+   },
+   {
+    "step": 7,
+    "rule": "616.1f",
+    "status": "supported",
+    "note": "I recomputed all six orders. +2,x2,x3 = 18; +2,x3,x2 = 18; x2,+2,x3 = 12; x3,+2,x2 = 10; x2,x3,+2 = 8; x3,x2,+2 = 8. Totals {8,10,12,18}, minimum 8. final_state.possible_totals_per_opponent matches."
+   },
+   {
+    "step": 7,
+    "rule": "614.6",
+    "status": "supported",
+    "note": "The modified event replaces the original, which is the basis for applying the effects in sequence."
+   },
+   {
+    "step": 8,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "No infect: 8 damage means 8 life lost, 40 to 32."
+   },
+   {
+    "step": 8,
+    "rule": "120.4c",
+    "status": "supported",
+    "note": "Damage is processed into its result, life loss."
+   },
+   {
+    "step": 8,
+    "rule": "903.10a",
+    "status": "supported",
+    "note": "The rule says 'combat damage', so a noncombat ping adds nothing to the commander-damage count. Per-seat 8 and pod total 24 are stated separately and match scenario-facts drain_arithmetic (3 opponents, 120 total life)."
+   },
+   {
+    "step": 9,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Full rule: SBAs are checked, waiting triggers are put on the stack, then the appropriate player gets priority. 'No triggered abilities are waiting' now holds: one discard and one trigger, now resolved. I checked the board's oracle text for any trigger on damage, counters or life loss (Kitsa's prowess needs a cast noncreature spell) and found none."
+   },
+   {
+    "step": 9,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "Every opponent is at 32, so nobody loses."
+   },
+   {
+    "step": 9,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   }
+  ],
+  "iterations": 2
+ }
+}
