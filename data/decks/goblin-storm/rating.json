@@ -18,7 +18,7 @@
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.54
+    63.53
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -51,8 +51,8 @@
    "weight_effective": 0.1,
    "sub_score": 85.72,
    "sub_ci": [
-    79.25,
-    92.17
+    79.29,
+    92.11
    ],
    "placement": 66.67,
    "anchor": 100.0,
@@ -94,7 +94,7 @@
    "sub_score": 28.57,
    "sub_ci": [
     28.57,
-    34.98
+    35.01
    ],
    "placement": 0.0,
    "anchor": 50.0,
@@ -239,12 +239,12 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.1875,
-   "sub_score": 51.19,
+   "sub_score": 36.91,
    "sub_ci": [
-    43.64,
-    58.48
+    29.59,
+    44.31
    ],
-   "placement": 50.0,
+   "placement": 16.67,
    "anchor": 52.08,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
@@ -311,7 +311,7 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
- "fleet_sha": "d3e5191eba75",
+ "fleet_sha": "955573fd0a1a",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -361,12 +361,12 @@
   ],
   "iterations": 2
  },
- "code_score": 54.1,
- "score_point": 54.0,
- "score": 54.6,
+ "code_score": 50.5,
+ "score_point": 51.4,
+ "score": 51.8,
  "score_ci": [
-  48.1,
-  60.7
+  45.1,
+  58.8
  ],
  "grade": "C",
  "grade_range": [
@@ -376,9 +376,9 @@
  "grade_display": "C",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.005,
-  "C": 0.885,
-  "D": 0.11,
+  "B": 0.001,
+  "C": 0.674,
+  "D": 0.325,
   "F": 0.0
  },
  "uncertainty": {
@@ -395,46 +395,62 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 53.5,
+    "score": 50.3,
     "grade": "C"
    },
    "mana": {
-    "score": 50.5,
-    "grade": "C"
+    "score": 47.5,
+    "grade": "D"
    },
    "resilience": {
-    "score": 58.5,
+    "score": 55.4,
     "grade": "C"
    },
    "construction": {
-    "score": 53.2,
-    "grade": "C"
+    "score": 50.0,
+    "grade": "D"
    },
    "dti": {
     "score": 54.7,
     "grade": "C"
    },
    "judgment": {
-    "score": 54.1,
+    "score": 50.5,
     "grade": "C"
    }
   },
   "flips": [
    {
+    "component": "mana",
+    "share_now": 0.1,
+    "share_at_flip": 0.064,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "lower"
+   },
+   {
     "component": "resilience",
     "share_now": 0.15,
-    "share_at_flip": 0.285,
+    "share_at_flip": 0.201,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
    },
    {
-    "component": "mana",
-    "share_now": 0.1,
-    "share_at_flip": 0.411,
-    "boundary": 65,
-    "grade_at_flip": "B",
+    "component": "dti",
+    "share_now": 0.187,
+    "share_at_flip": 0.264,
+    "boundary": 50,
+    "grade_at_flip": "D",
     "direction": "raise"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.163,
+    "share_at_flip": 0.004,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "lower"
    }
   ]
  },
@@ -442,7 +458,7 @@
   "level": "mixed",
   "instruments": {
    "construction": 3.0,
-   "dti": 3.0,
+   "dti": 4.0,
    "judgment": 4.0,
    "mana": 2.0,
    "resilience": 4.0,
@@ -452,16 +468,21 @@
   "spread": 0.667,
   "outliers": [
    {
+    "instrument": "construction",
+    "rank": 3.0,
+    "side": "better"
+   },
+   {
     "instrument": "mana",
     "rank": 2.0,
     "side": "better"
    }
   ],
   "group": {
-   "kendall_w": 0.396,
-   "p": 0.1104,
+   "kendall_w": 0.477,
+   "p": 0.0254,
    "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 5,
+   "m": 6,
    "n": 4
   }
  },
@@ -498,8 +519,8 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   45.64,
-   62.17
+   45.87,
+   62.5
   ]
  },
  "rank": {
@@ -524,10 +545,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 81.3,
-   "gishath": 73.8,
-   "ur-dragon": 68.0,
-   "goblin-storm": 54.6
+   "sharknado": 81.9,
+   "gishath": 71.4,
+   "ur-dragon": 65.9,
+   "goblin-storm": 51.8
   }
  }
 }

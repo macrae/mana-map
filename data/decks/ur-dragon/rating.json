@@ -18,7 +18,7 @@
    "sub_score": 85.72,
    "sub_ci": [
     79.2,
-    92.17
+    92.16
    ],
    "placement": 66.67,
    "anchor": 100.0,
@@ -52,7 +52,7 @@
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.58
+    63.66
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -93,7 +93,7 @@
    "weight_effective": 0.1304,
    "sub_score": 82.86,
    "sub_ci": [
-    76.46,
+    76.43,
     82.86
    ],
    "placement": 100.0,
@@ -239,12 +239,12 @@
    "weight": 0.15,
    "weight_validity": 1.0,
    "weight_effective": 0.163,
-   "sub_score": 57.14,
+   "sub_score": 42.86,
    "sub_ci": [
-    49.35,
-    64.85
+    35.32,
+    50.32
    ],
-   "placement": 50.0,
+   "placement": 16.67,
    "anchor": 62.5,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
    "inputs": [
@@ -280,8 +280,8 @@
    "weight_effective": 0.1304,
    "sub_score": 67.62,
    "sub_ci": [
-    44.01,
-    96.97
+    44.63,
+    95.27
    ],
    "placement": null,
    "anchor": 67.62,
@@ -341,7 +341,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
- "fleet_sha": "d3e5191eba75",
+ "fleet_sha": "955573fd0a1a",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -396,12 +396,12 @@
   ],
   "iterations": 2
  },
- "code_score": 67.7,
- "score_point": 68.0,
- "score": 68.0,
+ "code_score": 64.7,
+ "score_point": 65.6,
+ "score": 65.9,
  "score_ci": [
-  62.1,
-  74.5
+  58.9,
+  73.0
  ],
  "grade": "B",
  "grade_range": [
@@ -410,10 +410,10 @@
  ],
  "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.792,
-  "C": 0.207,
-  "D": 0.0,
+  "A": 0.0,
+  "B": 0.575,
+  "C": 0.425,
+  "D": 0.001,
   "F": 0.0
  },
  "uncertainty": {
@@ -430,19 +430,19 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 65.3,
-    "grade": "B"
+    "score": 62.6,
+    "grade": "C"
    },
    "mana": {
-    "score": 69.0,
+    "score": 66.4,
     "grade": "B"
    },
    "resilience": {
-    "score": 65.7,
-    "grade": "B"
+    "score": 63.1,
+    "grade": "C"
    },
    "construction": {
-    "score": 70.0,
+    "score": 67.3,
     "grade": "B"
    },
    "dti": {
@@ -450,35 +450,19 @@
     "grade": "B"
    },
    "table_record": {
-    "score": 68.0,
+    "score": 65.3,
     "grade": "B"
    },
    "judgment": {
-    "score": 67.7,
-    "grade": "B"
+    "score": 64.7,
+    "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "construction",
-    "share_now": 0.141,
-    "share_at_flip": 0.349,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
-   },
-   {
     "component": "dti",
     "share_now": 0.163,
-    "share_at_flip": 0.392,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
-   },
-   {
-    "component": "mana",
-    "share_now": 0.087,
-    "share_at_flip": 0.337,
+    "share_at_flip": 0.186,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
@@ -486,18 +470,42 @@
    {
     "component": "speed",
     "share_now": 0.13,
-    "share_at_flip": 0.72,
-    "boundary": 80,
-    "grade_at_flip": "A",
-    "direction": "raise"
+    "share_at_flip": 0.103,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
    },
    {
     "component": "resilience",
     "share_now": 0.13,
-    "share_at_flip": 0.833,
-    "boundary": 80,
-    "grade_at_flip": "A",
+    "share_at_flip": 0.098,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.141,
+    "share_at_flip": 0.196,
+    "boundary": 65,
+    "grade_at_flip": "C",
     "direction": "raise"
+   },
+   {
+    "component": "mana",
+    "share_now": 0.087,
+    "share_at_flip": 0.155,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "raise"
+   },
+   {
+    "component": "judgment",
+    "share_now": 0.217,
+    "share_at_flip": 0.069,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
    }
   ]
  },
@@ -505,7 +513,7 @@
   "level": "divergent",
   "instruments": {
    "construction": 4.0,
-   "dti": 2.0,
+   "dti": 3.0,
    "judgment": 3.0,
    "mana": 4.0,
    "resilience": 1.0,
@@ -518,13 +526,28 @@
     "instrument": "resilience",
     "rank": 1.0,
     "side": "better"
+   },
+   {
+    "instrument": "speed",
+    "rank": 2.0,
+    "side": "better"
+   },
+   {
+    "instrument": "construction",
+    "rank": 4.0,
+    "side": "worse"
+   },
+   {
+    "instrument": "mana",
+    "rank": 4.0,
+    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.396,
-   "p": 0.1104,
+   "kendall_w": 0.477,
+   "p": 0.0254,
    "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 5,
+   "m": 6,
    "n": 4
   }
  },
@@ -556,8 +579,8 @@
   "weight": 0.2,
   "weight_effective": 0.2174,
   "sub_ci": [
-   60.91,
-   77.26
+   60.76,
+   76.99
   ]
  },
  "rank": {
@@ -570,9 +593,9 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.005,
-   "2": 0.107,
-   "3": 0.877,
+   "1": 0.002,
+   "2": 0.112,
+   "3": 0.876,
    "4": 0.01
   },
   "basis": {
@@ -582,10 +605,10 @@
    "ur-dragon": "this document"
   },
   "scores": {
-   "sharknado": 81.3,
-   "gishath": 73.8,
-   "ur-dragon": 68.0,
-   "goblin-storm": 54.6
+   "sharknado": 81.9,
+   "gishath": 71.4,
+   "ur-dragon": 65.9,
+   "goblin-storm": 51.8
   }
  }
 }

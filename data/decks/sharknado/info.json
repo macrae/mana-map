@@ -10444,40 +10444,40 @@
     "within_target": true
   },
   "deckcheck": {
-    "score": 33,
+    "score": 41,
     "max_score": 96,
     "bracket": 3,
-    "as_of": "2026-10-19",
-    "source_updated_at": "2026-10-19T15:44:54.300248+00:00",
+    "as_of": "2026-10-25",
+    "source_updated_at": "2026-10-25T14:49:41.982787+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": true,
-    "readings_n": 2,
+    "stale_list": false,
+    "readings_n": 3,
     "omni": {
       "benchmarks": {
         "A1": "B",
-        "A2": "B",
+        "A2": "A",
         "I1": "B",
         "I2": "B",
         "P1": "A",
         "P2": "B",
         "P3": "B",
-        "R1": "B",
+        "R1": "A",
         "R2": "S",
-        "S1": "B",
+        "S1": "A",
         "S2": "A",
         "S3": "A"
       },
-      "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+      "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
       "median_bracket": 3,
-      "median_score": 33,
+      "median_score": 41,
       "n": 1,
       "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
     },
     "floor_vs_dti": {
       "floor": 3,
-      "floor_decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+      "floor_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
       "floor_name": "Upgraded",
-      "reading_as_of": "2026-10-19",
+      "reading_as_of": "2026-10-25",
       "relation": "equal",
       "their_bracket": 3
     },
@@ -10505,13 +10505,15 @@
     "release": "v2.0.0"
   },
   "record": {
-    "games": 2,
+    "games": 3,
     "win": 0,
     "loss": 1,
     "draw": 0,
-    "last_played": "2026-10-20",
+    "last_played": "2026-10-25",
     "first_played": "2026-10-06",
-    "undebriefed": [],
+    "undebriefed": [
+      "003"
+    ],
     "causes": {
       "001": "won",
       "002": "combo"
@@ -10641,6 +10643,14 @@
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)": {
+          "value": 44,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -10856,6 +10866,10 @@
       {
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
         "by_turn_6_pct": 72
+      },
+      {
+        "label": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
+        "by_turn_6_pct": 44
       }
     ],
     "combat": {
@@ -11199,8 +11213,7 @@
     ]
   },
   "next": [
-    "DeckCheck copy is V8, sleeved is V9 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
-    "DTI (2026-10-19) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
   ],

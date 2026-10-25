@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 100.0,
    "sub_ci": [
-    93.58,
+    93.64,
     100.0
    ],
    "placement": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1231,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    93.68,
+    93.55,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 67.14,
    "sub_ci": [
-    60.73,
-    73.6
+    60.59,
+    73.7
    ],
    "placement": 50.0,
    "anchor": 80.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.1625,
    "sub_score": 71.43,
    "sub_ci": [
     71.43,
@@ -233,13 +233,48 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1875,
+   "sub_score": 80.95,
+   "sub_ci": [
+    73.19,
+    84.01
+   ],
+   "placement": 100.0,
+   "anchor": 66.67,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 41,
+     "ci95": null,
+     "n": 3,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 66.67,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
-  {
-   "component": "dti",
-   "reason": "the DeckCheck reading describes another list — `deckcheck sharknado --write` after a rescan"
-  },
   {
    "component": "table_record",
    "reason": "1 game(s) logged; 5 needed"
@@ -267,16 +302,16 @@
  ],
  "context": {
   "dti": {
-   "score": 33,
+   "score": 41,
    "max_score": 96,
    "bracket": 3,
-   "as_of": "2026-10-19",
-   "stale_list": true
+   "as_of": "2026-10-25",
+   "stale_list": false
   },
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
- "fleet_sha": "d3e5191eba75",
+ "fleet_sha": "955573fd0a1a",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -285,57 +320,72 @@
    "settled_by": "resolve-stack"
   },
   {
-   "question": "Does the current wheel count fix the opening-hand problem the pilot named, with creatures and wheels in the kept seven?",
-   "settled_by": "goldfish"
+   "question": "Opening hand, keep call and lands by turn in the next game on v2.0.0, to separate a mana problem from sequencing.",
+   "settled_by": "rate"
   },
   {
-   "question": "A game on the current list, to replace the one older-list loss as the table record.",
-   "settled_by": "rate"
+   "question": "Red and white sit under their source targets while the mana component reads land drops only: does the colour shortfall explain log 003's mana-starved round?",
+   "settled_by": "diagnose"
   }
  ],
- "iterations": 2,
+ "iterations": 1,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
     "where": "mechanical",
     "status": "supported",
-    "note": "validate-rating passes (A, 81.3). Re-run scorecard identical to rating.json on every key."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "79 is 4 under code_score 83. The gap rests only on the unproven combat step (open question, no stack) and an unplayed list; answers/sweepers and goldfish blindness are no longer charged a second time. Against a larger discount: kill_by_turn_8 0.901 and the pilot's 'feels good'. Against a smaller one: no game on v2.0.0. Within that window the size is a judgment, not a finding."
+    "note": "validate-rating OK. Re-run scorecard identical on components, withheld, code_score 82.5, bracket, limits, uncertainty, sensitivity. score_point 82.6 in both. Round 1's 81.9 vs 81.1 is the group moving, not a finding."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Record restated correctly (log 001 no result, called good; 002 loss on v8). 'No passing stack covers combat' matches the open question. 'Kill line included a card since cut': Spider-Man was in earlier versions (v1.3.0) and is absent from the current decklist (removed in the v2.0.0 merge). Concordance claim withdrawn; speed/mana vs construction/resilience stated as a small mixed gap."
+    "note": "Round-1 finding 1 (no colour reads thin) is answered: the argument now quotes engine.json stage mana (label RED FIRST, BLUE THIN; R 34/U 23/W 19 vs R 36/U 22/W 22; red and white under target) and withholds the 'sequencing' call on log 003. It matches the stage text, and open question 3 keeps the mana-vs-sequencing question open for diagnose."
    },
    {
-    "where": "judgment.citations",
+    "where": "judgment.sub_score",
     "status": "supported",
-    "note": "Unchanged and verbatim as verified in round 1."
+    "note": "Round-1 finding 2 (80 too harsh) is answered: 83 is 0.5 above code_score 82.5, and the argument says the stack lift and the colour shortfall roughly cancel. The only cited unmeasured facts are stack 006 (a stipulated board) and the unsized colour shortfall; neither supports more than a rounding-size gap. Weak point, not a failure: 'rounded up a point because speed and mana read at the top' rests on components already scored, so it is a double count if read as a reason. At 0.5 points and weight 0.25 the composite effect is about 0.1, and grade A holds either way (leave_one_out judgment 82.5)."
    },
    {
-    "where": "open_questions[2]",
+    "where": "judgment.citations[3]",
     "status": "supported",
-    "note": "Minor: its text still says 'the one older-list loss' while the argument now says two games; harmless, the log 001 has no result."
+    "note": "stack 006 passes its checker; quote is the title verbatim. It proves 10 + 11 = 21 on a stipulated board only; the argument says exactly that, and that Brallin has no passing stack."
    },
    {
-    "where": "grade",
+    "where": "judgment.citations[2]",
     "status": "supported",
-    "note": "A at 81.3 [75.3, 87.5] spans the 80 boundary; the 79 versus 74 choice flips the letter, which the resolution line already discloses."
+    "note": "log 003 quote is verbatim; result None, tags empty. The entry also says 'slooooowwwww' and 'no removal'; the argument weights it lightly, which is fair. The slow/no-removal complaints are already scored in speed (0.901 kill by T8) and resilience."
+   },
+   {
+    "where": "judgment.citations[4]",
+    "status": "supported",
+    "note": "engine.json thesis contains the quoted sentence."
+   },
+   {
+    "where": "judgment.citations[5]",
+    "status": "supported",
+    "note": "engine.json mana stage contains the quoted figures verbatim and they are used as the stage states them (red and white under target, blue one over)."
+   },
+   {
+    "where": "judgment.citations[0..1]",
+    "status": "supported",
+    "note": "answer_cards (16) and kill_by_turn_8 (0.901) exist as inputs. Concordance is 'mixed', not divergent, so there is no outlier obligation; the argument already says resilience and construction are not charged twice."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Q1 (Brallin 21-rule route, resolve-stack), Q2 (next-game lands by turn, rate) and Q3 (colour shortfall vs log 003, diagnose) are not answered by the skeleton or the artifacts."
    }
   ],
-  "iterations": 2
+  "iterations": 1
  },
- "code_score": 83.0,
- "score_point": 81.8,
- "score": 81.3,
+ "code_score": 82.5,
+ "score_point": 82.6,
+ "score": 81.9,
  "score_ci": [
-  75.3,
-  87.5
+  76.9,
+  87.4
  ],
  "grade": "A",
  "grade_range": [
@@ -344,8 +394,8 @@
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.638,
-  "B": 0.361,
+  "A": 0.73,
+  "B": 0.271,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -364,63 +414,51 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 77.6,
+    "score": 79.5,
     "grade": "B"
    },
    "mana": {
-    "score": 79.2,
-    "grade": "B"
+    "score": 80.7,
+    "grade": "A"
    },
    "resilience": {
-    "score": 85.1,
+    "score": 85.3,
     "grade": "A"
    },
    "construction": {
-    "score": 84.3,
+    "score": 84.8,
+    "grade": "A"
+   },
+   "dti": {
+    "score": 83.0,
     "grade": "A"
    },
    "judgment": {
-    "score": 83.0,
+    "score": 82.5,
     "grade": "A"
    }
   },
   "flips": [
    {
     "component": "speed",
-    "share_now": 0.185,
-    "share_at_flip": 0.106,
-    "boundary": 80,
-    "grade_at_flip": "B",
-    "direction": "lower"
-   },
-   {
-    "component": "mana",
-    "share_now": 0.123,
-    "share_at_flip": 0.039,
+    "share_now": 0.15,
+    "share_at_flip": 0.023,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "lower"
    },
    {
     "component": "resilience",
-    "share_now": 0.185,
-    "share_at_flip": 0.283,
+    "share_now": 0.15,
+    "share_at_flip": 0.293,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.2,
-    "share_at_flip": 0.336,
-    "boundary": 80,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
-    "component": "judgment",
-    "share_now": 0.308,
-    "share_at_flip": 0.749,
+    "share_now": 0.163,
+    "share_at_flip": 0.358,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -431,6 +469,7 @@
   "level": "mixed",
   "instruments": {
    "construction": 2.0,
+   "dti": 1.0,
    "judgment": 1.0,
    "mana": 1.0,
    "resilience": 2.5,
@@ -439,16 +478,6 @@
   "of": 4,
   "spread": 0.5,
   "outliers": [
-   {
-    "instrument": "mana",
-    "rank": 1.0,
-    "side": "better"
-   },
-   {
-    "instrument": "speed",
-    "rank": 1.0,
-    "side": "better"
-   },
    {
     "instrument": "construction",
     "rank": 2.0,
@@ -461,32 +490,37 @@
    }
   ],
   "group": {
-   "kendall_w": 0.396,
-   "p": 0.1104,
+   "kendall_w": 0.477,
+   "p": 0.0254,
    "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 5,
+   "m": 6,
    "n": 4
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
  "judgment": {
-  "sub_score": 79,
-  "argument": "The measured components read this deck as a Bracket 3 clock with a clean mana base, and the goldfish kill is strong. Their blind spot is the opposed table: the goldfish has no blockers and no removal. Resilience and construction already carry the thin answer suite and the lack of sweepers, so I do not count those again. What is left is unmeasured. The engine's thesis ends in one evasive hit for 21 commander damage, and no passing stack covers that combat step. The stacks that do pass (the Windfall and Library of Leng lines) prove the counter-building, and the Windfall kill line there included a card since cut. That open step is an unknown, not a defect, and I treat it as a small discount. Two games are logged, both on older lists. The first has no result and the pilot called it good. In the second, a loss, the pilot said there are too many wheels; the current list cut several, which answers his point in intent, but nothing has been played on it. Mana and speed rank first in the group and construction and resilience lower, but the concordance is only mixed and the gaps are small, so I do not pick a side. I sit a few points under the code score for the unproven finishing step and the untested list, not further, because the engine is coherent and the pilot says the deck feels good.",
+  "sub_score": 83,
+  "argument": "The measured components read a Bracket 3 clock and a clean land count. They cannot see the opposed table, the finish, or which colours the lands make. Resilience and construction already carry the thin answer suite and missing sweepers, so I do not charge those twice. First, a correction: the mana stage reads RED FIRST, BLUE THIN, with land sources R 34 / U 23 / W 19 against targets R 36 / U 22 / W 22, so red and white sit under target. The mana component counts land drops, not colours, so this is unmeasured and it costs a little. It also means I cannot call the mana-starved round in the one logged game sequencing; it may be real, and the question stays open. That game has no result, so it carries little weight either way. Against that, the finish is better than the components know: a checker-passed stack shows a loot between the two damage steps making 10 + 11 = 21 commander damage pass, and the thesis ends on that one evasive hit. The stack proves the rule on a stipulated board, not that the deck reaches it, and Brallin's road has no passing stack. So the lift is small and the colour shortfall roughly cancels it. I sit at the code score, rounded up a point, because speed and mana read at the top and I have no cited fact that moves the deck further either way.",
   "citations": [
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_8"
-   },
    {
     "kind": "skeleton",
     "ref": "skeleton:resilience",
     "quote": "answer_cards"
    },
    {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
     "kind": "log",
-    "ref": "log:002",
-    "quote": "I think there's too many wheels"
+    "ref": "log:003",
+    "quote": "got mana starved one round"
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:006",
+    "quote": "a loot between the two damage steps makes 10 + 11 = 21 commander damage"
    },
    {
     "kind": "engine",
@@ -494,9 +528,9 @@
     "quote": "then cash it as one double-striking, evasive hit for 21 commander damage"
    },
    {
-    "kind": "strategy",
-    "ref": "strategy:deckbuilding.power-level",
-    "quote": "the sharpest line between them is expected game length"
+    "kind": "engine",
+    "ref": "engine:mana",
+    "quote": "land sources R 34 / U 23 / W 19 against targets R 36 / U 22 / W 22"
    }
   ],
   "against": {
@@ -504,10 +538,10 @@
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.3077,
+  "weight_effective": 0.25,
   "sub_ci": [
-   70.88,
-   87.27
+   74.7,
+   91.68
   ]
  },
  "rank": {
@@ -520,8 +554,8 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.964,
-   "2": 0.035,
+   "1": 0.995,
+   "2": 0.005,
    "3": 0.001,
    "4": 0.0
   },
@@ -532,10 +566,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 81.3,
-   "gishath": 73.8,
-   "ur-dragon": 68.0,
-   "goblin-storm": 54.6
+   "sharknado": 81.9,
+   "gishath": 71.4,
+   "ur-dragon": 65.9,
+   "goblin-storm": 51.8
   }
  }
 }

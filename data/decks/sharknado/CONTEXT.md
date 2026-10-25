@@ -1,12 +1,12 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=c9186bd91308 at=2026-10-24 -->
+<!-- ctx:written-for version=v2.0.0 sha=c9186bd91308 at=2026-10-25 -->
 
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
 - **Version:** v2.0.0 (V9) · **status:** sleeved since 2026-10-24
-- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 33/96 → B3 (deckcheck.co, 2026-10-19, 2 readings) — older list
+- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 41/96 → B3 (deckcheck.co, 2026-10-25, 3 readings)
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 38 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
@@ -41,7 +41,7 @@ Sean plays this list on printed proxies from today. The unowned cards are on the
 
 **Answers and clearing the way.** [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Iroh's Demonstration](https://manamap.seanmacrae.com/viz/index.html?cards=Iroh%27s+Demonstration), [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and the burn-wheels handle what stands in the way. [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) can phase out a blocker.
 
-**Mana leans red.** The payoffs are red-heavy, so the land base moved toward red and white and away from blue. The mana pass made blue the thinner colour, so blue spells are the ones to watch. [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), two Signets and two Talismans ([Azorius Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Azorius+Signet), [Izzet Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Izzet+Signet), [Talisman of Conviction](https://manamap.seanmacrae.com/viz/index.html?cards=Talisman+of+Conviction), [Talisman of Creativity](https://manamap.seanmacrae.com/viz/index.html?cards=Talisman+of+Creativity)) pay for the second spell. [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe), [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) and [Collector's Vault](https://manamap.seanmacrae.com/viz/index.html?cards=Collector%27s+Vault) make extra mana.
+**Mana leans red.** The payoffs are red-heavy, so the land base moved toward red and white and away from blue. Even so, the Numbers section's on-curve colour with rocks has blue the most reliable and white the least, so no colour is thin and blue spells are not the ones to worry about. [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), two Signets and two Talismans ([Azorius Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Azorius+Signet), [Izzet Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Izzet+Signet), [Talisman of Conviction](https://manamap.seanmacrae.com/viz/index.html?cards=Talisman+of+Conviction), [Talisman of Creativity](https://manamap.seanmacrae.com/viz/index.html?cards=Talisman+of+Creativity)) pay for the second spell. [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe), [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) and [Collector's Vault](https://manamap.seanmacrae.com/viz/index.html?cards=Collector%27s+Vault) make extra mana.
 
 **What the goldfish can say.** It has no blockers and no removal, and it does not model the modal plan. Forge's AI played every add except Flawless Maneuver, which it held because it is reactive. Read the Numbers section as a ceiling for how often things line up, never as a verdict on the table.
 
@@ -167,6 +167,7 @@ Goldfish, 10,000 seeded games, measured on v2.0.0 (V9), 2026-10-24. Each group b
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **79%**
 - A real answer drawn — a counter, a sweeper or a tax: **69%**
 - A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **72%**
+- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **44%**
 - share of opening sevens the model would keep: **80%**
 - Engine online by turn 5: **72%** (95% CI 71%–72%) — exceptional
 - A win route assembled by turn 6: **32%** (95% CI 31%–33%)
@@ -180,8 +181,9 @@ These figures were measured on an older list and the goldfish does not model the
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **2 game(s):** 0 won, 1 lost · 2026-10-06 to 2026-10-20
+- **3 game(s):** 0 won, 1 lost · 2026-10-06 to 2026-10-25
 - **How games ended:** combo 1, won 1
+- **Not yet read:** 003
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -209,13 +211,22 @@ Read together with 001: the shape that works is one or both commanders on the ta
 
 Of the things Sean said he missed after 001, the v1.3.0 branch added removal and answers, wheels that do something else, and a way to buy a commander back. Ramp is the one it did not add to. Game 002 is the first look at that list, and its main finding is about how many wheels there are, not which.
 
-**After game 002, the plan.** On 2026-10-22 Sean named the deck's main win condition: 21 commander damage from either commander, chosen by the board. That is the base of v2.0.0. The "too many wheels" and "wheels are finishers" notes above became the wheel cut. No game has been played on v2.0.0 yet.
+**After game 002, the plan.** On 2026-10-22 Sean named the deck's main win condition: 21 commander damage from either commander, chosen by the board. That is the base of v2.0.0. The "too many wheels" and "wheels are finishers" notes above became the wheel cut. Game 003 is the first on v2.0.0.
+
+**003 (2026-10-25, the first game on v2.0.0).** No result is recorded, and no opponents. Sean's words: "goddamn, just played shabraz... it's slooooowwwww..... maybe it's a sequencing thing, maybe it's the cards I saw... but no removal, slow to get cards out, got mana starved one round... not the best showing tonight." He had no result to give, so none is inferred here.
+
+- **Slow.** He was playing Shabraz.
+- **Slow to get cards out.** Cards came out of hand slowly.
+- **Mana-starved for one round.** One round stalled for lack of mana.
+- **No removal seen.** The same gap he named after 001.
+- **He does not know why.** He names two suspects himself, his sequencing and the cards he happened to see, and does not pick between them. A single game cannot split them.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v2.0.0 · V9** (2026-10-24) — in: Akroma's Will, Azorius Signet, Bard, King of Dale, Battlefield Forge, Blade Historian, Brotherhood Regalia, Champion's Helm, Clifftop Retreat …; out: Anje's Ravager, Arjun, the Shifting Flame, Big Score, Burning Inquiry, Commit // Memory, Curator of Mysteries, Echo of Eons, Faerie Mastermind …. _modal voltron: voltron-v1 merged; either commander wins on 21 commander damage_
   - merge `voltron-v1`: objective forge.commander_damage_max_on_one_defender read **not resolvable** — played on printed proxies from 2026-10-24; the unowned cards are on the order list
+  - played 1: 0W 0L
 - **v1.3.0 · V8** (2026-10-19) — in: Alhammarret's Archive, Big Score, Boros Charm, Campfire, Collective Defiance, Command Beacon, Fateful Showdown, Fevered Visions …; out: Adarkar Wastes, Calciform Pools, Containment Construct, Currency Converter, Drake Haven, Exotic Orchard, Improbable Alliance, Mana Geyser …. _torbran-v1 merged 2026-10-19: Torbran, three wheels that do something else (Collective Defiance, Fateful Showdown, Incendiary Command), Spider-Man, Lae'zel, Alhammarret's Archive, the answers (Silence_
   - merge `torbran-v1`: objective kill_by_6 read **met** — played on printed proxies from 2026-10-19; the unowned cards are on the order list (the pilot's call)
   - played 1: 0W 1L
@@ -249,14 +260,19 @@ The engine model (engine.json) was written for v1.1.0 and still names cards that
 - **Q002** decided — What a Jeskai-identity (W/U/R) card-search returns for cards that discard the whole hand and also counter, bounce, destroy or exile, split by whether they discard (pay Brallin) or shuffle/bottom (pay only Shabraz). The output is the list; no premise about its length. → _supported: 25 WUR cards outside the 99 wheel AND interact; the best fits for both commanders (YOUR discard pays Brallin, YOUR draw pays Shabraz) are Fateful Showdown, Collective Defiance, Incendiary Command and The Elder Dragon War; Rites of Refusal and Null Brooch are discard-as-counter (Brallin only); Snort and Moonveil Regent are wheel momentum, not answers_
 - **Q004** promoted — Break-even: a protection piece (Greaves 2, Boots 2 + equip, Teferi's Protection one-shot) beats a ramp piece only if P(removal lands on a commander by T6) exceeds a threshold set by the recast tax (CR 903.8: Brallin 4 then 6 then 8; Shabraz 5 then 7 then 9) over the protection piece's own deploy cost, and Greaves/Boots-style permanent protection is the case where it does.
 - **Q007** challenged — A wheel cast with both Shabraz and Brallin on the battlefield takes more life off the table than the same wheel with Shabraz still in the command zone — a wheel is a finisher dropped onto both commanders, not onto one.
+- **Q009** tested — On v2.0.0 the five-drop commander (Shabraz) alone arrives later than the four-drop (Brallin), and that is a description of the curve, not the cause of game 003's slowness. → _supported: metrics.commander = Shabraz, metrics.partner = Brallin (goldfish.py). v2.0.0, n=10,000: Shabraz mean cast 4.771, by T4 0.412 (+/-0.010), by T6 0.892 (+/-0.006); Brallin mean 3.927, by T6 0.967 (+/-0.004). v1.3.0: Shabraz 5.344, by T4 0.189, by T6 0.828; Brallin 4.229, by T6 0.933. Shabraz arrives later than Brallin on both lists; the gap narrowed from ~1.4 to ~0.8 turns and both commanders came earlier on v2.0.0. Q003/Q005's 5.253/4.256 are from an older build._
+- **Q010** tested — Context's line calling blue the thinner colour on v2.0.0 is contradicted by its own Numbers: on-curve colour is W 91 / U 96 / R 94 with rocks and W 0.831 / U 0.881 / R 0.839 lands-only ungated, so no colour is thin and this is a Context correction. → _supported: The Context's 'blue is the thinner colour' line contradicted its own Numbers (on-curve with rocks W 91 / U 96 / R 94); the sentence is rewritten to agree, with Sean's approval 2026-10-25._
+- **Q011** promoted — Sean's 'mana-starved round' in game 004 (or its neighbours) is separated into a land-count problem and a sequencing problem only by his own opening-hand log, because the stall-by-kept-land cut does not exist as a command.
 - 5 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list just changed and has not been played, so these are things to test, not swaps.
+The list has had one game (003), a slow one Sean could not explain, so these are things to test, not swaps.
+
+- Slow start on v2.0.0: Sean suspects either sequencing or the draw. Does the first commander land on turn four or five more often than it did on v1.3.0, and what was in hand when it did not? The Numbers section's colour-on-curve and land lines give the mana side; the deploy-turn read for the new list is missing, and it needs another game or two with a note of the opening hand.
 
 - Modal choice: does Shabraz-first, with Brallin as the pivot when Torbran or Gratuitous Violence arrives, put 21 on one defender more often than holding both commanders back? The goldfish can see the draws; it cannot see the table's removal.
 - Tutors: do Idyllic Tutor and Stoneforge Mystic find a line (a draw doubler, Gratuitous Violence, Embercleave) in real games, or do they sit as slow cards? Needs games.
-- Mana: does leaning red leave the blue spells (Tolarian Winds, Frantic Search, Negate, Teferi, Master of Time) uncastable on time? Needs games and the Numbers section's colour-on-curve line.
+- Mana (game 003 had a mana-starved round): the worry that leaning red strands the blue spells is closed. Q010 corrected it, because the Numbers section's colour-on-curve line has blue the most reliable and white the least. What stays open is Q011: Sean logs his opening hand, whether he kept it, and his lands by turn in game 004, so a land-count problem can be told from a sequencing problem.
 - Wheel count: with the wheels cut to a short list, does a kept seven have a commander and a way to cast it more often? Needs games and Sean's own count.
 - Protection: does Flawless Maneuver, free with a commander out, actually save a commander when a real table aims removal at one? Needs real games.
 - Wheel timing: does holding every full-hand wheel until a commander is out beat firing it early? Sean thinks yes; no games yet on this list.
@@ -270,3 +286,5 @@ The list just changed and has not been played, so these are things to test, not 
 - 2026-10-19 · Keeper · deck change: torbran-v1 merged as v1.3.0 (22 swaps; Torbran, the wheels that do something else, the answers)
 - 2026-10-21 · Keeper · pilot log 002: game two at Oliver's 2026-10-20 — too many wheels, wheels as finishers
 - 2026-10-24 · Keeper · deck change: voltron-v1 merged as v2.0.0
+- 2026-10-25 · Keeper · pilot log 003: first v2.0.0 game, slow, no removal seen, mana-starved one round
+- 2026-10-25 · Keeper · Q010: removed the claim that blue is the thinner colour (contradicted by Numbers); Q011 pending Sean's game 004 opening-hand log

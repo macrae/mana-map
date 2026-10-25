@@ -356,15 +356,15 @@
         "open_questions",
         "verifier"
       ],
-      "artifact_sha256": "47e8e72dc3ad2c09c6024b11ed33d86d83c725af7a969f8773754658ddd3af9a",
+      "artifact_sha256": "11c61c5b51057939e9038f399096caf8b79d5efbb5f5409ea6b06417d922dc54",
       "extra": {
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "38407d5ea259c0b6b0376d0c3781dccb013a65c3343cae23506f7abeba2acb5d",
+      "fingerprint": "b153e2241f3f420fa28ba8998b2e27537cc81c2ac9f5bc6dd6dc09b2f6301d23",
       "inputs": [
         {
           "path": "data/decks/sharknado/CONTEXT.md",
-          "sha256": "5feefda950e551bcb92b18936308b10afaad359a701b8618d9a65c3b08e37de9"
+          "sha256": "00f813243e511085980cca4d599753aeb1178ff9342cc7b53130d21e4d4b742a"
         },
         {
           "path": "data/decks/sharknado/benchmark.json",
@@ -384,7 +384,7 @@
         },
         {
           "path": "data/decks/sharknado/deckcheck.json",
-          "sha256": "3152cd97e865f5389957a786ee8c65917134681a8f7ad33ef71f21e7385b941d"
+          "sha256": "d3312f01a4d45dc410a13d2cd836b85bddb90d18a539c90d6c659265b689cb9f"
         },
         {
           "path": "data/decks/sharknado/diagnosis.json",
@@ -400,7 +400,7 @@
         },
         {
           "path": "data/decks/sharknado/log.jsonl",
-          "sha256": "2b7262f28ec1d9e83975733be42eff085a89f0d453f3b0845ae3ebbf99bb656d"
+          "sha256": "c3e458d33a03bb4f4a54da858ef745ee275dbceb18db85cafa4f8965065e26dd"
         },
         {
           "path": "data/decks/sharknado/log_annotations.json",
@@ -412,7 +412,7 @@
         },
         {
           "path": "data/decks/sharknado/rating.json!judgment,open_questions,verifier,iterations",
-          "sha256": "8c9844032719af4501f0c0a67a0df3a11d69335094de8b1b33e1d3acaa2a23d0"
+          "sha256": "e64b1890922ae2b5b4a3d5939f845542142a8eaa2ee0d750a6292fe5309c6962"
         },
         {
           "path": "data/decks/sharknado/stacks/001-windfall-brallin-base-line.json",
@@ -435,8 +435,20 @@
           "sha256": "3873aa864da4a62343dc61338e479c3fa15b77b4e04036111a30da7f121f7f72"
         },
         {
+          "path": "data/decks/sharknado/stacks/006-shabraz-kitsa-21-between-strikes.json",
+          "sha256": "dd0b43a0e627bd5c12e294ca651c9fd17fbd2275fc9e5ca40e5fe41acd69ae6f"
+        },
+        {
+          "path": "data/decks/sharknado/stacks/007-brallin-ping-three-replacements.json",
+          "sha256": "f8f85a326ca59e6cf51ce70571a49777d1375c3c2946b53d83981c682f0bdda8"
+        },
+        {
+          "path": "data/decks/sharknado/stacks/008-laezel-windfall-commander-counters.json",
+          "sha256": "9d81ab49fb9ceb713cfc5235f118bfc103e7d0425fb547e3a0528750bb9d91a9"
+        },
+        {
           "path": "data/fleet/analytics.json",
-          "sha256": "d3e5191eba75c1248e789f886bab38000ccc26933586bf93f79e335191dc70b6"
+          "sha256": "955573fd0a1a739778644e04c1a1d2dbffdf6cf677c5955d17570d0b02129404"
         },
         {
           "path": "src/manamap/pilot/rating.py",
@@ -976,6 +988,108 @@
         {
           "path": "data/decks/sharknado/stacks/005-torbran-spider-man-windfall-kill.json#scenario",
           "sha256": "3b36e63f4febaf8ea9a7fa6a72f8c88e57638287096969c1ab841110237b84b4"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:006": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/sharknado/stacks/006-shabraz-kitsa-21-between-strikes.json",
+      "artifact_sha256": "0e407f6d4219c35f54f083283fa4199062a16bdafe8773be216c2d146758983b",
+      "card_refs": [
+        "Brallin, Skyshark Rider",
+        "Command Tower",
+        "Fireshrieker",
+        "Kitsa, Otterball Elite",
+        "Mountain",
+        "Sacred Foundry",
+        "Shabraz, the Skyshark",
+        "Steam Vents"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "842278993fdd8fb8dcd776371730642ffc83c111c6dbd49dcb0cb8516c4e15fc",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "4f77129a9ad48313cabb6e2458fc15ec1396c40910d549523ec08e5277a54d60"
+      },
+      "fingerprint": "01ebd7a2cfee69787c90aa7edb7bfcb2fb2c5255b76eda92fa08262d09210606",
+      "inputs": [
+        {
+          "path": "data/decks/sharknado/stacks/006-shabraz-kitsa-21-between-strikes.json#scenario",
+          "sha256": "99802d2055a4ccb17a771177a2d383ed01044731d71d3d44bcaebcc050c66481"
+        }
+      ],
+      "iterations": 1,
+      "verdict": "pass"
+    },
+    "stack:007": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/sharknado/stacks/007-brallin-ping-three-replacements.json",
+      "artifact_sha256": "40f34093d2bca51ec1439b29a5508e4e25da71d73e2ea916ff7ea4662ba64cce",
+      "card_refs": [
+        "Brallin, Skyshark Rider",
+        "Command Tower",
+        "Fiery Emancipation",
+        "Gratuitous Violence",
+        "Kitsa, Otterball Elite",
+        "Mountain",
+        "Sacred Foundry",
+        "Steam Vents",
+        "Sulfur Falls",
+        "Torbran, Thane of Red Fell"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "842278993fdd8fb8dcd776371730642ffc83c111c6dbd49dcb0cb8516c4e15fc",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "520dd02e09ae4b83cec9bff2165584becd4cc3a02e37e47393ded6d09b5db856"
+      },
+      "fingerprint": "e8ec3af1dbcb047d00fbf1f217061037a40bc0a6279a1f430169d2cb75ea96cc",
+      "inputs": [
+        {
+          "path": "data/decks/sharknado/stacks/007-brallin-ping-three-replacements.json#scenario",
+          "sha256": "b5322289aed6900cac9b4d117de6c8f4598086b7ba536d74ffc0f801e38e1c83"
+        }
+      ],
+      "iterations": 2,
+      "verdict": "pass"
+    },
+    "stack:008": {
+      "agent": "stack-resolver+rules-checker",
+      "agent_prompt_sha256": "c4bf3f7af2b74ad516a697201ba92a17b530218d179c54717763c46af1dd705b",
+      "artifact": "data/decks/sharknado/stacks/008-laezel-windfall-commander-counters.json",
+      "artifact_sha256": "873dc17da75ce98bd363fde1c140868c0d9d0613290d4fb6b61ebc348e7385c8",
+      "card_refs": [
+        "Brallin, Skyshark Rider",
+        "Command Tower",
+        "Lae'zel, Vlaakith's Champion",
+        "Mountain",
+        "Negate",
+        "Sacred Foundry",
+        "Shabraz, the Skyshark",
+        "Shivan Reef",
+        "Silence",
+        "Sol Ring",
+        "Spirebluff Canal",
+        "Steam Vents",
+        "Sulfur Falls",
+        "Swords to Plowshares",
+        "Windfall"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "842278993fdd8fb8dcd776371730642ffc83c111c6dbd49dcb0cb8516c4e15fc",
+        "rules_version": "June 19, 2026",
+        "rulings_scenario": "f9b837a5470f76fd8e96c9dc7f33ebed9b9dd99851e132075eee55490397d9b5"
+      },
+      "fingerprint": "323fdc0b1e9ac0f4d48cf6c76b7ab56b7572a8702d89f5d3b8882461f239137c",
+      "inputs": [
+        {
+          "path": "data/decks/sharknado/stacks/008-laezel-windfall-commander-counters.json#scenario",
+          "sha256": "f904db99816a3926d6a378fb23c5cdc9b45b1695b38dbeb24cefdcd3e00344b6"
         }
       ],
       "iterations": 2,
