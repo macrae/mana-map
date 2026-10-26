@@ -519,3 +519,22 @@ def test_a_hint_may_name_an_open_branchs_card_but_not_a_decided_ones(tmp_path, m
     assert fp.validate_hints("d", hints) == []
     monkeypatch.setattr(deck_branch, "is_decided", lambda slug, b, doc=None: True)
     assert any("not in the 99 or an open branch" in e for e in fp.validate_hints("d", hints))
+
+
+def test_generate_accepts_a_floors_only_hints_file(tmp_path, monkeypatch):
+    """purphoros-pingers' file names two floors and no hints: `validate-forge-hints`
+    passed it and `forge-install --generate` refused it, because the generate loop
+    dropped the floors before validating (2026-10-25). Proven by removing the floors
+    from the call: the SystemExit returns."""
+    import types
+    from manamap.sim import forge_pilot as fp
+    monkeypatch.setattr(fp, "OVERRIDE_DIR", tmp_path)
+    monkeypatch.setattr(fp, "generate_overrides", lambda overridden: ([], []))
+    monkeypatch.setattr(fp, "generate_unflag", lambda names: [])
+    monkeypatch.setattr(fp, "unflag_list", lambda: [])
+    monkeypatch.setattr(fp, "hinted_decks", lambda: ["floors-only"])
+    monkeypatch.setattr(fp, "_hints_doc", lambda slug: {"hints": [], "floors": ["Grinning Ignus"]})
+    monkeypatch.setattr(fp, "generate_hints", lambda slug: [])
+    monkeypatch.setattr(fp, "unflag_candidates", lambda include_pods=False: [])
+    monkeypatch.setattr(fp, "render", lambda: [])
+    fp.main(types.SimpleNamespace(generate=True, verify=True, revert=False))

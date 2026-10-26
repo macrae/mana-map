@@ -149,3 +149,18 @@ def test_a_modal_wheel_cast_for_its_burn_is_not_a_wheel():
     with mock.patch.object(wt.board_series, "series", return_value={L: [
             {"global_turn": 5, "own_turn": 3, "commander_on_battlefield": True}]}):
         assert wt.per_game(shuffle, {}, L, {"Echo of Eons"})["wheels_cast"] == 1
+
+
+def test_an_instant_wheel_on_an_opponents_turn_reads_our_last_board(monkeypatch):
+    """Until 2026-10-25 only our own turns were looked up, so Tolarian Winds cast on an
+    opponent's turn read as "no commander" with Brallin out on both sides of it (run
+    caeeec41, one of the three misses behind the 86% seat-audit fail). Proven by
+    reverting `_board_at` to `own.get(t)`: the count drops to 0."""
+    monkeypatch.setattr(wt, "_wheeled", lambda *a: True)
+    monkeypatch.setattr(wt.board_series, "series", lambda game, cmd: {"1-us": [
+        {"global_turn": 1, "own_turn": 1, "commander_on_battlefield": True},
+        {"global_turn": 3, "own_turn": 2, "commander_on_battlefield": True}]})
+    game = {"events": [{"kind": "cast", "seat": "1-us", "what": "Tolarian Winds", "turn": 2}]}
+    row = wt.per_game(game, {}, "1-us", {"Tolarian Winds"})
+    assert row == {"first_wheel_turn": 1, "wheels_cast": 1, "wheels_with_commander": 1}
+    assert wt._board_at({}, 2) is None, "a wheel before our first turn has no board"

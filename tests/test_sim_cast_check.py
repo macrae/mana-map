@@ -105,12 +105,61 @@ def test_the_diagnosis_names_the_known_classes_on_the_real_scripts():
     assert {"x-priced-before-cost", "no-iscurse"} <= set(shipped["Toxic Deluge"])
     assert "no-iscurse" in shipped["Vish Kal, Blood Arbiter"]
     assert shipped["Altar of Dementia"] == ["removedeck-all", "no-ai-logic"]
-    assert shipped["Teferi's Protection"] == ["no-ai-logic"] and shipped["Deflecting Swat"] == ["no-ai-logic"]
+    assert shipped["Teferi's Protection"] == ["no-ai-logic"]
+    assert shipped["Deflecting Swat"] == ["no-ai-logic", "reactive"]
     assert shipped["Bastion of Remembrance"] == ["permanent-cast-priority"]
     assert shipped["Vein Ripper"] == ["unknown"], "a card with no defect says unknown, never guesses"
     d = cc.diagnose("Toxic Deluge")
     assert any("IsCurse" in r for r in d["remedies"]) and any("PumpAllAi" in r for r in d["remedies"])
     assert cc.diagnose("Not A Card")["classes"] == ["no-script"]
+
+
+def _script(monkeypatch, text):
+    from manamap.sim import forge_cards
+    monkeypatch.setattr(forge_cards, "script", lambda card, installed_copy=True: text)
+
+
+def test_an_authors_gate_is_named_with_the_drop_svars_remedy(monkeypatch):
+    """Wheel of Fortune read "no known class" with 0 casts in 5 drawn games (answers-v1,
+    2026-10-25): its script's NeedsToPlayVar (two or fewer other cards in hand) never
+    opened in the shell. Proven by deleting the SVar line: the class goes."""
+    wheel = ("Name:Wheel of Fortune\nTypes:Sorcery\n"
+             "A:SP$ Discard | Mode$ Hand | Defined$ Player | SubAbility$ DBEachDraw\n"
+             "SVar:NeedsToPlayVar:Y LE2\n")
+    _script(monkeypatch, wheel)
+    d = cc.diagnose("Wheel of Fortune")
+    assert d["classes"] == ["author-gate"]
+    assert any("drop_svars" in r and "Y LE2" in r for r in d["remedies"])
+    _script(monkeypatch, wheel.replace("SVar:NeedsToPlayVar:Y LE2\n", ""))
+    assert cc.diagnose("Wheel of Fortune")["classes"] == ["unknown"]
+
+
+@pytest.mark.parametrize("line,types,want", [
+    ("A:SP$ Counter | TargetType$ Spell | ValidTgts$ Card.nonCreature", "Instant", True),
+    ("A:SP$ Pump | ValidTgts$ Creature | KW$ Hexproof & Indestructible", "Instant", True),
+    ("A:SP$ Pump | ValidTgts$ Creature | NumAtt$ +3", "Instant", False),
+    ("A:SP$ Pump | ValidTgts$ Creature | KW$ Hexproof", "Sorcery", False),
+])
+def test_an_answer_only_card_is_reactive_and_a_pump_is_not(monkeypatch, line, types, want):
+    """Negate, Stubborn Denial, Loran's Escape and Deflecting Swat read HELD on
+    sharknado with nothing to answer (2026-10-25); a +3/+0 trick is not an answer."""
+    _script(monkeypatch, f"Name:X\nTypes:{types}\n{line}\n")
+    assert ("reactive" in cc.diagnose("X")["classes"]) is want
+
+
+def test_the_documented_limitations_replace_a_wrong_remedy(monkeypatch):
+    """Ghostly Pilferer's self-unblockable Effect was told to take the `Protection`
+    logic, which would cast it against a wipe; March's X phase-out had no class at all.
+    Both are documented limitations (the pilot's call, 2026-10-25), never patched."""
+    _script(monkeypatch, "Name:Ghostly Pilferer\nTypes:Creature Spirit Rogue\n"
+            "A:AB$ Effect | Cost$ Discard<1/Card> | RememberObjects$ Self | StaticAbilities$ Unblockable\n"
+            "SVar:Unblockable:Mode$ CantBlockBy | ValidAttacker$ Card.IsRemembered\n")
+    d = cc.diagnose("Ghostly Pilferer")
+    assert d["remedies"] == [cc.LIMITATIONS["self-unblockable-effect"]]
+    _script(monkeypatch, "Name:March of Swirling Mist\nTypes:Instant\n"
+            "A:SP$ Phases | ValidTgts$ Creature | TargetMax$ X\nSVar:X:Count$xPaid\n")
+    d = cc.diagnose("March of Swirling Mist")
+    assert cc.LIMITATIONS["phases-x"] in d["remedies"] and "reactive" in d["classes"]
 
 
 def test_cast_late_is_bastions_shape_and_played_needs_a_play():
@@ -365,3 +414,15 @@ def test_a_land_add_is_listed_and_never_proven_held_or_unproven(tmp_path, monkey
     with pytest.raises(SystemExit) as e:
         cc.main(argparse.Namespace(slug="d", branch="x", adds=True))
     assert "only lands" in str(e.value) and "lands not proven here (1): Command Beacon" in capsys.readouterr().out
+
+
+def test_our_own_gate_hint_is_not_an_authors_gate(monkeypatch):
+    """The first cut of `author-gate` fired on Incendiary Command's installed script,
+    whose only NeedsToPlay is OUR hint (2026-10-25). The class reads lines the SHIPPED
+    script carries."""
+    from manamap.sim import forge_cards
+    shipped = "Name:C\\nTypes:Sorcery\\nA:SP$ Charm | Choices$ A,B\\n"
+    installed = shipped + "SVar:NeedsToPlay:Creature.IsCommander+YouCtrl\\n"
+    monkeypatch.setattr(forge_cards, "script",
+                        lambda card, installed_copy=False: installed if installed_copy else shipped)
+    assert "author-gate" not in cc.diagnose("C")["classes"]

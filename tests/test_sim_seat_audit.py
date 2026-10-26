@@ -149,3 +149,31 @@ def test_an_experiment_at_a_pod_is_gated_like_simulate(monkeypatch):
     with pytest.raises(SystemExit, match="ran"):
         experiment.main(args)
     assert seen["seat_audit"] == {"verdict": "NOT", "anyway": True}
+
+
+def test_a_wheel_with_no_commander_gate_is_named_and_never_fails_the_seat(monkeypatch):
+    """Incendiary Command and Wheel of Fortune sat on their own rules until a hint said
+    otherwise, and only a dynamic 86% fail showed it (2026-10-25). Proven by gating the
+    second wheel: it leaves the list."""
+    wheel = "Each player discards their hand, then draws seven cards."
+    cards = [{"name": n, "type_line": "Sorcery", "cmc": 3, "mana_cost": "{2}{R}", "oracle_text": wheel}
+             for n in ("Wheel A", "Wheel B")]
+    monkeypatch.setattr(seat_audit, "_seat_doc", lambda slug: {"cards": cards})
+    monkeypatch.setattr(seat_audit, "_floors", lambda slug: [])
+    gate = "SVar:NeedsToPlay:Creature.IsCommander+YouCtrl\n"
+    _scripts(monkeypatch, {"Wheel A": "Name:Wheel A\n" + gate, "Wheel B": "Name:Wheel B\n"})
+    st = seat_audit.static_seat("x")
+    assert st["ungated_wheels"] == ["Wheel B"]
+    assert seat_audit._verdict("x", st, None, ours=True) == ("PILOTABLE", [])
+    _scripts(monkeypatch, {"Wheel A": "Name:Wheel A\n" + gate, "Wheel B": "Name:Wheel B\n" + gate})
+    assert seat_audit.static_seat("x")["ungated_wheels"] == []
+
+
+def test_a_held_card_is_marked_gated_or_reactive_and_a_plain_hold_is_not(monkeypatch):
+    _scripts(monkeypatch, {
+        "Gated Wheel": "Name:Gated Wheel\nTypes:Sorcery\nA:SP$ Discard | Mode$ Hand\n"
+                       "SVar:NeedsToPlay:Creature.IsCommander+YouCtrl\n",
+        "Negate": "Name:Negate\nTypes:Instant\nA:SP$ Counter | TargetType$ Spell\n",
+        "Plain": "Name:Plain\nTypes:Sorcery\nA:SP$ Draw | NumCards$ 2\n"})
+    assert seat_audit._held_marks(["Gated Wheel", "Negate", "Plain"]) == {
+        "Gated Wheel": ["gated"], "Negate": ["reactive"]}

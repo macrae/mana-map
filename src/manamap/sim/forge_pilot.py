@@ -824,7 +824,10 @@ def main(args=None):
         print(f"unflagged {len(unflagged)} card(s) the AI would never cast ({UNFLAG_FILE.name})")
         # PER-DECK HINTS LAST, so they layer on an unflag or an aim override.
         for slug in hinted_decks():
-            errs = validate_hints(slug, {"hints": hints_for(slug)})
+            # THE WHOLE FILE, floors included: a floors-only opponent file (purphoros-
+            # pingers) passed `validate-forge-hints` and was refused here, because this
+            # call dropped its floors (found 2026-10-25).
+            errs = validate_hints(slug, {"hints": hints_for(slug), "floors": floors_for(slug)})
             if errs:
                 raise SystemExit(f"{slug}/{HINTS_FILE}: " + "; ".join(errs))
             hinted = generate_hints(slug)

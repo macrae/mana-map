@@ -147,6 +147,25 @@ Three things changed here:
     anyway (March of Swirling Mist: `PhasesAi` never sets X). The audit reports a floor and
     never fails a seat for it.
 
+### Two limitations documented, not patched (2026-10-25)
+
+The pilot's call on sharknado's `answers-v1`: each would need a new Java logic class, and a
+patch moves the harness for every pod. Both are `floors` in sharknado's hints, and
+`cast_check.LIMITATIONS` gives the cast-check the same words.
+
+- **Ghostly Pilferer** — "Discard a card: this creature can't be blocked" is an `AB$ Effect`
+  on its own source (`RememberObjects$ Self`). Forge's `MakeUnblockable` logic targets and
+  `Evasion` wants two or more attackers, so the AI casts the creature and never uses the
+  outlet: the discards it would feed Brallin are absent from every run.
+- **March of Swirling Mist** — `PhasesAi` never chooses X.
+
+The cast-check now names three more shapes it used to call `unknown`: `author-gate` (a
+script's own `NeedsToPlay`/`NeedsToPlayVar`; Wheel of Fortune, fixed with `drop_svars`),
+`reactive` (counters, redirects, a protection pump, a phase-out — a HELD with nothing to
+answer is not a hold; opportunities are not counted yet) and `permanent-cast-priority`,
+whose remedy is now the `PlayMain1` hint rather than "no hint exists". The seat audit marks
+held cards `gated` or `reactive` and warns on a wheel with no commander gate.
+
 Every one of these is a HARNESS change: the overrides sha moves, every run under the old
 sha is a different instrument, and `pods --calibration` still excludes overridden runs
 (known-issue 17) — so a null for a table whose seats need overrides to be playable at all

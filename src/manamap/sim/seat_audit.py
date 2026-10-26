@@ -110,8 +110,24 @@ def static_seat(slug):
     return {"cards": len(names), "nonland": len(names) - len(lands),
             "flagged": sorted(flagged), "unfound": sorted(unfound),
             "gated": dict(sorted(gated.items())), "floors": floors,
+            "ungated_wheels": _ungated_wheels(doc, gated),
             "source": (doc or {}).get("source", "cards.json") if doc else "decklist only",
             "clean": not flagged and not unfound}
+
+
+def _commander_gated(gates):
+    return any(g.startswith("NeedsToPlay:") and "IsCommander" in g for g in gates or [])
+
+
+def _ungated_wheels(doc, gated):
+    """A wheel SPELL with no commander gate (2026-10-25): Incendiary Command and Wheel of
+    Fortune both fired, or sat, on their own rules until a hint said otherwise, and
+    nothing static said so — the first anyone knew was a dynamic fail at 86%. A WARNING,
+    never a fail: an opponent's list has no such rule, and ours may choose one."""
+    from manamap.sim import wheel_timing
+    if not doc or not doc.get("cards"):
+        return []
+    return sorted(n for n in wheel_timing.wheel_names(doc) if not _commander_gated(gated.get(n)))
 
 
 def _find_run(run_id):
@@ -162,6 +178,7 @@ def dynamic_seats(rec, texts, engine_by_slug=None):
                   "commander_resolved_rate": ca.get("resolved_rate"),
                   "commander_resolved_games": ca.get("games_resolved"),
                   "held_while_castable": held, "never_cast": never,
+                  "held_marks": _held_marks(held),
                   "engine": engine_rows}
     wt = rec.get("wheel_timing")
     if wt:
@@ -169,6 +186,26 @@ def dynamic_seats(rec, texts, engine_by_slug=None):
             "wheels_per_game": (wt["wheels_cast"]["mean_ci"] or {}).get("mean"),
             "with_commander": wt["wheels_with_commander"].get("rate"),
             "first_wheel_turn": (wt["first_wheel_turn"]["mean_ci"] or {}).get("mean")}
+    return out
+
+
+def _held_marks(held):
+    """Why a held card may not be a hold (2026-10-25): `gated` — its script waits for a
+    commander, and the castable count (lands only) ignores the gate, so some of those
+    turns had no commander to wait for; `reactive` — it answers something, and a table
+    with nothing to answer holds it. A LABEL, never a recount: recounting would change
+    `parse.hand_facts`, which every committed run record re-derives from."""
+    from manamap.sim import cast_check, forge_cards
+    out = {}
+    for n in held:
+        text = forge_cards.script(n, installed_copy=True) or ""
+        marks = []
+        if _commander_gated(f"{k}:{v.strip()}" for k, v in _GATE.findall(text)):
+            marks.append("gated")
+        if "reactive" in cast_check.diagnose(n)["classes"]:
+            marks.append("reactive")
+        if marks:
+            out[n] = marks
     return out
 
 
@@ -306,6 +343,9 @@ def _print(doc):
               f" · gated {len(st['gated'])}" + (f" · floors {len(st['floors'])}" if st["floors"] else ""))
         for w in r["why"]:
             print(f"      ! {w}")
+        if r["ours"] and st.get("ungated_wheels"):
+            print(f"      ~ wheel(s) with no commander gate: {', '.join(st['ungated_wheels'])} "
+                  f"(a warning: add a NeedsToPlay hint if the pilot's rule applies)")
         dy = r.get("dynamic")
         if dy:
             cr = dy.get("commander_resolved_rate")
@@ -314,7 +354,10 @@ def _print(doc):
                   + (f" · wheels {dy['wheel_timing']['wheels_per_game']}/game, "
                      f"{dy['wheel_timing']['with_commander']:.0%} with a commander" if dy.get("wheel_timing") else ""))
             if dy["held_while_castable"]:
-                print(f"      held: {', '.join(dy['held_while_castable'][:8])}")
+                marks = dy.get("held_marks") or {}
+                print("      held: " + ", ".join(
+                    n + (f" [{'/'.join(marks[n])}]" if n in marks else "")
+                    for n in dy["held_while_castable"][:8]))
     print(f"\n  {doc['verdict']} — " + ("every seat can be piloted under the definition above"
                                          if doc["verdict"] == "PILOTABLE" else
                                          "fix the seats named, or the run does not happen"))

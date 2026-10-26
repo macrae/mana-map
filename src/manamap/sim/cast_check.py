@@ -104,6 +104,34 @@ _NEEDS_LOGIC = {
 }
 
 
+#: Shapes Forge's AI cannot play and the harness does not patch, documented rather than
+#: fixed (2026-10-25, the pilot's call): each would be a new Java logic class, and a patch
+#: moves the harness sha for every pod. A card in one of these is a FLOOR in any run.
+LIMITATIONS = {
+    "self-unblockable-effect": (
+        "KNOWN LIMITATION, not patched (2026-10-25): an `AB$ Effect` that makes its own source "
+        "unblockable (Ghostly Pilferer's 'Discard a card') has no AILogic that fits — Forge's "
+        "MakeUnblockable logic targets, and Evasion wants two or more attackers. The AI casts the "
+        "creature and never uses the outlet, so the discards it would feed (Brallin) are absent "
+        "from every run; a new EffectAi logic would be a patch every pod pays for"),
+    "phases-x": (
+        "KNOWN LIMITATION, not patched (2026-10-25): PhasesAi never chooses X, so an X phase-out "
+        "(March of Swirling Mist) is never cast for value; the card is a floor in any run"),
+}
+
+#: The answer-only shapes: they wait for something to answer, so a hold can be an empty
+#: table. Counter and ChangeTargets by API; a Pump or Protection that grants a keyword
+#: which only matters against removal; and a phase-out.
+_REACTIVE_KW = re.compile(r"KW\$ [^|]*(Hexproof|Indestructible|Shroud|Protection)")
+
+
+def _reactive(api, rest, types):
+    if api in ("Counter", "ChangeTargets", "Phases"):
+        return True
+    return api in ("Pump", "PumpAll", "Protection") and "Instant" in types and bool(
+        _REACTIVE_KW.search(rest) or api == "Protection")
+
+
 #: The AI classes the patch set has taught to price X from a cost, by API. Read against
 #: the INSTALLED jar's registered classes, so a jar without the patch reports the defect.
 _X_PATCH = {"Pump": "PumpAi.java"}
@@ -157,15 +185,43 @@ def diagnose(card, installed_copy=True):
         need = _NEEDS_LOGIC.get(api)
         if need and "AILogic$" not in rest and (need[0] is None or need[0] in cost):
             classes.append("no-ai-logic")
-            remedies.append(f"ai_logic hint on `{prefix}`: {need[1]}")
+            if api == "Effect" and "RememberObjects$ Self" in rest and "CantBlockBy" in text:
+                # Ghostly Pilferer (2026-10-25): a self-unblockable Effect paid by a
+                # discard. `Protection` is the wrong remedy for it, and no shipped
+                # AILogic fits — the 55 `MakeUnblockable` abilities all target.
+                remedies.append(LIMITATIONS["self-unblockable-effect"])
+            else:
+                remedies.append(f"ai_logic hint on `{prefix}`: {need[1]}")
+        if api == "Phases" and x is not None:
+            classes.append("no-ai-logic")
+            remedies.append(LIMITATIONS["phases-x"])
+        if _reactive(api, rest, types):
+            classes.append("reactive")
+            remedies.append("fires only in answer to something — an opponent's spell to counter or "
+                            "redirect, a threat to a creature of ours — so HELD in a two-seat shell, or at "
+                            "a table whose removal does not target, can mean NOTHING TO ANSWER rather than "
+                            "a held card. Opportunities are not counted yet: re-test with `--vs` a deck "
+                            "that targets us before reading it as a defect")
     if not abilities and re.search(r"\b(Enchantment|Artifact)\b", types) and "Creature" not in types:
         # a cheap do-nothing-now permanent: the AI casts it after every creature in hand
         classes.append("permanent-cast-priority")
-        remedies.append("NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only "
-                        "(MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], "
-                        "Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can "
-                        "delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every "
-                        "deck affected — not done) or accept the lateness and judge the card knowing it")
+        remedies.append("svars {\"PlayMain1\": \"TRUE\"} in forge_hints.json — the permanent AI then casts it in "
+                        "the first main phase instead of after every creature in hand (Smothering Tithe, Teferi and "
+                        "Jeskai Ascendancy on sharknado; `AICastPreference` cannot do it, it only delays a cast)")
+    shipped = text if not installed_copy else (forge_cards.script(card, installed_copy=False) or "")
+    gates = [g for g in re.finditer(r"^SVar:(NeedsToPlay(?:Var)?):(.+)$", text, re.M)
+             if g.group(0) in shipped.splitlines()]
+    if gates:
+        # The card's AUTHOR gated it: NeedsToPlayVar counts something (Wheel of Fortune:
+        # two or fewer other cards in hand) and the cast waits until it holds. Found
+        # 2026-10-25 when Wheel of Fortune read "no known class" with 0 casts in 5 games.
+        # Only a line the SHIPPED script carries: our own NeedsToPlay hint is the rule,
+        # not a defect, and a dropped author's gate is gone from the installed copy.
+        classes.append("author-gate")
+        gate = gates[0]
+        remedies.append(f"the script's own {gate.group(1)} ({gate.group(2).strip()}) holds the cast until it is "
+                        f"met — if it never opens, `drop_svars: [\"{gate.group(1)}\"]` in forge_hints.json, "
+                        f"with a NeedsToPlay of the deck's own rule in its place (Reforge the Soul, Wheel of Fortune)")
     return {"script": {"abilities": [p for p, _, _ in abilities], "apis": sorted({a for _, a, _ in abilities}),
                        "x": x, "types": types.strip(), "ai_flag": flag,
                        "is_curse": any("IsCurse$" in r for _, _, r in abilities) if abilities else None,

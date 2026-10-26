@@ -43,7 +43,9 @@ LIMITS = [
     "engine_casts.",
     "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander "
     "cast after the wheel on the same turn reads as present, one removed on the same "
-    "turn reads as absent — the log has no mid-turn board. A floor, labelled one.",
+    "turn reads as absent — the log has no mid-turn board. A floor, labelled one. "
+    "An instant wheel cast on an OPPONENT's turn reads our latest own-turn cleanup "
+    "board before it (since 2026-10-25).",
     "The kept seven is NOT in the log: the telemetry's zone lines start with turn 1's "
     "draw. The pilot's marks carry the keep question.",
     "Forge's AI fires a wheel on its own rule, so these are counts about the LIST at "
@@ -109,6 +111,18 @@ def _wheeled(events, i, label, name):
     return False
 
 
+def _board_at(own, t):
+    """Our seat's board for global turn `t`: that turn's own cleanup row, or for an
+    instant cast on an OPPONENT's turn, our latest own-turn row before it. Until
+    2026-10-25 only own turns were looked up, so Tolarian Winds cast on an opponent's
+    turn read as "no commander" with Brallin on the table both turns either side
+    (run caeeec41: one of the three misses that failed the seat audit at 86%)."""
+    if t in own:
+        return own[t]
+    before = [g for g in own if g <= t]
+    return own[max(before)] if before else None
+
+
 def per_game(game, commanders, label, wheels):
     """One row for our seat in one parsed game."""
     rows = board_series.series(game, commanders).get(label) or []
@@ -122,9 +136,12 @@ def per_game(game, commanders, label, wheels):
             continue
         if _wheeled(events, i, label, _clean(ev.get("what"))):
             cast_turns.append(ev["turn"])
-    with_cmd = sum(1 for t in cast_turns if own.get(t, {}).get("commander_on_battlefield"))
+    with_cmd = sum(1 for t in cast_turns
+                   if (_board_at(own, t) or {}).get("commander_on_battlefield"))
     first = min(cast_turns) if cast_turns else None
-    return {"first_wheel_turn": own_turn.get(first) if first is not None else None,
+    first_row = _board_at(own, first) if first is not None else None
+    return {"first_wheel_turn": own_turn.get(first, (first_row or {}).get("own_turn"))
+            if first is not None else None,
             "wheels_cast": len(cast_turns),
             "wheels_with_commander": with_cmd}
 

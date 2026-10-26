@@ -1,5 +1,5 @@
 {
-  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one. 2026-10-22: equip-on-commander and attack hints (EquipMe, HasAttackEffect, AttachAi) for the voltron branch; Brotherhood Regalia (a restricted second Equip keyword) and Lizard Blades (Reconfigure ignores AttachAi) rely on the commanders' EquipMe.",
+  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one. 2026-10-22: equip-on-commander and attack hints (EquipMe, HasAttackEffect, AttachAi) for the voltron branch; Brotherhood Regalia (a restricted second Equip keyword) and Lizard Blades (Reconfigure ignores AttachAi) rely on the commanders' EquipMe. 2026-10-25: Wheel of Fortune (commander gate, author's NeedsToPlayVar dropped), Incendiary Command (commander gate on the whole card, the pilot's call) and Jeskai Ascendancy (PlayMain1) for answers-v1 and the seat-audit fail. Same date: hints for five cards no longer in the 99 or an open branch (Echo of Eons, Magus of the Wheel, Molten Psyche, Swiftfoot Boots, Thought Vessel) removed — the gate had failed on them since they were cut; git history keeps them.",
   "hints": [
     {
       "card": "Windfall",
@@ -18,16 +18,6 @@
         "NeedsToPlay": "Creature.IsCommander+YouCtrl"
       },
       "why": "the same hold; a two-mana early wheel is the exact play the pilot called wrong",
-      "cites": [
-        "log 002"
-      ]
-    },
-    {
-      "card": "Magus of the Wheel",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "the activated wheel waits for a commander too; NeedsToPlay gates abilities as well as spells",
       "cites": [
         "log 002"
       ]
@@ -56,13 +46,29 @@
       ]
     },
     {
-      "card": "Echo of Eons",
+      "card": "Wheel of Fortune",
       "svars": {
         "NeedsToPlay": "Creature.IsCommander+YouCtrl"
       },
-      "why": "a refill, held for a commander like the rest; its own Timetwister logic (hand under three) stays and ANDs with the gate",
+      "drop_svars": [
+        "NeedsToPlayVar"
+      ],
+      "why": "the author's gate (NeedsToPlayVar Y LE2: two or fewer other cards in hand) never opened in the shell — drawn in 5 games, cast 0, held castable 10 turns on answers-v1 (2026-10-25 cast proof); dropped as for Reforge the Soul, the commander gate is the rule",
       "cites": [
-        "log 002"
+        "log 002",
+        "answers-v1 cast_proofs.json 2026-10-25"
+      ]
+    },
+    {
+      "card": "Incendiary Command",
+      "svars": {
+        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
+      },
+      "why": "its wheel mode fired twice with no commander out at olivers-table-3p (run caeeec41), two of the three misses behind the 86% seat-audit fail. NeedsToPlay gates the whole card, so its burn and sweep modes wait for a commander too: the pilot accepted that cost 2026-10-25",
+      "cites": [
+        "log 002",
+        "run caeeec41 seat audit",
+        "Sean 2026-10-25"
       ]
     },
     {
@@ -73,6 +79,16 @@
       "why": "a noncreature permanent with no ETB is held behind creatures by the permanent AI (held 119 castable turns at V6); Torbran ships PlayMain1 for the same reason",
       "cites": [
         "V6 engine_casts"
+      ]
+    },
+    {
+      "card": "Jeskai Ascendancy",
+      "svars": {
+        "PlayMain1": "TRUE"
+      },
+      "why": "a noncreature permanent with no ETB is held behind creatures by the permanent AI — castable and uncast 6 turns on answers-v1 (2026-10-25 cast proof, flagged permanent-cast-priority); the same fix Smothering Tithe and Teferi carry",
+      "cites": [
+        "answers-v1 cast_proofs.json 2026-10-25"
       ]
     },
     {
@@ -136,16 +152,6 @@
       ]
     },
     {
-      "card": "Molten Psyche",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "the same run: 1 of 3 fired with no commander out; the author's gate (our hand two or fewer) stays and ANDs with the commander gate",
-      "cites": [
-        "olivers-table n20 e9cc7abe ov86dd61c1"
-      ]
-    },
-    {
       "card": "Izzet Signet",
       "svars": {
         "PlayMain1": "TRUE"
@@ -167,16 +173,6 @@
     },
     {
       "card": "Talisman of Creativity",
-      "svars": {
-        "PlayMain1": "TRUE"
-      },
-      "why": "finisher-v1 adds it (2026-10-21): the A/B of the deck against the branch must pilot both arms under the same rules, and the champion's Arcane Signet and Sol Ring carry PlayMain1 — a rock is cast before combat",
-      "cites": [
-        "branch finisher-v1"
-      ]
-    },
-    {
-      "card": "Thought Vessel",
       "svars": {
         "PlayMain1": "TRUE"
       },
@@ -277,17 +273,6 @@
       ]
     },
     {
-      "card": "Swiftfoot Boots",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
       "card": "Zephyr Boots",
       "svars": {
         "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
@@ -310,6 +295,7 @@
     }
   ],
   "floors": [
+    "Ghostly Pilferer",
     "March of Swirling Mist"
   ]
 }
