@@ -210667,17 +210667,17 @@
     "first_wheel_turn": {
       "mean_ci": {
         "mean": 6.86,
-        "median": 7.0,
+        "median": 7,
         "min": 2,
         "max": 14,
-        "n": 100,
+        "n": 101,
         "ci95": [
-          6.33,
+          6.34,
           7.39
         ]
       },
-      "games_with_a_wheel": 100,
-      "never": 100
+      "games_with_a_wheel": 101,
+      "never": 99
     },
     "wheels_cast": {
       "mean_ci": {
@@ -210724,7 +210724,7 @@
         "wheels_with_commander": 2
       },
       {
-        "first_wheel_turn": null,
+        "first_wheel_turn": 7,
         "wheels_cast": 1,
         "wheels_with_commander": 0
       },
@@ -211706,9 +211706,1088 @@
     ],
     "limits": [
       "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card by the face that wheels); a discard wheel those readers cannot parse is not counted, and a cast counts only when our seat DISCARDED before it resolved (a modal card cast for its burn modes is not a wheel). Activated wheels (Kayla, Magus, Archivist) are not casts and are in engine_casts.",
-      "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander cast after the wheel on the same turn reads as present, one removed on the same turn reads as absent — the log has no mid-turn board. A floor, labelled one.",
+      "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander cast after the wheel on the same turn reads as present, one removed on the same turn reads as absent — the log has no mid-turn board. A floor, labelled one. An instant wheel cast on an OPPONENT's turn reads our latest own-turn cleanup board before it (since 2026-10-25).",
       "The kept seven is NOT in the log: the telemetry's zone lines start with turn 1's draw. The pilot's marks carry the keep question.",
       "Forge's AI fires a wheel on its own rule, so these are counts about the LIST at this table, never about the pilot's hold."
+    ]
+  },
+  "answers": {
+    "seat": "sharknado",
+    "games": 200,
+    "since": "2026-10-21",
+    "cards": {
+      "Kefnet the Mindful": [
+        "protection"
+      ],
+      "Lightning Greaves": [
+        "protection"
+      ],
+      "Negate": [
+        "answer",
+        "counter"
+      ],
+      "Nimble Obstructionist": [
+        "answer",
+        "counter"
+      ],
+      "Shelter": [
+        "protection"
+      ],
+      "Swiftfoot Boots": [
+        "protection"
+      ],
+      "Swords to Plowshares": [
+        "answer"
+      ]
+    },
+    "answers_cast": {
+      "mean_ci": {
+        "mean": 0.37,
+        "median": 0.0,
+        "min": 0,
+        "max": 2,
+        "n": 200,
+        "ci95": [
+          0.29,
+          0.45
+        ]
+      },
+      "total": 74
+    },
+    "counters_cast": {
+      "mean_ci": {
+        "mean": 0.12,
+        "median": 0.0,
+        "min": 0,
+        "max": 2,
+        "n": 200,
+        "ci95": [
+          0.07,
+          0.17
+        ]
+      },
+      "total": 24
+    },
+    "protection_cast": {
+      "mean_ci": {
+        "mean": 1.4,
+        "median": 1.0,
+        "min": 0,
+        "max": 6,
+        "n": 200,
+        "ci95": [
+          1.2,
+          1.59
+        ]
+      },
+      "total": 279
+    },
+    "per_game": [
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 5
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 5
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 5
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 6
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 1,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 1
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 0,
+        "protection_cast": 0
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 4
+      },
+      {
+        "answers_cast": 2,
+        "counters_cast": 2,
+        "protection_cast": 2
+      },
+      {
+        "answers_cast": 1,
+        "counters_cast": 1,
+        "protection_cast": 3
+      },
+      {
+        "answers_cast": 0,
+        "counters_cast": 0,
+        "protection_cast": 2
+      }
+    ],
+    "limits": [
+      "A class is the corpus role (data/card_roles.json): answer = spot, bounce, sweeper, edict, fight, tax removal or a counterspell, plus damage removal on a noncreature card; protection = any protection:* role. A card the role patterns do not classify is in no class.",
+      "Counts CASTS and ACTIVATIONS — the AI choosing to interact — never whether the answer hit the right threat.",
+      "An equip activation of Greaves or Boots counts as protection: it is the AI moving its shroud onto a creature."
     ]
   }
 }

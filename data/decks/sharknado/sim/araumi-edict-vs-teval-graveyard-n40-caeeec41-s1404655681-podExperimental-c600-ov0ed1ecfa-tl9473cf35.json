@@ -10592,12 +10592,12 @@
       "total": 22
     },
     "wheels_with_commander": {
-      "k": 19,
+      "k": 20,
       "n": 22,
-      "rate": 0.8636,
+      "rate": 0.9091,
       "ci95": [
-        0.6666,
-        0.9525
+        0.7218,
+        0.9747
       ]
     },
     "per_game": [
@@ -10624,7 +10624,7 @@
       {
         "first_wheel_turn": 3,
         "wheels_cast": 2,
-        "wheels_with_commander": 0
+        "wheels_with_commander": 1
       },
       {
         "first_wheel_turn": null,
@@ -10804,7 +10804,7 @@
     ],
     "limits": [
       "A wheel is a SPELL the goldfish's readers call one (wheel_draws; a split card by the face that wheels); a discard wheel those readers cannot parse is not counted, and a cast counts only when our seat DISCARDED before it resolved (a modal card cast for its burn modes is not a wheel). Activated wheels (Kayla, Magus, Archivist) are not casts and are in engine_casts.",
-      "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander cast after the wheel on the same turn reads as present, one removed on the same turn reads as absent — the log has no mid-turn board. A floor, labelled one.",
+      "`wheels_with_commander` reads the CLEANUP board of the cast's own turn: a commander cast after the wheel on the same turn reads as present, one removed on the same turn reads as absent — the log has no mid-turn board. A floor, labelled one. An instant wheel cast on an OPPONENT's turn reads our latest own-turn cleanup board before it (since 2026-10-25).",
       "The kept seven is NOT in the log: the telemetry's zone lines start with turn 1's draw. The pilot's marks carry the keep question.",
       "Forge's AI fires a wheel on its own rule, so these are counts about the LIST at this table, never about the pilot's hold."
     ]
@@ -35739,8 +35739,7 @@
     "Seats are Forge AIs on both sides — including YOUR deck. A result is AI-vs-AI, never pilot-vs-pod.",
     "Two turn counts: `round` is the winner's own turn count (Forge's `Game Outcome: Turn N`), `global_turn` is the game's last `Turn:` line — in a 4-seat game round 8 is global turn ~32. Measured on a 2-seat log: Outcome Turn 8, last Turn: line 16.",
     "A game past Forge's `-c` clock IS a draw — Forge calls `setGameOver(Draw)` — but it prints a `has won` line for every surviving seat, so a naive parse credits one of them. Such games are now recorded `truncated: true` with no winner and are EXCLUDED from the win rate; `summary.truncated` and `summary.decided` report how many. A truncated game is also not byte-reproducible: Forge interrupts the accounting but not the AI thread, so the outcome lines are a snapshot of a game still being mutated.",
-    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest.",
-    "sharknado's strategic frame calls it \"Jeskai partner MODAL VOLTRON with an each-opponent ping engine riding underneath: two commanders that grow off card flow (Shabraz +1/+1 and 1 life per card drawn, flying; Brallin +1/+1 and 1 damage to each opponent per card discarded), cashed as one double-striking evasive hit for 21 commander damage at ONE seat, chosen by the board. Four wheels plus four wheel-modal spells are finishers cast with a commander out, not ignition. Commander-RELIANT (strategy:deckbuilding.archetype-selection): there is no payoff in the 99 that wins without one of the two. Bracket floor 3 on exactly three Game Changers (Jeska's Will, Rhystic Study, Smothering Tithe; bracket_report.json), zero contained combo lines (deck-facts), so the deck sits at the B3 Game Changer cap with no combo headroom.\" — read the AI caveat against that."
+    "A JOB is capped at clock x games x 1.5 + 120s of wall time. Forge's `-c` only ends the game's accounting, not its AI thread — two tracked 20-game runs took 3.7 and 4.2 HOURS with 95% of the wall claimed by no game. A killed job's finished games are kept; `truncated_jobs` names the rest."
   ],
   "logs": "sim/logs/araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35/ (gitignored; regenerate by re-running)"
 }
