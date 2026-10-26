@@ -1,0 +1,617 @@
+{
+ "id": "009",
+ "slug": "sphinx-wheel-cleanup-kill",
+ "deck": "sharknado",
+ "title": "Wheel of Fortune under Consecrated Sphinx: forty-two extra cards for Shabraz, then the cleanup discard fires Brallin forty-two times",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Shabraz, the Skyshark (3/3, no counters; your commander)",
+    "Brallin, Skyshark Rider (3/3, no counters; your commander)",
+    "Consecrated Sphinx (4/6)",
+    "Command Tower",
+    "Steam Vents",
+    "Sacred Foundry",
+    "Sulfur Falls",
+    "Mountain",
+    "Island",
+    "Spirebluff Canal",
+    "Shivan Reef",
+    "Hallowed Fountain"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5"
+     ],
+     "hand_size": 4,
+     "library_size": 52
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x4"
+     ],
+     "hand_size": 3,
+     "library_size": 61
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x6"
+     ],
+     "hand_size": 2,
+     "library_size": 47
+    }
+   ]
+  },
+  "hand": [],
+  "mana_available": "{0} (all nine lands are tapped: Wheel of Fortune and earlier spells this turn)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Wheel of Fortune — 'Each player discards their hand, then draws seven cards.'",
+    "controller": "you",
+    "note": "cast from your hand in your precombat main phase; it was your last card, so your hand is empty"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn, precombat main phase. Nobody responds to anything. Your library holds 60 cards, so no draw comes from an empty library. You choose to draw for every Consecrated Sphinx trigger. After everything from Wheel of Fortune has resolved you take no further actions: no spells, no attack, you pass priority with an empty stack through each remaining step and phase until the cleanup step. You have no effect that changes your maximum hand size. Each opponent's life is unchanged until Brallin's triggers resolve. Each opponent's library holds well over seven cards (52, 61 and 47), so no opponent draws from an empty library during Wheel of Fortune.",
+   "assumptions": [
+    "No player has a replacement effect on drawing, discarding or damage.",
+    "The cards you draw are not relevant to the answer except as a count."
+   ]
+  },
+  "question": "(a) After Wheel of Fortune and every trigger it causes have resolved, how many cards have you drawn, how many cards are in your hand, and what are Shabraz's counters and power/toughness? (b) In your cleanup step, how many cards do you discard, how much damage does Brallin deal to each opponent, does any opponent lose, and what happens to the cleanup step once Brallin's triggers exist?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Nobody responds; all players pass with Wheel of Fortune on the stack, so it resolves. Its instructions are followed in order: first, each player discards their hand.",
+    "effect": "You have an empty hand, so you discard nothing and Brallin's 'Whenever you discard a card' does not trigger (no event matches). The opponents discard 4, 3 and 2 cards. Brallin triggers only on YOUR discards, so their discards trigger nothing.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Wheel of Fortune continues: each player draws seven cards.",
+    "effect": "The draws are individual card draws, one at a time: you perform 7 draws and the opponents perform 7 each, 21 opponent draws in all. Your library (60) is large enough; you have 53 left after this.",
+    "citations": [
+     {
+      "rule": "121.2",
+      "quote": "Cards may only be drawn one at a time. If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "121.1",
+      "quote": "A player draws a card by putting the top card of their library into their hand."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Triggers during Wheel's resolution: Shabraz ('Whenever you draw a card') triggers once per card you drew; Consecrated Sphinx ('Whenever an opponent draws a card') triggers once per card each opponent drew.",
+    "effect": "Each card drawn is its own draw (121.2, step 2), so each is a separate trigger event: Shabraz triggers 7 times; Consecrated Sphinx triggers 21 times (7 per opponent). The official Sphinx ruling agrees: it triggers once for each card an opponent draws. None of these go on the stack yet: they wait until Wheel has finished resolving and a player would next receive priority. Wheel then goes to your graveyard.",
+    "citations": [
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs."
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "Before you (active player) receive priority after Wheel resolves, state-based actions are checked, then the 28 waiting triggers are put on the stack.",
+    "effect": "No state-based action applies. The only one Wheel could cause is a draw from an empty library: the scenario gives the opponents' libraries as 52, 61 and 47 cards, so each draws all seven from cards that exist (leaving 45, 54 and 40), and your 60-card library leaves 53. No player was required to draw more cards than their library held (104.3c) or attempted a draw from an empty library (704.5b), so no one loses here and all three opponents remain in the game; no later step makes an opponent draw (Sphinx's draws are yours). All 28 triggers (7 Shabraz, 21 Sphinx) are controlled by you, because you control both sources; you put them on the stack in any order you choose. The order does not change the totals. Then you receive priority.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.5b",
+      "quote": "If a player attempted to draw a card from a library with no cards in it since the last time state-based actions were checked, that player loses the game."
+     },
+     {
+      "rule": "104.3c",
+      "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority. (This is a state-based action. See rule 704.)"
+     },
+     {
+      "rule": "603.3a",
+      "quote": "A triggered ability is controlled by the player who controlled its source at the time it triggered"
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Each Shabraz trigger resolves (nobody responds): put a +1/+1 counter on Shabraz and you gain 1 life.",
+    "effect": "Each resolution adds one +1/+1 counter (+1/+1 in layer 7c) and 1 life.",
+    "citations": [
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "613.4c",
+      "quote": "Layer 7c: Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+     },
+     {
+      "rule": "119.3",
+      "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Each Consecrated Sphinx trigger resolves; you choose to draw two cards each time (the scenario's stated choice).",
+    "effect": "Each resolution is two individual draws (121.2), so two separate 'you draw a card' events, and Shabraz triggers once for each: twice per Sphinx trigger. Those two Shabraz triggers go on the stack (on top) the next time a player would receive priority, i.e. right after the Sphinx trigger finishes resolving, and resolve as in step 5. Your own draws do not trigger Sphinx (it reads 'an opponent draws'), so there is no loop. 21 Sphinx triggers x 2 = 42 cards, and 42 more Shabraz triggers. Per the official ruling you may draw two or none, never one.",
+    "citations": [
+     {
+      "rule": "121.2",
+      "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs."
+     },
+     {
+      "rule": "603.3",
+      "quote": "The ability becomes the topmost object on the stack."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Tally once the stack is empty after every Wheel-caused trigger (answer to (a)).",
+    "effect": "Cards drawn: 7 (Wheel) + 42 (Sphinx) = 49. Hand: 0 + 49 = 49 cards. Shabraz: 49 Shabraz triggers resolved, so 49 +1/+1 counters, 3/3 becomes 52/52. You gained 49 life (your starting life is not given by the scenario). Library 60 - 49 = 11, so no empty-library loss. Brallin unchanged (3/3, no counters); opponents unchanged at 40.",
+    "citations": [
+     {
+      "rule": "122.1a",
+      "quote": "adds X to that object’s power and Y to that object’s toughness"
+     },
+     {
+      "rule": "104.3c",
+      "quote": "If a player is required to draw more cards than are left in their library, they draw the remaining cards and then lose the game the next time a player would receive priority."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "You take no further actions: all players pass with an empty stack in each remaining step and phase until the cleanup step.",
+    "effect": "Each step or phase ends when all players pass in succession with the stack empty; nothing happens in between. Precombat main ends; in combat you declare no attackers, so the declare blockers and combat damage steps are skipped (508.8) and combat runs beginning of combat, declare attackers, end of combat; then postcombat main and the end step pass the same way.",
+    "citations": [
+     {
+      "rule": "500.2",
+      "quote": "A phase or step in which players receive priority ends when the stack is empty and all players pass in succession."
+     },
+     {
+      "rule": "405.5",
+      "quote": "If the stack is empty when all players pass, the current step or phase ends and the next begins."
+     },
+     {
+      "rule": "508.8",
+      "quote": "If no creatures are declared as attackers or put onto the battlefield attacking, skip the declare blockers and combat damage steps."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Cleanup step, turn-based action: discard to maximum hand size.",
+    "effect": "Your maximum hand size is seven (no effect changes it); you hold 49, so you discard 42 cards, leaving 7. This turn-based action does not use the stack, but it is a discard: Brallin ('Whenever you discard a card') triggers once per card discarded, 42 times, from this one event.",
+    "citations": [
+     {
+      "rule": "514.1",
+      "quote": "First, if the active player’s hand contains more cards than their maximum hand size (normally seven), they discard enough cards to reduce their hand size to that number. This turn-based action doesn’t use the stack."
+     },
+     {
+      "rule": "402.2",
+      "quote": "Each player has a maximum hand size, which is normally seven cards."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "Cleanup continues: 514.2 (damage removed, 'until end of turn' effects end; nothing relevant), then the 514.3a check finds 42 waiting triggers.",
+    "effect": "Because triggered abilities are waiting, the cleanup step is no longer priority-less: the 42 Brallin triggers are put on the stack (you order them; they are identical) and you, the active player, get priority. Players may cast spells and activate abilities. Had there been no triggers, no one would have received priority and the step would simply end. Once that stack empties and all players pass, the cleanup step does not end the turn: another cleanup step begins (514.1 again with 7 in hand: no discard, no triggers, so no priority and the turn would end). Here the game ends during the first cleanup step's priority window (step 12), so the second cleanup never happens.",
+    "citations": [
+     {
+      "rule": "514.2",
+      "quote": "Second, the following actions happen simultaneously: all damage marked on permanents (including phased-out permanents) is removed and all “until end of turn” and “this turn” effects end."
+     },
+     {
+      "rule": "514.3a",
+      "quote": "At this point, the game checks to see if any state-based actions would be performed and/or any triggered abilities are waiting to be put onto the stack (including those that trigger “at the beginning of the next cleanup step”). If so, those state-based actions are performed, then those triggered abilities are put on the stack, then the active player gets priority."
+     },
+     {
+      "rule": "704.3",
+      "quote": "This process also occurs during the cleanup step (see rule 514), except that if no state-based actions are performed as the result of the step’s first check and no triggered abilities are waiting to be put on the stack, then no player gets priority and the step ends."
+     },
+     {
+      "rule": "514.3a",
+      "quote": "Once the stack is empty and all players pass in succession, another cleanup step begins."
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "Brallin triggers resolve one at a time (all players pass between each): put a +1/+1 counter on Brallin and Brallin deals 1 damage to each opponent.",
+    "effect": "Each resolution: 1 damage to EACH of the three opponents (1 per seat, 3 across the pod) and one counter on Brallin (one counter per resolution regardless of how many opponents are dealt damage, per the official ruling). Damage to a player is life loss. After k resolutions each opponent is at 40 - k. This is noncombat damage, so it is not commander damage; it kills through life total only.",
+    "citations": [
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "903.10a",
+      "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     }
+    ]
+   },
+   {
+    "n": 12,
+    "action": "State-based actions after the 40th Brallin trigger resolves, before you would receive priority.",
+    "effect": "All three opponents are at 0 life. They all lose simultaneously as one state-based action and leave the game; their objects leave with them. You are the only player remaining, so you win immediately. It is not a draw: not all remaining players lost. The two remaining Brallin triggers never resolve. Brallin finishes at 40 counters (43/43); each opponent was dealt 40 (120 across the pod), not the 42 per seat the triggers would have dealt.",
+    "citations": [
+     {
+      "rule": "704.5a",
+      "quote": "If a player has 0 or less life, that player loses the game."
+     },
+     {
+      "rule": "704.3",
+      "quote": "then performs all applicable state-based actions simultaneously as a single event"
+     },
+     {
+      "rule": "104.5",
+      "quote": "If a player loses the game, that player leaves the game."
+     },
+     {
+      "rule": "800.4a",
+      "quote": "When a player leaves the game, all objects (see rule 109) owned by that player leave the game"
+     },
+     {
+      "rule": "104.2a",
+      "quote": "A player still in the game wins the game if that player’s opponents have all left the game. This happens immediately and overrides all effects that would preclude that player from winning the game."
+     },
+     {
+      "rule": "104.4a",
+      "quote": "If all the players remaining in a game lose simultaneously, the game is a draw."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "(a) After Wheel and its triggers: 49 cards drawn (7 + 21 Sphinx triggers x 2), 49 in hand, Shabraz 49 +1/+1 counters = 52/52, you +49 life. (b) Cleanup discards 42 (49 down to 7), triggering Brallin 42 times; the triggers force a priority window in cleanup (514.3a). Each trigger deals 1 to each opponent; after the 40th all three are at 0, lose simultaneously by SBA, and you win. Each opponent was dealt 40 (pod 120); the last 2 triggers never resolve. Had the game continued, another cleanup step would follow (514.3a). No opponent decked: libraries 52/61/47 cover Wheel's seven draws.",
+   "you": {
+    "result": "wins the game",
+    "hand": 7,
+    "life_change": "+49 (starting life not given)",
+    "library": 11,
+    "graveyard_adds": "Wheel of Fortune + 42 discarded cards",
+    "Shabraz": "49 +1/+1 counters, 52/52",
+    "Brallin": "40 +1/+1 counters, 43/43 (2 triggers left unresolved)",
+    "Consecrated Sphinx": "4/6 unchanged"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 0,
+     "damage_from_brallin": 40,
+     "result": "lost (704.5a), left the game"
+    },
+    {
+     "seat": "opponent_2",
+     "life": 0,
+     "damage_from_brallin": 40,
+     "result": "lost (704.5a), left the game"
+    },
+    {
+     "seat": "opponent_3",
+     "life": 0,
+     "damage_from_brallin": 40,
+     "result": "lost (704.5a), left the game"
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "No discard of yours happens (empty hand), so Brallin cannot trigger; opponents' discards don't match 'you discard'. Oracle text checked in answers-v1 cards.json."
+   },
+   {
+    "step": 2,
+    "rule": "121.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "121.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Once per card drawn; matches the 2017-11-17 Sphinx ruling ('The ability triggers once for each card an opponent draws.')."
+   },
+   {
+    "step": 3,
+    "rule": "603.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "704.5b",
+    "status": "supported",
+    "note": "Round-1 null-step finding addressed: scenario now gives opponent libraries 52/61/47; 45/54/40 remain after Wheel's seven draws (arithmetic checked). No empty-library draw, so no SBA loss."
+   },
+   {
+    "step": 4,
+    "rule": "104.3c",
+    "status": "supported",
+    "note": "Now cited at the right step and established by the scenario's stated library sizes: no player is required to draw more cards than remain."
+   },
+   {
+    "step": 4,
+    "rule": "603.3a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "All 28 have a non-'ability-triggering' trigger condition, so first-part ordering; you are the only controller (APNAP trivial)."
+   },
+   {
+    "step": 5,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "613.4c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "119.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "121.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Round-1 note addressed: the quote is now the rule's first sentence. Under 121.2 the two Sphinx draws are separate events, each triggering Shabraz once. Matches the Sphinx ruling: two or none, chosen as each resolves."
+   },
+   {
+    "step": 6,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Shabraz triggers go on top after each Sphinx trigger resolves; totals are order-independent."
+   },
+   {
+    "step": 7,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "49 counters on oracle 3/3 = 52/52; hand 49; life +49; library 60-7-42=11. Arithmetic checks."
+   },
+   {
+    "step": 7,
+    "rule": "104.3c",
+    "status": "supported",
+    "note": "Your library: 49 draws from 60, no shortfall."
+   },
+   {
+    "step": 8,
+    "rule": "500.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "508.8",
+    "status": "supported",
+    "note": "Round-1 note addressed: the skipped declare-blockers and combat-damage steps are now named and cited verbatim."
+   },
+   {
+    "step": 9,
+    "rule": "514.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "402.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "One turn-based discard of 42 cards is one event with 42 occurrences (same shape as the rule's destroy-all-lands example); the second sentence is the right one here. The Brallin ruling about discards during resolution does not apply to a turn-based action."
+   },
+   {
+    "step": 10,
+    "rule": "514.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 10,
+    "rule": "514.3a",
+    "status": "supported",
+    "note": "Both quotes accurate. The second-cleanup counterfactual (7 in hand, no discard, no triggers, no priority) is correct and is now folded into step 10 (round-1 step 13 no longer exists)."
+   },
+   {
+    "step": 10,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Cleanup exception quoted correctly; triggers are waiting, so the active player gets priority."
+   },
+   {
+    "step": 10,
+    "rule": "514.3a",
+    "status": "supported",
+    "note": "Both quotes accurate. The second-cleanup counterfactual (7 in hand, no discard, no triggers, no priority) is correct and is now folded into step 10 (round-1 step 13 no longer exists)."
+   },
+   {
+    "step": 11,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 11,
+    "rule": "903.10a",
+    "status": "supported",
+    "note": "Supports 'noncombat, so not commander damage' via its 'combat damage' wording."
+   },
+   {
+    "step": 11,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "One counter per resolution matches the 2020-04-17 Brallin ruling ('only one +1/+1 counter each time it resolves, no matter how many opponents are dealt damage')."
+   },
+   {
+    "step": 12,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "40 - 40 = 0 for each seat after the 40th resolution. Per seat 40, pod 120, kept apart correctly."
+   },
+   {
+    "step": 12,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 12,
+    "rule": "104.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 12,
+    "rule": "800.4a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 12,
+    "rule": "104.2a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 12,
+    "rule": "104.4a",
+    "status": "supported",
+    "note": "Used correctly to rule out a draw: you remain in the game."
+   }
+  ],
+  "summary": "Round 2. validate-stack: contract holds (warnings only: Consecrated Sphinx and Hallowed Fountain are not in the maindeck, expected as they are on branch answers-v1, where they and Wheel of Fortune are present with oracle text matching every step; 42 citations against a budget of 40). Every citation (32 distinct rule ids, 42 step-rule pairs) was fetched with lookup-rule and judged against the full text; all supported. Round-1 fail (104.3c, opponents' library sizes unstated) is resolved: scenario gives 52/61/47 and step 4 now establishes no empty-library loss. Round-1 notes resolved: step 6 quotes 603.2c's first sentence; step 8 cites 508.8. WotC rulings for Sphinx (2017-11-17), Brallin and Shabraz (2020-04-17) agree with every step; Wheel of Fortune and Sulfur Falls have no official rulings (present but empty, not absent). No sibling figure is quoted (scenario-facts: no sibling is like-for-like). Per-seat 40 and pod 120 are kept separate. Missing-step audit (priority 117, SBAs 704 after each resolution and in cleanup, trigger placement 603.3b, combat skips 508.8, cleanup 514.1-514.3a, game end 104.2a/104.4a/800.4a): nothing missing. Tool note: scenario-facts' opponents block does not echo library_size, so the field was read from the stack file directly.",
+  "iterations": 2
+ }
+}
