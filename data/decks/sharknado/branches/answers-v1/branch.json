@@ -1,7 +1,7 @@
 {
  "slug": "sharknado",
  "branch": "answers-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-10-25",
  "why": "The pilot, 2026-10-25: raise DeckCheck's DTI from 41 by fixing the weaknesses found after game 003 and DeckCheck's roast. One clean answer in the 99 (Swords), one counterspell (Negate), nothing for an enchantment, a planeswalker (Narset, Parter of Veils shuts off the wheels) or a graveyard; three basics, all Mountains, with red and white short of their land targets (engine.json mana stage R34/U23/W19 vs R36/U22/W22). Forge read the cost of the voltron merge: interaction cast per game 0.376 -> 0.167, [-0.287, -0.132], olivers-table. Objective: get it back. The DTI is the pilot's aim and is never the grade.",
  "objective": {
@@ -169,6 +169,13 @@
    "in": "Consecrated Sphinx",
    "strength": null,
    "why": "Sean: two cards per opponent draw, ~42 on an all-player wheel with Shabraz out; Helm's protection is covered by Greaves, Regalia, Robe"
+  },
+  {
+   "at": "2026-10-26",
+   "out": "Jeska's Will",
+   "in": "Magmakin Artillerist",
+   "strength": null,
+   "why": "Jeska's Will is a 4th Game Changer (floor 4 with Consecrated Sphinx); Artillerist scales every wheel discard into damage to each opponent, doubling Brallin"
   }
  ],
  "objective_history": [
@@ -183,5 +190,50 @@
    },
    "why_changed": "The pilot, 2026-10-25: Purphoros taken out of Oliver's table (as a stand-in it won 25 of 40 in run c0f7e15a and dealt 70.5 noncombat damage a game, eliminating sharknado 18 times), so the objective moves to olivers-table-3p. The 0.38 level came from the four-player table and is revisited against the v2.0.0 baseline on the new one."
   }
- ]
+ ],
+ "proposal": {
+  "at": "2026-10-26",
+  "as_version": "v2.1.0",
+  "why": "answers-v1: interaction and standing draw for the voltron shell \u2014 counters, removal, protection and card engines in for slow equipment and filler; Jeska's Will out for Magmakin Artillerist to hold three Game Changers (bracket 3); 19 swaps",
+  "base_version": 9,
+  "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+  "accepted_on": {
+   "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+   "state": "inconclusive",
+   "objective": {
+    "axis": "forge.interaction_cast",
+    "op": ">=",
+    "pod": "olivers-table-3p",
+    "value": 0.38,
+    "why": "The pilot, 2026-10-25: Purphoros taken out of Oliver's table (as a stand-in it won 25 of 40 in run c0f7e15a and dealt 70.5 noncombat damage a game, eliminating sharknado 18 times), so the objective moves to olivers-table-3p. The 0.38 level came from the four-player table and is revisited against the v2.0.0 baseline on the new one."
+   },
+   "grade": "not measured",
+   "reading": null,
+   "harness": {
+    "cast_proofs": null,
+    "iterations": 10000,
+    "model_version": "d4d357389cfd",
+    "seed": 20260826
+   }
+  },
+  "proxy": [
+   "Chaos Warp",
+   "Consecrated Sphinx",
+   "Deflecting Swat",
+   "Faerie Mastermind",
+   "Mystic Remora",
+   "Otawara, Soaring City",
+   "Stubborn Denial"
+  ],
+  "procurement": {
+   "at": "2026-10-26",
+   "note": "printed proxies sleeved 2026-10-26; unowned cards to order"
+  }
+ },
+ "merged": {
+  "at": "2026-10-26",
+  "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+  "into_version_before": null,
+  "forced_reason": "played on printed proxies sleeved 2026-10-26; the unowned cards are on the order list"
+ }
 }

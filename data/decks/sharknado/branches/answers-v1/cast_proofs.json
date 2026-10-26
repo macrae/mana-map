@@ -1,9 +1,9 @@
 {
   "slug": "sharknado",
   "branch": "answers-v1",
-  "as_of": "2026-10-25",
+  "as_of": "2026-10-26",
   "harness": {
-    "overrides": "0ed1ecfa5e1b",
+    "overrides": "ecdad552212b",
     "patches": "9473cf359146",
     "forge": {
       "version": "2.0.14",
@@ -22,19 +22,19 @@
   },
   "cards": {
     "Chaos Warp": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 3,
-      "drawn": 3,
-      "cast": 3,
+      "drawn_games": 4,
+      "drawn": 5,
+      "cast": 5,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
-      "castable_uncast_turns": 0,
-      "held_at_end_games": 2,
-      "held_castable_games": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict": "PLAYED: cast 5 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 2 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -73,19 +73,19 @@
       "vs": "giada-angels"
     },
     "Consecrated Sphinx": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 4,
-      "drawn": 5,
-      "cast": 1,
+      "drawn_games": 5,
+      "drawn": 8,
+      "cast": 2,
       "activated": 0,
       "triggered": 0,
-      "discarded": 3,
+      "discarded": 5,
       "castable_uncast_turns": 1,
-      "held_at_end_games": 1,
+      "held_at_end_games": 2,
       "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 1 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 0 across 5 drawn game(s); held castable and uncast on 1 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -120,25 +120,25 @@
       "vs": "giada-angels"
     },
     "Deflecting Swat": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 3,
+      "drawn_games": 5,
       "drawn": 5,
       "cast": 0,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
-      "castable_uncast_turns": 13,
-      "held_at_end_games": 3,
-      "held_castable_games": 3,
+      "castable_uncast_turns": 3,
+      "held_at_end_games": 5,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "HELD: in hand in 3 game(s), castable and uncast on 13 own turn(s) across 3 game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch",
+      "verdict": "HELD: in hand in 5 game(s), castable and uncast on 3 own turn(s) across 1 game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch",
       "verdict_word": "HELD",
       "classes": [
-        "unknown"
+        "reactive"
       ],
       "remedies": [
-        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+        "fires only in answer to something — an opponent's spell to counter or redirect, a threat to a creature of ours — so HELD in a two-seat shell, or at a table whose removal does not target, can mean NOTHING TO ANSWER rather than a held card. Opportunities are not counted yet: re-test with `--vs` a deck that targets us before reading it as a defect"
       ],
       "script": {
         "abilities": [
@@ -173,7 +173,7 @@
       "vs": "giada-angels"
     },
     "Faerie Mastermind": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
       "drawn_games": 6,
       "drawn": 10,
@@ -224,19 +224,19 @@
       "vs": "giada-angels"
     },
     "Get Lost": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
       "drawn_games": 4,
-      "drawn": 4,
-      "cast": 4,
+      "drawn": 5,
+      "cast": 5,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
-      "castable_uncast_turns": 1,
+      "castable_uncast_turns": 2,
       "held_at_end_games": 2,
-      "held_castable_games": 1,
+      "held_castable_games": 2,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 4 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict": "PLAYED: cast 5 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 2 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -275,11 +275,11 @@
       "vs": "giada-angels"
     },
     "Ghostly Pilferer": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 4,
-      "drawn": 7,
-      "cast": 6,
+      "drawn_games": 5,
+      "drawn": 8,
+      "cast": 7,
       "activated": 0,
       "triggered": 8,
       "discarded": 1,
@@ -287,13 +287,13 @@
       "held_at_end_games": 1,
       "held_castable_games": 0,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 6 / activated 0 / triggered 8 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict": "PLAYED: cast 7 / activated 0 / triggered 8 across 5 drawn game(s); held castable and uncast on 0 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "no-ai-logic"
       ],
       "remedies": [
-        "ai_logic hint on `AB$ Effect`: Protection (data/forge_patches/EffectAi.java): cast against a wipe, removal on the commander, a lethal spell or lethal combat"
+        "KNOWN LIMITATION, not patched (2026-10-25): an `AB$ Effect` that makes its own source unblockable (Ghostly Pilferer's 'Discard a card') has no AILogic that fits — Forge's MakeUnblockable logic targets, and Evasion wants two or more attackers. The AI casts the creature and never uses the outlet, so the discards it would feed (Brallin) are absent from every run; a new EffectAi logic would be a patch every pod pays for"
       ],
       "script": {
         "abilities": [
@@ -326,19 +326,19 @@
       "vs": "giada-angels"
     },
     "Grand Abolisher": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 2,
-      "drawn": 3,
-      "cast": 3,
+      "drawn_games": 4,
+      "drawn": 5,
+      "cast": 4,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
       "castable_uncast_turns": 0,
-      "held_at_end_games": 0,
+      "held_at_end_games": 1,
       "held_castable_games": 0,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 2 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict": "PLAYED: cast 4 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -373,19 +373,19 @@
       "vs": "giada-angels"
     },
     "Izzet Charm": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
       "drawn_games": 4,
-      "drawn": 8,
-      "cast": 7,
+      "drawn": 6,
+      "cast": 6,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
-      "castable_uncast_turns": 7,
-      "held_at_end_games": 2,
-      "held_castable_games": 4,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 7 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 7 own turn(s)",
+      "verdict": "PLAYED: cast 6 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 2 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -425,25 +425,25 @@
       "vs": "giada-angels"
     },
     "Jeskai Ascendancy": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 4,
-      "drawn": 4,
-      "cast": 2,
+      "drawn_games": 5,
+      "drawn": 5,
+      "cast": 4,
       "activated": 0,
-      "triggered": 8,
+      "triggered": 18,
       "discarded": 1,
-      "castable_uncast_turns": 6,
+      "castable_uncast_turns": 1,
       "held_at_end_games": 2,
-      "held_castable_games": 3,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 2 / activated 0 / triggered 8 across 4 drawn game(s); held castable and uncast on 6 own turn(s)",
+      "verdict": "PLAYED: cast 4 / activated 0 / triggered 18 across 5 drawn game(s); held castable and uncast on 1 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "permanent-cast-priority"
       ],
       "remedies": [
-        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+        "svars {\"PlayMain1\": \"TRUE\"} in forge_hints.json — the permanent AI then casts it in the first main phase instead of after every creature in hand (Smothering Tithe, Teferi and Jeskai Ascendancy on sharknado; `AICastPreference` cannot do it, it only delays a cast)"
       ],
       "script": {
         "abilities": [],
@@ -474,19 +474,19 @@
       "vs": "giada-angels"
     },
     "Ledger Shredder": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
       "drawn_games": 3,
       "drawn": 4,
-      "cast": 3,
+      "cast": 4,
       "activated": 0,
-      "triggered": 0,
+      "triggered": 2,
       "discarded": 0,
       "castable_uncast_turns": 0,
       "held_at_end_games": 1,
       "held_castable_games": 0,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict": "PLAYED: cast 4 / activated 0 / triggered 2 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -520,20 +520,67 @@
       },
       "vs": "giada-angels"
     },
-    "Mary Read and Anne Bonny": {
-      "as_of": "2026-10-25",
+    "Magmakin Artillerist": {
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 4,
+      "drawn_games": 3,
       "drawn": 5,
-      "cast": 4,
-      "activated": 7,
-      "triggered": 2,
-      "discarded": 1,
-      "castable_uncast_turns": 5,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 1,
+      "discarded": 0,
+      "castable_uncast_turns": 3,
       "held_at_end_games": 3,
-      "held_castable_games": 2,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 4 / activated 7 / triggered 2 across 4 drawn game(s); held castable and uncast on 5 own turn(s)",
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 1 across 3 drawn game(s); held castable and uncast on 3 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": "TriggerCount$Amount",
+        "types": "Creature Elemental Pirate",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Mary Read and Anne Bonny": {
+      "as_of": "2026-10-26",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 6,
+      "cast": 5,
+      "activated": 10,
+      "triggered": 3,
+      "discarded": 1,
+      "castable_uncast_turns": 6,
+      "held_at_end_games": 3,
+      "held_castable_games": 3,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 5 / activated 10 / triggered 3 across 5 drawn game(s); held castable and uncast on 6 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -573,7 +620,7 @@
       "vs": "giada-angels"
     },
     "Mystic Remora": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
       "drawn_games": 3,
       "drawn": 3,
@@ -591,7 +638,7 @@
         "permanent-cast-priority"
       ],
       "remedies": [
-        "NO HINT EXISTS (read 2026-10-01): `AICastPreference` is a set of DON'T-CAST conditions only (MustHaveInHand, MaxControlled[Globally|WithoutOppAuras], NumManaSources[NextTurn], Never/AlwaysCastIfLife{Below,Above}, OnlyFromZone — 9 cards in the corpus use it), so it can delay a cast and never hasten one. Either patch the AI's spell ORDERING (AiController, every deck affected — not done) or accept the lateness and judge the card knowing it"
+        "svars {\"PlayMain1\": \"TRUE\"} in forge_hints.json — the permanent AI then casts it in the first main phase instead of after every creature in hand (Smothering Tithe, Teferi and Jeskai Ascendancy on sharknado; `AICastPreference` cannot do it, it only delays a cast)"
       ],
       "script": {
         "abilities": [],
@@ -620,25 +667,25 @@
       "vs": "giada-angels"
     },
     "Robe of Stars": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 5,
-      "drawn": 6,
-      "cast": 4,
-      "activated": 2,
+      "drawn_games": 6,
+      "drawn": 8,
+      "cast": 8,
+      "activated": 0,
       "triggered": 0,
-      "discarded": 1,
+      "discarded": 0,
       "castable_uncast_turns": 0,
-      "held_at_end_games": 0,
+      "held_at_end_games": 2,
       "held_castable_games": 0,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 4 / activated 2 / triggered 0 across 5 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict": "PLAYED: cast 8 / activated 0 / triggered 0 across 6 drawn game(s); held castable and uncast on 0 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
-        "unknown"
+        "reactive"
       ],
       "remedies": [
-        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+        "fires only in answer to something — an opponent's spell to counter or redirect, a threat to a creature of ours — so HELD in a two-seat shell, or at a table whose removal does not target, can mean NOTHING TO ANSWER rather than a held card. Opportunities are not counted yet: re-test with `--vs` a deck that targets us before reading it as a defect"
       ],
       "script": {
         "abilities": [
@@ -671,19 +718,19 @@
       "vs": "giada-angels"
     },
     "Shu Yun, the Silent Tempest": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 4,
-      "drawn": 5,
-      "cast": 2,
+      "drawn_games": 3,
+      "drawn": 6,
+      "cast": 3,
       "activated": 0,
-      "triggered": 14,
-      "discarded": 1,
-      "castable_uncast_turns": 5,
+      "triggered": 16,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
       "held_at_end_games": 3,
       "held_castable_games": 2,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 2 / activated 0 / triggered 14 across 4 drawn game(s); held castable and uncast on 5 own turn(s)",
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 16 across 3 drawn game(s); held castable and uncast on 2 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -720,25 +767,25 @@
       "vs": "giada-angels"
     },
     "Stubborn Denial": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 5,
-      "drawn": 6,
-      "cast": 1,
+      "drawn_games": 4,
+      "drawn": 4,
+      "cast": 0,
       "activated": 0,
       "triggered": 0,
-      "discarded": 1,
-      "castable_uncast_turns": 17,
-      "held_at_end_games": 5,
+      "discarded": 0,
+      "castable_uncast_turns": 7,
+      "held_at_end_games": 4,
       "held_castable_games": 3,
       "timeouts": 0,
-      "verdict": "CAST-LATE: cast 1 / activated 0 in 5 drawn game(s) while castable and uncast on 17 own turn(s) — the AI plays it behind everything else; a FLOOR",
-      "verdict_word": "CAST-LATE",
+      "verdict": "HELD: in hand in 4 game(s), castable and uncast on 7 own turn(s) across 3 game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch",
+      "verdict_word": "HELD",
       "classes": [
-        "unknown"
+        "reactive"
       ],
       "remedies": [
-        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+        "fires only in answer to something — an opponent's spell to counter or redirect, a threat to a creature of ours — so HELD in a two-seat shell, or at a table whose removal does not target, can mean NOTHING TO ANSWER rather than a held card. Opportunities are not counted yet: re-test with `--vs` a deck that targets us before reading it as a defect"
       ],
       "script": {
         "abilities": [
@@ -771,19 +818,19 @@
       "vs": "giada-angels"
     },
     "Wheel of Fortune": {
-      "as_of": "2026-10-25",
+      "as_of": "2026-10-26",
       "games": 8,
-      "drawn_games": 5,
-      "drawn": 6,
+      "drawn_games": 3,
+      "drawn": 4,
       "cast": 0,
       "activated": 0,
       "triggered": 0,
       "discarded": 0,
-      "castable_uncast_turns": 10,
-      "held_at_end_games": 5,
-      "held_castable_games": 3,
+      "castable_uncast_turns": 9,
+      "held_at_end_games": 3,
+      "held_castable_games": 1,
       "timeouts": 0,
-      "verdict": "HELD: in hand in 5 game(s), castable and uncast on 10 own turn(s) across 3 game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch",
+      "verdict": "HELD: in hand in 3 game(s), castable and uncast on 9 own turn(s) across 1 game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch",
       "verdict_word": "HELD",
       "classes": [
         "unknown"

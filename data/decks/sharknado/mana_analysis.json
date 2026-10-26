@@ -1,23 +1,23 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+  "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
   "model_version": "d4d357389cfd",
   "lands": {
     "total": 36,
     "entries": 34,
     "life": {
       "recurring_per_tap_cycle": 6,
-      "one_time_on_entry": 4
+      "one_time_on_entry": 6
     },
     "enters_tapped": 14,
-    "enters_tapped_always": 5,
+    "enters_tapped_always": 4,
     "classes": {
       "basic": 3,
       "fixing": 7,
       "mdfc": 3,
       "tapped": 14,
-      "untapped-dual": 18,
-      "utility": 9
+      "untapped-dual": 17,
+      "utility": 10
     },
     "list": [
       {
@@ -90,17 +90,6 @@
         ]
       },
       {
-        "name": "Ferrous Lake",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "R",
-          "U"
-        ]
-      },
-      {
         "name": "Fiery Islet",
         "copies": 1,
         "classes": [
@@ -145,6 +134,17 @@
         ],
         "produces": [
           "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Hallowed Fountain",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "U",
           "W"
         ]
       },
@@ -230,6 +230,16 @@
           "R",
           "U",
           "W"
+        ]
+      },
+      {
+        "name": "Otawara, Soaring City",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": [
+          "U"
         ]
       },
       {
@@ -396,17 +406,6 @@
         ]
       },
       {
-        "name": "Thundering Falls",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "U"
-        ]
-      },
-      {
         "name": "Training Center",
         "copies": 1,
         "classes": [
@@ -421,30 +420,29 @@
   },
   "sources": {
     "lands": {
-      "W": 19,
+      "W": 20,
       "U": 23,
       "B": 0,
-      "R": 34,
+      "R": 32,
       "G": 0
     },
     "nonland": {
-      "W": 3,
+      "W": 2,
       "U": 5,
       "B": 0,
-      "R": 6,
+      "R": 4,
       "G": 0
     },
     "total": {
       "W": 22,
       "U": 28,
       "B": 0,
-      "R": 40,
+      "R": 36,
       "G": 0
     },
     "gated": {
-      "count": 3,
+      "count": 2,
       "names": [
-        "Ferrous Lake",
         "Opal Palace",
         "Talon Gates of Madara"
       ],
@@ -480,14 +478,6 @@
         ]
       },
       {
-        "name": "Jeska's Will",
-        "kind": "ramp:ritual",
-        "cmc": 3.0,
-        "produces": [
-          "R"
-        ]
-      },
-      {
         "name": "Sol Ring",
         "kind": "ramp:rock",
         "cmc": 1.0,
@@ -503,15 +493,6 @@
         ]
       },
       {
-        "name": "Talisman of Conviction",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
-        "produces": [
-          "R",
-          "W"
-        ]
-      },
-      {
         "name": "Talisman of Creativity",
         "kind": "ramp:rock",
         "cmc": 2.0,
@@ -524,39 +505,39 @@
   },
   "pips": {
     "R": {
-      "total_pips": 37.0,
+      "total_pips": 39.0,
       "max_pips": 3,
-      "cards": 24,
+      "cards": 26,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "U": {
-      "total_pips": 20.0,
+      "total_pips": 30.0,
       "max_pips": 2,
-      "cards": 17,
+      "cards": 26,
       "earliest_turn": 1,
       "effective_pips": 1
     },
     "W": {
-      "total_pips": 15.0,
+      "total_pips": 19.0,
       "max_pips": 2,
-      "cards": 14,
+      "cards": 17,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "R": {
-      "pip_share": 0.514,
-      "source_share": 0.447
+      "pip_share": 0.443,
+      "source_share": 0.427
     },
     "U": {
-      "pip_share": 0.278,
-      "source_share": 0.303
+      "pip_share": 0.341,
+      "source_share": 0.307
     },
     "W": {
-      "pip_share": 0.208,
-      "source_share": 0.25
+      "pip_share": 0.216,
+      "source_share": 0.267
     }
   },
   "source_targets": {
@@ -566,50 +547,49 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.866,
+      "W": 0.881,
       "U": 0.918,
-      "R": 0.882
+      "R": 0.855
     },
     "with_rocks_and_dorks": {
       "W": 0.907,
       "U": 0.957,
-      "R": 0.942
+      "R": 0.906
     },
     "lands_only_ungated": {
-      "W": 0.831,
-      "U": 0.881,
-      "R": 0.839
+      "W": 0.849,
+      "U": 0.895,
+      "R": 0.822
     }
   },
   "ramp": {
     "ramp:cost-reduction": 3,
-    "ramp:ritual": 1,
-    "ramp:rock": 7
+    "ramp:rock": 6
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.748,
+      "10": 0.774,
       "2": 0.997,
-      "3": 0.903,
-      "4": 0.789,
-      "5": 0.702,
-      "6": 0.7,
-      "7": 0.738,
-      "8": 0.768,
-      "9": 0.766
+      "3": 0.9,
+      "4": 0.798,
+      "5": 0.708,
+      "6": 0.711,
+      "7": 0.767,
+      "8": 0.793,
+      "9": 0.788
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 10.413,
-      "2": 2.141,
-      "3": 3.546,
-      "4": 4.431,
-      "5": 5.251,
-      "6": 6.119,
-      "7": 7.121,
-      "8": 8.22,
-      "9": 9.305
+      "10": 10.423,
+      "2": 2.144,
+      "3": 3.505,
+      "4": 4.389,
+      "5": 5.192,
+      "6": 6.032,
+      "7": 7.041,
+      "8": 8.155,
+      "9": 9.272
     }
   },
   "assumptions": [
@@ -619,8 +599,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 34 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 40.",
-    "W: 19 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
+    "R: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 36.",
+    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
     "14 of 36 lands enter tapped (39%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
