@@ -3,10 +3,14 @@
   "at": "2026-10-25",
   "since": "2026-10-21",
   "harness": {
-    "overrides": "0ed1ecfa5e1b",
+    "overrides": "ecdad552212b",
     "telemetry": ""
   },
-  "run": null,
+  "run": {
+    "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35",
+    "games": 40,
+    "logs_read": 4
+  },
   "definition": {
     "static": [
       "no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's overrides",
@@ -35,6 +39,9 @@
           "Fateful Showdown": [
             "NeedsToPlay:Creature.IsCommander+YouCtrl"
           ],
+          "Incendiary Command": [
+            "NeedsToPlay:Creature.IsCommander+YouCtrl"
+          ],
           "Jace's Archivist": [
             "NeedsToPlay:Creature.IsCommander+YouCtrl"
           ],
@@ -53,12 +60,85 @@
           ]
         },
         "floors": [
+          "Ghostly Pilferer",
           "March of Swirling Mist"
+        ],
+        "ungated_wheels": [
+          "Collective Defiance"
         ],
         "source": "cards.json",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 40,
+        "commander_resolved_rate": 0.95,
+        "commander_resolved_games": 38,
+        "held_while_castable": [
+          "Bard, King of Dale",
+          "Boros Charm",
+          "Jace's Archivist",
+          "Knowledge Is Power",
+          "March of Swirling Mist",
+          "Negate",
+          "Teferi's Ageless Insight",
+          "Tolarian Winds",
+          "Windfall"
+        ],
+        "never_cast": [
+          "Bard, King of Dale",
+          "Battlefield Forge",
+          "Boros Charm",
+          "City of Brass",
+          "Clifftop Retreat",
+          "Ferrous Lake",
+          "Frostboil Snarl",
+          "Gemstone Caverns",
+          "Hengegate Pathway",
+          "Inspiring Vantage",
+          "Mana Confluence",
+          "March of Swirling Mist",
+          "Mountain",
+          "Mystic Monastery",
+          "Negate",
+          "Raugrin Triome",
+          "Riverpyre Verge",
+          "Rugged Prairie",
+          "Sacred Foundry",
+          "Spectator Seating",
+          "Spire of Industry",
+          "Spirebluff Canal",
+          "Steam Vents",
+          "Stormcarved Coast",
+          "Sulfur Falls",
+          "Sunbillow Verge",
+          "Thundering Falls",
+          "Training Center",
+          "Windfall"
+        ],
+        "held_marks": {
+          "Jace's Archivist": [
+            "gated"
+          ],
+          "March of Swirling Mist": [
+            "reactive"
+          ],
+          "Negate": [
+            "reactive"
+          ],
+          "Tolarian Winds": [
+            "gated"
+          ],
+          "Windfall": [
+            "gated"
+          ]
+        },
+        "engine": {},
+        "wheel_timing": {
+          "wheels_per_game": 0.35,
+          "with_commander": 0.9286,
+          "first_wheel_turn": 7.92
+        }
+      },
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -90,10 +170,38 @@
         "floors": [
           "Araumi of the Dead Tide"
         ],
+        "ungated_wheels": [],
         "source": "corpus",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 40,
+        "commander_resolved_rate": 0.95,
+        "commander_resolved_games": 38,
+        "held_while_castable": [
+          "Cloud of Faeries",
+          "Peregrine Drake"
+        ],
+        "never_cast": [
+          "Bojuka Bog",
+          "Choked Estuary",
+          "Cloud of Faeries",
+          "Command Tower",
+          "Darkwater Catacombs",
+          "Dimir Aqueduct",
+          "Drowned Catacomb",
+          "Island",
+          "Morphic Pool",
+          "Peregrine Drake",
+          "Shipwreck Marsh",
+          "Sunken Hollow",
+          "Swamp",
+          "Underground River",
+          "Watery Grave"
+        ],
+        "held_marks": {},
+        "engine": {}
+      },
       "verdict": "PILOTABLE",
       "why": []
     },
@@ -109,10 +217,39 @@
         "floors": [
           "Tortured Existence"
         ],
+        "ungated_wheels": [],
         "source": "corpus",
         "clean": true
       },
-      "dynamic": null,
+      "dynamic": {
+        "games": 40,
+        "commander_resolved_rate": 0.875,
+        "commander_resolved_games": 35,
+        "held_while_castable": [
+          "Steward of the Harvest"
+        ],
+        "never_cast": [
+          "Breeding Pool",
+          "Command Tower",
+          "Crypt of Agadeem",
+          "Dreamroot Cascade",
+          "Exotic Orchard",
+          "Forest",
+          "Golgari Rot Farm",
+          "Hinterland Harbor",
+          "Island",
+          "Llanowar Wastes",
+          "Opulent Palace",
+          "Overgrown Tomb",
+          "Steward of the Harvest",
+          "Sunken Hollow",
+          "Swamp",
+          "Watery Grave",
+          "Woodland Cemetery"
+        ],
+        "held_marks": {},
+        "engine": {}
+      },
       "verdict": "PILOTABLE",
       "why": []
     }
