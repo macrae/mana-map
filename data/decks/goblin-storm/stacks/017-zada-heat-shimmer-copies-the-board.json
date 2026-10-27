@@ -27,7 +27,7 @@
     "pos": 0,
     "object": "Heat Shimmer — 'Create a token that's a copy of target creature, except it has haste and \"At the beginning of the end step, exile this token.\"' — targeting only Zada, Hedron Grinder",
     "controller": "you",
-    "note": "cast from your hand in your precombat main phase; Zada's ability has not yet triggered"
+    "note": "cast from your hand in your precombat main phase; Zada's ability triggered on the cast and has not yet been put on the stack"
    }
   ],
   "extras": {
@@ -38,5 +38,456 @@
    ]
   },
   "question": "(a) How many copies of Heat Shimmer does Zada's trigger create, what does each target, and in what order do the copies and the original resolve? (b) After all of them and any triggers they cause have resolved: which creatures do you control, which have haste, and what happens to the token copy of Zada under the legend rule?"
+ },
+ "resolution": {
+  "stack_id": "017",
+  "deck": "goblin-storm",
+  "steps": [
+   {
+    "n": 1,
+    "action": "Heat Shimmer was cast targeting only Zada, Hedron Grinder; Zada's ability triggers on the cast and goes on the stack above Heat Shimmer before anyone gets priority.",
+    "effect": "Zada's oracle trigger condition ('Whenever you cast an instant or sorcery spell that targets only Zada') is met by casting Heat Shimmer with Zada as its only target. As the scenario's stack note says, Zada's ability 'triggered on the cast and has not yet been put on the stack'. It goes on the stack the next time a player would receive priority, after a state-based-action check that finds nothing, and sits on top of Heat Shimmer.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     },
+     {
+      "rule": "603.3",
+      "quote": "its controller puts it on the stack as an object that’s not a card the next time a player would receive priority"
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "All players pass; Zada's trigger resolves and creates three copies of Heat Shimmer, one each targeting Mogg War Marshal, Goblin token 1 and Goblin token 2.",
+    "effect": "(a) THREE copies: Zada copies the spell 'for each other creature you control that the spell could target'. The other creatures are Mogg War Marshal, Goblin token 1 and Goblin token 2 (scenario-facts: four creature bodies including Zada). 'Target creature' can legally target each of them, so each gets one copy. Each copy targets a different one of them, and you cannot pick other targets. The copies are not cast, so Zada does not trigger again on them. The copies carry Heat Shimmer's text, haste and end-step exile clause included. The official Zada rulings say the same: copies are created on the stack and not cast, you choose their order, and the original resolves last.",
+    "citations": [
+     {
+      "rule": "117.4",
+      "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+     },
+     {
+      "rule": "707.10d",
+      "quote": "Some effects copy a spell or ability for each player or object it “could target.” The copies are put onto the stack with those targets in the order of their controller’s choice."
+     },
+     {
+      "rule": "707.10",
+      "quote": "a copy of a spell isn’t cast"
+     },
+     {
+      "rule": "707.10",
+      "quote": "A copy of a spell or ability copies both the characteristics of the spell or ability and all decisions made for it, including modes, targets"
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "You order the three copies on the stack. In this resolution the copy targeting Mogg War Marshal goes on top; the copies targeting Goblin token 1 and Goblin token 2 go beneath it; the original Heat Shimmer stays at the bottom.",
+    "effect": "Each copy goes on top of what is already there, so all three copies sit above the original Heat Shimmer. Last in resolves first, so the original resolves LAST, after all three copies and any triggers they cause. The order you pick among the copies does not change the final board; this resolution puts the Mogg War Marshal copy on top.",
+    "citations": [
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     },
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All pass; the Heat Shimmer copy targeting Mogg War Marshal resolves and creates a token copy of Mogg War Marshal with haste and 'At the beginning of the end step, exile this token.'",
+    "effect": "The target is still legal, so the copy resolves. The token gets Mogg War Marshal's copiable values (1/1 Goblin Warrior with echo and the enters-or-dies Goblin-making ability), and the two abilities Heat Shimmer grants as part of the copying (haste and the end-step exile trigger) become part of its copiable values. Haste lets it attack this turn even though it just arrived. After resolving, the copy leaves the stack and ceases to exist.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "707.2",
+      "quote": "When copying an object, the copy acquires the copiable values of the original object’s characteristics"
+     },
+     {
+      "rule": "707.9a",
+      "quote": "Some copy effects cause the copy to gain an ability as part of the copying process. This ability becomes part of the copiable values for the copy"
+     },
+     {
+      "rule": "702.10b",
+      "quote": "If a creature has haste, it can attack even if it hasn’t been controlled by its controller continuously since their most recent turn began."
+     },
+     {
+      "rule": "707.10a",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "The token copy of Mogg War Marshal's enters ability triggers ('When this creature enters or dies, create a 1/1 red Goblin creature token') and goes on the stack above the two remaining Heat Shimmer copies.",
+    "effect": "The token copy has Mogg War Marshal's enters-or-dies ability, and entering the battlefield matches it. The active player gets priority after the copy resolves. Before that, the state-based-action check finds nothing and the waiting trigger goes on the stack on top. It therefore resolves before the remaining copies.",
+    "citations": [
+     {
+      "rule": "603.6a",
+      "quote": "Enters-the-battlefield abilities trigger when a permanent enters the battlefield."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.3",
+      "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "All pass; the trigger resolves and creates one 1/1 red Goblin creature token (Goblin token 3).",
+    "effect": "This is an ordinary 1/1 red Goblin token. It is not a Heat Shimmer copy, so it has no haste and no end-step exile clause. It entered this turn, so it cannot attack this turn. It survives the end step.",
+    "citations": [
+     {
+      "rule": "111.1",
+      "quote": "Some effects put tokens onto the battlefield."
+     },
+     {
+      "rule": "302.6",
+      "quote": "A creature can’t attack unless it has been under its controller’s control continuously since their most recent turn began."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "All pass; the copy targeting Goblin token 1 resolves, creating a token copy of Goblin token 1 with haste and the end-step exile clause. Then all pass again and the copy targeting Goblin token 2 resolves the same way.",
+    "effect": "A token's copiable values are the characteristics its creating effect defined, so each new token is a 1/1 red Goblin creature token plus haste and 'At the beginning of the end step, exile this token.' A plain Goblin token has no triggered abilities, so neither copy triggers anything. The SBA checks before each priority find nothing.",
+    "citations": [
+     {
+      "rule": "111.3",
+      "quote": "The characteristic values defined this way are functionally equivalent to the characteristic values that are printed on a card; for example, they define the token’s copiable values."
+     },
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "All pass; the original Heat Shimmer resolves last, targeting Zada, and creates a token copy of Zada, Hedron Grinder with haste and the end-step exile clause. Heat Shimmer goes to your graveyard.",
+    "effect": "Zada is still a legal target. The token copies Zada's copiable values, including the Legendary supertype and the name 'Zada, Hedron Grinder'. Copying a commander does not make a commander: the token is not your commander.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "Otherwise, the spell or ability will resolve normally."
+     },
+     {
+      "rule": "707.2",
+      "quote": "The copiable values are the values derived from the text printed on the object (that text being name, mana cost, color indicator, card type, subtype, supertype, rules text, power, toughness, and/or loyalty)"
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "903.3",
+      "quote": "A permanent that’s copying a commander (such as a Body Double, for example, copying a commander in a player’s graveyard) is not a commander."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "State-based actions before the next priority: the legend rule applies to the two Zadas. You keep the original Zada; the token copy of Zada goes to the graveyard and then ceases to exist.",
+    "effect": "(b) You control two legendary permanents named Zada, Hedron Grinder, so you choose one and the other goes to the graveyard. Keep the ORIGINAL. It has been under your control since the turn began, so it can attack without haste. It is your commander, and it stays on the battlefield instead of being exiled at the end step. The token copy goes to the graveyard and ceases to exist at the next SBA check. Haste on the Zada token gains nothing, and the Zada token never matters again. If you kept the token instead, the original commander would go to the graveyard, and you could put it into the command zone as an SBA. That would lose your commander for no gain.",
+    "citations": [
+     {
+      "rule": "704.5j",
+      "quote": "If two or more legendary permanents with the same name are controlled by the same player, that player chooses one of them, and the rest are put into their owners’ graveyards."
+     },
+     {
+      "rule": "704.5d",
+      "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+     },
+     {
+      "rule": "903.9a",
+      "quote": "If a commander is in a graveyard or in exile and that object was put into that zone since the last time state-based actions were checked, its owner may put it into the command zone."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "Forward note, beginning of the end step: the three surviving Heat Shimmer tokens (the Mogg War Marshal copy and the two Goblin copies) each trigger 'At the beginning of the end step, exile this token.' You put the three triggers on the stack in an order you choose; this resolution puts the Mogg War Marshal copy's trigger on the bottom and the two Goblin copies' triggers above it.",
+    "effect": "The beginning of the end step matches each token's granted trigger event, so all three trigger at once. They are all yours and none triggers on another ability, so you put them on the stack in any order you choose before you receive priority. The order does not change the outcome: each trigger exiles only its own token. The Zada token is already gone (step 9), so it has no trigger here.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "All pass after each; the three exile triggers resolve one at a time, top first, each exiling its own token. The Mogg War Marshal copy does NOT trigger its dies clause.",
+    "effect": "Exile is not dying: 'dies' means going to a graveyard from the battlefield. So the exiled Mogg War Marshal token makes no Goblin on the way out. Each exiled token ceases to exist at the next state-based-action check. Goblin token 3 from step 6 is not a Heat Shimmer token and stays, as do the original Zada, Mogg War Marshal and Goblin tokens 1 and 2.",
+    "citations": [
+     {
+      "rule": "700.4",
+      "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+     },
+     {
+      "rule": "704.5d",
+      "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Zada's trigger creates THREE copies of Heat Shimmer, one each targeting Mogg War Marshal, Goblin token 1 and Goblin token 2. You choose their order. They resolve before the original, which resolves last on Zada. Result: three hasty tokens (a Mogg War Marshal copy and two Goblin copies), one extra non-hasty Goblin from the Mogg War Marshal copy's enters trigger, and a hasty Zada token that the legend rule removes (keep the original Zada). You control 8 creatures and 3 of them have haste. Zada can also attack (no summoning sickness), so the attack-capable power this turn is Zada 3 + three hasty 1/1s = 6. At the end step the three hasty tokens are exiled and no dies trigger fires; Goblin token 3 stays.",
+   "you": {
+    "creatures": [
+     "Zada, Hedron Grinder (original, 3/3, your commander; no haste but not summoning sick, can attack)",
+     "Mogg War Marshal (1/1, summoning sick)",
+     "Goblin token 1 (1/1, summoning sick)",
+     "Goblin token 2 (1/1, summoning sick)",
+     "Mogg War Marshal token copy (1/1, HASTE, exiled at beginning of end step)",
+     "Goblin token copy of token 1 (1/1, HASTE, exiled at beginning of end step)",
+     "Goblin token copy of token 2 (1/1, HASTE, exiled at beginning of end step)",
+     "Goblin token 3 (1/1, from the Mogg War Marshal copy's enters trigger; summoning sick, no haste; not exiled)"
+    ],
+    "creature_count": 8,
+    "with_haste": 3,
+    "can_attack_this_turn": 4,
+    "attack_power_available": 6,
+    "removed": [
+     "Token copy of Zada, Hedron Grinder (legend rule: put into graveyard, ceased to exist)"
+    ],
+    "graveyard": [
+     "Heat Shimmer"
+    ],
+    "lands": [
+     "Mountain x3 (tapped)"
+    ],
+    "hand": [],
+    "mana_available": "{0}"
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 40,
+     "board": []
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Zada oracle (cards.json) condition met; agrees with 2018-03-16 ruling 'triggers whenever you cast an instant or sorcery spell that targets only Zada and no other object or player'."
+   },
+   {
+    "step": 1,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Round-1 finding fixed: the step now quotes the stack note as it stands on disk ('triggered on the cast and has not yet been put on the stack'). Full rule: goes on the stack the next time a player would receive priority and becomes the topmost object."
+   },
+   {
+    "step": 1,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "117.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "707.10d",
+    "status": "supported",
+    "note": "Three other creatures, each a legal 'target creature', so three copies. Agrees with 2018-03-16 rulings on ordering and fixed targets. Count matches scenario-facts (four creature bodies including Zada)."
+   },
+   {
+    "step": 2,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Both quotes hold: a copy is not cast, so Zada does not trigger again (2018-03-16 ruling), and copies carry the characteristics and targets."
+   },
+   {
+    "step": 3,
+    "rule": "405.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 3,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Original resolves last; matches 2018-03-16 ruling 'The original spell will be on the stack beneath those copies and will resolve last.'"
+   },
+   {
+    "step": 4,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "707.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "707.9a",
+    "status": "supported",
+    "note": "Round-1 finding fixed: re-cited from 707.9b to 707.9a. The quote is verbatim, and the full rule makes the granted haste and end-step trigger part of the copiable values."
+   },
+   {
+    "step": 4,
+    "rule": "702.10b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "707.10a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "603.6a",
+    "status": "supported",
+    "note": "Mogg War Marshal oracle: 'When this creature enters or dies, create a 1/1 red Goblin creature token.' The token copy has it through 707.2."
+   },
+   {
+    "step": 5,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "704.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "111.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "302.6",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "111.3",
+    "status": "supported",
+    "note": "A plain Goblin token's copiable values are its creating effect's definition. The haste and exile clause on these copies follow from 707.9a as cited in step 4."
+   },
+   {
+    "step": 7,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "608.2b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "707.2",
+    "status": "supported",
+    "note": "Name and the Legendary supertype are copiable, which sets up step 9."
+   },
+   {
+    "step": 8,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "903.3",
+    "status": "supported",
+    "note": "The example text 'A permanent that's copying a commander ... is not a commander.' is part of 903.3."
+   },
+   {
+    "step": 9,
+    "rule": "704.5j",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "704.5d",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 9,
+    "rule": "903.9a",
+    "status": "supported",
+    "note": "Used only for the counterfactual. Correct."
+   },
+   {
+    "step": 10,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Round-1 missing step fixed: the three granted 'exile this token' triggers are now shown triggering at the beginning of the end step."
+   },
+   {
+    "step": 10,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Round-1 missing step fixed: all three triggers are yours and the order is your choice. The chosen order is stated and it does not change the outcome."
+   },
+   {
+    "step": 11,
+    "rule": "700.4",
+    "status": "supported",
+    "note": "Exile is not dying, so the Mogg War Marshal token's dies clause does not fire."
+   },
+   {
+    "step": 11,
+    "rule": "704.5d",
+    "status": "supported",
+    "note": ""
+   }
+  ],
+  "iterations": 2,
+  "summary": "Iteration 2. All three round-1 findings are resolved (707.9a re-cited; the step 1 quote matches the stack note on disk; the end-step exile triggers are shown triggering and ordered under 603.2/603.3b). Every citation was re-checked against its full rule text. Missing-step audit: SBA checks before each priority are noted (704.3); priority after each resolution is covered (117.3b/117.4); the legend rule runs before priority; nothing triggers when the Zada token or the Goblin copies enter; the copies are not cast, so Zada does not re-trigger. No replacement effects apply, per the scenario's assumption. Final state checks out: 8 creatures, 3 with haste, 4 can attack, 6 power. Rulings: Zada has 8 official rulings (2018-03-16), and the resolution agrees with all of them. Heat Shimmer and Mogg War Marshal have no official rulings. The resolution makes no sibling comparisons (scenario-facts lists no like-for-like siblings). There is one opponent, and no per-seat or pod figures are claimed."
  }
 }

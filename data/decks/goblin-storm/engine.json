@@ -1,916 +1,682 @@
 {
-  "slug": "goblin-storm",
-  "thesis": "A Goblin swarm that is really a spell-count machine: bodies make the mana and set the copy count, cheap spells pointed at Zada turn each body into a card, and one payoff turn cashes the whole board into damage.",
-  "stages": [
+ "slug": "goblin-storm",
+ "thesis": "A Goblin swarm that is really a spell-count machine: bodies make the mana and set the copy count, one-target spells pointed at Zada turn each body into a card, a Treasure, a pump or a copy of itself, and one turn cashes the board into damage.",
+ "stages": [
+  {
+   "stage": "mana",
+   "label": "THE RED FLOOR, AND THE BURST THAT ISN'T LAND",
+   "what_it_does": "Fifteen land entries and thirty-six copies (deck-facts), 29 of them red-producing lands by deck-facts' count and 32 red sources against a Karsten target of 22 by deck-audit's. deck-audit's taplands axis counts two tapped lands: Spinerock Knoll always, and Den of the Bugbear whenever you control two or more other lands. Three more enter tapped only without enough Mountains (Arena of Glory, Castle Embereth, Dwarven Mine); deck-facts' 5 counts both groups together. Sol Ring is the one rock. That part only has to hit drops. The part that decides games scales off the board, not off lands: Battle Hymn adds {R} per creature, Brightstone Ritual {R} per Goblin, and Three Tree City with Goblin named pays {2} to add one mana per Goblin, which is a net gain only past two Goblins. So once bodies exist, mana is downstream of the body count. Goblin Warchief sits here as a cost reducer: stack 004 locked Krenko at {1}{R}{R} because of it, and its haste is what let Krenko tap the turn he landed. Several lands are here for a second job, filed here because a land does one job in this model: Reliquary Tower (no maximum hand size, for a deck that draws a card per body off one {R}), War Room and Fountainport (a card each), Kher Keep and Sokenzan (bodies), Castle Embereth and Goblin Burrows (pumps), and Plaza of Heroes, whose exile mode gives a legendary creature hexproof and indestructible: the only land in the 99 that protects Zada. The Treasure-making pumps are NOT here; through Zada they turn bodies into mana and live in conversion.",
+   "cards": [
+    "Arena of Glory",
+    "Castle Embereth",
+    "Den of the Bugbear",
+    "Dwarven Mine",
+    "Fountainport",
+    "Goblin Burrows",
+    "Kher Keep",
+    "Mountain",
+    "Plaza of Heroes",
+    "Reliquary Tower",
+    "Shinka, the Bloodsoaked Keep",
+    "Sokenzan, Crucible of Defiance",
+    "Spinerock Knoll",
+    "Three Tree City",
+    "War Room",
+    "Sol Ring",
+    "Battle Hymn",
+    "Brightstone Ritual",
+    "Goblin Warchief"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
     {
-      "stage": "mana",
-      "label": "THE RED FLOOR, AND THE BURST THAT ISN'T LAND",
-      "what_it_does": "Fifteen land entries and thirty-six copies, of which mana_analysis counts 33 as red sources: Fountainport, Reliquary Tower and War Room tap for {C} only. (It also credits Kher Keep red on a land whose printed mana ability reads '{T}: Add {C}', so 33 is the artifact's figure and an upper bound on it.) Add Sol Ring, Ruby Medallion and Throne of Eldraine. That part only has to hit drops. The part that decides games is the declared ritual group of four, which scales off the board rather than off lands: Battle Hymn adds {R} per creature, Brightstone Ritual {R} per Goblin, Seething Song is flat, Mana Geyser reads the opponents' tapped lands. Once bodies exist, mana is downstream of the body count. (The taxonomy reads ramp:ritual at 6, adding Ancestors' Aid and Glimpse the Impossible; this model files the second of those in fuel.) The brief's goldfish figure for turn five is 4.589 mean available mana — nowhere near a storm turn, which is the point: the big turn is bought with a ritual cast into an existing board, not with land drops. Goblin Warchief sits here as a cost reducer rather than with the Goblins: stack 004 locked Krenko at {1}{R}{R} because of it, and the haste it grants is what let Krenko tap the turn he landed. Ancestors' Aid is filed here because through the hub its Treasure clause is a Treasure per creature — a ritual with a pump stapled on. The utility lands are mostly NOT here for their mana: Reliquary Tower's 'no maximum hand size' is why a deck that draws five cards off one {R} (stack 001) plays a colourless land, War Room's '{3}, {T}, pay life: draw a card' is repeatable advantage that deck-audit lists under card-advantage's uncounted, and Fountainport turns a spent token into a card.",
-      "cards": [
-        "Ancestors' Aid",
-        "Arena of Glory",
-        "Battle Hymn",
-        "Brightstone Ritual",
-        "Castle Embereth",
-        "Den of the Bugbear",
-        "Dwarven Mine",
-        "Forgotten Cave",
-        "Fountainport",
-        "Goblin Burrows",
-        "Goblin Warchief",
-        "Hidden Volcano",
-        "Kher Keep",
-        "Mana Geyser",
-        "Mountain",
-        "Reliquary Tower",
-        "Ruby Medallion",
-        "Seething Song",
-        "Shinka, the Bloodsoaked Keep",
-        "Smoldering Crater",
-        "Sol Ring",
-        "Spinerock Knoll",
-        "Throne of Eldraine",
-        "War Room"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "004",
-          "note": "Goblin Warchief's static reduction locks Krenko's total cost at {1}{R}{R} and grants the haste that allows the same-turn tap"
-        },
-        {
-          "kind": "city",
-          "id": "city-3",
-          "agreement": "partial",
-          "note": "THE RED FLOOR is exactly the fifteen land entries and nothing else; the stage is larger"
-        },
-        {
-          "kind": "city",
-          "id": "city-0",
-          "agreement": "cuts-across",
-          "note": "the rituals and Ancestors' Aid live in MANA FOR ONE TURN, the rocks and Warchief in THE STAYING POWER, Seething Song in CRITICAL MASS"
-        }
-      ]
+     "kind": "stack",
+     "id": "004",
+     "note": "Goblin Warchief's reduction locks Krenko at {1}{R}{R} and grants the haste for the same-turn tap"
     },
     {
-      "stage": "ignition",
-      "label": "A SECOND AND THIRD BODY BY TURN THREE",
-      "what_it_does": "Every multiplier in this deck multiplies by the number of creatures already on the battlefield. Zada with an empty board copies nothing. Brightstone Ritual adds one {R}. Impact Tremors fires once. So the first thing that has to happen is not the hub and not a ritual — it is bodies, cheaply, early. Dragon Fodder and Krenko's Command are two 1/1s for two mana; Mogg War Marshal is two over its life and replaces itself when it dies; Searslicer Goblin is one more at every end step you attacked. The brief prices the declared group at 5 cards, 31.2% in an opener and 38.6% by turn three, assembling 60% of games at mean turn 3.184 — the earliest of the three declared targets by 1.730 turns against the next-earliest, the storm payoff plus ritual at mean turn 4.914, and the reason this deck can afford a five-mana payoff. The declared group's fifth card is Skirk Prospector, which creates no tokens; it is held in conversion here, where it eats them, and that difference is filed as a proposed goldfish edit so the price and the stage can agree.",
-      "cards": [
-        "Dragon Fodder",
-        "Krenko's Command",
-        "Mogg War Marshal",
-        "Searslicer Goblin"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "Dragon Fodder is one of the three prior casts that set Empty the Warrens' storm count at 3"
-        },
-        {
-          "kind": "city",
-          "id": "city-4",
-          "agreement": "partial",
-          "note": "all four sit inside THE TOKEN FACTORY. Exactly two stages in this model live at one address — this one, and protection, whose two cards are both in THE STAYING POWER. Ignition is the only one of the two that does work rather than carry insurance"
-        },
-        {
-          "kind": "role",
-          "id": "threat:tokens",
-          "note": "the declared component's shared roles are threat:tokens and threat:body — a property of the cards, not evidence that they interact"
-        }
-      ]
+     "kind": "stack",
+     "id": "002",
+     "note": "Battle Hymn and Brightstone Ritual are two of the three prior casts; the stack's four mana came from four Mountains, so it verifies their spell count, not their mana"
     },
     {
-      "stage": "fuel",
-      "label": "CHEAP SPELLS THAT REPLACE THEMSELVES",
-      "what_it_does": "Storm counts CASTS, and stack 002 established the hard half of that: copies are put on the stack without being cast, so a storm count of 3 becomes 8 tokens but the next spell still only sees 4. Nothing here can be replaced by a copy — every point of count has to be paid for one card at a time, which is why fuel is one of the two largest non-mana stages, 13 cards, tied with output. Crimson Wisps, Expedite and Renegade Tactics cost {R} and cantrip on their own; pointed at the hub they draw one card per body (stack 001: five cards off a single {R} with four Goblins out). Witch's Mark, Faithless Looting, Glimpse the Impossible and Daring Discovery are the deck's paper card advantage, and not one of them refills a hand: Faithless Looting is draw two then discard two, net zero and a filter; Witch's Mark is net +1 and gated on already holding a card to pitch, which is the resource a storm turn has just spent; Glimpse the Impossible exiles three cards playable only this turn; Daring Discovery is Discover 4, which is one card. deck-audit reads card-advantage at 8 copies against a floor of 10, verdict under. The rule above therefore has no exception. Goblin Matron and Moggcatcher find the missing piece; Conspicuous Snoop casts Goblins off the top of the library. Past in Flames gives flashback to every instant and sorcery in the graveyard, which after a storm turn is where the whole hand went: that is the rebuild plan, and it is one card. Goblin Dark-Dwellers recasts exactly one spell, and only at mana value 3 or less — a far smaller second option, not redundancy for it. Grenzo turns combat damage into impulse cards.",
-      "cards": [
-        "Conspicuous Snoop",
-        "Crimson Wisps",
-        "Daring Discovery",
-        "Expedite",
-        "Faithless Looting",
-        "Glimpse the Impossible",
-        "Goblin Dark-Dwellers",
-        "Goblin Matron",
-        "Grenzo, Havoc Raiser",
-        "Moggcatcher",
-        "Past in Flames",
-        "Renegade Tactics",
-        "Witch's Mark"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "001",
-          "note": "Crimson Wisps targeting only Zada with four Goblins out: four copies plus the original, five cards drawn"
-        },
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "the copies of Empty the Warrens are not cast, so a later Grapeshot sees storm count 4 and not 7"
-        },
-        {
-          "kind": "city",
-          "id": "city-5",
-          "agreement": "partial",
-          "note": "ten of the thirteen are in CRITICAL MASS"
-        },
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "cuts-across",
-          "note": "Faithless Looting and Witch's Mark cluster on their draw text in THE STAYING POWER; Glimpse the Impossible on its Eldrazi Spawn mana in MANA FOR ONE TURN"
-        }
-      ]
-    },
-    {
-      "stage": "fodder",
-      "label": "THE BODY PILE",
-      "what_it_does": "Goblins are the resource this deck converts, and they are spent four different ways: counted (Zada's copy count, Brightstone Ritual, Battle Hymn, Impact Tremors), sacrificed for mana or damage, clamped for cards, and pumped for lethal. So the pile is a stage in its own right rather than a threat count. Krenko, Mob Boss is the largest single producer — stack 004 measured one activation at five tokens, because Krenko counts himself — four Goblins were out when he was cast and five when the ability resolved — leaving ten Goblins on the table. Howlsquad Heavy and Goblin Chieftain hand the pile haste, which matters because most of these bodies are made on the turn they are meant to be spent. Goblin Chieftain, Rundvelt Hordemaster and Goblin Trashmaster are lords: they raise what every 1/1 is worth in combat and, in Hordemaster's case, turn Goblin deaths back into cards. Goblin Lackey puts a Goblin permanent onto the battlefield off first-strike-free combat damage; Impulsive Pilferer is a body that becomes a Treasure when it dies; Redcap Gutter-Dweller brings two Rats and eats a creature every upkeep. Nothing here is a win condition on its own, and that is the correct reading of it.",
-      "cards": [
-        "Goblin Chieftain",
-        "Goblin Lackey",
-        "Goblin Trashmaster",
-        "Howlsquad Heavy",
-        "Impulsive Pilferer",
-        "Krenko, Mob Boss",
-        "Redcap Gutter-Dweller",
-        "Rundvelt Hordemaster"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "004",
-          "note": "Krenko cast under Warchief, tapping the same turn for five tokens; the board goes to ten Goblins"
-        },
-        {
-          "kind": "city",
-          "id": "city-5",
-          "agreement": "cuts-across",
-          "note": "four in CRITICAL MASS, Krenko in THE TOKEN FACTORY, Howlsquad Heavy and Impulsive Pilferer in MANA FOR ONE TURN, Goblin Trashmaster in BODIES INTO DAMAGE"
-        }
-      ]
-    },
-    {
-      "stage": "conversion",
-      "label": "THE HUBS — ONE RESOURCE IN, A DIFFERENT ONE OUT",
-      "what_it_does": "Seven cards that take one resource and hand back another, cheaply and repeatably. Zada is the multiplier: an instant or sorcery targeting only her is copied once per other creature, so the board size is the exchange rate (stack 001: four copies plus the original off one {R}). Frontline Heroism is redundancy for the EFFECT and not for the multiplier — read the text, it makes one Soldier and copies the spell once, at that token, however wide you are. Storm-Kiln Artist turns every cast and every copy into a Treasure, which is what makes the buyback loop mana-positive in stack 005. Skirk Prospector eats a Goblin for {R} — stack 004 measured at most ten, one shot, and it empties the board doing it. Skullclamp turns a 1/1 into two cards, which is why a sweeper is a draw step here. Goblin Bombardment is the free outlet, converting any body into a point of damage at instant speed. Idol of Oblivion draws one card per TURN, gated on having created a token — the one rate in this paragraph that is not per unit. Zada is this stage's single point of failure and the brief agrees from the other side: she is the only load-bearing card in the deck, the one card named by two passing stacks. Being the commander makes an answer a tax rather than a loss, but nothing else in the 99 multiplies, so the tax is charged every time the engine restarts. This is the stage the map cannot see: its seven cards have four different city addresses, because a card's text names what it pays and never what it eats.",
-      "cards": [
-        "Frontline Heroism",
-        "Goblin Bombardment",
-        "Idol of Oblivion",
-        "Skirk Prospector",
-        "Skullclamp",
-        "Storm-Kiln Artist",
-        "Zada, Hedron Grinder"
-      ],
-      "single_point_of_failure": "Zada, Hedron Grinder",
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "001",
-          "note": "the copy count is the board count: four Goblin tokens, four copies"
-        },
-        {
-          "kind": "stack",
-          "id": "004",
-          "note": "Prospector converts up to ten Goblins into one-shot red mana; the combo graph's infinite is refuted here because Zada, not Krenko, is the commander"
-        },
-        {
-          "kind": "stack",
-          "id": "005",
-          "note": "magecraft mints a Treasure per cast AND per copy: four on cast #1, five on cast #2, nine on board"
-        },
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "cuts-across",
-          "note": "Zada and Goblin Bombardment in BODIES INTO DAMAGE, Storm-Kiln and Prospector in MANA FOR ONE TURN, Skullclamp in THE STAYING POWER, Frontline Heroism and Idol of Oblivion in THE TOKEN FACTORY"
-        }
-      ]
-    },
-    {
-      "stage": "output",
-      "label": "WHERE IT LANDS",
-      "what_it_does": "Impact Tremors and General Kreat, the Boltbringer are the two cards in the 99 that turn a creature entering into damage to EACH opponent, and the deck's best-verified kill runs straight through them: stack 002 resolves eight tokens into eight damage to each of two opponents. Neither is a single point of failure on its own — that is why this stage declares none — but two cards is thinner than anything the declaration prices — the thinnest declared component is four cards at 25.8% in an opener — and no goldfish target measures this class at all. Boggart Shenanigans and Pashalik Mons price Goblin deaths instead, one point per death at a chosen target, which is the reach that survives a sweeper. Siege-Gang Commander, Siege-Gang Lieutenant and Broadside Bombardiers buy damage with a body at a cost, and all three can point it at a player. Gempalm Incinerator and Goblin Negotiation spend no body and are not that class: Incinerator is cycled from hand for X equal to the Goblin count, so bodies are the meter rather than the fuel, and Negotiation MAKES tokens out of excess damage. Both can only hit a creature, so neither is reach across a table. Grapeshot is filed here rather than in wincon deliberately: stack 002 measured it at storm count 4, which is five instances of one damage — real reach and real creature removal, and not a kill across three seats at forty life. Chaos Warp, Vandalblast and Blasphemous Act are the interaction budget, and Blasphemous Act is a reset that this deck survives better than most.",
-      "cards": [
-        "Blasphemous Act",
-        "Boggart Shenanigans",
-        "Broadside Bombardiers",
-        "Chaos Warp",
-        "Gempalm Incinerator",
-        "General Kreat, the Boltbringer",
-        "Goblin Negotiation",
-        "Grapeshot",
-        "Impact Tremors",
-        "Pashalik Mons",
-        "Siege-Gang Commander",
-        "Siege-Gang Lieutenant",
-        "Vandalblast"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "eight Impact Tremors triggers, eight damage to each opponent; the following Grapeshot sees storm count 4"
-        },
-        {
-          "kind": "city",
-          "id": "city-1",
-          "agreement": "partial",
-          "note": "ten of the thirteen are BODIES INTO DAMAGE; Chaos Warp and Vandalblast sit in CRITICAL MASS and Blasphemous Act in THE STAYING POWER"
-        }
-      ]
-    },
-    {
-      "stage": "protection",
-      "label": "ONE PAIR OF BOOTS",
-      "what_it_does": "The brief's audit axis reads 2 copies against a 5-7 target, and reading the two cards makes it thinner than that. Swiftfoot Boots grants hexproof and haste to a creature and equips for {1}. Roaming Throne's ward {2} protects Roaming Throne — it is insurance for itself, not for the hub. So exactly one card in the 99 can make Zada untargetable, and the deck's real answer to a removal spell is the commander tax plus the fact that half the engine never needed her: the rituals, Empty the Warrens, Grapeshot and the Haze of Rage / Storm-Kiln loop all function with Zada in the command zone. That is a genuine structural strength and it is also why the insurance is affordable at one card. Roaming Throne is placed here on its ward. If its trigger-doubling clause, with Goblin chosen, applies to Zada's copy trigger, it is a conversion piece worth twice what it looks like, and that question is open and unresolved.",
-      "cards": [
-        "Roaming Throne",
-        "Swiftfoot Boots"
-      ],
-      "single_point_of_failure": "Swiftfoot Boots",
-      "evidence": [
-        {
-          "kind": "role",
-          "id": "protection:self",
-          "note": "the taxonomy gives both cards protection:self — a property of each card, and precisely the reason neither covers a third permanent"
-        },
-        {
-          "kind": "city",
-          "id": "city-2",
-          "agreement": "partial",
-          "note": "both sit in THE STAYING POWER, which is eleven cards wide and mostly not protection"
-        }
-      ]
-    },
-    {
-      "stage": "wincon",
-      "label": "THE ONE TURN, THREE WAYS",
-      "what_it_does": "Three endings, and all three have a checker-passed board behind them. Fists of Flame through the hub is the burst: stack 003 resolves copies one at a time, each drawing first, so the +1/+0-per-card locks in at +3/+4/+5/+6 on the tokens and +7 on Zada — 32 power with trample, at least 30 of it reaching an opponent at 30 life past a lone 2/2. Empty the Warrens is the wide ending: stack 002 turns storm count 3 into eight tokens. Haze of Rage with Storm-Kiln Artist is the arbitrary one: stack 005 verifies two buyback casts at +9/+0 across the team and nine Treasures, with each further iteration costing four and yielding k+3 — mana-positive and strictly improving. Wild Ride, Goblin Bushwhacker, Great Train Heist and Quest for the Goblin Lord are the smaller pumps that convert an existing swarm; Spreading Insurrection steals a creature per storm copy. Note that the declared 'storm payoff' component is split by this model: three of its four cards end games and Grapeshot is reach, which is a disagreement with the declaration rather than with the map.",
-      "cards": [
-        "Empty the Warrens",
-        "Fists of Flame",
-        "Goblin Bushwhacker",
-        "Great Train Heist",
-        "Haze of Rage",
-        "Quest for the Goblin Lord",
-        "Spreading Insurrection",
-        "Wild Ride"
-      ],
-      "single_point_of_failure": null,
-      "evidence": [
-        {
-          "kind": "stack",
-          "id": "003",
-          "note": "32 total power with trample; the buffs do not grow retroactively, so the ORDER of resolution sets the size"
-        },
-        {
-          "kind": "stack",
-          "id": "002",
-          "note": "storm count 3 produces eight tokens across four resolutions"
-        },
-        {
-          "kind": "stack",
-          "id": "005",
-          "note": "the loop is mana-positive from cast #2 and strictly improves; the Commander Spellbook line is confirmed for this pair"
-        },
-        {
-          "kind": "combo",
-          "id": "Haze of Rage + Storm-Kiln Artist",
-          "note": "the one contained combo line of the four that a stack has confirmed; the three Krenko lines assume Krenko is the commander and stack 004 refutes them here"
-        },
-        {
-          "kind": "city",
-          "id": "city-5",
-          "agreement": "cuts-across",
-          "note": "five in CRITICAL MASS, Empty the Warrens in THE TOKEN FACTORY, Fists of Flame in THE STAYING POWER, Great Train Heist in MANA FOR ONE TURN"
-        }
-      ]
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "partial",
+     "note": "16 of 19 sit in Mana; Battle Hymn and Brightstone Ritual cluster in Ramp, Goblin Warchief in Card Flow"
     }
-  ],
-  "lines": [
+   ]
+  },
+  {
+   "stage": "ignition",
+   "label": "A SECOND AND THIRD BODY BY TURN THREE",
+   "what_it_does": "Every multiplier in this deck multiplies by creatures already on the battlefield. Zada with an empty board copies nothing; Brightstone Ritual adds one {R}; Impact Tremors fires once; Heat Shimmer copies one creature. So the first thing that has to happen is not the hub and not a ritual: it is bodies, cheaply, early. Dragon Fodder and Krenko's Command are two 1/1s for two mana; Mogg War Marshal and Goblin Instigator are two bodies off one card; Legion Warboss adds one more every turn, and Searslicer Goblin one more at each end step in which you attacked (Raid). The brief prices the declared group at 7 cards, 41.2% in an opener and 49.8% by turn three, assembling in 82.8% of games and 68.9% by turn six at mean turn 3.09 - the earliest of the three declared targets, against 4.922 for the Zada cantrip group and 6.9 for the storm payoff plus ritual. The declared group's seventh card is Skirk Prospector, which creates no tokens; it eats them, so it is held in conversion and the mismatch is filed as a proposed goldfish edit. The 3.09 is therefore the price of the group as declared, Prospector included, not of these six alone.",
+   "cards": [
+    "Dragon Fodder",
+    "Krenko's Command",
+    "Mogg War Marshal",
+    "Searslicer Goblin",
+    "Legion Warboss",
+    "Goblin Instigator"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
     {
-      "from": "fuel",
-      "to": "conversion",
-      "via": [
-        "Crimson Wisps",
-        "Zada, Hedron Grinder"
-      ],
-      "carries": "one {R} spell",
-      "verified_by": "001",
-      "note": "the hub's input is a single cheap spell that can legally target only Zada"
+     "kind": "stack",
+     "id": "002",
+     "note": "Dragon Fodder is one of the three prior casts that set Empty the Warrens' storm count at 3; the stack shows it paying storm count, not bodies"
     },
     {
-      "from": "conversion",
-      "to": "fuel",
-      "via": [
-        "Zada, Hedron Grinder",
-        "Crimson Wisps"
-      ],
-      "carries": "five cards",
-      "verified_by": "001",
-      "note": "the feedback loop that makes this an engine: four copies plus the original each draw, so one {R} returns five cards and five hasted bodies"
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "partial",
+     "note": "four of six in Bodies; Dragon Fodder and Krenko's Command cluster in Ramp with the other cheap sorceries"
     },
     {
-      "from": "ignition",
-      "to": "wincon",
-      "via": [
-        "Dragon Fodder",
-        "Empty the Warrens"
-      ],
-      "carries": "storm count",
-      "verified_by": "002",
-      "note": "Dragon Fodder is one of the three casts before Empty the Warrens in the verified board, and storm count is all it pays there: stack 002's board is Impact Tremors and four Mountains with zero Goblin tokens on it, so the stack shows the token maker paying once, not twice"
-    },
-    {
-      "from": "mana",
-      "to": "wincon",
-      "via": [
-        "Battle Hymn",
-        "Brightstone Ritual",
-        "Empty the Warrens"
-      ],
-      "carries": "storm count, not mana",
-      "verified_by": "002",
-      "note": "read this arrow carefully: stack 002's four mana come from four untapped Mountains and both rituals are in the GRAVEYARD as two of the three prior casts. What they contribute to that kill is spell count. The mana claim is not what the stack shows"
-    },
-    {
-      "from": "wincon",
-      "to": "output",
-      "via": [
-        "Empty the Warrens",
-        "Grapeshot"
-      ],
-      "carries": "storm count (4, not 7)",
-      "verified_by": "002",
-      "note": "the three storm copies were put on the stack without being cast, so the following Grapeshot sees 4 and is five instances of one damage"
-    },
-    {
-      "from": "conversion",
-      "to": "wincon",
-      "via": [
-        "Zada, Hedron Grinder",
-        "Fists of Flame"
-      ],
-      "carries": "power with trample",
-      "verified_by": "003",
-      "note": "32 power, at least 30 reaching one opponent at 30 life past a single 2/2 blocker. One seat, an empty opposing board apart from that blocker — the stack proves a kill, not a table kill"
-    },
-    {
-      "from": "mana",
-      "to": "fodder",
-      "via": [
-        "Goblin Warchief",
-        "Krenko, Mob Boss"
-      ],
-      "carries": "a {1} discount and haste",
-      "verified_by": "004",
-      "note": "the cost reduction locks Krenko at {1}{R}{R} and the haste is what lets him tap the turn he lands"
-    },
-    {
-      "from": "fodder",
-      "to": "conversion",
-      "via": [
-        "Krenko, Mob Boss",
-        "Skirk Prospector"
-      ],
-      "carries": "bodies into red mana",
-      "verified_by": "004",
-      "note": "at most ten {R}, one shot, spendable only in that phase, and the last activation eats Prospector. The combo graph's infinite needs Krenko in the command zone; Zada is the commander, so the line terminates"
-    },
-    {
-      "from": "conversion",
-      "to": "wincon",
-      "via": [
-        "Storm-Kiln Artist",
-        "Haze of Rage"
-      ],
-      "carries": "Treasures",
-      "verified_by": "005",
-      "note": "nine Treasures after two casts; each further iteration costs four and yields k+3"
-    },
-    {
-      "from": "wincon",
-      "to": "conversion",
-      "via": [
-        "Haze of Rage",
-        "Storm-Kiln Artist"
-      ],
-      "carries": "casts and copies",
-      "verified_by": "005",
-      "note": "the second half of the loop, drawn backward on purpose: every cast and every copy is a magecraft trigger, which is what pays for the next cast"
-    },
-    {
-      "from": "wincon",
-      "to": "output",
-      "via": [
-        "Empty the Warrens",
-        "Impact Tremors"
-      ],
-      "carries": "creature ETBs",
-      "verified_by": null,
-      "note": "the deck's headline kill and it is NOT verifiable as drawn. Stack 002's resolution measures eight tokens into eight damage to each opponent, but its scenario names Impact Tremors only on the battlefield, which `line_cards` skips when the stack and hand already name the line. Null is the honest value until a scenario names Impact Tremors on the stack or in hand"
-    },
-    {
-      "from": "ignition",
-      "to": "conversion",
-      "via": [
-        "Mogg War Marshal",
-        "Skullclamp"
-      ],
-      "carries": "1/1 bodies",
-      "verified_by": null,
-      "note": "the attrition line nobody has checked: a clamped 1/1 dies to the -1 toughness and pays two cards, and Mogg War Marshal replaces itself on the way out"
-    },
-    {
-      "from": "conversion",
-      "to": "output",
-      "via": [
-        "Goblin Bombardment",
-        "Boggart Shenanigans"
-      ],
-      "carries": "Goblin deaths",
-      "verified_by": null,
-      "note": "the free outlet and the death trigger together price a swept or chump-blocked board at two damage per body; unchecked"
-    },
-    {
-      "from": "protection",
-      "to": "conversion",
-      "via": [
-        "Swiftfoot Boots",
-        "Zada, Hedron Grinder"
-      ],
-      "carries": "hexproof and haste",
-      "verified_by": null,
-      "note": "the only card in the 99 that can make the hub untargetable, drawn backward because insurance flows onto the engine rather than out of it"
-    },
-    {
-      "from": "fuel",
-      "to": "wincon",
-      "via": [
-        "Past in Flames",
-        "Haze of Rage"
-      ],
-      "carries": "a graveyard of spells, recast",
-      "verified_by": null,
-      "note": "the rebuild: after a storm turn the hand is in the graveyard, and flashback on every instant and sorcery is a second count from zero. No stack has been run on it"
+     "kind": "role",
+     "id": "threat:tokens",
+     "note": "the declared component's shared roles are threat:tokens, threat:body and value:etb - properties of the cards, not evidence that they interact"
     }
-  ],
-  "map_disagreements": [
+   ]
+  },
+  {
+   "stage": "fuel",
+   "label": "A CARD PER BODY",
+   "what_it_does": "Storm counts CASTS, and stack 002 established the hard half of that: copies are put on the stack without being cast, so storm count 3 becomes 8 tokens but the next spell still sees 4. Every point of count is paid one card at a time, so the hand has to refill. Seven one- and two-mana spells target only a single creature and draw: Crimson Wisps, Expedite, Accelerate, Impolite Entrance, Renegade Tactics, Might of the Meek and Ancestral Anger. Cast at Zada alone, each is copied once per other creature, so each body becomes a card (stack 001: five cards off a single {R} with four Goblins out). That is the refill, and it scales with exactly the resource the deck builds. Around it: Faithless Looting filters, Goblin Matron tutors a Goblin, Conspicuous Snoop casts Goblins off the top, Grenzo impulses off combat damage, Idol of Oblivion draws once a turn after a token, and Past in Flames is the rebuild, flashback on every instant and sorcery in the graveyard after a storm turn put the hand there. Daring Discovery can legally target only Zada (up to three targets), which would make it a Discover 4 per body; stack 015 on exactly that failed its checker, so it is a candidate, not a line. deck-audit reads card-advantage at 4 counted copies against a floor of 10 and lists the cantrips as possible_uncounted: the taxonomy has no pattern for a cantrip that becomes N cards.",
+   "cards": [
+    "Crimson Wisps",
+    "Expedite",
+    "Accelerate",
+    "Impolite Entrance",
+    "Renegade Tactics",
+    "Might of the Meek",
+    "Ancestral Anger",
+    "Faithless Looting",
+    "Daring Discovery",
+    "Goblin Matron",
+    "Conspicuous Snoop",
+    "Past in Flames",
+    "Grenzo, Havoc Raiser",
+    "Idol of Oblivion"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
     {
-      "component": "Zada online with a cantrip drawn (declared)",
-      "cities": [
-        "CRITICAL MASS",
-        "MANA FOR ONE TURN",
-        "THE STAYING POWER"
-      ],
-      "why": "the group's defining property is a LEGALITY — cheap enough to cast and worded so it can target only one creature you control — and no card says that anywhere in its text. The map reads each card's other half instead: Ancestors' Aid on its Treasure clause, Fists of Flame on its draw-and-pump. Four of the six land together only because they are all one-mana red spells"
+     "kind": "stack",
+     "id": "001",
+     "note": "Crimson Wisps targeting only Zada with four Goblins out: four copies plus the original, five cards drawn"
     },
     {
-      "component": "Early token maker drawn (declared)",
-      "cities": [
-        "THE TOKEN FACTORY",
-        "MANA FOR ONE TURN"
-      ],
-      "why": "Skirk Prospector is filed under mana because its text says 'Add {R}', which is exactly the reason it does not belong in a token-maker group — it creates no tokens, it eats them. Here the map is right and the declaration is wrong, which is the inverse of the usual case"
+     "kind": "stack",
+     "id": "002",
+     "note": "the copies of Empty the Warrens are not cast, so a later Grapeshot sees storm count 4"
     },
     {
-      "component": "Storm payoff plus ritual drawn — the payoff half (declared)",
-      "cities": [
-        "CRITICAL MASS",
-        "BODIES INTO DAMAGE",
-        "THE TOKEN FACTORY"
-      ],
-      "why": "the shared property is one keyword, storm, and clustering reads what each spell DOES: Grapeshot with the burn, Empty the Warrens with the token makers, Haze of Rage and Spreading Insurrection with the cheap red spells. A keyword that modifies how many times a spell happens is invisible to a model of what the spell does"
-    },
-    {
-      "component": "conversion — the hubs (this model's stage)",
-      "cities": [
-        "MANA FOR ONE TURN",
-        "BODIES INTO DAMAGE",
-        "THE STAYING POWER",
-        "THE TOKEN FACTORY"
-      ],
-      "why": "an exchange engine is defined by what it eats and what it pays, and card text names only the payment. Zada is filed with the damage cards, Skullclamp with the cheap-spells-and-hand city, Storm-Kiln Artist and Skirk Prospector with the mana. The engine proper has four addresses and no territory, which is the single most useful thing the map cannot tell you about this deck"
-    },
-    {
-      "component": "wincon — the one turn (this model's stage)",
-      "cities": [
-        "CRITICAL MASS",
-        "THE TOKEN FACTORY",
-        "THE STAYING POWER",
-        "MANA FOR ONE TURN"
-      ],
-      "why": "the deck has three different endings — a trample burst, a token flood into each-opponent damage, and an unbounded pump loop — and they have nothing in common in card text. The brief's own scatter table says it plainly: 0 of 4 declared components sit in a single city"
+     "kind": "city",
+     "id": "city-4",
+     "agreement": "cuts-across",
+     "note": "six of the cantrips sit in Finishers, Ancestral Anger, Faithless Looting, Daring Discovery and Past in Flames in Ramp, Snoop and Grenzo in Card Flow, Matron in Bodies, Idol in Mana"
     }
-  ],
-  "unassigned": [],
-  "open_questions": [
+   ]
+  },
+  {
+   "stage": "fodder",
+   "label": "THE BODY PILE",
+   "what_it_does": "Goblins are the resource this deck converts, and they are spent four ways: counted (Zada's copy count, Brightstone Ritual, Battle Hymn, Three Tree City), copied (Heat Shimmer and its kin double whatever is here), sacrificed for mana, cards or damage, and pumped for lethal. So the pile is a stage in its own right rather than a threat count. Krenko, Mob Boss is the largest repeatable producer: stack 004 measured one activation at five tokens off a four-Goblin board, because Krenko counts himself, leaving ten Goblins. Goblin Chieftain gives the pile +1/+1 and haste, which matters because most of these bodies are made the turn they are spent; Rundvelt Hordemaster pumps it and turns Goblin deaths into chances at more Goblins. Goblin Lackey puts a Goblin from hand onto the battlefield off combat damage; Impulsive Pilferer leaves a Treasure when it dies; Fable of the Mirror-Breaker makes a Goblin Shaman, loots, and flips into Reflection of Kiki-Jiki, which copies a nonlegendary creature every turn. The ignition token makers feed this pile too; they are filed apart because they are what has to happen first. Nothing here ends a game on its own, which is the correct reading of it.",
+   "cards": [
+    "Krenko, Mob Boss",
+    "Goblin Chieftain",
+    "Goblin Lackey",
+    "Impulsive Pilferer",
+    "Rundvelt Hordemaster",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
     {
-      "question": "Can a stack scenario verify the Empty the Warrens -> Impact Tremors arrow under the citation contract? Stack 002 resolves it (eight tokens, eight damage to each opponent) but names Impact Tremors only on the battlefield, and `line_cards` skips the board when the stack, hand and graveyard already name two or more cards — so the deck's headline kill has no citable link between the token flood and the damage.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "Impact Tremors is one of only two cards in the 99 that convert a creature entering into damage to each opponent, and the arrow that says so currently has to render dashed. Three columnists are forbidden to assert an unverified line, so this gap reaches the prose."
+     "kind": "stack",
+     "id": "004",
+     "note": "Krenko cast under Warchief and tapped the same turn for five tokens; the board goes to ten Goblins"
     },
     {
-      "question": "With Goblin chosen, does Roaming Throne's 'triggers an additional time' clause apply to Zada's copy trigger — and if it does, how many copies result: 2N, or N doubled with each set choosing targets separately?",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It decides whether Roaming Throne belongs in protection (ward on itself, which is where this model put it) or in conversion as a second multiplier. It is a four-mana card either way, but the two readings differ by a factor of two on every hub turn."
-    },
-    {
-      "question": "Does Frontline Heroism's copy clause behave as the strategic frame describes it — a second copy hub? Read literally it creates one Soldier and copies the spell once, at that token, regardless of board width, which is one extra copy rather than one per creature.",
-      "settled_by": "resolve-stack",
-      "why_it_matters": "It is the only in-deck redundancy for the copy effect. If it makes one copy and not N, the deck's answer to a removed Zada is far weaker than the declaration's commander-gated target implies, and the thinnest component in the deck is the hub itself."
-    },
-    {
-      "question": "What rate does the deck assemble the stack-002 kill — an each-opponent ETB damage payoff (Impact Tremors or General Kreat) together with a token maker — by turn six? No declared target measures this pair at all.",
-      "settled_by": "goldfish",
-      "why_it_matters": "It is the deck's best-verified path to damage across three seats, and the simulator has never been pointed at it. The three declared targets measure the hub's ammunition, an early body and a payoff-plus-ritual; none of them measures the thing stack 002 proves."
-    },
-    {
-      "question": "Does the strategy doc's commander-insurance target (deck-audit reads 2 copies against 5-7) apply to a commander whose engine is OPTIONAL? Half of this deck — rituals, Empty the Warrens, Grapeshot, the Haze of Rage loop — functions with Zada in the command zone.",
-      "settled_by": "research-strategy",
-      "why_it_matters": "If the target assumes a must-resolve commander, the axis is measuring this deck against the wrong standard and a pilot will buy protection slots the deck does not need. If it does not, one pair of Boots is a real hole."
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "partial",
+     "note": "Krenko, Lackey and Pilferer in Bodies; Chieftain, Hordemaster and Fable in Card Flow"
     }
-  ],
-  "proposed_goldfish_edits": [
+   ]
+  },
+  {
+   "stage": "conversion",
+   "label": "THE HUB AND WHAT IT COPIES",
+   "what_it_does": "Zada is the multiplier: an instant or sorcery that targets only her is copied once per other creature it could target, so board size is the exchange rate (stack 001). Which spell is pointed at her decides the output, which is why single-target creature spells are engine, not filler. Ancestors' Aid, Sudden Breakthrough and Reckless Ransacking each make a Treasure: through Zada, a Treasure per body, mid-turn mana that pays for the next spell. Heat Shimmer, Molten Duplication, Electroduplicate and Twinflame each make a hasty token copy of one creature: through Zada, a copy of every creature at once, so the board doubles, every copy is an ETB for the output stage, and the next cantrip draws twice as many. Stack 017 verifies it: Heat Shimmer at Zada with Mogg War Marshal and two tokens out made three hasty copies, the Marshal copy made a fourth Goblin, and the Zada token died to the legend rule - four creatures became eight. Storm-Kiln Artist mints a Treasure per cast AND per copy (stack 005), so with Zada every copy pays. Roaming Throne naming Goblin may make Zada's trigger fire twice - an open question, and the reason it is here rather than in protection. Skirk Prospector eats a Goblin for {R} (stack 004: at most ten, one shot). Skullclamp turns a 1/1 into two cards. Goblin Bombardment converts any creature, even a stolen one (stack 016), into a point at instant speed. Zada is the single point of failure: storm copies only its own spell, so no other card copies a spell pointed at one creature. engine-facts names her in six passing stacks; three concern the current 99 (001, 003, 017), since 013, 014 and 016 are about cut cards and 016 shows her not triggering. As commander, an answer to her is a tax, not a loss.",
+   "cards": [
+    "Zada, Hedron Grinder",
+    "Roaming Throne",
+    "Storm-Kiln Artist",
+    "Skirk Prospector",
+    "Skullclamp",
+    "Goblin Bombardment",
+    "Ancestors' Aid",
+    "Sudden Breakthrough",
+    "Reckless Ransacking",
+    "Heat Shimmer",
+    "Molten Duplication",
+    "Electroduplicate",
+    "Twinflame"
+   ],
+   "single_point_of_failure": "Zada, Hedron Grinder",
+   "evidence": [
     {
-      "target": "Early token maker drawn",
-      "change": "Either rename the label to 'Early Goblin body drawn', or replace Skirk Prospector with a card that actually makes tokens. Prospector creates none — it is a one-mana Goblin body and a sacrifice outlet.",
-      "why": "As declared, the group's size-5 pricing (31.2% in an opener, 38.6% by turn three) measures 'an early Goblin body', which is a looser claim than the label makes. The deck's own map agrees: Prospector clusters in MANA FOR ONE TURN, away from the other four."
+     "kind": "stack",
+     "id": "001",
+     "note": "the copy count is the board count: four Goblin tokens, four copies"
     },
     {
-      "target": "Zada online with a cantrip drawn",
-      "change": "Add Witch's Mark to the any_of group, taking it from 6 cards to 7.",
-      "why": "Witch's Mark targets 'up to one target creature you control', so it can be cast targeting only Zada, and it draws two. The strategic frame already names it among the cantrips; the goldfish group omits it. Price the change against this component's own odds and not the nearest citable anchor: engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%. The 5-copy figure of 31% is not this edit's baseline."
+     "kind": "stack",
+     "id": "017",
+     "note": "Heat Shimmer at Zada alone: three copies, one per other creature, resolving before the original; the Mogg War Marshal copy's ETB fires; the Zada token is removed by the legend rule; eight creatures, three with haste, the copies exiled at end step"
     },
     {
-      "target": "a new target: 'Each-opponent ETB damage payoff plus a token maker'",
-      "change": "Declare a target with two any_of groups: [Impact Tremors, General Kreat, the Boltbringer] and the early-token-maker group, so the simulator measures the pair stack 002 proves.",
-      "why": "This is the primary-win-line-with-no-target defect the fleet has hit twice before. The deck's best-verified kill runs through a two-card class, thinner than any declared component (the thinnest priced group is 4 cards at 25.8%), and nothing measures it."
+     "kind": "stack",
+     "id": "003",
+     "note": "Fists of Flame copies resolve one at a time and each draws first"
     },
     {
-      "target": "a new target: 'The copy hub without the commander'",
-      "change": "Declare a target whose only any_of group is [Frontline Heroism], and leave the existing 'Zada online' target commander-gated as it is.",
-      "why": "The existing hub target sets commander: true, so the simulator assumes the multiplier and measures only its ammunition. The deck's real exposure is the turn after Zada is answered, and its in-deck redundancy for that effect is one card — a size-1 group is exactly the redundancy claim being made. It also gives deck-audit something to price: this model declares Zada as conversion's single point of failure, while audit_engine.single_points_of_failure is empty because no declared target names her."
+     "kind": "stack",
+     "id": "004",
+     "note": "Prospector converts up to ten Goblins into one-shot red mana; the combo graph's infinite is refuted because Zada, not Krenko, is the commander"
     },
     {
-      "target": "Storm payoff plus ritual drawn",
-      "change": "Add Storm-Kiln Artist to the ritual any_of group, or declare the loop as its own target [Haze of Rage] + [Storm-Kiln Artist].",
-      "why": "Stack 005 is the deck's only verified arbitrarily-large line and Storm-Kiln Artist appears in no component at all. It is also a Treasure engine that pays for the storm turn, which is the same job as the four cards already in that group."
+     "kind": "stack",
+     "id": "005",
+     "note": "magecraft mints a Treasure per cast AND per copy: four on cast #1, five on cast #2; the stack's other card (Haze of Rage) has left the 99, so only Storm-Kiln's half survives as evidence"
+    },
+    {
+     "kind": "stack",
+     "id": "016",
+     "note": "three stolen creatures sacrificed to Goblin Bombardment for 3 damage; the stack also records that Zada did NOT trigger on that spell, so it is evidence for Bombardment only"
+    },
+    {
+     "kind": "city",
+     "id": "city-2",
+     "agreement": "cuts-across",
+     "note": "five in Ramp, Zada, Prospector and Bombardment in Bodies, Roaming Throne and Skullclamp in Card Flow, Heat Shimmer, Molten Duplication and Twinflame in Interaction"
     }
-  ],
-  "critic": {
-    "round": 3,
-    "iterations": 3,
-    "verdict": "pass",
-    "findings": [
-      {
-        "where": "stages[2].what_it_does",
-        "claim": "every point of count has to be paid for one card at a time, which is why fuel is one of the two largest non-mana stages, 13 cards, tied with output",
-        "status": "supported",
-        "note": "The round-2 blocking defect is repaired and the repair is exact, not approximate. Re-derived from the model's own stages[].cards: mana 24, ignition 4, fuel 13, fodder 8, conversion 7, output 13, protection 2, wincon 8. Fuel is 13, output is 13, and the next-largest non-mana stage is 8 — so 'one of the two largest, 13 cards, tied with output' is true in all three of its assertions (the count, the tie, and the partner named). The premise it supports is unchanged and still sound: nothing in fuel can be replaced by a storm copy, so the stage has to be wide. This was the only claim in the model that a size superlative was propping up."
-      },
-      {
-        "where": "stages[2].what_it_does",
-        "claim": "the trade that paid for the fix: 1728 -> 1633 characters against MAX_WHAT_IT_DOES = 1800",
-        "status": "supported",
-        "note": "Sentence-level diff against the previous state shows exactly two edits: the superlative clause grew by 58 characters, and the closing pair 'Witch's Mark is also a legal Zada target and is absent from the declared cantrip component; that is filed as a proposed goldfish edit' was deleted (-153). Net 1728 -> 1633, so the stage regained 95 characters of headroom rather than spending its remaining 72. No information was lost: proposed_goldfish_edits[1] still carries the whole claim with its own derivation ('Witch's Mark targets up to one target creature you control ... engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%'), which is what made this the cheapest sentence in the stage to trade. This is the pattern the 1,800 cap exists to produce — a fix bought by deleting a restatement rather than by accreting a clause."
-      },
-      {
-        "where": "thesis, stages[0..1], stages[3..7], lines, map_disagreements, unassigned, open_questions, proposed_goldfish_edits",
-        "claim": "nothing else moved this round",
-        "status": "supported",
-        "note": "Verified by diff, not by re-reading. The committed HEAD copy of engine.json is byte-identical to the round-2 state (its what_it_does lengths are exactly the 1725/1045/1728/1195/1500/1525/913/1058 round 2 recorded). Diffing the current file against it: thesis, lines, map_disagreements, unassigned, open_questions and proposed_goldfish_edits are all byte-identical, seven of eight stages have zero changed keys, and stages[2].what_it_does is the single changed value in the entire model. Independently, every verbatim claim quoted in a round-2 finding still appears verbatim in the model except the one superlative that was the finding. So the verified layer, the ten cited arrows, the five dashed notes and the five disagreements are unregressed by construction, and I have not re-litigated them."
-      },
-      {
-        "where": "stages[*].what_it_does",
-        "claim": "a 'largest / only / thinnest stage' superlative should be diffed mechanically against len(stages[i].cards)",
-        "status": "supported",
-        "note": "Agreed, and worth making permanent — with one scoping caveat, and it is measured against the fleet before proposing it, per the repo's own rule. VERIFICATION is exact and free: validate_engine already holds stages[].cards, so 'is there another stage of equal or greater size' is decidable, and the goblin-storm defect was precisely a TIE, which a size ranking sees and a reader does not. The round-1 'exactly two stages live at one address' claim needs one extra join — deck_map.json's level-0 city per card, tracked in the same deck directory — after which the distinct-city count per stage is equally exact. DETECTION is the fuzzy half, so this must be WARN-shaped, not an error: scanning all nine tracked engine.json files for /(largest|smallest|thinnest|widest|biggest|fewest|only)[^.;]{0,60}stage/i returns 5 sentences (edgar 2, goblin-storm 1, radagast 1, sisay 1), of which only goblin-storm's is a size claim — edgar's 'the only stage that does not have to be found' and sisay's 'the only stage a city name addresses correctly' are semantic and city-coherence claims respectively and would be false positives against a size check. The useful shape is therefore: on a match, print the computed size ranking (and the per-stage distinct-city count) as a warning for a human or the critic to diff. Fleet cost: 5 warnings, 0 spurious errors."
-      },
-      {
-        "where": "lines[3]",
-        "claim": "mana -> wincon via Battle Hymn, Brightstone Ritual, Empty the Warrens, carries 'storm count, not mana', verified_by 002",
-        "status": "supported",
-        "note": "Re-checked directly this round even though the array is unchanged, because this is the exact shape of the radagast Castle-Garenbrig failure the charter exists for: a mana-stage arrow into a kill. Stack 002's scenario board gives you Impact Tremors and Mountain x4 with mana_available '{R}{R}{R}{R}', and both rituals are in the GRAVEYARD as two of the three prior casts (extras.spells_cast_before_this_turn = 3, graveyard = Battle Hymn, Brightstone Ritual, Dragon Fodder). The four mana that cast Empty the Warrens therefore come from the four Mountains, and the rituals contribute spell count. The line's carries says 'storm count, not mana' and its note says 'The mana claim is not what the stack shows'. That is the arrow declining the inference the stack does not support, in the one place it would have been easiest to make."
-      },
-      {
-        "where": "stages[3].what_it_does",
-        "claim": "Krenko, Mob Boss is the largest single producer",
-        "status": "supported",
-        "note": "Recording the scope rather than a defect, because the proposed mechanical check must not be over-scoped to catch it. This is a CARD-level claim inside 'THE BODY PILE' and is true within stages[3]: Krenko made five tokens in stack 004 against Redcap Gutter-Dweller's two and Howlsquad Heavy's one per attack. Deck-wide it would be arguable — Empty the Warrens put eight tokens on the board in stack 002 — but Empty the Warrens is in stages[7] (wincon) and the sentence is bounded by the preceding one ('the pile is a stage in its own right'). It stays true as stage-scoped prose; it would become wrong if lifted into shared copy. A len(stages[i].cards) diff cannot see this claim and should not try to."
-      },
-      {
-        "where": "stages[5].what_it_does, proposed_goldfish_edits[1].why, proposed_goldfish_edits[2].why",
-        "claim": "the thinnest declared component is four cards at 25.8%; the declared cantrip group is 6 at 36.4% and 7 copies is 41.1%",
-        "status": "supported",
-        "note": "Re-derived from a fresh engine-facts run rather than from the round-2 record. audit_engine.targets gives component sizes 6 (opening_seven 0.364), 5 (0.312), 4 (0.258) and 4 (0.258), so thinnest_size 4 at 25.8% is right in both places it is quoted. Hypergeometrics recomputed independently: 1 - C(99-n,7)/C(99,7) = 0.2577 / 0.3124 / 0.3636 / 0.4115 for n = 4/5/6/7, matching 25.8, 31.2, 36.4 and 41.1 as printed. verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'] and audit_engine.single_points_of_failure is [] — both still as stages[4] and proposed_goldfish_edits[3].why describe them."
-      },
-      {
-        "where": "stages[0].what_it_does",
-        "claim": "1,725 characters against MAX_WHAT_IT_DOES = 1800",
-        "status": "supported",
-        "note": "Unchanged and legal, but it is now the model's longest field and the only one near the cap, with 75 characters of headroom. It is organised rather than muddled — a card-by-card sequence, no narration of previous drafts — which is the distinction the cap was measured on, so it is not a defect. Flagging it only so a future revision knows that any addition here has to be a trade, and that the safest trade is not the Kher Keep hedge or the Sol Ring / Ruby Medallion / Throne of Eldraine sentence, both of which are load-bearing against a red-source miscount."
-      },
-      {
-        "where": "engine.json",
-        "claim": "the model as a whole",
-        "status": "supported",
-        "note": "validate-engine passes: 8 stages, 79 cards placed, each exactly once, 0 unassigned, 10 of 15 lines verified by a passing stack. Five dashed lines with honest notes on a deck with five passing stacks is a complete model of what has been checked, not an incomplete one."
-      }
-    ],
-    "previous_rounds": [
-      {
-        "round": 2,
-        "verdict": "fail",
-        "findings": [
-          {
-            "where": "stages[0].what_it_does",
-            "claim": "thirty-six copies, of which mana_analysis counts 33 as red sources ... it also credits Kher Keep red on a land whose printed mana ability reads '{T}: Add {C}', so 33 is the artifact's figure and an upper bound on it",
-            "status": "supported",
-            "note": "Round-1 finding 1 answered, and the hedge is a fair reading rather than a second derived count. mana_analysis.lands.total = 36, lands.entries = 15, sources.lands.R = 33, and lands.list carries produces: [] for exactly Fountainport, Reliquary Tower and War Room — the three the stage names. Kher Keep's cards.json oracle is '{T}: Add {C}' plus '{1}{R}, {T}: Create a 0/1 Kobold', so its only mana ability adds {C} while lands.list gives it produces: ['R']; 33 therefore over-counts by one and 'upper bound' is exactly the right word. The stage asserts no number of its own: it reports the artifact's 33 and says why 33 is a ceiling, which is the disciplined version of the round-1 fix."
-          },
-          {
-            "where": "stages[1].evidence[1].note",
-            "claim": "Exactly two stages in this model live at one address — this one, and protection, whose two cards are both in THE STAYING POWER",
-            "status": "supported",
-            "note": "Round-1 finding 2 answered. Re-derived by joining stages[].cards to deck_map.json's level-0 city per card: mana 4, ignition 1, fuel 3, fodder 4, conversion 4, output 3, protection 1, wincon 4. Exactly two stages at one city, and the added clause ('ignition is the only one of the two that does work rather than carry insurance') preserves the original point without asserting what protection's own evidence denies. Still mechanically checkable: count distinct level-0 regions per stage and diff against any 'only stage' phrasing."
-          },
-          {
-            "where": "stages[1].what_it_does",
-            "claim": "the earliest of the three declared targets by 1.730 turns against the next-earliest, the storm payoff plus ritual at mean turn 4.914",
-            "status": "supported",
-            "note": "Round-1 finding 3 answered exactly. goldfish_metrics.json mean_turn: 3.184 / 4.914 / 5.266; 4.914 - 3.184 = 1.730, and the sentence now names which target the gap is measured against, which is what made 'two full turns' unfalsifiable. The other figures in the same sentence re-derive: 5 cards, opening_seven 0.312, by_turn_three 0.386, assembled_rate 0.600."
-          },
-          {
-            "where": "stages[4].single_point_of_failure",
-            "claim": "Zada, Hedron Grinder",
-            "status": "supported",
-            "note": "Round-1 finding 4 answered in the direction the evidence points. engine-facts verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'] and she is the only card named by two passing stacks (001, 003). audit_engine.single_points_of_failure IS empty and the reason is mechanical, not a disagreement: deck_audit.py:651 builds that list from targets whose thinnest component size <= 1, and the three declared components are 6, 5 and 4, so nothing can appear there. The model now says so in proposed_goldfish_edits[3].why ('audit_engine.single_points_of_failure is empty because no declared target names her'), which is accurate — Zada is a commander gate on the 'Zada online' target, not a member of any any_of group. The commander-tax rebuttal was kept as an argument inside the stage rather than used to withhold the declaration, and the round-1 asymmetry (protection declaring a SPOF while conversion declared none) is gone."
-          },
-          {
-            "where": "stages[2].what_it_does",
-            "claim": "Witch's Mark, Faithless Looting, Glimpse the Impossible and Daring Discovery are the deck's paper card advantage, and not one of them refills a hand",
-            "status": "supported",
-            "note": "Round-1 finding 5 answered and each card's reading checks against cards.json: Faithless Looting 'Draw two cards, then discard two cards' (net zero); Witch's Mark 'You may discard a card. If you do, draw two cards' (net +1, gated); Glimpse the Impossible exiles three playable only this turn; Daring Discovery is Discover 4. deck-audit card-advantage is value 8 against low 10, verdict 'under', as quoted. The paragraph's own rule ('every point of count has to be paid for one card at a time') no longer has a false exception attached to it."
-          },
-          {
-            "where": "stages[5].what_it_does",
-            "claim": "Siege-Gang Commander, Siege-Gang Lieutenant and Broadside Bombardiers buy damage with a body at a cost, and all three can point it at a player ... Gempalm Incinerator and Goblin Negotiation spend no body and are not that class",
-            "status": "supported",
-            "note": "Round-1 finding 6 answered. Oracle: Commander '{1}{R}, Sacrifice a Goblin: 2 damage to any target'; Lieutenant '{2}, Sacrifice a Goblin: 1 damage to any target'; Bombardiers 'Boast — Sacrifice another creature or artifact: damage equal to 2 plus the sacrificed permanent's mana value to any target' — all three spend a permanent and all three read 'any target'. Incinerator (cycling, X = Goblin count) and Negotiation (X damage, then tokens from excess) target a creature only, exactly as the revision now says. Two cards moved out of the class and the class shrank from five to three."
-          },
-          {
-            "where": "proposed_goldfish_edits[1].why",
-            "claim": "engine-facts puts the declared 6-card group at 36.4% of openers, and the cited redundancy anchor puts 7 copies at 41.1%. The 5-copy figure of 31% is not this edit's baseline",
-            "status": "supported",
-            "note": "Round-1 finding 7 answered, including the explicit disclaimer of the wrong anchor. Recomputed: 1 - C(93,7)/C(99,7) = 0.3636 and 1 - C(92,7)/C(99,7) = 0.4115, matching engine-facts' 0.364 for the six-card group and the strategy quote's 41.1%. The edit now prices +4.7 points rather than +10.1."
-          },
-          {
-            "where": "lines[2].note",
-            "claim": "storm count is all it pays there: stack 002's board is Impact Tremors and four Mountains with zero Goblin tokens on it, so the stack shows the token maker paying once, not twice",
-            "status": "supported",
-            "note": "Round-1 finding 8 answered by narrowing the note to what the board shows. Stack 002's scenario board is ['Impact Tremors', 'Mountain x4'] with opponents at 32 and 28 and no tokens; extras.spells_cast_before_this_turn is 3 and the graveyard holds Battle Hymn, Brightstone Ritual, Dragon Fodder. The line's carries ('storm count') and its note now agree with the board rather than with the deck's general behaviour."
-          },
-          {
-            "where": "stages[3].what_it_does",
-            "claim": "stack 004 measured one activation at five tokens, because Krenko counts himself — four Goblins were out when he was cast and five when the ability resolved — leaving ten Goblins on the table",
-            "status": "supported",
-            "note": "Round-1 finding 9 answered verbatim against stack 004 step 5 ('X is determined now, at resolution: you control 5 Goblins (Krenko, Warchief, Prospector, 2 tokens), so X = 5') and its board of ten. The off-by-one that would have taught the reader X = pre-cast board count is gone and the correct rule is stated."
-          },
-          {
-            "where": "stages[2].what_it_does",
-            "claim": "Past in Flames ... that is the rebuild plan, and it is one card. Goblin Dark-Dwellers recasts exactly one spell, and only at mana value 3 or less — a far smaller second option, not redundancy for it",
-            "status": "supported",
-            "note": "Round-1 finding 10 answered. Oracle confirms Past in Flames grants flashback to every instant and sorcery in the graveyard and Dark-Dwellers casts one card of mana value 3 or less on ETB. The rebuild class is now stated as one card deep, so nothing downstream can quote 'two cards deep' as redundancy."
-          },
-          {
-            "where": "stages[4].what_it_does",
-            "claim": "Idol of Oblivion draws one card per TURN, gated on having created a token — the one rate in this paragraph that is not per unit",
-            "status": "supported",
-            "note": "Round-1 finding 11 answered. Oracle: '{T}: Draw a card. Activate only if you created a token this turn.' The revision also flags the asymmetry with Skullclamp and Bombardment in the same paragraph rather than leaving the reader to infer a per-token rate from the surrounding sentences."
-          },
-          {
-            "where": "stages[0].what_it_does",
-            "claim": "The utility lands are mostly NOT here for their mana ... (The taxonomy reads ramp:ritual at 6, adding Ancestors' Aid and Glimpse the Impossible; this model files the second of those in fuel.)",
-            "status": "supported",
-            "note": "Round-1 finding 12 answered on both halves. Reliquary Tower's 'You have no maximum hand size', War Room's '{3}, {T}, Pay life: Draw a card' (deck-audit lists War Room under card-advantage.possible_uncounted, as the stage says) and Fountainport's '{2}, {T}, Sacrifice a token: Draw a card' all check. The ritual slip is fixed by naming the DECLARED group of four (engine-facts' component is exactly Battle Hymn, Brightstone Ritual, Mana Geyser, Seething Song) and stating the taxonomy's 6 beside it; card_roles gives ramp:ritual to exactly those four plus Ancestors' Aid and Glimpse the Impossible, and Glimpse is in stages[2].cards as claimed."
-          },
-          {
-            "where": "lines[0], lines[1], lines[8], lines[9]",
-            "claim": "the two feedback pairs — Zada <-> Crimson Wisps (001) and Haze of Rage <-> Storm-Kiln Artist (005)",
-            "status": "supported",
-            "note": "Byte-identical to round 1 (diffed the whole lines[] array) and re-read against the stacks anyway, because a backward arrow is where causation is easiest to fake. 001: one {R} in at step 1, five cards out at steps 4-8, final_state cards_drawn 5. 005: step 7 gives 4 Treasures on cast #1, step 10 gives 5 on cast #2 (nine on board), step 4 establishes each COPY as a magecraft trigger and step 11 gives 'iteration k ... costs 4 mana, and yields k+3 Treasures'. Both directions are established by the cited stack, not merely mentioned in it."
-          },
-          {
-            "where": "lines[10]",
-            "claim": "the deck's headline kill and it is NOT verifiable as drawn (verified_by null)",
-            "status": "supported",
-            "note": "Untouched, and still the right call. engine-facts verified.by_stack['002'].cards is exactly [Battle Hymn, Brightstone Ritual, Dragon Fodder, Empty the Warrens, Grapeshot] — build_index.line_cards stops once stack+hand+graveyard name two cards, so Impact Tremors, which sits on 002's battlefield, never enters the list and validate-engine could not accept a citation here. The line stayed dashed and open_questions[0] still routes the remedy to resolve-stack; nothing was re-pointed at two cards 002 does name in order to buy a green arrow."
-          },
-          {
-            "where": "lines[11], lines[12], lines[13], lines[14]",
-            "claim": "the four other dashed lines and their notes",
-            "status": "supported",
-            "note": "All four untouched and none is phrased as fact. lines[11] 'the attrition line nobody has checked', lines[12] '...; unchecked', lines[14] 'No stack has been run on it'. lines[13]'s one factual assertion — Swiftfoot Boots is the only card in the 99 that can make the hub untargetable — was re-derived, not taken over: scanning all 79 cards.json entries for hexproof/shroud/protection from/ward/'can't be the target' returns exactly Swiftfoot Boots and Roaming Throne, whose ward {2} protects only itself. Its card-text claims also hold (Skullclamp +1/-1 kills a 1/1 and draws two; Mogg War Marshal makes a token on enter and on death; Bombardment plus Boggart Shenanigans is two damage per Goblin body)."
-          },
-          {
-            "where": "stages[5].what_it_does, stages[7].evidence[3]",
-            "claim": "Impact Tremors and General Kreat are the only two each-opponent ETB damage cards; the three Krenko combo lines are refuted here",
-            "status": "supported",
-            "note": "Both survived the revision unchanged and both re-checked. Scanning all 79 entries for 'each opponent' returns four cards; only Impact Tremors ('Whenever a creature you control enters, deals 1 damage to each opponent') and General Kreat ('Whenever another creature you control enters ... 1 damage to each opponent') deal damage on an ETB. The Krenko refutation is still stated with its actual reason (Zada is the commander, so 903.9a never returns Krenko; he is also tapped) in stages[4].evidence[1], lines[7].note and stages[7].evidence[3], and stack 004's final_state says the same. No re-adoption of the assumes_commander lines in engine-facts.candidate_lines."
-          },
-          {
-            "where": "map_disagreements",
-            "claim": "five disagreements, each naming which artifact is wrong about what",
-            "status": "supported",
-            "note": "Untouched, and every city list re-derived from deck_map.json rather than re-read: cantrip group CRITICAL MASS 4 / MANA FOR ONE TURN 1 / THE STAYING POWER 1; payoff half CRITICAL MASS 2 / BODIES INTO DAMAGE 1 / THE TOKEN FACTORY 1; conversion 2/2/2/1 across four cities; wincon 5/1/1/1. engine-facts' scatter still reads coherent: false on all four components. The other city figures in the file also re-derive exactly: THE RED FLOOR is precisely the fifteen land entries, ten of thirteen in fuel are CRITICAL MASS, ten of thirteen in output are BODIES INTO DAMAGE, THE STAYING POWER is eleven cards wide, and the mana stage splits 4 rituals-plus-Ancestors'-Aid / 4 rocks-and-Warchief / 1 Seething Song exactly as evidence[2] says."
-          },
-          {
-            "where": "stages[*].cards",
-            "claim": "coverage and the declared figures",
-            "status": "supported",
-            "note": "79 cards placed, each exactly once, all present in cards.json, unassigned empty — recomputed, and validate-engine passes (8 stages, 10/15 lines verified). Re-derived figures that survived the rewrite: turn-five mean available mana 4.589; thinnest declared component 4 cards at opening_seven 0.258; deck-audit protection 2 copies against the 5-7 target, verdict under, both cards carrying protection:self; stack 003's +3/+4/+5/+6 and +7 for 32 power with at least 30 reaching (steps 8-9); stack 002's eight tokens and eight damage to each of two opponents and the following Grapeshot at storm count 4 (steps 7-8). Hypergeometrics 25.8 / 31.2 / 36.4 / 41.1 all recomputed to the printed value."
-          },
-          {
-            "where": "open_questions",
-            "claim": "five open questions, three routed to resolve-stack",
-            "status": "supported",
-            "note": "Untouched, and this is the one block of the model the renderer actually publishes (build_manual reads engine.open_questions and the schematic; what_it_does is agent-facing only). Re-checked the two that decide placements: Zada's type line is 'Legendary Creature — Goblin Ally', so Roaming Throne naming Goblin does reach her and open_questions[1] is genuinely open; Frontline Heroism's oracle is one Soldier and one copy at that token regardless of width, so open_questions[2] states the literal reading correctly and neither card was moved on the strength of an unresolved question."
-          },
-          {
-            "where": "stages[2].what_it_does",
-            "claim": "every point of count has to be paid for one card at a time, which is why this is the largest non-mana stage",
-            "status": "miscounted",
-            "note": "Fuel holds 13 cards and OUTPUT also holds 13 (Blasphemous Act, Boggart Shenanigans, Broadside Bombardiers, Chaos Warp, Gempalm Incinerator, General Kreat, Goblin Negotiation, Grapeshot, Impact Tremors, Pashalik Mons, Siege-Gang Commander, Siege-Gang Lieutenant, Vandalblast). Full non-mana counts from the model's own stages[].cards: ignition 4, fuel 13, fodder 8, conversion 7, output 13, protection 2, wincon 8. Fuel is TIED for largest, not the largest, so the sentence's conclusion does not follow from its premise as stated — and the premise is fine, so the fix is 'tied with output as the largest' or simply 'one of the two largest'. This is the same class as round-1 finding 3: a superlative that is 'almost true' propping up a real argument. Mechanically checkable and worth adding: any 'largest/only/thinnest stage' phrasing can be diffed against len(stages[i].cards), which is data validate_engine already loads."
-          },
-          {
-            "where": "stages[0].what_it_does, stages[2].what_it_does",
-            "claim": "the two rewritten stages are 1725 and 1728 characters against MAX_WHAT_IT_DOES = 1800",
-            "status": "supported",
-            "note": "Recording the headroom, not a defect: all eight stages are legal (1725 / 1045 / 1728 / 1195 / 1500 / 1525 / 913 / 1058) and both long ones are organised rather than muddled — each is a sequence of card-by-card readings, not accreted narration of previous drafts, which is the failure mode the cap was measured against. But the round-1 fixes were bought entirely with length (stages[0] was 913 and stages[2] 1110), and 72-75 characters of headroom means the one-clause fix above cannot be ADDED, it has to be traded. The cheapest trade in stages[2] is the closing sentence about Witch's Mark, which repeats proposed_goldfish_edits[1] in full."
-          },
-          {
-            "where": "stages[0].what_it_does",
-            "claim": "Add Sol Ring, Ruby Medallion and Throne of Eldraine. That part only has to hit drops.",
-            "status": "supported",
-            "note": "Checked because it sits one sentence after a red-source count and could be read as three more red sources, which would contradict mana_analysis: Sol Ring is in producers with produces: [] (it adds {C}{C}), Throne of Eldraine and Ruby Medallion are not producers at all, and sources.nonland.R = 10 names none of the three. It survives because deck-audit's ramp axis files exactly these three together (Sol Ring and Ruby Medallion as measured ramp, Throne of Eldraine as possible_uncounted), so 'add' reads as the deck's non-land mana furniture rather than as red sources, and no combined number is ever stated. If stages[0] is edited anyway, one word ('three artifacts beside them') removes the ambiguity — but Ruby Medallion adds no mana at all, so do not let a revision turn this list into a source count."
-          }
-        ]
-      },
-      {
-        "round": 1,
-        "verdict": "fail",
-        "findings": [
-          {
-            "where": "stages[0].what_it_does",
-            "claim": "Fifteen land entries, thirty-six copies, all of them red",
-            "status": "contradicts-artifact",
-            "note": "mana_analysis.json reads sources.lands.R = 33 against lands.total = 36. Three land copies produce no red at all and the model NAMES all three two sentences later in its own utility-land list: Fountainport, Reliquary Tower and War Room each read '{T}: Add {C}' and each carries produces: [] in mana_analysis's lands.list. Entries and copies (15 / 36) are both exact; only 'all of them red' is wrong. Worse than a rounding error, because the sentence is the stage's opening premise and a mono-red deck's red-source count is the one figure a reader will not re-check. Note in passing that a fourth, Kher Keep, also taps for {C} by its oracle text while mana_analysis credits it R — so the defensible number is 32-33, never 36. Mechanically checkable: a stage's colour claim can be diffed against mana_analysis.sources.lands."
-          },
-          {
-            "where": "stages[1].what_it_does",
-            "claim": "all four sit inside THE TOKEN FACTORY, the only stage in this model that lives at one address",
-            "status": "contradicts-artifact",
-            "note": "This is in stages[1].evidence[1].note and it is contradicted by stages[6].evidence[1].note in the same file: protection's two cards BOTH sit in THE STAYING POWER. Joining engine.json's stages to deck_map.json's level-0 regions gives distinct-city counts of mana 4, ignition 1, fuel 3, fodder 4, conversion 4, output 3, protection 1, wincon 4. Two stages live at one address, not one. Ignition is still the only MULTI-card functional stage that does, if that is the claim intended — but as written the model asserts something its own protection evidence denies. Mechanically checkable: count distinct level-0 regions per stage and compare against any 'only stage' phrasing."
-          },
-          {
-            "where": "stages[1].what_it_does",
-            "claim": "the earliest of the three declared targets by two full turns",
-            "status": "miscounted",
-            "note": "goldfish_metrics.json mean_turn: 'Early token maker drawn' 3.184, 'Storm payoff plus ritual drawn' 4.914, 'Zada online with a cantrip drawn' 5.266. Earliest by 1.730 turns against the next-earliest. 'By two full turns' is only reachable against the LATEST target (2.082), which is not what 'the earliest of the three ... by' means. The 0.27-turn overstatement is small; the sentence it props up is not — it is the stage's argument for why a five-mana payoff is affordable. 1.7 turns still carries that argument, so this costs the model nothing to fix."
-          },
-          {
-            "where": "stages[4].single_point_of_failure",
-            "claim": "conversion declares no single point of failure",
-            "status": "unjustified",
-            "note": "The model argues the opposite in three other places. open_questions[2] concludes 'the thinnest component in the deck is the hub itself'; proposed_goldfish_edits[3] asks for a size-1 group precisely so deck-audit can 'price a single point of failure it currently reports as zero'; and stages[4].what_it_does establishes that Frontline Heroism is 'redundancy for the EFFECT and not for the multiplier'. engine-facts agrees from the other side: verified.load_bearing_cards is exactly ['Zada, Hedron Grinder'], the only card in two passing stacks. Either Zada is conversion's single_point_of_failure or the proposed edit's justification is wrong; the model cannot hold both. The available rebuttal is real and should be written down if taken: a commander is recastable from the command zone, so she is a tax rather than a loss — but then edit[3] must stop calling her a single point of failure. Note the asymmetry this creates today: protection declares a SPOF for a stage the model calls optional, while conversion declares none for the card the whole engine turns on."
-          },
-          {
-            "where": "stages[2].what_it_does",
-            "claim": "Witch's Mark, Faithless Looting, Glimpse the Impossible and Daring Discovery refill the hand outright",
-            "status": "over-claimed",
-            "note": "Against cards.json oracle text, none of the four refills a hand outright. Faithless Looting is 'Draw two cards, then discard two cards' — net ZERO, a filter, and the single worst member of a class defined by refilling. Witch's Mark is 'You may discard a card. If you do, draw two cards' — net +1 and GATED on already holding a card, which is exactly the resource a storm turn has spent. Glimpse the Impossible exiles three playable only this turn, converting the remainder to 0/1 Spawn — impulse with a clock, not hand. Daring Discovery is Discover 4: one card. The claim matters because the same paragraph's argument is that 'every point of count has to be paid for one card at a time', and this sentence is the stated exception to it. deck-audit independently reads card-advantage at 8 copies against a floor of 10, verdict 'under'."
-          },
-          {
-            "where": "stages[5].what_it_does",
-            "claim": "Siege-Gang Commander, Siege-Gang Lieutenant, Broadside Bombardiers, Gempalm Incinerator and Goblin Negotiation buy damage with a body at a cost",
-            "status": "over-claimed",
-            "note": "Three of the five do. Siege-Gang Commander ('{1}{R}, Sacrifice a Goblin: 2 damage to any target'), Siege-Gang Lieutenant ('{2}, Sacrifice a Goblin: 1 damage to any target') and Broadside Bombardiers ('Sacrifice another creature or artifact') all spend a body. Gempalm Incinerator spends NO body — it is cycled from hand and deals X to a creature where X is the Goblin count, which is the opposite trade (bodies are the meter, not the fuel). Goblin Negotiation spends no body either and CREATES them: 'deals X damage to target creature. Create a number of 1/1 red Goblin creature tokens equal to the amount of excess damage'. Both non-members also share a restriction the sentence hides: they can only hit a creature, never a player, so neither is reach across a table. Two of five wrong, both in the same direction, inside the stage whose job is stating how the deck converts bodies into damage."
-          },
-          {
-            "where": "proposed_goldfish_edits[1].why",
-            "claim": "The brief's cited redundancy anchors put 7 copies at 41.1% of openers against 5 at 31%",
-            "status": "over-claimed",
-            "note": "The quoted anchors are real (strategy:deckbuilding.redundancy-vs-tutors, verbatim in engine-facts.audit_engine.redundancy_citation) but they are the wrong pair. The edit itself says the group goes 'from 6 cards to 7', and engine-facts prices that same 6-card component at opening_seven 0.364. The gain being bought is 36.4% -> 41.1%, i.e. +4.7 points, not 31% -> 41.1%, i.e. +10.1. Quoting the 5-copy anchor doubles the apparent value of an edit that is still worth making — the recomputed 41.1% is right, the baseline is not. Mechanically checkable: an edit that changes a component's size must price the change against that component's own engine-facts odds, not against the nearest citable anchor."
-          },
-          {
-            "where": "lines[2].note",
-            "claim": "an early token maker pays twice, once in bodies and once in count",
-            "status": "over-claimed",
-            "note": "The carries value ('storm count') is exactly right and stack 002 establishes it: extras.spells_cast_before_this_turn is 3, the graveyard holds exactly three cards, and build_index.line_cards resolves 002 to [Battle Hymn, Brightstone Ritual, Dragon Fodder, Empty the Warrens, Grapeshot], so Dragon Fodder being one of the three prior casts is corroborated rather than assumed. The 'once in bodies' half is not. Stack 002's board is 'Impact Tremors, Mountain x4' — ZERO Goblin tokens — and the opponents open at 32 and 28 with no Impact Tremors damage yet taken, i.e. the verified board is one in which Dragon Fodder contributed no bodies at all to the kill. The stack shows the token maker paying exactly ONCE, in count. (The scenario is arguably inconsistent with itself on this point; that is the stack's problem, but the model may not borrow the half of it the board denies.)"
-          },
-          {
-            "where": "stages[3].what_it_does",
-            "claim": "stack 004 measured one activation off a four-Goblin board at five tokens",
-            "status": "miscounted",
-            "note": "Stack 004 step 5 is explicit: 'X is determined now, at resolution: you control 5 Goblins (Krenko, Warchief, Prospector, 2 tokens), so X = 5'. The board was four Goblins before Krenko was CAST and five when the ability RESOLVED — Krenko counts himself. As written the sentence teaches the reader X = board count, off by one in the direction that happens to give the right answer here and the wrong one everywhere else. 'Leaving ten Goblins on the table' is exact (step 5). Fix is one clause: five, because Krenko counts himself."
-          },
-          {
-            "where": "stages[2].what_it_does",
-            "claim": "Goblin Dark-Dwellers and Past in Flames recast the graveyard ... that is the deck's rebuild plan, and it is two cards deep",
-            "status": "over-claimed",
-            "note": "Past in Flames gives flashback to EVERY instant and sorcery in the yard. Goblin Dark-Dwellers casts exactly one, and only at mana value 3 or less. Calling them a two-deep class treats an order-of-magnitude difference as redundancy — the same mistake the model correctly refuses to make one stage later about Frontline Heroism, and worth flagging for the same reason: a rebuild plan that reads 'two cards deep' will be quoted as redundancy by the prose."
-          },
-          {
-            "where": "stages[4].what_it_does",
-            "claim": "Idol of Oblivion pays a card for a token made",
-            "status": "over-claimed",
-            "note": "Oracle text is '{T}: Draw a card. Activate only if you created a token this turn.' It is one card per TURN, gated on having made any token — not one card per token, which is what a hub stage's 'one resource in, a different one out' framing implies and what the surrounding sentences (Skullclamp two cards per body, Bombardment one damage per body) set the reader up to expect. It is the only per-unit rate in the paragraph that is not per-unit."
-          },
-          {
-            "where": "stages[0].what_it_does",
-            "claim": "The utility lands (War Room, Fountainport, Reliquary Tower, Spinerock Knoll, Kher Keep) ... none of them is why they are in the deck",
-            "status": "unjustified",
-            "note": "Backwards for at least two of the five. Reliquary Tower's mana ability is the throwaway — 'You have no maximum hand size' is the reason a deck that draws five cards off one {R} (stack 001) runs it. War Room is '{3}, {T}, Pay life: Draw a card', and deck-audit lists it under card-advantage's possible_uncounted for exactly that. Neither is in the deck for its {C}. Related smaller slip in the same paragraph: 'the four rituals' is stated three sentences before the model itself describes Ancestors' Aid as 'a ritual with a pump stapled on', and deck-audit counts ramp:ritual at 6."
-          },
-          {
-            "where": "lines[10]",
-            "claim": "the deck's headline kill and it is NOT verifiable as drawn",
-            "status": "supported",
-            "note": "Checked against the code rather than taken on trust, because this is the one place a model could talk itself out of evidence it holds. build_index.line_cards collects stack + hand + graveyard first and returns as soon as that reaches two names; stack 002's stack/hand/graveyard yield five, so the board is skipped and Impact Tremors never enters the list. engine-facts confirms it independently: verified.by_stack['002'].cards is exactly [Battle Hymn, Brightstone Ritual, Dragon Fodder, Empty the Warrens, Grapeshot]. validate-engine requires the cited stack to NAME the via cards, so verified_by: null is forced, not chosen. Two things the model deserves credit for: it did not re-point the via at two cards 002 does name in order to buy a green arrow, and open_questions[0] dispatches the right remedy (a scenario naming Impact Tremors on the stack or in hand). The honest dashed line is correct."
-          },
-          {
-            "where": "stages[7].evidence[3]",
-            "claim": "the three Krenko lines assume Krenko is the commander and stack 004 refutes them here",
-            "status": "supported",
-            "note": "Checked for quiet re-adoption, since this deck's record contains a refuted famous infinite. engine-facts.candidate_lines carries four lines, three of them Krenko + Skirk Prospector + (Goblin Chieftain | Goblin Warchief | Howlsquad Heavy), all with assumes_commander: true. Nothing in the model re-adopts them. The refutation is stated three times and consistently — stages[4].evidence[1], lines[7].note and this entry — and each states the actual reason (903.9a scopes the command-zone return to a commander; Zada is the commander; Krenko is also already tapped, so the loop cannot even repeat on the battlefield). lines[7] then prices the surviving line correctly at 'at most ten {R}, one shot', matching stack 004 step 6 verbatim."
-          },
-          {
-            "where": "stages[4].what_it_does",
-            "claim": "Frontline Heroism ... makes one Soldier and copies the spell once, at that token, however wide you are",
-            "status": "supported",
-            "note": "Oracle text in cards.json: 'Whenever you cast a spell that targets only a single creature you control, create a 1/1 red Soldier creature token with haste, then copy that spell. The copy targets that token.' One token, one copy, no per-creature clause — the model's reading is right and the strategic frame's 'second copy hub' is not. This is the most consequential rules reading in the file, because it is what makes open_questions[2] and the hub's thinness argument true rather than rhetorical."
-          },
-          {
-            "where": "stages[5].what_it_does",
-            "claim": "Impact Tremors and General Kreat, the Boltbringer are the two cards in the 99 that turn a creature entering into damage to EACH opponent",
-            "status": "supported",
-            "note": "Scanned all 79 entries for 'each opponent'. Four cards contain the phrase; only these two trigger on a creature entering and deal DAMAGE. Witch's Mark's Wicked Role makes each opponent LOSE 1 life, and only when the Role token hits a graveyard; Impulsive Pilferer's is 'for each opponent' inside an encore cost. The class really is two cards wide, no goldfish target measures it (all three declared targets checked), and proposed_goldfish_edits[2] is therefore the highest-value item in the file."
-          },
-          {
-            "where": "lines[13]",
-            "claim": "the only card in the 99 that can make the hub untargetable",
-            "status": "supported",
-            "note": "Scanned all 79 entries for hexproof / shroud / protection from / ward / \"can't be the target\". Exactly two hits: Swiftfoot Boots and Roaming Throne, and Roaming Throne's ward {2} protects only Roaming Throne, as stages[6] says. Worth stating in the note that hexproof does not stop the pilot's OWN targeting, so Boots and Zada's trigger are compatible — the arrow is drawn backward for the right reason. Mechanically checkable across the fleet: an 'only card that protects X' claim can be diffed against a protection-keyword scan of cards.json."
-          },
-          {
-            "where": "lines[8], lines[9]",
-            "claim": "the Haze of Rage <-> Storm-Kiln Artist feedback pair",
-            "status": "supported",
-            "note": "Both directions are established by stack 005, which is what a backward arrow has to earn. Forward (conversion -> wincon, 'Treasures'): steps 7 and 10 give 4 Treasures on cast #1 and 5 on cast #2, nine on board — the model's figure exactly. Backward (wincon -> conversion, 'casts and copies'): step 4 establishes that each COPY is a magecraft trigger under 112.1a, and step 11 closes the loop, 'iteration k ... costs 4 mana, and yields k+3 Treasures'. The model's 'each further iteration costing four and yielding k+3' is verbatim correct. This is a genuine loop, not two arrows drawn between the same two boxes."
-          },
-          {
-            "where": "lines[0], lines[1]",
-            "claim": "the Zada <-> Crimson Wisps feedback pair",
-            "status": "supported",
-            "note": "Stack 001 establishes both halves: one {R} in (step 1) and five cards out across four copies plus the original (steps 4-8, final_state cards_drawn 5). 'Five hasted bodies' is also right, though they are five EXISTING creatures gaining haste rather than five new ones — worth one word if the line is revised, not a defect."
-          },
-          {
-            "where": "lines[3].note, lines[5].note",
-            "claim": "two notes that state what their stack does NOT show",
-            "status": "supported",
-            "note": "Recording these because they are the behaviour this loop exists to produce. lines[3] carries 'storm count, not mana' out of the mana stage and says outright that 002's four mana come from Mountains with both rituals already in the graveyard — 'The mana claim is not what the stack shows.' lines[5] caps stack 003 at 'One seat, an empty opposing board apart from that blocker — the stack proves a kill, not a table kill', which is exactly what 003's scenario supports (one opponent, 30 life, a lone 2/2). Both are the radagast Castle-Garenbrig failure caught before it was written."
-          },
-          {
-            "where": "map_disagreements",
-            "claim": "five disagreements, and 0 of 4 declared components sit in a single city",
-            "status": "supported",
-            "note": "Every city list was re-derived from deck_map.json's level-0 regions and every one is exact. Declared cantrip group: CRITICAL MASS 4 / MANA FOR ONE TURN 1 (Ancestors' Aid) / THE STAYING POWER 1 (Fists of Flame). Payoff half: CRITICAL MASS 2 / BODIES INTO DAMAGE 1 (Grapeshot) / THE TOKEN FACTORY 1 (Empty the Warrens). conversion: 2/2/2/1 across four cities exactly as stages[4].evidence[3] says. wincon: 5/1/1/1. engine-facts.scatter carries coherent: false on all four components, so '0 of 4' is right. Each entry also names which artifact is wrong about what rather than hedging — map_disagreements[1] is the best of them ('Here the map is right and the declaration is wrong, which is the inverse of the usual case'). Every other city figure in the file was checked too and all hold: THE RED FLOOR is exactly the fifteen land entries and nothing else; ten of thirteen in fuel and ten of thirteen in output; four in fodder's CRITICAL MASS; rocks and Warchief in THE STAYING POWER; Seething Song in CRITICAL MASS."
-          },
-          {
-            "where": "stages[*].what_it_does",
-            "claim": "structural checks: coverage, length, and the declared figures",
-            "status": "supported",
-            "note": "79 cards placed, each exactly once, all in the 99, none unassigned — verified against cards.json. what_it_does lengths are 913 / 973 / 1110 / 1111 / 1087 / 1217 / 913 / 1058, every one comfortably under MAX_WHAT_IT_DOES = 1800, so nothing here is at the length where a revision starts failing. Figures re-derived and correct: goldfish turn-five mean available mana 4.589; the 5-card token group at 31.2% opener / 38.6% by turn three / 0.600 assembled / mean turn 3.184; the thinnest declared component at 4 cards and 25.8%; deck-audit protection at 2 copies against the 5-7 target; audit_engine.single_points_of_failure empty. The hypergeometrics behind 25.8 / 31.2 / 38.6 / 41.1 were recomputed by hand and all four land on the printed value."
-          },
-          {
-            "where": "open_questions[1]",
-            "claim": "Roaming Throne with Goblin chosen may double Zada's copy trigger",
-            "status": "supported",
-            "note": "Well-founded, and worth confirming because it decides a stage assignment. Zada's type line is 'Legendary Creature — Goblin Ally', so a Throne naming Goblin reaches her; the Throne's clause is 'If a triggered ability of another creature you control of the chosen type triggers, it triggers an additional time', and Zada's copy ability is a triggered ability of another creature. The question is genuinely open — and the second half the model asks (2N, or N doubled with each set choosing targets separately) is the part that actually matters, since 'could target' is evaluated per trigger. Correctly routed to resolve-stack, and correctly NOT used to move Roaming Throne into conversion in the meantime."
-          }
-        ]
-      }
-    ]
+   ]
+  },
+  {
+   "stage": "output",
+   "label": "WHERE THE BODIES LAND",
+   "what_it_does": "Impact Tremors, General Kreat, the Boltbringer and Purphoros, God of the Forge turn a creature entering into damage to EACH opponent - one, one and two points respectively - and the deck's best-verified multi-seat damage runs through the first: stack 002 resolves eight tokens into eight damage to each of two opponents, 32 to 24 and 28 to 20. That is a burst, not a kill: both opponents end alive. This is the stage the copy spells were added to feed: every token Heat Shimmer or Empty the Warrens makes is an entry. That is a three-card class, and no declared goldfish target measures it. Pashalik Mons prices Goblin deaths instead, one point per death at any target, which is the reach that survives a sweeper. Siege-Gang Commander and Broadside Bombardiers buy damage with a body at a cost, and both can point it at a player. Grapeshot is filed here rather than in wincon deliberately: stack 002 measured it at storm count 4, five instances of one damage - reach and removal, not a kill across three seats at forty life.",
+   "cards": [
+    "Impact Tremors",
+    "General Kreat, the Boltbringer",
+    "Purphoros, God of the Forge",
+    "Grapeshot",
+    "Siege-Gang Commander",
+    "Pashalik Mons",
+    "Broadside Bombardiers"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "stack",
+     "id": "002",
+     "note": "eight Impact Tremors triggers, eight damage to each opponent; the following Grapeshot sees storm count 4"
+    },
+    {
+     "kind": "stack",
+     "id": "012",
+     "note": "a lifted Forge board where General Kreat fired three times off tokens entering, 1 to each opponent; the stack itself says the line needed a card outside the 99, so it is evidence for Kreat's trigger only"
+    },
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "partial",
+     "note": "five of seven in Bodies; Purphoros in Card Flow, Grapeshot in Ramp"
+    }
+   ]
+  },
+  {
+   "stage": "protection",
+   "label": "FOUR WAYS TO KEEP ZADA",
+   "what_it_does": "deck-audit's protection axis reads 6 copies against a 5-7 target, verdict at. Reading the six cards makes it four for the hub: Purphoros is indestructible and Roaming Throne has ward {2}, and both protect only themselves, so this model files them where they do work. The four that cover a third permanent: Swiftfoot Boots (hexproof and haste, equip {1}); Hexing Squelcher (other creatures have ward - pay 2 life, and your spells can't be countered, which protects the storm turn as well as the hub); Deflecting Swat (free while you control a commander; new targets for a spell or ability); and Untimely Malfunction, whose redirect mode does the same at instant speed and whose other modes are an artifact kill or two creatures that can't block. Plaza of Heroes is a fifth effect (hexproof and indestructible until end of turn) filed in mana. The deck's other answer to removal is structural: the rituals, Empty the Warrens, Grapeshot and Impact Tremors function with Zada in the command zone. The two redirect spells answer a single-target spell or ability, such as removal aimed at Zada, by changing its target; a sweeper has no target, so they do not answer one. That is why the pilot's interaction axis and this stage overlap.",
+   "cards": [
+    "Swiftfoot Boots",
+    "Hexing Squelcher",
+    "Deflecting Swat",
+    "Untimely Malfunction"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "role",
+     "id": "protection:redirect",
+     "note": "Deflecting Swat and Untimely Malfunction carry protection:redirect - a property of each card, not evidence it was tested on Zada"
+    },
+    {
+     "kind": "role",
+     "id": "protection:self",
+     "note": "Boots, Squelcher, Purphoros and Roaming Throne carry protection:self; reading the text, only Boots and Squelcher extend it to Zada"
+    },
+    {
+     "kind": "city",
+     "id": "city-1",
+     "agreement": "cuts-across",
+     "note": "Boots and Squelcher in Card Flow, Deflecting Swat and Untimely Malfunction in Interaction"
+    }
+   ]
+  },
+  {
+   "stage": "wincon",
+   "label": "THE ONE TURN, TWO WAYS",
+   "what_it_does": "One checker-passed ending and one checker-passed burst. Fists of Flame through the hub is the ending: stack 003 resolves copies one at a time, each drawing first, so the +1/+0-per-card locks in at +3/+4/+5/+6 on the tokens and +7 on Zada - 32 power with trample, at least 30 of it reaching an opponent at 30 life past a lone 2/2. Empty the Warrens is the wide burst: stack 002 turns storm count 3 into eight tokens and, with Impact Tremors out, eight damage to each of two opponents - who end at 24 and 20, so it sets up a kill rather than being one. The rest are team-wide pumps only because of Zada: Wild Ride (+3/+0 and haste per body), Infuriate (+3/+2) and Ticked Off (double strike) are single-target creature spells, so through the hub each one hits the whole board. Goblin Bushwhacker kicked and Great Train Heist (untap and an extra combat, or +1/+0 and first strike) are the two that work without her. The deck's former verified loop, stack 005's Haze of Rage with Storm-Kiln Artist, is gone with Haze of Rage: v1.2.0 has no verified arbitrarily-large line, and its two contained Spellbook lines both assume Krenko is the commander, which stack 004 refutes here. deck-audit reads threat-density at 1 copy against a floor of 3 because only Ticked Off carries a wincon role; this stage is the evidence that the taxonomy cannot see a pump that becomes a team pump.",
+   "cards": [
+    "Empty the Warrens",
+    "Fists of Flame",
+    "Wild Ride",
+    "Infuriate",
+    "Ticked Off",
+    "Goblin Bushwhacker",
+    "Great Train Heist"
+   ],
+   "single_point_of_failure": null,
+   "evidence": [
+    {
+     "kind": "stack",
+     "id": "003",
+     "note": "32 total power with trample; the buffs do not grow retroactively, so the ORDER of resolution sets the size"
+    },
+    {
+     "kind": "stack",
+     "id": "002",
+     "note": "storm count 3 produces eight tokens across four resolutions"
+    },
+    {
+     "kind": "combo",
+     "id": "Krenko, Mob Boss + Skirk Prospector + Goblin Warchief",
+     "note": "contained Spellbook line with assumes_commander true; stack 004 terminates it after one activation here, so it is not a wincon"
+    },
+    {
+     "kind": "city",
+     "id": "city-4",
+     "agreement": "cuts-across",
+     "note": "Fists, Infuriate and Ticked Off in Finishers; Empty the Warrens, Wild Ride and Great Train Heist in Ramp; Bushwhacker in Bodies"
+    }
+   ]
   }
+ ],
+ "lines": [
+  {
+   "from": "fuel",
+   "to": "conversion",
+   "via": [
+    "Crimson Wisps",
+    "Zada, Hedron Grinder"
+   ],
+   "carries": "one {R} spell",
+   "verified_by": "001",
+   "note": "the hub's input is a single cheap spell that can legally target only Zada"
+  },
+  {
+   "from": "conversion",
+   "to": "fuel",
+   "via": [
+    "Zada, Hedron Grinder",
+    "Crimson Wisps"
+   ],
+   "carries": "five cards",
+   "verified_by": "001",
+   "note": "the feedback loop that makes this an engine: four copies plus the original each draw, so one {R} returns five cards and five hasted bodies"
+  },
+  {
+   "from": "conversion",
+   "to": "wincon",
+   "via": [
+    "Zada, Hedron Grinder",
+    "Fists of Flame"
+   ],
+   "carries": "power with trample",
+   "verified_by": "003",
+   "note": "32 power, at least 30 reaching one opponent at 30 life past a single 2/2 blocker. One seat - the stack proves a kill, not a table kill"
+  },
+  {
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Dragon Fodder",
+    "Empty the Warrens"
+   ],
+   "carries": "storm count",
+   "verified_by": "002",
+   "note": "Dragon Fodder is one of the three casts before Empty the Warrens. The scenario stipulates the prior casts in the graveyard without their outputs (no Fodder tokens on its board), so the stack verifies the storm-count contribution only; the two tokens a real Fodder cast leaves are outside what it shows"
+  },
+  {
+   "from": "mana",
+   "to": "wincon",
+   "via": [
+    "Battle Hymn",
+    "Brightstone Ritual",
+    "Empty the Warrens"
+   ],
+   "carries": "storm count, not mana",
+   "verified_by": "002",
+   "note": "read carefully: stack 002's four mana come from four Mountains and both rituals are in the graveyard as two of the three prior casts. What they contribute to that burst (eight to each of two opponents, both left alive) is spell count"
+  },
+  {
+   "from": "wincon",
+   "to": "output",
+   "via": [
+    "Empty the Warrens",
+    "Impact Tremors"
+   ],
+   "carries": "creature ETBs",
+   "verified_by": "002",
+   "note": "eight tokens, eight damage to each of two opponents. Verifiable now: validate-engine has counted cards on your own board since 2026-09-15, and Impact Tremors is on stack 002's board, which closes the previous model's open question"
+  },
+  {
+   "from": "wincon",
+   "to": "output",
+   "via": [
+    "Empty the Warrens",
+    "Grapeshot"
+   ],
+   "carries": "storm count (4, not 7)",
+   "verified_by": "002",
+   "note": "the three storm copies were put on the stack without being cast, so the following Grapeshot sees 4 and is five instances of one damage"
+  },
+  {
+   "from": "mana",
+   "to": "fodder",
+   "via": [
+    "Goblin Warchief",
+    "Krenko, Mob Boss"
+   ],
+   "carries": "a {1} discount and haste",
+   "verified_by": "004",
+   "note": "the cost reduction locks Krenko at {1}{R}{R} and the haste is what lets him tap the turn he lands"
+  },
+  {
+   "from": "fodder",
+   "to": "conversion",
+   "via": [
+    "Krenko, Mob Boss",
+    "Skirk Prospector"
+   ],
+   "carries": "bodies into red mana",
+   "verified_by": "004",
+   "note": "at most ten {R}, one shot, and the last activation eats Prospector. The combo graph's infinite needs Krenko in the command zone; Zada is the commander, so the line terminates"
+  },
+  {
+   "from": "conversion",
+   "to": "output",
+   "via": [
+    "Heat Shimmer",
+    "Zada, Hedron Grinder",
+    "Impact Tremors",
+    "General Kreat, the Boltbringer",
+    "Purphoros, God of the Forge"
+   ],
+   "carries": "a copy of every creature, each an ETB",
+   "verified_by": null,
+   "note": "the reason the copy spells are in the deck: each token Heat Shimmer makes through Zada is an entry, worth 1+1+2 to each opponent with all three payoffs out. Stack 017 verifies the copying half (four creatures to eight) on a board with no ETB payoff, so it cannot carry this arrow; the payoff half is oracle text plus stack 002's Tremors count. Null until a stack puts both on one board"
+  },
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mogg War Marshal",
+    "Heat Shimmer"
+   ],
+   "carries": "bodies, each copied with its enters trigger",
+   "verified_by": "017",
+   "note": "with Zada, Marshal and two tokens out, Heat Shimmer at Zada alone made three hasty copies and the Marshal copy made one more Goblin: four creatures became eight. Only the copies have haste, and they are exiled at end step - a one-turn doubling, which is what a storm or pump turn wants"
+  },
+  {
+   "from": "conversion",
+   "to": "fuel",
+   "via": [
+    "Heat Shimmer",
+    "Crimson Wisps"
+   ],
+   "carries": "a doubled board",
+   "verified_by": null,
+   "note": "the compounding line: a board doubled by a copy spell makes the next cantrip at Zada draw twice as many. Each half rests on oracle text and stack 001; the sequence is unchecked"
+  },
+  {
+   "from": "fodder",
+   "to": "conversion",
+   "via": [
+    "Krenko, Mob Boss",
+    "Molten Duplication"
+   ],
+   "carries": "a second Krenko activation",
+   "verified_by": null,
+   "note": "Molten Duplication copies Krenko with haste, but the copy is legendary and stack 017 shows the legend rule removing a legendary token copy, so it is a second activation only if the original has already tapped and is the one you let go. A trade, not a doubling; unchecked"
+  },
+  {
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mogg War Marshal",
+    "Skullclamp"
+   ],
+   "carries": "1/1 bodies",
+   "verified_by": null,
+   "note": "the attrition line: a clamped 1/1 dies to the -1 toughness and pays two cards, and Mogg War Marshal leaves a token when it dies. Skullclamp is invisible to the goldfish, so nothing has measured this"
+  },
+  {
+   "from": "conversion",
+   "to": "output",
+   "via": [
+    "Goblin Bombardment",
+    "Pashalik Mons"
+   ],
+   "carries": "Goblin deaths",
+   "verified_by": null,
+   "note": "the free outlet and the death trigger together price a swept or chump-blocked board at two damage per Goblin; stack 016 verifies Bombardment's half only"
+  },
+  {
+   "from": "protection",
+   "to": "conversion",
+   "via": [
+    "Swiftfoot Boots",
+    "Zada, Hedron Grinder"
+   ],
+   "carries": "hexproof and haste",
+   "verified_by": null,
+   "note": "drawn backward because insurance flows onto the engine rather than out of it"
+  },
+  {
+   "from": "protection",
+   "to": "conversion",
+   "via": [
+    "Hexing Squelcher",
+    "Zada, Hedron Grinder"
+   ],
+   "carries": "ward - pay 2 life",
+   "verified_by": null,
+   "note": "Squelcher gives every other creature ward, Zada included, and makes the copy spells uncounterable; unchecked"
+  },
+  {
+   "from": "fuel",
+   "to": "wincon",
+   "via": [
+    "Past in Flames",
+    "Empty the Warrens"
+   ],
+   "carries": "a graveyard of spells, recast",
+   "verified_by": null,
+   "note": "the rebuild: flashback on every instant and sorcery in the graveyard. Cast on the storm turn itself, each flashback cast continues the same storm count (storm counts every spell cast this turn); cast on a later turn, the count starts again from that turn's first spell. No stack has been run on it"
+  }
+ ],
+ "map_disagreements": [
+  {
+   "component": "Zada online with a cantrip drawn (declared)",
+   "cities": [
+    "Finishers",
+    "Ramp"
+   ],
+   "why": "the group's defining property is a LEGALITY - one creature target, cheap enough to cast at Zada - and no card says that in its text. The map reads each card's other half: Accelerate, Expedite, Crimson Wisps, Renegade Tactics and Fists of Flame land in Finishers on their haste/evasion/pump text, Ancestors' Aid on its Treasure and Ancestral Anger and Wild Ride with the cheap sorceries in Ramp"
+  },
+  {
+   "component": "Early token maker drawn (declared)",
+   "cities": [
+    "Bodies",
+    "Ramp"
+   ],
+   "why": "Dragon Fodder and Krenko's Command are sorceries and cluster with the cheap spells, the creature token makers with the Goblins. Skirk Prospector sits in Bodies, which is right for a Goblin and still wrong for a token-maker group: it creates none, it eats them"
+  },
+  {
+   "component": "conversion - the hub and what it copies (this model's stage)",
+   "cities": [
+    "Ramp",
+    "Bodies",
+    "Card Flow",
+    "Interaction"
+   ],
+   "why": "an exchange engine is defined by what it eats and what it pays, and card text names only the payment. The sharpest case is new in v1.2.0: Heat Shimmer, Molten Duplication and Twinflame cluster in Interaction with Abrade and the redirect spells, and Electroduplicate in Ramp, though through Zada all four are the same board doubler. 'Create a token copy of target creature' reads as a one-card effect; the engine makes it N cards, and that multiplication is invisible to a model of what each card says"
+  },
+  {
+   "component": "wincon - the one turn (this model's stage)",
+   "cities": [
+    "Finishers",
+    "Ramp",
+    "Bodies"
+   ],
+   "why": "the team pumps are single-target creature spells that become team-wide only through Zada, so the map files Wild Ride beside the rituals and Infuriate beside the cantrips, and the taxonomy gives only Ticked Off a wincon role (deck-audit threat-density 1 against 3)"
+  },
+  {
+   "component": "protection (this model's stage) vs the protection axis",
+   "cities": [
+    "Card Flow",
+    "Interaction"
+   ],
+   "why": "Boots and Squelcher cluster with the equipment and utility creatures, the two redirects with the removal. The audit counts six protection copies; two of them (Purphoros, Roaming Throne) protect only themselves, which a role tag cannot distinguish from protecting the hub"
+  }
+ ],
+ "unassigned": [
+  {
+   "card": "Abrade",
+   "why": "interaction, not engine: 3 damage to target creature or destroy target artifact. It is a single-target creature spell, but cast at Zada it would deal 3 to every creature you control, so it never routes through the hub. The pilot's interaction axis owns it; no stage does"
+  },
+  {
+   "card": "Blasphemous Act",
+   "why": "a reset, not a stage: 13 to each creature, which kills Zada and the board the engine is made of. It interacts with Skullclamp and Pashalik Mons on the way down, but the deck plays it as interaction, and filing it in output would call a sweeper a damage source"
+  },
+  {
+   "card": "Harsh Mentor",
+   "why": "a tax piece: 2 damage to an opponent each time they activate a non-mana ability. It is a body for Zada's count and Battle Hymn, but not a Goblin, makes nothing and converts nothing; it is in the 99 for the pilot's interaction axis"
+  }
+ ],
+ "open_questions": [
+  {
+   "question": "With Impact Tremors, General Kreat and Purphoros on the battlefield, does Heat Shimmer cast at Zada alone with N other creatures deal 4 damage to each opponent per token created, and do the copies of ETB creatures (Mogg War Marshal, Goblin Instigator, Siege-Gang Commander) add their own tokens as further entries?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Stack 017 verified the copying (four creatures to eight) on a board with no payoff. The conversion->output arrow through the copy spells is the reason v1.2.0 added them, and it stays null until one board holds both halves."
+  },
+  {
+   "question": "With Goblin chosen, does Roaming Throne's 'triggers an additional time' apply to Zada's copy trigger, and if so is the result two full sets of copies (2N), each choosing targets separately?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "This model moved Roaming Throne from protection to conversion on the oracle reading (Zada is a Goblin, her ability is a triggered ability). If it holds, every hub turn doubles; if not, Throne is a ward-{2} body and belongs back in protection or fodder."
+  },
+  {
+   "question": "Stack 015 (Daring Discovery at Zada with three Goblins) failed its checker: is the failure a citation defect or a rules one - does each copy Discover 4?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "If each copy discovers, a five-mana sorcery becomes N free spells and N storm-free casts, which would make it conversion, not fuel."
+  },
+  {
+   "question": "Does the goldfish copy Impolite Entrance, Might of the Meek, Heat Shimmer, Molten Duplication, Electroduplicate, Twinflame, Infuriate, Ticked Off and the Treasure pumps through Zada? model-coverage lists Impolite Entrance and Might of the Meek as 'draw' only, without the 'target' channel Accelerate and Crimson Wisps carry, and the four copy spells as 'bodies, combat' only.",
+   "settled_by": "goldfish",
+   "why_it_matters": "If the commander-copy channel does not read them, every goldfish figure prices v1.2.0's new conversion half at one copy, and a null on these cards is the model's blind spot, not the cards' weakness."
+  },
+  {
+   "question": "What rate does the deck assemble an each-opponent ETB payoff (Impact Tremors, General Kreat or Purphoros) together with a token maker by turn six? No declared target measures this pair.",
+   "settled_by": "goldfish",
+   "why_it_matters": "It is the deck's best-verified path to damage at every opponent (stack 002 shows eight to each of its two opponents; three seats follows from the oracle's 'each opponent', not from the stack) and the stage the copy spells were added to feed."
+  }
+ ],
+ "proposed_goldfish_edits": [
+  {
+   "target": "Zada online with a cantrip drawn",
+   "change": "Add Impolite Entrance and Might of the Meek to the any_of group, taking it from 8 cards to 10.",
+   "why": "Both read 'Target creature gains trample ... Draw a card' - one creature target and a cantrip, the exact property the group selects for, and both are in the 99. The brief prices the current 8 at 45.6% of openers; the redundancy anchor puts 10 copies at 54%."
+  },
+  {
+   "target": "Early token maker drawn",
+   "change": "Replace Skirk Prospector with a card that makes tokens, or rename the label to 'Early Goblin body drawn'.",
+   "why": "Prospector creates no tokens; it is a one-mana Goblin and a sacrifice outlet. As declared, the 7-card price (41.2% in an opener, mean turn 3.09) measures a looser claim than the label makes."
+  },
+  {
+   "target": "a new target: 'Each-opponent ETB damage payoff plus a token maker'",
+   "change": "Declare a target with two any_of groups: [Impact Tremors, General Kreat, the Boltbringer, Purphoros, God of the Forge] and the early-token-maker group.",
+   "why": "The deck's best-verified multi-seat damage (stack 002: eight to each of two opponents, both left alive at 24 and 20) runs through a three-card class and nothing measures it; the v1.2.0 copy spells exist to feed it."
+  },
+  {
+   "target": "a new target: 'Zada plus a creature-copy spell'",
+   "change": "Declare a commander-gated target whose any_of group is [Heat Shimmer, Molten Duplication, Electroduplicate, Twinflame] - but only after the goldfish is shown to copy them through Zada (open question 4).",
+   "why": "The four are v1.2.0's largest new engine class and appear in no declared group; declaring a target the model cannot read would print a figure about nothing."
+  }
+ ],
+ "critic": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "stages[7].what_it_does",
+    "claim": "One checker-passed ending and one checker-passed burst. Fists of Flame through the hub is the ending: stack 003 ...; Empty the Warrens is the wide burst: stack 002 ... who end at 24 and 20",
+    "status": "supported",
+    "note": "Round-2 fix holds. Stack 003 (checker pass) leaves its one opponent dead, so it is the ending. Stack 002 (pass) leaves both opponents alive at 24 and 20, so it is the burst. The opening sentence, the two labels and lines[2] ('the stack proves a kill, not a table kill') now agree. The evidence entries for 003 and 002 are unchanged and still correct. The mechanical check proposed in round 2 still stands: a stack cited next to 'burst' or 'not a kill' whose final_state has an opponent at life <= 0 or 'dead'."
+   },
+   {
+    "where": "stages[6].what_it_does",
+    "claim": "The two redirect spells answer a single-target spell or ability, such as removal aimed at Zada, by changing its target; a sweeper has no target, so they do not answer one",
+    "status": "supported",
+    "note": "Round-2 fix holds, and the superlative 'best' is gone. Against the oracle text: Deflecting Swat reads 'You may choose new targets for target spell or ability', and Untimely Malfunction reads 'Change the target of target spell or ability with a single target'. Both answer a single-target spell, and neither touches an untargeted sweeper. 'Free while you control a commander' matches Swat's text ('If you control a commander, you may cast this spell without paying its mana cost'). One residual nit, not a fix item: 'does the same at instant speed' still suggests Swat is not an instant, though both are. The closing sentence's 'single-target' scoping now covers Malfunction's narrower clause."
+   },
+   {
+    "where": "stages[4].what_it_does",
+    "claim": "engine-facts names her in six passing stacks; three concern the current 99 (001, 003, 017), since 013, 014 and 016 are about cut cards and 016 shows her not triggering",
+    "status": "supported",
+    "note": "Round-2 fix holds. Checked against decklist.txt: the cut cards are Frontline Heroism (013), Witch's Mark (014) and Spreading Insurrection (016), with 0 matches each. The current-99 focal cards are Crimson Wisps (001), Fists of Flame (003), and Heat Shimmer plus Mogg War Marshal (017), with 1 match each. All six stacks have checker verdict pass. The phrasing still undersells 013 slightly, since its spell is Crimson Wisps, a current card, and only Frontline Heroism is cut. But 'three concern the current 99' is now true, and nothing downstream sizes off it."
+   },
+   {
+    "where": "stages[4].what_it_does",
+    "claim": "length 1737 of 1800",
+    "status": "supported",
+    "note": "Up from 1674 in round 2: the fix spent 63 characters. It is 63 short of the cap, the closest of the eight stages, and the prose is still coherent. It is not muddled, but the next revision of this stage should cut a sentence before it adds one."
+   },
+   {
+    "where": "stages[0].what_it_does",
+    "claim": "deck-audit's taplands axis counts two tapped lands: Spinerock Knoll always, and Den of the Bugbear whenever you control two or more other lands. Three more enter tapped only without enough Mountains (Arena of Glory, Castle Embereth, Dwarven Mine); deck-facts' 5 counts both groups together",
+    "status": "supported",
+    "note": "Round-2 fix holds against the oracle text. Spinerock Knoll: 'This land enters tapped.' Den: 'If you control two or more other lands, this land enters tapped.' Arena of Glory and Castle Embereth: 'unless you control a Mountain'. Dwarven Mine: 'unless you control three or more other Mountains'. deck-facts mana.enters_tapped is 5 = 2 + 3. The deck-audit misclassification of Den as unconditional is still the orchestrator's to fix: a corpus sweep over 'If you control ... enters tapped' clauses."
+   },
+   {
+    "where": "stages[0].what_it_does",
+    "claim": "Sol Ring is the one rock; Plaza of Heroes ... the only land in the 99 that protects Zada",
+    "status": "supported",
+    "note": "Both superlatives checked by enumerating cards.json. Sol Ring is the only artifact whose text contains 'Add {'. Plaza of Heroes is the only land whose text mentions hexproof, indestructible, protection, ward or shroud."
+   },
+   {
+    "where": "stages[0].what_it_does",
+    "claim": "Fifteen land entries and thirty-six copies, 29 red-producing lands, 32 red sources against 22",
+    "status": "supported",
+    "note": "deck-facts (re-run this round): counts.lands 15, land_copies 36, mana.land_sources.R 29, source_targets.R 22. Unchanged from round 2."
+   },
+   {
+    "where": "lines[*]",
+    "claim": "all 18 lines",
+    "status": "supported",
+    "note": "The text of lines[] is unchanged from round 2, and every round-2 'supported' finding on lines[0..17] carries forward. Re-checked this round: each verified_by (001, 001, 003, 002, 002, 002, 002, 004, 004, 017) resolves to a stack with checker.verdict pass. validate-engine reports OK with 10/18 lines verified. The eight dashed lines (9, 11-17) are still labelled oracle arithmetic or unchecked, and none is phrased as a verified flow."
+   },
+   {
+    "where": "stages[1..3], stages[5], map_disagreements, open_questions, proposed_goldfish_edits",
+    "claim": "unchanged since round 2",
+    "status": "supported",
+    "note": "The engineer's output (.agent-out/deck-engineer.json) is identical to the merged engine.json apart from the critic block. The four scoped fixes are the only edits I could find. Round-2 findings on these keys stand."
+   }
+  ],
+  "iterations": 3
+ }
 }

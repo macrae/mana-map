@@ -12,14 +12,11 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 16,
+    "complete": 18,
     "of": 19,
-    "stale": [
-      "tutors"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [
-      "engine",
       "CONTEXT.md",
       "rating.json"
     ],
@@ -4675,9 +4672,9 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "A Goblin swarm that is really a spell-count machine: bodies make the mana and set the copy count, cheap spells pointed at Zada turn each body into a card, and one payoff turn cashes the whole board into damage.",
+    "thesis": "A Goblin swarm that is really a spell-count machine: bodies make the mana and set the copy count, one-target spells pointed at Zada turn each body into a card, a Treasure, a pump or a copy of itself, and one turn cashes the board into damage.",
     "critic": "pass",
-    "lines": 15,
+    "lines": 18,
     "verified_lines": 10
   },
   "diagnosis": {
@@ -4706,28 +4703,28 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Can a stack scenario verify the Empty the Warrens -> Impact Tremors arrow under the citation contract? Stack 002 resolves it (eight tokens, eight damage to each opponent) but names Impact Tremors only on the battlefield, and `line_cards` skips the board when the stack, hand and graveyard already name two or more cards — so the deck's headline kill has no citable link between the token flood and the damage.",
+      "question": "With Impact Tremors, General Kreat and Purphoros on the battlefield, does Heat Shimmer cast at Zada alone with N other creatures deal 4 damage to each opponent per token created, and do the copies of ETB creatures (Mogg War Marshal, Goblin Instigator, Siege-Gang Commander) add their own tokens as further entries?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "With Goblin chosen, does Roaming Throne's 'triggers an additional time' clause apply to Zada's copy trigger — and if it does, how many copies result: 2N, or N doubled with each set choosing targets separately?",
+      "question": "With Goblin chosen, does Roaming Throne's 'triggers an additional time' apply to Zada's copy trigger, and if so is the result two full sets of copies (2N), each choosing targets separately?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Does Frontline Heroism's copy clause behave as the strategic frame describes it — a second copy hub? Read literally it creates one Soldier and copies the spell once, at that token, regardless of board width, which is one extra copy rather than one per creature.",
+      "question": "Stack 015 (Daring Discovery at Zada with three Goblins) failed its checker: is the failure a citation defect or a rules one - does each copy Discover 4?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "What rate does the deck assemble the stack-002 kill — an each-opponent ETB damage payoff (Impact Tremors or General Kreat) together with a token maker — by turn six? No declared target measures this pair at all.",
+      "question": "Does the goldfish copy Impolite Entrance, Might of the Meek, Heat Shimmer, Molten Duplication, Electroduplicate, Twinflame, Infuriate, Ticked Off and the Treasure pumps through Zada? model-coverage lists Impolite Entrance and Might of the Meek as 'draw' only, without the 'target' channel Accelerate and Crimson Wisps carry, and the four copy spells as 'bodies, combat' only.",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Does the strategy doc's commander-insurance target (deck-audit reads 2 copies against 5-7) apply to a commander whose engine is OPTIONAL? Half of this deck — rituals, Empty the Warrens, Grapeshot, the Haze of Rage loop — functions with Zada in the command zone.",
-      "settled_by": "research-strategy"
+      "question": "What rate does the deck assemble an each-opponent ETB payoff (Impact Tremors, General Kreat or Purphoros) together with a token maker by turn six? No declared target measures this pair.",
+      "settled_by": "goldfish"
     },
     {
       "from": "diagnosis",
@@ -4800,7 +4797,7 @@
         "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
         "Goblin Instigator"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Goblin Bombardment, Accelerate, Ancestral Anger, Goblin Instigator, Legion Warboss, Renegade Tactics. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Goblin Bombardment, Accelerate, Ancestral Anger, Electroduplicate, Fable of the Mirror-Breaker // Reflection of Kiki-Jiki, Goblin Instigator …. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
     },
     "eliminated_by": {
       "sythis-enchantress": 32,
@@ -4919,12 +4916,11 @@
     ]
   },
   "next": [
-    "3 artifact(s) fail their own gate (engine, CONTEXT.md, rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "2 artifact(s) fail their own gate (CONTEXT.md, rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
     "DeckCheck copy is V3, sleeved is V4 — `manamap pilot deck-export goblin-storm --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link goblin-storm deckcheck <url>`",
     "DTI (2026-10-20) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
-    "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×4",
+    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×1, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-20
+- **Version:** v1.2.0 (V4) · **status:** sleeved since 2026-10-27
 - **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 35/96 → B3 (deckcheck.co, 2026-10-20, 3 readings) — older list
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 34 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
@@ -93,7 +93,7 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v1.2.0 (V4), 2026-10-27. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -123,6 +123,8 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 ## Change history
 
 <!-- ctx:gen history -->
+- **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
+  - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
 - **v1.1.1 · V3** (2026-10-20) — in: Goblin Matron; out: Battle Hymn. _Goblin Matron back for Battle Hymn, 2026-10-20_
   - merge `matron-v1`: objective kill_by_10 read **met** — the pilot's own card, sleeved again 2026-10-20 as the thirteen v1.1.0 adds went in (Fable and Purphoros on proxies)
 - **v1.1.0 · V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …. _meaner-v1 merged 2026-10-18: meaner and faster, the Haze of Rage loop out; thirteen swaps, no lands_
