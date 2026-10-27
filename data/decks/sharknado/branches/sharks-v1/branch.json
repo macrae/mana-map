@@ -1,0 +1,115 @@
+{
+ "slug": "sharknado",
+ "branch": "sharks-v1",
+ "v": 3,
+ "opened": "2026-10-27",
+ "why": "The pilot, 2026-10-27: lift the pause to explore \u2014 inventory the deck, find the weakest slots, fit Shark Typhoon and Razorkin Needlehead, and fix the red mana distribution. Objective: the win route by T8 (51% on v2.1.1) up, without red on curve falling; judged as a profile, not on this row alone.",
+ "objective": {
+  "axis": "kill_by_6",
+  "op": ">=",
+  "value": 0.4,
+  "why": "kill_by_8 reads 0.91 on the champion \u2014 already met, so it could not falsify anything; kill_by_6 is where Needlehead's wheel damage and steadier red should show"
+ },
+ "commits": [
+  {
+   "at": "2026-10-27",
+   "decklist_sha256": "566d72e1c04787b97e30d5ca701bab30f44fb49ea8cf58886b44782b13b41537",
+   "message": "The pilot's picks (2026-10-27): Razorkin Needlehead for Ghostly Pilferer, Shark Typhoon for Boros Charm; Volcanic Island for Talon Gates of Madara, Plateau for Cascade Bluffs (the best untapped red lands)"
+  },
+  {
+   "at": "2026-10-27",
+   "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
+   "message": "The pilot (2026-10-27): Thundering Falls and Sundown Pass instead of Volcanic Island and Plateau \u2014 the duals were ~$670 for two lands"
+  }
+ ],
+ "base_version": 11,
+ "base_sha256": "0f00066d1090296ddb0acfb5eb9fac0498bc428349e44d1302d6a33d5622526d",
+ "objective_history": [
+  {
+   "at": "2026-10-27",
+   "was": {
+    "axis": "kill_by_8",
+    "op": ">=",
+    "value": 0.55,
+    "why": "The pilot, 2026-10-27: lift the pause to explore \u2014 inventory the deck, find the weakest slots, fit Shark Typhoon and Razorkin Needlehead, and fix the red mana distribution. Objective: the win route by T8 (51% on v2.1.1) up, without red on curve falling; judged as a profile, not on this row alone."
+   },
+   "why_changed": "kill_by_8 reads 0.91 on the champion \u2014 already met, so it could not falsify anything; kill_by_6 is where Needlehead's wheel damage and steadier red should show"
+  }
+ ],
+ "staged": [
+  {
+   "at": "2026-10-27",
+   "out": "Ghostly Pilferer",
+   "in": "Razorkin Needlehead",
+   "strength": null,
+   "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-27",
+   "out": "Boros Charm",
+   "in": "Shark Typhoon",
+   "strength": null,
+   "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-27",
+   "out": "Talon Gates of Madara",
+   "in": "Volcanic Island",
+   "strength": null,
+   "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-27",
+   "out": "Cascade Bluffs",
+   "in": "Plateau",
+   "strength": null,
+   "why": "try: trade \u2014 high \u2014 every swapped card is visible to the model; Smothering Tithe's Treasure assumes opponents pay its tax 50% of the time (an authored rate); Rhystic Study assumes each opponent casts 1.264 spells a turn (measured in Forge) and pays its tax 50% of the time (an authored rate)"
+  },
+  {
+   "at": "2026-10-27",
+   "out": "Volcanic Island",
+   "in": "Thundering Falls",
+   "strength": null,
+   "why": ""
+  },
+  {
+   "at": "2026-10-27",
+   "out": "Plateau",
+   "in": "Sundown Pass",
+   "strength": null,
+   "why": ""
+  }
+ ],
+ "proposal": {
+  "at": "2026-10-27",
+  "as_version": "v2.2.0",
+  "why": "The pilot, 2026-10-27: Razorkin Needlehead (Wheel + Needlehead + Torbran is 21 per opponent, rules-checked CR 121.2/603.2c/614.5) and Shark Typhoon (instant cycling that pays Brallin, Mako and Shabraz and leaves an X/X flying Shark), plus Thundering Falls and Sundown Pass for real red.",
+  "base_version": 11,
+  "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
+  "accepted_on": {
+   "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
+   "state": "do not merge",
+   "objective": {
+    "axis": "kill_by_6",
+    "op": ">=",
+    "value": 0.4,
+    "why": "kill_by_8 reads 0.91 on the champion \u2014 already met, so it could not falsify anything; kill_by_6 is where Needlehead's wheel damage and steadier red should show"
+   },
+   "grade": "not met",
+   "reading": 0.3336,
+   "harness": {
+    "cast_proofs": null,
+    "iterations": 10000,
+    "model_version": "f5b4b19d2254",
+    "seed": 20260826
+   }
+  },
+  "forced_reason": "the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change; kill_by_6 rose 0.314 -> 0.334 with five rows better and one worse, and Needlehead adds a rules-checked wheel kill the bar does not measure"
+ },
+ "merged": {
+  "at": "2026-10-27",
+  "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
+  "into_version_before": null,
+  "forced_reason": "all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change; kill_by_6 rose 0.314 -> 0.334 with five rows better and one worse, and Needlehead adds a rules-checked wheel kill the bar does not measure"
+ }
+}

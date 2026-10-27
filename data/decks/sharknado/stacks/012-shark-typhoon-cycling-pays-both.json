@@ -1,0 +1,326 @@
+{
+ "id": "012",
+ "slug": "shark-typhoon-cycling-pays-both",
+ "deck": "sharknado",
+ "title": "Cycling Shark Typhoon for X=4: Brallin, Marauding Mako and Shabraz all paid, and a 4/4 flying Shark",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Shabraz, the Skyshark (3/3, no counters; your commander)",
+    "Brallin, Skyshark Rider (3/3, no counters; your commander)",
+    "Marauding Mako (1/1, no counters)",
+    "Mountain (untapped)",
+    "Command Tower (tapped)",
+    "Steam Vents (tapped)",
+    "Hallowed Fountain (tapped)",
+    "Sacred Foundry (tapped)",
+    "Thundering Falls (tapped)",
+    "Sundown Pass (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5"
+     ],
+     "hand_size": 4,
+     "library_size": 52
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x4"
+     ],
+     "hand_size": 3,
+     "library_size": 61
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x6"
+     ],
+     "hand_size": 2,
+     "library_size": 47
+    }
+   ]
+  },
+  "hand": [],
+  "mana_available": "{R} from Mountain (untapped)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Shark Typhoon's cycling ability — 'Cycling {X}{1}{U} ({X}{1}{U}, Discard this card: Draw a card.)', activated with X=4",
+    "controller": "you",
+    "note": "just activated from your hand in an opponent's end step; its cost {4}{1}{U} was paid with Command Tower, Steam Vents, Hallowed Fountain, Sacred Foundry, Thundering Falls and Sundown Pass, and Shark Typhoon was discarded to pay it and is now in your graveyard. No triggered ability has been put on the stack yet."
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "An opponent's end step. You have just activated Shark Typhoon's cycling ability with X=4 (the cost is paid; Shark Typhoon is in your graveyard). Any abilities that triggered on paying that cost go on the stack the next time a player would receive priority. After everything resolves, you activate Brallin's '{R}: Target Shark gains trample until end of turn' with Mountain, targeting the Shark token. Nobody responds to anything. Your library is far larger than one card.",
+   "assumptions": [
+    "No player has a replacement effect on drawing, discarding or damage."
+   ]
+  },
+  "question": "(a) Which abilities trigger when Shark Typhoon is cycled, in what order do they and the cycling ability resolve, and what size is the Shark token? (b) After everything has resolved: what are Shabraz's, Brallin's and Marauding Mako's counters and power/toughness, your life change, the damage dealt to each opponent, and can Brallin's ability target the token and give it trample?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "Establish what has already happened. In an opponent's end step you activated Shark Typhoon's cycling ability from your hand, announcing X=4, and paid its full activation cost {4}{1}{U} (six lands tapped) plus 'Discard this card'. The cycling ability is the only object on the stack.",
+    "effect": "Cycling is '[Cost], Discard this card: Draw a card.' X was announced as part of activation and, while the cycling ability is on the stack, the X in its activation cost is 4. Both cost parts were paid during activation; the discard moved Shark Typhoon from your hand to your graveyard. Your hand is now empty and only Mountain is untapped.",
+    "citations": [
+     {
+      "rule": "702.29a",
+      "quote": "“Cycling [cost]” means “[Cost], Discard this card: Draw a card.”"
+     },
+     {
+      "rule": "107.3a",
+      "quote": "While an activated ability is on the stack, any X in its activation cost equals the announced value."
+     },
+     {
+      "rule": "602.2b",
+      "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+     },
+     {
+      "rule": "601.2h",
+      "quote": "The player pays the total cost."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "Check which abilities trigger on the cost payment: Brallin ('Whenever you discard a card, put a +1/+1 counter on Brallin and it deals 1 damage to each opponent'), Marauding Mako ('Whenever you discard one or more cards, put that many +1/+1 counters on this creature') and Shark Typhoon ('When you cycle this card, create an X/X blue Shark creature token with flying').",
+    "effect": "THREE abilities trigger, all controlled by you. Brallin and Mako trigger on the discard (a discard paid as a cost is still a discard; Brallin's official ruling confirms it triggers on a cost discard and resolves before the ability). Mako's trigger counts one discarded card. Shark Typhoon's trigger means 'when you discard this card to pay a cycling activation cost' and works from the graveyard, where the card now is. Shabraz does NOT trigger yet: nothing has been drawn. The triggers do nothing until they are on the stack and resolve.",
+    "citations": [
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+     },
+     {
+      "rule": "117.2a",
+      "quote": "Triggered abilities can trigger at any time, including while a spell is being cast, an ability is being activated, or a spell or ability is resolving."
+     },
+     {
+      "rule": "702.29c",
+      "quote": "“When you cycle this card” means “When you discard this card to pay an activation cost of a cycling ability.” These abilities trigger from whatever zone the card winds up in after it’s cycled."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "Activation completes and you would receive priority. State-based actions are checked, then the waiting triggers go on the stack.",
+    "effect": "No state-based action applies. All three triggers are yours, so you put them on the stack in any order you choose; the opponents control no triggers. None of the three targets. The order does not change the outcome (none of them reads anything another changes). Chosen order, bottom to top: [0] cycling ability (draw), [1] Marauding Mako trigger, [2] Brallin trigger, [3] Shark Typhoon trigger. Every trigger sits above the cycling ability, so all three resolve BEFORE the draw, as Shark Typhoon's official ruling says. Then you receive priority.",
+    "citations": [
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     },
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All players pass; Shark Typhoon's cycle trigger (top) resolves.",
+    "effect": "You create one blue Shark creature token with flying, under your control, size 4/4. The X: the CR has no general rule tying the X of a cycle trigger on a card in the graveyard to the cycling cost (107.3a covers only the activated ability while it is on the stack). The X here is the value announced for the cycling activation, per Shark Typhoon's official ruling (2020-04-17: choosing X=0 for the cycling cost makes the trigger create a 0/0 Shark). With X=4 the token is a 4/4 named 'Shark Token', creature type Shark, with flying and no other abilities. No ruling is used as a citation; the cited rules cover the trigger's resolution and the token's characteristics only.",
+    "citations": [
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "111.2",
+      "quote": "The player who creates a token is its owner. The token enters the battlefield under that player’s control."
+     },
+     {
+      "rule": "111.3",
+      "quote": "The spell or ability that creates a token may define the values of any number of characteristics for the token."
+     },
+     {
+      "rule": "111.4",
+      "quote": "If the spell or ability doesn’t specify the name of the token, its name is the same as its subtype(s) plus the word “Token.”"
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "The active player (the opponent whose end step it is) receives priority; state-based actions are checked first.",
+    "effect": "The token has toughness 4, so the 0-toughness rule does not apply; nothing else applies. No new triggers. All pass.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "704.5f",
+      "quote": "If a creature has toughness 0 or less, it’s put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "Brallin's discard trigger resolves.",
+    "effect": "Brallin gets one +1/+1 counter and becomes 4/4. Brallin deals 1 damage to each opponent; each loses 1 life: 40 -> 39 per seat, 3 life across the pod (1 per seat, never 3 per seat). Brallin's official ruling confirms one counter however many opponents are damaged. SBAs: no player at 0 or less; all pass.",
+    "citations": [
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "Marauding Mako's trigger resolves.",
+    "effect": "One card was discarded, so Mako gets one +1/+1 counter: 1/1 -> 2/2. Active player receives priority; nothing applies; all pass.",
+    "citations": [
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "The cycling ability (bottom) resolves: draw a card.",
+    "effect": "You draw one card (your library is much larger than one card). Your hand goes from 0 to 1 card. Shabraz's 'Whenever you draw a card, put a +1/+1 counter on Shabraz and you gain 1 life' triggers on this draw.",
+    "citations": [
+     {
+      "rule": "121.1",
+      "quote": "A player draws a card by putting the top card of their library into their hand."
+     },
+     {
+      "rule": "603.2",
+      "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+     }
+    ]
+   },
+   {
+    "n": 9,
+    "action": "Before the active player receives priority, SBAs are checked and Shabraz's trigger goes on the stack; then all pass and it resolves.",
+    "effect": "Shabraz gets one +1/+1 counter, 3/3 -> 4/4, and you gain 1 life. The stack is empty.",
+    "citations": [
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "119.3",
+      "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+     }
+    ]
+   },
+   {
+    "n": 10,
+    "action": "With priority, you activate Brallin's '{R}: Target Shark gains trample until end of turn', paying {R} by tapping Mountain, targeting the Shark token.",
+    "effect": "Legal target: the token is a permanent with creature type Shark (set by the effect that created it). Tapping Mountain is a mana ability made during the activation. Brallin's ability has no tap symbol, so the summoning-sickness rule does not restrict it.",
+    "citations": [
+     {
+      "rule": "111.4",
+      "quote": "A spell or ability that creates a token sets both its name and its subtype(s)."
+     },
+     {
+      "rule": "115.1",
+      "quote": "These targets are declared as part of the process of putting the spell or ability on the stack."
+     },
+     {
+      "rule": "115.2",
+      "quote": "Only permanents are legal targets for spells and abilities"
+     },
+     {
+      "rule": "605.3a",
+      "quote": "whenever they are casting a spell or activating an ability that requires a mana payment"
+     },
+     {
+      "rule": "302.6",
+      "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+     }
+    ]
+   },
+   {
+    "n": 11,
+    "action": "All players pass; Brallin's trample ability resolves.",
+    "effect": "The target is still legal, so the 4/4 flying Shark token gains trample until end of turn. In practice it does nothing: it is an opponent's end step, so no combat remains this turn; trample only affects an attacking creature's combat damage; and the effect ends in this turn's cleanup step, before your turn.",
+    "citations": [
+     {
+      "rule": "608.2b",
+      "quote": "If the spell or ability specifies targets, it checks whether the targets are still legal."
+     },
+     {
+      "rule": "702.19a",
+      "quote": "Trample is a static ability that modifies the rules for assigning an attacking creature’s combat damage."
+     },
+     {
+      "rule": "514.2",
+      "quote": "all “until end of turn” and “this turn” effects end."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "Cycling Shark Typhoon for X=4 triggers three of your abilities: Brallin and Marauding Mako on the discard, Shark Typhoon's cycle trigger from the graveyard. All three resolve before the cycling draw (order is your choice and does not matter here); the draw then triggers Shabraz. Results: a 4/4 flying Shark token (X from the cycling activation, per the card's official ruling; no CR rule states this), Brallin 4/4, Mako 2/2, Shabraz 4/4 (one counter each), you +1 life and +1 card, each opponent takes 1 (39 each, 3 across the pod). Brallin's {R} can legally target the token and gives it trample, which ends in cleanup with no combat left this turn.",
+   "you": {
+    "life_change": "+1 (starting life not stated in the scenario)",
+    "hand": "1 card (the cycling draw)",
+    "battlefield": {
+     "Shabraz, the Skyshark": "4/4, one +1/+1 counter, flying",
+     "Brallin, Skyshark Rider": "4/4, one +1/+1 counter",
+     "Marauding Mako": "2/2, one +1/+1 counter",
+     "Shark token": "4/4 blue Shark with flying; trample until end of turn (ends in this turn's cleanup)",
+     "lands": "all seven tapped (Mountain tapped for Brallin's {R})"
+    },
+    "graveyard": [
+     "Shark Typhoon"
+    ]
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "damage_taken": 1,
+     "life": 39
+    },
+    {
+     "seat": "opponent_2",
+     "damage_taken": 1,
+     "life": 39
+    },
+    {
+     "seat": "opponent_3",
+     "damage_taken": 1,
+     "life": 39
+    }
+   ],
+   "pod_total_damage": 3
+  }
+ }
+}
