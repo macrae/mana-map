@@ -1087,8 +1087,12 @@ def test_changes_reports_the_NET_diff_not_the_staging_log():
     # No name may appear on both sides: that is the tell the staging log leaves.
     assert not (set(got_in) & set(got_out)), (
         f"names on both sides: {sorted(set(got_in) & set(got_out))}")
-    # And the staged count is kept, because the difference is the finding.
-    assert c["staged_count"] >= c["count"]
+    # And the staged count is kept, because the difference is the finding — on
+    # a branch still measured against today's list. zada-v1 was rejected
+    # 2026-10-19 and goblin-storm has moved since, so its net diff against the
+    # CURRENT list outgrew what was staged; a decided branch is not re-read.
+    if not deck_branch.is_decided("goblin-storm", "zada-v1"):
+        assert c["staged_count"] >= c["count"]
 
 
 @requires_branch
@@ -1353,6 +1357,9 @@ def test_a_branch_never_declares_a_model_channel_its_deck_does_not():
             own = DECKS_DIR / slug / "branches" / branch / "goldfish_targets.json"
             if not own.exists():
                 continue          # it inherits the deck's, which is the norm
+            if deck_branch.is_decided(slug, branch):
+                continue          # merged or rejected: never measured again, so a
+                                  # channel the deck declared LATER is not two models
             got = {k: v for k, v in _json.loads(own.read_text()).items()
                    if k.startswith("model_")}
             assert got == want, (

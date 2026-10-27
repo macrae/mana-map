@@ -73,7 +73,11 @@ def test_restricted_mana_is_counted_but_named():
     Delighted Halfling's legendary-only mana is nearly free in Commander;
     Throne of Eldraine's four is not. Same contract as the Treasure blind
     spots — the assumption is NAMED rather than silently made or dropped."""
-    got = goldfish.run("goblin-storm", iterations=120, quiet=True)
+    # Throne of Eldraine left goblin-storm after this was written, so it is
+    # swapped back in for a Mountain: the claim is the NAMING, not the list.
+    from manamap.pilot import try_swap
+    doc, _, _, _ = try_swap.apply_swaps("goblin-storm", None, [("Mountain", "Throne of Eldraine")])
+    got = goldfish.run("goblin-storm", doc=doc, iterations=120, quiet=True)
     named = got["meta"].get("restricted_mana_counted_as_free")
     assert named, "restricted mana was counted with nothing saying so"
     assert any("Throne of Eldraine" in n for n in named), named

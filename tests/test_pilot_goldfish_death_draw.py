@@ -169,7 +169,10 @@ def test_morbid_opportunist_now_draws_on_edgars_sacrifices():
     sweep converts about 1.5 tokens a game by turn ten and the cap holds the
     engine to one draw a turn, and POSITIVE, which is the claim. Re-introduce the
     bug (drop `die\\b` from the trigger) and the interval spans zero."""
-    r = try_swap.run("edgar-vampires", [("Nighthawk Scavenger", "Morbid Opportunist")], iterations=3000)
+    # Edgar runs Morbid Opportunist since the swap was measured, so the same
+    # pair is read in the other direction (2026-10-26): taking it OUT for
+    # Nighthawk Scavenger must COST draw, which is the same claim.
+    r = try_swap.run("edgar-vampires", [("Morbid Opportunist", "Nighthawk Scavenger")], iterations=3000)
     row = next(t for t in r["table"] if t["measure"] == "extra cards by T8")
-    assert row["ci95_diff"][0] > 0.0, row
+    assert row["ci95_diff"][1] < 0.0, row
     assert next(c for c in r["cards"] if c["name"] == "Morbid Opportunist")["state"] == "seen"

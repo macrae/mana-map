@@ -54,10 +54,11 @@ def test_switching_the_gate_off_gives_back_kefnets_phantom_swings(monkeypatch):
     """DRIVEN THROUGH THE SIMULATOR and proved by RE-INTRODUCING THE BUG: with the gate
     blinded, sharknado's champion deals MORE damage by turn ten, because Kefnet swings
     again without seven cards in hand. Measured 2026-10-04: 60.879 gated, 61.408 not.
-    Kefnet left the list in v1.2.0 (2026-10-06), so it is swapped back in for an
-    Island here — the gate is the claim, not the decklist."""
+    Kefnet left the list in v1.2.0 (2026-10-06), so it is swapped back in for a
+    Mountain here (the Islands left by v2.0.0) — the gate is the claim, not the
+    decklist."""
     from manamap.pilot import diagnostic, try_swap
-    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Island", "Kefnet the Mindful")])
+    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Mountain", "Kefnet the Mindful")])
     on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
     monkeypatch.setattr(gp, "attack_gate", lambda card: None)
     off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=5, quiet=True)
@@ -173,14 +174,11 @@ def test_a_ritual_is_cast_when_it_is_the_difference(monkeypatch):
     were in the list from v1.2.0 (2026-10-06) until v1.3.0 (2026-10-19) cut Mana
     Geyser, after which one ritual read within noise of none (94.94 against 95.15)
     — so the test puts Geyser back in a Mountain's slot for the measurement: the
-    claim is about the READER, not about which list is sleeved today."""
+    claim is about the READER, not about which list is sleeved today. v2.1.0
+    (2026-10-26) cut Jeska's Will too, so it goes back in a second Mountain's."""
     from manamap.pilot import diagnostic, goldfish_library, try_swap
-    from manamap.pilot.common import load_deck_cards
-    doc = dict(load_deck_cards("sharknado"))
-    cards = list(doc["cards"])
-    slot = next(k for k, c in enumerate(cards) if c["name"] == "Mountain")
-    cards[slot] = try_swap.corpus_card("Mana Geyser")
-    doc["cards"] = cards
+    doc, _, _, _ = try_swap.apply_swaps(
+        "sharknado", None, [("Mountain", "Mana Geyser"), ("Mountain", "Jeska's Will")])
     on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
     monkeypatch.setattr(goldfish_library, "ritual_profile", lambda card: None)
     off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)

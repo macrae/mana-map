@@ -281,8 +281,14 @@ class TestGoblinStorm:
         doc = load_deck_cards("goblin-storm")
         cards = doc["cards"]
         flags, roles, details = load_reference()
+        # Haze of Rage left the 99 after stack 005 proved the loop; the claim is
+        # that the ENGINE agrees with the stack, so both pieces are put back.
+        names = [c["name"] for c in cards]
+        for piece in ("Storm-Kiln Artist", "Haze of Rage"):
+            if piece not in names:
+                names.append(piece)
         return assess(
-            [c["name"] for c in cards],
+            names,
             flags, roles, details,
             [c["name"] for c in cards if c.get("is_commander")],
         )

@@ -57,10 +57,10 @@ def test_the_validator_fails_the_broken_shapes():
 def test_a_protected_cut_is_refused_by_the_swap_arithmetic(monkeypatch):
     entries = deck_branch._parsed(EDGAR)
     with pytest.raises(SystemExit, match="PROTECTED"):
-        deck_branch.swap_entries(EDGAR, None, entries, VISH, "Morbid Opportunist")
+        deck_branch.swap_entries(EDGAR, None, entries, VISH, "Nighthawk Scavenger")
     # PROVEN BY SWITCHING IT OFF: the identical call goes through.
     monkeypatch.setattr(protected, "load", lambda slug: [])
-    staged, out_e, _ = deck_branch.swap_entries(EDGAR, None, entries, VISH, "Morbid Opportunist")
+    staged, out_e, _ = deck_branch.swap_entries(EDGAR, None, entries, VISH, "Nighthawk Scavenger")
     assert out_e["name"] == VISH
     assert VISH not in {e["name"] for e in staged}
 
@@ -72,7 +72,7 @@ def test_try_refuses_a_protected_cut_before_measuring_anything(monkeypatch):
     from manamap.pilot import diagnostic
     monkeypatch.setattr(diagnostic, "run_on", lambda *a, **k: calls.append(1))
     with pytest.raises(SystemExit, match="PROTECTED"):
-        try_swap.run(EDGAR, [(VISH, "Morbid Opportunist")], iterations=200)
+        try_swap.run(EDGAR, [(VISH, "Nighthawk Scavenger")], iterations=200)
     assert calls == [], "a refused swap must cost nothing"
 
 

@@ -234,7 +234,7 @@ def test_dead_wheels_fall_when_wheels_leave_the_list(monkeypatch):
     base = goldfish.run(SLUG, iterations=200, seed=3, max_turn=10, doc=doc,
                         with_results=True, quiet=True, _band=False)
     fewer = copy.deepcopy(doc)
-    out = {"Windfall", "Time Reversal"}
+    out = {"Windfall", "Reforge the Soul"}   # Time Reversal left in v2.0.0
     fewer["cards"] = [c for c in fewer["cards"] if c["name"] not in out]
     for c in fewer["cards"]:
         if c["name"] == "Mountain":

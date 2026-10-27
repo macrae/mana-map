@@ -101,11 +101,12 @@ def test_torbran_boosts_red_attackers_too():
     from manamap.pilot.common import load_deck_cards
 
     doc = load_deck_cards("sharknado")
-    target = next(c for c in doc["cards"]
-                  if "Creature" in (c.get("type_line") or "")
-                  and "R" in (c.get("colors") or [])
-                  and c.get("name") not in ("Shabraz, the Skyshark", "Brallin, Skyshark Rider")
-                  and (c.get("cmc") or 0) <= 4)
+    # Named, not "the first red creature at four or less": on v2.0.0 that became
+    # Blade Historian, whose own text is the team's double strike, so rewriting
+    # it moved the base and the lift read +0.94 (2026-10-26). Glint-Horn
+    # Buccaneer is a plain red attacker; its lift measured +1.74.
+    target = next(c for c in doc["cards"] if c["name"] == "Glint-Horn Buccaneer")
+    assert "R" in (target.get("colors") or [])
 
     def combat_damage(text):
         d = copy.deepcopy(doc)

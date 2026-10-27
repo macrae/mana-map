@@ -82,8 +82,10 @@ def test_death_draw_splits_on_the_word_nontoken(doc):
 
 def test_the_threat_dimension_reads_printed_power_and_keywords(doc):
     threat = _rows(doc, "threat")
-    vr = threat["Vein Ripper"]
-    assert vr["power"] == 6 and vr["matched"]["keywords"] == ["Flying"] and vr["flags"]["typal"] and vr["flags"]["death_drain"]
+    # Vein Ripper joined the 99, so it is (rightly) no longer a candidate;
+    # Butcher of Malakir is the same shape — a flying Vampire with a death drain.
+    vr = threat["Butcher of Malakir"]
+    assert vr["power"] == 5 and vr["matched"]["keywords"] == ["Flying"] and vr["flags"]["typal"] and vr["flags"]["death_drain"]
     assert threat["Malakir Bloodwitch"]["flags"]["typal"] is True
     assert "Twilight Prophet" not in threat, "a 2/4 is not big; it is a drain and draw card"
     assert all(r["power"] is not None and r["power"] >= cs.THREAT_MIN_POWER for r in threat.values())

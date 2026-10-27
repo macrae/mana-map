@@ -429,9 +429,11 @@ def test_a_one_shot_that_sacrifices_itself_takes_the_body_with_it():
     figures, which is why it is asserted on BOARD POWER instead."""
     import copy
 
-    from manamap.pilot.common import load_deck_cards
+    from manamap.pilot import try_swap
 
-    doc = load_deck_cards("sharknado")
+    # Magus of the Wheel left the list in v2.0.0 (2026-10-24), so it is swapped
+    # back in for a Mountain: the claim is about the sacrifice cost, not the list.
+    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Mountain", "Magus of the Wheel")])
 
     def power10(d):
         return goldfish.run("sharknado", doc=d, iterations=4000, seed=3,
@@ -439,10 +441,13 @@ def test_a_one_shot_that_sacrifices_itself_takes_the_body_with_it():
                                 "combat"]["mean_board_power_by_turn"]["10"]
 
     kept = copy.deepcopy(doc)
+    patched = 0
     for card in kept["cards"]:
         if card["name"] == "Magus of the Wheel":
             card["oracle_text"] = card["oracle_text"].replace(
                 ", Sacrifice this creature:", ":")
+            patched += 1
+    assert patched == 1, "Magus of the Wheel is not in the doc — the arms are identical"
     assert power10(copy.deepcopy(doc)) < power10(kept), (
         "the sacrificed body is still on the board")
 
@@ -575,24 +580,35 @@ def test_a_wheel_refills_the_opponent_and_that_is_part_of_the_tax():
                             quiet=True, _band=False)["metrics"]["discard"][
                                 "mean_cumulative_event_damage_by_turn"]["10"]
 
-    def plus_tax(d):
+    def plus_tax(d, live=True):
+        # THE CONTROL IS THE CARD'S OWN TEXT, NOT A DIFFERENT LIST (2026-10-26).
+        # The first cut compared the list with the tax card against the list
+        # without it, cutting the costliest spell for the slot; on v2.1.0 that
+        # was Fiery Emancipation, a damage TRIPLER, and the "tax" read negative.
+        # Any slot moves the whole damage figure (Brallin's pings ride on it),
+        # so both arms now hold the SAME hundred and only the tax line differs:
+        # Needlehead with its trigger, against Needlehead without it. Negate
+        # makes the room, because the goldfish never counters.
         d = copy.deepcopy(d)
-        victim = max((c for c in d["cards"] if not c.get("is_commander")
-                      and "Land" not in (c.get("type_line") or "")),
-                     key=lambda c: float(c.get("cmc") or 0))
-        d["cards"] = [c for c in d["cards"] if c["name"] != victim["name"]]
-        d["cards"].append(candidates._resolve("Razorkin Needlehead"))
+        assert any(c["name"] == "Negate" for c in d["cards"]), "Negate left the list"
+        d["cards"] = [c for c in d["cards"] if c["name"] != "Negate"]
+        needle = dict(candidates._resolve("Razorkin Needlehead"))
+        if not live:
+            needle["oracle_text"] = "This creature has first strike during your turn."
+        d["cards"].append(needle)
         return d
 
     doc = load_deck_cards("sharknado")
-    with_wheels = ping(plus_tax(doc)) - ping(doc)
+    with_wheels = ping(plus_tax(doc)) - ping(plus_tax(doc, live=False))
 
     blind = copy.deepcopy(doc)
     blinded = 0
     for c in blind["cards"]:
         t = c.get("oracle_text") or ""
         if ("discards their hand" in t or "discard your hand" in t
-                or "shuffles their hand" in t):
+                or "shuffles their hand" in t
+                or "all the cards in their hand" in t
+                or "all the cards in your hand" in t):
             c["oracle_text"] = "Flying"
             blinded += 1
     # 9 -> 8 on 2026-09-14 with the budget swaps: Wheel of Fortune and Wheel of
@@ -600,8 +616,12 @@ def test_a_wheel_refills_the_opponent_and_that_is_part_of_the_tax():
     # this grep — Queen Kayla says "discard ALL THE CARDS IN your hand", which is
     # the same act in different words. The grep is deliberately literal, so the
     # floor moves with the wording rather than the wording being chased.
+    # 2026-10-26: v2.0.0 and v2.1.0 left four "their hand" wheels, and the rest
+    # say "all the cards in your/their hand" (Tolarian Winds, Fateful Showdown,
+    # Collective Defiance, Incendiary Command) — that wording joins the grep, the
+    # floor stays at eight.
     assert blinded >= 8, f"only {blinded} wheels blinded — the control is weak"
-    without_wheels = ping(plus_tax(blind)) - ping(blind)
+    without_wheels = ping(plus_tax(blind)) - ping(plus_tax(blind, live=False))
 
     assert with_wheels > without_wheels + 0.4, (
         f"the tax gains {with_wheels:.2f} with wheels and {without_wheels:.2f} "
