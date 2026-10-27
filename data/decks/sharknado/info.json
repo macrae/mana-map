@@ -882,17 +882,16 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 2,
-        "fell": 3,
-        "no_call": 11
+        "rose": 0,
+        "fell": 0,
+        "no_call": 16
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.3148,
-        "shortfall": 0.0252
+        "reading": 0.3172,
+        "shortfall": 0.0228
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Adarkar Wastes",
         "Mystic Monastery",
@@ -901,61 +900,54 @@
       ],
       "impact": {
         "state": "do not merge",
-        "rose": [
-          "board power @T6",
-          "finisher wheel by T8"
-        ],
-        "fell": [
-          "damage @T10",
-          "missed drop by T5",
-          "extra cards by T8"
-        ],
+        "rose": [],
+        "fell": [],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.9678,
+            "delta": -0.0226,
             "ci95_diff": [
-              -3.8769,
-              -2.0587
+              -0.1644,
+              0.1192
             ],
-            "mde": 1.2994,
-            "verdict": "worse",
+            "mde": 0.2027,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0011,
+            "delta": -0.0004,
             "ci95_diff": [
-              -0.0026,
-              0.0004
+              -0.0009,
+              0.0001
             ],
-            "mde": 0.0021,
+            "mde": 0.0007,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0626,
+            "delta": -0.0026,
             "ci95_diff": [
-              0.039,
-              0.0862
+              -0.0067,
+              0.0015
             ],
-            "mde": 0.0337,
-            "verdict": "better",
+            "mde": 0.0059,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.7126,
+            "delta": 0.0107,
             "ci95_diff": [
-              -0.8304,
-              -0.5948
+              -0.0102,
+              0.0316
             ],
-            "mde": 0.1684,
-            "verdict": "worse",
+            "mde": 0.0299,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           }

@@ -1,0 +1,604 @@
+{
+ "id": "010",
+ "slug": "kitsa-copies-the-wheel",
+ "deck": "sharknado",
+ "title": "Kitsa copies Wheel of Fortune on the stack: two wheels for one cast, Brallin paid for both discards",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Shabraz, the Skyshark (3/3, no counters; your commander)",
+    "Brallin, Skyshark Rider (3/3, no counters; your commander)",
+    "Kitsa, Otterball Elite (1/3 base; +1/+1 until end of turn from the prowess trigger that resolved when you cast Arcane Signet earlier this turn, so 2/4 now; untapped, no summoning sickness)",
+    "Arcane Signet (cast earlier this turn, tapped)",
+    "Command Tower (untapped)",
+    "Hallowed Fountain (untapped)",
+    "Steam Vents (tapped)",
+    "Sacred Foundry (tapped)",
+    "Mountain (tapped)",
+    "Inspiring Vantage (tapped)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x5"
+     ],
+     "hand_size": 4,
+     "library_size": 52
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x4"
+     ],
+     "hand_size": 3,
+     "library_size": 61
+    },
+    {
+     "life": 40,
+     "board": [
+      "untapped lands x6"
+     ],
+     "hand_size": 2,
+     "library_size": 47
+    }
+   ]
+  },
+  "hand": [
+   "Negate",
+   "Swords to Plowshares",
+   "Boros Charm"
+  ],
+  "mana_available": "{W}{U} or any two (Command Tower and Hallowed Fountain, untapped)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Wheel of Fortune — 'Each player discards their hand, then draws seven cards.'",
+    "controller": "you",
+    "note": "cast from your hand in your precombat main phase, a noncreature spell"
+   },
+   {
+    "pos": 1,
+    "object": "Kitsa, Otterball Elite's prowess trigger — 'Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.'",
+    "controller": "you",
+    "note": "triggered by casting Wheel of Fortune; on top of the stack"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn, precombat main phase. Nobody responds to anything. The prowess trigger resolves first. You then hold priority and activate Kitsa's '{2}, {T}: Copy target instant or sorcery spell you control' targeting Wheel of Fortune, paying {2} from Command Tower and Hallowed Fountain. Your library holds 60 cards and every opponent's library is far larger than fourteen, so nobody draws from an empty library. You take no other actions. Mana spent this turn: Arcane Signet ({2}) was paid with Steam Vents and Sacred Foundry; Wheel of Fortune ({2}{R}) was paid with Arcane Signet, Mountain and Inspiring Vantage.",
+   "assumptions": [
+    "No player has a replacement effect on drawing, discarding or damage.",
+    "The cards drawn matter only as a count."
+   ]
+  },
+  "question": "(a) Can Kitsa's copy ability be activated once the prowess trigger has resolved (its condition is 'Activate only if Kitsa's power is 3 or greater'), and in what order do the copy and the original Wheel of Fortune resolve? (b) After the copy, the original and every trigger they cause have resolved: how many cards have you discarded and drawn in total, how many times did Brallin's ability trigger and how much damage has each opponent taken, and what are Shabraz's and Brallin's counters and power/toughness?"
+ },
+ "resolution": {
+  "steps": [
+   {
+    "n": 1,
+    "action": "All players pass priority with Kitsa's prowess trigger (pos 1) on top of the stack; it resolves.",
+    "effect": "Prowess is a triggered ability that gives Kitsa +1/+1 until end of turn. Kitsa was 2/4 (base 1/3 plus the earlier Arcane Signet prowess bonus); it becomes 3/5. Both bonuses are layer 7c effects and stack. Wheel of Fortune remains on the stack.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "702.108a",
+      "quote": "“Prowess” means “Whenever you cast a noncreature spell, this creature gets +1/+1 until end of turn.”"
+     },
+     {
+      "rule": "613.4c",
+      "quote": "Effects and counters that modify power and/or toughness (but don’t set power and/or toughness to a specific number or value) are applied."
+     }
+    ]
+   },
+   {
+    "n": 2,
+    "action": "You receive priority (active player) with Wheel of Fortune alone on the stack, and activate Kitsa's '{2}, {T}: Copy target instant or sorcery spell you control', targeting Wheel of Fortune; pay {2} by tapping Command Tower and Hallowed Fountain, and tap Kitsa.",
+    "effect": "(a) YES, it can be activated. 'Activate only if Kitsa's power is 3 or greater' is an activation instruction that restricts when the ability may be activated; it is checked as you begin to activate it. Kitsa's power is now 3, so the activation is not prohibited. There is no timing restriction (it is not sorcery-speed), so it can be activated with Wheel on the stack. Kitsa has no summoning sickness, so the {T} cost may be paid. Wheel of Fortune is a sorcery spell you control, a legal target. The ability goes on the stack above Wheel of Fortune. Once activated, it exists independently of Kitsa, so later changes to Kitsa's power would not stop it (Kitsa's official ruling agrees). Choosing Wheel as the target, then paying the {2} activation cost (tapping Command Tower and Hallowed Fountain for mana during activation) follow the spell-casting steps 601.2b-i, which apply to activating an ability. Mana check (the revised scenario): Arcane Signet {2} was paid with Steam Vents and Sacred Foundry; Wheel of Fortune {2}{R} with Arcane Signet, Mountain and Inspiring Vantage; Kitsa's {2} with Command Tower and Hallowed Fountain. That is seven sources for seven mana.",
+    "citations": [
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
+     {
+      "rule": "117.1b",
+      "quote": "A player may activate an activated ability any time they have priority."
+     },
+     {
+      "rule": "602.1b",
+      "quote": "Some text after the colon of an activated ability states instructions that must be followed while activating that ability. Such text may state which players can activate that ability, may restrict when a player can activate the ability, or may define some aspect of the activation cost."
+     },
+     {
+      "rule": "602.5",
+      "quote": "A player can’t begin to activate an ability that’s prohibited from being activated."
+     },
+     {
+      "rule": "602.5a",
+      "quote": "A creature’s activated ability with the tap symbol ({T}) or the untap symbol ({Q}) in its activation cost can’t be activated unless the creature has been under its controller’s control since the start of their most recent turn."
+     },
+     {
+      "rule": "602.2a",
+      "quote": "That ability is created on the stack as an object that’s not a card. It becomes the topmost object on the stack."
+     },
+     {
+      "rule": "602.2b",
+      "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i. Those rules apply to activating an ability just as they apply to casting a spell. An activated ability’s analog to a spell’s mana cost (as referenced in rule 601.2f) is its activation cost."
+     },
+     {
+      "rule": "113.7a",
+      "quote": "Once activated or triggered, an ability exists on the stack independently of its source."
+     }
+    ]
+   },
+   {
+    "n": 3,
+    "action": "You receive priority again; all players pass. Kitsa's copy ability resolves.",
+    "effect": "A copy of Wheel of Fortune is put onto the stack on top of the original. The copy is not cast, so it triggers no prowess (Kitsa's official ruling agrees). Wheel has no targets, so 'choose new targets' does nothing. You control the copy. Stack, bottom to top: Wheel of Fortune (original), Wheel of Fortune (copy).",
+    "citations": [
+     {
+      "rule": "117.3c",
+      "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+     },
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "707.10",
+      "quote": "To copy a spell, activated ability, or triggered ability means to put a copy of it onto the stack; a copy of a spell isn’t cast and a copy of an activated ability isn’t activated."
+     },
+     {
+      "rule": "707.10",
+      "quote": "A copy of a spell or ability is controlled by the player under whose control it was put on the stack. A copy of a spell is itself a spell, even though it has no spell card associated with it."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 4,
+    "action": "All players pass. The COPY of Wheel of Fortune resolves first (it is on top): each player discards their hand, then draws seven cards.",
+    "effect": "(a) ORDER: copy first, then the original. You discard your 3 cards (Negate, Swords to Plowshares, Boros Charm); opponents discard 4, 3 and 2 at the same time. Then every player draws seven, one card at a time. Your 3 discards are 3 occurrences of 'you discard a card', so Brallin triggers 3 times. Your 7 draws are 7 separate draws, so Shabraz triggers 7 times. Opponents' discards and draws trigger neither ('you'). No trigger goes on the stack during resolution. The copy goes to the graveyard as its last step of resolving, then ceases to exist as a state-based action.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "608.2c",
+      "quote": "The controller of the spell or ability follows its instructions in the order written."
+     },
+     {
+      "rule": "101.4",
+      "quote": "If multiple players would make choices and/or take actions at the same time, the active player (the player whose turn it is) makes any choices required, then the next player in turn order (usually the player seated to the active player’s left) makes any choices required, followed by the remaining nonactive players in turn order. Then the actions happen simultaneously."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "121.2",
+      "quote": "Cards may only be drawn one at a time. If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+     },
+     {
+      "rule": "117.2a",
+      "quote": "However, nothing actually happens at the time an ability triggers. Each time a player would receive priority, each ability that has triggered but hasn’t yet been put on the stack is put on the stack."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     },
+     {
+      "rule": "704.5e",
+      "quote": "If a copy of a spell is in a zone other than the stack, it ceases to exist."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "Before anyone gets priority after the copy resolves: state-based actions are checked (the copy ceases to exist; nothing else), then the 10 waiting triggers (3 Brallin, 7 Shabraz) go on the stack ABOVE the original Wheel of Fortune.",
+    "effect": "All ten are yours, so you put them on the stack in any order you choose. Triggers that came from the copy therefore resolve before the original Wheel does. Stack, bottom to top: Wheel of Fortune (original), then the ten triggers.",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack"
+     },
+     {
+      "rule": "603.3",
+      "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     },
+     {
+      "rule": "405.2",
+      "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+     }
+    ]
+   },
+   {
+    "n": 6,
+    "action": "The ten triggers resolve one at a time, all players passing priority before each.",
+    "effect": "Each Brallin trigger puts one +1/+1 counter on Brallin and deals 1 damage to each opponent: 3 counters, 3 damage to each opponent (40 -> 37 each; 9 across the pod). Each Shabraz trigger puts one +1/+1 counter on Shabraz and you gain 1 life: 7 counters, +7 life. Brallin 6/6, Shabraz 10/10. SBA checks between resolutions find nothing to do.",
+    "citations": [
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "122.1a",
+      "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     },
+     {
+      "rule": "119.3",
+      "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+     }
+    ]
+   },
+   {
+    "n": 7,
+    "action": "All players pass. The ORIGINAL Wheel of Fortune resolves: each player discards their hand (seven cards each), then draws seven.",
+    "effect": "You discard the 7 cards the copy drew: Brallin triggers 7 times. You draw 7: Shabraz triggers 7 times. The original Wheel goes to your graveyard.",
+    "citations": [
+     {
+      "rule": "405.5",
+      "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+     },
+     {
+      "rule": "701.9a",
+      "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+     },
+     {
+      "rule": "121.2",
+      "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+     },
+     {
+      "rule": "603.2c",
+      "quote": "However, it can trigger repeatedly if one event contains multiple occurrences."
+     },
+     {
+      "rule": "608.2n",
+      "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+     }
+    ]
+   },
+   {
+    "n": 8,
+    "action": "Before anyone gets priority: SBA check (nothing), then the 14 new triggers (7 Brallin, 7 Shabraz) go on the stack in any order you choose; they resolve one at a time with priority passes.",
+    "effect": "Brallin gets 7 more counters and deals 7 more damage to each opponent (37 -> 30 each; 21 across the pod). Shabraz gets 7 more counters and you gain 7 more life. The stack is empty. Brallin's and Shabraz's triggers are placed under 603.3b's first part (their trigger conditions are not another ability triggering), as in step 5.",
+    "citations": [
+     {
+      "rule": "117.5",
+      "quote": "Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     },
+     {
+      "rule": "603.3b",
+      "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+     },
+     {
+      "rule": "608.1",
+      "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+     },
+     {
+      "rule": "120.3a",
+      "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+     }
+    ]
+   }
+  ],
+  "final_state": {
+   "summary": "(a) Yes. Once prowess resolves, Kitsa is 3/5, so 'Activate only if Kitsa's power is 3 or greater' is met when you activate. The copy resolves first and the original second. Triggers from the copy's discards and draws go on the stack above the original and resolve before it. (b) You discarded 10 cards (3 + 7) and drew 14 (7 + 7). Brallin triggered 10 times: 10 +1/+1 counters, 13/13, and 10 damage to EACH opponent (40 -> 30 per seat; 30 across the pod, 120 -> 90). Shabraz triggered 14 times: 14 +1/+1 counters, 17/17, and you gained 14 life (your starting life is not given in the scenario).",
+   "you": {
+    "life_change": "+14 (starting total not stated in the scenario)",
+    "hand": "7 cards (second wheel's draw)",
+    "library": 46,
+    "graveyard_added": "11 cards: Negate, Swords to Plowshares, Boros Charm, the 7 cards drawn by the copy, Wheel of Fortune (the copy ceased to exist)",
+    "Shabraz, the Skyshark": "14 +1/+1 counters, 17/17",
+    "Brallin, Skyshark Rider": "10 +1/+1 counters, 13/13",
+    "Kitsa, Otterball Elite": "3/5 until end of turn (two prowess bonuses), tapped",
+    "mana": "Every mana source tapped: Command Tower, Hallowed Fountain (Kitsa's {2}), Steam Vents, Sacred Foundry (Arcane Signet), Arcane Signet, Mountain, Inspiring Vantage (Wheel of Fortune)",
+    "discards_total": 10,
+    "draws_total": 14,
+    "brallin_triggers": 10,
+    "shabraz_triggers": 14
+   },
+   "opponents": [
+    {
+     "seat": "opponent_1",
+     "life": 30,
+     "damage_taken": 10,
+     "hand": 7,
+     "library": 38
+    },
+    {
+     "seat": "opponent_2",
+     "life": 30,
+     "damage_taken": 10,
+     "hand": 7,
+     "library": 47
+    },
+    {
+     "seat": "opponent_3",
+     "life": 30,
+     "damage_taken": 10,
+     "hand": 7,
+     "library": 33
+    }
+   ]
+  }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "702.108a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 1,
+    "rule": "613.4c",
+    "status": "supported",
+    "note": "Both prowess pumps are 7c; 1/3 +1/+1 +1/+1 = 3/5."
+   },
+   {
+    "step": 2,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "117.1b",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "602.1b",
+    "status": "supported",
+    "note": "'Activate only if Kitsa's power is 3 or greater' is an activation instruction restricting when it may be activated."
+   },
+   {
+    "step": 2,
+    "rule": "602.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "602.5a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "602.2a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 2,
+    "rule": "602.2b",
+    "status": "supported",
+    "note": "Round-1 finding addressed: the 601.2b-i bridge now carries target choice, mana abilities and payment. Mana check holds: Signet {2} <- Steam Vents + Sacred Foundry; Wheel {2}{R} <- Signet, Mountain, Inspiring Vantage ({R} from Mountain or Vantage); Kitsa {2} <- Command Tower + Hallowed Fountain. Seven sources, seven mana."
+   },
+   {
+    "step": 2,
+    "rule": "113.7a",
+    "status": "supported",
+    "note": "Agrees with Kitsa ruling 2024-07-26: 'Once you've activated Kitsa's last ability, any changes to Kitsa's power won't stop the ability from resolving.'"
+   },
+   {
+    "step": 3,
+    "rule": "117.3c",
+    "status": "supported",
+    "note": "Round-2 finding fixed: you retain priority after activating Kitsa's ability."
+   },
+   {
+    "step": 3,
+    "rule": "608.1",
+    "status": "supported",
+    "note": "All players pass; the ability on top resolves."
+   },
+   {
+    "step": 3,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Verbatim; copy not cast agrees with Kitsa ruling 2024-07-26. 'Choose new targets does nothing' is uncited (707.10c) but is not load-bearing."
+   },
+   {
+    "step": 3,
+    "rule": "707.10",
+    "status": "supported",
+    "note": "Verbatim; copy not cast agrees with Kitsa ruling 2024-07-26. 'Choose new targets does nothing' is uncited (707.10c) but is not load-bearing."
+   },
+   {
+    "step": 3,
+    "rule": "405.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "101.4",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "121.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Agrees with Brallin ruling 2020-04-17: 'If you discard a card while a spell or ability is resolving, that spell or ability finishes resolving before Brallin's triggered ability does.'"
+   },
+   {
+    "step": 4,
+    "rule": "117.2a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 4,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "The copy has an owner (707.10: owned by the player under whose control it was put on the stack), so it goes to your graveyard, then 704.5e."
+   },
+   {
+    "step": 4,
+    "rule": "704.5e",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "117.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "603.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 5,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "First part correctly applied."
+   },
+   {
+    "step": 5,
+    "rule": "405.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "608.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "122.1a",
+    "status": "supported",
+    "note": "3 counters: Brallin 6/6; 7 counters: Shabraz 10/10. Per-seat 3 (40->37) and pod 9 stated separately. The 'SBA checks between resolutions find nothing' claim rests on 117.5 cited in step 5 (704.3 was trimmed); acceptable."
+   },
+   {
+    "step": 6,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 6,
+    "rule": "119.3",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "405.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "701.9a",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "121.2",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 7,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "117.5",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Round-1 misquote fixed: now the first part, correct for Brallin's and Shabraz's triggers."
+   },
+   {
+    "step": 8,
+    "rule": "608.1",
+    "status": "supported",
+    "note": ""
+   },
+   {
+    "step": 8,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "10 per seat (40->30), 30 across the pod (120->90); per-seat and pod kept distinct, matching scenario-facts drain_arithmetic. Counter/life claims in this step rely on 122.1a and 119.3 cited in step 6 for the identical effect."
+   }
+  ],
+  "summary": "Round 3. Mechanical gate passes at 42 citations, two over the budget of 40 (warning only). Step 3 now cites 117.3c and 608.1, which closes the only round-2 finding. The citation lists for steps 1, 2 and 4-8 are identical to round 2, and every citation was re-judged against the full rule text and supports its claim. No missing step: SBA (117.5), trigger placement (603.3/603.3b first part), priority (117.3b/117.3c) and resolution order are all covered. Arithmetic holds: 10 discards, 14 draws, Brallin 10 triggers 13/13, 10 per opponent (40->30), 30 across the pod (120->90), Shabraz 14 triggers 17/17 and +14 life. The mana checks: seven sources for seven mana. No WotC ruling is contradicted (Kitsa, Brallin, Shabraz and Inspiring Vantage rulings read). No sibling figure is quoted.",
+  "iterations": 3
+ }
+}
