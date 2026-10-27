@@ -515,12 +515,12 @@ def clock_tag(clock=None):
 def _seat_names(slug):
     """The names in a seat's decklist.txt (commander included, `*CMDR*` stripped by
     the parser), or [] — for a seat with no cards.json, the corpus is read by name."""
-    from manamap.pilot.fetch_deck import parse_decklist
+    from manamap.pilot.fetch_deck import parse_mainboard
     try:
         text = (seat_dir(slug) / "decklist.txt").read_text(encoding="utf-8")
     except (SystemExit, OSError, FileNotFoundError):
         return []
-    return [e["name"] for e in parse_decklist(text) if e.get("board", "main") == "main"]
+    return [e["name"] for e in parse_mainboard(text)]
 
 
 def _corpus_doc(slug):
