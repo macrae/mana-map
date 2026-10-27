@@ -361,7 +361,7 @@
             }
           },
           "n": 120,
-          "played_share": 0.971,
+          "played_share": 1.451,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -705,7 +705,7 @@
             }
           },
           "n": 200,
-          "played_share": 1.127,
+          "played_share": 1.647,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -760,6 +760,1445 @@
             0.841
           ],
           "n": 50,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov83896c03-tl9473cf35",
+        "at": "2026-10-21",
+        "pod": "olivers-table",
+        "games": 20,
+        "decided": 20,
+        "harness": {
+          "card_overrides": "83896c030c27",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+        "version": 8,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-a075281c-01",
+          "kind": "rate_vs_null",
+          "text": "4 of 20 decided games (0.200, ci95 [0.081, 0.416]) — no measured null for this table",
+          "figure": 0.2,
+          "ci95": [
+            0.081,
+            0.416
+          ],
+          "n": 20,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table)"
+        },
+        {
+          "id": "F-a075281c-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.963,
+          "verdict": true,
+          "n": 20,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-a075281c-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 14 of 20 games: purphoros-pingers ×11, araumi-edict ×2, teval-graveyard ×1; how: {\"damage\": 14}",
+          "eliminated_by": {
+            "purphoros-pingers": 11,
+            "araumi-edict": 2,
+            "teval-graveyard": 1
+          },
+          "eliminated_how": {
+            "damage": 14
+          },
+          "n": 20,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-a075281c-04",
+          "kind": "held",
+          "text": "8 card(s) never cast over 20 games (8 seen discarded, 0 inferred): March of Swirling Mist, Mind's Eye, Sorcerer Class, Faerie Mastermind, Mana Confluence, Rielle, the Everwise",
+          "cards": [
+            "March of Swirling Mist",
+            "Mind's Eye",
+            "Sorcerer Class",
+            "Faerie Mastermind",
+            "Mana Confluence",
+            "Rielle, the Everwise",
+            "Teferi's Ageless Insight",
+            "Tolarian Winds"
+          ],
+          "measured": [
+            "March of Swirling Mist",
+            "Mind's Eye",
+            "Sorcerer Class",
+            "Faerie Mastermind",
+            "Mana Confluence",
+            "Rielle, the Everwise",
+            "Teferi's Ageless Insight",
+            "Tolarian Winds"
+          ],
+          "modelled": [],
+          "counts": {
+            "March of Swirling Mist": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Mind's Eye": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Sorcerer Class": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Faerie Mastermind": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Rielle, the Everwise": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Teferi's Ageless Insight": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Tolarian Winds": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 20,
+          "played_share": 0.996,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-a075281c-05",
+          "kind": "held_castable",
+          "text": "22 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Tolarian Winds x17, Faerie Mastermind x15, Jace's Archivist x14, Boros Charm x12, Teferi's Ageless Insight x12, Windfall x12",
+          "cards": [
+            "Tolarian Winds",
+            "Faerie Mastermind",
+            "Jace's Archivist",
+            "Boros Charm",
+            "Teferi's Ageless Insight",
+            "Windfall",
+            "Sorcerer Class",
+            "Burning Inquiry",
+            "Magmakin Artillerist",
+            "March of Swirling Mist",
+            "Mind's Eye",
+            "Big Score",
+            "Nimble Obstructionist",
+            "Rielle, the Everwise",
+            "Artist's Talent",
+            "Razorkin Needlehead",
+            "Curator of Mysteries",
+            "Khorvath's Fury",
+            "Irencrag Pyromancer",
+            "Negate",
+            "Niv-Mizzet, Parun",
+            "Molten Psyche"
+          ],
+          "counts": {
+            "Tolarian Winds": {
+              "castable_uncast": 17,
+              "cast": 0,
+              "in_hand_games": 7
+            },
+            "Faerie Mastermind": {
+              "castable_uncast": 15,
+              "cast": 0,
+              "in_hand_games": 6
+            },
+            "Jace's Archivist": {
+              "castable_uncast": 14,
+              "cast": 1,
+              "in_hand_games": 7
+            },
+            "Boros Charm": {
+              "castable_uncast": 12,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 12,
+              "cast": 0,
+              "in_hand_games": 8
+            },
+            "Windfall": {
+              "castable_uncast": 12,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Sorcerer Class": {
+              "castable_uncast": 11,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Burning Inquiry": {
+              "castable_uncast": 10,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Magmakin Artillerist": {
+              "castable_uncast": 9,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 9,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Mind's Eye": {
+              "castable_uncast": 8,
+              "cast": 0,
+              "in_hand_games": 6
+            },
+            "Big Score": {
+              "castable_uncast": 6,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Nimble Obstructionist": {
+              "castable_uncast": 6,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Rielle, the Everwise": {
+              "castable_uncast": 6,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Artist's Talent": {
+              "castable_uncast": 5,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Razorkin Needlehead": {
+              "castable_uncast": 5,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Curator of Mysteries": {
+              "castable_uncast": 4,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Khorvath's Fury": {
+              "castable_uncast": 4,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Irencrag Pyromancer": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Negate": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Niv-Mizzet, Parun": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 5
+            },
+            "Molten Psyche": {
+              "castable_uncast": 2,
+              "cast": 0,
+              "in_hand_games": 3
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-a075281c-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 17.62 (median 18.0, n 16 of 20 games — games with no attack are absent)",
+          "figure": 17.62,
+          "ci95": [
+            14.19,
+            21.06
+          ],
+          "n": 16,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-a075281c-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.2 of games (ci95 [0.036, 0.624]); damage on the wipe turn 0.0",
+          "figure": 0.2,
+          "ci95": [
+            0.036,
+            0.624
+          ],
+          "n": 5,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov86dd61c1-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n20-e9cc7abe-s1922492094-podExperimental-c600-ov86dd61c1-tl9473cf35",
+        "at": "2026-10-21",
+        "pod": "olivers-table",
+        "games": 20,
+        "decided": 20,
+        "harness": {
+          "card_overrides": "86dd61c16971",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+        "version": 8,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-c74afe7f-01",
+          "kind": "rate_vs_null",
+          "text": "6 of 20 decided games (0.300, ci95 [0.145, 0.519]) — no measured null for this table",
+          "figure": 0.3,
+          "ci95": [
+            0.145,
+            0.519
+          ],
+          "n": 20,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table)"
+        },
+        {
+          "id": "F-c74afe7f-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 1.021,
+          "verdict": true,
+          "n": 20,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-c74afe7f-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 12 of 20 games: purphoros-pingers ×10, teval-graveyard ×1, araumi-edict ×1; how: {\"damage\": 12}",
+          "eliminated_by": {
+            "purphoros-pingers": 10,
+            "teval-graveyard": 1,
+            "araumi-edict": 1
+          },
+          "eliminated_how": {
+            "damage": 12
+          },
+          "n": 20,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-c74afe7f-04",
+          "kind": "held",
+          "text": "8 card(s) never cast over 20 games (8 seen discarded, 0 inferred): Time Reversal, Artist's Talent, Mana Confluence, Thundering Falls, Jace's Archivist, Nimble Obstructionist",
+          "cards": [
+            "Time Reversal",
+            "Artist's Talent",
+            "Mana Confluence",
+            "Thundering Falls",
+            "Jace's Archivist",
+            "Nimble Obstructionist",
+            "Teferi's Ageless Insight",
+            "Windfall"
+          ],
+          "measured": [
+            "Time Reversal",
+            "Artist's Talent",
+            "Mana Confluence",
+            "Thundering Falls",
+            "Jace's Archivist",
+            "Nimble Obstructionist",
+            "Teferi's Ageless Insight",
+            "Windfall"
+          ],
+          "modelled": [],
+          "counts": {
+            "Time Reversal": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 6
+            },
+            "Artist's Talent": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Thundering Falls": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Jace's Archivist": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Nimble Obstructionist": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Teferi's Ageless Insight": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Windfall": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 20,
+          "played_share": 1.054,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-c74afe7f-05",
+          "kind": "held_castable",
+          "text": "19 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Faerie Mastermind x19, Windfall x15, March of Swirling Mist x9, Sorcerer Class x9, Magus of the Wheel x8, Echo of Eons x7",
+          "cards": [
+            "Faerie Mastermind",
+            "Windfall",
+            "March of Swirling Mist",
+            "Sorcerer Class",
+            "Magus of the Wheel",
+            "Echo of Eons",
+            "Fevered Visions",
+            "Artist's Talent",
+            "Ivora, Insatiable Heir",
+            "Jace's Archivist",
+            "Nimble Obstructionist",
+            "Reforge the Soul",
+            "Teferi's Ageless Insight",
+            "Big Score",
+            "Tolarian Winds",
+            "Marauding Mako",
+            "Burning Inquiry",
+            "Rielle, the Everwise",
+            "The Locust God"
+          ],
+          "counts": {
+            "Faerie Mastermind": {
+              "castable_uncast": 19,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Windfall": {
+              "castable_uncast": 15,
+              "cast": 0,
+              "in_hand_games": 5
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 9,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Sorcerer Class": {
+              "castable_uncast": 9,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Magus of the Wheel": {
+              "castable_uncast": 8,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Echo of Eons": {
+              "castable_uncast": 7,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Fevered Visions": {
+              "castable_uncast": 7,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Artist's Talent": {
+              "castable_uncast": 6,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Ivora, Insatiable Heir": {
+              "castable_uncast": 6,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Jace's Archivist": {
+              "castable_uncast": 6,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Nimble Obstructionist": {
+              "castable_uncast": 6,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Reforge the Soul": {
+              "castable_uncast": 5,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 5,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Big Score": {
+              "castable_uncast": 4,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Tolarian Winds": {
+              "castable_uncast": 4,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Marauding Mako": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Burning Inquiry": {
+              "castable_uncast": 2,
+              "cast": 1,
+              "in_hand_games": 1
+            },
+            "Rielle, the Everwise": {
+              "castable_uncast": 2,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "The Locust God": {
+              "castable_uncast": 2,
+              "cast": 1,
+              "in_hand_games": 4
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-c74afe7f-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 20.12 (median 21.5, n 16 of 20 games — games with no attack are absent)",
+          "figure": 20.12,
+          "ci95": [
+            16.66,
+            23.59
+          ],
+          "n": 16,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-c74afe7f-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.6 of games (ci95 [0.231, 0.882]); damage on the wipe turn 2.0",
+          "figure": 0.6,
+          "ci95": [
+            0.231,
+            0.882
+          ],
+          "n": 5,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n8-e9cc7abe-s1922492094-podExperimental-c600-ovb8e1e37e-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n8-e9cc7abe-s1922492094-podExperimental-c600-ovb8e1e37e-tl9473cf35",
+        "at": "2026-10-21",
+        "pod": "olivers-table",
+        "games": 8,
+        "decided": 8,
+        "harness": {
+          "card_overrides": "b8e1e37eadd9",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "fda57c5a37502a3869c7099e77f24a0baa34860e0921452172e053e316245793",
+        "version": 8,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-0206a4bb-01",
+          "kind": "rate_vs_null",
+          "text": "1 of 8 decided games (0.125, ci95 [0.022, 0.471]) — no measured null for this table",
+          "figure": 0.125,
+          "ci95": [
+            0.022,
+            0.471
+          ],
+          "n": 8,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table)"
+        },
+        {
+          "id": "F-0206a4bb-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.941,
+          "verdict": true,
+          "n": 8,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-0206a4bb-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 7 of 8 games: purphoros-pingers ×4, teval-graveyard ×2, araumi-edict ×1; how: {\"damage\": 7}",
+          "eliminated_by": {
+            "purphoros-pingers": 4,
+            "teval-graveyard": 2,
+            "araumi-edict": 1
+          },
+          "eliminated_how": {
+            "damage": 7
+          },
+          "n": 8,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-0206a4bb-04",
+          "kind": "held",
+          "text": "1 card(s) never cast over 8 games (1 seen discarded, 0 inferred): Echo of Eons",
+          "cards": [
+            "Echo of Eons"
+          ],
+          "measured": [
+            "Echo of Eons"
+          ],
+          "modelled": [],
+          "counts": {
+            "Echo of Eons": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 8,
+          "played_share": 1.111,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-0206a4bb-05",
+          "kind": "held_castable",
+          "text": "18 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Sorcerer Class x10, Ivora, Insatiable Heir x8, March of Swirling Mist x7, Molten Psyche x7, Windfall x7, Negate x5",
+          "cards": [
+            "Sorcerer Class",
+            "Ivora, Insatiable Heir",
+            "March of Swirling Mist",
+            "Molten Psyche",
+            "Windfall",
+            "Negate",
+            "Nimble Obstructionist",
+            "Arcane Signet",
+            "Campfire",
+            "Faerie Mastermind",
+            "Magmakin Artillerist",
+            "Marauding Mako",
+            "Razorkin Needlehead",
+            "Teferi's Ageless Insight",
+            "Tolarian Winds",
+            "Irencrag Pyromancer",
+            "Magus of the Wheel",
+            "Mind's Eye"
+          ],
+          "counts": {
+            "Sorcerer Class": {
+              "castable_uncast": 10,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Ivora, Insatiable Heir": {
+              "castable_uncast": 8,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 7,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Molten Psyche": {
+              "castable_uncast": 7,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Windfall": {
+              "castable_uncast": 7,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Negate": {
+              "castable_uncast": 5,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Nimble Obstructionist": {
+              "castable_uncast": 5,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Arcane Signet": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Campfire": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Faerie Mastermind": {
+              "castable_uncast": 3,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Magmakin Artillerist": {
+              "castable_uncast": 3,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Marauding Mako": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Razorkin Needlehead": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 3,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Tolarian Winds": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 2
+            },
+            "Irencrag Pyromancer": {
+              "castable_uncast": 2,
+              "cast": 0,
+              "in_hand_games": 2
+            },
+            "Magus of the Wheel": {
+              "castable_uncast": 2,
+              "cast": 0,
+              "in_hand_games": 1
+            },
+            "Mind's Eye": {
+              "castable_uncast": 2,
+              "cast": 0,
+              "in_hand_games": 2
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-0206a4bb-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 16.57 (median 16, n 7 of 8 games — games with no attack are absent)",
+          "figure": 16.57,
+          "ci95": [
+            10.04,
+            23.1
+          ],
+          "n": 7,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35",
+        "at": "2026-10-25",
+        "pod": "olivers-table-3p",
+        "games": 40,
+        "decided": 40,
+        "harness": {
+          "card_overrides": "ecdad552212b",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+        "version": 9,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-3c5e5634-01",
+          "kind": "rate_vs_null",
+          "text": "13 of 40 decided games (0.325, ci95 [0.201, 0.48]) — no measured null for this table",
+          "figure": 0.325,
+          "ci95": [
+            0.201,
+            0.48
+          ],
+          "n": 40,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table-3p)"
+        },
+        {
+          "id": "F-3c5e5634-02",
+          "kind": "pilot_quality",
+          "text": "land drops 0.862 against a 0.85 line — INSIDE the run-to-run noise (the median within-deck spread across the fleet is 0.038), so the verdict is withheld rather than decided on a coin flip. Two decks' verdicts flip between runs at this threshold. The rates are reported; read them, and prefer an A/B where both arms sit on the same side.",
+          "figure": 0.862,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-3c5e5634-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 25 of 40 games: teval-graveyard ×19, araumi-edict ×6; how: {\"damage\": 23, \"life loss\": 2}",
+          "eliminated_by": {
+            "teval-graveyard": 19,
+            "araumi-edict": 6
+          },
+          "eliminated_how": {
+            "damage": 23,
+            "life loss": 2
+          },
+          "n": 40,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-3c5e5634-04",
+          "kind": "held",
+          "text": "8 card(s) never cast over 40 games (8 seen discarded, 0 inferred): Mana Confluence, Mountain, Raugrin Triome, Boros Charm, Riverpyre Verge, Spectator Seating",
+          "cards": [
+            "Mana Confluence",
+            "Mountain",
+            "Raugrin Triome",
+            "Boros Charm",
+            "Riverpyre Verge",
+            "Spectator Seating",
+            "Steam Vents",
+            "Sunbillow Verge"
+          ],
+          "measured": [
+            "Mana Confluence",
+            "Mountain",
+            "Raugrin Triome",
+            "Boros Charm",
+            "Riverpyre Verge",
+            "Spectator Seating",
+            "Steam Vents",
+            "Sunbillow Verge"
+          ],
+          "modelled": [],
+          "counts": {
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Raugrin Triome": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 5
+            },
+            "Boros Charm": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Riverpyre Verge": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Spectator Seating": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Steam Vents": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Sunbillow Verge": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 40,
+          "played_share": 1.385,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-3c5e5634-05",
+          "kind": "held_castable",
+          "text": "9 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): March of Swirling Mist x30, Tolarian Winds x26, Windfall x25, Jace's Archivist x19, Negate x16, Boros Charm x14",
+          "cards": [
+            "March of Swirling Mist",
+            "Tolarian Winds",
+            "Windfall",
+            "Jace's Archivist",
+            "Negate",
+            "Boros Charm",
+            "Teferi's Ageless Insight",
+            "Knowledge Is Power",
+            "Bard, King of Dale"
+          ],
+          "counts": {
+            "March of Swirling Mist": {
+              "castable_uncast": 30,
+              "cast": 0,
+              "in_hand_games": 7
+            },
+            "Tolarian Winds": {
+              "castable_uncast": 26,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Windfall": {
+              "castable_uncast": 25,
+              "cast": 0,
+              "in_hand_games": 8
+            },
+            "Jace's Archivist": {
+              "castable_uncast": 19,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Negate": {
+              "castable_uncast": 16,
+              "cast": 0,
+              "in_hand_games": 5
+            },
+            "Boros Charm": {
+              "castable_uncast": 14,
+              "cast": 0,
+              "in_hand_games": 7
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 11,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Knowledge Is Power": {
+              "castable_uncast": 10,
+              "cast": 1,
+              "in_hand_games": 7
+            },
+            "Bard, King of Dale": {
+              "castable_uncast": 3,
+              "cast": 0,
+              "in_hand_games": 3
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-3c5e5634-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 14.55 (median 15, n 31 of 40 games — games with no attack are absent)",
+          "figure": 14.55,
+          "ci95": [
+            12.29,
+            16.8
+          ],
+          "n": 31,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-3c5e5634-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.4 of games (ci95 [0.219, 0.613]); damage on the wipe turn 7.5",
+          "figure": 0.4,
+          "ci95": [
+            0.219,
+            0.613
+          ],
+          "n": 20,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
+        "at": "2026-10-25",
+        "pod": "olivers-table-3p",
+        "games": 40,
+        "decided": 40,
+        "harness": {
+          "card_overrides": "0ed1ecfa5e1b",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+        "version": 9,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-8ec5e2db-01",
+          "kind": "rate_vs_null",
+          "text": "19 of 40 decided games (0.475, ci95 [0.329, 0.625]) — no measured null for this table",
+          "figure": 0.475,
+          "ci95": [
+            0.329,
+            0.625
+          ],
+          "n": 40,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table-3p)"
+        },
+        {
+          "id": "F-8ec5e2db-02",
+          "kind": "pilot_quality",
+          "text": "land drops 0.859 against a 0.85 line — INSIDE the run-to-run noise (the median within-deck spread across the fleet is 0.038), so the verdict is withheld rather than decided on a coin flip. Two decks' verdicts flip between runs at this threshold. The rates are reported; read them, and prefer an A/B where both arms sit on the same side.",
+          "figure": 0.859,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-8ec5e2db-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 21 of 40 games: teval-graveyard ×14, araumi-edict ×7; how: {\"damage\": 20, \"life loss\": 1}",
+          "eliminated_by": {
+            "teval-graveyard": 14,
+            "araumi-edict": 7
+          },
+          "eliminated_how": {
+            "damage": 20,
+            "life loss": 1
+          },
+          "n": 40,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-8ec5e2db-04",
+          "kind": "held",
+          "text": "4 card(s) never cast over 40 games (4 seen discarded, 0 inferred): March of Swirling Mist, Ferrous Lake, Mountain, Spirebluff Canal",
+          "cards": [
+            "March of Swirling Mist",
+            "Ferrous Lake",
+            "Mountain",
+            "Spirebluff Canal"
+          ],
+          "measured": [
+            "March of Swirling Mist",
+            "Ferrous Lake",
+            "Mountain",
+            "Spirebluff Canal"
+          ],
+          "modelled": [],
+          "counts": {
+            "March of Swirling Mist": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Ferrous Lake": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Spirebluff Canal": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 40,
+          "played_share": 1.322,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-8ec5e2db-05",
+          "kind": "held_castable",
+          "text": "7 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Loran's Escape x31, March of Swirling Mist x28, Negate x19, Reforge the Soul x14, Boros Charm x13, Teferi's Ageless Insight x11",
+          "cards": [
+            "Loran's Escape",
+            "March of Swirling Mist",
+            "Negate",
+            "Reforge the Soul",
+            "Boros Charm",
+            "Teferi's Ageless Insight",
+            "Knowledge Is Power"
+          ],
+          "counts": {
+            "Loran's Escape": {
+              "castable_uncast": 31,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 28,
+              "cast": 0,
+              "in_hand_games": 6
+            },
+            "Negate": {
+              "castable_uncast": 19,
+              "cast": 0,
+              "in_hand_games": 7
+            },
+            "Reforge the Soul": {
+              "castable_uncast": 14,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "Boros Charm": {
+              "castable_uncast": 13,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 11,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Knowledge Is Power": {
+              "castable_uncast": 9,
+              "cast": 1,
+              "in_hand_games": 5
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-8ec5e2db-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 14.86 (median 15.5, n 36 of 40 games — games with no attack are absent)",
+          "figure": 14.86,
+          "ci95": [
+            13.25,
+            16.48
+          ],
+          "n": 36,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-8ec5e2db-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.4 of games (ci95 [0.219, 0.613]); damage on the wipe turn 3.7",
+          "figure": 0.4,
+          "ci95": [
+            0.219,
+            0.613
+          ],
+          "n": 20,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
+    "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n40-c0f7e15a-s1237470554-podExperimental-c600-ov0ed1ecfa-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n40-c0f7e15a-s1237470554-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
+        "at": "2026-10-25",
+        "pod": "olivers-table",
+        "games": 40,
+        "decided": 40,
+        "harness": {
+          "card_overrides": "0ed1ecfa5e1b",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+        "version": 9,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-211821e5-01",
+          "kind": "rate_vs_null",
+          "text": "6 of 40 decided games (0.150, ci95 [0.071, 0.291]) — no measured null for this table",
+          "figure": 0.15,
+          "ci95": [
+            0.071,
+            0.291
+          ],
+          "n": 40,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table)"
+        },
+        {
+          "id": "F-211821e5-02",
+          "kind": "pilot_quality",
+          "text": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands.",
+          "figure": 0.927,
+          "verdict": true,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-211821e5-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 25 of 40 games: purphoros-pingers ×18, teval-graveyard ×4, araumi-edict ×3; how: {\"damage\": 25}",
+          "eliminated_by": {
+            "purphoros-pingers": 18,
+            "teval-graveyard": 4,
+            "araumi-edict": 3
+          },
+          "eliminated_how": {
+            "damage": 25
+          },
+          "n": 40,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-211821e5-04",
+          "kind": "held",
+          "text": "3 card(s) never cast over 40 games (3 seen discarded, 0 inferred): Mountain, Clifftop Retreat, Mana Confluence",
+          "cards": [
+            "Mountain",
+            "Clifftop Retreat",
+            "Mana Confluence"
+          ],
+          "measured": [
+            "Mountain",
+            "Clifftop Retreat",
+            "Mana Confluence"
+          ],
+          "modelled": [],
+          "counts": {
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 7
+            },
+            "Clifftop Retreat": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Mana Confluence": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 40,
+          "played_share": 0.905,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-211821e5-05",
+          "kind": "held_castable",
+          "text": "14 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Loran's Escape x26, Teferi's Ageless Insight x15, Jace's Archivist x13, Boros Charm x12, Tolarian Winds x12, Knowledge Is Power x10",
+          "cards": [
+            "Loran's Escape",
+            "Teferi's Ageless Insight",
+            "Jace's Archivist",
+            "Boros Charm",
+            "Tolarian Winds",
+            "Knowledge Is Power",
+            "Key to the City",
+            "Khorvath's Fury",
+            "March of Swirling Mist",
+            "Idyllic Tutor",
+            "Incendiary Command",
+            "Collector's Vault",
+            "Genji Glove",
+            "Karlach, Fury of Avernus"
+          ],
+          "counts": {
+            "Loran's Escape": {
+              "castable_uncast": 26,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 15,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "Jace's Archivist": {
+              "castable_uncast": 13,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Boros Charm": {
+              "castable_uncast": 12,
+              "cast": 1,
+              "in_hand_games": 5
+            },
+            "Tolarian Winds": {
+              "castable_uncast": 12,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Knowledge Is Power": {
+              "castable_uncast": 10,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "Key to the City": {
+              "castable_uncast": 9,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Khorvath's Fury": {
+              "castable_uncast": 9,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 9,
+              "cast": 0,
+              "in_hand_games": 4
+            },
+            "Idyllic Tutor": {
+              "castable_uncast": 8,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Incendiary Command": {
+              "castable_uncast": 5,
+              "cast": 1,
+              "in_hand_games": 4
+            },
+            "Collector's Vault": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Genji Glove": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 3
+            },
+            "Karlach, Fury of Avernus": {
+              "castable_uncast": 3,
+              "cast": 1,
+              "in_hand_games": 4
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-211821e5-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 18.6 (median 19.0, n 30 of 40 games — games with no attack are absent)",
+          "figure": 18.6,
+          "ci95": [
+            15.9,
+            21.3
+          ],
+          "n": 30,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-211821e5-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.4 of games (ci95 [0.168, 0.687]); damage on the wipe turn 0.0",
+          "figure": 0.4,
+          "ci95": [
+            0.168,
+            0.687
+          ],
+          "n": 10,
           "source": "analysis.wipe_recovery",
           "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
         }

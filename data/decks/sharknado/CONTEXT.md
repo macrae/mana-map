@@ -5,8 +5,8 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-24
-- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 41/96 → B3 (deckcheck.co, 2026-10-25, 3 readings) — older list
+- **Version:** v2.1.0 (V10) · **status:** sleeved since 2026-10-26
+- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 37/96 → B3 (deckcheck.co, 2026-10-26, 4 readings)
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 72 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
@@ -160,7 +160,7 @@ Colours are red and white first, then blue. The special ones: [Gemstone Caverns]
 
 ## Numbers
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v2.1.0 (V10), 2026-10-26. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -181,7 +181,7 @@ Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each 
 - A win route assembled by turn 6: **34%** (95% CI 33%–35%)
 - A win route assembled by turn 8: **52%** (95% CI 51%–53%)
 - Colour on curve (lands + rocks): W 91%, U 96%, R 91%
-- Forge (an optional probe, not a gate): last run 2026-10-25, 13/40 won (32% (95% CI 20%–48%)) on V9 — on an older list
+- Forge (an optional probe, not a gate): last run 2026-10-25, 6/40 won (15% (95% CI 7%–29%)) on V9 — on an older list
 <!-- /ctx:gen numbers -->
 
 The goldfish does not model the modal plan, the equipment, or interaction, so treat these as a ceiling and read the block's own line for which version it describes. What is missing: a reading for a commander connecting with double strike, how often a tutor finds its target, and a reading for the v2.1.0 list.
@@ -234,6 +234,8 @@ The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003
 
 ## Change history
 <!-- ctx:gen history -->
+- **v2.1.0 · V10** (2026-10-26) — in: Chaos Warp, Consecrated Sphinx, Deflecting Swat, Faerie Mastermind, Get Lost, Ghostly Pilferer, Grand Abolisher, Hallowed Fountain …; out: Alhammarret's Archive, Campfire, Champion's Helm, Chasm Skulker, Collector's Vault, Ferrous Lake, Fireshrieker, Genji Glove …. _answers-v1 merged: interaction and standing draw; Jeska's Will out for Magmakin Artillerist (three Game Changers, bracket 3)_
+  - merge `answers-v1`: objective forge.interaction_cast read **not measured** — played on printed proxies sleeved 2026-10-26; the unowned cards are on the order list
 - **v2.0.0 · V9** (2026-10-24) — in: Akroma's Will, Azorius Signet, Bard, King of Dale, Battlefield Forge, Blade Historian, Brotherhood Regalia, Champion's Helm, Clifftop Retreat …; out: Anje's Ravager, Arjun, the Shifting Flame, Big Score, Burning Inquiry, Commit // Memory, Curator of Mysteries, Echo of Eons, Faerie Mastermind …. _modal voltron: voltron-v1 merged; either commander wins on 21 commander damage_
   - merge `voltron-v1`: objective forge.commander_damage_max_on_one_defender read **not resolvable** — played on printed proxies from 2026-10-24; the unowned cards are on the order list
   - played 1: 0W 0L
@@ -250,8 +252,7 @@ The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003
 - **v1.0.1 · V4** (2026-09-21) — in: Shelter; out: Astral Drift
   - merge `shelter-v1`: objective damage_8 read **not met** — Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive 
 - **v1.0.0 · V3** (2026-09-14) — in: Anje's Ravager, Ferrous Lake, Fiery Islet, Glittering Massif, Irrigated Farmland, Magmakin Artillerist, Queen Kayla bin-Kroog, Riverpyre Verge …; out: Battlefield Forge, Ceremonial Knife, Clifftop Retreat, Inspiring Vantage, Plateau, Tundra, Volcanic Island, Wheel of Fortune …
-- **V2** (2026-09-14) — in: Ivora, Insatiable Heir, Teferi's Ageless Insight; out: Elesh Norn, Goblin Engineer
-- … 1 earlier version(s): `manamap pilot deck-version sharknado list`
+- … 2 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
 **v2.1.0, answers-v1 (merged 2026-10-26).** Twenty cards in, twenty out, aimed at the gap Sean named after games 001 and 003: no removal, and not enough standing draw. In came interaction (Chaos Warp, Get Lost, Deflecting Swat, Grand Abolisher, Izzet Charm, Stubborn Denial), standing draw (Consecrated Sphinx, Mystic Remora, Faerie Mastermind, Ghostly Pilferer, Ledger Shredder), looting and payoff (Mary Read and Anne Bonny, Jeskai Ascendancy, Shu Yun, Magmakin Artillerist, Robe of Stars) and Wheel of Fortune, plus Hallowed Fountain and Otawara as lands. Out went the loose equipment (Champion's Helm, Fireshrieker, Genji Glove, Key to the City, Lizard Blades, Mask of Memory, Zephyr Boots), the mana odds and ends (Campfire, Collector's Vault, Talisman of Conviction, Jeska's Will, Ferrous Lake, Thundering Falls) and Alhammarret's Archive, Chasm Skulker, Iroh's Demonstration, Karlach, Khorvath's Fury and Silence. Jeska's Will left to keep the deck at three Game Changers for Bracket 3. Magmakin Artillerist is a second per-discard damage source that scales every wheel discard. In net-change the branch read better on nine rows and worse on none, with the objective itself inconclusive (a Forge axis). Cast proofs: thirteen adds played, Stubborn Denial cast late, Deflecting Swat and Wheel of Fortune held by the AI. Stack 009 is now a main-list line.
