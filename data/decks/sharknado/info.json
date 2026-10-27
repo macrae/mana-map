@@ -26,6 +26,7 @@
     "invalid": [
       "engine",
       "log",
+      "CONTEXT.md",
       "log_annotations.json"
     ],
     "verified": true,
@@ -11740,12 +11741,12 @@
     "top": []
   },
   "paper": {
-    "version": 9,
-    "sha": "75275e4c1436",
-    "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
-    "built_at": "2026-10-24",
-    "note": "proxies in sleeves 2026-10-24; 29 cards to order",
-    "release": "v2.0.0"
+    "version": 10,
+    "sha": "84d9fcae6c9e",
+    "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+    "built_at": "2026-10-26",
+    "note": "printed proxies in sleeves 2026-10-26; unowned cards to order",
+    "release": "v2.1.0"
   },
   "record": {
     "games": 3,
@@ -12238,45 +12239,45 @@
   ],
   "simulation": {
     "runs": 8,
-    "latest": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35",
+    "latest": "araumi-edict-vs-teval-graveyard-vs-purphoros-pingers-n40-c0f7e15a-s1237470554-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
     "at": "2026-10-25",
     "stale": true,
     "ran_on_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
     "ran_on_version": 9,
-    "current_version": null,
+    "current_version": 10,
     "runs_on_current_list": 0,
     "games": 40,
-    "wins": 13,
+    "wins": 6,
     "decided": 40,
     "vs": [
       "araumi-edict",
-      "teval-graveyard"
+      "teval-graveyard",
+      "purphoros-pingers"
     ],
-    "win_rate": 0.325,
+    "win_rate": 0.15,
     "win_rate_ci95": [
-      0.201,
-      0.48
+      0.071,
+      0.291
     ],
     "piloting": {
-      "comparable": null,
-      "lands_ratio": 0.862,
-      "casts_ratio": 0.9,
-      "reading": "land drops 0.862 against a 0.85 line — INSIDE the run-to-run noise (the median within-deck spread across the fleet is 0.038), so the verdict is withheld rather than decided on a coin flip. Two decks' verdicts flip between runs at this threshold. The rates are reported; read them, and prefer an A/B where both arms sit on the same side."
+      "comparable": true,
+      "lands_ratio": 0.927,
+      "casts_ratio": 0.815,
+      "reading": "our seat was handled about as well as the pod, so an A/B between two of your own lists against this table is played equally badly on both sides and remains informative. It is still not a claim about how the deck plays in your hands."
     },
     "engine_casts": {
-      "covered": false,
-      "never_cast": [
-        "Boros Charm"
-      ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Boros Charm. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome. BUT Tolarian Winds sat castable and uncast on 26 own turns, Windfall sat castable and uncast on 25 own turns, Jace's Archivist sat castable and uncast on 19 own turns (+4 more) — measured from the hand, not inferred."
+      "covered": true,
+      "never_cast": [],
+      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck. BUT Teferi's Ageless Insight sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 13 own turns, Boros Charm sat castable and uncast on 12 own turns (+4 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
-      "teval-graveyard": 19,
-      "araumi-edict": 6
+      "purphoros-pingers": 18,
+      "teval-graveyard": 4,
+      "araumi-edict": 3
     },
-    "mean_round": 14.3,
-    "token_damage_share": 0.01,
-    "tokens_observed": 0.2
+    "mean_round": 15.7,
+    "token_damage_share": 0.13,
+    "tokens_observed": 0.3
   },
   "experiments": {
     "count": 4,
@@ -12444,9 +12445,9 @@
     ]
   },
   "next": [
-    "3 artifact(s) fail their own gate (engine, log, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "4 artifact(s) fail their own gate (engine, log, CONTEXT.md, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DeckCheck copy is V9, sleeved is V10 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-25) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×4",
