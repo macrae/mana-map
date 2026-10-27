@@ -1,6 +1,6 @@
 {
   "slug": "sharknado",
-  "assessment": "Two narrow tutors, one for each kind of missing piece. Idyllic Tutor ({2}{W}, sorcery) finds an enchantment. The 99 holds ten: Artist's Talent, Fiery Emancipation, Gratuitous Violence, Jeskai Ascendancy, Knowledge Is Power, Mystic Remora, Rhystic Study, Smothering Tithe, Sorcerer Class and Teferi's Ageless Insight. Stoneforge Mystic ({1}{W}) finds one of four Equipment: Brotherhood Regalia, Embercleave, Lightning Greaves and Robe of Stars. Her {1}{W}, {T} puts an Equipment from your hand onto the battlefield without casting it. That needs a turn of waiting, since it is a tap ability on a creature. Neither tutor finds a commander, a wheel, Consecrated Sphinx or a shield spell, so neither one makes a keep on its own. The only checker-passed kill on this list (stack 009) runs through a creature, which neither can fetch. Every combat figure below is oracle arithmetic: no passing stack resolves combat with any card in the 99.",
+  "assessment": "Two narrow tutors, one for each kind of missing piece. Idyllic Tutor ({2}{W}, sorcery) finds an enchantment. The 99 holds eleven: Artist's Talent, Fiery Emancipation, Gratuitous Violence, Jeskai Ascendancy, Knowledge Is Power, Mystic Remora, Rhystic Study, Shark Typhoon, Smothering Tithe, Sorcerer Class and Teferi's Ageless Insight. Stoneforge Mystic ({1}{W}) finds one of four Equipment: Brotherhood Regalia, Embercleave, Lightning Greaves and Robe of Stars. Her {1}{W}, {T} puts an Equipment from your hand onto the battlefield without casting it, which needs a turn of waiting, since it is a tap ability on a creature. Neither tutor finds a commander, a wheel, Consecrated Sphinx, Razorkin Needlehead, Torbran or a shield spell, so neither one makes a keep on its own. Both checker-passed wheel lines on this list run through creatures neither can fetch: Sphinx (stack 009) and Needlehead with Torbran (stack 011). What Idyllic adds to them is a multiplier or a refill. Every combat figure below is oracle arithmetic: no passing stack resolves combat with any card in the 99, so the 21-commander-damage kill stays unproven.",
   "tutors": [
     {
       "card": "Idyllic Tutor",
@@ -8,31 +8,25 @@
         {
           "scenario": "Turn three or four. No commander yet, two or three lands, no rock, and a commander or a wheel in hand: the game 003 shape, mana-starved for a round.",
           "fetch": "Smothering Tithe",
-          "why": "Every opponent draw is a Treasure unless that player pays {2}, so a symmetrical wheel later is seven offers per seat. Tithe has to be on the battlefield before the wheel. No passing stack has Tithe on a board, and the goldfish barely reads its Treasure (treasure engine online by turn 6 in 0.6% of games), so this rests on oracle text. It is a Game Changer and it taxes the whole table, so expect attention."
+          "why": "Every opponent draw is a Treasure unless that player pays {2}, so a symmetrical wheel later is seven offers per seat. Tithe has to be on the battlefield before the wheel. No passing stack has Tithe on a board, and the goldfish barely reads its Treasure (treasure engine online by turn 6 in 0.7% of games), so this rests on oracle text. It is a Game Changer and it taxes the whole table, so expect attention."
         },
         {
-          "scenario": "Brallin is out and has survived a turn cycle, Torbran is on the battlefield, a wheel is in hand, and you can wait a turn.",
+          "scenario": "Torbran is on the battlefield with Razorkin Needlehead or Brallin beside him (or both), Wheel of Fortune is in hand, and you can wait a turn.",
           "fetch": "Gratuitous Violence",
-          "why": "Stack 007 settles that each opponent orders the damage replacements on Brallin's ping and takes the smaller result. With Torbran and Gratuitous Violence only, the smaller order is double first, then +2: 4 per ping. Seven discards make 28 per seat by that arithmetic, against Torbran's 21 alone (stack 005). It also doubles both commanders' combat damage by oracle text. It costs {2}{R}{R}{R}, and red is the short colour at 30 land sources against a target of 36. Needs a stack scenario."
+          "why": "It doubles damage from creatures you control, and Needlehead and Brallin are both creatures. Stack 007 settles that each opponent orders the replacements and takes the smaller result: double first, then Torbran's +2, so 4 per ping. Stack 011 is the Wheel under Needlehead and Torbran alone, 21 per seat; with Gratuitous Violence the same seven draws are at least 28 per seat by that arithmetic, before Brallin adds anything. It costs {2}{R}{R}{R}, and red is the short colour at 30 land sources against a target of 36. Needs a stack scenario."
         },
         {
           "scenario": "Shabraz is out at about 10/10 with a clear lane in the air, and you hold a wheel for next turn but no double-strike piece.",
           "fetch": "Knowledge Is Power",
-          "why": "Creatures you control get +X/+X, where X is the cards drawn this turn. A precombat Windfall for seven puts seven counters on Shabraz (stack 001) and adds at least +7/+7, so a 10/10 attacks as at least a 24/24. By arithmetic that is past 21 in one hit, with no double strike. It costs {3}{W}{U}, so you tutor on one turn and cast the enchantment and the wheel on the next. This is candidate line 5 in strategic_frame.json and needs a stack scenario."
+          "why": "Creatures you control get +X/+X, where X is the cards drawn this turn. A precombat Windfall for seven puts seven counters on Shabraz (stack 001) and adds at least +7/+7, so a 10/10 attacks as at least a 24/24. By arithmetic that is past 21 in one hit, with no double strike. It costs {3}{W}{U}, so you tutor on one turn and cast the enchantment and the wheel on the next. It is a candidate line in strategic_frame.json and needs a stack scenario."
         },
         {
-          "scenario": "Shabraz is out and unblocked in the air, you have no double-strike piece, and six mana with {R}{R}{R} next turn.",
-          "fetch": "Fiery Emancipation",
-          "why": "It triples damage from any source you control, and Shabraz is white and blue, so Torbran never helps him. By oracle arithmetic a 7/7 Shabraz connecting under it deals 21, and no double strike is needed. Whether tripled combat damage from a commander counts toward the 21 is read here from the rule, not from a stack, so it needs a stack scenario. Stack 007 also has it as one of the three replacements on Brallin's ping.",
-          "citations": [
-            {
-              "rule": "903.10a",
-              "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
-            }
-          ]
+          "scenario": "The table holds a sorcery-speed sweeper (or has already wiped once), a commander is out or has been removed, and you have nothing to do at instant speed.",
+          "fetch": "Shark Typhoon",
+          "why": "It is an enchantment, so Idyllic finds it, and few players expect a tutor for a cycler. Hold it and cycle it at an opponent's end step after their wipe. Stack 012: cycling for X=4 is one discard and one draw, which pays Brallin, Marauding Mako and Shabraz a counter each, pings every opponent for 1, and leaves a flying Shark that Brallin's {R} can give trample. The 4/4 size is the card's ruling, taken as an input, not a CR result. Cycling is not casting, so Shu Yun and prowess do not see it. Idyllic is a sorcery, so you tutor on your turn and cycle on theirs."
         }
       ],
-      "notes": "Idyllic Tutor is a sorcery for three, so you tutor on one turn and cast on the next. Gratuitous Violence and Fiery Emancipation each need {R}{R}{R}, so count your red sources before you name either."
+      "notes": "Idyllic Tutor is a sorcery for three, so you tutor on one turn and cast on the next. Gratuitous Violence and Fiery Emancipation each need {R}{R}{R}, so count your red sources before you name either. Fiery Emancipation is the alternate to Gratuitous Violence: it triples damage from any source you control, Shabraz included, where Torbran never helps him; whether tripled combat damage from a commander counts toward 21 has no stack."
     },
     {
       "card": "Stoneforge Mystic",
@@ -70,7 +64,7 @@
         {
           "scenario": "Closing. Stoneforge has been on the battlefield since your last turn, a commander is at 10/10 or more, and you have {1}{W} plus a lane.",
           "fetch": "Embercleave",
-          "why": "Her {1}{W}, {T} puts Embercleave onto the battlefield without paying {4}{R}{R}, and its enter trigger attaches it to target creature you control: +1/+1, double strike, trample. A 10/10 becomes an 11/11 that deals 22 by arithmetic. No passing stack resolves combat with Embercleave, so this is the deck's stated win and it is unproven. Its equip {3} is a sorcery-speed backup if it falls off. Its trigger targets, so it cannot attach to a commander in Lightning Greaves."
+          "why": "Her {1}{W}, {T} puts Embercleave onto the battlefield without paying {4}{R}{R}, and its enter trigger attaches it to target creature you control: +1/+1, double strike, trample. A 10/10 becomes an 11/11 that deals 22 by arithmetic. No passing stack resolves combat with Embercleave, so this is the deck's stated win and it is UNPROVEN. Its equip {3} is a sorcery-speed backup if it falls off. Its trigger targets, so it cannot attach to a commander in Lightning Greaves."
         },
         {
           "scenario": "The board is wide with blockers (game 001's zombie tokens), and Brallin is the commander you have out.",
@@ -83,7 +77,10 @@
   ],
   "gaps": [
     "No passing stack resolves combat with Embercleave, Knowledge Is Power, Fiery Emancipation or Gratuitous Violence. Every combat figure here is oracle arithmetic (engine.json open_questions[0] and [1]).",
+    "Gratuitous Violence on Needlehead's pings (at least 28 per seat from one Wheel) is arithmetic from stacks 007 and 011; no stack holds Needlehead under it. strategic_frame.json lists it as a candidate line, status needs a stack scenario.",
     "Smothering Tithe is on no stack board, and the goldfish's Treasure reading is near zero, so its behind-on-mana value is unmeasured.",
-    "No artifact measures how often either tutor is cast, or what it found, in a real game. CONTEXT.md lists this as an open question."
-  ]
+    "Shark Typhoon's draw is not modelled by the goldfish (draw_not_modelled), so the value of fetching it is stack 012 and judgment only.",
+    "No artifact measures how often either tutor is cast, or what it found, in a real game. No game is logged on v2.2.0."
+  ],
+  "decklist_sha256_prefix": "8df06ee13607"
 }

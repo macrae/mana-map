@@ -5,7 +5,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-27
+- **Version:** v2.2.0 (V12) · **status:** sleeved since 2026-10-27
 - **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 37/96 → B3 (deckcheck.co, 2026-10-26, 4 readings) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 69 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
@@ -166,7 +166,7 @@ Colours are red and white first, then blue. The special ones: [Gemstone Caverns]
 
 ## Numbers
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v2.2.0 (V12), 2026-10-27. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -240,6 +240,8 @@ The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003
 
 ## Change history
 <!-- ctx:gen history -->
+- **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
+  - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
 - **v2.1.1 · V11** (2026-10-27) — in: Adarkar Wastes, Sea of Clouds; out: Mystic Monastery, Opal Palace. _powertune-v1 merged: a land pass (Sea of Clouds, Adarkar Wastes)_
   - merge `powertune-v1`: objective kill_by_6 read **not met** — the pilot's word 2026-10-27: merge the land pass for now
 - **v2.1.0 · V10** (2026-10-26) — in: Chaos Warp, Consecrated Sphinx, Deflecting Swat, Faerie Mastermind, Get Lost, Ghostly Pilferer, Grand Abolisher, Hallowed Fountain …; out: Alhammarret's Archive, Campfire, Champion's Helm, Chasm Skulker, Collector's Vault, Ferrous Lake, Fireshrieker, Genji Glove …. _answers-v1 merged: interaction and standing draw; Jeska's Will out for Magmakin Artillerist (three Game Changers, bracket 3)_
@@ -257,9 +259,7 @@ The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003
   - merge `swords-v1` — The four swaps were MADE IN CARDBOARD by the pilot on 2026-10-01 before this merge — the sourcing gate predicts whether the cards can be got, and that question 
 - **v1.0.2 · V5** (2026-09-22) — in: Island; out: Gleaming Bastion. _Astral Drift -> Shelter and Gleaming Bastion -> a basic Island, both made in cardboard. The Island is the deck's first basic: Gleaming Bastion's W/U mode is gated on controlling one, so at zero basics_
   - merge `basic-island-v1`: objective land_drop read **not met** — Gleaming Bastion's W/U mode is gated on controlling a basic land; the deck runs zero basics, so it makes coloured mana only on the turn it enters and is a colou
-- **v1.0.1 · V4** (2026-09-21) — in: Shelter; out: Astral Drift
-  - merge `shelter-v1`: objective damage_8 read **not met** — Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. Protection reads 3 copies against a 5-7 target and ALL THREE are permanents that must survive 
-- … 3 earlier version(s): `manamap pilot deck-version sharknado list`
+- … 4 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
 **v2.1.0, answers-v1 (merged 2026-10-26).** Twenty cards in, twenty out, aimed at the gap Sean named after games 001 and 003: no removal, and not enough standing draw. In came interaction (Chaos Warp, Get Lost, Deflecting Swat, Grand Abolisher, Izzet Charm, Stubborn Denial), standing draw (Consecrated Sphinx, Mystic Remora, Faerie Mastermind, Ghostly Pilferer, Ledger Shredder), looting and payoff (Mary Read and Anne Bonny, Jeskai Ascendancy, Shu Yun, Magmakin Artillerist, Robe of Stars) and Wheel of Fortune, plus Hallowed Fountain and Otawara as lands. Out went the loose equipment (Champion's Helm, Fireshrieker, Genji Glove, Key to the City, Lizard Blades, Mask of Memory, Zephyr Boots), the mana odds and ends (Campfire, Collector's Vault, Talisman of Conviction, Jeska's Will, Ferrous Lake, Thundering Falls) and Alhammarret's Archive, Chasm Skulker, Iroh's Demonstration, Karlach, Khorvath's Fury and Silence. Jeska's Will left to keep the deck at three Game Changers for Bracket 3. Magmakin Artillerist is a second per-discard damage source that scales every wheel discard. In net-change the branch read better on nine rows and worse on none, with the objective itself inconclusive (a Forge axis). Cast proofs: thirteen adds played, Stubborn Denial cast late, Deflecting Swat and Wheel of Fortune held by the AI. Stack 009 is now a main-list line.

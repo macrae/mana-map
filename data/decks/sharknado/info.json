@@ -15,15 +15,11 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 17,
     "of": 19,
-    "stale": [
-      "frame",
-      "prose"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [
-      "engine",
       "log",
       "CONTEXT.md",
       "log_annotations.json",
@@ -14673,8 +14669,8 @@
   "engine": {
     "thesis": "Modal voltron: land either commander and keep it alive, let it tax every card that moves (Shabraz takes a counter and 1 life per draw, Brallin a counter and 1 damage to each opponent per discard), and win by 21 commander damage, with a wheel held until a commander is out as the finisher that turns one turn's hand into the kill.",
     "critic": "pass",
-    "lines": 13,
-    "verified_lines": 8
+    "lines": 17,
+    "verified_lines": 9
   },
   "diagnosis": null,
   "audit": {
@@ -14707,13 +14703,28 @@
     },
     {
       "from": "engine",
-      "question": "Wheel of Fortune with Glint-Horn Buccaneer and Brallin both out: 14 to each opponent from seven discards?",
+      "question": "Wheel of Fortune with Glint-Horn Buccaneer and Brallin both out: 14 to each opponent from seven discards, cast from an eight-card hand (Wheel plus seven)?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
       "question": "With Bard, King of Dale and Teferi's Ageless Insight both out, how many cards does one draw become, and what does a wheel pay Shabraz?",
       "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Wheel of Fortune cast from an eight-card hand (Wheel plus seven) with Brallin, Razorkin Needlehead and Torbran all out: is it 21 from Brallin's seven discard pings plus 21 from Needlehead's seven draw triggers per opponent, 42 to each opponent from 40?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "What size is the Shark token from Shark Typhoon's cycle trigger when X was paid in the cycling cost, by CR rather than by the card's official ruling?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "When a wheel is cast with a commander out, how many cards are in the pilot's hand?",
+      "settled_by": "goldfish"
     },
     {
       "from": "log:001",
@@ -14964,12 +14975,11 @@
     ]
   },
   "next": [
-    "5 artifact(s) fail their own gate (engine, log, CONTEXT.md, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
-    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "4 artifact(s) fail their own gate (log, CONTEXT.md, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "DeckCheck copy is V10, sleeved is V12 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
-    "open questions routed: diagnose ×2, goldfish ×2, research-strategy ×2, resolve-stack ×5",
+    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
   ],

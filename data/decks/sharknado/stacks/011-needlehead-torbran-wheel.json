@@ -7,7 +7,7 @@
  "scenario": {
   "board": {
    "you": [
-    "Razorkin Needlehead (2/1; untapped, no summoning sickness)",
+    "Razorkin Needlehead (2/2; untapped, no summoning sickness)",
     "Torbran, Thane of Red Fell (2/4; untapped)",
     "Mountain (tapped)",
     "Sacred Foundry (tapped)",
@@ -114,8 +114,31 @@
    },
    {
     "n": 4,
-    "action": "Before you would receive priority, you put all 21 Needlehead triggers on the stack in an order of your choice.",
-    "effect": "You control all 21 triggers, so you stack them in any order; the order changes nothing, since every trigger is independent and no opponent can reach 0 before all have resolved (see step 6). The active player then receives priority.",
+    "action": "Wheel of Fortune has finished resolving; before anyone receives priority the game checks state-based actions, and only then are the waiting triggers put on the stack.",
+    "effect": "The active player would now receive priority, so the game first checks state-based actions. Nobody has lost life yet (every player is still at 40), nobody drew from an empty library (every library holds well over seven), and no creature has lethal damage or 0 toughness (Razorkin Needlehead is 2/2 and Torbran 2/4, both undamaged), so no state-based action is performed. With nothing performed, the 21 waiting Needlehead triggers are put on the stack next (step 5), after which the check is repeated and again finds nothing.",
+    "citations": [
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "704.3",
+      "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     }
+    ]
+   },
+   {
+    "n": 5,
+    "action": "After the state-based-action check finds nothing to do, you put all 21 Needlehead triggers on the stack in an order of your choice.",
+    "effect": "You control all 21 triggers, so you stack them in any order; the order changes nothing, since every trigger is independent and no opponent can reach 0 before all have resolved (see step 7). The active player then receives priority.",
     "citations": [
      {
       "rule": "603.3",
@@ -132,7 +155,7 @@
     ]
    },
    {
-    "n": 5,
+    "n": 6,
     "action": "Each Needlehead trigger resolves (all players pass each time): Needlehead deals 1 damage to that opponent, which Torbran replaces with 3.",
     "effect": "Razorkin Needlehead is a red source you control (colors: R) dealing damage to an opponent, so Torbran's replacement effect ('it deals that much damage plus 2 instead') applies to each damage event separately as it happens: each trigger deals 1 + 2 = 3 damage. The extra 2 is dealt by Needlehead itself (per Torbran's official ruling). No other replacement or prevention effect exists (scenario assumption). Damage to a player from a source without infect is life loss, so each trigger costs its opponent 3 life.",
     "citations": [
@@ -159,10 +182,22 @@
     ]
    },
    {
-    "n": 6,
-    "action": "State-based actions are checked after each trigger resolves; no player is at 0 or less life.",
-    "effect": "Each opponent takes 7 x 3 = 21 damage across their seven triggers: 40 - 21 = 19. No opponent ever reaches 0, so no player loses the game. The stack is empty and the game continues in your precombat main phase.",
+    "n": 7,
+    "action": "State-based actions are checked each time a player would receive priority — after every one of the 21 triggers resolves — and no player is ever at 0 or less life.",
+    "effect": "After each trigger resolves the active player would receive priority, so the game checks state-based actions before that happens. The worst a seat can be at mid-sequence is 40 - 3 x 7 = 19, so no check ever finds a player at 0 or less life, and no creature is affected (Needlehead, a 2/2, and Torbran, a 2/4, take no damage). Each opponent takes 7 x 3 = 21 damage across their seven triggers: 40 - 21 = 19. No player loses the game. After the last trigger resolves the final check also finds nothing, the stack is empty, and the game continues in your precombat main phase.",
     "citations": [
+     {
+      "rule": "704.3",
+      "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+     },
+     {
+      "rule": "117.5",
+      "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+     },
+     {
+      "rule": "117.3b",
+      "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+     },
      {
       "rule": "704.5a",
       "quote": "If a player has 0 or less life, that player loses the game."
@@ -221,5 +256,161 @@
     }
    ]
   }
+ },
+ "checker": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "step": 1,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Wheel of Fortune is the only object on the stack, so when every player passes it resolves."
+   },
+   {
+    "step": 2,
+    "rule": "608.2c",
+    "status": "supported",
+    "note": "Wheel says 'discards their hand, then draws seven' (cards.json oracle), so every discard comes before any draw. The rest of 608.2c (replacement effects can modify the actions) does not apply: the scenario names no draw replacement."
+   },
+   {
+    "step": 2,
+    "rule": "121.2c",
+    "status": "supported",
+    "note": "The active player draws first, then each opponent in turn order. Needlehead's oracle is 'Whenever an opponent draws a card', so the controller's own seven draws trigger nothing."
+   },
+   {
+    "step": 3,
+    "rule": "121.2",
+    "status": "supported",
+    "note": "Full text: 'Cards may only be drawn one at a time.' Seven cards means seven separate draws."
+   },
+   {
+    "step": 3,
+    "rule": "603.2c",
+    "status": "supported",
+    "note": "Read with 121.2: one trigger per draw, 7 per opponent, 21 in total. Agrees with the Needlehead ruling (2024-09-20): 'If a spell or ability causes an opponent to put cards into their hand without specifically using the word \"draw,\" it's not a card drawn.' Wheel does use 'draws'."
+   },
+   {
+    "step": 3,
+    "rule": "603.2",
+    "status": "supported",
+    "note": "Triggers do nothing until they are put on the stack."
+   },
+   {
+    "step": 3,
+    "rule": "608.2n",
+    "status": "supported",
+    "note": "Wheel goes to its owner's graveyard as the last part of its resolution."
+   },
+   {
+    "step": 4,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "Fixes round-1 finding 704.3. Both quotes are verbatim from 704.3. The full rule sets the order: check SBAs, then put waiting triggers on the stack, then check again, then a player gets priority. Step 4 states that order exactly. The SBA check after Wheel resolves is now an explicit step."
+   },
+   {
+    "step": 4,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Same order: SBAs first, then triggered abilities, then the player who would have received priority does so."
+   },
+   {
+    "step": 4,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "The active player is the one who would receive priority after Wheel resolves, and that is what starts the check."
+   },
+   {
+    "step": 5,
+    "rule": "603.3",
+    "status": "supported",
+    "note": "Triggers go on the stack the next time a player would receive priority."
+   },
+   {
+    "step": 5,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "The quote is a verbatim fragment. You control all 21 triggers (none is a trigger on another ability triggering), so you choose their order. The rest of 603.3b (SBAs re-checked afterwards) matches step 4's 'the check is repeated'. Order does not matter: each trigger resolves the same way and no seat can reach 0."
+   },
+   {
+    "step": 5,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "Read with 117.5: the active player gets priority once the triggers are on the stack."
+   },
+   {
+    "step": 6,
+    "rule": "614.1",
+    "status": "supported",
+    "note": "Torbran applies separately to each damage event as it happens."
+   },
+   {
+    "step": 6,
+    "rule": "614.1a",
+    "status": "supported",
+    "note": "Torbran's oracle 'it deals that much damage plus 2 instead' makes it a replacement effect. Needlehead's colors are [R] in cards.json, so it is 'a red source you control', and 1 becomes 3. Agrees with Torbran's ruling (2019-10-04): 'The additional 2 damage is dealt by the same source as the original source of damage.' Torbran's ordering ruling (2019-10-04) does not apply, because the scenario assumes no other damage-modifying effect."
+   },
+   {
+    "step": 6,
+    "rule": "120.4b",
+    "status": "supported",
+    "note": "Damage is dealt as modified by replacement effects."
+   },
+   {
+    "step": 6,
+    "rule": "120.3a",
+    "status": "supported",
+    "note": "Needlehead has no infect (oracle checked), so 3 damage is 3 life lost."
+   },
+   {
+    "step": 6,
+    "rule": "405.5",
+    "status": "supported",
+    "note": "Each trigger resolves after all players pass in succession."
+   },
+   {
+    "step": 7,
+    "rule": "704.3",
+    "status": "supported",
+    "note": "SBAs are checked every time a player would get priority, which is after each of the 21 resolutions."
+   },
+   {
+    "step": 7,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Same timing as 704.3, stated from the priority side."
+   },
+   {
+    "step": 7,
+    "rule": "117.3b",
+    "status": "supported",
+    "note": "The active player receives priority after each trigger resolves, so a check happens before each one."
+   },
+   {
+    "step": 7,
+    "rule": "704.5a",
+    "status": "supported",
+    "note": "The loss condition is never met. Arithmetic: 7 x 3 = 21 per seat, 40 - 21 = 19. The 63 pod total is stated separately and labelled as the pod total, matching scenario-facts drain_arithmetic (3 opponents at 40). Final libraries 52-7=45, 61-7=54 and 47-7=40, and hands of 7, all check out."
+   },
+   {
+    "step": null,
+    "rule": "208.1",
+    "status": "supported",
+    "note": "Fixes round-1 finding 208.1. scenario.board now lists Razorkin Needlehead as 2/2, matching cards.json (power 2, toughness 2). Torbran 2/4 also matches. Steps 4 and 7 use 2/2 consistently."
+   },
+   {
+    "step": null,
+    "rule": "117.5",
+    "status": "supported",
+    "note": "Missing-step audit: nothing is missing. Priority is passed for Wheel and for each trigger. SBAs are checked after Wheel, again after the triggers go on the stack, and after every trigger resolves. The only replacement effect is Torbran (614), applied per event. No triggers fire beyond Needlehead's: the opponents' discards and your own draws trigger nothing on this board. No combat."
+   },
+   {
+    "step": null,
+    "rule": "603.3b",
+    "status": "supported",
+    "note": "Sibling audit: the resolution quotes no sibling stack or figure. scenario-facts lists 001, 004 and 006 as having the same body count but 0 shared bodies, and the rest as not comparable. Nothing to reconcile. Card membership: every board card is in_the_deck. Wheel of Fortune is in decklist.txt line 100 and Mountain is line 59 (3 copies). Rulings section present. Wheel of Fortune has no official rulings."
+   }
+  ],
+  "iterations": 2
  }
 }

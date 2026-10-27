@@ -5,31 +5,36 @@
   {
    "stage": "mana",
    "label": "PAY FOR A COMMANDER, THEN FOR THE TURN",
-   "what_it_does": "Thirty-six lands (34 entries, three Mountains) plus Sol Ring, Arcane Signet, two Signets, Talisman of Creativity and Smothering Tithe pay for a 4- or 5-mana commander, then for equip costs, a double-strike grant and a held wheel on the same turn. The declared ramp group (those six) is in 36.4% of opening sevens and drawn by turn six in 69.1% of games (deck-audit). deck-facts: land sources R 30 / U 23 / W 20 against targets R 36 / U 22 / W 22, and 14 lands can enter tapped; red, the colour of Brallin and every wheel but three, sits furthest under its target. Smothering Tithe is filed here because Treasure is what it makes, and a symmetrical wheel is seven opponent draws per seat for it to tax; that pairing has no passing stack in which Tithe is on the battlefield. Several lands do a second job, filed here because making mana is what they do every game: Command Beacon returns a commander to hand (a tax reset), Otawara bounces by channel, Talon Gates of Madara phases a creature out, and Raugrin Triome and Glittering Massif cycle, which is a discard for Brallin (stack 003: a cost discard triggers him). powertune-v1 put Sea of Clouds and Adarkar Wastes in for Mystic Monastery and Opal Palace.",
+   "what_it_does": "Thirty-six lands (34 entries, three Mountains) plus Sol Ring, Arcane Signet, two Signets, Talisman of Creativity and Smothering Tithe pay for a 4- or 5-mana commander, then for equip costs, a double-strike grant and a held wheel on the same turn. The declared ramp group (those six) is in 36.4% of opening sevens and measured by turn six in 69.0% of goldfish games (deck-audit). deck-facts: land sources R 30 / U 22 / W 20 against targets R 36 / U 22 / W 22, and 16 lands can enter tapped; red, the colour of Brallin and every wheel but three, sits furthest under its target. sharks-v1 swapped two lands: Thundering Falls (Island Mountain, enters tapped, surveil 1) for Talon Gates of Madara and Sundown Pass (R/W, untapped with two other lands) for Cascade Bluffs, so the phase-out land is gone. Smothering Tithe is filed here because Treasure is what it makes, and a symmetrical wheel is seven opponent draws per seat for it to tax; no passing stack has Tithe on the battlefield. Several lands do a second job, filed here because making mana is what they do every game: Command Beacon returns a commander to hand (a tax reset), Otawara bounces by channel, and Raugrin Triome and Glittering Massif cycle, which is a discard for Brallin (stack 003: a cost discard triggers him). Thundering Falls and Sundown Pass are among the lands stack 012's premise taps for the Shark Typhoon cycle: a legal mana pile, not a resolved step.",
    "single_point_of_failure": null,
    "evidence": [
     {
+     "kind": "stack",
+     "id": "003",
+     "note": "a discard paid as a cycling cost triggers Brallin: 1 to each opponent, one counter (scenario cycles Raugrin Triome)"
+    },
+    {
      "kind": "city",
-     "id": "city-3",
+     "id": "city-2",
      "agreement": "partial",
-     "note": "27 of the 34 land entries"
+     "note": "28 of 40 in Mana (28 cards)"
     },
     {
      "kind": "city",
      "id": "city-4",
-     "agreement": "partial",
-     "note": "Sol Ring, Arcane Signet, Smothering Tithe and seven lands"
+     "agreement": "cuts-across",
+     "note": "9 of 40 in Mana II (9 cards)"
     },
     {
      "kind": "city",
      "id": "city-0",
      "agreement": "cuts-across",
-     "note": "Azorius Signet, Izzet Signet and Talisman of Creativity sit in Card Flow"
+     "note": "3 of 40 in Ramp (17 cards): Azorius Signet, Izzet Signet, Talisman of Creativity"
     },
     {
      "kind": "stack",
-     "id": "003",
-     "note": "a discard paid as a cycling cost triggers Brallin: 1 to each opponent, one counter (scenario cycles Raugrin Triome)"
+     "id": "012",
+     "note": "Thundering Falls and Sundown Pass are tapped on 012's board among the lands that paid {4}{1}{U}; the payment is the scenario's premise (step 1), so this shows only that the two new lands sit in a legal mana pile"
     },
     {
      "kind": "role",
@@ -46,7 +51,6 @@
     "Talisman of Creativity",
     "Adarkar Wastes",
     "Battlefield Forge",
-    "Cascade Bluffs",
     "City of Brass",
     "Clifftop Retreat",
     "Command Beacon",
@@ -76,14 +80,15 @@
     "Stormcarved Coast",
     "Sulfur Falls",
     "Sunbillow Verge",
-    "Talon Gates of Madara",
+    "Sundown Pass",
+    "Thundering Falls",
     "Training Center"
    ]
   },
   {
    "stage": "ignition",
    "label": "A COMMANDER ON THE BATTLEFIELD",
-   "what_it_does": "The engine does not pay until Shabraz (5 mana, flying) or Brallin (4 mana) has resolved and survived: without one a loot or a wheel pays no commander, and the multipliers lose the triggers they are in the deck to multiply, which is why the pilot holds wheels until a commander is out. Shabraz turns each card drawn into a +1/+1 counter and 1 life; Brallin turns each card discarded into a +1/+1 counter and 1 damage to each opponent. The two hand each other evasion by oracle text: Brallin's {R} gives a Shark trample and Shabraz is a Shark Bird; Shabraz's {W/U} gives a Human flying and Brallin is a Human Shaman. The deck is modal: either one alone can be the 21-commander-damage threat, so the ignition is redundant, not single, and each removal adds 2 to that commander's tax. Both start in the command zone, so drawing them is never the constraint; casting and keeping them is. goldfish_metrics.json (10,000 games, the current decklist sha): Shabraz is cast by turn six in 87.7% (mean turn 4.928, median 5), Brallin in 95.8% (mean 4.015), and both are on the battlefield by turn six in 87.5%. The goldfish casts each once and has no removal, so these are a ceiling on the ignition, not its survival; protection is drawn by turn six in 84.2% (deck-audit). goldfish_targets still calls a WHEEL 'the ignition' and marks it `required`; that reading is the one this model replaces (proposed_goldfish_edits[0]).",
+   "what_it_does": "The COMMANDER half of the engine does not pay until Shabraz (5 mana, flying) or Brallin (4 mana) has resolved and survived: without one a loot or a wheel grows no commander and Lae'zel, Bard and Teferi's Ageless Insight have no commander trigger to multiply, which is why the pilot holds wheels until a commander is out. It is not the whole engine: the second collectors pay with both commanders in the command zone, Razorkin Needlehead by stack 011 (a wheel under Torbran, 21 per seat) and Glint-Horn and Magmakin by oracle text (output). Shabraz turns each card drawn into a +1/+1 counter and 1 life; Brallin turns each card discarded into a +1/+1 counter and 1 damage to each opponent. The two hand each other evasion by oracle text: Brallin's {R} gives a Shark trample and Shabraz is a Shark Bird; Shabraz's {W/U} gives a Human flying and Brallin is a Human Shaman. The deck is modal: either one alone can be the 21-commander-damage threat, so the ignition is redundant, not single, and each removal adds 2 to that commander's tax. Both start in the command zone, so drawing them is never the constraint; casting and keeping them is. goldfish_metrics.json (10,000 games, the current decklist sha): Shabraz is cast by turn six in 88.3% (mean turn 4.909, median 5), Brallin in 95.6% (mean 4.005), and both are on the battlefield by turn six in 87.8%. The goldfish casts each once and has no removal, so these are a ceiling on the ignition, not its survival; the protection group is measured by turn six in 80.1% (deck-audit). goldfish_targets still calls a WHEEL 'the ignition' and marks it `required`; that reading is the one this model replaces (proposed_goldfish_edits[0]).",
    "single_point_of_failure": null,
    "evidence": [
     {
@@ -98,9 +103,14 @@
     },
     {
      "kind": "city",
-     "id": "city-6",
-     "agreement": "partial",
-     "note": "both commanders sit in Bodies, beside eight other creatures"
+     "id": "city-5",
+     "agreement": "full",
+     "note": "2 of 2 in Card Flow (10 cards): Brallin, Skyshark Rider, Shabraz, the Skyshark"
+    },
+    {
+     "kind": "stack",
+     "id": "011",
+     "note": "the commander-free exception: both commanders in the command zone, Wheel of Fortune under Needlehead and Torbran still deals 21 to each opponent"
     }
    ],
    "cards": [
@@ -111,9 +121,14 @@
   {
    "stage": "fuel",
    "label": "EVERY CARD THAT MOVES",
-   "what_it_does": "Steady fuel between wheels: a loot pays both commanders at once (a draw for Shabraz, a discard for Brallin) without emptying the hand. Repeatable loots: Kitsa ({T}), Mary Read and Anne Bonny ({T}, plus a Treasure on a discarded Pirate or Island), Teferi, Master of Time (+1 at instant speed), Jeskai Ascendancy (per noncreature spell), Ledger Shredder (connive). One-shot loots: Faithless Looting, Frantic Search, Sorcerer Class's entry. Draw engines that tax opponents: Rhystic Study, Mystic Remora, Faerie Mastermind, Ghostly Pilferer. Discard converters: Rielle draws as many as you discarded the first time each turn, and Inti discards on attack for a counter, trample and an impulse draw. Two narrow tutors aim the flow: Idyllic Tutor for an enchantment (the multipliers live there) and Stoneforge Mystic for any of the four Equipment. The standing-draw group (nine cards) is in 49.8% of opening sevens and drawn by turn six in 82.3%; the discard-converter group (Inti, Mako, Mary Read, Rielle) in 25.8% and 54.5% (deck-audit). Kitsa is proven on boards of 99 cards twice: stack 007 has its loot pay Brallin a counter and a ping, and stack 010 has it copy Wheel of Fortune. Stack 006 shows its loot between first-strike and regular damage making Shabraz 10 + 11 = 21, but that board's double strike was the cut Fireshrieker. There is no dedicated fodder stage: the deck eats its own hand. Cards that pay for being discarded (the cyclers Magmakin, Mako, Raugrin Triome and Glittering Massif; Mary Read's Treasure on a discarded Pirate) are filed under their other job.",
+   "what_it_does": "Steady fuel between wheels: a loot pays both commanders at once (a draw for Shabraz, a discard for Brallin) without emptying the hand. Repeatable loots: Kitsa ({T}), Mary Read and Anne Bonny ({T}, plus a Treasure on a discarded Pirate or Island), Teferi, Master of Time (+1 at instant speed), Jeskai Ascendancy (per noncreature spell), Ledger Shredder (connive). One-shot loots: Faithless Looting, Frantic Search, Sorcerer Class's entry, and Shark Typhoon's cycling, which is a discard and a draw at instant speed plus an X/X flying Shark (stack 012: Brallin, Mako and Shabraz each paid); on the battlefield it instead makes an X/X flying Shark per noncreature spell, by oracle text. Draw engines that tax opponents: Rhystic Study, Mystic Remora, Faerie Mastermind. Discard converters: Rielle draws as many as you discarded the first time each turn, and Inti discards on attack for a counter, trample and an impulse draw. Two narrow tutors aim the flow: Idyllic Tutor for an enchantment and Stoneforge Mystic for any of the four Equipment. The standing-draw group (eight cards) is in 45.6% of opening sevens and measured by turn six in 78.1%; the discard-converter group (Inti, Mako, Mary Read, Rielle, Shark Typhoon) in 31.2% and 64.4% (deck-audit). Kitsa is proven on boards of the 99 twice: stack 007 has its loot pay Brallin, stack 010 has it copy Wheel of Fortune. Stack 006 shows a loot between strikes making Shabraz 10 + 11 = 21, but its double strike was the cut Fireshrieker. There is no dedicated fodder stage: the deck eats its own hand.",
    "single_point_of_failure": null,
    "evidence": [
+    {
+     "kind": "stack",
+     "id": "012",
+     "note": "Shark Typhoon cycled for X=4: the discard triggers Brallin and Mako, the cycling draw triggers Shabraz, the cycle trigger makes a flying Shark (its 4/4 size is the scenario's ruling-based input, not CR-derived)"
+    },
     {
      "kind": "stack",
      "id": "006",
@@ -131,28 +146,33 @@
     },
     {
      "kind": "city",
-     "id": "city-0",
+     "id": "city-1",
      "agreement": "cuts-across",
-     "note": "9 of 16"
-    },
-    {
-     "kind": "city",
-     "id": "city-6",
-     "agreement": "cuts-across",
-     "note": "Inti, Kitsa, Mary Read, Rielle"
+     "note": "7 of 16 in Bodies (12 cards)"
     },
     {
      "kind": "city",
      "id": "city-5",
      "agreement": "cuts-across",
-     "note": "Faithless Looting, Frantic Search, Idyllic Tutor"
+     "note": "4 of 16 in Card Flow (10 cards): Inti, Seneschal of the Sun, Kitsa, Otterball Elite, Mary Read and Anne Bonny, Rielle, the Everwise"
+    },
+    {
+     "kind": "city",
+     "id": "city-6",
+     "agreement": "cuts-across",
+     "note": "3 of 16 in Tutors (9 cards): Faithless Looting, Frantic Search, Idyllic Tutor"
+    },
+    {
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "2 of 16 in Ramp (17 cards): Sorcerer Class, Teferi, Master of Time"
     }
    ],
    "cards": [
     "Faerie Mastermind",
     "Faithless Looting",
     "Frantic Search",
-    "Ghostly Pilferer",
     "Idyllic Tutor",
     "Inti, Seneschal of the Sun",
     "Jeskai Ascendancy",
@@ -162,6 +182,7 @@
     "Mystic Remora",
     "Rhystic Study",
     "Rielle, the Everwise",
+    "Shark Typhoon",
     "Sorcerer Class",
     "Stoneforge Mystic",
     "Teferi, Master of Time"
@@ -170,7 +191,7 @@
   {
    "stage": "conversion",
    "label": "MAKE EACH CARD WORTH MORE",
-   "what_it_does": "The commanders convert one card into one counter or one ping; these nine raise what each card is worth. Counters: Lae'zel adds one to every counter placement (stack 008: Windfall gives Brallin 10 counters for 5 discards and Shabraz 14 for 7 draws). Draws: Bard, King of Dale and Teferi's Ageless Insight turn every draw into two except the first one in each of your draw steps, so a main-phase wheel's draws are all doubled; Consecrated Sphinx draws two per opponent draw, so a symmetrical wheel is 21 triggers (stack 009: 49 cards, Shabraz 52/52, and the cleanup discard of 42 fires Brallin past 40 at every seat). Knowledge Is Power makes the draw turn a pump turn for the whole team. Damage, on Brallin's pings: Torbran adds 2 per red-source event to an opponent (stack 005: seven pings, 21 to each opponent, not a kill from 40), Artist's Talent at level 3 adds 2 per noncombat event (stack 004), and with Torbran, Gratuitous Violence and Fiery Emancipation all out one ping is at least 8 per opponent, since each opponent orders the replacements (stack 007). The amplifier group (Torbran, Gratuitous Violence, Fiery Emancipation) is in 19.9% of opening sevens and drawn by turn six in 45.8%; Lae'zel alone in 7.1% and 18.1% (deck-audit, which names it the deck's one single-card point of failure for its target). Gratuitous Violence and Fiery Emancipation also multiply commander combat damage by oracle text; no passing stack resolves combat under them.",
+   "what_it_does": "The commanders convert one card into one counter or one ping; these nine raise what each card is worth. Counters: Lae'zel adds one to every counter placement (stack 008: Windfall gives Brallin 10 counters for 5 discards and Shabraz 14 for 7 draws). Draws: Bard, King of Dale and Teferi's Ageless Insight turn every draw into two except the first one in each of your draw steps, so a main-phase wheel's draws are all doubled; Consecrated Sphinx draws two per opponent draw, so a symmetrical wheel is 21 triggers (stack 009: 49 cards, Shabraz 52/52, and the cleanup discard of 42 fires Brallin past 40 at every seat). Knowledge Is Power makes the draw turn a pump turn for the whole team. Damage, on Brallin's pings and Razorkin Needlehead's: Torbran adds 2 per red-source event to an opponent (stack 005: Brallin's seven pings, 21 to each opponent; stack 011: Needlehead's seven, 21 each; neither a kill from 40), Artist's Talent at level 3 adds 2 per noncombat event (stack 004), and with Torbran, Gratuitous Violence and Fiery Emancipation all out one ping is at least 8 per opponent, since each opponent orders the replacements (stack 007). The amplifier group (Torbran, Gratuitous Violence, Fiery Emancipation) is in 19.9% of opening sevens and measured by turn six in 45.6%; Lae'zel alone in 7.1% and 17.8% (deck-audit, which names it the deck's one single-card point of failure for its target). Gratuitous Violence and Fiery Emancipation also multiply commander combat damage by oracle text; no passing stack resolves combat under them.",
    "single_point_of_failure": null,
    "evidence": [
     {
@@ -195,26 +216,31 @@
     },
     {
      "kind": "stack",
+     "id": "011",
+     "note": "Torbran on Needlehead's triggers: 1 + 2 = 3 each, 21 per opponent from one wheel"
+    },
+    {
+     "kind": "stack",
      "id": "004",
      "note": "Artist's Talent level 3: +2 on each ping"
     },
     {
      "kind": "city",
+     "id": "city-0",
+     "agreement": "partial",
+     "note": "5 of 9 in Ramp (17 cards): Artist's Talent, Fiery Emancipation, Gratuitous Violence, Knowledge Is Power, Teferi's Ageless Insight"
+    },
+    {
+     "kind": "city",
+     "id": "city-5",
+     "agreement": "cuts-across",
+     "note": "3 of 9 in Card Flow (10 cards): Bard, King of Dale, Lae'zel, Vlaakith's Champion, Torbran, Thane of Red Fell"
+    },
+    {
+     "kind": "city",
      "id": "city-1",
      "agreement": "cuts-across",
-     "note": "the four enchantment multipliers"
-    },
-    {
-     "kind": "city",
-     "id": "city-6",
-     "agreement": "cuts-across",
-     "note": "Bard, Lae'zel, Torbran"
-    },
-    {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "cuts-across",
-     "note": "Artist's Talent, Consecrated Sphinx"
+     "note": "1 of 9 in Bodies (12 cards): Consecrated Sphinx"
     }
    ],
    "cards": [
@@ -232,49 +258,72 @@
   {
    "stage": "output",
    "label": "THE SECOND COLLECTORS",
-   "what_it_does": "What the engine produces besides a large commander: three creatures that collect the same discard tax Brallin does. Glint-Horn Buccaneer deals 1 to each opponent per card discarded, a second Brallin (haste, and a {1}{R} loot while attacking). Magmakin Artillerist deals damage equal to the cards discarded to each opponent, once per discard event, and cycles for a ping of its own; answers-v1 brought it in for Jeska's Will. Marauding Mako grows a counter per card discarded and cycles. The declared second-damage group (Glint-Horn, Magmakin) is two cards: 13.7% of opening sevens, drawn by turn six in 33.1% (deck-audit marks it thin). Stack 004 resolves Magmakin's single blast for a seven-card discard as 7 to each opponent, 9 under Artist's Talent, beside Brallin's seven pings: 30 per seat, 40 to 10. No passing stack has Glint-Horn on the battlefield, so its doubling of a wheel's pings is oracle text only.",
+   "what_it_does": "What the engine produces besides a large commander: creatures that collect a second tax on the same cards. Glint-Horn Buccaneer deals 1 to each opponent per card discarded, a second Brallin (haste, and a {1}{R} loot while attacking). Magmakin Artillerist deals damage equal to the cards discarded to each opponent, once per discard event, and cycles. Marauding Mako grows a counter per card discarded and cycles. Razorkin Needlehead (sharks-v1, for Ghostly Pilferer) taxes the other half of a symmetrical wheel: 1 damage to an opponent per card that opponent draws, so Wheel of Fortune or Reforge the Soul is seven per seat on its own whatever your hand held (both draw seven; Brallin's, Glint-Horn's and Magmakin's halves are your discard count), and stack 011 resolves Wheel of Fortune under Needlehead and Torbran as seven triggers of 3 per opponent, 40 to 19, with no commander on the board. The declared second-damage group (Glint-Horn, Magmakin) is two cards: 13.7% of opening sevens, measured by turn six in 32.9% (deck-audit marks it thin); the wheel kill's damage component now names Needlehead as well, three cards in 19.9% of openers, and the paired wheel kill is measured by turn six in 33.9%. Stack 004 resolves Magmakin's blast for a seven-card discard as 7 to each opponent, 9 under Artist's Talent, beside Brallin's seven pings: 30 per seat. Stack 012 has Mako take a counter from a Shark Typhoon cycle. No passing stack has Glint-Horn on the battlefield, nor Needlehead beside Brallin.",
    "single_point_of_failure": null,
    "evidence": [
+    {
+     "kind": "stack",
+     "id": "011",
+     "note": "Wheel of Fortune under Razorkin Needlehead and Torbran: seven triggers per opponent, 3 each, 40 to 19; no commander on the board"
+    },
     {
      "kind": "stack",
      "id": "004",
      "note": "Magmakin's one trigger for seven discards: 7, or 9 under Artist's Talent level 3"
     },
     {
+     "kind": "stack",
+     "id": "012",
+     "note": "Marauding Mako takes a counter from the Shark Typhoon cycle's discard"
+    },
+    {
+     "kind": "city",
+     "id": "city-1",
+     "agreement": "partial",
+     "note": "3 of 4 in Bodies (12 cards): Glint-Horn Buccaneer, Magmakin Artillerist, Marauding Mako"
+    },
+    {
      "kind": "city",
      "id": "city-0",
-     "agreement": "partial",
-     "note": "all three sit in Card Flow, which holds 18 cards"
+     "agreement": "cuts-across",
+     "note": "1 of 4 in Ramp (17 cards): Razorkin Needlehead"
     }
    ],
    "cards": [
     "Glint-Horn Buccaneer",
     "Magmakin Artillerist",
-    "Marauding Mako"
+    "Marauding Mako",
+    "Razorkin Needlehead"
    ]
   },
   {
    "stage": "protection",
    "label": "KEEP THE COMMANDER, CLEAR THE LANE",
-   "what_it_does": "The whole engine is one creature that a single removal spell answers. Constant cover: Lightning Greaves (haste and shroud, equip 0) and Robe of Stars (phase out). Held cover: Flawless Maneuver and Deflecting Swat (free with a commander out), Loran's Escape, March of Swirling Mist, and the counters Negate, Stubborn Denial and Izzet Charm. Grand Abolisher shuts off responses on your own turn, which is the turn the wheel or the double-strike attack happens. Answers that clear a blocker or a hate piece: Swords to Plowshares, Get Lost, Chaos Warp, Prismari Command. The declared protection group (nine cards, counting Akroma's Will, Boros Charm and Brotherhood Regalia, which this model files under wincon) is in 49.8% of opening sevens and drawn by turn six in 84.2%; the answers group (nine) in 49.8% and 83.5% (deck-audit). Both price DRAWING a card, never using it at the right moment. No passing stack resolves any of these protecting a commander from removal; stacks 005, 008 and 010 hold Negate, Swords or Lightning Greaves only as cards in hand or on the board.",
+   "what_it_does": "The whole engine is one creature that a single removal spell answers. Constant cover: Lightning Greaves (haste and shroud, equip 0) and Robe of Stars (phase out). Held cover: Flawless Maneuver and Deflecting Swat (free with a commander out), Loran's Escape, March of Swirling Mist, and the counters Negate, Stubborn Denial and Izzet Charm. Grand Abolisher shuts off responses on your own turn, which is the turn the wheel or the double-strike attack happens. Answers that clear a blocker or a hate piece: Swords to Plowshares, Get Lost, Chaos Warp, Prismari Command. The declared protection group (eight cards, counting Akroma's Will and Brotherhood Regalia, which this model files under wincon) is in 45.6% of opening sevens and measured by turn six in 80.1%; the answers group (nine) in 49.8% and 84.0% (deck-audit). sharks-v1 cut Boros Charm and Talon Gates of Madara, two of the deck's protective modes. The two group rates price DRAWING a card, never using it at the right moment. No passing stack resolves any of these protecting a commander from removal; stacks 005, 008 and 010 hold Negate, Swords or Lightning Greaves only as cards in hand or on the board.",
    "single_point_of_failure": null,
    "evidence": [
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "partial",
-     "note": "10 of 14"
-    },
-    {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "Grand Abolisher, Lightning Greaves, Robe of Stars sit in Finishers"
-    },
-    {
      "kind": "role",
      "id": "protection:self",
-     "note": "nine cards carry it: five filed here, three under wincon (Akroma's Will, Boros Charm, Brotherhood Regalia) and Teferi, Master of Time under fuel"
+     "note": "eight cards carry it: five filed here, two under wincon (Akroma's Will, Brotherhood Regalia) and Teferi, Master of Time under fuel"
+    },
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "partial",
+     "note": "10 of 14 in Interaction (13 cards)"
+    },
+    {
+     "kind": "city",
+     "id": "city-0",
+     "agreement": "cuts-across",
+     "note": "3 of 14 in Ramp (17 cards): Grand Abolisher, Lightning Greaves, Robe of Stars"
+    },
+    {
+     "kind": "city",
+     "id": "city-6",
+     "agreement": "cuts-across",
+     "note": "1 of 14 in Tutors (9 cards): Chaos Warp"
     }
    ],
    "cards": [
@@ -297,7 +346,7 @@
   {
    "stage": "wincon",
    "label": "TWENTY-ONE, OR THE WHEEL",
-   "what_it_does": "Two endings, and the pilot chooses between them each game. COMMANDER DAMAGE: a grown commander connects for 21. The kit: double strike from Shu Yun (pay {R/W}{R/W} per noncreature spell), Embercleave, Blade Historian, Boros Charm or Akroma's Will (which, with a commander out, also gives indestructible and protection from each colour); evasion from Brotherhood Regalia (can't be blocked, ward 2) or the commanders' own flying and trample grants. Stack 006 is the shape: a 10/10 double-striker that loots between strikes deals 10 + 11. THE WHEEL: a full-hand discard-and-draw with a commander out. Wheel of Fortune, Windfall, Reforge the Soul, Tolarian Winds (instant), Jace's Archivist (repeatable), Fateful Showdown (instant, plus damage equal to the hand), and the wheel modes of Collective Defiance and Incendiary Command. The wheel group is in 45.6% of opening sevens, drawn by turn three in 54.7% and by turn six in 73.4% (deck-audit), so the usual job is holding one, not finding one. A wheel pays one ping per card discarded, so its damage is the hand size: seven cards made 7 per seat (stack 001), a three-card hand copied by Kitsa made 3 + 7 = 10 (stack 010), and under Consecrated Sphinx the cleanup discard is the kill (stack 009). Paired with a second per-discard damage source it is drawn by turn six in 25.7%. A wheel also grows both commanders, so it feeds the first ending as well as being the second.",
+   "what_it_does": "Two endings, and the pilot chooses between them each game. COMMANDER DAMAGE: a grown commander connects for 21. The kit: double strike from Shu Yun (pay {R/W}{R/W} per noncreature spell), Embercleave, Blade Historian or Akroma's Will (which, with a commander out, also gives indestructible and protection from each colour); evasion from Brotherhood Regalia (can't be blocked, ward 2) or the commanders' own flying and trample grants. Stack 006 is the shape: a 10/10 double-striker that loots between strikes deals 10 + 11. Its double strike was the cut Fireshrieker, and sharks-v1 cut Boros Charm too, so none of the four double-strike sources now in the 99 has a passing stack: the kill is the deck's stated plan and an unproven line (open_questions[0]). THE WHEEL: a full-hand discard-and-draw with a commander out. Wheel of Fortune, Windfall, Reforge the Soul, Tolarian Winds (instant), Jace's Archivist (repeatable), Fateful Showdown (instant, plus damage equal to the hand), and the wheel modes of Collective Defiance and Incendiary Command. The wheel group is in 45.6% of opening sevens, drawn by turn three in 54.7% and measured by turn six in 73.1% (deck-audit), so the usual job is holding one, not finding one. A wheel pays one ping per card discarded: seven cards made 7 per seat (stack 001), a copied three-card hand 10 (stack 010), and under Consecrated Sphinx the cleanup discard is the kill (stack 009). Paired with a second per-card damage source (now including Needlehead) it is measured by turn six in 33.9%. A wheel also grows both commanders, so it feeds the first ending as well.",
    "single_point_of_failure": null,
    "evidence": [
     {
@@ -322,27 +371,38 @@
     },
     {
      "kind": "city",
-     "id": "city-5",
+     "id": "city-6",
      "agreement": "cuts-across",
-     "note": "five wheels"
+     "note": "5 of 13 in Tutors (9 cards): Fateful Showdown, Reforge the Soul, Tolarian Winds, Wheel of Fortune, Windfall"
     },
     {
      "kind": "city",
-     "id": "city-2",
+     "id": "city-0",
      "agreement": "cuts-across",
-     "note": "Akroma's Will, Boros Charm, Collective Defiance, Incendiary Command"
+     "note": "3 of 13 in Ramp (17 cards): Blade Historian, Brotherhood Regalia, Embercleave"
+    },
+    {
+     "kind": "city",
+     "id": "city-3",
+     "agreement": "cuts-across",
+     "note": "3 of 13 in Interaction (13 cards): Akroma's Will, Collective Defiance, Incendiary Command"
     },
     {
      "kind": "city",
      "id": "city-1",
      "agreement": "cuts-across",
-     "note": "Blade Historian, Brotherhood Regalia, Embercleave"
+     "note": "1 of 13 in Bodies (12 cards): Jace's Archivist"
+    },
+    {
+     "kind": "city",
+     "id": "city-5",
+     "agreement": "cuts-across",
+     "note": "1 of 13 in Card Flow (10 cards): Shu Yun, the Silent Tempest"
     }
    ],
    "cards": [
     "Akroma's Will",
     "Blade Historian",
-    "Boros Charm",
     "Brotherhood Regalia",
     "Collective Defiance",
     "Embercleave",
@@ -427,8 +487,40 @@
    "note": "Seven pings of 3: 21 to each opponent. The stack's own title: NOT a kill from 40. Spider-Man (cut) is on that board; its blast hits one opponent and the 21 per seat does not depend on it."
   },
   {
-   "from": "conversion",
+   "from": "output",
+   "to": "conversion",
+   "via": [
+    "Razorkin Needlehead",
+    "Torbran, Thane of Red Fell",
+    "Wheel of Fortune"
+   ],
+   "verified_by": "011",
+   "note": "The wheel taxed on the draw side: seven Needlehead triggers per opponent, 3 each under Torbran, 21 per seat (40 to 19). Not a kill alone, and no commander is on the board."
+  },
+  {
+   "from": "fuel",
+   "to": "ignition",
+   "via": [
+    "Shark Typhoon",
+    "Brallin, Skyshark Rider",
+    "Shabraz, the Skyshark"
+   ],
+   "verified_by": null,
+   "note": "A cycle pays both commanders: the cost discard triggers Brallin (a counter, 1 to each opponent), the cycling draw triggers Shabraz (a counter, 1 life), and the cycle trigger makes a flying Shark Brallin can give trample. The token's 4/4 is a ruling-based input. Stack 012 passed its checker on exactly this board, but its scenario names Shark Typhoon only inside the stack object's prose, so validate-engine's name check cannot see the card and this line stays null until 012's scenario names it plainly (an orchestrator call: the stack file is read-only here)."
+  },
+  {
+   "from": "fuel",
    "to": "output",
+   "via": [
+    "Shark Typhoon",
+    "Marauding Mako"
+   ],
+   "verified_by": null,
+   "note": "The same cycle's discard grows Mako by one counter. Stack 012 passed its checker on exactly this board, but its scenario names Shark Typhoon only inside the stack object's prose, so validate-engine's name check cannot see the card and this line stays null until 012's scenario names it plainly (an orchestrator call: the stack file is read-only here)."
+  },
+  {
+   "from": "output",
+   "to": "conversion",
    "via": [
     "Artist's Talent",
     "Magmakin Artillerist",
@@ -436,7 +528,7 @@
     "Windfall"
    ],
    "verified_by": "004",
-   "note": "Level 3: Brallin's seven pings at 3 each plus Magmakin's blast at 9, 30 to each opponent, 40 to 10."
+   "note": "Level 3: Brallin's seven pings at 3 each plus Magmakin's blast at 9, 30 to each opponent, 40 to 10. Drawn output -> conversion by the model's convention (lines[6], lines[10]): the arrow runs from the card whose damage event it is to the amplifier that modifies it, and 004's final_state says the extra 2 is dealt by Brallin or Magmakin, never by Artist's Talent."
   },
   {
    "from": "ignition",
@@ -458,7 +550,7 @@
     "Shu Yun, the Silent Tempest"
    ],
    "verified_by": null,
-   "note": "The modal voltron kill with a double-strike grant in the 99. Claim only: no passing stack resolves combat with Shu Yun, Embercleave, Blade Historian, Boros Charm or Akroma's Will."
+   "note": "The modal voltron kill, kept as the deck's plan: a grown commander with a double-strike grant in the 99 connects for 21. Claim only: no passing stack resolves combat with Shu Yun, Embercleave, Blade Historian or Akroma's Will (Boros Charm, cut in sharks-v1, never had one either). Unproven is not refuted: stack 006 resolved the same arithmetic with a different double-strike source."
   },
   {
    "from": "fuel",
@@ -490,7 +582,7 @@
     "Brallin, Skyshark Rider"
    ],
    "verified_by": null,
-   "note": "A second per-discard pinger under a wheel: by oracle text 14 per seat. No stack has Glint-Horn on the battlefield."
+   "note": "A second per-discard pinger under a wheel: by oracle text 14 per seat from seven discards, which needs eight cards in hand when Wheel of Fortune is cast (the wheel is one of them). No stack has Glint-Horn on the battlefield."
   },
   {
    "from": "conversion",
@@ -502,6 +594,18 @@
    ],
    "verified_by": null,
    "note": "Torbran's +2 on each of Brallin's combat strikes under double strike, and whether it counts as commander damage. Oracle text only."
+  },
+  {
+   "from": "output",
+   "to": "wincon",
+   "via": [
+    "Razorkin Needlehead",
+    "Brallin, Skyshark Rider",
+    "Torbran, Thane of Red Fell",
+    "Wheel of Fortune"
+   ],
+   "verified_by": null,
+   "note": "Both halves of one wheel taxed under Torbran, cast from an eight-card hand (Wheel plus seven): Brallin's seven discard pings (stack 005's shape, 21) plus Needlehead's 21 draw triggers (stack 011, 21 per seat) would be 42 per seat from 40. Brallin's half is the hand size minus the wheel: in 011 Wheel was the last card, so it would have been 0 there, and 005's seven discards came from Windfall. Needlehead's half does not depend on the hand. Each half is checker-passed on its own board; no stack holds both, so the sum is a claim (open_questions[4])."
   }
  ],
  "map_disagreements": [
@@ -510,54 +614,72 @@
    "cities": [
     "Tutors",
     "Interaction",
-    "Card Flow"
+    "Bodies"
    ],
-   "why": "The map files a wheel by the rest of its text: the five plain or near-plain wheels sit in Tutors, the two modal ones whose other modes deal damage (Collective Defiance, Incendiary Command) in Interaction, and Jace's Archivist, a creature with a tap ability, in Card Flow. To the engine all eight are one finisher, because a discard pays Brallin and a draw pays Shabraz whatever else the card says."
+   "why": "The map files a wheel by the rest of its text: the five plain or near-plain wheels sit in Tutors, the two modal ones whose other modes deal damage (Collective Defiance, Incendiary Command) in Interaction, and Jace's Archivist, a creature with a tap ability, in Bodies. To the engine all eight are one finisher, because a discard pays Brallin and a draw pays Shabraz whatever else the card says."
   },
   {
    "component": "wincon (the commander-damage kit)",
    "cities": [
-    "Finishers",
+    "Ramp",
     "Interaction",
-    "Bodies"
+    "Card Flow"
    ],
-   "why": "Embercleave, Blade Historian and Brotherhood Regalia read as Finishers; Boros Charm and Akroma's Will read as Interaction on their protective modes; Shu Yun reads as a body. All five do one job here: give a grown commander double strike or an unblocked lane. The voltron route is not visible in card text as a group."
+   "why": "Embercleave, Blade Historian and Brotherhood Regalia sit in the city now labelled Ramp beside the Equipment, enchantment multipliers and Signets; Akroma's Will reads as Interaction on its protective modes; Shu Yun sits with the commanders and loot creatures. All four do one job here: give a grown commander double strike or an unblocked lane. The voltron route is not visible in card text as a group."
   },
   {
    "component": "conversion",
    "cities": [
-    "Finishers",
-    "Bodies",
-    "Card Flow"
+    "Ramp",
+    "Card Flow",
+    "Bodies"
    ],
-   "why": "The multipliers are replacement effects whose text names damage, counters or draws, and the map clusters on those nouns: the enchantments with Finishers, the creatures with Bodies, Artist's Talent (a loot at level 1) and Consecrated Sphinx (a draw engine) with Card Flow. What unites them, multiplying a commander trigger, is a relation to Brallin and Shabraz that no single card's text states."
+   "why": "The multipliers are replacement effects whose text names damage, counters or draws, and the map clusters on those nouns: the enchantments (Artist's Talent, Gratuitous Violence, Fiery Emancipation, Knowledge Is Power, Teferi's Ageless Insight) beside the Equipment, the creatures (Bard, Lae'zel, Torbran) with the commanders, Consecrated Sphinx with the draw engines. What unites them, multiplying a commander trigger, is a relation to Brallin and Shabraz that no single card's text states."
   },
   {
    "component": "fuel",
    "cities": [
-    "Card Flow",
     "Bodies",
-    "Tutors"
+    "Card Flow",
+    "Tutors",
+    "Ramp"
    ],
-   "why": "Loot creatures (Kitsa, Mary Read, Rielle, Inti) cluster with Bodies on their type line; Faithless Looting and Frantic Search sit with the wheels in Tutors. They do the same job here, paying both commanders at once."
+   "why": "Loot creatures (Kitsa, Mary Read, Rielle, Inti) sit with the commanders; the draw engines and Shark Typhoon with Bodies; Faithless Looting, Frantic Search and Idyllic Tutor with the wheels in Tutors; Sorcerer Class and Teferi, Master of Time with the Equipment. They do one job here, paying both commanders at once."
   },
   {
    "component": "protection",
    "cities": [
     "Interaction",
-    "Finishers",
+    "Ramp",
     "Tutors"
    ],
-   "why": "Lightning Greaves, Robe of Stars and Grand Abolisher sit in Finishers beside the voltron Equipment and Abolisher's turn-lock, Chaos Warp in Tutors (it reveals off the top of a library); everything else that protects the window sits in Interaction."
+   "why": "Lightning Greaves, Robe of Stars and Grand Abolisher sit with the voltron Equipment, Chaos Warp in Tutors (it reveals off the top of a library); everything else that protects the window sits in Interaction."
   },
   {
    "component": "mana",
    "cities": [
     "Mana",
+    "Mana II",
+    "Ramp"
+   ],
+   "why": "The two Signets and Talisman of Creativity sit with the Equipment and enchantments, not with Sol Ring and Arcane Signet in Mana II. A reading, not a measurement: their activated two-colour text sits nearer that cluster than the colourless rocks do."
+  },
+  {
+   "component": "output (the second collectors)",
+   "cities": [
+    "Bodies",
+    "Ramp"
+   ],
+   "why": "Glint-Horn, Magmakin and Mako cluster as creatures with Bodies; Razorkin Needlehead, the draw-side collector, lands with the enchantment amplifiers it pairs with (Torbran's +2, stack 011). To the engine all four are one job, a second tax on a wheel's cards; the declared wheel-kill damage group shows the same split (Bodies 2, Ramp 1)."
+  },
+  {
+   "component": "the map's city labels",
+   "cities": [
     "Ramp",
+    "Bodies",
     "Card Flow"
    ],
-   "why": "The two Signets and Talisman of Creativity sit in Card Flow, not with Sol Ring and Arcane Signet in Ramp. A reading, not a measurement: their activated two-colour text sits nearer the blue loot cards than the colourless rocks do."
+   "why": "Against deck_map.json at 7bbc74bf (v2.1.1), the v2.2.0 map changed the label on every one of its seven city ids (0 Card Flow->Ramp, 1 Finishers->Bodies, 2 Interaction->Mana, 3 Mana->Interaction, 4 Ramp->Mana II, 5 Tutors->Card Flow, 6 Bodies->Tutors). Matched by membership, Mana, Interaction and Tutors kept their labels under new ids; the old Ramp cluster kept city-4 and is now Mana II (9 of 9 members); the old Finishers cluster is now Ramp (10 of 17); and the old Card Flow and Bodies clusters swapped labels (11 of 12, 10 of 10). That is why three labels no longer describe their members: 'Ramp' (city-0) holds Embercleave, Lightning Greaves and three damage enchantments beside three mana rocks, 'Card Flow' (city-5) holds both commanders, Torbran and Shu Yun, and 'Bodies' (city-1) holds Rhystic Study, Mystic Remora and Jeskai Ascendancy. This model cites the labels as the map prints them; the mismatch is a finding about the labeller, not the deck."
   }
  ],
  "unassigned": [],
@@ -565,7 +687,7 @@
   {
    "question": "Shabraz at 10/10 is given double strike by Shu Yun's trigger (a noncreature spell cast precombat, {R/W}{R/W} paid), attacks unblocked, and Kitsa loots in the first-strike damage step: is it 10 + 11 = 21 commander damage as in stack 006?",
    "settled_by": "resolve-stack",
-   "why_it_matters": "Stack 006's double strike came from Fireshrieker, now cut. The deck's stated win, 21 commander damage, has no passing stack with a double-strike source that is in the 99."
+   "why_it_matters": "Stack 006's double strike came from Fireshrieker, cut in answers-v1, and Boros Charm went in sharks-v1. The deck's stated win, 21 commander damage, has no passing stack with any double-strike source in the 99 (Shu Yun, Embercleave, Blade Historian, Akroma's Will)."
   },
   {
    "question": "Brallin attacks with double strike (Embercleave) under Torbran: does each strike get +2, and is all of it combat damage from a commander for 903.10a / 704.6c?",
@@ -573,7 +695,7 @@
    "why_it_matters": "It is Brallin's whole road to 21, and Torbran's combat clause is read from oracle text only (stack 005 scopes combat out)."
   },
   {
-   "question": "Wheel of Fortune with Glint-Horn Buccaneer and Brallin both out: 14 to each opponent from seven discards?",
+   "question": "Wheel of Fortune with Glint-Horn Buccaneer and Brallin both out: 14 to each opponent from seven discards, cast from an eight-card hand (Wheel plus seven)?",
    "settled_by": "resolve-stack",
    "why_it_matters": "It is the declared second-damage group's whole purpose and no stack has Glint-Horn on the battlefield."
   },
@@ -581,13 +703,28 @@
    "question": "With Bard, King of Dale and Teferi's Ageless Insight both out, how many cards does one draw become, and what does a wheel pay Shabraz?",
    "settled_by": "resolve-stack",
    "why_it_matters": "Two copies of the same replacement on one draw is an unproven figure the conversion stage leans on."
+  },
+  {
+   "question": "Wheel of Fortune cast from an eight-card hand (Wheel plus seven) with Brallin, Razorkin Needlehead and Torbran all out: is it 21 from Brallin's seven discard pings plus 21 from Needlehead's seven draw triggers per opponent, 42 to each opponent from 40?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "It is the shortest wheel kill the v2.2.0 list can name without Consecrated Sphinx; stacks 005 and 011 each prove one half on separate boards. Ordering is not the open part: 001's TIMING section and 011's steps 3 to 5 already show no trigger is put on the stack until the wheel has finished resolving, so no seat can die before the draws. What is open is the sum on one board."
+  },
+  {
+   "question": "What size is the Shark token from Shark Typhoon's cycle trigger when X was paid in the cycling cost, by CR rather than by the card's official ruling?",
+   "settled_by": "resolve-stack",
+   "why_it_matters": "Stack 012 takes the 4/4 as a ruling-based scenario input; the token is a flying body Brallin can give trample, so its size is part of what the cycle produces."
+  },
+  {
+   "question": "When a wheel is cast with a commander out, how many cards are in the pilot's hand?",
+   "settled_by": "goldfish",
+   "why_it_matters": "Every discard-side figure in this model (Brallin's pings, Glint-Horn's, Magmakin's blast, lines[14], lines[16]) is the hand size minus the wheel; the seven used throughout is an assumption, and a wheel cast as the last card pays the discard side nothing (stack 011)."
   }
  ],
  "proposed_goldfish_edits": [
   {
    "target": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
    "change": "Relabel to 'A WHEEL drawn — the finisher, held until a commander is out' and drop `required`, or move `required` to a measure of a commander on the battlefield.",
-   "why": "The ignition is a commander; the pilot holds wheels until one is out (modal voltron), and stack 001 shows a wheel without a commander pays nobody."
+   "why": "In this model the ignition is a commander and a wheel is the finisher the pilot holds until one is out (modal voltron). A wheel pays the COMMANDER triggers only with a commander out; stack 001 is the both-out case (seven Brallin and seven Shabraz triggers), not a wheel without one. A wheel can pay without a commander: stack 011 resolves Wheel of Fortune under Needlehead and Torbran with both commanders in the command zone, 21 per seat, and Glint-Horn and Magmakin do the same by oracle text. So the label's 'nothing else in the deck starts itself' is false in both directions, and `required` on a wheel measures the finisher, not the start."
   },
   {
    "target": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
@@ -606,7 +743,7 @@
   },
   {
    "target": "(new) A double-strike source drawn",
-   "change": "Add any_of [Shu Yun, the Silent Tempest; Embercleave; Blade Historian; Boros Charm; Akroma's Will].",
+   "change": "Add any_of [Shu Yun, the Silent Tempest; Embercleave; Blade Historian; Akroma's Will].",
    "why": "The modal voltron kill needs one and nothing measures it; stack 006 is 10 + 11 = 21 only because Shabraz had double strike."
   },
   {
@@ -622,173 +759,95 @@
   {
    "target": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
    "change": "Add Grand Abolisher.",
-   "why": "It stops responses on your own turn, the turn the wheel or the double-strike attack happens."
+   "why": "It stops responses on your own turn, the turn the wheel or the double-strike attack happens. sharks-v1 cut Boros Charm, so the group is eight cards (45.6% of openers) and Abolisher would make nine."
+  },
+  {
+   "target": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
+   "change": "Either add Razorkin Needlehead and relabel to 'A second per-card DAMAGE source drawn', or delete it as redundant with THE WHEEL KILL's second component, which already names Glint-Horn, Magmakin and Needlehead.",
+   "why": "Stack 011: Needlehead taxes a wheel's draw half for 7 per seat (21 under Torbran). The group and the kill's component now name different sets for one job."
+  },
+  {
+   "target": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
+   "change": "Append to the label 'and every Razorkin Needlehead ping (stack 011)'.",
+   "why": "Torbran's +2 applies to Needlehead's triggers as well (stack 011: 3 per trigger)."
   }
  ],
  "notes": [
   "Full rewrite for v2.1.1 (answers-v1 merged 2026-10-26, powertune-v1 merged 2026-10-27). Nothing carried from the previous engine.json, which named cut cards.",
   "A line cites a stack only where the stack's scenario names every via card and those cards are in the 99, and where no cut card on the board carries the line's figure. Stacks 002 and 003 are about Library of Leng (cut); 003 is cited only for 'a cost discard triggers Brallin'. Off-list board cards: 005 Spider-Man (its blast is outside the cited half), 006 Fireshrieker (it is the double strike, so 006 verifies no line; the 21 is a dashed claim), 009 Island (mana only).",
   "Most verified pairings in engine-facts are incidental: lands and cards that sat in a scenario's hand. Only the cards each stack's question is about are cited as lines.",
-  "Round 2 (critic iteration 1): lines[3] re-pointed from 006 to 007 as 'a loot pays a commander'; the 006 shape is now a dashed line (lines[9]). stages[2]'s 'proven twice' rescoped to 007 and 010, its Rielle evidence (in hand in 001, never on a board) withdrawn, and 'no card exists to be discarded' narrowed to 'no dedicated fodder stage'. stages[5] protection:self count corrected to three under wincon. stages[1] 'only Glint-Horn and Magmakin' withdrawn and Shabraz's and Brallin's goldfish cast figures added from goldfish_metrics.json; open_questions[4] dropped. 'All in the 99' for 009 narrowed to its load-bearing cards. Bard / Teferi's Ageless Insight restated to the oracle. stages[6]'s per-wheel damage restated as hand size."
+  "Round 2 (critic iteration 1): lines[3] re-pointed from 006 to 007 as 'a loot pays a commander'; the 006 shape is now a dashed line (lines[9] then, lines[12] since v2.2.0). stages[2]'s 'proven twice' rescoped to 007 and 010, its Rielle evidence (in hand in 001, never on a board) withdrawn, and 'no card exists to be discarded' narrowed to 'no dedicated fodder stage'. stages[5] protection:self count corrected to three under wincon. stages[1] 'only Glint-Horn and Magmakin' withdrawn and Shabraz's and Brallin's goldfish cast figures added from goldfish_metrics.json; open_questions[4] dropped. 'All in the 99' for 009 narrowed to its load-bearing cards. Bard / Teferi's Ageless Insight restated to the oracle. stages[6]'s per-wheel damage restated as hand size.",
+  "Revision for v2.2.0 (sharks-v1 merged 2026-10-27): out Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara; in Razorkin Needlehead (output), Shark Typhoon (fuel), Sundown Pass and Thundering Falls (mana). Every deck-audit and goldfish figure re-read from the current brief (decklist sha 8df06ee1); 'drawn by turn six' figures now say 'measured by turn six', since they are deck-audit's goldfish-measured by_turn_6_rate. City evidence re-pointed to the recomputed map, which changed the label on every city id (map_disagreements[7] gives the id and membership counts; this note's earlier 'six of seven' was wrong). One new verified line from stack 011 (Needlehead + Torbran under Wheel of Fortune). Stack 012 (Shark Typhoon cycling, checker pass at iteration 2) is cited as stage evidence for fuel, output and mana; its two lines are null only because the validator cannot extract Shark Typhoon from 012's scenario. The voltron kill is kept as the deck's plan and stays an unverified line. At that revision the critic block was carried from v2.1.1; it is now the v2.2.0 round-1 critique.",
+  "Round 2 of v2.2.0 (critic iteration 1, 15 findings). Line direction convention, now stated: an arrow runs from the card whose event it is to the card that receives or amplifies it, and from an amplifier to the ending it enlarges; lines[9] reversed to output -> conversion to match lines[6] and lines[10], and no two lines are mirror images. stages[1] rescoped to the commander half, with 011 as the commander-free exception. proposed_goldfish_edits[0].why restated: 001 is the both-out case, and 011 is acknowledged. The eight-card hand premise added to lines[14], lines[16] and open_questions[2]; open_questions[4]'s ordering clause withdrawn as settled by 001 and 011, and a goldfish question on hand size added (open_questions[6]). map_disagreements[7] and notes[4] recounted against deck_map.json at 7bbc74bf. Prose: 012's land payment labelled a premise, Shark Typhoon's battlefield mode named, stages[5]'s antecedent fixed. lines[7] and lines[8] left dashed as the critic agreed."
  ],
  "critic": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "lines[3]",
-    "claim": "fuel -> ignition via Kitsa + Brallin, verified_by 007: 'A loot pays a commander: Kitsa's loot resolves, the discard triggers Brallin, one +1/+1 counter and a ping to each opponent. Every board card is in the 99.'",
-    "status": "supported",
-    "note": "RESOLVED (round 1: over-claimed on 006). In stack 007, step 1 (citing 603.2 and 603.3, both rated supported by the checker) has Kitsa's '{T}: Draw a card, then discard a card' discard the Mountain, which triggers Brallin exactly once. Step 3 (608.2c) puts the counter on, making Brallin 4/4, and Brallin deals the damage to each opponent. Every card on 007's scenario.board.you is in decklist.txt: Brallin, Torbran, Kitsa, Gratuitous Violence, Fiery Emancipation, Command Tower, Sacred Foundry, Steam Vents, Sulfur Falls and two Mountains. The note does not quote a damage figure, which is correct, because 007's 8 per seat comes from the three amplifiers and not from the loot. The flow the arrow draws, a fuel card paying a commander, is exactly what resolved."
-   },
-   {
     "where": "lines[9]",
-    "claim": "fuel -> ignition via Kitsa + Shabraz, dashed: the 006 shape, 10 + 11 = 21, 'a claim until open_questions[0] passes'",
+    "claim": "output -> conversion via Artist's Talent, Magmakin Artillerist, Brallin, Windfall, verified_by 004; 'Drawn output -> conversion by the model's convention (lines[6], lines[10])'",
     "status": "supported",
-    "note": "Correctly dashed. The first sentence states the rules shape that 006 resolved, and the second names Fireshrieker as the reason it is not proven on the 99. No line now has verified_by 006, which agrees with notes[1]."
-   },
-   {
-    "where": "stages[2].what_it_does",
-    "claim": "'Kitsa is proven on boards of 99 cards twice: stack 007 … and stack 010 …'; 006 described as a shape on a board with the cut Fireshrieker",
-    "status": "supported",
-    "note": "RESOLVED. Every card on the boards of 007 and 010 is in decklist.txt. 006 is now described accurately. stages[2].evidence[0] carries the same caveat."
-   },
-   {
-    "where": "stages[2].evidence",
-    "claim": "Rielle 'on the board' citation of 001",
-    "status": "supported",
-    "note": "RESOLVED: withdrawn. No stage evidence now claims a card is on a board that does not list it. I checked every remaining stack-evidence note against its stack's scenario.board.you."
-   },
-   {
-    "where": "stages[2].what_it_does",
-    "claim": "'There is no dedicated fodder stage … Cards that pay for being discarded (the cyclers Magmakin, Mako, Raugrin Triome and Glittering Massif; Mary Read's Treasure on a discarded Pirate) are filed under their other job.'",
-    "status": "supported",
-    "note": "RESOLVED. cards.json's cycling cards in the 99 are exactly Glittering Massif, Magmakin Artillerist, Marauding Mako and Raugrin Triome. The Pirates are Glint-Horn, Magmakin, Mako and Mary Read."
-   },
-   {
-    "where": "stages[5].evidence[2]",
-    "claim": "protection:self: 'nine cards carry it: five filed here, three under wincon (Akroma's Will, Boros Charm, Brotherhood Regalia) and Teferi, Master of Time under fuel'",
-    "status": "supported",
-    "note": "RESOLVED (round 1: miscounted). Per card_roles.json, five are in protection (Robe of Stars, March of Swirling Mist, Lightning Greaves, Loran's Escape, Flawless Maneuver), three in wincon and one (Teferi) in fuel, nine in all."
-   },
-   {
-    "where": "stages[0].evidence[4]",
-    "claim": "ramp:rock: 'seven cards carry it: the six here, and Sorcerer Class (spells-only mana) under fuel'",
-    "status": "supported",
-    "note": "card_roles.json: Talisman of Creativity, Azorius Signet, Smothering Tithe, Arcane Signet, Izzet Signet, Sorcerer Class and Sol Ring. Sorcerer Class is in the fuel stage, and deck-facts restricted_mana confirms it is restricted to spells."
-   },
-   {
-    "where": "stages[1].what_it_does",
-    "claim": "Shabraz cast by T6 in 87.7% (mean 4.928, median 5), Brallin 95.8% (mean 4.015), both on the battlefield by T6 in 87.5%, a ceiling since the goldfish has no removal",
-    "status": "supported",
-    "note": "RESOLVED (round 1: contradicts-artifact). goldfish_metrics.json, whose meta.decklist_sha256 0f00066d… matches the current decklist.txt and which ran 10,000 iterations, gives: metrics.commander cast_by_turn_6_rate 0.877, mean_cast_turn 4.928, median_cast_turn 5; metrics.partner cast_by_turn_6_rate 0.958, mean_cast_turn 4.015, both_online_by_turn_6_rate 0.875. The 'ceiling, not survival' caveat follows CLAUDE.md (the goldfish has no removal). The 'only Glint-Horn and Magmakin' superlative is gone."
-   },
-   {
-    "where": "stages[3].what_it_does",
-    "claim": "Bard and Teferi's Ageless Insight 'turn every draw into two except the first one in each of your draw steps, so a main-phase wheel's draws are all doubled'",
-    "status": "supported",
-    "note": "RESOLVED (round 1: contradicts-artifact). This now matches the oracle text in cards.json for both cards, and it agrees with lines[10]."
-   },
-   {
-    "where": "stages[3].evidence[0]",
-    "claim": "009: 'the one checker-passed kill whose load-bearing cards are all in the 99 (its board's Island is not, and only taps for mana; 006 also ends a game, through the cut Fireshrieker)'",
-    "status": "supported",
-    "note": "RESOLVED. I listed every checker-passed stack that ends a game: 006 (Fireshrieker) and 009. 004 ends at 40 to 10 and 005 at 'NOT a kill'. 009's Island is tapped for Wheel and earlier spells, and nothing after Wheel uses mana. The same wording now appears in lines[0] and proposed_goldfish_edits[6]."
-   },
-   {
-    "where": "stages[6].what_it_does",
-    "claim": "'A wheel pays one ping per card discarded, so its damage is the hand size: seven cards made 7 per seat (001), a three-card hand copied by Kitsa made 3 + 7 = 10 (010)'",
-    "status": "supported",
-    "note": "RESOLVED. Brallin triggers on YOUR discards, so a wheel's ping total is your hand size. 001's hand was 7 and 010's discards were 3 then 7, matching both final_states."
+    "note": "Round-1 finding fixed. The arrow now runs from the event's source (Magmakin, output) to the replacement that modifies it (Artist's Talent, conversion), which is what 004's final_state says ('dealt by ... Brallin or Magmakin Artillerist, never by Artist's Talent'). The figures (21 + 9 = 30, 40 to 10) are unchanged and match 004. I enumerated all 17 (from, to) pairs: there are no mirror images left (output->conversion x2, ignition->conversion x1, and nothing from conversion to output or ignition). validate-engine OK, 9/17 verified. Observation, not a defect: under notes[5]'s two-part convention (event -> amplifier, amplifier -> ending), the same Torbran-on-seven-pings relation at 21 per seat is drawn conversion->wincon for Brallin (lines[5], 005) and output->conversion for Needlehead (lines[6], 011). Each stack supports its own arrow, and neither line claims a kill. MECHANICALLY CHECKABLE (repeated): validate_engine can reject mirror-image (from, to) pairs. It would pass this model."
    },
    {
     "where": "proposed_goldfish_edits[0].why",
-    "claim": "'stack 001 shows a wheel without a commander pays nobody'",
+    "claim": "'A wheel pays the COMMANDER triggers only with a commander out; stack 001 is the both-out case ... stack 011 resolves Wheel of Fortune under Needlehead and Torbran with both commanders in the command zone, 21 per seat, and Glint-Horn and Magmakin do the same by oracle text'",
+    "status": "supported",
+    "note": "Round-1 finding fixed. 011's extras say 'Both your commanders are in the command zone and play no part', and its hand is empty ('it was the last card in your hand'). Glint-Horn's oracle ('Whenever you discard a card ... 1 damage to each opponent') and Magmakin's ('Whenever you discard one or more cards ... that much damage to each opponent') need no commander. The false 'without a commander pays nobody' reading of 001 is gone. 'False in both directions' is vague but asserts nothing the artifacts contradict."
+   },
+   {
+    "where": "stages[1].what_it_does",
+    "claim": "'The COMMANDER half of the engine does not pay until Shabraz ... or Brallin ... has resolved and survived ... It is not the whole engine: the second collectors pay with both commanders in the command zone, Razorkin Needlehead by stack 011 ... and Glint-Horn and Magmakin by oracle text'",
+    "status": "supported",
+    "note": "Round-1 over-claim fixed and scoped correctly. The multipliers clause is narrowed to Lae'zel, Bard and Teferi's Ageless Insight. That is right: Bard and TAI ('If you would draw a card except the first one you draw in each of your draw steps, draw two cards instead') double only YOUR draws, and Needlehead taxes opponents' draws, so with no commander out they have nothing to multiply. Torbran is correctly left out, since 011 has it amplifying a commander-free wheel. The stage no longer contradicts stages[4]. Length is now 1,678 characters, the longest stage and 122 under the cap. It still reads in one pass, but the next revision has little headroom."
+   },
+   {
+    "where": "lines[14], lines[16], open_questions[2], open_questions[4], open_questions[6]",
+    "claim": "the eight-card-hand premise; 'Brallin's half is the hand size minus the wheel: in 011 Wheel was the last card, so it would have been 0 there'; ordering clause withdrawn; new goldfish question on hand size",
+    "status": "supported",
+    "note": "Round-1 finding fixed. 011's scenario has hand: [] and the stack note 'it was the last card in your hand', so 0 discards is right. 'Needlehead's half does not depend on the hand' is right by oracle: Wheel of Fortune makes each opponent draw seven whatever you held. lines[14]'s 14 (Glint-Horn 7 + Brallin 7) and its eight-card premise are stated as oracle-text claims on a dashed line. open_questions[4] now asks only for the sum on one board. In lines[16], 'Needlehead's 21 draw triggers (stack 011, 21 per seat)' is literally true (7 per opponent x 3 = 21 triggers, 21 damage each), but a reader can take 21 as per seat. Low severity, wording only."
+   },
+   {
+    "where": "map_disagreements[7], notes[4]",
+    "claim": "every city id relabelled; by membership Mana, Interaction, Tutors kept labels; old Ramp kept city-4 as Mana II (9 of 9); old Finishers is now Ramp (10 of 17); old Card Flow and Bodies swapped labels (11 of 12, 10 of 10)",
+    "status": "supported",
+    "note": "Round-1 miscount fixed. I recomputed from deck_map.json at 7bbc74bf against the working copy. id labels: 0 Card Flow->Ramp, 1 Finishers->Bodies, 2 Interaction->Mana, 3 Mana->Interaction, 4 Ramp->Mana II, 5 Tutors->Card Flow, 6 Bodies->Tutors, all seven changed. Overlaps: new city-4 has 9/9 from old city-4. New city-0 (17) has 10 from old Finishers (all 10) plus 6 from old Card Flow. New city-1 (12) has 11 from old Card Flow. New city-5 (10) has 10/10 from old Bodies. Mana is 26 of 28 from old Mana (27), Interaction 13/13 from old Interaction (14), Tutors 9/9 from old Tutors. Every figure matches. 'Swapped labels' is slightly loose for old Card Flow, which split 11/6, but the stated counts are exact. notes[4] withdraws 'six of seven', and no 'still city-4' remains outside the critic block."
+   },
+   {
+    "where": "map_disagreements[6].why",
+    "claim": "'Razorkin Needlehead, the draw-side collector, lands with the enchantment amplifiers it pairs with (Torbran's +2, stack 011)'",
     "status": "mis-cited",
-    "note": "NEW, and I should have caught it in round 1. The first assumption in stack 001's scenario.extras is 'Brallin and Shabraz are both on the battlefield under your control', and both are on scenario.board.you. No stack resolves a wheel with neither commander out. The conclusion is true by oracle text (with neither on the battlefield nothing triggers), but 001 cannot show it, because it resolves the opposite case. The fix is one sentence: cite oracle text, or cite 001 only for what a wheel pays WITH both out. This touches no line and no rendered proof, so it does not fail the model, but it should be fixed before or with the cache record. PARTLY MECHANICAL: a 'stack N shows … without <card>' rationale can be flagged when <card> is on N's scenario.board.you."
+    "note": "Low severity, not verdict-bearing (no line, figure or stage evidence depends on it). Needlehead does sit in city-0 'Ramp' with Artist's Talent, Gratuitous Violence and Fiery Emancipation. But the amplifier cited as its pairing, Torbran, is in city-5 'Card Flow' in deck_map.json, not city-0, and Torbran is a creature, not an enchantment. The only passing stack with Needlehead (011) pairs it with Torbran alone. Restate it as 'lands with the enchantment amplifiers (Gratuitous Violence, Fiery Emancipation and Artist's Talent, which would also modify its damage by oracle text), not beside Torbran, the amplifier stack 011 pairs it with'. Not mechanically checkable as written. A map_disagreement that names cards as co-located could be checked against deck_map memberships, but only if the prose named its cards structurally."
    },
    {
-    "where": "notes[3]",
-    "claim": "'open_questions[4] dropped' after the goldfish cast figures were added",
-    "status": "unjustified",
-    "note": "Low severity. Round 1 said that only the cast-turn half of open_questions[4] was answered on disk. Its second half, 'how often is a wheel cast with a commander already on the battlefield', is not measured by goldfish_metrics.json, and no artifact I found answers it. Nothing in the model asserts a figure for it, so dropping the question loses information but over-claims nothing. Restoring that half as an open question would keep the pilot's hold-the-wheel rule visibly unmeasured."
-   },
-   {
-    "where": "notes[1]",
-    "claim": "off-list board cards: 005 Spider-Man outside the cited half, 006 Fireshrieker verifies no line, 009 Island mana only",
+    "where": "stages[0].evidence[4], stages[0].what_it_does, stages[2].what_it_does, stages[5].what_it_does",
+    "claim": "012's land payment labelled a premise; Shark Typhoon's battlefield mode named; 'The two group rates price DRAWING a card'",
     "status": "supported",
-    "note": "RESOLVED (round 1: contradicts-artifact). I diffed scenario.board.you against decklist.txt for every cited stack. The off-list cards are exactly 005 Spider-Man, 006 Fireshrieker and 009 Island. 002 and 003 have Library of Leng off-list, but 003 is cited only as stage evidence for the cost-discard half, which Leng does not touch (003 final_state: a cost is not an effect). No verified line cites 006. MECHANICAL CHECK still recommended: require a line's note to name every off-list card on its stack's board."
+    "note": "All three round-1 prose items are addressed. stages[0] says 'a legal mana pile, not a resolved step', which matches 012's stack note that the cost was already paid. stages[2] names the battlefield mode 'by oracle text', with no stack claimed. stages[5]'s antecedent is now unambiguous."
    },
    {
-    "where": "lines[0]",
-    "claim": "009 kill: 49 drawn, Shabraz 52/52, cleanup discard of 42, all opponents at 0 after the 40th trigger; Island named as mana only",
+    "where": "lines[0], lines[1], lines[2], lines[3], lines[4], lines[5], lines[6], lines[10]",
+    "claim": "the other eight verified lines",
     "status": "supported",
-    "note": "Re-checked against 009's final_state."
+    "note": "Their from/to/via/verified_by and notes are unchanged from round 1. Stacks 011 and 012 were last written at 12:36 and 12:40, before the round-1 critique at 12:53, so the boards I read then are the boards on disk. The round-1 reading against each final_state holds."
    },
    {
-    "where": "lines[1]",
-    "claim": "001: 7 to each opponent (40 to 33), both 10/10, 7 life, not a kill",
+    "where": "lines[7], lines[8], lines[11], lines[12], lines[13], lines[15]",
+    "claim": "dashed lines",
     "status": "supported",
-    "note": "Re-checked against 001's final_state. All board cards are in the 99. The three cut cards in hand only count toward the discard total."
+    "note": "Unchanged and still honest: each is labelled as oracle text, as a claim, or as checker-passed on a board the name check cannot read (012). None is phrased as proven."
    },
    {
-    "where": "lines[2]",
-    "claim": "010: 10 discards (3 + 7), 14 draws, 10 per seat, Brallin 13/13, Shabraz 17/17",
+    "where": "stages[*] figures, stages[*].evidence (city)",
+    "claim": "deck-audit / goldfish / city figures",
     "status": "supported",
-    "note": "Re-checked against 010's final_state. All board and hand cards are in the 99."
-   },
-   {
-    "where": "lines[4]",
-    "claim": "008: Brallin 13/13, Shabraz 17/17, 5 per seat",
-    "status": "supported",
-    "note": "Re-checked against 008's final_state. All board cards are in the 99."
-   },
-   {
-    "where": "lines[5]",
-    "claim": "005: seven pings of 3, 21 per seat, not a kill; Spider-Man named as outside the cited half",
-    "status": "supported",
-    "note": "Re-checked. Spider-Man's single trigger targets opponent 1 only and resolves last, so the 21 per seat does not depend on it."
-   },
-   {
-    "where": "lines[6]",
-    "claim": "004: 21 + 9 = 30 per seat, 40 to 10",
-    "status": "supported",
-    "note": "004 final_state damage_by_source: Brallin 21, Magmakin 9. All board cards are in the 99."
-   },
-   {
-    "where": "lines[7]",
-    "claim": "007: 8/10/12/18 per opponent, 8 if minimised",
-    "status": "supported",
-    "note": "007 step 7 lists all six orders, and final_state possible_totals_per_opponent agrees."
-   },
-   {
-    "where": "lines[8], lines[10], lines[11], lines[12]",
-    "claim": "dashed: Shu Yun voltron kill; TAI under a wheel 14 draws; Glint-Horn under a wheel 14 per seat; Torbran + Embercleave on Brallin",
-    "status": "supported",
-    "note": "Each is labelled as oracle text or a claim, each ties to an open question or says 'No stack', and none is phrased as proven. A grep of stacks/*.json confirms no scenario board holds Glint-Horn Buccaneer, Shu Yun, Embercleave, Blade Historian or Smothering Tithe."
-   },
-   {
-    "where": "stages[*] figures",
-    "claim": "every deck-audit / deck-facts / deck_map figure",
-    "status": "supported",
-    "note": "Re-derived from scratch: land 36/34, sources R30/U23/W20 against targets R36/U22/W22, 14 lands entering tapped, ramp 36.4%/69.1%, standing draw 49.8%/82.3%, discard converters 25.8%/54.5%, amplifiers 19.9%/45.8%, Lae'zel 7.1%/18.1%, second damage 13.7%/33.1%, protection 49.8%/84.2%, answers 49.8%/83.5%, wheels 45.6%/54.7%/73.4%, wheel kill 25.7%, and the city membership counts. None has drifted."
+    "note": "decklist sha is still 8df06ee1, and goldfish_metrics.json and goldfish_targets.json are unmodified in git. I recomputed every city-evidence 'N of M in Label (K cards)' from the current deck_map.json, 21 entries, and all match. proposed_goldfish_edits[7] (eight protection cards, 45.6%) and [8] (THE WHEEL KILL's second component is Glint-Horn, Magmakin and Needlehead) match goldfish_targets.json."
    },
    {
     "where": "stages[*].single_point_of_failure",
     "claim": "null on every stage",
     "status": "supported",
-    "note": "Unchanged from round 1. The audit's one single point of failure, Lae'zel, sits under a stale Chasm Skulker label and is one of nine conversion cards. Six verified lines resolve without her."
-   },
-   {
-    "where": "stages[*].what_it_does",
-    "claim": "length",
-    "status": "supported",
-    "note": "Lengths are 913 to 1,572 characters, all under the 1,800 cap. The longest, fuel at 1,572, reads cleanly."
-   },
-   {
-    "where": "map_disagreements",
-    "claim": "six disagreements",
-    "status": "supported",
-    "note": "Unchanged from round 1 and re-checked against deck_map.json. Each names which artifact reads what."
+    "note": "Unchanged, and still sound for the reason given in round 1."
    }
   ],
   "iterations": 2

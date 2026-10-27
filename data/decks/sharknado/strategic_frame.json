@@ -1,8 +1,8 @@
 {
  "slug": "sharknado",
- "decklist_sha256_prefix": "0f00066d1090",
- "version": "v2.1.1",
- "archetype": "Jeskai partner modal voltron: two command-zone payoffs that tax every card that moves (Shabraz: a counter and 1 life per draw; Brallin: a counter and 1 damage to each opponent per discard), closed by 21 commander damage from whichever the board favours, with the held wheel as the one-turn finisher that grows both and, under Consecrated Sphinx, kills the table outright (stack 009).",
+ "decklist_sha256_prefix": "8df06ee13607",
+ "version": "v2.2.0",
+ "archetype": "Jeskai partner modal voltron with a wheel-burn second road. Two command-zone payoffs tax every card that moves: Shabraz gets a counter and you gain 1 life per draw, Brallin gets a counter and deals 1 to each opponent per discard. Either one closes with 21 commander damage, whichever the board favours. The held wheel is the one-turn finisher that grows both. Since v2.2.0 it also punishes the table's half of the wheel: Razorkin Needlehead turns each opponent's seven draws into seven pings, 21 per seat under Torbran.",
  "schools": [
   "strategy:whos-the-beatdown",
   "strategy:multiplayer.pivot-window",
@@ -10,38 +10,51 @@
   "strategy:conversion.availability",
   "strategy:multiplayer.asymmetry",
   "strategy:conversion.yield",
+  "strategy:conversion.passive-tax",
   "strategy:deckbuilding.threat-density",
   "strategy:mulligans.engine-hands",
   "strategy:multiplayer.threat-deflection",
   "strategy:critical-mass.storm-math"
  ],
  "role_assignment": {
-  "default_role": "The developing engine, not the early beatdown. Both payoffs live in the command zone, which strategy:conversion.availability ranks as the location a payoff 'cannot be kept off the table, only taxed', so the opening turns go to mana, one commander and standing draw (Rhystic Study, Mystic Remora, Faerie Mastermind, Ghostly Pilferer, Smothering Tithe), pacing the pod slow until the pivot as strategy:multiplayer.pod-management prescribes for engine decks. Role is seat-relative (strategy:whos-the-beatdown): against a counterspell draw deck like the one in log 001 you do not own the long game and must be the beatdown on that seat; against creature boards your inevitability is the scaling commander (strategy:whos-the-beatdown.metagame-clock: 'an engine that scales').",
-  "pivot_trigger": "Flip to the kill the turn all of these hold: a commander has resolved and survived a turn cycle; a wheel or a double-strike grant (Shu Yun, Embercleave, Blade Historian, Akroma's Will, Boros Charm) is in hand with the mana for it; protection is up (Flawless Maneuver or Deflecting Swat free with a commander out, or Grand Abolisher on the battlefield, which shuts the table out of exactly the turn you go); and the table's open mana has been counted (strategy:multiplayer.pivot-window: 'assume every held answer appears the moment you present lethal'). The go decision is hand-and-board arithmetic before the first spell (strategy:critical-mass.storm-math): a wheel pays Brallin the size of the hand discarded (engine.json wincon; stack 001: seven cards, 7 per seat), so count the hand, not the hoped-for draws.",
+  "default_role": "You are the developing engine, not the early beatdown. Both payoffs live in the command zone, which strategy:conversion.availability ranks as the place a payoff cannot be kept off the table, only taxed. So the opening turns go to mana, one commander and standing draw (Rhystic Study, Mystic Remora, Faerie Mastermind, Smothering Tithe), keeping the pod's pace slow until the pivot, as strategy:multiplayer.pod-management prescribes for engine decks. Ghostly Pilferer has left. Razorkin Needlehead is the new table-draw piece, and it is a tell: a 2/2 that dies to anything and pings each opponent on their own draw step. Cast it on the wheel turn, or the turn before with protection up, not as an early drop (strategy:multiplayer.threat-deflection: time your tells for the turn they win). Your role depends on the seat (strategy:whos-the-beatdown). Against a counterspell draw deck you do not own the long game, so you are that seat's beatdown. Against creature boards your inevitability is the scaling commander (strategy:whos-the-beatdown.metagame-clock: 'an engine that scales').",
+  "pivot_trigger": "Go for the kill on the turn all of these hold. (1) A commander has resolved and survived a turn cycle, OR Needlehead plus Torbran are on the battlefield (the wheel kill needs no commander). (2) A finisher is in hand with mana for it: a wheel (Wheel of Fortune {2}{R}, Reforge the Soul, Windfall, Jace's Archivist on board), or a double-strike grant (Shu Yun, Embercleave, Blade Historian, Akroma's Will; Boros Charm has left). (3) Protection is up: Flawless Maneuver or Deflecting Swat free with a commander out, or Grand Abolisher, which shuts the table out of the turn you go. (4) You have counted the table's open mana (strategy:multiplayer.pivot-window: 'assume every held answer appears the moment you present lethal'). The go decision is arithmetic before the first spell (strategy:critical-mass.storm-math). Under Torbran, Wheel of Fortune with Needlehead deals 21 to each opponent from the opponents' seven draws alone (verified stack 011). Brallin adds 3 per card YOU discard. From 40, 21 + 3 x H kills when H >= 7 cards discarded, so a six-card hand leaves each seat at 1. Count the hand, not the hoped-for draws. That total is oracle arithmetic, not a verified line (candidate 1).",
   "strategy_ref": "strategy:multiplayer.pivot-window"
  },
  "engines": [
   {
    "piece": "Shabraz, the Skyshark",
-   "engine": "Draw tax: +1/+1 counter and 1 life per card drawn; the flying commander-damage road. Multiplied by Teferi's Ageless Insight and Bard, King of Dale (every non-first-draw-step draw becomes two, by oracle text), Lae'zel (+1 counter per placement), Consecrated Sphinx (two draws per opponent draw).",
+   "engine": "Draw tax: +1/+1 counter and 1 life per card drawn, and the flying road to commander damage. Teferi's Ageless Insight and Bard, King of Dale double every draw that is not the first draw-step draw (oracle text). Lae'zel adds a counter per placement, and Consecrated Sphinx draws two per opponent draw. Shark Typhoon's cycling adds an instant-speed draw. {W/U}: target Human gains flying, and Razorkin Needlehead is a Human Assassin (oracle text), so you can give it evasion.",
    "evidence": "oracle text; verified stacks 001, 008, 009 (stack 009: Wheel of Fortune under Sphinx, 49 cards, Shabraz 52/52)",
    "strategy_ref": "strategy:conversion.availability"
   },
   {
    "piece": "Brallin, Skyshark Rider",
-   "engine": "Discard tax: +1/+1 counter and 1 damage to EACH opponent per discard; the each-opponent scope that strategy:conversion.yield prices at three times a targeted converter. Amplified by Torbran, Gratuitous Violence, Fiery Emancipation, Artist's Talent; doubled by Glint-Horn Buccaneer and Magmakin Artillerist.",
+   "engine": "Discard tax: +1/+1 counter and 1 damage to EACH opponent per discard. That each-opponent scope is what strategy:conversion.yield prices at three times a targeted converter. Amplified by Torbran, Gratuitous Violence, Fiery Emancipation and Artist's Talent; Glint-Horn Buccaneer and Magmakin Artillerist add a second per-discard ping. {R}: target Shark gains trample, which now has Shark Typhoon's tokens and Marauding Mako to aim at.",
    "evidence": "oracle text; verified stacks 001, 003 (a cycling cost discard triggers him), 004, 005, 007, 008, 009, 010",
    "strategy_ref": "strategy:conversion.yield"
   },
   {
+   "piece": "Razorkin Needlehead (+ Torbran, Thane of Red Fell)",
+   "engine": "NEW in v2.2.0. Punishes the opponents' draws: 1 damage to an opponent for each card they draw. That is the half of a symmetrical wheel Brallin cannot reach. Each player-wide wheel (Wheel of Fortune, Reforge the Soul; Windfall and Jace's Archivist scale to the biggest discard) becomes per-seat damage. Under Torbran each ping is 3, so seven draws are 21 per opponent. Between wheels it is a passive each-opponent tax on their draw steps (1 per seat per round, 3 under Torbran), and Faerie Mastermind's {3}{U} and Prismari Command's draw mode feed it too. It is a creature, so it falls outside the non-creature shape strategy:conversion.passive-tax measured. A 2/2 body for {R}{R} is fragile, and the table can see the threat.",
+   "evidence": "oracle text; verified stack 011 (checker verdict pass, after the second iteration): 21 triggers, 3 damage each, every opponent 40 -> 19 (CR 121.2, 603.2c, 614.5)",
+   "strategy_ref": "strategy:conversion.passive-tax"
+  },
+  {
+   "piece": "Shark Typhoon",
+   "engine": "NEW in v2.2.0. Instant-speed cycling for {X}{1}{U} is one discard and one draw. The discard pays Brallin (a counter and a ping per opponent) and Marauding Mako (a counter). The draw pays Shabraz (a counter and a life). It also leaves an X/X flying Shark that Brallin can give trample. Cast as an enchantment it makes a Shark for each noncreature spell. Cycling is not casting, so it does not trigger Shu Yun or prowess. You can fire it in response to removal or at an opponent's end step, so it rebuilds a threat outside sorcery-speed sweeper windows.",
+   "evidence": "oracle text; verified stack 012 (checker verdict pass, two iterations): cycling for X=4 pays Brallin, Marauding Mako and Shabraz and leaves a flying Shark. The 4/4 token size is a scenario input taken from the card's ruling on X, not something the CR establishes.",
+   "strategy_ref": "strategy:resource-hedging.wrath-math"
+  },
+  {
    "piece": "Wheel of Fortune + Consecrated Sphinx",
-   "engine": "The one checker-passed table kill: a symmetrical wheel becomes an asymmetric draw flood (21 Sphinx triggers), Shabraz grows past lethal size and the cleanup discard fires Brallin until all three opponents are at 0. The symmetric refill problem of wheels is solved by Sphinx converting the table's draws into yours, the 'engine that out-draws three players' strategy:card-advantage names the format's defining advantage.",
-   "evidence": "verified stack 009 (load-bearing cards all in the 99; its Island is not, mana only)",
+   "engine": "The one passing-stack table kill. Sphinx turns a symmetrical wheel into an asymmetric draw flood (21 Sphinx triggers). Shabraz grows past lethal size, and the cleanup discard fires Brallin until all three opponents are at 0. Sphinx converts the table's draws into yours, the 'engine that out-draws three players' that strategy:card-advantage names as the format's defining advantage. Needlehead is a second answer to the same symmetry problem, and the two stack: with both on board, each opponent draw is 2 cards for you AND a ping.",
+   "evidence": "verified stack 009 (all load-bearing cards in the 99)",
    "strategy_ref": "strategy:card-advantage"
   },
   {
    "piece": "Kitsa, Otterball Elite",
-   "engine": "Repeatable loot that pays both commanders at once, and at power 3+ copies a wheel for two discards-and-draws off one cast.",
+   "engine": "Repeatable loot that pays both commanders at once. At power 3+ she copies a wheel, so one cast gives two discards-and-draws, and under Needlehead fourteen opponent draws per seat.",
    "evidence": "verified stacks 007 (loot fires Brallin) and 010 (copies Wheel of Fortune: 10 discards, 14 draws, 10 per seat)",
    "strategy_ref": "strategy:card-advantage.plan-draw"
   },
@@ -53,30 +66,84 @@
   },
   {
    "piece": "Torbran, Thane of Red Fell / Gratuitous Violence / Fiery Emancipation",
-   "engine": "Damage replacements on Brallin's pings (and by oracle text on commander combat damage); the damaged opponent orders them, so build to the smaller result.",
-   "evidence": "verified stacks 005 (seven pings of 3: 21 per seat, NOT a kill from 40) and 007 (one ping under all three: at least 8 per opponent)",
+   "engine": "Damage replacements on Brallin's pings, Needlehead's pings and, by oracle text, commander combat damage from a red source. Gratuitous Violence applies only to creatures, and both Brallin and Needlehead are creatures. The damaged opponent orders the replacements, so build for the smaller result.",
+   "evidence": "verified stacks 005 (seven pings of 3: 21 per seat; its Spider-Man is no longer in the 99), 007 (one ping under all three: at least 8 per opponent); verified stack 011 (Needlehead under Torbran)",
    "strategy_ref": "strategy:conversion.yield"
   },
   {
    "piece": "Artist's Talent + Magmakin Artillerist",
-   "engine": "Level 3 adds 2 to each noncombat damage event; Magmakin is a second per-discard collector.",
+   "engine": "Level 3 adds 2 to each noncombat damage event, and Needlehead's pings are noncombat. Magmakin is a second per-discard collector.",
    "evidence": "verified stack 004 (Windfall: 30 per seat, 40 to 10)",
    "strategy_ref": "strategy:conversion.yield"
   },
   {
-   "piece": "Shu Yun / Embercleave / Blade Historian / Akroma's Will / Boros Charm",
-   "engine": "Double-strike grants that turn a grown commander into a 21 in one combat; the voltron conversion step.",
-   "evidence": "oracle text only — stack 006 resolved the 10 + 11 = 21 shape with Fireshrieker, which is cut; no passing stack resolves combat with any grant in the 99",
+   "piece": "Shu Yun / Embercleave / Blade Historian / Akroma's Will",
+   "engine": "Double-strike grants that turn a grown commander into 21 in one combat: the voltron conversion step. Boros Charm left in v2.2.0, so four grants remain, all oracle-only.",
+   "evidence": "oracle text only. Stack 006 resolved the 10 + 11 = 21 shape with Fireshrieker, which is cut. No passing stack resolves combat with any grant in the current 99.",
    "strategy_ref": "strategy:conversion.combat-channel"
   },
   {
    "piece": "Lightning Greaves / Robe of Stars / Flawless Maneuver / Deflecting Swat / Loran's Escape / March of Swirling Mist / Grand Abolisher",
-   "engine": "Commander insurance: constant cover (Greaves, Robe) plus held single-use instants, two of them free with a commander out — Cullen's taxonomy as relayed in strategy:multiplayer.commander-insurance.",
-   "evidence": "oracle text; engine.json protection stage notes no passing stack resolves any of these protecting a commander",
+   "engine": "Commander insurance, in Cullen's taxonomy as relayed in strategy:multiplayer.commander-insurance: constant cover (Greaves, Robe) plus held single-use instants, two of them free with a commander out. Boros Charm's indestructible mode left with it. Deck-facts reads protection:self at 8.",
+   "evidence": "oracle text; deck-facts roles. No passing stack resolves any of these protecting a commander.",
    "strategy_ref": "strategy:multiplayer.commander-insurance"
   }
  ],
  "candidate_missing_lines": [
+  {
+   "title": "Wheel of Fortune with Brallin, Needlehead and Torbran: 21 from the opponents' draws plus 3 per card you discard, a table kill from 40 at seven discards",
+   "cards": [
+    "Brallin, Skyshark Rider",
+    "Razorkin Needlehead",
+    "Torbran, Thane of Red Fell",
+    "Wheel of Fortune"
+   ],
+   "why_plausible": "Verified stack 011 gives 21 per seat from Needlehead. Stack 005 gives 3 per Brallin ping under Torbran. All triggers wait until the wheel finishes and go on the stack together. By arithmetic, 21 + 3 x 7 = 42 >= 40, and 21 + 3 x 6 = 39 leaves each seat at 1. This is the deck's cheapest no-combat table kill, and the exact hand-size threshold is the pivot number. Arithmetic from oracle text, not a fact.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Needlehead under Gratuitous Violence and Torbran: at least 4 per opponent draw, 28 per seat from one Wheel of Fortune",
+   "cards": [
+    "Razorkin Needlehead",
+    "Gratuitous Violence",
+    "Torbran, Thane of Red Fell",
+    "Wheel of Fortune"
+   ],
+   "why_plausible": "Needlehead is a creature, so Gratuitous Violence applies. Stack 007 shows the opponent orders the replacements; the floor is 1 x 2 + 2 = 4. Seven draws make 28 per seat, before Brallin. Fiery Emancipation in place of either piece also needs its own ordering.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Kitsa copies Wheel of Fortune under Needlehead and Torbran: fourteen opponent draws per seat, 42 per opponent",
+   "cards": [
+    "Kitsa, Otterball Elite",
+    "Razorkin Needlehead",
+    "Torbran, Thane of Red Fell",
+    "Wheel of Fortune"
+   ],
+   "why_plausible": "Stack 010 verifies Kitsa's copy is two full wheels, and verified stack 011 gives 3 per opponent draw. 2 x 7 x 3 = 42 per seat kills from 40 with no commander out. The copy resolves first, so the original's discard is of the copy's seven fresh cards.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Jace's Archivist with Needlehead: a repeatable wheel that pings each seat for the biggest hand discarded, every turn",
+   "cards": [
+    "Jace's Archivist",
+    "Razorkin Needlehead",
+    "Brallin, Skyshark Rider"
+   ],
+   "why_plausible": "Oracle: {U},{T}: each player discards their hand, then draws equal to the greatest number discarded. Every opponent draws that many, so Needlehead pings each for the table's largest hand, and Brallin pays for your discards. Mana-bounded, once a turn. No stack has Archivist on a board.",
+   "status": "needs a stack scenario"
+  },
+  {
+   "title": "Faerie Mastermind's {3}{U}, 'each player draws a card', under Needlehead, Sphinx and Tithe",
+   "cards": [
+    "Faerie Mastermind",
+    "Razorkin Needlehead",
+    "Consecrated Sphinx",
+    "Smothering Tithe"
+   ],
+   "why_plausible": "Oracle: one activation makes each opponent draw once. Needlehead deals 1 each (3 under Torbran), Sphinx offers six cards, Tithe offers three Treasure, and Shabraz gets a counter for your own draw. It is an instant-speed table-draw button that feeds every opponent-draw payoff the deck now has.",
+   "status": "needs a stack scenario"
+  },
   {
    "title": "Shu Yun's double strike on a 10/10 Shabraz with a Kitsa loot between strikes: 10 + 11 = 21",
    "cards": [
@@ -84,7 +151,7 @@
     "Shu Yun, the Silent Tempest",
     "Kitsa, Otterball Elite"
    ],
-   "why_plausible": "Stack 006 resolved exactly this shape but its double strike was the cut Fireshrieker; Shu Yun's oracle grants double strike on any noncreature cast for {R/W}{R/W}. engine.json open_questions[0]. The deck's stated win condition has no passing stack on the current 99.",
+   "why_plausible": "Stack 006 resolved exactly this shape, but its double strike came from Fireshrieker, which is cut. Shu Yun's oracle grants double strike on any noncreature cast for {R/W}{R/W}. The deck's stated win condition still has no passing stack on the current 99.",
    "status": "needs a stack scenario"
   },
   {
@@ -94,7 +161,7 @@
     "Embercleave",
     "Torbran, Thane of Red Fell"
    ],
-   "why_plausible": "Torbran's oracle covers any red source dealing damage to an opponent, combat included; Embercleave gives double strike and trample. Stack 005 scoped combat out. engine.json open_questions[1]; it is Brallin's whole road to 21.",
+   "why_plausible": "Torbran's oracle covers any red source you control dealing damage to an opponent, combat included. Embercleave grants double strike and trample. Stack 005 scoped combat out. This is Brallin's whole road to 21.",
    "status": "needs a stack scenario"
   },
   {
@@ -106,7 +173,7 @@
     "Torbran, Thane of Red Fell",
     "Wheel of Fortune"
    ],
-   "why_plausible": "Both are creatures that deal the ping themselves, so Gratuitous Violence applies; with Torbran the opponent orders the two replacements and the floor is 1x2+2 = 4 per ping. Seven discards: 28 per seat from Brallin, 56 with Glint-Horn — a table kill from 40 by arithmetic. engine.json open_questions[2] asks the Glint-Horn half; no stack has Glint-Horn on a board. Arithmetic from oracle text, never a fact.",
+   "why_plausible": "Both are creatures that deal the ping themselves, so Gratuitous Violence applies. The floor is 4 per ping, so seven discards make 28 per seat from Brallin and 56 with Glint-Horn. No stack has Glint-Horn on a board. Arithmetic, not a fact.",
    "status": "needs a stack scenario"
   },
   {
@@ -117,7 +184,7 @@
     "Teferi's Ageless Insight",
     "Windfall"
    ],
-   "why_plausible": "Two copies of the same draw replacement; whether the second applies to the first's replacement draws decides whether a seven-card wheel pays Shabraz 14 or 28 counters. engine.json open_questions[3].",
+   "why_plausible": "These are two copies of the same draw replacement. Whether the second applies to the first's replacement draws decides whether a seven-card wheel pays Shabraz 14 or 28 counters.",
    "status": "needs a stack scenario"
   },
   {
@@ -128,7 +195,7 @@
     "Windfall",
     "Blade Historian"
    ],
-   "why_plausible": "Stack 001 leaves Shabraz 10/10 after Windfall from a 3/3 base; Knowledge Is Power adds +X/+X for cards drawn this turn (at least +7), so 17/17 that turn by oracle arithmetic, and double strike from Blade Historian makes 34 at one seat. It is the 'wheel as finisher with a commander out' turn the pilot described after log 002.",
+   "why_plausible": "Stack 001 leaves Shabraz 10/10 after Windfall. Knowledge Is Power adds +X/+X for cards drawn this turn (at least +7), so Shabraz is 17/17 by oracle arithmetic, and Blade Historian's double strike makes 34 at one seat.",
    "status": "needs a stack scenario"
   },
   {
@@ -137,17 +204,17 @@
     "Shabraz, the Skyshark",
     "Akroma's Will"
    ],
-   "why_plausible": "Oracle: with a commander controlled as it is cast, both modes — flying, vigilance, double strike, lifelink, indestructible and protection from each colour. Protection from each colour means no coloured creature can block, and the commander survives coloured removal that turn. An 11/11 Shabraz is 22. One card that is the pivot-window answer to held interaction (strategy:multiplayer.pivot-window).",
+   "why_plausible": "Oracle: if you control a commander as you cast it, you may choose both modes. That gives flying, vigilance, double strike, lifelink, indestructible and protection from each colour. With Boros Charm gone, this is the deck's only grant that also protects the swing (strategy:multiplayer.pivot-window).",
    "status": "needs a stack scenario"
   },
   {
    "title": "Smothering Tithe under a symmetrical wheel: the Treasure that pays for the second action the same turn",
    "cards": [
     "Smothering Tithe",
-    "Windfall",
+    "Wheel of Fortune",
     "Brallin, Skyshark Rider"
    ],
-   "why_plausible": "Oracle: each opponent draw offers {2} or a Treasure; seven draws per seat is a price no opponent pays in full. engine.json mana stage notes the pairing has no passing stack with Tithe on the battlefield, and the goldfish does not read Treasure (treasure engine_online by turn 6: 0.6%). This is the line that answers the pilot's 'mana-starved' game 003 on the kill turn — an equip, a Shu Yun payment or a second wheel.",
+   "why_plausible": "Oracle: each opponent draw offers {2} or a Treasure, and seven draws per seat is a price no opponent pays in full. The goldfish barely reads Treasure here (treasure engine_online by turn 6: 0.7%). With Needlehead out, the same draws are also damage.",
    "status": "needs a stack scenario"
   },
   {
@@ -156,24 +223,25 @@
     "Glint-Horn Buccaneer",
     "Curiosity"
    ],
-   "why_plausible": "combo_details.json by_card record [Glint-Horn Buccaneer, Curiosity], produces 'Near-infinite damage' and 'Infinite rummaging', bracket 3: Glint-Horn's attacking {1}{R} discard-draw pings each opponent, and Curiosity draws per damage instance, so each activation nets cards. Mana-bounded by oracle text. The same file lists [Brallin, Skyshark Rider, Curiosity] as a two-card loop, but Brallin has no discard outlet of his own, so that record needs a refutation stack before anyone believes it (agents-common §4: Spellbook lines can quietly assume a piece). Recorded for the pilot's watch list only; no add is recommended here.",
+   "why_plausible": "combo_details.json lists [Glint-Horn Buccaneer, Curiosity], producing near-infinite damage, bracket 3. The same file lists [Brallin, Skyshark Rider, Curiosity] as a two-card loop, but Brallin has no discard outlet of his own, so that record needs a refutation stack before anyone believes it. Needlehead's 26 by_card records with all but one piece in the deck are poison and infect conversions (Tainted Strike, Phyresis and similar) or Peer into the Abyss. None suits this deck. Recorded for the watch list only; no add is recommended.",
    "status": "needs a stack scenario"
   }
  ],
  "matchup_frames": {
-  "vs_sweeper_control": "You are the beatdown on that seat: the control deck owns the long game, and 'whoever loses the long game must be the beatdown' (strategy:whos-the-beatdown). Deploy in waves (strategy:resource-hedging.wrath-math): one commander first, the second held as the rebuild, which the partner pair gives you for free — the modal win means the second commander is a second threat, not a second piece (strategy:deckbuilding.threat-density, 'the median runs three cheap ones'). Flawless Maneuver answers a destroy wipe only; against exile and bounce the answer is a held counter (Negate, Stubborn Denial, Izzet Charm) or March of Swirling Mist. Do not open with a symmetrical wheel against a counterspell draw deck: it refills their hand and their inevitability; prefer loots, and wheel only under Sphinx or Grand Abolisher on the pivot turn (strategy:multiplayer.pivot-window).",
-  "vs_stax": "You are the beatdown, racing the lock (strategy:threat-assessment.resource-denial). Taxes hit this deck's velocity directly — Shu Yun, Jeskai Ascendancy and Artist's Talent all want many noncreature spells a turn — so recount the hand under the tax. Outs: Chaos Warp and Get Lost (any permanent / creature, enchantment, planeswalker), Prismari Command for an artifact; name the piece that beats you, not the scariest one. Lightning Greaves at equip 0 stays live under an equip tax that a 3-equip Embercleave does not.",
-  "vs_aggro": "Commander damage kills one seat at a time, and an attack opens you to the two seats you did not choose (strategy:conversion.combat-channel). Shabraz's 1 life per draw is a racing resource (strategy:combat-math.racing: spend the minimum that wins your race); Bard has reach and vigilance, Akroma's Will's second mode is lifelink and indestructible, and Incendiary Command's sweep mode clears small creatures. Brallin's each-opponent pings let you damage the aggro seat without turning sideways.",
-  "vs_combo": "Held answers rot against combo — 'the last profitable moment is now' (strategy:threat-assessment.answer-economy). Negate, Stubborn Denial and Izzet Charm counter the noncreature half of most combos; Grand Abolisher only protects your own turn, so it is a kill-turn piece, not a combo hoser. Your clock is not fast enough to ignore them (goldfish median kill turn 7 with no opposition, kill by turn 6 in 31.0%), so hold one counter rather than tap out for a value engine."
+  "vs_sweeper_control": "You are the beatdown on that seat: the control deck owns the long game, and 'whoever loses the long game must be the beatdown' (strategy:whos-the-beatdown). Deploy in waves (strategy:resource-hedging.wrath-math). Lead with one commander and hold the second as the rebuild. Shark Typhoon's instant-speed cycling now rebuilds a flying threat at their end step, outside the sorcery-speed sweeper window. Flawless Maneuver answers only a destroy wipe. Against exile and bounce, answer with a held counter (Negate, Stubborn Denial, Izzet Charm) or March of Swirling Mist. Needlehead changes the wheel calculation against a counterspell draw deck. Without it, a symmetrical wheel refills their hand and feeds their inevitability, so wheel only under Sphinx, Needlehead or Grand Abolisher on the pivot turn (strategy:multiplayer.pivot-window). With Needlehead plus Torbran, the seven cards cost them 21 life.",
+  "vs_stax": "You are the beatdown, racing the lock (strategy:threat-assessment.resource-denial). Taxes hit this deck's velocity directly, because Shu Yun, Jeskai Ascendancy, Artist's Talent and Shark Typhoon's enchantment mode all want many noncreature spells a turn, so recount the hand under the tax. Needlehead at {R}{R} and Wheel of Fortune at {2}{R} are the cheapest kill package the deck has: five mana plus Torbran's four. Outs: Chaos Warp and Get Lost, plus Prismari Command for an artifact. Name the piece that beats you, not the scariest one. Lightning Greaves at equip 0 stays live under an equip tax.",
+  "vs_aggro": "Commander damage kills one seat at a time, and an attack opens you to the two seats you did not choose (strategy:conversion.combat-channel). Shabraz's 1 life per draw is a racing resource (strategy:combat-math.racing: spend the minimum that wins your race). Bard has reach and vigilance. Akroma's Will's second mode is lifelink and indestructible, and Incendiary Command's sweep mode clears small creatures. Shark Typhoon's flash-speed Shark is a flying blocker. Needlehead has first strike only on your turn, so it is not a blocker. Brallin's each-opponent pings damage the aggro seat without turning sideways.",
+  "vs_combo": "Held answers rot against combo: 'the last profitable moment is now' (strategy:threat-assessment.answer-economy). Negate, Stubborn Denial and Izzet Charm counter the noncreature half of most combos. Grand Abolisher protects only your own turn, so it is a kill-turn piece, not a combo hoser. Needlehead taxes draw-heavy combo pilots, but 1 per card is not a lock. Your clock is not fast enough to ignore them: goldfish median kill turn 7, kill by turn 6 in 32.5%, with no opposition. Hold one counter rather than tap out for a value engine."
  },
- "distribution_notes": "From deck-facts (sha 0f00066d1090, matches goldfish_metrics): 100 copies, 36 lands (34 entries), 64 nonland; curve 1:8, 2:21, 3:18, 4:8, 5:5, 6:4. Mana is the soft spot. Red has 30 land sources against a deck-facts target of 36 and 39 red pips over 26 cards, with three triple-red payoffs: Torbran {1}{R}{R}{R}, Gratuitous Violence {2}{R}{R}{R}, Fiery Emancipation {3}{R}{R}{R}. Karsten's single-colour tables, quoted in strategy:deckbuilding.mana-base.color-sources, ask 33 / 30 / 28 sources for those costs, so 30 is short for Torbran on curve. That fits colour-on-curve R 88% against U 96% and W 91%, and land-drop hit rates of 79.4% on turn 4 and 70.8% on turn 5, beside the pilot's 'mana starved one round' in game 003. strategy:conversion.raising-the-ceiling's test applies: a deck that would do 'the same thing, twice' with two more mana has an input problem, not a payoff problem. Ramp is six cards (Sol Ring, Arcane Signet, Azorius and Izzet Signets, Talisman of Creativity, Smothering Tithe) plus Sorcerer Class's spells-only mana; it is drawn by turn 6 in 69.1%. There are eight wheels (engine.json wincon), and one is in 45.6% of opening sevens. That is near the 41% strategy:deckbuilding.redundancy-vs-tutors gives for seven copies, so the job is holding a wheel, not finding one. The wheel-heavy hand from log 002 is the payoff-without-enabler keep that strategy:mulligans.engine-hands says to ship: the commanders cannot be drawn and are never the constraint, so the enablers are mana and protection. Protection: the protection:self role covers nine cards, plus Deflecting Swat's redirect and Grand Abolisher. That is above the 6-8 'Voltron' band in strategy:deckbuilding.interaction-suite, and protection is drawn by turn 6 in 84.2%. Removal is lighter than the 8-10 floor in the same section. There are three spot removal spells (Swords, Get Lost, Chaos Warp), three removal modes inside modal cards (Collective Defiance, Incendiary Command, Izzet Charm), Prismari Command for artifacts, and one sweep mode (Incendiary Command). Counters are three (Negate, Stubborn Denial, Izzet Charm). Interaction is castable by turn 6 in 39.0% of goldfish games. The commanders: Shabraz is cast by turn 6 in 87.7% (mean turn 4.928), Brallin in 95.8% (mean 4.015), and both are online by turn 6 in 87.5%. These are ceilings, because the goldfish has no removal. Goldfish kill: median turn 7, mean 6.991, by turn 6 in 31.0%. The goldfish does not model the modal voltron plan, the equipment or interaction (CONTEXT.md), so these figures are ceilings on how often the pieces line up, not a verdict.",
- "overall_assessment": "Sharknado is playing an engine game that ends in a voltron turn. In strategy:conversion.availability's terms the deck is unusually well located: both payoffs sit in the command zone, so the question is never whether a payoff shows up. It is whether one survives and whether the hand can be converted on the turn you choose. That makes it a commander-insurance deck first (strategy:multiplayer.commander-insurance), with the twist that the partner pair turns the recast tax into a second, independent threat. strategy:deckbuilding.threat-density's 'Plan A and Plan B' fits better than usual because the two plans are layered rather than unconnected: every wheel and loot feeds both commanders at once. Brallin's scope is each-opponent, the yield strategy:multiplayer.asymmetry and strategy:conversion.yield favour against 120 combined life. Shabraz's is single-seat combat, which pays strategy:conversion.combat-channel's three taxes, so the flyer is the clean seat-killer and the pinger is the table-softener. The one proved table kill is Wheel of Fortune under Consecrated Sphinx (stack 009), which wins precisely because Sphinx makes a symmetrical wheel asymmetric. The pilot's own thesis, wheels as finishers fired with a commander out, is the strategy:multiplayer.threat-deflection prescription in his words: time the tells for the turn they win, not the turn they impress. It also answers the political cost he named in log 002 (strategy:multiplayer.politics: a table you play again is a multi-game resource). Three things hold it back, all grounded above. Mana: red is short for the triple-red amplifiers, and game 003 was mana-starved. Proof: the stated win condition, 21 commander damage with a double-strike grant in the 99, has no passing stack (candidate lines 1, 2, 5 and 6). Removal: the count sits below the interaction-suite floor even after answers-v1. This frame is ★ coaching. It verifies no line, and nothing in it upgrades a candidate to fact.",
+ "distribution_notes": "From deck-facts (sha 8df06ee13607, which matches goldfish_metrics and mana_analysis): 100 copies, 36 lands (34 entries), 64 nonland. Curve 1:8, 2:20, 3:18, 4:8, 5:5, 6:5. Boros Charm and Ghostly Pilferer (both 2) left; Needlehead (2) and Shark Typhoon (6, usually cycled) came in. MANA: the land pass swapped Cascade Bluffs and Talon Gates for Thundering Falls and Sundown Pass. Red land sources still read 30 against a target of 36 (34 with rocks), with 40 red pips over 26 cards. Needlehead's {R}{R} adds one pip, beside Torbran {1}{R}{R}{R}, Gratuitous Violence {2}{R}{R}{R} and Fiery Emancipation {3}{R}{R}{R}. Karsten's table in strategy:deckbuilding.mana-base.color-sources asks 33 / 30 / 28 sources for those three costs, so Torbran on curve is still short. On-curve probability, lands only: R 82.2%, U 90.7%, W 88.1%; with rocks: R 88.2%, U 95.1%, W 90.7%. Land drops hit 80.3% on turn 4 and 70.9% on turn 5. The 16-of-36 tapland figure overstates the cost. Only 4 lands always enter tapped (mana_analysis), which matches Karsten's 'about four' pure-tapland cap in the same section. Spectator Seating and Training Center are untapped in any pod, and Sundown Pass is untapped once you control two other lands (oracle text). WHEELS: Wheel of Fortune, Reforge the Soul and Windfall, Jace's Archivist (repeatable) and Incendiary Command's mode all make opponents draw, so every one feeds Needlehead, Sphinx and Tithe. A wheel is drawn by turn 6 in 73.1% (goldfish target) and cast by turn 6 in 47.3%. The job is still holding a wheel for the right turn, not finding one (strategy:deckbuilding.redundancy-vs-tutors). Mulligan to enabler classes, not to wheels (strategy:mulligans.engine-hands): the commanders are never the constraint. PROTECTION: protection:self is 8 (Boros Charm's indestructible mode is gone), plus Deflecting Swat's redirect and Grand Abolisher. That is still at or above the 6-8 'Voltron' band in strategy:deckbuilding.interaction-suite, and protection is drawn by turn 6 in 80.1%. REMOVAL is unchanged and below that section's 8-10 floor: Swords, Get Lost, Chaos Warp, removal modes in Collective Defiance, Incendiary Command, Izzet Charm and Prismari Command, plus three counters. Interaction is castable by turn 6 in 39.4%. GOLDFISH (10,000 games, seed 42): Shabraz cast by turn 6 in 88.3% (mean turn 4.909); both commanders online by turn 6 in 87.8%. Kill median turn 7, mean 6.942, by turn 6 in 32.5%. The branch's paired net-change read kill_by_6 0.314 -> 0.334 at seed 20260826 (decisions 017). These are ceilings: the goldfish has no removal, measures damage against ONE seat, and does not model the modal voltron plan, the equipment, Shark Typhoon's draw (draw_not_modelled) or interaction. Per the pilot's frame (judgment over goldfish), none of these numbers is the verdict.",
+ "overall_assessment": "Sharknado is playing an engine game that ends in a voltron turn or a burn turn, and v2.2.0 makes the burn turn a real second plan rather than a softener. In strategy:conversion.availability's terms the deck is unusually well placed: both payoffs sit in the command zone. The question is never whether a payoff shows up, only whether one survives and whether you can convert the hand on the turn you choose. That makes it a commander-insurance deck first (strategy:multiplayer.commander-insurance), and the partner pair turns the recast tax into a second, independent threat. The two plans are layered, not separate (strategy:deckbuilding.threat-density): every wheel and loot feeds both commanders. Shabraz's single-seat combat pays strategy:conversion.combat-channel's three taxes; Brallin's each-opponent scope is the yield strategy:multiplayer.asymmetry and strategy:conversion.yield favour against 120 combined life. The new piece fixes the wheel's oldest flaw. A symmetrical wheel gives the table seven cards, and until now only Consecrated Sphinx (stack 009) turned that gift into your advantage. Razorkin Needlehead is a second, cheaper fix: the opponents' seven draws become 21 damage each under Torbran (verified stack 011). With Brallin's 3 per discard that is a table kill from 40 at seven discards, and it needs no combat and no commander damage. It is the passive each-opponent shape strategy:conversion.passive-tax describes, with that section's warning attached: taxing the whole table makes you everyone's problem, and a 2/2 is the easiest piece in the deck to kill. So treat Needlehead and Torbran as tells, and time them for the turn they win (strategy:multiplayer.threat-deflection). Shark Typhoon is the quiet half of the change: an instant-speed discard-plus-draw that pays both commanders and Mako and leaves a flier, so it answers a sweeper rather than feeding one (strategy:resource-hedging.wrath-math). Three things still hold the deck back. Mana: red reads 30 land sources for three triple-red amplifiers and a {R}{R} Needlehead. Proof: no passing stack resolves the double-strike road with a grant in the 99. Removal: the count is still below the interaction-suite floor. This frame is coaching (★). It verifies no line, and nothing in it upgrades a candidate to fact.",
  "gaps": [
-  "A Voltron pillar (proposed slug 'voltron'): commander-damage kills as a plan. It would cover 21 per seat against 40 life, kill order across three seats, evasion versus double strike as the scarcer piece, equipment versus intrinsic growth, and the shroud-blocks-your-own-equip sequencing trap with Lightning Greaves. The doc has only the 6-8 protection band in strategy:deckbuilding.interaction-suite and the one-line mention in strategy:multiplayer.asymmetry. Carried from the v2.0 frame; still missing.",
-  "Wheels as an archetype: symmetrical refill against control, which feeds their inevitability; when to wheel versus loot; making a wheel asymmetric (Sphinx, Tithe, discard payoffs); and the social cost of hand disruption the pilot named in log 002. No section covers wheels. Carried; still missing.",
-  "Partner and two-commander play: which commander to deploy first, baiting removal with one, two independent taxes, and the modal win-condition choice made at the pivot. strategy:multiplayer.commander-insurance and strategy:multiplayer.zonal-commander assume one commander. Carried; still missing.",
-  "Replacement-effect stacking for damage and draw doublers (Torbran, Gratuitous Violence, Fiery Emancipation, Artist's Talent; Bard and Teferi's Ageless Insight): the affected player orders damage replacements, so a build should price the smaller result. No section covers it. Carried; still missing.",
-  "Self-discard as a resource: how many outlets a discard-payoff deck needs, discarding lands or spells, and repeatable loots versus one-shot wheels. No section covers it. Carried; still missing.",
-  "Removal counts for a voltron or engine deck that leans on protection: whether a deck above the protection band can run below Walser's 8-10 removal floor. strategy:deckbuilding.interaction-suite gives both numbers but not the trade between them."
+  "A Voltron pillar (proposed slug 'voltron'): commander-damage kills as a plan. It would cover 21 per seat against 40 life, kill order across three seats, evasion versus double strike as the scarcer piece, equipment versus intrinsic growth, and the trap where Lightning Greaves' shroud blocks your own equip. Carried; still missing.",
+  "Wheels as an archetype, now sharper: symmetrical refill and how to make it asymmetric. That means opponent-draw punishers (Needlehead), draw-stealers (Sphinx), taxes (Smothering Tithe) and discard payoffs, plus when to wheel versus loot and the social cost the pilot named in log 002. No section covers wheels or opponent-draw punishers; the queries returned only plan-draw and passive-tax. Carried and widened.",
+  "Creature-based punishers: strategy:conversion.passive-tax's measured shape is explicitly NON-creature. Nothing prices a fragile creature punisher (Needlehead) against an enchantment one, or says when to deploy it, early for the tax or late as a kill-turn piece.",
+  "Partner and two-commander play: which commander to deploy first, baiting removal with one, two independent taxes, and the modal win-condition choice at the pivot. strategy:multiplayer.commander-insurance assumes one commander. Carried; still missing.",
+  "Replacement-effect stacking for damage and draw doublers (Torbran, Gratuitous Violence, Fiery Emancipation, Artist's Talent; Bard and Teferi's Ageless Insight): the affected player orders damage replacements, so a build should price the smaller result. Carried; still missing.",
+  "Self-discard as a resource: how many outlets a discard-payoff deck needs, instant-speed cycling (Shark Typhoon) versus sorcery-speed wheels, discarding lands versus spells. Carried; still missing.",
+  "Removal counts for a voltron or engine deck that leans on protection: whether a deck above the protection band can run below Walser's 8-10 removal floor. strategy:deckbuilding.interaction-suite gives both numbers but not the trade between them. Carried."
  ]
 }
