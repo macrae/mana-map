@@ -1907,11 +1907,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if _net <= 0:
                 break
             _avail = pool + treasures
-            _wants = [reduced_cost(c, reductions, chosen_type) for c in hand
-                      if not c["is_land"] and not c.get("ritual")]
+            # WHAT THE RITUAL WOULD BUY, AND ONLY WHAT THE TURN WILL CAST
+            # (2026-10-26). The bridge read a want as a mana TOTAL, so a ritual
+            # was spent on two kinds of card the turn then refused:
+            #   a wheel the policy holds (`hold_until.wheel`) — the same gate as
+            #   the spell site, so a Windfall it will not fire is not a want;
+            #   a card whose COLOURS the turn cannot pay — `spend` checks pips
+            #   against the sources in play, so the bridge asks the same
+            #   question, with the ritual's own colours counted as sources.
+            _nonlands = sum(1 for c in hand if not c["is_land"])
+            _wants = [(reduced_cost(c, reductions, chosen_type), c["pips"]) for c in hand
+                      if not c["is_land"] and not c.get("ritual")
+                      and not (c["draw"]["wheel_draws"]
+                               and not _wheel_castable(_nonlands - 1))]
             if commander_turn is None:
-                _wants.append(reduced_cost(commander_card, reductions, chosen_type))
-            if not any(_avail < w_ <= _avail + _net for w_ in _wants):
+                _wants.append((reduced_cost(commander_card, reductions, chosen_type),
+                               commander_pips))
+            _rit_src = ([frozenset(_best["ritual"]["colors"])] * _y
+                        if _best["ritual"]["colors"] else [])
+            if not any(_avail < w_ <= _avail + _net
+                       and (not model_colors or not p_
+                            or can_pay(p_, sources + _rit_src, treasures))
+                       for w_, p_ in _wants):
                 break
             if not spend(_best["cmc"], _best["pips"]):
                 break
