@@ -131,11 +131,7 @@
       "base_moved": null,
       "proposal": null,
       "pull_list": {
-        "buy": [
-          {
-            "name": "Razorkin Needlehead"
-          }
-        ],
+        "buy": [],
         "unsleeve": [],
         "proxy": [],
         "free": [
@@ -154,24 +150,22 @@
             ]
           }
         ],
-        "blocking": 1,
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 2,
+      "out": 2,
       "counts": {
-        "in_deck": 95,
+        "in_deck": 96,
         "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 0,
         "free": 1
       },
-      "unsourced": [
-        "Razorkin Needlehead"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "free": 1,
       "cards": [
         {
@@ -502,6 +496,13 @@
           "is_new": false
         },
         {
+          "name": "Kitsa, Otterball Elite",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Knowledge Is Power",
           "state": "in_deck",
           "where": [],
@@ -619,13 +620,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Razorkin Needlehead",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Reforge the Soul",
@@ -880,22 +874,27 @@
         "op": ">=",
         "value": 0.34
       },
+      "summary": {
+        "title": "A land pass: two untapped duals for two slow lands",
+        "blurb": "Sea of Clouds and Adarkar Wastes replace Mystic Monastery and Opal Palace, the slow lands DeckCheck's PowerTune flagged; the spell swaps it proposed were tried and set aside.",
+        "by": "jarvis",
+        "at": "2026-10-26"
+      },
       "verdict": {
         "state": "do not merge",
         "rose": 2,
-        "fell": 6,
-        "no_call": 8
+        "fell": 3,
+        "no_call": 11
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.3176,
-        "shortfall": 0.0224
+        "reading": 0.3148,
+        "shortfall": 0.0252
       },
       "measured": false,
       "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Adarkar Wastes",
-        "Incendiary Command",
         "Mystic Monastery",
         "Opal Palace",
         "Sea of Clouds"
@@ -904,61 +903,58 @@
         "state": "do not merge",
         "rose": [
           "board power @T6",
-          "kept hand passes the pilot's keep rule"
+          "finisher wheel by T8"
         ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
-          "stall, 2 in a row",
           "missed drop by T5",
-          "extra cards by T8",
-          "wheels cast by T10"
+          "extra cards by T8"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -7.7496,
+            "delta": -2.9678,
             "ci95_diff": [
-              -9.0854,
-              -6.4138
+              -3.8769,
+              -2.0587
             ],
-            "mde": 1.9094,
+            "mde": 1.2994,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0013,
+            "delta": -0.0011,
             "ci95_diff": [
-              -0.0008,
-              0.0034
+              -0.0026,
+              0.0004
             ],
-            "mde": 0.0031,
+            "mde": 0.0021,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.3582,
+            "delta": 0.0626,
             "ci95_diff": [
-              0.3225,
-              0.3939
+              0.039,
+              0.0862
             ],
-            "mde": 0.051,
+            "mde": 0.0337,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -1.7549,
+            "delta": -0.7126,
             "ci95_diff": [
-              -1.9332,
-              -1.5766
+              -0.8304,
+              -0.5948
             ],
-            "mde": 0.2548,
+            "mde": 0.1684,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
