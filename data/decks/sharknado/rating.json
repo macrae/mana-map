@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 100.0,
    "sub_ci": [
-    93.58,
+    93.64,
     100.0
    ],
    "placement": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1231,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    93.68,
+    93.55,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.15,
    "sub_score": 80.0,
    "sub_ci": [
-    73.58,
-    86.46
+    73.45,
+    86.56
    ],
    "placement": 66.67,
    "anchor": 90.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.1625,
    "sub_score": 78.57,
    "sub_ci": [
     78.57,
@@ -233,13 +233,48 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1875,
+   "sub_score": 64.29,
+   "sub_ci": [
+    56.52,
+    71.81
+   ],
+   "placement": 66.67,
+   "anchor": 62.5,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 37,
+     "ci95": null,
+     "n": 4,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 62.5,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
-  {
-   "component": "dti",
-   "reason": "the DeckCheck reading describes another list — `deckcheck sharknado --write` after a rescan"
-  },
   {
    "component": "table_record",
    "reason": "1 game(s) logged; 5 needed"
@@ -267,16 +302,16 @@
  ],
  "context": {
   "dti": {
-   "score": 41,
+   "score": 37,
    "max_score": 96,
    "bracket": 3,
-   "as_of": "2026-10-25",
-   "stale_list": true
+   "as_of": "2026-10-26",
+   "stale_list": false
   },
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
- "fleet_sha": "f1233ee8f3c0",
+ "fleet_sha": "7cf96529b43b",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -320,22 +355,22 @@
   ],
   "iterations": 2
  },
- "code_score": 88.5,
- "score_point": 88.3,
- "score": 87.8,
+ "code_score": 82.4,
+ "score_point": 83.8,
+ "score": 83.4,
  "score_ci": [
-  83.1,
-  92.5
+  77.8,
+  88.9
  ],
  "grade": "A",
  "grade_range": [
-  "A",
+  "B",
   "A"
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.998,
-  "B": 0.002,
+  "A": 0.85,
+  "B": 0.15,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -354,31 +389,43 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 85.7,
+    "score": 81.0,
     "grade": "A"
    },
    "mana": {
-    "score": 86.7,
+    "score": 82.0,
     "grade": "A"
    },
    "resilience": {
-    "score": 90.2,
+    "score": 84.5,
     "grade": "A"
    },
    "construction": {
-    "score": 90.8,
+    "score": 84.8,
+    "grade": "A"
+   },
+   "dti": {
+    "score": 88.3,
     "grade": "A"
    },
    "judgment": {
-    "score": 88.5,
+    "score": 82.4,
     "grade": "A"
    }
   },
   "flips": [
    {
+    "component": "dti",
+    "share_now": 0.187,
+    "share_at_flip": 0.346,
+    "boundary": 80,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
     "component": "construction",
-    "share_now": 0.2,
-    "share_at_flip": 0.883,
+    "share_now": 0.163,
+    "share_at_flip": 0.772,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -389,6 +436,7 @@
   "level": "concordant",
   "instruments": {
    "construction": 1.0,
+   "dti": 2.0,
    "judgment": 1.0,
    "mana": 1.0,
    "resilience": 2.0,
@@ -398,14 +446,14 @@
   "spread": 0.333,
   "outliers": [],
   "group": {
-   "kendall_w": 0.52,
-   "p": 0.0454,
+   "kendall_w": 0.5,
+   "p": 0.0206,
    "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 5,
+   "m": 6,
    "n": 4
   }
  },
- "resolution": "the 90% interval spans 0 grade boundaries; concordance concordant",
+ "resolution": "the 90% interval spans 1 grade boundary (80); concordance concordant",
  "judgment": {
   "sub_score": 88,
   "argument": "The measured components are counts and a goldfish: speed is an unopposed ceiling with no blockers and no removal, and mana, resilience and construction read capacity from the list. What they cannot see is the line itself, and the record supports it. The engine turns every draw and discard into counters and cashes them as one commander-damage hit, and the Sphinx wheel stack shows the Wheel plus Sphinx kill passing its checker on the main list. Interaction and standing draw, the pieces the deck lacked, are now in, and the resilience and construction components already score them, so I add nothing for them. I also take nothing off for the missing evidence: the context says the list has had three games, none on v2.1.0, but dti, table record, pilot survey and Forge are already withheld, and an absence is not a deduction. The one logged loss was on an older list and says nothing about this one. Open items, whether the commander survives a real table and whether the Sphinx wheel goes off when the table sees it coming, are questions rather than marks against the number. So my judgment sits at the code score: the components say what I can ground, and no unmeasured fact justifies a gap either way.",
@@ -441,10 +489,10 @@
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.3077,
+  "weight_effective": 0.25,
   "sub_ci": [
-   79.88,
-   96.27
+   79.7,
+   96.68
   ]
  },
  "rank": {
@@ -457,8 +505,8 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 1.0,
-   "2": 0.0,
+   "1": 0.989,
+   "2": 0.011,
    "3": 0.0,
    "4": 0.0
   },
@@ -469,10 +517,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 87.8,
-   "gishath": 70.3,
-   "ur-dragon": 65.8,
-   "goblin-storm": 52.0
+   "sharknado": 83.4,
+   "gishath": 72.9,
+   "ur-dragon": 65.9,
+   "goblin-storm": 51.8
   }
  }
 }
