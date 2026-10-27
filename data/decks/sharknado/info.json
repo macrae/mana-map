@@ -25,6 +25,7 @@
     "invalid": [
       "engine",
       "log",
+      "CONTEXT.md",
       "log_annotations.json",
       "rating.json"
     ],
@@ -14258,12 +14259,12 @@
     "top": []
   },
   "paper": {
-    "version": 11,
-    "sha": "7bbc74bf017b",
-    "decklist_sha256": "0f00066d1090296ddb0acfb5eb9fac0498bc428349e44d1302d6a33d5622526d",
+    "version": 12,
+    "sha": "acecab71d75e",
+    "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
     "built_at": "2026-10-27",
-    "note": "land pass sleeved 2026-10-27",
-    "release": "v2.1.1"
+    "note": "the pilot's cards in the sleeves 2026-10-27",
+    "release": "v2.2.0"
   },
   "record": {
     "games": 3,
@@ -14757,7 +14758,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
     "ran_on_version": 9,
-    "current_version": null,
+    "current_version": 12,
     "runs_on_current_list": 0,
     "games": 40,
     "wins": 6,
@@ -14963,10 +14964,9 @@
     ]
   },
   "next": [
-    "4 artifact(s) fail their own gate (engine, log, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "5 artifact(s) fail their own gate (engine, log, CONTEXT.md, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
-    "DeckCheck copy is V10, sleeved is V11 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
+    "DeckCheck copy is V10, sleeved is V12 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
     "open questions routed: diagnose ×2, goldfish ×2, research-strategy ×2, resolve-stack ×5",
