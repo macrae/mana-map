@@ -1,81 +1,89 @@
 {
   "slug": "sharknado",
-  "decklist_sha256_prefix": "c9186bd91308",
-  "assessment": "Two narrow tutors, one per kind of missing piece. Idyllic Tutor ({2}{W}, sorcery) finds an enchantment, and the 99 holds eight: Artist's Talent, Fiery Emancipation, Gratuitous Violence, Knowledge Is Power, Rhystic Study, Smothering Tithe, Sorcerer Class, Teferi's Ageless Insight. Stoneforge Mystic ({1}{W}) finds one of nine Equipment: Brotherhood Regalia, Champion's Helm, Embercleave, Fireshrieker, Genji Glove, Lightning Greaves, Lizard Blades, Mask of Memory, Zephyr Boots. She can also put an Equipment from your hand onto the battlefield for {1}{W}, which skips its casting cost. Both cost white, the thinnest colour: 19 land sources against a target of 22. Neither finds a commander, a wheel or a shield spell, so neither replaces a keep. The default for each is the piece that closes on the board you have; every damage figure below that goes past stacks 001, 004 and 005 is oracle arithmetic and needs a stack scenario.",
+  "assessment": "Two narrow tutors, one for each kind of missing piece. Idyllic Tutor ({2}{W}, sorcery) finds an enchantment. The 99 holds ten: Artist's Talent, Fiery Emancipation, Gratuitous Violence, Jeskai Ascendancy, Knowledge Is Power, Mystic Remora, Rhystic Study, Smothering Tithe, Sorcerer Class and Teferi's Ageless Insight. Stoneforge Mystic ({1}{W}) finds one of four Equipment: Brotherhood Regalia, Embercleave, Lightning Greaves and Robe of Stars. Her {1}{W}, {T} puts an Equipment from your hand onto the battlefield without casting it. That needs a turn of waiting, since it is a tap ability on a creature. Neither tutor finds a commander, a wheel, Consecrated Sphinx or a shield spell, so neither one makes a keep on its own. The only checker-passed kill on this list (stack 009) runs through a creature, which neither can fetch. Every combat figure below is oracle arithmetic: no passing stack resolves combat with any card in the 99.",
   "tutors": [
     {
       "card": "Idyllic Tutor",
       "targets": [
         {
-          "scenario": "A commander is out and has survived a turn cycle, you hold a double-strike piece or Blade Historian is on the battlefield, and you have no damage multiplier.",
-          "fetch": "Gratuitous Violence",
-          "why": "It doubles damage from any creature you control, so it serves both commanders: Shabraz's swing and Brallin's swing and pings. By oracle arithmetic a 10/10 with double strike under it is 40 to one seat, where the same hit without it is 20. Five mana on the turn after the tutor. Needs a stack scenario: no passing stack resolves combat in this deck."
-        },
-        {
-          "scenario": "Shabraz is out, a wheel is in hand, and you are one turn from swinging with nothing that adds to his size beyond his own counters.",
-          "fetch": "Knowledge Is Power",
-          "why": "Every creature gets +X/+X, X being the cards you drew this turn, so the wheel turn is also the pump turn. Stack 001 leaves Shabraz a 10/10 after Windfall, and double strike on that is 20, one short; this is the card that covers the gap. It costs {3}{W}{U}, so plan Idyllic one turn and Knowledge Is Power plus the wheel the next. The +X arithmetic needs a stack scenario."
-        },
-        {
-          "scenario": "Turn three or four, no commander resolved yet, a symmetrical wheel (Windfall, Reforge the Soul, Jace's Archivist) in hand, and ramp short: the game 001 problem.",
+          "scenario": "Turn three or four. No commander yet, two or three lands, no rock, and a commander or a wheel in hand: the game 003 shape, mana-starved for a round.",
           "fetch": "Smothering Tithe",
-          "why": "Each opponent draw is a Treasure unless that player pays {2}, and a symmetrical wheel makes every opponent draw seven at once. That is the mana for a commander plus an equip on the same turn. Tithe must be on the battlefield before the wheel. It is a Game Changer and it taxes the whole table, so it draws attention; the payment the table chooses is not modelled anywhere. Oracle text only."
+          "why": "Every opponent draw is a Treasure unless that player pays {2}, so a symmetrical wheel later is seven offers per seat. Tithe has to be on the battlefield before the wheel. No passing stack has Tithe on a board, and the goldfish barely reads its Treasure (treasure engine online by turn 6 in 0.6% of games), so this rests on oracle text. It is a Game Changer and it taxes the whole table, so expect attention."
         },
         {
-          "scenario": "Brallin is out, Torbran or a level-3 Artist's Talent is not, and the table is at life totals a seven-card wheel cannot reach from pings alone.",
+          "scenario": "Brallin is out and has survived a turn cycle, Torbran is on the battlefield, a wheel is in hand, and you can wait a turn.",
+          "fetch": "Gratuitous Violence",
+          "why": "Stack 007 settles that each opponent orders the damage replacements on Brallin's ping and takes the smaller result. With Torbran and Gratuitous Violence only, the smaller order is double first, then +2: 4 per ping. Seven discards make 28 per seat by that arithmetic, against Torbran's 21 alone (stack 005). It also doubles both commanders' combat damage by oracle text. It costs {2}{R}{R}{R}, and red is the short colour at 30 land sources against a target of 36. Needs a stack scenario."
+        },
+        {
+          "scenario": "Shabraz is out at about 10/10 with a clear lane in the air, and you hold a wheel for next turn but no double-strike piece.",
+          "fetch": "Knowledge Is Power",
+          "why": "Creatures you control get +X/+X, where X is the cards drawn this turn. A precombat Windfall for seven puts seven counters on Shabraz (stack 001) and adds at least +7/+7, so a 10/10 attacks as at least a 24/24. By arithmetic that is past 21 in one hit, with no double strike. It costs {3}{W}{U}, so you tutor on one turn and cast the enchantment and the wheel on the next. This is candidate line 5 in strategic_frame.json and needs a stack scenario."
+        },
+        {
+          "scenario": "Shabraz is out and unblocked in the air, you have no double-strike piece, and six mana with {R}{R}{R} next turn.",
           "fetch": "Fiery Emancipation",
-          "why": "The one nobody sees. It triples damage from any source you control, Brallin's pings included, so by oracle arithmetic seven discards would be 21 to each opponent: the figure stacks 004 and 005 reach with other cards. It also triples either commander's swing. Six mana with {R}{R}{R}, so it is a two-turn plan. Needs a stack scenario."
+          "why": "It triples damage from any source you control, and Shabraz is white and blue, so Torbran never helps him. By oracle arithmetic a 7/7 Shabraz connecting under it deals 21, and no double strike is needed. Whether tripled combat damage from a commander counts toward the 21 is read here from the rule, not from a stack, so it needs a stack scenario. Stack 007 also has it as one of the three replacements on Brallin's ping.",
+          "citations": [
+            {
+              "rule": "903.10a",
+              "quote": "A player who’s been dealt 21 or more combat damage by the same commander over the course of the game loses the game."
+            }
+          ]
         }
       ],
-      "notes": "A three-mana sorcery that does nothing to the board the turn you cast it. Cast it on a quiet turn, never on the turn you intend to swing."
+      "notes": "Idyllic Tutor is a sorcery for three, so you tutor on one turn and cast on the next. Gratuitous Violence and Fiery Emancipation each need {R}{R}{R}, so count your red sources before you name either."
     },
     {
       "card": "Stoneforge Mystic",
       "targets": [
         {
-          "scenario": "Turn two or three, no commander yet, no protection in hand, and the table has removal up.",
+          "scenario": "Default. A commander lands next turn, or has just landed, and the table has shown spot removal.",
           "fetch": "Lightning Greaves",
-          "why": "Haste and shroud, equip {0}: the commander lands and can swing the turn it arrives, and opponents cannot target it. Shroud stops your own targeting too, so move Greaves to another creature before you attach anything else. Brallin was removed twice in game 001.",
+          "why": "It gives haste and shroud, and equip {0} moves it for free. You named Greaves 'really good' in game 001, the game in which Brallin was removed twice. Shroud also blocks your own targeting, so move Greaves off the commander before you equip anything else or take Shu Yun's double strike.",
           "citations": [
             {
               "rule": "702.18a",
-              "quote": "Shroud is a static ability. “Shroud” means “This permanent or player can’t be the target of spells or abilities.”"
-            }
-          ]
-        },
-        {
-          "scenario": "A commander with counters is out without Greaves on it, Stoneforge has been on the battlefield since your turn began, and {1}{W} is open.",
-          "fetch": "Embercleave",
-          "why": "The closer. Stoneforge puts it onto the battlefield for {1}{W} instead of {4}{R}{R}, and its enters trigger attaches it to target creature you control: double strike, trample and +1/+1. Her ability has no timing restriction, so you can do it after blockers are declared. She taps to do it, so not on the turn she arrives. The trigger targets, so it cannot attach to a Greaves-wearing commander.",
-          "citations": [
-            {
-              "rule": "117.1b",
-              "quote": "A player may activate an activated ability any time they have priority."
+              "quote": "“Shroud” means “This permanent or player can’t be the target of spells or abilities.”"
             },
             {
-              "rule": "302.6",
-              "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+              "rule": "702.6a",
+              "quote": "“Equip [cost]” means “[Cost]: Attach this permanent to target creature you control. Activate only as a sorcery.”"
             }
           ]
         },
         {
-          "scenario": "Brallin is the commander you are swinging with, the defender has ground blockers, and you have no evasion piece.",
-          "fetch": "Brotherhood Regalia",
-          "why": "Can't be blocked and ward {2}, and equip legendary creature is {1}, so it goes on either commander for one mana. Shabraz already flies; Brallin does not, and Regalia is the one fetch that gives him both evasion and protection. Pair it with a double-strike piece already in hand."
+          "scenario": "Behind. A commander has already been removed once (the tax is on), and the table runs exile or bounce that Flawless Maneuver does not stop.",
+          "fetch": "Robe of Stars",
+          "why": "For {1}{W} at instant speed the carrier phases out until your next turn. A phased-out permanent is treated as though it does not exist, which answers exile and bounce as well as destroy. Equip {1}. It saves paying the tax again: each recast costs {2} more per earlier cast from the command zone.",
+          "citations": [
+            {
+              "rule": "702.26b",
+              "quote": "If a permanent phases out, its status changes to “phased out.” Except for rules and effects that specifically mention phased-out permanents, a phased-out permanent is treated as though it does not exist."
+            },
+            {
+              "rule": "903.8",
+              "quote": "A commander cast from the command zone costs an additional {2} for each previous time the player casting it has cast it from the command zone that game."
+            }
+          ]
         },
         {
-          "scenario": "One opponent is near 21 commander damage from a grown commander, a second seat is also low, and you hold no double-strike piece.",
-          "fetch": "Genji Glove",
-          "why": "Double strike plus an extra combat phase, and Stoneforge puts it in without paying {5}; equip is still {3}. Each combat lets you attack a different seat, so it is the fetch that can take two opponents in one turn. Whether that line kills two seats needs a stack scenario."
+          "scenario": "Closing. Stoneforge has been on the battlefield since your last turn, a commander is at 10/10 or more, and you have {1}{W} plus a lane.",
+          "fetch": "Embercleave",
+          "why": "Her {1}{W}, {T} puts Embercleave onto the battlefield without paying {4}{R}{R}, and its enter trigger attaches it to target creature you control: +1/+1, double strike, trample. A 10/10 becomes an 11/11 that deals 22 by arithmetic. No passing stack resolves combat with Embercleave, so this is the deck's stated win and it is unproven. Its equip {3} is a sorcery-speed backup if it falls off. Its trigger targets, so it cannot attach to a commander in Lightning Greaves."
+        },
+        {
+          "scenario": "The board is wide with blockers (game 001's zombie tokens), and Brallin is the commander you have out.",
+          "fetch": "Brotherhood Regalia",
+          "why": "Equip legendary creature {1}, and both commanders are legendary. The equipped creature can't be blocked and has ward {2}. Brallin has no evasion of his own, and Shabraz's {W/U} flying grant is the other way over. Ward taxes removal but does not stop it."
         }
       ],
-      "notes": "She finds Equipment only. Equip costs still apply to everything except Embercleave's own attach trigger, so count the equip mana before you choose the target."
+      "notes": "Her ETB is a 'may' search, so you can hold her until you know which of the four you need. The put-onto-battlefield ability needs her untapped and free of summoning sickness."
     }
   ],
   "gaps": [
-    "No passing stack resolves combat in this deck, so every commander-damage figure here past stacks 001, 004 and 005 is oracle arithmetic.",
-    "The goldfish declares no group for either tutor's targets, so how often a tutor finds its piece in time is unpriced.",
-    "Smothering Tithe's yield depends on how often opponents pay {2}; no figure for this table exists.",
-    "Brallin's partner trigger puts Shabraz into a hand 'from their library'. It is not a library search, and Shabraz starts in the command zone, so it is not covered here."
+    "No passing stack resolves combat with Embercleave, Knowledge Is Power, Fiery Emancipation or Gratuitous Violence. Every combat figure here is oracle arithmetic (engine.json open_questions[0] and [1]).",
+    "Smothering Tithe is on no stack board, and the goldfish's Treasure reading is near zero, so its behind-on-mana value is unmeasured.",
+    "No artifact measures how often either tutor is cast, or what it found, in a real game. CONTEXT.md lists this as an open question."
   ]
 }
