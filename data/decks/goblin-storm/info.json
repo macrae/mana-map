@@ -12,15 +12,15 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 19,
-    "stale": [],
-    "older_model": [
-      "goldfish",
-      "mana"
+    "stale": [
+      "tutors"
     ],
+    "older_model": [],
     "invalid": [
-      "engine"
+      "engine",
+      "rating.json"
     ],
     "verified": true,
     "missing": [
@@ -36,6 +36,720 @@
   },
   "brief": null,
   "branches": [
+    {
+      "name": "storm-tune-v1",
+      "opened": "2026-10-27",
+      "why": "The pilot, 2026-10-27, from DeckCheck's PowerTune read through Zada's text: add the spells Zada copies into team effects (Accelerate, Ancestral Anger, Molten Duplication, Heat Shimmer) and Battle Hymn; cut Goblin Trashmaster (a flat lord) and the three tapped lands for untapped utility (Three Tree City, Sokenzan); add protection for Zada. Judged as a profile, not on this row alone.",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-27 into the list after VNone",
+      "base_moved": null,
+      "proposal": {
+        "at": "2026-10-27",
+        "as_version": "v1.2.0",
+        "why": "The pilot, 2026-10-27: a DTI push read through Zada's text — copy spells (Accelerate, Ancestral Anger, Heat Shimmer, Molten Duplication), Battle Hymn, interaction (Abrade, Harsh Mentor, Untimely Malfunction), protection (Hexing Squelcher, Deflecting Swat, Plaza of Heroes) and untapped lands (Three Tree City, Sokenzan).",
+        "base_version": 3,
+        "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+        "accepted_on": {
+          "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+          "state": "do not merge",
+          "objective": {
+            "axis": "kill_by_8",
+            "op": ">=",
+            "value": 0.62,
+            "why": "kill_by_8 reads 0.551 on the champion (resolves ~0.02); 0.30 was already met. +0.07 is a real move for a draw-and-copy package."
+          },
+          "grade": "not met",
+          "reading": 0.4846,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "f5b4b19d2254",
+            "seed": 20260826
+          }
+        },
+        "forced_reason": "the pilot's call, 2026-10-27, on the whole profile: interaction (+0.040 affordable, plus four answers the goldfish cannot see), protection for Zada (Hexing Squelcher, Deflecting Swat, Untimely Malfunction, Plaza of Heroes), consistency (stalls -0.055, missed drops -0.015, act by T3 +0.007), card flow (+0.75 by T8) and late power (+27 damage @T10) over a slightly slower early clock; the pre-registered kill_by_8 row is one measure, not the verdict"
+      },
+      "pull_list": {
+        "buy": [],
+        "unsleeve": [],
+        "proxy": [],
+        "free": [],
+        "box": [],
+        "blocking": 0,
+        "procurement": null
+      },
+      "base_version": 3,
+      "size": 100,
+      "add": 0,
+      "out": 0,
+      "counts": {
+        "in_deck": 79,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
+      },
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
+      "cards": [
+        {
+          "name": "Abrade",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Accelerate",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ancestors' Aid",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ancestral Anger",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Arena of Glory",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Battle Hymn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Blasphemous Act",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Brightstone Ritual",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Broadside Bombardiers",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Castle Embereth",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Conspicuous Snoop",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Crimson Wisps",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Daring Discovery",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Deflecting Swat",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Den of the Bugbear",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dragon Fodder",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Dwarven Mine",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Electroduplicate",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Empty the Warrens",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Expedite",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Faithless Looting",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fists of Flame",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Fountainport",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "General Kreat, the Boltbringer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Bombardment",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Burrows",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Bushwhacker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Chieftain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Instigator",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Lackey",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Matron",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Goblin Warchief",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Grapeshot",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Great Train Heist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Grenzo, Havoc Raiser",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Harsh Mentor",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Heat Shimmer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Hexing Squelcher",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Idol of Oblivion",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Impact Tremors",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Impolite Entrance",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Impulsive Pilferer",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Infuriate",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Kher Keep",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Krenko's Command",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Krenko, Mob Boss",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Legion Warboss",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Might of the Meek",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mogg War Marshal",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Molten Duplication",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Mountain",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Pashalik Mons",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Past in Flames",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Plaza of Heroes",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Purphoros, God of the Forge",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reckless Ransacking",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Reliquary Tower",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Renegade Tactics",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Roaming Throne",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Rundvelt Hordemaster",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Searslicer Goblin",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Shinka, the Bloodsoaked Keep",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Siege-Gang Commander",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skirk Prospector",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Skullclamp",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sokenzan, Crucible of Defiance",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sol Ring",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Spinerock Knoll",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Storm-Kiln Artist",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Sudden Breakthrough",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Swiftfoot Boots",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Three Tree City",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Ticked Off",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Twinflame",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Untimely Malfunction",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "War Room",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Wild Ride",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
+          "name": "Zada, Hedron Grinder",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        }
+      ],
+      "has_cards": true,
+      "objective": {
+        "axis": "kill_by_8",
+        "op": ">=",
+        "value": 0.62
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 7,
+        "fell": 4,
+        "no_call": 4
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.4846,
+        "shortfall": 0.1354
+      },
+      "measured": true,
+      "blind_spots": [
+        "Abrade",
+        "Deflecting Swat",
+        "Forgotten Cave",
+        "Goblin Trashmaster",
+        "Hexing Squelcher",
+        "Hidden Volcano",
+        "Plaza of Heroes",
+        "Siege-Gang Lieutenant",
+        "Smoldering Crater",
+        "Sokenzan, Crucible of Defiance",
+        "Three Tree City",
+        "Untimely Malfunction",
+        "Vandalblast",
+        "Witch's Mark"
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "hoard @T10",
+          "damage @T10",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "extra cards by T8",
+          "interaction affordable @T6",
+          "hand can act by T3"
+        ],
+        "fell": [
+          "hoard @T6",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 27.2676,
+            "ci95_diff": [
+              16.0723,
+              38.4629
+            ],
+            "mde": 16.0024,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0509,
+            "ci95_diff": [
+              -0.0577,
+              -0.0441
+            ],
+            "mde": 0.0097,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.9995,
+            "ci95_diff": [
+              -1.0786,
+              -0.9204
+            ],
+            "mde": 0.1131,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.7492,
+            "ci95_diff": [
+              0.6333,
+              0.8651
+            ],
+            "mde": 0.1656,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      }
+    },
     {
       "name": "matron-v1",
       "opened": "2026-10-20",
@@ -70,27 +784,84 @@
         "proxy": []
       },
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Beetleback Chief"
+          },
+          {
+            "name": "Forgotten Cave"
+          },
+          {
+            "name": "Frontline Heroism"
+          },
+          {
+            "name": "Goblin Dark-Dwellers"
+          },
+          {
+            "name": "Goblin Trashmaster"
+          },
+          {
+            "name": "Hidden Volcano"
+          },
+          {
+            "name": "Redcap Gutter-Dweller"
+          },
+          {
+            "name": "Ruby Medallion"
+          },
+          {
+            "name": "Seething Song"
+          },
+          {
+            "name": "Siege-Gang Lieutenant"
+          },
+          {
+            "name": "Smoldering Crater"
+          },
+          {
+            "name": "Vandalblast"
+          }
+        ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Witch's Mark",
+            "where": [
+              "Green"
+            ]
+          }
+        ],
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 79,
-        "box": 0,
+        "in_deck": 66,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 0,
+        "buy": 12,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Beetleback Chief",
+        "Forgotten Cave",
+        "Frontline Heroism",
+        "Goblin Dark-Dwellers",
+        "Goblin Trashmaster",
+        "Hidden Volcano",
+        "Redcap Gutter-Dweller",
+        "Ruby Medallion",
+        "Seething Song",
+        "Siege-Gang Lieutenant",
+        "Smoldering Crater",
+        "Vandalblast"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -109,10 +880,10 @@
         },
         {
           "name": "Beetleback Chief",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Blasphemous Act",
@@ -228,10 +999,10 @@
         },
         {
           "name": "Forgotten Cave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fountainport",
@@ -242,10 +1013,10 @@
         },
         {
           "name": "Frontline Heroism",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "General Kreat, the Boltbringer",
@@ -284,10 +1055,10 @@
         },
         {
           "name": "Goblin Dark-Dwellers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Goblin Instigator",
@@ -312,10 +1083,10 @@
         },
         {
           "name": "Goblin Trashmaster",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Goblin Warchief",
@@ -347,10 +1118,10 @@
         },
         {
           "name": "Hidden Volcano",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Idol of Oblivion",
@@ -466,10 +1237,10 @@
         },
         {
           "name": "Redcap Gutter-Dweller",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reliquary Tower",
@@ -494,10 +1265,10 @@
         },
         {
           "name": "Ruby Medallion",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rundvelt Hordemaster",
@@ -515,10 +1286,10 @@
         },
         {
           "name": "Seething Song",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shinka, the Bloodsoaked Keep",
@@ -536,10 +1307,10 @@
         },
         {
           "name": "Siege-Gang Lieutenant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skirk Prospector",
@@ -557,10 +1328,10 @@
         },
         {
           "name": "Smoldering Crater",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -613,10 +1384,10 @@
         },
         {
           "name": "Vandalblast",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "War Room",
@@ -634,10 +1405,15 @@
         },
         {
           "name": "Witch's Mark",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Zada, Hedron Grinder",
@@ -720,7 +1496,25 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "013",
+          "title": "Frontline Heroism and Zada trigger on the same cast",
+          "checker": "pass",
+          "names": [
+            "Frontline Heroism"
+          ]
+        },
+        {
+          "id": "014",
+          "title": "Witch's Mark cast at Zada with three Goblins out",
+          "checker": "pass",
+          "names": [
+            "Witch's Mark"
+          ]
+        }
+      ]
     },
     {
       "name": "meaner-v1",
@@ -757,29 +1551,80 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Battle Hymn"
+            "name": "Beetleback Chief"
+          },
+          {
+            "name": "Forgotten Cave"
+          },
+          {
+            "name": "Frontline Heroism"
+          },
+          {
+            "name": "Goblin Dark-Dwellers"
+          },
+          {
+            "name": "Goblin Trashmaster"
+          },
+          {
+            "name": "Hidden Volcano"
+          },
+          {
+            "name": "Redcap Gutter-Dweller"
+          },
+          {
+            "name": "Ruby Medallion"
+          },
+          {
+            "name": "Seething Song"
+          },
+          {
+            "name": "Siege-Gang Lieutenant"
+          },
+          {
+            "name": "Smoldering Crater"
+          },
+          {
+            "name": "Vandalblast"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 1,
+        "box": [
+          {
+            "name": "Witch's Mark",
+            "where": [
+              "Green"
+            ]
+          }
+        ],
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 13,
+      "out": 13,
       "counts": {
-        "in_deck": 78,
-        "box": 0,
+        "in_deck": 66,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 12,
         "free": 0
       },
       "unsourced": [
-        "Battle Hymn"
+        "Beetleback Chief",
+        "Forgotten Cave",
+        "Frontline Heroism",
+        "Goblin Dark-Dwellers",
+        "Goblin Trashmaster",
+        "Hidden Volcano",
+        "Redcap Gutter-Dweller",
+        "Ruby Medallion",
+        "Seething Song",
+        "Siege-Gang Lieutenant",
+        "Smoldering Crater",
+        "Vandalblast"
       ],
       "mergeable": false,
       "free": 0,
@@ -800,17 +1645,17 @@
         },
         {
           "name": "Battle Hymn",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Beetleback Chief",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Beetleback Chief",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Blasphemous Act",
@@ -926,10 +1771,10 @@
         },
         {
           "name": "Forgotten Cave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fountainport",
@@ -940,10 +1785,10 @@
         },
         {
           "name": "Frontline Heroism",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "General Kreat, the Boltbringer",
@@ -982,10 +1827,10 @@
         },
         {
           "name": "Goblin Dark-Dwellers",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Goblin Instigator",
@@ -1003,10 +1848,10 @@
         },
         {
           "name": "Goblin Trashmaster",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Goblin Warchief",
@@ -1038,10 +1883,10 @@
         },
         {
           "name": "Hidden Volcano",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Idol of Oblivion",
@@ -1157,10 +2002,10 @@
         },
         {
           "name": "Redcap Gutter-Dweller",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reliquary Tower",
@@ -1185,10 +2030,10 @@
         },
         {
           "name": "Ruby Medallion",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rundvelt Hordemaster",
@@ -1206,10 +2051,10 @@
         },
         {
           "name": "Seething Song",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shinka, the Bloodsoaked Keep",
@@ -1227,10 +2072,10 @@
         },
         {
           "name": "Siege-Gang Lieutenant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skirk Prospector",
@@ -1248,10 +2093,10 @@
         },
         {
           "name": "Smoldering Crater",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -1304,10 +2149,10 @@
         },
         {
           "name": "Vandalblast",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "War Room",
@@ -1325,10 +2170,15 @@
         },
         {
           "name": "Witch's Mark",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Zada, Hedron Grinder",
@@ -1420,11 +2270,19 @@
       },
       "stacks": [
         {
-          "id": "002",
-          "title": "Empty the Warrens as the fourth spell with Impact Tremors out",
+          "id": "013",
+          "title": "Frontline Heroism and Zada trigger on the same cast",
           "checker": "pass",
           "names": [
-            "Battle Hymn"
+            "Frontline Heroism"
+          ]
+        },
+        {
+          "id": "014",
+          "title": "Witch's Mark cast at Zada with three Goblins out",
+          "checker": "pass",
+          "names": [
+            "Witch's Mark"
           ]
         }
       ]
@@ -1439,13 +2297,7 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Ancestral Anger"
-          },
-          {
             "name": "Assault Strobe"
-          },
-          {
-            "name": "Battle Hymn"
           },
           {
             "name": "Boggart Shenanigans"
@@ -1455,6 +2307,12 @@
           },
           {
             "name": "Firebrand Archer"
+          },
+          {
+            "name": "Forgotten Cave"
+          },
+          {
+            "name": "Frontline Heroism"
           },
           {
             "name": "Goblin Negotiation"
@@ -1469,7 +2327,7 @@
             "name": "Haze of Rage"
           },
           {
-            "name": "Heat Shimmer"
+            "name": "Hidden Volcano"
           },
           {
             "name": "Howlsquad Heavy"
@@ -1487,10 +2345,19 @@
             "name": "Mana Geyser"
           },
           {
-            "name": "Molten Duplication"
+            "name": "Pyretic Ritual"
           },
           {
-            "name": "Pyretic Ritual"
+            "name": "Redcap Gutter-Dweller"
+          },
+          {
+            "name": "Seething Song"
+          },
+          {
+            "name": "Siege-Gang Lieutenant"
+          },
+          {
+            "name": "Smoldering Crater"
           },
           {
             "name": "Spreading Insurrection"
@@ -1517,40 +2384,43 @@
             ]
           }
         ],
-        "blocking": 21,
+        "blocking": 24,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 25,
+      "out": 25,
       "counts": {
-        "in_deck": 57,
+        "in_deck": 54,
         "box": 1,
         "elsewhere": 1,
-        "buy": 20,
+        "buy": 23,
         "free": 0
       },
       "unsourced": [
-        "Ancestral Anger",
         "Assault Strobe",
-        "Battle Hymn",
         "Boggart Shenanigans",
         "Champion's Helm",
         "Firebrand Archer",
+        "Forgotten Cave",
+        "Frontline Heroism",
         "Goblin Negotiation",
         "Guttersnipe",
         "Hanweir Garrison",
         "Haze of Rage",
-        "Heat Shimmer",
+        "Hidden Volcano",
         "Howlsquad Heavy",
         "Kessig Flamebreather",
         "Kindle the Inner Flame",
         "Lavaspur Boots",
         "Mana Geyser",
         "Mithril Coat",
-        "Molten Duplication",
         "Pyretic Ritual",
+        "Redcap Gutter-Dweller",
+        "Seething Song",
+        "Siege-Gang Lieutenant",
+        "Smoldering Crater",
         "Spreading Insurrection",
         "Squee, Dubious Monarch"
       ],
@@ -1566,10 +2436,10 @@
         },
         {
           "name": "Ancestral Anger",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arena of Glory",
@@ -1587,10 +2457,10 @@
         },
         {
           "name": "Battle Hymn",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Boggart Shenanigans",
@@ -1699,10 +2569,10 @@
         },
         {
           "name": "Forgotten Cave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fountainport",
@@ -1713,10 +2583,10 @@
         },
         {
           "name": "Frontline Heroism",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "General Kreat, the Boltbringer",
@@ -1804,17 +2674,17 @@
         },
         {
           "name": "Heat Shimmer",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Hidden Volcano",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Hidden Volcano",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Howlsquad Heavy",
@@ -1924,10 +2794,10 @@
         },
         {
           "name": "Molten Duplication",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -1959,10 +2829,10 @@
         },
         {
           "name": "Redcap Gutter-Dweller",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reliquary Tower",
@@ -2006,10 +2876,10 @@
         },
         {
           "name": "Seething Song",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shinka, the Bloodsoaked Keep",
@@ -2027,10 +2897,10 @@
         },
         {
           "name": "Siege-Gang Lieutenant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skirk Prospector",
@@ -2048,10 +2918,10 @@
         },
         {
           "name": "Smoldering Crater",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -2226,14 +3096,6 @@
       },
       "stacks": [
         {
-          "id": "002",
-          "title": "Empty the Warrens as the fourth spell with Impact Tremors out",
-          "checker": "pass",
-          "names": [
-            "Battle Hymn"
-          ]
-        },
-        {
           "id": "005",
           "title": "Haze of Rage buyback + Storm-Kiln Artist: the self-sustaining storm loop",
           "checker": "pass",
@@ -2277,6 +3139,14 @@
           ]
         },
         {
+          "id": "013",
+          "title": "Frontline Heroism and Zada trigger on the same cast",
+          "checker": "pass",
+          "names": [
+            "Frontline Heroism"
+          ]
+        },
+        {
           "id": "016",
           "title": "Storm-copied Spreading Insurrection into Goblin Bombardment",
           "checker": "pass",
@@ -2296,13 +3166,7 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Ancestral Anger"
-          },
-          {
             "name": "Assault Strobe"
-          },
-          {
-            "name": "Battle Hymn"
           },
           {
             "name": "Boggart Shenanigans"
@@ -2312,6 +3176,12 @@
           },
           {
             "name": "Firebrand Archer"
+          },
+          {
+            "name": "Forgotten Cave"
+          },
+          {
+            "name": "Frontline Heroism"
           },
           {
             "name": "Goblin Negotiation"
@@ -2324,6 +3194,9 @@
           },
           {
             "name": "Haze of Rage"
+          },
+          {
+            "name": "Hidden Volcano"
           },
           {
             "name": "Howlsquad Heavy"
@@ -2339,6 +3212,18 @@
           },
           {
             "name": "Pyretic Ritual"
+          },
+          {
+            "name": "Redcap Gutter-Dweller"
+          },
+          {
+            "name": "Seething Song"
+          },
+          {
+            "name": "Siege-Gang Lieutenant"
+          },
+          {
+            "name": "Smoldering Crater"
           },
           {
             "name": "Spreading Insurrection"
@@ -2370,40 +3255,51 @@
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Witch's Mark",
+            "where": [
+              "Green"
+            ]
           }
         ],
-        "blocking": 19,
+        "blocking": 24,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 20,
-      "out": 20,
+      "add": 26,
+      "out": 26,
       "counts": {
-        "in_deck": 59,
-        "box": 1,
+        "in_deck": 53,
+        "box": 2,
         "elsewhere": 2,
-        "buy": 17,
+        "buy": 22,
         "free": 0
       },
       "unsourced": [
-        "Ancestral Anger",
         "Assault Strobe",
-        "Battle Hymn",
         "Boggart Shenanigans",
         "Champion's Helm",
         "Chaos Warp",
         "Firebrand Archer",
+        "Forgotten Cave",
+        "Frontline Heroism",
         "Goblin Negotiation",
         "Guttersnipe",
         "Hanweir Garrison",
         "Haze of Rage",
+        "Hidden Volcano",
         "Howlsquad Heavy",
         "Kessig Flamebreather",
         "Lavaspur Boots",
         "Mana Geyser",
         "Mithril Coat",
         "Pyretic Ritual",
+        "Redcap Gutter-Dweller",
+        "Seething Song",
+        "Siege-Gang Lieutenant",
+        "Smoldering Crater",
         "Spreading Insurrection",
         "Squee, Dubious Monarch"
       ],
@@ -2419,10 +3315,10 @@
         },
         {
           "name": "Ancestral Anger",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arena of Glory",
@@ -2440,10 +3336,10 @@
         },
         {
           "name": "Battle Hymn",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blasphemous Act",
@@ -2581,10 +3477,10 @@
         },
         {
           "name": "Forgotten Cave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fountainport",
@@ -2595,10 +3491,10 @@
         },
         {
           "name": "Frontline Heroism",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "General Kreat, the Boltbringer",
@@ -2686,10 +3582,10 @@
         },
         {
           "name": "Hidden Volcano",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Howlsquad Heavy",
@@ -2827,10 +3723,10 @@
         },
         {
           "name": "Redcap Gutter-Dweller",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Reliquary Tower",
@@ -2874,10 +3770,10 @@
         },
         {
           "name": "Seething Song",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shinka, the Bloodsoaked Keep",
@@ -2895,10 +3791,10 @@
         },
         {
           "name": "Siege-Gang Lieutenant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skirk Prospector",
@@ -2916,10 +3812,10 @@
         },
         {
           "name": "Smoldering Crater",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -2986,10 +3882,15 @@
         },
         {
           "name": "Witch's Mark",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Zada, Hedron Grinder",
@@ -3099,14 +4000,6 @@
       },
       "stacks": [
         {
-          "id": "002",
-          "title": "Empty the Warrens as the fourth spell with Impact Tremors out",
-          "checker": "pass",
-          "names": [
-            "Battle Hymn"
-          ]
-        },
-        {
           "id": "005",
           "title": "Haze of Rage buyback + Storm-Kiln Artist: the self-sustaining storm loop",
           "checker": "pass",
@@ -3150,6 +4043,22 @@
           ]
         },
         {
+          "id": "013",
+          "title": "Frontline Heroism and Zada trigger on the same cast",
+          "checker": "pass",
+          "names": [
+            "Frontline Heroism"
+          ]
+        },
+        {
+          "id": "014",
+          "title": "Witch's Mark cast at Zada with three Goblins out",
+          "checker": "pass",
+          "names": [
+            "Witch's Mark"
+          ]
+        },
+        {
           "id": "016",
           "title": "Storm-copied Spreading Insurrection into Goblin Bombardment",
           "checker": "pass",
@@ -3175,159 +4084,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4305,
+          "rate": 0.4225,
           "ci95": [
-            0.4208,
-            0.4402
+            0.4129,
+            0.4322
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0997,
+          "rate": 0.0505,
           "ci95": [
-            0.094,
-            0.1057
+            0.0464,
+            0.055
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0623,
+          "rate": 0.0327,
           "ci95": [
-            0.0577,
-            0.0672
+            0.0294,
+            0.0364
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.026,
+          "rate": 0.016,
           "ci95": [
-            0.0231,
-            0.0293
+            0.0137,
+            0.0187
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0516,
+          "rate": 0.0432,
           "ci95": [
-            0.0474,
-            0.0561
+            0.0394,
+            0.0474
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.107,
+          "rate": 0.0917,
           "ci95": [
-            0.1011,
-            0.1132
+            0.0862,
+            0.0975
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.1511,
+          "rate": 0.1255,
           "ci95": [
-            0.1442,
-            0.1583
+            0.1192,
+            0.1321
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.1666,
+          "rate": 0.1282,
           "ci95": [
-            0.1594,
-            0.174
+            0.1218,
+            0.1349
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1571,
+          "rate": 0.1119,
           "ci95": [
-            0.1501,
-            0.1644
+            0.1059,
+            0.1182
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1428,
+          "rate": 0.0992,
           "ci95": [
-            0.1361,
-            0.1498
+            0.0935,
+            0.1052
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.2211,
+        "rate": 0.1664,
         "ci95": [
-          0.2131,
-          0.2293
+          0.1592,
+          0.1738
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 9642,
-        "hand_empty": 4522,
-        "mana_short": 5120
+        "stall_turns": 6989,
+        "hand_empty": 3262,
+        "mana_short": 3727
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 6176,
-        "hand_empty": 4042,
-        "mana_short": 2134,
+        "stall_turns": 4648,
+        "hand_empty": 2909,
+        "mana_short": 1739,
         "stall_rate": {
-          "rate": 0.1544,
+          "rate": 0.1162,
           "ci95": [
-            0.1509,
-            0.158
+            0.1131,
+            0.1194
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.026,
-          "diff": 0.1284,
+          "floor_rate": 0.016,
+          "diff": 0.1002,
           "ci95": [
-            0.1236,
-            0.133
+            0.0961,
+            0.1041
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.0686,
+            "rate": 3.1745,
             "ci95": [
-              3.0118,
-              3.1254
+              3.1158,
+              3.2332
             ],
-            "sd": 2.8983,
+            "sd": 2.9933,
             "n": 10000
           },
           "8": {
-            "rate": 3.1145,
+            "rate": 3.3968,
             "ci95": [
-              3.0397,
-              3.1893
+              3.3144,
+              3.4792
             ],
-            "sd": 3.8171,
+            "sd": 4.2061,
             "n": 10000
           },
           "9": {
-            "rate": 3.5113,
+            "rate": 3.9975,
             "ci95": [
-              3.4091,
-              3.6135
+              3.8826,
+              4.1124
             ],
-            "sd": 5.2151,
+            "sd": 5.86,
             "n": 10000
           },
           "10": {
-            "rate": 4.2075,
+            "rate": 4.9266,
             "ci95": [
-              4.0768,
-              4.3382
+              4.7772,
+              5.076
             ],
-            "sd": 6.666,
+            "sd": 7.6207,
             "n": 10000
           }
         },
@@ -3337,39 +4246,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.3979,
+        "rate": 0.3741,
         "ci95": [
-          0.3883,
-          0.4075
+          0.3647,
+          0.3836
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.268,
+      "missed_land_drop_rate": 0.253,
       "mulliganed": {
-        "rate": 0.2185,
+        "rate": 0.2112,
         "ci95": [
-          0.2105,
-          0.2267
+          0.2033,
+          0.2193
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
         "2": 2.144,
-        "3": 3.083,
-        "4": 3.923,
-        "5": 4.635,
-        "6": 5.3,
-        "7": 5.914,
-        "8": 6.521,
-        "9": 7.117,
-        "10": 7.712
+        "3": 3.092,
+        "4": 3.949,
+        "5": 4.672,
+        "6": 5.365,
+        "7": 5.999,
+        "8": 6.621,
+        "9": 7.234,
+        "10": 7.863
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 0.9993
+      "mana_stdev_turn_five": 0.9761
     },
-    "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830"
+    "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f"
   },
   "bracket": {
     "floor": 1,
@@ -3384,7 +4293,7 @@
     "as_of": "2026-10-20",
     "source_updated_at": "2026-10-20T21:44:52.016101+00:00",
     "url": "https://deckcheck.co/app/decklist/lHEauc76uA6G",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 3,
     "omni": {
       "benchmarks": {
@@ -3528,7 +4437,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.993,
+          "value": 4.114,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -3536,7 +4445,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Zada online with a cantrip drawn": {
-          "value": 58,
+          "value": 67,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Zada online with a cantrip drawn' by turn six",
@@ -3544,7 +4453,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Early token maker drawn": {
-          "value": 73,
+          "value": 69,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Early token maker drawn' by turn six",
@@ -3609,6 +4518,7 @@
             "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw a card' -- is paid for out of whatever mana the casting loops did not want, and a cost that eats its own source fires once. Energy and {X} activation costs are REFUSED and named, never priced at zero.",
             "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
             "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+            "WHEEL TIMING (2026-10-21): the turn of every wheel is observed and decided on by nothing. A FINISHER is a wheel resolved with a COMMANDER on the battlefield and a hand the thin-hand clause alone would not have thrown away. A deck's pilot_policy.json may HOLD a wheel (`hold_until` on the wheel channel: event_payoffs, commanders_out) — an AND-gate on the rule above, so a threshold of zero changes nothing; the policy is stamped on the artifact as meta.pilot_policy. A `keep` rule in the same file is read on the hand the model kept and reported as a pass rate, never enforced.",
             "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. DAMAGE IS ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent, which is the right per-seat clock. WHAT WE GAIN off their draws is paid by every opponent and scales with GOLDFISH_OPPONENTS (3): Faerie Mastermind's card on each opponent's second draw, Consecrated Sphinx's two per opponent draw, a Blood per opponent (2026-10-04; at one seat Hallcreeper -> Mastermind read -0.17 cards by T8, at three +0.62). WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
             "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
             "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
@@ -3629,16 +4539,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 7.712,
-            "2": 2.149,
-            "3": 3.087,
-            "4": 3.932,
-            "5": 4.657,
-            "6": 5.317,
-            "7": 5.928,
-            "8": 6.516,
-            "9": 7.102
+            "1": 1.0,
+            "10": 7.87,
+            "2": 2.148,
+            "3": 3.095,
+            "4": 3.959,
+            "5": 4.69,
+            "6": 5.38,
+            "7": 6.011,
+            "8": 6.624,
+            "9": 7.236
           },
           "tier": "data",
           "weight": "detail",
@@ -3648,16 +4558,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 0.566,
-            "2": 0.996,
-            "3": 0.915,
-            "4": 0.816,
-            "5": 0.71,
-            "6": 0.625,
-            "7": 0.573,
-            "8": 0.554,
-            "9": 0.549
+            "1": 1.0,
+            "10": 0.584,
+            "2": 0.997,
+            "3": 0.923,
+            "4": 0.834,
+            "5": 0.719,
+            "6": 0.652,
+            "7": 0.598,
+            "8": 0.578,
+            "9": 0.569
           },
           "tier": "data",
           "weight": "detail",
@@ -3667,16 +4577,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.177,
-            "10": 14.88,
-            "2": 0.682,
-            "3": 1.6,
-            "4": 2.173,
-            "5": 3.046,
-            "6": 5.074,
-            "7": 7.244,
-            "8": 8.63,
-            "9": 11.357
+            "1": 0.149,
+            "10": 18.487,
+            "2": 0.592,
+            "3": 1.521,
+            "4": 1.947,
+            "5": 2.818,
+            "6": 4.781,
+            "7": 6.904,
+            "8": 8.66,
+            "9": 12.705
           },
           "tier": "data",
           "weight": "detail",
@@ -3686,14 +4596,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 360,
-            "1": 1646,
-            "2": 2964,
-            "3": 2890,
-            "4": 1530,
+            "0": 407,
+            "1": 1627,
+            "2": 2944,
+            "3": 2842,
+            "4": 1561,
             "5": 528,
             "6": 78,
-            "7": 4
+            "7": 13
           },
           "tier": "data",
           "weight": "detail",
@@ -3702,13 +4612,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1160,
-            "4": 6,
-            "5": 51,
-            "6": 503,
-            "7": 2059,
-            "8": 3066,
-            "9": 2196
+            "10": 1326,
+            "4": 4,
+            "5": 47,
+            "6": 437,
+            "7": 1737,
+            "8": 2629,
+            "9": 2330
           },
           "tier": "data",
           "weight": "detail",
@@ -3724,16 +4634,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.993,
+    "commander_mean_cast_turn": 4.114,
     "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
         "label": "Zada online with a cantrip drawn",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 67
       },
       {
         "label": "Early token maker drawn",
-        "by_turn_6_pct": 73
+        "by_turn_6_pct": 69
       },
       {
         "label": "Storm payoff plus ritual drawn",
@@ -3741,20 +4651,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.141,
+      "mean_kill_turn": 8.26,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 6,
-      "kill_by_turn_8_pct": 57,
+      "kill_by_turn_6_pct": 5,
+      "kill_by_turn_8_pct": 48,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 10,
+      "no_kill_by_max_turn_pct": 15,
       "kill_turn_histogram": {
-        "10": 1160,
-        "4": 6,
-        "5": 51,
-        "6": 503,
-        "7": 2059,
-        "8": 3066,
-        "9": 2196
+        "10": 1326,
+        "4": 4,
+        "5": 47,
+        "6": 437,
+        "7": 1737,
+        "8": 2629,
+        "9": 2330
       }
     }
   },
@@ -3779,7 +4689,7 @@
     "under": [
       "card-advantage",
       "sweepers",
-      "protection",
+      "threat-density",
       "interaction-breadth"
     ],
     "over": [
@@ -3856,7 +4766,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
     "ran_on_version": 1,
-    "current_version": 3,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 100,
     "wins": 6,
@@ -3881,15 +4791,15 @@
       "covered": false,
       "never_cast": [
         "Goblin Bombardment",
-        "Beetleback Chief",
+        "Abrade",
+        "Accelerate",
+        "Ancestral Anger",
+        "Deflecting Swat",
         "Electroduplicate",
         "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-        "Goblin Instigator",
-        "Impolite Entrance",
-        "Infuriate",
-        "Legion Warboss"
+        "Goblin Instigator"
       ],
-      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Goblin Bombardment, Beetleback Chief, Goblin Instigator, Legion Warboss, Renegade Tactics, Witch's Mark. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
+      "reading": "THE AI NEVER CAST PART OF THE ENGINE: Goblin Bombardment, Accelerate, Ancestral Anger, Goblin Instigator, Legion Warboss, Renegade Tactics. A win rate from this run is a FLOOR on a deck the AI could not pilot; read the observations, not the outcome."
     },
     "eliminated_by": {
       "sythis-enchantress": 32,
@@ -3902,7 +4812,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 6,
+    "count": 8,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -3917,42 +4827,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "008",
+        "branch": "storm-tune-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "002",
-        "at": "2026-10-18T19:38:43-07:00",
-        "kind": "merge",
-        "branch": "meaner-v1",
-        "as_version": "v1.1.0",
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "003",
-        "at": "2026-10-19T16:22:37-07:00",
-        "kind": "reject",
-        "branch": "zada-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "extra_cards_8",
-          "grade": "not met",
-          "forge_delta": -0.031,
-          "forge_ci95": [
-            -0.109,
-            0.0777
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
       {
         "id": "004",
         "at": "2026-10-19T16:22:43-07:00",
@@ -4000,12 +4884,44 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "007",
+        "at": "2026-10-27T16:19:41-07:00",
+        "kind": "propose",
+        "branch": "storm-tune-v1",
+        "as_version": "v1.2.0",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "008",
+        "at": "2026-10-27T16:20:43-07:00",
+        "kind": "merge",
+        "branch": "storm-tune-v1",
+        "as_version": "v1.2.0",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug goblin-storm` re-reads them when you want, never on its own",
+    "2 artifact(s) fail their own gate (engine, rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "stale: tutors — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-20) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"

@@ -1,0 +1,42 @@
+{
+ "id": "017",
+ "slug": "zada-heat-shimmer-copies-the-board",
+ "deck": "goblin-storm",
+ "title": "Heat Shimmer on Zada alone: every other creature copies itself with haste, and Zada's own token copy meets the legend rule",
+ "rules_version": "June 19, 2026",
+ "scenario": {
+  "board": {
+   "you": [
+    "Zada, Hedron Grinder (3/3; untapped, no summoning sickness; your commander)",
+    "Mogg War Marshal (1/1; entered this turn, summoning sick)",
+    "Goblin token 1 (1/1 red Goblin creature token; entered this turn, summoning sick)",
+    "Goblin token 2 (1/1 red Goblin creature token; entered this turn, summoning sick)",
+    "Mountain x3 (tapped to cast Heat Shimmer)"
+   ],
+   "opponents": [
+    {
+     "life": 40,
+     "board": []
+    }
+   ]
+  },
+  "hand": [],
+  "mana_available": "{0} (the {2}{R} to cast Heat Shimmer is already paid; no other mana source)",
+  "stack": [
+   {
+    "pos": 0,
+    "object": "Heat Shimmer — 'Create a token that's a copy of target creature, except it has haste and \"At the beginning of the end step, exile this token.\"' — targeting only Zada, Hedron Grinder",
+    "controller": "you",
+    "note": "cast from your hand in your precombat main phase; Zada's ability has not yet triggered"
+   }
+  ],
+  "extras": {
+   "note_for_the_resolver": "Your turn, precombat main phase. Nobody responds to anything. You take no other actions.",
+   "assumptions": [
+    "No player has a replacement effect on token creation.",
+    "Mogg War Marshal's copy has its own enters trigger; resolve it if it triggers."
+   ]
+  },
+  "question": "(a) How many copies of Heat Shimmer does Zada's trigger create, what does each target, and in what order do the copies and the original resolve? (b) After all of them and any triggers they cause have resolved: which creatures do you control, which have haste, and what happens to the token copy of Zada under the legend rule?"
+ }
+}

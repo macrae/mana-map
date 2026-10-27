@@ -1,7 +1,7 @@
 {
   "slug": "goblin-storm",
-  "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
-  "model_version": "ddec1ff58e1d",
+  "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+  "model_version": "f5b4b19d2254",
   "lands": {
     "total": 36,
     "entries": 15,
@@ -9,11 +9,13 @@
       "recurring_per_tap_cycle": 0,
       "one_time_on_entry": 0
     },
-    "enters_tapped": 8,
-    "enters_tapped_always": 5,
+    "enters_tapped": 5,
+    "enters_tapped_always": 2,
     "classes": {
       "basic": 22,
-      "tapped": 8,
+      "fixing": 1,
+      "tapped": 5,
+      "untapped-dual": 1,
       "utility": 11
     },
     "list": [
@@ -60,17 +62,6 @@
         ]
       },
       {
-        "name": "Forgotten Cave",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "R"
-        ]
-      },
-      {
         "name": "Fountainport",
         "copies": 1,
         "classes": [
@@ -85,17 +76,6 @@
           "utility"
         ],
         "produces": []
-      },
-      {
-        "name": "Hidden Volcano",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "R"
-        ]
       },
       {
         "name": "Kher Keep",
@@ -116,6 +96,16 @@
         ]
       },
       {
+        "name": "Plaza of Heroes",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": []
+      },
+      {
         "name": "Reliquary Tower",
         "copies": 1,
         "classes": [],
@@ -132,10 +122,9 @@
         ]
       },
       {
-        "name": "Smoldering Crater",
+        "name": "Sokenzan, Crucible of Defiance",
         "copies": 1,
         "classes": [
-          "tapped",
           "utility"
         ],
         "produces": [
@@ -154,6 +143,14 @@
         ]
       },
       {
+        "name": "Three Tree City",
+        "copies": 1,
+        "classes": [
+          "utility"
+        ],
+        "produces": []
+      },
+      {
         "name": "War Room",
         "copies": 1,
         "classes": [
@@ -168,7 +165,7 @@
       "W": 0,
       "U": 0,
       "B": 0,
-      "R": 31,
+      "R": 29,
       "G": 0
     },
     "nonland": {
@@ -182,7 +179,7 @@
       "W": 0,
       "U": 0,
       "B": 0,
-      "R": 34,
+      "R": 32,
       "G": 0
     },
     "gated": {
@@ -192,17 +189,17 @@
     },
     "producers": [
       {
-        "name": "Brightstone Ritual",
+        "name": "Battle Hymn",
         "kind": "ramp:ritual",
-        "cmc": 1.0,
+        "cmc": 2.0,
         "produces": [
           "R"
         ]
       },
       {
-        "name": "Seething Song",
+        "name": "Brightstone Ritual",
         "kind": "ramp:ritual",
-        "cmc": 3.0,
+        "cmc": 1.0,
         "produces": [
           "R"
         ]
@@ -225,9 +222,9 @@
   },
   "pips": {
     "R": {
-      "total_pips": 68.0,
+      "total_pips": 65.0,
       "max_pips": 2,
-      "cards": 58,
+      "cards": 59,
       "earliest_turn": 1,
       "effective_pips": 1
     }
@@ -243,45 +240,45 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "R": 0.972
+      "R": 0.962
     },
     "with_rocks_and_dorks": {
-      "R": 0.982
+      "R": 0.975
     },
     "lands_only_ungated": {
-      "R": 0.972
+      "R": 0.962
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 3,
+    "ramp:cost-reduction": 2,
     "ramp:dork": 1,
     "ramp:ritual": 2,
     "ramp:rock": 1
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.566,
-      "2": 0.996,
-      "3": 0.915,
-      "4": 0.816,
-      "5": 0.71,
-      "6": 0.625,
-      "7": 0.573,
-      "8": 0.554,
-      "9": 0.549
+      "1": 1.0,
+      "10": 0.584,
+      "2": 0.997,
+      "3": 0.923,
+      "4": 0.834,
+      "5": 0.719,
+      "6": 0.652,
+      "7": 0.598,
+      "8": 0.578,
+      "9": 0.569
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.712,
-      "2": 2.149,
-      "3": 3.087,
-      "4": 3.932,
-      "5": 4.657,
-      "6": 5.317,
-      "7": 5.928,
-      "8": 6.516,
-      "9": 7.102
+      "1": 1.0,
+      "10": 7.87,
+      "2": 2.148,
+      "3": 3.095,
+      "4": 3.959,
+      "5": 4.69,
+      "6": 5.38,
+      "7": 6.011,
+      "8": 6.624,
+      "9": 7.236
     }
   },
   "assumptions": [
