@@ -226,12 +226,15 @@ def test_a_finisher_needs_a_commander_not_merely_a_payoff():
 def test_dead_wheels_fall_when_wheels_leave_the_list(monkeypatch):
     """Two wheel spells become a Mountain and the clog at turn five falls.
     Direction only — no figure pinned. Proven by counting every nonland in
-    `_dead_wheels`: the swap then moves the figure the wrong way or not at all."""
+    `_dead_wheels`: the swap then moves the figure the wrong way or not at all.
+    2,000 games, not 200: the figure is near 0.04, so at 200 one game is the
+    whole difference and v2.2.0 read it backwards (0.025 vs 0.030; at 2,000
+    it reads 0.044 vs 0.026)."""
     import copy
     from manamap.pilot.common import load_json, deck_file
     doc = load_json(deck_file(SLUG, "cards.json"))
     monkeypatch.setattr(pp, "load", lambda slug, branch=None: {})
-    base = goldfish.run(SLUG, iterations=200, seed=3, max_turn=10, doc=doc,
+    base = goldfish.run(SLUG, iterations=2000, seed=3, max_turn=10, doc=doc,
                         with_results=True, quiet=True, _band=False)
     fewer = copy.deepcopy(doc)
     out = {"Windfall", "Reforge the Soul"}   # Time Reversal left in v2.0.0
@@ -240,7 +243,7 @@ def test_dead_wheels_fall_when_wheels_leave_the_list(monkeypatch):
         if c["name"] == "Mountain":
             c["quantity"] = int(c.get("quantity") or 1) + len(out)
     assert len([c for c in doc["cards"] if c["name"] in out]) == 2, "both must be in the list"
-    less = goldfish.run(SLUG, iterations=200, seed=3, max_turn=10, doc=fewer,
+    less = goldfish.run(SLUG, iterations=2000, seed=3, max_turn=10, doc=fewer,
                         with_results=True, quiet=True, _band=False)
     d5 = lambda got: got["metrics"]["discard"]["mean_dead_wheels_in_hand_by_turn"]["5"]
     assert d5(less) < d5(base), (d5(less), d5(base))
