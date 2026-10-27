@@ -26,7 +26,6 @@
     "invalid": [
       "engine",
       "log",
-      "CONTEXT.md",
       "log_annotations.json"
     ],
     "verified": true,
@@ -126,59 +125,40 @@
       "name": "powertune-v1",
       "opened": "2026-10-26",
       "why": "Jarvis's pick from DeckCheck's PowerTune (2026-10-26): Razorkin Needlehead (per-opponent-draw damage, multiplies every all-player wheel), Change of Fortune (a finisher wheel that draws for every card discarded this turn), Currency Converter (discards into Treasure — ramp to answer the DTI's Mana Velocity drop), and Sea of Clouds / Adarkar Wastes for the two tapped lands. Cards the pilot believes he owns.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-27 into the list after VNone",
       "base_moved": null,
       "proposal": null,
       "pull_list": {
         "buy": [],
         "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          }
-        ],
+        "free": [],
+        "box": [],
         "blocking": 0,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 2,
-      "out": 2,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 96,
-        "box": 1,
+        "in_deck": 98,
+        "box": 0,
         "elsewhere": 0,
         "buy": 0,
-        "free": 1
+        "free": 0
       },
       "unsourced": [],
       "mergeable": true,
-      "free": 1,
+      "free": 0,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Akroma's Will",
@@ -679,18 +659,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -1002,11 +974,27 @@
       },
       "pull_list": {
         "buy": [],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          }
+        ],
+        "blocking": 1,
         "procurement": {
           "at": "2026-10-26",
           "note": "printed proxies sleeved 2026-10-26; unowned cards to order"
@@ -1014,17 +1002,19 @@
       },
       "base_version": 9,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 2,
+      "out": 2,
       "counts": {
-        "in_deck": 98,
-        "box": 0,
-        "elsewhere": 0,
+        "in_deck": 96,
+        "box": 1,
+        "elsewhere": 1,
         "buy": 0,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Opal Palace"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -1428,10 +1418,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Remora",
@@ -1456,10 +1455,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Otawara, Soaring City",
@@ -1976,7 +1997,15 @@
             "name": "Zephyr Boots"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          }
+        ],
         "proxy": [
           {
             "name": "Talisman of Conviction",
@@ -2018,9 +2047,16 @@
             "where": [
               "Zur Parts"
             ]
+          },
+          {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
           }
         ],
-        "blocking": 13,
+        "blocking": 14,
         "procurement": {
           "at": "2026-10-24",
           "note": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
@@ -2028,12 +2064,12 @@
       },
       "base_version": 8,
       "size": 100,
-      "add": 19,
-      "out": 19,
+      "add": 21,
+      "out": 21,
       "counts": {
-        "in_deck": 79,
-        "box": 3,
-        "elsewhere": 1,
+        "in_deck": 77,
+        "box": 4,
+        "elsewhere": 2,
         "buy": 13,
         "free": 2
       },
@@ -2049,6 +2085,7 @@
         "Key to the City",
         "Khorvath's Fury",
         "Lizard Blades",
+        "Opal Palace",
         "Thundering Falls",
         "Zephyr Boots"
       ],
@@ -2497,10 +2534,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Needleverge Pathway // Pillarverge Pathway",
@@ -2518,10 +2564,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Prismari Command",
@@ -3042,6 +3110,13 @@
         ],
         "unsleeve": [
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -3064,12 +3139,6 @@
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
-          },
           {
             "name": "Silence",
             "where": [
@@ -3117,6 +3186,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Swiftfoot Boots",
             "where": [
               "Shabraz Parts",
@@ -3131,19 +3207,19 @@
             ]
           }
         ],
-        "blocking": 29,
+        "blocking": 30,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 39,
-      "out": 39,
+      "add": 40,
+      "out": 40,
       "counts": {
-        "in_deck": 61,
-        "box": 8,
-        "elsewhere": 3,
+        "in_deck": 60,
+        "box": 9,
+        "elsewhere": 4,
         "buy": 26,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Alhammarret's Archive",
@@ -3163,6 +3239,7 @@
         "Nezahal, Primal Tide",
         "Nimble Obstructionist",
         "Niv-Mizzet, Parun",
+        "Opal Palace",
         "Psychosis Crawler",
         "Razorkin Needlehead",
         "Scrawling Crawler",
@@ -3177,7 +3254,7 @@
         "Thundering Falls"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -3576,10 +3653,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Negate",
@@ -3611,10 +3697,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Prismari Command",
@@ -3739,18 +3847,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -4302,6 +4402,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -4318,12 +4425,6 @@
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
-          },
           {
             "name": "Silence",
             "where": [
@@ -4377,6 +4478,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Swiftfoot Boots",
             "where": [
               "Shabraz Parts",
@@ -4384,19 +4492,19 @@
             ]
           }
         ],
-        "blocking": 33,
+        "blocking": 34,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 43,
-      "out": 43,
+      "add": 44,
+      "out": 44,
       "counts": {
-        "in_deck": 57,
-        "box": 8,
-        "elsewhere": 3,
+        "in_deck": 56,
+        "box": 9,
+        "elsewhere": 4,
         "buy": 30,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Alhammarret's Archive",
@@ -4420,6 +4528,7 @@
         "Nezahal, Primal Tide",
         "Nimble Obstructionist",
         "Niv-Mizzet, Parun",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Razorkin Needlehead",
@@ -4434,7 +4543,7 @@
         "Time Reversal"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -4860,10 +4969,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Negate",
@@ -4895,10 +5013,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -5016,18 +5156,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Shabraz, the Skyshark",
@@ -5601,6 +5733,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -5643,21 +5782,8 @@
           }
         ],
         "proxy": [],
-        "free": [
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
+        "free": [],
         "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
           {
             "name": "Chasm Skulker",
             "where": [
@@ -5710,6 +5836,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
@@ -5723,7 +5856,7 @@
             ]
           }
         ],
-        "blocking": 45,
+        "blocking": 46,
         "procurement": null
       },
       "base_version": 6,
@@ -5733,9 +5866,9 @@
       "counts": {
         "in_deck": 43,
         "box": 11,
-        "elsewhere": 7,
+        "elsewhere": 8,
         "buy": 38,
-        "free": 1
+        "free": 0
       },
       "unsourced": [
         "Anje's Ravager",
@@ -5766,6 +5899,7 @@
         "Nimbus Maze",
         "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Razorkin Needlehead",
@@ -5785,19 +5919,14 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 0,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -6211,10 +6340,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Negate",
@@ -6260,10 +6398,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -6396,18 +6556,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Seachrome Coast",
@@ -6989,6 +7141,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -7022,21 +7181,9 @@
             "where": [
               "zur-enchantress"
             ]
-          },
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
           }
         ],
         "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
           {
             "name": "Chasm Skulker",
             "where": [
@@ -7089,6 +7236,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
@@ -7102,7 +7256,7 @@
             ]
           }
         ],
-        "blocking": 45,
+        "blocking": 46,
         "procurement": null
       },
       "base_version": 5,
@@ -7112,9 +7266,9 @@
       "counts": {
         "in_deck": 42,
         "box": 11,
-        "elsewhere": 6,
+        "elsewhere": 7,
         "buy": 39,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
@@ -7145,6 +7299,7 @@
         "Nimbus Maze",
         "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
@@ -7164,19 +7319,14 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -7606,10 +7756,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Negate",
@@ -7655,10 +7814,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -7762,18 +7943,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Seachrome Coast",
@@ -8234,6 +8407,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -8267,21 +8447,9 @@
             "where": [
               "zur-enchantress"
             ]
-          },
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
           }
         ],
         "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
           {
             "name": "Chasm Skulker",
             "where": [
@@ -8328,6 +8496,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
@@ -8341,7 +8516,7 @@
             ]
           }
         ],
-        "blocking": 49,
+        "blocking": 50,
         "procurement": null
       },
       "base_version": 4,
@@ -8351,9 +8526,9 @@
       "counts": {
         "in_deck": 39,
         "box": 10,
-        "elsewhere": 6,
+        "elsewhere": 7,
         "buy": 43,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
@@ -8387,6 +8562,7 @@
         "Nimbus Maze",
         "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
@@ -8407,19 +8583,14 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -8851,10 +9022,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nezahal, Primal Tide",
@@ -8893,10 +9073,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -9000,18 +9202,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Seachrome Coast",
@@ -9612,6 +9806,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -9645,21 +9846,9 @@
             "where": [
               "zur-enchantress"
             ]
-          },
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
           }
         ],
         "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
           {
             "name": "Chasm Skulker",
             "where": [
@@ -9700,6 +9889,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Shelter",
             "where": [
               "Mystery Booster 2"
@@ -9713,7 +9909,7 @@
             ]
           }
         ],
-        "blocking": 50,
+        "blocking": 51,
         "procurement": null
       },
       "base_version": 3,
@@ -9723,9 +9919,9 @@
       "counts": {
         "in_deck": 39,
         "box": 9,
-        "elsewhere": 6,
+        "elsewhere": 7,
         "buy": 44,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
@@ -9760,6 +9956,7 @@
         "Nimbus Maze",
         "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
@@ -9780,19 +9977,14 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -10219,10 +10411,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nezahal, Primal Tide",
@@ -10261,10 +10462,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -10368,18 +10591,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Seachrome Coast",
@@ -10954,6 +11169,13 @@
             ]
           },
           {
+            "name": "Opal Palace",
+            "where": [
+              "emiel-blink",
+              "meren-recursion"
+            ]
+          },
+          {
             "name": "Psychosis Crawler",
             "where": [
               "heliod",
@@ -10987,21 +11209,9 @@
             "where": [
               "zur-enchantress"
             ]
-          },
-          {
-            "name": "Sea of Clouds",
-            "where": [
-              "sisay"
-            ]
           }
         ],
         "box": [
-          {
-            "name": "Adarkar Wastes",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
           {
             "name": "Chasm Skulker",
             "where": [
@@ -11036,6 +11246,13 @@
             ]
           },
           {
+            "name": "Mystic Monastery",
+            "where": [
+              "Mystery Booster 2",
+              "Shabraz Parts"
+            ]
+          },
+          {
             "name": "Swiftfoot Boots",
             "where": [
               "Shabraz Parts",
@@ -11043,7 +11260,7 @@
             ]
           }
         ],
-        "blocking": 51,
+        "blocking": 52,
         "procurement": null
       },
       "base_version": 2,
@@ -11053,9 +11270,9 @@
       "counts": {
         "in_deck": 40,
         "box": 7,
-        "elsewhere": 6,
+        "elsewhere": 7,
         "buy": 45,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
@@ -11091,6 +11308,7 @@
         "Nimbus Maze",
         "Niv-Mizzet, Parun",
         "Ominous Seas",
+        "Opal Palace",
         "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
@@ -11111,19 +11329,14 @@
         "Winds of Change"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Anje's Ravager",
@@ -11559,10 +11772,19 @@
         },
         {
           "name": "Mystic Monastery",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nezahal, Primal Tide",
@@ -11601,10 +11823,32 @@
         },
         {
           "name": "Opal Palace",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Psychosis Crawler",
@@ -11701,18 +11945,10 @@
         },
         {
           "name": "Sea of Clouds",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Seachrome Coast",
@@ -12139,164 +12375,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.4961,
+          "rate": 0.4897,
           "ci95": [
-            0.4863,
-            0.5059
+            0.4799,
+            0.4995
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.5485,
+          "rate": 0.5382,
           "ci95": [
-            0.5387,
-            0.5582
+            0.5284,
+            0.548
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.6314,
+          "rate": 0.6164,
           "ci95": [
-            0.6219,
-            0.6408
+            0.6068,
+            0.6259
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.6792,
+          "rate": 0.6667,
           "ci95": [
-            0.67,
-            0.6883
+            0.6574,
+            0.6759
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.7349,
+          "rate": 0.7256,
           "ci95": [
-            0.7262,
-            0.7435
+            0.7168,
+            0.7343
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7853,
+          "rate": 0.7791,
           "ci95": [
-            0.7771,
-            0.7932
+            0.7709,
+            0.7871
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8275,
+          "rate": 0.8254,
           "ci95": [
-            0.82,
-            0.8348
+            0.8178,
+            0.8327
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.8657,
+          "rate": 0.8652,
           "ci95": [
-            0.8589,
-            0.8722
+            0.8584,
+            0.8718
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.8934,
+          "rate": 0.8943,
           "ci95": [
-            0.8872,
-            0.8993
+            0.8881,
+            0.9002
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9161,
+          "rate": 0.9185,
           "ci95": [
-            0.9105,
-            0.9214
+            0.913,
+            0.9237
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.066,
+          "rate": 0.0652,
           "ci95": [
-            0.0613,
-            0.071
+            0.0605,
+            0.0702
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0866,
+          "rate": 0.0839,
           "ci95": [
-            0.0812,
-            0.0923
+            0.0786,
+            0.0895
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.1433,
+          "rate": 0.1427,
           "ci95": [
-            0.1366,
-            0.1503
+            0.136,
+            0.1497
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.1853,
+          "rate": 0.1789,
           "ci95": [
-            0.1778,
-            0.193
+            0.1715,
+            0.1865
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.2538,
+          "rate": 0.2489,
           "ci95": [
-            0.2454,
-            0.2624
+            0.2405,
+            0.2575
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.3415,
+          "rate": 0.3339,
           "ci95": [
-            0.3323,
-            0.3509
+            0.3247,
+            0.3432
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.4328,
+          "rate": 0.4259,
           "ci95": [
-            0.4231,
-            0.4425
+            0.4162,
+            0.4356
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.519,
+          "rate": 0.5139,
           "ci95": [
-            0.5092,
-            0.5288
+            0.5041,
+            0.5237
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.5981,
+          "rate": 0.5919,
           "ci95": [
-            0.5885,
-            0.6077
+            0.5822,
+            0.6015
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.6668,
+          "rate": 0.6596,
           "ci95": [
-            0.6575,
-            0.676
+            0.6503,
+            0.6688
           ],
           "n": 10000
         }
@@ -12304,10 +12540,10 @@
       "bottleneck": {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
         "by_turn_three": {
-          "rate": 0.6314,
+          "rate": 0.6164,
           "ci95": [
-            0.6219,
-            0.6408
+            0.6068,
+            0.6259
           ],
           "n": 10000
         }
@@ -12317,159 +12553,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6085,
+          "rate": 0.5954,
           "ci95": [
-            0.5989,
-            0.618
+            0.5857,
+            0.605
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0929,
+          "rate": 0.0928,
           "ci95": [
-            0.0874,
-            0.0987
+            0.0873,
+            0.0986
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0123,
+          "rate": 0.012,
           "ci95": [
-            0.0103,
-            0.0147
+            0.01,
+            0.0143
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0029,
+          "rate": 0.003,
           "ci95": [
-            0.002,
-            0.0042
+            0.0021,
+            0.0043
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0079,
+          "rate": 0.006,
           "ci95": [
-            0.0063,
-            0.0098
+            0.0047,
+            0.0077
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0221,
+          "rate": 0.0232,
           "ci95": [
-            0.0194,
-            0.0252
+            0.0204,
+            0.0263
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.052,
+          "rate": 0.0506,
           "ci95": [
-            0.0478,
-            0.0565
+            0.0465,
+            0.0551
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.083,
+          "rate": 0.0764,
           "ci95": [
-            0.0778,
-            0.0886
+            0.0714,
+            0.0818
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1084,
+          "rate": 0.1147,
           "ci95": [
-            0.1025,
-            0.1146
+            0.1086,
+            0.1211
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1551,
+          "rate": 0.1547,
           "ci95": [
-            0.1481,
-            0.1623
+            0.1477,
+            0.1619
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1076,
+        "rate": 0.1128,
         "ci95": [
-          0.1017,
-          0.1138
+          0.1067,
+          0.1191
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5366,
-        "hand_empty": 1714,
-        "mana_short": 3652
+        "stall_turns": 5334,
+        "hand_empty": 1736,
+        "mana_short": 3598
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 3985,
-        "hand_empty": 1698,
-        "mana_short": 2287,
+        "stall_turns": 3964,
+        "hand_empty": 1710,
+        "mana_short": 2254,
         "stall_rate": {
-          "rate": 0.0996,
+          "rate": 0.0991,
           "ci95": [
-            0.0967,
-            0.1026
+            0.0962,
+            0.1021
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.0029,
-          "diff": 0.0967,
+          "floor_rate": 0.003,
+          "diff": 0.0961,
           "ci95": [
-            0.0936,
-            0.0998
+            0.0929,
+            0.0992
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 5.3644,
+            "rate": 5.3203,
             "ci95": [
-              5.2764,
-              5.4524
+              5.2387,
+              5.4019
             ],
-            "sd": 4.4906,
+            "sd": 4.1653,
             "n": 10000
           },
           "8": {
-            "rate": 5.7428,
+            "rate": 5.7185,
             "ci95": [
-              5.6109,
-              5.8747
+              5.593,
+              5.844
             ],
-            "sd": 6.731,
+            "sd": 6.4035,
             "n": 10000
           },
           "9": {
-            "rate": 6.4187,
+            "rate": 6.3259,
             "ci95": [
-              6.2502,
-              6.5872
+              6.165,
+              6.4868
             ],
-            "sd": 8.595,
+            "sd": 8.2069,
             "n": 10000
           },
           "10": {
-            "rate": 6.6862,
+            "rate": 6.7171,
             "ci95": [
-              6.5042,
-              6.8682
+              6.5364,
+              6.8978
             ],
-            "sd": 9.2836,
+            "sd": 9.2183,
             "n": 10000
           }
         },
@@ -12479,39 +12715,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4183,
+        "rate": 0.4271,
         "ci95": [
-          0.4087,
-          0.428
+          0.4174,
+          0.4368
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1761,
+      "missed_land_drop_rate": 0.1763,
       "mulliganed": {
-        "rate": 0.2146,
+        "rate": 0.2107,
         "ci95": [
-          0.2067,
-          0.2228
+          0.2028,
+          0.2188
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.143,
-        "3": 3.489,
+        "2": 2.142,
+        "3": 3.493,
         "4": 4.374,
-        "5": 5.174,
+        "5": 5.173,
         "6": 6.022,
-        "7": 7.031,
-        "8": 8.145,
-        "9": 9.267,
-        "10": 10.412
+        "7": 7.022,
+        "8": 8.144,
+        "9": 9.262,
+        "10": 10.419
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.2486
+      "mana_stdev_turn_five": 1.228
     },
-    "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc"
+    "decklist_sha256": "0f00066d1090296ddb0acfb5eb9fac0498bc428349e44d1302d6a33d5622526d"
   },
   "bracket": {
     "floor": 3,
@@ -12526,7 +12762,7 @@
     "as_of": "2026-10-26",
     "source_updated_at": "2026-10-27T04:07:57.310838+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 4,
     "omni": {
       "benchmarks": {
@@ -12627,7 +12863,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.904,
+          "value": 4.928,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -12635,7 +12871,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
-          "value": 74,
+          "value": 73,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
@@ -12643,7 +12879,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)": {
-          "value": 74,
+          "value": 73,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)' by turn six",
@@ -12651,7 +12887,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 34,
+          "value": 33,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
@@ -12659,7 +12895,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 56,
+          "value": 55,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -12667,7 +12903,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
-          "value": 19,
+          "value": 18,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
@@ -12793,16 +13029,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 10.423,
-            "2": 2.144,
-            "3": 3.505,
-            "4": 4.389,
-            "5": 5.192,
-            "6": 6.032,
-            "7": 7.041,
-            "8": 8.155,
-            "9": 9.272
+            "1": 0.998,
+            "10": 10.404,
+            "2": 2.141,
+            "3": 3.489,
+            "4": 4.374,
+            "5": 5.177,
+            "6": 6.02,
+            "7": 7.029,
+            "8": 8.142,
+            "9": 9.261
           },
           "tier": "data",
           "weight": "detail",
@@ -12812,16 +13048,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 0.774,
-            "2": 0.997,
-            "3": 0.9,
-            "4": 0.798,
+            "1": 0.998,
+            "10": 0.778,
+            "2": 0.996,
+            "3": 0.902,
+            "4": 0.794,
             "5": 0.708,
-            "6": 0.711,
-            "7": 0.767,
-            "8": 0.793,
-            "9": 0.788
+            "6": 0.714,
+            "7": 0.759,
+            "8": 0.789,
+            "9": 0.793
           },
           "tier": "data",
           "weight": "detail",
@@ -12831,16 +13067,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.061,
-            "10": 3.774,
-            "2": 0.309,
-            "3": 0.582,
-            "4": 0.725,
-            "5": 1.011,
-            "6": 1.494,
-            "7": 2.059,
-            "8": 2.613,
-            "9": 3.178
+            "1": 0.057,
+            "10": 3.754,
+            "2": 0.311,
+            "3": 0.578,
+            "4": 0.712,
+            "5": 0.994,
+            "6": 1.48,
+            "7": 2.029,
+            "8": 2.593,
+            "9": 3.159
           },
           "tier": "data",
           "weight": "detail",
@@ -12850,14 +13086,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 312,
-            "1": 1566,
-            "2": 3057,
-            "3": 2892,
-            "4": 1590,
-            "5": 476,
-            "6": 101,
-            "7": 6
+            "0": 328,
+            "1": 1607,
+            "2": 2962,
+            "3": 2832,
+            "4": 1632,
+            "5": 536,
+            "6": 95,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -12866,13 +13102,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 183,
-            "4": 1,
-            "5": 403,
-            "6": 2831,
-            "7": 4183,
-            "8": 1701,
-            "9": 548
+            "10": 200,
+            "5": 453,
+            "6": 2650,
+            "7": 4261,
+            "8": 1726,
+            "9": 572
           },
           "tier": "data",
           "weight": "detail",
@@ -12888,28 +13123,28 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.904,
+    "commander_mean_cast_turn": 4.928,
     "commander_cast_by_turn_6_pct": 88,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "by_turn_6_pct": 74
+        "by_turn_6_pct": 73
       },
       {
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "by_turn_6_pct": 74
+        "by_turn_6_pct": 73
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 33
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 56
+        "by_turn_6_pct": 55
       },
       {
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "by_turn_6_pct": 19
+        "by_turn_6_pct": 18
       },
       {
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
@@ -12937,29 +13172,28 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 6.97,
+      "mean_kill_turn": 6.991,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 32,
+      "kill_by_turn_6_pct": 31,
       "kill_by_turn_8_pct": 91,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 2,
+      "no_kill_by_max_turn_pct": 1,
       "kill_turn_histogram": {
-        "10": 183,
-        "4": 1,
-        "5": 403,
-        "6": 2831,
-        "7": 4183,
-        "8": 1701,
-        "9": 548
+        "10": 200,
+        "5": 453,
+        "6": 2650,
+        "7": 4261,
+        "8": 1726,
+        "9": 572
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.7349,
+    "rate": 0.7256,
     "ci95": [
-      0.7262,
-      0.7435
+      0.7168,
+      0.7343
     ],
     "n": 10000,
     "turn": 5,
@@ -12994,6 +13228,7 @@
   "audit": {
     "archetype": "voltron",
     "under": [
+      "colour-sources",
       "sweepers",
       "interaction-breadth"
     ],
@@ -13076,7 +13311,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
     "ran_on_version": 9,
-    "current_version": 10,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 40,
     "wins": 6,
@@ -13130,7 +13365,7 @@
     }
   },
   "decisions": {
-    "count": 14,
+    "count": 15,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -13187,27 +13422,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "015",
+        "branch": "powertune-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "010",
-        "at": "2026-10-22T14:55:06-07:00",
-        "kind": "reject",
-        "branch": "finisher-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "dead_wheels_5",
-          "grade": "met",
-          "forge_delta": -0.0394,
-          "forge_ci95": [
-            -0.0939,
-            0.0151
-          ],
-          "pod": "olivers-table"
-        },
-        "realised": null
-      },
       {
         "id": "011",
         "at": "2026-10-24T15:34:19-07:00",
@@ -13273,12 +13497,29 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "015",
+        "at": "2026-10-27T07:34:01-07:00",
+        "kind": "merge",
+        "branch": "powertune-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_6",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "4 artifact(s) fail their own gate (engine, log, CONTEXT.md, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "3 artifact(s) fail their own gate (engine, log, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×4",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",

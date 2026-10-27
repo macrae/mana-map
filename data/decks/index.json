@@ -2348,10 +2348,10 @@
       "branches": [
         {
           "name": "powertune-v1",
-          "state": "OPEN",
+          "state": "MERGED",
           "opened": "2026-10-26",
-          "add": 2,
-          "out": 2,
+          "add": 0,
+          "out": 0,
           "verdict": "do not merge",
           "objective_grade": "not met",
           "as_version": null,
@@ -2361,8 +2361,8 @@
           "name": "answers-v1",
           "state": "MERGED",
           "opened": "2026-10-25",
-          "add": 0,
-          "out": 0,
+          "add": 2,
+          "out": 2,
           "verdict": "inconclusive",
           "objective_grade": "not measured",
           "as_version": "v2.1.0",
@@ -2372,8 +2372,8 @@
           "name": "voltron-v1",
           "state": "MERGED",
           "opened": "2026-10-22",
-          "add": 19,
-          "out": 19,
+          "add": 21,
+          "out": 21,
           "verdict": "inconclusive",
           "objective_grade": "not resolvable",
           "as_version": "v2.0.0",
@@ -2383,8 +2383,8 @@
           "name": "finisher-v1",
           "state": "REJECTED",
           "opened": "2026-10-21",
-          "add": 39,
-          "out": 39,
+          "add": 40,
+          "out": 40,
           "verdict": "a trade",
           "objective_grade": "met",
           "as_version": null,
@@ -2394,8 +2394,8 @@
           "name": "torbran-v1",
           "state": "MERGED",
           "opened": "2026-10-11",
-          "add": 43,
-          "out": 43,
+          "add": 44,
+          "out": 44,
           "verdict": "merge",
           "objective_grade": "met",
           "as_version": "v1.3.0",
@@ -2457,8 +2457,9 @@
           "measured": true
         }
       ],
-      "branches_open": 1,
+      "branches_open": 0,
       "cards": [
+        "Adarkar Wastes",
         "Akroma's Will",
         "Arcane Signet",
         "Artist's Talent",
@@ -2519,12 +2520,10 @@
         "Mary Read and Anne Bonny",
         "Mistgate Pathway",
         "Mountain",
-        "Mystic Monastery",
         "Mystic Remora",
         "Needleverge Pathway",
         "Needleverge Pathway // Pillarverge Pathway",
         "Negate",
-        "Opal Palace",
         "Otawara, Soaring City",
         "Pillarverge Pathway",
         "Prismari Command",
@@ -2538,6 +2537,7 @@
         "Robe of Stars",
         "Rugged Prairie",
         "Sacred Foundry",
+        "Sea of Clouds",
         "Shabraz, the Skyshark",
         "Shivan Reef",
         "Shu Yun, the Silent Tempest",
@@ -2571,9 +2571,20 @@
         "built_at": "2026-10-26",
         "note": "printed proxies in sleeves 2026-10-26; unowned cards to order",
         "locked": true,
-        "in_sync": true,
-        "versions_behind": 0,
-        "drift": null
+        "in_sync": false,
+        "versions_behind": null,
+        "drift": {
+          "pull": [
+            "Mystic Monastery",
+            "Opal Palace"
+          ],
+          "add": [
+            "Adarkar Wastes",
+            "Sea of Clouds"
+          ],
+          "pull_copies": 2,
+          "add_copies": 2
+        }
       },
       "locked": true,
       "version": {

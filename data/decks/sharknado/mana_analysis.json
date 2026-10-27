@@ -1,25 +1,37 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
-  "model_version": "d4d357389cfd",
+  "decklist_sha256": "0f00066d1090296ddb0acfb5eb9fac0498bc428349e44d1302d6a33d5622526d",
+  "model_version": "f5b4b19d2254",
   "lands": {
     "total": 36,
     "entries": 34,
     "life": {
-      "recurring_per_tap_cycle": 6,
+      "recurring_per_tap_cycle": 7,
       "one_time_on_entry": 6
     },
     "enters_tapped": 14,
-    "enters_tapped_always": 4,
+    "enters_tapped_always": 3,
     "classes": {
       "basic": 3,
-      "fixing": 7,
+      "fixing": 6,
       "mdfc": 3,
       "tapped": 14,
       "untapped-dual": 17,
-      "utility": 10
+      "utility": 11
     },
     "list": [
+      {
+        "name": "Adarkar Wastes",
+        "copies": 1,
+        "classes": [
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "U",
+          "W"
+        ]
+      },
       {
         "name": "Battlefield Forge",
         "copies": 1,
@@ -196,18 +208,6 @@
         ]
       },
       {
-        "name": "Mystic Monastery",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "U",
-          "W"
-        ]
-      },
-      {
         "name": "Needleverge Pathway // Pillarverge Pathway",
         "copies": 1,
         "classes": [
@@ -216,19 +216,6 @@
         ],
         "produces": [
           "R",
-          "W"
-        ]
-      },
-      {
-        "name": "Opal Palace",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "R",
-          "U",
           "W"
         ]
       },
@@ -297,6 +284,17 @@
         ],
         "produces": [
           "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Sea of Clouds",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "U",
           "W"
         ]
       },
@@ -423,7 +421,7 @@
       "W": 20,
       "U": 23,
       "B": 0,
-      "R": 32,
+      "R": 30,
       "G": 0
     },
     "nonland": {
@@ -437,13 +435,12 @@
       "W": 22,
       "U": 28,
       "B": 0,
-      "R": 36,
+      "R": 34,
       "G": 0
     },
     "gated": {
-      "count": 2,
+      "count": 1,
       "names": [
-        "Opal Palace",
         "Talon Gates of Madara"
       ],
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
@@ -529,15 +526,15 @@
   "shares": {
     "R": {
       "pip_share": 0.443,
-      "source_share": 0.427
+      "source_share": 0.411
     },
     "U": {
       "pip_share": 0.341,
-      "source_share": 0.307
+      "source_share": 0.315
     },
     "W": {
       "pip_share": 0.216,
-      "source_share": 0.267
+      "source_share": 0.274
     }
   },
   "source_targets": {
@@ -549,17 +546,17 @@
     "lands_only": {
       "W": 0.881,
       "U": 0.918,
-      "R": 0.855
+      "R": 0.822
     },
     "with_rocks_and_dorks": {
       "W": 0.907,
       "U": 0.957,
-      "R": 0.906
+      "R": 0.882
     },
     "lands_only_ungated": {
-      "W": 0.849,
-      "U": 0.895,
-      "R": 0.822
+      "W": 0.866,
+      "U": 0.907,
+      "R": 0.804
     }
   },
   "ramp": {
@@ -568,28 +565,28 @@
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.774,
-      "2": 0.997,
-      "3": 0.9,
-      "4": 0.798,
+      "1": 0.998,
+      "10": 0.778,
+      "2": 0.996,
+      "3": 0.902,
+      "4": 0.794,
       "5": 0.708,
-      "6": 0.711,
-      "7": 0.767,
-      "8": 0.793,
-      "9": 0.788
+      "6": 0.714,
+      "7": 0.759,
+      "8": 0.789,
+      "9": 0.793
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 10.423,
-      "2": 2.144,
-      "3": 3.505,
-      "4": 4.389,
-      "5": 5.192,
-      "6": 6.032,
-      "7": 7.041,
-      "8": 8.155,
-      "9": 9.272
+      "1": 0.998,
+      "10": 10.404,
+      "2": 2.141,
+      "3": 3.489,
+      "4": 4.374,
+      "5": 5.177,
+      "6": 6.02,
+      "7": 7.029,
+      "8": 8.142,
+      "9": 9.261
     }
   },
   "assumptions": [
@@ -599,7 +596,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 36.",
+    "R: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
     "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 22.",
     "14 of 36 lands enter tapped (39%) — over the one-in-three budget the deck builder allows itself."
   ]

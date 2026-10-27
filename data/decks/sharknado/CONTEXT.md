@@ -1,12 +1,12 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=1a3b46d076c9 at=2026-10-26 -->
+<!-- ctx:written-for version=VNone sha=0f00066d1090 at=2026-10-27 -->
 
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** v2.1.0 (V10) · **status:** sleeved since 2026-10-26
-- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 37/96 → B3 (deckcheck.co, 2026-10-26, 4 readings)
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-26
+- **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 37/96 → B3 (deckcheck.co, 2026-10-26, 4 readings) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 72 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
 <!-- /ctx:gen summary -->
@@ -70,7 +70,6 @@ Sean plays this list on printed proxies.
 ### make counters count
 - [Lae'zel, Vlaakith's Champion](https://manamap.seanmacrae.com/viz/index.html?cards=Lae%27zel%2C+Vlaakith%27s+Champion): one extra counter on everything that gets a counter
 - [Inti, Seneschal of the Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Inti%2C+Seneschal+of+the+Sun): a discard becomes a counter and trample on an attacker
-- [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace): puts extra counters on a commander as it is cast
 - [Ledger Shredder](https://manamap.seanmacrae.com/viz/index.html?cards=Ledger+Shredder): a flyer that grows as it connives
 
 ### ping on every discard
@@ -154,22 +153,22 @@ Sean plays this list on printed proxies.
 - [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe): Treasure when the table draws
 
 ### lands
-Colours are red and white first, then blue. The special ones: [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) is a free land off the opening hand, [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace) puts counters on a commander, [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) can phase out a creature, [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon) returns a commander, [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) bounces a threat, [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain) is the clean white-blue untapped dual, and the Verges, Pathways and Clifftop Retreat are mostly untapped red-white duals. [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain) turns on the Verges, Clifftop Retreat and Sulfur Falls.
+Colours are red and white first, then blue. The special ones: [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) is a free land off the opening hand, [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara) can phase out a creature, [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon) returns a commander, [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) bounces a threat, [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain) is the clean white-blue untapped dual, and the Verges, Pathways and Clifftop Retreat are mostly untapped red-white duals. [Adarkar Wastes](https://manamap.seanmacrae.com/viz/index.html?cards=Adarkar+Wastes) and [Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds) are the white-blue duals that came in with v2.1.1; they fix blue and white and leave red a little thinner (the summary block above has the red count). [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain) turns on the Verges, Clifftop Retreat and Sulfur Falls.
 
-[Battlefield Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Battlefield+Forge), [Cascade Bluffs](https://manamap.seanmacrae.com/viz/index.html?cards=Cascade+Bluffs), [City of Brass](https://manamap.seanmacrae.com/viz/index.html?cards=City+of+Brass), [Clifftop Retreat](https://manamap.seanmacrae.com/viz/index.html?cards=Clifftop+Retreat), [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon), [Command Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Tower), [Fiery Islet](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Islet), [Frostboil Snarl](https://manamap.seanmacrae.com/viz/index.html?cards=Frostboil+Snarl), [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns), [Glittering Massif](https://manamap.seanmacrae.com/viz/index.html?cards=Glittering+Massif), [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain), [Hengegate Pathway // Mistgate Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Hengegate+Pathway+%2F%2F+Mistgate+Pathway), [Inspiring Vantage](https://manamap.seanmacrae.com/viz/index.html?cards=Inspiring+Vantage), [Mana Confluence](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Confluence), [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain), [Mystic Monastery](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Monastery), [Needleverge Pathway // Pillarverge Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Needleverge+Pathway+%2F%2F+Pillarverge+Pathway), [Opal Palace](https://manamap.seanmacrae.com/viz/index.html?cards=Opal+Palace), [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City), [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome), [Riverglide Pathway // Lavaglide Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Riverglide+Pathway+%2F%2F+Lavaglide+Pathway), [Riverpyre Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Riverpyre+Verge), [Rugged Prairie](https://manamap.seanmacrae.com/viz/index.html?cards=Rugged+Prairie), [Sacred Foundry](https://manamap.seanmacrae.com/viz/index.html?cards=Sacred+Foundry), [Shivan Reef](https://manamap.seanmacrae.com/viz/index.html?cards=Shivan+Reef), [Spectator Seating](https://manamap.seanmacrae.com/viz/index.html?cards=Spectator+Seating), [Spire of Industry](https://manamap.seanmacrae.com/viz/index.html?cards=Spire+of+Industry), [Spirebluff Canal](https://manamap.seanmacrae.com/viz/index.html?cards=Spirebluff+Canal), [Steam Vents](https://manamap.seanmacrae.com/viz/index.html?cards=Steam+Vents), [Stormcarved Coast](https://manamap.seanmacrae.com/viz/index.html?cards=Stormcarved+Coast), [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls), [Sunbillow Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Sunbillow+Verge), [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara), [Training Center](https://manamap.seanmacrae.com/viz/index.html?cards=Training+Center)
+[Adarkar Wastes](https://manamap.seanmacrae.com/viz/index.html?cards=Adarkar+Wastes), [Battlefield Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Battlefield+Forge), [Cascade Bluffs](https://manamap.seanmacrae.com/viz/index.html?cards=Cascade+Bluffs), [City of Brass](https://manamap.seanmacrae.com/viz/index.html?cards=City+of+Brass), [Clifftop Retreat](https://manamap.seanmacrae.com/viz/index.html?cards=Clifftop+Retreat), [Command Beacon](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Beacon), [Command Tower](https://manamap.seanmacrae.com/viz/index.html?cards=Command+Tower), [Fiery Islet](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Islet), [Frostboil Snarl](https://manamap.seanmacrae.com/viz/index.html?cards=Frostboil+Snarl), [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns), [Glittering Massif](https://manamap.seanmacrae.com/viz/index.html?cards=Glittering+Massif), [Hallowed Fountain](https://manamap.seanmacrae.com/viz/index.html?cards=Hallowed+Fountain), [Hengegate Pathway // Mistgate Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Hengegate+Pathway+%2F%2F+Mistgate+Pathway), [Inspiring Vantage](https://manamap.seanmacrae.com/viz/index.html?cards=Inspiring+Vantage), [Mana Confluence](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Confluence), [Mountain](https://manamap.seanmacrae.com/viz/index.html?cards=Mountain), [Needleverge Pathway // Pillarverge Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Needleverge+Pathway+%2F%2F+Pillarverge+Pathway), [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City), [Raugrin Triome](https://manamap.seanmacrae.com/viz/index.html?cards=Raugrin+Triome), [Riverglide Pathway // Lavaglide Pathway](https://manamap.seanmacrae.com/viz/index.html?cards=Riverglide+Pathway+%2F%2F+Lavaglide+Pathway), [Riverpyre Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Riverpyre+Verge), [Rugged Prairie](https://manamap.seanmacrae.com/viz/index.html?cards=Rugged+Prairie), [Sacred Foundry](https://manamap.seanmacrae.com/viz/index.html?cards=Sacred+Foundry), [Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds), [Shivan Reef](https://manamap.seanmacrae.com/viz/index.html?cards=Shivan+Reef), [Spectator Seating](https://manamap.seanmacrae.com/viz/index.html?cards=Spectator+Seating), [Spire of Industry](https://manamap.seanmacrae.com/viz/index.html?cards=Spire+of+Industry), [Spirebluff Canal](https://manamap.seanmacrae.com/viz/index.html?cards=Spirebluff+Canal), [Steam Vents](https://manamap.seanmacrae.com/viz/index.html?cards=Steam+Vents), [Stormcarved Coast](https://manamap.seanmacrae.com/viz/index.html?cards=Stormcarved+Coast), [Sulfur Falls](https://manamap.seanmacrae.com/viz/index.html?cards=Sulfur+Falls), [Sunbillow Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Sunbillow+Verge), [Talon Gates of Madara](https://manamap.seanmacrae.com/viz/index.html?cards=Talon+Gates+of+Madara), [Training Center](https://manamap.seanmacrae.com/viz/index.html?cards=Training+Center)
 
 ## Numbers
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on v2.1.0 (V10), 2026-10-26. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 4.904**
-- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **74%**
-- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **74%**
-- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **34%**
-- A discard converted to board or cards (the non-damage half of the tax): **56%**
-- A per-draw BOARD source drawn (the air force the commanders fly with): **19%**
+- mean turn the commander is first cast: **turn 4.928**
+- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **73%**
+- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **73%**
+- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **33%**
+- A discard converted to board or cards (the non-damage half of the tax): **55%**
+- A per-draw BOARD source drawn (the air force the commanders fly with): **18%**
 - THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **26%**
 - Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **69%**
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **84%**
@@ -177,10 +176,10 @@ Goldfish, 10,000 seeded games, measured on v2.1.0 (V10), 2026-10-26. Each group 
 - A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **82%**
 - A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **46%**
 - share of opening sevens the model would keep: **80%**
-- Engine online by turn 5: **73%** (95% CI 73%–74%) — exceptional
-- A win route assembled by turn 6: **34%** (95% CI 33%–35%)
-- A win route assembled by turn 8: **52%** (95% CI 51%–53%)
-- Colour on curve (lands + rocks): W 91%, U 96%, R 91%
+- Engine online by turn 5: **73%** (95% CI 72%–73%) — exceptional
+- A win route assembled by turn 6: **33%** (95% CI 32%–34%)
+- A win route assembled by turn 8: **51%** (95% CI 50%–52%)
+- Colour on curve (lands + rocks): W 91%, U 96%, R 88%
 - Forge (an optional probe, not a gate): last run 2026-10-25, 6/40 won (15% (95% CI 7%–29%)) on V9 — on an older list
 <!-- /ctx:gen numbers -->
 
@@ -298,3 +297,4 @@ The list has had three games, none on v2.1.0, so these are things to test, not s
 - 2026-10-25 · Keeper · pilot log 003: first v2.0.0 game, slow, no removal seen, mana-starved one round
 - 2026-10-25 · Keeper · Q010: removed the claim that blue is the thinner colour (contradicted by Numbers); Q011 pending Sean's game 004 opening-hand log
 - 2026-10-26 · Keeper · deck change: answers-v1 merged as v2.1.0
+- 2026-10-27 · Keeper · deck change: powertune-v1 merged as v2.1.1 (land pass)
