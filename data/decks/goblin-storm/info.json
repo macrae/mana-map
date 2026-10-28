@@ -4285,14 +4285,14 @@
     "within_target": true
   },
   "deckcheck": {
-    "score": 35,
+    "score": 39,
     "max_score": 96,
     "bracket": 3,
-    "as_of": "2026-10-20",
-    "source_updated_at": "2026-10-20T21:44:52.016101+00:00",
+    "as_of": "2026-10-27",
+    "source_updated_at": "2026-10-28T00:06:14.181500+00:00",
     "url": "https://deckcheck.co/app/decklist/lHEauc76uA6G",
-    "stale_list": true,
-    "readings_n": 3,
+    "stale_list": false,
+    "readings_n": 4,
     "omni": {
       "benchmarks": {
         "A1": "B",
@@ -4302,23 +4302,23 @@
         "P1": "A",
         "P2": "S",
         "P3": "B",
-        "R1": "B",
+        "R1": "A",
         "R2": "S",
-        "S1": "C",
-        "S2": "B",
-        "S3": "B"
+        "S1": "B",
+        "S2": "A",
+        "S3": "C"
       },
-      "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+      "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
       "median_bracket": 3,
-      "median_score": 35,
+      "median_score": 39,
       "n": 1,
       "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
     },
     "floor_vs_dti": {
       "floor": 1,
-      "floor_decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
+      "floor_decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
       "floor_name": "Exhibition",
-      "reading_as_of": "2026-10-20",
+      "reading_as_of": "2026-10-27",
       "relation": "dti_higher",
       "their_bracket": 3
     },
@@ -4917,8 +4917,6 @@
   },
   "next": [
     "2 artifact(s) fail their own gate (CONTEXT.md, rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
-    "DeckCheck copy is V3, sleeved is V4 — `manamap pilot deck-export goblin-storm --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link goblin-storm deckcheck <url>`",
-    "DTI (2026-10-20) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×1, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"
