@@ -17,7 +17,6 @@
     "stale": [],
     "older_model": [],
     "invalid": [
-      "CONTEXT.md",
       "rating.json"
     ],
     "verified": true,
@@ -5006,20 +5005,26 @@
     "release": "v1.2.0"
   },
   "record": {
-    "games": 2,
-    "win": 0,
+    "games": 5,
+    "win": 1,
     "loss": 2,
     "draw": 0,
-    "last_played": "2026-09-01",
+    "last_played": "2026-10-27",
     "first_played": "2026-08-28",
-    "undebriefed": [],
+    "undebriefed": [
+      "003",
+      "004",
+      "005"
+    ],
     "causes": {
       "001": "stalled",
-      "002": "raced"
+      "002": "raced",
+      "003": "won"
     },
     "cause_counts": {
       "raced": 1,
-      "stalled": 1
+      "stalled": 1,
+      "won": 1
     },
     "feel": {},
     "feel_n": 0,
@@ -5531,7 +5536,8 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (CONTEXT.md, rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "1 artifact(s) fail their own gate (rating.json) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "3 logged game(s) not yet debriefed (003, 004, 005) — `/debrief goblin-storm`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×1, resolve-stack ×4",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"

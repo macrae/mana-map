@@ -14262,28 +14262,42 @@
     "release": "v2.2.0"
   },
   "record": {
-    "games": 3,
+    "games": 4,
     "win": 0,
-    "loss": 1,
+    "loss": 2,
     "draw": 0,
-    "last_played": "2026-10-25",
+    "last_played": "2026-10-27",
     "first_played": "2026-10-06",
     "undebriefed": [
-      "003"
+      "003",
+      "004"
     ],
     "causes": {
       "001": "won",
-      "002": "combo"
+      "002": "combo",
+      "004": "raced"
     },
     "cause_counts": {
       "combo": 1,
+      "raced": 1,
       "won": 1
     },
     "feel": {},
     "feel_n": 0,
-    "marks": {},
-    "marks_n": 0,
-    "marked": {}
+    "marks": {
+      "kept_wheels": {
+        "n": 1,
+        "min": 1,
+        "max": 1,
+        "mean": 1.0
+      }
+    },
+    "marks_n": 1,
+    "marked": {
+      "004": {
+        "kept_wheels": 1
+      }
+    }
   },
   "model": {
     "goldfish": {
@@ -14977,7 +14991,7 @@
     "3 artifact(s) fail their own gate (log, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "DeckCheck copy is V10, sleeved is V12 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "1 logged game(s) not yet debriefed (003) — `/debrief sharknado`",
+    "2 logged game(s) not yet debriefed (003, 004) — `/debrief sharknado`",
     "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
