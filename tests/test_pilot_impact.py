@@ -80,6 +80,22 @@ def test_reference_impact_names_artifact_and_key(deck):
     assert not any(k == "mulligan" for _, k in artifacts)
 
 
+def test_a_cut_card_named_in_the_procedures_is_impact(deck):
+    """THE CUT is what a stale artifact names. goblin-storm v1.2.1 cut Faithless
+    Looting and the report read clean, because it kept only names still in the
+    deck and never opened `poh_procedures.json` (2026-10-28)."""
+    write_json(deck / "poh_procedures.json", {"emergency": {"stalled": {
+        "steps": ["Cast Loop Piece and untap everything."]}}})
+    _seed_baseline(deck)
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["cards"] = [c for c in cards["cards"] if c["name"] != "Loop Piece"]
+    write_json(deck / "cards.json", cards)
+    ac._SHA_MEMO.clear(); common.clear_memo()
+    hits = impact.analyze(SLUG)["reference_impact"]
+    artifacts = {h["artifact"].rsplit("/", 1)[-1] for h in hits}
+    assert {"poh_procedures.json", "manual_prose.json", "001-loop.json"} <= artifacts, artifacts
+
+
 def test_unreferenced_change_has_no_impact(deck):
     _seed_baseline(deck)
     cards = json.loads((deck / "cards.json").read_text())

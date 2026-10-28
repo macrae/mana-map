@@ -94,7 +94,8 @@ def reference_impact(base, changed_names):
 
     for fname in ("strategic_frame.json", "considering.json",
                   "tutor_guide.json", "mana_analysis.json",
-                  "goldfish_targets.json"):
+                  "goldfish_targets.json", "engine.json",
+                  "poh_procedures.json"):
         doc = load_json(base / fname)
         if doc is None:
             continue
@@ -276,13 +277,14 @@ def analyze(slug):
     cache = load_cache(slug)
     diff = deck_diff(base, cache)
     changed = diff.get("changed", []) if diff.get("available") else []
-    names = deck_card_names(load_json_memo(base / "cards.json")) \
-        if (base / "cards.json").exists() else []
-    changed_known = [n for n in changed if n in names] or changed
+    # EVERY changed name, the cuts included. This kept only names still in
+    # cards.json, which drops exactly the card a stale artifact names: goblin-
+    # storm v1.2.1 cut Faithless Looting, impact read "every artifact is clean",
+    # and the prose and the procedures both still named it (2026-10-28).
     return {
         "slug": slug,
         "deck_diff": diff,
-        "reference_impact": reference_impact(base, changed_known),
+        "reference_impact": reference_impact(base, changed),
         "figure_audit": figure_audit(base),
         "target_audit": target_audit(base),
     }
