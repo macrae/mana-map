@@ -311,12 +311,12 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
- "fleet_sha": "0e11fc288d6b",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "How often does the current list have double green on curve for its double green dinosaurs?",
+   "question": "How often does the current list have double green on curve, and is red the thinner colour in play?",
    "settled_by": "goldfish"
   },
   {
@@ -324,59 +324,34 @@
    "settled_by": "rate"
   }
  ],
- "iterations": 3,
+ "iterations": 2,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
+    "where": "judgment.citations",
+    "status": "supported",
+    "note": "Unchanged from round 1; log 002, engine thesis, context numbers and DTI all verified."
+   },
+   {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "77 equals code_score 77.0; the one unmeasured fact (green sources) is stated in words, kept out of the number because mana (83.33) and construction (mana-base under) already carry land structure. mana_analysis.json confirms G 27 land sources vs target 36; no figure argues for moving off neutral."
+    "note": "72 vs code_score 71.8 is rounding; the argument now says sizes are unavailable and sits at the measured score. Scorecard re-run identical on all non-simulation fields."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Concordance is mixed, not divergent, so no outlier duty. No superlatives. Minor omission, not a finding: mana_analysis reads RED worse than green (on_curve lands-only R 0.548 vs G 0.764; R 19 sources vs 36), but the pilot's log names green and the neutral point is unaffected."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "log:001 quote is verbatim; the game says it. Caveat: the debrief flags that the finisher Enlarge is not in the tracked 99 and the entry sha (0480...) is not the current list. The argument already says both games were on older lists and gives the win no weight."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "log:002 quote verbatim; the 16/16 commander-damage kill and the sequencing-loss attribution match the whole note."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "engine:thesis 'it fired at all in 7,300 of them' is verbatim and matches the argument's use (the reveal fired in 7,300 of 10,000 games)."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "stack:001 title verbatim; validate-stack reports OK, checker pass."
-   },
-   {
-    "where": "open_questions[0]",
-    "status": "supported",
-    "note": "Reframed as double green on curve, which is answerable. mana_analysis already gives a hypergeometric G on-curve (0.764 lands-only, 0.822 with rocks/dorks, max_pips 2), but that is a no-mulligan draw model; per-card castability from the goldfish is still new."
-   },
-   {
-    "where": "open_questions[1]",
-    "status": "supported",
-    "note": "Both logs predate V5 (older decklist shas); only a rate over table games settles it."
+    "note": "The unsized 'cancel' claim is replaced by a plain statement that neither side can be sized, which is the permitted form."
    }
   ],
-  "iterations": 3
+  "iterations": 2
  },
  "code_score": 71.8,
- "score_point": 73.1,
- "score": 72.9,
+ "score_point": 71.9,
+ "score": 71.6,
  "score_ci": [
-  68.7,
-  76.5
+  67.5,
+  75.2
  ],
  "grade": "B",
  "grade_range": [
@@ -385,9 +360,9 @@
  ],
  "grade_display": "B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.997,
-  "C": 0.002,
+  "A": 0.0,
+  "B": 0.995,
+  "C": 0.005,
   "D": 0.0,
   "F": 0.0
  },
@@ -405,23 +380,23 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 73.4,
+    "score": 72.0,
     "grade": "B"
    },
    "mana": {
-    "score": 73.3,
+    "score": 71.9,
     "grade": "B"
    },
    "resilience": {
-    "score": 75.4,
+    "score": 74.0,
     "grade": "B"
    },
    "construction": {
-    "score": 73.2,
+    "score": 71.7,
     "grade": "B"
    },
    "dti": {
-    "score": 71.3,
+    "score": 69.8,
     "grade": "B"
    },
    "judgment": {
@@ -433,7 +408,7 @@
    {
     "component": "resilience",
     "share_now": 0.15,
-    "share_at_flip": 0.676,
+    "share_at_flip": 0.642,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
@@ -441,7 +416,7 @@
    {
     "component": "dti",
     "share_now": 0.187,
-    "share_at_flip": 0.901,
+    "share_at_flip": 0.915,
     "boundary": 80,
     "grade_at_flip": "A",
     "direction": "raise"
@@ -482,14 +457,9 @@
  },
  "resolution": "the 90% interval spans 0 grade boundaries; concordance mixed",
  "judgment": {
-  "sub_score": 77,
-  "argument": "The measured components cannot see the table. The goldfish has no blockers and no removal, the table record is withheld (two games logged, five needed), there is no survey, and Forge has not run this list.\n\nThe engine is real: the reveal fired in 7,300 of the goldfish's games, and the cascade stack passed its checker. Log 001 is a win and the pilot calls it the deck working as designed. Log 002 shows Gishath online and killing a player with commander damage, then a loss the pilot puts on his own sequencing, not on the list.\n\nOne unmeasured fact cuts the other way. The pilot wrote down a green source audit as a follow up, and the mana analysis reads the green count under its target. The missed land drop rate counts any land, so it does not see a colour shortfall. I do not let it move the number: it is one fixable distribution, the audit's mana base axis already reads under inside construction, and the game it showed up in was lost to sequencing.\n\nBoth games were played on older lists, and one win with one loss argues neither way. Resilience is scored from its capacity counts already, so marking it down again would double count.\n\nSo I sit at the measured score: 77, the code_score. Not higher, because no game has been played on this list; not lower, because the one colour concern is partly carried and fixable.",
+  "sub_score": 72,
+  "argument": "The measured components cannot see the table. The goldfish has no blockers and no removal, the table record is withheld, no survey exists, and Forge has not run this list. Both logged games were played before the V5 payoff layer, so nothing here has watched the current 99 at a table.\n\nWhat the record does say: log 002 shows Gishath online and killing a player with commander damage, and the pilot puts the loss on his own closing, not on the list. The engine thesis is real: the reveal fired in most of the goldfish's games, and V5 added Purphoros and Molten Echoes so entries pay without a combat step.\n\nThe colours cut the other way. The context's own line reads red at 61% on curve against 82% for green, and the pilot's green complaint is the one follow-up he wrote down. The missed-land-drop rate counts any land, so it cannot see a colour shortfall. But the V5 upside has no figure from a table game, and the colour concern has only a goldfish figure, so I cannot size either against the other. Construction and mana already carry the land structure, and DeckCheck already ranks this deck first in the bracket, so moving off the measured score would double count.\n\nSo I sit at the measured score, rounded: no game has been played on this list, and neither the V5 upside nor the red shortfall is sized well enough to argue a gap.",
   "citations": [
-   {
-    "kind": "log",
-    "ref": "log:001",
-    "quote": "No changes. This is the deck working as designed."
-   },
    {
     "kind": "log",
     "ref": "log:002",
@@ -501,9 +471,14 @@
     "quote": "it fired at all in 7,300 of them"
    },
    {
-    "kind": "stack",
-    "ref": "stack:001",
-    "quote": "Gishath connects: what seven damage actually unleashes"
+    "kind": "context",
+    "ref": "context:numbers",
+    "quote": "Colour on curve (lands + rocks): W 87%, R 61%, G 82%"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
    }
   ],
   "against": {
@@ -513,8 +488,8 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   68.64,
-   84.85
+   63.64,
+   79.85
   ]
  },
  "rank": {
@@ -527,10 +502,10 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.052,
-   "2": 0.853,
-   "3": 0.094,
-   "4": 0.001
+   "1": 0.029,
+   "2": 0.871,
+   "3": 0.098,
+   "4": 0.002
   },
   "basis": {
    "gishath": "this document",
@@ -539,9 +514,9 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 80.8,
-   "gishath": 72.9,
-   "ur-dragon": 65.0,
+   "sharknado": 80.5,
+   "gishath": 71.6,
+   "ur-dragon": 63.6,
    "goblin-storm": 60.9
   }
  }

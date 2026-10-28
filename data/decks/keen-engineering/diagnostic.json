@@ -8,6 +8,7 @@
   "max_turn": 10
  },
  "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
+ "model_version": "f5b4b19d2254",
  "stall": {
   "by_turn": {
    "1": {
@@ -656,6 +657,358 @@
    "n": 10000
   },
   "basis": "`castable` is the mana left at the END OF THE MAIN PHASE \u2014 the moment the decision is made, before combat. Extra combat phases are paid for after it and attack triggers add mana after it, so on a deck with Aggravated Assault this float is larger than what survives the turn. It is also a FLOOR against the spending policy: the model casts everything it can afford every turn, so a pilot choosing to hold up two mana would score higher. A low figure is a real finding; a high one is unambiguous good news."
+ },
+ "wheels": {
+  "first_wheel_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   }
+  },
+  "wheels_cast_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   }
+  },
+  "with_payoff": null,
+  "finisher_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0004
+    ],
+    "n": 10000
+   }
+  },
+  "dead_in_hand_by_turn": {
+   "1": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "2": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "3": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "4": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "5": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "6": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "7": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "8": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "9": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   },
+   "10": {
+    "rate": 0.0,
+    "ci95": [
+     0.0,
+     0.0
+    ],
+    "sd": 0.0,
+    "n": 10000
+   }
+  },
+  "basis": "a wheel is a card the model reads as one (spell or activated engine); the discard wheels it cannot parse are named in the goldfish declaration and are in none of these figures. A finisher needs a COMMANDER out, not merely any payoff. The table's dislike of a wheel is in no figure here: this counts what the model fired, not what a pod forgave."
  },
  "output": {
   "damage_by_turn": {

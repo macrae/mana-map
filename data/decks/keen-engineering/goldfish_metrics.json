@@ -92,12 +92,14 @@
       "ACTIVATED DRAW: a draw you BUY -- '{1}, {T}, Sacrifice this artifact: Draw a card' -- is paid for out of whatever mana the casting loops did not want, and a cost that eats its own source fires once. Energy and {X} activation costs are REFUSED and named, never priced at zero.",
       "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only when the hand holds at most three nonland cards or a discard payoff is on the battlefield; a loot pitches lands beyond the next drop first, then the most expensive nonland. A discarded card stays 'seen' for target assembly (assembly is 'drawn by', and it was). Wheel of Misfortune is excluded (conditional). Activated loots and rummages, cycling and madness are NOT modelled and are named in meta.draw_not_modelled. Discard- and draw-triggered payoffs pay a flat amount per event, outside the combat gate; +1/+1 counters they put on their own body are added to the swing while the commander is out, an approximation. Payoffs that DRAW on a draw are not read: an uncapped loop would draw the library and call it steam.",
       "DISCARD: a wheel a PERMANENT carries is activated from the battlefield under the same hand-size gate as a wheel that is cast, paying its mana cost every time. It fires at the earliest on the turn AFTER the permanent lands, which is the summoning sickness of the tap in its cost, and a cost that sacrifices its own source fires once and takes the body off the board. An ability activated from the graveyard (Runehorn Hellkite) is a zone this model does not have and is refused rather than fired.",
+      "WHEEL TIMING (2026-10-21): the turn of every wheel is observed and decided on by nothing. A FINISHER is a wheel resolved with a COMMANDER on the battlefield and a hand the thin-hand clause alone would not have thrown away. A deck's pilot_policy.json may HOLD a wheel (`hold_until` on the wheel channel: event_payoffs, commanders_out) — an AND-gate on the rule above, so a threshold of zero changes nothing; the policy is stamped on the artifact as meta.pilot_policy. A `keep` rule in the same file is read on the hand the model kept and reported as a pass rate, never enforced.",
       "DISCARD: THE OPPONENT'S HALF OF A WHEEL IS NOW COUNTED, AND ONLY THE TAX ON IT. A symmetrical wheel refills the opponent too, so `whenever an opponent draws a card` payoffs (Razorkin Needlehead, Scrawling Crawler, Mind's Eye, Consecrated Sphinx) fire on their draw step and on every card a wheel deals them. DAMAGE IS ONE SEAT, the same convention the damage pillar uses -- Brallin's '1 damage to EACH opponent' is counted once against a single 40-life opponent, which is the right per-seat clock. WHAT WE GAIN off their draws is paid by every opponent and scales with GOLDFISH_OPPONENTS (3): Faerie Mastermind's card on each opponent's second draw, Consecrated Sphinx's two per opponent draw, a Blood per opponent (2026-10-04; at one seat Hallcreeper -> Mastermind read -0.17 cards by T8, at three +0.62). WHAT IS STILL NOT MODELLED IS THE COST: the opponent draws those cards and never gets to use them, because this model has no opponent turn, no opponent board and no interaction. So the tax is priced and the risk it offsets is not. A trigger on an opponent CASTING (Rhystic Study) is a different family and stays unread.",
       "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "ddec1ff58e1d",
-    "seed": 42
+    "model_version": "f5b4b19d2254",
+    "seed": 42,
+    "targets_sha256": "0c5181bedb56bda22f90c9c7f6b0ffadaca8315e001cea55062faf269f43136a"
   },
   "metrics": {
     "combat": {
@@ -178,6 +180,18 @@
       "median_cast_turn": 3
     },
     "discard": {
+      "finisher_wheel_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
       "mean_cards_discarded_by_turn": {
         "1": 0.0,
         "10": 0.413,
@@ -214,6 +228,18 @@
         "8": 1.453,
         "9": 2.121
       },
+      "mean_dead_wheels_in_hand_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
       "mean_event_damage_by_turn": {
         "1": 0.0,
         "10": 0.799,
@@ -225,7 +251,36 @@
         "7": 0.425,
         "8": 0.552,
         "9": 0.668
-      }
+      },
+      "mean_first_wheel_turn": {
+        "mean": null,
+        "n": 0
+      },
+      "mean_wheels_cast_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "wheel_cast_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "wheel_with_payoff_rate": null
     },
     "interaction_castable_by_turn": {
       "1": 0.0,

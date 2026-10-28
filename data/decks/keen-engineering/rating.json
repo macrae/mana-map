@@ -288,7 +288,7 @@
  "withheld": [
   {
    "component": "table_record",
-   "reason": "0 game(s) logged; 5 needed"
+   "reason": "1 game(s) logged; 5 needed"
   },
   {
    "component": "pilot_feel",
@@ -322,12 +322,12 @@
   "floor_vs_target": "floor 1, target 2"
  },
  "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
- "fleet_sha": "8cab7bc112e7",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Diagnostic stalls and engine online by turn five: does this lower the deck once Sai's Thopters are modelled? Model the cast trigger and re-read.",
+   "question": "Does the deck read lower or higher once Sai's Thopters and sacrifice-draw are modelled? Model the cast trigger and re-read.",
    "settled_by": "goldfish"
   },
   {
@@ -335,57 +335,37 @@
    "settled_by": "diagnose"
   }
  ],
- "iterations": 2,
+ "iterations": 3,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "components",
-    "status": "supported",
-    "note": "validate-rating OK. Re-run of rating --json is identical on components, withheld, code_score (79.3), score_point, bracket, limits, uncertainty, sensitivity."
-   },
-   {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "79 vs code_score 79.3: neutral. The argument names two unmeasured, opposite-sign facts (Sai Thopters/sacrifice-draw unmodelled, context:plays; engine online by T5 = 34% 'brittle', context:numbers), declines to size them, and refuses to re-count DeckCheck (already the dti component at 0.15). No gap is claimed, so no figure is owed. Concordance is withheld (group of 1), so no outlier duty."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "'The goldfish undercounts this deck.' is verbatim in the context Plays section and its next sentence says the Thopters are the main source of bodies; used as claimed."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "'Engine online by turn 5' is verbatim in Numbers: 34% (CI 34-35), 'brittle'; used for brittleness as claimed."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "power-level section says the sharpest line between brackets is expected game length (Exhibition >=9 turns, Core >=8); it supports a slow kill as bracket-appropriate."
+    "note": "79 vs code_score 79.3: neutral. Both directions (undermodelled Thopters vs 37% brittle engine, one-game loss) are unsized, and the argument says so; DTI double count correctly avoided."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "DeckCheck 30/96, rubric mean 56.25 matches deckcheck.json and the dti component. 'Pulls the composite down from where it stood' matches the prior committed 87.1. No superlative; group is n=1."
+    "note": "30/96, 56.25, 37% brittle, one logged loss all match the artifacts. 'His flying finisher' is slightly firmer than the context, which says Steel Kite Dragon is not in the 99 (probably Steel Hellkite, open question to Sean); immaterial since the number sits at code_score."
    },
    {
-    "where": "components[0].citations[0]",
+    "where": "judgment.citations",
     "status": "supported",
-    "note": "Minor, not a defect: speed's anchor uses kill_by_turn_10 for bracket 2 while the strategy text gives Core >=8 turns (Exhibition 9) and the context floor is 1. The anchor is authored config, speed validity is unchecked (no engine.json), and the judgment does not lean on it."
+    "note": "context:plays, context:numbers and context:pilot quotes verified verbatim and read in their section's sense; skeleton quotes present in rating.json."
    },
    {
-    "where": "open_questions[0]",
+    "where": "open_questions",
     "status": "supported",
-    "note": "Needs a model change first, but the question says so ('Model the cast trigger and re-read'), and the goldfish is the instrument that settles it afterwards. The skeleton does not answer it today."
+    "note": "Both are unanswered by the artifacts; settled_by goldfish and diagnose fit."
    },
    {
-    "where": "open_questions[1]",
+    "where": "scorecard",
     "status": "supported",
-    "note": "Audit answer list vs context answer list is a diagnose-time read; not answered by the artifacts."
+    "note": "validate-rating OK; rerun matches components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity. Concordance withheld (n=1), no outliers to address."
    }
   ],
-  "iterations": 2
+  "iterations": 3
  },
  "code_score": 79.3,
  "score_point": 79.2,
@@ -500,7 +480,7 @@
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance withheld",
  "judgment": {
   "sub_score": 79,
-  "argument": "Every measured component here is anchor-only: the deck is alone in its bracket, so nothing is placed against another list. DeckCheck's read is now in, and it is the first outside view of card quality: 30 of 96, with a rubric mean of 56.25, a plain middle grade for a printed precon. That sits below the goldfish-based components, which mostly ask whether a gentle deck behaves like one, and it pulls the composite down from where it stood before the scan. What the instruments miss is Sai. The context says his Thopters and his sacrifice-draw are not modelled, so every board figure is a floor, and the deck's main source of bodies never appears. That argues the engine is under-read. Against it, the goldfish has no blockers or removal, no game is logged, and the context marks engine online by turn five as brittle. Those two gaps point opposite ways and I cannot size either from cited facts, so the record does not explain a move off the measured figure. The number sits at the code score because the one new reading, DeckCheck's, is already carried by its own component, and counting it again would be a double count.",
+  "argument": "Every measured component is anchor-only: this deck is alone in its bracket, so nothing is placed against another list. What the instruments miss is Sai. The context says the goldfish does not model his Thopters or his sacrifice-draw, so every board and damage figure is a floor and the deck's main source of bodies never appears. That argues the engine is under-read. Against it, the goldfish has no blockers or removal, and the context marks engine online by turn 5 at 37%, which it calls brittle. The one logged game is a loss, where the pilot felt like a threat but never drew a cost reducer or his flying finisher and could not get past wider boards with no trample. That is one game, not a record, and it points the same way as the brittle engine number. DeckCheck's read, 30 of 96 with a rubric mean of 56.25, is already its own component, so counting it again would be a double count. These unmeasured facts pull in opposite directions and I cannot size either from cited facts, so the number sits at the code score: a gentle precon played as printed, doing about what a Bracket 2 deck should, in a slow kill that suits the bracket.",
   "citations": [
    {
     "kind": "skeleton",
@@ -520,12 +500,12 @@
    {
     "kind": "context",
     "ref": "context:numbers",
-    "quote": "Engine online by turn 5"
+    "quote": "Engine online by turn 5: **37%** (95% CI 36%–38%) — brittle"
    },
    {
-    "kind": "strategy",
-    "ref": "strategy:deckbuilding.power-level",
-    "quote": "the sharpest line between them is expected game length"
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "I didn't draw into any artifact discount cards."
    }
   ],
   "against": {

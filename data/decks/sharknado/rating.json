@@ -311,48 +311,43 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
- "fleet_sha": "0e11fc288d6b",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [
-  {
-   "question": "Rescan DeckCheck on the current list so the dti component can be read.",
-   "settled_by": "rate"
-  }
- ],
- "iterations": 3,
+ "open_questions": [],
+ "iterations": 2,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Empty; the goldfish-routed question is gone. Nothing unanswerable remains."
+   },
+   {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "82, 6 under code_score 88, one named unmeasured fact (warp matchup, no logged win); no double count."
+    "note": "81 is code_score 80.6 rounded; no gap is claimed, and the argument says the Alex matchup is unsized in the record, which matches log 004 and Q014 (no Alex clock recorded)."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Q013 now described as a break-even table; consistent with the record."
+    "note": "The uncited Q013 phrase is removed. Remaining claims trace to Q012, Q014 and log 004."
    },
    {
     "where": "judgment.citations",
     "status": "supported",
-    "note": "Verbatim and consistent with Q012/Q014."
-   },
-   {
-    "where": "open_questions[0]",
-    "status": "supported",
-    "note": "DeckCheck rescan is answerable by rate."
+    "note": "Six quotes unchanged and verbatim. validate-rating passes; components, withheld, code_score, score_point, bracket, limits, uncertainty and sensitivity identical to a re-run."
    }
   ],
-  "iterations": 3
+  "iterations": 2
  },
  "code_score": 80.6,
- "score_point": 80.9,
- "score": 80.8,
+ "score_point": 80.7,
+ "score": 80.5,
  "score_ci": [
-  74.5,
-  86.2
+  74.3,
+  85.9
  ],
  "grade": "A",
  "grade_range": [
@@ -361,8 +356,8 @@
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.587,
-  "B": 0.412,
+  "A": 0.556,
+  "B": 0.444,
   "C": 0.001,
   "D": 0.0,
   "F": 0.0
@@ -381,23 +376,23 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 77.6,
+    "score": 77.3,
     "grade": "B"
    },
    "mana": {
-    "score": 80.4,
+    "score": 80.1,
     "grade": "A"
    },
    "resilience": {
-    "score": 81.1,
+    "score": 80.8,
     "grade": "A"
    },
    "construction": {
-    "score": 80.0,
-    "grade": "A"
+    "score": 79.7,
+    "grade": "B"
    },
    "dti": {
-    "score": 86.2,
+    "score": 85.8,
     "grade": "A"
    },
    "judgment": {
@@ -409,7 +404,7 @@
    {
     "component": "dti",
     "share_now": 0.187,
-    "share_at_flip": 0.221,
+    "share_at_flip": 0.212,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -417,7 +412,15 @@
    {
     "component": "speed",
     "share_now": 0.15,
-    "share_at_flip": 0.108,
+    "share_at_flip": 0.12,
+    "boundary": 80,
+    "grade_at_flip": "B",
+    "direction": "lower"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.163,
+    "share_at_flip": 0.048,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "lower"
@@ -447,13 +450,18 @@
  },
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance concordant",
  "judgment": {
-  "sub_score": 82,
-  "argument": "The measured components are mostly right about this deck, so I sit a little under code_score, not far. Concordance is clean and the engine ran well in the one game on this list. I do not mark the deck down for that loss's tempo: the pilot held the commanders for a wheel that never came, and the context's break-even table for holding shows it favours casting once a removal or wipe is unlikely, so the cost came from that decision, not the 99. A keepable opener full of lands and rocks with no payoff reaches a commander sooner in the model, and casting on curve beats holding. What the instruments cannot see is the table. Speed is an unopposed ceiling (kill_by_turn_8), and the one opponent the record names, Alex's warp deck, is a deck-specific problem the goldfish has no seat for. The decided research says three cards in the 99 can answer his turn-ending artifact at instant speed, Prismari Command, Chaos Warp and Otawara, none of them is a creature counter, and the plan against him is racing. That is a narrow, named gap, not a flaw in the engine. The list has no logged win yet and DeckCheck's read is of an older list, so nothing outside the goldfish confirms the ceiling. I take six points off for that one unconfirmed matchup, and no more, because the engine and the scorecard point the other way.",
+  "sub_score": 81,
+  "argument": "The measured components now cover this deck well: DeckCheck's read is of this very list, concordance is clean, and speed, mana and construction all sit high. So I do not argue the scorecard undersells it, and I do not mark it down for the loss on this list. Q012 found the land-and-ramp keep was a good keep in the model, and log 004's slowness came from holding the commanders, which the goldfish never does. What the instruments cannot see is the table. Speed is an unopposed ceiling (kill_by_turn_8), with no blockers and no removal, and the one opponent the record names, Alex's warp deck, has no seat in it. The decided research says only three cards in the 99 can take his turn-ending artifact at instant speed, and zero cards counter a creature spell, so the plan is racing; the debrief calls his deck a faster class of deck. That is a real, named gap, but nothing in the record prices Alex's clock, and DeckCheck grades card quality, not this matchup. A deduction I cannot size would be a guess, so I sit at code_score: the unmeasured matchup is a risk the list carries, not a number I can subtract. The list also has no logged win yet. I go no higher, because nothing at a real table confirms the ceiling.",
   "citations": [
    {
     "kind": "skeleton",
     "ref": "skeleton:speed",
     "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
    },
    {
     "kind": "log",
@@ -483,8 +491,8 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   73.7,
-   90.68
+   72.7,
+   89.68
   ]
  },
  "rank": {
@@ -497,8 +505,8 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.947,
-   "2": 0.053,
+   "1": 0.97,
+   "2": 0.03,
    "3": 0.0,
    "4": 0.0
   },
@@ -509,9 +517,9 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 80.8,
-   "gishath": 72.9,
-   "ur-dragon": 65.0,
+   "sharknado": 80.5,
+   "gishath": 71.6,
+   "ur-dragon": 63.6,
    "goblin-storm": 60.9
   }
  }

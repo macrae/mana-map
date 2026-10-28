@@ -237,6 +237,8 @@ def test_a_sound_judged_document_passes_and_each_bug_is_caught(fleet):
     # "The 99" is the decklist, not a figure; a 99 that IS a figure still fires.
     assert not any("quotes 99" in e for e in errs(
         lambda d: d["judgment"].__setitem__("argument", d["judgment"]["argument"] + " The cost was the play, not the 99.")))
+    assert not any("quotes 99" in e for e in errs(
+        lambda d: d["judgment"].__setitem__("argument", d["judgment"]["argument"] + " Nothing has watched the current 99.")))
     assert any("quotes 99" in e for e in errs(
         lambda d: d["judgment"].__setitem__("argument", d["judgment"]["argument"] + " It wins 99 games.")))
     assert any("two citations" in e for e in errs(lambda d: d["judgment"].__setitem__("citations", d["judgment"]["citations"][:1])))

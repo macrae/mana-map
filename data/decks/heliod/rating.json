@@ -323,62 +323,33 @@
   "floor_vs_target": "floor 4, target 4"
  },
  "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
- "fleet_sha": "95977cec192f",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Does anything in the current list protect Heliod from a counter war plus redirected removal, and do the answer cards reach the pod's real threats?",
+   "question": "Does the current list protect Heliod from a counter war plus redirected removal?",
    "settled_by": "diagnose"
-  },
-  {
-   "question": "How often does the single Approach of the Second Sun finish resolve against a table that can counter it?",
-   "settled_by": "resolve-stack"
   }
  ],
  "iterations": 3,
  "verifier": {
-  "verdict": "fail",
+  "verdict": "pass",
   "findings": [
-   {
-    "where": "mechanical",
-    "status": "supported",
-    "note": "validate-rating OK; components, withheld, code_score, score_point, bracket, limits, uncertainty and sensitivity identical to a fresh rating --json."
-   },
    {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "65 vs code_score 65.1 claims no gap, so no unmeasured figure has to carry one."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "engine stage output: 'this stage produces value, not a kill' with Crawler/Secure/Ballista/Hangarback named; read whole, it supports the dti explanation."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "engine stage wincon: 'One card' (Approach), single point of failure; not a clock claim is consistent."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "log:001 says losing the commander takes the engine down; stack-war loss on the V5 list. The 'pilot's own sequencing' loss is log:002 (three sequencing errors, incl. Supreme Verdict on own Heliod) which is true but uncited."
+    "note": "65 vs code_score 64.9; scorecard rerun identical; validate-rating passes."
    },
    {
     "where": "judgment.argument",
-    "status": "unjustified",
-    "note": "Resilience is a named outlier (rank 1) and the argument offers no explanation for it: it says the record does not explain why 21 answer cards ranks first and that no gap is citable. Charter requires every outlier be addressed with a cited unmeasured fact. 'The two outliers offset' is then asserted, not shown: dti (rank 1, effective weight 0.203) is supposedly cancelled by speed (rank 3, weight 0.081) and the unexplained resilience; leave-one-out moves are +5.7 without speed and -3.6 without dti, so they do not cancel in size. Also, the dti explanation (quality never converted into a kill) is what the speed component already scores at 0, so it explains the divergence rather than an unmeasured gap; fine for staying at code_score, but the 'cancel' language is over-claimed."
+    "status": "supported",
+    "note": "Protection claim correct (audit.protection at its band); 'wash' stays at code_score; citations verbatim and fairly read."
    },
    {
-    "where": "judgment.argument",
-    "status": "over-claimed",
-    "note": "'dti and resilience rank Heliod first ... speed, mana and construction rank it last' ranks over n=3 only (rank.group edgar-vampires, heliod, sharknado); rank 1 of 3 at group n=3 is a thin basis for 'cancel'."
-   },
-   {
-    "where": "open_questions[1]",
-    "status": "unjustified",
-    "note": "'How often does the single Approach finish resolve against a table that can counter it?' asks for a rate; settled_by resolve-stack proves a single stack with rules citations (engine wincon says stack 002 already shows the second cast winning through a counter window) and cannot produce a frequency. The route/rate is explicitly unmeasured per the engine stage, so a measuring route, not resolve-stack, is needed."
+    "where": "open_questions[0]",
+    "status": "supported",
+    "note": "Counter war plus redirected removal on the current list is a diagnose question; no artifact already answers it. The Approach cost question is dropped."
    }
   ],
   "iterations": 3
@@ -496,7 +467,7 @@
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance withheld",
  "judgment": {
   "sub_score": 65,
-  "argument": "The measured components cannot see whether this deck's good cards turn into a win, and they disagree: dti and resilience rank Heliod first in its bracket, speed, mana and construction rank it last. Dti is DeckCheck's score of 46 with a rubric mean of 68.75: it grades the cards one by one. The engine's output stage says what the deck produces is the Crawlers, Secure the Wastes, Walking Ballista and Hangarback Walker, and that it is not a clock; the wincon stage says it is one card. So the rubric rewards quality the goldfish never converts into a kill, which is what pulls speed to the bottom. Neither instrument is wrong about its own question. They measure different things, and they cancel. Resilience counts 21 answer cards, and the record does not explain why that count ranks first: both logged games, on earlier lists, were lost, one to a stack war that took Heliod, the other to the pilot's own sequencing, and neither sizes a gap I can cite for the current list. Logged games are withheld, so I do not price them. The judgment sits at code_score 65.1 because the two outliers offset and no unmeasured, cited fact moves it either way.",
+  "argument": "The measured components cannot see whether this deck's value turns into a win, or what happens when the table fights back. The goldfish has no blockers and no removal, and the win is one card the goldfish cannot score, so speed reads at the floor. DeckCheck's score of 46 with a rubric mean of 68.75 grades the cards one by one. The engine's output stage says the deck produces Crawlers, Secure the Wastes, Walking Ballista and Hangarback Walker, which is value and not a clock, and the wincon stage says the finish is one card with a single point of failure. So speed and dti are answering different questions, and neither is wrong. Concordance is withheld at a group of two, so no instrument is an outlier. The two logged games, both on earlier lists and both losses, point the same way: the pilot lost Heliod in a stack war, and later killed his own Heliod with a wipe and sat on the tutor that sets up the win. The first is a commander-protection failure that no component prices, since the construction audit's protection count sits at its band and says nothing about a stack war; the second is sequencing, which no component prices either. Neither sizes a citable gap for the current list, and table-record is withheld, so I price neither. I stay at code_score because the cited unmeasured facts are a wash: the record shows a real single point of failure but also a pilot-side cause.",
   "citations": [
    {
     "kind": "skeleton",
@@ -522,6 +493,11 @@
     "kind": "log",
     "ref": "log:001",
     "quote": "Losing the commander takes the whole engine down"
+   },
+   {
+    "kind": "log",
+    "ref": "log:002",
+    "quote": "Supreme Verdict after Heliod was already out. I killed my own commander."
    }
   ],
   "against": {
@@ -543,8 +519,8 @@
    "edgar-vampires"
   ],
   "acceptability": {
-   "1": 0.758,
-   "2": 0.241
+   "1": 0.88,
+   "2": 0.12
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -552,7 +528,7 @@
   },
   "scores": {
    "heliod": 65.0,
-   "edgar-vampires": 61.8
+   "edgar-vampires": 60.4
   }
  }
 }

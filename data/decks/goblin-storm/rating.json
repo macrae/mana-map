@@ -311,7 +311,7 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
- "fleet_sha": "0e11fc288d6b",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -320,32 +320,37 @@
    "settled_by": "rate"
   }
  ],
- "iterations": 2,
+ "iterations": 3,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "mechanical",
-    "status": "supported",
-    "note": "validate-rating passes; scorecard fields identical on re-run."
-   },
-   {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "61 vs code_score 60.8, neutral."
+    "note": "61 vs code_score 60.8: effectively neutral; no gap is claimed, and the argument says the unmeasured facts are too few to move it. Scorecard re-run is identical on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Unchanged; mana outlier addressed; citations verified in round 1."
+    "note": "Divergent outlier mana (rank 1, better) is addressed: the gain is already in the composite, so crediting it again would double count; number held at the measured score. leave_one_out shows no grade flip (all C)."
    },
    {
-    "where": "open_questions[0]",
+    "where": "judgment.citations[4]",
     "status": "supported",
-    "note": "Answerable by rate; the unanswerable goldfish question is gone."
+    "note": "log:003 quote is verbatim and the game matches the argument (Swat redirect, Altar removed, Alex killed Ryan, Sean won the next turn). The log is on an older decklist sha than the current list; the argument states this."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "'Breadth before depth' is verbatim in interaction-suite and is used for its meaning (cover classes before doubling)."
+   },
+   {
+    "where": "judgment.citations[5]",
+    "status": "supported",
+    "note": "context summary quote is verbatim and read in its sense."
    }
   ],
-  "iterations": 2
+  "iterations": 3
  },
  "code_score": 60.8,
  "score_point": 60.8,
@@ -517,9 +522,9 @@
   ],
   "acceptability": {
    "1": 0.0,
-   "2": 0.009,
-   "3": 0.27,
-   "4": 0.721
+   "2": 0.015,
+   "3": 0.333,
+   "4": 0.653
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -528,9 +533,9 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 80.8,
-   "gishath": 72.9,
-   "ur-dragon": 65.0,
+   "sharknado": 80.5,
+   "gishath": 71.6,
+   "ur-dragon": 63.6,
    "goblin-storm": 60.9
   }
  }

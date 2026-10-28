@@ -57,7 +57,7 @@ INSTRUMENT_WORDS = {"speed": ("speed",), "mana": ("mana",), "resilience": ("resi
                     "table_record": ("table record", "table_record", "record"),
                     "pilot_feel": ("pilot feel", "pilot_feel", "survey", "feel")}
 _NUM = re.compile(r"-?\d+(?:\.\d+)?")
-_THE_99 = re.compile(r"\b(?:the|this|our|your|a) 99\b", re.I)
+_THE_99 = re.compile(r"\b(?:the|this|our|your|a)(?: [a-z-]+)? 99\b", re.I)
 
 
 def _strip_code(doc):

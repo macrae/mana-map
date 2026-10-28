@@ -341,7 +341,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
- "fleet_sha": "0e11fc288d6b",
+ "fleet_sha": "a29575e16551",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -352,58 +352,47 @@
   {
    "question": "Does the response suite change real games, given that no logged game on this list shows it working?",
    "settled_by": "diagnose"
+  },
+  {
+   "question": "Does Firespitter Whelp with Panharmonicon and Miirym reach the damage the pilot counted in game 007?",
+   "settled_by": "resolve-stack"
   }
  ],
- "iterations": 2,
+ "iterations": 1,
  "verifier": {
   "verdict": "pass",
   "findings": [
    {
-    "where": "judgment.citations[2]",
+    "where": "judgment.sub_score",
     "status": "supported",
-    "note": "skeleton:table_record '3 wins in 7 games' resolves: components[table_record].citations quotes it verbatim (ref log.jsonl), and deck-notes list prints '3W 4L over 7 logged'. Only the ref label differs (skeleton: vs log.jsonl); validate-rating accepts it."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "Log 005 says 'No green source all game' and 'That is not a deck defect'; its sha 7095f2d8 differs from the current list 99419d5b, so 'previous list' is correct."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "Log 007 (current sha) says 'it is definitely a three, optimized' in the same sentence as 'tier-four if consistent'. Equating it with DTI's within-bracket middle rank is loose, but it is offered only as a consistency remark and moves nothing."
+    "note": "63 equals code_score 63.2; no gap claimed; game 007 is already inside table_record."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "All four outliers are addressed. Speed: game 007 is the only game on the current sha, and it is counted in table_record. Resilience, construction and mana: the argument states that the record does not explain them. 'sub_score lower' for DTI is true (50 vs 69). Matches sensitivity: no flips attributable to the judgment (69.2 leave-one-out)."
+    "note": "Both concordance outliers (resilience, speed) are answered; the earlier-list claim for the losses checks against the log shas."
    },
    {
-    "where": "judgment.sub_score",
+    "where": "judgment.citations",
     "status": "supported",
-    "note": "69 vs code_score 69.2 is neutral; no unmeasured fact is claimed to move it, so there is no gap to be too generous or too harsh."
+    "note": "The decorative strategy citation is gone; log:007, log:004 and skeleton:table_record are verbatim and read correctly."
    },
    {
-    "where": "open_questions",
+    "where": "rank",
     "status": "supported",
-    "note": "Neither question is answered by the skeleton or artifacts: turn-4 discount plus five-colour dork odds is a goldfish question, and whether the response suite changes real games is a diagnose question. The log has no game showing the suite."
-   },
-   {
-    "where": "code_keys",
-    "status": "supported",
-    "note": "Re-run of rating --json shows no differing top-level key against rating.json, including components, withheld, code_score, score_point, bracket, limits, uncertainty and sensitivity."
+    "note": "validate-rating now passes, so the group rank is current."
    }
   ],
-  "iterations": 2
+  "iterations": 1
  },
  "code_score": 63.2,
- "score_point": 64.5,
- "score": 65.0,
+ "score_point": 63.2,
+ "score": 63.6,
  "score_ci": [
-  57.5,
-  72.6
+  56.3,
+  71.2
  ],
- "grade": "B",
+ "grade": "C",
  "grade_range": [
   "C",
   "B"
@@ -411,9 +400,9 @@
  "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.497,
-  "C": 0.502,
-  "D": 0.001,
+  "B": 0.369,
+  "C": 0.629,
+  "D": 0.002,
   "F": 0.0
  },
  "uncertainty": {
@@ -430,27 +419,27 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 61.3,
+    "score": 59.8,
     "grade": "C"
    },
    "mana": {
-    "score": 65.2,
-    "grade": "B"
+    "score": 63.7,
+    "grade": "C"
    },
    "resilience": {
-    "score": 61.7,
+    "score": 60.2,
     "grade": "C"
    },
    "construction": {
-    "score": 65.9,
-    "grade": "B"
+    "score": 64.4,
+    "grade": "C"
    },
    "dti": {
-    "score": 70.1,
+    "score": 68.5,
     "grade": "B"
    },
    "table_record": {
-    "score": 64.0,
+    "score": 62.5,
     "grade": "C"
    },
    "judgment": {
@@ -462,7 +451,7 @@
    {
     "component": "dti",
     "share_now": 0.163,
-    "share_at_flip": 0.148,
+    "share_at_flip": 0.107,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
@@ -470,7 +459,7 @@
    {
     "component": "speed",
     "share_now": 0.13,
-    "share_at_flip": 0.152,
+    "share_at_flip": 0.201,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -478,31 +467,7 @@
    {
     "component": "resilience",
     "share_now": 0.13,
-    "share_at_flip": 0.155,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
-    "component": "construction",
-    "share_now": 0.141,
-    "share_at_flip": 0.09,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
-   },
-   {
-    "component": "mana",
-    "share_now": 0.087,
-    "share_at_flip": 0.021,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
-   },
-   {
-    "component": "judgment",
-    "share_now": 0.217,
-    "share_at_flip": 0.309,
+    "share_at_flip": 0.211,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -510,7 +475,7 @@
    {
     "component": "table_record",
     "share_now": 0.13,
-    "share_at_flip": 0.276,
+    "share_at_flip": 0.488,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -551,18 +516,18 @@
  },
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
  "judgment": {
-  "sub_score": 69,
-  "argument": "The measured components cannot see how this list plays against blockers and removal: the goldfish has neither, there is no pilot survey, and no Forge run describes this list. The instruments disagree on this deck, so each outlier gets its own answer. Mana, ranked worse: the record does touch it, but only on older builds. Game 005's note says \"No green source all game.\" That is a loss on a previous list, and the pilot himself says it is not a deck defect. It does not tell me the current list is worse than the audit says, so I do not move. Construction, ranked worse: the audit's counts against the cited ratios are the whole evidence, and nothing in the record argues for or against them. I do not move. Speed, ranked better: game 007 is the only game on this list and it won quickly, but it is already counted in table_record, so using it again would double count. Resilience, ranked better: no logged game shows the answer suite at work, since game 007 turned on politics, so the record does not explain this ranking. I do not move. The pilot calls it \"definitely a three, optimized\", which matches the middle rank DeckCheck gives it, though its own sub_score is lower. With nothing unmeasured to add, I sit at the code_score of 69.2, rounded.",
+  "sub_score": 63,
+  "argument": "The measured components cannot see blockers or removal: the goldfish has neither, there is no pilot survey, and no Forge run describes this list. The instruments split on this deck, so both outliers get an answer. Resilience, ranked best: it counts answer cards and classes answered, which is capacity, and no logged game shows the suite working; game 007 turned on politics, not on an instant-speed answer. The record does not explain that reading, so I do not move for it. Speed, ranked better: the goldfish clock is an unopposed ceiling. Game 007 is the one game on this list and the pilot calls it a win on \"turn six or seven\", but that game is already inside table_record, so counting it again would double count. The pilot's own Whelp arithmetic in that game is flagged unverified in the debrief and I give it no weight. The older losses were on earlier lists and the pilot reads game 004 as \"a political loss, not a deck loss\"; that says something about table optics, not about the 99 as it stands. Mana and construction sit worst, and nothing unmeasured argues either way. One strong game on this list is not enough to lift the number; I sit at the code score, because the record adds nothing the components have not already carried.",
   "citations": [
    {
     "kind": "log",
-    "ref": "log:005",
-    "quote": "No green source all game."
+    "ref": "log:007",
+    "quote": "I think I won on turn six or seven"
    },
    {
     "kind": "log",
-    "ref": "log:007",
-    "quote": "it is definitely a three, optimized"
+    "ref": "log:004",
+    "quote": "this was a political loss, not a deck loss"
    },
    {
     "kind": "skeleton",
@@ -577,8 +542,8 @@
   "weight": 0.2,
   "weight_effective": 0.2174,
   "sub_ci": [
-   60.76,
-   76.99
+   54.76,
+   70.99
   ]
  },
  "rank": {
@@ -592,9 +557,9 @@
   ],
   "acceptability": {
    "1": 0.001,
-   "2": 0.086,
-   "3": 0.636,
-   "4": 0.278
+   "2": 0.085,
+   "3": 0.57,
+   "4": 0.345
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -603,9 +568,9 @@
    "ur-dragon": "this document"
   },
   "scores": {
-   "sharknado": 80.8,
-   "gishath": 72.9,
-   "ur-dragon": 65.0,
+   "sharknado": 80.5,
+   "gishath": 71.6,
+   "ur-dragon": 63.6,
    "goblin-storm": 60.9
   }
  }
