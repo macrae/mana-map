@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=8df06ee13607 at=2026-10-27 -->
+<!-- ctx:written-for version=v2.2.0 sha=8df06ee13607 at=2026-10-27 -->
 
 
 <!-- ctx:gen summary -->
@@ -52,6 +52,10 @@ Sean plays this list on printed proxies.
 **What the goldfish can say.** It has no blockers and no removal, and it does not model the modal plan. Forge's AI played the adds in the proof run except for two it held. Read the Numbers section as a ceiling for how often things line up, never as a verdict on the table.
 
 **Proved lines.** Stack 009: [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune) under [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) draws a huge pile, and the cleanup discard fires Brallin until all three opponents lose together. Stack 001 (Windfall with both commanders out) and stack 004 (Artist's Talent adding to every ping) were proved on earlier lists; read them as shape, not as proof on this one.
+
+**Holding the commanders back.** Game 004 tested the habit of keeping both commanders in hand to dodge a wipe and wait for a wheel. The wheel never came, and the hand sat there. The shape in the pilot notes (commanders first, wheels second) has a cost: a commander held for a wheel is tempo spent on nothing if the wheel is not in the opening cards. The deck has loots, draw engines and [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) to find the wheel, but with few payoffs in hand there was nothing to cash it on.
+
+**The fast table.** Alex's warp deck is the first opponent the notes name as simply faster than this deck. It ramps hard and puts a lot of big creatures on the board, and an artifact lets those creatures stay. The slow plan of landing a commander, then wheeling, gets raced by it. The answers in the list ([Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost), [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp), [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate)) are one-for-ones, and no log says yet what was in hand against it.
 
 **What the table misreads.** They see a draw deck and two creatures and rank you low. A flying shark with a pile of counters and double strike is the correction.
 
@@ -195,9 +199,9 @@ The goldfish does not model the modal plan, the equipment, or interaction, so tr
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **3 game(s):** 0 won, 1 lost · 2026-10-06 to 2026-10-25
-- **How games ended:** combo 1, won 1
-- **Not yet read:** 003
+- **4 game(s):** 0 won, 2 lost · 2026-10-06 to 2026-10-27
+- **How games ended:** combo 1, raced 1, won 1
+- **Not yet read:** 003, 004
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -235,13 +239,25 @@ Of the things Sean said he missed after 001, the v1.3.0 branch added removal and
 - **No removal seen.** The same gap he named after 001.
 - **He does not know why.** He names two suspects himself, his sequencing and the cards he happened to see, and does not pick between them. A single game cannot split them.
 
-The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003 both named: it adds removal, counters and a free table-wide silence. No game has been logged on it yet, nor on v2.2.0.
+The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003 both named: it adds removal, counters and a free table-wide silence.
+
+**004 (2026-10-27, Ryan's house, a loss, the first game logged on v2.2.0).** The deck sha on the log entry matches the list on disk, so this is the sleeved v2.2.0. Three players: Sean on Sharknado, Alex on his warp deck, Ryan on Slivers (nothing much popped off for Ryan). The cause is logged as raced. Sean's words: the engine ran well and the sequencing felt right, but Alex's deck was a faster class of deck, and a land-heavy opener without payoffs never found the wheels.
+
+- **The engine ran.** Draw and discard loops moved Sean through the deck all game: the Ledger connive creature ([Ledger Shredder](https://manamap.seanmacrae.com/viz/index.html?cards=Ledger+Shredder), as far as the log says) and [Mary Read and Anne Bonny](https://manamap.seanmacrae.com/viz/index.html?cards=Mary+Read+and+Anne+Bonny) (haste, draw a card, discard a card). He cast a lot of spells, and Alex said things were happening.
+- **[Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) did the ramping.** It made steady Treasure, which was the mana the hand needed. Sean thinks it may have been under-used.
+- **No wheel.** None was drawn. Sean held the commanders back to avoid a wipe and wait for one, and it never showed. [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) was in hand again.
+- **The kept hand.** A lot of lands, ramp, one artifact mana creature and one wheel, with few creatures or payoffs. [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) was in it, but Sean won the roll and went first, so it never made any colour. He now thinks the keep was not ideal. This is the second game where the hand is the doubt: game 002 was a pile of wheels and one creature, game 004 a pile of lands and one wheel.
+- **Both commanders, sooner.** He wants both out early and has no clean way to cheat them in or ramp to them faster. The discard-a-card parts of the deck also slow it. A discard-to-top-of-library option came up and costs tempo.
+- **Alex's warp deck.** It ramps very high and warps out a large number of creatures. An artifact lets him end the turn before his end step, so the warped creatures stay. Big threats arrive cheaply and keep coming. Sean's read: without Alex's warp turns, Sharknado does much more.
+
+Read with the earlier games: 002 said wheels are finishers and need the commanders out first, 003 said slow and no removal, and 004 says the commanders-first plan can stall on a hand with no wheel and no creature to carry it. The engine pieces worked in this game. The problem was the hand and the opponent's speed, and one game cannot split those. It is the first game on v2.2.0 and neither [Razorkin Needlehead](https://manamap.seanmacrae.com/viz/index.html?cards=Razorkin+Needlehead) nor [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) is mentioned in the log.
 
 
 ## Change history
 <!-- ctx:gen history -->
 - **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
   - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
+  - played 1: 0W 1L
 - **v2.1.1 · V11** (2026-10-27) — in: Adarkar Wastes, Sea of Clouds; out: Mystic Monastery, Opal Palace. _powertune-v1 merged: a land pass (Sea of Clouds, Adarkar Wastes)_
   - merge `powertune-v1`: objective kill_by_6 read **not met** — the pilot's word 2026-10-27: merge the land pass for now
 - **v2.1.0 · V10** (2026-10-26) — in: Chaos Warp, Consecrated Sphinx, Deflecting Swat, Faerie Mastermind, Get Lost, Ghostly Pilferer, Grand Abolisher, Hallowed Fountain …; out: Alhammarret's Archive, Campfire, Champion's Helm, Chasm Skulker, Collector's Vault, Ferrous Lake, Fireshrieker, Genji Glove …. _answers-v1 merged: interaction and standing draw; Jeska's Will out for Magmakin Artillerist (three Game Changers, bracket 3)_
@@ -285,9 +301,9 @@ Cuts worth watching: Swiftfoot Boots carried the protection in game 001, and Lib
 - 5 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list has had three games, none on v2.1.0 or v2.2.0, so these are things to test, not swaps.
+The list has had four games, one of them on v2.2.0 (004, a loss to a faster deck), so these are things to test, not swaps.
 - Interaction: with removal, counters and Grand Abolisher added, does the commander survive to swing more often on a real table? Needs games on v2.1.0, with a note of what was aimed at it.
-- Slow start: Sean suspects either sequencing or the draw. Does the first commander land on turn four or five more often than before, and what was in hand when it did not? The deploy-turn read for the new list is missing and needs a game or two with the opening hand noted.
+- Slow start (003; 004 is a different shape of stall): Sean suspects either sequencing or the draw. Does the first commander land on turn four or five more often than before, and what was in hand when it did not? The deploy-turn read for the new list is missing and needs a game or two with the opening hand noted.
 - Modal choice: does Shabraz-first, with Brallin as the pivot when Torbran or Gratuitous Violence arrives, put 21 on one defender more often than holding both back?
 - Standing draw: do Consecrated Sphinx, Mystic Remora and the smaller engines keep the hand full between wheels, or do they draw removal and tax the table into slowing down? Needs games.
 - Wheel under the Sphinx: does Wheel of Fortune with Consecrated Sphinx out end a real game the way stack 009 does, given the table sees it coming? The Forge AI held Wheel of Fortune, so only paper games will say.
@@ -297,6 +313,10 @@ The list has had three games, none on v2.1.0 or v2.2.0, so these are things to t
 - Tutors: do Idyllic Tutor and Stoneforge Mystic find a line in real games, or sit as slow cards?
 - Mana: Sean logs his opening hand, whether he kept it, and his lands by turn, so a land-count problem can be told from a sequencing one (Q011).
 - Which good cards are discarded to fire a wheel, and is there a way to play them out first?
+- Mulligan call (from 004): on a hand that is mostly lands and ramp with one wheel and few payoffs, a mulligan to six finds a commander or a payoff by turn four more often than keeping and drawing into one. Expected effect: fewer games where the first four turns go by with nothing to cash a wheel on. Needs Sean's opening-hand log (Q011) to test; the Numbers block's keep line is the model's opinion, not his.
+- Holding the commanders (from 004): casting a commander on curve and wheeling later puts more damage on the board by turn six than holding it for a wheel, because the commander grows off the loots and draw engines in the meantime and a wipe costs one tax, not the game. Expected effect: the commander is out and carrying counters when the wheel finally arrives. Compare games where he held with games where he cast.
+- Both commanders sooner (from 004): more cheap mana that is not land, or a way to cheat a commander out, lands the second commander a turn earlier. Expected effect: the wheel turn and the first swing come together. The Numbers block has the first-cast turn for each commander; it has no line for the second commander on the table. The costs are the discard parts and tempo of the options already named (discard-to-top).
+- Beating Alex's warp deck (from 004): the answers that are free or cheap and instant ([Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver), [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial), [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate), [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares)) can be saved for its ramp turn, and [Grand Abolisher](https://manamap.seanmacrae.com/viz/index.html?cards=Grand+Abolisher) shuts it out of the turn that matters. Expected effect: it gets a slower start. What it plays at the table (the artifact that ends its turn early, the creatures that stay) needs to be named in the next log, so a card search can price an answer to the artifact.
 
 ## Context changelog
 
@@ -311,3 +331,4 @@ The list has had three games, none on v2.1.0 or v2.2.0, so these are things to t
 - 2026-10-26 · Keeper · deck change: answers-v1 merged as v2.1.0
 - 2026-10-27 · Keeper · deck change: powertune-v1 merged as v2.1.1 (land pass)
 - 2026-10-27 · Keeper · deck change: sharks-v1 merged as v2.2.0 (Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass)
+- 2026-10-27 · Keeper · pilot log 004: first v2.2.0 game, raced by Alex's warp deck; no wheel, land-heavy keep

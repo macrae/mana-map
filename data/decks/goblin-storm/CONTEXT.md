@@ -1,11 +1,11 @@
 # Zada, Hedron Grinder — Deck Context
 
-<!-- ctx:written-for version=VNone sha=aa02ea1989f3 at=2026-10-27 -->
+<!-- ctx:written-for version=v1.2.0 sha=aa02ea1989f3 at=2026-10-27 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
 - **Version:** v1.2.0 (V4) · **status:** sleeved since 2026-10-27
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 35/96 → B3 (deckcheck.co, 2026-10-20, 3 readings) — older list
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-27, 4 readings)
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 34 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->
@@ -14,7 +14,7 @@
 
 Zada is a red goblin deck that wins by making a wide board and then pointing one cheap spell at [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder). She copies a spell that targets only her once for each other creature you control. A one-mana cantrip across a big goblin board is a pile of draws, treasure and a hasted team.
 
-The bodies come first and the spells second. Goblin presence is the whole deck: a hand of cantrips and storm cards with no small goblins does nothing, and both games on record were lost by keeping that hand.
+The bodies come first and the spells second. Goblin presence is the whole deck: a hand of cantrips and storm cards with no small goblins does nothing, and the first two games on record were lost by keeping that hand. The first game on the new list was a win: the board filled, Zada's protection held, and one big storm turn finished it (see Pilot notes).
 
 The list moved on 2026-10-27 to v1.2.0 (branch storm-tune-v1), printed proxies in the sleeves. The aim is a push on DeckCheck's Threat Index, read through Zada's text, with interaction and protection as the two key axes. The deck now has red answers again ([Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade), [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), [Harsh Mentor](https://manamap.seanmacrae.com/viz/index.html?cards=Harsh+Mentor)), real protection for Zada that never gives her shroud ([Hexing Squelcher](https://manamap.seanmacrae.com/viz/index.html?cards=Hexing+Squelcher), [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), [Plaza of Heroes](https://manamap.seanmacrae.com/viz/index.html?cards=Plaza+of+Heroes), next to [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots)), and more spells that become a team-wide effect when Zada copies them. The Summary block above still shows the DeckCheck reading from the older list, so the push is not measured yet.
 
@@ -109,22 +109,29 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V4), 2026-10-27. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **2 game(s):** 0 won, 2 lost · 2026-08-28 to 2026-09-01
-- **How games ended:** raced 1, stalled 1
+- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
+- **How games ended:** raced 1, stalled 1, won 1
+- **Not yet read:** 003
 <!-- /ctx:gen record -->
 
-Both games on record were lost on v1.0.0, with the same cause underneath: I kept a hand with no small goblins. No games yet on the lists since.
+The first two games were lost on v1.0.0, with the same cause underneath: I kept a hand with no small goblins. Game 003 is the first on v1.2.0 and a win.
 
 - **Game 001 (Alex's, three players):** a clean mulligan hand of land, one-mana spells, Crimson Wisps and Storm-Kiln Artist, and zero goblins. The copy half of the engine had nothing to multiply. I called it a bad keep, not a deck problem.
 - **Game 002 (Oliver's, five players):** kept lands and Krenko, Mob Boss, with expensive spells and no small goblins. The table was three red decks, and Oliver won on turn five off Krenko tokens and pings. That table is a reason the new answers and protection matter.
 
-The rule I keep from both: goblin presence gates the mulligan, not cantrip density.
+- **Game 003 (Ryan's house, three players, v1.2.0, a win):** Ryan was on T'Vol with Gravecrawler and Phyrexian Altar, a Zombie Druid engine that was about to swing lethal at both of us. Alex fought Zada and I cast [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), moving the fight onto a 1/1 goblin, so I lost a token and not the commander. Then I destroyed the Altar with the new artifact removal, to break Ryan's engine. Ryan called it kingmaking. My answer was that leaving the Altar meant the game was over anyway. Alex then killed Ryan and hit me from 40 to 23. On my turn I cantripped into [Empty the Warrens](https://manamap.seanmacrae.com/viz/index.html?cards=Empty+the+Warrens) for about ten goblins with [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors) already out, so every opponent took ten. The new land helped reach 15 mana, I drew about 15 cards, and the spells gave a 20-plus goblin board haste, trample and +3/+2. I swung at Alex for lethal and nobody had a response. It felt like threading a needle: lots of options, one right sequence, a big payoff when it lands. Deflecting Swat is a "great card, glad it's in the deck". The new any-colour land is a good fit for a mono-red deck.
+  - Which cards were they? The log never names the artifact removal or the land. By oracle text only, and as an inference, the removal is [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade) or [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), since both can destroy a target artifact. The land is most likely [Three Tree City](https://manamap.seanmacrae.com/viz/index.html?cards=Three+Tree+City): it pays two, taps, and adds a chosen colour in an amount equal to the creatures of the chosen type you control. [Plaza of Heroes](https://manamap.seanmacrae.com/viz/index.html?cards=Plaza+of+Heroes) does not pay two to tap for mana, so it fits less well.
+  - The pilot's lesson: sequencing and the right answer at the right time won it. No follow-up; the bracket 3 tune is working. One game is a first reading, not a trend.
+  - The log's own order check: the timing of the Impact Tremors damage against Ryan's death is loose. Sean said it came before the final turn.
+
+The rule I keep from games 001 and 002: goblin presence gates the mulligan, not cantrip density.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
   - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
+  - played 1: 1W 0L
 - **v1.1.1 · V3** (2026-10-20) — in: Goblin Matron; out: Battle Hymn. _Goblin Matron back for Battle Hymn, 2026-10-20_
   - merge `matron-v1`: objective kill_by_10 read **met** — the pilot's own card, sleeved again 2026-10-20 as the thirteen v1.1.0 adds went in (Fable and Purphoros on proxies)
 - **v1.1.0 · V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …. _meaner-v1 merged 2026-10-18: meaner and faster, the Haze of Rage loop out; thirteen swaps, no lands_
@@ -138,7 +145,7 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 - In: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher, Molten Duplication, Untimely Malfunction; lands Plaza of Heroes, Sokenzan, Crucible of Defiance, Three Tree City.
 - Why: Zada copies a spell that targets only her, so the new instants and sorceries are chosen to turn into a team-wide effect. Answers and protection came back because the deck had almost none. Battle Hymn returned as the board-scaled ritual.
 - Kept on purpose: Brightstone Ritual, Blasphemous Act, Past in Flames, Swiftfoot Boots. No mass land denial in bracket 3.
-- Not yet measured by a game or a fresh DeckCheck scan.
+- First game on this list: a win, game 003. Not yet measured by a fresh DeckCheck scan.
 
 **v1.1.0 and v1.1.1, 2026-10-18 and 2026-10-20.** meaner-v1 added bodies for Zada to copy onto (Beetleback Chief, Goblin Instigator, Legion Warboss, Fable of the Mirror-Breaker, Purphoros) and cheap Zada targets, and took out the Haze of Rage loop on purpose to sit at true bracket 3. matron-v1 put Goblin Matron back for Battle Hymn. Battle Hymn is now back, and Beetleback Chief is gone again.
 
@@ -148,6 +155,9 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 - Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
 <!-- /ctx:gen queue -->
 
+- Which two v1.2.0 cards did the work in game 003? Sean's words name neither the artifact removal nor the land. Ask him, then record the names; until then the guess is Abrade or Untimely Malfunction for the removal and Three Tree City for the land.
+- Is Three Tree City the reason the big turn reached its mana? The claim: swapping it for a Mountain lowers how often the storm turn comes by turn eight. A paired try on the same seeds would show it, and the Numbers section already holds the median kill turn to compare against.
+- Does the free [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) earn its slot more than a plain protection card? The claim: with a commander out, it saves Zada from targeted removal and fights at no mana cost, so the turn is not spent on defence. The goldfish has no removal, so this needs more games, not a run.
 - Does the Threat Index actually move? The Summary block shows a reading from the older list. A fresh DeckCheck scan after the pilot's own look would say whether interaction and protection did what they were bought for.
 - Do the treasure instants beat the plain pump spells as Zada targets? A paired try on the same seeds would say whether the treasure is worth the slot.
 - With fewer goblin makers in the list, does a goblin-light seven turn up more often? The keep share in the Numbers section counts a different rule than goblin presence, so the goldfish needs to be asked with goblin presence as the gate.
@@ -163,3 +173,4 @@ The rule I keep from both: goblin presence gates the mulligan, not cantrip densi
 - 2026-10-18 · Keeper · deck change: meaner-v1 merged as v1.1.0 — 13 swaps, Haze of Rage loop gone, cards arriving
 - 2026-10-20 · Keeper · deck change: matron-v1 merged as v1.1.1 (Goblin Matron for Battle Hymn); the thirteen v1.1.0 adds all sleeved
 - 2026-10-27 · Keeper · deck change: storm-tune-v1 merged as v1.2.0 (copy spells, interaction, protection, untapped lands)
+- 2026-10-27 · Keeper · pilot log 003: first v1.2.0 game, a win — Swat saved Zada, Altar killed, Empty+Tremors closed
