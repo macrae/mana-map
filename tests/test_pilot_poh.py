@@ -640,13 +640,27 @@ def test_the_headline_run_is_the_newest_on_the_current_list_at_the_default_table
 def test_matchups_and_appendices_render_from_tracked_records_with_intervals():
     """Sections 8 and 9 had never rendered on any deck. Now they do, from
     tracked records only, and every rate they print carries an interval."""
-    html = _rendered("goblin-storm")
-    assert 'id="s8"' in html and 'id="s9"' in html
-    sec8 = html.split('id="s8"', 1)[1].split('id="s9"', 1)[0]
-    assert "ci95 [" in sec8 and "Wins " in sec8, "per-opponent rates carry intervals"
-    sec9 = html.split('id="s9"', 1)[1]
-    assert "The simulation record" in sec9 and "ci95" in sec9 or "not available" in sec9
-    assert "Proven lines" in sec9
+    # EVERY rendered handbook, not one deck: which deck has a Forge run on its
+    # CURRENT list is a fact about the data, and it moves on every merge
+    # (goblin-storm pinned here lost its last one at v1.2.0, 2026-10-27). Each
+    # page either prints per-opponent rates with intervals or says why not,
+    # with the command that would measure it.
+    checked = 0
+    for path in sorted((MANUALS_DIR / "p").glob("*.html")):
+        slug, html = path.stem, path.read_text(encoding="utf-8")
+        if 'id="s8"' not in html:
+            continue
+        assert 'id="s9"' in html, slug
+        sec8 = html.split('id="s8"', 1)[1].split('id="s9"', 1)[0]
+        if "not available" in sec8:
+            assert f"simulate {slug} --pod" in sec8, (slug, "an absent section names its command")
+        else:
+            assert "ci95 [" in sec8 and "Wins " in sec8, (slug, "per-opponent rates carry intervals")
+        sec9 = html.split('id="s9"', 1)[1]
+        assert "The simulation record" in sec9 and "ci95" in sec9 or "not available" in sec9, slug
+        assert "Proven lines" in sec9, slug
+        checked += 1
+    assert checked >= 3, checked
     # a deck with runs on no current list says so with the command
     html_h = _rendered("heliod")
     sec8h = html_h.split('id="s8"', 1)[1].split('id="s9"', 1)[0]

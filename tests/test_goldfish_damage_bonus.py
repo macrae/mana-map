@@ -61,23 +61,29 @@ def test_magmakin_is_one_instance_per_batch():
 @requires_data
 @requires_deck
 def test_torbran_turns_brallins_ping_into_three():
-    """Same seeds, one card's text changed: a creature that is either a vanilla
-    or Torbran. Discard-event damage by turn eight must rise by well over half.
+    """Same seeds, the small red creatures' text changed: each is either a
+    vanilla or Torbran. Discard-event damage by turn eight must rise by well over half.
     Re-introduce the bug (drop the `_b` terms in the event block) and the arms
     read identical."""
     from manamap.pilot.common import load_deck_cards
 
     doc = load_deck_cards("sharknado")
-    target = next(c for c in doc["cards"]
-                  if "Creature" in (c.get("type_line") or "")
-                  and "R" in (c.get("colors") or [])
-                  and c.get("name") not in ("Shabraz, the Skyshark", "Brallin, Skyshark Rider")
-                  and (c.get("cmc") or 0) <= 4)
+    # EVERY small red creature's slot, not one. One slot of 99 is a card drawn by
+    # turn eight in a minority of games, and since v1.3.0 the real Torbran sits
+    # in the list, so a single-slot arm read +4% (11.86 -> 12.35, 2026-10-28)
+    # with the bonus working. Nine slots read 8.1 -> 20.3. Torbran's own slot is
+    # among them, so the vanilla arm has no Torbran at all.
+    targets = {c["name"] for c in doc["cards"]
+               if "Creature" in (c.get("type_line") or "")
+               and "R" in (c.get("colors") or [])
+               and c.get("name") not in ("Shabraz, the Skyshark", "Brallin, Skyshark Rider")
+               and (c.get("cmc") or 0) <= 4}
+    assert len(targets) >= 3, targets
 
     def event_damage(text):
         d = copy.deepcopy(doc)
         for c in d["cards"]:
-            if c["name"] == target["name"]:
+            if c["name"] in targets:
                 c["oracle_text"] = text
         m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7,
                          quiet=True, _band=False)["metrics"]
@@ -87,7 +93,7 @@ def test_torbran_turns_brallins_ping_into_three():
     torbran = event_damage("If a red source you control would deal damage to an opponent "
                            "or a permanent an opponent controls, it deals that much damage "
                            "plus 2 instead.")
-    assert torbran > vanilla * 1.05, (vanilla, torbran)
+    assert torbran > vanilla * 1.5, (vanilla, torbran)
 
 
 @requires_data

@@ -207,12 +207,9 @@ STALE_XFAIL = {
     # v2.0.0 (mardu-combo-v1, 27 swaps) and sharknado v1.2.0 (momentum-v1); the
     # agent artifacts below were written against the previous lists and name
     # cards that left. They are re-run by their agents, never hand-patched.
-    "edgar-vampires/engine.json": (
-        "written for v1.1.1 (stages name a cut Plains); re-run /analyze-engine "
-        "edgar-vampires against v2.0.0"),
-    "edgar-vampires/tutor_guide.json": (
-        "written for v1.1.1 (no entry for Demonic Tutor, added in v2.0.0); "
-        "re-run /write-manual edgar-vampires"),
+    # `edgar-vampires/engine.json` and `tutor_guide.json` came off 2026-10-28:
+    # both were rebuilt for v2.1.0 (no Plains in the stages; Demonic Tutor has
+    # its entry) and validate (XPASS).
     # `sharknado/build_plan.json` came off 2026-10-21: v1.3.0 reads floor 3 again
     # and the plan validates — the strict xfail said so (XPASS), as designed.
     # `sharknado/engine.json` came off 2026-10-24: /analyze-engine re-ran it for
