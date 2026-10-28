@@ -109,9 +109,9 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V4), 2026-10-27. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **5 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
+- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
 - **How games ended:** raced 1, stalled 1, won 1
-- **Not yet read:** 003, 004, 005
+- **Not yet read:** 003
 <!-- /ctx:gen record -->
 
 The first two games were lost on v1.0.0, with the same cause underneath: I kept a hand with no small goblins. Game 003 is the first on v1.2.0 and a win.
@@ -129,7 +129,7 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 <!-- ctx:gen history -->
 - **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
   - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
-  - played 3: 1W 0L
+  - played 1: 1W 0L
 - **v1.1.1 · V3** (2026-10-20) — in: Goblin Matron; out: Battle Hymn. _Goblin Matron back for Battle Hymn, 2026-10-20_
   - merge `matron-v1`: objective kill_by_10 read **met** — the pilot's own card, sleeved again 2026-10-20 as the thirteen v1.1.0 adds went in (Fable and Purphoros on proxies)
 - **v1.1.0 · V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …. _meaner-v1 merged 2026-10-18: meaner and faster, the Haze of Rage loop out; thirteen swaps, no lands_
