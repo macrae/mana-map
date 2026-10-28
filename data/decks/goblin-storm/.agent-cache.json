@@ -23,7 +23,6 @@
       "Empty the Warrens": "2bb5514c3fd2ad47a1634ce9772dfb5cc9e9c095972bc3b014f9bc9f8faf356b",
       "Expedite": "2a653050850b5691118c977439f3710af1bf25c14de7d0065efe1c632fedf897",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki": "051981d7405b33e255687e9b8846bd28ba77b0a534479baab9f9e00b11b1ffdc",
-      "Faithless Looting": "f008796b99abb1874706e6d7eb532ae8eda5dae45132229bed5b2e3c88f02114",
       "Fists of Flame": "e8f25d40fb576144af06401e64c71416ce6dfe9fcedb573f4c233ba04410bc61",
       "Fountainport": "6b4abb6f84fa31b3caaeeba01d85741632c9083f0cf01d6272d8ea32aca8b1d6",
       "General Kreat, the Boltbringer": "394ecbf332585621d9cd1f30bcf9a790e897c6739e2cbb8f5706a7c22fc94419",
@@ -34,6 +33,7 @@
       "Goblin Instigator": "c2640ebe17435b94eaf72e59c70762f1dda6ff5827731c4e14919b9aa5e87f55",
       "Goblin Lackey": "8fe24927d4ad80009b58d5b7385ec976c689bcc7bfd44d35b35bfb7839cf4f7a",
       "Goblin Matron": "0372d2ef5043b05f45eaf5a3e59f4d77f5f132abb1c2aa3522655f4b3b343a62",
+      "Goblin Sharpshooter": "3d3fde59a058f68f6f0291046dae2c24b3146f3703f3ddb210d1c13489ddc527",
       "Goblin Warchief": "71e9619f24e58844156b2ae82e2635f661a9bbaf5e04c81bc2917ded619d4213",
       "Grapeshot": "a611ee7b7c3d7c2f2e518168553c85784f61c02d6ade94a0b61cef7e8c26d006",
       "Great Train Heist": "6bbea6e554a592b2560aca64a1675418fb3477859f1a1542b9dd84f47a6a44f0",
@@ -82,7 +82,7 @@
       "Wild Ride": "24fcd81c5037c557d82083907294054d8e5a3da8c05617134afe9f685c12a873",
       "Zada, Hedron Grinder": "fae280f9ee8260ffa3b0d8c77d547e5f10748512a3a320a7d59fb08918c27a73"
     },
-    "digest": "e2a99670d627ce5b4c41b7206099a540e4aa260e67cee68863010c965386541c"
+    "digest": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106"
   },
   "routines": {
     "captains-log": {
@@ -658,7 +658,7 @@
         "mulligan",
         "threat_assessment"
       ],
-      "artifact_sha256": "a1107232599eee650003a5dfea2a4719159bec2f9f99744e8893f5969327285c",
+      "artifact_sha256": "00682f8318d198a31d49c223de0acde529c653ebace1b35eb1abe9b713f8c3ac",
       "card_refs": [
         "Abrade",
         "Accelerate",
@@ -672,13 +672,13 @@
         "Electroduplicate",
         "Empty the Warrens",
         "Expedite",
-        "Faithless Looting",
         "Fists of Flame",
         "General Kreat, the Boltbringer",
         "Goblin Bombardment",
         "Goblin Instigator",
         "Goblin Lackey",
         "Goblin Matron",
+        "Goblin Sharpshooter",
         "Goblin Warchief",
         "Grapeshot",
         "Great Train Heist",
@@ -765,8 +765,8 @@
           "Brightstone Ritual",
           "Deflecting Swat",
           "Electroduplicate",
-          "Faithless Looting",
           "Goblin Bombardment",
+          "Goblin Sharpshooter",
           "Harsh Mentor",
           "Hexing Squelcher",
           "Krenko, Mob Boss",
@@ -825,18 +825,18 @@
       },
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "e2a99670d627ce5b4c41b7206099a540e4aa260e67cee68863010c965386541c",
+        "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106",
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "352d81db5bf1f64026b93623659870d415c5638aa50c1e327513245d48aea3ca",
+      "fingerprint": "c27f7106e44bc51ee05bbcde641c78103eec40ed7853b5751467e2502de7c429",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/engine.json",
-          "sha256": "14242ac2187569144ef6319238b0f775ed2c0656257dfd4110aac64cbea69ec0"
+          "sha256": "d553afa525d1f08b263e24238ae7a003f12b565b1cca4c47265d84df156ffee0"
         },
         {
           "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
-          "sha256": "c3a6416e7614126e5b7f16f1417a2023c206aa3418a4385659662bf92c16b4a1"
+          "sha256": "ce5de97e990f5950700a3f288f112034939fef3497b2ae14004cef8cca6568dc"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -880,15 +880,15 @@
         },
         {
           "path": "data/decks/goblin-storm/strategic_frame.json",
-          "sha256": "154d426d3672a45ba1e65c66e3af264f6417d6f3a6a57626b021703f5c4e4c02"
+          "sha256": "8a8b5aa980a4485c865355c1559c191de3dce0716ccd7dcf4ebae5cb200200f7"
         }
       ],
       "key_fingerprints": {
         "combo_lines": "bf9966d66bc77dc9d31df5a00df9d1be9868c2beca195cea0598becca05e0ecf",
-        "how_it_wins": "89783efeb9e79c5075b7a2ab7f09462d79369c5d715c37b7b2632ef56dac0a1f",
-        "matchups": "55ef1773d1ec113525e2d8ec71c02ac26cb888ce27fe109435f7094858bd2613",
-        "mulligan": "6234d530a24b5f7240301d2ba0bf647982d9da6513d6621bcd298ad1e9cf9a83",
-        "threat_assessment": "77636ff1f3cba25fc26cac7765cf2f8b1b269ed44d932beeaf463ec5fd3e846f"
+        "how_it_wins": "f65d1fad5ad05959686395063a5cf58513b8724caa56606759d61a9d05aa45ee",
+        "matchups": "0ee687047fec48ba194868d4d12491db5d0eb486366c4f12ac8db9c6d5eaed3a",
+        "mulligan": "018b5bcd07895994e5f5c22962fa74f8ddcd669d72f30b07dd18df952706295d",
+        "threat_assessment": "90df7c595aafa65a9e74ddbb30869d6229cbc38cb68a82c99bb8bfd44c4e5a5c"
       }
     },
     "poh-procedures": {
@@ -1288,11 +1288,11 @@
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "e2a99670d627ce5b4c41b7206099a540e4aa260e67cee68863010c965386541c",
+        "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106",
         "rules_version": "June 19, 2026",
         "rulings_scenario": "b434cbb0bbf7e566bc6c5d1e0d5de11cc0952baf345580d567812898d7fc6cb2"
       },
-      "fingerprint": "661d5b5f012c11dd1de2f301b1fed12976a8a5862bcb284def5bfee7be712c3b",
+      "fingerprint": "7dec4c24a4fb40d390a92b389850ae71eb63b9eba41de849ef1aceeb0366570b",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/stacks/017-zada-heat-shimmer-copies-the-board.json#scenario",
@@ -1306,7 +1306,7 @@
       "agent": "strategy-researcher",
       "agent_prompt_sha256": "3d83cf83e069386e25c4fb5665ebb3b6e6855235c52491be83807ad1d55688ad",
       "artifact": "data/decks/goblin-storm/strategic_frame.json",
-      "artifact_sha256": "fb3635a255723457f651c25f052ac8864e2529d6f196a954c7f17a173540f528",
+      "artifact_sha256": "2651e4a1d5b1368d8004712c3da28a2fa6a3969b647b7a89b0cb1f5b7461b53c",
       "card_refs": [
         "Abrade",
         "Accelerate",
@@ -1326,6 +1326,7 @@
         "Goblin Bombardment",
         "Goblin Chieftain",
         "Goblin Instigator",
+        "Goblin Sharpshooter",
         "Goblin Warchief",
         "Grapeshot",
         "Grenzo, Havoc Raiser",
@@ -1360,14 +1361,14 @@
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "e2a99670d627ce5b4c41b7206099a540e4aa260e67cee68863010c965386541c",
+        "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106",
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "65f9a1ba014574f721a3981e08410592d19a5a67109e7e7bd8b21116eb4db196",
+      "fingerprint": "715fa0835abfbf274dc7aa824df6649f7baf1f9bc803e2df312ad7da2debf2e8",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
-          "sha256": "c3a6416e7614126e5b7f16f1417a2023c206aa3418a4385659662bf92c16b4a1"
+          "sha256": "ce5de97e990f5950700a3f288f112034939fef3497b2ae14004cef8cca6568dc"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -1415,7 +1416,7 @@
       "agent": "pilot-notes",
       "agent_prompt_sha256": "79517ca85959e354df4e34116c457266d2f75f300d8f286af87ba58b89b56f14",
       "artifact": "data/decks/goblin-storm/tutor_guide.json",
-      "artifact_sha256": "d2b4e397cb51ce6b8e0ce3cb14999ad2b7f5fa3a5c6131d91476134adc209099",
+      "artifact_sha256": "0f6c3a0bf7a812d5a57851ee7bb4ebe7ec39563796919c4642cffd6ae1921c1a",
       "card_refs": [
         "Blasphemous Act",
         "Brightstone Ritual",
@@ -1429,6 +1430,7 @@
         "Goblin Instigator",
         "Goblin Lackey",
         "Goblin Matron",
+        "Goblin Sharpshooter",
         "Goblin Warchief",
         "Great Train Heist",
         "Harsh Mentor",
@@ -1448,14 +1450,14 @@
       ],
       "card_refs_version": 2,
       "extra": {
-        "cards_semantic": "e2a99670d627ce5b4c41b7206099a540e4aa260e67cee68863010c965386541c",
+        "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106",
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "1495c195ae78e2d478599954bfd96a68523aee0b183086def5bcb464afe7f7e2",
+      "fingerprint": "0d80495109b39e9fb3c20bcffa59853a766cf5b06eefc504c9a1605a17c0e00e",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
-          "sha256": "c3a6416e7614126e5b7f16f1417a2023c206aa3418a4385659662bf92c16b4a1"
+          "sha256": "ce5de97e990f5950700a3f288f112034939fef3497b2ae14004cef8cca6568dc"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -1499,7 +1501,7 @@
         },
         {
           "path": "data/decks/goblin-storm/strategic_frame.json",
-          "sha256": "154d426d3672a45ba1e65c66e3af264f6417d6f3a6a57626b021703f5c4e4c02"
+          "sha256": "8a8b5aa980a4485c865355c1559c191de3dce0716ccd7dcf4ebae5cb200200f7"
         }
       ]
     }

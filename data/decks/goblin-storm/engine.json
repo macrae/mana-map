@@ -82,7 +82,7 @@
   {
    "stage": "fuel",
    "label": "A CARD PER BODY",
-   "what_it_does": "Storm counts CASTS, and stack 002 established the hard half of that: copies are put on the stack without being cast, so storm count 3 becomes 8 tokens but the next spell still sees 4. Every point of count is paid one card at a time, so the hand has to refill. Seven one- and two-mana spells target only a single creature and draw: Crimson Wisps, Expedite, Accelerate, Impolite Entrance, Renegade Tactics, Might of the Meek and Ancestral Anger. Cast at Zada alone, each is copied once per other creature, so each body becomes a card (stack 001: five cards off a single {R} with four Goblins out). That is the refill, and it scales with exactly the resource the deck builds. Around it: Faithless Looting filters, Goblin Matron tutors a Goblin, Conspicuous Snoop casts Goblins off the top, Grenzo impulses off combat damage, Idol of Oblivion draws once a turn after a token, and Past in Flames is the rebuild, flashback on every instant and sorcery in the graveyard after a storm turn put the hand there. Daring Discovery can legally target only Zada (up to three targets), which would make it a Discover 4 per body; stack 015 on exactly that failed its checker, so it is a candidate, not a line. deck-audit reads card-advantage at 4 counted copies against a floor of 10 and lists the cantrips as possible_uncounted: the taxonomy has no pattern for a cantrip that becomes N cards.",
+   "what_it_does": "Storm counts CASTS, and stack 002 established the hard half of that: copies are put on the stack without being cast, so storm count 3 becomes 8 tokens but the next spell still sees 4. Every point of count is paid one card at a time, so the hand has to refill. Seven one- and two-mana spells target only a single creature and draw: Crimson Wisps, Expedite, Accelerate, Impolite Entrance, Renegade Tactics, Might of the Meek and Ancestral Anger. Cast at Zada alone, each is copied once per other creature, so each body becomes a card (stack 001: five cards off a single {R} with four Goblins out). That is the refill, and it scales with exactly the resource the deck builds. Around it: Goblin Matron tutors a Goblin, Conspicuous Snoop casts Goblins off the top, Grenzo impulses off combat damage, Idol of Oblivion draws once a turn after a token, and Past in Flames is the rebuild, flashback on every instant and sorcery in the graveyard after a storm turn put the hand there. Daring Discovery can legally target only Zada (up to three targets), which would make it a Discover 4 per body; stack 015 on exactly that failed its checker, so it is a candidate, not a line. deck-audit reads card-advantage at 4 counted copies against a floor of 10 and lists the cantrips as possible_uncounted: the taxonomy has no pattern for a cantrip that becomes N cards.",
    "cards": [
     "Crimson Wisps",
     "Expedite",
@@ -91,7 +91,6 @@
     "Renegade Tactics",
     "Might of the Meek",
     "Ancestral Anger",
-    "Faithless Looting",
     "Daring Discovery",
     "Goblin Matron",
     "Conspicuous Snoop",
@@ -115,7 +114,7 @@
      "kind": "city",
      "id": "city-4",
      "agreement": "cuts-across",
-     "note": "six of the cantrips sit in Finishers, Ancestral Anger, Faithless Looting, Daring Discovery and Past in Flames in Ramp, Snoop and Grenzo in Card Flow, Matron in Bodies, Idol in Mana"
+     "note": "six of the cantrips sit in Finishers, Ancestral Anger, Daring Discovery and Past in Flames in Ramp, Snoop and Grenzo in Card Flow, Matron in Bodies, Idol in Mana"
     }
    ]
   },
@@ -208,7 +207,7 @@
   {
    "stage": "output",
    "label": "WHERE THE BODIES LAND",
-   "what_it_does": "Impact Tremors, General Kreat, the Boltbringer and Purphoros, God of the Forge turn a creature entering into damage to EACH opponent - one, one and two points respectively - and the deck's best-verified multi-seat damage runs through the first: stack 002 resolves eight tokens into eight damage to each of two opponents, 32 to 24 and 28 to 20. That is a burst, not a kill: both opponents end alive. This is the stage the copy spells were added to feed: every token Heat Shimmer or Empty the Warrens makes is an entry. That is a three-card class, and no declared goldfish target measures it. Pashalik Mons prices Goblin deaths instead, one point per death at any target, which is the reach that survives a sweeper. Siege-Gang Commander and Broadside Bombardiers buy damage with a body at a cost, and both can point it at a player. Grapeshot is filed here rather than in wincon deliberately: stack 002 measured it at storm count 4, five instances of one damage - reach and removal, not a kill across three seats at forty life.",
+   "what_it_does": "Impact Tremors, General Kreat, the Boltbringer and Purphoros, God of the Forge turn a creature entering into damage to EACH opponent - one, one and two points respectively - and the deck's best-verified multi-seat damage runs through the first: stack 002 resolves eight tokens into eight damage to each of two opponents, 32 to 24 and 28 to 20. That is a burst, not a kill: both opponents end alive. This is the stage the copy spells were added to feed: every token Heat Shimmer or Empty the Warrens makes is an entry. That is a three-card class, and no declared goldfish target measures it. Pashalik Mons prices Goblin deaths instead, one point per death at any target, which is the reach that survives a sweeper. Goblin Sharpshooter prices the same deaths as pings: it untaps whenever a creature dies, so each Goblin spent to Skirk Prospector, Goblin Bombardment or Skullclamp is one more point at any target. No stack covers it yet. Siege-Gang Commander and Broadside Bombardiers buy damage with a body at a cost, and both can point it at a player. Grapeshot is filed here rather than in wincon deliberately: stack 002 measured it at storm count 4, five instances of one damage - reach and removal, not a kill across three seats at forty life.",
    "cards": [
     "Impact Tremors",
     "General Kreat, the Boltbringer",
@@ -216,6 +215,7 @@
     "Grapeshot",
     "Siege-Gang Commander",
     "Pashalik Mons",
+    "Goblin Sharpshooter",
     "Broadside Bombardiers"
    ],
    "single_point_of_failure": null,
@@ -234,7 +234,7 @@
      "kind": "city",
      "id": "city-3",
      "agreement": "partial",
-     "note": "five of seven in Bodies; Purphoros in Card Flow, Grapeshot in Ramp"
+     "note": "six of eight in Bodies; Purphoros in Card Flow, Grapeshot in Ramp"
     }
    ]
   },

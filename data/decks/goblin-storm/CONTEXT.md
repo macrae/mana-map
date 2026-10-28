@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-27
+- **Version:** v1.2.1 (V5) · **status:** sleeved since 2026-10-28
 - **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-27, 4 readings) — older list
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 41 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
@@ -96,7 +96,7 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v1.2.1 (V5), 2026-10-28. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -130,6 +130,8 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 ## Change history
 
 <!-- ctx:gen history -->
+- **v1.2.1 · V5** (2026-10-28) — in: Goblin Sharpshooter; out: Faithless Looting. _storm-tune-v2: Goblin Sharpshooter for Faithless Looting_
+  - merge `storm-tune-v2`: objective kill_by_8 read **met** — The pilot, 2026-10-27, from DeckCheck's second PowerTune read through Zada's text: Mirrorwing Dragon (Zada's copy ability on a second body — Independence), Immo
 - **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
   - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
   - played 1: 1W 0L
