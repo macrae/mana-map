@@ -9537,8 +9537,16 @@ def test_the_pages_show_the_pilots_marks_as_the_table_instrument(browser, viz_se
         assert "kept seven passed the keep rule: 50%" in text
     finally:
         page.close()
-    # The control: the tracked info.json has no marked game, and no block renders.
+    # The control: a deck with no marked game renders no block. Routed, not read off
+    # disk — the tracked info.json gained a marked game on 2026-10-27 (sharknado 004,
+    # kept_wheels=1), and a control that leans on live data fails the day the pilot logs.
+    bare = _json.loads((DECKS_DIR / slug / "info.json").read_text())
+    rec = bare.setdefault("record", {})
+    rec.pop("marks", None)
+    rec["marks_n"] = 0
     page = browser.new_page()
+    page.route(f"**/data/decks/{slug}/info.json", lambda route: route.fulfill(
+        status=200, content_type="application/json", body=_json.dumps(bare)))
     try:
         page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
         page.wait_for_timeout(2000)

@@ -1581,6 +1581,10 @@
     },
     // An explicit request, so it overrides "the user has taken the camera".
     fit: function () { userAdjusted = false; fitToGraph(true); userAdjusted = true; },
+    // An AUTOMATIC refit (the box changed under the graph): it yields to a camera
+    // the user has taken and never claims one. `fit` above is the button; calling
+    // it from a resize marked every Build load user-owned and froze auto-framing.
+    refit: function () { fitToGraph(true, true); },
     get nodeCount() { return nodes.length; },
     get linkCount() { return links.length; },
     get trailLength() { return trail.length; },

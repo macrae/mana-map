@@ -621,7 +621,7 @@
   /* After the map's box changes, refit the deck once the renderers have resized. */
   function settleMap() {
     clearTimeout(settleMap._t);
-    settleMap._t = setTimeout(function () { if (active) fitDeck(); }, 320);
+    settleMap._t = setTimeout(function () { if (active) fitDeck(true); }, 320);
   }
 
   /* ── The review grid: a write loop, so it is held safe by four rules ──────
@@ -2802,9 +2802,11 @@
 
   /* Frame the whole deck on whichever surface is showing. The graph's extent is emergent
    * and can only be measured; the map's is the deck's world positions. */
-  function fitDeck() {
+  function fitDeck(auto) {
     if (view === 'graph') {
-      if (window.Force && Force.fit) Force.fit();
+      // `auto` is a resize settling, not a request: it must not take the camera.
+      if (window.Force && auto && Force.refit) Force.refit();
+      else if (window.Force && Force.fit) Force.fit();
       return;
     }
     zoomToDeck();
