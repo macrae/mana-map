@@ -5,7 +5,7 @@
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
 - **Version:** v1.2.1 (V5) · **status:** sleeved since 2026-10-28
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-27, 4 readings) — older list
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-28, 5 readings)
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 41 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->

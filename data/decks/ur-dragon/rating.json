@@ -17,8 +17,8 @@
    "weight_effective": 0.1304,
    "sub_score": 85.72,
    "sub_ci": [
-    79.31,
-    92.1
+    79.2,
+    92.16
    ],
    "placement": 66.67,
    "anchor": 100.0,
@@ -52,7 +52,7 @@
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.55
+    63.66
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -93,7 +93,7 @@
    "weight_effective": 0.1304,
    "sub_score": 82.86,
    "sub_ci": [
-    76.39,
+    76.43,
     82.86
    ],
    "placement": 100.0,
@@ -241,8 +241,8 @@
    "weight_effective": 0.163,
    "sub_score": 35.71,
    "sub_ci": [
-    32.88,
-    43.19
+    32.53,
+    43.18
    ],
    "placement": 0.0,
    "anchor": 62.5,
@@ -280,8 +280,8 @@
    "weight_effective": 0.1304,
    "sub_score": 67.62,
    "sub_ci": [
-    44.68,
-    96.82
+    44.63,
+    95.27
    ],
    "placement": null,
    "anchor": 67.62,
@@ -341,7 +341,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
- "fleet_sha": "8c6eb7fd4838",
+ "fleet_sha": "0e11fc288d6b",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -398,12 +398,12 @@
  },
  "code_score": 63.2,
  "score_point": 64.5,
- "score": 64.8,
+ "score": 65.0,
  "score_ci": [
-  58.2,
-  72.3
+  57.5,
+  72.6
  ],
- "grade": "C",
+ "grade": "B",
  "grade_range": [
   "C",
   "B"
@@ -411,8 +411,8 @@
  "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.486,
-  "C": 0.513,
+  "B": 0.497,
+  "C": 0.502,
   "D": 0.001,
   "F": 0.0
  },
@@ -521,6 +521,7 @@
   "level": "divergent",
   "instruments": {
    "construction": 4.0,
+   "dti": 4.0,
    "judgment": 3.0,
    "mana": 4.0,
    "resilience": 1.0,
@@ -538,23 +539,13 @@
     "instrument": "speed",
     "rank": 2.0,
     "side": "better"
-   },
-   {
-    "instrument": "construction",
-    "rank": 4.0,
-    "side": "worse"
-   },
-   {
-    "instrument": "mana",
-    "rank": 4.0,
-    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.275,
-   "p": 0.3893,
-   "p_method": "exact over 13824 relabellings",
-   "m": 4,
+   "kendall_w": 0.344,
+   "p": 0.112,
+   "p_method": "permutation, 5000 draws, seed 20261019",
+   "m": 6,
    "n": 4
   }
  },
@@ -586,8 +577,8 @@
   "weight": 0.2,
   "weight_effective": 0.2174,
   "sub_ci": [
-   60.78,
-   77.31
+   60.76,
+   76.99
   ]
  },
  "rank": {
@@ -600,22 +591,22 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.0,
-   "2": 0.075,
-   "3": 0.523,
-   "4": 0.402
+   "1": 0.001,
+   "2": 0.086,
+   "3": 0.636,
+   "4": 0.278
   },
   "basis": {
    "gishath": "rating.json judgment",
-   "goblin-storm": "skeleton",
+   "goblin-storm": "rating.json judgment",
    "sharknado": "rating.json judgment",
    "ur-dragon": "this document"
   },
   "scores": {
-   "sharknado": 85.9,
-   "gishath": 72.8,
-   "ur-dragon": 64.8,
-   "goblin-storm": 62.9
+   "sharknado": 80.8,
+   "gishath": 72.9,
+   "ur-dragon": 65.0,
+   "goblin-storm": 60.9
   }
  }
 }

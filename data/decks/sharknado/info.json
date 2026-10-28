@@ -19,7 +19,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "issue"
@@ -14197,19 +14199,19 @@
     "within_target": true
   },
   "deckcheck": {
-    "score": 37,
+    "score": 39,
     "max_score": 96,
     "bracket": 3,
-    "as_of": "2026-10-26",
-    "source_updated_at": "2026-10-27T04:07:57.310838+00:00",
+    "as_of": "2026-10-28",
+    "source_updated_at": "2026-10-28T17:58:31.150697+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": true,
-    "readings_n": 4,
+    "stale_list": false,
+    "readings_n": 5,
     "omni": {
       "benchmarks": {
         "A1": "B",
         "A2": "A",
-        "I1": "B",
+        "I1": "A",
         "I2": "B",
         "P1": "A",
         "P2": "B",
@@ -14220,17 +14222,17 @@
         "S2": "A",
         "S3": "B"
       },
-      "decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+      "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
       "median_bracket": 3,
-      "median_score": 37,
+      "median_score": 39,
       "n": 1,
       "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
     },
     "floor_vs_dti": {
       "floor": 3,
-      "floor_decklist_sha256": "1a3b46d076c96d584f1fd97a6a78e4ebdb8ca45d7deb4401fd667a49a58ad2fc",
+      "floor_decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4",
       "floor_name": "Upgraded",
-      "reading_as_of": "2026-10-26",
+      "reading_as_of": "2026-10-28",
       "relation": "equal",
       "their_bracket": 3
     },
@@ -14992,7 +14994,7 @@
     ]
   },
   "next": [
-    "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status sharknado` names them; fix before anything else reads them",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"

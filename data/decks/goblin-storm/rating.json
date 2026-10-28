@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.15,
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.58
+    63.53
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1778,
+   "weight_effective": 0.1,
    "sub_score": 100.0,
    "sub_ci": [
-    93.52,
+    93.57,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.15,
    "sub_score": 40.0,
    "sub_ci": [
     40.0,
-    46.38
+    46.44
    ],
    "placement": 0.0,
    "anchor": 70.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2889,
+   "weight_effective": 0.1625,
    "sub_score": 66.19,
    "sub_ci": [
     66.19,
@@ -233,13 +233,48 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1875,
+   "sub_score": 54.76,
+   "sub_ci": [
+    47.44,
+    62.16
+   ],
+   "placement": 50.0,
+   "anchor": 58.33,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 39,
+     "ci95": null,
+     "n": 5,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 58.33,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
   }
  ],
  "withheld": [
-  {
-   "component": "dti",
-   "reason": "the DeckCheck reading describes another list — `deckcheck goblin-storm --write` after a rescan"
-  },
   {
    "component": "table_record",
    "reason": "3 game(s) logged; 5 needed"
@@ -251,10 +286,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "judgment written against aa02ea1989f3"
   }
  ],
  "limits": [
@@ -274,24 +305,54 @@
    "score": 39,
    "max_score": 96,
    "bracket": 3,
-   "as_of": "2026-10-27",
-   "stale_list": true
+   "as_of": "2026-10-28",
+   "stale_list": false
   },
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
- "fleet_sha": "8c6eb7fd4838",
+ "fleet_sha": "0e11fc288d6b",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
- "code_score": 62.8,
- "score_point": 62.8,
- "score": 62.9,
+ "open_questions": [
+  {
+   "question": "Does the protection and interaction package change outcomes over more than one game?",
+   "settled_by": "rate"
+  }
+ ],
+ "iterations": 2,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "mechanical",
+    "status": "supported",
+    "note": "validate-rating passes; scorecard fields identical on re-run."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "61 vs code_score 60.8, neutral."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Unchanged; mana outlier addressed; citations verified in round 1."
+   },
+   {
+    "where": "open_questions[0]",
+    "status": "supported",
+    "note": "Answerable by rate; the unanswerable goldfish question is gone."
+   }
+  ],
+  "iterations": 2
+ },
+ "code_score": 60.8,
+ "score_point": 60.8,
+ "score": 60.9,
  "score_ci": [
-  54.7,
-  73.8
+  55.5,
+  67.7
  ],
  "grade": "C",
  "grade_range": [
@@ -300,10 +361,10 @@
  ],
  "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.009,
-  "B": 0.361,
-  "C": 0.626,
-  "D": 0.004,
+  "A": 0.0,
+  "B": 0.154,
+  "C": 0.845,
+  "D": 0.001,
   "F": 0.0
  },
  "uncertainty": {
@@ -320,43 +381,51 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 64.9,
+    "score": 61.5,
     "grade": "C"
    },
    "mana": {
-    "score": 54.8,
+    "score": 56.5,
     "grade": "C"
    },
    "resilience": {
-    "score": 71.1,
-    "grade": "B"
+    "score": 64.5,
+    "grade": "C"
    },
    "construction": {
-    "score": 61.4,
+    "score": 59.8,
+    "grade": "C"
+   },
+   "dti": {
+    "score": 62.2,
+    "grade": "C"
+   },
+   "judgment": {
+    "score": 60.8,
     "grade": "C"
    }
   },
   "flips": [
    {
     "component": "mana",
-    "share_now": 0.178,
-    "share_at_flip": 0.226,
+    "share_now": 0.1,
+    "share_at_flip": 0.196,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "resilience",
-    "share_now": 0.267,
-    "share_at_flip": 0.196,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
+    "share_now": 0.15,
+    "share_at_flip": 0.592,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.289,
-    "share_at_flip": 0.75,
+    "share_now": 0.163,
+    "share_at_flip": 0.814,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -367,6 +436,8 @@
   "level": "divergent",
   "instruments": {
    "construction": 3.0,
+   "dti": 3.0,
+   "judgment": 4.0,
    "mana": 1.0,
    "resilience": 4.0,
    "speed": 4.0
@@ -375,36 +446,66 @@
   "spread": 1.0,
   "outliers": [
    {
-    "instrument": "construction",
-    "rank": 3.0,
-    "side": "better"
-   },
-   {
     "instrument": "mana",
     "rank": 1.0,
     "side": "better"
-   },
-   {
-    "instrument": "resilience",
-    "rank": 4.0,
-    "side": "worse"
-   },
-   {
-    "instrument": "speed",
-    "rank": 4.0,
-    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.275,
-   "p": 0.3893,
-   "p_method": "exact over 13824 relabellings",
-   "m": 4,
+   "kendall_w": 0.344,
+   "p": 0.112,
+   "p_method": "permutation, 5000 draws, seed 20261019",
+   "m": 6,
    "n": 4
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
- "judgment": null,
+ "judgment": {
+  "sub_score": 61,
+  "argument": "The measured components were read on the goldfish, which has no blockers and no removal, and the record is thin: three logged games, no survey, no Forge run on this list, and nothing yet on the list as it now stands. The instruments disagree. The one outlier is mana, which ranks best in the bracket; the composite already carries that gain, and crediting it again would double count, so for mana my number sits at the measured score. The record does not explain the others' spread either. Speed (kill_by_turn_8 at 0.511) and resilience (15 answer cards, 2 of 5 classes) read worse than mana; the strategy says to cover classes before doubling any, so two classes is a real capacity gap, but the logged game does not show it costing a game. dti (39 of 96) is DeckCheck's read of card quality, and nothing logged confirms or refutes it. The one recent game was a win that fit the deck's own thesis: a redirect spared the commander, removal broke the opposing engine, and a single storm turn finished it. That is one game, and an opponent killed another seat first. The unmeasured facts are too few to move the number either way, so I leave it at the measured score.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:dti",
+    "quote": "DeckCheck Threat Index"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "answer_cards"
+   },
+   {
+    "kind": "strategy",
+    "ref": "strategy:deckbuilding.interaction-suite",
+    "quote": "Breadth before depth"
+   },
+   {
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "Empty the Warrens, Impact Tremors, 15 mana and a 20-plus goblin board"
+   },
+   {
+    "kind": "context",
+    "ref": "context:summary",
+    "quote": "Goblin presence is the whole deck"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.25,
+  "sub_ci": [
+   52.87,
+   69.5
+  ]
+ },
  "rank": {
   "position": 4,
   "of": 4,
@@ -415,10 +516,10 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.003,
-   "2": 0.057,
-   "3": 0.344,
-   "4": 0.597
+   "1": 0.0,
+   "2": 0.009,
+   "3": 0.27,
+   "4": 0.721
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -427,10 +528,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 85.9,
-   "gishath": 72.8,
-   "ur-dragon": 64.8,
-   "goblin-storm": 62.9
+   "sharknado": 80.8,
+   "gishath": 72.9,
+   "ur-dragon": 65.0,
+   "goblin-storm": 60.9
   }
  }
 }
