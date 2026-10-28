@@ -188,6 +188,17 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .combo-link { margin-left: auto; color: #6f6f8a; text-decoration: none; font-size: 0.8rem; }
 .combo-link:hover { color: #c4a747; }
 .combo-count { font-size: 0.72rem; color: #6f6f8a; margin: 2px 0 0; }
+/* Three rows, then "show all" (2026-10-28). CSS rather than a JS pass, so the lines the
+ * lazy index appends later fold under the same rule. `.combo-lines` holds only lines. */
+.combo-block:not(.is-open) .combo-lines > .combo-line:nth-child(n+4) { display: none; }
+.combo-foot { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.combo-more { font: inherit; font-size: 0.72rem; color: #c4a747; background: none; border: none;
+  padding: 2px 0; cursor: pointer; margin-left: auto; }
+.combo-more:hover { text-decoration: underline; }
+/* An index line touching one of the pilot's decks: gold when one card short, green when
+ * every piece is there, a quiet blue when it only shares a card. */
+.combo-line.tier-1 { border-left: 3px solid #4A7BFF; }
+.combo-tag.combo-touch { color: #9fb6ff; }
 
 
 
@@ -669,7 +680,9 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .discover-rel { flex: 1; min-width: 92px; font-size: 0.78rem; }
 /* A relation with nothing behind it is a fact about the card, not a broken button —
    23.6% of cards have only "similar". Say the number rather than hide the control. */
-.discover-rel.is-empty { opacity: 0.4; cursor: default; }
+.discover-rel.is-empty { opacity: 0.4; cursor: help; }
+/* An empty relation says "none", not "0" — the count is not an answer (2026-10-28). */
+.discover-rel.is-empty .discover-count { font-style: italic; }
 .discover-count {
   display: inline-block; margin-left: 4px; padding: 0 5px; border-radius: 8px;
   background: rgba(196,167,71,0.22); color: #c4a747; font-variant-numeric: tabular-nums;
@@ -941,6 +954,15 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .cand-grid { flex: 0 0 auto; height: var(--cg-height, 40vh); min-height: 160px; max-height: 75vh;
   display: flex; flex-direction: column; background: #0e0e1e; border-top: 1px solid #2f2f55;
   outline: none; position: relative; }
+/* The grid, collapsed to one line (2026-10-28): a set with every card judged opens as
+ * this rather than a 40% drawer reading "Nothing here". Click to open the grid. */
+.cg-chip { flex: 0 0 auto; display: flex; align-items: baseline; gap: 12px; width: 100%;
+  font: inherit; font-size: 0.78rem; text-align: left; color: #aaa; background: #0e0e1e;
+  border: none; border-top: 1px solid #2f2f55; padding: 7px 16px; cursor: pointer; }
+.cg-chip strong { color: #eee; font-size: 0.85rem; }
+.cg-chip-progress { color: #4ade80; font-variant-numeric: tabular-nums; }
+.cg-chip-open { margin-left: auto; color: #c4a747; }
+.cg-chip:hover .cg-chip-open { text-decoration: underline; }
 /* The divider between the map and the grid: drag it to trade map for grid. */
 .cg-split { flex: 0 0 auto; height: 7px; cursor: row-resize; background: #15152a;
   border-top: 1px solid #2f2f55; display: flex; align-items: center; justify-content: center;
@@ -1064,3 +1086,19 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .de-card { margin: 6px 0; }
 .de-card-row { display: flex; flex-wrap: wrap; align-items: center; }
 .de-pending { font-size: 0.75rem; color: #c4a747; }
+
+/* ── Build's deck header: one line of badges under the name (2026-10-28) ────────
+ * Version, rung, bracket, ★ grade, W–L, DTI — each from `DeckFacts` (api.js), the
+ * reading the workbench chips use. A figure the files do not carry is not drawn; the
+ * DTI's absence is said in muted text, never as a number. */
+.deck-badges { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-top: 6px; }
+.deck-badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 0.68rem;
+  color: #c8c8dc; border: 1px solid #3a3a5a; background: #1a1a2e; white-space: nowrap; cursor: default; }
+.deck-badge[title] { cursor: help; }
+.deck-badge b { color: #eee; }
+.deck-badge.is-warn { border-color: #c4a747; color: #e2c766; }
+.deck-badge-version { color: #eee; font-weight: 600; }
+.deck-badge-rung.is-sleeved { border-color: #2a5a3a; color: #4ade80; }
+.deck-badge-grade { border-color: #a88a35; color: #c4a747; }
+.deck-badge-asof { color: #7a7aa0; }
+.deck-badge.is-absent { color: #6f6f8a; border-style: dashed; font-style: italic; }

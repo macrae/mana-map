@@ -80,6 +80,125 @@ window.branchStateBadge = function (b) {
        + (b && b.base_moved ? ' <span class="br-state" data-state="base-moved" title="' + e(b.base_moved) + '">base moved</span>' : '');
 };
 
+/* ── A deck's identity facts — ONE reading, two surfaces (2026-10-28) ─────────
+ *
+ * The workbench card and Build's deck header both say which deck this is: its
+ * name, its version, its rung, its bracket, its ★ grade, its record and
+ * DeckCheck's Threat Index. The workbench had the only reading, private to its
+ * IIFE; Build's header would have been a second. These return DATA (text,
+ * title, warn) and each page wraps them in its own markup.
+ *
+ * ABSENT MEANS ABSENT: every reader returns null when the file does not carry
+ * the figure, and the caller omits it. Nothing here computes a score — every
+ * value is a field of `index.json` (the manifest entry), `info.json`
+ * (`deck-info --write`) or `rating.json`, printed. */
+window.DeckFacts = (function () {
+  /* The release tag, not the ordinal; the ordinal when there is no tag. */
+  function versionName(v) {
+    if (!v) return '';
+    return v.release ? v.release : (v.version ? 'V' + v.version : '');
+  }
+
+  /* THE DECK'S NAME. `build_index` falls back to the commander when no authored
+   * `deck_name` exists (issue.json), so sharknado reads "Shabraz, the Skyshark"
+   * — the commander twice. Where the name IS the commander, the slug is the one
+   * name the bench actually calls the deck by, and it is printed as a name
+   * ("sharknado" -> "Sharknado"); `authored` says which one this is. */
+  function displayName(e) {
+    if (!e) return { text: '', authored: false };
+    var name = e.deck_name || '';
+    if (name && name !== e.commander) return { text: name, authored: true };
+    var slug = String(e.slug || '');
+    var words = slug.split('-').filter(Boolean).map(function (w) {
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    });
+    return { text: words.join(' ') || name, authored: false };
+  }
+
+  /* The version a reader should know this list by. A paper lock wins (it is what
+   * is in the sleeves); its drift is a warning. Otherwise the latest release. */
+  function version(e) {
+    if (!e) return null;
+    var p = e.paper;
+    if (p && (p.release || p.version)) {
+      var name = versionName(p);
+      if (p.unresolved) return { text: name, title: 'paper lock ' + name + ' — not in git', warn: true };
+      if (p.in_sync === false) {
+        return { text: name + (p.versions_behind ? ' · ' + p.versions_behind + ' behind' : ' · drifted'),
+                 title: 'the sleeves hold ' + name + '; the list has moved since', warn: true };
+      }
+      return { text: name, title: 'sleeved as V' + p.version + (p.in_sync ? ', in sync with the list' : ''),
+               warn: false };
+    }
+    var tag = versionName(e.version);
+    return tag ? { text: tag, title: 'latest release', warn: false } : null;
+  }
+
+  /* The ladder rung: Sleeved / On the bench / Brewing, or null for a pile. */
+  function rung(e) {
+    var r = window.deckRung ? window.deckRung(e) : (e && e.stage);
+    var label = r && window.DECK_RUNGS ? window.DECK_RUNGS[r] : null;
+    return label ? { key: r, text: label } : null;
+  }
+
+  /* The bracket the deck is built for (the floor when no target is set), with the
+   * floor and DeckCheck's read in the title. Warn when the floor outgrew the
+   * target or DeckCheck read an older list. */
+  function bracket(info) {
+    var b = (info && info.bracket) || {}, dc = info && info.deckcheck;
+    var n = b.target || b.floor || (dc && dc.bracket);
+    if (!n) return null;
+    var title = [];
+    if (b.floor) title.push('floor ' + b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : ''));
+    if (b.target) title.push('target ' + b.target);
+    if (dc && dc.bracket) title.push('DeckCheck B' + dc.bracket + (dc.score != null ? ' ' + dc.score + '/' + dc.max_score : ''));
+    return { text: 'B' + n, title: title.join(' · '),
+             warn: b.within_target === false || !!(dc && dc.stale_list) };
+  }
+
+  /* The ★ grade from rating.json — ★ coaching over ◆ inputs; the rank names its n. */
+  function grade(rt) {
+    if (!rt) return null;
+    var g = rt.grade_display || rt.grade;
+    if (!g) return null;
+    var rk = rt.rank || {};
+    var title = 'rating ' + (rt.score != null ? String(rt.score) : '') + (rk.position ? ' · ' + rk.position + ' of ' + rk.of
+              + ' in ' + ((rt.bracket && rt.bracket.key) ? 'B' + rt.bracket.key : 'its bracket') : '')
+              + ' · ★ coaching over ◆ inputs';
+    return { text: '★ ' + g, title: title };
+  }
+
+  /* W–L from the captain's log (`info.record`), a draw column only when one
+   * exists. No logged game is no record — null, never "0–0". */
+  function record(info) {
+    var r = (info && info.record) || {};
+    if (!r.games) return null;
+    var wl = [r.win || 0, r.loss || 0].concat(r.draw ? [r.draw] : []).join('–');
+    var games = r.games + ' game' + (r.games === 1 ? '' : 's');
+    return { text: wl, games: games, last: r.last_played || null,
+             title: games + (r.last_played ? ', last ' + r.last_played : '') };
+  }
+
+  /* DeckCheck's Threat Index — dated external evidence, with its as_of. Warn when
+   * it describes an older list or is past `max_age_days`. */
+  function dti(info) {
+    var dc = info && info.deckcheck;
+    if (!dc || dc.score == null) return null;
+    var warn = '';
+    if (dc.stale_list) warn = 'older list';
+    else if (dc.as_of && dc.max_age_days) {
+      var days = Math.floor((Date.now() - Date.parse(dc.as_of)) / 86400000);
+      if (days > dc.max_age_days) warn = days + ' d old';
+    }
+    return { text: 'DTI ' + dc.score + '/' + dc.max_score, as_of: dc.as_of || null, warn: warn,
+             title: 'DeckCheck Threat Index' + (dc.bracket ? ', B' + dc.bracket : '')
+                    + (dc.as_of ? ', read ' + dc.as_of : '') + ' — external evidence, never a gate' };
+  }
+
+  return { versionName: versionName, displayName: displayName, version: version, rung: rung,
+           bracket: bracket, grade: grade, record: record, dti: dti };
+})();
+
 /* ── Land on the hash after an async render (2026-10-20) ─────────────────────
  *
  * The deck and branch pages build their panels after a fetch, so the browser's

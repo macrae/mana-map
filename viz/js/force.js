@@ -839,9 +839,21 @@
     const wantSpace = (window.MM && MM.space) || null;
     if (emb && embSpace !== wantSpace) { emb = null; dim = 0; }   // the space moved
     if (unique.length > 1 && !emb) {
-      MM.setStatus('Loading embeddings…');
+      // THE LABEL IS OURS, SO TAKING IT DOWN IS OURS TOO (2026-10-28). Build sets its
+      // status ("<deck> — 100 cards lit, …") and THEN seeds the graph, which overwrote
+      // it with this line and never cleared it: the matrix landed in seconds, the graph
+      // drew, and "Loading embeddings…" sat in the status bar for as long as the deck
+      // was open. Put back what was there — only if nobody wrote over us meanwhile.
+      const statusEl = document.getElementById('status');
+      const before = statusEl ? statusEl.textContent : '';
+      const LOADING = 'Loading embeddings…';
+      MM.setStatus(LOADING);
       emb = await MM.getEmbeddings();
       if (emb) { dim = MM.EMBED_DIM; embSpace = wantSpace; }
+      if (statusEl && statusEl.textContent === LOADING) {
+        MM.setStatus(emb ? before
+          : 'Embeddings unavailable — the graph links only what the neighbour table knows.');
+      }
     }
     // No background prefetch on the landing path, deliberately. Nothing in discovery
     // reads `emb` — branching comes from the table and a single seed has no intra-graph

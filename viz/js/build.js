@@ -87,7 +87,12 @@
   let watchSetId = null;
   let gridFilter = 'unreviewed';   // unreviewed | watching | pass | all
   let gridSort = 'set';            // set | mv | pays | axis
-  let gridOpen = true;
+  /* null = not yet decided for this deck and set: it opens only when the set still
+   * has an unreviewed card (2026-10-28). A set with every card judged opened a 40%
+   * drawer reading "Nothing here", so the map lost its bottom half to an empty
+   * state. Resolved ONCE per deck/set (`gridIsOpen`), then the pilot's own choice:
+   * a verdict that empties the queue never snaps the grid shut under the cursor. */
+  let gridOpen = null;
   let gridFocus = 0;
   let gridNote = null;             // the card whose note editor is open
   let gridNoteDraft = '';          // its text, kept OUTSIDE the DOM so no re-render loses it
@@ -406,12 +411,25 @@
     // Prices as dated evidence (`prices <slug> --write`); the card panel's price
     // row quotes the file with its date and source, or shows nothing.
     const prices = await optional('prices', 'prices.json');
+    /* The deck header's badges (2026-10-28): the record, the bracket and DeckCheck's
+     * Threat Index from `info.json` (`deck-info --write` — every deck has one, and the
+     * workbench reads the same file), the ★ grade from `rating.json` only where the
+     * manifest says one is on file. Fetched side by side; either failing is a badge
+     * that is absent, never a zero. */
+    const facts = await Promise.all([
+      getJSON(DECK_BASE + slug + '/info.json').catch(function () { return null; }),
+      (entry.has && entry.has.rating)
+        ? getJSON(DECK_BASE + slug + '/rating.json').catch(function () { return null; })
+        : Promise.resolve(null),
+    ]);
 
     const built = buildActive(entry, deckDoc, considering, stacks, engine, prose);
     built.bracketReport = bracketReport && typeof bracketReport === 'object' ? bracketReport : null;
     built.combos = combos && typeof combos === 'object' ? combos : null;
     built.prices = prices && prices.cards && typeof prices.cards === 'object' ? prices : null;
     built.watch = watch && Array.isArray(watch.sets) ? watch : null;
+    built.info = facts[0] && typeof facts[0] === 'object' ? facts[0] : null;
+    built.rating = facts[1] && typeof facts[1] === 'object' ? facts[1] : null;
     // What `cards.json` was built FROM. The edit tray reads it as the stamp: a
     // figure on this panel is current only when this matches the list on disk.
     built.listSha = deckDoc.decklist_sha256 || null;
@@ -419,6 +437,7 @@
     watchSetId = built.watch && built.watch.sets.length ? built.watch.sets[0].id : null;
     gridFocus = 0;
     gridNote = null;
+    gridOpen = null;     // a new deck: its set decides whether the grid opens
     built.candidates = currentCandidates(built);
     return built;
   }
@@ -450,6 +469,15 @@
     return n;
   }
 
+  function gridIsOpen() {
+    if (gridOpen === null) {
+      const set = active && watchSet();
+      if (!set) return false;              // nothing to decide on yet; ask again later
+      gridOpen = watchCounts(set).unreviewed > 0;
+    }
+    return gridOpen;
+  }
+
   function candSectionHtml() {
     const sets = (active.watch && active.watch.sets) || [];
     if (!sets.length) return '';
@@ -470,7 +498,7 @@
         '<select id="candSetSelect" onchange="Build.chooseSet(this.value)">' + opts + '</select></div>' +
       line +
       (set ? '<button class="lens-btn" onclick="Build.toggleGrid()">' +
-        (gridOpen ? 'Hide the review grid' : 'Review these cards') + '</button>' : '') +
+        (gridIsOpen() ? 'Hide the review grid' : 'Review these cards') + '</button>' : '') +
       '</div>';
   }
 
@@ -557,6 +585,37 @@
     const split = document.getElementById('cgSplit');
     if (split) split.remove();
     if (el) { el.remove(); settleMap(); }
+  }
+
+  /* THE COLLAPSED GRID: one line where the drawer was — "<set> · 25 / 25 ✓" — and a
+   * click opens the grid. It is a sibling of the map like the grid, so the map keeps
+   * all but one line of its height. Not `#candGrid`: nothing that asks "is the grid
+   * open" (its keys, `Build.gridCard`) can mistake the chip for it. */
+  function renderGridChip(set) {
+    const col = document.getElementById('plotCol') ||
+      (document.getElementById('plot') || {}).parentNode;
+    let chip = document.getElementById('cgChip');
+    if (!set || !col) { if (chip) { chip.remove(); settleMap(); } return; }
+    const n = watchCounts(set);
+    const done = n.watching + n.pass;
+    const all = n.unreviewed === 0;
+    const html = '<strong>' + esc(set.title) + '</strong>' +
+      '<span class="cg-chip-progress">' + done + ' / ' + set.cards.length +
+        (all ? ' ✓' : ' reviewed · ' + n.unreviewed + ' unreviewed') + '</span>' +
+      '<span class="cg-chip-open">Review grid ▴</span>';
+    if (!chip) {
+      chip = document.createElement('button');
+      chip.id = 'cgChip';
+      chip.type = 'button';
+      chip.className = 'cg-chip';
+      chip.title = 'Open the review grid';
+      chip.addEventListener('click', function () { gridOpen = true; renderPanel(); renderGrid(); });
+      col.appendChild(chip);
+      chip.innerHTML = html;
+      settleMap();
+      return;
+    }
+    chip.innerHTML = html;
   }
 
   /* After the map's box changes, refit the deck once the renderers have resized. */
@@ -694,10 +753,13 @@
    * the empty state — never for navigation or a verdict. */
   function renderGrid(opts) {
     const set = active && watchSet();
-    if (!set || !gridOpen || !(window.MM && MM.mode === 'build')) {
+    const inBuild = !!(window.MM && MM.mode === 'build');
+    if (!set || !inBuild || !gridIsOpen()) {
       removeGrid();
+      renderGridChip(inBuild ? set : null);
       return;
     }
+    renderGridChip(null);
     const el = gridEl(true);
     const oldTiles = el.querySelector('.cg-tiles');
     const scroll = oldTiles && !(opts && opts.resetScroll) ? oldTiles.scrollTop : 0;
@@ -809,7 +871,7 @@
   function afterMark(name, advance, focusTile) {
     const set = active && watchSet();
     const g = gridEl(false);
-    if (!set || !g || !gridOpen) return;
+    if (!set || !g || !gridIsOpen()) return;
     const before = gridTiles().map(t => t.getAttribute('data-card'));
     const focusedName = before[gridFocus];
     const cards = gridCards(set);
@@ -1248,7 +1310,7 @@
   }
 
   function gridLive() {
-    return !!(gridOpen && active && window.MM && MM.mode === 'build' && watchSet() && gridEl(false));
+    return !!(active && window.MM && MM.mode === 'build' && watchSet() && gridIsOpen() && gridEl(false));
   }
 
   function onGridKey(ev) {
@@ -1310,6 +1372,7 @@
     watchSetId = id || null;
     gridFocus = 0;
     gridNote = null;
+    gridOpen = null;     // the new set decides, as a new deck does
     if (active) active.candidates = currentCandidates();
     renderPanel();
     renderGrid({ resetScroll: true });
@@ -1317,7 +1380,7 @@
   }
 
   function toggleGrid() {
-    gridOpen = !gridOpen;
+    gridOpen = !gridIsOpen();
     renderPanel();
     renderGrid();
   }
@@ -1890,6 +1953,7 @@
                 theme: d.theme, fmt: d.format || 'commander', formats: [],
                 saved: d.slug };
     renderPanel();
+    renderGrid();        // a draft has no watch set: the grid and its chip go
     MM.render();
 
     /* LOAD THE DRAFT'S LIBRARY INTO THE SESSION.
@@ -2142,6 +2206,53 @@
     };
   }
 
+  /* ── The deck header's badges (2026-10-28, the pilot's UI review) ─────────
+   *
+   * The header read "Shabraz, the Skyshark · 100/100 cards" and nothing else — no
+   * version, rung, bracket, grade, record or DTI, all of which the workbench card
+   * already shows for the same deck. One line under the name, every reading from
+   * `DeckFacts` (api.js), which the workbench chips read too, so the two surfaces
+   * cannot disagree. ABSENT MEANS ABSENT: a figure the files do not carry is
+   * omitted — except the DTI, whose absence is itself worth saying on a deck you
+   * are about to change, and reads as a muted "no DTI", never as a number. */
+  function deckTitle(e) {
+    return window.DeckFacts ? DeckFacts.displayName(e).text : (e.deck_name || e.slug);
+  }
+
+  /* Every commander, partners included ("Shabraz, the Skyshark + Brallin, Skyshark
+   * Rider") — the manifest's `commander` names one. */
+  function commanderLine() {
+    return active && active.commanderNames ? active.commanderNames.join(' + ') : '';
+  }
+
+  function deckBadgesHtml() {
+    if (!active || !window.DeckFacts) return '';
+    const e = active.entry, info = active.info, F = window.DeckFacts;
+    const badge = (cls, f, text) => f
+      ? '<span class="deck-badge ' + cls + (f.warn ? ' is-warn' : '') + '"' +
+          (f.title ? ' title="' + esc(f.title) + '"' : '') + '>' + esc(text || f.text) + '</span>'
+      : '';
+    const name = F.displayName(e);
+    const rung = F.rung(e);
+    const rec = F.record(info);
+    const dti = F.dti(info);
+    let html = badge('deck-badge-version', F.version(e)) +
+      (rung ? '<span class="deck-badge deck-badge-rung is-' + esc(rung.key) + '">' + esc(rung.text) + '</span>' : '') +
+      badge('deck-badge-bracket', F.bracket(info)) +
+      badge('deck-badge-grade', F.grade(active.rating)) +
+      (rec ? '<span class="deck-badge deck-badge-record" title="' + esc(rec.title) + '"><b>' + esc(rec.text) +
+        '</b> · ' + esc(rec.games) + '</span>' : '');
+    if (dti) {
+      html += '<span class="deck-badge deck-badge-dti' + (dti.warn ? ' is-warn' : '') + '" title="' + esc(dti.title) + '">' +
+        esc(dti.text) + (dti.as_of ? ' <span class="deck-badge-asof">' + esc(dti.as_of) + '</span>' : '') +
+        (dti.warn ? ' · ' + esc(dti.warn) : '') + '</span>';
+    } else if (active.spec && active.spec.commanders) {
+      // A Commander deck with no reading on file. A 60-card deck is not a DeckCheck deck.
+      html += '<span class="deck-badge deck-badge-dti is-absent" title="no deckcheck.json on file for this deck">no DTI</span>';
+    }
+    return html ? '<div class="deck-badges">' + html + '</div>' : '';
+  }
+
   function renderPanel() {
     const el = panelEl();
     if (!el) return;
@@ -2189,7 +2300,11 @@
       : deckCount(active.copies, spec, 0);
     html +=
       '<div class="deck-section">' +
-        '<div class="lens-title">' + esc(e.deck_name) + '</div>' +
+        // The name a deck with no authored one is known by is its slug; the title
+        // says so, rather than presenting it as if someone had named it.
+        '<div class="lens-title"' + (window.DeckFacts && !DeckFacts.displayName(e).authored
+          ? ' title="no authored deck name (issue.json) — named by its slug"' : '') + '>' +
+          esc(deckTitle(e)) + '</div>' +
         // The deck's COUNT leads, for every format, then a commander where there
         // is one, otherwise the format, which is what a 60-card deck is identified
         // by. This line used to read "Modern · 60+ cards": the format's RULE, which
@@ -2198,8 +2313,9 @@
         '<div class="lens-sub">' +
           '<span id="buildDeckCount" class="lens-count' + (count.off ? ' is-off' : '') + '">' +
             esc(count.text) + '</span>' +
-          esc(' · ' + (spec.commanders ? (e.commander || '') : spec.name)) +
+          esc(' · ' + (spec.commanders ? (commanderLine() || e.commander || '') : spec.name)) +
         '</div>' +
+        deckBadgesHtml() +
         // The magazine is not a product any more, so nothing invites a pilot
         // into it. This link survived the removal on the other three surfaces
         // because it lives in a panel that only renders with a deck loaded —
@@ -2404,7 +2520,7 @@
     if (!slug) {
       active = null;
       if (window.DeckEdit) DeckEdit.detach();
-      renderPanel(); MM.render(); return;
+      renderPanel(); renderGrid(); MM.render(); return;
     }
     // A DRAFT has no 99 to load, so `loadDeck` would 404 on its `cards.json`.
     // Picking one reopens the new-deck form on it instead — which is what
@@ -2419,7 +2535,7 @@
       // One answer to "which format": the brief, the "Set as commander" button and
       // Discover all read Session, so the deck you open writes it there.
       if (window.Session && Session.setFormat) Session.setFormat(active.format);
-      MM.setStatus(active.entry.deck_name + ' — ' + active.copies + ' cards lit, ' +
+      MM.setStatus(deckTitle(active.entry) + ' — ' + active.copies + ' cards lit, ' +
                    active.entry.verified + ' verified line(s)');
       // The edit tray (deck-edit.js): edit, branch or read-only, from the rung.
       if (window.DeckEdit) DeckEdit.attach(active.entry, active);
@@ -2800,6 +2916,7 @@
 
   function exit() {
     removeGrid();
+    renderGridChip(null);
     const plot = document.getElementById('plot');
     if (plot) plot.classList.remove('force-mode');
     // `Force.newWalk` below clears the graph's half of this; the index is ours.
@@ -2922,7 +3039,7 @@
      * `gridCards` order the grid drew, so j/k and this agree on which card it is. */
     get gridCard() {
       const set = active && watchSet();
-      if (!set || !gridOpen || !nameToIdx || !gridEl(false)) return null;
+      if (!set || !gridIsOpen() || !nameToIdx || !gridEl(false)) return null;
       const cards = gridCards(set);
       const c = cards[Math.min(gridFocus, cards.length - 1)];
       return c ? c.name : null;

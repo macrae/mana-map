@@ -1178,7 +1178,8 @@
    *
    *   [title/stats when the panel has no header] · deck context (Build only) ·
    *   THE IMAGE (panel width, at most 58vh tall; click to magnify, flip for a DFC) ·
-   *   combo lines · relations, the outclassed-by comparison and Keep · type + oracle
+   *   relations, the outclassed-by comparison and Keep · combo lines (three, then
+   *   "show all"; the pilot's own decks first) · type + oracle
    *   (DFC faces labelled; the card prints it, so it sits below what it cannot show) ·
    *   EDHREC, Commander legality and identity, every other format in a closed <details>.
    *
@@ -1201,16 +1202,19 @@
     // Read at RENDER time behind a guard — `DeckEdit` loads after this file.
     if (window.DeckEdit && DeckEdit.cardButtons) html += DeckEdit.cardButtons(row);
     html += cardImageHtml(d, deckEntry(d, row));
-    // Directly under the card: what it goes infinite with, then where to go next. The
-    // rules text the card already PRINTS moved below them (2026-10-10): with the card
-    // first and large, the combo lines had slid under the fold, a screen and a half down.
-    html += comboLinesHtml(d, row);
+    // Directly under the card: WHERE TO GO NEXT, then what it goes infinite with
+    // (2026-10-28, the pilot's review). The relations and Keep are the mode's verbs, and
+    // Windfall's twelve combo rows had pushed them a full panel-scroll down — the answer
+    // to "what do I do with this card" sat under a list of B1 lines in colours nobody at
+    // this table plays. The combos follow, three rows and a "show all" (comboLinesHtml).
+    // The rules text the card already PRINTS stays below them (2026-10-10).
     html += buildRelationHtml(row);
     // Not inside buildRelationHtml: that returns nothing until the neighbour table is in,
     // and the comparison must not wait on it. It still renders directly under the
     // relation buttons, so obsolescence has ONE place in the panel.
     html += buildObsolescenceHtml(d.n);
     html += cardActionsHtml(row);
+    html += comboLinesHtml(d, row);
     html += cardTextHtml(d);
     // The legality line leads with the DECK's format in Build — every panel, not only
     // Build's own (which passes it): the atlas detail panel passed nothing, so a Modern
@@ -1487,71 +1491,199 @@
     });
     if (deckDoc) { forRows(deckDoc.included, 'deck'); forRows(deckDoc.near, 'near'); }
 
-    let indexHtml;
+    let index = null;
+    let slot = '';
     if (comboIndexDoc) {
-      indexHtml = comboIndexLinesHtml(name, comboIndexDoc, seen);
+      index = comboIndexLines(name, comboIndexDoc, seen);
     } else {
       // Not loaded yet (or never will be): leave a slot and ask for the index.
-      indexHtml = '<span class="combo-index-slot" data-card="' + escHtml(name) + '"></span>';
+      slot = '<span class="combo-index-slot" data-card="' + escHtml(name) + '"></span>';
       comboIndex().then(function (doc) {
         if (!doc) return;
-        document.querySelectorAll('.combo-index-slot[data-card]').forEach(function (slot) {
-          const n = slot.getAttribute('data-card');
-          const block = slot.closest('.combo-block');
+        document.querySelectorAll('.combo-index-slot[data-card]').forEach(function (el) {
+          const n = el.getAttribute('data-card');
+          const block = el.closest('.combo-block');
           const ids = new Set(block ? Array.from(block.querySelectorAll('.combo-line[data-id]'))
-            .map(el => el.getAttribute('data-id')) : []);
-          const html = comboIndexLinesHtml(n, doc, ids);
-          if (block) { slot.outerHTML = html; return; }
+            .map(x => x.getAttribute('data-id')) : []);
+          const got = comboIndexLines(n, doc, ids);
+          if (block) {
+            el.outerHTML = got ? got.html : '';
+            const foot = block.querySelector('.combo-foot');
+            const total = block.querySelectorAll('.combo-lines > .combo-line').length;
+            if (foot) foot.outerHTML = comboFootHtml(got, total);
+            return;
+          }
           // A placeholder with no block: the deck had nothing, so the block is born here —
           // or not at all, when the index has nothing either.
-          slot.outerHTML = html ? comboBlockHtml(n, '', html) : '';
+          el.outerHTML = got && got.shown ? comboBlockHtml(n, got.html, got, got.shown) : '';
         });
       });
     }
-    if (!deckLines.length && !indexHtml) return '';
-    if (!deckLines.length && comboIndexDoc == null) return indexHtml;   // the bare slot
-    return comboBlockHtml(name, deckLines.join(''), indexHtml);
+    if (!deckLines.length && !(index && index.shown) && !slot) return '';
+    if (!deckLines.length && slot) return slot;   // the bare slot
+    const total = deckLines.length + (index ? index.shown : 0);
+    return comboBlockHtml(name, deckLines.join('') + (index ? index.html : '') + slot, index, total);
   }
 
-  function comboBlockHtml(name, deckHtml, indexHtml) {
+  /* THREE ROWS, THEN "SHOW ALL" (2026-10-28). Windfall drew twelve rows above the
+   * relation buttons; the block now shows three and says how many more there are. The
+   * hiding is CSS (`.combo-block:not(.is-open) .combo-lines > .combo-line:nth-child(n+4)`),
+   * so the lines that land later from the lazy index fold under the same rule with no
+   * second pass. `.combo-lines` holds ONLY lines (and, briefly, the empty slot). */
+  const COMBO_ROWS = 3;
+
+  function comboBlockHtml(name, linesHtml, index, total) {
     const inBuild = currentMode === 'build' && window.Build && Build.deckSlug;
     return '<div class="combo-block" data-card="' + escHtml(name) + '">' +
       '<div class="detail-section-title combo-title" title="' + (inBuild
         ? 'Partners you run are lit'
         : 'open a deck in Build to see which partners you run') + '">Combos' +
       (inBuild ? '' : ' <span class="combo-hint">open a deck in Build to see which partners you run</span>') +
-      '</div>' + deckHtml + indexHtml + '</div>';
+      '</div><div class="combo-lines">' + linesHtml + '</div>' +
+      comboFootHtml(index, total) + '</div>';
   }
 
-  /* The index's lines for one card, skipping ids the deck already drew, plus the count
-   * line. '' when the index does not know the card. */
-  function comboIndexLinesHtml(name, doc, skipIds) {
+  /* The count line and the toggle. `total` is the lines in the block, deck and index. */
+  function comboFootHtml(index, total) {
+    let html = '<div class="combo-foot">';
+    if (index && index.entry) {
+      const n = index.entry.n || 0;
+      html += '<span class="combo-count">in ' + n.toLocaleString() + ' known combo' +
+        (n === 1 ? '' : 's') + ' (' + (index.entry.inf || 0).toLocaleString() + ' infinite)</span>';
+    }
+    if (total > COMBO_ROWS) {
+      html += '<button type="button" class="combo-more" onclick="MM.toggleCombos(this)" ' +
+        'data-total="' + total + '" aria-expanded="false">show all ' + total + '</button>';
+    }
+    return html + '</div>';
+  }
+
+  function toggleCombos(btn) {
+    const block = btn && btn.closest('.combo-block');
+    if (!block) return;
+    const open = block.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'show ' + COMBO_ROWS : 'show all ' + btn.getAttribute('data-total');
+  }
+
+  /* ── Your decks first: the index's lines, tiered (2026-10-28) ──────────────
+   *
+   * The index orders a card's lines its own way (Spellbook popularity), so Windfall
+   * led with Doomsday + Laboratory Maniac and Nekusar + Phyresis — lines in colours
+   * none of the pilot's decks play. Three tiers, and WITHIN a tier the index's order
+   * stands, so nothing is re-ranked by a judgment this page has no basis for:
+   *
+   *   1. a line touching one of the pilot's live decks (sleeved, bench, brewing —
+   *      `isWorkableDeck`): one of the OTHER cards is in that deck's list. When every
+   *      card but one is there, the line says "one card short in <deck>: X"; when all
+   *      of them are, "in <deck>". The card itself is not what makes a line touch a
+   *      deck — Windfall in a wheels deck would otherwise put every one of its lines
+   *      in tier 1 and the tiering would sort nothing.
+   *   2. a line inside the colour identity of a live COMMANDER deck — the union of
+   *      every card's identity in the line against the union of every card's in the
+   *      deck's list (a legal Commander list's union IS its identity).
+   *   3. the rest.
+   *
+   * Membership is the manifest's `cards` (`setDecks`, the "In these decks" pill's
+   * source); identity is the projection record's `ci`. A card whose identity is not
+   * known yet (the projection has not landed) cannot place its line in tier 2 —
+   * it falls to 3 rather than being guessed in. No new artifact. */
+  let liveDeckCache = null;
+  function liveDecks() {
+    if (liveDeckCache && liveDeckCache.doc === decksDoc && liveDeckCache.withCi) return liveDeckCache.list;
+    const workable = window.isWorkableDeck || function (e) { return !!e.stage; };
+    const order = { sleeved: 0, bench: 1, dev: 2 };
+    const rung = window.deckRung || function (e) { return e.stage; };
+    let withCi = allData.length > 0;
+    const list = decksDoc
+      .filter(e => workable(e) && Array.isArray(e.cards) && e.cards.length)
+      .sort((a, b) => (order[rung(a)] ?? 9) - (order[rung(b)] ?? 9))
+      .map(function (e) {
+        const cards = new Set(e.cards);
+        let ci = null;
+        if ((e.format || 'commander') === 'commander' && allData.length) {
+          ci = new Set();
+          e.cards.forEach(function (n) {
+            const c = cardIdentity(n);
+            if (c) c.forEach(x => ci.add(x));
+          });
+        }
+        const label = window.DeckFacts ? DeckFacts.displayName(e).text : (e.deck_name || e.slug);
+        return { slug: e.slug, label: label, cards: cards, ci: ci };
+      });
+    liveDeckCache = { doc: decksDoc, withCi: withCi, list: list };
+    return list;
+  }
+
+  /* A card's colour identity as a Set, or null when the record that carries it has
+   * not landed (the slim `viz_index` record has no `ci`). Colourless is an empty Set. */
+  function cardIdentity(name) {
+    if (!allData.length || !window.Discovery || !Discovery.rowByName) return null;
+    const row = Discovery.rowByName(name);
+    const d = typeof row === 'number' && row >= 0 ? allData[row] : null;
+    if (!d) return null;
+    return new Set(String(d.ci || '').split(',').map(c => c.trim()).filter(Boolean));
+  }
+
+  function comboTier(name, cards, decks) {
+    const partners = cards.filter(n => n !== name);
+    let best = null;
+    for (const dk of decks) {
+      if (!partners.some(n => dk.cards.has(n))) continue;
+      const missing = cards.filter(n => !dk.cards.has(n));
+      const cand = { tier: 1, deck: dk.label, missing: missing };
+      if (!best || missing.length < best.missing.length) best = cand;
+    }
+    if (best) return best;
+    let ci = null;
+    for (const n of cards) {
+      const c = cardIdentity(n);
+      if (!c) return { tier: 3 };
+      ci = ci || new Set();
+      c.forEach(x => ci.add(x));
+    }
+    if (ci && decks.some(dk => dk.ci && Array.from(ci).every(x => dk.ci.has(x)))) return { tier: 2 };
+    return { tier: 3 };
+  }
+
+  /* The index's lines for one card, skipping ids the deck already drew, tiered.
+   * `{html, shown, entry}`, or null when the index does not know the card. */
+  function comboIndexLines(name, doc, skipIds) {
     const entry = doc && doc.by_card && doc.by_card[name];
-    if (!entry) return '';
-    let html = '';
-    let shown = 0;
-    (entry.top || []).forEach(function (i) {
+    if (!entry) return null;
+    const decks = liveDecks();
+    const rows = [];
+    (entry.top || []).forEach(function (i, pos) {
       const c = doc.combos[i];
       if (!c || skipIds.has(c[0])) return;
-      shown += 1;
-      html += comboLineHtml(name, { id: c[0], cards: c[1], infinite: !!c[2], bracket: c[3],
-                                    banned: c[3] == null, kind: 'index' });
+      const t = comboTier(name, c[1] || [], decks);
+      rows.push({ pos: pos, tier: t.tier, html: comboLineHtml(name, {
+        id: c[0], cards: c[1], infinite: !!c[2], bracket: c[3], banned: c[3] == null,
+        kind: 'index', tier: t.tier, deck: t.deck, missing: t.missing }) });
     });
-    const total = entry.n || 0;
-    html += '<div class="combo-count">in ' + total.toLocaleString() + ' known combo' +
-      (total === 1 ? '' : 's') + ' (' + (entry.inf || 0).toLocaleString() + ' infinite) — ' +
-      (shown + skipIds.size) + ' shown</div>';
-    return html;
+    rows.sort((a, b) => a.tier - b.tier || a.pos - b.pos);
+    return { html: rows.map(r => r.html).join(''), shown: rows.length, entry: entry };
   }
 
   function comboLineHtml(name, c) {
     const has = (window.Build && Build.hasCard) ? n => Build.hasCard(n) : () => false;
     const partners = (c.cards || []).filter(n => n !== name);
-    let html = '<div class="combo-line is-' + c.kind + '" data-id="' + escHtml(String(c.id)) + '">';
+    let html = '<div class="combo-line is-' + c.kind + (c.tier ? ' tier-' + c.tier : '') +
+      '" data-id="' + escHtml(String(c.id)) + '"' + (c.tier ? ' data-tier="' + c.tier + '"' : '') + '>';
     if (c.kind === 'deck') html += '<span class="combo-tag">in this deck</span>';
     if (c.kind === 'near') {
       html += '<span class="combo-tag combo-near">one card short: ' +
         escHtml(c.missing.join(', ') || '?') + '</span>';
+    }
+    // An index line touching one of the pilot's decks says which, and how close.
+    if (c.kind === 'index' && c.tier === 1 && c.deck) {
+      const miss = c.missing || [];
+      html += miss.length === 0
+        ? '<span class="combo-tag">in ' + escHtml(c.deck) + '</span>'
+        : miss.length === 1
+          ? '<span class="combo-tag combo-near">one card short in ' + escHtml(c.deck) + ': ' +
+              escHtml(miss[0]) + '</span>'
+          : '<span class="combo-tag combo-touch">touches ' + escHtml(c.deck) + '</span>';
     }
     html += partners.map(n => '<span class="combo-partner' + (has(n) ? ' is-in-deck' : '') +
       '" title="' + escHtml(n) + '">' + escHtml(n) + '</span>').join('');
@@ -1858,7 +1990,8 @@
     if (!hits.length) return '';
     return '<span class="deck-pills" title="in these decks">In: ' + hits.map(e =>
       '<a class="deck-pill" href="deck.html?deck=' + encodeURIComponent(e.slug) + '" title="'
-      + escHtml(rungs[rung(e)] || rung(e) || '') + '">' + escHtml(e.deck_name || e.slug) + '</a>').join(' ') + '</span>';
+      + escHtml(rungs[rung(e)] || rung(e) || '') + '">' + escHtml(window.DeckFacts
+        ? DeckFacts.displayName(e).text : (e.deck_name || e.slug)) + '</a>').join(' ') + '</span>';
   }
 
   function updateViewerPanel() {
@@ -2393,11 +2526,24 @@
     if (typeof row !== 'number' || row < 0) return '';
     if (!window.Discovery || !Discovery.isReady()) return '';
     const c = Discovery.counts(row);
+    // AN EMPTY RELATION IS NOT AN ANSWER (2026-10-28). "Synergy 0" on Windfall — a wheel,
+    // in a wheels deck's colours — read as "this card has no synergy", when it means the
+    // rule list has no rule for it (no SYNERGY_RULES tag matches the card; docs/viz.md).
+    // DISABLED, NOT HIDDEN: a missing button reads as a panel that failed to draw, and the
+    // three-button row is how the pilot learned where each relation lives. The count gives
+    // way to "none" and the title says what the absence means.
+    const EMPTY = {
+      similar: 'No similar cards in the neighbour table for this card.',
+      synergy: 'No rule-based synergy partners for this card — none of the synergy rules '
+             + 'matches its mechanical tags. That is a gap in the rules, not proof the card '
+             + 'has no synergy.',
+      obsolete: 'Nothing in the obsolescence index outclasses this card.',
+    };
     const btn = (rel, label, n, title) =>
-      '<button class="lens-btn discover-rel' + (n ? '' : ' is-empty') + '"'
+      '<button class="lens-btn discover-rel' + (n ? '' : ' is-empty') + '" data-rel="' + rel + '"'
       + (n ? ' onclick="MM.relate(' + row + ',\'' + rel + '\')"' : ' disabled')
-      + (title ? ' title="' + title + '"' : '')
-      + '>' + label + ' <span class="discover-count">' + n + '</span></button>';
+      + ((n ? title : EMPTY[rel]) ? ' title="' + (n ? title : EMPTY[rel]) + '"' : '')
+      + '>' + label + ' <span class="discover-count">' + (n ? n : 'none') + '</span></button>';
     // The synergy caveat rides on its button: as a paragraph under the row it cost a
     // line on every card, for a sentence that is about one of the three buttons.
     return '<div class="discover-relations">'
@@ -3990,7 +4136,7 @@
     // the lazy combo index — a promise, resolved once, null on failure.
     cardFlags,
     gcPillHtml,
-    deckPillHtml, setDecks,
+    deckPillHtml, setDecks, toggleCombos,
     comboIndex,
     showCardPopup,
     hideCardPopup,

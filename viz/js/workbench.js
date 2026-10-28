@@ -60,10 +60,7 @@
    * means nothing to a reader; `v1.0.2` is what the pilot ships and asks for.
    * Falls back to the ordinal when a list carries no release tag — a real state,
    * not an error, so it degrades to the number rather than to nothing. */
-  function versionName(v) {
-    if (!v) return '';
-    return v.release ? v.release : (v.version ? 'V' + v.version : '');
-  }
+  function versionName(v) { return window.DeckFacts.versionName(v); }
 
   /* THE STAMP OVER THE ART, and the pin is the load-bearing half of it.
    *
@@ -165,21 +162,20 @@
              + ' measured under an older simulator; `manamap pilot regen --slug ' + e.slug
              + '` re-reads them when you want') + '">older model</span>';
     }
-    var r = (info && info.record) || {};
-    if (r.games) {
+    // The W–L reading is `DeckFacts.record` (api.js), shared with Build's header.
+    var r = window.DeckFacts.record(info);
+    if (r) {
       // THE RECORD LEADS WITH W–L (2026-10-20): "2–1" is what the pilot reads;
       // the game count and the recency follow. A draw column only when one
       // exists, so the common case stays two numbers.
-      var rec = [r.win || 0, r.loss || 0].concat(r.draw ? [r.draw] : []).join('–');
       // RECENCY RIDES WITH THE RECORD. `ago()` was written for the fleet table
       // and the card threw it away, so a deck played last night and a deck
       // played in July read identically — on the page whose only question is
       // which deck to spend tonight on. A record with no date is a fact about
       // the past presented as a fact about now.
-      var when = ago(r.last_played);
-      out += '<span class="wb-chip wb-ok wb-record" title="' + esc(r.games + ' game' + (r.games === 1 ? '' : 's')
-             + (r.last_played ? ', last ' + r.last_played : '')) + '"><b>' + esc(rec) + '</b> · '
-           + esc(r.games + ' game' + (r.games === 1 ? '' : 's') + (when ? ' · ' + when : '')) + '</span>';
+      var when = ago(r.last);
+      out += '<span class="wb-chip wb-ok wb-record" title="' + esc(r.title) + '"><b>' + esc(r.text) + '</b> · '
+           + esc(r.games + (when ? ' · ' + when : '')) + '</span>';
     }
     /* HOW CLOSE IS THIS DECK TO THE NEXT RUNG. `promote --show` has computed
      * this all along and no screen rendered it: zur has been two requirements
@@ -335,30 +331,21 @@
    * title. Amber when the floor has outgrown the target or DeckCheck's reading
    * describes an older list — both are facts the pilot acts on. */
   function bracketChip(info) {
-    var b = (info && info.bracket) || {}, dc = info && info.deckcheck;
-    var n = b.target || b.floor;
-    if (!n && !dc) return '';
-    var title = [];
-    if (b.floor) title.push('floor ' + b.floor + (b.floor_name ? ' (' + b.floor_name + ')' : ''));
-    if (b.target) title.push('target ' + b.target);
-    if (dc && dc.bracket) title.push('DeckCheck B' + dc.bracket + (dc.score != null ? ' ' + dc.score + '/' + dc.max_score : ''));
-    var warn = b.within_target === false || (dc && dc.stale_list);
-    return '<span class="wb-chip wb-bracket' + (warn ? ' wb-warn' : '') + '" title="' + esc(title.join(' · ')) + '">'
-         + esc('B' + (n || dc.bracket)) + '</span>';
+    // The reading is `DeckFacts.bracket` (api.js), shared with Build's deck header.
+    var f = window.DeckFacts.bracket(info);
+    if (!f) return '';
+    return '<span class="wb-chip wb-bracket' + (f.warn ? ' wb-warn' : '') + '" title="' + esc(f.title) + '">'
+         + esc(f.text) + '</span>';
   }
 
   /* THE ★ GRADE, from `rating.json` where one is on file (`has.rating`). The
    * grade is ★ coaching over ◆ inputs; the rank in the title names its n. */
   function ratingChip(rt) {
-    if (!rt) return '';
-    var grade = rt.grade_display || rt.grade;
-    if (!grade) return '';
-    var rk = rt.rank || {};
-    var title = 'rating ' + (rt.score != null ? num(rt.score) : '') + (rk.position ? ' · ' + rk.position + ' of ' + rk.of
-              + ' in ' + ((rt.bracket && rt.bracket.key) ? 'B' + rt.bracket.key : 'its bracket') : '')
-              + ' · ★ coaching over ◆ inputs';
-    return '<span class="wb-chip wb-star" title="' + esc(title) + '">★ ' + esc(grade) + '</span>';
+    var f = window.DeckFacts.grade(rt);
+    if (!f) return '';
+    return '<span class="wb-chip wb-star" title="' + esc(f.title) + '">' + esc(f.text) + '</span>';
   }
+
 
   /* The branches that are WORK: open or proposed. Merged, rejected and
    * withdrawn ones live in the deck page's decided fold. Newest first, as

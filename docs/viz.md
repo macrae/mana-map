@@ -1596,11 +1596,11 @@ full width (Scryfall `large`, 672x936; the Explore panel went 350 → 440px and 
 | deck context | **Build only, with a deck loaded** (`Build.cardContext(row)`; below) |
 | the image | full panel width, `large`, the box reserved at 488:680. **Click (or Enter) magnifies**: `MM.magnifyCard` opens a `role=dialog` overlay on a dark scrim with the face the panel is showing at `png`, centred, max-height 92vh; Escape (caught in the capture phase so it does not also peel the selection), a click anywhere, or the close button dismiss it, focus returns to the image, and the fade-in only runs under `prefers-reduced-motion: no-preference`. A png that refuses falls back to what the panel drew. A multi-face card gets **⇄ flip** to Scryfall's `face=back`. The projection has no `layout`, so a back image is learned by asking: a split / adventure / flip card prints both halves on ONE face, Scryfall refuses `face=back`, and `MM.cardImageError` restores the front and retires the button ("both faces are on this image"). A full `A // B` name that 404s retries the front face once — at `large` too. **In Build with the card in the open deck**, the image is the sleeved printing's (`Build.deckCard(name)` → `Shell.cardImageUrl(name, 'large', entry)`, which rewrites the entry's `cards.scryfall.io/normal/…` to `/large/…`, `/png/….png` for the magnifier) and the flip is that printing's own back face; everywhere else it is by name. `preloadNeighbourImages` warms the SAME version, or the cache misses. The map's hover popup stays `normal` |
 | price (inside the deck context) | one `.deck-ctx-row.deck-ctx-price` directly after the roles and colour-identity rows, from `cardContext(row).price` — `{nm_cents, foil_cents, source, as_of}` off the deck's `prices.json`, loaded by `loadDeck` through the same `optional()` helper as `combos.json`; `$4.20 (foil $9.00) Scryfall, 2026-10-09`. Unpriced card or no file: no row |
-| type + oracle | a multi-face card (`A // B`, 891 in the corpus) gets one block per face, labelled **Front — name** / **Back — name**, each with its own type and text. 17 cards have a face with no rules text, so their oracle cannot be assigned to a face — the headings stay and the text prints once, unassigned, with a note |
-| combos | `comboLinesHtml`: what the card goes infinite with, deck first. (a) the open deck's `combos.json` entries naming it — "in this deck" (`included`) or "one card short: X" (`near`), synchronous; then (b) `combo_index.json`'s `by_card[name].top`, deduped by id, appended when the lazy index resolves (`MM.comboIndex()`, fetched once; the slot is found by `data-card` in the live DOM, so a panel that moved on gets nothing). Each line: partner chips (`.is-in-deck` via `Build.hasCard`; outside Build the title says to open a deck), `∞`, a bracket pill or `banned`, "assumes its own commander", a Spellbook link, and a count line from `by_card[name].n/inf`. No lines, no header |
-| relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title` |
+| relations | Similar / Synergy / Outclassed by, counts stated before the click; the synergy caveat is the button's `title`. **Directly under the card since 2026-10-28** (the pilot's review: on Windfall they sat under twelve combo rows, a full panel-scroll down). **An empty relation is not an answer**: it stays in the row, disabled, its count reading *none* rather than `0`, and its `title` says what the absence means — for synergy, "no rule-based synergy partners for this card", which is a gap in `SYNERGY_RULES` and not proof of no synergy. Disabled rather than hidden, because a missing button reads as a panel that failed to draw and the three-button row is where the pilot looks for each relation |
 | the comparison | `buildObsolescenceHtml`: a CLOSED `<details>` directly under the relation row — strength, gains, costs and "played less" for each card that outclasses this one. It was a separate "Compare with" box above the oracle reading the same index as the button; obsolescence now has one place |
 | Keep, Set as commander | one row (`.detail-actions`) |
+| combos | `comboLinesHtml`: what the card goes infinite with, deck first. (a) the open deck's `combos.json` entries naming it — "in this deck" (`included`) or "one card short: X" (`near`), synchronous; then (b) `combo_index.json`'s `by_card[name].top`, deduped by id, appended when the lazy index resolves (`MM.comboIndex()`, fetched once; the slot is found by `data-card` in the live DOM, so a panel that moved on gets nothing). Each line: partner chips (`.is-in-deck` via `Build.hasCard`; outside Build the title says to open a deck), `∞`, a bracket pill or `banned`, "assumes its own commander", a Spellbook link, and a count line from `by_card[name].n/inf`. No lines, no header. **Under Keep since 2026-10-28, three rows then "show all N"** (`.combo-foot`'s `MM.toggleCombos`; the fold is CSS — `.combo-block:not(.is-open) .combo-lines > .combo-line:nth-child(n+4)` — so lines the lazy index appends later fold under the same rule with no second pass). **The index's lines are tiered, your decks first**: (1) a line one of whose OTHER cards is in a live deck's list (`isWorkableDeck`, the manifest's `cards` that `setDecks` already hands over for the "In these decks" pill), tagged "in <deck>", "one card short in <deck>: X" or "touches <deck>"; (2) a line inside the colour identity of a live Commander deck (the union of the line's `ci` against the union of the deck list's — a legal list's union IS its identity); (3) the rest. Within a tier the index's own order stands. The card itself does not make a line touch a deck, or Windfall in a wheels deck would put every one of its lines in tier 1. A card whose `ci` has not landed (no projection yet) cannot place a line in tier 2 and it falls to 3 rather than being guessed in. With ur-dragon live, tier 2 is every colour-legal line — that is the rule, not a defect. The deck's own `combos.json` lines still lead in Build |
+| type + oracle | a multi-face card (`A // B`, 891 in the corpus) gets one block per face, labelled **Front — name** / **Back — name**, each with its own type and text. 17 cards have a face with no rules text, so their oracle cannot be assigned to a face — the headings stay and the text prints once, unassigned, with a note |
 | facts | `cardFactsHtml(d, {format})`: `EDHREC #n · <Format>: legal / BANNED / not legal · Identity …`; every other format inside a closed `<details>` in the same three states. The format is the deck's (`Build.deckFormat()`) in EVERY panel while Build has a deck open — the atlas detail panel passed none until C7, so a Modern card read "Commander: legal" there — and commander elsewhere |
 
 **Dropped**: the CMC row (the cost is in the header) and the Keywords section (it repeats the
@@ -1864,6 +1864,18 @@ lands). Mana value and oracle text come from `MM.cardRecord`, never from the fil
 `has.considering` now gates the Short List fetch, so a deck without one costs no 404;
 `MANIFEST_VERSION` went to 4 for it (7 since the manifest's `format` key, C7).
 
+**It opens only when there is something to review (2026-10-28).** On sharknado the pilot
+found the grid open across ~40% of the map reading "25 / 25 reviewed · Nothing here — every
+card has a verdict". `gridOpen` starts `null` for each deck and each set chosen, and
+`gridIsOpen()` resolves it ONCE: open when the set has an unreviewed card, otherwise
+collapsed to **`#cgChip`** — one line where the drawer was, "`<set title>` · 25 / 25 ✓"
+(or "… · N unreviewed" after a close), a sibling of the map like the grid, and a click opens
+the grid. Resolved once, then the pilot's: a verdict that empties the queue never snaps the
+grid shut under the cursor, and closing it (×) leaves the chip rather than nothing. The chip
+is deliberately NOT `#candGrid`, so everything that asks "is the grid open" — `gridLive()`
+for the keys, `Build.gridCard`, `afterMark` — reads the collapsed grid as closed: no key
+reaches a write while only the chip is showing. The rules below are the grid's, unchanged.
+
 **The grid is a write loop, and four rules keep it safe (audit 2026-10-08).** The audit found
 Cmd+W posting `verdict: watching` before the tab closed, a double `w` posting twice, j/k
 rebuilding the grid through `innerHTML` (every image blanked and re-queued, open Oracle text
@@ -1901,6 +1913,41 @@ on the map.
 `watch/mark` (a catch-all refuses any other `/api/` call), so the tracked `watchlist.json` is
 never written. The card panel's **Watch / Pass** (its Build deck block — see "The card panel:
 text first") is a third caller of the same `markCard`, not a second write path.
+
+## Build mode: the deck header (2026-10-28)
+
+The header read "Shabraz, the Skyshark · 100/100 cards" and nothing else. It is now the
+deck's **name**, the count with **every** commander (partners are two: "Shabraz, the Skyshark
++ Brallin, Skyshark Rider"), and one line of badges: **version** (the paper lock's release —
+`v2.2.0` — amber with "N behind" when the sleeves drifted, else the latest release), **rung**
+(Sleeved / On the bench / Brewing), **bracket** (target, else floor; floor and DeckCheck in
+the title), the **★ grade**, **W–L** from the captain's log with the game count, and the
+**DTI** with its `as_of`. Every reading is `window.DeckFacts` in `api.js`, which the
+workbench's bracket, ★ and record chips now read too, so the card on the landing page and
+this header cannot disagree. `loadDeck` fetches `info.json` (every deck has one) and
+`rating.json` only where `has.rating` says one is on file, beside the deck's other artifacts.
+
+**Absent means absent.** A figure the files do not carry is not drawn — no game logged is no
+record badge, never "0–0"; no rating is no ★. The one exception is the DTI on a Commander
+deck: its absence is said as a muted, dashed **"no DTI"**, never as a number or a dash
+standing in for one (a 60-card deck is not a DeckCheck deck and says nothing).
+
+**The name.** `build_index` falls back to the commander when no authored `deck_name` exists
+(`issue.json`; sharknado's `info.status.todo` lists it), which is how the header said the
+commander twice. Where `deck_name` equals `commander`, `DeckFacts.displayName` prints the
+slug as a name — "sharknado" → **Sharknado** — and the title says it is the slug, not an
+authored name. The "In these decks" pill and Build's status line use the same name. The
+real fix is the authored `issue.json`; this only stops the header from repeating itself.
+
+**The status line.** Build sets "<deck> — 100 cards lit, 12 verified line(s)" and then seeds
+the graph; `Force.enter` wrote "Loading embeddings…" over it while it awaited the matrix and
+never took it down — the matrix landed in seconds and the graph drew, but the label stayed
+for as long as the deck was open. The load was never stuck. `Force.enter` now restores what
+was there, and only if nothing else wrote the status meanwhile.
+
+`tests/test_viz_atlas_review.py` drives all of this — the panel order, the three-row fold,
+the tiers, the empty relation, the chip, the badges against the files, their absence, and the
+status — each proven by putting the old behaviour back.
 
 ## Build mode: editing a deck in place (`deck-edit.js`, 2026-10-10)
 
