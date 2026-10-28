@@ -109,9 +109,9 @@ Goldfish, 10,000 seeded games, measured on v1.2.0 (V4), 2026-10-27. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
+- **5 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
 - **How games ended:** raced 1, stalled 1, won 1
-- **Not yet read:** 003
+- **Not yet read:** 003, 004, 005
 <!-- /ctx:gen record -->
 
 The first two games were lost on v1.0.0, with the same cause underneath: I kept a hand with no small goblins. Game 003 is the first on v1.2.0 and a win.
@@ -119,10 +119,8 @@ The first two games were lost on v1.0.0, with the same cause underneath: I kept 
 - **Game 001 (Alex's, three players):** a clean mulligan hand of land, one-mana spells, Crimson Wisps and Storm-Kiln Artist, and zero goblins. The copy half of the engine had nothing to multiply. I called it a bad keep, not a deck problem.
 - **Game 002 (Oliver's, five players):** kept lands and Krenko, Mob Boss, with expensive spells and no small goblins. The table was three red decks, and Oliver won on turn five off Krenko tokens and pings. That table is a reason the new answers and protection matter.
 
-- **Game 003 (Ryan's house, three players, v1.2.0, a win):** Ryan was on T'Vol with Gravecrawler and Phyrexian Altar, a Zombie Druid engine that was about to swing lethal at both of us. Alex fought Zada and I cast [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), moving the fight onto a 1/1 goblin, so I lost a token and not the commander. Then I destroyed the Altar with the new artifact removal, to break Ryan's engine. Ryan called it kingmaking. My answer was that leaving the Altar meant the game was over anyway. Alex then killed Ryan and hit me from 40 to 23. On my turn I cantripped into [Empty the Warrens](https://manamap.seanmacrae.com/viz/index.html?cards=Empty+the+Warrens) for about ten goblins with [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors) already out, so every opponent took ten. The new land helped reach 15 mana, I drew about 15 cards, and the spells gave a 20-plus goblin board haste, trample and +3/+2. I swung at Alex for lethal and nobody had a response. It felt like threading a needle: lots of options, one right sequence, a big payoff when it lands. Deflecting Swat is a "great card, glad it's in the deck". The new any-colour land is a good fit for a mono-red deck.
-  - Which cards were they? The log never names the artifact removal or the land. By oracle text only, and as an inference, the removal is [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade) or [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), since both can destroy a target artifact. The land is most likely [Three Tree City](https://manamap.seanmacrae.com/viz/index.html?cards=Three+Tree+City): it pays two, taps, and adds a chosen colour in an amount equal to the creatures of the chosen type you control. [Plaza of Heroes](https://manamap.seanmacrae.com/viz/index.html?cards=Plaza+of+Heroes) does not pay two to tap for mana, so it fits less well.
+- **Game 003 (Ryan's house, three players, v1.2.0, a win):** Ryan was on T'Vol with Gravecrawler and Phyrexian Altar, a Zombie Druid engine that was about to swing lethal at both of us. Alex fought Zada and I cast [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), moving the fight onto a 1/1 goblin, so I lost a token and not the commander. Then I destroyed the Altar with [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction) to break Ryan's engine. Ryan called it kingmaking. My answer was that leaving the Altar meant the game was over anyway. Alex then killed Ryan and hit me from 40 to 23. The turn before the last, [Empty the Warrens](https://manamap.seanmacrae.com/viz/index.html?cards=Empty+the+Warrens) with [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors) already out gave about ten goblins and pinged the table, but it did not close the game. On the final turn I had 15 goblins, tapped for 15 mana with [Three Tree City](https://manamap.seanmacrae.com/viz/index.html?cards=Three+Tree+City), and brought in more goblins. Then [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking) gave everything +3/+2 and trample, and [Accelerate](https://manamap.seanmacrae.com/viz/index.html?cards=Accelerate), [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps) and [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite) gave them haste and drew about 20 cards between them. The pilot called the card draw immaculate. I swung at Alex with over twenty trampling goblins and nobody had a response. It felt like threading a needle: lots of options, one right sequence, a big payoff when it lands. Deflecting Swat is a "great card, glad it's in the deck". Three Tree City is a good fit for a mono-red goblin deck.
   - The pilot's lesson: sequencing and the right answer at the right time won it. No follow-up; the bracket 3 tune is working. One game is a first reading, not a trend.
-  - The log's own order check: the timing of the Impact Tremors damage against Ryan's death is loose. Sean said it came before the final turn.
 
 The rule I keep from games 001 and 002: goblin presence gates the mulligan, not cantrip density.
 
@@ -131,7 +129,7 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 <!-- ctx:gen history -->
 - **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
   - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
-  - played 1: 1W 0L
+  - played 3: 1W 0L
 - **v1.1.1 · V3** (2026-10-20) — in: Goblin Matron; out: Battle Hymn. _Goblin Matron back for Battle Hymn, 2026-10-20_
   - merge `matron-v1`: objective kill_by_10 read **met** — the pilot's own card, sleeved again 2026-10-20 as the thirteen v1.1.0 adds went in (Fable and Purphoros on proxies)
 - **v1.1.0 · V2** (2026-10-18) — in: Beetleback Chief, Electroduplicate, Fable of the Mirror-Breaker, Goblin Instigator, Impolite Entrance, Infuriate, Legion Warboss, Might of the Meek …; out: Boggart Shenanigans, Chaos Warp, Gempalm Incinerator, Glimpse the Impossible, Goblin Matron, Goblin Negotiation, Haze of Rage, Howlsquad Heavy …. _meaner-v1 merged 2026-10-18: meaner and faster, the Haze of Rage loop out; thirteen swaps, no lands_
@@ -155,7 +153,6 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
 <!-- /ctx:gen queue -->
 
-- Which two v1.2.0 cards did the work in game 003? Sean's words name neither the artifact removal nor the land. Ask him, then record the names; until then the guess is Abrade or Untimely Malfunction for the removal and Three Tree City for the land.
 - Is Three Tree City the reason the big turn reached its mana? The claim: swapping it for a Mountain lowers how often the storm turn comes by turn eight. A paired try on the same seeds would show it, and the Numbers section already holds the median kill turn to compare against.
 - Does the free [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) earn its slot more than a plain protection card? The claim: with a commander out, it saves Zada from targeted removal and fights at no mana cost, so the turn is not spent on defence. The goldfish has no removal, so this needs more games, not a run.
 - Does the Threat Index actually move? The Summary block shows a reading from the older list. A fresh DeckCheck scan after the pilot's own look would say whether interaction and protection did what they were bought for.
@@ -174,3 +171,5 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - 2026-10-20 · Keeper · deck change: matron-v1 merged as v1.1.1 (Goblin Matron for Battle Hymn); the thirteen v1.1.0 adds all sleeved
 - 2026-10-27 · Keeper · deck change: storm-tune-v1 merged as v1.2.0 (copy spells, interaction, protection, untapped lands)
 - 2026-10-27 · Keeper · pilot log 003: first v1.2.0 game, a win — Swat saved Zada, Altar killed, Empty+Tremors closed
+- 2026-10-27 · Keeper · pilot log 004: correction to 003 — Untimely Malfunction, Three Tree City, the kill was the Ransacking turn
+- 2026-10-27 · Keeper · pilot log 005: Accelerate, Crimson Wisps, Expedite on the final turn of 003
