@@ -15,15 +15,11 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 17,
+    "complete": 18,
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [
-      "log",
-      "log_annotations.json",
-      "rating.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "issue"
@@ -14268,18 +14264,16 @@
     "draw": 0,
     "last_played": "2026-10-27",
     "first_played": "2026-10-06",
-    "undebriefed": [
-      "003",
-      "004"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "won",
       "002": "combo",
+      "003": "raced",
       "004": "raced"
     },
     "cause_counts": {
       "combo": 1,
-      "raced": 1,
+      "raced": 2,
       "won": 1
     },
     "feel": {},
@@ -14773,6 +14767,16 @@
       "from": "log:002",
       "question": "Is the deck's wheel count right for a list where wheels are finishers rather than card flow?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:003",
+      "question": "Did answers-v1 (v2.1.0) give the current list enough removal to answer the 'no removal' complaint of games 001 and 003, counting creature and enchantment answers in the 99?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:004",
+      "question": "Is the wheel count on v2.2.0 right, and how much do the deck's discard-a-card costs ('Discard-a-card effects also slow the deck') drag on hand size and tempo?",
+      "settled_by": "diagnose"
     }
   ],
   "simulation": {
@@ -14988,11 +14992,9 @@
     ]
   },
   "next": [
-    "3 artifact(s) fail their own gate (log, log_annotations.json, rating.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "DeckCheck copy is V10, sleeved is V12 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-26) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "2 logged game(s) not yet debriefed (003, 004) — `/debrief sharknado`",
-    "open questions routed: diagnose ×2, goldfish ×3, research-strategy ×2, resolve-stack ×7",
+    "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
   ],
