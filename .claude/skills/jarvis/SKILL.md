@@ -42,6 +42,8 @@ v2`, 2026-10-07.)
    untouched for 14 days), pass it on **as one line at the end of your answer**, at
    the first request about that deck in a conversation, not on every turn. Never
    expand it into a report unless he asks.
+   A question about a matchup or an opponent ("how do I beat Alex's warp deck?")
+   also reads that seat's `data/opponents/<seat>/NOTES.md` (see "The opponents' seats" in Story 2).
 4. **Answer from the context when it covers the question.** Say which section it
    came from ("from the Numbers section, measured on v1.2.0").
 5. **Otherwise delegate.** Say in one line which agent and why. Run independent
@@ -110,6 +112,17 @@ answer, not a gap to fill.
 
    A refused install prints why. Send the errors back to the Keeper once. Never
    hand-patch the draft.
+2a. **The opponents' seats.** When the log names an opponent's deck (a player and
+   their commander or archetype: "Alex's warp deck", "Ryan on T'Vol"), find its seat
+   under `data/opponents/` (`source.json`'s `commander` and `note` say whose it is;
+   `fetch-opponent --list`). Read its `NOTES.md` before answering, and pass the
+   relevant lines to the Keeper and the Pod. What the game taught about THAT DECK
+   (how it wins, what answers it, when) goes in the seat's `NOTES.md`, not the
+   pilot's Deck Context; the deck's context keeps only which of its own cards answer
+   it, plus a pointer. A seat with no `NOTES.md` gets one only on Sean's go-ahead
+   (offer it); a deck with no seat is named in your reply, never fetched unasked.
+   `NOTES.md` is hand-written: "How it wins", "How to answer it", "Games" (each
+   game cited as `<deck> <log id>`), rules claims with the CR number.
 3. **Tell him in two or three lines what changed**, then **offer** to incubate the
    open questions the Keeper returned ("Want me to look into these three?"). On a
    yes, run `/incubate` with the log ids and those questions. Never start it
