@@ -45,10 +45,7 @@ def _rendered(slug=SLUG):
 #: Strict: current procedures fail until the entry is removed.
 PROCEDURES_AWAITING_RERUN = {
     # edgar-vampires came off 2026-10-21: its procedures were rewritten for v2.1.0.
-    "goblin-storm": ("written for v1.0.0; v1.1.0/v1.1.1 cut Battle Hymn, Boggart "
-                     "Shenanigans, Gempalm Incinerator, Glimpse the Impossible, Goblin "
-                     "Negotiation, Haze of Rage, Howlsquad Heavy — re-run "
-                     "/poh-procedures goblin-storm, never hand-edit"),
+    # goblin-storm came off 2026-10-27: its procedures were rewritten for v1.2.0.
 }
 
 def test_the_stage_vocabulary_is_the_engines_and_not_a_second_one():

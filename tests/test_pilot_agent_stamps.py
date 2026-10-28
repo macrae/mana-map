@@ -51,8 +51,8 @@ STAMP_CHECKED = {name: sha for _k, name, sha, _r, _w, _h in STAGES if sha}
 #: an entry whose model is current again fails until it is removed.
 ENGINE_AWAITING_RERUN = {
     # edgar-vampires left this list 2026-10-20: /analyze-engine re-ran for v2.1.0.
-    "goblin-storm": "v1.1.0 (meaner-v1) and v1.1.1 (matron-v1): re-run /analyze-engine goblin-storm",
-    "sharknado": "v1.2.0 (momentum-v1) and v1.3.0 (torbran-v1): re-run /analyze-engine sharknado",
+    # goblin-storm left this list 2026-10-27: /analyze-engine re-ran for v1.2.0.
+    # sharknado left this list 2026-10-27: /analyze-engine re-ran for v2.2.0.
 }
 
 def test_every_stamp_checked_artifact_has_a_way_to_be_stamped():
