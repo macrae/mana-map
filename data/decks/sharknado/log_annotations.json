@@ -2,7 +2,7 @@
   "slug": "sharknado",
   "entries": {
     "001": {
-      "summary": "The first game ever played with the deck (no result logged; a pod of three at home). A Sol Ring opening made it fast, and Brallin and Shabraz got big off discards and draws. A late wheel (the note's 'Edge of Eons', which on this list reads as Echo of Eons) 'almost killed Stuart through commander damage'. After that it went grindy: Brallin was removed twice and picked up commander tax, the deck drew no ramp past the opening, and it had no creature or enchantment removal against Steven's counters. Played on v7 (decklist_sha256 ce0ceaa6…, 2026-10-06), not the current v2.0.0. Several cards the note names have since left the 99: Mana Geyser (gone by v1.3.0), and Swiftfoot Boots, Echo of Eons and the 'wheel on a stick' (Magus of the Wheel on that list) were cut at v2.0.0. Read those as notes about the list that was played, not errors.",
+      "summary": "The first game ever played with the deck (no result logged; a pod of three at home). A Sol Ring opening made it fast, and Brallin and Shabraz got big off discards and draws. A late wheel (the note's 'Edge of Eons', which on this list reads as Echo of Eons) 'almost killed Stuart through commander damage'. After that it went grindy: Brallin was removed twice and picked up commander tax, the deck drew no ramp past the opening, and it had no creature or enchantment removal against Steven's counters. Played on v7 (decklist_sha256 ce0ceaa6…, 2026-10-06), not the current v2.2.0. Several cards the note names have since left the 99: Mana Geyser (gone by v1.3.0), Swiftfoot Boots, Echo of Eons and the 'wheel on a stick' (Magus of the Wheel on that list) were cut at v2.0.0, and the note's 'Jessica's Will' was cut at v2.1.0 (answers-v1). Read those as notes about the list that was played, not errors.",
       "opponents": [
         {
           "seat": "Stuart",
@@ -39,14 +39,9 @@
           "why": "a wheel 'made Shabraz really big' and 'almost killed Stuart through commander damage'"
         },
         {
-          "card": "Jeska's Will",
-          "read": "missed",
-          "why": "'I never pulled Jessica's Will or Mana Geyser' while the deck felt 'a little light on the ramp'"
-        },
-        {
           "card": "Mana Geyser",
           "read": "missed",
-          "why": "never drawn, named alongside Jeska's Will as the ramp the pilot was counting on. It has since left the 99"
+          "why": "'I never pulled Jessica's Will or Mana Geyser' while the deck felt 'a little light on the ramp'. It has since left the 99"
         }
       ],
       "decisions": [
@@ -169,6 +164,107 @@
           "question": "Is the deck's wheel count right for a list where wheels are finishers rather than card flow?",
           "settled_by": "diagnose",
           "why_it_matters": "the pilot proposed recalibrating the deck around that role, and game 001 also asked for wheels held until both commanders are out"
+        }
+      ]
+    },
+    "003": {
+      "summary": "A short note after a game on v2.0.0 (decklist_sha256 c9186bd9…, the modal-voltron list of 2026-10-24), not the current v2.2.0; no result or table recorded, and the pilot logged the cause as raced (2026-10-28). The deck felt slow: 'no removal, slow to get cards out, got mana starved one round'. The pilot left open whether that was 'a sequencing thing' or 'the cards I saw'. answers-v1 (v2.1.0, 2026-10-26) added interaction after this game, so the 'no removal' read is about the list that was played.",
+      "opponents": [],
+      "cards": [],
+      "decisions": [],
+      "takeaways": [
+        "The deck read as slow ('it's slooooowwwww'), and the pilot could not tell sequencing from the draw: 'maybe it's a sequencing thing, maybe it's the cards I saw'.",
+        "'No removal' again, the same complaint as game 001, on the list before answers-v1 added interaction.",
+        "'Got mana starved one round', a second note after 001 ('a little light on the ramp') that the mana ran short."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "protection"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Did answers-v1 (v2.1.0) give the current list enough removal to answer the 'no removal' complaint of games 001 and 003, counting creature and enchantment answers in the 99?",
+          "settled_by": "diagnose",
+          "why_it_matters": "two of the four logged games name missing removal, both on lists from before that merge; game 004, on the current list, does not"
+        }
+      ]
+    },
+    "004": {
+      "summary": "A loss at Ryan's house on the current list (v2.2.0, decklist_sha256 8df06ee1…), cause raced. The draw/discard engine 'ran well and the sequencing felt right', but Sean kept a land-heavy opener with one wheel and few payoffs, held both commanders back to dodge a wipe while waiting for a wheel that never came, and Alex's warp deck, 'a faster class of deck', outpaced him. Since settled by the queue: Q012 found the land-and-ramp keep was good, Q013 led to the rule to cast the first commander on curve, and Q014 named Alex's turn-ending artifact and the answers to it (see data/opponents/tannuk-warp/NOTES.md).",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": "warp ramp",
+          "commander": null,
+          "evidence": "Ramps to about 15 mana and warps out a large number of creatures."
+        },
+        {
+          "seat": "Ryan",
+          "archetype": "Slivers",
+          "commander": null,
+          "evidence": "Ryan on Slivers (nothing much popped off for Ryan)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Ledger Shredder",
+          "read": "as-expected",
+          "why": "'the Ledger card (connive: draw, discard)' was one of the draw/discard pieces that 'moved Sean through the deck all game'"
+        },
+        {
+          "card": "Mary Read and Anne Bonny",
+          "read": "as-expected",
+          "why": "'Bonnie/Annie (haste, draw a card, discard a card)', the other piece of the loops that worked"
+        },
+        {
+          "card": "Smothering Tithe",
+          "read": "under",
+          "why": "'produced steady Treasure. That was the ramp the hand needed, and it may have been under-used'"
+        },
+        {
+          "card": "Gemstone Caverns",
+          "read": "under",
+          "why": "in the opener, but Sean 'went first, so he never got the luck-counter version for any-color mana'"
+        },
+        {
+          "card": "Deflecting Swat",
+          "read": "as-expected",
+          "why": "'Deflecting Swat was in hand this game too'; the note records it without saying it was cast"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "keep or mulligan an opener of 'a lot of lands, ramp, one artifact dork and one wheel, but few creatures or payoffs'; Q012 has since read it as a good keep",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "hold both commanders 'to avoid a wipe and wait for a wheel', or cast the first on curve; Q013 has since settled on casting on curve",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "how hard to lean on Smothering Tithe's Treasure, which 'may have been under-used'",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "The draw/discard loops (Ledger Shredder, Mary Read and Anne Bonny) carried the game: Sean 'cast a lot of spells' and the table saw 'things were happening'.",
+        "Holding the commanders for a wheel cost tempo when no wheel came. The play rule adopted since (Q012, Q013): keep the land-and-ramp hand and cast the first commander on curve.",
+        "Alex's warp turns outpace Sharknado: 'without Alex's warp turns, Sharknado does much more'. The answers and their timing were worked out since (Q014).",
+        "Discard-a-card effects slow the deck, and the pilot wants the wheel count looked at."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "fuel"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Is the wheel count on v2.2.0 right, and how much do the deck's discard-a-card costs ('Discard-a-card effects also slow the deck') drag on hand size and tempo?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the note's lesson asks to 'Look at wheel count and the discard-a-card drag'; Q012 to Q014 did not cover it, and game 002 called the wheels too many on an earlier list"
         }
       ]
     }

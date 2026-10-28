@@ -52,8 +52,8 @@
      "S": 0
     },
     "R1": {
-     "A": 5,
-     "B": 2,
+     "A": 6,
+     "B": 1,
      "C": 0,
      "F": 0,
      "S": 0
@@ -67,22 +67,22 @@
     },
     "S1": {
      "A": 4,
-     "B": 2,
-     "C": 1,
+     "B": 3,
+     "C": 0,
      "F": 0,
      "S": 0
     },
     "S2": {
-     "A": 6,
-     "B": 1,
+     "A": 7,
+     "B": 0,
      "C": 0,
      "F": 0,
      "S": 0
     },
     "S3": {
      "A": 3,
-     "B": 4,
-     "C": 0,
+     "B": 3,
+     "C": 1,
      "F": 0,
      "S": 0
     }
@@ -155,11 +155,11 @@
      "P1": "A",
      "P2": "S",
      "P3": "B",
-     "R1": "B",
+     "R1": "A",
      "R2": "S",
-     "S1": "C",
-     "S2": "B",
-     "S3": "B"
+     "S1": "B",
+     "S2": "A",
+     "S3": "C"
     },
     "heliod": {
      "A1": "A",
@@ -266,6 +266,13 @@
      "current_list": false,
      "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
      "score": 35
+    },
+    {
+     "as_of": "2026-10-27",
+     "bracket": 3,
+     "current_list": true,
+     "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+     "score": 39
     }
    ],
    "heliod": [
@@ -349,12 +356,12 @@
    },
    {
     "dti_bracket": 3,
-    "dti_score": 35,
+    "dti_score": 39,
     "floor": 1,
-    "reading_as_of": "2026-10-20",
+    "reading_as_of": "2026-10-27",
     "relation": "dti_higher",
     "slug": "goblin-storm",
-    "stale_list": true,
+    "stale_list": false,
     "target": 3
    },
    {
@@ -1892,7 +1899,7 @@
     }
    },
    "dti": {
-    "as_of": "2026-10-20",
+    "as_of": "2026-10-27",
     "benchmarks": {
      "A1": "B",
      "A2": "B",
@@ -1901,18 +1908,18 @@
      "P1": "A",
      "P2": "S",
      "P3": "B",
-     "R1": "B",
+     "R1": "A",
      "R2": "S",
-     "S1": "C",
-     "S2": "B",
-     "S3": "B"
+     "S1": "B",
+     "S2": "A",
+     "S3": "C"
     },
     "bracket": 3,
     "floor_vs_dti": {
      "floor": 1,
      "floor_decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
      "floor_name": "Exhibition",
-     "reading_as_of": "2026-10-20",
+     "reading_as_of": "2026-10-27",
      "relation": "dti_higher",
      "their_bracket": 3
     },
@@ -1926,27 +1933,27 @@
       "P1": "A",
       "P2": "S",
       "P3": "B",
-      "R1": "B",
+      "R1": "A",
       "R2": "S",
-      "S1": "C",
-      "S2": "B",
-      "S3": "B"
+      "S1": "B",
+      "S2": "A",
+      "S3": "C"
      },
      "median_bracket": 3,
-     "median_score": 35,
+     "median_score": 39,
      "n": 1
     },
-    "readings_n": 3,
+    "readings_n": 4,
     "score": {
-     "as_of": "2026-10-20",
+     "as_of": "2026-10-27",
      "basis": "of 96; an LLM's read, dated",
-     "decklist_sha256": "08491e6d87c068c32b0c503cbcaa814e2ed3c6911505180e3856685a11e68830",
-     "n": 3,
+     "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+     "n": 4,
      "source": "deckcheck.json#readings[-1].score",
-     "stale": true,
-     "value": 35
+     "stale": false,
+     "value": 39
     },
-    "stale_list": true
+    "stale_list": false
    },
    "format": null,
    "lifecycle": null,
@@ -1986,7 +1993,7 @@
     },
     "group": {
      "answer_cards": "below the bracket median",
-     "dti_score": "below the bracket median",
+     "dti_score": "above the bracket median",
      "kill_by_turn_6": "below the bracket median",
      "kill_by_turn_8": "below the bracket median",
      "mana_at_turn_five": "below the bracket median",
@@ -2022,18 +2029,29 @@
       "release": "v1.0.0",
       "version": 1,
       "win": 0
+     },
+     {
+      "date": "2026-10-27",
+      "draw": 0,
+      "feel": {},
+      "games": 1,
+      "loss": 0,
+      "release": "v1.2.0",
+      "version": 4,
+      "win": 1
      }
     ],
     "cause_counts": {
      "raced": 1,
-     "stalled": 1
+     "stalled": 1,
+     "won": 1
     },
     "draw": 0,
-    "games": 2,
-    "last_played": "2026-09-01",
+    "games": 3,
+    "last_played": "2026-10-27",
     "loss": 2,
     "unmatched_games": [],
-    "win": 0
+    "win": 1
    },
    "slug": "goblin-storm",
    "stage": "sleeved",
@@ -3658,7 +3676,7 @@
     },
     "group": {
      "answer_cards": "above the bracket median",
-     "dti_score": "above the bracket median",
+     "dti_score": "below the bracket median",
      "kill_by_turn_6": "above the bracket median",
      "kill_by_turn_8": "above the bracket median",
      "mana_at_turn_five": "above the bracket median",
@@ -3714,16 +3732,27 @@
       "release": "v2.0.0",
       "version": 9,
       "win": 0
+     },
+     {
+      "date": "2026-10-27",
+      "draw": 0,
+      "feel": {},
+      "games": 1,
+      "loss": 1,
+      "release": "v2.2.0",
+      "version": 12,
+      "win": 0
      }
     ],
     "cause_counts": {
      "combo": 1,
+     "raced": 2,
      "won": 1
     },
     "draw": 0,
-    "games": 3,
-    "last_played": "2026-10-25",
-    "loss": 1,
+    "games": 4,
+    "last_played": "2026-10-27",
+    "loss": 2,
     "unmatched_games": [],
     "win": 0
    },
@@ -4718,7 +4747,7 @@
   },
   "dti_score": {
    "max": 46,
-   "median": 37,
+   "median": 39,
    "min": 30,
    "n": 7
   },
@@ -4830,7 +4859,7 @@
     },
     "dti_score": {
      "max": 40,
-     "median": 36.0,
+     "median": 38.0,
      "min": 35,
      "n": 4
     },
