@@ -1353,11 +1353,96 @@
           "is_new": false
         }
       ],
-      "has_cards": false,
+      "has_cards": true,
       "objective": {
         "axis": "kill_by_8",
         "op": ">=",
         "value": 0.47
+      },
+      "summary": {
+        "title": "Sharpshooter, Shaman and Mirrorwing: punishment and a second Zada",
+        "blurb": "Swaps Faithless Looting, Goblin Instigator and Searslicer Goblin for Goblin Sharpshooter, Immolation Shaman and Mirrorwing Dragon: a repeatable pinger that untaps on every death, a tax on opponents' activated abilities, and a second body that copies Zada's targeted spells.",
+        "by": "jarvis",
+        "at": "2026-10-28"
+      },
+      "verdict": {
+        "state": "do not merge",
+        "rose": 1,
+        "fell": 6,
+        "no_call": 8
+      },
+      "objective_grade": {
+        "state": "not met",
+        "reading": 0.4465,
+        "shortfall": 0.0235
+      },
+      "measured": true,
+      "blind_spots": [
+        "Goblin Sharpshooter"
+      ],
+      "impact": {
+        "state": "do not merge",
+        "rose": [
+          "missed drop by T5"
+        ],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10",
+          "extra cards by T8",
+          "hand can act by T3"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -18.0245,
+            "ci95_diff": [
+              -27.0335,
+              -9.0155
+            ],
+            "mde": 12.8773,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.009,
+            "ci95_diff": [
+              -0.0133,
+              -0.0047
+            ],
+            "mde": 0.0061,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.3083,
+            "ci95_diff": [
+              -0.3439,
+              -0.2727
+            ],
+            "mde": 0.0508,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -0.5851,
+            "ci95_diff": [
+              -0.6432,
+              -0.527
+            ],
+            "mde": 0.083,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
       }
     },
     {
