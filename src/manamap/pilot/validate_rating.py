@@ -57,6 +57,7 @@ INSTRUMENT_WORDS = {"speed": ("speed",), "mana": ("mana",), "resilience": ("resi
                     "table_record": ("table record", "table_record", "record"),
                     "pilot_feel": ("pilot feel", "pilot_feel", "survey", "feel")}
 _NUM = re.compile(r"-?\d+(?:\.\d+)?")
+_THE_99 = re.compile(r"\b(?:the|this|our|your|a) 99\b", re.I)
 
 
 def _strip_code(doc):
@@ -233,7 +234,9 @@ def validate(slug, doc, *, fresh=None, strategy_sections=None):
                                    "context": doc["context"], "grade_probabilities": doc.get("grade_probabilities"),
                                    "sensitivity": doc.get("sensitivity"), "concordance": doc.get("concordance")})
             allowed |= {0.0, 1.0, float(sub or 0)}
-            for m in _NUM.finditer(arg):
+            # "The 99" is the decklist, not a figure (sharknado 2026-10-28 read it
+            # as one, and passed only while some skeleton figure was 99).
+            for m in _NUM.finditer(_THE_99.sub("the list", arg)):
                 v = round(float(m.group(0)), 4)
                 if v not in allowed and round(v, 1) not in allowed and round(v) not in allowed:
                     errors.append(f"argument quotes {m.group(0)}, which appears in no cited material and no skeleton figure")
