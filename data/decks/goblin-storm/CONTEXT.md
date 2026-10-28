@@ -1,12 +1,12 @@
 # Zada, Hedron Grinder — Deck Context
 
-<!-- ctx:written-for version=v1.2.0 sha=aa02ea1989f3 at=2026-10-27 -->
+<!-- ctx:written-for version=VNone sha=67b7bdf82855 at=2026-10-28 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** v1.2.0 (V4) · **status:** sleeved since 2026-10-27
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-27, 4 readings)
-- **Combos:** 2 known lines (0 infinite, 0 two-card) · 34 one card short
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-27
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-27, 4 readings) — older list
+- **Combos:** 2 known lines (0 infinite, 0 two-card) · 41 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->
 
@@ -75,10 +75,13 @@ Copies a single-target spell for every other creature.
 [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual), [Battle Hymn](https://manamap.seanmacrae.com/viz/index.html?cards=Battle+Hymn), [Skirk Prospector](https://manamap.seanmacrae.com/viz/index.html?cards=Skirk+Prospector), [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking), [Sudden Breakthrough](https://manamap.seanmacrae.com/viz/index.html?cards=Sudden+Breakthrough), [Ancestors' Aid](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestors%27+Aid). The last three leave treasures.
 
 ### draw cards and dig
-[Faithless Looting](https://manamap.seanmacrae.com/viz/index.html?cards=Faithless+Looting), [Skullclamp](https://manamap.seanmacrae.com/viz/index.html?cards=Skullclamp), [Idol of Oblivion](https://manamap.seanmacrae.com/viz/index.html?cards=Idol+of+Oblivion), [Fists of Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Fists+of+Flame), [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps), [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite), [Accelerate](https://manamap.seanmacrae.com/viz/index.html?cards=Accelerate), [Ancestral Anger](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestral+Anger), [Renegade Tactics](https://manamap.seanmacrae.com/viz/index.html?cards=Renegade+Tactics), [Impolite Entrance](https://manamap.seanmacrae.com/viz/index.html?cards=Impolite+Entrance), [Might of the Meek](https://manamap.seanmacrae.com/viz/index.html?cards=Might+of+the+Meek), [Daring Discovery](https://manamap.seanmacrae.com/viz/index.html?cards=Daring+Discovery), [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker)
+[Skullclamp](https://manamap.seanmacrae.com/viz/index.html?cards=Skullclamp), [Idol of Oblivion](https://manamap.seanmacrae.com/viz/index.html?cards=Idol+of+Oblivion), [Fists of Flame](https://manamap.seanmacrae.com/viz/index.html?cards=Fists+of+Flame), [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps), [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite), [Accelerate](https://manamap.seanmacrae.com/viz/index.html?cards=Accelerate), [Ancestral Anger](https://manamap.seanmacrae.com/viz/index.html?cards=Ancestral+Anger), [Renegade Tactics](https://manamap.seanmacrae.com/viz/index.html?cards=Renegade+Tactics), [Impolite Entrance](https://manamap.seanmacrae.com/viz/index.html?cards=Impolite+Entrance), [Might of the Meek](https://manamap.seanmacrae.com/viz/index.html?cards=Might+of+the+Meek), [Daring Discovery](https://manamap.seanmacrae.com/viz/index.html?cards=Daring+Discovery), [Fable of the Mirror-Breaker](https://manamap.seanmacrae.com/viz/index.html?cards=Fable+of+the+Mirror-Breaker)
 
 ### replay spells
-[Past in Flames](https://manamap.seanmacrae.com/viz/index.html?cards=Past+in+Flames), [Wild Ride](https://manamap.seanmacrae.com/viz/index.html?cards=Wild+Ride), [Faithless Looting](https://manamap.seanmacrae.com/viz/index.html?cards=Faithless+Looting)
+[Past in Flames](https://manamap.seanmacrae.com/viz/index.html?cards=Past+in+Flames), [Wild Ride](https://manamap.seanmacrae.com/viz/index.html?cards=Wild+Ride)
+
+### ping on every death
+[Goblin Sharpshooter](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Sharpshooter) is a one-toughness goblin that taps for a ping and untaps whenever any creature dies. In a deck full of sacrifice and sweepers it keeps pinging, and it is a small body for Zada to copy onto. The goldfish cannot see the ping.
 
 ### answer threats
 [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade), [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), [Harsh Mentor](https://manamap.seanmacrae.com/viz/index.html?cards=Harsh+Mentor), [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act)
@@ -93,13 +96,13 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on v1.2.0 (V4), 2026-10-27. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 4.114**
+- mean turn the commander is first cast: **turn 4.088**
 - Zada online with a cantrip drawn: **67%**
-- Early token maker drawn: **69%**
+- Early token maker drawn: **68%**
 - Storm payoff plus ritual drawn: **7%**
 - share of opening sevens the model would keep: **79%**
 - Colour on curve (lands + rocks): R 98%
@@ -138,6 +141,8 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
   - played 2: 0W 2L
 <!-- /ctx:gen history -->
 
+**v1.2.1, 2026-10-28 (storm-tune-v2).** One swap, the pilot's call: Faithless Looting out, Goblin Sharpshooter in. The paired goldfish read had the board stronger by turn six, the kill by turn ten better, and fewer stalls and missed drops, with fewer extra cards by turn eight as the cost. The goldfish cannot see the ping, so that part rests on play.
+
 **v1.2.0, 2026-10-27 (storm-tune-v1).** Aimed at DeckCheck's Threat Index, read through Zada's text, with interaction and protection as the key axes. Printed proxies are in the sleeves.
 - Out: Beetleback Chief, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Redcap Gutter-Dweller, Ruby Medallion, Seething Song, Siege-Gang Lieutenant, Vandalblast, Witch's Mark; lands Forgotten Cave, Hidden Volcano, Smoldering Crater.
 - In: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher, Molten Duplication, Untimely Malfunction; lands Plaza of Heroes, Sokenzan, Crucible of Defiance, Three Tree City.
@@ -156,6 +161,7 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - Is Three Tree City the reason the big turn reached its mana? The claim: swapping it for a Mountain lowers how often the storm turn comes by turn eight. A paired try on the same seeds would show it, and the Numbers section already holds the median kill turn to compare against.
 - Does the free [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) earn its slot more than a plain protection card? The claim: with a commander out, it saves Zada from targeted removal and fights at no mana cost, so the turn is not spent on defence. The goldfish has no removal, so this needs more games, not a run.
 - Does the Threat Index actually move? The Summary block shows a reading from the older list. A fresh DeckCheck scan after the pilot's own look would say whether interaction and protection did what they were bought for.
+- Does Goblin Sharpshooter earn its slot through the ping? The claim: with sacrifice outlets and a sweeper in the list, it pings several times a turn and kills small creatures the goldfish cannot see. This needs games, not a run.
 - Do the treasure instants beat the plain pump spells as Zada targets? A paired try on the same seeds would say whether the treasure is worth the slot.
 - With fewer goblin makers in the list, does a goblin-light seven turn up more often? The keep share in the Numbers section counts a different rule than goblin presence, so the goldfish needs to be asked with goblin presence as the gate.
 - Does the goldfish see the new cards? It has no blockers and no removal, so Abrade, Untimely Malfunction, Harsh Mentor and the protection pieces will look like dead slots. Check model coverage before reading any null.
@@ -173,3 +179,4 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - 2026-10-27 · Keeper · pilot log 003: first v1.2.0 game, a win — Swat saved Zada, Altar killed, Empty+Tremors closed
 - 2026-10-27 · Keeper · pilot log 004: correction to 003 — Untimely Malfunction, Three Tree City, the kill was the Ransacking turn
 - 2026-10-27 · Keeper · pilot log 005: Accelerate, Crimson Wisps, Expedite on the final turn of 003
+- 2026-10-28 · Keeper · deck change: storm-tune-v2 merged as v1.2.1 (Faithless Looting -> Goblin Sharpshooter)

@@ -937,8 +937,8 @@
           "name": "storm-tune-v1",
           "state": "MERGED",
           "opened": "2026-10-27",
-          "add": 0,
-          "out": 0,
+          "add": 1,
+          "out": 1,
           "verdict": "do not merge",
           "objective_grade": "not met",
           "as_version": "v1.2.0",
@@ -946,21 +946,21 @@
         },
         {
           "name": "storm-tune-v2",
-          "state": "OPEN",
+          "state": "MERGED",
           "opened": "2026-10-27",
-          "add": 3,
-          "out": 3,
-          "verdict": null,
-          "objective_grade": null,
-          "as_version": null,
-          "measured": null
+          "add": 0,
+          "out": 0,
+          "verdict": "a trade",
+          "objective_grade": "met",
+          "as_version": "v1.2.1",
+          "measured": true
         },
         {
           "name": "matron-v1",
           "state": "MERGED",
           "opened": "2026-10-20",
-          "add": 13,
-          "out": 13,
+          "add": 14,
+          "out": 14,
           "verdict": "merge",
           "objective_grade": "met",
           "as_version": "v1.1.1",
@@ -970,8 +970,8 @@
           "name": "meaner-v1",
           "state": "MERGED",
           "opened": "2026-10-10",
-          "add": 13,
-          "out": 13,
+          "add": 14,
+          "out": 14,
           "verdict": "a trade",
           "objective_grade": "met",
           "as_version": "v1.1.0",
@@ -981,8 +981,8 @@
           "name": "copy-burst-v1",
           "state": "REJECTED",
           "opened": "2026-09-27",
-          "add": 25,
-          "out": 25,
+          "add": 26,
+          "out": 26,
           "verdict": "a trade",
           "objective_grade": "met",
           "as_version": null,
@@ -992,15 +992,15 @@
           "name": "zada-v1",
           "state": "REJECTED",
           "opened": "2026-09-25",
-          "add": 26,
-          "out": 26,
+          "add": 27,
+          "out": 27,
           "verdict": "do not merge",
           "objective_grade": "not met",
           "as_version": null,
           "measured": true
         }
       ],
-      "branches_open": 1,
+      "branches_open": 0,
       "cards": [
         "Abrade",
         "Accelerate",
@@ -1024,7 +1024,6 @@
         "Expedite",
         "Fable of the Mirror-Breaker",
         "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-        "Faithless Looting",
         "Fists of Flame",
         "Fountainport",
         "General Kreat, the Boltbringer",
@@ -1035,6 +1034,7 @@
         "Goblin Instigator",
         "Goblin Lackey",
         "Goblin Matron",
+        "Goblin Sharpshooter",
         "Goblin Warchief",
         "Grapeshot",
         "Great Train Heist",
@@ -1091,9 +1091,18 @@
         "built_at": "2026-10-27",
         "note": "printed proxies in the sleeves 2026-10-27; pulling the real cards from bulk",
         "locked": true,
-        "in_sync": true,
-        "versions_behind": 0,
-        "drift": null
+        "in_sync": false,
+        "versions_behind": null,
+        "drift": {
+          "pull": [
+            "Faithless Looting"
+          ],
+          "add": [
+            "Goblin Sharpshooter"
+          ],
+          "pull_copies": 1,
+          "add_copies": 1
+        }
       },
       "locked": true,
       "version": {

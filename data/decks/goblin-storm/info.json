@@ -12,11 +12,17 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 18,
+    "complete": 14,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "frame",
+      "tutors",
+      "prose"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -66,26 +72,35 @@
       },
       "pull_list": {
         "buy": [],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Faithless Looting",
+            "where": [
+              "sharknado"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [],
-        "blocking": 0,
+        "blocking": 1,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 1,
+      "out": 1,
       "counts": {
-        "in_deck": 79,
+        "in_deck": 78,
         "box": 0,
-        "elsewhere": 0,
+        "elsewhere": 1,
         "buy": 0,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Faithless Looting"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -237,10 +252,18 @@
         },
         {
           "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fists of Flame",
@@ -749,33 +772,50 @@
       "name": "storm-tune-v2",
       "opened": "2026-10-27",
       "why": "The pilot, 2026-10-27, from DeckCheck's second PowerTune read through Zada's text: Mirrorwing Dragon (Zada's copy ability on a second body — Independence), Immolation Shaman and Goblin Sharpshooter (opponent-only punishment and a Goblin pinger — Proactive Denial and Reactive Disruption) for Searslicer Goblin, Goblin Instigator and Faithless Looting. The objective row is a non-regression guard on the clock; the branch is judged on the whole profile.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-10-28 into the list after VNone",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-10-28",
+        "as_version": "v1.2.1",
+        "why": "One swap: Goblin Sharpshooter for Faithless Looting — repeatable pinger that untaps on every creature death; steadier curve and bigger early board for a little card flow. The pilot's card, sleeved 2026-10-28.",
+        "base_version": 4,
+        "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
+        "accepted_on": {
+          "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
+          "state": "a trade",
+          "objective": {
+            "axis": "kill_by_8",
+            "op": ">=",
+            "value": 0.47,
+            "why": "The pilot, 2026-10-27, from DeckCheck's second PowerTune read through Zada's text: Mirrorwing Dragon (Zada's copy ability on a second body — Independence), Immolation Shaman and Goblin Sharpshooter (opponent-only punishment and a Goblin pinger — Proactive Denial and Reactive Disruption) for Searslicer Goblin, Goblin Instigator and Faithless Looting. The objective row is a non-regression guard on the clock; the branch is judged on the whole profile."
+          },
+          "grade": "met",
+          "reading": 0.5017,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "f5b4b19d2254",
+            "seed": 20260826
+          }
+        }
+      },
       "pull_list": {
         "buy": [],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Goblin Sharpshooter",
-            "where": [
-              "Auntie Ool"
-            ]
-          }
-        ],
+        "box": [],
         "blocking": 0,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 1,
-      "out": 1,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 78,
-        "box": 1,
+        "in_deck": 79,
+        "box": 0,
         "elsewhere": 0,
         "buy": 0,
         "free": 0
@@ -1003,15 +1043,10 @@
         },
         {
           "name": "Goblin Sharpshooter",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Goblin Warchief",
@@ -1505,7 +1540,14 @@
             "name": "Vandalblast"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Faithless Looting",
+            "where": [
+              "sharknado"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
@@ -1516,22 +1558,23 @@
             ]
           }
         ],
-        "blocking": 12,
+        "blocking": 13,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 13,
-      "out": 13,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 66,
+        "in_deck": 65,
         "box": 1,
-        "elsewhere": 0,
+        "elsewhere": 1,
         "buy": 12,
         "free": 0
       },
       "unsourced": [
         "Beetleback Chief",
+        "Faithless Looting",
         "Forgotten Cave",
         "Frontline Heroism",
         "Goblin Dark-Dwellers",
@@ -1668,10 +1711,18 @@
         },
         {
           "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fists of Flame",
@@ -2270,7 +2321,14 @@
             "name": "Vandalblast"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Faithless Looting",
+            "where": [
+              "sharknado"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
@@ -2281,22 +2339,23 @@
             ]
           }
         ],
-        "blocking": 12,
+        "blocking": 13,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 13,
-      "out": 13,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 66,
+        "in_deck": 65,
         "box": 1,
-        "elsewhere": 0,
+        "elsewhere": 1,
         "buy": 12,
         "free": 0
       },
       "unsourced": [
         "Beetleback Chief",
+        "Faithless Looting",
         "Forgotten Cave",
         "Frontline Heroism",
         "Goblin Dark-Dwellers",
@@ -2440,10 +2499,18 @@
         },
         {
           "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Fists of Flame",
@@ -3051,6 +3118,12 @@
         ],
         "unsleeve": [
           {
+            "name": "Faithless Looting",
+            "where": [
+              "sharknado"
+            ]
+          },
+          {
             "name": "Mithril Coat",
             "where": [
               "ur-dragon"
@@ -3067,17 +3140,17 @@
             ]
           }
         ],
-        "blocking": 24,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 25,
-      "out": 25,
+      "add": 26,
+      "out": 26,
       "counts": {
-        "in_deck": 54,
+        "in_deck": 53,
         "box": 1,
-        "elsewhere": 1,
+        "elsewhere": 2,
         "buy": 23,
         "free": 0
       },
@@ -3085,6 +3158,7 @@
         "Assault Strobe",
         "Boggart Shenanigans",
         "Champion's Helm",
+        "Faithless Looting",
         "Firebrand Archer",
         "Forgotten Cave",
         "Frontline Heroism",
@@ -3231,10 +3305,18 @@
         },
         {
           "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Firebrand Archer",
@@ -3924,6 +4006,12 @@
             ]
           },
           {
+            "name": "Faithless Looting",
+            "where": [
+              "sharknado"
+            ]
+          },
+          {
             "name": "Mithril Coat",
             "where": [
               "ur-dragon"
@@ -3946,17 +4034,17 @@
             ]
           }
         ],
-        "blocking": 24,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 1,
       "size": 100,
-      "add": 26,
-      "out": 26,
+      "add": 27,
+      "out": 27,
       "counts": {
-        "in_deck": 53,
+        "in_deck": 52,
         "box": 2,
-        "elsewhere": 2,
+        "elsewhere": 3,
         "buy": 22,
         "free": 0
       },
@@ -3965,6 +4053,7 @@
         "Boggart Shenanigans",
         "Champion's Helm",
         "Chaos Warp",
+        "Faithless Looting",
         "Firebrand Archer",
         "Forgotten Cave",
         "Frontline Heroism",
@@ -4139,10 +4228,18 @@
         },
         {
           "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Firebrand Archer",
@@ -4767,159 +4864,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4225,
+          "rate": 0.4532,
           "ci95": [
-            0.4129,
-            0.4322
+            0.4435,
+            0.463
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0505,
+          "rate": 0.058,
           "ci95": [
-            0.0464,
-            0.055
+            0.0536,
+            0.0628
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0327,
+          "rate": 0.0303,
           "ci95": [
-            0.0294,
-            0.0364
+            0.0271,
+            0.0338
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.016,
+          "rate": 0.0155,
           "ci95": [
-            0.0137,
-            0.0187
+            0.0133,
+            0.0181
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0432,
+          "rate": 0.0405,
           "ci95": [
-            0.0394,
-            0.0474
+            0.0368,
+            0.0445
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0917,
+          "rate": 0.092,
           "ci95": [
-            0.0862,
-            0.0975
+            0.0865,
+            0.0978
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.1255,
+          "rate": 0.1228,
           "ci95": [
-            0.1192,
-            0.1321
+            0.1165,
+            0.1294
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.1282,
+          "rate": 0.1246,
           "ci95": [
-            0.1218,
-            0.1349
+            0.1183,
+            0.1312
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1119,
+          "rate": 0.1074,
           "ci95": [
-            0.1059,
-            0.1182
+            0.1015,
+            0.1136
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0992,
+          "rate": 0.0918,
           "ci95": [
-            0.0935,
-            0.1052
+            0.0863,
+            0.0976
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1664,
+        "rate": 0.1602,
         "ci95": [
-          0.1592,
-          0.1738
+          0.1531,
+          0.1675
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 6989,
-        "hand_empty": 3262,
-        "mana_short": 3727
+        "stall_turns": 6829,
+        "hand_empty": 3118,
+        "mana_short": 3711
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 4648,
-        "hand_empty": 2909,
-        "mana_short": 1739,
+        "stall_turns": 4466,
+        "hand_empty": 2778,
+        "mana_short": 1688,
         "stall_rate": {
-          "rate": 0.1162,
+          "rate": 0.1116,
           "ci95": [
-            0.1131,
-            0.1194
+            0.1086,
+            0.1148
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.016,
-          "diff": 0.1002,
+          "floor_rate": 0.0155,
+          "diff": 0.0961,
           "ci95": [
-            0.0961,
-            0.1041
+            0.0921,
+            0.1
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.1745,
+            "rate": 3.2741,
             "ci95": [
-              3.1158,
-              3.2332
+              3.2095,
+              3.3387
             ],
-            "sd": 2.9933,
+            "sd": 3.2966,
             "n": 10000
           },
           "8": {
-            "rate": 3.3968,
+            "rate": 3.5282,
             "ci95": [
-              3.3144,
-              3.4792
+              3.4376,
+              3.6188
             ],
-            "sd": 4.2061,
+            "sd": 4.6209,
             "n": 10000
           },
           "9": {
-            "rate": 3.9975,
+            "rate": 4.1179,
             "ci95": [
-              3.8826,
-              4.1124
+              3.9988,
+              4.237
             ],
-            "sd": 5.86,
+            "sd": 6.079,
             "n": 10000
           },
           "10": {
-            "rate": 4.9266,
+            "rate": 5.0898,
             "ci95": [
-              4.7772,
-              5.076
+              4.9351,
+              5.2445
             ],
-            "sd": 7.6207,
+            "sd": 7.892,
             "n": 10000
           }
         },
@@ -4929,39 +5026,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.3741,
+        "rate": 0.3628,
         "ci95": [
-          0.3647,
-          0.3836
+          0.3534,
+          0.3723
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.253,
+      "missed_land_drop_rate": 0.2526,
       "mulliganed": {
-        "rate": 0.2112,
+        "rate": 0.2135,
         "ci95": [
-          0.2033,
-          0.2193
+          0.2056,
+          0.2216
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
         "2": 2.144,
-        "3": 3.092,
-        "4": 3.949,
-        "5": 4.672,
-        "6": 5.365,
-        "7": 5.999,
-        "8": 6.621,
-        "9": 7.234,
-        "10": 7.863
+        "3": 3.093,
+        "4": 3.953,
+        "5": 4.689,
+        "6": 5.38,
+        "7": 6.01,
+        "8": 6.625,
+        "9": 7.241,
+        "10": 7.869
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 0.9761
+      "mana_stdev_turn_five": 0.9624
     },
-    "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f"
+    "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c"
   },
   "bracket": {
     "floor": 1,
@@ -4976,7 +5073,7 @@
     "as_of": "2026-10-27",
     "source_updated_at": "2026-10-28T00:06:14.181500+00:00",
     "url": "https://deckcheck.co/app/decklist/lHEauc76uA6G",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 4,
     "omni": {
       "benchmarks": {
@@ -5015,8 +5112,8 @@
       "highest_bracket": null,
       "included": 2,
       "infinite": 0,
-      "near": 34,
-      "near_total": 34,
+      "near": 41,
+      "near_total": 41,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -5124,7 +5221,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.114,
+          "value": 4.088,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -5140,7 +5237,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Early token maker drawn": {
-          "value": 69,
+          "value": 68,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Early token maker drawn' by turn six",
@@ -5226,16 +5323,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 7.87,
-            "2": 2.148,
-            "3": 3.095,
-            "4": 3.959,
-            "5": 4.69,
-            "6": 5.38,
-            "7": 6.011,
-            "8": 6.624,
-            "9": 7.236
+            "1": 0.999,
+            "10": 7.876,
+            "2": 2.15,
+            "3": 3.101,
+            "4": 3.966,
+            "5": 4.706,
+            "6": 5.401,
+            "7": 6.032,
+            "8": 6.643,
+            "9": 7.248
           },
           "tier": "data",
           "weight": "detail",
@@ -5245,16 +5342,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 0.584,
-            "2": 0.997,
-            "3": 0.923,
-            "4": 0.834,
-            "5": 0.719,
-            "6": 0.652,
-            "7": 0.598,
-            "8": 0.578,
-            "9": 0.569
+            "1": 0.999,
+            "10": 0.578,
+            "2": 0.996,
+            "3": 0.929,
+            "4": 0.838,
+            "5": 0.728,
+            "6": 0.657,
+            "7": 0.597,
+            "8": 0.576,
+            "9": 0.565
           },
           "tier": "data",
           "weight": "detail",
@@ -5264,16 +5361,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.149,
-            "10": 18.487,
-            "2": 0.592,
-            "3": 1.521,
-            "4": 1.947,
-            "5": 2.818,
-            "6": 4.781,
-            "7": 6.904,
-            "8": 8.66,
-            "9": 12.705
+            "1": 0.158,
+            "10": 18.262,
+            "2": 0.613,
+            "3": 1.551,
+            "4": 1.981,
+            "5": 2.879,
+            "6": 4.851,
+            "7": 6.985,
+            "8": 8.831,
+            "9": 12.811
           },
           "tier": "data",
           "weight": "detail",
@@ -5283,14 +5380,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 407,
-            "1": 1627,
-            "2": 2944,
-            "3": 2842,
-            "4": 1561,
-            "5": 528,
-            "6": 78,
-            "7": 13
+            "0": 375,
+            "1": 1625,
+            "2": 2926,
+            "3": 2923,
+            "4": 1559,
+            "5": 499,
+            "6": 85,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -5299,13 +5396,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1326,
-            "4": 4,
-            "5": 47,
-            "6": 437,
-            "7": 1737,
-            "8": 2629,
-            "9": 2330
+            "10": 1293,
+            "4": 3,
+            "5": 50,
+            "6": 463,
+            "7": 1807,
+            "8": 2784,
+            "9": 2218
           },
           "tier": "data",
           "weight": "detail",
@@ -5321,7 +5418,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.114,
+    "commander_mean_cast_turn": 4.088,
     "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
@@ -5330,7 +5427,7 @@
       },
       {
         "label": "Early token maker drawn",
-        "by_turn_6_pct": 69
+        "by_turn_6_pct": 68
       },
       {
         "label": "Storm payoff plus ritual drawn",
@@ -5338,20 +5435,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.26,
+      "mean_kill_turn": 8.222,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 5,
-      "kill_by_turn_8_pct": 48,
+      "kill_by_turn_8_pct": 51,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 15,
+      "no_kill_by_max_turn_pct": 14,
       "kill_turn_histogram": {
-        "10": 1326,
-        "4": 4,
-        "5": 47,
-        "6": 437,
-        "7": 1737,
-        "8": 2629,
-        "9": 2330
+        "10": 1293,
+        "4": 3,
+        "5": 50,
+        "6": 463,
+        "7": 1807,
+        "8": 2784,
+        "9": 2218
       }
     }
   },
@@ -5453,7 +5550,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
     "ran_on_version": 1,
-    "current_version": 4,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 100,
     "wins": 6,
@@ -5499,7 +5596,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 8,
+    "count": 10,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -5521,42 +5618,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "010",
+        "branch": "storm-tune-v2",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "004",
-        "at": "2026-10-19T16:22:43-07:00",
-        "kind": "reject",
-        "branch": "copy-burst-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "damage_10",
-          "grade": "met",
-          "forge_delta": 0.0375,
-          "forge_ci95": [
-            -0.0545,
-            0.1317
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
-      {
-        "id": "005",
-        "at": "2026-10-20T14:28:16-07:00",
-        "kind": "propose",
-        "branch": "matron-v1",
-        "as_version": "v1.1.1",
-        "predicted": {
-          "endpoint": "kill_by_10",
-          "grade": "met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "006",
         "at": "2026-10-20T14:30:22-07:00",
@@ -5601,10 +5672,44 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "009",
+        "at": "2026-10-28T09:45:52-07:00",
+        "kind": "propose",
+        "branch": "storm-tune-v2",
+        "as_version": "v1.2.1",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "010",
+        "at": "2026-10-28T09:46:55-07:00",
+        "kind": "merge",
+        "branch": "storm-tune-v2",
+        "as_version": "v1.2.1",
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (engine) — `deck-status goblin-storm` names them; fix before anything else reads them",
+    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-27) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief goblin-storm`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×1, resolve-stack ×4",
