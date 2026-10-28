@@ -1,7 +1,7 @@
 {
   "slug": "goblin-storm",
-  "current_version": 4,
-  "working_decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+  "current_version": 5,
+  "working_decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
   "versions": [
     {
       "version": 1,
@@ -248,6 +248,33 @@
       "tags": [
         "v1.2.0"
       ]
+    },
+    {
+      "version": 5,
+      "sha": "d8038e63b3a6",
+      "first_sha": "d8038e63b3a6",
+      "date": "2026-10-28",
+      "first_date": "2026-10-28",
+      "subject": "goblin-storm v1.2.1: merge storm-tune-v2 — Faithless Looting -> Goblin Sharpshooter (sleeved 2026-10-28). net-change: kill_by_8 0.4835 -> 0.5017 (guard 0.47 met); board @T6, kill by T10, stall, missed drop better; extra cards by T8 -0.34. engine.json names the cut card (revision running); tutor guide, prose and frame stale by fingerprint.",
+      "decklist_sha256": "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c",
+      "decklist_sha256s": [
+        "67b7bdf82855774b29ea1f62ba440e1522663d63296a62fe124293dd2565186c"
+      ],
+      "size": 100,
+      "in": [
+        "Goblin Sharpshooter"
+      ],
+      "out": [
+        "Faithless Looting"
+      ],
+      "games": 0,
+      "record": {
+        "win": 0,
+        "loss": 0,
+        "draw": 0
+      },
+      "log_ids": [],
+      "tags": []
     }
   ],
   "tags": {
@@ -286,11 +313,22 @@
     "built_at": "2026-10-27",
     "note": "printed proxies in the sleeves 2026-10-27; pulling the real cards from bulk",
     "locked": true,
-    "in_sync": true,
-    "versions_behind": 0,
-    "drift": null
+    "in_sync": false,
+    "versions_behind": 1,
+    "drift": {
+      "pull": [
+        "Faithless Looting"
+      ],
+      "add": [
+        "Goblin Sharpshooter"
+      ],
+      "pull_copies": 1,
+      "add_copies": 1
+    }
   },
   "baseline": null,
   "unmatched_log_entries": [],
-  "notes": []
+  "notes": [
+    "the sleeved list is V4; the repo is at V5 — pull 1, add 1 to bring the cardboard level"
+  ]
 }
