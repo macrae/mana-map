@@ -89,7 +89,7 @@ manamap pilot validate-deckcheck <slug>                  # deckcheck.json: the t
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
-manamap pilot page-state [--json]       # what Sean has open in the browser, focused tab first (Jarvis resolves "this card")
+manamap pilot page-state [--json] [--clear-ask]  # what Sean has open in the browser, focused tab first (Jarvis resolves "this card"); a pending page ASK first; --clear-ask marks it taken
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out
 manamap pilot archetypes "<commander>" [--theme SLUG]   # how it is actually built, and that style's role template
 manamap pilot brew <slug> --commander "<name>" [--theme SLUG] [--from FILE] [--build]  # the cards you kept -> a deck on the bench
@@ -1254,6 +1254,29 @@ anything, and "nothing open" is an answer. A tab older than 15 minutes prints ST
 snapshot is re-sent only when it changes). Fields outside `page_state.FIELDS` are dropped
 and lists are capped, so a page cannot grow it into a second store. Nothing measured or
 tracked reads it.
+
+**A pending ASK — "Send to Jarvis" (2026-10-28).** A page's **Ask Jarvis** button (the
+card panel, the swap in Build's Change tab, a branch row; `docs/viz.md`, "Send to Jarvis")
+copies `/jarvis <text>` to the clipboard and posts its snapshot with an `ask` —
+`{text, page, deck, cards, branch}`, stamped `at` by `record` — which prints first, on its
+own line:
+
+```bash
+manamap pilot page-state
+# ASK      "Should I swap Opt for Windfall in Sharknado?"
+#          from atlas · deck sharknado · cards Opt, Windfall  (40s ago) — answer it, then `manamap pilot page-state --clear-ask`
+# FOCUSED  atlas · mode build · deck sharknado · view graph · tab change  (12s ago)
+manamap pilot page-state --clear-ask   # cleared the pending ask: "…"  (or: no pending ask)
+```
+
+There is **one** pending ask: a newer one from any tab replaces it, and a later snapshot
+without one carries it over, so an ordinary repaint cannot erase an unanswered question.
+It keeps the record's staleness rules — STALE past 15 minutes, gone with its tab after six
+hours. `--clear-ask` WRITES (the gitignored file only), so `clear_ask` is in serve's
+`_CLI_WRITE_ATTRS`: the warm daemon refuses it and the CLI runs it locally, under a file
+lock (`fcntl`) that serve's writes take too, so a snapshot in flight cannot put a cleared
+question back. `--json` carries it as `ask`. The page never calls an LLM, and serve's
+`ask` endpoint stays callerless.
 
 ## `serve`'s local API — the origin gate and the new-deck guard (2026-10-09)
 

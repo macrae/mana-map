@@ -151,7 +151,18 @@ window.BranchRows = (function () {
       + '<div class="wb-br-head">' + head + '</div>'
       + blurb
       + (opts.profile ? profileLine(b) : '')
-      + links + '</div>';
+      + links + (opts.ask ? askHtml(deck, b) : '') + '</div>';
+  }
+
+  /* Send to Jarvis on this branch ("Review branch X on Sharknado"), where the caller
+   * asks for it (Build's Change tab). page-state.js owns the button and the prompt. */
+  function askHtml(deck, b) {
+    if (!window.PageState || !PageState.askButton) return '';
+    var name = window.DeckFacts ? DeckFacts.displayName(deck).text : (deck.deck_name || deck.slug);
+    return '<p class="wb-br-ask">' + PageState.askButton({
+      text: PageState.askText.branch(b.name, name), deck: deck.slug, branch: b.name,
+      label: 'Ask Jarvis about this branch', cls: 'br-jarvis',
+    }) + '</p>';
   }
 
   return { live: live, row: row };

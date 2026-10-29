@@ -626,7 +626,8 @@
                       : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
               return '<li><a href="branch.html?deck=' + encodeURIComponent(slug) + '&branch=' + encodeURIComponent(b.name) + '">'
                    + esc(b.name) + '</a> <span class="br-state" data-state="' + key + '">' + esc(st || 'OPEN') + '</span>'
-                   + (v.state ? ' <span class="ev">' + esc(v.state) + '</span>' : '') + '</li>';
+                   + (v.state ? ' <span class="ev">' + esc(v.state) + '</span>' : '')
+                   + ' ' + askBranchHtml(slug, b.name) + '</li>';
             }).join('')
           + '</ul><p class="ev"><a href="deck.html?deck=' + encodeURIComponent(slug) + '#panel-branches">\u2190 Branches, on the deck page</a></p></section>');
       }
@@ -1162,6 +1163,13 @@
 
   /* ── boot ───────────────────────────────────────────────────────────── */
 
+  function askBranchHtml(slug, name) {
+    if (!window.PageState || !PageState.askButton) return '';
+    var deck = window.DeckFacts ? DeckFacts.displayName({ slug: slug }).text : slug;
+    return PageState.askButton({ text: PageState.askText.branch(name, deck), deck: slug,
+                                 branch: name, label: 'Ask Jarvis', cls: 'br-jarvis' });
+  }
+
   function main() {
     var q = new URLSearchParams(location.search);
     var slug = q.get('deck');
@@ -1179,6 +1187,12 @@
     head.textContent = slug + ' @ ' + name;
     var link = document.getElementById('deckLink');
     link.href = 'deck.html?deck=' + encodeURIComponent(slug);
+    // SEND TO JARVIS on this branch (2026-10-28) — the page's own row. The deck's
+    // name is the slug printed as one (DeckFacts.displayName), which is what the
+    // pilot calls it; page-state.js owns the button and the prompt.
+    if (window.PageState && PageState.askButton && !document.getElementById('branchAsk')) {
+      link.parentNode.insertAdjacentHTML('beforeend', '<span id="branchAsk">' + askBranchHtml(slug, name) + '</span>');
+    }
 
     var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
                encodeURIComponent(name) + '/';

@@ -24,6 +24,21 @@ v2`, 2026-10-07.)
 
    It is filled only while `manamap serve` is running and the page was opened
    through it. "nothing open" or a STALE tab means ask him, never guess.
+
+   **A pending ASK comes first.** When the output opens with an `ASK "…"` line,
+   Sean pressed **Ask Jarvis** on a page (a card, the swap he is trying, a branch)
+   and that is his question about what he has open — the `from …` line names the
+   deck, cards and branch it was asked about. It usually arrives pasted as
+   `/jarvis <the same text>`; either way, treat it as this request, answer it like
+   any other (steps 2–6), then mark it taken:
+
+   ```bash
+   .venv/bin/manamap pilot page-state --clear-ask   # after answering; never before
+   ```
+
+   A STALE ask (over 15 minutes) may be one he has moved on from: say what it was
+   and ask whether he still wants it, rather than answering cold. Never clear an ask
+   you did not answer.
 2. **Classify the intent** as one of the eight below.
 3. **Read the Deck Context first**, every time a deck is involved:
 

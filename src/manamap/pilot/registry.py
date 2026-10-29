@@ -82,7 +82,8 @@ PILOT_STEPS = [
      "identity-derived from --deck, the deck's own list and cards illegal in its format excluded"),
     ("page-state", "manamap.pilot.page_state",
      "What Sean has open in the browser (page, deck, mode, focused card, selection), "
-     "latest per tab, as reported to `manamap serve`; for resolving \"this card\""),
+     "latest per tab, as reported to `manamap serve`; for resolving \"this card\". "
+     "A pending page ask (Send to Jarvis) prints first; --clear-ask marks it taken"),
     ("scan-candidates", "manamap.pilot.candidate_scan",
      "One pass over the corpus along a deck's DIMENSIONS (drain, gain, threat, outlet, sweeper, draw): "
      "every row says which predicate found it; converters and two-card infinites FLAGGED, never ranked"),
@@ -1441,6 +1442,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "page-state":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+            # A WRITE (of the gitignored page-state file only), so `clear_ask` is in
+            # serve's `_CLI_WRITE_ATTRS`: the warm daemon refuses it and the CLI
+            # runs it locally, under the file lock serve's writes take too.
+            cmd.add_argument("--clear-ask", action="store_true", dest="clear_ask",
+                             help="mark the pending \"Send to Jarvis\" ask taken (remove it)")
         if name == "similar-cards":
             # NO slug positional, like card-search: the positionals are the SEED cards,
             # and --deck only scopes the corpus (identity, the list excluded, its format).

@@ -1364,7 +1364,10 @@ CLI_READONLY = frozenset({
 #: Any of these on the parsed namespace means the command intends to WRITE.
 #: Belt and braces over `CLI_READONLY`, because a read-only command can grow a
 #: `--write` flag later and nobody will remember this file.
-_CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway", "stage")
+_CLI_WRITE_ATTRS = ("write", "force", "apply", "record", "anyway", "stage",
+                    # `page-state --clear-ask` (2026-10-28): it removes the pending
+                    # page ask, so it runs in the terminal, never over the API/MCP.
+                    "clear_ask")
 
 #: A WRITE THE FLAG CHECK CANNOT SEE, because the verb is a POSITIONAL.
 #:
@@ -1843,7 +1846,23 @@ class Handler(SimpleHTTPRequestHandler):
                     f"from http://127.0.0.1:{port} or http://localhost:{port}")
         return None
 
+    #: STATIC FILES REVALIDATE, EVERY TIME (2026-10-28). With no Cache-Control the
+    #: browser applies HEURISTIC freshness — 10% of a file's age since Last-Modified —
+    #: and serves it without asking: an 18-day-old `embeddings_cardbert.bin` was
+    #: reused for ~43 hours, and so would a `cards.json` that a `regen` had just
+    #: rewritten under the same `?v=`. `no-cache` keeps the bytes in the cache and
+    #: asks first; `SimpleHTTPRequestHandler` answers an unchanged file with a 304
+    #: and no body, so a navigation back to Build re-uses the 17.9 MB matrix for one
+    #: loopback round trip and never shows a stale artifact. The API stays no-store.
+    _static = False
+
+    def end_headers(self):
+        if self._static:
+            self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
+
     def do_GET(self):
+        self._static = False
         if self.path.split("?")[0].rstrip("/") == "/api" or self.path.startswith("/api/"):
             refused = self._foreign()
             if refused:
@@ -1865,9 +1884,11 @@ class Handler(SimpleHTTPRequestHandler):
             from urllib.parse import parse_qs
             payload = {k: v[0] for k, v in parse_qs(query).items() if v}
             return self._run(name, payload)
+        self._static = True
         return super().do_GET()
 
     def do_POST(self):
+        self._static = False
         if not self.path.startswith("/api/"):
             return self.send_error(404)
         refused = self._foreign()

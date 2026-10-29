@@ -323,11 +323,13 @@
 
   async function ensureShared() {
     buildNameIndex();
+    // Side by side: two independent reads (the open's own waterfall, 2026-10-28).
+    // The manifest is kept even if the roles fail, as it was when they ran in turn.
+    const rolesP = rolesByName ? Promise.resolve(null) : getJSON(ROLES_URL);
+    rolesP.catch(function () { /* surfaced by the await below, not as an unhandled rejection */ });
     if (!manifest) manifest = await getJSON(MANIFEST_URL);
-    if (!rolesByName) {
-      const doc = await getJSON(ROLES_URL);
-      rolesByName = doc.roles || {};
-    }
+    const roles = await rolesP;
+    if (roles) rolesByName = roles.roles || {};
   }
 
   async function loadDeck(slug) {
@@ -337,20 +339,23 @@
     focusedLine = -1;
     if (window.Force && Force.clearLine) Force.clearLine();
 
-    const deckDoc = await getJSON(DECK_BASE + slug + '/cards.json');
+    /* EVERY FILE AT ONCE (2026-10-28). These were fifteen-odd awaits in a row — cards,
+     * considering, watchlist, engine, prose, each stack, the bracket report, combos,
+     * prices, info and rating — and each await gave the main thread back to whatever
+     * was drawing, so on sharknado the open was a waterfall of 20 requests a frame apart
+     * (~360 ms apart in a software-rendered browser, 8.6 s before the graph could seed;
+     * measured in docs/viz.md, "Load figures"). They are independent reads, so they go
+     * out together; each keeps its own rule for a missing file. `cards.json` is the one
+     * that must exist, and its failure still fails the open. */
+    const has = function (flag) { return !!(entry.has && entry.has[flag]); };
+    const maybe = function (file) {
+      return getJSON(DECK_BASE + slug + '/' + file).catch(function () { return null; });
+    };
 
     // considering.json (the legacy Short List) is gated on `has.considering` now, so a
     // deck without one costs no 404. A manifest from before the flag existed has no
     // key at all, and gets the old optimistic fetch.
-    let considering = null;
     const hasKey = entry.has && Object.prototype.hasOwnProperty.call(entry.has, 'considering');
-    if (!hasKey || entry.has.considering) {
-      try { considering = await getJSON(DECK_BASE + slug + '/considering.json'); } catch (e) { /* absent */ }
-    }
-    let watch = null;
-    if (entry.has && entry.has.watchlist) {
-      try { watch = await getJSON(DECK_BASE + slug + '/watchlist.json'); } catch (e) { /* absent */ }
-    }
 
     /* `engine.json` is the ONLY place direction lives.
      *
@@ -363,10 +368,6 @@
      *
      * Gated on `has.engine` so a deck without a model costs no failed fetch —
      * the flag is in the manifest precisely because a browser cannot stat. */
-    let engine = null;
-    if (entry.has && entry.has.engine) {
-      try { engine = await getJSON(DECK_BASE + slug + '/engine.json'); } catch (e) { /* absent */ }
-    }
 
     /* The authored intro to each verified line.
      *
@@ -378,50 +379,54 @@
      *
      * Gated on `has.manual_prose` for the same reason `engine` is: a browser
      * cannot stat, and a 404 per deck load is a cost paid for nothing. */
-    let prose = null;
-    if (entry.has && entry.has.manual_prose) {
-      try { prose = await getJSON(DECK_BASE + slug + '/manual_prose.json'); } catch (e) { /* absent */ }
-    }
 
-    // The manifest lists checker-passed stacks only, which is the whole point of it —
-    // a browser can list neither data/decks/ nor stacks/.
-    const stacks = [];
-    for (const file of (entry.stack_files || [])) {
-      try {
-        const doc = await getJSON(DECK_BASE + slug + '/stacks/' + file);
-        // Keep the filename: it is the key `stack_cards` is stored under, since that is
-        // what the manifest hands the browser.
-        doc.__file = file;
-        stacks.push(doc);
-      } catch (e) { /* skip */ }
-    }
     /* The bracket report and the deck's combos, for the card panel's deck block and
      * its combo lines. Gated on `has.bracket_report` / `has.combos` like `engine` —
      * but the manifest may predate those flags, so a manifest with NO such key gets
      * the optimistic fetch and a 404 is swallowed (the `considering` rule). A manifest
      * that says `false` is believed. Nothing here logs: an absent file is a feature
      * that is off, not an error. */
-    const optional = async function (flag, file) {
+    const optional = function (flag, file) {
       const known = entry.has && Object.prototype.hasOwnProperty.call(entry.has, flag);
-      if (known && !entry.has[flag]) return null;
-      try { return await getJSON(DECK_BASE + slug + '/' + file); } catch (e) { return null; }
+      if (known && !entry.has[flag]) return Promise.resolve(null);
+      return maybe(file);
     };
-    const bracketReport = await optional('bracket_report', 'bracket_report.json');
-    const combos = await optional('combos', 'combos.json');
-    // Prices as dated evidence (`prices <slug> --write`); the card panel's price
-    // row quotes the file with its date and source, or shows nothing.
-    const prices = await optional('prices', 'prices.json');
-    /* The deck header's badges (2026-10-28): the record, the bracket and DeckCheck's
-     * Threat Index from `info.json` (`deck-info --write` — every deck has one, and the
-     * workbench reads the same file), the ★ grade from `rating.json` only where the
-     * manifest says one is on file. Fetched side by side; either failing is a badge
-     * that is absent, never a zero. */
-    const facts = await Promise.all([
-      getJSON(DECK_BASE + slug + '/info.json').catch(function () { return null; }),
-      (entry.has && entry.has.rating)
-        ? getJSON(DECK_BASE + slug + '/rating.json').catch(function () { return null; })
-        : Promise.resolve(null),
+
+    // The manifest lists checker-passed stacks only, which is the whole point of it —
+    // a browser can list neither data/decks/ nor stacks/. Order is the manifest's, and
+    // a stack that fails to load is skipped.
+    const stackFiles = entry.stack_files || [];
+
+    const got = await Promise.all([
+      getJSON(DECK_BASE + slug + '/cards.json'),
+      (!hasKey || entry.has.considering) ? maybe('considering.json') : Promise.resolve(null),
+      has('watchlist') ? maybe('watchlist.json') : Promise.resolve(null),
+      has('engine') ? maybe('engine.json') : Promise.resolve(null),
+      has('manual_prose') ? maybe('manual_prose.json') : Promise.resolve(null),
+      Promise.all(stackFiles.map(function (file) {
+        return getJSON(DECK_BASE + slug + '/stacks/' + file)
+          // Keep the filename: it is the key `stack_cards` is stored under, since that
+          // is what the manifest hands the browser.
+          .then(function (doc) { doc.__file = file; return doc; })
+          .catch(function () { return null; });
+      })),
+      optional('bracket_report', 'bracket_report.json'),
+      optional('combos', 'combos.json'),
+      // Prices as dated evidence (`prices <slug> --write`); the card panel's price
+      // row quotes the file with its date and source, or shows nothing.
+      optional('prices', 'prices.json'),
+      /* The deck header's badges (2026-10-28): the record, the bracket and DeckCheck's
+       * Threat Index from `info.json` (`deck-info --write` — every deck has one, and the
+       * workbench reads the same file), the ★ grade from `rating.json` only where the
+       * manifest says one is on file. Either failing is a badge that is absent, never
+       * a zero. */
+      maybe('info.json'),
+      has('rating') ? maybe('rating.json') : Promise.resolve(null),
     ]);
+    const deckDoc = got[0], considering = got[1], watch = got[2], engine = got[3], prose = got[4];
+    const stacks = got[5].filter(Boolean);
+    const bracketReport = got[6], combos = got[7], prices = got[8];
+    const facts = [got[9], got[10]];
 
     const built = buildActive(entry, deckDoc, considering, stacks, engine, prose);
     built.bracketReport = bracketReport && typeof bracketReport === 'object' ? bracketReport : null;
@@ -2311,7 +2316,11 @@
       '</div>' +
       '<div class="deck-format-row">' +
         '<label for="deckLensSelect">Deck</label>' +
-        '<select id="deckLensSelect" onchange="Build.select(this.value)">' +
+        // Opening the picker means a deck is about to load, and its graph will await
+        // the 17.9 MB embedding matrix: start the bytes now (`MM.prefetchEmbeddings`,
+        // a no-op once they are in hand or in flight).
+        '<select id="deckLensSelect" onchange="Build.select(this.value)"' +
+          ' onpointerdown="MM.prefetchEmbeddings()" onfocus="MM.prefetchEmbeddings()">' +
           '<option value="">Choose a deck…</option>' + picker + draftOptions() +
         '</select>' +
         // With a deck open the new-deck form's own button would be a body of its own;
@@ -3032,6 +3041,16 @@
     const panel = document.getElementById('deckPanel');
     panel.classList.add('open');
     resizeMap();
+    // A DEEP-LINKED DECK OPENS ON ITS GRAPH, so the 34K atlas has no business drawing
+    // (and swaying) behind the panel while the deck's files load: measured on
+    // sharknado, every frame of it was main-thread time the open's requests waited
+    // behind. The graph's surface claims #plot now; `applyView` settles it once the
+    // deck is in (and hands it back to the map if the deck fails to load).
+    const wantedDeck = new URLSearchParams(window.location.search).get('deck');
+    if (wantedDeck && view === 'graph') {
+      const plot = document.getElementById('plot');
+      if (plot) plot.classList.add('force-mode');
+    }
     loading = true;
     renderPanel();
     try {
@@ -3181,6 +3200,8 @@
     get watchSetId() { return watchSetId; },
     /* For the page-state beacon (Jarvis's "this deck" / "this card"): reads only. */
     get deckSlug() { return active ? active.slug : null; },
+    /* The open deck's display name ("Sharknado"), for Send to Jarvis's question. */
+    get deckName() { return active && active.entry ? deckTitle(active.entry) : null; },
     get gridFilter() { return gridFilter; },
     /* The review grid's current tile, or null when no grid is on screen. The same
      * `gridCards` order the grid drew, so j/k and this agree on which card it is. */

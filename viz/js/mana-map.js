@@ -2387,6 +2387,31 @@
     return embeddingsPromise;
   }
 
+  /* START THE BYTES EARLY WHEN A DECK WILL OPEN (2026-10-28). A seeded graph awaits
+   * this matrix (`Force.enter`), and it used to be requested only once the deck's own
+   * files had loaded and the graph began to seed — the last request of the open, on a
+   * critical path it did not need to be on. Called at boot on `?deck=` and when
+   * Build's deck picker is opened; NEVER on the Discover landing, where a
+   * speculative 17.9 MB fetch was measured as contention and removed.
+   *
+   * It fetches BYTES only. The size check below (rows x EMBED_DIM x 4) needs the
+   * card count, which may not have landed yet at boot, so `fetchEmbeddings` still
+   * validates — it awaits these bytes instead of asking the network again. A failed
+   * prefetch is forgotten and the ordinary path fetches as before. */
+  let embeddingsBytes = null;   // { key, promise<ArrayBuffer|null> }
+  function prefetchEmbeddings() {
+    const key = currentSpace;
+    if (embeddings || embeddingsCache[key] || embeddingsPromise) return false;
+    if (embeddingsBytes && embeddingsBytes.key === key) return false;
+    embeddingsBytes = {
+      key,
+      promise: fetch(similarityEmbeddings())
+        .then(r => (r.ok ? r.arrayBuffer() : null))
+        .catch(() => null),
+    };
+    return true;
+  }
+
   async function fetchEmbeddings() {
     // THE CACHE KEY IS THE SPACE. It was the literal string 'function' when there was
     // one space and a toggle made it two; a fixed key handed the toggle the previous
@@ -2397,9 +2422,15 @@
       return true;
     }
     try {
-      const r = await fetch(similarityEmbeddings());
-      if (!r.ok) return false;
-      const buf = await r.arrayBuffer();
+      let buf = null;
+      const early = embeddingsBytes && embeddingsBytes.key === key ? embeddingsBytes : null;
+      embeddingsBytes = null;
+      if (early) buf = await early.promise;
+      if (!buf) {
+        const r = await fetch(similarityEmbeddings());
+        if (!r.ok) return false;
+        buf = await r.arrayBuffer();
+      }
       // The .bin is headerless: nothing in it says how many rows or dims it
       // holds, so a truncated or wrong-dimension file parses fine and every
       // offset is silently wrong. This is the only place that can notice. Discover
@@ -2582,6 +2613,16 @@
       html += '<button class="lens-btn discover-keep" onclick="MM.setCommander(' +
         (isCmd ? -1 : row) + ')">' +
         (isCmd ? '★ Commander' : 'Set as commander') + '</button>';
+    }
+    // SEND TO JARVIS (2026-10-28): the question about this card, for the terminal the
+    // pilot talks to Jarvis in — in Build it names the open deck. page-state.js owns
+    // the button, the prompt and the phrasing; nothing here calls an LLM.
+    if (window.PageState && PageState.askButton && rec && rec.n) {
+      const b = currentMode === 'build' && window.Build && Build.deckSlug ? window.Build : null;
+      html += PageState.askButton({
+        text: PageState.askText.card(rec.n, b ? b.deckName : null),
+        deck: b ? b.deckSlug : '', cards: [rec.n], cls: 'detail-jarvis',
+      });
     }
     return html + '</div>';
   }
@@ -2972,6 +3013,10 @@
   // rendering — has to ask for it rather than assume it is what boot produces.
   const wantedMode = params.get('mode');
   if (wantedMode) currentMode = wantedMode;
+  // A deck is opening: its graph will await the embedding matrix, so the bytes start
+  // now, beside the boot files, instead of after the deck's own artifacts. `?deck=`
+  // only — the Discover landing never prefetches (see `prefetchEmbeddings`).
+  if (wantedDeck) prefetchEmbeddings();
 
   Discovery.configure({ vizIndex: DATA.vizIndex, neighbours: SPACES[currentSpace].neighbours });
   // Apply the mode chrome BEFORE the data arrives. `currentMode` being 'discover' is not
@@ -4259,6 +4304,9 @@
       const ok = await loadEmbeddings();
       return ok ? embeddings : null;
     },
+    // Start the matrix's bytes now, because a deck is about to open (Build's picker).
+    // Returns whether a request was started; a no-op once it is in hand or in flight.
+    prefetchEmbeddings,
     async getSynergyGraph() {
       const ok = await loadSynergyGraph();
       return ok ? synergyGraph : null;

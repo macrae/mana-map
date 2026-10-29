@@ -650,7 +650,7 @@ window.DeckEdit = (function () {
         (window.deckRung(S.entry) === 'sleeved' ? ' — a change to a sleeved list starts one.' : '.') + '</p></div>';
     }
     return '<div class="de-branches">' + head + live.map(function (b) {
-      return window.BranchRows.row(S.entry, b, { profile: true });
+      return window.BranchRows.row(S.entry, b, { profile: true, ask: true });
     }).join('') + '</div>';
   }
 
@@ -721,7 +721,30 @@ window.DeckEdit = (function () {
       return '<li class="de-row">' + label + btn('remove', '×', { i: i, cls: 'de-x', title: 'Take out of the tray' }) + '</li>';
     }).join('') + '</ul>';
     out += '<p class="de-balance">' + esc(balanceLine()) + '</p>';
+    out += askChangeHtml();
     return out;
+  }
+
+  /* SEND TO JARVIS on the swap being tried (2026-10-28): "Should I swap A for B in
+   * Sharknado?", every card in the tray named for page-state. page-state.js owns the
+   * button and the prompt. */
+  function deckName() {
+    return S.entry && window.DeckFacts ? DeckFacts.displayName(S.entry).text
+      : (S.entry ? (S.entry.deck_name || S.entry.slug) : '');
+  }
+
+  function askChangeHtml() {
+    if (!S.tray.length || !window.PageState || !PageState.askButton) return '';
+    var cards = [];
+    S.tray.forEach(function (t) {
+      (t.op === 'swap' ? [t.out, t['in']] : [t.card]).forEach(function (n) {
+        if (n && cards.indexOf(n) === -1) cards.push(n);
+      });
+    });
+    return '<p class="de-ask">' + PageState.askButton({
+      text: PageState.askText.change(S.tray, deckName()), deck: S.slug, cards: cards,
+      label: 'Ask Jarvis about this change', cls: 'de-jarvis',
+    }) + '</p>';
   }
 
   function signed(v, dp) {

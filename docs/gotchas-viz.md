@@ -112,3 +112,19 @@ stacks proven on it, and the way to its siblings were all on disk and none were 
 - **Scope a locator to the card when the same row renders twice.** The Branches rack at the
   top of the workbench repeats each card's branch row; a page-wide `.wb-branch-row .wb-br-links a`
   matched both and the first test failed on its own fixture.
+
+## 2026-10-28 — an await is a frame
+
+- **Sequential awaits behind a drawing surface cost a frame each, not a round trip each.**
+  Build's `loadDeck` awaited twenty small files in turn; on loopback each took ~3 ms, but
+  every await handed the main thread to the 34K atlas swaying behind the panel, so the
+  requests went out one frame apart — ~360 ms apart in a software-rendered browser, 8.6 s
+  before sharknado's graph could seed, while the 17.9 MB matrix everyone suspected took
+  ~150 ms of it. Independent reads go out together (`Promise.all`), and a deep-linked deck
+  claims `#plot` for the graph before its files load. Measure the waterfall
+  (`performance.getEntriesByType('resource')` start times) before blaming the biggest file.
+  Figures: `docs/viz.md`, "Load figures, per mode".
+- **No Cache-Control is not "no cache".** serve sent `Last-Modified` alone, so Chrome
+  re-used static files by heuristic freshness without asking — the 17.9 MB matrix and a
+  just-regenerated `cards.json` alike. Static files are `no-cache` now (keep, revalidate,
+  304); the API stays `no-store`.

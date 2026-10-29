@@ -17,12 +17,27 @@ keeps the latest one per browser tab in `.progress/page/state.json`.
 
 `record(tab, state)` is serve's writer; `read()` returns the tabs, most recently
 focused first; `main` prints them.
+
+**A pending ASK (2026-10-28).** "Send to Jarvis" on a page posts its snapshot with
+an `ask` — `{text, page, deck, cards, branch}`, stamped `at` here — and copies
+`/jarvis <text>` to the clipboard for Sean to paste. The ask rides on the tab's
+record and keeps its staleness rules (gone with the tab after `KEEP_S`, flagged
+STALE past `FRESH_S`). There is ONE pending ask: a newer one, from any tab,
+replaces it; a later snapshot without one carries it over; `--clear-ask`
+(`clear_ask()`) is how Jarvis marks it taken. The page never calls an LLM, and
+neither does this: it is a note on the fridge, not a request.
 """
 
+import contextlib
 import json
 import os
 import threading
 import time
+
+try:                      # POSIX: the CLI's --clear-ask and serve's writes are two processes
+    import fcntl
+except ImportError:       # pragma: no cover - Windows: the in-process lock is all there is
+    fcntl = None
 
 from manamap import progress
 
@@ -37,11 +52,16 @@ FRESH_S = 15 * 60
 #: Fields a page may report, and the cap on each list. Anything else is dropped,
 #: so a page cannot grow this file into a second store.
 #: `panel` is Build's side-panel tab (change / candidates / deck / numbers, 2026-10-28).
+#: `ask` is a pending "Send to Jarvis" question (`ASK_FIELDS`, cleaned by `_clean_ask`).
 FIELDS = {"page": str, "url": str, "title": str, "deck": str, "branch": str, "mode": str,
           "focus": str, "selected": list, "library": list, "filters": dict, "view": str,
-          "panel": str, "visible": bool, "focused": bool}
+          "panel": str, "visible": bool, "focused": bool, "ask": dict}
 MAX_LIST = 40
 MAX_TEXT = 300
+#: What an ask may carry. `at` is stamped by `record`, never taken from the page.
+ASK_FIELDS = {"text": str, "page": str, "deck": str, "branch": str, "cards": list}
+#: A question is a sentence or two; longer is a paste that belongs in the terminal.
+MAX_ASK = 1000
 
 _lock = threading.Lock()
 
@@ -50,13 +70,36 @@ def _path(path=None):
     return path or PATH or progress.DIR / "page" / "state.json"
 
 
+def _clean_ask(v):
+    """An ask's own fields, capped; None when it carries no question."""
+    if not isinstance(v, dict):
+        return None
+    text = " ".join(str(v.get("text") or "").split())[:MAX_ASK]
+    if not text:
+        return None
+    out = {"text": text}
+    for key, kind in ASK_FIELDS.items():
+        x = v.get(key)
+        if key == "text" or x in (None, "", []):
+            continue
+        if kind is str:
+            out[key] = str(x)[:MAX_TEXT]
+        elif isinstance(x, (list, tuple)):
+            out[key] = [str(c)[:MAX_TEXT] for c in x[:MAX_LIST]]
+    return out
+
+
 def _clean(state):
     out = {}
     for key, kind in FIELDS.items():
         v = (state or {}).get(key)
         if v is None or v == "" or v == [] or v == {}:
             continue
-        if kind is str:
+        if key == "ask":
+            ask = _clean_ask(v)
+            if ask:
+                out[key] = ask
+        elif kind is str:
             out[key] = str(v)[:MAX_TEXT]
         elif kind is bool:
             out[key] = bool(v)
@@ -76,26 +119,85 @@ def _load(path):
         return {}
 
 
+@contextlib.contextmanager
+def _locked(path):
+    """One writer at a time: serve's threads (`_lock`) AND the CLI's `--clear-ask`,
+    which is another process — without the file lock a snapshot read before the
+    clear and written after it would put the answered question back."""
+    with _lock:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if fcntl is None:
+            yield
+            return
+        with open(path.with_suffix(".lock"), "a") as fh:
+            fcntl.flock(fh, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def _save(path, tabs):
+    tmp = path.with_suffix(f".{os.getpid()}.{threading.get_ident()}.tmp")
+    tmp.write_text(json.dumps({"tabs": tabs}, indent=1), encoding="utf-8")
+    os.replace(tmp, path)
+
+
 def record(tab, state, now=None, path=None):
-    """Keep `state` as tab `tab`'s latest; drop tabs gone quiet. Returns what was kept."""
+    """Keep `state` as tab `tab`'s latest; drop tabs gone quiet. Returns what was kept.
+
+    A state carrying an `ask` makes it THE pending ask (any other tab's is dropped);
+    one without carries this tab's pending ask over, so the next ordinary snapshot
+    does not erase a question nobody has answered yet."""
     if not tab or not isinstance(state, dict):
         raise ValueError("page/state needs a tab id and a state object")
     path = _path(path)
     now = time.time() if now is None else now
+    tab = str(tab)[:64]
     row = _clean(state)
     row["at"] = round(now, 1)
-    with _lock:
+    with _locked(path):
         tabs = {k: v for k, v in _load(path).items() if now - (v.get("at") or 0) < KEEP_S}
         if row.get("focused"):
             row["focused_at"] = row["at"]
         elif tab in tabs and tabs[tab].get("focused_at"):
             row["focused_at"] = tabs[tab]["focused_at"]
-        tabs[str(tab)[:64]] = row
-        path.parent.mkdir(parents=True, exist_ok=True)
-        tmp = path.with_suffix(f".{os.getpid()}.tmp")
-        tmp.write_text(json.dumps({"tabs": tabs}, indent=1), encoding="utf-8")
-        os.replace(tmp, path)
+        if "ask" in row:
+            row["ask"]["at"] = row["at"]
+            for other in tabs.values():
+                other.pop("ask", None)
+        elif tab in tabs and tabs[tab].get("ask"):
+            row["ask"] = tabs[tab]["ask"]
+        tabs[tab] = row
+        _save(path, tabs)
     return row
+
+
+def pending_ask(tabs):
+    """The one pending ask among `read()`'s tabs, with its tab and age; or None."""
+    now = time.time()
+    for t in tabs:
+        a = t.get("ask")
+        if a and a.get("text"):
+            return dict(a, tab=t["tab"], age_s=round(now - (a.get("at") or 0)))
+    return None
+
+
+def clear_ask(path=None):
+    """Mark the pending ask taken (remove it). Returns the ask cleared, or None."""
+    path = _path(path)
+    if not path.exists():
+        return None
+    with _locked(path):
+        tabs = _load(path)
+        gone = None
+        for t in tabs.values():
+            a = t.pop("ask", None)
+            if a:
+                gone = a
+        if gone:
+            _save(path, tabs)
+    return gone
 
 
 def read(now=None, path=None):
@@ -130,11 +232,33 @@ def line(t):
     return f"{' · '.join(bits)}  ({_ago(t['age_s'])} ago{stale})"
 
 
+def ask_line(a):
+    """The pending ask on its own line, then where it came from."""
+    where = [a.get("page") or "?"]
+    for key, label in (("deck", "deck"), ("branch", "branch")):
+        if a.get(key):
+            where.append(f"{label} {a[key]}")
+    if a.get("cards"):
+        where.append("cards " + ", ".join(a["cards"][:8])
+                     + (f" (+{len(a['cards']) - 8})" if len(a["cards"]) > 8 else ""))
+    stale = " — STALE, may have moved on" if a["age_s"] > FRESH_S else ""
+    return (f"ASK      \"{a['text']}\"\n"
+            f"         from {' · '.join(where)}  ({_ago(a['age_s'])} ago{stale})"
+            f" — answer it, then `manamap pilot page-state --clear-ask`")
+
+
 def main(args):
-    tabs = read()
-    if getattr(args, "as_json", False):
-        print(json.dumps({"tabs": tabs}, indent=1))
+    if getattr(args, "clear_ask", False):
+        gone = clear_ask()
+        print(f"cleared the pending ask: \"{gone['text']}\"" if gone else "no pending ask")
         return
+    tabs = read()
+    ask = pending_ask(tabs)
+    if getattr(args, "as_json", False):
+        print(json.dumps({"tabs": tabs, "ask": ask}, indent=1))
+        return
+    if ask:
+        print(ask_line(ask))
     if not tabs:
         print("nothing open: no page has reported (is `manamap serve` running, and the page "
               "opened through it?)")

@@ -228,7 +228,7 @@ python -m http.server 8000
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
 | `viz/js/shell.js` | The library drawer (~930 lines), mounted on every page; `Shell.cardImageUrl(name, version, entry)` is the art helper — a `cards.json` entry's own image (its face by name for a DFC, `art_crop` when asked) when one is passed, the by-name Scryfall URL otherwise |
 | `viz/js/api.js` | The local-server probe (~460 lines). Also `window.BranchRows` (a deck's live branches as rows — the workbench's and Build's Change tab's one renderer, 2026-10-28). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below), and since 2026-10-18 `window.Fmt` — `esc`, `num`, `pct`, `signed`, `getJSON` — read by the fleet page; the three private copies in workbench, deck and branch are a later cleanup |
-| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all seven pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`, and Build's tab as `panel`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
+| `viz/js/page-state.js` | The page-state beacon for Jarvis (~353 lines), loaded right after `api.js` on all seven pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`, and Build's tab as `panel`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing. Also **Send to Jarvis** (2026-10-28): `askButton`, the prompt, the copy and the pending `ask` — see "Send to Jarvis" |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
 | `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
 | `viz/css/library.css` | Curate's own styles (185 lines), on top of `tokens.css` |
@@ -551,6 +551,71 @@ continues past its list: synergy and outclassed-by are rule-based lists, and a l
 run out has run out. A **seeded** walk (deck or region) still awaits it: `linkWithinFromTable`
 only links cards whose precomputed top-12 are also in the set, which on a 97-card deck is
 38 links instead of ~290 — a visibly sparser graph, caught by the browser suite.
+
+### Load figures, per mode (2026-10-28)
+
+**Method.** Playwright driving Chromium 149 against `manamap serve` on this Mac (M1),
+`.venv/bin/python` + a scratch script; each run a FRESH browser context (empty HTTP cache),
+1440×900, `/api/page/state` blocked at the network layer so the pilot's own page-state
+file was never written. *Time to usable* is `performance.now()` at the first poll (50 ms)
+where the mode is usable: **Discover** `?card=Windfall` — `Discovery.isReady()`, the card
+current and a node on the graph; **Explore** `?mode=explore` — the projection in and the
+renderer's base fit computed (`getCamera() !== null`); **Build** `?deck=sharknado` — ≥ 90
+graph nodes AND the status final ("Sharknado — 100 cards lit, …"). Bytes are same-origin
+`encodedBodySize`; serve does not gzip, so they are RAW (GitHub Pages gzips — see the boot
+table above for gzipped sizes). Two renderers, because the answer depends on how expensive
+a frame is: **GPU** = new-headless Chromium (Metal, ~31 ms a frame on the atlas) and
+**software** = the headless shell's SwiftShader (~141 ms a frame), which is what a loaded
+machine looks like. Median (min–max) of 5 GPU / 3 software runs.
+
+| mode | bytes (raw) | GPU before | GPU after | software before | software after |
+|---|---|---|---|---|---|
+| Discover `?card=Windfall` | 22.5–32.0 MB, 23–25 req | 449 ms (386–619) | 458 ms (417–659) | 314 ms (294–488) | 379 ms (338–462) |
+| Explore `?mode=explore` | 22.6 MB, 23–24 req | 541 ms (534–578) | 505 ms (493–761) | 506 ms (497–537) | 538 ms (529–570) |
+| Build `?deck=sharknado` | 43.6 MB, 47–51 req | **860 ms** (829–872) | **746 ms** (695–825) | **10,089 ms** (9,090–11,738) | **623 ms** (600–628) |
+| Build, revisited (warm profile) | before 0.00 MB wire · after 0.02 MB | 491 ms (457–516) | 510 ms (470–538) | — | — |
+
+Discover and Explore did not change (their load path was not touched; a 7-run re-check read
+361–375 ms and 528–558 ms). Discover's byte count moves with whether the card panel's lazy
+indexes (`obsolescence_index.json`, `combo_index.json`, ~9.5 MB raw) landed before the
+poll fired.
+
+**What Build was waiting on was not the matrix.** The 17.9 MB `embeddings_cardbert.bin`
+was the open's LAST request (started at 630–670 ms GPU, 8.8–11.3 s software) and took
+~50–200 ms itself. In front of it, `loadDeck` awaited twenty files one after another —
+cards, watchlist, engine, prose, twelve stacks, the bracket report, combos, prices, info,
+rating — each ~3 ms on loopback, but each await handed the main thread to the 34K atlas,
+which was drawing and swaying behind the panel the whole time (the map is visible until the
+graph claims `#plot`). One frame per request: ~360 ms apart in software, 8.6 s before the
+graph could seed. Three changes, all in the browser:
+
+- **`loadDeck` fetches every file at once** (`Promise.all`, each keeping its own
+  absent-file rule; `cards.json` alone still fails the open), and `ensureShared` reads the
+  manifest and `card_roles.json` side by side.
+- **A deep-linked deck claims `#plot` for the graph at once** (`Build.enter` adds
+  `force-mode` when `?deck=` will open on the graph view), so the atlas stops drawing while
+  the deck loads; `applyView` settles it, and hands it back to the map if the deck fails.
+- **The matrix's bytes start when a deck WILL open**: at boot on `?deck=`, and when Build's
+  deck picker is focused or pressed (`MM.prefetchEmbeddings`). It fetches bytes only; the
+  size check (`rows × EMBED_DIM × 4`) still runs in `fetchEmbeddings`, which awaits those
+  bytes instead of asking again, because the card count may not have landed at boot. **Never
+  on the Discover landing** (`test_the_deck_picker_starts_the_matrix_and_the_landing_never_does`),
+  for the contention reason above. The request now starts at 130–300 ms.
+
+**Across navigations** the bytes were already kept — and that was the hazard. serve sent
+`Last-Modified` and no `Cache-Control`, so Chrome applied heuristic freshness (10% of a
+file's age) and re-used files WITHOUT asking: 0.00 MB on the wire on a revisit, including,
+for up to ~43 hours, a `cards.json` that a `regen` had rewritten under the same `?v=`.
+serve's static files now carry `Cache-Control: no-cache`: the browser keeps the bytes and
+revalidates each one, `SimpleHTTPRequestHandler` answers an unchanged file with a 304 and
+no body (the matrix costs 300 bytes), and a changed one is never shown stale. 0.02 MB on the
+wire for a whole Build revisit, at the same speed. The API stays `no-store`. The Cache API
+was not needed: it would have kept the bytes with no way to know they were stale. (GitHub
+Pages sets its own `max-age=600`; nothing here changes the deployed site's caching.)
+
+A measurement through Google Chrome 156 (`channel="chrome"`) on the same machine read
+Build at 25.9 s and Discover at 8.2 s, with the pilot's own Chrome at 41% CPU beside it —
+too noisy to quote as before/after, and the reason the software column is in the table.
 
 ### Starting a walk from cards you name
 
@@ -2024,6 +2089,42 @@ caller on this page.
 rung, `?tab=`, persistence across a reload, the overlay and Escape's order, the off-tab count,
 the grouped profile with no call line, the live branches, the popover — each proven by putting
 the old behaviour back.
+
+## Send to Jarvis (P2, 2026-10-28)
+
+The pilot talks to Jarvis in the Claude Code terminal; the pages are where he looks. A
+question about the thing on screen should not have to be retyped there, so a small
+**Ask Jarvis** button sits on:
+
+- **the card panel** — every mode, Build's card overlay included (`cardActionsHtml`, beside
+  Keep): "What does Windfall do for Sharknado?" in Build, "What does Windfall do, and which
+  of my decks wants it?" elsewhere;
+- **the swap being tried** — Build's Change tab once the tray has rows (`deck-edit.js`,
+  under the balance line): "Should I swap A for B in Sharknado?", every tray card named;
+- **a branch row** — Build's live branches (`BranchRows.row(…, {ask: true})`; the
+  workbench's rows do not carry it) and `branch.html`'s head and sibling rows: "Review
+  branch X on Sharknado".
+
+A click opens a one-line prompt, prefilled and editable (Enter sends, Escape closes —
+its keys stop at the prompt, so Escape does not also peel Build's card). **Send** does two
+things, and the note under the field says which happened:
+
+1. copies `/jarvis <text>` — the Clipboard API, then `execCommand('copy')`, and if both
+   refuse, the exact text shown SELECTED and read-only for ⌘C — "Copied — paste it into
+   Claude Code";
+2. under a local serve, posts the page's snapshot with an `ask`
+   (`{text, page, deck, cards, branch}`) to `page/state`, so `manamap pilot page-state`
+   prints it first as the pending ASK and Jarvis answers it, then `--clear-ask` marks it
+   taken (`docs/pilot.md`, "A pending ASK"). A serve that predates asks answers without
+   one, and the note says to restart it rather than claiming Jarvis has it; on a static
+   host the note says the clipboard is the whole of it.
+
+All of it is `page-state.js` (`PageState.askButton`, `askText`, `openAsk`; the prompt's CSS
+is injected once from there rather than duplicated into both stylesheets). **The page never
+calls an LLM** — the ask is a note left on the record, and the pilot's paste is what starts
+the turn; serve's `ask` endpoint stays callerless. `tests/test_viz_jarvis_ask.py` drives it
+under serve's real `Handler` (the record written in tmp), against the fake `/api`, and on
+the static server, each test proven by putting the old behaviour back.
 
 ## Build mode: editing a deck in place (`deck-edit.js`, 2026-10-10)
 
