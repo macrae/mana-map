@@ -61,8 +61,8 @@ def _is_heavy_argv(argv: list[str]) -> bool:
     while argv and (re.match(r"^[A-Za-z_][A-Za-z0-9_]*=", argv[0]) or argv[0] in _PREFIXES
                     or argv[0].startswith("-")):
         argv = argv[1:]
-    if not argv:
-        return False
+    if not argv or "--help" in argv or "-h" in argv:
+        return False                      # asking what a command does is not running it
     prog, rest = os.path.basename(argv[0]), argv[1:]
     line = " ".join(argv)
     if prog in ("make", "gmake"):

@@ -38,6 +38,8 @@ LIGHT = [
     "ps aux | grep pytest",
     "echo make test",
     ".venv/bin/python -c 'import pytest'",
+    ".venv/bin/manamap cluster-regions --help",     # refused mid-prepush, 2026-10-29
+    "make -h",
 ]
 
 
