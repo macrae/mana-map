@@ -1918,17 +1918,17 @@ def _dispatch(args):
     if not branch:
         raise SystemExit(f"`deck-branch {slug} {action}` needs a branch name.")
     if action == "new":
+        # THE OBJECTIVE IS OPTIONAL (the pilot, 2026-10-28). A branch is judged on
+        # its whole paired profile — twelve Holm-corrected rows — and an objective,
+        # when one is given, is a GUARD: one row written down before the run that
+        # the branch must not fail, shown among the others. It is still parsed by
+        # `parse_objective` whenever it is given, so a guard names an axis the bench
+        # computes. With none, `net-change` reports only what changed.
         raw = getattr(args, "objective", None)
-        if not raw:
-            raise SystemExit(
-                "A branch needs an --objective: `<measure> <op> <number>`, e.g.\n"
-                '  --objective "kill_by_8 >= 0.30"\n'
-                "A branch that cannot be falsified gets graded on whether it did "
-                "what it does. The Ur-Dragon treasure branch said 'treasure is the "
-                "engine', achieved that 4.4x over, and missed the purpose nobody "
-                "wrote down.")
-        objective = parse_objective(raw)
-        objective["why"] = getattr(args, "why", None) or ""
+        objective = None
+        if raw:
+            objective = parse_objective(raw)
+            objective["why"] = getattr(args, "why", None) or ""
         # NO --from MEANS THE DECK'S OWN LIST. It used to reach `read_list(None)`
         # and die in a TypeError traceback (the Story 6 trial, 2026-10-07); the
         # list a branch usually starts from is the one the deck runs today.
@@ -1944,8 +1944,13 @@ def _dispatch(args):
         got = new(slug, branch, check_in.read_list(from_list),
                   why=getattr(args, "why", None), objective=objective)
         print(f"Opened {got['path']}  ({got['size']} cards)")
-        print(f"  objective: {objective['axis']} {objective['op']} {objective['value']}"
-              + (f" @{objective['pod']}" if objective.get("pod") else ""))
+        if objective:
+            print(f"  guard: {objective['axis']} {objective['op']} {objective['value']}"
+                  + (f" @{objective['pod']}" if objective.get("pod") else ""))
+        else:
+            print("  guard: none — net-change reads the whole profile, twelve rows, "
+                  "Holm-corrected; add one with `deck-branch "
+                  f"{slug} objective {branch} --objective \"<axis> <op> <n>\"`")
         # ANCHOR THE THRESHOLD TO THE CONTROL THAT WILL GRADE IT.
         #
         # `--objective` takes a bare number and the number has to come from
@@ -1960,7 +1965,7 @@ def _dispatch(args):
         # at the moment it is being chosen, from the same harness that will do
         # the grading. Cheap — one goldfish run — and it makes the mistake
         # visible instead of arriving hours later inside a verdict.
-        for line in champion_reading(slug, objective):
+        for line in (champion_reading(slug, objective) if objective else []):
             print(line)
         for w in got["warnings"]:
             print(f"  warning: {w}")
@@ -2010,8 +2015,7 @@ def _dispatch(args):
             print(f"  objective: {o['axis']} {o['op']} {o['value']}"
                   + (f"   — {o['why']}" if o.get("why") else ""))
         else:
-            print("  objective: NONE — this branch predates the requirement and "
-                  "cannot be graded")
+            print("  objective: none — judged on the whole profile, no guard row")
         # STAGED SWAPS, which `unstage`'s refusal has always claimed this
         # command lists and which it never did (#25). Uncommitted work is the
         # thing a pilot is most likely to be asking about.

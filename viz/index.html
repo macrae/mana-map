@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=263">
+<link rel="stylesheet" href="css/mana-map.css?v=264">
 </head>
 <body>
 
@@ -103,7 +103,14 @@
          screen at once. `force.js` fills it; `#plot:not(.force-mode)` hides it,
          exactly as it hides `.force-canvas`, so leaving the mode takes the bar
          with the graph and nothing has to remember to. -->
-    <div id="graphBar" class="graph-bar" hidden></div>
+    <!-- One top-right row of canvas controls: Build's settings (View, Show — the
+         popover, P1 2026-10-28) beside the graph's Fit / Reheat. `#buildBar` is its
+         own element because the graph bar hides with the graph, and the map view
+         still needs the way back to it; `build.js` fills it in Build only. -->
+    <div class="canvas-tools">
+      <div id="buildBar" class="build-bar" hidden></div>
+      <div id="graphBar" class="graph-bar" hidden></div>
+    </div>
   </div>
   </div>
   <div class="detail-panel" id="detailPanel">
@@ -120,19 +127,19 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=263"></script>
-<script src="js/page-state.js?v=263"></script>
-<script src="js/shell.js?v=263"></script>
-<script src="js/stage.js?v=263"></script>
-<script src="js/session.js?v=263"></script>
-<script src="js/decklist.js?v=263"></script>
-<script src="js/discovery.js?v=263"></script>
-<script src="js/render/canvas.js?v=263"></script>
-<script src="js/mana-map.js?v=263"></script>
-<script src="js/drill.js?v=263"></script>
-<script src="js/force.js?v=263"></script>
-<script src="js/build.js?v=263"></script>
+<script src="js/api.js?v=264"></script>
+<script src="js/page-state.js?v=264"></script>
+<script src="js/shell.js?v=264"></script>
+<script src="js/stage.js?v=264"></script>
+<script src="js/session.js?v=264"></script>
+<script src="js/decklist.js?v=264"></script>
+<script src="js/discovery.js?v=264"></script>
+<script src="js/render/canvas.js?v=264"></script>
+<script src="js/mana-map.js?v=264"></script>
+<script src="js/drill.js?v=264"></script>
+<script src="js/force.js?v=264"></script>
+<script src="js/build.js?v=264"></script>
 <!-- Build's edit tray: edit a bench deck in place, or start a branch on a sleeved one. -->
-<script src="js/deck-edit.js?v=263"></script>
+<script src="js/deck-edit.js?v=264"></script>
 </body>
 </html>

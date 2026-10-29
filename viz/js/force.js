@@ -374,7 +374,7 @@
       const hit = pick(e.clientX - r.left, e.clientY - r.top) || hovered;
       // SELECT, do not grow. Expanding on a single click meant there was no way to
       // simply read a card: every look cost you six new nodes and a re-layout.
-      if (hit) selectCard(hit.row);
+      if (hit) { noteBuildCard(); selectCard(hit.row); }
     });
 
     /* Double-click EXPANDS. The first click of the double has already selected the card,
@@ -386,7 +386,7 @@
     canvas.addEventListener('dblclick', function (e) {
       const r = canvas.getBoundingClientRect();
       const hit = pick(e.clientX - r.left, e.clientY - r.top) || pinned || hovered;
-      if (hit) branchFrom(hit);
+      if (hit) { noteBuildCard(); branchFrom(hit); }
     });
 
     canvas.addEventListener('mouseleave', function () {
@@ -1403,6 +1403,14 @@
     if (trail[trail.length - 1] !== n) trail.push(n);
     draw();
     renderPanel();
+  }
+
+  /* A CLICK on a node in Build opens the card as an overlay on Build's active tab
+   * (P1, 2026-10-28). Only a click: Build pins the commander itself when it seeds,
+   * and that must not cover the tab. Build marks it; the click's own `renderPanel`
+   * paints it, so the click renders once. */
+  function noteBuildCard() {
+    if (window.MM && MM.mode === 'build' && window.Build && window.Build.noteCard) window.Build.noteCard();
   }
 
   // ── Panel ───────────────────────────────────────────────────────────────

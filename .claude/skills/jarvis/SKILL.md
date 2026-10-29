@@ -19,7 +19,7 @@ v2`, 2026-10-07.)
    focused on Windfall"):
 
    ```bash
-   .venv/bin/manamap pilot page-state      # FOCUSED tab first: page, deck, mode, focus, selection
+   .venv/bin/manamap pilot page-state      # FOCUSED tab first: page, deck, mode, Build panel (change|candidates|deck|numbers), focus, selection
    ```
 
    It is filled only while `manamap serve` is running and the page was opened

@@ -645,17 +645,18 @@ def _agents():
 
 
 def _branch_new(slug=None, name=None, objective=None, why=None, cards=()):
-    """Open a challenger identical to the champion, plus a goal it must meet.
+    """Open a challenger identical to the champion, with an optional guard.
 
     IT STARTS AS A COPY, with zero swaps staged. A branch that begins as a
     different list has already made the decisions the report exists to weigh, and
     there is no baseline to measure the first swap against.
 
-    The objective is REQUIRED here for the same reason `deck-branch new` demands
-    one: a branch that cannot be falsified gets graded on whether it did what it
-    does. It arrives as the string a pilot confirmed — `<measure> <op> <number>`
-    — and `parse_objective` is the only thing that reads it, so the page cannot
-    invent an axis the bench does not compute.
+    The objective is OPTIONAL (the pilot, 2026-10-28), as it is for `deck-branch
+    new`: a branch is judged on its whole paired profile, and an objective is a
+    GUARD — one row it must not fail, written down before the run. When one is
+    given it arrives as the string a pilot confirmed — `<measure> <op> <number>`
+    — and `parse_objective` is still the only thing that reads it, so the page
+    cannot invent an axis the bench does not compute.
     """
     from manamap.pilot import deck_branch
     from manamap.pilot.common import deck_dir
@@ -663,16 +664,13 @@ def _branch_new(slug=None, name=None, objective=None, why=None, cards=()):
         raise ValueError("branch/new needs a slug")
     if not name:
         raise ValueError("branch/new needs a branch name")
-    if not objective:
-        raise ValueError(
-            "branch/new needs an objective — `<measure> <op> <number>`, e.g. "
-            "`hoard_8 >= 6.0`. A branch that cannot be falsified gets graded on "
-            "whether it did what it does.")
     src = deck_dir(slug) / "decklist.txt"
     if not src.exists():
         raise ValueError(f"{slug} has no decklist.txt — there is nothing to branch")
-    parsed = deck_branch.parse_objective(objective)
-    parsed["why"] = why or ""
+    parsed = None
+    if objective and str(objective).strip():
+        parsed = deck_branch.parse_objective(objective)
+        parsed["why"] = why or ""
     got = deck_branch.new(slug, name, src.read_text(encoding="utf-8"),
                           why=why, objective=parsed)
     # The pile rides along, so "treat this deck with these cards" is one act.

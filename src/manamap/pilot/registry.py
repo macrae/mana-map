@@ -912,11 +912,12 @@ def add_pilot_parser(subparsers):
                              help="stage: the `upgrades` strength behind this swap, "
                                   "recorded as provenance and never as a claim")
             cmd.add_argument("--objective", default=None, metavar="EXPR",
-                             help='new: what would make this branch worth merging, '
-                                  'as `<measure> <op> <number>` — e.g. '
-                                  '"kill_by_8 >= 0.30". Required: a branch that '
-                                  'cannot be falsified gets graded on whether it '
-                                  'did what it does.')
+                             help='new / objective: an optional GUARD, '
+                                  '`<measure> <op> <number>` — e.g. '
+                                  '"kill_by_8 >= 0.30": one row the branch must not '
+                                  'fail, written down before it is measured and shown '
+                                  'among the twelve. The branch is judged on its whole '
+                                  'profile either way.')
             cmd.add_argument("-m", "--message", default=None,
                              help="commit: why this list and not the last one")
             cmd.add_argument("--write", action="store_true",

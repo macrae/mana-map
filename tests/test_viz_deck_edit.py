@@ -203,7 +203,8 @@ def _card(page, name):
 
 
 def test_a_bench_edit_previews_applies_and_undoes(browser, viz_server):
-    page, st = _open(browser, viz_server, f"?mode=build&deck={BENCH}", api_slug=BENCH)
+    # The tray is Build's Change tab (2026-10-28); a bench deck opens on Deck.
+    page, st = _open(browser, viz_server, f"?mode=build&deck={BENCH}&tab=change", api_slug=BENCH)
     try:
         _wait_mode(page, BENCH, "edit")
         page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
@@ -223,9 +224,10 @@ def test_a_bench_edit_previews_applies_and_undoes(browser, viz_server):
         page.wait_for_function(
             "() => (document.querySelector('#dePreview .de-preview:not(.is-stale) .de-gf') || {}).textContent",
             timeout=10000)
-        pv = page.inner_text("#dePreview")
+        pv = page.evaluate("() => document.getElementById('dePreview').textContent")
         assert "[+0.011, +0.053]" in pv, pv
-        assert "kill_by_8" in pv and "no call" in pv and "BETTER" in pv, pv
+        # Grouped by axis, no single call line (test_viz_build_tabs holds the groups).
+        assert "kill_by_8" in pv and "No call" in pv and "Better" in pv and "⇒" not in pv, pv
         assert "−$1.50" in pv and "as of 2026-10-01" in pv, pv
         assert "3 → 2" in pv and "Worldgorger Dragon" in pv, pv
         assert "no blockers" in pv and "every card in and out is seen" in pv, pv
@@ -285,19 +287,23 @@ def test_a_sleeved_deck_offers_a_branch_and_no_apply(browser, viz_server):
     page, st = _open(browser, viz_server, f"?mode=build&deck={SLEEVED}", api_slug=SLEEVED)
     try:
         _wait_mode(page, SLEEVED, "branch")
-        page.wait_for_selector("#deckEditTray[data-mode='branch'] .de-start-branch", timeout=10000)
+        page.wait_for_selector("#deckEditTray[data-mode='branch']", timeout=10000)
         assert page.query_selector("#deckEditTray .de-apply") is None
         assert page.query_selector("#deckEditTray .de-undo") is None
-        assert "Start a branch" in page.inner_text("#deActions")
-        # The axes select carries the deck's current reading.
-        page.wait_for_function(
-            "() => (document.querySelector('[data-de-field=axis]') || {}).value === 'kill_by_8'",
-            timeout=10000)
-        assert "kill_by_8 (now 0.269)" in page.inner_text("#deForm")
+        # Nothing is offered until the tray has a row (2026-10-28).
+        assert page.query_selector("#deckEditTray .de-start-branch") is None
 
         # An unbalanced tray is refused with the reason, and nothing is posted.
         _card(page, "Arcane Denial")
         page.click("#detailInner .de-card [data-de-act='cut']")
+        page.wait_for_selector("#deActions .de-start-branch", timeout=5000)
+        assert "Start a branch" in page.inner_text("#deActions")
+        # The axes select carries the deck's current reading; the guard is optional.
+        page.wait_for_function("() => [...document.querySelectorAll('[data-de-field=axis] option')]"
+                               ".some(o => o.value === 'kill_by_8')", timeout=10000)
+        page.select_option("[data-de-field=axis]", "kill_by_8")
+        assert "kill_by_8 (now 0.269)" in page.inner_text("#deForm")
+        assert page.input_value("[data-de-field=value]") == "0.269"
         page.fill("[data-de-field=branch]", "trim-v1")
         page.click("#deActions .de-start-branch")
         page.wait_for_selector("#deStatus .de-error", timeout=5000)
@@ -309,7 +315,7 @@ def test_a_sleeved_deck_offers_a_branch_and_no_apply(browser, viz_server):
 
 
 def test_without_the_local_server_the_page_says_so_and_offers_no_edit(browser, viz_server):
-    page, _ = _open(browser, viz_server, f"?mode=build&deck={BENCH}")
+    page, _ = _open(browser, viz_server, f"?mode=build&deck={BENCH}&tab=change")
     try:
         _wait_mode(page, BENCH, "noapi")
         page.wait_for_selector("#deckEditNoApi", timeout=10000)
@@ -326,7 +332,7 @@ def test_without_the_local_server_the_page_says_so_and_offers_no_edit(browser, v
 
 
 def test_an_archived_deep_link_has_no_tray(browser, viz_server):
-    page, st = _open(browser, viz_server, f"?mode=build&deck={ARCHIVED}", api_slug=ARCHIVED)
+    page, st = _open(browser, viz_server, f"?mode=build&deck={ARCHIVED}&tab=change", api_slug=ARCHIVED)
     try:
         _wait_mode(page, ARCHIVED, "readonly")
         page.wait_for_selector("#deckEditReadonly", timeout=10000)
@@ -382,7 +388,7 @@ def test_the_tray_survives_a_reload_until_the_list_moves(browser, viz_server):
     """sessionStorage under slug + the list's sha: the same list gets its tray
     back after a reload; a list that moved (an edit in another tab, the CLI)
     drops it, because a tray built against one list means nothing on another."""
-    page, st = _open(browser, viz_server, f"?mode=build&deck={BENCH}", api_slug=BENCH)
+    page, st = _open(browser, viz_server, f"?mode=build&deck={BENCH}&tab=change", api_slug=BENCH)
     try:
         _wait_mode(page, BENCH, "edit")
         page.wait_for_function("() => DeckEdit.baseSha", timeout=10000)
@@ -417,7 +423,7 @@ def test_a_sixty_card_deck_edits_copy_counts(browser, viz_server):
     copy-count input, and the typed count is the `qty` the preview and Apply post
     (on the cut/add op — the tray does not send `set`)."""
     stages = dict(STAGES, **{SIXTY: ("bench", None)})
-    page, st = _open(browser, viz_server, f"?mode=build&deck={SIXTY}", api_slug=SIXTY,
+    page, st = _open(browser, viz_server, f"?mode=build&deck={SIXTY}&tab=change", api_slug=SIXTY,
                      stages=stages)
     try:
         _wait_mode(page, SIXTY, "edit")
@@ -449,7 +455,7 @@ def test_a_superseded_deep_link_is_read_only(browser, viz_server):
     call to the edit verbs."""
     stages = dict(STAGES, **{SUPERSEDED: (None, ["superseded", "SUPERSEDED",
                                                  "Replaced by a newer build."])})
-    page, st = _open(browser, viz_server, f"?mode=build&deck={SUPERSEDED}",
+    page, st = _open(browser, viz_server, f"?mode=build&deck={SUPERSEDED}&tab=change",
                      api_slug=SUPERSEDED, stages=stages)
     try:
         _wait_mode(page, SUPERSEDED, "readonly")

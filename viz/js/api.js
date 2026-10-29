@@ -80,6 +80,83 @@ window.branchStateBadge = function (b) {
        + (b && b.base_moved ? ' <span class="br-state" data-state="base-moved" title="' + e(b.base_moved) + '">base moved</span>' : '');
 };
 
+/* ── A deck's live branches, as rows — ONE renderer, two surfaces (2026-10-28) ──
+ *
+ * The workbench drew these privately (`branchRow` in workbench.js); Build's Change
+ * tab lists the same deck's live branches, and a copy there would have been the
+ * second reading of one artifact. Moved here beside `branchStateBadge`, which it
+ * calls. The rows read `info.json`'s `branches` (`deck_info._branches`) and print
+ * them; nothing is derived.
+ *
+ * `opts.withDeck` prefixes the deck's name (the workbench's fleet-wide rack).
+ * `opts.profile` adds one line of what was MEASURED — how many rows rose, fell and
+ * made no call, and the guard's row when the branch named one — for Build, where
+ * the pilot is deciding what to change next. The workbench leaves it off: there
+ * the pilot called the deltas "messy, illegible" (2026-10-20). Never the
+ * report's merge word as a headline — a branch is read as a whole profile. */
+window.BranchRows = (function () {
+  var e = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]; }); };
+
+  /* The branches that are WORK: open or proposed. Merged, rejected and withdrawn
+   * ones live in the deck page's decided fold. Newest first, as `deck_info._branches`
+   * orders them. */
+  function live(info) {
+    return ((info && info.branches) || []).filter(function (b) {
+      return b && !/^(MERGED|REJECT|WITHDRAW)/.test(String(b.state || ''));
+    });
+  }
+
+  function profileLine(b) {
+    var v = b.verdict;
+    var bits = [];
+    if (v && (v.rose != null || v.fell != null)) {
+      bits.push((v.rose || 0) + ' better · ' + (v.fell || 0) + ' worse · ' + (v.no_call || 0) + ' no call');
+    } else {
+      bits.push('not measured yet');
+    }
+    var o = b.objective;
+    if (o && o.axis) {
+      var g = b.objective_grade || {};
+      bits.push('guard ' + o.axis + ' ' + o.op + ' ' + o.value +
+        (g.state ? ': ' + g.state + (typeof g.reading === 'number' ? ' (' + (+g.reading.toFixed(3)) + ')' : '') : ''));
+    }
+    return '<p class="wb-br-profile">' + e(bits.join(' · ')) + '</p>';
+  }
+
+  /* ONE BRANCH, IN PLAIN WORDS. The headline is Jarvis's summary when one is on the
+   * branch (`deck-branch <slug> summary <name> --title --blurb`): the branch in
+   * words, then one sentence on what it would do and why. Without one the
+   * branch's name stands in and the row says so. */
+  function row(deck, b, opts) {
+    opts = opts || {};
+    var slug = encodeURIComponent(deck.slug), name = encodeURIComponent(b.name);
+    var href = 'branch.html?deck=' + slug + '&branch=' + name;
+    var sm = b.summary || {};
+    var head = (opts.withDeck ? '<a class="wb-br-deck" href="deck.html?deck=' + slug + '">' + e(deck.deck_name || deck.slug) + '</a> ' : '')
+      + '<a class="wb-br-name" href="' + href + '">' + e(sm.title || b.name) + '</a> '
+      + window.branchStateBadge(b)
+      + (b.proposal && b.proposal.as_version ? ' <span class="wb-br-as">proposed as ' + e(b.proposal.as_version) + '</span>' : '')
+      + (sm.title ? ' <span class="wb-br-slug" title="the branch’s name on the bench">' + e(b.name) + '</span>' : '');
+    var blurb = sm.blurb
+      ? '<p class="wb-br-blurb">' + e(sm.blurb) + '</p>'
+      : '<p class="wb-br-blurb wb-br-unsummarised">No summary yet — ask Jarvis to review the branch and it writes one.</p>';
+    var links = '<nav class="wb-br-links">'
+      + '<a href="' + href + '#swaps">the swaps</a>'
+      + '<a href="' + href + '#measured">what was measured</a>'
+      + '<a href="' + href + '#net-change">the net change</a>'
+      + '<a href="deck.html?deck=' + slug + '#panel-branches">all of this deck’s branches</a>'
+      + '</nav>';
+    return '<div class="wb-branch-row" data-state="' + e(String(b.state || 'OPEN').toLowerCase()) + '">'
+      + '<div class="wb-br-head">' + head + '</div>'
+      + blurb
+      + (opts.profile ? profileLine(b) : '')
+      + links + '</div>';
+  }
+
+  return { live: live, row: row };
+})();
+
 /* ── A deck's identity facts — ONE reading, two surfaces (2026-10-28) ─────────
  *
  * The workbench card and Build's deck header both say which deck this is: its

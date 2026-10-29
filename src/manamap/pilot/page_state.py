@@ -36,9 +36,10 @@ KEEP_S = 6 * 3600
 FRESH_S = 15 * 60
 #: Fields a page may report, and the cap on each list. Anything else is dropped,
 #: so a page cannot grow this file into a second store.
+#: `panel` is Build's side-panel tab (change / candidates / deck / numbers, 2026-10-28).
 FIELDS = {"page": str, "url": str, "title": str, "deck": str, "branch": str, "mode": str,
           "focus": str, "selected": list, "library": list, "filters": dict, "view": str,
-          "visible": bool, "focused": bool}
+          "panel": str, "visible": bool, "focused": bool}
 MAX_LIST = 40
 MAX_TEXT = 300
 
@@ -112,7 +113,8 @@ def _ago(s):
 def line(t):
     """One tab in a sentence Jarvis can quote."""
     bits = [t.get("page") or "?"]
-    for key, label in (("mode", "mode"), ("deck", "deck"), ("branch", "branch"), ("view", "view")):
+    for key, label in (("mode", "mode"), ("deck", "deck"), ("branch", "branch"), ("view", "view"),
+                       ("panel", "tab")):
         if t.get(key):
             bits.append(f"{label} {t[key]}")
     if t.get("focus"):

@@ -54,6 +54,15 @@ def test_the_line_names_what_resolves_this_and_flags_a_stale_tab():
     assert "STALE" not in s and "STALE" in ps.line(dict(t, age_s=ps.FRESH_S + 1))
 
 
+def test_builds_panel_tab_is_kept_and_named_in_the_line(path):
+    """Build's side panel is tabs (2026-10-28); the page reports which as `panel`.
+    Without it in FIELDS it would be dropped like any unknown field."""
+    row = ps.record("t1", {"page": "atlas", "mode": "build", "deck": "heliod", "view": "graph",
+                           "panel": "change"}, now=1)
+    assert row["panel"] == "change"
+    assert "view graph · tab change" in ps.line(dict(row, age_s=1))
+
+
 def test_cli_says_nothing_is_open_when_no_page_reported(path, capsys):
     ps.main(type("A", (), {"as_json": False}))
     assert "nothing open" in capsys.readouterr().out

@@ -333,6 +333,59 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .deck-inner::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
 
 .deck-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+
+/* ── Build's panel as tabs (P1, 2026-10-28) ───────────────────────────────
+ * The strip — the picker, the deck's name and badges, the tab bar — is STICKY
+ * inside `.deck-inner`, which stays the scroller: replacing a scroller on every
+ * repaint would throw away the reader's place, and the panel repaints on every
+ * graph reheat. It carries the panel's own padding as negative margins and its
+ * background, so nothing in the body reads through it while scrolled. */
+.bt-strip {
+  position: sticky; top: -16px; z-index: 6;
+  margin: -16px -16px 12px; padding: 16px 16px 0;
+  background: #16213e; border-bottom: 1px solid #2a2a4a;
+}
+.bt-strip .deck-header { margin-bottom: 10px; }
+.bt-strip .deck-format-row { margin-bottom: 10px; }
+.bt-deck { margin-bottom: 8px; }
+.bt-new { margin: 0; flex: none; }
+.bt-tabs { display: flex; gap: 2px; margin: 0 -4px; }
+.bt-tab {
+  flex: 1; background: none; border: none; border-bottom: 2px solid transparent;
+  color: #8a8aa8; font: inherit; font-size: 0.78rem; letter-spacing: 0.02em;
+  padding: 7px 4px 8px; cursor: pointer; white-space: nowrap;
+}
+.bt-tab:hover { color: #e0e0e0; }
+.bt-tab.is-on { color: #c4a747; border-bottom-color: #c4a747; }
+.bt-tab:focus-visible { outline: 2px solid #c4a747; outline-offset: -2px; }
+.bt-tab-n { color: #e0c973; }
+.bt-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.bt-card-back { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+.bt-cmd-row { display: flex; gap: 8px; }
+.bt-cmd { flex: 1; min-width: 0; cursor: pointer; border: 1px solid #2a2a4a; border-radius: 4px; overflow: hidden; background: #1a1a2e; }
+.bt-cmd:hover { border-color: #c4a747; }
+.bt-cmd-art { display: block; width: 100%; aspect-ratio: 626 / 457; object-fit: cover; }
+.bt-cmd-name { display: block; padding: 5px 7px; font-size: 0.78rem; color: #e0e0e0; }
+
+/* The deck's live branches on the Change tab — the workbench's row (BranchRows in
+ * api.js), restyled for this stylesheet: index.html does not load tokens.css. */
+.de-branches .wb-branch-row { border: 1px solid #2a2a4a; border-left: 3px solid #4a9eff; border-radius: 4px;
+  padding: 6px 8px; margin-bottom: 6px; }
+.de-branches .wb-branch-row[data-state^="proposed"] { border-left-color: #e0a030; }
+.de-branches .wb-br-head { font-size: 0.82rem; }
+.de-branches .wb-br-name { color: #e0e0e0; font-weight: 700; text-decoration: none; }
+.de-branches .wb-br-name:hover { text-decoration: underline; }
+.de-branches .wb-br-slug { font-family: monospace; font-size: 0.68rem; color: #777; margin-left: 4px; }
+.de-branches .wb-br-as { color: #e0a030; font-size: 0.72rem; }
+.de-branches .br-state { font-family: monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: #4a9eff;
+  border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; }
+.de-branches .br-state[data-state="proposed"], .de-branches .br-state[data-state="base-moved"] { color: #e0a030; }
+.de-branches .wb-br-blurb { margin: 3px 0; font-size: 0.76rem; line-height: 1.35; color: #bbb; }
+.de-branches .wb-br-unsummarised { color: #777; font-style: italic; }
+.de-branches .wb-br-profile { margin: 2px 0; font-size: 0.72rem; color: #9a9ab8; }
+.de-branches .wb-br-links { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 0.68rem; }
+.de-branches .wb-br-links a { color: #4a9eff; text-decoration: none; }
+.de-branches .wb-br-links a:hover { text-decoration: underline; }
 .deck-header h2 { font-size: 1.1rem; color: #c4a747; }
 
 .deck-section { margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #2a2a4a; }
@@ -341,7 +394,7 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 
 .deck-format-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .deck-format-row label { font-size: 0.85rem; color: #aaa; min-width: 80px; }
-.deck-format-row select, .deck-format-row input { background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 8px; font-size: 0.85rem; flex: 1; }
+.deck-format-row select, .deck-format-row input { background: #1a1a2e; color: #e0e0e0; border: 1px solid #3a3a5a; border-radius: 4px; padding: 5px 8px; font-size: 0.85rem; flex: 1; min-width: 0; }
 .deck-format-row select:focus, .deck-format-row input:focus { outline: none; border-color: #c4a747; }
 
 /* Mana curve mini chart */
@@ -515,8 +568,16 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
  * copy of it in JS, because two owners of "is the graph showing" is how the
  * canvas once stayed hidden through a whole re-entry.
  */
-.graph-bar {
+/* The row both bars sit in (P1, 2026-10-28): Build's settings button beside Fit /
+ * Reheat. The ROW is positioned; each bar keeps its own visibility rule, so the
+ * graph bar still hides with the graph and nothing else has to know. The row lets
+ * clicks through where it has no bar. */
+.canvas-tools {
   position: absolute; top: 8px; right: 8px; z-index: 120;
+  display: flex; align-items: flex-start; gap: 6px; pointer-events: none;
+}
+.canvas-tools > * { pointer-events: auto; }
+.graph-bar {
   display: flex; align-items: center; gap: 6px;
   background: rgba(22,33,62,0.94); border: 1px solid #3a3a5a; border-radius: 5px;
   padding: 5px 6px;
@@ -532,6 +593,28 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 }
 .graph-btn:hover { border-color: #c4a747; color: #e0c973; }
 .graph-btn:focus-visible { outline: 2px solid #c4a747; outline-offset: 1px; }
+.graph-btn.is-on { border-color: #c4a747; }
+
+/* Build's canvas settings: one button, and its popover under it. */
+.build-bar {
+  position: relative;
+  background: rgba(22,33,62,0.94); border: 1px solid #3a3a5a; border-radius: 5px;
+  padding: 5px 6px; box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+.build-bar[hidden] { display: none; }
+.bt-settings {
+  position: absolute; top: calc(100% + 6px); right: 0; width: 260px;
+  background: #16213e; border: 1px solid #3a3a5a; border-radius: 5px;
+  padding: 10px 12px; box-shadow: 0 6px 22px rgba(0,0,0,0.55);
+}
+.bt-settings .deck-section-title { margin-top: 6px; }
+.bt-settings .lens-btn { margin-top: 8px; }
+.bt-settings .discover-graphctl { display: flex; gap: 6px; }
+.bt-settings .discover-graphctl .lens-btn { margin-top: 0; flex: 1; }
+.bt-settings .lens-btn.is-on { border-color: #c4a747; background: #2e2a1a; }
+/* In Build's map view the atlas legend sits top right too: below the settings row,
+ * never under it. */
+#plot:has(#buildBar:not([hidden])) .map-legend { top: 50px; }
 
 /* ── Browse mode (selections too big for the accordion) ───────────────────
  * A list of 400 names is not navigation, it is a wall. The arrows are the whole
@@ -1061,12 +1144,21 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .de-absent, .de-asof { color: #777; }
 .de-col.is-short { color: #e0a060; }
 .de-preview.is-stale { opacity: 0.55; }
-.de-gf { width: 100%; border-collapse: collapse; font-size: 0.7rem; margin: 6px 0; }
+.de-gf { width: 100%; font-size: 0.7rem; margin: 6px 0; }
 .de-gf th { color: #777; font-weight: normal; text-align: left; border-bottom: 1px solid #3a3a5a; padding: 2px 3px; }
 .de-gf td { padding: 2px 3px; color: #ccc; white-space: nowrap; }
 .de-gf .de-v-better td { color: #8ad08a; }
 .de-gf .de-v-worse td { color: #e08a8a; }
-.de-call { font-size: 0.76rem; color: #c4a747; margin: 4px 0; }
+/* The goldfish profile by axis (2026-10-28): three groups, no single call line. */
+.de-gf-group { margin: 6px 0 4px; }
+.de-gf-head { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.5px; color: #888; }
+.de-gf-head span { color: #666; margin-left: 4px; }
+.de-gf-group[data-verdict="better"] .de-gf-head { color: #8ad08a; }
+.de-gf-group[data-verdict="worse"] .de-gf-head { color: #e08a8a; }
+.de-gf-t { width: 100%; border-collapse: collapse; }
+.de-gf-m { white-space: normal !important; width: 42%; }
+.de-gf-none { font-size: 0.7rem; color: #555; margin: 1px 0 0 2px; }
+.de-optional { font-size: 0.66rem; color: #777; text-transform: none; margin-left: 4px; }
 .de-blocking, .de-error { color: #e08a8a; font-size: 0.75rem; margin: 4px 0; }
 .de-blocking ul { margin: 2px 0 0 1em; padding: 0; }
 .de-warnings { color: #e0a060; font-size: 0.72rem; margin: 4px 0; padding-left: 1em; }
@@ -1084,6 +1176,7 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .de-h-save { color: #c4a747; }
 .de-h-at { color: #666; }
 .de-card { margin: 6px 0; }
+.de-card:empty { display: none; }   /* the container waits for the mode probe */
 .de-card-row { display: flex; flex-wrap: wrap; align-items: center; }
 .de-pending { font-size: 0.75rem; color: #c4a747; }
 

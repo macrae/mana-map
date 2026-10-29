@@ -9,7 +9,8 @@ embedding pipeline: ~35,000 oracle cards from Scryfall, two small neural nets (1
 seconds: `manamap pilot try <slug> --out A --in B` runs both lists through the seeded Monte
 Carlo goldfish **game by game on the same seeds**, so the interval is on the difference and
 the noise of two independent samples cancels. A swap that survives becomes a branch, and
-`net-change` grades it on one pre-registered objective plus twelve Holm-corrected rows.
+`net-change` reads it on twelve Holm-corrected rows plus one optional guard, judged as a whole
+profile.
 Since **2026-10-04 Forge is a targeted probe, never a gate**: `forge-cast-check` answers
 "does the AI actually play this card", and a pod run is optional evidence whose loss is a
 warning (`forge_warning`), not a block. A board can be lifted out of a Forge game
@@ -127,8 +128,9 @@ manamap pilot deck-branch <slug> new|stage|propose|withdraw|reject|merge …
                               # a candidate 99; `propose <name> --as v1.2.0` accepts it and
                               # waits for cardboard. Decisions go in the append-only ledger.
 manamap pilot net-change <slug> --branch <name> --write
-                              # ONE primary (the objective) + twelve exploratory rows,
-                              # Holm-corrected, paired per game. A Forge loss is a WARNING.
+                              # twelve Holm-corrected rows + one OPTIONAL guard (the
+                              # objective, shown among them), paired per game, judged as
+                              # a whole profile. A Forge loss is a WARNING.
 manamap pilot card-search --deck <slug> --oracle REGEX     # mine the corpus
 manamap pilot prices <slug> [--branch B] --write            # the list's prices as DATED evidence (prices.json)
 manamap pilot scan-candidates <slug> [--dimension …] --write  # one pass along the deck's axes
@@ -206,7 +208,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 
 - **A validator that fires on correct data is worse than none — measure it against the whole fleet first.** → `docs/gotchas-evidence.md`
 - **Absent means ABSENT, never zero.** An unmeasured figure is a missing key with a reason. → `docs/gotchas-bench.md`
-- **Every rate carries its interval; a comparison carries the interval on the DIFFERENCE; a family carries its correction** (net-change: one primary, twelve Holm-corrected rows). → `docs/gotchas-bench.md`
+- **Every rate carries its interval; a comparison carries the interval on the DIFFERENCE; a family carries its correction** (net-change: twelve Holm-corrected rows plus one optional guard, judged as a whole profile). → `docs/gotchas-bench.md`
 - **Pair what can be paired.** Every goldfish game has its own seed (`f"{seed}:{i}"`, harness v2) and two lists are aligned slot by slot, so `try` and `net-change` read a paired interval — roughly half the width of two independent samples. An A/A reads exactly zero. → `docs/simulation.md`
 - **A mean is not a result.** Carry median, min and max beside it. → `docs/gotchas-bench.md`
 - **Never `cache-record` to make a board green, and never hand-patch an agent's prose to pass a gate.** → `docs/gotchas-bench.md`

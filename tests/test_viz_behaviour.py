@@ -3415,8 +3415,12 @@ def test_naming_a_commander_refreshes_build(page):
         await new Promise(r => setTimeout(r, 3000));
         await Build.select('heliod');
         await new Promise(r => setTimeout(r, 9000));
-        return {defined: typeof Build.onCommanderChange,
-                sections: document.querySelectorAll('#deckInner .deck-section-title').length};
+        // The analysis is split across the Deck and Numbers tabs (2026-10-28).
+        const titles = () => document.querySelectorAll('#deckInner .bt-body .deck-section-title').length;
+        Build.setTab('deck');
+        const deck = titles();
+        Build.setTab('numbers');
+        return {defined: typeof Build.onCommanderChange, sections: deck + titles()};
     }""")
     assert page.js_errors == []
     assert r["defined"] == "function", (
@@ -3621,9 +3625,12 @@ _INK = """
 """
 
 
-def _build_page(browser, viz_server, slug):
+def _build_page(browser, viz_server, slug, tab="deck"):
+    """Build with `slug` loaded, on `tab`. The panel is tabs since 2026-10-28 and a
+    sleeved deck opens on Change; the verified lines and the role budget are Deck's,
+    the curve is Numbers'."""
     from conftest_viz import _boot
-    page = _boot(browser, viz_server, f"?deck={slug}")
+    page = _boot(browser, viz_server, f"?deck={slug}&tab={tab}")
     page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
     page.wait_for_timeout(1500)
     return page
@@ -5487,7 +5494,7 @@ def test_a_group_spotlight_actually_dims_the_graph(browser, viz_server):
     spotlight left every edge at full strength, so the graph stayed a bright
     web while the nodes receded.
     """
-    page = _build_page(browser, viz_server, "edgar-vampires")
+    page = _build_page(browser, viz_server, "edgar-vampires", tab="numbers")
     try:
         assert page.js_errors == [], page.js_errors
         base = _lit_pixels(page)
@@ -5568,7 +5575,7 @@ def test_a_group_spotlight_and_a_line_spotlight_are_not_the_same_thing(browser, 
     slug = _a_deck_with_a_drawable_line()
     if not slug:
         pytest.skip("no deck with a drawable verified line")
-    page = _build_page(browser, viz_server, slug)
+    page = _build_page(browser, viz_server, slug, tab="numbers")
     try:
         seg = page.query_selector(".curve-seg[data-group]")
         assert seg is not None, "no curve segment rendered"
@@ -6301,7 +6308,7 @@ def test_agent_affordances_are_absent_not_broken_without_a_server(browser, viz_s
     # graph to have nodes, which is the signal that a deck actually loaded.
     # Hand-rolling the wait here read "Loading artifacts…" and reported a
     # missing message that had simply not been written yet.
-    page = _build_page(browser, viz_server, "heliod")
+    page = _build_page(browser, viz_server, "heliod", tab="change")
     errors = page.js_errors
     try:
         page.wait_for_function("() => window.Api && Api.probed", timeout=BOOT_TIMEOUT_MS)
@@ -9263,6 +9270,7 @@ def _open_watch(page):
         await new Promise(r => setTimeout(r, 4000));
         await Build.select('sharknado');
         await new Promise(r => setTimeout(r, 4000));
+        Build.setTab('candidates');   // the set picker is the Candidates tab's
         const g = document.getElementById('candGrid');
         return {
             set: Build.watchSetId,

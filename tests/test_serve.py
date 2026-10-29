@@ -554,7 +554,9 @@ def test_a_pool_is_not_a_promise(decks):
 @pytest.mark.parametrize("payload,expect", [
     ({}, "slug"),
     ({"slug": "zur"}, "branch name"),
-    ({"slug": "zur", "name": "t"}, "objective"),
+    # No objective is no longer a refusal (optional since 2026-10-28,
+    # test_pilot_branch_no_objective); the next missing thing is the list itself.
+    ({"slug": "zur", "name": "t"}, "nothing to branch"),
 ])
 def test_opening_a_branch_refuses_with_a_sentence(decks, payload, expect):
     with pytest.raises(ValueError) as e:

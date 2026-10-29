@@ -38,6 +38,7 @@ window.DeckEdit = (function () {
       previewFor: null, gf: null,
       busy: null, measure: null, notice: null, error: null, saved: null,
       branchDone: null,
+      // `axis: ''` is NO GUARD: a branch's objective is optional (2026-10-28).
       form: { note: '', branch: '', axis: '', op: '>=', value: '', why: '' },
     };
   }
@@ -99,10 +100,25 @@ window.DeckEdit = (function () {
   }
 
   /* The panel is Build's; a mode change re-renders it whole so the tray's
-   * section appears or goes. Every smaller change paints only its own part. */
+   * section appears or goes. Every smaller change paints only its own part.
+   *
+   * OFF THE CHANGE TAB (or under the card overlay) nothing of the tray is on
+   * screen, so nothing is repainted but the count on the tab ("Change · 2"), the
+   * header's count and the card's buttons: a Cut pressed on the overlay must not
+   * re-render the panel out from under the card it was pressed on. */
+  function onChangeTab() {
+    return !!(window.Build && Build.tab === 'change' && !Build.cardOpen);
+  }
+
   function repaintPanel() {
-    if (window.Build && Build.renderPanel && window.MM && MM.mode === 'build') Build.renderPanel();
+    if (onChangeTab() && Build.renderPanel && window.MM && MM.mode === 'build') Build.renderPanel();
+    else { paintTabCount(); paintCount(); }
     paintCards();
+  }
+
+  function paintTabCount() {
+    var el = document.getElementById('btChangeN');
+    if (el) el.textContent = S.tray.length ? ' · ' + S.tray.length : '';
   }
 
   /* ── server state: history, axes ──────────────────────────────────────── */
@@ -128,16 +144,15 @@ window.DeckEdit = (function () {
     Api.call('branch/axes', { slug: slug }).then(function (doc) {
       if (S.slug !== slug) return;
       S.axes = doc.axes || [];
-      if (!S.form.axis && S.axes.length) {
-        var k8 = S.axes.filter(function (a) { return a.axis === 'kill_by_8'; })[0];
-        pickAxis((k8 || S.axes[0]).axis);
-      }
+      // No axis is picked for the pilot: a guard is optional, and pre-selecting
+      // one made every branch look as if it had been aimed at kill_by_8.
       paint('form');
     }).catch(function () { S.axes = []; paint('form'); });
   }
 
   function pickAxis(axis) {
     S.form.axis = axis;
+    if (!axis) { S.form.value = ''; return; }
     var row = (S.axes || []).filter(function (a) { return a.axis === axis; })[0];
     if (!row) return;
     S.form.op = row.lower_is_better ? '<=' : '>=';
@@ -194,6 +209,7 @@ window.DeckEdit = (function () {
     persist();
     paint('rows');
     paint('actions');
+    paint('form');
     paintCards();
     schedulePreview();
   }
@@ -477,15 +493,18 @@ window.DeckEdit = (function () {
     if (!S.tray.length) why = 'The tray is empty — cut and add the cards the branch should try.';
     else if (p.error) why = p.error;
     else if (!name) why = 'Name the branch.';
-    else if (!S.form.axis || value === '' || isNaN(+value)) {
-      why = 'Pick the objective it must meet — an axis, a direction and a number.';
+    else if (S.form.axis && (value === '' || isNaN(+value))) {
+      why = 'The guard needs a number — or choose "no guard".';
     }
     if (why) { S.error = why; paint('status'); return; }
-    var slug = S.slug, objective = S.form.axis + ' ' + S.form.op + ' ' + value;
+    var slug = S.slug;
+    var body = { slug: slug, name: name, why: S.form.why.trim() || 'started from Build' };
+    // A GUARD IS OPTIONAL (2026-10-28): a branch is judged on its whole profile, and
+    // a guard is one row it must not fail, shown among the others — never the grade.
+    if (S.form.axis) body.objective = S.form.axis + ' ' + S.form.op + ' ' + value;
     S.busy = 'branch'; S.error = null;
     paint('actions');
-    Api.call('branch/new', { slug: slug, name: name, objective: objective,
-                             why: S.form.why.trim() || 'started from Build' })
+    Api.call('branch/new', body)
       .then(function () {
         var chain = Promise.resolve(), done = 0;
         p.pairs.forEach(function (pr) {
@@ -524,10 +543,12 @@ window.DeckEdit = (function () {
   /* The card panel's half: Add to deck / Cut / Swap for…. Empty outside edit
    * and branch mode, so the library's "+ Deck" behaviour is untouched there. */
   function cardButtons(row) {
-    if (!editing() || !window.MM || MM.mode !== 'build') return '';
+    if (!window.MM || MM.mode !== 'build' || !S.entry) return '';
     var d = MM.cardRecord && MM.cardRecord(row);
     if (!d || !d.n) return '';
-    return '<div class="de-card" data-row="' + (+row) + '">' + cardInner(d.n) + '</div>';
+    // The container is there even while the mode is still being probed, so the
+    // probe's answer can fill it in place (`paintCards`) without a panel repaint.
+    return '<div class="de-card" data-row="' + (+row) + '">' + (editing() ? cardInner(d.n) : '') + '</div>';
   }
 
   function cardInner(name) {
@@ -561,6 +582,10 @@ window.DeckEdit = (function () {
   function trayHtml() {
     if (!S.entry || S.mode === 'off') return '';
     var e = S.entry;
+    // The deck's live branches read `info.json`, a static file, so they are listed
+    // in every mode — on GitHub Pages too — under the one line saying why there is
+    // no tray.
+    var branches = '<div class="deck-section">' + branchesHtml() + '</div>';
     if (S.mode === 'readonly') {
       // The manifest's `status` is `[status, HEADLINE, sentence]` (or a bare string
       // from an older one).
@@ -568,27 +593,31 @@ window.DeckEdit = (function () {
       return '<div class="deck-section de-readonly" id="deckEditReadonly"><p class="lens-note">' +
         esc(e.deck_name || e.slug) + ' is archived (' + esc(status || 'archived') +
         ') — read only. Revive it to edit: <code>manamap pilot deck-state ' + esc(e.slug) +
-        ' revive --reason "…"</code></p></div>';
+        ' revive --reason "…"</code></p></div>' + branches;
     }
-    if (S.mode === 'probing') return '';
+    if (S.mode === 'probing') return branches;
     if (S.mode === 'noapi') {
       return '<div class="deck-section de-noapi" id="deckEditNoApi"><p class="lens-note">' +
         'Editing needs the local bench — run <code>manamap serve</code> and open this page from it.' +
-        '</p></div>';
+        '</p></div>' + branches;
     }
     if (S.mode === 'oldserver') {
       return '<div class="deck-section de-noapi" id="deckEditNoApi"><p class="lens-note">' +
         'This <code>manamap serve</code> predates editing — restart it and reload the page.' +
-        '</p></div>';
+        '</p></div>' + branches;
     }
     var title = S.mode === 'branch'
       ? 'Change it on a branch <span>sleeved — the list is cardboard</span>'
       : 'Edit this deck <span>' + esc(window.DECK_RUNGS[window.deckRung(e)] || '') + '</span>';
     return '<div class="deck-section de-tray" id="deckEditTray" data-mode="' + S.mode + '">' +
       '<div class="deck-section-title">' + title + '</div>' +
+      // The order a change is read in (the pilot's, 2026-10-28): the rows, the
+      // instant checks and the goldfish profile, the deck's live branches, then
+      // what you can do about it, then the history.
       '<div id="deStatus">' + statusInner() + '</div>' +
       '<div id="deRows">' + rowsInner() + '</div>' +
       '<div id="dePreview">' + previewInner() + '</div>' +
+      '<div id="deBranches">' + branchesHtml() + '</div>' +
       '<div id="deActions">' + actionsInner() + '</div>' +
       '<div id="deForm">' + formInner() + '</div>' +
       '<div id="deHistory">' + historyInner() + '</div>' +
@@ -596,7 +625,8 @@ window.DeckEdit = (function () {
   }
 
   var PARTS = { status: ['deStatus', statusInner], rows: ['deRows', rowsInner],
-                preview: ['dePreview', previewInner], actions: ['deActions', actionsInner],
+                preview: ['dePreview', previewInner], branches: ['deBranches', branchesHtml],
+                actions: ['deActions', actionsInner],
                 form: ['deForm', formInner], history: ['deHistory', historyInner] };
 
   function paint(part) {
@@ -604,6 +634,37 @@ window.DeckEdit = (function () {
     var el = p && document.getElementById(p[0]);
     if (el) el.innerHTML = p[1]();
     paintCount();
+    paintTabCount();
+  }
+
+  /* THE DECK'S LIVE BRANCHES — open or proposed — from `info.json`, each with its
+   * state, what was measured and a link to its page. `BranchRows` (api.js) is the
+   * workbench's own row, so the two surfaces print one artifact one way. */
+  function branchesHtml() {
+    var info = S.active && S.active.info;
+    if (!window.BranchRows || !S.entry) return '';
+    var live = window.BranchRows.live(info);
+    var head = '<div class="deck-section-title">Live branches <span>' + live.length + '</span></div>';
+    if (!live.length) {
+      return '<div class="de-branches">' + head + '<p class="lens-note de-no-branches">No open or proposed branch on this deck' +
+        (window.deckRung(S.entry) === 'sleeved' ? ' — a change to a sleeved list starts one.' : '.') + '</p></div>';
+    }
+    return '<div class="de-branches">' + head + live.map(function (b) {
+      return window.BranchRows.row(S.entry, b, { profile: true });
+    }).join('') + '</div>';
+  }
+
+  /* Is there anything to ACT on? The actions are offered once the tray has rows —
+   * before that, the one line in the rows says how to add a swap. On a bench deck
+   * an applied edit leaves the tray empty and Undo, Redo and Save version are
+   * still the next thing to do, so those count too: an empty tray must not strand
+   * an unsaved edit. */
+  function hasWork() {
+    if (S.tray.length || S.busy || S.measure) return true;
+    if (S.mode !== 'edit') return false;
+    var h = S.history || {};
+    var since = sinceSave();
+    return h.undo > 0 || h.redo > 0 || !!(since && (since.ins || since.outs));
   }
 
   function paintAll() {
@@ -740,28 +801,39 @@ window.DeckEdit = (function () {
     return out + '<ul class="de-instant">' + li.join('') + '</ul>';
   }
 
-  /* The paired goldfish table: champion -> after, the delta, the interval ON THE
-   * DIFFERENCE, and the verdict — the same rows `try` prints, with its trust line
-   * and the caveat that the goldfish says nothing about board quality. */
+  /* THE GOLDFISH PROFILE, BY AXIS (the pilot's decision, 2026-10-28): every
+   * paired row the preview read — champion → after, the delta and the 95% interval
+   * ON THE DIFFERENCE — grouped into better / worse / no call. There is no single
+   * verdict line: the `⇒ CALL` that headed this block collapsed the profile into
+   * one word, and a change is read as the whole profile (CLAUDE.md, "no single-
+   * metric gate"). The trust line and the board-quality caveat stay. */
+  var GF_GROUPS = [['better', 'Better'], ['worse', 'Worse'], ['noise', 'No call']];
+
   function goldfishHtml(g) {
     if (!g) return '';
     if (g.pending) return '<p class="lens-note de-gf-wait">goldfish: 10,000 paired games on both lists…</p>';
     if (g.absent) return '<p class="lens-note de-gf-absent">goldfish: ' + esc(g.absent) + '</p>';
-    var rows = (g.table || []).map(function (r) {
-      var ci = r.ci95_diff;
-      var verdict = r.verdict === 'noise' ? 'no call' : r.verdict;
-      return '<tr class="de-v-' + esc(r.verdict) + '"><td>' + esc(r.measure) + '</td>' +
-        '<td>' + num(r.champion) + ' → ' + num(r.branch) + '</td>' +
-        '<td>' + signed(r.delta) + '</td>' +
-        '<td class="de-ci">' + (ci ? '[' + signed(ci[0]) + ', ' + signed(ci[1]) + ']' : '') + '</td>' +
-        '<td>' + esc(verdict || '') + '</td></tr>';
+    var table = g.table || [];
+    var groups = GF_GROUPS.map(function (gr) {
+      var rows = table.filter(function (r) {
+        var v = r.verdict === 'better' || r.verdict === 'worse' ? r.verdict : 'noise';
+        return v === gr[0];
+      });
+      var body = rows.length
+        ? '<table class="de-gf-t"><tbody>' + rows.map(function (r) {
+            var ci = r.ci95_diff;
+            return '<tr class="de-v-' + esc(gr[0]) + '"><td class="de-gf-m">' + esc(r.measure) + '</td>' +
+              '<td>' + num(r.champion) + ' → ' + num(r.branch) + '</td>' +
+              '<td>' + signed(r.delta) + '</td>' +
+              '<td class="de-ci">' + (ci ? '[' + signed(ci[0]) + ', ' + signed(ci[1]) + ']' : '') + '</td></tr>';
+          }).join('') + '</tbody></table>'
+        : '<p class="de-gf-none">none</p>';
+      return '<div class="de-gf-group" data-verdict="' + gr[0] + '">' +
+        '<div class="de-gf-head">' + gr[1] + ' <span>' + rows.length + '</span></div>' + body + '</div>';
     }).join('');
-    return '<table class="de-gf"><thead><tr><th>measure</th><th>champion → after</th>' +
-      '<th>Δ</th><th>95% on the difference</th><th>verdict</th></tr></thead><tbody>' + rows +
-      '</tbody></table>' +
-      '<p class="de-call">⇒ ' + esc(String(g.call || '').toUpperCase()) +
-      ((g.better || []).length ? ': better on ' + esc(g.better.join(', ')) : '') +
-      ((g.worse || []).length ? '; worse on ' + esc(g.worse.join(', ')) : '') + '</p>' +
+    return '<div class="de-gf">' +
+      '<p class="lens-note de-gf-key">The paired goldfish, by axis: champion → after, Δ, and the 95% interval on the difference.</p>' +
+      groups + '</div>' +
       (g.trust ? '<p class="lens-note de-trust">' + esc(g.trust) + '</p>' : '') +
       (g.caveat ? '<p class="lens-note de-caveat">' + esc(g.caveat) + '</p>' : '');
   }
@@ -779,6 +851,7 @@ window.DeckEdit = (function () {
   function actionsInner() {
     var h = S.history || {};
     var block = blocking();
+    if (!hasWork()) return '';
     if (S.mode === 'branch') {
       return btn('branch', S.busy === 'branch' ? 'Starting the branch…' : 'Start a branch',
                  { disabled: !!S.busy || !S.tray.length, cls: 'de-start-branch' });
@@ -797,9 +870,11 @@ window.DeckEdit = (function () {
   }
 
   function formInner() {
+    if (!hasWork()) return '';
     if (S.mode === 'branch') {
+      if (!S.tray.length) return '';
       var axes = S.axes || [];
-      var opts = axes.map(function (a) {
+      var opts = '<option value=""' + (S.form.axis ? '' : ' selected') + '>no guard</option>' + axes.map(function (a) {
         return '<option value="' + esc(a.axis) + '"' + (a.axis === S.form.axis ? ' selected' : '') + '>' +
           esc(a.axis) + (a.current != null ? ' (now ' + (+a.current.toFixed(3)) + ')' : '') +
           (a.needs ? ' — needs ' + esc(a.needs) : '') + '</option>';
@@ -807,12 +882,15 @@ window.DeckEdit = (function () {
       return '<div class="de-form de-branch-form">' +
         '<label>Branch name <input data-de-field="branch" value="' + esc(S.form.branch) + '" placeholder="e.g. ramp-v1"></label>' +
         '<label>What it is for <input data-de-field="why" value="' + esc(S.form.why) + '" placeholder="one sentence"></label>' +
-        '<label>Objective <span class="de-objective">' +
-          '<select data-de-field="axis">' + (opts || '<option value="">loading the axes…</option>') + '</select>' +
-          '<select data-de-field="op"><option' + (S.form.op === '>=' ? ' selected' : '') + '>&gt;=</option>' +
-          '<option' + (S.form.op === '<=' ? ' selected' : '') + '>&lt;=</option></select>' +
-          '<input data-de-field="value" value="' + esc(S.form.value) + '" size="6"></span></label>' +
-        '<p class="lens-note">Pre-registered: the branch is graded on this one objective. ' +
+        '<label>Guard <span class="de-optional">optional</span> <span class="de-objective">' +
+          '<select data-de-field="axis">' + opts + (S.axes ? '' : '<option value="" disabled>loading the axes…</option>') + '</select>' +
+          (S.form.axis
+            ? '<select data-de-field="op"><option' + (S.form.op === '>=' ? ' selected' : '') + '>&gt;=</option>' +
+              '<option' + (S.form.op === '<=' ? ' selected' : '') + '>&lt;=</option></select>' +
+              '<input data-de-field="value" value="' + esc(S.form.value) + '" size="6">'
+            : '') + '</span></label>' +
+        '<p class="lens-note de-guard-note">A guard is one row the branch must not fail, written down ' +
+        'before it is measured and shown among the rows; the branch is judged on the whole profile. ' +
         'Staging is 1-for-1, so the tray must pair every cut with an add.</p></div>';
     }
     var since = sinceSave();
@@ -894,6 +972,7 @@ window.DeckEdit = (function () {
     detach: detach,
     cardButtons: cardButtons,
     trayHtml: trayHtml,
+    branchesHtml: branchesHtml,
     // Build's header count: copies after the tray's edits (null when it has
     // none) and how many edits are pending.
     pendingCopies: pendingCopies,
@@ -903,6 +982,9 @@ window.DeckEdit = (function () {
     get tray() { return JSON.parse(JSON.stringify(S.tray)); },
     get baseSha() { return S.baseSha; },
     __wireOps: wireOps,
+    // What a landed job (history, apply, save) calls: with no tray on screen it
+    // falls back to `repaintPanel`, which off the Change tab paints only the counts.
+    __paintAll: paintAll,
     __balanceLine: balanceLine,
   };
 })();

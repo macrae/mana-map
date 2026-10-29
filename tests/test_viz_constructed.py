@@ -49,13 +49,16 @@ def _entry():
     return next(d for d in doc["decks"] if d["slug"] == SLUG)
 
 
-def _open_build(page, slug=SLUG):
+def _open_build(page, slug=SLUG, tab="numbers"):
     page.evaluate("""() => { document.getElementById('modeSelect').value = 'build';
                              MM.setMode('build'); }""")
     page.wait_for_function("() => MM.mode === 'build'", timeout=10000)
     page.evaluate("s => Build.select(s)", slug)
-    page.wait_for_function("s => Build.deckSlug === s && document.querySelector('#deckInner .lens-stats')",
+    page.wait_for_function("s => Build.deckSlug === s && document.querySelector('#deckInner .bt-tabs')",
                            arg=slug, timeout=30000)
+    # Build's panel is tabs (2026-10-28): the stat tiles are on Numbers, the
+    # sideboard on Deck; the header (count, format) is pinned above every tab.
+    page.evaluate("t => Build.setTab(t)", tab)
 
 
 def test_the_fixture_is_a_modern_deck_with_no_commander():
@@ -173,11 +176,12 @@ def test_a_sideboard_is_listed_and_kept_out_of_the_deck(page):
     body = json.dumps(doc)
     page.route(f"**/data/decks/{SLUG}/cards.json*",
                lambda route: route.fulfill(status=200, content_type="application/json", body=body))
-    _open_build(page)
+    _open_build(page, tab="deck")
     n = _main_copies()
     sect = page.locator("#deckInner .deck-sideboard")
     assert sect.count() == 1
     assert "Sideboard (5)" in sect.text_content()
+    page.evaluate("() => Build.setTab('numbers')")
     assert page.inner_text("#deckInner .lens-stats .lens-stat:first-child .lens-stat-n") == f"{n} / 60+"
     page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=15000)
     on_graph = page.evaluate("""() => ['Lightning Bolt', 'Thoughtseize'].map(n =>

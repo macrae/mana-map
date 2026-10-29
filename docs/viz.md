@@ -227,8 +227,8 @@ python -m http.server 8000
 | `viz/branch.html` | Branch shell: the objective mount and the panel grid |
 | `viz/js/branch-view.js` | The branch workbench (~856 lines). IIFE; exposes `window.Branch` for the browser suite |
 | `viz/js/shell.js` | The library drawer (~930 lines), mounted on every page; `Shell.cardImageUrl(name, version, entry)` is the art helper — a `cards.json` entry's own image (its face by name for a DFC, `art_crop` when asked) when one is passed, the by-name Scryfall URL otherwise |
-| `viz/js/api.js` | The local-server probe (~215 lines). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below), and since 2026-10-18 `window.Fmt` — `esc`, `num`, `pct`, `signed`, `getJSON` — read by the fleet page; the three private copies in workbench, deck and branch are a later cleanup |
-| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all seven pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
+| `viz/js/api.js` | The local-server probe (~460 lines). Also `window.BranchRows` (a deck's live branches as rows — the workbench's and Build's Change tab's one renderer, 2026-10-28). `Api.ready` is false on a static host and every verb degrades to a named command. Also the shared constants every page needs: `MANIFEST_VERSION`, `FORMAT_SPECS` / `formatSpec()` / `formatOptionsHtml()` (see *Formats* below), and since 2026-10-18 `window.Fmt` — `esc`, `num`, `pct`, `signed`, `getJSON` — read by the fleet page; the three private copies in workbench, deck and branch are a later cleanup |
+| `viz/js/page-state.js` | The page-state beacon for Jarvis (~107 lines), loaded right after `api.js` on all seven pages. Each page's own JS calls `PageState.register(fn)` once with a PURE READ of its state (`deck`, `branch`, `mode`, `focus`, `selected`, `library`, `filters`, `view`, and Build's tab as `panel`); it is polled every 1.5 s and POSTed to serve's `page/state` only on change and only when `Api.probe()` finds a local serve. Static hosts send nothing |
 | `viz/library.html` | **Curate** shell: pile rail, grid, pinned pane |
 | `viz/js/library-view.js` | Curate (774 lines). IIFE; multi-select, bulk move/remove, the sorts and filters over `viz_index.json` |
 | `viz/css/library.css` | Curate's own styles (185 lines), on top of `tokens.css` |
@@ -1949,6 +1949,82 @@ was there, and only if nothing else wrote the status meanwhile.
 the tiers, the empty relation, the chip, the badges against the files, their absence, and the
 status — each proven by putting the old behaviour back.
 
+## Build mode: the panel is tabs (P1, 2026-10-28)
+
+Build's side panel was one scroll of sixteen blocks — header, stats, the edit tray,
+candidates, View, Show, the curve, the colour load, the role budget, the sideboard, the open
+card, the verified lines, an Ask box, the Short List, the unmapped names — so whatever the
+pilot came to do was a scroll away. It is now a **pinned strip** and **four tabs**, and only
+the active tab is rendered (`tabBodyHtml`):
+
+- **The strip** (`.bt-strip`, `position: sticky` inside `.deck-inner`, which stays the
+  scroller so a repaint never loses the reader's place): the deck picker, the deck's name
+  (with **+ New deck** when serve is up), its count and commanders, the P0 badge line, and
+  the tab bar.
+- **Change** — the tray's rows, the instant checks, the goldfish profile **by axis**, the
+  deck's **live branches**, then the actions, then the history (`deck-edit.js` renders all of
+  it). The actions — Start a branch on a sleeved deck; Apply · Undo · Redo · Save version on a
+  bench or brewing one — appear only once there is something to act on: tray rows, or on a
+  bench deck an applied edit still to undo, redo or save (an empty tray must not strand an
+  unsaved edit). Before that, one line says how to add a swap (Cut / Swap for… on a card).
+- **Candidates** — the watch-list set picker and counts, the review grid's button, the Short
+  List; a deck with neither says so and names `scan-candidates`.
+- **Deck** — the commanders as cards (a click opens the card), the verified lines, the role
+  budget (still the map legend, still click-to-spotlight), the sideboard, what is not on the
+  map, and the Dossier link.
+- **Numbers** — the stat tiles, the mana curve, the colour load.
+
+**The default tab is the rung's question**: a sleeved deck opens on **Change** (it is opened
+to be changed, through a branch), anything else on **Deck**. The last tab is remembered per
+deck in `sessionStorage` (`mm.buildTab.<slug>`, behind try/catch), `?tab=` deep-links one for
+the first deck the page opens, and page-state reports it as `panel` so Jarvis knows whether
+"this" is the tray, a candidate or the deck as read. Re-reading the same deck after an edit
+keeps its tab.
+
+**Off the Change tab, a tray change repaints nothing but the counts.** A Cut pressed on the
+card overlay, or a preview landing while the pilot reads Numbers, used to re-render the whole
+panel (`DeckEdit.repaintPanel` → `Build.renderPanel`) and would have thrown the card out from
+under the click. Off-tab it paints the tab's count (**Change · 2**, `#btChangeN`), the header
+count and the card's buttons; the Change tab paints its own parts when it is next shown.
+
+**The goldfish profile is grouped, with no single verdict.** The tray's paired table is three
+groups — **Better**, **Worse**, **No call** — each row an axis with champion → after, Δ and the
+95% interval on the difference. The `⇒ CALL` line that headed it (the uppercase BETTER /
+WORSE / TRADE) is gone: one word over a profile is the single-metric gate the pilot keeps
+refusing. The trust line and the board-quality caveat stay.
+
+**The live branches** are `window.BranchRows` (api.js) — the workbench's row, moved out of
+`workbench.js` rather than copied — with `{profile: true}`, which adds one line of what was
+measured ("2 better · 3 worse · 5 no call · guard kill_by_8 >= 0.3: not met (0.266)"). The
+workbench leaves that line off, as the pilot asked on 2026-10-20. The report's merge word is
+never the headline. The rows read `info.json`, so they list on GitHub Pages too, under the
+one line saying there is no tray.
+
+**The card is an overlay on the active tab.** A click on a graph node (`force.js`'s click and
+double-click call `Build.noteCard()` before their own repaint) or `MM.openCard` in Build
+renders the card card-first in place of the tab body — `MM.buildCardDetailHtml`, the same
+block as before — with **×** and **Escape** returning to the tab at the scroll it was left at.
+Only a click opens it: Build pins the commander when it seeds the graph, and an overlay on
+that would cover the tab on every load. **Escape peels the overlay first**, then the settings
+popover, then `handleEscape`'s existing chain (the line spotlight, then `MM.escapeOnce`).
+Choosing a tab closes the overlay.
+
+**View and Show moved to the canvas.** A settings button (**Graph ▾** / **Map ▾**) sits in
+`#buildBar`, in one top-right row (`.canvas-tools`) beside the graph's Fit / Reheat; its
+popover holds Graph | Map, the four Show toggles and **Zoom to the deck**. It is its own
+element because the graph bar hides with the graph and the map view still needs the way back
+to it; in the map view the atlas legend drops below it. A click outside closes it, and leaving
+Build takes it with you.
+
+**"Ask the bench" is removed** (`askSectionHtml`, `ask`, its job poll). The page tells Jarvis
+what is open through page-state instead; serve's `ask` endpoint is untouched and now has no
+caller on this page.
+
+`tests/test_viz_build_tabs.py` drives all of it against a mocked `/api` — the default tab per
+rung, `?tab=`, persistence across a reload, the overlay and Escape's order, the off-tab count,
+the grouped profile with no call line, the live branches, the popover — each proven by putting
+the old behaviour back.
+
 ## Build mode: editing a deck in place (`deck-edit.js`, 2026-10-10)
 
 The pilot's ruling: a deck **brewing or on the bench** is edited STRAIGHT ON THE DECK from
@@ -1970,15 +2046,16 @@ read-only. `window.DeckEdit` is the page half of `manamap pilot edit` (`docs/pil
   **Cut** and **Swap for…** (which holds the card OUT; the next Add pairs with it as a swap).
   The header's library "+ Deck" is hidden in those modes — it reads as the same act and is not.
   Outside them the library behaviour is unchanged.
-- **The tray** (`DeckEdit.trayHtml()`, rendered by `Build.renderPanel` under the stats) lists
+- **The tray** (`DeckEdit.trayHtml()`, Build's **Change** tab since 2026-10-28) lists
   `− A / + B` rows (a copy count is editable on a 60-card deck), a balance line ("2 out, 1 in —
   Commander needs 100"), then `deck/edit/preview` **600 ms after the last change** — a newer tray
   replaces an older request, on the page (a sequence number) and on the server (only the newest
   preview per deck comes back; an older job returns `superseded`). The INSTANT tier: blocking
   sentences, warnings, size, colour sources against target, the curve buckets that moved, combos
   gained and lost, the keep list, roles, and the price delta from the dated `prices.json` with its
-  `as_of` (or "unpriced"). The GOLDFISH tier (a job): measure, champion → after, Δ, the 95%
-  interval ON THE DIFFERENCE, the verdict, the trust line and the board-quality caveat. The tray
+  `as_of` (or "unpriced"). The GOLDFISH tier (a job): every row, champion → after, Δ, the 95%
+  interval ON THE DIFFERENCE, grouped by axis into better / worse / no call (no single call
+  line since 2026-10-28), the trust line and the board-quality caveat. The tray
   is kept in `sessionStorage` under slug + the list's sha and dropped when the sha moves.
 - **Apply / Undo / Redo** post `deck/edit` / `deck/edit/undo|redo` with `expect_sha` (the sha
   `deck/edit/history` reported), so a tab left open across a CLI edit is refused ("the list moved
@@ -1992,9 +2069,12 @@ read-only. `window.DeckEdit` is the page half of `manamap pilot edit` (`docs/pil
   git HEAD; absent when there is neither), and posts `deck/save-version` with `confirm` = the
   slug, as a job. The **history drawer** lists the edits since the last save, with the save marker.
 - **BRANCH mode** (sleeved): the same tray; the action is **Start a branch** — a name, a sentence,
-  and an objective picked from `branch/axes` (`candidates.OBJECTIVE_AXES` less the membership axes
-  `parse_objective` refuses, each with the deck's current reading from `try`'s cached champion;
-  Forge axes need a pod and are not offered). It posts `branch/new`, then `branch/stage` for each
+  and an OPTIONAL **guard** (since 2026-10-28; "no guard" is the default) picked from
+  `branch/axes` (`candidates.OBJECTIVE_AXES` less the membership axes `parse_objective`
+  refuses, each with the deck's current reading from `try`'s cached champion; Forge axes need
+  a pod and are not offered). A guard is one row the branch must not fail, shown among the
+  rows; the branch is judged on the whole profile. With none, `branch/new` gets no
+  `objective` and `net-change` reports the `no objective` state. It posts `branch/new`, then `branch/stage` for each
   1-for-1 pair, and links to `branch.html`. An unbalanced tray is refused with the reason.
 - **The branch page** gained the two verbs it lacked: **Measure** (`branch/net-change`, polled,
   then the page re-renders from the artifact it wrote) and a per-staged-row **Unstage**

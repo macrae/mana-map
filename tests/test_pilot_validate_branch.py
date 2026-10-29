@@ -40,10 +40,13 @@ def test_the_base_list_sha_is_optional_but_must_be_a_sha():
         assert any("base_sha256" in e for e in validate_branch.validate(_doc(base_sha256=bad)))
 
 
-def test_a_v2_branch_owes_an_objective():
+def test_a_v2_branch_needs_no_objective():
+    """Optional since 2026-10-28: a branch is judged on its whole profile, and an
+    objective is a guard row. Absent or null, a v2 branch passes."""
     doc = _doc()
     doc.pop("objective")
-    assert any("no objective" in e for e in validate_branch.validate(doc))
+    assert not any("objective" in e for e in validate_branch.validate(doc))
+    assert not any("objective" in e for e in validate_branch.validate(_doc(objective=None)))
 
 
 def test_a_v1_branch_predates_the_requirement_and_still_loads():

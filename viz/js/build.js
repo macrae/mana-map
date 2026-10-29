@@ -1711,84 +1711,10 @@
       .sort((a, b) => b.n - a.n);
   }
 
-  /* ── ASK — the agents, in the page ────────────────────────────────────
-   *
-   * The reason the local bridge exists. `manamap serve` exposes `/api/ask`,
-   * which spawns a real Claude Code sub-agent against this repo using the same
-   * charters the terminal uses — so the answer here is the answer there, not a
-   * weaker page-flavoured version of it.
-   *
-   * ABSENT, NOT BROKEN. On a deployed page there is no server, so this renders
-   * one line saying what is missing and how to get it. The PRD's rule, and the
-   * answer to `CLAUDE.md`'s objection that a local bridge makes two products:
-   * it does, and the page is the thing that says which one you are holding.
-   *
-   * THE COST IS SHOWN BEFORE IT IS SPENT. The cheapest measured routine is
-   * 54.5k tokens and `candidate-pool` is 235k. A button that spends a quarter
-   * of a million tokens without saying so is the one thing this must not be.
-   */
-  let askJob = null;
-
-  function askSectionHtml() {
-    if (!window.Api) return '';
-    if (!Api.ready) {
-      return '<div class="deck-section"><div class="deck-section-title">Ask</div>'
-        + '<p class="lens-note">' + esc(Api.reason || 'no local server')
-        + ' — the agents answer from your machine, so this half of Build is '
-        + 'absent here rather than broken.</p></div>';
-    }
-    let h = '<div class="deck-section"><div class="deck-section-title">Ask '
-      + '<span>the bench</span></div>'
-      + '<textarea id="bdAsk" class="discover-import" rows="2" '
-      + 'placeholder="Why does this deck stall on turn five?"></textarea>'
-      + '<button class="lens-btn" onclick="Build.ask()">Ask</button>';
-    if (askJob) {
-      h += '<p class="lens-note">' + esc(askJob.cost || '') + '</p>';
-      if (askJob.state === 'running') {
-        h += '<p class="lens-note">thinking…</p>';
-      } else if (askJob.error) {
-        h += '<p class="lens-note">' + esc(askJob.error) + '</p>';
-      } else if (askJob.output) {
-        h += '<div class="lens-line-prose"><p>' + esc(askJob.output.trim())
-          + '</p></div>';
-      }
-    }
-    return h + '</div>';
-  }
-
-  function ask() {
-    const box = document.getElementById('bdAsk');
-    const q = box && box.value.trim();
-    if (!q) return;
-    // The deck is context the pilot should not have to retype. A question asked
-    // from a deck's page is a question ABOUT that deck.
-    const scoped = active
-      ? q + '\n\n(Context: the deck slug is ' + active.slug + '. Its artifacts are '
-          + 'under data/decks/' + active.slug + '/. Read them before answering.)'
-      : q;
-    askJob = { state: 'running', cost: null };
-    renderPanel();
-    Api.call('ask', { question: scoped }).then(function (job) {
-      askJob = job;
-      renderPanel();
-      poll(job.id);
-    }).catch(function (e) {
-      askJob = { state: 'failed', error: e.message };
-      renderPanel();
-    });
-  }
-
-  /* Poll, slowly. An agent takes minutes, so a fast poll is a fast way to
-   * learn nothing repeatedly. */
-  function poll(id) {
-    setTimeout(function () {
-      Api.call('job', { id: id }).then(function (job) {
-        askJob = job;
-        renderPanel();
-        if (job.state === 'running') poll(id);
-      }).catch(function () { /* the server went away; leave the last state */ });
-    }, 2000);
-  }
+  /* ASK THE BENCH is gone (P1, 2026-10-28). `askSectionHtml` posted a free-text
+   * question to serve's `ask` and polled the job; the pilot's decision is that the
+   * page tells Jarvis what is open (page-state) and the question is asked there.
+   * serve's `ask` endpoint stays, callerless from this page. */
 
   /* ── START A NEW DECK ─────────────────────────────────────────────────
    *
@@ -2253,120 +2179,334 @@
     return html ? '<div class="deck-badges">' + html + '</div>' : '';
   }
 
+  /* ── THE PANEL IS TABS (P1 of the pilot's Atlas review, 2026-10-28) ──────
+   *
+   * One long scroll held the header, the stats, the edit tray, the candidates,
+   * View, Show, the curve, the colour load, the role budget, the sideboard, the
+   * open card, the verified lines, an Ask box, the Short List and the unmapped
+   * names — sixteen blocks, so the thing you came to do was always a scroll
+   * away. The pilot's decisions:
+   *
+   *   PINNED   the deck picker, the deck's name, count and badges, the tab bar
+   *   Change      the tray, its instant checks, the goldfish profile by axis,
+   *               the deck's live branches, then the actions and the history
+   *   Candidates  the watch-list set picker and counts, the review grid, the
+   *               Short List
+   *   Deck        commanders, verified lines, the role budget (the map legend),
+   *               the sideboard, what is not on the map, the dossier
+   *   Numbers     the stat tiles, the mana curve, the colour load
+   *
+   * View (Graph/Map) and the Show toggles left the panel for a settings popover
+   * on the canvas (`#buildBar`): they act on the picture, not on the deck. "Ask
+   * the bench" is gone; Jarvis reads the page through page-state instead.
+   *
+   * THE DEFAULT TAB IS THE RUNG'S QUESTION: a sleeved deck is opened to be
+   * changed (through a branch), anything else to be read. The last tab is
+   * remembered per deck in sessionStorage; `?tab=` deep-links one; page-state
+   * reports it as `panel`. Only the ACTIVE tab is rendered. */
+  const TABS = [
+    { key: 'change', label: 'Change' },
+    { key: 'candidates', label: 'Candidates' },
+    { key: 'deck', label: 'Deck' },
+    { key: 'numbers', label: 'Numbers' },
+  ];
+  const TAB_KEYS = TABS.map(t => t.key);
+  const TAB_STORE = 'mm.buildTab.';
+  let tab = 'deck';
+  // `?tab=` is honoured for the first deck the page opens, then the pilot's clicks are.
+  let urlTab = (function () {
+    try {
+      const t = new URLSearchParams(window.location.search).get('tab');
+      return TAB_KEYS.indexOf(t) !== -1 ? t : null;
+    } catch (e) { return null; }
+  })();
+
+  function defaultTab(entry) {
+    return window.deckRung && entry && window.deckRung(entry) === 'sleeved' ? 'change' : 'deck';
+  }
+
+  function storedTab(slug) {
+    try {
+      const t = sessionStorage.getItem(TAB_STORE + slug);
+      return TAB_KEYS.indexOf(t) !== -1 ? t : null;
+    } catch (e) { return null; }
+  }
+
+  function chooseTab(entry) {
+    if (urlTab) { const t = urlTab; urlTab = null; return t; }
+    return storedTab(entry.slug) || defaultTab(entry);
+  }
+
+  function setTab(key) {
+    if (TAB_KEYS.indexOf(key) === -1 || !active) return;
+    cardOpen = false;                       // choosing a tab is leaving the card
+    cardShown = false;
+    tab = key;
+    try { sessionStorage.setItem(TAB_STORE + active.slug, key); } catch (e) { /* private mode */ }
+    renderPanel();
+    const el = panelEl();
+    if (el) el.scrollTop = 0;
+  }
+
+  /* ── THE CARD, AS AN OVERLAY ON THE ACTIVE TAB ─────────────────────────
+   *
+   * A card clicked on the graph (or opened from the library) renders card-first
+   * in place of the tab's body — `MM.buildCardDetailHtml`, the same block as
+   * before — with × and Escape going back to the tab, at the scroll it was left
+   * at. It opens only on a CLICK: Build pins the commander when it seeds the
+   * graph, and an overlay that opened on that would hide the tab on every load. */
+  let cardOpen = false;
+  let cardScroll = 0;
+
+  let cardShown = false;     // what the LAST render drew — the scroll is moved on a change
+
+  function openCard(row) {
+    if (typeof row !== 'number' || row < 0 || !active) return;
+    cardOpen = true;
+    if (window.Session && Session.setFocus) Session.setFocus(row);
+    renderPanel();
+  }
+
+  /* `noteCard` is the graph's half: it marks the overlay open and leaves the
+   * render to the click's own `renderPanel`, so a click paints once. */
+  function noteCard() { cardOpen = true; }
+
+  function closeCard() {
+    if (!cardOpen) return false;
+    cardOpen = false;
+    renderPanel();
+    return true;
+  }
+
+  /* The card opens at its top; closing it puts the tab back where it was read. */
+  function settleCardScroll(el, wasShown) {
+    if (cardShown && !wasShown) { cardScroll = el.scrollTop; el.scrollTop = 0; }
+    else if (!cardShown && wasShown) el.scrollTop = cardScroll;
+  }
+
+  function tabBarHtml() {
+    const n = window.DeckEdit && DeckEdit.pendingEdits ? DeckEdit.pendingEdits() : 0;
+    return '<div class="bt-tabs" role="tablist" aria-label="Build">' + TABS.map(t =>
+      '<button class="bt-tab' + (t.key === tab ? ' is-on' : '') + '" role="tab" data-bt-tab="' + t.key + '"' +
+        ' aria-selected="' + (t.key === tab) + '" onclick="Build.setTab(\'' + t.key + '\')">' +
+        esc(t.label) +
+        (t.key === 'change'
+          ? '<span class="bt-tab-n" id="btChangeN">' + (n ? ' · ' + n : '') + '</span>' : '') +
+      '</button>').join('') + '</div>';
+  }
+
   function renderPanel() {
     const el = panelEl();
     if (!el) return;
+    renderBuildBar();
 
     const picker = deckPickerOptions();
-
-    let html =
+    // The new-deck form is a body of its own; with a deck open, the strip carries
+    // only the button that starts one.
+    const formOpen = !!(newDeck && newDeck.open);
+    let strip =
       '<div class="deck-header">' +
         '<h2>Build</h2>' +
         '<button class="detail-close" onclick="Build.close()" title="Close">×</button>' +
       '</div>' +
-      '<div class="deck-section">' +
-        '<div class="deck-format-row">' +
-          '<label for="deckLensSelect">Deck</label>' +
-          '<select id="deckLensSelect" onchange="Build.select(this.value)">' +
-            '<option value="">Choose a deck…</option>' + picker + draftOptions() +
-          '</select>' +
-        '</div>' +
-        newDeckHtml() +
+      '<div class="deck-format-row">' +
+        '<label for="deckLensSelect">Deck</label>' +
+        '<select id="deckLensSelect" onchange="Build.select(this.value)">' +
+          '<option value="">Choose a deck…</option>' + picker + draftOptions() +
+        '</select>' +
+        // With a deck open the new-deck form's own button would be a body of its own;
+        // the picker row carries a small one instead.
+        (active && !loading && window.Api && Api.ready && !formOpen
+          ? '<button class="lens-btn lens-btn-inline bt-new" onclick="Build.newDeck()" title="Start a new deck">+ New</button>' : '') +
       '</div>';
 
-    if (loading) {
-      html += '<div class="deck-section"><div class="deck-empty">Loading artifacts…</div></div>';
-      el.innerHTML = html;
-      return;
-    }
-
-    if (!active) {
-      html +=
-        '<div class="deck-section">' +
+    if (loading || !active) {
+      let body = newDeckHtml();
+      if (loading) body += '<div class="deck-section"><div class="deck-empty">Loading artifacts…</div></div>';
+      else if (!formOpen) {
+        body += '<div class="deck-section">' +
           '<div class="deck-empty">Pick a published deck to light up its list on the map. ' +
           'Everything else dims, so the deck’s footprint in card space becomes visible.</div>' +
         '</div>';
-      el.innerHTML = html;
+      }
+      el.innerHTML = '<div class="bt-strip">' + strip + '</div><div class="bt-body">' + body + '</div>';
+      cardShown = false;
       return;
     }
 
     const e = active.entry;
     const spec = active.spec;
     // What the deck holds AFTER the tray's edits, while it has any; the list on
-    // disk otherwise. The stats tile below stays the list on disk.
+    // disk otherwise. The stat tile on Numbers stays the list on disk.
     const pendingAfter = window.DeckEdit && DeckEdit.pendingCopies ? DeckEdit.pendingCopies() : null;
     const count = typeof pendingAfter === 'number'
       ? deckCount(pendingAfter, spec, DeckEdit.pendingEdits())
       : deckCount(active.copies, spec, 0);
-    html +=
-      '<div class="deck-section">' +
+    strip +=
+      '<div class="bt-deck">' +
         // The name a deck with no authored one is known by is its slug; the title
         // says so, rather than presenting it as if someone had named it.
         '<div class="lens-title"' + (window.DeckFacts && !DeckFacts.displayName(e).authored
           ? ' title="no authored deck name (issue.json) — named by its slug"' : '') + '>' +
-          esc(deckTitle(e)) + '</div>' +
+          esc(deckTitle(e)) +
+        '</div>' +
         // The deck's COUNT leads, for every format, then a commander where there
         // is one, otherwise the format, which is what a 60-card deck is identified
-        // by. This line used to read "Modern · 60+ cards": the format's RULE, which
-        // read as the count and left a pilot asking how many cards the deck had.
-        // The tray's pending edits move it live (deck-edit.js paints it in place).
+        // by. The tray's pending edits move it live (deck-edit.js paints it in place).
         '<div class="lens-sub">' +
           '<span id="buildDeckCount" class="lens-count' + (count.off ? ' is-off' : '') + '">' +
             esc(count.text) + '</span>' +
           esc(' · ' + (spec.commanders ? (commanderLine() || e.commander || '') : spec.name)) +
         '</div>' +
         deckBadgesHtml() +
-        // The magazine is not a product any more, so nothing invites a pilot
-        // into it. This link survived the removal on the other three surfaces
-        // because it lives in a panel that only renders with a deck loaded —
-        // a grep for the string found it, a click-through never would have.
-        // No Pilot's Manual link either (PRD v2 Step 3, 2026-10-07): the dossier,
-        // which the Deck Context now leads, is the one place a deck is read.
-        '<div class="lens-links">' +
-          '<a href="deck.html?deck=' + esc(active.slug) + '">Dossier →</a>' +
-        '</div>' +
       '</div>' +
+      tabBarHtml();
 
+    let body;
+    const wasShown = cardShown;
+    if (cardOpen && window.Session && Session.focus >= 0 && MM.buildCardDetailHtml) {
+      body = cardOverlayHtml(Session.focus);
+    } else {
+      cardOpen = false;
+      body = (formOpen ? newDeckHtml() : '') + tabBodyHtml(tab);
+    }
+    cardShown = cardOpen;
+    el.innerHTML = '<div class="bt-strip">' + strip + '</div>' +
+      '<div class="bt-body" data-tab="' + tab + '"' + (cardOpen ? ' data-card="1"' : '') + '>' + body + '</div>';
+    settleCardScroll(el, wasShown);
+
+    // Bound ONCE on the container, not per element: `renderPanel` replaces the
+    // whole innerHTML on every repaint, so per-row listeners would be re-bound
+    // on each render and leak the ones they replaced. Same pattern the map
+    // legend uses, for the same reason.
+    if (!el._groupBound) {
+      el._groupBound = true;
+      el.addEventListener('click', function (ev) {
+        const cmd = ev.target.closest && ev.target.closest('[data-bt-card]');
+        if (cmd) { openCard(+cmd.getAttribute('data-bt-card')); return; }
+        const role = ev.target.closest && ev.target.closest('[data-role]');
+        if (role) { focusGroup(role.getAttribute('data-role'), 'role'); return; }
+        const grp = ev.target.closest && ev.target.closest('[data-group]');
+        if (grp) { focusGroup(grp.getAttribute('data-group')); }
+      });
+    }
+    bindProseFade(el);
+
+    /* A block SHORTER than the cap never fires a scroll event, so `is-end` would
+     * never be set and the fade would dim the last lines of prose that has
+     * nothing after it. Rare but real — goblin-storm's line 002 is 877
+     * characters — and a fade over the end of a complete text is a lie about
+     * there being more. Settled on render rather than on scroll, because that
+     * is the only moment the two heights are both known and the reader has not
+     * touched anything yet. */
+    const pr = el.querySelector('.lens-line-prose');
+    if (pr) pr.classList.toggle('is-end', pr.scrollHeight <= pr.clientHeight + 2);
+  }
+
+  function cardOverlayHtml(row) {
+    const label = (TABS.find(t => t.key === tab) || {}).label || 'the tab';
+    return '<div class="bt-card" id="buildCard">' +
+      '<div class="bt-card-head">' +
+        '<span class="bt-card-back">over ' + esc(label) + '</span>' +
+        '<button class="detail-close bt-card-close" onclick="Build.closeCard()" ' +
+          'title="Back to ' + esc(label) + ' (Esc)">×</button>' +
+      '</div>' +
       '<div class="deck-section">' +
+        MM.buildCardDetailHtml(MM.cardRecord(row), row,
+                               { title: true, stats: true, format: active.format }) +
+      '</div></div>';
+  }
+
+  function tabBodyHtml(key) {
+    if (key === 'change') return changeTabHtml();
+    if (key === 'candidates') return candidatesTabHtml();
+    if (key === 'numbers') return numbersTabHtml();
+    return deckTabHtml();
+  }
+
+  /* CHANGE: the tray and everything that judges it, in the order a change is
+   * read — rows, instant checks, the goldfish profile by axis, the deck's live
+   * branches, then the actions and the history (deck-edit.js renders all of it,
+   * since the tray's state is its own). */
+  function changeTabHtml() {
+    const tray = window.DeckEdit ? DeckEdit.trayHtml() : '';
+    return tray || ('<div class="deck-section">' + (window.DeckEdit ? DeckEdit.branchesHtml() : '') + '</div>');
+  }
+
+  function candidatesTabHtml() {
+    let html = candSectionHtml();
+    if (active.candidates.length && !watchSet()) {
+      html +=
+        '<div class="deck-section">' +
+          '<div class="deck-section-title">The Short List <span>◆ data-derived</span></div>' +
+          active.candidates.map(c =>
+            '<div class="lens-cand" onclick="MM.selectByName(' + JSON.stringify(c.name).replace(/"/g, '&quot;') + ')">' +
+              '<span class="lens-cand-name">' + esc(c.name) + '</span>' +
+              '<span class="lens-chip lens-chip-' + esc(c.source) + '">' + esc(c.source) + '</span>' +
+            '</div>').join('') +
+        '</div>';
+    }
+    if (!html) {
+      html = '<div class="deck-section"><div class="deck-empty">No watch list and no Short List ' +
+        'for this deck — <code>manamap pilot scan-candidates ' + esc(active.slug) +
+        ' --write</code> makes one.</div></div>';
+    }
+    return html;
+  }
+
+  function numbersTabHtml() {
+    const mainIdx = active.main.map(function (x) { return x.idx; })
+                               .filter(function (i) { return i !== null; });
+    // Curve and colour load: the deck as a machine — what it costs and what it
+    // demands — where the role budget (Deck) is about what the cards DO. Both are
+    // cheap: `d.m` and `d.mc` are already in the projection row.
+    return '<div class="deck-section">' +
         '<div class="lens-stats">' +
           // Against the format's size: "60 / 60+" says the count AND the rule
           // (a minimum), where a bare 60 said neither. Copies, main deck only.
-          statBox(active.copies + ' / ' + spec.size + (spec.exact ? '' : '+'), 'cards') +
-          statBox(e.verified, 'verified') +
+          statBox(active.copies + ' / ' + active.spec.size + (active.spec.exact ? '' : '+'), 'cards') +
+          statBox(active.entry.verified, 'verified') +
           statBox(active.candidates.length, watchSet() ? 'on watch' : 'short list') +
         '</div>' +
-        '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
       '</div>' +
-      // The edit tray, or the one line saying why there is none (deck-edit.js).
-      (window.DeckEdit ? DeckEdit.trayHtml() : '') +
-      candSectionHtml() +
+      renderManaCurve(mainIdx) + renderColorDist(mainIdx);
+  }
 
-      '<div class="deck-section">' +
-        '<div class="deck-section-title">View</div>' +
-        '<div class="discover-graphctl">' +
-          '<button class="lens-btn' + (view === 'graph' ? ' is-on' : '') +
-            '" onclick="Build.setView(\'graph\')">Graph</button>' +
-          '<button class="lens-btn' + (view === 'map' ? ' is-on' : '') +
-            '" onclick="Build.setView(\'map\')">Map</button>' +
-        '</div>' +
-        '<div class="lens-note">The graph shows what is next to what · the map shows where it sits</div>' +
-      '</div>' +
+  /* The commanders as cards, each opening the overlay — partners are two. */
+  function commandersHtml() {
+    const names = active.commanderNames || [];
+    if (!names.length) return '';
+    return '<div class="deck-section bt-commanders">' +
+      '<div class="deck-section-title">Commander' + (names.length > 1 ? 's' : '') + '</div>' +
+      '<div class="bt-cmd-row">' + names.map(function (n) {
+        const slot = active.main.find(s => s.name === n);
+        const row = slot && slot.idx !== null ? slot.idx : -1;
+        const img = window.Shell && Shell.cardImageUrl
+          ? Shell.cardImageUrl(n, 'art_crop', slot ? slot.card : null) : null;
+        return '<div class="bt-cmd"' + (row >= 0 ? ' data-bt-card="' + row + '" title="Open ' + esc(n) + '"' : '') + '>' +
+          (img ? '<img class="bt-cmd-art" src="' + esc(img) + '" alt="" loading="lazy">' : '') +
+          '<span class="bt-cmd-name">' + esc(n) + '</span></div>';
+      }).join('') + '</div></div>';
+  }
 
-      '<div class="deck-section">' +
-        '<div class="deck-section-title">Show</div>' +
-        toggleRow('dimOthers', dimOthers, 'Dim the other cards') +
-        toggleRow('showEdges', showEdges, 'Verified lines (' + drawnEdges().length + ' drawn)') +
-        toggleRow('showCandidates', showCandidates,
-                  (watchSet() ? 'Candidates' : 'Short List') + ' (' + active.candidates.length + ')') +
-        toggleRow('showIllegal', showIllegal, 'Grey out what you cannot play') +
-      '</div>';
-
-    // Curve and colour load, from the builder half. These are about the deck as a
-    // machine — what it costs and what it demands — where the role budget is about what
-    // the cards DO. Both are cheap: `d.m` and `d.mc` are already in the projection row.
-    const mainIdx = active.main.map(function (x) { return x.idx; })
-                               .filter(function (i) { return i !== null; });
-    html += renderManaCurve(mainIdx) + renderColorDist(mainIdx);
+  function deckTabHtml() {
+    let html = commandersHtml();
+    if (active.edges.length) {
+      html +=
+        '<div class="deck-section">' +
+          '<div class="deck-section-title">Verified lines <span>✓ rules-verified</span></div>' +
+          active.edges.map((edge, i) =>
+            '<div class="lens-line' + (edge.pairs.length ? '' : ' lens-line-nodraw') +
+              (i === focusedLine ? ' is-on' : '') +
+          '" onclick="Build.focusLine(' + i + ')">' +
+              '<div class="lens-line-title">' + esc(edge.title) + '</div>' +
+              '<div class="lens-line-cards">' +
+                (edge.cards.length ? edge.cards.map(esc).join(' · ') : 'no deck card named — no line drawn') +
+              '</div>' +
+              (i === focusedLine ? lineProseHtml(edge) : '') +
+            '</div>').join('') +
+        '</div>';
+    }
 
     // Role budget, which is also the map legend.
     const counts = familyCounts();
@@ -2387,7 +2527,7 @@
           '<div class="lens-bar-row' +
           (focusedGroup && focusedGroup.key === c.family ? ' is-on' : '') +
           '" data-role="' + esc(c.family) + '"' +
-          ' title="' + esc(c.family) + ' \u2014 click to spotlight">' +
+          ' title="' + esc(c.family) + ' — click to spotlight">' +
             '<span class="lens-swatch" style="background:' + familyColour(c.family) + '"></span>' +
             '<span class="lens-bar-label">' + esc(c.family) + '</span>' +
             '<span class="lens-bar-track"><span class="lens-bar-fill" style="width:' +
@@ -2397,54 +2537,6 @@
       '</div>';
     html += sideboardHtml();
 
-    /* THE SELECTED CARD.
-     *
-     * Build's panel showed roles, a curve and the verified lines, and never once showed a
-     * CARD — so single-clicking a node in the deck graph had nowhere to put what you
-     * selected. `MM.buildCardDetailHtml` is the shared block Discovery already renders,
-     * and it carries the relation controls and Keep, so a card behaves identically in
-     * both modes rather than being a second, poorer card view.
-     *
-     * The row comes from Session, which owns "which card am I looking at" — the same
-     * value `Discovery.setCurrent` writes when the graph selects one. */
-    const selected = window.Session ? Session.focus : -1;
-    if (selected >= 0 && MM.buildCardDetailHtml) {
-      html += '<div class="deck-section">' +
-        MM.buildCardDetailHtml(MM.cardRecord(selected), selected,
-                               { title: true, stats: true, format: active.format }) + '</div>';
-    }
-
-    if (active.edges.length) {
-      html +=
-        '<div class="deck-section">' +
-          '<div class="deck-section-title">Verified lines <span>✓ rules-verified</span></div>' +
-          active.edges.map((edge, i) =>
-            '<div class="lens-line' + (edge.pairs.length ? '' : ' lens-line-nodraw') +
-              (i === focusedLine ? ' is-on' : '') +
-          '" onclick="Build.focusLine(' + i + ')">' +
-              '<div class="lens-line-title">' + esc(edge.title) + '</div>' +
-              '<div class="lens-line-cards">' +
-                (edge.cards.length ? edge.cards.map(esc).join(' · ') : 'no deck card named — no line drawn') +
-              '</div>' +
-              (i === focusedLine ? lineProseHtml(edge) : '') +
-            '</div>').join('') +
-        '</div>';
-    }
-
-    html += askSectionHtml();
-
-    if (active.candidates.length && !watchSet()) {
-      html +=
-        '<div class="deck-section">' +
-          '<div class="deck-section-title">The Short List <span>◆ data-derived</span></div>' +
-          active.candidates.map(c =>
-            '<div class="lens-cand" onclick="MM.selectByName(' + JSON.stringify(c.name).replace(/"/g, '&quot;') + ')">' +
-              '<span class="lens-cand-name">' + esc(c.name) + '</span>' +
-              '<span class="lens-chip lens-chip-' + esc(c.source) + '">' + esc(c.source) + '</span>' +
-            '</div>').join('') +
-        '</div>';
-    }
-
     if (active.unmapped.length) {
       html +=
         '<div class="deck-section">' +
@@ -2452,34 +2544,64 @@
           '<div class="deck-empty">' + active.unmapped.map(esc).join(', ') + '</div>' +
         '</div>';
     }
-
-    el.innerHTML = html;
-
-    // Bound ONCE on the container, not per element: `renderPanel` replaces the
-    // whole innerHTML on every repaint, so per-row listeners would be re-bound
-    // on each render and leak the ones they replaced. Same pattern the map
-    // legend uses, for the same reason.
-    if (!el._groupBound) {
-      el._groupBound = true;
-      el.addEventListener('click', function (ev) {
-        const role = ev.target.closest && ev.target.closest('[data-role]');
-        if (role) { focusGroup(role.getAttribute('data-role'), 'role'); return; }
-        const grp = ev.target.closest && ev.target.closest('[data-group]');
-        if (grp) { focusGroup(grp.getAttribute('data-group')); }
-      });
-    }
-    bindProseFade(el);
-
-    /* A block SHORTER than the cap never fires a scroll event, so `is-end` would
-     * never be set and the fade would dim the last lines of prose that has
-     * nothing after it. Rare but real — goblin-storm's line 002 is 877
-     * characters — and a fade over the end of a complete text is a lie about
-     * there being more. Settled on render rather than on scroll, because that
-     * is the only moment the two heights are both known and the reader has not
-     * touched anything yet. */
-    const pr = el.querySelector('.lens-line-prose');
-    if (pr) pr.classList.toggle('is-end', pr.scrollHeight <= pr.clientHeight + 2);
+    // No magazine, no Pilot's Manual (PRD v2 Step 3, 2026-10-07): the dossier, which
+    // the Deck Context leads, is the one place a deck is read.
+    html += '<div class="deck-section lens-links">' +
+      '<a href="deck.html?deck=' + esc(active.slug) + '">Dossier →</a></div>';
+    return html;
   }
+
+  /* ── THE CANVAS'S SETTINGS: View and Show, in a popover beside Fit / Reheat ──
+   *
+   * View (Graph / Map) and the four Show toggles act on the PICTURE, so they live
+   * on it — the rule that moved Fit and Reheat to `#graphBar`. `#buildBar` is its
+   * own element rather than part of the graph bar because the graph bar hides with
+   * the graph, and the map view needs the way back to the graph. */
+  let settingsOpen = false;
+
+  function renderBuildBar() {
+    const bar = document.getElementById('buildBar');
+    if (!bar) return;
+    if (!active || !window.MM || MM.mode !== 'build') { bar.hidden = true; bar.innerHTML = ''; return; }
+    bar.hidden = false;
+    let html = '<button class="graph-btn bt-settings-btn' + (settingsOpen ? ' is-on' : '') + '"' +
+      ' onclick="Build.toggleSettings()" aria-expanded="' + settingsOpen + '"' +
+      ' title="View and what to show">' + (view === 'graph' ? 'Graph' : 'Map') + ' ▾</button>';
+    if (settingsOpen) {
+      html += '<div class="bt-settings" id="buildSettings">' +
+        '<div class="deck-section-title">View</div>' +
+        '<div class="discover-graphctl">' +
+          '<button class="lens-btn' + (view === 'graph' ? ' is-on' : '') +
+            '" onclick="Build.setView(\'graph\')">Graph</button>' +
+          '<button class="lens-btn' + (view === 'map' ? ' is-on' : '') +
+            '" onclick="Build.setView(\'map\')">Map</button>' +
+        '</div>' +
+        '<div class="lens-note">The graph shows what is next to what · the map shows where it sits</div>' +
+        '<div class="deck-section-title">Show</div>' +
+        toggleRow('dimOthers', dimOthers, 'Dim the other cards') +
+        toggleRow('showEdges', showEdges, 'Verified lines (' + drawnEdges().length + ' drawn)') +
+        toggleRow('showCandidates', showCandidates,
+                  (watchSet() ? 'Candidates' : 'Short List') + ' (' + active.candidates.length + ')') +
+        toggleRow('showIllegal', showIllegal, 'Grey out what you cannot play') +
+        '<button class="lens-btn" onclick="Build.fitDeck()">Zoom to the deck</button>' +
+      '</div>';
+    }
+    bar.innerHTML = html;
+  }
+
+  function toggleSettings(open) {
+    settingsOpen = typeof open === 'boolean' ? open : !settingsOpen;
+    renderBuildBar();
+  }
+
+  // A click anywhere outside the popover closes it — it is a menu, not a panel.
+  document.addEventListener('mousedown', function (ev) {
+    if (!settingsOpen) return;
+    const bar = document.getElementById('buildBar');
+    if (bar && ev.target && bar.contains(ev.target)) return;
+    settingsOpen = false;
+    renderBuildBar();
+  }, true);
 
   /* The sideboard as a list, below the role budget. Off the map and out of every
    * count above — a sideboard card is not in the deck. Clicking a name opens it. */
@@ -2528,10 +2650,18 @@
     if (String(slug).indexOf('draft:') === 0) {
       return resumeDraft(slug.slice('draft:'.length));
     }
+    // The same deck re-read (an edit landed) keeps its tab and its open card; a
+    // different deck opens on its own remembered tab, or its rung's default.
+    const same = !!(active && active.slug === slug);
     loading = true;
     renderPanel();
     try {
       active = await loadDeck(slug);
+      if (!same) {
+        tab = chooseTab(active.entry);
+        cardOpen = false;
+        settingsOpen = false;
+      }
       // One answer to "which format": the brief, the "Set as commander" button and
       // Discover all read Session, so the deck you open writes it there.
       if (window.Session && Session.setFormat) Session.setFormat(active.format);
@@ -2793,6 +2923,10 @@
    *
    * Peel outermost-first, then hand the rest to the shared chain. */
   function handleEscape() {
+    // THE OPEN CARD PEELS FIRST: it sits over the tab, so it is the outermost thing on
+    // screen, and the line spotlight under it is still there when it goes.
+    if (closeCard()) return;
+    if (settingsOpen) { toggleSettings(false); return; }
     // Escape means "get me back out". Dropping the spotlight without moving the camera
     // left you zoomed into two cards with no way back except a manual pan, so it also
     // reframes whatever surface you are on.
@@ -2877,7 +3011,7 @@
     clearLine();
     view = v;
     applyView();
-    renderPanel();
+    renderPanel();      // repaints the settings popover with it
   }
 
   /* Build shows a library count too ("N cards from your library will be kept in
@@ -2919,6 +3053,11 @@
   function exit() {
     removeGrid();
     renderGridChip(null);
+    // The canvas's settings belong to Build: leaving takes the button and its popover.
+    settingsOpen = false;
+    cardOpen = false;
+    const bar = document.getElementById('buildBar');
+    if (bar) { bar.hidden = true; bar.innerHTML = ''; }
     const plot = document.getElementById('plot');
     if (plot) plot.classList.remove('force-mode');
     // `Force.newWalk` below clears the graph's half of this; the index is ours.
@@ -2996,8 +3135,14 @@
     get focusedGroup() { return focusedGroup; },
     clearLine,
     handleEscape,
+    setTab,
+    get tab() { return active ? tab : null; },
+    openCard,
+    noteCard,
+    closeCard,
+    get cardOpen() { return cardOpen; },
+    toggleSettings,
     get activeLine() { return focusedLine; },
-    ask,
     newDeck: newDeckOpen,
     newDeckField,
     newDeckStyles,

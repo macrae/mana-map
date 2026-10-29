@@ -293,13 +293,16 @@ manamap pilot validate-protected <slug>                        # protected.json:
 manamap pilot net-change <slug> --branch N [--write] [--json]
                                         #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
                                         #   (every swap, with the reason it was staged,
-                                        #   lands split from spells), the objective
-                                        #   GRADED, every row with its MDE and a plain-
+                                        #   lands split from spells), the guard
+                                        #   GRADED when one was named, every row with its MDE and a plain-
                                         #   language reading, WHAT EACH ROW MEASURES and
                                         #   why we care, the deterministic mana half,
                                         #   Forge, and REWARD / RISK / COST.
-                                        #   ONE PRIMARY, TWELVE EXPLORATORY (2026-09-29):
-                                        #   the objective is the pre-registered test; the
+                                        #   ONE GUARD, TWELVE EXPLORATORY (2026-09-29;
+                                        #   the guard OPTIONAL since 2026-10-28): the
+                                        #   objective, when named, is one row written down
+                                        #   before the run and shown among the others; the
+                                        #   branch is judged on the whole profile. The
                                         #   rows are a FAMILY, each with the interval on
                                         #   its difference, and a verdict needs the MDE
                                         #   AND Holm across the family. Swept before it
@@ -311,8 +314,9 @@ manamap pilot validate-net-change <slug> --branch N
                                         #   `design.primary` is the objective's axis, and an
                                         #   unavailable block owes a reason
 manamap pilot validate-branch <slug> --branch N
-                                        #   the objective is falsifiable and names an
-                                        #   axis the deck PRODUCES; a proposal says what
+                                        #   an objective, when there is one, is falsifiable
+                                        #   and names an axis the deck PRODUCES (none is
+                                        #   allowed since 2026-10-28); a proposal says what
                                         #   it means to become and freezes both shas
 manamap pilot calibrate [--iterations N] [--json]
                                         #   DOES THE MODEL PREDICT ANYTHING? Correlates every
@@ -343,14 +347,18 @@ manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit
                                         #   `forge-cast-check <slug> --branch B --adds --write`
                                         #   proves every add in a shell; `simulate <slug>@B`
                                         #   REFUSES an add not PLAYED under the harness.
-                                        #   THE GIT WORKFLOW FOR A DECK. `new` demands an
-                                        #   --objective (`<measure> <op> <number>`, or the
-                                        #   real table: `forge.win_rate >= 0.25 @standard-v3`
-                                        #   — a Forge axis is a property of the list AT A
-                                        #   TABLE, so it names its pod or is refused;
-                                        #   `candidates.FORGE_OBJECTIVE_AXES`) because
-                                        #   a branch that cannot be falsified gets graded on
-                                        #   whether it did what it does. `commit` freezes a
+                                        #   THE GIT WORKFLOW FOR A DECK. `new` takes an
+                                        #   OPTIONAL --objective — a GUARD (2026-10-28, the
+                                        #   pilot; it was required): `<measure> <op> <number>`,
+                                        #   or the real table: `forge.win_rate >= 0.25
+                                        #   @standard-v3` — a Forge axis is a property of
+                                        #   the list AT A TABLE, so it names its pod or is
+                                        #   refused; `candidates.FORGE_OBJECTIVE_AXES`. Given,
+                                        #   it is still parsed by `parse_objective` alone and
+                                        #   shown among the rows; absent, net-change's state
+                                        #   is `no objective` and the twelve rows are the
+                                        #   whole read. Serve's `branch/new` and Build's
+                                        #   branch form follow the same rule. `commit` freezes a
                                         #   list with a message and is allowed while cards
                                         #   are unsourced; `merge` is not — the gap between
                                         #   them is cardboard. Merge backs up, runs the
@@ -1228,14 +1236,15 @@ price (`model:`), its text and an Atlas link. Read-only, so it runs warm under `
 "Is this card any good here?" names neither the card nor the deck; the page Sean is
 looking at does. Every page loads `viz/js/page-state.js` and registers one function that
 describes itself (page, deck, branch, Atlas mode, the focused card, the selection, the
-library, active filters). The module polls it and POSTs to `serve`'s `page/state` only
+library, active filters — and in Build the side panel's tab as `panel`, change /
+candidates / deck / numbers, since 2026-10-28). The module polls it and POSTs to `serve`'s `page/state` only
 when the snapshot changes or the tab gains or loses focus; `pilot/page_state.py` keeps
 the LATEST per tab in `.progress/page/state.json` (a subdirectory, so the job band never
 reads it as a job) and drops a tab not heard from in six hours.
 
 ```bash
 manamap pilot page-state
-# FOCUSED  atlas · mode build · deck sharknado · focus Windfall · library 3 cards  (12s ago)
+# FOCUSED  atlas · mode build · deck sharknado · view graph · tab change · focus Windfall · library 3 cards  (12s ago)
 #   also   deck · deck edgar-vampires  (4m ago)
 ```
 

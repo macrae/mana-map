@@ -85,11 +85,10 @@ def validate(doc, slug=None, branch=None):
         errors.append(f"base_sha256 is {base!r}, not a decklist sha256")
 
     # ── the objective ────────────────────────────────────────────────────
+    # OPTIONAL since 2026-10-28 (the pilot): a branch is judged on its whole paired
+    # profile, and an objective is a GUARD — one row written down before the run.
+    # None is a branch with no guard; one that IS given must still be well formed.
     o = doc.get("objective")
-    version = int(doc.get("v") or 1)
-    if o is None and version >= 2:
-        errors.append("v2+ and no objective — a branch that cannot be falsified "
-                      "gets graded on whether it did what it does")
     if o is not None:
         for key in ("axis", "op", "value"):
             if key not in o:

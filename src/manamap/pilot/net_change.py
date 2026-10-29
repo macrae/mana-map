@@ -1849,9 +1849,11 @@ def recommend(doc):
             + ". Check whether the AI plays the swapped cards before reading it as "
               "a verdict on the list.")
     if not objective:
+        # No guard named (optional since 2026-10-28): nothing to grade against, so
+        # the report says what changed and the branch is read as its profile.
         out = ("no objective",
-               "This branch never stated what it was for, so nothing here can "
-               "say whether it worked — only what changed.")
+               "No guard was named, so nothing here grades the branch — only what "
+               "changed: read the rows as a whole profile.")
     elif state == "met":
         if fell:
             out = ("a trade",

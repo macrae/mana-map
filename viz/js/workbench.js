@@ -347,48 +347,15 @@
   }
 
 
-  /* The branches that are WORK: open or proposed. Merged, rejected and
-   * withdrawn ones live in the deck page's decided fold. Newest first, as
-   * `deck_info._branches` orders them. */
-  function liveBranches(info) {
-    return ((info && info.branches) || []).filter(function (b) {
-      return b && !/^(MERGED|REJECT|WITHDRAW)/.test(String(b.state || ''));
-    });
-  }
-
-
-  /* ONE BRANCH, IN PLAIN WORDS — and only words. The headline is Jarvis's
-   * summary when one is on the branch (`deck-branch <slug> summary <name>
-   * --title --blurb`): the branch in words, then one sentence on what it would
-   * do and why. Without one the branch's name stands in and the row says so.
-   * The guard, the verdict, the swap count and the deltas were here for an
-   * hour on 2026-10-20 and the pilot called them "messy, illegible, takes up
-   * space"; they live on the branch page, which the four links reach — the
-   * swaps, what was measured, the net change, the deck's rack. `withDeck`
-   * prefixes the deck's name for the fleet-wide rack. */
-  function branchRow(e, b, withDeck) {
-    var slug = encodeURIComponent(e.slug), name = encodeURIComponent(b.name);
-    var href = 'branch.html?deck=' + slug + '&branch=' + name;
-    var sm = b.summary || {};
-    var head = (withDeck ? '<a class="wb-br-deck" href="deck.html?deck=' + slug + '">' + esc(e.deck_name || e.slug) + '</a> ' : '')
-      + '<a class="wb-br-name" href="' + href + '">' + esc(sm.title || b.name) + '</a> '
-      + window.branchStateBadge(b)
-      + (b.proposal && b.proposal.as_version ? ' <span class="wb-br-as">proposed as ' + esc(b.proposal.as_version) + '</span>' : '')
-      + (sm.title ? ' <span class="wb-br-slug" title="the branch’s name on the bench">' + esc(b.name) + '</span>' : '');
-    var blurb = sm.blurb
-      ? '<p class="wb-br-blurb">' + esc(sm.blurb) + '</p>'
-      : '<p class="wb-br-blurb wb-br-unsummarised">No summary yet — ask Jarvis to review the branch and it writes one.</p>';
-    var links = '<nav class="wb-br-links">'
-      + '<a href="' + href + '#swaps">the swaps</a>'
-      + '<a href="' + href + '#measured">what was measured</a>'
-      + '<a href="' + href + '#net-change">the net change</a>'
-      + '<a href="deck.html?deck=' + slug + '#panel-branches">all of this deck’s branches</a>'
-      + '</nav>';
-    return '<div class="wb-branch-row" data-state="' + esc(String(b.state || 'OPEN').toLowerCase()) + '">'
-      + '<div class="wb-br-head">' + head + '</div>'
-      + blurb
-      + links + '</div>';
-  }
+  /* The live branches and their rows are `window.BranchRows` (api.js) since
+   * 2026-10-28: Build's Change tab lists the same rows, and two renderers of one
+   * artifact is how the two surfaces drift. The guard, the verdict, the swap count
+   * and the deltas were on this page for an hour on 2026-10-20 and the pilot called
+   * them "messy, illegible, takes up space", so the workbench asks for the row
+   * WITHOUT the measured line; they live on the branch page, which the four links
+   * reach. */
+  function liveBranches(info) { return window.BranchRows.live(info); }
+  function branchRow(e, b, withDeck) { return window.BranchRows.row(e, b, {withDeck: withDeck}); }
 
   function branchBlock(e, info) {
     var live = liveBranches(info);

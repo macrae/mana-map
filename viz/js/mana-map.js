@@ -4084,8 +4084,10 @@
     // The map lights the card too when the projection has landed — but only as
     // an addition, never as the thing that makes this work.
     if (allData.length) selectByName((cardRecord(row) || {}).n);
-    if (currentMode === 'build' && window.Build) Build.renderPanel();
-    else updateViewerPanel();
+    // In Build the card opens as an overlay on the panel's active tab.
+    if (currentMode === 'build' && window.Build) {
+      if (Build.openCard && Build.deckSlug) Build.openCard(row); else Build.renderPanel();
+    } else updateViewerPanel();
     return true;
   }
 
@@ -4315,6 +4317,9 @@
     if (build) {
       if (build.deckSlug) s.deck = build.deckSlug;
       s.view = build.view;
+      // The side panel's tab (Change / Candidates / Deck / Numbers), so Jarvis
+      // knows whether "this" is the tray, a candidate or the deck as read.
+      if (build.tab) s.panel = build.tab;
     } else if (currentMode === 'explore') {
       s.view = currentMap;
     }
