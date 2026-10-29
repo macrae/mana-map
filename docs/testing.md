@@ -93,6 +93,32 @@ tree alone). `make prepush-full` is the unconditional escape hatch and uses the
 same runner. CI runs the whole suite on every push
 regardless; this only decides what blocks the pilot locally.
 
+## One heavy job at a time (2026-10-29)
+
+On eight cores one `make prepush` is already the whole machine: the regression tier's
+`-n auto` (eight xdist workers) beside the browser suite's four Chromiums. Session
+0ada19cc ran it from the main thread and from subagents AT ONCE, beside a retrain, and
+the load average reached 47. `train-ability`, ~4 min on a quiet machine, crawled for 8 h.
+A stopped background task did not take its children with it: the training process
+kept running until it was killed by hand.
+
+- **The guard.** `.claude/settings.json` runs `src/manamap/jobs.py hook` before every
+  Bash call, subagents' included. A heavy command (a suite `make` target, a parallel
+  pytest, a pipeline compute step, `regen` / `simulate` / `experiment` / `scenario-ab`)
+  beside a running heavy job or xdist worker is refused, naming the job. It judges the
+  program at command position, so `grep "make prepush" log` is not a job, and
+  `pytest -n0 -k one` is not heavy. It fails open. `MANAMAP_ALLOW_CONCURRENT=1` in the
+  command overrides it.
+- **After a stop.** `make jobs` lists every suite, pipeline step, worker, headless
+  browser and server, and marks the orphans (the parent died and launchd adopted the
+  process). `make reap` SIGTERMs the orphans only, sweeping until a pass finds nothing
+  new. A process with a live parent is left alone.
+- **Long jobs log live.** Use `PYTHONUNBUFFERED=1` and a log file under watch, never
+  `| tail` on a job that runs for minutes: the 8-hour stall was invisible because its
+  output was held until the end.
+- **Subagents run scoped tests** (`pytest -n0 <files>`, `make check-deck`). The main
+  thread runs `make prepush` once, on a quiet machine.
+
 ## The three tiers (2026-10-05, 8-core Mac, `-n auto`)
 
 | tier | what it touches | tests | wall |

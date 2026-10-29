@@ -268,6 +268,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **A loop over a possibly-empty collection needs `assert checked >= N`.**
 - **A cache key missing an input serves a PASS the code never earned.** → `docs/testing.md`
 - **Never edit source while the suite or `regen` is running** — the run reads a mix of both.
+- **One heavy job at a time; a stopped task is not a dead tree.** A PreToolUse hook (`manamap.jobs`) refuses a suite, retrain, regen or Forge run beside another — subagents included; `make jobs` lists, `make reap` kills orphans after a `TaskStop` (2026-10-29: load 47, `train-ability` 8 h instead of ~4 min). → `docs/testing.md`
 
 ### The frontend
 

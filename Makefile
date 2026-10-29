@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve manuals clean check demo docs-sizes
+.PHONY: help setup test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve manuals clean check demo docs-sizes jobs reap
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -249,6 +249,16 @@ demo:  ## Rebuild everything the demo shows, then serve it. Run before presentin
 	else \
 	  python3 -m http.server $(PORT); \
 	fi
+
+# One heavy job at a time (src/manamap/jobs.py; the PreToolUse hook in
+# .claude/settings.json refuses a second). A stopped background task can leave its
+# children running — `train-ability` crawled for 8 h on 2026-10-29 — so after a stop,
+# `make reap` kills whatever launchd adopted.
+jobs:  ## What suite, pipeline step, xdist worker, headless browser or server is running
+	@$(PY) -I src/manamap/jobs.py list
+
+reap:  ## Kill the ORPHANS among them (parent died); a process with a live parent is left
+	@$(PY) -I src/manamap/jobs.py reap
 
 docs-sizes:  ## Re-derive the size column in docs/README.md (run after editing a doc)
 	@$(PY) tools/docs_index_sizes.py
