@@ -94,7 +94,10 @@ AREA_TIERS = {
     "viz": ["unit", "browser"],
     "agents": ["unit", "docs"],
     "plugin": ["plugin"],
-    "python": ["unit", "unit-isolated", "regression"],
+    # No isolation proof for a source change (2026-10-29): it re-ran the whole unit
+    # tier (~1 min, on the critical path) to prove what only a HARNESS change can
+    # break, and CI runs it on every push. `full` keeps it.
+    "python": ["unit", "regression"],
 }
 #: Everything `make prepush-full` runs: both tiers, the isolation proof and the
 #: browser suite. The plugin's tests join only when the plugin changed.

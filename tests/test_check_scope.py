@@ -68,13 +68,15 @@ def test_viz_runs_the_unit_tier_and_the_browser_suite_and_no_regression():
     assert cs.commands(plan) == [["make", "test"], ["make", "test-browser"]]
 
 
-def test_python_runs_unit_isolated_and_regression_and_no_browser():
+def test_python_runs_unit_and_regression_and_no_browser():
+    """No isolation proof for a source change: only a harness change can break it,
+    and CI runs it on every push (2026-10-29). A harness change still runs it."""
     plan = cs.classify(["src/manamap/pilot/net_change.py", "tests/test_pilot_net_change.py",
                         "tools/docs_index_sizes.py"])
     assert plan["scope"] == "python"
-    assert plan["tiers"] == ["unit", "unit-isolated", "regression"]
-    assert cs.commands(plan) == [["make", "test"], ["make", "test-unit-isolated"],
-                                 ["make", "regression-prepush"]]
+    assert plan["tiers"] == ["unit", "regression"]
+    assert cs.commands(plan) == [["make", "test"], ["make", "regression-prepush"]]
+    assert "unit-isolated" in cs.classify(["tests/conftest.py"])["tiers"]
 
 
 def test_prepush_leaves_the_fleet_regen_to_ci_and_prepush_full_runs_it():
@@ -82,10 +84,10 @@ def test_prepush_leaves_the_fleet_regen_to_ci_and_prepush_full_runs_it():
     7-15 minutes; a scoped push skips it. Asking for everything still runs it."""
     plan = cs.classify(["src/manamap/pilot/net_change.py"])
     assert ["make", "regression-prepush"] in cs.commands(plan)
-    assert cs.pytest_runs(plan) == 3
+    assert cs.pytest_runs(plan) == 2              # unit + regression-prepush
     everything = {**plan, "everything": True}
     assert ["make", "regression"] in cs.commands(everything)
-    assert cs.pytest_runs(everything) == 4
+    assert cs.pytest_runs(everything) == 3        # unit + regression (two runs)
     recipe = (cs.REPO / "Makefile").read_text()
     target = re.search(r"^regression-prepush:.*\n((?:\t.*\n)+)", recipe, re.M)
     assert target and "REGRESSION_PARALLEL" in target.group(1)
@@ -148,7 +150,7 @@ def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypat
 def test_a_mixed_diff_runs_the_union_of_its_areas():
     plan = cs.classify(["viz/js/shell.js", "src/manamap/pilot/net_change.py"])
     assert plan["scope"] == "python+viz"
-    assert plan["tiers"] == ["unit", "unit-isolated", "regression", "browser"]
+    assert plan["tiers"] == ["unit", "regression", "browser"]
     assert sorted(plan["areas"]) == ["python", "viz"]
     plan = cs.classify(["docs/viz.md", "viz/js/shell.js"])
     assert plan["scope"] == "docs+viz" and plan["tiers"] == ["docs", "unit", "browser"]
@@ -162,7 +164,7 @@ def test_an_area_another_already_covers_adds_nothing():
     plan = cs.classify(["data/decks/heliod/decklist.txt", "src/manamap/pilot/goldfish.py",
                         "docs/pilot.md"])
     assert plan["scope"] == "python" and plan["decks"] == ["heliod"]
-    assert plan["tiers"] == ["unit", "unit-isolated", "regression"]
+    assert plan["tiers"] == ["unit", "regression"]
     assert "python" in plan["why"] and "decks" in plan["why"] and "docs" in plan["why"]
 
 

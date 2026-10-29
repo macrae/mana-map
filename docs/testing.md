@@ -41,7 +41,7 @@ tiers those areas can break:
 | **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the unit tier (the JS parse and cache-bust tests live there) + `make test-browser`; never regression or the regen | 8 min |
 | **agents** | `.claude/**` — charters, skills, settings | the unit tier + the doc guards | 1 min |
 | **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (30 tests) | 5 s |
-| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + its isolation proof + regression, without the fleet regen | 10 min |
+| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + regression, without the fleet regen (the isolation proof is the harness's and CI's, since 2026-10-29) | 9 min |
 | **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
 
 **The fleet regen is not the push's** (2026-10-09, corrected 2026-10-21). Every scope runs
