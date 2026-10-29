@@ -27,7 +27,7 @@ a finder (B2) can ask "how often did the board look like THIS".
 """
 
 from manamap.sim import parse as sim_parse
-from manamap.sim.bridge import reconstruct
+from manamap.sim.bridge import _replay, cut_matches
 from manamap.sim.parse import mean_ci
 
 #: Records made before this block existed carry no `board_series`; a catalog
@@ -115,21 +115,35 @@ def _variants(commanders):
 def series(game, commanders):
     """Per seat, per OWN turn: the board at the start of that turn's cleanup.
 
-    One `reconstruct` per global turn per PARTNER — measured at ~0.4 ms a cut,
-    so a 100-game run costs about a second and a half (three on a partner deck).
-    A label's commanders may be one name or a set of partner names; the
-    `commander_on_battlefield` flag is true when any of them is. Returns
-    `{seat: [{"own_turn": k, "global_turn": G, **snapshot}, ...]}`.
+    ONE replay per PARTNER, walked forward through every turn's cut. It was one
+    `reconstruct` per global turn per partner, each replaying from the first
+    event — quadratic, 111 s of sharknado's 138 s validator (2026-10-29). The cut
+    for turn G is where `reconstruct(game, G, "ending", "cleanup")` stops: the
+    first cleanup of G, or the first event past G, or the end of the log. Cuts
+    only move forward, so one replay reaches each in turn, and the state there is
+    the same prefix fold `reconstruct` computes. A label's commanders may be one
+    name or a set of partner names; the `commander_on_battlefield` flag is true
+    when any of them is. Returns `{seat: [{"own_turn": k, "global_turn": G,
+    **snapshot}, ...]}`.
     """
     turns = own_turns(game)
     max_turn = max((ev["turn"] for ev in game["events"]), default=0)
     variants = _variants(commanders)
+    per_variant = []
+    for cmd in variants:
+        replay = _replay(game, cmd)
+        ev, states = next(replay)[:2]
+        at = {}
+        for g in range(1, max_turn + 1):
+            while ev is not None and ev["turn"] <= g and \
+                    not cut_matches(ev, g, "ending", "cleanup"):
+                ev, states = next(replay)[:2]
+            at[g] = {s: snapshot(st) for s, st in states.items()}
+        replay.close()
+        per_variant.append(at)
     boards = {}
     for g in range(1, max_turn + 1):
-        snaps = []
-        for cmd in variants:
-            states, _notes, _a, _p, _s = reconstruct(game, g, "ending", "cleanup", cmd)
-            snaps.append({s: snapshot(st) for s, st in states.items()})
+        snaps = [at[g] for at in per_variant]
         merged = snaps[0]
         for other in snaps[1:]:
             for s, snap in other.items():

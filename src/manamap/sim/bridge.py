@@ -194,9 +194,13 @@ def _seat_state():
             "commander_zone": None, "last_untap_turn": 0, "attacked_since_untap": set()}
 
 
-def reconstruct(game, turn, phase, step, commanders):
-    """Replay one parsed game up to the START of (turn, phase, step). Returns the v2
-    `seats[]` plus bookkeeping for the scenario's `extras`."""
+def _replay(game, commanders):
+    """Replay one parsed game ONCE, yielding the state BEFORE each event, then the
+    end state with `ev` None: `(ev, seats, notes, active, phase, step)`. The state is
+    live — read it before advancing. `reconstruct` stops at one cut; `board_series`
+    walks one replay through every turn's cut, which replaying from the start for
+    each turn made quadratic (71,244 replays, 111 s of sharknado's validator).
+    """
     seats = {s: _seat_state() for s in game["seats"]}
     for s, n in (game.get("mulligan") or {}).items():
         seats[s]["kept"] = n
@@ -219,13 +223,8 @@ def reconstruct(game, turn, phase, step, commanders):
                 token_makers.setdefault(_nm, set()).add(_ev["seat"])
     notes = set()
     active, cur_phase, cur_step = None, None, None
-    reached = False
     for ev in game["events"]:
-        if cut_matches(ev, turn, phase, step):
-            reached = True
-            break
-        if ev["turn"] > turn:
-            break
+        yield ev, seats, notes, active, cur_phase, cur_step
         k = ev["kind"]
         if k == "phase":
             active = ev["seat"]
@@ -421,6 +420,21 @@ def reconstruct(game, turn, phase, step, commanders):
                         seats[x]["commander_zone"] = "command"
             if s in seats and to == "Graveyard":
                 seats[s]["graveyard"].append(name)
+    yield None, seats, notes, active, cur_phase, cur_step
+
+
+def reconstruct(game, turn, phase, step, commanders):
+    """Replay one parsed game up to the START of (turn, phase, step). Returns the v2
+    `seats[]` plus bookkeeping for the scenario's `extras`."""
+    reached = False
+    for ev, seats, notes, active, cur_phase, cur_step in _replay(game, commanders):
+        if ev is None:
+            break
+        if cut_matches(ev, turn, phase, step):
+            reached = True
+            break
+        if ev["turn"] > turn:
+            break
     if any(str(p.get("pt") or "").count("*") for st in seats.values()
            for p in st["perms"].values()):
         notes.add("a creature on this board has a CHARACTERISTIC-DEFINING power "

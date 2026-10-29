@@ -381,7 +381,10 @@ def test_a_procedure_page_names_only_cards_the_deck_runs():
         for k, v in corpus.items():
             if len(k) <= 10 or k in have:
                 continue
-            if not re.search(r"\b" + re.escape(v) + r"\b", text):
+            # The substring test first: it is NECESSARY for the word-boundary match
+            # and runs in C, so the regex is compiled only for the handful of names
+            # that occur at all — 35k regexes per deck took this test to 213 s.
+            if v not in text or not re.search(r"\b" + re.escape(v) + r"\b", text):
                 continue
             # Is it only there as part of a longer card name the deck DOES run?
             if any(v in real and v != real
