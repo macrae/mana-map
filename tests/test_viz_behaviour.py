@@ -176,9 +176,9 @@ def test_drill_back_restores_the_world(page):
 
 
 @pytest.mark.xfail(strict=False, reason=(
-    "KNOWN FAILURE, cause unknown (2026-10-29): passes alone and with the tests before it, "
-    "reads exactly 207px (> 140) in every full parallel browser run — a fixed value, so "
-    "another test's state, not load. A longer wait did not fix it and was reverted."))
+    "INTERMITTENT, cause unknown (2026-10-29): passes alone; in full runs the open row "
+    "has read exactly 207px (> 140). Not loading — it failed once with MM.whenIdle "
+    "(fetches, body reads, images idle) as well as with a fixed 600 ms."))
 def test_small_selection_uses_the_accordion(page):
     result = page.evaluate("""async () => {
         ['Sol Ring', 'Lightning Bolt', 'Counterspell', 'Grave Pact'].forEach(n => MM.selectByName(n));
