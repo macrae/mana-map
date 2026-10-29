@@ -83,6 +83,33 @@ def test_discarding_this_card_is_not_the_discard_tag():
     assert "discard" not in tags
 
 
+def test_a_payoff_is_tagged_apart_from_a_card_that_does_the_thing():
+    """`draw` / `discard` say a card DOES it; the payoffs say it PAYS OFF when anyone
+    does — the wheels' real partners (Nekusar, Waste Not, Brallin), 2026-10-29."""
+    assert "draw_payoff" in tag_oracle_text(
+        "Whenever an opponent draws a card, Nekusar deals 1 damage to that player.")
+    assert "draw_payoff" in tag_oracle_text(
+        "Whenever you draw your second card each turn, create a 1/1 blue Illusion token.")
+    assert "discard_payoff" in tag_oracle_text(
+        "Whenever an opponent discards a card, that player loses 2 life.")
+    assert "discard_payoff" in tag_oracle_text(
+        "Whenever you discard one or more cards, Brallin deals that much damage to each opponent.")
+    assert "discard_payoff" in tag_oracle_text(
+        "Whenever you cycle or discard another card, put a -1/-1 counter on each creature.")
+
+
+def test_a_card_that_draws_on_a_trigger_is_not_a_payoff():
+    """"Whenever X, draw a card" draws; it does not pay off drawing. A replacement
+    ("if a player would draw") is not a trigger. And a wheel is not its own payoff."""
+    for text in ("Whenever this creature attacks, draw a card.",
+                 "Whenever you cast an instant or sorcery spell, draw a card, then discard a card.",
+                 "If an opponent would draw a card except the first one they draw in each of "
+                 "their draw steps, instead that player skips that draw.",
+                 "Each player discards their hand, then draws seven cards."):
+        tags = tag_oracle_text(text)
+        assert "draw_payoff" not in tags and "discard_payoff" not in tags, (text, tags)
+
+
 def test_removal_destroy():
     text = "Destroy target creature."
     tags = tag_oracle_text(text)

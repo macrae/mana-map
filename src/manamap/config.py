@@ -427,6 +427,19 @@ MECHANICAL_TAGS = {
     "graveyard_matters": r"(?:cards? in|from) (?:your |a )?graveyard|flashback|dredge|unearth|escape",
     # Storm
     "storm": r"\bstorm\b",
+    # Payoffs (2026-10-29). `draw` and `discard` say a card DOES the thing; these say it
+    # PAYS OFF when anyone does: Nekusar, Smothering Tithe, Psychosis Crawler, Waste Not,
+    # Brallin, Archfiend of Ifnir. Without them every wheel's synergy partners were the
+    # same tag-pair generic ten. Corpus sweep 2026-10-29: draw_payoff 135, discard_payoff
+    # 81, samples read card by card; "whenever X, draw a card" (a card that draws) and
+    # "if a player would draw" (a replacement) are deliberately not payoffs.
+    "draw_payoff": r"\bwhenever (?:a player|an opponent|you|each player|another player|"
+                   r"target player|that player|one or more (?:players|opponents)) draws? "
+                   r"(?:a card|one or more cards|(?:a|your|their|his or her) \w+ card)",
+    "discard_payoff": r"\bwhenever (?:a player|an opponent|you|each player|another player|"
+                      r"target player|that player|one or more (?:players|opponents)) "
+                      r"(?:cycles? or )?discards? (?:a|an|another|one or more|two or more) "
+                      r"(?:\w+ )?cards?",
 }
 
 MECHANICAL_TAG_NAMES = sorted(MECHANICAL_TAGS.keys())
@@ -504,6 +517,8 @@ SYNERGY_RULES = [
     ("aura", "protection", "Aura + Protection"),
     ("ramp", "cost_reduction", "Ramp + Cost Reduction"),
     ("counterspell", "draw", "Counterspell + Draw"),
+    ("draw", "draw_payoff", "Draw + Draw Payoff"),
+    ("discard", "discard_payoff", "Discard + Discard Payoff"),
 ]
 
 # ── Deckbuilding Roles ───────────────────────────────────────────────────
@@ -860,6 +875,8 @@ REGION_TAG_DISPLAY_NAMES = {
     "evasion_trample": "Tramplers",
     "evasion_menace": "Menace",
     "evasion_unblockable": "Unblockable",
+    "draw_payoff": "Draw Payoffs",
+    "discard_payoff": "Discard Payoffs",
 }
 
 REGION_COLOR_DISPLAY_NAMES = {
