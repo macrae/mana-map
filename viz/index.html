@@ -13,7 +13,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
 <title>Mana Map</title>
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-<link rel="stylesheet" href="css/mana-map.css?v=265">
+<link rel="stylesheet" href="css/mana-map.css?v=266">
 </head>
 <body>
 
@@ -48,6 +48,11 @@
   <div data-modes="explore build">
     <label for="colorBy">Color by</label>
     <select id="colorBy">
+      <!-- Explore's default since 2026-10-28 (the pilot's review: "a lens, not a
+           museum"): the cards in your SLEEVED decks lit, one colour per deck,
+           the corpus dimmed to texture. `?color=` names another. Explore-only —
+           `MODE_GROUPINGS` hides it in Build and Discover. -->
+      <option value="decks">My decks</option>
       <option value="supertype">Supertype</option>
       <option value="role">Role</option>
       <option value="color">Primary Color</option>
@@ -61,28 +66,45 @@
     <input id="search" type="text" placeholder="Card name..." autocomplete="off">
     <div id="searchResults" class="search-results" hidden></div>
   </div>
-  <!-- The printing HIGHLIGHT. Explore only: it dims the atlas around a set or a
-       first-printed range, and only the atlas has a corpus to dim against. A set
-       is the CORPUS printing's set, so it includes that set's reprints; the
-       dates are when a card FIRST existed, which for a reprint is a different
-       year. Both are said where they are chosen. -->
-  <div class="print-filter" id="printFilter" data-modes="explore">
-    <label for="setSelect" title="Cards whose corpus printing is this set — so it includes the set's reprints">Set</label>
-    <select id="setSelect" title="Cards whose corpus printing is this set — so it includes the set's reprints">
-      <option value="">any set</option>
-    </select>
-    <label for="firstAfter" title="When the card FIRST existed, across every printing — not when this printing came out">First printed</label>
-    <input id="firstAfter" type="date" aria-label="First printed on or after" title="on or after">
-    <span class="print-to">to</span>
-    <input id="firstBefore" type="date" aria-label="First printed on or before" title="on or before">
-    <button class="toggle-btn" id="printClear" type="button" hidden title="Clear the set and date highlight (Esc)">×</button>
+  <!-- THE SET LENS: "show me the new set" in one click. `mana-map.js` derives the
+       newest set from `sets.json` + `viz_index.json` (never a literal) and fills
+       the label; it stays hidden until it has one. It IS the set filter below,
+       set to that code — picking any other set is the Filters popover. -->
+  <button class="toggle-btn set-lens" id="setLens" type="button" data-modes="explore" hidden></button>
+  <!-- FILTERS, behind one button (2026-10-28). The set, the first-printed range and
+       the nine type pills were all in view all the time; now they sit in a popover
+       and the button counts what is active. The controls keep their ids, so every
+       reader and writer of them (`applyPrintFocus`, `MM.setPrintFocus`, the
+       type toggles) is unchanged. -->
+  <div class="filters-wrap" id="filtersWrap" data-modes="explore build">
+    <button class="toggle-btn filters-btn" id="filtersBtn" type="button"
+            aria-expanded="false" aria-controls="filtersPop">Filters<span class="filters-count" id="filtersCount" hidden></span></button>
+    <div class="bt-settings filters-pop" id="filtersPop" hidden>
+      <!-- The printing HIGHLIGHT. Explore only: it dims the atlas around a set or a
+           first-printed range, and only the atlas has a corpus to dim against. A set
+           is the CORPUS printing's set, so it includes that set's reprints; the
+           dates are when a card FIRST existed, which for a reprint is a different
+           year. Both are said where they are chosen. -->
+      <div class="print-filter" id="printFilter" data-modes="explore">
+        <div class="deck-section-title">Set</div>
+        <div class="filters-row">
+          <select id="setSelect" aria-label="Set" title="Cards whose corpus printing is this set — so it includes the set's reprints">
+            <option value="">any set</option>
+          </select>
+          <button class="toggle-btn" id="printClear" type="button" hidden title="Clear the set and date highlight (Esc)">×</button>
+        </div>
+        <div class="deck-section-title" title="When the card FIRST existed, across every printing — not when this printing came out">First printed</div>
+        <div class="filters-row">
+          <input id="firstAfter" type="date" aria-label="First printed on or after" title="on or after">
+          <span class="print-to">to</span>
+          <input id="firstBefore" type="date" aria-label="First printed on or before" title="on or before">
+        </div>
+      </div>
+      <div class="deck-section-title">Types</div>
+      <div class="toggles" id="toggles"></div>
+    </div>
   </div>
-  <div class="toggles" id="toggles" data-modes="explore build"></div>
   <div class="topo-toggles" data-modes="explore">
-    <button class="toggle-btn" id="toggleContours" title="Density contours">Topo</button>
-    <button class="toggle-btn active" id="toggleLabels" title="Region labels">Labels</button>
-    <button class="toggle-btn active" id="toggleMotion"
-            title="Ambient drift — the atlas turns slowly at altitude, and settles as you zoom in">Motion</button>
     <button class="toggle-btn" id="drillFiltered" onclick="Drill.enterFiltered()"
             title="Re-map the currently filtered cards from their 128-dim embeddings">Drill ⤓</button>
   </div>
@@ -108,6 +130,26 @@
          own element because the graph bar hides with the graph, and the map view
          still needs the way back to it; `build.js` fills it in Build only. -->
     <div class="canvas-tools">
+      <!-- Explore's settings (2026-10-28): Topo, Labels and Motion act on the
+           PICTURE, so they live on it, in a gear popover — the pattern and the CSS
+           of Build's settings beside it. They held a front-row seat in the toolbar
+           they did not earn. Static markup: the buttons keep their ids and their
+           listeners; `mana-map.js` only opens, closes and hides the bar by mode. -->
+      <div id="exploreBar" class="build-bar explore-bar" hidden>
+        <button class="graph-btn bt-settings-btn" id="exploreSettingsBtn" type="button"
+                aria-expanded="false" aria-controls="exploreSettings"
+                title="Map settings: contours, labels, motion">⚙ Map</button>
+        <div class="bt-settings" id="exploreSettings" hidden>
+          <div class="deck-section-title">Show</div>
+          <div class="explore-settings-row">
+            <button class="toggle-btn" id="toggleContours" type="button" title="Density contours">Topo</button>
+            <button class="toggle-btn active" id="toggleLabels" type="button" title="Region labels">Labels</button>
+            <button class="toggle-btn active" id="toggleMotion" type="button"
+                    title="Ambient drift — the atlas turns slowly at altitude, and settles as you zoom in">Motion</button>
+          </div>
+          <div class="lens-note">Topo: density contours · Labels: region names, with what each region is for under them · Motion: the drift at altitude</div>
+        </div>
+      </div>
       <div id="buildBar" class="build-bar" hidden></div>
       <div id="graphBar" class="graph-bar" hidden></div>
     </div>
@@ -127,19 +169,19 @@
      even if the atlas never loads. -->
 <!-- Probes for a local `manamap serve`. Dependency-free and early, because
      every agent affordance is gated on the answer. -->
-<script src="js/api.js?v=265"></script>
-<script src="js/page-state.js?v=265"></script>
-<script src="js/shell.js?v=265"></script>
-<script src="js/stage.js?v=265"></script>
-<script src="js/session.js?v=265"></script>
-<script src="js/decklist.js?v=265"></script>
-<script src="js/discovery.js?v=265"></script>
-<script src="js/render/canvas.js?v=265"></script>
-<script src="js/mana-map.js?v=265"></script>
-<script src="js/drill.js?v=265"></script>
-<script src="js/force.js?v=265"></script>
-<script src="js/build.js?v=265"></script>
+<script src="js/api.js?v=266"></script>
+<script src="js/page-state.js?v=266"></script>
+<script src="js/shell.js?v=266"></script>
+<script src="js/stage.js?v=266"></script>
+<script src="js/session.js?v=266"></script>
+<script src="js/decklist.js?v=266"></script>
+<script src="js/discovery.js?v=266"></script>
+<script src="js/render/canvas.js?v=266"></script>
+<script src="js/mana-map.js?v=266"></script>
+<script src="js/drill.js?v=266"></script>
+<script src="js/force.js?v=266"></script>
+<script src="js/build.js?v=266"></script>
 <!-- Build's edit tray: edit a bench deck in place, or start a branch on a sleeved one. -->
-<script src="js/deck-edit.js?v=265"></script>
+<script src="js/deck-edit.js?v=266"></script>
 </body>
 </html>

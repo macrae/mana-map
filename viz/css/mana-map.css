@@ -722,6 +722,19 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
     -1px  1px 0 rgba(8, 10, 20, 0.95), 1px  1px 0 rgba(8, 10, 20, 0.95),
      0    0   10px rgba(196, 167, 71, 0.9);
 }
+/* THE FUNCTIONAL SUBTITLE (2026-10-28). The witty name stays the name; under it, in
+   plain words, what the region is FOR ("draw-seven wheels", "tapped lands · lands").
+   Derived at render time in `mana-map.js` (`regionSubtitle`). Shown on hover, and at
+   zoom — `setAnnotations` adds `.show-sub` when the camera is close enough that the
+   region is a place you are looking at rather than a country you are flying over.
+   The name and the subtitle are blocks so the label stays one centred column. */
+.map-label-name { display: block; }
+.map-label-sub {
+  display: none; font-size: 0.72em; font-weight: 400; font-style: italic;
+  color: inherit; opacity: 0.9; letter-spacing: 0.01em; margin-top: 1px;
+}
+.map-label.show-sub .map-label-sub, .map-label:hover .map-label-sub { display: block; }
+.map-label:hover { z-index: 2; }
 
 .map-legend {
   position: absolute; top: 10px; right: 10px; z-index: 25;
@@ -749,6 +762,14 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .map-legend-row:focus-visible { outline: 1px solid #c4a747; outline-offset: 1px; }
 .map-legend-row.is-active { opacity: 1; background: rgba(196, 167, 71, 0.18); font-weight: 600; }
 .map-legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+/* The "My decks" legend: a head naming what is lit, and the bench toggle as a row. */
+.map-legend-head { font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: #c4a747; margin: 0 4px 4px; }
+.map-legend-note { font-size: 0.68rem; color: #8a8aa0; margin: 4px 4px 0; white-space: normal; max-width: 200px; }
+.map-legend-row.map-legend-opt { margin-top: 5px; border-top: 1px solid #2a2a4a; padding-top: 4px; opacity: 0.7; }
+.map-legend-row.map-legend-opt .map-legend-box { width: 9px; height: 9px; border: 1px solid #8a8aa0; border-radius: 2px; flex-shrink: 0; }
+.map-legend-row.map-legend-opt.is-active .map-legend-box { background: #c4a747; border-color: #c4a747; }
+.map-legend-row.map-legend-opt.is-active { background: none; font-weight: normal; opacity: 0.95; }
 
 /* Discovery — the landing. Few controls on purpose: a type, a colour, a cost band,
    and a re-roll. */
@@ -856,6 +877,37 @@ body { background: #1a1a2e; color: #e0e0e0; font-family: system-ui, -apple-syste
 .print-filter select:disabled, .print-filter input:disabled { opacity: 0.45; cursor: not-allowed; }
 .print-filter .print-to { font-size: 0.8rem; color: #8a8aa0; }
 .print-filter .toggle-btn[hidden] { display: none; }
+
+/* ── Filters, behind one button (2026-10-28) ──────────────────────────────
+ * The set, the first-printed range and the type pills moved into a popover that
+ * reuses Build's settings card (`.bt-settings`), anchored LEFT under the button
+ * rather than right. The wrapper is positioned so the card hangs under the
+ * button, and the card sits above the canvas row (z 120) because it falls over
+ * the map. In the popover the print filter stacks instead of running inline. */
+.filters-wrap { position: relative; }
+.filters-btn { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-size: 0.8rem; }
+.filters-btn.is-on { border-color: #c4a747; color: #e0c973; }
+.filters-count { background: #c4a747; color: #16162a; border-radius: 8px; padding: 0 6px;
+  font-size: 0.68rem; font-weight: 700; line-height: 1.4; }
+.filters-count[hidden] { display: none; }
+.filters-pop { left: 0; right: auto; width: 330px; z-index: 300; }
+.filters-pop[hidden] { display: none; }
+.filters-pop .print-filter { display: block; }
+.filters-pop .print-filter[hidden] { display: none; }
+.filters-pop .filters-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.filters-pop .filters-row select { flex: 1; min-width: 0; max-width: none; }
+.filters-pop .toggles { margin-top: 4px; }
+/* The set lens: one click to the newest set. Gold when lit, like every other "on". */
+.set-lens { padding: 4px 10px; font-size: 0.8rem; }
+.set-lens.active { background: #2e2a1a; border-color: #c4a747; color: #e0c973; }
+.toolbar .set-lens[hidden] { display: none; }
+
+/* ── Explore's settings gear: Build's popover, on the atlas ──────────────── */
+.explore-bar .bt-settings[hidden] { display: none; }
+.explore-settings-row { display: flex; gap: 6px; margin-top: 6px; }
+.explore-settings-row .toggle-btn { flex: 1; }
+.explore-settings-row .toggle-btn.active { background: #2a3a4a; border-color: #5ab4c4; color: #5ab4c4; }
+#plot:has(#exploreBar:not([hidden])) .map-legend { top: 50px; }
 
 /* ── "Start somewhere else" ────────────────────────────────────────────────
    Nine buttons used to sit ABOVE the card the front door is about. They are

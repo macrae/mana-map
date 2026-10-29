@@ -496,6 +496,84 @@ clears the lens, the region focus, the legend focus and the selection, and refit
 other `orientTo` caller stays: the lens re-engages the moment you ask from inside Explore,
 which is what `MM.relate` does.
 
+### Explore opens as a lens (Atlas P1, 2026-10-28)
+
+The pilot's review: Explore "opens as a museum, not a lens" — coloured by supertype, a
+set picker, two dates, nine type pills and Topo / Labels / Motion all in view, over
+"34,964 cards shown". His questions were *where do my decks live*, *where's the new set*
+and *what is near this hole in my deck*. Five changes, each held by
+`tests/test_viz_explore_lens.py` and each proven by putting the old behaviour back:
+
+- **It opens coloured by "My decks"** (`GROUPINGS.decks`), unless the URL names another
+  colouring (`?color=supertype|color|rarity|decks`, `?colour=` too). Every card in a
+  **sleeved** deck draws in that deck's colour; everything else is the grouping's `quiet`
+  group, *Not in a deck*, drawn first, small, at 0.2 alpha and with no halo, so the shape
+  of the corpus stays legible behind the decks without competing with them. Membership has
+  one home — the deck manifest's `cards`, handed over by `discovery.js` through
+  `MM.setDecks`, the same list the card panel's "In: <deck>" pill and the combo tiers read,
+  with api.js's `deckRung` / `isWorkableDeck` — and nothing new is fetched. **A card in two
+  lit decks is *In 2+ decks*** (white), never the first deck's colour: that would claim the
+  other deck does not hold it, and the shared cards (basics, Sol Ring, the signets) are
+  themselves a finding about where the fleet overlaps. **Bench and brewing decks are a
+  legend toggle, off by default** (*Bench & brewing (n)*, the legend's last row, a real
+  control reachable by a hit-tested click); colours are assigned over every workable deck
+  in one fixed order (sleeved, bench, brewing, each by slug), so turning the bench on adds
+  colours and never repaints a sleeved deck. The legend is headed *Your sleeved decks*.
+  It is **Explore's language only**: `MODE_GROUPINGS` hides it in Build and Discover (whose
+  graphs have no corpus to dim) and falls back to supertype there, while `exploreColour`
+  remembers it, so returning to Explore puts the atlas back as the pilot left it. A
+  manifest that lands after the first draw repaints the atlas (`setDecks`).
+- **The set lens** (`#setLens`, "New: Reality Fracture"): one click lights the newest set
+  and dims the rest. *Newest* is derived, never a literal: the latest `released_at` in
+  `sets.json` that is on or before today (a later date is previews — the Star Trek cards
+  dated 2026-11-13) and has at least `LENS_MIN_CARDS` (100) corpus cards in
+  `viz_index.json` (so a one-card promo set the same week is not "the new set"); ties go to
+  the bigger set (FRA's 279 over FRC's 83). The pill **is** the set filter set to that code
+  — picking any other set is the set picker under Filters, and the pill reads lit only while
+  that code is the filter. **It composes with My decks by deciding what is lit while the
+  colour still says whose it is**: the lens dims every non-set card, a set card in a deck
+  keeps its deck colour, and a set card in no deck — most of the set, and the point of
+  asking — draws full size in a brighter neutral (`#9AA3C0`) rather than staying texture.
+- **Filters behind one button** (`#filtersBtn`, a popover in Build's `.bt-settings` card,
+  anchored left): the set picker, the first-printed range and the type pills. The button
+  counts active FILTERS, not values — a set, a date range (however many bounds), the type
+  pills (however many are off) — and its title lists them; Build, which has no set or date
+  control, counts only the types. Every control kept its id, so `applyPrintFocus`,
+  `MM.setPrintFocus`, `narrowedTo` and the type toggles are untouched, and none of these
+  filters was ever in the URL (only `?mode=`, `?deck=`, `?card=` and now `?color=` are), so
+  no link changed meaning. Escape closes an open popover before it peels any filter; a click
+  outside closes it too.
+- **Topo, Labels and Motion moved to a gear on the canvas** (`#exploreBar`, "⚙ Map",
+  top right in `.canvas-tools`, Build's settings pattern and CSS). Labels went with them:
+  the subtitles below make the labels richer, so the switch for them belongs with the other
+  two picture settings, and the toolbar keeps only what answers a question. The bar sits
+  outside `.toolbar`, so `data-modes` cannot reach it: `syncToolbar` shows it in Explore
+  only, and on a `?mode=explore` boot the microtask runs `syncToolbar('explore')` (chrome is
+  safe before the data; the render is not).
+- **Region labels carry a plain-words subtitle** under the witty name — "The Kaldra Forge /
+  auras & equipment", "Leyline Checkpoint / tapped lands", "Arrival Groves / ETB & death
+  triggers · green creatures". Derived at render time (`regionSubtitles`, once per map,
+  cached once the projection is in) from what is already on the wire: (1) the cards' roles
+  (`viz_index.json`'s `g`) — the role at least 40% of the region does at at least 3× its
+  corpus rate, ranked by share × ln(lift), a second if it scores half the first, phrased by
+  `ROLE_PHRASES` (`draw:wheel` → "draw-seven wheels"); (2) otherwise the region's own
+  `mechanical` line from `cluster-regions`, lower-cased, two parts, the N/S/E/W dedup suffix
+  dropped; (3) then the card colour at 75%+ and the card type at 85%+, where the line does
+  not already say them. Shown on hover for the clickable levels at any zoom, and outright
+  (`.show-sub`) once a region is a place rather than a country: an L1 label below a 16-unit
+  span, an L2 below 8, a focused region's children always. The tooltip carries the card
+  count and which source the line came from. **What data would do better** (not done —
+  no pipeline step was re-run): `cluster-regions` could write the subtitle itself from the
+  FULL `card_roles.json` (the index's `g` is the same roles, but 4,020 cards carry none), and
+  stop writing the direction suffixes and the "Equipment 2 / Auras 6" L2 names that the
+  dedup produces; `sets.json` carrying Scryfall's `set_type` would let the lens say
+  "expansion" instead of using a 100-card floor as its proxy.
+- **The status line counts only what was chosen.** With nothing narrowed it no longer
+  prints the corpus size: under My decks it says how many of the pilot's cards are lit
+  ("513 cards lit across your 7 sleeved decks · the rest of the corpus is texture"), under
+  any other colouring one line of what the picture is; hiding a type adds the drawn count,
+  and every filter keeps the count it always printed (`baseExploreStatus`).
+
 **Region labels now reject overlaps**, which `force.js` has done for node labels since the
 graph shipped. The map emitted every label unconditionally, so the atlas was a pile of
 colliding text while the graph never was — most of why one felt noisier than the other.
@@ -845,7 +923,8 @@ gold bar. The legend rows are controls: clicking one spotlights that group, comp
 focused region through a single `spotlightFor(g)` predicate — a group focus is one scalar
 per trace and never touches the 34K per-point array.
 
-The default overlay is **supertype**, with a frequency-aware palette: Creature is 55.1% of
+Outside Explore the default overlay is **supertype** (Explore opens on **My decks** since
+2026-10-28 — see "Explore opens as a lens"), with a frequency-aware palette: Creature is 55.1% of
 the corpus (19,240 of 34,890), Planeswalker 1.0% (338), Battle 39 cards, so saturation runs
 *inverse* to frequency. The previous palette gave Creature `#22C55E` — the exact green
 `COLOR_PALETTE` uses for G — on more than half the points, so the supertype map read as a
@@ -922,7 +1001,7 @@ motion passes "does it move" and fails only that one.
 the fit and 0 by the time a region fills the screen (`K1: 6`, the same altitude the halo
 fades at), so points slide home as you approach and Explore still converges on Discover
 and Build up close. It also stops when the tab is hidden, when `prefers-reduced-motion`
-is set (the boot default — the **Motion** toolbar button reports the renderer's state
+is set (the boot default — the **Motion** button, in the ⚙ Map settings since 2026-10-28, reports the renderer's state
 rather than the markup's), and when the canvas is off screen. That last check reads
 `canvas.offsetParent`, **not** `host.offsetParent`: `#plot` is shared with the force
 graph and stays visible in Discover and Build, so asking the host animated 34,890 points
@@ -1747,7 +1826,7 @@ Explore stay by name: they have no entry.
   is known and is on `spaces.html`: CardBERT loses functional similarity (−0.205 at a
   100-card pool, −0.275 at 500) and wins theme. The function space's browser files stay
   tracked and unfetched; the bench's agents and `manamap pilot` keep the function space
-- Color by primary color / supertype / rarity; supertype filter toggles
+- Color by **My decks** (the default, see "Explore opens as a lens") / supertype / primary color / rarity; the supertype toggles live under **Filters**
 - **Search UNIONS across name / type / keyword / oracle text** (`computeQuery`), with an
   exact name match winning alone because typing a whole card name is unambiguous. There is
   **no tier cascade and no cap** — the cascade was removed after it was measured: "treasure"
@@ -1756,7 +1835,7 @@ Explore stay by name: they have no entry.
   names the two fields that contributed most; the counts overlap, so they are reported
   rather than summed
 - Multi-select up to 8 (Shift+click / Shift+drag box select); keyboard nav (arrows, 1–8, Delete, Escape, `/`)
-- **The printing highlight** (`#setSelect`, `#firstAfter`, `#firstBefore`; `printFocus`):
+- **The printing highlight** (`#setSelect`, `#firstAfter`, `#firstBefore` — inside the Filters popover since 2026-10-28, with the set lens pill as its one-click shortcut; `printFocus`):
   a set and/or a first-printed range DIMS the atlas around the matches rather than
   removing anything — a new set's shape only reads against the whole corpus. It is a
   row Set like `regionFocus` and `queryFocus`, so it joins `spotlightFor` and
@@ -1901,7 +1980,7 @@ be eight requests for seven cards the reader may never open. The open card's ima
 deliberately **not** `loading="lazy"` — it is the only card image ever rendered and it is
 scrolled into view as it appears.
 - Relations on every card: *similar* (12 nearest in 128D cosine), *synergy* (rule-based complements, carrying their reason), *outclassed by* — all precomputed in `neighbours.bin`, all growing the graph
-- Region labels as real DOM buttons with a zoom-dependent L0/L1 CSS crossfade; optional density contours ("Topo")
+- Region labels as real DOM buttons with a zoom-dependent L0/L1 CSS crossfade and a plain-words subtitle on hover or at zoom; optional density contours ("Topo", in the ⚙ Map settings with Labels and Motion)
 - Pinch zoom on mobile comes from `d3.zoom` (the hand-rolled version existed only because `scattergl` has none)
 
 ## Deck builder highlights — DELETED

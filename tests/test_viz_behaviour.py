@@ -2476,7 +2476,10 @@ def test_escape_returns_the_whole_atlas(discover_page):
     }""")
     assert discover_page.js_errors == []
     assert r["on"] and r["off"]
-    assert "cards shown" in r["status"], "clearing the lens did not restore the atlas status"
+    # The atlas's own line, not the lens's. Since 2026-10-28 that line is no longer the
+    # corpus size ("34,964 cards shown"), so the check is that the LENS line is gone.
+    assert r["status"] and "highlighted in the full map" not in r["status"], (
+        "clearing the lens did not restore the atlas status: " + r["status"])
 
 
 def test_region_labels_do_not_pile_on_each_other(canvas_page):
@@ -2638,7 +2641,8 @@ def test_the_atlas_draws_typed_edges(page):
             violet: violet, red: red,
             // An edge layer carries no customdata, so it must stay out of the quadtree
             // and out of the legend — a swatch for it would be a dot standing for a line.
-            legendRows: document.querySelectorAll('.map-legend-row').length,
+            // Group rows only: the My decks legend adds a bench TOGGLE row (data-action).
+            legendRows: document.querySelectorAll('.map-legend-row[data-key]').length,
             markerLayers: MM.mapRenderer.layers.filter(l => l.mode !== 'edges'
                           && l.mode !== 'lines' && l.name).length,
             picksACard: MM.mapRenderer.pointCount > 0,
@@ -4274,6 +4278,11 @@ def test_clicking_a_legend_row_spotlights_that_group(page):
     is the failure this map already made once with region focus, and the reason you could
     not tell where anything was.
     """
+    # A SUPERTYPE legend: Explore opens on My decks since 2026-10-28, so ask for it.
+    page.evaluate("""() => {
+        const s = document.getElementById('colorBy');
+        s.value = 'supertype'; s.dispatchEvent(new Event('change'));
+    }""")
     page.wait_for_timeout(800)
     before = _ink_strength(page)
 
@@ -7505,10 +7514,12 @@ def test_changing_the_grouping_clears_a_selection_that_no_longer_means_anything(
     page.wait_for_timeout(1500)
     assert page.evaluate("() => MM.legendGroups") == [], (
         "a selection outlived its key space and now filters on nothing")
+    # The status no longer claims the dropped filter. (It used to be asserted to carry
+    # a count; with nothing narrowed it no longer prints the corpus size, 2026-10-28.)
     assert page.evaluate("""() => {
         const t = document.getElementById('status').textContent;
-        return /\\d/.test(t);
-    }"""), "the status stopped reporting a count"
+        return !!t && !t.includes('Esc to clear');
+    }"""), "the status still describes the selection that was cleared"
     assert page.js_errors == []
 
 
@@ -9001,7 +9012,9 @@ def _printing_atlas(browser, viz_server, strip=False):
     page.on("pageerror", lambda e: _add(e))
     page.on("console", lambda m: _add(m.text) if m.type == "error" else None)
     _route_printing(page, strip=strip)
-    page.goto(f"{viz_server}/viz/index.html?mode=explore")
+    # Supertype, explicitly: these tests read "every card lit" before the highlight,
+    # and Explore's default since 2026-10-28 (My decks) lights only the pilot's cards.
+    page.goto(f"{viz_server}/viz/index.html?mode=explore&color=supertype")
     page.add_style_tag(content="*, *::before, *::after {"
                                " transition: none !important; animation: none !important; }")
     page.js_errors = errors

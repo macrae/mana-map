@@ -128,3 +128,22 @@ stacks proven on it, and the way to its siblings were all on disk and none were 
   re-used static files by heuristic freshness without asking — the 17.9 MB matrix and a
   just-regenerated `cards.json` alike. Static files are `no-cache` now (keep, revalidate,
   304); the API stays `no-store`.
+
+## 2026-10-28 — Explore opens as a lens
+
+- **A grouping whose groups are DATA reads its palette through getters.** `GROUPINGS.decks`
+  is the first grouping whose keys are not a fixed vocabulary — they are the decks in the
+  manifest, which lands after `mana-map.js` runs — so `palette` and `order` are getters over
+  `deckGroups()`, and `MM.setDecks` repaints the atlas when the manifest arrives. A frozen
+  copy would colour every card "Not in a deck" until the next unrelated render.
+- **A colouring that only one mode can speak needs a memory, not just a fallback.**
+  `MODE_GROUPINGS` already fell back to supertype when a mode does not offer the current
+  grouping; with My decks Explore-only, that fallback alone would lose the pilot's choice on
+  every trip through Build. `exploreColour` remembers it; `syncColourOptions('explore')`
+  restores it.
+- **Controls moved behind a popover keep their ids, and a test that `click()`s them in JS
+  still passes with the popover shut** — which is exactly the hole the legend lived in
+  (`row.click()` bypasses hit-testing). The new tests open the popover and use Playwright's
+  real click, and assert the controls are NOT visible before it opens.
+- **The texture draws first and is listed last.** Draw order and legend order are two
+  orders: the quiet group must paint under every deck, and must not head the legend.

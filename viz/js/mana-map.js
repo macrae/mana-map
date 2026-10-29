@@ -54,7 +54,11 @@
 
   let allData = [];
   let activeSupertypes = new Set(SUPERTYPES);
-  let currentColorBy = 'supertype';   // see SUPERTYPE_PALETTE for why this is the default
+  // The grouping in force NOW. Supertype outside Explore (see SUPERTYPE_PALETTE for why);
+  // Explore opens on `exploreColour` — "My decks" unless the URL names another
+  // (`?color=supertype|color|rarity|decks`), then whatever the pilot last chose there.
+  let currentColorBy = 'supertype';
+  let exploreColour = 'decks';
   let searchTerm = '';
   let searchTimeout = null;
   let plotInitialized = false;
@@ -522,8 +526,7 @@
   function clearOrientation() {
     if (!orientation) return;
     orientation = null;
-    render();
-    setStatus(allData.length.toLocaleString() + ' cards shown');
+    render();          // and render() writes the status for whatever is left
   }
 
   // ── Zoom to a region ────────────────────────────────────────────────────
@@ -674,7 +677,6 @@
     regionFocus = null;
     render();
     if (mapCanvas) mapCanvas.fitToData();
-    setStatus(allData.length.toLocaleString() + ' cards shown');
     return true;
   }
 
@@ -776,6 +778,9 @@
   function syncPrintClear() {
     const b = document.getElementById('printClear');
     if (b) b.hidden = !printFocus;
+    // The lens pill and the Filters count are two more views of the same state.
+    syncSetLens();
+    syncFiltersBadge();
   }
 
   /* `sets.json` turns a code into "Reality Fracture (FRA) · 461" and puts the
@@ -847,6 +852,9 @@
         });
         setCatalogue = { order: order, byCode: obj };
         fill(setCatalogue);
+        // The set lens needs release dates, so it is derived here and only here.
+        newestSet = computeNewestSet();
+        syncSetLens();
         if (printFocus) render();   // the status line can name the set now
         return true;
       })
@@ -866,6 +874,145 @@
     if (clear) clear.addEventListener('click', clearPrintFocus);
   }
   initPrintControls();
+
+  /* ── Filters behind one button, the set lens, the settings gear (2026-10-28) ──
+   *
+   * The pilot's review: the toolbar showed every control at once — a set picker,
+   * two dates, nine type pills, Topo / Labels / Motion — and "34,964 cards shown".
+   * Now the filters sit behind ONE button that counts what is active, the new set
+   * is one pill, and the three picture settings are a gear on the canvas (Build's
+   * settings popover, same CSS). Nothing about what a filter DOES changed: the
+   * controls keep their ids, so `applyPrintFocus`, `MM.setPrintFocus`, the type
+   * toggles and `narrowedTo` read and write exactly what they did. */
+  const POPOVERS = { filtersPop: 'filtersBtn', exploreSettings: 'exploreSettingsBtn' };
+
+  function setPopover(id, open) {
+    const pop = document.getElementById(id);
+    const btn = document.getElementById(POPOVERS[id]);
+    if (!pop) return;
+    const on = typeof open === 'boolean' ? open : pop.hidden;
+    pop.hidden = !on;
+    if (btn) { btn.setAttribute('aria-expanded', on ? 'true' : 'false'); btn.classList.toggle('is-on', on); }
+    // Re-assert the count's highlight: `is-on` is shared with "a filter is active".
+    if (id === 'filtersPop') syncFiltersBadge();
+  }
+
+  function closePopovers() {
+    let closed = false;
+    for (const id of Object.keys(POPOVERS)) {
+      const pop = document.getElementById(id);
+      if (pop && !pop.hidden) { setPopover(id, false); closed = true; }
+    }
+    return closed;
+  }
+
+  /* WHAT IS ACTIVE, counted by FILTER, not by value: a set, a first-printed range
+   * (one filter however many bounds), the type pills (one filter however many are
+   * off). Only what this mode shows — Build has no set or date control, so a
+   * printing highlight left over from Explore is not counted there. */
+  function activeFilters() {
+    const out = [];
+    if (currentMode === 'explore' && printFocus) {
+      if (printFocus.set) out.push('set ' + printFocus.set.toUpperCase());
+      if (printFocus.after || printFocus.before) out.push('first printed');
+    }
+    if (activeSupertypes.size < SUPERTYPES.length) {
+      out.push((SUPERTYPES.length - activeSupertypes.size) + ' type' +
+               (SUPERTYPES.length - activeSupertypes.size === 1 ? '' : 's') + ' hidden');
+    }
+    return out;
+  }
+
+  function syncFiltersBadge() {
+    const badge = document.getElementById('filtersCount');
+    const btn = document.getElementById('filtersBtn');
+    if (!badge || !btn) return;
+    const act = activeFilters();
+    badge.hidden = !act.length;
+    badge.textContent = act.length ? String(act.length) : '';
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.classList.toggle('is-on', open || act.length > 0);
+    btn.title = act.length ? 'Active: ' + act.join(' · ') : 'Set, first-printed date and card types';
+  }
+
+  /* THE SET LENS. "Where's the new set" is one click. The newest set is DERIVED,
+   * never a literal: the latest `released_at` in `sets.json` that is (a) on or
+   * before today — a set dated later is previews, a partial set — and (b) has at
+   * least `LENS_MIN_CARDS` corpus cards in `viz_index.json`, so a promo set or a
+   * one-card insert released the same week is not "the new set". Ties on the date
+   * (a set and its Commander decks ship together) go to the bigger one. On
+   * 2026-10-28 that is Reality Fracture (FRA, 279), not FRC (83) beside it and not
+   * the Star Trek previews dated 2026-11-13.
+   *
+   * It IS the set filter, set to that code: the lens dims every other card, and
+   * the colouring is untouched — under My decks the new set's cards in no deck
+   * light grey and the ones you already run light in their deck's colour. */
+  const LENS_MIN_CARDS = 100;
+  let newestSet = null;   // { code, name, released, count } | null
+
+  function computeNewestSet() {
+    const index = (window.Discovery && Discovery.index) || null;
+    if (!index || !setCatalogue) return null;
+    const tally = Object.create(null);
+    for (const rec of index) if (rec && rec.e) tally[rec.e] = (tally[rec.e] || 0) + 1;
+    const today = new Date().toISOString().slice(0, 10);
+    let best = null;
+    for (const code of Object.keys(setCatalogue.byCode)) {
+      const meta = setCatalogue.byCode[code] || {};
+      const n = tally[code] || 0;
+      const rel = meta.released_at || '';
+      if (!rel || rel > today || n < LENS_MIN_CARDS) continue;
+      if (!best || rel > best.released || (rel === best.released && n > best.count)) {
+        best = { code: code, name: meta.name || code.toUpperCase(), released: rel, count: n };
+      }
+    }
+    return best;
+  }
+
+  function syncSetLens() {
+    const btn = document.getElementById('setLens');
+    if (!btn) return;
+    if (!newestSet) { btn.hidden = true; btn.removeAttribute('data-set'); return; }
+    // `data-modes` decides the mode; this only decides whether there is a lens at all.
+    btn.hidden = currentMode !== 'explore';
+    btn.setAttribute('data-set', newestSet.code);
+    const on = !!(printFocus && printFocus.set === newestSet.code);
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.textContent = 'New: ' + newestSet.name;
+    btn.title = newestSet.name + ' (' + newestSet.code.toUpperCase() + ') · '
+      + newestSet.count.toLocaleString() + ' cards · released ' + newestSet.released
+      + ' — the newest set in the corpus with ' + LENS_MIN_CARDS + '+ cards. '
+      + (on ? 'Click to clear it.' : 'Click to light it and dim the rest; any other set is under Filters.');
+  }
+
+  function toggleSetLens() {
+    if (!newestSet) return;
+    const select = document.getElementById('setSelect');
+    if (!select) return;
+    const on = printFocus && printFocus.set === newestSet.code;
+    select.value = on ? '' : newestSet.code;
+    applyPrintFocus();
+  }
+
+  (function initFilterChrome() {
+    const fb = document.getElementById('filtersBtn');
+    if (fb) fb.addEventListener('click', function () { setPopover('filtersPop'); });
+    const sb = document.getElementById('exploreSettingsBtn');
+    if (sb) sb.addEventListener('click', function () { setPopover('exploreSettings'); });
+    const lens = document.getElementById('setLens');
+    if (lens) lens.addEventListener('click', toggleSetLens);
+    // A click outside closes a popover — it is a menu, not a panel (Build's rule).
+    document.addEventListener('mousedown', function (ev) {
+      for (const id of Object.keys(POPOVERS)) {
+        const pop = document.getElementById(id);
+        if (!pop || pop.hidden) continue;
+        const btn = document.getElementById(POPOVERS[id]);
+        if (pop.contains(ev.target) || (btn && btn.contains(ev.target))) continue;
+        setPopover(id, false);
+      }
+    }, true);
+  })();
 
   // WHICH RELATIONS EARN AN ARC ON WHICH MAP — measured, not chosen.
   //
@@ -1977,7 +2124,17 @@
    * bench, brewing \u2014 `isWorkableDeck`); an archived or broken-down deck is not a
    * place a card is. Sleeved decks first. */
   let decksDoc = [];
-  function setDecks(list) { decksDoc = Array.isArray(list) ? list : []; }
+  function setDecks(list) {
+    decksDoc = Array.isArray(list) ? list : [];
+    deckGroupCache = null;
+    // "My decks" colours FROM this list, and the manifest can land after the atlas
+    // first drew — in which case every card read "Not in a deck" until the next
+    // render. Repaint once it is here. Never called during boot (discovery hands
+    // the manifest over from a fetch), so `render` is safe to reach.
+    if (currentMode === 'explore' && currentColorBy === 'decks' && allData.length && mapCanvas) {
+      render();
+    }
+  }
   function deckPillHtml(name) {
     if (!name || !decksDoc.length) return '';
     const rung = window.deckRung || function (e) { return e.stage; };
@@ -2781,6 +2938,8 @@
   function setMapStatus() {
     // It said "Color + Type map" for any map that was not 'ability' — including the
     // CardBERT one, which is the only one there is now.
+    // In Explore the atlas's own line, not the corpus size (see `baseExploreStatus`).
+    if (currentMode === 'explore') { render(); return; }
     setStatus(`${allData.length.toLocaleString()} cards loaded — CardBERT map`);
   }
 
@@ -2877,6 +3036,147 @@
    * still see which country you left — the same reason focusing mutes points instead of
    * hiding them.
    */
+  /* ── A REGION'S PLAIN-WORDS SUBTITLE (2026-10-28) ───────────────────────
+   *
+   * "The Biblioplex" and "Jaya's Furnace" are fun and say nothing about what is
+   * in them. The witty name stays the name; under it, a functional line, DERIVED
+   * HERE from what is already on the wire — no pipeline step, no new artifact:
+   *
+   *   1. the cards' ROLES (`viz_index.json`'s `g`, positional, so a region's members
+   *      are `membership[level][i] === id`): the role that most of the region does
+   *      and the corpus mostly does not — share >= 0.4 AND lift >= 3 over the
+   *      corpus rate, ranked by share x ln(lift); a second if it scores half the
+   *      first. `threat:body` (every creature) never qualifies. Phrased by
+   *      `ROLE_PHRASES` ("draw:wheel" -> "draw-seven wheels").
+   *   2. else the region's own `mechanical` line from `cluster-regions` (TF-IDF
+   *      tags), lower-cased, its first two parts, its N/S/E/W dedup suffix dropped.
+   *   3. then WHAT the cards are, when they agree: a colour at >= 75% of the
+   *      region, a card type at >= 85% — skipped where the line already says it.
+   *
+   * Computed ONCE per map for every region in one pass over the members, then
+   * cached; a page without `g` (an older index) or without membership falls back
+   * to `mechanical` alone. The tooltip carries the count and the source. */
+  const ROLE_PHRASES = {
+    'buff:attached': 'auras & equipment', 'buff:counters': '+1/+1 counters',
+    'buff:pump': 'pump effects', counterspell: 'counterspells',
+    'doubler:counters': 'counter doublers', 'doubler:tokens': 'token doublers',
+    'doubler:triggers': 'trigger doublers', 'draw:burst': 'card-draw bursts',
+    'draw:cantrip': 'cantrips', 'draw:engine': 'card-draw engines',
+    'draw:impulse': 'impulse draw', 'draw:wheel': 'draw-seven wheels',
+    'hate:graveyard': 'graveyard hate', 'land:basic': 'basic lands', 'land:fetch': 'fetch lands',
+    'land:fixing': 'mana-fixing lands', 'land:mdfc': 'modal double-faced lands',
+    'land:tapped': 'tapped lands', 'land:untapped-dual': 'untapped dual lands',
+    'land:utility': 'utility lands', 'payoff:counters': 'counter payoffs',
+    'payoff:typal': 'typal payoffs', 'protection:fog': 'fogs',
+    'protection:granted': 'protection spells', 'protection:redirect': 'redirection',
+    'protection:self': 'hard-to-kill threats', 'ramp:cost-reduction': 'cost reducers',
+    'ramp:dork': 'mana dorks', 'ramp:land': 'land ramp', 'ramp:ritual': 'rituals',
+    'ramp:rock': 'mana rocks', 'ramp:treasure': 'treasure makers', recursion: 'recursion',
+    'removal:bounce': 'bounce', 'removal:damage': 'burn', 'removal:debuff': '-X/-X removal',
+    'removal:edict': 'edicts', 'removal:fight': 'fight removal', 'removal:spot': 'spot removal',
+    'removal:sweeper': 'board wipes', 'removal:tax': 'tax effects', 'sac-cost': 'sacrifice costs',
+    'sac-outlet': 'sac outlets', stax: 'stax', 'threat:tokens': 'token makers',
+    'tutor:narrow': 'tutors', 'tutor:unrestricted': 'unrestricted tutors',
+    'utility:activated': 'activated abilities', 'value:etb': 'enter-the-battlefield value',
+    'wincon:alt': 'alternate wins', 'wincon:combat': 'combat finishers', 'wincon:drain': 'drain finishers',
+  };
+  const COLOUR_WORDS = { W: 'white', U: 'blue', B: 'black', R: 'red', G: 'green',
+                         Multicolor: 'multicolor', Colorless: 'colorless' };
+  const TYPE_WORDS = { Creature: 'creatures', Instant: 'instants', Sorcery: 'sorceries',
+                       Enchantment: 'enchantments', Artifact: 'artifacts', Land: 'lands',
+                       Planeswalker: 'planeswalkers', Battle: 'battles' };
+  const regionSubCache = {};
+
+  function cleanMechanical(m) {
+    if (!m) return '';
+    const parts = String(m).replace(/\s*\((?:North|South|East|West)\)\s*$/i, '')
+      .split(/\s+—\s+/).filter(Boolean).slice(0, 2);
+    return parts.join(', ').toLowerCase()
+      .replace(/\betb\b/g, 'ETB');
+  }
+
+  function regionSubtitles() {
+    if (regionSubCache[currentMap]) return regionSubCache[currentMap];
+    const data = regionDataCache[currentMap];
+    if (!data || !data.regions) return null;
+    const index = (window.Discovery && Discovery.index) || null;
+    const mem = data.membership || null;
+    const byLevel = {};          // level -> cid -> {n, roles:{}, c:{}, s:{}}
+    const corpus = Object.create(null);
+    let N = 0;
+    if (mem && index) {
+      for (const lv of ['l0', 'l1', 'l2']) if (mem[lv]) byLevel[lv] = Object.create(null);
+      for (let i = 0; i < index.length; i++) {
+        const rec = index[i];
+        if (!rec) continue;
+        N++;
+        const roles = Array.isArray(rec.g) ? rec.g : [];
+        for (const r of roles) corpus[r] = (corpus[r] || 0) + 1;
+        const d = allData[i];
+        for (const lv in byLevel) {
+          const cid = mem[lv][i];
+          if (cid == null || cid < 0) continue;
+          let acc = byLevel[lv][cid];
+          if (!acc) acc = byLevel[lv][cid] = { n: 0, roles: Object.create(null), c: Object.create(null), s: Object.create(null) };
+          acc.n++;
+          for (const r of roles) acc.roles[r] = (acc.roles[r] || 0) + 1;
+          const c = (d && d.c) || rec.c, s = (d && d.s) || rec.s;
+          if (c) acc.c[c] = (acc.c[c] || 0) + 1;
+          if (s) acc.s[s] = (acc.s[s] || 0) + 1;
+        }
+      }
+    }
+    const top = function (counts) {
+      let k = null, v = 0;
+      for (const key in counts) if (counts[key] > v) { k = key; v = counts[key]; }
+      return [k, v];
+    };
+    const out = {};
+    for (const region of data.regions) {
+      const m = /^l(\d)_(\d+)$/.exec(region.id || '');
+      const acc = m && byLevel['l' + m[1]] ? byLevel['l' + m[1]][m[2]] : null;
+      let line = '', source = 'the region’s tags';
+      if (acc && acc.n && N) {
+        const scored = [];
+        for (const r in acc.roles) {
+          if (!ROLE_PHRASES[r]) continue;
+          const share = acc.roles[r] / acc.n;
+          const lift = share / (corpus[r] / N);
+          if (share >= 0.4 && lift >= 3) scored.push([share * Math.log(lift), r]);
+        }
+        scored.sort((a, b) => b[0] - a[0]);
+        if (scored.length) {
+          const picks = [scored[0][1]];
+          if (scored[1] && scored[1][0] >= 0.5 * scored[0][0]) picks.push(scored[1][1]);
+          line = picks.map(r => ROLE_PHRASES[r]).join(' & ');
+          source = 'the cards’ roles';
+        }
+      }
+      if (!line) line = cleanMechanical(region.mechanical);
+      const what = [];
+      if (acc && acc.n) {
+        const [ck, cv] = top(acc.c), [sk, sv] = top(acc.s);
+        const cw = ck && cv / acc.n >= 0.75 ? COLOUR_WORDS[ck] : null;
+        const sw = sk && sv / acc.n >= 0.85 ? TYPE_WORDS[sk] : null;
+        const low = line.toLowerCase();
+        if (cw && low.indexOf(cw) === -1) what.push(cw);
+        if (sw && low.indexOf(sw.replace(/s$/, '')) === -1) what.push(sw);
+        else if (cw && what.length === 1) what[0] = 'mostly ' + cw;
+      }
+      const sub = [line, what.join(' ')].filter(Boolean).join(' · ');
+      const count = (acc && acc.n) || region.count || 0;
+      out[region.id] = {
+        sub: sub,
+        title: (region.label || region.id) + (sub ? ' — ' + sub : '') + ' · '
+          + count.toLocaleString() + ' cards (from ' + source + ')',
+      };
+    }
+    // Only cached once the projection is in: without it the colour/type half is
+    // missing, and a cache filled early would keep the thinner line for good.
+    if (allData.length) regionSubCache[currentMap] = out;
+    return out;
+  }
+
   function refreshCanvasLabels() {
     if (!mapCanvas) return;
     const cam = mapCanvas.getCamera();
@@ -2884,6 +3184,7 @@
     const data = regionDataCache[currentMap];
     if (!data || !showRegionLabels) { mapCanvas.setAnnotations([]); return; }
     const byId = regionIndex();
+    const subs = regionSubtitles();
     const focusId = regionFocus ? regionFocus.id : null;
 
     // 0 = the focused region, 1 = child, 2 = grandchild, -1 = elsewhere, null = no focus.
@@ -2936,7 +3237,20 @@
        * it. Cut the band off where the text stops being legible rather than where it
        * reaches zero. Measured at span 15.3, where the L0 band sits at 0.03. */
       if (opacity < 0.09) continue;
+      // The subtitle shows outright AT ZOOM — once a region is a place you are
+      // looking at, not a country you are flying over: an L1 state once the camera
+      // spans under 16 units (it is fully named below 20), an L2 neighbourhood
+      // under 8 (fully named below 9), and a focused region's own children always. Hover shows it on the
+      // clickable levels (L0/L1) at any zoom; L2 labels take no pointer events.
+      const showSub = opacity >= 0.6 && (
+        depth === 1 ? true
+          : depth === 2 ? span < 6
+          : depth === null && region.level === 1 ? span < 16
+          : depth === null && region.level === 2 ? span < 8
+          : false);
+      const subInfo = subs && subs[region.id];
       out.push({
+        sub: subInfo ? subInfo.sub : '', title: subInfo ? subInfo.title : '', showSub: showSub,
         x: region.cx, y: region.cy, id: region.id, size: size, level: region.level,
         // The outline has to fade WITH the text. A fixed-alpha dark ring under a 0.28
         // label is more opaque than the label itself, so the faint context names rendered
@@ -2963,9 +3277,33 @@
       el.className = 'map-legend';
       document.getElementById('plot').appendChild(el);
     }
-    el.innerHTML = traces
-      .filter(tr => tr.name && tr.visible !== false &&
-              tr.mode !== 'lines' && tr.mode !== 'edges')
+    // The quiet group (texture) is drawn first and LISTED last: it is the backdrop,
+    // not the first thing to read.
+    const shown = traces.filter(tr => tr.name && tr.visible !== false &&
+                                tr.mode !== 'lines' && tr.mode !== 'edges');
+    const rows = shown.filter(tr => !tr._quiet).concat(shown.filter(tr => tr._quiet));
+    const decks = currentColorBy === 'decks' && currentMode === 'explore';
+    let head = '', tail = '';
+    if (decks) {
+      const dg = deckGroups();
+      head = '<div class="map-legend-head">' +
+        (showBenchDecks ? 'Your decks' : 'Your sleeved decks') + '</div>';
+      if (!decksDoc.length) {
+        tail += '<div class="map-legend-note">The deck manifest has not loaded.</div>';
+      } else if (!dg.decks.length) {
+        tail += '<div class="map-legend-note">No sleeved decks in the manifest.</div>';
+      }
+      // Bench and brewing: a toggle row, OFF by default. Same row element as the
+      // groups so it is reachable the same way (`pointer-events: auto`), told apart
+      // by `data-action` in the one handler below.
+      if (dg.benchCount) {
+        tail += '<div class="map-legend-row map-legend-opt' + (showBenchDecks ? ' is-active' : '') +
+          '" role="switch" tabindex="0" aria-checked="' + showBenchDecks +
+          '" data-action="bench"><span class="map-legend-box"></span>Bench &amp; brewing (' +
+          dg.benchCount + ')</div>';
+      }
+    }
+    el.innerHTML = head + rows
       .map(tr => {
         const m = tr.marker || {};
         const c = Array.isArray(m.color) ? '#8a8a8a' : (m.color || '#666');
@@ -2976,7 +3314,7 @@
           (c === 'rgba(0,0,0,0)' ? 'transparent;border:2px solid ' +
             ((m.line && m.line.color) || '#888') : c) +
           '"></span>' + escHtml(tr.name) + '</div>';
-      }).join('');
+      }).join('') + tail;
 
     // Bound once on the container, not per row: the rows are replaced on every render,
     // so per-row listeners would be re-attached 34,000-point-render after render.
@@ -2985,6 +3323,7 @@
       el.addEventListener('click', function (ev) {
         const row = ev.target.closest('.map-legend-row');
         if (!row) return;
+        if (row.getAttribute('data-action') === 'bench') { setShowBenchDecks(!showBenchDecks); return; }
         const key = row.getAttribute('data-key');
         // ACCUMULATE. Click adds, click again removes, empty means everything.
         if (legendKeys.has(key)) legendKeys.delete(key); else legendKeys.add(key);
@@ -3013,6 +3352,12 @@
   // rendering — has to ask for it rather than assume it is what boot produces.
   const wantedMode = params.get('mode');
   if (wantedMode) currentMode = wantedMode;
+  // `?color=` (or `?colour=`) names Explore's colouring explicitly; without it Explore
+  // opens on "My decks". An unknown or Explore-less value (role) is ignored, not obeyed.
+  const wantedColour = params.get('color') || params.get('colour');
+  if (wantedColour && ['decks', 'supertype', 'color', 'rarity'].indexOf(wantedColour) !== -1) {
+    exploreColour = wantedColour;
+  }
   // A deck is opening: its graph will await the embedding matrix, so the bytes start
   // now, beside the boot files, instead of after the deck's own artifacts. `?deck=`
   // only — the Discover landing never prefetches (see `prefetchEmbeddings`).
@@ -3054,6 +3399,9 @@
     // render() against an empty allData and initialise Plotly on nothing; the data-load
     // path below already renders explore once there is something to draw.
     if (currentMode === 'discover') setMode('discover');
+    // Explore's CHROME is safe before the data, though its render is not: the
+    // settings gear sits outside `.toolbar` and is shown only by `syncToolbar`.
+    else if (currentMode === 'explore') syncToolbar('explore');
   });
   Discovery.ready()
     .then(() => {
@@ -3080,6 +3428,8 @@
       // markup order and a `let` default are two places deciding one thing, and they
       // drift the moment someone reorders the list for readability.
       const colourSel = document.getElementById('colorBy');
+      // Booted straight into the atlas: it opens on Explore's colouring.
+      if (currentMode === 'explore') currentColorBy = exploreColour;
       if (colourSel) colourSel.value = currentColorBy;
       // Explore does not get `setMode` at boot — only Discover has its chrome
       // applied before the data lands, deliberately — so the per-mode option
@@ -3090,10 +3440,9 @@
       refreshDrillButton();
       // Only paint the scatter if that is what the user is looking at. Rendering 34,322
       // points behind a landing card is work nobody asked for.
-      if (currentMode === 'explore') {
-        render();
-        setStatus(`${allData.length.toLocaleString()} cards loaded`);
-      }
+      // No "34,964 cards loaded" over it (2026-10-28): `render()` writes the status,
+      // and with nothing narrowed that is what is lit, not a count of the corpus.
+      if (currentMode === 'explore') render();
       // THE LANDING UPGRADES IN PLACE. Discover painted its card from the slim
       // viz_index record, which has no type, oracle, cost or legality — and the card
       // panel is text-first now, so until something re-rendered, the landing showed a
@@ -3207,6 +3556,7 @@
         }
         render();
         refreshDrillButton();
+        syncFiltersBadge();
       });
       container.appendChild(btn);
     });
@@ -3215,6 +3565,8 @@
   // ── Event listeners ──
   document.getElementById('colorBy').addEventListener('change', e => {
     currentColorBy = e.target.value;
+    // Remembered per mode for Explore, so leaving and coming back keeps the choice.
+    if (currentMode === 'explore') exploreColour = currentColorBy;
     // A SELECTION DOES NOT SURVIVE ITS KEY SPACE. "Red" means nothing once the
     // map is coloured by rarity, and as a filter it would select zero cards
     // rather than merely lighting none — the map going blank with no active row
@@ -3434,9 +3786,15 @@
   // ── Keyboard handlers ──
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      // Drill wins the key: it is the deepest state on screen, and surfacing back up
-      // one level is what Escape should mean while a local layout is showing.
-      if (typeof window.Drill !== 'undefined' && window.Drill.isActive()) {
+      // An open popover (Filters, the map settings) is the outermost thing on
+      // screen, so Escape closes it before it peels any filter.
+      // (One chain, one `return` — `test_escape_pops_the_drill_before_anything_else`
+      // reads this block up to its first return.)
+      // Drill wins the key next: it is the deepest state on screen, and surfacing back
+      // up one level is what Escape should mean while a local layout is showing.
+      if (closePopovers()) {
+        // closed; nothing else peels on this press
+      } else if (typeof window.Drill !== 'undefined' && window.Drill.isActive()) {
         window.Drill.back();
       } else if (currentMode === 'build') {
         if (typeof window.Build !== 'undefined' && window.Build.handleEscape) {
@@ -3584,6 +3942,13 @@
       tab.classList.toggle('is-on', on);
       tab.setAttribute('aria-selected', on ? 'true' : 'false');
     }
+    // The settings gear sits on the canvas, outside `.toolbar`, so `data-modes`
+    // cannot reach it: Explore only, and leaving a mode closes what it had open.
+    const bar = document.getElementById('exploreBar');
+    if (bar) bar.hidden = mode !== 'explore';
+    closePopovers();
+    syncSetLens();
+    syncFiltersBadge();
   }
 
   /* WHICH GROUPINGS THE PICKER OFFERS, per mode.
@@ -3605,7 +3970,16 @@
    * option is present in Build and absent in Explore, and entering Explore while it is
    * selected falls back rather than leaving a select showing a value it no longer has.
    */
-  const MODE_GROUPINGS = { explore: ['supertype', 'color', 'rarity'] };
+  /* "My decks" (2026-10-28) is EXPLORE's language, the mirror of role being Build's:
+   * Build colours one deck's own 99 and Discover a walk, and neither has a corpus
+   * to dim. So it is offered in Explore only, and leaving Explore with it selected
+   * falls back to supertype there — while `exploreColour` remembers it, so coming
+   * back to Explore puts the atlas back the way the pilot left it. */
+  const MODE_GROUPINGS = {
+    explore: ['decks', 'supertype', 'color', 'rarity'],
+    build: ['supertype', 'role', 'color', 'rarity'],
+    discover: ['supertype', 'role', 'color', 'rarity'],
+  };
 
   function syncColourOptions(mode) {
     const sel = document.getElementById('colorBy');
@@ -3614,6 +3988,16 @@
     for (const opt of sel.options) {
       opt.hidden = !!(allowed && allowed.indexOf(opt.value) === -1);
       opt.disabled = opt.hidden;
+    }
+    // Explore opens on ITS colouring: the URL's `?color=`, else "My decks", else
+    // whatever the pilot last picked there. A selection does not survive the change.
+    if (mode === 'explore' && allowed.indexOf(exploreColour) !== -1 &&
+        currentColorBy !== exploreColour) {
+      currentColorBy = exploreColour;
+      sel.value = currentColorBy;
+      legendKeys.clear();
+      if (allData.length) regroup();
+      return;
     }
     if (allowed && allowed.indexOf(currentColorBy) === -1) {
       currentColorBy = allowed[0];
@@ -3775,6 +4159,108 @@
       },
     },
   };
+
+  /* ── "My decks": Explore's default colouring (2026-10-28) ──────────────
+   *
+   * The pilot's review: Explore "opens as a museum, not a lens" — 34,964 cards
+   * coloured by supertype answer a question nobody brought. The one he does
+   * bring is "where do my decks live", so that is what the atlas opens on:
+   * every card in a SLEEVED deck lit in that deck's colour, the rest of the
+   * corpus drawn as quiet texture (`quiet`, below) so the shape of the space
+   * stays legible behind them.
+   *
+   * MEMBERSHIP HAS ONE HOME: the deck manifest's `cards` (`decksDoc`, handed
+   * over by `discovery.js` through `setDecks`) — the same list the card panel's
+   * "In: <deck>" pill and the combo tiers read, with the same rung predicate
+   * (`deckRung` / `isWorkableDeck` from api.js). Nothing new is fetched.
+   *
+   * A CARD IN TWO LIT DECKS IS "SHARED", not the first deck's. Painting it the
+   * first deck's colour would be a claim the other deck does not hold it;
+   * a neutral mark says the true thing. In practice that is the basics, Sol
+   * Ring, Arcane Signet and the other staples — which is itself the finding
+   * (where the fleet overlaps).
+   *
+   * BENCH AND BREWING DECKS ARE A LEGEND TOGGLE, OFF BY DEFAULT: the sleeved
+   * decks are the ones in the house. Colours are assigned over EVERY workable
+   * deck in one fixed order (sleeved first, then bench, then brewing, each by
+   * slug), so turning the bench on adds colours and never repaints a sleeved
+   * deck. The palette avoids the lens gold (`#c4a747`, the orientation lens)
+   * and the shared white. */
+  const DECK_PALETTE = ['#4FC3F7', '#FF7043', '#9CCC65', '#BA68C8', '#F06292', '#4DB6AC',
+                        '#FFD54F', '#7986CB', '#E57373', '#A1887F', '#DCE775', '#90A4AE'];
+  const DECKS_SHARED = 'In 2+ decks';
+  const DECKS_REST = 'Not in a deck';
+  let showBenchDecks = false;
+  let deckGroupCache = null;
+
+  function deckGroups() {
+    if (deckGroupCache && deckGroupCache.doc === decksDoc &&
+        deckGroupCache.bench === showBenchDecks) return deckGroupCache;
+    const rung = window.deckRung || function (e) { return e.stage; };
+    const workable = window.isWorkableDeck || function (e) { return !!e.stage; };
+    const rungOrder = { sleeved: 0, bench: 1, dev: 2 };
+    const all = decksDoc
+      .filter(e => workable(e) && Array.isArray(e.cards) && e.cards.length)
+      .sort((a, b) => (rungOrder[rung(a)] ?? 9) - (rungOrder[rung(b)] ?? 9) ||
+                      String(a.slug).localeCompare(String(b.slug)));
+    const palette = {}, order = [], decks = [];
+    const used = new Set();
+    all.forEach(function (e, i) {
+      let label = window.DeckFacts ? DeckFacts.displayName(e).text : (e.deck_name || e.slug);
+      if (!label || used.has(label)) label = (label ? label + ' · ' : '') + e.slug;
+      used.add(label);
+      const colour = DECK_PALETTE[i % DECK_PALETTE.length];
+      const sleeved = rung(e) === 'sleeved';
+      if (!sleeved && !showBenchDecks) return;
+      palette[label] = colour;
+      order.push(label);
+      decks.push({ slug: e.slug, label: label, rung: rung(e), cards: e.cards });
+    });
+    // name -> the lit decks that hold it. A Map, built once per manifest/toggle.
+    const byName = new Map();
+    for (const dk of decks) {
+      for (const n of dk.cards) {
+        const had = byName.get(n);
+        if (!had) byName.set(n, [dk.label]);
+        else if (had.indexOf(dk.label) === -1) had.push(dk.label);
+      }
+    }
+    palette[DECKS_SHARED] = '#FFFFFF';
+    palette[DECKS_REST] = '#5C6378';
+    order.push(DECKS_SHARED, DECKS_REST);
+    deckGroupCache = {
+      doc: decksDoc, bench: showBenchDecks, palette: palette, order: order, byName: byName,
+      decks: decks,
+      sleevedCount: all.filter(e => rung(e) === 'sleeved').length,
+      benchCount: all.filter(e => rung(e) !== 'sleeved').length,
+    };
+    return deckGroupCache;
+  }
+
+  function deckKeyOf(d) {
+    const hit = d && deckGroups().byName.get(d.n);
+    if (!hit || !hit.length) return DECKS_REST;
+    return hit.length > 1 ? DECKS_SHARED : hit[0];
+  }
+
+  // A getter-backed grouping: the deck list is data, so `palette` and `order` are
+  // read through `deckGroups()` rather than frozen at boot (the manifest lands after
+  // this file runs). `quiet` names the group drawn as texture — see `render()`.
+  GROUPINGS.decks = {
+    label: 'My decks', keyOf: deckKeyOf, quiet: DECKS_REST,
+    get palette() { return deckGroups().palette; },
+    get order() { return deckGroups().order; },
+  };
+
+  function setShowBenchDecks(on) {
+    showBenchDecks = !!on;
+    deckGroupCache = null;
+    // The key space changed under the legend (a bench deck's row appears or goes,
+    // and a sleeved card can become "shared"), so a selection does not survive it.
+    legendKeys.clear();
+    regroup();
+    refreshDrillButton();
+  }
 
   function grouping() { return GROUPINGS[currentColorBy] || GROUPINGS.supertype; }
 
@@ -3976,9 +4462,24 @@
      * anywhere else. The registry's `order` is the one answer, and every surface that
      * reports these groups sorts by it. Unknown keys sort last rather than being dropped. */
     const groupOrder = grouping().order || [];
+    // A grouping's QUIET group ("Not in a deck" under My decks) is texture, not a
+    // category: it draws FIRST so every lit group paints over it, small, faint and
+    // without the halo — the halo is what makes a cluster read as a lit island, and
+    // 34,000 grey islands would bury the seven that matter. The legend still lists
+    // it, last (`renderCanvasLegend`).
+    const quietKey = grouping().quiet || null;
     const orderedGroups = Object.values(groups).sort(
-      (a, b) => (groupOrder.indexOf(a.key) + 1 || 999) - (groupOrder.indexOf(b.key) + 1 || 999));
+      (a, b) => ((a.key === quietKey) ? -1 : 0) - ((b.key === quietKey) ? -1 : 0) ||
+        (groupOrder.indexOf(a.key) + 1 || 999) - (groupOrder.indexOf(b.key) + 1 || 999));
+    const QUIET = 0.2, QUIET_LIT = 0.9, QUIET_UNLIT = 0.05;
+    const spotlit = !!(regionFocus || legendKeys.size || printFocus ||
+                       (queryFocus && queryFocus.rows.size));
+    // Under a spotlight the texture's LIT points are cards the pilot asked to see
+    // (a new set's cards in no deck), so they draw full size in a brighter neutral
+    // than the texture grey, still apart from the shared white.
+    const QUIET_LIT_COLOUR = '#9AA3C0';
     const traces = orderedGroups.map(g => {
+      const quiet = g.key === quietKey;
       let opacity;
       if (dimsAll) {
         opacity = 0.08;
@@ -3988,10 +4489,20 @@
         // still see WHERE the lit set sits — the question the atlas exists to answer, and
         // the one that hiding everything else destroyed.
         opacity = spotlightFor(g);
+        // THE SET LENS ON MY DECKS (2026-10-28): the lens decides WHAT is lit, the
+        // colour still says WHOSE it is. A new-set card in no deck must still light
+        // (it is most of the set, and the point of asking), so a lit quiet point is
+        // drawn plainly visible in its neutral grey while an unlit one sinks further
+        // than texture — the deck colours then mark which of the set you already run.
+        if (quiet) {
+          opacity = Array.isArray(opacity)
+            ? opacity.map(o => (o === LIT ? QUIET_LIT : QUIET_UNLIT))
+            : (opacity === LIT ? QUIET_LIT : QUIET_UNLIT);
+        }
       } else if (dimmedIndices) {
         opacity = g.customdata.map(idx => dimmedIndices.has(idx) ? 0.08 : 0.85);
       } else {
-        opacity = 0.85;
+        opacity = quiet ? QUIET : 0.85;
       }
       return {
         type: 'scattergl',
@@ -4005,7 +4516,10 @@
         // `glow` opts this layer into the renderer's zoom-responsive halo. Only the base
         // scatter takes it: the overlays (search, selection, deck) are already at full
         // alpha and a halo on them would read as a second, wrong highlight.
-        marker: { size: 3, opacity, color: palette[g.key] || '#666', glow: true },
+        marker: { size: quiet && !spotlit ? 2.5 : 3, opacity,
+                  color: quiet && spotlit && !dimsAll ? QUIET_LIT_COLOUR : (palette[g.key] || '#666'),
+                  glow: !quiet },
+        _quiet: quiet || undefined,
       };
     });
 
@@ -4071,7 +4585,7 @@
       setStatus(n.toLocaleString() + ' ' + Array.from(legendKeys).join(' + ')
         + ' card' + (n === 1 ? '' : 's') + ' \u00b7 Esc to clear');
     } else if (currentMode === 'explore') {
-      setStatus(`${filtered.length.toLocaleString()} cards shown`);
+      setStatus(baseExploreStatus(filtered.length));
     }
 
     // Add overlay traces from deck builder
@@ -4099,6 +4613,31 @@
   }
 
   function setStatus(msg) { document.getElementById('status').textContent = msg; }
+
+  /* THE STATUS WITH NOTHING NARROWED (2026-10-28). It said "34,964 cards shown" —
+   * the size of the corpus, the same number every time, which tells the pilot
+   * nothing he did not know. A count now appears only when it counts something
+   * he chose: a filter (type pills hide cards, so the drawn total is news) or
+   * the deck lens (how many of his cards are lit). Otherwise one line of what
+   * the picture is. `drawn` is what `visible` kept. */
+  function baseExploreStatus(drawn) {
+    const typesNarrowed = activeSupertypes.size < SUPERTYPES.length;
+    if (currentColorBy === 'decks') {
+      const dg = deckGroups();
+      const n = dg.decks.length;
+      if (!decksDoc.length) return 'My decks: the deck manifest has not loaded — nothing lit yet';
+      if (!n) return 'My decks: no sleeved decks in the manifest — turn on bench & brewing in the legend';
+      let lit = 0;
+      for (const d of allData) if (dg.byName.has(d.n) && activeSupertypes.has(d.s)) lit++;
+      return lit.toLocaleString() + ' cards lit across your ' + n + ' '
+        + (showBenchDecks ? 'decks' : 'sleeved decks')
+        + (typesNarrowed ? ' · ' + drawn.toLocaleString() + ' cards of the chosen types drawn' : '')
+        + ' · the rest of the corpus is texture';
+    }
+    if (typesNarrowed) return drawn.toLocaleString() + ' cards of the chosen types';
+    return 'Coloured by ' + grouping().label.toLowerCase()
+      + ' · click a card, a region or a legend row';
+  }
 
   function selectByName(name) {
     const idx = allData.findIndex(d => d.n === name);

@@ -928,13 +928,24 @@
           '-1px 0 0 ' + ring, '1px 0 0 ' + ring,
           '0 0 6px ' + soft,
         ].join(',');
+        const esc = function (t) {
+          return String(t || '').replace(/[&<>"]/g, function (c) {
+            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+          });
+        };
+        // A plain-words subtitle under the witty name (`a.sub`, 2026-10-28): hidden
+        // until hover, or shown outright when the caller says the camera is close
+        // (`a.showSub`). It is part of the button, so the measured box below includes
+        // it whenever it is showing and the collision pass stays honest.
         return '<button class="map-label map-label-l' + (a.level == null ? 1 : a.level) +
+          (a.sub && a.showSub ? ' show-sub' : '') +
           '" data-i="' + i + '" data-id="' + (a.id || '') + '"' +
+          (a.title ? ' title="' + esc(a.title) + '"' : '') +
           ' style="font-size:' + a.size + 'px;color:' + a.colour +
           ';text-shadow:' + shadow + '">' +
-          (a.text || '').replace(/[&<>"]/g, function (c) {
-            return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
-          }) + '</button>';
+          '<span class="map-label-name">' + esc(a.text) + '</span>' +
+          (a.sub ? '<span class="map-label-sub">' + esc(a.sub) + '</span>' : '') +
+          '</button>';
       }).join('');
       Array.prototype.forEach.call(labelHost.children, function (el) {
         el.addEventListener('click', function (e) {
