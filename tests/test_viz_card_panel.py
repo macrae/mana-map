@@ -186,7 +186,7 @@ def test_obsolescence_appears_once_under_its_button(page):
     comparison is the button's own detail: one section, collapsed, directly under the
     relation row, with the strength / gains / costs only it carries."""
     _route_scryfall(page)
-    _open(page, "The Elder Dragon War")
+    _open(page, "Storm Crow")
     page.wait_for_function("() => !document.querySelector('#detailInner .obsolescence-placeholder')",
                            timeout=10000)
     r = page.evaluate("""() => {
@@ -210,8 +210,10 @@ def test_obsolescence_appears_once_under_its_button(page):
     # refresh re-scored the corpus and left 1. The browser's table caps at
     # NEIGHBOURS_K_OBSOLETE.
     from manamap import config
+    # Storm Crow, not The Elder Dragon War: the 2026-10-29 tag sweep gave the Saga a
+    # `discard` tag (a cost), and the index rightly stopped comparing it.
     entry = json.loads((config.DATA_DIR / "obsolescence_index.json").read_text())[
-        "The Elder Dragon War"]
+        "Storm Crow"]
     n = min(len(entry["compare_with"]), config.NEIGHBOURS_K_OBSOLETE)
     assert n >= 1, "the fixture card has no outclassed-by entry left to test"
     assert r["button"] == str(n) and r["items"] == n, (n, r)

@@ -147,8 +147,14 @@ def test_combos_lead_with_your_decks_and_keep_the_index_order_within_a_tier(wind
     assert windfall.js_errors == []
 
 
-def test_an_empty_relation_is_disabled_and_says_why(windfall):
-    """Windfall has no rule-based synergy partners. "Synergy 0" read as an answer."""
+def test_an_empty_relation_is_disabled_and_says_why(windfall, viz_server):
+    """A card with no rule-based synergy partners. "Synergy 0" read as an answer.
+
+    Windfall was that card until the 2026-10-29 tag sweep taught `draw`/`discard` to
+    read a wheel; a vanilla creature carries no tag, so no rule can ever pair it."""
+    windfall.goto(f"{viz_server}/viz/index.html?card=Grizzly%20Bears")
+    _wait_for_boot(windfall, "() => window.Discovery && Discovery.isReady() && Discovery.current >= 0",
+                   "discovery to land on Grizzly Bears")
     r = windfall.evaluate("""() => {
         const b = document.querySelector('#deckInner .discover-rel[data-rel="synergy"]');
         return {disabled: b.disabled, count: b.querySelector('.discover-count').textContent,
