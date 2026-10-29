@@ -20,8 +20,9 @@ Needs: `pip install playwright && playwright install chromium` (skips cleanly wi
 from __future__ import annotations
 
 import base64
-import re
 import json
+import pathlib
+import re
 
 import pytest
 
@@ -176,8 +177,20 @@ def test_drill_back_restores_the_world(page):
 def test_small_selection_uses_the_accordion(page):
     result = page.evaluate("""async () => {
         ['Sol Ring', 'Lightning Bolt', 'Counterspell', 'Grave Pact'].forEach(n => MM.selectByName(n));
-        await new Promise(r => setTimeout(r, 600));
+        // Wait for the scroll to SETTLE, up to 5 s, rather than a fixed 600 ms: under a
+        // loaded prepush the row was still travelling (207px at 600 ms, 2026-10-29 twice).
         const inner = document.getElementById('detailInner');
+        const top = () => {
+            const a = inner.querySelector('.acc-row.active');
+            return a ? Math.round(a.getBoundingClientRect().top - inner.getBoundingClientRect().top) : null;
+        };
+        let last = null;
+        for (let t = 0; t < 5000; t += 100) {
+            await new Promise(r => setTimeout(r, 100));
+            const now = top();
+            if (now !== null && now === last && now <= 140) break;
+            last = now;
+        }
         const active = inner.querySelector('.acc-row.active');
         const ir = inner.getBoundingClientRect(), rr = active.getBoundingClientRect();
         return {
@@ -324,8 +337,16 @@ def test_the_map_view_lights_a_deck(page):
     assert result["overlays"] >= 10, "the deck did not light up"
     assert result["commander"] == 1
     assert result["dimScalar"] == "number", "Deck Lens regressed to per-point opacity"
-    assert result["deckName"] == "EDGAR MARKOV"
+    assert result["deckName"] == _authored_name("edgar-vampires")
 
+
+def _authored_name(slug):
+    """The deck's name as the pilot authored it (`issue.json`, through the manifest).
+    Read, never a literal: the name is the pilot's to change (2026-10-29: EDGAR MARKOV became
+    Edgar Vampires), and the lens title is the authored name, drawn as authored."""
+    return next(d["deck_name"] for d in json.loads(
+        (pathlib.Path(__file__).resolve().parents[1] / "data" / "decks" / "index.json")
+        .read_text())["decks"] if d["slug"] == slug)
 
 def test_mode_switches_are_exclusive(page):
     result = page.evaluate("""async () => {
@@ -1297,7 +1318,7 @@ def test_the_map_view_and_drill_run_on_canvas(canvas_page):
                 labels: document.querySelectorAll('.map-label').length};
     }""")
     assert canvas_page.js_errors == []
-    assert r["lens"]["deck"] == "EDGAR MARKOV", "Deck Lens did not load on canvas"
+    assert r["lens"]["deck"] == _authored_name("edgar-vampires"), "Deck Lens did not load on canvas"
     assert r["zoomed"] < r["before"], "focusLine did not move the camera"
     assert r["drilled"]["active"] and r["drilled"]["bar"], "drill did not run on canvas"
     assert r["backOk"] and r["labels"] > 5, "leaving drill did not restore the map"

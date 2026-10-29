@@ -20,7 +20,7 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 10,
+    "complete": 11,
     "of": 19,
     "stale": [],
     "older_model": [
@@ -37,7 +37,6 @@
       "tutors",
       "prose",
       "log",
-      "issue",
       "sim"
     ],
     "todo": [
@@ -75,11 +74,6 @@
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
         "how": "manamap pilot deck-notes emiel-blink add \"<what happened>\" --result win|loss --opponents 3"
-      },
-      {
-        "stage": "issue",
-        "what": "authored identity: name and commander (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/emiel-blink/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state emiel-blink archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       },
       {
         "stage": "sim",

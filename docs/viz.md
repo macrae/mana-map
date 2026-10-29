@@ -2082,6 +2082,12 @@ commander twice. Where `deck_name` equals `commander`, `DeckFacts.displayName` p
 slug as a name — "sharknado" → **Sharknado** — and the title says it is the slug, not an
 authored name. The "In these decks" pill and Build's status line use the same name. The
 real fix is the authored `issue.json`; this only stops the header from repeating itself.
+**Every deck is named (2026-10-29).** The pilot's call: sixteen `issue.json` names, the
+eight magazine covers' ALL-CAPS ones re-cased (GOBLIN STORM → Goblin Storm) and eight
+new ones from each deck's own name (Sharknado, Keen Engineering…). The two that only
+repeated the commander now say the deck: Edgar Vampires, Ur-Dragon. An all-caps name
+that arrives later is still DRAWN in title case (`unshout`: a card name's small words
+stay lowercase, "Heliod, the Warped Eclipse", except first or after a dash).
 
 **The status line.** Build sets "<deck> — 100 cards lit, 12 verified line(s)" and then seeds
 the graph; `Force.enter` wrote "Loading embeddings…" over it while it awaited the matrix and

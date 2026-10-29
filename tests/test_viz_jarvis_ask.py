@@ -66,6 +66,25 @@ def _note(page):
     return page.inner_text("#mmAsk .mm-ask-note")
 
 
+# ── the button is styled before anyone clicks it ───────────────────────────
+
+
+def test_the_button_is_styled_before_the_first_click(browser, viz_server):
+    """Its style was injected only when the prompt opened, so on a fresh page the card
+    panel's Ask Jarvis drew as a bare white browser button (2026-10-29)."""
+    page = _watch(_ctx(browser).new_page())
+    serve_card_images_locally(page)
+    try:
+        page.goto(f"{viz_server}/viz/index.html?card=Windfall")
+        page.wait_for_selector(".detail-jarvis", timeout=BOOT_TIMEOUT_MS)
+        got = page.evaluate("""() => { const cs = getComputedStyle(document.querySelector('.detail-jarvis'));
+            return {bg: cs.backgroundColor, color: cs.color}; }""")
+        assert got["bg"] == "rgba(0, 0, 0, 0)" and got["color"] == "rgb(196, 167, 71)", got
+        assert page.js_errors == []
+    finally:
+        page.close()
+
+
 # ── the card panel, under serve: the question lands on the record ──────────
 
 

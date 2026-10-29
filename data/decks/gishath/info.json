@@ -14,26 +14,20 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 17,
+    "complete": 18,
     "of": 19,
     "stale": [],
     "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [
-      "brief",
-      "issue"
+      "brief"
     ],
     "todo": [
       {
         "stage": "brief",
         "what": "the written intent a build starts from",
         "how": "manamap pilot brew gishath --commander \"<name>\" --theme <style>"
-      },
-      {
-        "stage": "issue",
-        "what": "authored identity: name and commander (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/gishath/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state gishath archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       }
     ]
   },

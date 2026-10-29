@@ -12,7 +12,7 @@
   "size": 100,
   "lands": 40,
   "status": {
-    "complete": 16,
+    "complete": 17,
     "of": 19,
     "stale": [],
     "older_model": [],
@@ -20,7 +20,6 @@
     "verified": true,
     "missing": [
       "tutors",
-      "issue",
       "sim"
     ],
     "todo": [
@@ -28,11 +27,6 @@
         "stage": "tutors",
         "what": "the tutor guide — `tutor-guide`",
         "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
-      },
-      {
-        "stage": "issue",
-        "what": "authored identity: name and commander (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/keen-engineering/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state keen-engineering archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       },
       {
         "stage": "sim",

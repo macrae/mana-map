@@ -192,10 +192,24 @@ window.DeckFacts = (function () {
    * — the commander twice. Where the name IS the commander, the slug is the one
    * name the bench actually calls the deck by, and it is printed as a name
    * ("sharknado" -> "Sharknado"); `authored` says which one this is. */
+  /* An all-caps name is a magazine cover line (EDGAR MARKOV, THE UR-DRAGON), not a
+   * name: the pages read it in title case, with the small words a card name keeps
+   * lowercase ("Heliod, the Warped Eclipse") — except first, or after a dash. The
+   * authored bytes are untouched; this is how they are DRAWN. */
+  var SMALL = { the: 1, of: 1, a: 1, an: 1, and: 1, to: 1, in: 1, on: 1, at: 1, for: 1 };
+  function unshout(s) {
+    if (!/[A-Z]/.test(s) || s !== s.toUpperCase()) return s;
+    return s.toLowerCase().replace(/[a-z][a-z']*/g, function (w, at, all) {
+      var before = all.slice(0, at).replace(/\s+$/, '');
+      var opens = !before || /[\u2014:-]$/.test(before) && !/[a-z]-$/.test(all.slice(0, at));
+      return SMALL[w] && !opens ? w : w.charAt(0).toUpperCase() + w.slice(1);
+    });
+  }
+
   function displayName(e) {
     if (!e) return { text: '', authored: false };
     var name = e.deck_name || '';
-    if (name && name !== e.commander) return { text: name, authored: true };
+    if (name && name !== e.commander) return { text: unshout(name), authored: true };
     var slug = String(e.slug || '');
     var words = slug.split('-').filter(Boolean).map(function (w) {
       return w.charAt(0).toUpperCase() + w.slice(1);

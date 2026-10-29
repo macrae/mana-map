@@ -18,9 +18,12 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
     "stale": [],
+    "older_model": [
+      "goldfish"
+    ],
     "invalid": [
       "combos"
     ],
@@ -31,8 +34,7 @@
       "stacks",
       "tutors",
       "prose",
-      "log",
-      "issue"
+      "log"
     ],
     "todo": [
       {
@@ -64,11 +66,6 @@
         "stage": "log",
         "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
         "how": "manamap pilot deck-notes zur-enchantress add \"<what happened>\" --result win|loss --opponents 3"
-      },
-      {
-        "stage": "issue",
-        "what": "authored identity: name and commander (volume/price are legacy fields)",
-        "how": "AUTHORED: data/decks/zur-enchantress/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state zur-enchantress archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
       }
     ]
   },
@@ -7007,7 +7004,10 @@
     "causes": {},
     "cause_counts": {},
     "feel": {},
-    "feel_n": 0
+    "feel_n": 0,
+    "marks": {},
+    "marks_n": 0,
+    "marked": {}
   },
   "model": {
     "goldfish": {
@@ -7395,7 +7395,8 @@
   "decisions": null,
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
-    "1 artifact(s) fail their own gate (combos) — `deck-status zur-enchantress` names them; fix before anything else reads them"
+    "1 artifact(s) fail their own gate (combos) — `deck-status zur-enchantress` names them; fix before anything else reads them",
+    "measured under an older simulator: goldfish — the figures were right when taken; `manamap pilot regen --slug zur-enchantress` re-reads them when you want, never on its own"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

@@ -144,6 +144,10 @@ window.PageState = (function () {
   /* The button. `spec` = {text, deck, cards, branch, label?, title?}; `deck` is the
    * SLUG (what page-state and Jarvis resolve), the name is already in `text`. */
   function askButton(spec) {
+    // The button's own style, injected HERE: it lived only behind the prompt's open, so
+    // every Ask Jarvis button drew as a bare white browser button until the first click
+    // (the card panel, 2026-10-29).
+    ensureStyle();
     var payload = { text: spec.text || '', deck: spec.deck || '', branch: spec.branch || '',
                     cards: spec.cards || [] };
     return '<button type="button" class="mm-jarvis-btn' + (spec.cls ? ' ' + esc(spec.cls) : '') +

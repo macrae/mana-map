@@ -29,11 +29,13 @@ DATA = ROOT / "data"
 
 # Two sleeved decks sharing Sol Ring, one bench deck. Real card names, so they resolve
 # against the corpus; the deck names are made up so nothing collides with the fleet.
+# Beta's name is SHOUTED, as five of the fleet's were authored (EDGAR MARKOV, THE
+# UR-DRAGON): the legend draws it in title case (`DeckFacts.displayName`, 2026-10-29).
 MANIFEST = {"drafts": [], "decks": [
     {"slug": "fixture-alpha", "deck_name": "Fixture Alpha", "commander": "Nobody",
      "format": "commander", "stage": "sleeved", "has": {}, "branches": [],
      "cards": ["Sol Ring", "Lightning Bolt"]},
-    {"slug": "fixture-beta", "deck_name": "Fixture Beta", "commander": "Nobody",
+    {"slug": "fixture-beta", "deck_name": "FIXTURE BETA", "commander": "Nobody",
      "format": "commander", "stage": "sleeved", "has": {}, "branches": [],
      "cards": ["Sol Ring", "Counterspell"]},
     {"slug": "fixture-gamma", "deck_name": "Fixture Gamma", "commander": "Nobody",
