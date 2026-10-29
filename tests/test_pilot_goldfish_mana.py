@@ -14,6 +14,8 @@ import pytest
 
 from manamap.pilot import goldfish
 
+from conftest import requires_corpus
+
 
 @pytest.mark.parametrize("text,want", [
     # the shape that always worked
@@ -67,6 +69,9 @@ def test_a_land_never_counts_as_a_rock():
     assert got["produces"] == 0
 
 
+# The swapped-in card is not in the deck, so `apply_swaps` resolves it from the corpus,
+# which CI's push job does not have (FileNotFoundError on oracle-cards.json.gz).
+@requires_corpus
 @pytest.mark.regression
 def test_restricted_mana_is_counted_but_named():
     """`spend()` is a scalar and cannot represent "only to cast Dragon spells".
