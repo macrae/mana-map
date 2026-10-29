@@ -386,14 +386,23 @@ MECHANICAL_TAGS = {
     "upkeep_trigger": r"at the beginning of (?:your |each )?upkeep",
     # Effects
     "sacrifice": r"sacrifice (?:a |an |another )",
-    "draw": r"draw (?:a |two |three |\d+ )?cards?",
+    # draw / discard widened 2026-10-28 (corpus sweep: draw +535, discard +768, none
+    # dropped). The old forms missed "draws", "draw X / that many / seven cards" and
+    # "discard(s) your/their hand", so every wheel (Windfall, Wheel of Fortune, Magus of
+    # the Wheel) carried neither tag and scored zero synergy. "Discard this card"
+    # (Channel and kin, 558 cards) is excluded: a self-ability, not a loot or a wheel.
+    "draw": r"\bdraws? (?:(?:a|an|one|two|three|four|five|six|seven|eight|nine|ten|x|\d+|"
+            r"that many|half that many|up to (?:one|two|three|\d+)) )?(?:additional )?cards?\b",
     "removal": r"destroy (?:target |all |each )|(?:target |each ).*gets? [+-]\d+/-\d+|exile (?:target |all |each )",
     "bounce": r"return (?:target |a ).*to (?:its |their )?owner'?s hand",
     "counterspell": r"counter target spell",
     "blink": r"exile .*(?:then |, )return (?:it|that card|them) to the battlefield|flicker",
     "reanimate": r"return .*from (?:a |your )?graveyard to the battlefield|put .*from (?:a |your )?graveyard onto the battlefield",
     "tutor": r"search your library for",
-    "discard": r"discard (?:a |two |\d+ )?cards?",
+    "discard": r"\bdiscards? (?:(?:a|an|one|two|three|four|five|six|seven|eight|nine|ten|x|\d+|"
+               r"that many|that|those|any number of|up to (?:one|two|three|\d+)) )?"
+               r"(?:(?!this\b)\w+ )?cards?\b"
+               r"|\bdiscards? (?:their|your|his or her|its owner's|that player's) hands?\b",
     # Generators
     "tokens": r"create (?:a |an |two |three |four |five |ten |\d+ )?(?:\d+/\d+ )?\w+ \w+ (?:creature |artifact |enchantment )?tokens?|create (?:a |an |two |three |\d+ )?tokens?",
     "counters_plus": r"put (?:a |two |three |\d+ )?\+1/\+1 counters? on",

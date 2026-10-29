@@ -75,9 +75,14 @@ def test_death_draw_splits_on_the_word_nontoken(doc):
     # (Phyrexian Arena and Twilight Prophet were these rows until edgar v2.0.0 ran them.)
     assert draw["Read the Bones"]["flags"] == {"trigger": "plain", "nontoken": False, "costs_life": True}
     assert "draw.put_into_hand" in draw["Dark Confidant"]["matched"]["oracle"]
-    # admission by TAG alone (Midnight Reaper has no draw role) and by ORACLE alone (Standard Bearer has neither)
+    # admission by TAG alone (Midnight Reaper has no draw role) and by ORACLE alone. Standard
+    # Bearer ("you draw X cards") was the oracle-only example until the 2026-10-29 tag sweep
+    # taught `draw` that form; any row admitted by oracle alone proves the path still exists.
     assert draw["Midnight Reaper"]["matched"]["roles"] == [] and draw["Midnight Reaper"]["matched"]["tags"] == ["draw"]
-    assert draw["Liliana's Standard Bearer"]["matched"] == {"oracle": ["draw.cards"], "roles": [], "tags": [], "keywords": []}
+    assert draw["Liliana's Standard Bearer"]["matched"]["tags"] == ["draw"]
+    oracle_only = [n for n, r in draw.items()
+                   if r["matched"]["oracle"] and not r["matched"]["roles"] and not r["matched"]["tags"]]
+    assert oracle_only, "no card admitted by its oracle text alone"
 
 
 def test_the_threat_dimension_reads_printed_power_and_keywords(doc):

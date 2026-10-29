@@ -64,6 +64,25 @@ def test_draw():
     assert "draw" in tags
 
 
+def test_a_wheel_is_draw_and_discard():
+    """Windfall carried neither tag before 2026-10-28 ("draws", "discards their hand")."""
+    text = ("Each player discards their hand, then draws cards equal to the greatest "
+            "number of cards a player discarded this way.")
+    tags = tag_oracle_text(text)
+    assert "draw" in tags and "discard" in tags
+    assert "draw" in tag_oracle_text("Each player discards their hand, then draws seven cards.")
+    assert "draw" in tag_oracle_text("Draw X cards.")
+    assert "draw" in tag_oracle_text("Draw that many cards.")
+    assert "discard" in tag_oracle_text("Target player reveals their hand. That player discards that card.")
+    assert "discard" in tag_oracle_text("{1}{B}, Discard a creature card: Draw a card.")
+
+
+def test_discarding_this_card_is_not_the_discard_tag():
+    """Channel and kin discard themselves for an ability — not a loot or a wheel."""
+    tags = tag_oracle_text("Channel — {1}{G}, Discard this card: Target creature gets +2/+2.")
+    assert "discard" not in tags
+
+
 def test_removal_destroy():
     text = "Destroy target creature."
     tags = tag_oracle_text(text)
