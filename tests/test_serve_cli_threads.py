@@ -40,6 +40,24 @@ from manamap import serve
 import pytest
 
 
+# A generous ceiling, and a failure that SAYS it was the ceiling. The lock in `_cli`
+# serializes the calls, so three cold `deck-status` runs on a loaded machine (prepush
+# at load 20+, 2026-10-28/29) outlived the old 60 s join. The thread still inside
+# `_cli` had stdout redirected, and the assertion below read that live redirect as a
+# DEAD stdout — a timing artifact reported as the bug this file exists to catch.
+JOIN_S = 300
+
+
+def _join_all(threads):
+    deadline = time.monotonic() + JOIN_S
+    for t in threads:
+        t.join(max(0.0, deadline - time.monotonic()))
+    alive = [t.name for t in threads if t.is_alive()]
+    if alive:
+        pytest.fail(f"{len(alive)} `_cli` call(s) still running after {JOIN_S} s — the machine "
+                    f"is starved or `_cli` deadlocked; stdout cannot be judged mid-call")
+
+
 def test_redirect_stdout_is_process_global_not_per_thread():
     """The mechanism, pinned. If a future Python makes stdout thread-local this
     fails, and the lock in `_cli` can go."""
@@ -93,8 +111,7 @@ def test_concurrent_cli_calls_do_not_swap_their_output():
     threads = [threading.Thread(target=call, args=(s,)) for s in slugs]
     for t in threads:
         t.start()
-    for t in threads:
-        t.join(60)
+    _join_all(threads)
 
     assert not errors, errors
     assert len(results) == len(slugs)
@@ -115,8 +132,7 @@ def test_stdout_survives_concurrent_cli_calls():
                for s in ("heliod", "gishath", "ur-dragon")]
     for t in threads:
         t.start()
-    for t in threads:
-        t.join(60)
+    _join_all(threads)
     assert sys.stdout is real, (
         f"sys.stdout was left as {type(sys.stdout).__name__}; every later print "
         f"in this process would vanish")
