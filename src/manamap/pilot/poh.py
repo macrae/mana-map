@@ -833,8 +833,12 @@ def render_appendices(d):
     by_sha = _versions_by_sha(d)
     cur = d["cards"].get("decklist_sha256")
     out = ""
-    # 9.1 the sim record, every run, grouped by the version it played
-    runs = list_runs(slug)
+    # 9.1 the sim record, every run, grouped by the version it played. Sorted by date
+    # then run id, NOT list_runs' order: its same-day tie-break is the file's mtime,
+    # which a checkout resets, so CI rendered sharknado's two 2026-10-25 runs the other
+    # way round and the byte-identical rebuild failed (2026-10-29). A table of every
+    # run needs a stable order, not a "latest".
+    runs = sorted(list_runs(slug), key=lambda r: (r.get("at") or "", r.get("run_id") or ""))
     findings = load_json(d["base"] / "sim_findings.json") or {}
     if runs:
         groups = {}
