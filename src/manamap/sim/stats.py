@@ -269,6 +269,21 @@ def permutation_p(xs, ys, seed=0, iterations=10000):
     return round((hits + 1) / (iterations + 1), 4)
 
 
+def _uniform_index(rng, n):
+    """`rng.randrange(n)`, draw for draw — CPython's own path under it, inlined:
+    `getrandbits(n.bit_length())`, rejected until below n. The same stream, without
+    randrange's per-call layers: 29.6M of them were 35 s of one regression test
+    (2026-10-29). `tests/test_sim_stats.py` holds it equal to `randrange`."""
+    k, bits = n.bit_length(), rng.getrandbits
+
+    def draw():
+        r = bits(k)
+        while r >= n:
+            r = bits(k)
+        return r
+    return draw
+
+
 def diff_medians(xs, ys, seed=0, iterations=10000):
     """Percentile-bootstrap interval for the difference of medians. Seeded."""
     xs = [x for x in xs if x is not None]
@@ -284,9 +299,10 @@ def diff_medians(xs, ys, seed=0, iterations=10000):
     rng = random.Random(seed)
     d = med(ys) - med(xs)
     draws = []
+    pick_x, pick_y = _uniform_index(rng, len(xs)), _uniform_index(rng, len(ys))
     for _ in range(iterations):
-        a = [xs[rng.randrange(len(xs))] for _ in range(len(xs))]
-        b = [ys[rng.randrange(len(ys))] for _ in range(len(ys))]
+        a = [xs[pick_x()] for _ in range(len(xs))]
+        b = [ys[pick_y()] for _ in range(len(ys))]
         draws.append(med(b) - med(a))
     draws.sort()
     lo = draws[int(0.025 * iterations)]

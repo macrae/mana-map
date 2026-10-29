@@ -439,3 +439,27 @@ def test_the_permutation_p_agrees_with_the_exact_p_at_n_three():
     mc, m2 = stats.kendall_w_p(rankings, seed=5, exact_max=1, iterations=4000)
     assert m1.startswith("exact") and m2.startswith("permutation")
     assert abs(mc - exact) < 0.03, (mc, exact)
+
+
+#: diff_medians under the old `randrange` draw — the faster one must reproduce it.
+PINNED_DIFF_MEDIANS = {'diff': 2.5, 'ci95': [-3.5, 5.0]}
+
+
+def test_the_bootstrap_index_draw_is_randrange_draw_for_draw():
+    """`_uniform_index` replaced `rng.randrange(n)` in `diff_medians` for speed
+    (2026-10-29); every committed net-change interval depends on the stream being
+    the SAME, so it is held to randrange across sizes, including powers of two."""
+    import random
+    for n in (1, 2, 3, 7, 8, 9, 63, 64, 65, 200, 1000):
+        for seed in (0, 1, 12345):
+            ours, ref = random.Random(seed), random.Random(seed)
+            draw = stats._uniform_index(ours, n)
+            assert [draw() for _ in range(300)] == [ref.randrange(n) for _ in range(300)], n
+
+
+def test_diff_medians_reads_as_it_did_before_the_faster_draw():
+    """Pinned from the randrange implementation, seed 0, 500 resamples."""
+    got = stats.diff_medians([1, 5, 3, 8, 2, 9, 4], [6, 2, 7, 7, 1, 3, 9, 10],
+                             seed=0, iterations=500)
+    assert got["diff"] == PINNED_DIFF_MEDIANS["diff"]
+    assert got["ci95"] == PINNED_DIFF_MEDIANS["ci95"]

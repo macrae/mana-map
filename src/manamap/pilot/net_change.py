@@ -67,8 +67,10 @@ wrong in a consistent direction: a mean read as a rate, a clock read as a win
 percentage, a hoard read as mana. All three have happened here.
 """
 
+import functools
 import glob
 import math
+import os
 import re
 import hashlib
 import json
@@ -1025,6 +1027,22 @@ def forge(slug, branch, pod=None):
 _SIM_GLOB = re.compile(r"^data/decks/(?P<slug>[^/]+)/(?:branches/(?P<branch>[^/]+)/)?sim/\*\.json$")
 
 
+@functools.lru_cache(maxsize=64)
+def _load_cached(path, _mtime_ns, _size):
+    return json.load(open(path))
+
+
+def _load_record(path):
+    """A run record, parsed once per version of the file. `_records` is asked for the
+    same files ~19 times per `_forge` call, and decoding them was 34 of the 92 s
+    the fleet's forge-record test took (2026-10-29). Keyed on mtime and size, so an
+    edited record is re-read; bounded, because `manamap serve`'s worker lives long.
+    READ-ONLY: the one caller aggregates and never writes into a record — a caller
+    that did would corrupt every later read of that file."""
+    st = os.stat(path)
+    return _load_cached(path, st.st_mtime_ns, st.st_size)
+
+
 def _records(pattern, want, live_sha):
     """`(path, record)` for every run record the pattern names — and, since
     2026-10-22, EVERY EXPERIMENT ARM that played the same list: an experiment is two
@@ -1035,14 +1053,14 @@ def _records(pattern, want, live_sha):
     Each arm is re-keyed to `want` so the reader below needs no second spelling."""
     for path in sorted(glob.glob(pattern)):
         if "logs" not in path:
-            yield path, json.load(open(path))
+            yield path, _load_record(path)
     m = _SIM_GLOB.match(pattern)
     if not m:
         return
     slug, branch = m.group("slug"), m.group("branch")
     for path in sorted(glob.glob(f"data/decks/{slug}/experiments/*.json")):
         try:
-            doc = json.load(open(path))
+            doc = _load_record(path)
         except (OSError, ValueError):
             continue
         if (doc.get("design") or {}).get("aa"):
