@@ -97,7 +97,7 @@ def test_drill_renders_its_layout(page):
         const rd = await MM.getRegionData();
         const reg = rd.regions.find(r => r.level === 1 && r.count > 100);
         await Drill.enterRegion(reg.id);
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const gd = document.getElementById('plot');
         const dt = MM.mapRenderer.layers.find(t => t._isDrill);
         let moved = 0;
@@ -182,7 +182,7 @@ def test_drill_back_restores_the_world(page):
 def test_small_selection_uses_the_accordion(page):
     result = page.evaluate("""async () => {
         ['Sol Ring', 'Lightning Bolt', 'Counterspell', 'Grave Pact'].forEach(n => MM.selectByName(n));
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         const inner = document.getElementById('detailInner');
         const active = inner.querySelector('.acc-row.active');
         const ir = inner.getBoundingClientRect(), rr = active.getBoundingClientRect();
@@ -210,7 +210,7 @@ def test_big_selection_enters_browse_and_orders_by_embedding(page):
         const rows = [];
         rd.membership.l0.forEach((v, i) => { if (v === cid) rows.push(i); });
         await MM.enterBrowse(rows, reg.label);
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const gd = document.getElementById('plot');
         const bs = MM.browseSet;
         return {
@@ -234,7 +234,7 @@ def test_browse_cycling_moves_the_marker(page):
     result = page.evaluate("""async () => {
         const rows = []; for (let i = 0; i < 400; i++) rows.push(i * 7 % 34322);
         await MM.enterBrowse(rows, 'T');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         const gd = document.getElementById('plot');
         const snap = () => { const t = MM.mapRenderer.layers.find(x => x._isBrowseCurrent);
                              return {x: t.x[0], y: t.y[0], cd: t.customdata[0]}; };
@@ -345,10 +345,10 @@ def test_mode_switches_are_exclusive(page):
     result = page.evaluate("""async () => {
         const out = {};
         document.getElementById('modeSelect').value = 'build'; MM.setMode('build');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         out.deckPanelOpen = document.getElementById('deckPanel').classList.contains('open');
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         out.afterExplore = document.getElementById('deckPanel').classList.contains('open');
         out.overlays = MM.mapRenderer.layers
             .filter(t => t._isDeckOverlay).length;
@@ -375,7 +375,7 @@ def test_render_stays_under_budget(page):
         const empty = t(() => MM.render(), 7);
         const rows = []; for (let i = 0; i < 8000; i++) rows.push(i * 3 % 34322);
         await MM.enterBrowse(rows, 'Perf');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         return {empty, browse: t(() => MM.render(), 7), cycle: t(() => MM.cycleNext(), 7)};
     }""")
     assert page.js_errors == []
@@ -400,7 +400,7 @@ def test_render_draws_everything_in_one_pass(page):
     result = page.evaluate("""async () => {
         const rows = []; for (let i = 0; i < 5000; i++) rows.push(i * 5 % 34322);
         await MM.enterBrowse(rows, 'Calls');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         const counts = {setLayers: 0, updateLayerBy: 0};
         const r = MM.mapRenderer, orig = {};
         for (const k of ['setLayers', 'updateLayerBy']) {
@@ -505,7 +505,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
         await Force.enter(rows, 'Test');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const before = Force.nodeCount;
         const steps = [];
         // Three cards the deck really runs, spread across the list so their
@@ -513,7 +513,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         const walk = [rows[0], rows[Math.floor(rows.length / 2)], rows[rows.length - 1]];
         for (const i of walk) {
             Force.focusCard(i);
-            await new Promise(r => setTimeout(r, 700));
+            await MM.whenIdle();
             steps.push(Force.nodeCount);
         }
         // A card that is not on the graph must be a no-op, not a crash and not a
@@ -540,9 +540,9 @@ def test_leaving_the_walk_restores_the_map(page):
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
         await new Promise(r => setTimeout(r, 200));
         await Force.enter(rows, 'Test');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         const gd = document.getElementById('plot');
         const cv = document.getElementById('forceCanvas');
         return {
@@ -574,7 +574,7 @@ def test_the_panel_always_offers_somewhere_to_go(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 3500));
+        await MM.whenIdle();
         const el = document.getElementById('deckInner');
         return {
             decks: el.querySelectorAll('#dcDeck option').length - 1,   // minus the prompt
@@ -603,9 +603,9 @@ def test_walking_a_deck_from_the_empty_state(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         Force.freeze();
         const b = Force.bbox();
         return {nodes: Force.nodeCount, links: Force.linkCount, w: b.w, h: b.h};
@@ -637,22 +637,22 @@ def test_walk_survives_a_round_trip_through_explore(page):
         };
 
         setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         const i = MM.allData.findIndex(d => d.n === 'Past in Flames');
         if (i >= 0) Force.focusCard(i);
-        await new Promise(r => setTimeout(r, 2000));
+        await MM.whenIdle();
         const before = {nodes: Force.nodeCount, trail: Force.trailLength,
                         w: cv().clientWidth, ink: ink()};
 
         setMode('explore');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const explore = {traces: MM.mapRenderer.layers.length,
                          inlineDisplay: cv().style.display || ''};
 
         setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const after = {nodes: Force.nodeCount, trail: Force.trailLength,
                        w: cv().clientWidth, ink: ink()};
         return {before, explore, after};
@@ -679,7 +679,7 @@ def test_the_walk_panel_is_actually_on_screen(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const panel = document.getElementById('deckPanel');
         // The region seeds live behind a disclosure now — they are a way of
         // starting somewhere ELSE, and nine equal-weight buttons above the card
@@ -720,16 +720,16 @@ def test_a_walk_in_progress_can_be_restarted(page):
     r = page.evaluate("""async () => {
         const setMode = m => { document.getElementById('modeSelect').value = m; MM.setMode(m); };
         setMode('discover');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 6000));
+        await MM.whenIdle();
         const walking = {nodes: Force.nodeCount,
                          hasStartOver: !!document.querySelector('[onclick^="Discovery.newGraph"]')};
         document.querySelector('[onclick^="Discovery.newGraph"]').click();
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const reset = {nodes: Force.nodeCount};
         await Discovery.loadDeck('heliod');
-        await new Promise(r => setTimeout(r, 6000));
+        await MM.whenIdle();
         return {walking, reset, switched: Force.nodeCount};
     }""")
     assert page.js_errors == []
@@ -969,10 +969,10 @@ def test_the_drill_button_reports_what_it_would_do(page, corpus_count):
         document.querySelectorAll('#toggles button').forEach(b => {
             if (b.textContent !== 'Battle' && b.classList.contains('active')) b.click();
         });
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const narrow = {label: btn.textContent, disabled: btn.classList.contains('is-disabled')};
         btn.click();
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         return {wide, refused, narrow, drilled: Drill.isActive()};
     }""")
     assert page.js_errors == []
@@ -1098,7 +1098,7 @@ def test_canvas_click_selects_the_card_under_the_pointer(canvas_page):
         const p = MM.mapRenderer.dataToPixel(MM.allData[i].x, MM.allData[i].y);
         c.dispatchEvent(new MouseEvent('click',
             {bubbles: true, clientX: rect.left + p[0], clientY: rect.top + p[1]}));
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
         const rows = MM.selectedRows();
         return {n: rows.length, name: rows.length ? MM.allData[rows[0]].n : null,
                 aimedAt: MM.allData[i].n};
@@ -1267,7 +1267,7 @@ def test_canvas_box_select_uses_the_quadtree(canvas_page):
         await new Promise(r => setTimeout(r, 200));
         window.dispatchEvent(new MouseEvent('mouseup',
             {bubbles: true, clientX: rect.left + 800, clientY: rect.top + 450}));
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         document.dispatchEvent(new KeyboardEvent('keyup', {key: 'Shift', bubbles: true}));
         return {browse: !!MM.browseSet,
                 held: MM.browseSet ? MM.browseSet.indices.length : MM.selectedRows().length};
@@ -1283,30 +1283,30 @@ def test_the_map_view_and_drill_run_on_canvas(canvas_page):
     rebuilding every layer per frame."""
     r = canvas_page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build'; MM.setMode('build');
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         await Build.select('edgar-vampires');
-        await new Promise(r => setTimeout(r, 6000));
+        await MM.whenIdle();
         Build.setView('map');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const lens = {deck: (document.querySelector('.lens-title') || {}).textContent};
 
         const span = () => { const c = MM.mapRenderer.getCamera();
                              return Math.abs(c.x[1] - c.x[0]); };
         const before = span();
         Build.focusLine(0);
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const zoomed = span();
 
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const rd = await MM.getRegionData();
         const reg = rd.regions.find(r => r.level === 1 && r.count > 120 && r.count < 300);
         await Drill.enterRegion(reg.id);
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         const drilled = {active: Drill.isActive(),
                          bar: document.getElementById('drillBar').style.display !== 'none'};
         Drill.back();
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         return {lens, before, zoomed, drilled, backOk: !Drill.isActive(),
                 labels: document.querySelectorAll('.map-label').length};
     }""")
@@ -1537,7 +1537,7 @@ def test_the_atlas_is_still_one_click_away(discover_page):
     r = discover_page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const gd = document.getElementById('plot');
         return {traces: MM.mapRenderer.layers.length, rows: MM.allData.length};
     }""")
@@ -1561,7 +1561,7 @@ def test_a_real_moxfield_export_imports_completely(discover_page):
         const text = await (await fetch('../data/decks/edgar-vampires/decklist.txt')).text();
         const doc = await (await fetch('../data/decks/edgar-vampires/cards.json')).json();
         const res = Discovery.importText(text);
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         const expected = new Set(doc.cards.map(c => c.name));
         const got = new Set(Discovery.library.names());
         const missingFromGraph = [...expected].filter(n => !got.has(n));
@@ -1593,7 +1593,7 @@ def test_import_keeps_the_discovery_chrome(discover_page):
     r = discover_page.evaluate("""async () => {
         const text = await (await fetch('../data/decks/goblin-storm/decklist.txt')).text();
         Discovery.importText(text);
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         Force.renderPanel();
         return {
             header: document.querySelector('#deckInner h2').textContent,
@@ -1639,7 +1639,7 @@ def test_the_brief_is_the_hand_off_not_a_backend(discover_page):
     r = discover_page.evaluate("""async () => {
         const text = await (await fetch('../data/decks/heliod/decklist.txt')).text();
         const res = Discovery.importText(text);
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const b = Discovery.brief();
         return {resolved: res.resolved, importedCommander: res.commander,
                 commander: b.commander, slug: b.slug, bracket: b.bracket,
@@ -1665,7 +1665,7 @@ def test_import_does_not_go_through_deck_lens(discover_page):
     r = discover_page.evaluate("""async () => {
         const text = await (await fetch('../data/decks/sisay/decklist.txt')).text();
         const res = Discovery.importText(text);
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         return {resolved: res.resolved, mode: document.getElementById('modeSelect').value,
                 nodes: Force.nodeCount};
     }""")
@@ -1689,9 +1689,9 @@ def test_the_hover_card_appears_and_leaves(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         Force.fit();
-        await new Promise(r => setTimeout(r, 700));
+        await MM.whenIdle();
 
         const c = document.getElementById('forceCanvas');
         const rect = c.getBoundingClientRect();
@@ -1759,12 +1759,12 @@ def test_a_sample_of_cards_stays_named(discover_page):
             for (const nb of Discovery.neighbours(Discovery.current, 'similar').slice(0, 4)) {
                 Force.branchByRow(nb.row, 'similar');
             }
-            await new Promise(r => setTimeout(r, 900));
+            await MM.whenIdle();
         };
         const single = Force.labelCount;      // the landing: one card
         await grow();
         Force.fit();
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
         return {single: single, many: Force.labelCount,
                 nodes: Force.nodeCount, cap: Force.LABEL_MAX};
     }""")
@@ -1873,9 +1873,9 @@ def test_a_click_survives_a_shaky_hand(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         Force.fit();
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
 
         const c = document.getElementById('forceCanvas');
         const nodeAt = () => {
@@ -1940,9 +1940,9 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
     r = discover_page.evaluate("""async () => {
         const landing = Discovery.index[Discovery.current].n;
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 700));
+        await MM.whenIdle();
         Force.fit();
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
         const nodesAfterBranch = Force.nodeCount;
 
         const c = document.getElementById('forceCanvas');
@@ -2005,7 +2005,7 @@ def test_a_checked_in_deck_loads_with_its_commander(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         const res = await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         return {
             res: res,
             commanderName: res && res.commander >= 0
@@ -2036,13 +2036,13 @@ def test_cards_you_brought_look_different_from_cards_you_found(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         const before = Force.membership();
         for (const row of Discovery.library.list.slice(0, 5)) {
             Force.branchByRow(row, 'similar');
             await new Promise(r => setTimeout(r, 120));
         }
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         return {before: before, after: Force.membership()};
     }""")
     assert discover_page.js_errors == []
@@ -2060,11 +2060,11 @@ def test_loading_a_deck_replaces_the_previous_one(discover_page):
     ambiguous — a card in both decks could only be one colour."""
     r = discover_page.evaluate("""async () => {
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const first = {m: Force.membership(),
                        cmdr: Discovery.index[Discovery.current].n};
         await Discovery.loadDeck('heliod');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         return {first: first, second: {m: Force.membership(),
                                        cmdr: Discovery.index[Discovery.current].n}};
     }""")
@@ -2090,7 +2090,7 @@ def test_a_loaded_deck_arrives_already_arranged(discover_page):
         const ms = performance.now() - t0;
         const bb = () => JSON.stringify(Force.bbox());
         const atArrival = bb();
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         return {ms: ms, stillAfterwards: bb() === atArrival, nodes: Force.nodeCount};
     }""")
     assert discover_page.js_errors == []
@@ -2111,7 +2111,7 @@ def test_your_zoom_survives_the_graph_moving(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         await Discovery.loadDeck('goblin-storm');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const c = document.getElementById('forceCanvas');
         const rect = c.getBoundingClientRect();
         // Reheat, then zoom into the moving graph — the exact reported sequence.
@@ -2120,7 +2120,7 @@ def test_your_zoom_survives_the_graph_moving(discover_page):
         c.dispatchEvent(new WheelEvent('wheel', {bubbles: true, cancelable: true,
             clientX: rect.left + 400, clientY: rect.top + 300, deltaY: -300}));
         const zoomed = d3.zoomTransform(c).k;
-        await new Promise(r => setTimeout(r, 3000));   // through the settle and any fit
+        await MM.whenIdle();   // through the settle and any fit
         return {before: before, zoomed: zoomed, after: d3.zoomTransform(c).k};
     }""")
     assert discover_page.js_errors == []
@@ -2241,7 +2241,7 @@ def test_obsolescence_fills_in_outside_explore(discover_page):
         // A card that definitely has a replacement, opened in Discover with no prior
         // explore selection to have warmed the index.
         Discovery.show(Discovery.rowByName('Storm Crow'));
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const section = document.querySelector('.obsolescence-section');
         return {
             filled: !!section,
@@ -2301,14 +2301,14 @@ def test_relations_render_in_every_panel(discover_page):
 
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         MM.selectByName("Ashnod's Altar");
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         seen.explore = count();
 
         // browse panel — a different renderer again, and one of the silent no-ops
         MM.enterNeighbourhood(Discovery.rowByName("Ashnod's Altar"));
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         seen.browse = count();
         return seen;
     }""")
@@ -2335,19 +2335,19 @@ def test_a_relation_always_grows_the_graph(discover_page):
         const row = Discovery.rowByName("Ashnod's Altar");
 
         Discovery.show(row);
-        await new Promise(r => setTimeout(r, 500));
+        await MM.whenIdle();
         const before = Session.size();
         MM.relate(row, 'synergy');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const fromDiscover = {grew: Session.size() > before, held: Session.rows().slice()};
 
         // From the atlas: same control, same direction of travel — bigger, never smaller.
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         const beforeExplore = Session.size();
         MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         const after = Session.rows();
         return {
             fromDiscover: {grew: fromDiscover.grew},
@@ -2372,9 +2372,9 @@ def test_the_library_follows_the_card_not_the_mode(discover_page):
     r = discover_page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         MM.selectByName("Ashnod's Altar");
-        await new Promise(r => setTimeout(r, 1000));
+        await MM.whenIdle();
         const keep = document.querySelector('.discover-keep');
         const before = Discovery.library.list.length;
         if (keep) keep.click();
@@ -2398,13 +2398,13 @@ def test_relations_survive_the_canvas_renderer(canvas_page):
     an unhandled rejection so nothing drew and nothing complained. Outclassed-by, because
     it is the relation the CardBERT map draws an arc for (`MAP_ARC_RELATIONS`)."""
     r = canvas_page.evaluate("""async () => {
-        await new Promise(r => setTimeout(r, 500));
+        await MM.whenIdle();
         const row = MM.allData.findIndex(d => d.n === "Palinchron");
         MM.selectByName("Palinchron");
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
         const before = Session.size();
         MM.relate(row, 'obsolete');
-        await new Promise(r => setTimeout(r, 1800));
+        await MM.whenIdle();
         return {mode: document.getElementById('modeSelect').value,
                 grew: Session.size() > before, seeded: Session.has(row),
                 arcs: (MM.mapRenderer.layers.find(l => l.mode === 'edges') || {edges: []})
@@ -2430,17 +2430,17 @@ def test_leaving_a_graph_for_the_atlas_shows_where_it_sits(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         MM.relate(Discovery.current, 'synergy');
-        await new Promise(r => setTimeout(r, 1400));
+        await MM.whenIdle();
         const built = Force.nodeCount;
 
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
         // by design. The lens is engaged from INSIDE Explore, which is what `MM.relate`
         // does here.
         MM.relate(Session.rows()[0], 'synergy');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         return {
             // Re-read AFTER engaging the lens: the relate above grows the graph, and the
             // invariant under test is "the lens lights the whole graph", not "the graph
@@ -2473,18 +2473,18 @@ def test_escape_returns_the_whole_atlas(discover_page):
     selection."""
     r = discover_page.evaluate("""async () => {
         MM.relate(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3500));
+        await MM.whenIdle();
         // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
         // by design. The lens is engaged from INSIDE Explore, which is what `MM.relate`
         // does here.
         MM.relate(Session.rows()[0], 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         const on = !!MM.orientation;
         MM.clearOrientation();
-        await new Promise(r => setTimeout(r, 800));
+        await MM.whenIdle();
         return {on: on, off: !MM.orientation,
                 status: document.getElementById('status').textContent};
     }""")
@@ -2513,7 +2513,7 @@ def test_region_labels_do_not_pile_on_each_other(canvas_page):
         for (let i = 0; i < 200 && !document.querySelector('.map-label'); i++) {
             await new Promise(r => setTimeout(r, 50));
         }
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const all = [...document.querySelectorAll('.map-label')];
         const shown = all.filter(e => e.style.display !== 'none');
         const boxes = shown.map(e => e.getBoundingClientRect());
@@ -2548,11 +2548,11 @@ def test_growing_from_the_atlas_never_destroys_the_graph(discover_page):
     r = discover_page.evaluate("""async () => {
         // Build a real graph by branching a few times.
         Discovery.show(Discovery.rowByName("Ashnod's Altar"));
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         for (let i = 0; i < 3; i++) {
             const rows = Force.rows();
             MM.relate(rows[rows.length - 1], 'similar');
-            await new Promise(r => setTimeout(r, 500));
+            await MM.whenIdle();
         }
         const before = Force.rows().slice();
         if (before.length < 8) return {tooSmall: before.length};
@@ -2566,9 +2566,9 @@ def test_growing_from_the_atlas_never_destroys_the_graph(discover_page):
         // Go to the atlas and grow from it, exactly as a user would.
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         MM.relate(outsider, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
 
         const after = Force.rows();
         const kept = before.filter(x => after.indexOf(x) !== -1);
@@ -2596,10 +2596,10 @@ def test_an_empty_graph_still_seeds_from_the_atlas(discover_page):
         await new Promise(r => setTimeout(r, 300));
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         const row = Discovery.rowByName("Ashnod's Altar");
         MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         return {nodes: Force.nodeCount, seeded: Force.hasRow(row)};
     }""")
     assert discover_page.js_errors == []
@@ -2639,7 +2639,7 @@ def test_the_atlas_draws_typed_edges(page):
         layers.push({mode: 'edges', name: 'relations', edges: edges,
                      curve: 0.12, line: {width: 1.4}, opacity: 0.9});
         MM.mapRenderer.setLayers(layers);
-        await new Promise(r => setTimeout(r, 700));
+        await MM.whenIdle();
 
         const cv = MM.mapRenderer.canvas;
         const px = cv.getContext('2d').getImageData(0, 0, cv.width, cv.height).data;
@@ -2690,16 +2690,16 @@ def test_the_orientation_lens_is_live_not_a_snapshot(discover_page):
         for (let i = 0; i < 3; i++) {
             const rows = Session.rows();
             MM.relate(rows[rows.length - 1], 'similar');
-            await new Promise(r => setTimeout(r, 500));
+            await MM.whenIdle();
         }
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3500));
+        await MM.whenIdle();
         // Arriving in Explore no longer auto-orients — a clean atlas is the entry state,
         // by design. Engage the lens from INSIDE Explore, which is the whole point: what
         // this test measures is that it then tracks the graph rather than freezing it.
         MM.relate(Session.rows()[0], 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
 
         const lit = () => {
             const l = MM.mapRenderer.layers.find(
@@ -2711,9 +2711,9 @@ def test_the_orientation_lens_is_live_not_a_snapshot(discover_page):
 
         // Grow while Explore is on screen. A snapshot cannot move.
         Session.grow(Session.rows()[0], 'synergy');
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         MM.render();
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         return {before: before, after: lit(),
                 beforeSize: beforeSize, afterSize: Session.size()};
     }""")
@@ -2747,10 +2747,10 @@ def test_explore_grows_in_place_and_draws_the_arcs(page):
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Palinchron");
         MM.selectByName("Palinchron");
-        await new Promise(r => setTimeout(r, 700));
+        await MM.whenIdle();
         const before = Session.size();
         MM.relate(row, 'obsolete');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         const el = edgeLayer();
         return {
             mode: document.getElementById('modeSelect').value,
@@ -2790,10 +2790,10 @@ def test_synergy_is_never_drawn_as_an_atlas_arc(page):
         const edgeLayer = () => MM.mapRenderer.layers.find(l => l.mode === 'edges');
         const row = MM.allData.findIndex(d => d.n === "Ashnod's Altar");
         MM.relate(row, 'similar');
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const arcsBefore = edgeLayer() ? edgeLayer().edges.length : 0;
         MM.relate(row, 'synergy');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         const el = edgeLayer();
         return {
             synergyLinks: Session.links().filter(l => l.rel === 'synergy').length,
@@ -2877,7 +2877,7 @@ def test_only_one_surface_draws_per_mode(page):
         for (const m of ['discover', 'explore']) {
             document.getElementById('modeSelect').value = m;
             MM.setMode(m);
-            await new Promise(r => setTimeout(r, 2800));
+            await MM.whenIdle();
             out.push(look(m));
         }
         return out;
@@ -3008,7 +3008,7 @@ def test_a_settled_drill_is_still_clickable(page):
         const rd = await MM.getRegionData();
         const reg = rd.regions.find(r => r.level === 1 && r.count > 100 && r.count < 600);
         await Drill.enterRegion(reg.id);
-        await new Promise(r => setTimeout(r, 4000));   // the 90-frame settle
+        await MM.whenIdle();   // the 90-frame settle
         const layer = MM.mapRenderer.layers.find(l => l._isDrill);
         if (!layer) return {noLayer: true};
         let tried = 0, hits = 0;
@@ -3054,7 +3054,7 @@ def test_selecting_a_card_does_not_leave_the_region(page):
         const label = document.querySelector('.map-label');
         if (!label) return {error: 'no .map-label was ever placed'};
         label.click();
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const points = () => MM.mapRenderer.layers
             .filter(l => l.customdata && l.mode !== 'edges')
             .reduce((n, l) => n + l.x.length, 0);
@@ -3066,13 +3066,13 @@ def test_selecting_a_card_does_not_leave_the_region(page):
         const rect = document.getElementById('plot').getBoundingClientRect();
         MM.mapRenderer.canvas.dispatchEvent(new MouseEvent('click',
             {bubbles: true, clientX: rect.left + p[0], clientY: rect.top + p[1]}));
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const picked = {span: span(), region: !!MM.regionFocus, points: points(),
                         card: (document.querySelector('#detailInner h2') || {}).textContent};
 
         // Escape still peels the region — the behaviour that was borrowed, not deleted.
         document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         return {zoomed: zoomed, picked: picked,
                 escaped: {span: span(), region: !!MM.regionFocus}};
     }""")
@@ -3112,23 +3112,23 @@ def test_build_opens_on_the_graph_and_keeps_it_across_views(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         await Build.select('edgar-vampires');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         const seeded = {view: Build.view, nodes: Force.nodeCount,
                         m: Force.membership()};
 
         MM.relate(Force.rows()[5], 'similar');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const grown = Force.nodeCount;
 
         Build.setView('map');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const onMap = {view: Build.view,
                        forceMode: document.getElementById('plot').classList.contains('force-mode'),
                        layers: MM.mapRenderer.layers.length};
         Build.setView('graph');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         return {seeded, grown, onMap,
                 back: {nodes: Force.nodeCount, m: Force.membership()}};
     }""")
@@ -3160,13 +3160,13 @@ def test_the_cards_you_brought_are_inked_differently(page):
                             .map(c => (c.quantity || 1) + ' ' + c.name).join('\\n');
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 2000));
+        await MM.whenIdle();
         const distinct = new Set(d.cards.map(c => c.name)).size;
         const res = Discovery.importText(text);
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         const imported = Force.membership();
         MM.relate(Force.rows()[3], 'similar');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         return {resolved: res.resolved, missing: res.missing.length, distinct: distinct,
                 imported: imported, after: Force.membership()};
     }""")
@@ -3198,27 +3198,27 @@ def test_the_commander_is_one_card_and_changing_it_keeps_the_graph(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 2000));
+        await MM.whenIdle();
         const edgar = MM.allData.findIndex(d => d.n === 'Edgar Markov');
         const bolt = MM.allData.findIndex(d => d.n === 'Lightning Bolt');
 
         Discovery.show(edgar);
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const onLegend = document.getElementById('deckInner').innerHTML.indexOf('Set as commander') !== -1;
 
         for (let i = 0; i < 2; i++) {
             MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
-            await new Promise(r => setTimeout(r, 700));
+            await MM.whenIdle();
         }
         const before = Force.nodeCount;
         MM.setCommander(edgar);
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         const set = {isCommander: Session.commander === edgar,
                      ringed: Force.membership().commander,
                      nodes: Force.nodeCount};
 
         Discovery.focus(bolt);
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         const onSpell = document.getElementById('deckInner').innerHTML.indexOf('Set as commander') !== -1;
         return {onLegend, onSpell, before, set};
     }""")
@@ -3246,19 +3246,19 @@ def test_the_panel_belongs_to_the_mode_not_the_engine(page):
         const heading = () => (document.querySelector('#deckInner h2') || {}).textContent;
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         await Build.select('edgar-vampires');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         const loaded = {panel: heading(), nodes: Force.nodeCount};
 
         // Branching is what reheats the graph, which is what repainted the panel.
         MM.relate(Force.rows()[5], 'similar');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const branched = {panel: heading(), nodes: Force.nodeCount};
 
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 3500));
+        await MM.whenIdle();
         const discover = {panel: heading(), nodes: Force.nodeCount,
                           deck: Force.membership().deck};
         return {loaded, branched, discover};
@@ -3286,25 +3286,25 @@ def test_leaving_build_hands_the_canvas_back(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         await Build.select('edgar-vampires');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         const inBuild = Force.nodeCount;
 
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 3500));
+        await MM.whenIdle();
         const discover = {nodes: Force.nodeCount, deck: Force.membership().deck};
 
         // Now grow a walk of your own, and check Explore does NOT take it away.
         for (let i = 0; i < 2; i++) {
             MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
-            await new Promise(r => setTimeout(r, 700));
+            await MM.whenIdle();
         }
         const mine = Force.nodeCount;
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         return {inBuild, discover, mine, throughExplore: Session.size()};
     }""")
     assert page.js_errors == []
@@ -3346,12 +3346,12 @@ def test_the_brief_is_the_schema_build_deck_reads(discover_page):
         const blocked = Discovery.brief();
 
         Discovery.show(edgar);
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         MM.setCommander(edgar);
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         for (let i = 0; i < 3; i++) {
             MM.relate(Force.rows()[Force.nodeCount - 1], 'similar');
-            await new Promise(r => setTimeout(r, 700));
+            await MM.whenIdle();
         }
         Force.rows().filter(r => r !== edgar).slice(0, 6).forEach(function (r) {
             if (!Session.library.has(r)) Session.library.toggle(r);
@@ -3405,11 +3405,11 @@ def test_a_box_select_can_become_a_graph(page):
         const rows = [];
         for (let i = 0; i < MM.allData.length; i += 430) rows.push(i);
         await MM.enterBrowse(rows.slice(0, 60), 'Test lasso');
-        await new Promise(r => setTimeout(r, 1800));
+        await MM.whenIdle();
         const offered = !!document.querySelector('[onclick^="MM.growFromBrowse"]');
 
         MM.growFromBrowse();
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         return {offered: offered, mode: MM.mode, nodes: Force.nodeCount,
                 links: Force.linkCount,
                 status: document.getElementById('status').textContent};
@@ -3430,9 +3430,9 @@ def test_naming_a_commander_refreshes_build(page):
     r = page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
-        await new Promise(r => setTimeout(r, 3000));
+        await MM.whenIdle();
         await Build.select('heliod');
-        await new Promise(r => setTimeout(r, 9000));
+        await MM.whenIdle();
         // The analysis is split across the Deck and Numbers tabs (2026-10-28).
         const titles = () => document.querySelectorAll('#deckInner .bt-body .deck-section-title').length;
         Build.setTab('deck');
@@ -3462,9 +3462,9 @@ def test_fit_frames_a_small_graph_instead_of_leaving_it_tiny(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         Discovery.show(Discovery.rowByName('Sol Ring'));
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         MM.relate(Force.rows()[0], 'similar');
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         // Freeze BEFORE measuring: the simulation keeps expanding the bbox, and reading it
         // mid-settle is how this was misdiagnosed twice.
         Force.freeze();
@@ -3474,7 +3474,7 @@ def test_fit_frames_a_small_graph_instead_of_leaving_it_tiny(discover_page):
         const wanted = Math.min(cv.clientWidth / (b.w * 1.18),
                                 cv.clientHeight / (b.h * 1.18));
         Force.fit();
-        await new Promise(r => setTimeout(r, 1200));
+        await MM.whenIdle();
         return {nodes: Force.nodeCount, bw: b.w, bh: b.h,
                 wanted: wanted, labels: Force.labelCount,
                 onScreenWidthAtOldCap: b.w * 1.6};
@@ -3509,12 +3509,12 @@ def test_both_panels_draw_the_same_card_header(page):
         const nHeaders = () => document.querySelectorAll('#detailInner .viewer-header').length;
 
         MM.selectByName('Teferi, Hero of Dominaria');
-        await new Promise(r => setTimeout(r, 1000));
+        await MM.whenIdle();
         const selected = {stats: q(), headers: nHeaders()};
 
         const pw = MM.allData.findIndex(d => d.n === 'Teferi, Hero of Dominaria');
         await MM.enterBrowse([pw, 10, 20, 30, 40], 'Header check');
-        await new Promise(r => setTimeout(r, 2000));
+        await MM.whenIdle();
         // enterBrowse orders by distance from the set's centroid, so walk to the card
         // rather than assuming it is first — comparing two different cards proves nothing.
         let guard = 0;
@@ -3522,7 +3522,7 @@ def test_both_panels_draw_the_same_card_header(page):
             MM.cycleNext();
             await new Promise(r => setTimeout(r, 300));
         }
-        await new Promise(r => setTimeout(r, 600));
+        await MM.whenIdle();
         return {
             selected: selected,
             browsed: {stats: q(), headers: nHeaders(),
@@ -4399,7 +4399,7 @@ def _excursion_track(page, seconds, step_ms=500):
             const rows = [];
             for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
             R.setMotion(false);
-            await new Promise(r => setTimeout(r, 1200));   // let it ease home
+            await MM.whenIdle();   // let it ease home
             const home = rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
             R.setMotion(true);
             const track = [];
@@ -4432,12 +4432,12 @@ def test_the_atlas_drifts_at_altitude_and_holds_still_up_close(page):
             const R = MM.mapRenderer;
             const d = MM.allData[MM.allData.findIndex(c => c.n === 'Sol Ring')];
             R.setCamera({x: [d.x - 1.5, d.x + 1.5], y: [d.y - 1.0, d.y + 1.0]});
-            await new Promise(r => setTimeout(r, 1200));
+            await MM.whenIdle();
             const rows = [];
             for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
             const snap = () => rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
             const a = snap();
-            await new Promise(r => setTimeout(r, 2000));
+            await MM.whenIdle();
             const b = snap();
             let m = 0;
             for (let i = 0; i < a.length; i++) {
@@ -4493,7 +4493,7 @@ def test_a_click_still_lands_on_the_card_it_aimed_at_while_the_map_moves(page):
                 if (i < 0) continue;
                 const p = R.dataToPixel(MM.allData[i].x, MM.allData[i].y);
                 out.push({aim: nm, exact: R.pick(p[0], p[1], 3) === i});
-                await new Promise(r => setTimeout(r, 700));   // sample several phases
+                await MM.whenIdle();   // sample several phases
             }
             return out;
         }"""
@@ -4511,11 +4511,11 @@ def test_motion_stops_when_the_map_is_not_the_thing_on_screen(page):
     r = page.evaluate(
         """async () => {
             MM.setMode('discover');
-            await new Promise(r => setTimeout(r, 900));
+            await MM.whenIdle();
             const hidden = document.querySelector('.map-canvas').offsetParent === null;
             const off = MM.mapRenderer.motionLevel;
             MM.setMode('explore');
-            await new Promise(r => setTimeout(r, 1200));
+            await MM.whenIdle();
             return {hidden, off, back: MM.mapRenderer.motionLevel};
         }"""
     )
@@ -4559,7 +4559,7 @@ def test_the_motion_toggle_reports_the_renderer_not_the_markup(page):
             const on = {motion: MM.mapRenderer.motion,
                         active: btn.classList.contains('active')};
             btn.click();
-            await new Promise(r => setTimeout(r, 1400));
+            await MM.whenIdle();
             return {on, off: {motion: MM.mapRenderer.motion,
                               active: btn.classList.contains('active'),
                               level: MM.mapRenderer.motionLevel}};
@@ -4582,7 +4582,7 @@ def test_reduced_motion_is_honoured_at_boot(still_page):
             for (let i = 0; i < MM.allData.length; i += 997) rows.push(i);
             const snap = () => rows.map(i => R.dataToPixel(MM.allData[i].x, MM.allData[i].y));
             const a = snap();
-            await new Promise(r => setTimeout(r, 2000));
+            await MM.whenIdle();
             const b = snap();
             let moved = 0;
             for (let i = 0; i < a.length; i++) {
@@ -4592,7 +4592,7 @@ def test_reduced_motion_is_honoured_at_boot(still_page):
             // measures the click instead of the default, and passes either way.
             const booted = {motion: R.motion, active: btn.classList.contains('active')};
             btn.click();
-            await new Promise(r => setTimeout(r, 1500));
+            await MM.whenIdle();
             return {...booted, movedPx: moved, afterOptIn: R.motion};
         }"""
     )
@@ -5822,7 +5822,7 @@ def test_naming_cards_never_deletes_the_walk(discover_page):
         await Discovery.seedFromRows(
             Discovery.parseSeedNames('Sol Ring\\nLightning Bolt').rows, 'seed', {});
         Force.branchByRow(Force.rows()[0], 'similar');
-        await new Promise(r => setTimeout(r, 900));
+        await MM.whenIdle();
         const before = Force.rows().slice();
 
         // ADD — every card that was there must still be there.
@@ -6866,7 +6866,7 @@ def test_an_unreadable_draft_does_not_empty_your_library(browser, viz_server):
             }, 100); setTimeout(() => { clearInterval(t); r(); }, 15000); });
             const sawDraft = Build.draftSlugs().indexOf('a-draft-that-was-deleted') !== -1;
             Build.resumeDraft('a-draft-that-was-deleted');
-            await new Promise(r => setTimeout(r, 1500));
+            await MM.whenIdle();
             const status = (document.getElementById('status') || {}).textContent || '';
             return { before, sawDraft, status, after: Session.library.names,
                      stored: (d => !d ? null : (Array.isArray(d.cards) ? d.cards : (d.zones || []).reduce((a, z) => a.concat(z.cards || []), [])))(JSON.parse(localStorage.getItem('manamap-library') || 'null')) };
@@ -7661,7 +7661,7 @@ def test_the_camera_follows_only_when_the_card_leaves_the_view(canvas_page):
                 {key: 'ArrowRight', bubbles: true}));
             // Long enough for an ANIMATED pan to settle. Sampling mid-flight
             // reports the old bounds and every step then looks off-screen.
-            await new Promise(r => setTimeout(r, 1100));
+            await MM.whenIdle();
             moves.push({ wasVisible, moved: cam() !== was });
         }
         return moves;
@@ -8154,7 +8154,7 @@ def test_fit_and_reheat_sit_over_the_canvas_not_in_the_panel(discover_page):
     """The controls that act on the graph are ON the graph."""
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         const bar = document.getElementById('graphBar');
         const plot = document.getElementById('plot');
         const b = bar.getBoundingClientRect(), p = plot.getBoundingClientRect();
@@ -8196,7 +8196,7 @@ def test_the_bar_is_absent_until_there_is_a_layout(discover_page):
         const bar = document.getElementById('graphBar');
         const alone = {n: Force.nodeCount, hidden: bar.hidden, html: bar.innerHTML};
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 1500));
+        await MM.whenIdle();
         return {alone: alone, after: {n: Force.nodeCount, hidden: bar.hidden}};
     }""")
     assert discover_page.js_errors == []
@@ -9294,9 +9294,9 @@ def _open_watch(page):
     return page.evaluate("""async () => {
         document.getElementById('modeSelect').value = 'build';
         MM.setMode('build');
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         await Build.select('sharknado');
-        await new Promise(r => setTimeout(r, 4000));
+        await MM.whenIdle();
         Build.setTab('candidates');   // the set picker is the Candidates tab's
         const g = document.getElementById('candGrid');
         return {
@@ -9333,7 +9333,7 @@ def test_the_review_grid_shows_a_watch_set_read_only_without_the_server(page):
 
     rings = page.evaluate("""async () => {
         Build.setView('map');
-        await new Promise(r => setTimeout(r, 2500));
+        await MM.whenIdle();
         const t = MM.mapRenderer.layers.find(t => /^Candidates/.test(t.name || ''));
         return t ? t.x.length : 0;
     }""")

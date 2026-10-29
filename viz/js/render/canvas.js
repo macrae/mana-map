@@ -1083,6 +1083,10 @@
       };
     }
 
+    // When the last animated camera move ENDS, for `isMoving` / MM.whenIdle. A deadline,
+    // not a counter of transitions in flight: a counter leaked (a superseded or
+    // cancelled transition does not always report back) and read 'moving' forever.
+    let movingUntil = 0;
     function setCamera(range, opts) {
       if (!canvas || !baseFit) return;
       const o = opts || {};
@@ -1099,7 +1103,9 @@
       // this file that touches rAF has needed the same guard; a camera that does not
       // arrive is worse than one that arrives without easing.
       if (o.animate && !document.hidden) {
-        sel.transition().duration(o.duration || 420).call(zoomBehaviour.transform, t);
+        const dur = o.duration || 420;
+        movingUntil = Math.max(movingUntil, performance.now() + dur);
+        sel.transition().duration(dur).call(zoomBehaviour.transform, t);
       } else {
         sel.call(zoomBehaviour.transform, t);
       }
@@ -1117,6 +1123,9 @@
       init, destroy, resize, setLayers,
       draw: schedule, drawNow: draw,
       pick, pickRect, getCamera, setCamera, dataToPixel,
+      // A camera transition, or a motion TOGGLE still easing (0.7 s) — not the 2.5 s
+      // exhale after ten idle seconds, which is ambience, not work.
+      isMoving: function () { return performance.now() < movingUntil || (ticking && gain !== gainTarget && !resting); },
       setAnnotations, updateLayerBy, reindex,
       get visibleLabelCount() { return lastVisibleLabels; },
       setSelectMode: function (on) { selectMode = !!on; if (canvas) canvas.style.cursor = on ? 'crosshair' : 'grab'; },

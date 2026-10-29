@@ -1,3 +1,35 @@
+/* IN-FLIGHT FETCHES, for `MM.whenIdle` (2026-10-29). The browser suite waited on
+ * fixed sleeps — 151 tests, ~490 s in one file — which are slow on a quiet machine
+ * and wrong on a loaded one. A page that can say "nothing is loading" lets a test
+ * wait for exactly that. Counted here because this is the first script every page
+ * loads. Display-free: it changes no request and no response. */
+(function () {
+  if (window.__mmFetches || !window.fetch) return;
+  var inner = window.fetch, state = { n: 0, last: 0 };
+  window.__mmFetches = state;
+  window.fetch = function () {
+    state.n += 1; state.last = performance.now();
+    var p = inner.apply(this, arguments);
+    var done = function () { state.n -= 1; state.last = performance.now(); };
+    // A fetch resolves on its HEADERS; a 68 MB body is read and parsed after that.
+    // Count each body read too, or the page reads "idle" in the middle of a parse.
+    p.then(function (res) {
+      ['json', 'text', 'arrayBuffer', 'blob'].forEach(function (m) {
+        var read = res[m];
+        if (typeof read !== 'function') return;
+        res[m] = function () {
+          state.n += 1; state.last = performance.now();
+          var q = read.apply(res, arguments);
+          q.then(done, done);
+          return q;
+        };
+      });
+      done();
+    }, done);
+    return p;
+  };
+})();
+
 /* api.js — is there a machine behind this page?
  *
  * `manamap serve` exposes `/api/` beside the static files. GitHub Pages does

@@ -117,6 +117,7 @@
   let canvas = null, ctx = null;
   let surface = null, cam = null;
   let sim = null, nodes = [], links = [], byIdx = new Map();
+  let lastTick = 0;      // the layout's last tick, for `lastTick()` / MM.whenIdle
   let transform = null;          // d3.zoomIdentity once d3 is loaded
   let zoomBehaviour = null;      // the ONE instance — programmatic transforms must
                                  // go through it or its internal state desyncs and
@@ -771,7 +772,7 @@
         .force('center', d3.forceCenter(0, 0).strength(0.04))
         .velocityDecay(PHYSICS.velocityDecay)
         .alphaDecay(PHYSICS.alphaDecay)
-        .on('tick', function () { draw(); followGraph(); })
+        .on('tick', function () { lastTick = performance.now(); draw(); followGraph(); })
         // Fit when the layout stops, not on a timer. alphaDecay 0.015 gives an ~8 s
         // settle, so an early fit frames a graph that then grows out of the viewport —
         // which is exactly what left the canvas looking empty the first time.
@@ -1515,6 +1516,7 @@
   }
 
   window.Force = {
+    lastTick: function () { return lastTick; },
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, renderGraphBar, bbox,
     setLine, clearLine, setGroup, clearGroup, selectCard,

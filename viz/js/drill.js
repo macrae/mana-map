@@ -410,6 +410,7 @@
   }
 
   window.Drill = {
+    isAnimating: function () { return rafId !== null; },   // for MM.whenIdle
     enter,
     enterRegion,
     enterFiltered,
