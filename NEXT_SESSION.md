@@ -3,7 +3,7 @@
 Read CLAUDE.md first. Sean is the pilot. Never push without asking. One heavy job at a time: the
 PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and clear leftovers.
 
-## Done 2026-10-29 (all on main, NOT PUSHED)
+## Done 2026-10-29 (pushed through 1d54afcb; 815e1c2f onward NOT pushed)
 
 - **38562067, edf4a3cd: the job guard.** `src/manamap/jobs.py` is a PreToolUse hook on Bash
   (`.claude/settings.json`). It refuses a suite, retrain, regen or Forge run beside another
@@ -30,6 +30,9 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
   - 37f80491: a source-only prepush no longer re-runs the unit tier as an isolation proof.
   - 3edcf911: `MM.whenIdle()` replaces 151 fixed sleeps in `test_viz_behaviour.py`
     (246 s → ~183 s, green twice). The full browser suite took 270 s.
+  - 815e1c2f: the rest of the waits. `mmWhenIdle` moved to `api.js` (every page);
+    `idle(page)` in `conftest_viz.py`. 129 more waits converted; full browser suite
+    219 s / 223 s, green twice.
 
 ## Test state
 
@@ -41,11 +44,10 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
-1. Ask Sean before pushing the commits above.
+1. Ask Sean before pushing 815e1c2f onward.
 2. Remaining test speed:
-   - Convert the other 22 browser-file sleeps, the 67 short in-page ones and the 93 Python
-     `wait_for_timeout` calls. Some are deliberate: debounces, or proving that nothing
-     happens.
+   - What stays timed is deliberate: negative checks, hover delays, poll periods, and
+     waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
    - Five behaviour tests still need timed waits (search/slug debounces, the
      first-expansion fit, the follow camera). Each needs its own condition.
    - Regression's next heaviest: `test_embedding_pool_eval` (113 s),
