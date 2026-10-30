@@ -1,0 +1,430 @@
+{
+  "id": "013",
+  "slug": "needlehead-gratuitous-violence-wheel",
+  "deck": "sharknado",
+  "title": "Wheel of Fortune under Razorkin Needlehead and Gratuitous Violence: does the doubler double a creature's triggered ping",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Razorkin Needlehead (2/2; untapped, no summoning sickness)",
+        "Gratuitous Violence",
+        "Mountain (tapped)",
+        "Sacred Foundry (tapped)",
+        "Steam Vents (tapped)",
+        "Command Tower (untapped)",
+        "Hallowed Fountain (untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ],
+          "hand_size": 4,
+          "library_size": 52
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ],
+          "hand_size": 3,
+          "library_size": 61
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x6"
+          ],
+          "hand_size": 2,
+          "library_size": 47
+        }
+      ]
+    },
+    "hand": [],
+    "mana_available": "{W}{U} or any two (Command Tower and Hallowed Fountain, untapped)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Wheel of Fortune — 'Each player discards their hand, then draws seven cards.'",
+        "controller": "you",
+        "note": "cast from your hand in your precombat main phase, paid {2}{R} with Mountain, Sacred Foundry and Steam Vents; it was the last card in your hand"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, precombat main phase. Nobody responds to anything. Both your commanders are in the command zone and play no part. You take no other actions. This is stack 011 with Torbran replaced by Gratuitous Violence; the question is only whether and how the doubler applies to Needlehead's triggered damage.",
+      "assumptions": [
+        "No player has a replacement effect on drawing or damage other than Gratuitous Violence.",
+        "No opponent controls a creature or a damage-prevention effect.",
+        "Every library is far larger than seven, so nobody draws from an empty library."
+      ]
+    },
+    "question": "After Wheel of Fortune and every trigger it causes have resolved: how many times does Razorkin Needlehead's ability trigger for each opponent, how much damage does each trigger deal with Gratuitous Violence on the battlefield, and what is each opponent's life total?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players pass priority; Wheel of Fortune (the only object on the stack) resolves.",
+        "effect": "Nobody responds, so the top (only) object on the stack, Wheel of Fortune, begins to resolve.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Wheel of Fortune: each player discards their hand, then draws seven cards, in the order written.",
+        "effect": "Instructions are followed in order: first every player discards their hand (yours is already empty — Wheel was your last card; the opponents discard 4, 3 and 2 cards), then every player draws seven. You, the active player, draw your seven first, then each opponent draws seven in turn order. Your own draws trigger nothing: Needlehead triggers only on an OPPONENT drawing.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "121.2c",
+            "quote": "If more than one player is instructed to draw cards, the active player performs all of their draws first, then each other player in turn order does the same."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Each opponent's 'draw seven' is seven individual draws; Razorkin Needlehead triggers once per card drawn.",
+        "effect": "Drawing seven is seven separate card draws, each one an occurrence of Needlehead's trigger event ('Whenever an opponent draws a card'). Needlehead therefore triggers 7 times for each opponent — 21 triggers in total, each one tied to the opponent whose draw caused it (the ability deals damage 'to them'). The Needlehead ruling (only cards actually 'drawn' count) agrees: Wheel says 'draws'. The triggers do nothing yet; they wait while Wheel finishes resolving, and Wheel goes to your graveyard.",
+        "citations": [
+          {
+            "rule": "121.2",
+            "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "603.2",
+            "quote": "The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Wheel of Fortune has finished resolving; before anyone receives priority the game checks state-based actions, and only then are the waiting triggers put on the stack.",
+        "effect": "The active player would now receive priority, so the game first checks state-based actions. Nobody has lost life yet (every player is still at 40), nobody drew from an empty library (every library holds well over seven), and no creature has lethal damage or 0 toughness (Razorkin Needlehead, the only creature, is an undamaged 2/2), so no state-based action is performed. With nothing performed, the 21 waiting Needlehead triggers are put on the stack next (step 5), after which the check is repeated and again finds nothing.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "After the state-based-action check finds nothing to do, you put all 21 Needlehead triggers on the stack in an order of your choice.",
+        "effect": "You control all 21 triggers, so you stack them in any order; the order changes nothing, since every trigger is independent and no opponent can reach 0 before all have resolved (see step 7). The active player then receives priority.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Each Needlehead trigger resolves (all players pass each time): Needlehead deals 1 damage to that opponent, which Gratuitous Violence replaces with 2.",
+        "effect": "The ability says 'this creature deals 1 damage to them', so the object dealing the damage is Razorkin Needlehead itself, a creature you control on the battlefield, not the ability. That is exactly the event Gratuitous Violence watches for ('If a creature you control would deal damage to a permanent or player, it deals double that damage instead'), and nothing in it limits it to combat damage. The replacement applies to each trigger's damage event separately as it happens and only once per event: 1 becomes 2, never more. No other replacement or prevention effect exists (scenario assumption), so no ordering choice arises. Gratuitous Violence has no official rulings. Needlehead has no infect, so each trigger costs its opponent 2 life.",
+        "citations": [
+          {
+            "rule": "120.2b",
+            "quote": "Damage may be dealt as an effect of a spell or ability. The spell or ability will specify which object deals that damage."
+          },
+          {
+            "rule": "120.1",
+            "quote": "An object that deals damage is the source of that damage."
+          },
+          {
+            "rule": "614.1a",
+            "quote": "Effects that use the word “instead” are replacement effects."
+          },
+          {
+            "rule": "614.1",
+            "quote": "replacement effects apply continuously as events happen—they aren’t locked in ahead of time."
+          },
+          {
+            "rule": "614.5",
+            "quote": "A replacement effect doesn’t invoke itself repeatedly; it gets only one opportunity to affect an event or any modified events that may replace that event."
+          },
+          {
+            "rule": "120.4b",
+            "quote": "Second, damage is dealt, as modified by replacement and prevention effects that interact with damage."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "State-based actions are checked each time a player would receive priority — after every one of the 21 triggers resolves — and no player is ever at 0 or less life.",
+        "effect": "After each trigger resolves the active player would receive priority, so the game checks state-based actions before that happens. The worst a seat can be at mid-sequence is 40 - 2 x 7 = 26, so no check ever finds a player at 0 or less life, and Needlehead (an undamaged 2/2) is unaffected. Each opponent takes 7 x 2 = 14 damage across their seven triggers: 40 - 14 = 26. No player loses the game. After the last trigger resolves the final check also finds nothing, the stack is empty, and the game continues in your precombat main phase.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Needlehead triggers 7 times for each opponent (21 triggers total). Gratuitous Violence applies to each trigger's damage, because the ability names Needlehead (a creature you control) as the object dealing it: 1 becomes 2. Each opponent takes 14 and goes from 40 to 26. That is 14 per seat, 42 across the pod; not lethal to anyone. You drew seven (no triggers), your hand is the seven new cards, and Wheel of Fortune is in your graveyard.",
+      "you": {
+        "hand": "7 cards (drawn from Wheel)",
+        "battlefield": [
+          "Razorkin Needlehead",
+          "Gratuitous Violence",
+          "Mountain (tapped)",
+          "Sacred Foundry (tapped)",
+          "Steam Vents (tapped)",
+          "Command Tower (untapped)",
+          "Hallowed Fountain (untapped)"
+        ],
+        "graveyard_added": [
+          "Wheel of Fortune"
+        ],
+        "mana_available": "two (Command Tower + Hallowed Fountain)"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "triggers": 7,
+          "damage_per_trigger": 2,
+          "damage_taken": 14,
+          "life": 26,
+          "hand_size": 7,
+          "library_size": 45,
+          "discarded": 4
+        },
+        {
+          "seat": "opponent_2",
+          "triggers": 7,
+          "damage_per_trigger": 2,
+          "damage_taken": 14,
+          "life": 26,
+          "hand_size": 7,
+          "library_size": 54,
+          "discarded": 3
+        },
+        {
+          "seat": "opponent_3",
+          "triggers": 7,
+          "damage_per_trigger": 2,
+          "damage_taken": 14,
+          "life": 26,
+          "hand_size": 7,
+          "library_size": 40,
+          "discarded": 2
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Full text: top object resolves when all pass in succession; Wheel is the only object."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Discard then draw, in the order written; no replacement effect on discard/draw exists (scenario assumption)."
+      },
+      {
+        "step": 2,
+        "rule": "121.2c",
+        "status": "supported",
+        "note": "Active player draws all seven first, then each opponent in turn order. Matches full rule text."
+      },
+      {
+        "step": 3,
+        "rule": "121.2",
+        "status": "supported",
+        "note": "'Cards may only be drawn one at a time' — seven individual draws per opponent, each an occurrence of 'Whenever an opponent draws a card'. Needlehead ruling (2024-09-20) agrees: Wheel uses the word 'draws'."
+      },
+      {
+        "step": 3,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "Multiple occurrences in one event trigger repeatedly; the rule's own example (destroy all lands) is the same shape. 7 triggers per opponent, 21 total."
+      },
+      {
+        "step": 3,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "The ability doesn't do anything at trigger time; it waits until Wheel finishes."
+      },
+      {
+        "step": 3,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Wheel goes to the graveyard as the final part of resolution."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Both fragments accurate in context: SBA check, then waiting triggers, then re-check, before priority. Negative SBA claims (40 life each, no empty-library draw, undamaged 2/2) hold on this board."
+      },
+      {
+        "step": 4,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Same sequence stated from the priority side."
+      },
+      {
+        "step": 4,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player would receive priority after Wheel resolves, which is what triggers the 704.3 check."
+      },
+      {
+        "step": 5,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Controller puts triggered abilities on the stack the next time a player would receive priority."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Only you control triggers, so APNAP is trivial; you choose the order. Order-irrelevance claim holds: every trigger is identical and no seat can reach 0."
+      },
+      {
+        "step": 5,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player then receives priority."
+      },
+      {
+        "step": 6,
+        "rule": "120.2b",
+        "status": "supported",
+        "note": "'The spell or ability will specify which object deals that damage' — Needlehead's oracle (cards.json: 'this creature deals 1 damage to them') names the creature as the dealer. This is the load-bearing citation for the core question and it holds: the source is a creature you control, so Gratuitous Violence's condition is met; nothing in its oracle text restricts it to combat damage."
+      },
+      {
+        "step": 6,
+        "rule": "120.1",
+        "status": "supported",
+        "note": "An object that deals damage is the source — Needlehead, not the ability."
+      },
+      {
+        "step": 6,
+        "rule": "614.1a",
+        "status": "supported",
+        "note": "Gratuitous Violence uses 'instead' — a replacement effect."
+      },
+      {
+        "step": 6,
+        "rule": "614.1",
+        "status": "supported",
+        "note": "Applies continuously as each event happens, so it applies to each of the 21 separate damage events."
+      },
+      {
+        "step": 6,
+        "rule": "614.5",
+        "status": "supported",
+        "note": "Only one opportunity per event: 1 becomes 2, never 4. The rule's own example is Gratuitous Violence's wording (two copies -> 2 becomes 8), confirming the doubling reads exactly as claimed. With one copy, no 616.1 ordering choice arises (only one replacement effect; scenario assumption excludes others)."
+      },
+      {
+        "step": 6,
+        "rule": "120.4b",
+        "status": "supported",
+        "note": "Damage is dealt as modified by replacement effects."
+      },
+      {
+        "step": 6,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "No infect: 2 damage = 2 life lost."
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Each trigger resolves when all pass."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "SBA checked before each priority grant, after each trigger resolves."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "As above."
+      },
+      {
+        "step": 7,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player receives priority after each trigger resolves."
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "No seat ever at 0 or less: floor is 40 - 14 = 26. Arithmetic: 7 x 2 = 14 per seat, 42 across the pod — per-seat and pod totals stated separately and correctly (scenario-facts drain_arithmetic: 3 opponents, 120 opposing life). Library sizes 52/61/47 - 7 = 45/54/40 correct."
+      }
+    ],
+    "summary": "Every citation supports its claim against the full rule text. Core question answered correctly: Needlehead's ability names the creature as the object dealing the damage (120.2b/120.1), so Gratuitous Violence (a replacement effect, 614.1a) doubles each of the 21 noncombat damage events once (614.5): 2 per trigger, 14 per seat, 26 life each, 42 across the pod. Missing-step audit (trigger timing 603.2/603.3, APNAP and ordering 603.3b, SBA before every priority grant 704.3/117.5, priority passes per trigger 405.5, per-event replacement application 614.1/614.5, no 616.1 choice) found no omission. Rulings: Gratuitous Violence and Wheel of Fortune have none; Needlehead's 2024-09-20 ruling agrees with the resolution. Sibling 011 is flagged NOT like-for-like by scenario-facts (Torbran is a creature body); 013's resolution mentions 011 only in the scenario's note and quotes none of its figures, so there is no finding. Tool note: scenario-facts card_membership omits Wheel of Fortune (the stack object), though it is in decklist.txt and its rulings were fetched.",
+    "iterations": 1
+  }
+}

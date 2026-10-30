@@ -1,0 +1,382 @@
+{
+  "id": "014",
+  "slug": "brallin-needlehead-one-wheel",
+  "deck": "sharknado",
+  "title": "One Wheel of Fortune under Brallin and Razorkin Needlehead: discard pings plus draw pings to each opponent",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Brallin, Skyshark Rider (3/3; untapped, no counters, cast from the command zone on an earlier turn)",
+        "Razorkin Needlehead (2/2; untapped, no summoning sickness)",
+        "Mountain (tapped)",
+        "Sacred Foundry (tapped)",
+        "Steam Vents (tapped)",
+        "Command Tower (untapped)",
+        "Hallowed Fountain (untapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x5"
+          ],
+          "hand_size": 4,
+          "library_size": 52
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x4"
+          ],
+          "hand_size": 3,
+          "library_size": 61
+        },
+        {
+          "life": 40,
+          "board": [
+            "untapped lands x6"
+          ],
+          "hand_size": 2,
+          "library_size": 47
+        }
+      ]
+    },
+    "hand": [
+      "Negate",
+      "Swords to Plowshares",
+      "Sol Ring"
+    ],
+    "mana_available": "{W}{U} or any two (Command Tower and Hallowed Fountain, untapped)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Wheel of Fortune — 'Each player discards their hand, then draws seven cards.'",
+        "controller": "you",
+        "note": "cast from your hand in your precombat main phase, paid {2}{R} with Mountain, Sacred Foundry and Steam Vents; the three cards listed in hand are still in your hand"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Your turn, precombat main phase. Nobody responds to anything. Shabraz is in the command zone and plays no part. You take no other actions. None of the three cards in your hand has an ability that works from the graveyard or on being discarded. There is no damage amplifier on the battlefield: no Torbran, no Gratuitous Violence.",
+      "assumptions": [
+        "No player has a replacement effect on drawing, discarding or damage.",
+        "No opponent controls a creature or a damage-prevention effect.",
+        "Every library is far larger than seven, so nobody draws from an empty library."
+      ]
+    },
+    "question": "After Wheel of Fortune and every trigger it causes have resolved: how many times does Brallin's ability trigger and how many times does Razorkin Needlehead's ability trigger for each opponent, how much damage does each opponent take in total, what is each opponent's life total, and how many +1/+1 counters are on Brallin?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "All players pass priority with Wheel of Fortune the only object on the stack; it resolves.",
+        "effect": "Nobody responds (scenario), so Wheel of Fortune begins to resolve. No player receives priority until it has finished.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "First action: each player discards their hand. You discard Negate, Swords to Plowshares and Sol Ring (3 cards); the opponents discard 4, 3 and 2.",
+        "effect": "Instructions are followed in the order written, and the discard is processed for all players simultaneously before any draw. Brallin's 'Whenever you discard a card' triggers once per card YOU discard: 3 triggers. It does not trigger for the 9 cards the opponents discard, because 'you' is Brallin's controller. None of your three discarded cards does anything from the graveyard or on being discarded (scenario note). The triggers do nothing yet.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "608.2e",
+            "quote": "Then the choices for the second action are made in APNAP order, and then that action is processed simultaneously, and so on."
+          },
+          {
+            "rule": "701.9a",
+            "quote": "To discard a card, move it from its owner’s hand to that player’s graveyard."
+          },
+          {
+            "rule": "603.2c",
+            "quote": "An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences."
+          },
+          {
+            "rule": "109.5",
+            "quote": "The words “you” and “your” on an object refer to the object’s controller, its would-be controller (if a player is attempting to play, cast, or activate it), or its owner (if it has no controller)."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "Second action: each player draws seven cards. You (the active player) draw your seven first, then each opponent draws seven in turn order, one card at a time.",
+        "effect": "Each 'draw seven' is seven individual draws. Razorkin Needlehead's 'Whenever an opponent draws a card' triggers once per card each opponent draws: 7 triggers for opponent_1, 7 for opponent_2, 7 for opponent_3 (21 total), each tied to the opponent whose draw caused it ('deals 1 damage to them'). Your own seven draws trigger nothing: Needlehead cares only about opponents, and Shabraz, whose ability would care, is in the command zone. The Needlehead ruling (only cards actually 'drawn' count) agrees: Wheel says 'draws'. These triggers also do nothing yet; Brallin is still a 3/3 with no counters and every opponent is at 40.",
+        "citations": [
+          {
+            "rule": "121.2",
+            "quote": "If a player is instructed to draw multiple cards, that player performs that many individual card draws."
+          },
+          {
+            "rule": "121.2c",
+            "quote": "If more than one player is instructed to draw cards, the active player performs all of their draws first, then each other player in turn order does the same."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers. The ability doesn’t do anything at this point."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Wheel of Fortune is put into your graveyard; it has finished resolving.",
+        "effect": "Wheel joins Negate, Swords to Plowshares and Sol Ring in your graveyard. As the official Brallin ruling says, the resolving spell finishes before Brallin's triggers resolve.",
+        "citations": [
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an instant or sorcery spell’s resolution, the spell is put into its owner’s graveyard."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Before you, the active player, receive priority, state-based actions are checked (none apply), then you put all 24 waiting triggers (3 Brallin, 21 Needlehead) on the stack in any order you choose.",
+        "effect": "Every opponent is at 40 and your life total is unchanged, nobody drew from an empty library, no creature is damaged, so no state-based action is performed. You control all 24 triggers and choose their order; the order changes no total, since every trigger is independent and no opponent can reach 0 (step 7).",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event (see rule 704, “State-Based Actions”), then repeats this process until no state-based actions are performed. Then triggered abilities are put on the stack (see rule 603, “Handling Triggered Abilities”)."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "All players pass each time; the 24 triggers resolve one at a time. Each Brallin trigger: one +1/+1 counter on Brallin and 1 damage to EACH opponent. Each Needlehead trigger: 1 damage to the opponent who drew.",
+        "effect": "There is no damage amplifier, replacement or prevention effect (scenario), so every damage event is exactly 1, and damage to a player from a source without infect is that much life lost. Per opponent: 3 (Brallin, 3 triggers x 1) + 7 (Needlehead, 7 triggers x 1) = 10 damage. Brallin gets one counter per resolution regardless of how many opponents are hit (official ruling), so 3 counters: 3/3 becomes 6/6.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "120.3a",
+            "quote": "Damage dealt to a player by a source without infect causes that player to lose that much life."
+          },
+          {
+            "rule": "122.1a",
+            "quote": "A +X/+Y counter on a creature or on a creature card in a zone other than the battlefield, where X and Y are numbers, adds X to that object’s power and Y to that object’s toughness."
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "State-based actions are checked each time a player would receive priority, after every trigger; no opponent ever reaches 0 life, and nothing in this resolution changes your life total.",
+        "effect": "The lowest any opponent can be is 40 - 10 = 30, so no check ever finds an opponent at 0 or less; nothing here damages you or changes your life total. After the last trigger the stack is empty and the game continues in your precombat main phase.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Brallin triggers 3 times (one per card you discard: Negate, Swords to Plowshares, Sol Ring); each trigger hits every opponent, so 3 damage per opponent. Needlehead triggers 7 times for each opponent (21 total), 1 damage each. Each opponent takes 3 + 7 = 10 and goes 40 -> 30: 10 per seat, 30 across the pod; nobody dies. Brallin has three +1/+1 counters and is a 6/6.",
+      "you": {
+        "life": "unstated in the scenario; unchanged by this resolution",
+        "hand": "7 cards (drawn from Wheel)",
+        "battlefield": [
+          "Brallin, Skyshark Rider (6/6, three +1/+1 counters)",
+          "Razorkin Needlehead (2/2)",
+          "Mountain (tapped)",
+          "Sacred Foundry (tapped)",
+          "Steam Vents (tapped)",
+          "Command Tower (untapped)",
+          "Hallowed Fountain (untapped)"
+        ],
+        "graveyard_added": [
+          "Negate",
+          "Swords to Plowshares",
+          "Sol Ring",
+          "Wheel of Fortune"
+        ],
+        "mana_available": "two (Command Tower + Hallowed Fountain)",
+        "brallin_triggers": 3,
+        "brallin_counters": 3
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "brallin_triggers_hitting_them": 3,
+          "needlehead_triggers": 7,
+          "damage_from_brallin": 3,
+          "damage_from_needlehead": 7,
+          "damage_taken": 10,
+          "life": 30,
+          "hand_size": 7,
+          "library_size": 45,
+          "discarded": 4
+        },
+        {
+          "seat": "opponent_2",
+          "brallin_triggers_hitting_them": 3,
+          "needlehead_triggers": 7,
+          "damage_from_brallin": 3,
+          "damage_from_needlehead": 7,
+          "damage_taken": 10,
+          "life": 30,
+          "hand_size": 7,
+          "library_size": 54,
+          "discarded": 3
+        },
+        {
+          "seat": "opponent_3",
+          "brallin_triggers_hitting_them": 3,
+          "needlehead_triggers": 7,
+          "damage_from_brallin": 3,
+          "damage_from_needlehead": 7,
+          "damage_taken": 10,
+          "life": 30,
+          "hand_size": 7,
+          "library_size": 40,
+          "discarded": 2
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "All pass with Wheel alone on the stack; it resolves. The rider 'no player receives priority until it has finished' is true but rests on 608.2/117.3b, not 405.5; not load-bearing."
+      },
+      {
+        "step": 2,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Discard, then draw, in the order written."
+      },
+      {
+        "step": 2,
+        "rule": "608.2e",
+        "status": "supported",
+        "note": "Multi-player multi-action spell: first action (discard) processed simultaneously for all players before the second (draw). Full text read; also points to 101.4 (APNAP)."
+      },
+      {
+        "step": 2,
+        "rule": "701.9a",
+        "status": "supported",
+        "note": "Discard = hand to graveyard."
+      },
+      {
+        "step": 2,
+        "rule": "603.2c",
+        "status": "supported",
+        "note": "One simultaneous discard event with three occurrences of 'you discard a card' -> Brallin triggers three times. Full rule's example (destroy all lands) is the exact analogue."
+      },
+      {
+        "step": 2,
+        "rule": "109.5",
+        "status": "supported",
+        "note": "Round 2: quote is now the rule's first sentence ('you' = the object's controller), the operative text for the trigger condition 'whenever you discard'. Establishes that opponents' 9 discards do not trigger Brallin."
+      },
+      {
+        "step": 3,
+        "rule": "121.2",
+        "status": "supported",
+        "note": "Draw seven = seven individual draws; each is a separate trigger event for Needlehead."
+      },
+      {
+        "step": 3,
+        "rule": "121.2c",
+        "status": "supported",
+        "note": "Active player draws first, then each opponent in turn order. Order affects no total."
+      },
+      {
+        "step": 3,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Needlehead triggers 7 per opponent (21), doing nothing yet. Consistent with the 2024-09-20 Needlehead ruling (only cards 'drawn' count; Wheel says 'draws'). Shabraz's non-participation is a scenario stipulation (and 113.6), not a gap."
+      },
+      {
+        "step": 4,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Sorcery to graveyard as final part of resolution. Matches the 2020-04-17 Brallin ruling that the resolving spell finishes before Brallin's trigger resolves."
+      },
+      {
+        "step": 5,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs then triggers before the active player gets priority. Round 3: the effect now reads 'Every opponent is at 40 and your life total is unchanged', consistent with final_state.you.life; the invented 'every player at 40' is gone."
+      },
+      {
+        "step": 5,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "You control all 24 triggers (3 Brallin + 21 Needlehead) and order them; opponents control none, so APNAP is trivial. Order-independence of totals is correct: each trigger is a fixed 1 damage, no threshold reachable."
+      },
+      {
+        "step": 5,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Active player receives priority after Wheel resolves."
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Triggers resolve one at a time as all pass."
+      },
+      {
+        "step": 6,
+        "rule": "120.3a",
+        "status": "supported",
+        "note": "1 damage from a non-infect source = 1 life lost. Per seat 3 (Brallin) + 7 (Needlehead) = 10; pod total 30 stated separately and correctly."
+      },
+      {
+        "step": 6,
+        "rule": "122.1a",
+        "status": "supported",
+        "note": "Three +1/+1 counters -> 3/3 becomes 6/6. One counter per resolution regardless of opponents hit agrees with the 2020-04-17 Brallin ruling."
+      },
+      {
+        "step": 6,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Ability removed from the stack after resolving."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "SBAs before each priority. Round 3 edits judged: 'nothing in this resolution changes your life total' / 'nothing here damages you' is true, since Brallin's damage goes to each opponent and Needlehead's only to the opponent who drew, Wheel neither gains nor costs life, and the scenario rules out other effects."
+      },
+      {
+        "step": 7,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Lowest opponent life 30 > 0; scoped to opponents now. Your unstated, unchanged life cannot newly fall to 0 here, so no 704.5a event is possible for you either."
+      }
+    ],
+    "round": 3,
+    "iterations": 3
+  }
+}
