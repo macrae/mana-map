@@ -1,9 +1,28 @@
-# Next session (written 2026-10-29, end of the cleanup + test-speed session)
+# Next session (written 2026-10-30, after the CI fix, the worktree prune and the UI walkthrough)
 
 Read CLAUDE.md first. Sean is the pilot. Never push without asking. One heavy job at a time: the
 PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and clear leftovers.
 
-## Done 2026-10-29 (pushed through 1d54afcb; 815e1c2f onward NOT pushed)
+## Done 2026-10-30 (all pushed; CI green on 32d49dd6)
+
+- **32d49dd6: the CI browser flake, fixed at the cause.** `idle()` could resolve in the
+  middle of the force graph's 520 ms fit transition, because the page's busy probe only
+  watched the map camera and the layout ticks. `Force.lastZoom()` now feeds the probe
+  ("the graph camera is moving"); the zoom test waits with `graph=True` before and after
+  the fit. Busts at v=272 on all seven pages — `tests/test_viz_cache_busts.py` holds all
+  seven to one number, and CLAUDE.md's gotcha now says so.
+- **The 23 agent worktrees under `.claude/worktrees` (8 GB) are removed** and their
+  branches deleted; every patch was already on main. One worktree remains under
+  `~/.claude/jobs`, which is Claude Code's own.
+- **The UI overhaul is VERIFIED in Chrome by Sean (2026-10-30): "it all looks great".**
+  Explore on My decks, the New: FRA pill, Filters and ⚙ Map, region subtitles,
+  Windfall's real payoffs, Sharknado in title case, Ask Jarvis styled, the Build tabs,
+  the landing page's names. No fix list came out of it.
+- **The browser suite on this Mac is not reliable with Chrome open** (load 13: two full
+  runs failed on `Page.goto` and boot timeouts, different tests each time, every one
+  passing alone). CI is the proof of a full run; locally, close Chrome first.
+
+## Done 2026-10-29 (pushed through f2b44e85)
 
 - **38562067, edf4a3cd: the job guard.** `src/manamap/jobs.py` is a PreToolUse hook on Bash
   (`.claude/settings.json`). It refuses a suite, retrain, regen or Forge run beside another
@@ -44,8 +63,18 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
-1. Ask Sean before pushing 815e1c2f onward.
-2. Remaining test speed:
+1. The UI overhaul's leftovers, no decision needed:
+   - `sets.json` carries Scryfall's `set_type`, so the set lens stops using a 100-card floor.
+   - Region subtitles from the full `card_roles.json` (`cluster-regions` -> `viz-index`,
+     minutes, no retrain); drop "(North)" and the "Auras 6" names.
+   - `regions_cardbert.json` was not re-clustered after the tag change: re-key old->new
+     by Jaccard >= 0.5 on `membership`, carry the name.
+2. DECISION FOR SEAN: the payoff-tag retrain was mixed (function r@10 0.258 -> 0.262,
+   median rank 66 -> 76). Recommendation: accept; spot-check Similar on 5-10 cards he knows.
+3. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
+   Brallin + Needlehead) through /resolve-stack; work Q011 (promoted, waiting); then the
+   heliod and ur-dragon engine critics that fail.
+4. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
    - Five behaviour tests still need timed waits (search/slug debounces, the
@@ -55,11 +84,6 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
      (86 s), `test_sim_seat_audit` (81 s).
    - Measure with the cache ON. `-p no:cacheprovider` turns off the suite's `unchanged`
      cache and inflates every figure.
-3. Still open from the UI sprint:
-   - `sets.json` set_type for the set lens.
-   - Region subtitle data work.
-   - Prove the Sharknado stacks (Gratuitous Violence + Needlehead; Brallin + Needlehead).
-   - The heliod and ur-dragon engine critics fail.
 
 ## Standing rules
 
