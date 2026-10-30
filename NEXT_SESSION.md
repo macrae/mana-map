@@ -95,8 +95,10 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
    end-step trigger) passed its checker in round 2 (28 citations; recorded). You may order
    the sacrifice first (603.3b), Gadrak counts on resolution (608.2h) and makes one Treasure,
    and you get priority again to spend it before cleanup. The new passing stack is an
-   engine input, so deck-engine is a cache MISS: one engineer pass could cite 009 as
-   verified_by on the Sneak Attack -> Gadrak arrow and close the question (~120k + ~140k).
+   engine input; the engine model now cites it (round 5, critic PASS, recorded): a new
+   lines[8] Sneak Attack -> Gadrak (conversion -> fuel, verified_by 009), 6/9 lines verified.
+   open_questions[6] keeps a residual for /resolve-stack: two Sneak Attack creatures for two
+   Treasures, and an instant actually cast in that window. The fuel stage is at 1,798/1,800.
 3. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).

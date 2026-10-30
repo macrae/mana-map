@@ -127,7 +127,7 @@
     {
       "stage": "fuel",
       "label": "TREASURE, TWO DRAGONSTORMS THAT COME BACK, AND THE DRAW THE GOLDFISH DOES NOT MODEL",
-      "what_it_does": "Once a Dragon has landed the deck needs two things it is short of: mana for the SECOND Dragon the same turn, and cards.\n\nSix Treasure sources cover the first — Atsushi, Gadrak, Ganax, Goldspan Dragon, Old Gnawbone and Smaug the Magnificent. 'A Treasure source drawn' assembles in 0.672 of runs, 0.562 by turn six. Read the hoard as a FLOOR and not a measurement: goldfish meta.treasure_sources_not_modelled names Atsushi, Gadrak and Ganax as sources it cannot see, so 0.428 Treasures at turn six and 1.853 at turn ten are what the other three produce. Treasure is a stockpile rather than a rock — it buys one expensive turn and does not raise mean available mana, which is why it sits here and not in mana.\n\nCards are the thinner half. deck-audit reads card-advantage UNDER at 4 copies against a floor of 10, and its own note says the count misses Dragon's Hoard and Sunbaked Canyon, which do the job in words the taxonomy has no pattern for. What actually refills: Garruk's Uprising and Temur Ascendancy each draw when a creature with power 4 or greater enters — the same event the output stage is built on, so the engine pays for its own next card — Dragon's Hoard banks a gold counter per Dragon entering and cashes them one at a time, and both Dragonstorms RETURN TO HAND when a Dragon enters — Roiling draws two and discards one, Breaching is impulse access, not a draw.\n\nTwo tutors sit here because their job is to find the missing piece rather than to ramp: Enlightened Tutor (Panharmonicon, Sneak Attack, Dragon Tempest) and Sarkhan's Triumph (any Dragon), both at instant speed. The goldfish models a cast tutor as filling one missing any_of group, which is the gap between every unassisted rate in this model and its assisted twin.",
+      "what_it_does": "Once a Dragon has landed the deck needs two things it is short of: mana for the SECOND Dragon the same turn, and cards.\n\nSix Treasure sources cover the first — Atsushi, Gadrak, Ganax, Goldspan Dragon, Old Gnawbone and Smaug the Magnificent. 'A Treasure source drawn' assembles in 0.672 of runs, 0.562 by turn six. Read the hoard as a FLOOR: goldfish meta.treasure_sources_not_modelled names Atsushi, Gadrak and Ganax as sources it cannot see, so 0.428 Treasures at turn six and 1.853 at turn ten are what the other three produce. Stack 009 proves one Gadrak route: a Sneak Attack creature sacrificed at your end step pays a Treasure (lines[8]). Treasure is a stockpile, not a rock: it buys one expensive turn and does not raise mean available mana, so it sits here and not in mana.\n\nCards are the thinner half. deck-audit reads card-advantage UNDER at 4 copies against a floor of 10, and its own note says the count misses Dragon's Hoard and Sunbaked Canyon, which do the job in words no taxonomy pattern matches. What actually refills: Garruk's Uprising and Temur Ascendancy each draw when a creature with power 4 or greater enters — the same event the output stage is built on, so the engine pays for its own next card — Dragon's Hoard banks a gold counter per Dragon entering and cashes them one at a time, and both Dragonstorms RETURN TO HAND when a Dragon enters — Roiling draws two and discards one, Breaching is impulse access, not a draw.\n\nTwo tutors sit here because they find the missing piece rather than ramp: Enlightened Tutor (Panharmonicon, Sneak Attack, Dragon Tempest) and Sarkhan's Triumph (any Dragon), both at instant speed. The goldfish models a cast tutor as filling one missing any_of group, which is the gap between every unassisted rate in this model and its assisted twin.",
       "cards": [
         "Atsushi, the Blazing Sky",
         "Gadrak, the Crown-Scourge",
@@ -145,6 +145,11 @@
       ],
       "single_point_of_failure": null,
       "evidence": [
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "Gadrak, Sneak Attack and a sacrificed Glorybringer: the sacrifice ordered on top (603.3b), Gadrak counts on resolution (608.2h), one Treasure, and priority again in the end step (117.3b, 500.2). Hand empty, one activation"
+        },
         {
           "kind": "city",
           "id": "city-0-hood-1",
@@ -207,6 +212,11 @@
           "kind": "stack",
           "id": "005",
           "note": "Sneak Attack puts Drakuseth in with haste for {R}; the same stack REFUTES it reaching the command zone (903.6 — the command zone is not the hand) and names Hellkite Courser as the card that does"
+        },
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "Sneak Attack's end-step sacrifice on your own turn resolves as printed and, ordered above Gadrak's trigger, is a nontoken death Gadrak pays a Treasure for — the arrow conversion -> fuel in lines[8]"
         },
         {
           "kind": "city",
@@ -369,7 +379,7 @@
   "absent_stages": [
     {
       "stage": "fodder",
-      "why": "No fodder STAGE, re-verified against the current 97 entries, and defended on what the conversions EAT rather than on how often they run. A regex scan for 'sacrific' returns eleven cards: four fetchlands (Arid Mesa, Bloodstained Mire, Scalding Tarn, Wooded Foothills), Gemstone Mine and Sunbaked Canyon sacrifice THEMSELVES as their own cost; Maelstrom of the Spirit Dragon sacrifices itself to tutor; Gadrak, Ganax and Goldspan Dragon only print the Treasure token's reminder; Sneak Attack sacrifices each creature it puts in at the next end step. None is a sacrifice outlet. A scan for 'dies|died' returns exactly two cards that turn a death into a resource: Gadrak, the Crown-Scourge ('a Treasure token for each nontoken creature that died this turn', at your end step, so only while Gadrak itself survives), the only card that pays for ANOTHER creature's death; and Atsushi, the Blazing Sky, which pays for its OWN death only (three Treasures, or two impulse-drawn cards). The choosable kills: Sneak Attack, with NO activation limit, so every {R} is another creature sacrificed at an end step; Desolation of Smaug (3 to each non-Dragon) and Crux of Fate's non-Dragon mode, which kill the five dorks, Dragonlord's Servant and Dragonspeaker Shaman and leave Gadrak and Atsushi, both Dragons, alive; Crux's Dragon mode, which kills Atsushi for its payout but kills Gadrak too; and Generous Gift aimed at your own creature. The any-target damage triggers (Terror of the Peaks, Dragon Tempest, Scourge of Valkas, Drakuseth, Smaug) can also be turned on your own creature, at the cost of the damage they exist to deal. So there are real fodder-to-fuel conversions: Gadrak with any of those, and Atsushi through Sneak Attack, Crux's Dragon mode, Generous Gift or a 4-damage trigger, with or without Gadrak. The verdict stands on two grounds. First, the payoff side is two cards and neither is a resource the deck makes: Gadrak is one payoff, and Atsushi converts itself once, since nothing in the 99 returns it from the graveyard or to hand. Second, what is eaten is the deck's own cards: Desolation and Crux eat the deck's ramp, Generous Gift and the damage triggers spend removal or output on it, and Sneak Attack eats creature cards from hand, the deck's own Dragons, whose sacrifice is the price Sneak Attack already charges, so the Treasure is a rebate on that price, not an engine. A fodder stage would name one payoff, one self-cashing Dragon and a cost as an engine the deck is not built around. That reading is a judgement; open_questions' last entry asks the rules half."
+      "why": "No fodder STAGE, re-verified against the current 97 entries and defended on what the conversions EAT, not how often they run. A regex scan for 'sacrific' returns eleven cards: four fetchlands (Arid Mesa, Bloodstained Mire, Scalding Tarn, Wooded Foothills), Gemstone Mine and Sunbaked Canyon sacrifice THEMSELVES as a cost; Maelstrom of the Spirit Dragon sacrifices itself to tutor; Gadrak, Ganax and Goldspan Dragon only print the Treasure reminder; Sneak Attack sacrifices each creature it puts in at the next end step. None is a sacrifice outlet. A scan for 'dies|died' returns exactly two cards that turn a death into a resource: Gadrak, the Crown-Scourge (a Treasure per nontoken creature that died this turn, at your end step, while Gadrak survives), the only payoff for ANOTHER creature's death; and Atsushi, the Blazing Sky, which pays for its OWN death only. The choosable kills: Sneak Attack, with no activation limit; Crux of Fate's non-Dragon mode, which kills every non-Dragon (the five dorks, Dragonlord's Servant, Dragonspeaker Shaman, Solphim); Desolation of Smaug's 3 to each non-Dragon, which kills the same minus Solphim (toughness 4), and minus Faeburrow Elder when you control four or more colours; Crux's Dragon mode, which kills Atsushi and Gadrak both; Generous Gift on your own creature; and the any-target damage triggers (Terror of the Peaks, Dragon Tempest, Scourge of Valkas, Drakuseth, Smaug), at the cost of the damage they exist to deal. Stack 009 proves the Sneak Attack route for one creature (lines[8]). The verdict stands on two grounds. The payoff side is two cards: Gadrak, and Atsushi converting itself once, since nothing in the 99 returns it. And what is eaten is the deck's own cards: Desolation and Crux eat the ramp (Crux a payoff too), Gift and the damage triggers spend removal or output, and Sneak Attack eats Dragons from hand whose sacrifice is the price it already charges, so 009's Treasure is a rebate on that price, not an engine. That reading is a judgement."
     }
   ],
   "lines": [
@@ -460,6 +470,17 @@
       "carries": "timing",
       "verified_by": null,
       "note": "V6's thesis as a single arrow, and nothing verifies it. Whirlwing reads 'You may cast sorcery spells and Dragon spells as though they had flash', so with it on the battlefield Lathliss can be cast on an opponent's end step with mana held up through the turn cycle for Stubborn Denial and Mithril Coat. It is not the only door off your own turn: Transcendent Dragon and Whirlwing are themselves flash Dragons whose entry is an arrival, and Sneak Attack's '{R}: You may put a creature card from your hand onto the battlefield' carries no 'activate only as a sorcery' clause (CR 117.1b: an activated ability may be activated any time its controller has priority). If any of it holds, the deck stops choosing between developing and responding — the choice prescription 0241fb6a70f1 says it kept losing."
+    },
+    {
+      "from": "conversion",
+      "to": "fuel",
+      "via": [
+        "Sneak Attack",
+        "Gadrak, the Crown-Scourge"
+      ],
+      "carries": "mana",
+      "verified_by": "009",
+      "note": "Sneak Attack's sacrifice is what Gadrak pays for. Both trigger at the beginning of your end step; you order them (603.3b) so the sacrifice resolves first, Gadrak counts 'each nontoken creature that died this turn' on resolution (608.2h) and makes one Treasure, and you get priority again before cleanup (117.3b, 500.2). Reversed, it makes zero. What 009 does NOT prove: its hand is empty, so it shows the Treasure CAN pay for an instant in that window, not that the deck has one to cast then; and it is ONE activation on one board, so that every activation refunds a Treasure is this model's reading of an unlimited ability, not the stack's finding. Gadrak must already be on the battlefield and survive to the end step."
     }
   ],
   "map_disagreements": [
@@ -547,9 +568,9 @@
       "why_it_matters": "The thesis and lines[7] name Sneak Attack as the second door to an arrival off your own turn, resting on its ability carrying no timing restriction (CR 117.1b). No stack has resolved it at instant speed, and if the answer to the sacrifice question is 'at your own end step', the cheated Lathliss survives a full turn — which would make Sneak Attack a deploy rather than a one-turn loan."
     },
     {
-      "question": "On your own turn, with Gadrak, the Crown-Scourge and Sneak Attack on the battlefield, put a nontoken creature in with Sneak Attack. At the beginning of your end step both Sneak Attack's delayed sacrifice and Gadrak's Treasure trigger fire: can you order them (CR 603.3b) so the sacrifice resolves first and Gadrak counts that creature, and does the Treasure arrive before the end step's priority so it can pay for an instant?",
+      "question": "ANSWERED IN PART BY STACK 009 (one creature: ordered sacrifice-first, Gadrak makes one Treasure, priority before cleanup). What remains: with two creatures put in by Sneak Attack this turn, do both delayed sacrifices go on above Gadrak's trigger so it counts two and makes two Treasures, and on a board with an instant in hand does the end-step window actually cast it?",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Gadrak with Sneak Attack is the only repeatable fodder-to-fuel conversion that spends nothing but {R}: Sneak Attack has no once-per-turn limit and each creature it puts in dies at an end step. The others are one-shots or cost an output: Desolation of Smaug, Crux of Fate's non-Dragon mode and Generous Gift with Gadrak out are single spells; Atsushi, the Blazing Sky pays for its own death (via Sneak Attack, Crux's Dragon mode, Generous Gift or a damage trigger, with no Gadrak needed) but once, since nothing in the 99 returns it; and pointing a repeating damage trigger such as Terror of the Peaks at your own creature spends the damage it exists to deal. absent_stages[0] keeps the no-fodder verdict on the grounds that the payoff side is Gadrak plus one self-cashing Atsushi and that every route eats the deck's own cards; it does not rest on any of them being a one-shot. If the ordering resolves, every Sneak Attack activation on your turn refunds a Treasure, which can pay for the off-turn response the protection stage is built around."
+      "why_it_matters": "lines[8] stands on 009's single activation. The model reads Sneak Attack's lack of an activation limit as one Treasure refunded per creature, which is the repeatability claim 009 does not make; and the off-turn response that refund is meant to pay for is a card the 009 board did not hold. absent_stages[0] keeps the no-fodder verdict either way, because the Treasure is a rebate on the Dragon Sneak Attack already sacrifices."
     }
   ],
   "proposed_goldfish_edits": [
@@ -598,60 +619,54 @@
     "verdict": "pass",
     "findings": [
       {
-        "where": "absent_stages[0].why",
-        "claim": "'A scan for dies|died returns exactly two cards that turn a death into a resource: Gadrak ... the only card that pays for ANOTHER creature's death; and Atsushi, the Blazing Sky, which pays for its OWN death only (three Treasures, or two impulse-drawn cards)'",
+        "where": "lines[8].verified_by",
+        "claim": "conversion -> fuel via Sneak Attack and Gadrak, carries mana: 'Sneak Attack's sacrifice is what Gadrak pays for'",
         "status": "supported",
-        "note": "ROUND-3 FINDING RESOLVED. A sweep of cards.json (97 entries) for \\bdies\\b|\\bdied\\b returns exactly Atsushi, the Blazing Sky and Gadrak, the Crown-Scourge. Atsushi reads 'When Atsushi dies, choose one: exile the top two cards ... you may play those cards / Create three Treasure tokens', so it pays for its own death only. Gadrak reads 'At the beginning of your end step, create a Treasure token for each nontoken creature that died this turn', so it pays for any nontoken creature's death and needs Gadrak on the battlefield at the end step ('only while Gadrak itself survives' is right). Generous Gift's Elephant is the spell's own effect and not a death payoff, so leaving it out of this list is correct. The 'sacrific' count of eleven is re-confirmed, with the same eleven names. Mechanically checkable: any 'exactly N cards turn a death into a resource' claim can be swept against oracle dies|died in cards.json."
+        "note": "Stack 009 shows the flow itself, not just a board that names both cards. Its checker verdict is pass with no non-supported finding. What 009 resolves, step by step: Gadrak has been on the battlefield since an earlier turn. Glorybringer, a nontoken card Dragon that is in the decklist, was put in by Sneak Attack in precombat main. No creature has died earlier this turn. Steps 1-2: both end-step triggers are yours and you order them (603.3b) with the sacrifice on top. Step 4: Glorybringer is sacrificed and is the only death this turn. Step 6: Gadrak counts on resolution, finds 1 and creates one Treasure, and the step states that the reverse order makes 0. Step 7: you get priority again in the end step with the Treasure untapped. final_state lists the Treasure on the battlefield and Glorybringer in the graveyard. So the death that Sneak Attack (conversion stage) causes is what Gadrak (fuel stage) turns into a Treasure. The arrow's direction, its via cards and 'carries mana' all match the resolution, and the rule numbers the note cites (603.3b, 608.2h, 117.3b, 500.2) are the ones 009's summary cites. The note's list of what 009 does not prove is accurate: the hand is empty, there is one activation, and Gadrak is already out and survives. It puts the repeatability claim on the model's side, not the stack's. This is unlike the two radagast failures: the 009 board makes the Treasure, it does not leave it unmade."
+      },
+      {
+        "where": "lines[8].note",
+        "claim": "'that every activation refunds a Treasure is this model's reading of an unlimited ability, not the stack's finding'",
+        "status": "supported",
+        "note": "This is correctly kept out of the solid arrow. Sneak Attack's oracle text has no activation limit, and Gadrak counts 'each nontoken creature that died this turn', so the reading is plausible. It is unproven and labelled unproven, and open_questions[6] carries it forward as a residual."
+      },
+      {
+        "where": "open_questions[6]",
+        "claim": "'ANSWERED IN PART BY STACK 009' with residual: two Sneak Attack creatures -> two Treasures, and an actual instant cast in the window",
+        "status": "supported",
+        "note": "The part marked answered matches 009's three answers, (a), (b) and (c). The two residuals are exactly what 009's scenario leaves out: its hand is empty, and only one creature is on it. Both are well formed for resolve-stack. why_it_matters no longer makes any claim beyond the stack. 'A rebate on the Dragon Sneak Attack already sacrifices' fits 009, where the sacrificed creature is Glorybringer, a Dragon."
       },
       {
         "where": "absent_stages[0].why",
-        "claim": "'nothing in the 99 returns it from the graveyard or to hand'",
+        "claim": "Crux's non-Dragon mode kills 'the five dorks, Dragonlord's Servant, Dragonspeaker Shaman, Solphim'; Desolation 'the same minus Solphim (toughness 4), and minus Faeburrow Elder when you control four or more colours'",
         "status": "supported",
-        "note": "A cards.json sweep for graveyard|return|owner's hand|into your hand matches seven cards. Breaching Dragonstorm and Roiling Dragonstorm return THEMSELVES. Hellkite Courser returns the commander to the command zone. Herald's Horn, Sarkhan's Triumph and Maelstrom of the Spirit Dragon put cards from the LIBRARY into hand. Transcendent Dragon exiles a countered spell. None returns a creature from the graveyard or bounces one to hand, so Atsushi converts itself once per game. The Ur-Dragon's attack trigger puts a permanent from hand onto the battlefield, which is not recursion either."
+        "note": "ROUND-4 FINDING RESOLVED. cards.json has exactly eight non-Dragon creatures: Birds of Paradise 0/1, Bloom Tender 1/1, Delighted Halfling 1/2, Faeburrow Elder 0/0 (W/G), Ignoble Hierarch 0/1, Dragonlord's Servant 1/3, Dragonspeaker Shaman 2/2, and Solphim (Phyrexian Horror, 5/4). Crux's list is all eight. Desolation's 3 damage kills each one with toughness 3 or less. Solphim survives at toughness 4. Faeburrow gets +1/+1 per colour among your permanents and counts its own W and G, so its toughness equals your colour count: it dies at three colours or fewer and survives at four or more, which is exactly what the text says. 'Crux a payoff too' is correct because Solphim is a damage doubler. Gadrak and Atsushi are both Dragons, and Crux's Dragon mode kills both: correct. The dies|died sweep (Atsushi and Gadrak only), the eleven 'sacrific' cards, 'nothing in the 99 returns it', and the list of any-target damage triggers all still match cards.json, as re-verified in round 4. Trimming the field to 2,011 characters cut the loose 'a 4-damage trigger' wording, which resolves that note too."
       },
       {
-        "where": "absent_stages[0].why",
-        "claim": "the choosable-kill list: Sneak Attack; Desolation of Smaug; Crux of Fate's two modes; Generous Gift on your own creature; the any-target damage triggers (Terror of the Peaks, Dragon Tempest, Scourge of Valkas, Drakuseth, Smaug)",
+        "where": "stages[2].what_it_does",
+        "claim": "'Stack 009 proves one Gadrak route: a Sneak Attack creature sacrificed at your end step pays a Treasure (lines[8])'",
         "status": "supported",
-        "note": "Complete by enumeration. Every 'any target' damage source among the deck's creatures and enchantments is named. The cards left out are rightly left out. Glorybringer hits only a 'non-Dragon creature an opponent controls'. Boros Charm hits only a player or planeswalker. Firespitter Whelp and Thunderbreak Regent hit opponents and players. Steel Hellkite destroys only permanents whose controller it dealt combat damage to, and that can never be you. Swords to Plowshares exiles, so the creature never dies and neither Atsushi nor Gadrak sees it. Generous Gift says 'target permanent', so aiming it at your own creature is legal. Crux's Dragon mode kills Gadrak and Atsushi together, so Gadrak is gone before its end-step trigger and only Atsushi pays: correct. Small wording point: Atsushi is a 4/4, and Drakuseth is the only trigger that deals a FIXED 4. Terror's damage is the entering creature's power, Tempest's and Scourge's is X Dragons, and Smaug's is the Treasure count, so 'a 4-damage trigger' means 'a trigger dealing 4 or more'. Not fail-worthy."
+        "note": "Faithful to 009, and the sentence says 'one route'. Length is 1,798 characters, 2 under the 1,800 cap. That is now the tightest field in the model, alongside stages[5] at 1,792. The next edit to either field must shorten before it adds, or it fails the cap."
       },
       {
-        "where": "absent_stages[0].why",
-        "claim": "'Desolation of Smaug (3 to each non-Dragon) and Crux of Fate's non-Dragon mode, which kill the five dorks, Dragonlord's Servant and Dragonspeaker Shaman and leave Gadrak and Atsushi, both Dragons, alive'",
-        "status": "over-claimed",
-        "note": "NON-BLOCKING, and it was in the text before this round: my round-3 note wrongly called this sentence correct. Both Gadrak and Atsushi are Dragons (type lines 'Legendary Creature — Dragon' and 'Legendary Creature — Dragon Spirit'), and both survive both spells: correct. The victim list is imprecise in two places. (a) Crux's non-Dragon mode also destroys Solphim, Mayhem Dominus ('Legendary Creature — Phyrexian Horror', 5/4). The model itself calls Solphim a non-Dragon in map_disagreements and proposed_goldfish_edits. Desolation's 3 damage does NOT kill Solphim, because its toughness is 4. So the two spells do not kill the same set. (b) Faeburrow Elder is a 0/0 that 'gets +1/+1 for each color among permanents you control', and it is itself W/G, so it is at least 2/2. With four or more colours among your permanents (for example The Ur-Dragon on the battlefield, which is WUBRG) it has toughness 4 or more and survives Desolation. 'Kill the five dorks' is true only on boards with three or fewer colours. Neither error moves the verdict's grounds. Both actually strengthen ground two, since Crux also eats a payoff (Solphim). Fix next time the field is touched: 'Crux's non-Dragon mode kills every non-Dragon (the five dorks, Servant, Shaman, Solphim); Desolation kills the same minus Solphim (toughness 4), and minus Faeburrow Elder when you control four or more colours.' Partly mechanical: a 'damage N to each non-Dragon kills X' claim can be checked against type_line and printed toughness in cards.json. Toughness that depends on the board (Faeburrow's 0/0) needs a flag rather than a verdict."
+        "where": "stages[2].evidence / stages[3].evidence (009 entries)",
+        "claim": "009 evidence on the fuel and conversion stages",
+        "status": "supported",
+        "note": "Both entries describe the 009 board accurately. Gadrak is in fuel (stages[2]) and Sneak Attack is in conversion (stages[3]), so each stage cites 009 for its own card. The fuel entry repeats the 'hand empty, one activation' caveat."
       },
       {
-        "where": "absent_stages[0].why",
-        "claim": "the no-fodder verdict on the rescoped grounds (payoff side is Gadrak plus a once-only Atsushi; every route eats the deck's own cards)",
+        "where": "(whole artifact) since round 4",
+        "claim": "only lines[8], open_questions[6], absent_stages[0].why, stages[2].what_it_does and the two evidence entries changed",
         "status": "supported",
-        "note": "Both grounds are now stated truly, and the judgement half is labelled a judgement. Length is 2,576 characters. This field has no measured cap, unlike what_it_does, but it is past the roughly one-page point where a revision loses the thread. If it is revised again, cut the 'sacrific' paragraph, which is now settled, before adding anything."
+        "note": "Byte diff of engine.json against HEAD: the hunks are exactly those six, and nothing else changed. Stage lengths are 1720 / 1645 / 1798 / 1744 / 1723 / 1792 / 1651, and only fuel moved. No prose elsewhere states a count of verified lines that is now stale. The one trivial difference: the file has lost its trailing newline. That is harmless to the validator, but worth restoring when it is merged so the tracked diff stays clean. validate-engine: OK, 7 stages, 97 placed, 0 unassigned, 6/9 lines verified."
       },
       {
-        "where": "open_questions[6].why_it_matters",
-        "claim": "'Gadrak with Sneak Attack is the only repeatable fodder-to-fuel conversion that spends nothing but {R}'",
+        "where": "lines[0..4] and every finding resolved in rounds 1-4",
+        "claim": "the five previously verified arrows and the earlier resolutions",
         "status": "supported",
-        "note": "ROUND-3 FINDING RESOLVED. The count of three and 'all three run through Gadrak alone' are gone. The narrowed superlative survives enumeration of every conversion absent_stages[0] lists. Desolation, Crux and Generous Gift are single spells. Atsushi converts once, because nothing returns it (see above). The damage triggers repeat but spend their own damage. Sneak Attack's oracle text has no activation limit. 'Nothing but {R}' sits alongside absent_stages' 'Sneak Attack eats creature cards from hand' without contradiction: the creature card is the fodder, not an extra cost. The summary of absent_stages[0]'s grounds matches that field. The question itself (CR 603.3b ordering plus Treasure timing, settled_by resolve-stack) is unchanged and well formed."
-      },
-      {
-        "where": "(whole artifact) since round 3",
-        "claim": "only absent_stages[0].why and open_questions[6].why_it_matters changed",
-        "status": "supported",
-        "note": "This round has a byte diff: `git diff` of engine.json against HEAD (ba6608d4/33306b16, the committed round-3 file) shows 2 insertions and 2 deletions, exactly those two fields. Stage what_it_does lengths are unchanged (1720 / 1645 / 1741 / 1744 / 1723 / 1792 / 1651). validate-engine: OK, 7 stages, 97 placed, 0 unassigned, 5/8 lines verified."
-      },
-      {
-        "where": "lines[0..4] and every finding resolved in rounds 1-3",
-        "claim": "the five verified arrows and the earlier resolutions",
-        "status": "supported",
-        "note": "Carried forward, since the bytes are unchanged. Each verified line's stack (001, 002, 002, 007, 005) was judged in earlier rounds to show the flow it claims, not just the cards it names. No green line rests on either field edited this round."
-      },
-      {
-        "where": "stages[5].what_it_does",
-        "claim": "1,792 characters",
-        "status": "supported",
-        "note": "Unchanged, 8 under the cap. It remains the first thing to shorten if the field is touched."
+        "note": "Unchanged bytes, carried forward. The verified lines' stacks (001, 002, 002, 007, 005) were judged in earlier rounds to show the flows they claim. With lines[8], six solid arrows, each backed by its stack, and three dashed."
       }
     ],
-    "iterations": 4
+    "iterations": 5
   }
 }
