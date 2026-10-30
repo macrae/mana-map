@@ -20,7 +20,7 @@ import json
 
 import pytest
 
-from conftest_viz import BOOT_TIMEOUT_MS
+from conftest_viz import BOOT_TIMEOUT_MS, idle
 from manamap.config import DECKS_DIR
 from test_viz_deck_edit import (ADD, BENCH, CUT, SLEEVED, _card, _open, _until,  # noqa: F401
                                 _wait_mode)
@@ -126,14 +126,14 @@ def test_a_clicked_card_overlays_the_tab_and_escape_peels_it_first(browser, viz_
     page = _boot(browser, viz_server, f"?deck={slug}&tab=deck")
     try:
         page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(1500)
+        idle(page, graph=True)
         assert page.evaluate("() => Build.cardOpen") is False, "the overlay opened on the seed's pin"
         page.click("#deckInner .lens-line:not(.lens-line-nodraw)")
         line = page.evaluate("() => Build.activeLine")
         assert line != -1
         page.evaluate("() => document.getElementById('deckInner').scrollTop = 120")
         before = page.evaluate("() => document.getElementById('deckInner').scrollTop")
-        page.wait_for_timeout(1500)       # the spotlight fits; let the nodes settle
+        idle(page, graph=True)       # the spotlight fits; let the nodes settle
         pos = _node(page)
         page.mouse.click(pos["x"], pos["y"])
         page.wait_for_selector("#deckInner #buildCard", timeout=5000)
@@ -178,7 +178,7 @@ def test_off_the_change_tab_a_tray_change_repaints_only_the_count(browser, viz_s
         # The graph repaints the panel while it seeds (Force.renderPanel asks the mode);
         # the probe goes on after that, so only the tray could take it off.
         page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(1500)
+        idle(page, graph=True)
         page.evaluate("() => { document.querySelector('#deckInner .bt-body').__probe = 1; }")
         _card(page, CUT)
         page.click("#detailInner .de-card [data-de-act='cut']")

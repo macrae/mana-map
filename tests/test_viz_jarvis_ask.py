@@ -28,7 +28,7 @@ import json
 
 import pytest
 
-from conftest_viz import BOOT_TIMEOUT_MS, _record, await_projection, serve_card_images_locally
+from conftest_viz import BOOT_TIMEOUT_MS, _record, await_projection, idle, serve_card_images_locally
 from test_viz_deck_edit import ADD, BENCH, COMMANDS, CUT, _card, _fake_api, _manifest, STAGES, _wait_mode
 from test_viz_page_state import serve_server  # noqa: F401  (the fixture)
 
@@ -281,12 +281,12 @@ def test_the_deck_picker_starts_the_matrix_and_the_landing_never_does(browser, v
         page.wait_for_function("() => window.Discovery && Discovery.isReady() && Force.nodeCount > 0",
                                timeout=BOOT_TIMEOUT_MS)
         await_projection(page)      # the landing's whole boot, then a beat
-        page.wait_for_timeout(800)
+        idle(page)
         assert not [u for u in seen if EMB in u], "the Discover landing fetched the matrix"
 
         page.evaluate("() => MM.setMode('build')")
         page.wait_for_selector("#deckLensSelect", timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(300)
+        idle(page)
         assert not [u for u in seen if EMB in u], "Build without a deck fetched the matrix"
         page.focus("#deckLensSelect")
         for _ in range(40):

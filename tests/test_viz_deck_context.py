@@ -11,6 +11,7 @@ import json
 import pytest
 
 from manamap.config import DECKS_DIR
+from conftest_viz import idle
 
 pytestmark = pytest.mark.browser
 
@@ -59,7 +60,7 @@ def test_the_context_is_the_first_panel_with_card_links_and_hover_art(browser, v
         assert refs.count() >= 50
         assert refs.first.get_attribute("href").startswith("index.html?cards=")
         refs.first.hover()
-        page.wait_for_timeout(300)
+        idle(page)
         pop = refs.first.locator("img.card-pop")
         assert pop.get_attribute("src"), "hovering did not promote the preview's data-src"
         assert page.locator("#panel-context [data-section='cards-by-role']").count() == 1

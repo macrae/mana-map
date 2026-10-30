@@ -3772,6 +3772,7 @@
   document.getElementById('search').addEventListener('input', e => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
+      searchTimeout = null;            // MM.whenIdle reads a pending debounce as busy
       searchTerm = e.target.value.trim().toLowerCase();
       renderSearchResults(searchTerm);
       // Explore narrows the atlas; Discover has no atlas on screen to narrow.
@@ -4678,48 +4679,19 @@
   // ── Expose shared state/functions on window.MM ──
   // Only members with a live caller (the other eight scripts, generated onclick
   // handlers, or index.html) are exported — see docs/viz.md for the contract.
-  /* WHEN IS THE PAGE DONE? (2026-10-29) Resolves once nothing has been busy for
-   * `quietMs`: no fetch in flight (api.js counts them), no camera transition, no
-   * drill animation, and — only with `{graph: true}`, because a layout settles over
-   * ~8 s by design — no force-layout tick. The browser suite waited on fixed sleeps
-   * instead: slow on a quiet machine, wrong on a loaded one. On timeout it REJECTS
-   * naming what was still busy, so a failure says why rather than "timeout". */
-  function busyParts(graph, now, quietMs) {
-    const f = window.__mmFetches || { n: 0, last: 0 };
+  /* WHEN IS THE PAGE DONE? `mmWhenIdle` lives in api.js so every page has it; this
+   * page adds what only it knows: the camera, the drill, and — only with
+   * `{graph: true}`, because a layout settles over ~8 s by design — the force layout. */
+  (window.__mmBusy = window.__mmBusy || []).push(function (graph, now, quietMs) {
     const out = [];
-    if (f.n > 0) out.push(f.n + ' fetch(es) in flight');
-    else if (now - f.last < quietMs) out.push('a fetch just settled');
+    if (searchTimeout) out.push('the search is debouncing');
     if (mapCanvas && mapCanvas.isMoving && mapCanvas.isMoving()) out.push('the camera is moving');
     if (window.Drill && Drill.isAnimating && Drill.isAnimating()) out.push('the drill is animating');
-    // Card art loads through <img>, not fetch: an image with a source that has not
-    // finished is still loading (a lazy one off screen never will, so skip those).
-    const loading = Array.from(document.images).filter(function (im) {
-      return im.currentSrc && !im.complete && im.loading !== 'lazy';
-    }).length;
-    if (loading) out.push(loading + ' image(s) loading');
     if (graph && window.Force && Force.lastTick && now - Force.lastTick() < quietMs)
       out.push('the graph layout is still settling');
     return out;
-  }
-  function whenIdle(opts) {
-    const o = opts || {};
-    const quietMs = o.quietMs == null ? 150 : o.quietMs;
-    const timeout = o.timeout == null ? 20000 : o.timeout;
-    const start = performance.now();
-    return new Promise(function (resolve, reject) {
-      let quietSince = null;
-      (function check() {
-        const now = performance.now();
-        const busy = busyParts(!!o.graph, now, quietMs);
-        if (busy.length) quietSince = null;
-        else if (quietSince === null) quietSince = now;
-        if (quietSince !== null && now - quietSince >= quietMs) return resolve();
-        if (now - start > timeout)
-          return reject(new Error('MM.whenIdle: still busy after ' + timeout + ' ms: ' + busy.join(', ')));
-        setTimeout(check, 25);
-      })();
-    });
-  }
+  });
+  const whenIdle = window.mmWhenIdle;
 
   window.MM = {
     whenIdle,

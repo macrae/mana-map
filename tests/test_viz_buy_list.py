@@ -13,7 +13,7 @@ import pathlib
 
 import pytest
 
-from conftest_viz import BOOT_TIMEOUT_MS, _record  # noqa: F401
+from conftest_viz import BOOT_TIMEOUT_MS, _record, idle  # noqa: F401
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
@@ -101,7 +101,7 @@ def _buy_page(browser, viz_server, slug, branch, api_calls=None, prices=None):
             _json(route, _BUY_FIXTURE)
         page.route("**/api/branch/buy-list*", buy)
     page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
-    page.wait_for_timeout(2200)
+    idle(page)
     page.js_errors = errors
     return page
 

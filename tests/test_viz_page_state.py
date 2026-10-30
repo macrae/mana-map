@@ -28,7 +28,7 @@ from http.server import ThreadingHTTPServer
 import pytest
 
 from conftest import ROOT, _free_port
-from conftest_viz import BOOT_TIMEOUT_MS, _boot, _record, canvas_page  # noqa: F401
+from conftest_viz import BOOT_TIMEOUT_MS, _boot, _record, canvas_page, idle  # noqa: F401
 
 pytestmark = pytest.mark.browser
 
@@ -81,7 +81,7 @@ def test_a_clicked_card_in_build_is_the_focus_and_the_deck_is_named(browser, viz
         page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
         page.wait_for_function("() => window.Build && Build.deckSlug === 'sharknado'",
                                timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(1500)   # the layout settles; a node mid-flight is a miss
+        idle(page, graph=True)   # the layout settles; a node mid-flight is a miss
         pos = page.evaluate("""() => {
             const c = document.querySelector('canvas.force-canvas');
             const r = c.getBoundingClientRect();

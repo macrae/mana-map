@@ -36,7 +36,7 @@ from manamap.config import SYNERGY_RULES
 from conftest_viz import await_projection  # noqa: F401
 from conftest_viz import (  # noqa: F401
     BOOT_TIMEOUT_MS, _record, canvas_page, corpus_count, discover_page, page,
-    serve_watchlist_fixture, still_page,
+    idle, serve_watchlist_fixture, still_page,
 )
 
 pytestmark = pytest.mark.browser
@@ -238,8 +238,8 @@ def test_browse_cycling_moves_the_marker(page):
         const gd = document.getElementById('plot');
         const snap = () => { const t = MM.mapRenderer.layers.find(x => x._isBrowseCurrent);
                              return {x: t.x[0], y: t.y[0], cd: t.customdata[0]}; };
-        const a = snap(); MM.cycleNext(); await new Promise(r => setTimeout(r, 300));
-        const b = snap(); MM.cyclePrev(); await new Promise(r => setTimeout(r, 300));
+        const a = snap(); MM.cycleNext(); await window.mmWhenIdle();
+        const b = snap(); MM.cyclePrev(); await window.mmWhenIdle();
         const c = snap();
         return {a, b, c, count: document.querySelector('.viewer-count').textContent};
     }""")
@@ -430,14 +430,14 @@ def test_render_draws_everything_in_one_pass(page):
 # so these tests keep their assertions and change only how they get to the graph.
 
 
-def _walk(page, seed_js, settle=9000):
-    return page.evaluate("""async ([seedJs, settle]) => {
+def _walk(page, seed_js):
+    return page.evaluate("""async (seedJs) => {
         const rows = await (new Function('return (async () => {' + seedJs + '})()'))();
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         await Force.enter(rows, 'Test');
-        await new Promise(r => setTimeout(r, settle));
+        await MM.whenIdle({graph: true, timeout: 30000});   // the layout has stopped
         Force.freeze();
         const b = Force.bbox();
         return {
@@ -448,7 +448,7 @@ def _walk(page, seed_js, settle=9000):
             canvas: !!document.getElementById('forceCanvas'),
             plotHidden: document.getElementById('plot').classList.contains('force-mode'),
         };
-    }""", [seed_js, settle])
+    }""", seed_js)
 
 
 DECK_SEED = """
@@ -481,7 +481,7 @@ def test_walk_builds_a_graph_that_spreads(page):
 def test_link_length_is_the_embedding_distance(page):
     """Chord distance on a unit sphere is bounded by [0, 2]. Screen distance is not, so
     this fails immediately if the layout is ever fed 2-D positions instead."""
-    r = _walk(page, DECK_SEED, settle=3000)
+    r = _walk(page, DECK_SEED)
     st = r["linkStats"]
     assert st is not None and st["n"] > 0
     assert 0 <= st["min"] < st["max"] <= 2.0, f"link d out of chord range: {st}"
@@ -503,7 +503,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         const names = new Set(deck.cards.map(c => c.name));
         const rows = []; MM.allData.forEach((d, i) => { if (names.has(d.n)) rows.push(i); });
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         await Force.enter(rows, 'Test');
         await MM.whenIdle();
         const before = Force.nodeCount;
@@ -520,7 +520,7 @@ def test_branching_grows_the_graph_and_records_the_walk(page):
         // phantom trail entry.
         const absent = MM.allData.findIndex(d => d.n === 'Black Lotus');
         Force.focusCard(absent);
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         Force.freeze();
         return {before, steps, walk: walk.length,
                 trail: Force.trailLength, afterAbsent: Force.nodeCount};
@@ -538,7 +538,7 @@ def test_leaving_the_walk_restores_the_map(page):
     r = page.evaluate("""async () => {
         const rows = []; for (let i = 0; i < 60; i++) rows.push(i * 37 % 34322);
         document.getElementById('modeSelect').value = 'discover'; MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         await Force.enter(rows, 'Test');
         await MM.whenIdle();
         document.getElementById('modeSelect').value = 'explore'; MM.setMode('explore');
@@ -759,7 +759,7 @@ def test_one_card_plus_arrow_walks_its_neighbourhood(page):
     """Selecting a card and pressing → was a no-op: `cycleSelection` returned early below
     two selected cards. It now seeds the card's k nearest and steps into them."""
     page.evaluate("MM.selectByName('Zada, Hedron Grinder')")
-    page.wait_for_timeout(700)
+    idle(page)
     assert page.evaluate("!!MM.browseSet") is False, "selection should not start as a browse"
 
     _key(page, "ArrowRight")
@@ -796,7 +796,7 @@ def test_one_card_plus_arrow_walks_its_neighbourhood(page):
         f"stepped to {r['showing']}, nearest is {r['trueNearest']}")
 
     _key(page, "ArrowLeft")
-    page.wait_for_timeout(600)
+    idle(page)
     back = page.evaluate("({pos: MM.browseSet.pos, "
                          "showing: MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n})")
     assert back["pos"] == 0 and back["showing"] == "Zada, Hedron Grinder"
@@ -804,7 +804,7 @@ def test_one_card_plus_arrow_walks_its_neighbourhood(page):
 
 def test_enter_reanchors_the_neighbourhood(page):
     page.evaluate("MM.selectByName('Zada, Hedron Grinder')")
-    page.wait_for_timeout(700)
+    idle(page)
     _key(page, "ArrowRight")
     # Seeding the neighbourhood awaits the embedding matrix, so this is a real
     # async wait rather than a repaint — but it is still a CONDITION. `pos > 0`
@@ -816,7 +816,7 @@ def test_enter_reanchors_the_neighbourhood(page):
         timeout=30_000)
     was = page.evaluate("MM.allData[MM.browseSet.indices[MM.browseSet.pos]].n")
     _key(page, "Enter")
-    page.wait_for_timeout(3000)
+    idle(page)
     r = page.evaluate("({anchor: MM.allData[MM.browseSet.anchor].n, pos: MM.browseSet.pos})")
     assert page.js_errors == []
     assert r["anchor"] == was, "Enter should re-anchor to the card you walked to"
@@ -829,13 +829,13 @@ def test_arrow_keys_drive_browse_mode(page):
         const rows = []; for (let i = 0; i < 300; i++) rows.push(i * 11 % 34322);
         await MM.enterBrowse(rows, 'T');
     }""")
-    page.wait_for_timeout(1500)
+    idle(page)
     start = page.evaluate("MM.browseSet.pos")
     _key(page, "ArrowRight")
-    page.wait_for_timeout(400)
+    idle(page)
     fwd = page.evaluate("MM.browseSet.pos")
     _key(page, "ArrowLeft")
-    page.wait_for_timeout(400)
+    idle(page)
     back = page.evaluate("MM.browseSet.pos")
     assert page.js_errors == []
     assert fwd != start, "ArrowRight did nothing in browse mode"
@@ -897,7 +897,7 @@ def test_hover_shows_a_card_image_at_the_cursor(page):
     assert r["insideRight"] and r["insideTop"], "popup escaped the plot area"
 
     page.evaluate("MM.hideCardPopup()")
-    page.wait_for_timeout(300)
+    idle(page)
     assert page.evaluate("document.querySelector('.card-popup').style.display") == "none"
 
 
@@ -1191,7 +1191,7 @@ def test_canvas_has_its_own_legend(canvas_page):
         const s = document.getElementById('colorBy');
         s.value = 'color'; s.dispatchEvent(new Event('change'));
     }""")
-    canvas_page.wait_for_timeout(1200)
+    idle(canvas_page)
     text = canvas_page.evaluate("() => document.getElementById('mapLegend').innerText")
     assert "Multicolor" in text or "Colorless" in text
 
@@ -1240,13 +1240,13 @@ def test_canvas_draws_density_contours(canvas_page):
         pytest.fail(f"the camera never stayed zoomed in (span {span:.1f}) — "
                     f"a render keeps refitting it")
 
-    canvas_page.wait_for_timeout(800)
+    idle(canvas_page)
     before = _ink(canvas_page)
     canvas_page.evaluate("document.getElementById('toggleContours').click()")
-    canvas_page.wait_for_timeout(1800)
+    idle(canvas_page)
     during = _ink(canvas_page)
     canvas_page.evaluate("document.getElementById('toggleContours').click()")
-    canvas_page.wait_for_timeout(1000)
+    idle(canvas_page)
     after = _ink(canvas_page)
     assert canvas_page.js_errors == []
     assert during > before * 3, f"Topo added almost no ink ({before:.1f} -> {during:.1f})"
@@ -1259,12 +1259,12 @@ def test_canvas_box_select_uses_the_quadtree(canvas_page):
         const c = document.querySelector('.map-canvas');
         const rect = c.getBoundingClientRect();
         document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Shift', bubbles: true}));
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         c.dispatchEvent(new MouseEvent('mousedown',
             {bubbles: true, clientX: rect.left + 400, clientY: rect.top + 200}));
         window.dispatchEvent(new MouseEvent('mousemove',
             {bubbles: true, clientX: rect.left + 800, clientY: rect.top + 450}));
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         window.dispatchEvent(new MouseEvent('mouseup',
             {bubbles: true, clientX: rect.left + 800, clientY: rect.top + 450}));
         await MM.whenIdle();
@@ -1378,7 +1378,7 @@ def test_a_card_with_no_synergy_says_zero_rather_than_lying(discover_page):
     Surfacing it as `Synergy 0` is the honest rendering of that."""
     r = discover_page.evaluate("""async () => {
         Discovery.show(Discovery.rowByName('Doubling Season'));
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         const btns = [...document.querySelectorAll('.discover-rel')];
         return {
             counts: Discovery.counts(Discovery.current),
@@ -1461,10 +1461,10 @@ def test_the_graph_is_not_a_pure_tree(discover_page):
     """
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         const rows = Discovery.neighbours(Discovery.current, 'similar').map(n => n.row);
         for (const row of rows.slice(0, 4)) Force.branchByRow(row, 'similar');
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         return {nodes: Force.nodeCount, links: Force.linkCount};
     }""")
     assert discover_page.js_errors == []
@@ -1479,17 +1479,17 @@ def test_the_pin_beats_the_hover(discover_page):
     happened to be passing over. Hover is a preview; the pin is where you are."""
     r = discover_page.evaluate("""async () => {
         Force.branchByRow(Discovery.current, 'similar');
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         document.getElementById('modeSelect').value = 'discover';
         MM.setMode('discover');
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         const pinnedName = Discovery.index[Discovery.current].n;
         const c = document.getElementById('forceCanvas');
         const rect = c.getBoundingClientRect();
         // Sweep the cursor across empty canvas — nothing should steal the panel.
         c.dispatchEvent(new MouseEvent('mousemove',
             {bubbles: true, clientX: rect.left + 5, clientY: rect.top + 5}));
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         return {panel: document.getElementById('deckInner').textContent, expect: pinnedName};
     }""")
     assert discover_page.js_errors == []
@@ -1515,11 +1515,11 @@ def test_feeling_lucky_changes_the_card(discover_page):
 def test_filters_narrow_the_pick(discover_page):
     r = discover_page.evaluate("""async () => {
         Discovery.onFilter('supertype', 'Land');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         const land = Discovery.index[Discovery.current].s;
         Discovery.onFilter('supertype', '');
         Discovery.onFilter('color', 'R');
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
         return {land: land, colour: Discovery.index[Discovery.current].c,
                 pool: Discovery.poolSize()};
     }""")
@@ -1755,7 +1755,7 @@ def test_a_sample_of_cards_stays_named(discover_page):
     r = discover_page.evaluate("""async () => {
         const grow = async () => {
             Force.branchByRow(Discovery.current, 'similar');
-            await new Promise(r => setTimeout(r, 300));
+            await window.mmWhenIdle();
             for (const nb of Discovery.neighbours(Discovery.current, 'similar').slice(0, 4)) {
                 Force.branchByRow(nb.row, 'similar');
             }
@@ -1962,7 +1962,7 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
                 const before = Discovery.current;
                 c.dispatchEvent(new MouseEvent('click',
                     {bubbles: true, clientX: rect.left + x, clientY: rect.top + y}));
-                await new Promise(r => setTimeout(r, 250));
+                await window.mmWhenIdle();
                 if (Discovery.current !== before) {
                     clicked = Discovery.index[Discovery.current].n;
                     break outer;
@@ -1973,7 +1973,7 @@ def test_clicking_a_card_opens_it_in_the_panel(discover_page):
         const keep = document.querySelector('.discover-keep');
         const libBefore = Discovery.library.list.length;
         if (keep) keep.click();
-        await new Promise(r => setTimeout(r, 200));
+        await window.mmWhenIdle();
 
         return {
             landing: landing, clicked: clicked, panel: title(),
@@ -2170,7 +2170,7 @@ def test_synergy_neighbours_carry_their_reason(discover_page):
     r = discover_page.evaluate("""async () => {
         const row = Discovery.rowByName("Ashnod's Altar");
         Discovery.show(row);
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         const syn = Discovery.neighbours(row, 'synergy');
         return {
             count: syn.length,
@@ -2202,7 +2202,7 @@ def test_synergy_edges_are_labelled_in_the_graph(discover_page):
     r = discover_page.evaluate("""async () => {
         const row = Discovery.rowByName("Ashnod's Altar");
         Discovery.show(row);
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         Force.branchByRow(row, 'synergy');
         // Settle: alphaDecay 0.08 is ~1.3 s, and a cramped graph collides every label.
         const bb = () => JSON.stringify(Force.bbox());
@@ -2378,7 +2378,7 @@ def test_the_library_follows_the_card_not_the_mode(discover_page):
         const keep = document.querySelector('.discover-keep');
         const before = Discovery.library.list.length;
         if (keep) keep.click();
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         return {
             hadButton: !!keep,
             before: before,
@@ -2593,7 +2593,7 @@ def test_an_empty_graph_still_seeds_from_the_atlas(discover_page):
     a relation clicked in Explore must still seed rather than no-op."""
     r = discover_page.evaluate("""async () => {
         Force.newWalk(true);
-        await new Promise(r => setTimeout(r, 300));
+        await window.mmWhenIdle();
         document.getElementById('modeSelect').value = 'explore';
         MM.setMode('explore');
         await MM.whenIdle();
@@ -3468,7 +3468,7 @@ def test_fit_frames_a_small_graph_instead_of_leaving_it_tiny(discover_page):
         // Freeze BEFORE measuring: the simulation keeps expanding the bbox, and reading it
         // mid-settle is how this was misdiagnosed twice.
         Force.freeze();
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         const b = Force.bbox();
         const cv = document.getElementById('forceCanvas');
         const wanted = Math.min(cv.clientWidth / (b.w * 1.18),
@@ -3520,7 +3520,7 @@ def test_both_panels_draw_the_same_card_header(page):
         let guard = 0;
         while (MM.browseSet.indices[MM.browseSet.pos] !== pw && guard++ < 10) {
             MM.cycleNext();
-            await new Promise(r => setTimeout(r, 300));
+            await window.mmWhenIdle();
         }
         await MM.whenIdle();
         return {
@@ -3549,7 +3549,7 @@ def test_both_panels_draw_the_same_card_header(page):
 def _dossier(browser, viz_server, slug):
     page = browser.new_page()
     page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
-    page.wait_for_timeout(2500)
+    idle(page)
     return page
 
 
@@ -3588,7 +3588,7 @@ def test_no_live_surface_links_into_the_magazine(browser, viz_server):
 
     page = browser.new_page()
     page.goto(f"{viz_server}/viz/workbench.html")
-    page.wait_for_timeout(2500)
+    idle(page)
     try:
         hrefs = page.eval_on_selector_all(
             "a", "els => els.map(e => e.getAttribute('href'))")
@@ -3650,7 +3650,7 @@ def _build_page(browser, viz_server, slug, tab="deck"):
     from conftest_viz import _boot
     page = _boot(browser, viz_server, f"?deck={slug}&tab={tab}")
     page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
-    page.wait_for_timeout(1500)
+    idle(page)
     return page
 
 
@@ -3688,7 +3688,7 @@ def test_clicking_a_verified_line_spotlights_it(browser, viz_server):
     try:
         assert page.evaluate("Build.activeLine") == -1
         page.click(".lens-line")
-        page.wait_for_timeout(900)
+        idle(page)
 
         assert page.evaluate("Build.activeLine") == 0
         assert page.evaluate("Force.activeLine") is not None
@@ -3757,13 +3757,13 @@ def test_the_spotlight_actually_dims_the_canvas(browser, viz_server):
     page = _build_page(browser, viz_server, slug)
     try:
         page.click(".lens-line")
-        page.wait_for_timeout(1500)          # includes the 450ms fit transition
+        idle(page)          # includes the 450ms fit transition
         spotlit = page.evaluate(_INK)
         rows = page.evaluate("() => Force.spotlitRows")
         near_lit = page.evaluate(_NEAR_LINE, rows)
 
         page.click(".lens-line")             # clear; camera stays put
-        page.wait_for_timeout(900)
+        idle(page)
         cleared = page.evaluate(_INK)
         # Same rows, same camera — only the styling moved.
         near_off = page.evaluate(_NEAR_LINE, rows)
@@ -3788,9 +3788,9 @@ def test_clicking_the_same_line_again_clears_it(browser, viz_server):
         pytest.skip("no deck with a drawable verified line")
     page = _build_page(browser, viz_server, slug)
     try:
-        page.click(".lens-line"); page.wait_for_timeout(800)
+        page.click(".lens-line"); idle(page)
         assert page.evaluate("Force.lineRowCount") >= 2
-        page.click(".lens-line"); page.wait_for_timeout(800)
+        page.click(".lens-line"); idle(page)
         assert page.evaluate("Build.activeLine") == -1
         assert page.evaluate("Force.lineRowCount") == 0
         assert not page.evaluate(
@@ -3807,9 +3807,9 @@ def test_escape_peels_the_spotlight_first(browser, viz_server):
         pytest.skip("no deck with a drawable verified line")
     page = _build_page(browser, viz_server, slug)
     try:
-        page.click(".lens-line"); page.wait_for_timeout(800)
+        page.click(".lens-line"); idle(page)
         assert page.evaluate("Build.activeLine") == 0
-        page.keyboard.press("Escape"); page.wait_for_timeout(600)
+        page.keyboard.press("Escape"); idle(page)
         assert page.evaluate("Build.activeLine") == -1
         assert page.evaluate("Force.lineRowCount") == 0
         assert page.js_errors == []
@@ -3829,12 +3829,12 @@ def test_escape_reframes_the_whole_deck(browser, viz_server):
     page = _build_page(browser, viz_server, slug)
     try:
         page.click(".lens-line")
-        page.wait_for_timeout(1600)          # the 450ms fit transition, settled
+        idle(page)          # the 450ms fit transition, settled
         k_line = page.evaluate(
             "() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
         page.keyboard.press("Escape")
-        page.wait_for_timeout(1400)
+        idle(page)
         k_deck = page.evaluate(
             "() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
@@ -3923,7 +3923,7 @@ def test_single_click_selects_without_growing_the_graph(browser, viz_server):
         before = page.evaluate("({n: Force.nodeCount, t: Force.trailLength})")
         pos = _a_node_position(page)
         page.mouse.click(pos["x"], pos["y"])
-        page.wait_for_timeout(900)
+        idle(page)
 
         assert page.evaluate("Force.nodeCount") == before["n"], "a click grew the graph"
         # The breadcrumb records where you WENT, not everything you looked at.
@@ -3942,7 +3942,7 @@ def test_double_click_expands(browser, viz_server):
         before = page.evaluate("Force.nodeCount")
         pos = _a_node_position(page)
         page.mouse.dblclick(pos["x"], pos["y"])
-        page.wait_for_timeout(3000)
+        idle(page)
         assert page.evaluate("Force.nodeCount") > before
         assert page.js_errors == []
     finally:
@@ -3961,14 +3961,14 @@ def test_a_click_does_not_claim_the_camera_but_a_drag_does(browser, viz_server):
     try:
         pos = _a_node_position(page)
         page.mouse.click(pos["x"], pos["y"])
-        page.wait_for_timeout(500)
+        idle(page)
         assert page.evaluate("Force.cameraOwnedByUser") is False, "a click claimed the camera"
 
         page.mouse.move(pos["x"], pos["y"])
         page.mouse.down()
         page.mouse.move(pos["x"] + 120, pos["y"] + 90, steps=8)
         page.mouse.up()
-        page.wait_for_timeout(500)
+        idle(page)
         assert page.evaluate("Force.cameraOwnedByUser") is True, "a real drag must own it"
         assert page.js_errors == []
     finally:
@@ -3986,11 +3986,11 @@ def test_expansion_keeps_every_card_on_screen(browser, viz_server):
     from conftest_viz import _boot
     page = _boot(browser, viz_server, "?card=Craterhoof%20Behemoth")
     page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
-    page.wait_for_timeout(1500)
+    idle(page)
     try:
         pos = _a_node_position(page)
         page.mouse.dblclick(pos["x"], pos["y"])
-        page.wait_for_timeout(2600)
+        idle(page, graph=True)
 
         assert page.evaluate("Force.nodeCount") > 1, "nothing expanded"
         assert page.evaluate("Force.followCount") > 0, "the follow camera never ran"
@@ -4011,11 +4011,11 @@ def test_zoom_to_the_deck_works_in_graph_view(browser, viz_server):
         pos = _a_node_position(page)
         page.mouse.move(pos["x"], pos["y"])
         page.mouse.wheel(0, -600)          # take the camera somewhere else
-        page.wait_for_timeout(600)
+        idle(page)
         moved = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
         page.evaluate("Build.fitDeck()")
-        page.wait_for_timeout(1200)
+        idle(page)
         framed = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
         assert framed != moved, "zoom-to-the-deck did not move the graph camera"
@@ -4073,10 +4073,10 @@ def test_focusing_a_region_dims_the_map_instead_of_erasing_it(browser, viz_serve
             }"""
         )
         page.evaluate("MM.focusRegion('l0_0')")
-        page.wait_for_timeout(2000)
+        idle(page)
         members = page.evaluate("() => [...MM.regionFocus.rows]")
         page.evaluate("MM.clearRegionFocus()")
-        page.wait_for_timeout(1500)
+        idle(page)
 
         box = page.evaluate(
             """(members) => {
@@ -4115,9 +4115,9 @@ def test_focusing_a_region_dims_the_map_instead_of_erasing_it(browser, viz_serve
 
         cam = page.evaluate("() => MM.mapRenderer.getCamera()")
         page.evaluate("MM.focusRegion('l0_0')")
-        page.wait_for_timeout(2200)
+        idle(page)
         page.evaluate("(c) => MM.mapRenderer.setCamera(c)", cam)
-        page.wait_for_timeout(1200)
+        idle(page)
         after = page.evaluate(patch_ink, box)
 
         # Dimmed...
@@ -4196,7 +4196,7 @@ def test_hovering_names_the_card_under_the_cursor(page):
     # the geometry assertion it is supposed to be. Another wait would only move
     # the odds.
     page.evaluate("() => MM.mapRenderer.setMotion(false)")
-    page.wait_for_timeout(900)          # let the 700 ms motion ramp settle to rest
+    idle(page)          # let the 700 ms motion ramp settle to rest
     box = page.evaluate(
         """() => {
             const r = document.querySelector('.map-canvas').getBoundingClientRect();
@@ -4297,7 +4297,7 @@ def test_clicking_a_legend_row_spotlights_that_group(page):
         const s = document.getElementById('colorBy');
         s.value = 'supertype'; s.dispatchEvent(new Event('change'));
     }""")
-    page.wait_for_timeout(800)
+    idle(page)
     before = _ink_strength(page)
 
     page.evaluate(
@@ -4307,7 +4307,7 @@ def test_clicking_a_legend_row_spotlights_that_group(page):
             row.click();
         }"""
     )
-    page.wait_for_timeout(1000)
+    idle(page)
     during = _ink_strength(page)
 
     assert page.evaluate("() => MM.legendFocus && MM.legendFocus.key") == "Planeswalker"
@@ -4324,7 +4324,7 @@ def test_clicking_a_legend_row_spotlights_that_group(page):
     )
 
     page.keyboard.press("Escape")
-    page.wait_for_timeout(900)
+    idle(page)
     assert page.evaluate("() => MM.legendFocus") is None
     assert page.evaluate("() => document.querySelectorAll('.map-legend-row.is-active').length") == 0
     after = _ink_strength(page)
@@ -4347,7 +4347,7 @@ def test_entering_explore_shows_the_whole_map(discover_page):
     # A grown graph is what Session.size() counts, and it is what the old auto-orient
     # branch keyed on.
     page.evaluate("() => MM.relate(Discovery.current, 'similar')")
-    page.wait_for_timeout(400)
+    idle(page)
 
     page.evaluate(
         """() => {
@@ -4546,7 +4546,7 @@ def test_the_map_settles_when_nobody_is_there_and_wakes_on_input(page):
     box = page.locator(".map-canvas").bounding_box()
     page.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2)
     page.mouse.move(box["x"] + box["width"] / 2 + 40, box["y"] + box["height"] / 2 + 10)
-    page.wait_for_timeout(1000)
+    idle(page)
     woke = page.evaluate("() => ({resting: MM.mapRenderer.resting, level: MM.mapRenderer.motionLevel})")
     assert not woke["resting"] and woke["level"] > 0, f"input did not wake the map: {woke}"
     assert page.js_errors == []
@@ -4685,7 +4685,7 @@ def _workbench(browser, viz_server, decks, infos=None, ratings=None):
         status=200, content_type="application/json",
         body=_json.dumps((infos or {}).get(route.request.url.split("/")[-2], {}))))
     page.goto(f"{viz_server}/viz/workbench.html")
-    page.wait_for_timeout(1200)
+    idle(page)
     return page
 
 
@@ -4778,7 +4778,7 @@ def _fleet(browser, viz_server, doc, ratings=None):
             route.fulfill(status=200, content_type="application/json", body=_json.dumps(body))
     page.route("**/data/decks/*/rating.json", _rating)
     page.goto(f"{viz_server}/viz/fleet.html")
-    page.wait_for_timeout(1200)
+    idle(page)
     page.js_errors = errors
     return page
 
@@ -5098,7 +5098,7 @@ def test_the_fleet_table_has_a_branch_column(browser, viz_server):
                              "beta": {}})
     try:
         page.click(".wb-view[data-view='table']")
-        page.wait_for_timeout(300)
+        idle(page)
         heads = [th.text_content() for th in page.locator("table.wb-table thead th").all()]
         assert heads[5] == "Branch" and len(heads) == 9, heads
         cell = page.locator("tr.t-head").first.locator("td.t-branch")
@@ -5142,7 +5142,7 @@ def test_the_fleet_total_carries_both_halves_of_the_ratio(browser, viz_server):
         "b": {"engine": {"lines": 9, "verified_lines": 2}}})
     try:
         page.click('[data-view="table"]')
-        page.wait_for_timeout(400)
+        idle(page)
         total = page.text_content("tr.t-total")
         assert "6/22" in total, total
     finally:
@@ -5538,7 +5538,7 @@ def test_a_group_spotlight_actually_dims_the_graph(browser, viz_server):
         assert key, "no curve segment rendered"
 
         page.query_selector('.curve-seg[data-group="%s"]' % key).click()
-        page.wait_for_timeout(800)
+        idle(page)
         assert page.js_errors == [], page.js_errors
         assert page.evaluate("Build.focusedGroup && Build.focusedGroup.key") == key
         during = _lit_pixels(page)
@@ -5546,7 +5546,7 @@ def test_a_group_spotlight_actually_dims_the_graph(browser, viz_server):
 
         # Clicking the same segment releases it, and the graph comes back.
         page.query_selector('.curve-seg[data-group="%s"]' % key).click()
-        page.wait_for_timeout(700)
+        idle(page)
         assert page.evaluate("Build.focusedGroup") is None
         after = _lit_pixels(page)
         assert after > during * 1.05, (during, after)
@@ -5573,7 +5573,7 @@ def test_a_role_bar_switches_the_overlay_because_it_is_always_about_roles(browse
         row.click()
         page.wait_for_function("() => window.Build && Build.focusedGroup",
                                timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(900)
+        idle(page)
         assert page.js_errors == [], page.js_errors
         assert page.evaluate("MM.grouping") == "role"
         assert page.evaluate("Build.focusedGroup.key") == family
@@ -5603,11 +5603,11 @@ def test_a_group_spotlight_and_a_line_spotlight_are_not_the_same_thing(browser, 
         seg = page.query_selector(".curve-seg[data-group]")
         assert seg is not None, "no curve segment rendered"
         seg.click()
-        page.wait_for_timeout(600)
+        idle(page)
         assert page.evaluate("Build.focusedGroup") is not None
 
         page.evaluate("Build.focusLine(0)")
-        page.wait_for_timeout(600)
+        idle(page)
         assert page.evaluate("Build.focusedGroup") is None, \
             "taking a line must put the group down"
         assert page.js_errors == [], page.js_errors
@@ -5679,7 +5679,7 @@ def test_the_open_line_shows_its_prose(browser, viz_server):
             "prose before anything was opened")
 
         page.click(".lens-line")
-        page.wait_for_timeout(800)
+        idle(page)
 
         # Exactly ONE block, under the row that is open. The median summary is
         # 838 characters and the longest is 4,337; rendering every line's prose
@@ -5691,7 +5691,7 @@ def test_the_open_line_shows_its_prose(browser, viz_server):
         assert len(text) > 200, f"prose block is only {len(text)} chars"
 
         page.click(".lens-line")
-        page.wait_for_timeout(600)
+        idle(page)
         assert page.locator(".lens-line-prose").count() == 0
         assert page.js_errors == []
     finally:
@@ -5712,7 +5712,7 @@ def test_the_prose_is_the_artifact_verbatim(browser, viz_server):
     page = _build_page(browser, viz_server, slug)
     try:
         page.click(".lens-line")
-        page.wait_for_timeout(800)
+        idle(page)
         shown = page.locator(".lens-line-prose").inner_text()
 
         # Pull the same line's artifact prose out of Build's own state, then
@@ -5747,7 +5747,7 @@ def test_the_fade_only_promises_more_when_there_is_more(browser, viz_server):
     page = _build_page(browser, viz_server, slug)
     try:
         page.click(".lens-line")
-        page.wait_for_timeout(800)
+        idle(page)
         state = page.evaluate("""() => {
             const el = document.querySelector('.lens-line-prose');
             const over = el.scrollHeight > el.clientHeight + 2;
@@ -6194,7 +6194,7 @@ def test_the_toolbar_shows_only_what_the_mode_uses(page):
     counts = {}
     for mode in ("discover", "build", "explore"):
         page.evaluate(f"MM.setMode('{mode}')")
-        page.wait_for_timeout(400)
+        idle(page)
         counts[mode] = page.evaluate("""() => [...document.querySelectorAll(
             '.toolbar select, .toolbar input, .toolbar button')]
             .filter(e => e.offsetParent !== null).length""")
@@ -6212,7 +6212,7 @@ def test_the_mode_select_stays_the_one_source_of_truth(page):
     holding "which mode is current" is the bug this repo keeps undoing.
     """
     page.evaluate("document.querySelector('.mode-tab[data-mode=\\'build\\']').click()")
-    page.wait_for_timeout(500)
+    idle(page)
     assert page.evaluate("document.getElementById('modeSelect').value") == "build"
     assert page.evaluate("MM.mode") == "build"
     marked = page.eval_on_selector_all(
@@ -6358,10 +6358,10 @@ def test_the_probe_happens_once(browser, viz_server):
         page.on("request", lambda r: calls.append(r.url) if "/api/" in r.url else None)
         page.goto(f"{viz_server}/viz/index.html")
         page.wait_for_function("() => window.Api && Api.probed", timeout=BOOT_TIMEOUT_MS)
-        page.wait_for_timeout(1500)
+        idle(page)
         page.evaluate("() => Api.probe()")
         page.evaluate("() => Api.probe()")
-        page.wait_for_timeout(400)
+        idle(page)
         assert len(calls) <= 2, f"{len(calls)} API requests: {calls}"
     finally:
         page.close()
@@ -6398,7 +6398,7 @@ def test_the_new_deck_form_never_declines_in_silence(browser, viz_server):
                 return Promise.resolve({});
             };
             Build.newDeck();
-            await new Promise(r => setTimeout(r, 300));
+            await window.mmWhenIdle();
             const offered = [...document.querySelectorAll('#ndFmt option')]
                 .map(o => o.value);
             Build.newDeckBuild();                 // no slug — the reported case
@@ -6499,14 +6499,14 @@ def test_finish_is_offered_only_once_there_is_a_deck_to_finish(browser, viz_serv
             const label = () => [...document.querySelectorAll('.lens-btn')]
                 .map(b => b.textContent).find(t => t.startsWith('Finish it'));
             Build.newDeck();
-            await new Promise(r => setTimeout(r, 300));
+            await window.mmWhenIdle();
             const box = document.getElementById('ndSlug');
             box.value = 'zz'; box.dispatchEvent(new Event('change', {bubbles: true}));
             Build.pickCommander('Zur the Enchanter');
-            await new Promise(r => setTimeout(r, 300));
+            await window.mmWhenIdle();
             const before = label();
             Build.newDeckBuild();
-            await new Promise(r => setTimeout(r, 400));
+            await window.mmWhenIdle();
             return {before: before || null, after: label() || null};
         }""")
         assert seen["before"] is None, "Finish was offered before there was a deck"
@@ -7219,12 +7219,12 @@ def test_resuming_a_draft_gathers_a_card_held_in_another_pile(discover_page):
 
 # ── The search box, which was doing nothing in Discover ───────────────────
 
-def _search(page, term, settle=1600):
+def _search(page, term):
     page.evaluate("""(t) => {
         const i = document.getElementById('search');
         i.value = t; i.dispatchEvent(new Event('input'));
     }""", term)
-    page.wait_for_timeout(settle)
+    idle(page)
 
 
 def test_discover_search_lands_you_on_the_card(discover_page):
@@ -7323,8 +7323,8 @@ def test_explore_search_narrows_the_atlas_and_says_which_field_hit(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2200)
+    idle(page)
+    _search(page, "treasure")
 
     state = page.evaluate("""() => ({
         status: document.getElementById('status').textContent,
@@ -7352,8 +7352,8 @@ def test_a_full_card_name_still_finds_that_card(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "craterhoof behemoth", settle=2200)
+    idle(page)
+    _search(page, "craterhoof behemoth")
     status = page.evaluate("() => document.getElementById('status').textContent")
     count = int(status.split()[0].replace(",", ""))
     assert count <= 3, f"a full card name matched {count} cards: {status}"
@@ -7365,13 +7365,13 @@ def test_escape_peels_the_query_before_anything_else(canvas_page):
     would leave the query on and look like Escape did nothing."""
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2000)
+    idle(page)
+    _search(page, "treasure")
     before = page.evaluate("() => document.getElementById('status').textContent")
     assert "treasure" in before
 
     page.keyboard.press("Escape")
-    page.wait_for_timeout(900)
+    idle(page)
     after = page.evaluate("""() => ({
         status: document.getElementById('status').textContent,
         input: document.getElementById('search').value,
@@ -7391,14 +7391,14 @@ def test_role_is_offered_in_build_and_not_in_explore(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1000)
+    idle(page)
     explore = page.evaluate("""() => [...document.getElementById('colorBy').options]
         .filter(o => !o.hidden).map(o => o.value)""")
     assert "role" not in explore, f"Explore still offers Role: {explore}"
     assert "supertype" in explore and "color" in explore and "rarity" in explore
 
     page.evaluate("() => MM.setMode('build')")
-    page.wait_for_timeout(1500)
+    idle(page)
     build = page.evaluate("""() => [...document.getElementById('colorBy').options]
         .filter(o => !o.hidden).map(o => o.value)""")
     assert "role" in build, "Build lost Role — its role bars set the picker to it"
@@ -7421,7 +7421,7 @@ def test_a_real_mouse_click_reaches_a_legend_row(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
+    idle(page)
     page.wait_for_selector(".map-legend-row", timeout=15000)
 
     row = page.locator(".map-legend-row").first
@@ -7436,7 +7436,7 @@ def test_a_real_mouse_click_reaches_a_legend_row(canvas_page):
     assert reachable, "a click at the row's own centre does not land on the row"
 
     row.click()
-    page.wait_for_timeout(700)
+    idle(page)
     assert page.evaluate("() => MM.legendGroups") == [key]
     assert page.js_errors == []
 
@@ -7451,11 +7451,11 @@ def test_the_legend_selects_more_than_one_group(canvas_page):
         const s = document.getElementById('colorBy');
         s.value = 'color'; s.dispatchEvent(new Event('change'));
     }""")
-    page.wait_for_timeout(1800)
+    idle(page)
 
     def click(key):
         page.locator(f'.map-legend-row[data-key="{key}"]').click()
-        page.wait_for_timeout(700)
+        idle(page)
 
     click("R")
     click("U")
@@ -7491,11 +7491,11 @@ def test_a_legend_filter_recedes_the_rest_rather_than_erasing_it(canvas_page):
         const s = document.getElementById('colorBy');
         s.value = 'color'; s.dispatchEvent(new Event('change'));
     }""")
-    page.wait_for_timeout(1800)
+    idle(page)
     before = _ink_strength(page)
 
     page.locator('.map-legend-row[data-key="R"]').click()
-    page.wait_for_timeout(1200)
+    idle(page)
     during = _ink_strength(page)
 
     assert during["solid"] < before["solid"] * 0.6, (
@@ -7516,16 +7516,16 @@ def test_changing_the_grouping_clears_a_selection_that_no_longer_means_anything(
         const s = document.getElementById('colorBy');
         s.value = 'color'; s.dispatchEvent(new Event('change'));
     }""")
-    page.wait_for_timeout(1800)
+    idle(page)
     page.locator('.map-legend-row[data-key="R"]').click()
-    page.wait_for_timeout(700)
+    idle(page)
     assert page.evaluate("() => MM.legendGroups") == ["R"]
 
     page.evaluate("""() => {
         const s = document.getElementById('colorBy');
         s.value = 'rarity'; s.dispatchEvent(new Event('change'));
     }""")
-    page.wait_for_timeout(1500)
+    idle(page)
     assert page.evaluate("() => MM.legendGroups") == [], (
         "a selection outlived its key space and now filters on nothing")
     # The status no longer claims the dropped filter. (It used to be asserted to carry
@@ -7549,8 +7549,8 @@ def test_arrowing_a_filtered_set_walks_it(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2200)
+    idle(page)
+    _search(page, "treasure")
 
     page.keyboard.press("ArrowRight")
     page.wait_for_function("() => MM.browseSet", timeout=25000)
@@ -7575,8 +7575,8 @@ def test_the_walk_moves_by_proximity_not_by_list_order(canvas_page):
     """
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2200)
+    idle(page)
+    _search(page, "treasure")
     page.keyboard.press("ArrowRight")
     page.wait_for_function("() => MM.browseSet && MM.browseSet.order === 'walk'",
                            timeout=25000)
@@ -7610,12 +7610,12 @@ def test_the_panel_says_which_ordering_it_is_using(canvas_page):
     are not in."""
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2200)
+    idle(page)
+    _search(page, "treasure")
     page.keyboard.press("ArrowRight")
     page.wait_for_function("() => MM.browseSet", timeout=25000)
     page.keyboard.press("ArrowRight")
-    page.wait_for_timeout(900)
+    idle(page)
 
     label = page.evaluate(
         "() => (document.querySelector('.browse-order-label') || {}).textContent || ''")
@@ -7634,8 +7634,8 @@ def test_the_camera_follows_only_when_the_card_leaves_the_view(canvas_page):
     "only when needed" cheap — consecutive cards are near each other."""
     page = canvas_page
     page.evaluate("() => MM.setMode('explore')")
-    page.wait_for_timeout(1200)
-    _search(page, "treasure", settle=2200)
+    idle(page)
+    _search(page, "treasure")
     page.keyboard.press("ArrowRight")
     page.wait_for_function("() => MM.browseSet", timeout=25000)
 
@@ -7749,7 +7749,7 @@ def _branch_page(browser, viz_server, slug, branch):
             if m.type == "error" and "Failed to load resource" not in m.text
             else None)
     page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
-    page.wait_for_timeout(2200)
+    idle(page)
     page.js_errors = errors
     return page
 
@@ -8325,7 +8325,7 @@ def _fill_library(page, n):
         Session.library.clear();
         for (let i = 0; i < n; i++) Session.library.add('Filler Card ' + i);
         if (!Shell.isOpen) Shell.toggle();   // a getter, not a function
-        await new Promise(r => setTimeout(r, 400));
+        await window.mmWhenIdle();
         return Session.library.size;
     }""", n)
 
@@ -8747,7 +8747,7 @@ def test_sorting_and_filtering_re_request_no_card_art_at_all(browser, viz_server
         def unchanged(label, script):
             before = len(seen)
             page.evaluate(script)
-            page.wait_for_timeout(600)
+            idle(page)
             assert len(seen) == before, (
                 f"{label} re-requested {len(seen) - before} image(s) — the grid "
                 f"rebuilt its tiles instead of moving them")
@@ -9367,7 +9367,7 @@ def test_watch_moves_a_card_out_of_unreviewed_through_the_endpoint(page):
     # the graph canvas (z-index 10) sat over the grid and ate every click Sean made —
     # this test passed against a grid nobody could use (2026-10-07).
     page.locator('#candGrid .cg-tile').first.locator('[data-verdict="watching"]').click(timeout=3000)
-    page.wait_for_timeout(800)
+    idle(page)
     after = page.evaluate("""() => ({left: Build.__gridCards(),
         tiles: document.querySelectorAll('#candGrid .cg-tile').length})""")
     after["name"] = name
@@ -9480,7 +9480,7 @@ def test_the_branch_page_has_the_anchors_the_workbench_links_and_lands_on_them(b
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     try:
         page.goto(f"{viz_server}/viz/branch.html?deck=ur-dragon&branch={A_BRANCH}#measured")
-        page.wait_for_timeout(2200)
+        idle(page)
         assert page.evaluate("window.scrollY") > 0, "the page did not scroll to #measured after its render"
     finally:
         page.close()
@@ -9496,7 +9496,7 @@ def test_the_deck_page_lands_on_its_branches_rack_from_a_deep_link(browser, viz_
     page = browser.new_page(viewport={"width": 1440, "height": 900})
     try:
         page.goto(f"{viz_server}/viz/deck.html?deck=edgar-vampires#panel-branches")
-        page.wait_for_timeout(2500)
+        idle(page)
         assert page.locator("#panel-branches").count() == 1
         assert page.evaluate("window.scrollY") > 0, "the page did not scroll to #panel-branches after its render"
     finally:
@@ -9558,12 +9558,12 @@ def test_the_pages_show_the_pilots_marks_as_the_table_instrument(browser, viz_se
         status=200, content_type="application/json", body=_json.dumps(info)))
     try:
         page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
-        page.wait_for_timeout(2500)
+        idle(page)
         status = page.locator("#panel-status").text_content()
         assert "At the table" in status and "first wheel T5" in status and "never in 1" in status
         assert "landed on a commander in 50%" in status and "3 marked games" in status
         page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
-        page.wait_for_timeout(2500)
+        idle(page)
         block = page.locator("#table-marks")
         assert block.count() == 1
         text = block.text_content()
@@ -9584,7 +9584,7 @@ def test_the_pages_show_the_pilots_marks_as_the_table_instrument(browser, viz_se
         status=200, content_type="application/json", body=_json.dumps(bare)))
     try:
         page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
-        page.wait_for_timeout(2000)
+        idle(page)
         assert page.locator("#table-marks").count() == 0
     finally:
         page.close()

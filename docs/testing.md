@@ -293,7 +293,13 @@ Each rule cost something; the full story of each is in the log.
 - **A loop over a possibly-empty collection needs `assert checked >= N`.** Fourteen
   tests passed by iterating zero times.
 - **Wait for the condition, never for a timer** (browser). All five historical
-  browser flakes were a fixed `wait_for_timeout` measuring the machine.
+  browser flakes were a fixed `wait_for_timeout` measuring the machine. When there is
+  no one element to wait for, `idle(page)` (`conftest_viz.py`; in-page
+  `window.mmWhenIdle()`, `api.js`, on every page) waits until no fetch, image, camera
+  move, drill or search debounce is pending; `graph=True` adds the force layout. On a
+  timeout it names what was still busy. A wait stays timed only to prove that nothing
+  happens (no write, no second request) or across a deliberate delay (a hover, a poll
+  period), and says so.
 - **A test that inherits a default is testing the default.** Pass the value.
 - **Do not assert on things outside the code's control** — the clock, the network,
   another deck staying half-finished.

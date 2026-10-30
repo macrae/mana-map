@@ -18,7 +18,7 @@ import json
 
 import pytest
 
-from conftest_viz import page, serve_watchlist_fixture  # noqa: F401  (fixture)
+from conftest_viz import idle, page, serve_watchlist_fixture  # noqa: F401  (fixture)
 
 pytestmark = pytest.mark.browser
 
@@ -80,7 +80,7 @@ def _open_grid(page):
     page.wait_for_function(
         "() => document.querySelectorAll('#candGrid .cg-tile [data-verdict]').length > 0",
         timeout=30000)
-    page.wait_for_timeout(400)      # the settle-and-refit after the grid opens
+    idle(page)      # the settle-and-refit after the grid opens
 
 
 def _click_tile(page, i):
@@ -133,7 +133,7 @@ def test_a_double_w_posts_once(page):
     _release(held)
     page.wait_for_function(f"() => !Build.__gridCards().includes({json.dumps(name)})",
                            timeout=5000)
-    page.wait_for_timeout(300)
+    idle(page)
     assert len(posted) == 1 and posted[0]["card"] == name
     assert page.js_errors == []
 
@@ -199,7 +199,7 @@ def test_a_verdict_advances_to_the_next_unreviewed_card_in_view(page):
     page.keyboard.press("w")
     page.wait_for_function(f"() => !Build.__gridCards().includes({json.dumps(names[i])})",
                            timeout=5000)
-    page.wait_for_timeout(200)
+    idle(page)
     f = _focus(page)
     assert f["active"] == names[i + 1] == f["card"], f
     view = page.evaluate("""() => {
@@ -219,7 +219,7 @@ def test_a_verdict_advances_to_the_next_unreviewed_card_in_view(page):
     page.keyboard.press("w")
     page.wait_for_function("() => document.querySelector('#candGrid .cg-progress')"
                            ".textContent.startsWith('2 /')", timeout=5000)
-    page.wait_for_timeout(200)
+    idle(page)
     f = _focus(page)
     assert f["active"] == order[w + 1], f"under All the focus did not skip a reviewed card: {f}"
     assert [p["card"] for p in posted] == [names[i], order[w - 1]]
@@ -283,6 +283,8 @@ def test_a_note_and_a_click_elsewhere_are_written_one_after_the_other(page):
     page.keyboard.type("worth a look")
     page.keyboard.press("w")        # typed into the note, never a verdict
     page.locator(TILE).nth(1).locator('[data-verdict="watching"]').click(timeout=3000)
+    # TIMED ON PURPOSE: the first write is held open, so the page is never idle, and
+    # the check is that NO second write starts beside it.
     page.wait_for_timeout(500)
     assert len(posted) == 1 and posted[0]["note"] == "worth a lookw", posted
     _release(held)

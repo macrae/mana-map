@@ -54,6 +54,17 @@ def _record(errors):
 BOOT_TIMEOUT_MS = 120_000
 
 
+def idle(page, graph=False, quiet_ms=None, timeout=20_000):
+    """Wait until the page says nothing is loading or moving (`mmWhenIdle`, api.js):
+    no fetch or body read, no image, no camera move or drill, and with `graph=True`
+    no force-layout tick. Every page loads api.js. Replaces a fixed sleep, which is
+    slow on a quiet machine and wrong on a loaded one; a timeout names what was busy."""
+    opts = {"graph": graph, "timeout": timeout}
+    if quiet_ms is not None:
+        opts["quietMs"] = quiet_ms
+    page.evaluate("o => window.mmWhenIdle(o)", opts)
+
+
 # Discovery is the landing now, so every existing fixture asks for the map explicitly.
 # A test about rendering 34,322 points should say so rather than rely on what boot
 # happens to produce — and it documents the change for whoever reads these next.
@@ -227,7 +238,7 @@ def canvas_page(browser, viz_server):
     # every test on this fixture rather than the one that happened to catch it.
     _wait_for_boot(page, "() => MM.mapRenderer && MM.mapRenderer.getCamera() !== null",
                    "the canvas renderer to compute its base fit")
-    page.wait_for_timeout(600)
+    idle(page)
     try:
         yield page
     finally:

@@ -30,6 +30,51 @@
   };
 })();
 
+/* WHEN IS THE PAGE DONE? (2026-10-29) `mmWhenIdle({graph, quietMs, timeout})` resolves
+ * once nothing has been busy for `quietMs`: no fetch or body read in flight, no image
+ * loading, and nothing a page registered in `window.__mmBusy` (index.html adds the
+ * camera, the drill and the force layout; `MM.whenIdle` is this). The browser suite
+ * waited on fixed sleeps instead: slow on a quiet machine, wrong on a loaded one. On
+ * timeout it REJECTS naming what was still busy, so a failure says why. */
+(function () {
+  window.__mmBusy = window.__mmBusy || [];
+  function busyParts(graph, now, quietMs) {
+    var f = window.__mmFetches || { n: 0, last: 0 };
+    var out = [];
+    if (f.n > 0) out.push(f.n + ' fetch(es) in flight');
+    else if (now - f.last < quietMs) out.push('a fetch just settled');
+    // Card art loads through <img>, not fetch: an image with a source that has not
+    // finished is still loading (a lazy one off screen never will, so skip those).
+    var loading = Array.from(document.images).filter(function (im) {
+      return im.currentSrc && !im.complete && im.loading !== 'lazy';
+    }).length;
+    if (loading) out.push(loading + ' image(s) loading');
+    window.__mmBusy.forEach(function (probe) {
+      try { out = out.concat(probe(graph, now, quietMs) || []); } catch (e) { /* a probe never blocks */ }
+    });
+    return out;
+  }
+  window.mmWhenIdle = function (opts) {
+    var o = opts || {};
+    var quietMs = o.quietMs == null ? 150 : o.quietMs;
+    var timeout = o.timeout == null ? 20000 : o.timeout;
+    var start = performance.now();
+    return new Promise(function (resolve, reject) {
+      var quietSince = null;
+      (function check() {
+        var now = performance.now();
+        var busy = busyParts(!!o.graph, now, quietMs);
+        if (busy.length) quietSince = null;
+        else if (quietSince === null) quietSince = now;
+        if (quietSince !== null && now - quietSince >= quietMs) return resolve();
+        if (now - start > timeout)
+          return reject(new Error('mmWhenIdle: still busy after ' + timeout + ' ms: ' + busy.join(', ')));
+        setTimeout(check, 25);
+      })();
+    });
+  };
+})();
+
 /* api.js — is there a machine behind this page?
  *
  * `manamap serve` exposes `/api/` beside the static files. GitHub Pages does
