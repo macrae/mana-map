@@ -16,13 +16,11 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 17,
+    "complete": 18,
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [
-      "targets"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -7845,6 +7843,14 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
+        "target:Sneak Attack drawn (cheats a Dragon in off any turn; stacks 005, 009)": {
+          "value": 13,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Sneak Attack drawn (cheats a Dragon in off any turn; stacks 005, 009)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
         "assumptions": {
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
@@ -8045,6 +8051,10 @@
       {
         "label": "THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with",
         "by_turn_6_pct": 18
+      },
+      {
+        "label": "Sneak Attack drawn (cheats a Dragon in off any turn; stacks 005, 009)",
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
@@ -8436,7 +8446,6 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (targets) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×11",
     "try a swap in seconds — `try ur-dragon --out \"A\" --in \"B\"`"

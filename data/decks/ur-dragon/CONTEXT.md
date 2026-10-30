@@ -100,6 +100,7 @@ Goldfish, 10,000 seeded games, measured on v1.3.0 (V6), 2026-09-20. Each group b
 - A Treasure source drawn — six in the 99, of which the model can SPEND only two: **56%**
 - THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once: **10%**
 - THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with: **18%**
+- Sneak Attack drawn (cheats a Dragon in off any turn; stacks 005, 009): **13%**
 - share of opening sevens the model would keep: **77%**
 - Engine online by turn 5: **40%** (95% CI 39%–40%) — brittle
 - A win route assembled by turn 6: **41%** (95% CI 40%–42%)
