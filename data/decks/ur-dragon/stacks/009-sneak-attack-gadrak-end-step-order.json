@@ -1,0 +1,439 @@
+{
+  "id": "009",
+  "slug": "sneak-attack-gadrak-end-step-order",
+  "deck": "ur-dragon",
+  "title": "Sneak Attack and Gadrak at the same end step: sacrifice first, and Gadrak pays for it",
+  "rules_version": "2026-06-19",
+  "scenario": {
+    "board": {
+      "you": [
+        "Gadrak, the Crown-Scourge (on the battlefield since an earlier turn)",
+        "Sneak Attack",
+        "Glorybringer (put onto the battlefield from hand by Sneak Attack's ability in your precombat main phase this turn; it did not attack)",
+        "five lands, all tapped"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [],
+    "mana_available": "{0} (all five lands tapped)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Gadrak, the Crown-Scourge's triggered ability (\"At the beginning of your end step, create a Treasure token for each nontoken creature that died this turn.\")",
+        "controller": "you",
+        "note": "triggered at the beginning of your end step; you put it on the stack FIRST, so it is at the bottom"
+      },
+      {
+        "pos": 1,
+        "object": "Sneak Attack's delayed triggered ability (\"Sacrifice the creature at the beginning of the next end step.\"), referring to Glorybringer",
+        "controller": "you",
+        "note": "triggered at the beginning of the same end step; you put it on the stack SECOND, so it is on top and resolves first"
+      }
+    ],
+    "extras": {
+      "turn": "your own turn, the beginning of your end step; no creature has died earlier this turn",
+      "note_for_the_resolver": "Both abilities trigger at the same moment and are controlled by you. The ordering on the stack is the one the question asks about. Treat the opponents as passing priority throughout."
+    },
+    "question": "(a) Can you put these two triggers on the stack in this order (CR 603.3b), so the sacrifice resolves first? (b) When Gadrak's ability then resolves, does it count Glorybringer and create one Treasure (that is, is 'each nontoken creature that died this turn' counted on resolution, not when the ability triggered)? (c) After the Treasure is created, do you receive priority again during this end step, so the Treasure could pay for an instant before the turn moves on to cleanup?"
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Your end step begins. Gadrak's 'At the beginning of your end step' ability triggers, and so does the delayed triggered ability Sneak Attack's ability created when it resolved in your precombat main phase ('Sacrifice the creature at the beginning of the next end step', referring to Glorybringer). Gadrak's trigger has no intervening 'if' clause, so it triggers even though no creature has died yet; the count happens later. You control the delayed trigger because you controlled the Sneak Attack ability that created it.",
+        "effect": "Two triggered abilities, both controlled by you, wait to go on the stack. Neither has done anything yet.",
+        "citations": [
+          {
+            "rule": "603.2b",
+            "quote": "When a phase or step begins, all abilities that trigger “at the beginning of” that phase or step trigger."
+          },
+          {
+            "rule": "603.2",
+            "quote": "The ability doesn’t do anything at this point."
+          },
+          {
+            "rule": "603.7e",
+            "quote": "The controller of that delayed triggered ability is the player who controlled that other ability as it resolved."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Before you get priority in the end step, the game checks state-based actions (none apply) and then puts the waiting triggers on the stack. Neither trigger condition is another ability triggering, so both go on in the first part of 603.3b, and you, their only controller, choose their order. You put Gadrak's trigger on first (bottom, pos 0) and Sneak Attack's delayed trigger second (top, pos 1). Answer to (a): yes, this order is legal.",
+        "effect": "Stack, bottom to top: Gadrak's Treasure trigger, then Sneak Attack's sacrifice trigger. The sacrifice resolves first.",
+        "citations": [
+          {
+            "rule": "513.1",
+            "quote": "Once it begins, the active player gets priority."
+          },
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "First, each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "603.3",
+            "quote": "The ability becomes the topmost object on the stack."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "You get priority with both triggers on the stack. You pass and every opponent passes (as the scenario says).",
+        "effect": "The top object, Sneak Attack's delayed trigger, resolves.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Sneak Attack's delayed trigger resolves. Glorybringer has stayed on the battlefield since Sneak Attack put it there, so it is the object the trigger refers to, and you sacrifice it. Glorybringer is a card (not a token) and moves from the battlefield to your graveyard, so a nontoken creature has died this turn. The official Sneak Attack ruling agrees that you sacrifice the creature only if you still control it, which you do. The ability then leaves the stack.",
+        "effect": "Glorybringer is in your graveyard. One nontoken creature has died this turn. The stack holds only Gadrak's trigger.",
+        "citations": [
+          {
+            "rule": "603.7c",
+            "quote": "A delayed triggered ability that refers to a particular object still affects it even if the object changes characteristics."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "608.2n",
+            "quote": "As the final part of an ability’s resolution, the ability is removed from the stack and ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "You receive priority again. State-based actions are checked first and none apply: no player is at 0 life and no creature has lethal damage. Glorybringer's death triggers nothing on this board. You and every opponent pass.",
+        "effect": "Gadrak's trigger, now the top object, resolves.",
+        "citations": [
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+          },
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Gadrak's ability resolves. The number of 'nontoken creature[s] that died this turn' is game information, so it is determined once, as the effect is applied on resolution, not when the ability triggered. Glorybringer died in step 4, before this resolution, and no other creature has died this turn, so the count is 1. Answer to (b): yes, Glorybringer is counted and you create one Treasure. The official Gadrak ruling agrees that the ability counts creatures that died during the entire turn. In the reverse order (Gadrak on top) the count would have been 0, and Glorybringer would have died afterward without paying for anything.",
+        "effect": "You create one Treasure token, a colorless Treasure artifact with '{T}, Sacrifice this token: Add one mana of any color.' The stack is now empty.",
+        "citations": [
+          {
+            "rule": "608.2h",
+            "quote": "If an effect requires information from the game (such as the number of creatures on the battlefield), the answer is determined only once, when the effect is applied."
+          },
+          {
+            "rule": "111.1",
+            "quote": "Some effects put tokens onto the battlefield."
+          },
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "After Gadrak's ability resolves, before you (the active player) receive priority again, the game checks state-based actions and then puts any waiting triggers on the stack. Neither applies: no player is at 0 life, no creature has lethal damage, and nothing on this board triggers when a Treasure enters. You then receive priority again, still in the end step. An empty stack does not end the step: it ends only when all players pass in succession with the stack empty. The Treasure entered untapped, and since it is not a creature the summoning-sickness rule does not restrict its {T} ability, so you can tap it at once. While you hold priority you could tap and sacrifice the Treasure for one mana of any color and cast an instant. Answer to (c): yes. In this exact scenario your hand is empty, so there is nothing to cast now; the window exists but goes unused.",
+        "effect": "You have priority in the end step with one untapped Treasure, an empty stack and an empty hand.",
+        "citations": [
+          {
+            "rule": "117.5",
+            "quote": "Each time a player would get priority, the game first performs all applicable state-based actions as a single event"
+          },
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack, then the check is repeated."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "500.2",
+            "quote": "Simply having the stack become empty doesn’t cause such a phase or step to end; all players have to pass in succession with the stack empty."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "You and every opponent pass with the stack empty. The end step ends and the cleanup step begins, where normally no player receives priority. That makes this end step the last normal window this turn to use the Treasure. The Treasure itself stays on the battlefield for later turns if it is not used.",
+        "effect": "The turn moves to cleanup. You keep one Treasure, Gadrak and Sneak Attack. Glorybringer is in your graveyard. Each opponent is still at 40 life.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "if the stack is empty, the phase or step ends"
+          },
+          {
+            "rule": "514.3",
+            "quote": "Normally, no player receives priority during the cleanup step, so no spells can be cast and no abilities can be activated."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "(a) Yes: both triggers are yours and triggered at the same moment, so under 603.3b you choose their order, and Sneak Attack's sacrifice can go on top and resolve first. (b) Yes: Gadrak counts on resolution (608.2h), so it counts Glorybringer, which was sacrificed earlier in the same end step, and you get exactly one Treasure. With the triggers in the reverse order it would make zero. (c) Yes: you get priority after Gadrak's ability resolves (117.3b), and the end step does not end until everyone passes with the stack empty (500.2). The Treasure can pay for an instant in that window, but in this scenario your hand is empty.",
+      "you": {
+        "battlefield": [
+          "Gadrak, the Crown-Scourge",
+          "Sneak Attack",
+          "Treasure token (untapped)",
+          "five lands, all tapped"
+        ],
+        "graveyard": [
+          "Glorybringer"
+        ],
+        "hand": [],
+        "mana_available": "{0} floating; one Treasure can make one mana of any color"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 40,
+          "board": []
+        },
+        {
+          "seat": "opponent_2",
+          "life": 40,
+          "board": []
+        },
+        {
+          "seat": "opponent_3",
+          "life": 40,
+          "board": []
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "603.2b",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Full text: all 'at the beginning of' abilities trigger when the step begins. Covers both Gadrak's trigger and the delayed trigger. The aside 'no intervening if clause' is correct (603.4 is not cited, but 603.2b already establishes that it triggers unconditionally, so nothing depends on the aside)."
+      },
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. 'The ability doesn't do anything at this point.' Supports deferring the count to resolution."
+      },
+      {
+        "step": 1,
+        "rule": "603.7e",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The delayed trigger's controller is whoever controlled the creating ability as it resolved, which is you."
+      },
+      {
+        "step": 2,
+        "rule": "513.1",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The end step has no turn-based actions, and the active player gets priority."
+      },
+      {
+        "step": 2,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Full text: SBAs first, then triggers go on the stack, repeated, then priority. Matches the step."
+      },
+      {
+        "step": 2,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Neither trigger condition is 'another ability triggering', so both go on in the first part, in an order the controller chooses. Answer (a) is established."
+      },
+      {
+        "step": 2,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Each ability becomes the topmost object, so the one put on second is on top."
+      },
+      {
+        "step": 3,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. If all players pass in succession, the top object resolves."
+      },
+      {
+        "step": 4,
+        "rule": "603.7c",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Full text includes the zone caveat: the ability won't affect the object if it left the battlefield (even if it returned, per 400.7). Glorybringer never left, so the caveat is not triggered. This agrees with the Sneak Attack ruling (2020-08-07): 'You sacrifice the creature only if you still control it. If that creature has left the battlefield, even if it came back, you don't sacrifice it.' Control is not covered by 603.7c. It is covered by 701.21a's second sentence, cited in this same step."
+      },
+      {
+        "step": 4,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Moves the permanent from the battlefield to its owner's graveyard. The second sentence (you can't sacrifice a permanent you don't control) is the CR basis for the Sneak Attack ruling, and you do control Glorybringer."
+      },
+      {
+        "step": 4,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Dies means put into a graveyard from the battlefield. Glorybringer is a card (oracle in cards.json: Creature, Dragon), so it counts as a nontoken creature."
+      },
+      {
+        "step": 4,
+        "rule": "608.2n",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The ability is removed from the stack."
+      },
+      {
+        "step": 5,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The active player receives priority after an ability resolves."
+      },
+      {
+        "step": 5,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. SBA check before priority; no condition applies. The claim that Glorybringer's death triggers nothing matches the oracle text in cards.json: neither Gadrak, Glorybringer nor Sneak Attack has a dies trigger."
+      },
+      {
+        "step": 5,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The top (last-added) object resolves when all players pass."
+      },
+      {
+        "step": 6,
+        "rule": "608.2h",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. 'Number of nontoken creatures that died this turn' is game information, determined once when the effect is applied, so the count is 1. This agrees with the Gadrak ruling (2020-06-23): 'Gadrak's last ability counts creatures that died during the entire turn, even ones that died before Gadrak entered the battlefield.' The ruling sets the window (the whole turn) and 608.2h sets the moment of counting (resolution). Together they support the count of 1 here and 0 in the reverse order."
+      },
+      {
+        "step": 6,
+        "rule": "111.1",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. Effects put tokens onto the battlefield."
+      },
+      {
+        "step": 6,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The Treasure definition is quoted verbatim and matches Gadrak's reminder text."
+      },
+      {
+        "step": 7,
+        "rule": "117.5",
+        "status": "supported",
+        "note": "NEW in round 2. Full text: before any player gets priority, the game performs SBAs, then puts waiting triggers on the stack, repeating until nothing happens. This is the check missing in round 1. The step's claim that no SBA applies and nothing triggers holds: no permanent on the board has a trigger for an artifact or Treasure entering (cards.json oracle text)."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "NEW in round 2. The quoted sentence (repeat the check after any SBAs, otherwise put waiting triggers on the stack and check again) is verbatim and in context. The rest of the rule says the appropriate player then gets priority, which is consistent with the step."
+      },
+      {
+        "step": 7,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Unchanged from round 1. The active player receives priority after Gadrak's ability resolves."
+      },
+      {
+        "step": 7,
+        "rule": "500.2",
+        "status": "supported",
+        "note": "Unchanged from round 1. An empty stack does not end the step."
+      },
+      {
+        "step": 7,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "Unchanged from round 1. Covers when you may activate. Whether you can tap the Treasure is now established by 110.5b and 302.6."
+      },
+      {
+        "step": 7,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "NEW in round 2. Permanents enter untapped unless a spell or ability says otherwise. Gadrak's ability does not say otherwise, so the Treasure is untapped. This resolves round-1 finding 1."
+      },
+      {
+        "step": 7,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "NEW in round 2. Full text: the rule restricts only 'A creature's activated ability with the tap symbol'. A Treasure is a noncreature artifact token (111.10a), so its {T} ability is not restricted. The step reads the rule correctly by its scope (the restriction does not apply) and does not overstate it. This resolves round-1 finding 1."
+      },
+      {
+        "step": 7,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Unchanged from round 1. An instant may be cast whenever you have priority."
+      },
+      {
+        "step": 8,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. With the stack empty and all players passing, the step ends."
+      },
+      {
+        "step": 8,
+        "rule": "514.3",
+        "status": "supported",
+        "note": "Re-confirmed in round 2: step text and citations are unchanged from round 1. The quote ends at 'subject to the following exception' (514.3a: priority is given in cleanup if SBAs are performed or triggers are waiting). The step says 'normally' and 'last normal window', so the exception is not hidden. Nothing on this board would trigger in cleanup, and the hand is empty, so the 514.1 discard does nothing."
+      }
+    ],
+    "summary_notes": {
+      "rulings": "Present for all three cards. Gadrak (2020-06-23, entire-turn count) and Sneak Attack (2020-08-07, 'only if you still control it') both AGREE with steps 4 and 6. Glorybringer's rulings concern exert and are not engaged.",
+      "siblings": "The resolution quotes no figure from a sibling stack. scenario-facts flags 003/004/005/006/008 as having a different body count, but nothing in 009 compares against them. No finding.",
+      "per_seat_vs_pod": "No drain or damage. All three opponents end at 40, matching the scenario. No finding.",
+      "cards": "Oracle text for Gadrak, Glorybringer and Sneak Attack in cards.json matches every quotation and paraphrase in the resolution. All three are in the deck.",
+      "round_2": "Only step 7 changed (28 citations, up from 24). Both round-1 findings are resolved: 110.5b and 302.6 now ground answer (c), and 117.5 / 704.3 now open step 7 with the SBA and trigger check. Steps 1-6 and 8 were compared text-for-text with round 1 and are identical. validate-stack passes. No missing steps remain."
+    },
+    "iterations": 2
+  }
+}

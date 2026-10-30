@@ -90,9 +90,13 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
    and Arcane Denial included (round 4 missed Mastermind). ur-dragon passed in round 4:
    Atsushi is counted beside Gadrak as a death-to-resource card. One non-blocking finding
    remains: Crux's non-Dragon mode also kills Solphim, and Faeburrow Elder can survive
-   Desolation, and absent_stages[0].why (2,576 chars) wants a trim. Its open question
-   (Sneak Attack's sacrifice ordered before Gadrak's Treasure, CR 603.3b) is still ready for
-   /resolve-stack.
+   Desolation, and absent_stages[0].why (2,576 chars) wants a trim. Its open_questions[6]
+   is now ANSWERED: ur-dragon stack 009 (Sneak Attack's sacrifice ordered before Gadrak's
+   end-step trigger) passed its checker in round 2 (28 citations; recorded). You may order
+   the sacrifice first (603.3b), Gadrak counts on resolution (608.2h) and makes one Treasure,
+   and you get priority again to spend it before cleanup. The new passing stack is an
+   engine input, so deck-engine is a cache MISS: one engineer pass could cite 009 as
+   verified_by on the Sneak Attack -> Gadrak arrow and close the question (~120k + ~140k).
 3. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
