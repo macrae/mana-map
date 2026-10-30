@@ -13,7 +13,7 @@
   "size": 100,
   "lands": 33,
   "status": {
-    "complete": 17,
+    "complete": 18,
     "of": 19,
     "stale": [],
     "older_model": [],
@@ -4412,8 +4412,8 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and SIX permanents read it -- five trigger on an opponent drawing (Consecrated Sphinx and Faerie Mastermind for cards, Gleaming Splendor and Smothering Tithe for Treasure, Scrawling Crawler for life loss) and Heliod's back face reads the same count as a static cost discount; but the only card in the 99 that converts any of that into a win is one seven-mana sorcery cast twice, which is why a goldfish with no blockers still reaches turn ten without a kill in 86.5% of games.",
-    "critic": "fail",
+    "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and six permanents read it (Consecrated Sphinx and Faerie Mastermind for cards, Gleaming Splendor and Smothering Tithe for Treasure, Scrawling Crawler for life loss, Heliod's back face as a cost discount); but the only win the deck is BUILT around is one seven-mana sorcery cast twice -- the output stage kills rarely -- and the goldfish that finds no kill by turn ten in 89.4% of games runs with five of those six readers DARK and the sixth given no cost channel.",
+    "critic": "pass",
     "lines": 10,
     "verified_lines": 1
   },
@@ -4463,7 +4463,7 @@
     },
     {
       "from": "engine",
-      "question": "The goldfish has no opponents, so a Treasure gated on an opponent drawing cannot be modelled even with model_treasures switched on. Is that right, and if so, what is the honest instrument for pricing Gleaming Splendor and Smothering Tithe -- a Forge run, or nothing?",
+      "question": "If model_treasures and model_discard are switched on for heliod, what do Gleaming Splendor, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Rhystic Study and both Crawlers add to mana, draw and damage -- and how much of that rests on the authored TITHE_PAY_RATE (0.5) rather than on a measured rate?",
       "settled_by": "goldfish"
     },
     {
@@ -4478,7 +4478,7 @@
     },
     {
       "from": "engine",
-      "question": "In a four-player pod, how many tutor and protection slots is a single 'you win the game' card worth -- and given a 0-2 logged record and a goldfish that never kills in 86.5% of games, should this deck hold a second, board-based route to a win at all?",
+      "question": "In a four-player pod, how many tutor and protection slots is a single 'you win the game' card worth -- and given a 0-2 logged record and a goldfish that finds no kill by turn ten in 89.4% of games, should this deck hold a second, board-based route to a win at all?",
       "settled_by": "research-strategy"
     },
     {
@@ -4686,7 +4686,6 @@
   },
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "engine.json's critic verdict is 'fail' — `/analyze-engine heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"
   ],

@@ -8094,7 +8094,7 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: cost reduction lands two Dragons in one turn, Miirym and Lathliss turn each arrival into several, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — and V6 bought a response suite four of whose six additions are castable at instant speed as printed, so the mana held for them is not dead; that the CASCADE itself can be taken on somebody else's turn needs Whirlwing Stormbrood on the battlefield and nothing verifies it.",
+    "thesis": "An eminence-discounted Dragon deck whose engine is the ARRIVAL, not the attack: Miirym copies each nontoken Dragon that arrives, and Terror of the Peaks, Dragon Tempest and Scourge of Valkas price every arrival in damage — a cascade the passing stacks resolve from an assembled board, while the turn that puts two discounted Dragons down to build it is the model's claim, not a verified line. V6 bought a response suite four of whose six additions are castable at instant speed as printed, and two of those four are flash Dragons whose own entry is an arrival; Whirlwing Stormbrood's flash grant and Sneak Attack's unrestricted activation are the main doors for any other Dragon off your own turn — Chaos Warp on your own permanent and Transcendent Dragon's free cast of a countered Dragon spell (CR 608.2g) are narrower ones — and none of it is verified.",
     "critic": "fail",
     "lines": 8,
     "verified_lines": 5
@@ -8137,7 +8137,7 @@
     },
     {
       "from": "engine",
-      "question": "Repair stack 008's one failing citation and re-run the checker. Step 4 cites CR 608.2k for Hellkite Courser's 'It gains haste' reaching the commander; the checker calls that citation unsupported because 608.2k covers an object 'previously referred to by that ability's COST OR TRIGGER CONDITION', and the Courser's trigger condition refers to the Courser, not to the commander the EFFECT introduces. What CR text establishes that the pronoun chain 'It gains haste. Return it to the command zone' resolves to the commander — or does the artifact stand on the effect's own sentence structure with 608.2k dropped?",
+      "question": "Repair stack 008 and re-run the checker. Its checker block carries 33 findings, 26 supported and SEVEN not: step 4's 608.2k unsupported (the trigger condition names the Courser, not the commander the effect introduces); step 9's 608.2k misquoted (a zone change is not a changed characteristic); step 10's 508.3a unsupported; and four MISSING STEPS — 702.9b (flying never established, though final_state rules on blocks), 508.1b (attackers never assigned to players, though final_state prints a 19-power total), 603.10 (what actually settles step 10's Atarka answer) and 508.1f (the attackers are tapped).",
       "settled_by": "resolve-stack"
     },
     {
@@ -8147,13 +8147,23 @@
     },
     {
       "from": "engine",
-      "question": "Add Transcendent Dragon to the declared 'Protection or a RESPONSE held for the big turn' leg (taking it from nine cards to ten) and re-run. What do that target and interaction_castable_by_turn read then, against the CURRENT 0.811 assembled / 0.713 by turn six and 0.311 / 0.415 / 0.510?",
+      "question": "Add Transcendent Dragon to the declared 'Protection or a RESPONSE held for the big turn' leg (taking it from nine cards to ten) and re-run. What do that target and interaction_castable_by_turn read then, against the CURRENT 0.823 assembled / 0.716 by turn six and 0.306 / 0.395 / 0.481?",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
       "question": "Can this deck actually hold {4}{U}{U} up for Transcendent Dragon on the turn it wants to pivot? Blue is 20 total sources against a 22 yardstick with on-curve 0.881, but the card is six mana and the cascade turn is the same turn.",
       "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "Activate Sneak Attack on an opponent's end step, putting Lathliss, Dragon Queen onto the battlefield beside Miirym, Terror of the Peaks and Dragon Tempest. Does the cascade resolve exactly as stack 007's does on your own turn; when is Lathliss sacrificed, given that 'the beginning of the next end step' has already passed in the end step it arrived in; and do Miirym's token copies, which Sneak Attack did not put onto the battlefield, stay?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "On your own turn, with Gadrak, the Crown-Scourge and Sneak Attack on the battlefield, put a nontoken creature in with Sneak Attack. At the beginning of your end step both Sneak Attack's delayed sacrifice and Gadrak's Treasure trigger fire: can you order them (CR 603.3b) so the sacrifice resolves first and Gadrak counts that creature, and does the Treasure arrive before the end step's priority so it can pay for an instant?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -8426,7 +8436,7 @@
   "next": [
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's critic verdict is 'fail' — `/analyze-engine ur-dragon`",
-    "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×9",
+    "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×11",
     "try a swap in seconds — `try ur-dragon --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
