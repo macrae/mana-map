@@ -8741,8 +8741,12 @@ def test_sorting_and_filtering_re_request_no_card_art_at_all(browser, viz_server
         page.wait_for_function("() => Curate.facts === 'ready'", timeout=BOOT_TIMEOUT_MS)
         page.evaluate("() => Curate.setRail('all')")
 
-        # Let the paced queue drain: six cards at ART_GAP, plus slack.
-        page.wait_for_function("() => document.querySelectorAll('.cur-tile img[data-src]')"
+        # Let the paced queue drain: six cards at ART_GAP, plus slack. The six tiles
+        # must EXIST first: "no image still waiting" is true of a grid that has not
+        # drawn yet, and a slow CI runner read 5 requests for 6 cards that way
+        # (2026-10-30).
+        page.wait_for_function("() => document.querySelectorAll('.cur-tile img').length >= 6"
+                               " && document.querySelectorAll('.cur-tile img[data-src]')"
                                "        .length === 0", timeout=BOOT_TIMEOUT_MS)
         drained = len(seen)
         assert drained >= 6, f"the queue never ran: {drained} requests for 6 cards"

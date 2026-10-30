@@ -18,7 +18,8 @@ from pathlib import Path
 
 import pytest
 
-from conftest_viz import (WATCHLIST_FIXTURE, _record, _wait_for_boot, page,  # noqa: F401
+from conftest_viz import (BOOT_TIMEOUT_MS, WATCHLIST_FIXTURE, _record, _wait_for_boot,  # noqa: F401
+                          page,
                           serve_card_images_locally, serve_watchlist_fixture)
 
 pytestmark = pytest.mark.browser
@@ -207,8 +208,12 @@ def _open_sharknado(page, watchlist=None, routes=()):
                              MM.setMode('build'); }""")
     page.wait_for_function("() => MM.mode === 'build'", timeout=10000)
     page.evaluate("() => Build.select('sharknado')")
+    # A deck load is a boot (the 99, its artifacts, the embeddings): it gets the suite's
+    # boot window, as `_build_page` does. 30 s timed out on a two-core CI runner under
+    # parallel workers (2026-10-30), with nothing wrong on the page.
     page.wait_for_function("() => Build.deckSlug === 'sharknado' && "
-                           "document.querySelector('#deckPanel .lens-title')", timeout=30000)
+                           "document.querySelector('#deckPanel .lens-title')",
+                           timeout=BOOT_TIMEOUT_MS)
 
 
 def test_a_set_with_every_card_judged_collapses_to_a_chip(page):
