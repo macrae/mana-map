@@ -30,7 +30,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       # FETCH THE WHOLE HISTORY. `actions/checkout` defaults to a DEPTH-1
       # shallow clone, and half this repo's artifacts are derived from a git
