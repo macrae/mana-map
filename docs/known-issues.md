@@ -61,6 +61,7 @@ Until #49 is fixed, a warm run cannot establish this page.
 | ur-dragon's three artifacts describing a list nobody checked in (§1) | the pilot checked the paper list in; V6 is sleeved as v1.3.0 and `validate-engine ur-dragon` is OK |
 | the arrival channel depending on `model_combat` (§3b) | re-derived 2026-09-10 — the remaining gap is the cast-token channel and is legitimate; the threshold moved 0.7 → 0.4 |
 | two artifacts held by retired agents (§11) | the magazine renderer was deleted 2026-09-13, so nothing gates them; `ISSUE_XFAIL` does not exist, and `STALE_XFAIL` holds one entry since 2026-10-05 — edgar's `diagnosis.json`, staled by the transform-land model fix and awaiting a re-diagnosis |
+| two sleeved engine models failing their critic (§2) | heliod passed in round 5 and ur-dragon in round 4 (2026-10-30); every sleeved deck passes |
 | `model_colors` conflating a constraint with a bonus (#35) | fixed 2026-09-13 — see §3c, which is kept for the mechanism |
 | the sacrifice runaway guard firing on edgar (#34) | fixed 2026-09-13 — see §3a |
 
@@ -123,7 +124,17 @@ small lesson about editing a page in layers.)
 
 ---
 
-## 2. Six sleeved decks, six criticised engine models — two pass, two still failing
+## 2. Every sleeved engine model passes its critic — **RESOLVED 2026-10-30**
+
+*Closed 2026-10-30. heliod passed in round 5, ur-dragon in round 4, and both are
+cache-recorded. That makes all seven sleeved decks pass (edgar-vampires, gishath,
+goblin-storm, heliod, keen-engineering, sharknado, ur-dragon). The tripwire
+`test_every_sleeved_deck_has_a_criticised_engine` fired on CI as designed and is
+deleted. A rebuilt `engine.json` still drops its critic block, and nothing
+re-runs the critic: that mechanism is unchanged, and the next rebuild reopens this.
+The record below is kept.*
+
+### The record (2026-09-22)
 
 *Two rounds run 2026-09-22. This section opened the day saying four sleeved
 decks had NO critic at all.*

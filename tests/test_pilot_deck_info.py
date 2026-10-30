@@ -132,8 +132,9 @@ def test_a_real_deck_composes_every_panel():
     so nothing gates `considering.json` at all.)
 
     So: this asserts SHAPE, every panel present and typed, and says nothing
-    about the verdicts inside them. `test_every_sleeved_deck_has_a_criticised_engine`
-    below owns the content claim, fleet-scoped, where it belongs.
+    about the verdicts inside them. The fleet-scoped verdict check that sat
+    below it was a tripwire; it fired when every sleeved engine passed
+    (2026-10-30) and is deleted (known-issues §2).
 
     A LIVE DECK, not a broken-down one. This composed `radagast`, whose cards
     are not sleeved and whose artifacts are history, so holding them to today's
@@ -161,63 +162,6 @@ def test_a_real_deck_composes_every_panel():
     # already owned by `test_pilot_tracked_artifacts_validate`, which is also
     # the file that decides which artifacts are deliberately tolerated.
     assert info["status"]["invalid"] is not None, "verify=True did not run the gates"
-
-
-@pytest.mark.slow
-@requires_deck
-def test_every_sleeved_deck_has_a_criticised_engine():
-    """THE CONTENT CLAIM, moved out of the composition test and widened.
-
-    "The engine model has been criticised" is worth asserting and was being
-    asserted on one hard-coded slug as a side effect of a shape test. It is a
-    property of the FLEET: `docs/known-issues.md` §7 records two decks whose
-    engine model has never been criticised at all, and nothing could see it.
-
-    It xfails rather than fails because the state is known, deliberate and owned
-    (known-issues §2).
-
-    TWO THINGS THIS DOCSTRING USED TO CLAIM AND THE CODE DID NOT DO, found by
-    auditing `known-issues.md` on 2026-09-21:
-
-    - It said `xfail(strict=True)`, "so it goes red the moment the fleet is
-      clean and somebody has to delete this". **There was no marker.** An
-      imperative `pytest.xfail()` inside `if uncriticised:` simply does not fire
-      on a clean fleet — the test passes, quietly, and nobody is ever told. The
-      `xfail_clean` guard below is the strictness the docstring promised.
-    - `assert len(uncriticised) < 5` was a FLOOR on the fleet's brokenness,
-      sitting at 4 of 6. One more deck losing its critic block and it fails with
-      "has the key moved?", which would be a true failure reported under a false
-      cause. It asserts the KEY is readable instead, which is what it was
-      reaching for.
-
-    The live state and the mechanism — a rebuilt `engine.json` drops its critic
-    block and nothing re-runs the critic — are in known-issues §2.
-    """
-    from manamap.pilot import regen
-
-    sleeved, uncriticised = [], []
-    for path in sorted(DECKS_DIR.iterdir()):
-        if not path.is_dir() or not regen.is_pinned(path.name):
-            continue
-        sleeved.append(path.name)
-        info = deck_info.compose(path.name, verify=False)
-        engine = info.get("engine") or {}
-        if engine and "critic" not in engine:
-            raise AssertionError(
-                f"{path.name}'s engine panel has no `critic` key at all — the "
-                f"key moved and every verdict below is being read as absent")
-        if engine.get("critic") != "pass":
-            uncriticised.append(f"{path.name}: critic={engine.get('critic')!r}")
-    assert len(sleeved) >= 3, f"only {len(sleeved)} sleeved decks were checked"
-    if uncriticised:
-        pytest.xfail("known-issues §2 — engine models not criticised: "
-                     + "; ".join(uncriticised))
-    # THE STRICTNESS THE DOCSTRING PROMISED. Reaching here means the fleet is
-    # clean, and a permanently-xfailing test that silently starts passing is how
-    # a known-issues row outlives the issue.
-    raise AssertionError(
-        f"every sleeved deck now has a passing engine critic ({', '.join(sleeved)}) "
-        f"— delete this test and close known-issues §2.")
 
 
 def test_a_broken_down_deck_is_not_told_to_go_and_play_it(bare_deck):
