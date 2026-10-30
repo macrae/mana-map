@@ -18,6 +18,8 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
   Explore on My decks, the New: FRA pill, Filters and ⚙ Map, region subtitles,
   Windfall's real payoffs, Sharknado in title case, Ask Jarvis styled, the Build tabs,
   the landing page's names. No fix list came out of it.
+- **The payoff-tag retrain's mixed read is ACCEPTED by Sean (2026-10-30): "no need to
+  retrain". Not a decision to reopen.**
 - **The UI overhaul's leftovers are done (2026-10-30, later).** `extract` keeps Scryfall's
   `set_type` (cards.csv is 37 columns; re-extracted from the same dump, every other column
   byte-identical), `sets.json` carries it, and the set lens picks by release class instead
@@ -71,12 +73,10 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
-1. DECISION FOR SEAN: the payoff-tag retrain was mixed (function r@10 0.258 -> 0.262,
-   median rank 66 -> 76). Recommendation: accept; spot-check Similar on 5-10 cards he knows.
-2. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
+1. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
    Brallin + Needlehead) through /resolve-stack; work Q011 (promoted, waiting); then the
    heliod and ur-dragon engine critics that fail.
-3. Remaining test speed:
+2. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
    - Five behaviour tests still need timed waits (search/slug debounces, the
