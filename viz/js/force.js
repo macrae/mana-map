@@ -118,6 +118,7 @@
   let surface = null, cam = null;
   let sim = null, nodes = [], links = [], byIdx = new Map();
   let lastTick = 0;      // the layout's last tick, for `lastTick()` / MM.whenIdle
+  let lastZoom = 0;      // the camera's last zoom event, for `lastZoom()` / MM.whenIdle
   let transform = null;          // d3.zoomIdentity once d3 is loaded
   let zoomBehaviour = null;      // the ONE instance — programmatic transforms must
                                  // go through it or its internal state desyncs and
@@ -263,6 +264,11 @@
       onZoom: function (t, byUser) {
         const prev = transform;
         transform = t;
+        // A fit is a 520 ms d3 transition with an overshoot, and it drives the
+        // camera through this handler frame by frame. Recording the last frame is
+        // what lets `MM.whenIdle` wait for the camera to settle: CI's zoom-to-the-
+        // deck test read a node outside the viewport mid-overshoot (2026-10-30).
+        lastZoom = performance.now();
         // OUR OWN CAMERA MOVES ARE NEVER A CLAIM, and `sourceEvent` alone does
         // not say so. d3-zoom keeps a wheel gesture alive on the node for 150 ms
         // after the last wheel event (`wheelidled`), and `zoomBehaviour.transform`
@@ -1517,6 +1523,7 @@
 
   window.Force = {
     lastTick: function () { return lastTick; },
+    lastZoom: function () { return lastZoom; },
     enter, exit, isActive, seedFrom, focusCard, pinCard,
     reheat, freeze, clearTrail, newWalk, tune, renderPanel, renderGraphBar, bbox,
     setLine, clearLine, setGroup, clearGroup, selectCard,

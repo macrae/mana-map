@@ -4680,12 +4680,15 @@
   // Only members with a live caller (the other eight scripts, generated onclick
   // handlers, or index.html) are exported — see docs/viz.md for the contract.
   /* WHEN IS THE PAGE DONE? `mmWhenIdle` lives in api.js so every page has it; this
-   * page adds what only it knows: the camera, the drill, and — only with
+   * page adds what only it knows: the map camera, the graph camera, the drill, and — only with
    * `{graph: true}`, because a layout settles over ~8 s by design — the force layout. */
   (window.__mmBusy = window.__mmBusy || []).push(function (graph, now, quietMs) {
     const out = [];
     if (searchTimeout) out.push('the search is debouncing');
     if (mapCanvas && mapCanvas.isMoving && mapCanvas.isMoving()) out.push('the camera is moving');
+    // The graph's fit is a d3 transition on its own canvas, invisible to `isMoving`.
+    if (window.Force && Force.lastZoom && now - Force.lastZoom() < quietMs)
+      out.push('the graph camera is moving');
     if (window.Drill && Drill.isAnimating && Drill.isAnimating()) out.push('the drill is animating');
     if (graph && window.Force && Force.lastTick && now - Force.lastTick() < quietMs)
       out.push('the graph layout is still settling');

@@ -4011,11 +4011,14 @@ def test_zoom_to_the_deck_works_in_graph_view(browser, viz_server):
         pos = _a_node_position(page)
         page.mouse.move(pos["x"], pos["y"])
         page.mouse.wheel(0, -600)          # take the camera somewhere else
-        idle(page)
+        # The layout too, not just the camera: a fit frames the nodes where they ARE,
+        # and a layout still settling walks one of them out of that frame. CI read
+        # exactly that (1 node outside, 2026-10-30) after a fixed sleep became `idle`.
+        idle(page, graph=True)
         moved = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
         page.evaluate("Build.fitDeck()")
-        idle(page)
+        idle(page, graph=True)             # the fit's 520 ms transition counts as busy now
         framed = page.evaluate("() => d3.zoomTransform(document.querySelector('canvas.force-canvas')).k")
 
         assert framed != moved, "zoom-to-the-deck did not move the graph camera"
