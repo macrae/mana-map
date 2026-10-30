@@ -85,13 +85,14 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
      Tithe and Rhystic figures would rest on the authored TITHE_PAY_RATE 0.5.
    - ur-dragon: drop Solphim, Mayhem Dominus (not a Dragon) from two Dragon legs of
      goldfish_targets.json (the engineer's proposed edits).
-2. ur-dragon's engine model is saved as FAIL after three rounds, on one wording finding:
-   absent_stages[0] says no card but Gadrak turns a death into a resource, and Atsushi,
-   the Blazing Sky makes three Treasures when it dies (through Sneak Attack or Crux's
-   Dragon mode). A fresh loop is one engineer pass plus one critic; its open question
-   (Sneak Attack's sacrifice ordered before Gadrak's Treasure) is ready for /resolve-stack.
-   heliod's carries one non-blocking over-claim (stages[1] "the only gift pieces that
-   reach YOURS" misses Scrawling Crawler, Splendor, Prosperity, Skyscribing).
+2. Both engine models PASS (2026-10-30, later; recorded). heliod passed its critic in round 5:
+   stages[1] now lists every card that gives an opponent a card on YOUR turn, Faerie Mastermind
+   and Arcane Denial included (round 4 missed Mastermind). ur-dragon passed in round 4:
+   Atsushi is counted beside Gadrak as a death-to-resource card. One non-blocking finding
+   remains: Crux's non-Dragon mode also kills Solphim, and Faeburrow Elder can survive
+   Desolation, and absent_stages[0].why (2,576 chars) wants a trim. Its open question
+   (Sneak Attack's sacrifice ordered before Gadrak's Treasure, CR 603.3b) is still ready for
+   /resolve-stack.
 3. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).

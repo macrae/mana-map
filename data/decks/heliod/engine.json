@@ -79,7 +79,7 @@
           "note": "deck-facts roles: only Horn of Greed, The Second Doctor and Scrawling Crawler carry draw:engine among the gift pieces; Howling Mine, Font of Mythos, Dictate of Kruphix and Ghostly Prison are among the 12 entries card_roles.json has no pattern for at all. The gift is nearly invisible to the taxonomy"
         }
       ],
-      "what_it_does": "The first thing that has to happen, and the one thing this deck reliably does. Every card here hands cards to players who are not you: eight say \"each player\" or \"that player\" (Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, The Second Doctor, Horn of Greed -- enumerated by oracle text over cards.json), Kwain says \"each player may draw\", and Loran alone says \"you and target opponent\".\n\nThe declared component 'Table draw engine online (opponents are drawing)' is these ten plus Scrawling Crawler and measures 0.917 assembled, 0.821 by turn six, mean turn 2.449 -- the highest assembled rate and earliest mean turn of the eleven targets, 0.574 in an opening seven. It is a DRAWN rate: goldfish meta.card_advantage.draw_not_modelled names four of these ten (Howling Mine, Kwain, Loran, The Second Doctor).\n\nWHY IT IS IGNITION AND NOT DECORATION. Five conversion-side cards read an opponent drawing. Two of them -- Faerie Mastermind and Gleaming Splendor, the only two cards in the 99 carrying \"an opponent draws their second card each turn\" -- cannot fire off a natural draw step, which is one card. They need a piece from this stage. Smothering Tithe, Consecrated Sphinx and Scrawling Crawler fire on ANY opponent draw; this stage multiplies them.\n\nWHERE IT FIRES DECIDES WHICH TURN IS CHEAP. Howling Mine, Font, Kami and Dictate fire in each player's draw step, Horn on each land drop: they discount an OPPONENT's turn (the back face also gives flash), never yours. Temple Bell, Mikokoro, Kwain and Loran activate at instant speed and discount any turn; they and The Second Doctor's end-step trigger are the only gift pieces that reach YOURS."
+      "what_it_does": "The first thing that has to happen, and the one thing this deck reliably does. Every card here hands cards to players who are not you: eight say \"each player\" or \"that player\" (Howling Mine, Font of Mythos, Kami of the Crescent Moon, Dictate of Kruphix, Temple Bell, Mikokoro, The Second Doctor, Horn of Greed -- enumerated by oracle text over cards.json), Kwain says \"each player may draw\", and Loran alone says \"you and target opponent\".\n\nThe declared component 'Table draw engine online (opponents are drawing)' is these ten plus Scrawling Crawler and measures 0.917 assembled, 0.821 by turn six, mean turn 2.449 -- the highest assembled rate and earliest mean turn of the eleven targets, 0.574 in an opening seven. It is a DRAWN rate: goldfish meta.card_advantage.draw_not_modelled names four of these ten (Howling Mine, Kwain, Loran, The Second Doctor).\n\nWHY IT IS IGNITION AND NOT DECORATION. Five conversion-side cards read an opponent drawing. Two of them -- Faerie Mastermind and Gleaming Splendor, the only two cards in the 99 carrying \"an opponent draws their second card each turn\" -- cannot fire off a natural draw step, which is one card. They need a piece from this stage. Smothering Tithe, Consecrated Sphinx and Scrawling Crawler fire on ANY opponent draw; this stage multiplies them.\n\nWHERE IT FIRES DECIDES WHICH TURN IS CHEAP. Howling Mine, Font, Kami and Dictate fire in each player's draw step, Horn on each land drop: they discount an OPPONENT's turn (the back face also gives flash), never yours. Temple Bell, Mikokoro, Kwain and Loran activate at instant speed and discount any turn. Also on YOUR turn: The Second Doctor (end step), Scrawling Crawler (upkeep), Prosperity, Skyscribing, Splendor's and Mastermind's activations, and Arcane Denial if the next upkeep is yours."
     },
     {
       "stage": "fuel",
@@ -477,54 +477,36 @@
     "verdict": "pass",
     "findings": [
       {
-        "where": "notes[1], lines[5].note, stages[4].evidence[1]",
-        "claim": "b0f44e4a and 4b0e1964 = V10, two behind; 996adb84 = V6, six behind; 92280ee6 seat 2d7f07f9 = one of V5's two decklist shas, seven behind; 1b132fbb a branch seat",
+        "where": "stages[1].what_it_does (WHERE IT FIRES DECIDES WHICH TURN IS CHEAP, last sentence)",
+        "claim": "Also on YOUR turn: The Second Doctor (end step), Scrawling Crawler (upkeep), Prosperity, Skyscribing, Splendor's and Mastermind's activations, and Arcane Denial if the next upkeep is yours.",
         "status": "supported",
-        "note": "ROUND-2 MISCOUNT RESOLVED. I checked every count against `deck-version heliod list` and against the run record itself. deck-version lists V6 [v1.0.0], V10 [v1.2.1] and V12 [v1.4.0] as current and sleeved, which makes V10 two behind, V6 six and V5 seven. The run records: b0f44e4a seats[0] heliod 214af308, at 2026-09-09; 4b0e1964 214af308, 2026-09-10; 996adb84 decc32b0, 2026-09-07; 92280ee6 2d7f07f9, 2026-08-26; 1b132fbb 'heliod@splendor-v1' badd46c92ff0, 2026-09-11. deck_versions.json maps 214af308 to tag v1.2.1 and decc32b0 to v1.0.0. versions.json's version-5 entry carries decklist_sha256s [2046914..., 2d7f07f9...], and 92280ee6's date falls after V5 (2026-07-29) and before V6 (2026-09-07), so 'V5' is right. One caution: deck-version prints git COMMIT shas (V5 9209e3a9aa27), not decklist shas, so the V5 attribution rests on versions.json, which is what the note cites. stages[4].evidence[1] ('never cast in any of the four main-deck runs (v1.0.0, v1.2.1 and V5)') checks out: Psychosis Crawler is cast 0 in all four."
+        "note": "ROUND-4 OMISSION RESOLVED. Faerie Mastermind's activation is now listed. cards.json oracle reads '{3}{U}: Each player draws a card', with no timing restriction. I re-checked every listed card: The Second Doctor ('At the beginning of your end step, each player may draw a card'); Scrawling Crawler ('At the beginning of your upkeep, each player draws a card'); Prosperity ('Each player draws X cards', a sorcery); Skyscribing ('Each player draws X cards', with forecast 'Activate only during your upkeep'); Gleaming Splendor ('{2}{W}: Two target players each draw a card'). All are correct. I swept all 85 cards.json entries again with an oracle regex covering 'each player draws', 'may draw', 'its controller', 'target opponent each', 'target players each' and 'target player draws'. Nothing else hands an opponent a card. Path to Exile, Swords to Plowshares, Swan Song and An Offer You Can't Refuse give their controller a basic land, life, a Bird or Treasure, not cards. Archmage's Charm, Braingeyser, Stroke of Genius and Mathemagics ('Target player draws ...') stay out by the round-4 reasoning: aiming them at an opponent is not this deck's plan."
       },
       {
-        "where": "stages[1].what_it_does (WHERE IT FIRES DECIDES WHICH TURN IS CHEAP), lines[2].note, lines[0].note",
-        "claim": "Howling Mine, Font, Kami and Dictate fire in each player's draw step, Horn on each land drop: they discount an OPPONENT's turn, never yours. Temple Bell, Mikokoro, Kwain and Loran activate at instant speed and discount any turn; The Second Doctor triggers at the beginning of your end step",
+        "where": "stages[1].what_it_does (Arcane Denial clause)",
+        "claim": "Arcane Denial if the next upkeep is yours",
         "status": "supported",
-        "note": "ROUND-2 OVER-CLAIM RESOLVED. I checked each piece's assignment against cards.json oracle text. Howling Mine, Kami of the Crescent Moon, Dictate of Kruphix and Font of Mythos all say 'At the beginning of each player's draw step, that player draws ...': on your turn only you draw, so 'never yours' is right. Horn of Greed says 'Whenever a player plays a land, that player draws a card', and on your turn only you play lands. Temple Bell ('{T}: Each player draws a card'), Mikokoro ('{2}, {T}: Each player draws a card'), Kwain ('{T}: Each player may draw a card') and Loran ('{T}: You and target opponent each draw a card') have no timing restriction. The Second Doctor reads 'At the beginning of your end step, each player may draw a card'. lines[2]'s 'a draw-step gift counts only that one opponent's draws' is right: on opponent A's turn the back face counts the cards opponents have drawn THIS TURN, and only A draws in A's draw step. 'Two of those five say may (Kwain, The Second Doctor)' is right. lines[0] now uses the same split. stages[1] is 1,697 characters, inside the cap."
+        "note": "The clause is correct as worded. cards.json oracle: 'Counter target spell. Its controller may draw up to two cards at the beginning of the next turn's upkeep.' The draw happens in the upkeep of the turn after Denial resolves, so it lands on your turn exactly when Denial resolves during the turn of the player seated before you. The spell countered can be any player's. That is what 'if the next upkeep is yours' says. Caution for the coordinator: the gloss 'if you counter the opponent seated before you' is looser than the model. What matters is WHOSE TURN Denial resolves on, not whose spell it counters. Countering that player's instant on another opponent's turn gives the draw to a different upkeep. The model's wording is the exact one; do not let a later revision swap in the gloss."
       },
       {
-        "where": "stages[1].what_it_does",
-        "claim": "they and The Second Doctor's end-step trigger are the only gift pieces that reach YOURS",
-        "status": "over-claimed",
-        "note": "NEW IN THIS REVISION, and a superlative that enumeration falsifies inside the artifact. Two paragraphs earlier, the same field defines the declared gift component as 'these ten plus Scrawling Crawler'. Scrawling Crawler reads 'At the beginning of your upkeep, each player draws a card' (cards.json): every opponent draws on YOUR turn, every turn, at no mana cost. That is {3} off every spell you cast that turn with no activation, which makes it arguably the strongest your-turn discount piece in the 99. proposed_goldfish_edits[4] argues the same card 'is the table draw engine'. Outside the declared group, Gleaming Splendor's '{2}{W}: Two target players each draw a card' and Prosperity and Skyscribing ('Each player draws X cards') also hand opponents cards on your turn. Scoped to this stage's ten cards the sentence is true, but the field does not scope it that way. Fix: 'among this stage's ten', or add Scrawling Crawler's upkeep trigger. NOT BLOCKING, and I am stating why rather than leaving the verdict to look lenient. The fail criteria are an unsupported verified line, a wrong figure, or a dashed line written as fact. This is none of those: it is stage prose, no line or number rests on it, and it under-counts the deck's own-turn discount rather than inflating a claim. Record it for the next revision. MECHANICALLY CHECKABLE: when a stage's text names a declared target's membership, an 'only ... pieces' sentence in the same field can be matched against that target's any_of."
+        "where": "stages[1].what_it_does (length)",
+        "claim": "1,798 characters",
+        "status": "supported",
+        "note": "Measured: len() = 1798, inside the 1,800 cap with two characters to spare. The stage is not muddled; it reads in four labelled paragraphs. But it has no room left: the next revision of this stage must cut before it adds. A mechanical cap check already exists. This is a warning, not a finding against the model."
       },
       {
-        "where": "stages[3].what_it_does, lines[0].note",
-        "claim": "With a draw-step gift online, every opponent's own turn gives them a second card. / gives every opponent a second card on their own turn",
+        "where": "stages[1].what_it_does (rest of the stage)",
+        "claim": "Faerie Mastermind and Gleaming Splendor the only two cards carrying 'an opponent draws their second card each turn'; draw-step and land-drop pieces never discount your turn",
         "status": "supported",
-        "note": "Kept as true by the engineer, and correctly so. Mine, Kami and Dictate add one card in each player's own draw step and Font adds two, so with any of them online every opponent's natural draw is followed by at least one more on that opponent's turn. That second card triggers 'draws their second card each turn' (Splendor, Mastermind). Mine's untapped clause is noted in lines[0]."
+        "note": "Unchanged since round 4 and re-confirmed against cards.json. I checked that the stage's first 300 characters match HEAD byte for byte; only the closing sentence differs."
       },
       {
-        "where": "stages[4].what_it_does, stages[6].what_it_does",
-        "claim": "two lists behind (b0f44e4a)",
+        "where": "(whole model)",
+        "claim": "Only stages[1].what_it_does changed since round 3 apart from the merged critic block",
         "status": "supported",
-        "note": "Kept as true, and it is: b0f44e4a's seat 214af308 is V10 and the current list is V12."
-      },
-      {
-        "where": "open_questions[3]",
-        "claim": "Stack 002 resolves only the sorcery-speed cast on your own turn.",
-        "status": "supported",
-        "note": "Kept as true, and it is. Stack 002's extras.game_history reads 'you drew it during your draw step this turn', and the scenario has Approach as the only object on the stack, cast from hand: your turn, sorcery timing. No step considers a flash or end-step cast, so the question is a real gap and not one the stack answers. The Forge figure carries (v1.2.1, seat 214af308)."
-      },
-      {
-        "where": "lines[3].verified_by",
-        "claim": "Stack 002 supports Swan Song protecting the second Approach",
-        "status": "supported",
-        "note": "Unchanged and re-confirmed for the third round. Stack 002 has checker.verdict pass. Resolution steps 3-5 and final_state establish that Swan Song, with {U} up, counters the opponent's instant and Approach resolves. That is a flow the stack shows happening, not two cards that merely appear together. It is the only solid line, and validate-engine still prints 1/10 verified."
-      },
-      {
-        "where": "stages[*], lines[*], map_disagreements[*], proposed_goldfish_edits[*], open_questions[*], notes[*]",
-        "claim": "everything rounds 1 and 2 found supported, and the nine round-1 corrections",
-        "status": "supported",
-        "note": "Re-read after the revision. Nothing that rounds 1 and 2 passed has regressed. validate-engine prints OK: 7 stages, 85 placed, 0 unassigned. The what_it_does fields measure 1490 / 1697 / 1353 / 1597 / 1651 / 1584 / 1607, all under 1,800. Every Forge figure in a line or question names its run and the list that run played. No figure I re-derived across the three rounds is now wrong. The one standing defect is the stages[1] superlative above, which is prose, not a figure, and not blocking."
+        "note": "I walked HEAD's engine.json against the working copy key by key. The differing values are .stages[1].what_it_does and the .critic block. The critic block is expected: the orchestrator merged round 4's verdict, findings and iterations. Every stage, line, card list, evidence entry and note is otherwise identical, so the round-3 supported findings stand. validate-engine prints 'OK ... 7 stage(s), 85 card(s) placed, 0 unassigned, 1/10 line(s) verified by a passing stack'."
       }
     ],
-    "iterations": 3
+    "iterations": 5
   }
 }
