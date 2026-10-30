@@ -220,6 +220,10 @@ def process_card(card, first_printings=None):
         "rarity": card.get("rarity", ""),
         "set_code": card.get("set", ""),
         "set_name": card.get("set_name", ""),
+        # Scryfall's set type (expansion, commander, masters, box, promo, token…):
+        # what KIND of release a printing is. The set lens reads it from sets.json
+        # so a Secret Lair drop or a promo set is never "the new set" (2026-10-30).
+        "set_type": card.get("set_type", ""),
         "released_at": card.get("released_at", ""),
         # When the CARD first existed, across every printing. `released_at` above is
         # the corpus printing's date: Sol Ring reads 2026 there and 1993 here.

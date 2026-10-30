@@ -115,7 +115,7 @@ def build_viz_index(df, roles_by_name):
 
 
 def build_sets(df):
-    """{set code: {name, released_at, count}} over the corpus's own printings.
+    """{set code: {name, released_at, set_type, count}} over the corpus's own printings.
 
     A SEPARATE artifact because `viz_index.json` is a bare list every consumer
     indexes positionally. `count` is how many corpus rows carry the code, which a
@@ -123,12 +123,16 @@ def build_sets(df):
     Keyed in newest-first order so a reader can take the keys as the picker.
     """
     sets = {}
-    for row in df[["set_code", "set_name", "released_at"]].itertuples(index=False):
+    # `set_type` is Scryfall's release class (expansion, commander, box, promo…), kept by
+    # `extract` since 2026-10-30; the set lens picks "the new set" by it. A cards.csv
+    # without the column is an older extract: re-run `manamap extract` first.
+    for row in df[["set_code", "set_name", "released_at", "set_type"]].itertuples(index=False):
         if not isinstance(row.set_code, str):
             continue
         entry = sets.setdefault(row.set_code, {
             "name": row.set_name if isinstance(row.set_name, str) else row.set_code,
             "released_at": row.released_at if isinstance(row.released_at, str) else "",
+            "set_type": row.set_type if isinstance(row.set_type, str) else "",
             "count": 0,
         })
         entry["count"] += 1

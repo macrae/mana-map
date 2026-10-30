@@ -451,3 +451,46 @@ def test_reasons_match_the_synergy_graph(table):
             assert got == labels[0], f"{name} -> {entry['partner']}: {got!r} vs {labels[0]!r}"
             checked += 1
     assert checked > 500, f"only {checked} reasons verified"
+
+
+#: Scryfall's `set_type` vocabulary (https://scryfall.com/docs/api/sets), so a typo in
+#: an extract, or a new type Scryfall adds, is a loud failure here rather than a lens
+#: that quietly never lights.
+SCRYFALL_SET_TYPES = {
+    "core", "expansion", "masters", "alchemy", "masterpiece", "arsenal", "from_the_vault",
+    "spellbook", "premium_deck", "duel_deck", "draft_innovation", "treasure_chest",
+    "commander", "planechase", "archenemy", "vanguard", "funny", "starter", "box", "promo",
+    "token", "memorabilia", "minigame", "eternal",
+}
+
+
+def test_build_sets_carries_the_set_type_of_its_printings():
+    """Driven through the real builder: the lens reads `set_type` off sets.json."""
+    import pandas as pd
+
+    from manamap.export.viz_index import build_sets
+
+    df = pd.DataFrame([
+        {"set_code": "fra", "set_name": "Reality Fracture", "released_at": "2026-10-02",
+         "set_type": "expansion"},
+        {"set_code": "fra", "set_name": "Reality Fracture", "released_at": "2026-10-02",
+         "set_type": "expansion"},
+        {"set_code": "slz", "set_name": "The Zeta Set", "released_at": "2026-09-02",
+         "set_type": "box"},
+    ])
+    sets = build_sets(df)
+    assert sets["fra"] == {"name": "Reality Fracture", "released_at": "2026-10-02",
+                           "set_type": "expansion", "count": 2}
+    assert sets["slz"]["set_type"] == "box"
+
+
+def test_every_set_carries_a_scryfall_set_type(sets):
+    """`LENS_SET_TYPES` in mana-map.js picks the new set by this field, so every set
+    must carry one Scryfall knows, and at least one release-class set must exist for
+    the lens to have anything to light."""
+    assert len(sets) > 100
+    unknown = {code: v.get("set_type") for code, v in sets.items()
+               if v.get("set_type") not in SCRYFALL_SET_TYPES}
+    assert not unknown, unknown
+    release = {"expansion", "core", "masters", "draft_innovation", "commander"}
+    assert any(v["set_type"] in release for v in sets.values())

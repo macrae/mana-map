@@ -370,3 +370,41 @@ class TestMembership:
         for region in doc["regions"]:
             assert "w" in region and "h" in region
             assert region["span"] == pytest.approx(max(region["w"], region["h"]), abs=0.11)
+
+
+# ---------------------------------------------------------------------------
+# Tests: name_neighbourhoods — a number is the last resort (2026-10-30)
+# ---------------------------------------------------------------------------
+
+class TestNameNeighbourhoods:
+    @staticmethod
+    def _l2(id_, parent, tags):
+        return {"id": id_, "level": 2, "parent": parent, "label": "machine",
+                "short": "machine", "top_tags": tags}
+
+    def test_siblings_sharing_a_first_tag_take_their_next_tag(self):
+        """Before the change the first tag was taken blind and the second sibling
+        read "Biblioplex Stacks — Removal 2"; re-introduce that and this fails."""
+        from manamap.analysis.cluster_regions import name_neighbourhoods
+
+        by_id = {"l1_0": {"id": "l1_0", "short": "Biblioplex Stacks"}}
+        regions = [self._l2("l2_0", "l1_0", ["removal", "draw"]),
+                   self._l2("l2_1", "l1_0", ["removal", "etb"])]
+        name_neighbourhoods(regions, by_id)
+        assert [r["label"] for r in regions] == ["Biblioplex Stacks — Removal",
+                                                 "Biblioplex Stacks — ETB"]
+        assert [r["short"] for r in regions] == ["Removal", "ETB"]
+        assert all(r["mechanical"] == "machine" for r in regions)
+
+    def test_a_number_is_the_last_resort(self):
+        """Same tags, or none: nothing distinguishes them, so the number stays."""
+        from manamap.analysis.cluster_regions import name_neighbourhoods
+
+        by_id = {"l1_0": {"id": "l1_0", "short": "Ranks"}}
+        regions = [self._l2("l2_0", "l1_0", ["removal"]),
+                   self._l2("l2_1", "l1_0", ["removal"]),
+                   self._l2("l2_2", "l1_0", []),
+                   self._l2("l2_3", "l1_0", [])]
+        name_neighbourhoods(regions, by_id)
+        assert [r["label"] for r in regions] == ["Ranks — Removal", "Ranks — Removal 2",
+                                                 "Ranks", "Ranks 2"]

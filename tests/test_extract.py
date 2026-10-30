@@ -721,9 +721,10 @@ class TestProcessCard:
             assert f"legal_{fmt}" in row
 
     def test_csv_column_count(self):
-        """Every row should have exactly 36 columns (28 base + 8 legality)."""
+        """Every row should have exactly 37 columns (29 base + 8 legality); the 29th is
+        `set_type` (2026-10-30)."""
         row = process_card(_lightning_bolt())
-        assert len(row) == 36
+        assert len(row) == 37
 
     def test_first_released_at_comes_from_the_reduction_not_the_printing(self):
         """The corpus printing of Lightning Bolt here is Beta; its first printing is
@@ -761,3 +762,22 @@ def test_a_prepare_card_keeps_both_faces_text():
     assert "becomes prepared" in row["oracle_text"]
     assert "draws three cards" in row["oracle_text"]
     assert row["power"] == "2"
+
+
+# ---------------------------------------------------------------------------
+# Tests: set_type — the set lens picks "the new set" by it (2026-10-30)
+# ---------------------------------------------------------------------------
+
+class TestSetType:
+    def test_process_card_keeps_scryfalls_set_type(self):
+        from manamap.ingest.extract import process_card
+
+        card = _lightning_bolt()
+        card["set_type"] = "core"
+        assert process_card(card, {})["set_type"] == "core"
+
+    def test_an_absent_set_type_is_empty_and_never_missing(self):
+        """A column every row carries: `build_sets` selects it by name."""
+        from manamap.ingest.extract import process_card
+
+        assert process_card(_lightning_bolt(), {})["set_type"] == ""

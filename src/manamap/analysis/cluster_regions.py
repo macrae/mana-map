@@ -391,12 +391,24 @@ def name_neighbourhoods(l2_regions, by_id):
     # Deduped HERE rather than by `_deduplicate_labels`, which runs before naming and so
     # sees the mechanical labels, not these. Two neighbourhoods of one parent can easily
     # share a top tag; without this the map shows the same name twice a few pixels apart.
+    # Siblings often share a FIRST tag (two Removal corners of one state), so the detail
+    # is the first of the neighbourhood's top tags not yet used under its parent; the
+    # number is the last resort, for siblings with the same tags or none at all. Before
+    # 2026-10-30 the first tag was taken blind and 71 of 187 neighbourhoods were numbered
+    # ("Ranks 2", "Biblioplex Stacks — Removal 3").
     used = Counter()
     for r in l2_regions:
         parent = by_id.get(r.get("parent"))
         base = parent["short"] if parent else r["short"]
-        tag = (r.get("top_tags") or [None])[0]
-        detail = REGION_TAG_DISPLAY_NAMES.get(tag, tag) if tag else None
+        detail = None
+        for tag in r.get("top_tags") or []:
+            candidate = REGION_TAG_DISPLAY_NAMES.get(tag, tag)
+            if candidate and used[f"{base} — {candidate}"] == 0:
+                detail = candidate
+                break
+        if detail is None and r.get("top_tags"):
+            tag = r["top_tags"][0]
+            detail = REGION_TAG_DISPLAY_NAMES.get(tag, tag)
         label = f"{base} — {detail}" if detail else base
         used[label] += 1
         if used[label] > 1:

@@ -526,9 +526,11 @@ and *what is near this hole in my deck*. Five changes, each held by
 - **The set lens** (`#setLens`, "New: Reality Fracture"): one click lights the newest set
   and dims the rest. *Newest* is derived, never a literal: the latest `released_at` in
   `sets.json` that is on or before today (a later date is previews — the Star Trek cards
-  dated 2026-11-13) and has at least `LENS_MIN_CARDS` (100) corpus cards in
-  `viz_index.json` (so a one-card promo set the same week is not "the new set"); ties go to
-  the bigger set (FRA's 279 over FRC's 83). The pill **is** the set filter set to that code
+  dated 2026-11-13), whose `set_type` is a release class (`LENS_SET_TYPES`: expansion,
+  core, masters, draft_innovation, commander — so a Secret Lair drop, a promo set or a
+  token set the same week is not "the new set"; a 100-card floor was the proxy for this
+  until 2026-10-30) and that has a corpus card; ties go to the bigger set (FRA's 279 over
+  FRC's 83). The pill **is** the set filter set to that code
   — picking any other set is the set picker under Filters, and the pill reads lit only while
   that code is the filter. **It composes with My decks by deciding what is lit while the
   colour still says whose it is**: the lens dims every non-set card, a set card in a deck
@@ -564,10 +566,12 @@ and *what is near this hole in my deck*. Five changes, each held by
   span, an L2 below 8, a focused region's children always. The tooltip carries the card
   count and which source the line came from. **What data would do better** (not done —
   no pipeline step was re-run): `cluster-regions` could write the subtitle itself from the
-  FULL `card_roles.json` (the index's `g` is the same roles, but 4,020 cards carry none), and
-  stop writing the direction suffixes and the "Equipment 2 / Auras 6" L2 names that the
-  dedup produces; `sets.json` carrying Scryfall's `set_type` would let the lens say
-  "expansion" instead of using a 100-card floor as its proxy.
+  FULL `card_roles.json` — but the index's `g` IS those roles, and the 4,020 cards that
+  carry none carry none there either, so there is nothing to gain (checked 2026-10-30).
+  Done the same day: `sets.json` carries Scryfall's `set_type` and the lens picks by it;
+  a neighbourhood takes the first of its tags not already used under its parent, so the
+  "Removal 2 / Removal 3" L2 names are the last resort rather than the rule (the
+  direction suffixes had already stopped appearing).
 - **The status line counts only what was chosen.** With nothing narrowed it no longer
   prints the corpus size: under My decks it says how many of the pilot's cards are lit
   ("513 cards lit across your 7 sleeved decks · the rest of the corpus is texture"), under

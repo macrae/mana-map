@@ -43,8 +43,10 @@ MANIFEST = {"drafts": [], "decks": [
      "cards": ["Craterhoof Behemoth"]},
 ]}
 
-#: Mirrors `LENS_MIN_CARDS` in viz/js/mana-map.js — the lens's "a real set" floor.
-LENS_MIN_CARDS = 100
+#: Mirrors `LENS_SET_TYPES` in viz/js/mana-map.js — what counts as a release for the
+#: lens, by Scryfall's `set_type` in sets.json (a 100-card floor was its proxy until
+#: 2026-10-30).
+LENS_SET_TYPES = {"expansion", "core", "masters", "draft_innovation", "commander"}
 
 
 def _open(browser, viz_server, query="?mode=explore", sets_body=None):
@@ -162,8 +164,8 @@ def test_an_explicit_colour_in_the_url_wins(browser, viz_server):
 
 
 def _expected_newest(sets):
-    """The rule as documented: released on or before today, LENS_MIN_CARDS+ corpus cards,
-    latest date, ties to the bigger set."""
+    """The rule as documented: released on or before today, a release-class set type with
+    at least one corpus card, latest date, ties to the bigger set."""
     index = json.loads((DATA / "viz_index.json").read_text(encoding="utf-8"))
     tally: dict[str, int] = {}
     for rec in index:
@@ -173,7 +175,7 @@ def _expected_newest(sets):
     best = None
     for code, meta in sets.items():
         rel, n = meta.get("released_at") or "", tally.get(code, 0)
-        if not rel or rel > today or n < LENS_MIN_CARDS:
+        if not rel or rel > today or not n or meta.get("set_type") not in LENS_SET_TYPES:
             continue
         if best is None or rel > best[1] or (rel == best[1] and n > best[2]):
             best = (code, rel, n)

@@ -18,6 +18,14 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
   Explore on My decks, the New: FRA pill, Filters and ⚙ Map, region subtitles,
   Windfall's real payoffs, Sharknado in title case, Ask Jarvis styled, the Build tabs,
   the landing page's names. No fix list came out of it.
+- **The UI overhaul's leftovers are done (2026-10-30, later).** `extract` keeps Scryfall's
+  `set_type` (cards.csv is 37 columns; re-extracted from the same dump, every other column
+  byte-identical), `sets.json` carries it, and the set lens picks by release class instead
+  of a 100-card floor. A neighbourhood takes the first of its tags not already used under
+  its parent: numbered L2 names 71/72/72 -> 16/41/16 across the three maps, membership and
+  L0/L1 names untouched. The "subtitles from the full card_roles.json" idea is moot — the
+  index's roles ARE those roles — and `regions_cardbert.json` had already been re-clustered
+  in e01e4d2e. DATA_VERSION 16, busts v=273.
 - **The browser suite on this Mac is not reliable with Chrome open** (load 13: two full
   runs failed on `Page.goto` and boot timeouts, different tests each time, every one
   passing alone). CI is the proof of a full run; locally, close Chrome first.
@@ -63,18 +71,12 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
-1. The UI overhaul's leftovers, no decision needed:
-   - `sets.json` carries Scryfall's `set_type`, so the set lens stops using a 100-card floor.
-   - Region subtitles from the full `card_roles.json` (`cluster-regions` -> `viz-index`,
-     minutes, no retrain); drop "(North)" and the "Auras 6" names.
-   - `regions_cardbert.json` was not re-clustered after the tag change: re-key old->new
-     by Jaccard >= 0.5 on `membership`, carry the name.
-2. DECISION FOR SEAN: the payoff-tag retrain was mixed (function r@10 0.258 -> 0.262,
+1. DECISION FOR SEAN: the payoff-tag retrain was mixed (function r@10 0.258 -> 0.262,
    median rank 66 -> 76). Recommendation: accept; spot-check Similar on 5-10 cards he knows.
-3. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
+2. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
    Brallin + Needlehead) through /resolve-stack; work Q011 (promoted, waiting); then the
    heliod and ur-dragon engine critics that fail.
-4. Remaining test speed:
+3. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
    - Five behaviour tests still need timed waits (search/slug debounces, the

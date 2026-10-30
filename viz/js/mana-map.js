@@ -107,7 +107,7 @@
   // position and every region name a cached page holds came from the function space.
   // 13: 2026-10-10 corpus refresh: 34,964 cards and EVERY space retrained (CardBERT to
   // its 40-epoch cap), so every row index, position and neighbour means something new.
-  const DATA_VERSION = 15;
+  const DATA_VERSION = 16;   // 16: sets.json carries set_type (the lens needs it); L2 region names
   const v = url => url + '?v=' + DATA_VERSION;
   // Exported because the deck manifest and per-deck artifacts are fetched by
   // build.js and discovery.js, which had NO cache-busting at all — adding a key to
@@ -947,7 +947,11 @@
    * It IS the set filter, set to that code: the lens dims every other card, and
    * the colouring is untouched — under My decks the new set's cards in no deck
    * light grey and the ones you already run light in their deck's colour. */
-  const LENS_MIN_CARDS = 100;
+  /* What counts as a RELEASE for the lens: Scryfall's `set_type` from sets.json.
+   * A 100-card floor stood in for this until 2026-10-30; it was a proxy, and it
+   * could never tell a Secret Lair drop (`box`) or a promo set from an expansion
+   * that happens to be small. A Commander precon set on its own day IS new cards. */
+  const LENS_SET_TYPES = new Set(['expansion', 'core', 'masters', 'draft_innovation', 'commander']);
   let newestSet = null;   // { code, name, released, count } | null
 
   function computeNewestSet() {
@@ -961,9 +965,10 @@
       const meta = setCatalogue.byCode[code] || {};
       const n = tally[code] || 0;
       const rel = meta.released_at || '';
-      if (!rel || rel > today || n < LENS_MIN_CARDS) continue;
+      if (!rel || rel > today || !n || !LENS_SET_TYPES.has(meta.set_type)) continue;
       if (!best || rel > best.released || (rel === best.released && n > best.count)) {
-        best = { code: code, name: meta.name || code.toUpperCase(), released: rel, count: n };
+        best = { code: code, name: meta.name || code.toUpperCase(), released: rel, count: n,
+                 type: meta.set_type };
       }
     }
     return best;
@@ -982,7 +987,7 @@
     btn.textContent = 'New: ' + newestSet.name;
     btn.title = newestSet.name + ' (' + newestSet.code.toUpperCase() + ') · '
       + newestSet.count.toLocaleString() + ' cards · released ' + newestSet.released
-      + ' — the newest set in the corpus with ' + LENS_MIN_CARDS + '+ cards. '
+      + ' — the newest ' + (newestSet.type || 'set') + ' release in the corpus. '
       + (on ? 'Click to clear it.' : 'Click to light it and dim the rest; any other set is under Filters.');
   }
 
