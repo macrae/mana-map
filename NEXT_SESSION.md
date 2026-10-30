@@ -28,6 +28,11 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
   L0/L1 names untouched. The "subtitles from the full card_roles.json" idea is moot — the
   index's roles ARE those roles — and `regions_cardbert.json` had already been re-clustered
   in e01e4d2e. DATA_VERSION 16, busts v=273.
+- **The decks (2026-10-30, later).** Sharknado stacks 013 (Needlehead + Gratuitous
+  Violence: 14 per opponent) and 014 (Brallin + Needlehead on one wheel: 10 per opponent,
+  Brallin 6/6) are checker-PASSED. Q011 answered from the game logs. heliod's engine
+  model PASSED its critic (round 3; recorded); ur-dragon's FAILED round 3 (saved, not
+  recorded). Two CI browser flakes fixed at the cause (89bce1f3).
 - **The browser suite on this Mac is not reliable with Chrome open** (load 13: two full
   runs failed on `Page.goto` and boot timeouts, different tests each time, every one
   passing alone). CI is the proof of a full run; locally, close Chrome first.
@@ -73,10 +78,21 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
-1. Back to the decks: prove the Sharknado stacks (Gratuitous Violence + Needlehead;
-   Brallin + Needlehead) through /resolve-stack; work Q011 (promoted, waiting); then the
-   heliod and ur-dragon engine critics that fail.
-2. Remaining test speed:
+1. DECISIONS FOR SEAN, from today's deck work:
+   - Q011 is TESTED (`manamap pilot queue show Q011`): stage, drop, watch or more.
+   - heliod `proposed_goldfish_edits[6]`: switch on `model_treasures` and `model_discard`
+     (seven cards dark on them, five in conversion). Re-baselines every open branch; the
+     Tithe and Rhystic figures would rest on the authored TITHE_PAY_RATE 0.5.
+   - ur-dragon: drop Solphim, Mayhem Dominus (not a Dragon) from two Dragon legs of
+     goldfish_targets.json (the engineer's proposed edits).
+2. ur-dragon's engine model is saved as FAIL after three rounds, on one wording finding:
+   absent_stages[0] says no card but Gadrak turns a death into a resource, and Atsushi,
+   the Blazing Sky makes three Treasures when it dies (through Sneak Attack or Crux's
+   Dragon mode). A fresh loop is one engineer pass plus one critic; its open question
+   (Sneak Attack's sacrifice ordered before Gadrak's Treasure) is ready for /resolve-stack.
+   heliod's carries one non-blocking over-claim (stages[1] "the only gift pieces that
+   reach YOURS" misses Scrawling Crawler, Splendor, Prosperity, Skyscribing).
+3. Remaining test speed:
    - What stays timed is deliberate: negative checks, hover delays, poll periods, and
      waits under 200 ms (cheaper than `idle`'s 150 ms quiet window).
    - Five behaviour tests still need timed waits (search/slug debounces, the
