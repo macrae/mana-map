@@ -147,3 +147,16 @@ stacks proven on it, and the way to its siblings were all on disk and none were 
   real click, and assert the controls are NOT visible before it opens.
 - **The texture draws first and is listed last.** Draw order and legend order are two
   orders: the quiet group must paint under every deck, and must not head the legend.
+
+## 2026-11-02 — a page can hold everything and still not hold the list
+
+- **Measure a page as a reader, not as a file.** The dossier composed every artifact and had
+  no decklist: no copy count anywhere in its rendered text. Its "thirty seconds" cover started
+  at y=3709. Rendered text and section offsets found both in a minute, and fifteen files of
+  selector tests had never been able to.
+- **A global id rule outranks a class you removed.** Dropping `.panels` from `#panels` left
+  `#panels { display: grid }` standing from another page's block, and chapters rendered side
+  by side. `.dossier #panels { display: block }` says which page it means.
+- **An empty state states the deck's own stage.** "This deck is sleeved" was a literal, shown
+  on every deck with no logged games.
+

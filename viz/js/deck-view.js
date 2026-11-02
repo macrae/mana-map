@@ -13,59 +13,74 @@
 
   var BASE = '../data/decks/';
 
-  /* THE NINE SECTIONS OF THE FILE, mirrored from `page_spec.DOSSIER_SECTIONS`.
+  /* THE EIGHT CHAPTERS OF THE PAGE, mirrored from `page_spec.DOSSIER_SECTIONS`.
    *
-   * A dossier is not a report. A report has a conclusion; a dossier has a LATEST
-   * ENTRY, and its order encodes that: the cover sheet is thirty seconds at the
-   * top, the assessment is last and SEPARATE — because a file where the
-   * analyst's opinion is mixed into the record loses trust, which is exactly
-   * what the old page did by rendering the diagnosis verdict as one inline
-   * sentence inside the audit panel.
+   * The order is the reading order (2026-11-02, after a UX audit found the
+   * thirty-second summary four screens down and no decklist at all): where the deck
+   * stands, what is in it, how it plays, then the evidence, and the analyst's
+   * opinion last and SEPARATE, because a file where the opinion is mixed into the
+   * record loses trust.
    *
    * PYTHON OWNS THE ORDER. This is a transcription and a test locks the two
-   * together, the same contract `decklist.js` lives under — because the order
-   * used to be an anonymous array literal down in `render()` with no statement
-   * of it anywhere. */
+   * together, the same contract `decklist.js` lives under. */
   var DOSSIER = [
-    // THE DECK CONTEXT LEADS (PRD v2, 2026-10-07): the one living document per
-    // deck, the thing Jarvis reads first. Everything below it is the evidence.
-    ['context', 'Deck Context',
-     'What the deck is, how it plays, every card by its job. Prose by the Context Keeper; figures generated.',
-     ['coach', 'data']],
-    ['cover', 'Cover sheet',
-     'Who, what state, and the three numbers. Thirty seconds.', ['data']],
-    ['rap-sheet', 'Rap sheet',
-     'Every version this deck has been: what changed, why, and what happened.',
-     ['data', 'coach']],
-    ['associates', 'Known associates',
-     'The 99 by the job each card does, and the ones that decide games.', ['data']],
-    ['vitals', 'Vitals',
-     'The seeded measurements, and what they do not model.', ['data']],
-    ['priors', 'Priors',
-     'Every game played, one row, with how it ended.', ['coach']],
-    ['logs', "Captain's logs",
-     "The night as a ship's log; the pilot's own words underneath, unedited.", ['coach']],
-    ['exhibits', 'Exhibits',
-     'The evidence, attached whole and stamped with the list it describes.',
-     ['verified', 'data']],
-    ['leads', 'Open leads',
-     'What is unresolved, and which loop would settle it.', ['coach']],
-    ['assessment', "Analyst's assessment",
-     "The custodian's current read, dated. Previous reads kept underneath.",
-     ['coach']]
+    ['overview', 'Overview',
+     'What this deck is, what state it is in, and what to do next.', ['data', 'coach']],
+    ['decklist', 'Decklist',
+     'Every card and how many copies, with the mana curve.', ['data']],
+    ['plays', 'How it plays',
+     'The game plan in words, and every card by the job it does.', ['coach', 'data']],
+    ['mana', 'Mana',
+     'Whether the mana base keeps its promises, and what limits the deck.', ['data', 'coach']],
+    ['games', 'Games',
+     'Every game played by people, in the pilot\'s own words.', ['coach']],
+    ['measurements', 'Measurements',
+     'What the instruments say, each with its limits and the list it describes.', ['verified', 'data']],
+    ['versions', 'Versions',
+     'Candidate lists, and every version this deck has been.', ['data', 'coach']],
+    ['notes', 'Notes',
+     'Open questions, the written intent, and the assessment last.', ['coach']]
   ];
 
+  /* ONE PLAIN NAME PER PANEL, whatever its data (2026-11-02). Five panels used to
+   * change title when their artifact was missing (By the Numbers / The goldfish,
+   * Sources Say / The mana, The Kill / The lines, Fetch Quests / The tutors, Bracket
+   * Floor / Bracket) and the crime-file vocabulary had to be learned. The ids are
+   * unchanged, because deep links and tests address them. */
+  var PLAIN = {
+    cover: 'At a glance', summary: 'Summary', next: 'What to do next',
+    context: 'Game plan and cards by job', associates: 'Cards by deck region',
+    constellation: 'Deck map', map: 'Deck map', tutors: 'What to fetch',
+    mana: 'Mana base', audit: 'Deck targets',
+    priors: 'Game record', logs: 'Game notes', 'pilot-notes': 'Pilot notes',
+    vitals: 'Vitals', goldfish: 'Goldfish', table: 'Forge games',
+    targeting: 'Who the table attacks', bracket: 'Bracket floor',
+    dti: 'DeckCheck Threat Index', combos: 'Known combos', engine: 'Engine',
+    kill: 'Verified lines', numbers: 'Numbers', status: 'Pipeline status',
+    branches: 'Branches', 'rap-sheet': 'Version history', history: 'Change history',
+    leads: 'Open leads', questions: 'Open questions', brief: 'The brief',
+    asked: 'Asked and answered', ten: 'Shortlist', build: 'Build record',
+    assessment: 'Assessment', log: 'Log a game'
+  };
+
+  /* Titles, promises and tiers of the panels the registry used to name. */
+  var PANELS = {
+    cover: ['Who, what state, and the three numbers.', ['data']],
+    'rap-sheet': ['Every version this deck has been: what changed, why, and what happened.', ['data', 'coach']],
+    associates: ['The 99 by the job each card does, and the ones that decide games.', ['data']],
+    vitals: ['The seeded measurements, and what they do not model.', ['data']],
+    priors: ['Every game played, one row, with how it ended.', ['coach']],
+    logs: ["The night in summary; the pilot's own words underneath, unedited.", ['coach']],
+    leads: ['What is unresolved, and which loop would settle it.', ['coach']],
+    assessment: ["The custodian's current read, dated. Previous reads kept underneath.", ['coach']]
+  };
+
   function sect(id) {
-    for (var i = 0; i < DOSSIER.length; i++) {
-      if (DOSSIER[i][0] === id) return DOSSIER[i];
-    }
-    return [id, id, '', []];
+    var c = PANELS[id] || ['', []];
+    return [id, PLAIN[id] || id, c[0], c[1]];
   }
 
-  /* A dossier section, as opposed to `panel()`'s reference panel. Same shell —
-   * so the tier badges, the `--accent` hook and every existing style keep
-   * working — with the title and promise coming from the registry rather than
-   * from the call site, which is what stops the two drifting. */
+  /* A panel whose promise and tiers come from `PANELS`, so the two cannot drift. */
   function section(id, accent, body) {
     var sp = sect(id);
     return panel(id, sp[1], sp[2], sp[3], accent, body);
@@ -163,12 +178,15 @@
    * rendered its card names one per line down a 250px column and read as a
    * wall. Membership is a property of the content, not of the id, but the id is
    * what the caller has. */
-  var WIDE = { context: 1, kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1 };
+  var WIDE = { context: 1, kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1,
+               decklist: 1, coverage: 1, logs: 1 };
 
   function panel(id, title, promise, tiers, accent, body) {
+    // A branch's roster names the branch; every other title is the plain one.
+    var shownTitle = (PLAIN[id] && String(title).indexOf(' — branch ') < 0) ? PLAIN[id] : title;
     return '<section class="panel' + (WIDE[id] ? ' wide' : '') +
       '" id="panel-' + id + '" style="--accent:' + accent + '">' +
-      '<h2>' + esc(title) + '</h2>' +
+      '<h3 class="panel-title">' + esc(shownTitle) + '</h3>' +
       '<div class="promise">' + esc(promise) + ' ' +
       tiers.map(badge).join(' ') + '</div>' + body + '</section>';
   }
@@ -231,6 +249,24 @@
     return { what: m.what, blockedBy: missing };
   }
 
+  /* THE ONE PLACE A MISSING THING IS SAID (2026-11-02).
+   *
+   * Thirteen of a new deck's twenty-two sections held no content, and the page spent
+   * most of its length on what was not there. Every absence is still STATED, which
+   * is what keeps an unplayed deck distinguishable from a broken one, but once, in
+   * the strip at the foot, under the panel's own id so a deep link still lands.
+   * Two kinds, never merged: `na` (this format has no such measure, so no command is
+   * offered) and `todo` (it can be made). A second report for the same id adds its
+   * action to the first rather than repeating the row. */
+  var missing = [];
+  function reportMissing(row) {
+    var was = missing.filter(function (m) { return m.id === row.id; })[0];
+    if (!was) { missing.push(row); return; }
+    was.action = was.action || row.action || '';
+    was.how = was.how || row.how || '';
+    was.html = was.html || row.html || '';
+  }
+
   function absent(id, title, promise, accent, stage, d, what) {
     var t = todoFor(d, stage);
     // Not a lifecycle stage, or the deck has it and something else is wrong:
@@ -262,9 +298,9 @@
           ')">Draft it — a starting file to edit</button>';
       }
     }
-    return panel(id, title, promise, [], accent,
-      '<div class="todo"><p class="todo-what">Not yet on this deck — ' +
-      esc(what || t.what) + '</p>' + action + command(t.how) + '</div>');
+    reportMissing({ id: id, kind: 'todo', title: PLAIN[id] || title,
+                    what: what || t.what, action: action, how: t.how });
+    return '';
   }
 
   /* ── THE FORMAT: what kind of deck this page is about ──────────────────
@@ -295,9 +331,41 @@
    * nothing to do here is the answer. */
   function na(id, title, promise, accent, d, why) {
     var s = specOf(d);
-    return panel(id, title, promise, [], accent,
-      '<p class="ev na-line">Not measured for ' + esc(s.name) + ': ' +
-      esc(why || 'the goldfish and Forge are Commander-only.') + '</p>');
+    reportMissing({ id: id, kind: 'na', title: PLAIN[id] || title,
+      html: '<p class="ev na-line">Not measured for ' + esc(s.name) + ': ' +
+            esc(why || 'the goldfish and Forge are Commander-only.') + '</p>' });
+    return '';
+  }
+
+  /* An absence with its own sentence, for the panels that are not lifecycle stages. */
+  function noted(id, what, how) {
+    reportMissing({ id: id, kind: 'todo', title: PLAIN[id] || id, what: what, how: how || '' });
+    return '';
+  }
+
+  function coveragePanel(d) {
+    // Both come from one stage and one command, so they are one row.
+    if (missing.some(function (m) { return m.id === 'map'; })) {
+      missing = missing.filter(function (m) { return m.id !== 'associates'; });
+    }
+    var rows = function (kind) {
+      return missing.filter(function (m) { return m.kind === kind; }).map(function (m) {
+        return '<li class="cg-row" id="panel-' + esc(m.id) + '">' +
+          '<span class="cg-t">' + esc(m.title) + '</span>' +
+          (m.html || '<span class="ev cg-what">' + esc(m.what || '') + '</span>') +
+          (m.action || '') + (m.how ? command(m.how) : '') + '</li>';
+      }).join('');
+    };
+    var todo = rows('todo'), nope = rows('na');
+    var status = statusPanel(d), log = d.ctxChangelog || '';
+    if (!todo && !nope && !status && !log) return '';
+    var body = '';
+    if (nope) body += '<h4 class="cg-h">Does not apply to ' + esc(specOf(d).name) + '</h4><ul class="cg-list">' + nope + '</ul>';
+    if (todo) body += '<h4 class="cg-h">Not made yet</h4><ul class="cg-list">' + todo + '</ul>';
+    if (status) body += '<details class="cg-fold"><summary>Pipeline status</summary>' + status + '</details>';
+    if (log) body += '<details class="cg-fold"><summary>Context changelog</summary><div class="ctx-body">' + log + '</div></details>';
+    return panel('coverage', 'Not on this deck yet',
+      'Everything this page has no content for, said once.', [], 'var(--rule)', body);
   }
 
   /* ── THE BRIEF: what the deck is TRYING to be ──────────────────────────
@@ -578,19 +646,192 @@
   /* THE DECK CONTEXT. `context-md.js` renders the markdown (escaped; card links
    * become `a.cardref` with the page's hover art), then `wireContext` adds the
    * Cards-by-role filter once the panel is in the DOM. Absent says how to make one. */
-  function contextPanel(d) {
-    if (!d.context || !window.ContextMD) {
-      return section('context', '#c4a747',
-        '<p class="ctx-absent">No Deck Context yet — <code>manamap pilot context ' +
-        esc(d.slug) + ' --scaffold</code>, then a Context Keeper <code>seed</code> pass (ask Jarvis).</p>');
-    }
-    var body = ContextMD.render(d.context, {
+  /* The rendered document, cut at its `##` headings, so each part can sit with the
+   * evidence it belongs to rather than as one 3,400-pixel panel on top of the page.
+   * Text is moved, never altered. */
+  function contextParts(d) {
+    if (!d.context || !window.ContextMD) return null;
+    var html = ContextMD.render(d.context, {
       skipTitle: true,
       cardImageUrl: function (n) {
         return (window.Shell && Shell.cardImageUrl) ? Shell.cardImageUrl(n, 'normal', deckCards[n]) : null;
       }
     });
-    return section('context', '#c4a747', '<div class="ctx-body">' + body + '</div>');
+    var cut = html.split(/(?=<h3 class="ctx-h" data-section=")/);
+    var out = { lead: '', order: [], by: {} };
+    cut.forEach(function (chunk) {
+      var m = /^<h3 class="ctx-h" data-section="([^"]+)">[\s\S]*?<\/h3>\n?/.exec(chunk);
+      if (!m) { out.lead += chunk; return; }
+      out.order.push(m[1]);
+      out.by[m[1]] = { whole: chunk, body: chunk.slice(m[0].length) };
+    });
+    return out;
+  }
+
+  function ctxPanel(id, promise, tiers, accent, html) {
+    return panel(id, PLAIN[id], promise, tiers, accent, '<div class="ctx-body">' + html + '</div>');
+  }
+
+  /* What the deck is, from the Context's own Summary, then its generated facts
+   * (version, bracket floor, DTI, combos), which sit ahead of the first heading. */
+  function summaryPanel(d) {
+    var c = d.ctxParts;
+    if (!c || !c.by.summary) return '';
+    return ctxPanel('summary', 'What the deck is, by the Context Keeper.', ['coach', 'data'], '#c4a747',
+      c.by.summary.body + (c.lead ? '<div class="ctx-facts">' + c.lead + '</div>' : ''));
+  }
+
+  function contextPanel(d) {
+    var c = d.ctxParts;
+    if (!c) {
+      return noted('context', 'No Deck Context yet: the game plan and every card by its job.',
+        'manamap pilot context ' + d.slug + ' --scaffold');
+    }
+    // Everything the other chapters do not claim stays here, so a new heading
+    // written by the Keeper can never fall off the page.
+    var claimed = { summary: 1, numbers: 1, 'pilot-notes': 1, 'change-history': 1,
+                    'open-questions': 1, 'context-changelog': 1 };
+    var body = c.order.filter(function (k) { return !claimed[k]; })
+      .map(function (k) { return c.by[k].whole; }).join('');
+    return panel('context', PLAIN.context,
+      'How the deck plays, every card by its job. Prose by the Context Keeper.',
+      ['coach', 'data'], '#c4a747', '<div class="ctx-body">' + body + '</div>');
+  }
+
+  function ctxPart(d, id, slug, promise, tiers) {
+    var c = d.ctxParts;
+    return (c && c.by[slug]) ? ctxPanel(id, promise, tiers, '#c4a747', c.by[slug].body) : '';
+  }
+
+  /* ── THE DECKLIST: the thing a researcher came for, and it was not on the page ──
+   *
+   * No copy count appeared anywhere: "3 Penumbra Spider" was not in the rendered text
+   * of any deck. Rows are `cards.json`'s, in the standing order (non-lands, then
+   * lands, each alphabetical). The curve counts copies from the same rows, lands
+   * excluded, and carries nothing the list beside it does not. */
+  function isLand(c) { return /\bLand\b/.test(String(c.type_line || '').split('//')[0]); }
+  function qty(c) { return c.quantity || 1; }
+  function dlRow(c) {
+    return '<li class="dl-row"><span class="dl-q">' + esc(qty(c)) + '</span>' +
+      cardRef(c.name).replace(/^<li[^>]*>|<\/li>$/g, '') +
+      (c.mana_cost ? '<span class="dl-c">' + esc(c.mana_cost) + '</span>' : '') + '</li>';
+  }
+  function dlBlock(title, rows) {
+    if (!rows.length) return '';
+    var n = rows.reduce(function (t, c) { return t + qty(c); }, 0);
+    return '<div class="dl-block"><h4 class="dl-h">' + esc(title) + ' <span class="dl-n">' + n +
+      '</span></h4><ul class="dl-list">' + rows.map(dlRow).join('') + '</ul></div>';
+  }
+  function byName(a, b) { return a.name < b.name ? -1 : a.name > b.name ? 1 : 0; }
+
+  function dlView(d, view) {
+    var cards = ((d.cards || {}).cards || []);
+    var main = cards.filter(function (c) { return !c.is_commander; });
+    var head = dlBlock('Commander', cards.filter(function (c) { return c.is_commander; }));
+    var side = ((d.cards || {}).sideboard || []).slice().sort(byName);
+    var tail = dlBlock('Sideboard', side);
+    if (view === 'cost') {
+      var nonland = main.filter(function (c) { return !isLand(c); });
+      var costs = {};
+      nonland.forEach(function (c) { var k = Math.min(7, Math.round(c.cmc || 0)); (costs[k] = costs[k] || []).push(c); });
+      return head + Object.keys(costs).map(Number).sort(function (a, b) { return a - b; }).map(function (k) {
+        return dlBlock(k === 7 ? '7+ mana' : k + ' mana', costs[k].sort(byName));
+      }).join('') + dlBlock('Lands', main.filter(isLand).sort(byName)) + tail;
+    }
+    return head + dlBlock('Non-lands', main.filter(function (c) { return !isLand(c); }).sort(byName)) +
+      dlBlock('Lands', main.filter(isLand).sort(byName)) + tail;
+  }
+
+  function curveHtml(d) {
+    var counts = {}, max = 0;
+    ((d.cards || {}).cards || []).forEach(function (c) {
+      if (isLand(c) || c.is_commander) return;
+      var k = Math.min(7, Math.round(c.cmc || 0));
+      counts[k] = (counts[k] || 0) + qty(c);
+      if (counts[k] > max) max = counts[k];
+    });
+    if (!max) return '';
+    var bars = [0, 1, 2, 3, 4, 5, 6, 7].filter(function (k) { return k > 0 || counts[0]; }).map(function (k) {
+      var n = counts[k] || 0, label = k === 7 ? '7+' : String(k);
+      return '<div class="dl-bar" title="' + n + ' cost ' + label + '"><span class="dl-bar-n">' + (n || '') +
+        '</span><span class="dl-bar-f" style="height:' + Math.round(n / max * 64) + 'px"></span>' +
+        '<span class="dl-bar-k">' + label + '</span></div>';
+    }).join('');
+    return '<div class="dl-curve" role="img" aria-label="Mana curve: copies at each mana value, lands excluded">' +
+      '<div class="dl-curve-t">Mana curve <span class="ev">copies by mana value, no lands</span></div>' +
+      '<div class="dl-bars">' + bars + '</div></div>';
+  }
+
+  function decklistPanel(d) {
+    var cards = ((d.cards || {}).cards || []);
+    if (!cards.length) return noted('decklist', 'No card data for this list yet.', 'manamap pilot fetch-deck ' + d.slug);
+    return panel('decklist', theN(d), 'Every card and how many copies. Hover a name for the card.',
+      ['data'], 'var(--tier-data)',
+      '<div class="dl-tools" role="group" aria-label="Sort the list">' +
+        '<button class="dl-view is-on" data-view="alpha">A to Z</button>' +
+        '<button class="dl-view" data-view="cost">By cost</button>' +
+        '<button class="dl-view" data-view="job" hidden>By job</button></div>' +
+      '<div class="dl-grid"><div class="dl-cols" id="dlCols">' + dlView(d, 'alpha') + '</div>' +
+      '<div class="dl-side">' + curveHtml(d) + moxfieldExport() + '</div></div>');
+  }
+
+  /* BY JOB IS THE CONTEXT'S OWN GROUPING, read off the panel it rendered into, so a
+   * second classification cannot appear here. A card with two jobs is listed twice,
+   * as it is there, and the button stays hidden on a deck with no Context. */
+  function wireDecklist(d) {
+    var root = document.getElementById('panel-decklist');
+    if (!root) return;
+    var byCard = {};
+    ((d.cards || {}).cards || []).forEach(function (c) { byCard[c.name] = c; });
+    function jobs() {
+      var out = [];
+      Array.prototype.forEach.call(document.querySelectorAll('#panel-context .ctx-role'), function (role) {
+        var h = role.querySelector('h4');
+        if (!h) return;
+        var cur = { title: h.textContent, rows: [] };
+        Array.prototype.forEach.call(role.querySelectorAll('a.cardref'), function (a) {
+          var c = byCard[a.getAttribute('data-card')];
+          if (c && cur.rows.indexOf(c) < 0) cur.rows.push(c);
+        });
+        out.push(cur);
+      });
+      return out.filter(function (g) { return g.rows.length; });
+    }
+    var groups = jobs(), jobBtn = root.querySelector('[data-view=job]');
+    if (groups.length && jobBtn) jobBtn.hidden = false;
+    root.querySelector('.dl-tools').addEventListener('click', function (ev) {
+      var b = ev.target.closest('.dl-view');
+      if (!b) return;
+      Array.prototype.forEach.call(root.querySelectorAll('.dl-view'), function (x) { x.classList.toggle('is-on', x === b); });
+      var v = b.getAttribute('data-view');
+      document.getElementById('dlCols').innerHTML = v === 'job'
+        ? groups.map(function (g) { return dlBlock(g.title, g.rows); }).join('') : dlView(d, v);
+    });
+  }
+
+  /* The roles flow in columns: one 1,000-pixel column of short lists was most of the
+   * panel. The filter holds element references, so moving its items keeps it working. */
+  function wrapRoles(root) {
+    var head = root.querySelector('[data-section="cards-by-role"]');
+    if (!head) return;
+    var n = head.nextElementSibling, nodes = [];
+    while (n && n.tagName !== 'H3') {
+      if (!n.classList.contains('ctx-filter')) nodes.push(n);
+      n = n.nextElementSibling;
+    }
+    var wrap = document.createElement('div');
+    wrap.className = 'ctx-roles';
+    var role = null;
+    nodes.forEach(function (node) {
+      if (node.tagName === 'H4' || !role) {
+        role = document.createElement('div');
+        role.className = 'ctx-role';
+        wrap.appendChild(role);
+      }
+      role.appendChild(node);
+    });
+    var after = n || null;
+    head.parentNode.insertBefore(wrap, after);
   }
 
   function wireContext(d) {
@@ -601,6 +842,7 @@
       cards[c.name] = { colors: c.colors || [], type_line: c.type_line || '', cmc: c.cmc };
     });
     ContextMD.wireFilters(root, cards);
+    wrapRoles(root);
   }
 
   function rosterPanel(d) {
@@ -708,12 +950,9 @@
      * diagnosed, and the other nine said nothing about the difference between
      * "healthy" and "never measured". Named here instead. */
     if (!v) {
-      return section('vitals', '#4c8fbd',
-        '<p class="ev">Not measured. The vitals are the seeded diagnostic — ' +
-        'engine online by turn, stall risk, and the mana under both — and ' +
-        'nothing has run it against this list. ' +
-        '<code>manamap pilot diagnose ' + esc((d.info || {}).slug || '') +
-        ' --write</code></p>');
+      return noted('vitals', 'Not measured. The seeded diagnostic: engine online by turn, ' +
+        'stall risk, and the mana under both.',
+        'manamap pilot diagnose ' + ((d.info || {}).slug || '') + ' --write');
     }
     var out = '';
     var e = v.engine || {};
@@ -769,6 +1008,11 @@
     var b = (d.info || {}).brief;
     if (!b) return absent('brief', 'The brief', 'What this deck is trying to be.',
                           '#c4a747', 'brief', d);
+    // Nothing authored at all (a bare `{slug, format}`) says so once, in the strip.
+    if (!b.playstyle && !b.commander_rationale && !b.mana && !b.win_conditions &&
+        !(b.design_rules || []).length && !Object.keys(b.targets || {}).length &&
+        !(b.notes || []).length && !(b.must_include || []).length &&
+        !(b.must_exclude || []).length) return '';
     var out = '';
     if (b.playstyle) out += '<p class="brief-lede">' + esc(b.playstyle) + '</p>';
     if (b.commander_rationale && specOf(d).commanders)
@@ -1696,16 +1940,12 @@
      * A file whose tabs disappear when a drawer is empty is the "cleaned up into
      * a narrative" failure this page exists to avoid. */
     if (!entries.length) {
+      noted('log', 'Log a game. The debrief agent then routes what it raises to the loop that can settle it.',
+            'manamap pilot deck-notes ' + (d.slug || '<slug>') + ' add "…" --result win|loss --opponents 3');
+      // TRUE FOR THE DECK'S STAGE: this said "this deck is sleeved" on every deck.
       return section('logs', 'var(--tier-coach)',
-        '<p>No games logged on this deck yet. This deck is sleeved, so the next '
-        + 'one you play lands here — stamped with the exact list you played it '
-        + 'on, so its record attaches to that version and not to the deck in '
-        + 'general.</p>'
-        + '<p class="ev">Log a game: <code>manamap pilot deck-notes '
-        + esc(d.slug || '&lt;slug&gt;')
-        + ' add "…" --result win|loss --opponents 3</code>. The debrief agent '
-        + 'then reads it and routes what it raises to the loop that can settle '
-        + 'it — a goldfish run, a rules resolution, a question to the doctor.</p>');
+        '<p class="ev">No games logged on this deck yet.' + ((d.entry || {}).paper
+          ? ' The next one you play lands here, stamped with the exact list you played.' : '') + '</p>');
     }
 
     var notes = (d.debrief || {}).entries || {};
@@ -1859,10 +2099,8 @@
      * has questioned from one whose questions have all been settled, which a
      * vanished section cannot. */
     if (!qs.length) {
-      return section('leads', 'var(--tier-coach)',
-        '<p class="ev">Nothing open. Questions arrive from the engine model, ' +
-        'the diagnosis and the debrief — none of those has raised one against ' +
-        'this list.</p>');
+      return noted('leads', 'Nothing open. Questions arrive from the engine model, the diagnosis ' +
+        'and the debrief; none has raised one against this list.');
     }
     /* TWENTY-ONE QUESTIONS AT FULL LENGTH IS 3,936 PIXELS and answers nothing a
      * reader came for. What they came for is HOW MANY and WHICH LOOP SETTLES
@@ -1910,8 +2148,8 @@
   function stampOf(info, entry) {
     var life = info && info.lifecycle;
     if (life) {
-      return { word: life.status === 'broken-down' ? 'COLD CASE'
-                    : life.status === 'superseded' ? 'SUPERSEDED' : 'CLOSED',
+      return { word: life.status === 'broken-down' ? 'BROKEN DOWN'
+                    : life.status === 'superseded' ? 'SUPERSEDED' : 'RETIRED',
                kind: 'dead', why: life.headline };
     }
     if (entry && entry.paper) {
@@ -1923,8 +2161,12 @@
       return { word: 'SLEEVED ' + v, kind: 'warn', pin: true,
                why: 'the cardboard has drifted from the list' };
     }
-    return { word: 'UNDER INVESTIGATION', kind: 'open',
-             why: 'nobody has said whether this exists in paper' };
+    // The rung decides how the list changes, so the page says which one this is.
+    if (entry && entry.stage === 'dev') {
+      return { word: 'BREWING', kind: 'open', why: 'edited in place; not yet on the bench' };
+    }
+    return { word: 'ON THE BENCH', kind: 'open',
+             why: 'edited in place; nobody has said whether this exists in paper' };
   }
 
   /* One headline figure. THE DEFINITION TRAVELS WITH IT — a number a reader has
@@ -2124,10 +2366,10 @@
       '<div class="cov-sub">' + esc(specOf(d).commanders
         ? (info.commander || []).join(' // ') : specOf(d).name) + '</div>' +
       '<dl class="cov-book">' +
-        '<dt>Case no.</dt><dd>' + esc(info.slug || '') + '</dd>' +
-        '<dt>Marks</dt><dd>' + esc(marks) + '</dd>' + price +
+        '<dt>Deck ID</dt><dd>' + esc(info.slug || '') + '</dd>' +
+        '<dt>Deck</dt><dd>' + esc(marks) + '</dd>' + price +
         (published ? '<dt>Published</dt><dd>' + published + '</dd>' : '') +
-        '<dt>First booked</dt><dd>' + (rec.first_played
+        '<dt>First played</dt><dd>' + (rec.first_played
           ? esc(rec.first_played)
           : '<span class="ev">never played</span>') + '</dd>' +
       '</dl></div>';
@@ -2138,18 +2380,15 @@
      * opened, which is worth saying out loud rather than leaving blank. */
     var mo = info.engine && info.engine.thesis
       ? '<p class="cov-mo">' + esc(info.engine.thesis) + '</p>'
-      : '<p class="cov-mo cov-mo-none">No engine model yet — nothing here ' +
-        'states what this deck is trying to do. <code>/analyze-engine ' +
-        esc(info.slug || '') + '</code></p>';
+      : '';
     /* THE BRIEF'S ABSENCE, said here because it is a statement about what the
      * deck is TRYING to be. A brief is the written intent a build starts from;
      * a deck with none is absent rather than empty, and the difference matters
      * during a refactor when the brief and the 99 legitimately disagree. */
-    var briefless = (!info.brief || !info.brief.playstyle)
-      ? '<p class="ev cov-brief">No brief authored for this list. A brief is ' +
-        'the written intent a build starts from; this deck has none, which is ' +
-        'absent rather than empty.</p>'
-      : '';
+    if (!info.brief || !info.brief.playstyle) {
+      noted('brief', 'No brief authored for this list. A brief is the written intent a build ' +
+        'starts from; this deck has none, which is absent rather than empty.');
+    }
 
     /* THE WORD AND ITS MEASURE, together and never apart. `engine_health` is a
      * VERDICT, which this repo normally refuses to publish — the obsolescence
@@ -2198,7 +2437,7 @@
         '<div class="cov-stamp is-' + stamp.kind + '" title="' + esc(stamp.why || '') + '">' +
           (stamp.pin ? '<span class="wb-pin" aria-hidden="true">📌</span>' : '') +
           esc(stamp.word) + '</div>' +
-        ident + mo + briefless + health + nums + moxfieldExport() +
+        ident + mo + health + nums +
       '</div></div>';
     return section('cover', 'var(--tier-data)', body);
   }
@@ -2350,10 +2589,7 @@
   function priorsPanel(d) {
     var log = d.log || [];
     if (!log.length) {
-      return section('priors', 'var(--tier-coach)',
-        '<p class="ev">No games logged. <code>manamap pilot deck-notes ' +
-        esc((d.info || {}).slug || '') +
-        ' add "…" --result win|loss --opponents 3 --cause &lt;code&gt;</code></p>');
+      return '';   // The game notes panel beside it states this once.
     }
     var causes = ((d.causes || {}).entries) || {};
     var rows = log.slice().reverse().map(function (e) {
@@ -2412,11 +2648,8 @@
       /* NO READ IS ITSELF A FACT ABOUT THE FILE, and the last section is where
        * a reader looks for one. `absent()` returns '' when the stage is not in
        * the deck's todo list — right for a reference panel, wrong for a tab. */
-      return section('assessment', 'var(--tier-coach)',
-        '<p class="ev">Nobody has read this deck yet. The measurements above ' +
-        'are what it is; an assessment is what someone thinks of it, and there ' +
-        'is none on file. <code>/diagnose-deck ' +
-        esc((d.info || {}).slug || '') + '</code></p>');
+      return noted('assessment', 'Nobody has read this deck yet. An assessment is what someone thinks of it.',
+        '/diagnose-deck ' + ((d.info || {}).slug || ''));
     }
     var cur = currentVersion(d);
     var head = '<div class="as-head">' +
@@ -2491,57 +2724,71 @@
     // into the overlay rather than dropping the reader on an unfiltered map.
     document.getElementById('lensLink').href = 'index.html?deck=' + encodeURIComponent(slug);
 
-    // Workbench first, reference second: the questions a pilot sits down with are
-    // "where is this, and what do I do", not "what shape is the mana curve".
-    // THE CASE FILE AND THE LOG LEAD, AND THE EXPLORATIONS COME LAST.
-    //
-    // The old order opened with `next` and buried the log at position nine,
-    // between the threat table and the open questions — so the one artifact
-    // written by a person who was at the table sat below four derived ones. And
-    // `branchPanel` sat in the middle of the reference half, where a PROPOSAL
-    // read as a property of the deck. A branch is a deck that does not exist;
-    // it belongs at the foot, behind its own net-change report.
-    /* THE FILE, then everything else.
-     *
-     * The nine dossier sections come first, in `DOSSIER` order — cover sheet at
-     * the top because the whole point of one is that you absorb it in thirty
-     * seconds, and the assessment last because a file where the analyst's
-     * opinion sits inside the record loses trust.
-     *
-     * The remaining panels are APPENDED UNCHANGED beneath them. They are the
-     * evidence and they will become numbered exhibits; until then nothing is
-     * lost and nothing is half-converted, which is the only way to move a page
-     * this size without a window where it renders neither shape. */
-    var html = [
-      contextPanel(d),
-      coverPanel(d),
-      rapSheetPanel(d),
-      rosterPanel(d),
-      vitalsPanel(d),
-      priorsPanel(d),
-      logPanel(d),
-      questionsPanel(d),
-      assessmentPanel(d),
-
-      // ── the exhibits, not yet numbered ──
-      nextPanel(d), branchPanel(d), statusPanel(d), auditPanel(d),
-      enginePanel(d), tablePanel(d), targetingPanel(d), askedPanel(d),
-      briefPanel(d), constellationPanel(d),
-      bracketPanel(d), dtiPanel(d), combosPanel(d), manaPanel(d), goldfishPanel(d),
-      tenPanel(d), tutorPanel(d), buildPlanPanel(d), stacksPanel(d)
-    ].filter(Boolean).join('');
+    /* EIGHT CHAPTERS, one scrollable page, and a chapter with nothing in it is not
+     * drawn: its absences are in the strip at the foot, which is built LAST because
+     * every panel above reports to it. Panels keep their `#panel-<id>`. */
+    missing = [];
+    d.ctxParts = contextParts(d);
+    d.ctxChangelog = (d.ctxParts && d.ctxParts.by['context-changelog'])
+      ? d.ctxParts.by['context-changelog'].body : '';
+    var content = {
+      overview: [coverPanel(d), summaryPanel(d), nextPanel(d)],
+      decklist: [decklistPanel(d)],
+      plays: [contextPanel(d), rosterPanel(d), constellationPanel(d), tutorPanel(d)],
+      mana: [manaPanel(d), auditPanel(d)],
+      games: [priorsPanel(d), logPanel(d),
+              ctxPart(d, 'pilot-notes', 'pilot-notes', 'What the games have taught, by the Context Keeper.', ['coach'])],
+      measurements: [vitalsPanel(d), goldfishPanel(d), tablePanel(d), targetingPanel(d),
+                     bracketPanel(d), dtiPanel(d), combosPanel(d), enginePanel(d), stacksPanel(d),
+                     ctxPart(d, 'numbers', 'numbers', 'Generated figures from the Deck Context.', ['data'])],
+      versions: [branchPanel(d), rapSheetPanel(d),
+                 ctxPart(d, 'history', 'change-history', 'What changed in the deck, by the Context Keeper.', ['coach'])],
+      notes: [ctxPart(d, 'questions', 'open-questions', 'Questions only games or tests can settle.', ['coach']),
+              questionsPanel(d), briefPanel(d), askedPanel(d), tenPanel(d), buildPlanPanel(d),
+              assessmentPanel(d)]
+    };
+    var coverage = coveragePanel(d);
+    var chapters = DOSSIER.map(function (c) {
+      var body = content[c[0]].filter(Boolean).join('');
+      return body ? { id: c[0], title: c[1], promise: c[2], body: body } : null;
+    }).filter(Boolean);
+    var nav = '<nav class="dossier-nav" aria-label="Sections of this page">' + chapters.map(function (c) {
+      return '<a href="#ch-' + c.id + '" data-ch="ch-' + c.id + '">' + esc(c.title) + '</a>';
+    }).join('') + (coverage ? '<a href="#ch-coverage" data-ch="ch-coverage">Not yet</a>' : '') + '</nav>';
+    var html = nav + chapters.map(function (c) {
+      return '<div class="chapter" id="ch-' + c.id + '"><h2 class="chapter-title">' + esc(c.title) +
+        '</h2><p class="chapter-promise">' + esc(c.promise) + '</p><div class="panels">' + c.body + '</div></div>';
+    }).join('') + (coverage ? '<div class="chapter" id="ch-coverage"><div class="panels">' + coverage + '</div></div>' : '');
     document.getElementById('panels').innerHTML = html;
     // THE DEEP LINK LANDS (2026-10-20): the workbench links `#panel-branches`
     // and the panels did not exist when the browser tried to jump.
     if (window.scrollToHash) window.scrollToHash();
     wireContext(d);
+    wireDecklist(d);
     wireMoxfield(d);
+    wireNav();
     var bits = [d.stacks.length + ' verified line(s)'];
     if ((d.sims || []).length) bits.push(d.sims.length + ' sim run(s)');
     if ((d.experiments || []).length) bits.push(d.experiments.length + ' experiment(s)');
     if (!d.info) bits.push('no info.json — run `deck-info ' + slug + ' --write`');
     document.getElementById('status').textContent =
       bits.join(' · ') + ' · artifacts read from data/decks/' + slug + '/';
+  }
+
+  /* Which chapter you are reading, marked in the nav. Presentation only. */
+  function wireNav() {
+    if (!window.IntersectionObserver) return;
+    var links = {};
+    Array.prototype.forEach.call(document.querySelectorAll('.dossier-nav a'), function (a) {
+      links[a.getAttribute('data-ch')] = a;
+    });
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        Object.keys(links).forEach(function (k) { links[k].classList.toggle('is-here', k === e.target.id); });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    Array.prototype.forEach.call(document.querySelectorAll('.chapter'), function (c) { io.observe(c); });
   }
 
   function pickerHTML(decks, current) {
@@ -2602,16 +2849,15 @@
       // GATED ON THE MANIFEST, not fetched unconditionally like FILES: a deck
       // with no logged games has no artifact, and a 404 read as "absent" is the
       // ambiguity the `has` map exists to resolve.
-      // THE DECK CONTEXT and, only beside it, the 99's cards.json (cost, colour,
-      // type) for its filter. Gated on the manifest like the log: no context, no
-      // fetch, no 404 read as "absent".
+      // THE DECK CONTEXT, gated on the manifest like the log: no context, no fetch,
+      // no 404 read as "absent".
       var contextJob = (entry.has || {}).context
         ? fetch(BASE + entry.slug + '/CONTEXT.md', { cache: 'no-cache' }).then(function (r) {
             return r.ok ? r.text() : '';
           }).catch(function () { return ''; })
         : Promise.resolve('');
-      var cardsJob = (entry.has || {}).context
-        ? getJSON(BASE + entry.slug + '/cards.json') : Promise.resolve(null);
+      // The Decklist reads it on every deck now, Context or not.
+      var cardsJob = getJSON(BASE + entry.slug + '/cards.json');
       var picardJob = (entry.has || {}).captains_log
         ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
       // `audit.json` for its `not_measured` map, which `info.audit` does not carry.

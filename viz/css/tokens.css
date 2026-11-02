@@ -1404,3 +1404,101 @@ details.rost-fold > summary {
 .wb-br-slug { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-soft); margin-left: 6px; }
 .wb-br-blurb { margin: 3px 0 4px; font-size: 12.5px; line-height: 1.35; }
 .wb-br-unsummarised { color: var(--ink-soft); font-style: italic; }
+
+/* ══ THE DOSSIER'S READING LAYOUT (2026-11-02) ═══════════════════════════════
+ * Scoped to `.dossier`, because this stylesheet serves six pages. One jump nav,
+ * eight chapters, prose at a readable measure, 12px as the floor for anything a
+ * reader has to read, and panels that are as tall as their own content. */
+.dossier .dossier-head { padding: 14px 0 10px; margin-bottom: 8px; border-bottom-width: 2px; }
+.dossier #deckPicker { margin-bottom: 8px; letter-spacing: .06em; text-transform: none; font-size: 12px; line-height: 1.7; }
+.dossier-nav {
+  position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: 2px 4px;
+  background: var(--paper); border-bottom: 1px solid var(--rule); padding: 8px 0; margin-bottom: 18px;
+}
+.dossier-nav a {
+  font-family: var(--condensed); font-size: 13px; letter-spacing: .04em; text-decoration: none;
+  color: var(--ink-soft); padding: 4px 10px; border-radius: 3px;
+}
+.dossier-nav a:hover, .dossier-nav a:focus-visible { color: var(--ink); background: var(--panel); }
+.dossier-nav a.is-here { color: var(--ink); background: var(--panel); box-shadow: inset 0 -2px 0 var(--burst-yellow); }
+.chapter { margin-bottom: 40px; scroll-margin-top: 56px; }
+.dossier [id^="panel-"] { scroll-margin-top: 60px; }
+.chapter-title { font-family: var(--display); text-transform: uppercase; font-size: 22px; margin: 0; line-height: 1.2; }
+.chapter-promise { color: var(--ink-soft); font-size: 14px; margin: 2px 0 14px; }
+.dossier .panels { align-items: start; grid-template-columns: repeat(auto-fit, minmax(min(430px, 100%), 1fr)); }
+.dossier .panel { min-width: 0; }
+.dossier .panel-title { font-family: var(--display); text-transform: uppercase; font-size: 1.02em; margin: 0 0 2px; letter-spacing: .01em; }
+.dossier .panel .promise { text-transform: none; letter-spacing: 0; font-family: var(--body); font-size: 13px; margin-bottom: 12px; }
+.dossier .badge, .dossier .chip { font-size: 11px; letter-spacing: .06em; padding: 1px 6px; border-width: 1px; }
+.dossier .slug-line { letter-spacing: .12em; font-size: 12px; }
+.dossier .ev { font-size: 13px; }
+.dossier .cov-k, .dossier .cov-book dt, .dossier .cov-v small { font-size: 12px; letter-spacing: .06em; }
+.dossier .ctx-body p, .dossier .ctx-body li, .dossier .ev, .dossier .brief-lede, .dossier .cov-mo { max-width: 74ch; }
+.dossier table { max-width: 100%; }
+.dossier .panel { overflow-wrap: anywhere; }
+@media (max-width: 640px) {
+  .dossier .panel { padding: 14px 12px; overflow-x: auto; }
+  .dossier .head-links { margin-left: 0; }
+  .dossier .dl-cols { columns: 1; }
+  .dossier-nav { flex-wrap: nowrap; overflow-x: auto; }
+  .dossier-nav a { white-space: nowrap; }
+}
+.dossier #panels { display: block; }
+.dossier .panel:has(table) { overflow-x: auto; }
+/* The overview: the masthead already names the deck, so the card does not repeat it. */
+.dossier .dossier-head > div:first-child > .slug-line:first-child { display: none; }
+.dossier #ch-overview > .chapter-title, .dossier #ch-overview > .chapter-promise { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.dossier #ch-overview { margin-bottom: 32px; }
+.dossier #panel-cover > .panel-title, .dossier .cov-alias { display: none; }
+.dossier .cov { grid-template-columns: 170px minmax(0, 1fr); gap: 16px; }
+.dossier .cov-stamp { margin-bottom: 8px; }
+.dossier .cov-book { display: grid; grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 2px 12px; margin: 0 0 10px; }
+.dossier .cov-book dd { margin: 0; }
+.dossier .cov-v { font-size: 20px; }
+.dossier #deckPicker { margin-top: 28px; border-top: 1px solid var(--rule); padding-top: 12px; }
+.dl-side { display: flex; flex-direction: column; gap: 16px; }
+.dl-side .cov-export { margin-top: 0; }
+@media (max-width: 760px) { .dossier .cov-book { grid-template-columns: auto minmax(0, 1fr); } .dossier .cov { grid-template-columns: minmax(0, 1fr); } }
+.dossier th, .dossier dt, .dossier .cov-note, .dossier .rost-tag, .dossier .rap-side-k,
+.dossier .val, .dossier .combo-tag, .dossier .combo-partner, .dossier .todo-copy { font-size: 12px; }
+/* The decklist. */
+.dl-tools { display: flex; gap: 6px; margin-bottom: 12px; }
+.dl-view { font: inherit; font-size: 13px; color: var(--ink-soft); background: none; border: 1px solid var(--rule); padding: 3px 10px; cursor: pointer; border-radius: 3px; }
+.dl-view[hidden] { display: none; }
+.dl-view.is-on { color: var(--ink); border-color: var(--ink-soft); }
+.dl-grid { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 24px; align-items: start; }
+.dl-cols { columns: 3 210px; column-gap: 24px; }
+.dl-block { margin-bottom: 14px; }
+.dl-row { break-inside: avoid; }
+.ctx-facts { border-top: 1px solid var(--rule); margin-top: 10px; padding-top: 8px; font-size: 13px; color: var(--ink-soft); }
+.ctx-facts ul { margin: 0; padding-left: 16px; }
+.dl-h { break-after: avoid; font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--ink-soft); margin: 0 0 4px; border-bottom: 1px solid var(--rule); padding-bottom: 3px; }
+.dl-n { font-weight: 400; }
+.dl-list { list-style: none; margin: 0; padding: 0; }
+.dl-row { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 6px; align-items: baseline; padding: 2px 0; font-size: 14px; }
+.dl-q { font-variant-numeric: tabular-nums; text-align: right; color: var(--ink); font-weight: 600; }
+.dl-c { color: var(--ink-soft); font-size: 12px; white-space: nowrap; }
+.dl-row a.cardref { position: relative; }
+.dl-curve-t { font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 8px; }
+.dl-curve-t .ev { font-weight: 400; display: block; font-size: 12px; }
+.dl-bars { display: flex; align-items: flex-end; gap: 3px; height: 104px; }
+.dl-bar { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.dl-bar-n { font-size: 12px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dl-bar-f { width: 100%; background: var(--y2k-blue); border-radius: 4px 4px 0 0; }
+.dl-bar-k { font-size: 12px; color: var(--ink-soft); border-top: 1px solid var(--rule); width: 100%; text-align: center; margin-top: 0; }
+@media (max-width: 760px) { .dl-grid { grid-template-columns: minmax(0, 1fr); } }
+.ctx-roles { columns: 3 220px; column-gap: 24px; }
+.ctx-role { break-inside: avoid; margin-bottom: 10px; }
+.ctx-role ul { margin: 2px 0 0; padding-left: 16px; }
+.ctx-role h4 { margin: 0 0 2px; font-size: 13px; }
+/* What this deck does not have yet, said once. */
+.cg-h { font-family: var(--body); font-size: 13px; font-weight: 600; color: var(--ink-soft); margin: 10px 0 4px; }
+.cg-list { list-style: none; margin: 0; padding: 0; columns: 2 360px; column-gap: 28px; }
+.cg-row { padding: 5px 0; border-top: 1px solid var(--rule); font-size: 13px; break-inside: avoid; }
+.cg-row .na-line, .cg-row p { display: inline; margin: 0; }
+.cg-t { color: var(--ink); font-weight: 600; margin-right: 8px; }
+.cg-what { color: var(--ink-soft); }
+.cg-row .todo-cmd { margin: 4px 0 0; width: auto; max-width: 100%; display: inline-flex; font-size: 12px; padding: 3px 8px; }
+.cg-row .todo-run { margin: 4px 8px 0 0; width: auto; display: inline-block; padding: 3px 10px; font-size: 12px; }
+.cg-fold { margin-top: 10px; border-top: 1px solid var(--rule); padding-top: 8px; }
+.cg-fold > summary { cursor: pointer; font-size: 13px; color: var(--ink-soft); }

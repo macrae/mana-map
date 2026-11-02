@@ -7,6 +7,7 @@ locators (real hit-testing), never `el.click()` in script — the Atlas review g
 shipped unclickable because its test skipped hit-testing.
 """
 import json
+import re
 
 import pytest
 
@@ -50,12 +51,12 @@ def test_every_deck_page_renders_without_a_script_error(browser, viz_server):
     assert checked >= 8
 
 
-def test_the_context_is_the_first_panel_with_card_links_and_hover_art(browser, viz_server):
+def test_the_overview_leads_and_the_context_carries_card_links_and_hover_art(browser, viz_server):
     slug = _with_context()[0]
     page, errors = _open(browser, viz_server, slug)
     try:
         first = page.locator("#panels section").first
-        assert first.get_attribute("id") == "panel-context"
+        assert first.get_attribute("id") == "panel-cover"
         refs = page.locator("#panel-context a.cardref")
         assert refs.count() >= 50
         assert refs.first.get_attribute("href").startswith("index.html?cards=")
@@ -116,5 +117,68 @@ def test_the_renderer_escapes_everything_it_does_not_mean(browser, viz_server):
         assert 'href="deck.html?deck=x"' in html
         assert 'data-card="Sol Ring"' in html
         assert "<strong>b</strong>" in html and "<em>i</em>" in html and "<code>c</code>" in html
+    finally:
+        page.close()
+
+
+def _first_deck(pred):
+    for d in _manifest():
+        if pred(d):
+            return d["slug"]
+    pytest.skip("no tracked deck fits")
+
+
+def test_the_decklist_shows_every_copy_in_the_standing_order(browser, viz_server):
+    """No copy count appeared anywhere on this page until 2026-11-02. Drives the real
+    page against cards.json: every card once, its quantity, non-lands before lands,
+    each alphabetical."""
+    slug = _first_deck(lambda d: (d.get("has") or {}).get("context"))
+    doc = json.loads((DECKS_DIR / slug / "cards.json").read_text())
+    page, errors = _open(browser, viz_server, slug)
+    try:
+        rows = page.locator("#panel-decklist .dl-row")
+        shown = [" ".join(t.split()) for t in rows.all_inner_texts()]
+        assert len(shown) == len(doc["cards"]) and shown
+        got = {re.sub(r"\s*\{.*$", "", t) for t in shown}
+        for c in doc["cards"]:
+            assert f"{c['quantity']} {c['name']}" in got, c["name"]
+        blocks = page.locator("#panel-decklist .dl-h").all_inner_texts()
+        assert "Lands" in " ".join(blocks)
+        page.click("#panel-decklist .dl-view[data-view=cost]")
+        assert page.locator("#panel-decklist .dl-row").count() == len(doc["cards"])
+        assert errors == []
+    finally:
+        page.close()
+
+
+def test_a_missing_thing_is_said_once_with_its_id_and_the_nav_lands(browser, viz_server):
+    """Absences moved into one strip. They are still STATED, or a new deck reads as a
+    broken one, and a deep link to a missing panel still lands."""
+    slug = _first_deck(lambda d: d.get("format") == "modern")
+    page, errors = _open(browser, viz_server, slug)
+    try:
+        ids = page.locator(".cg-row").evaluate_all("els => els.map(e => e.id)")
+        assert len(ids) == len(set(ids)) and "panel-goldfish" in ids
+        assert page.locator("#panel-goldfish .na-line").count() == 1
+        links = page.locator(".dossier-nav a").evaluate_all("els => els.map(a => a.getAttribute('href'))")
+        assert "#ch-decklist" in links
+        for href in links:
+            assert page.locator(href).count() == 1, href
+        assert page.evaluate("getComputedStyle(document.querySelector('.dossier-nav')).position") == "sticky"
+        assert errors == []
+    finally:
+        page.close()
+
+
+def test_the_page_never_calls_an_unsleeved_deck_sleeved(browser, viz_server):
+    """Every deck with no logged games said "This deck is sleeved", and a brewing deck
+    was stamped UNDER INVESTIGATION."""
+    slug = _first_deck(lambda d: not d.get("paper") and d.get("stage") == "dev")
+    page, errors = _open(browser, viz_server, slug)
+    try:
+        text = page.inner_text("#panels")
+        assert "This deck is sleeved" not in text
+        assert page.inner_text("#panel-cover .cov-stamp") == "BREWING"
+        assert errors == []
     finally:
         page.close()

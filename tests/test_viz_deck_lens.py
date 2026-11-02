@@ -278,22 +278,16 @@ def test_the_dossier_sections_match_the_python_registry():
         assert list(got[3]) == list(want[3]), f"{got[0]}: tiers differ"
 
 
-def test_the_cover_sheet_is_first_and_the_assessment_is_last():
-    """The order is the argument, so it is asserted rather than assumed.
-
-    A cover sheet you absorb in thirty seconds is the only thing that makes the
-    depth behind it usable, and the assessment is last BECAUSE it is the
-    analyst's opinion — a file where that sits inside the record loses trust,
-    which is what the old page did by rendering the diagnosis verdict as one
-    inline sentence in the middle of the audit panel.
-    """
+def test_the_overview_is_first_and_the_notes_are_last():
+    """The order is the argument, so it is asserted rather than assumed: where the
+    deck stands, what is in it, how it plays, the evidence, and the notes (which hold
+    the analyst's assessment) last, because a file where that opinion sits inside the
+    record loses trust."""
     from manamap.pilot.page_spec import DOSSIER_IDS
 
-    # PRD v2: the Deck Context leads, then the cover sheet.
-    assert DOSSIER_IDS[:2] == ["context", "cover"]
-    assert DOSSIER_IDS[-1] == "assessment"
-    assert DOSSIER_IDS.index("priors") < DOSSIER_IDS.index("logs"), (
-        "the coded table reads before the prose it summarises")
+    assert DOSSIER_IDS[:2] == ["overview", "decklist"]
+    assert DOSSIER_IDS[-1] == "notes"
+    assert DOSSIER_IDS.index("plays") < DOSSIER_IDS.index("measurements")
 
 
 def test_every_dossier_section_grants_a_tier_it_can_actually_mint():
@@ -308,8 +302,10 @@ def test_every_dossier_section_grants_a_tier_it_can_actually_mint():
         assert set(tiers) <= known, f"{sid}: {tiers}"
         assert len(promise) > 25, f"{sid} has no usable promise"
     grants = {s[0]: set(s[3]) for s in DOSSIER_SECTIONS}
-    # The captain's log is the pilot speaking. It cannot mint a measurement.
-    assert grants["logs"] == {"coach"}
-    assert grants["assessment"] == {"coach"}
-    # The cover sheet's three numbers are all seeded measurements.
-    assert grants["cover"] == {"data"}
+    # The games are the pilot speaking. They cannot mint a measurement.
+    assert grants["games"] == {"coach"}
+    assert grants["notes"] == {"coach"}
+    # The list is read from cards.json; nothing about it is an opinion.
+    assert grants["decklist"] == {"data"}
+    # Only the evidence chapter may mint a check mark.
+    assert [k for k, v in grants.items() if "verified" in v] == ["measurements"]

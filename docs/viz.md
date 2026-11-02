@@ -1603,26 +1603,32 @@ and transcribed into `deck-view.js`'s `DOSSIER` literal, with
 `render()`, so "what sections does this page have, and why that order" was
 answerable only by reading the assembly line.
 
-| # | section | what it holds | from |
+| # | chapter | what it holds | from |
 |---|---|---|---|
-| 1 | **Cover sheet** | mugshot, stamp, MO, engine health, three numbers | `info.json`, the manifest |
-| 2 | **Rap sheet** | one row per version: what changed, why, expected, observed | `versions.json` |
-| 3 | **Known associates** | the 99 by the job each card does | `deck_map.json` |
-| 4 | **Vitals** | the seeded diagnostic | `info.diagnostic` |
-| 5 | **Priors** | every game, one row, with a coded cause | `log.jsonl`, `log_causes.json` |
-| 6 | **Captain's logs** | the pilot's words, unedited | `log.jsonl` |
-| 7 | **Exhibits** | the evidence, stamped with the list it describes | *(pending)* |
-| 8 | **Open leads** | what is unresolved and which loop settles it | `info.open_questions` |
-| 9 | **Analyst's assessment** | the current read, dated, filed apart | `info.diagnosis` |
+| 1 | **Overview** | stage, price, three numbers, the Context's summary, what to do next | `info.json`, the manifest, `prices.json`, `CONTEXT.md` |
+| 2 | **Decklist** | every card with its copies, by name, cost or job, and the curve | `cards.json` |
+| 3 | **How it plays** | the game plan, cards by job, deck regions and map, what to fetch | `CONTEXT.md`, `deck_map.json`, `tutor_guide.json` |
+| 4 | **Mana** | the mana base and the deck targets | `mana_analysis.json`, `info.audit`, `audit.json` |
+| 5 | **Games** | every game, the pilot's words, pilot notes | `log.jsonl`, `log_causes.json`, `CONTEXT.md` |
+| 6 | **Measurements** | vitals, goldfish, Forge, targeting, bracket, DTI, combos, engine, verified lines | `info.json`, `sim/`, `stacks/` and their own files |
+| 7 | **Versions** | branches, version history, change history | `info.branches`, `versions.json`, `CONTEXT.md` |
+| 8 | **Notes** | open questions and leads, the brief, the shortlist, the assessment | `CONTEXT.md`, `info.json` |
 
-Four rules the sections are built to:
+Below them, **Not on this deck yet** lists every absence once. Rebuilt 2026-11-02 after a UX
+audit: one scrollable page with a sticky jump nav, no decklist before it (no copy count was
+in the rendered text of any deck), the summary four screens down, and thirteen of a new
+deck's twenty-two sections empty. Every panel keeps its `#panel-<id>`, a missing one on its
+row in the strip, so deep links and selectors hold. Plain names only: `PLAIN` in
+`deck-view.js` gives one title per panel whatever its data. `.dossier` scopes the layout,
+because `tokens.css` serves six pages.
 
-- **ALL NINE ALWAYS RENDER.** A tab that vanishes when its drawer is empty is
-  the "cleaned up into a narrative" failure — you can no longer tell an
-  un-played deck from one whose log you have not opened. Three sections used to
-  vanish and one (`vitals`) vanished on **nine of ten decks**, because
-  `diagnostic.json` is a gated artifact with no `STAGES` row so `absent()` never
-  found a todo for it.
+Rules the page is built to:
+
+- **EVERY ABSENCE IS STATED, ONCE.** This replaced "all nine always render", and it keeps
+  that rule's purpose: a new deck must not read as a broken one, and an unplayed deck must
+  not read as one whose log you have not opened. `absent()` and `na()` report to the strip
+  rather than drawing a panel, `na` (no such measure for this format, no command offered)
+  apart from `todo` (it can be made). A chapter with nothing in it is not drawn.
 - **THE ASSESSMENT IS LAST AND SEPARATE.** A file where the analyst's opinion
   sits inside the record loses trust, and the old page rendered the diagnosis
   verdict as one inline sentence in the middle of the audit panel.
@@ -1648,8 +1654,7 @@ Renders a deck's **committed pilot artifacts** and nothing else. Slug comes from
 `index.html?deck=<slug>` enters **Build** with that deck loaded rather than dropping
 the reader on an unfiltered map with a query string they cannot see.
 
-**The workbench half comes first**, because the questions a pilot sits down with are
-"where is this, and what do I do" — not "what shape is the mana curve". Those panels read
+The panels answering "where is this, and what do I do" sit in the Overview. They read
 `info.json`, the shape `deck-info --write` composes; the page renders it rather than
 re-deriving anything, so it cannot disagree with the command that owns each figure.
 

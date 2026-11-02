@@ -116,10 +116,9 @@ the fleet table is one row per deck sorted by recently played, needs game logs, 
 analysis, or optimisations identified. Every sort maps to a predicate `deck-info` already
 computes, so the page adds no judgement of its own.
 
-**The deck page** (`viz/deck.html?deck=<slug>`) — the workbench surface. What to do next,
-where the deck stands, every list it has been, what limits it, the engine, **the
-experiments and simulation runs with their intervals**, prescriptions, the captain's log,
-open questions, and the constellation. It renders `info.json` — the shape `deck-info`
+**The deck page** (`viz/deck.html?deck=<slug>`) — the workbench surface, one page in eight
+chapters: overview, decklist, how it plays, mana, games, measurements (**the experiments
+and simulation runs with their intervals**), versions and notes. It renders `info.json` — the shape `deck-info`
 composes — rather than re-deriving anything, so it cannot disagree with the command that
 owns each figure.
 

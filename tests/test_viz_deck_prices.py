@@ -47,8 +47,8 @@ def test_the_cover_quotes_the_total_with_its_source_and_date(browser, viz_server
         line = page.locator("#panel-cover .cov-price").inner_text()
         assert line.startswith("≈ $74"), line
         assert "(Manapool, 2026-10-09; 1 unpriced)" in line, line
-        # Beside Marks, in the same book.
-        assert dts.index("Price") == dts.index("Marks") + 1, dts
+        # Beside the deck line, in the same book.
+        assert dts.index("Price") == dts.index("Deck") + 1, dts
     finally:
         page.close()
 

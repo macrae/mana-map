@@ -7011,7 +7011,7 @@ def test_the_dossier_offers_no_button_it_cannot_press(browser, viz_server):
         state = page.evaluate("""() => ({
             apiReady: !!(window.Api && Api.ready),
             runButtons: document.querySelectorAll('.todo-run').length,
-            absent: document.querySelectorAll('.todo').length,
+            absent: document.querySelectorAll('.cg-row').length,
             commands: document.querySelectorAll('.todo-cmd code').length,
         })""")
         assert state["apiReady"] is False, "a static host answered /api/health"
@@ -9455,9 +9455,10 @@ def test_the_deck_page_puts_branches_right_after_next_with_every_state_badged(br
     try:
         page.wait_for_selector("#panel-branches", timeout=25000)
         order = page.evaluate("Array.from(document.querySelectorAll('section[id^=panel-]')).map(s => s.id)")
-        assert order.index("panel-branches") - order.index("panel-next") == 1, order
-        assert order.index("panel-branches") < len(order) - 5, "no longer the last panel"
-        assert "Branches" in page.text_content("#panel-branches h2")
+        # The first thing in the Versions chapter, which the sticky nav reaches.
+        first = page.evaluate("document.querySelector('#ch-versions section[id^=panel-]').id")
+        assert first == "panel-branches", order
+        assert "Branches" in page.text_content("#panel-branches .panel-title")
         states = page.locator("#panel-branches .br-state[data-state='open']")
         assert states.count() >= 1
         assert page.locator("#panel-branches details.branch-decided-fold").count() == (1 if decided else 0)
