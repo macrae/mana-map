@@ -8,13 +8,13 @@
   "axes": [
     {
       "axis": "mana-base",
-      "gap": 2,
+      "gap": 1,
       "measured": {
         "cards": [],
         "how": "land copies from deck-facts (copies, not entries)",
         "land_entries": 1,
         "unit": "copies",
-        "value": 22
+        "value": 23
       },
       "target": {
         "high": 26,
@@ -52,13 +52,13 @@
         "how": "mana_analysis.sources.total against source_targets (Karsten, 90%)",
         "per_colour": {
           "G": {
-            "have": 29,
-            "target": 13
+            "have": 28,
+            "target": 22
           }
         },
         "short": {},
         "unit": "sources above target (worst colour)",
-        "value": 16
+        "value": 6
       },
       "target": {
         "deck_size": 60,
@@ -92,12 +92,12 @@
     },
     {
       "axis": "creatures",
-      "gap": -7,
+      "gap": -9,
       "measured": {
         "cards": [],
         "how": "front-face creature copies",
         "unit": "copies",
-        "value": 25
+        "value": 27
       },
       "target": {
         "high": 18,
@@ -114,7 +114,7 @@
         "cards": [],
         "how": "front-face creature copies — the section counts bodies for the second wave after a sweeper, not wincon roles",
         "unit": "copies",
-        "value": 25
+        "value": 27
       },
       "target": {
         "high": null,
@@ -160,14 +160,14 @@
       "axis": "curve",
       "gap": 0,
       "measured": {
-        "above_four": 3,
+        "above_four": 6,
         "cards": [],
         "how": "nonland copies by mana value (copies, not entries)",
-        "nonland_copies": 38,
-        "one_and_two_drops": 14,
+        "nonland_copies": 37,
+        "one_and_two_drops": 16,
         "top_end": 6,
         "unit": "modal mana value",
-        "value": 4
+        "value": 2
       },
       "target": {
         "formula": "fundamental-turn",
@@ -201,17 +201,17 @@
   "commander": [],
   "counts": {
     "copies": 60,
-    "entries": 14,
-    "land_copies": 22,
+    "entries": 16,
+    "land_copies": 23,
     "lands": 1,
     "legendary": 0,
     "legendary_lands": 0,
     "legendary_permanents": 0,
-    "nonland": 13,
-    "nonlegendary": 14
+    "nonland": 15,
+    "nonlegendary": 16
   },
   "dead_searches": [],
-  "decklist_sha256_prefix": "5ac2c16908bf",
+  "decklist_sha256_prefix": "26fa7dab8357",
   "engine": {
     "available": false,
     "reason": "no goldfish_targets.json — the deck has not declared what it is trying to assemble"
@@ -229,11 +229,11 @@
       },
       "mana_analysis.json": {
         "current": true,
-        "decklist_sha256": "5ac2c16908bffdec0023ab82d745920601ca44258b2d539c10334365b3ec39b8",
+        "decklist_sha256": "26fa7dab8357b710a571cb943e1c5505d10e9a5500a790f2718757772350e52f",
         "present": true
       }
     },
-    "decklist_sha256": "5ac2c16908bffdec0023ab82d745920601ca44258b2d539c10334365b3ec39b8",
+    "decklist_sha256": "26fa7dab8357b710a571cb943e1c5505d10e9a5500a790f2718757772350e52f",
     "recon": {
       "as_of": null,
       "present": false
@@ -255,10 +255,10 @@
     "Over target: creatures.",
     "Permanent class(es) with no answer detected: artifact, enchantment, graveyard, land. The detection is an oracle-text heuristic and counterspells are excluded from it, so this is a floor on breadth — read the cards before calling a class uncovered.",
     "No engine block: no goldfish_targets.json — the deck has not declared what it is trying to assemble. Authoring goldfish_targets.json is what makes the engine questions answerable at all.",
-    "Roles come from card_roles.json, which classifies 78.6% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
+    "Roles come from card_roles.json, which classifies 81.2% of this deck. An axis count is a floor: a card the taxonomy has no pattern for is invisible to it, not absent from the deck."
   ],
   "roles": {
-    "coverage": 0.7857,
+    "coverage": 0.8125,
     "no_role": [
       "Fanatical Strength",
       "Overgrowth",
