@@ -4,8 +4,8 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · G · 60 cards
-- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
-- **Colours:** G · **lands:** 22
+- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Colours:** G · **lands:** 23
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-green) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-green)
 <!-- /ctx:gen summary -->
@@ -69,7 +69,7 @@ The deck is unplayed, so none of this is yet checked against real beginners.
 
 <!-- ctx:gen numbers -->
 - Goldfish: not modelled for Modern — the goldfish is Commander-only (docs/simulation.md).
-- Colour on curve (lands + rocks): G 100%
+- Colour on curve (lands + rocks): G 98%
 <!-- /ctx:gen numbers -->
 
 ## Pilot notes
