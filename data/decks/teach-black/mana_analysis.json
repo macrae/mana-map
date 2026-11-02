@@ -1,0 +1,102 @@
+{
+  "slug": "teach-black",
+  "decklist_sha256": "eb69ec284261a9391a3d9c79ac84d849548eda40f7eb733fe48bee07a3c47189",
+  "format": "modern",
+  "lands": {
+    "total": 24,
+    "entries": 1,
+    "life": {
+      "recurring_per_tap_cycle": 0,
+      "one_time_on_entry": 0
+    },
+    "enters_tapped": 0,
+    "enters_tapped_always": 0,
+    "classes": {
+      "basic": 24
+    },
+    "list": [
+      {
+        "name": "Swamp",
+        "copies": 24,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "B"
+        ]
+      }
+    ]
+  },
+  "sources": {
+    "lands": {
+      "W": 0,
+      "U": 0,
+      "B": 24,
+      "R": 0,
+      "G": 0
+    },
+    "nonland": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 0
+    },
+    "total": {
+      "W": 0,
+      "U": 0,
+      "B": 24,
+      "R": 0,
+      "G": 0
+    },
+    "gated": {
+      "count": 0,
+      "names": [],
+      "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
+    },
+    "producers": []
+  },
+  "pips": {
+    "B": {
+      "total_pips": 47.0,
+      "max_pips": 2,
+      "cards": 36,
+      "earliest_turn": 1,
+      "effective_pips": 2
+    }
+  },
+  "shares": {
+    "B": {
+      "pip_share": 1.0,
+      "source_share": 1.0
+    }
+  },
+  "source_targets": {
+    "B": 22
+  },
+  "on_curve_probability": {
+    "lands_only": {
+      "B": 0.945
+    },
+    "with_rocks_and_dorks": {
+      "B": 0.945
+    },
+    "lands_only_ungated": {
+      "B": 0.945
+    }
+  },
+  "ramp": {},
+  "goldfish": {
+    "land_drop_hit_rate_by_turn": {},
+    "mean_available_mana_by_turn": {}
+  },
+  "assumptions": [
+    "Colour probabilities are hypergeometric draws from a 60-card library — no mulligans, no card selection, no fetching decisions.",
+    "A source counts only for mana it produces unconditionally; restricted mana (“spend this mana only…”) counts for nothing (the deck-builder's rule).",
+    "Hybrid pips charge half a pip to each side.",
+    "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
+  ],
+  "notes": [
+    "the goldfish is Commander-only; not run for Modern"
+  ]
+}
