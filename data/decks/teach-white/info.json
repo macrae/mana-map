@@ -1,0 +1,169 @@
+{
+  "slug": "teach-white",
+  "format": "modern",
+  "commander": [],
+  "lifecycle": null,
+  "stage": "dev",
+  "gates": {
+    "to": "bench",
+    "met": 3,
+    "of": 6,
+    "blocking": [
+      "short sim batch",
+      "combo audit",
+      "engine declared"
+    ]
+  },
+  "colour_identity": [
+    "W"
+  ],
+  "size": 60,
+  "lands": 24,
+  "status": {
+    "complete": 6,
+    "of": 14,
+    "stale": [],
+    "older_model": [],
+    "invalid": [],
+    "verified": true,
+    "missing": [
+      "frame",
+      "map",
+      "engine",
+      "stacks",
+      "tutors",
+      "prose",
+      "log",
+      "issue"
+    ],
+    "todo": [
+      {
+        "stage": "frame",
+        "what": "the strategist's read — `research-strategy` consult",
+        "how": "/research-strategy — MODE consult, on teach-white"
+      },
+      {
+        "stage": "map",
+        "what": "the constellation — `deck-map`",
+        "how": "manamap pilot deck-map teach-white"
+      },
+      {
+        "stage": "engine",
+        "what": "how it RUNS — `analyze-engine` loop",
+        "how": "/analyze-engine teach-white"
+      },
+      {
+        "stage": "stacks",
+        "what": "checker-passed lines: the only fact tier",
+        "how": "/resolve-stack — one board, one rules domain, cited"
+      },
+      {
+        "stage": "tutors",
+        "what": "the tutor guide — `tutor-guide`",
+        "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
+      },
+      {
+        "stage": "prose",
+        "what": "the pilot's notes — `write-manual`",
+        "how": "/write-manual teach-white"
+      },
+      {
+        "stage": "log",
+        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+        "how": "manamap pilot deck-notes teach-white add \"<what happened>\" --result win|loss --opponents 3"
+      },
+      {
+        "stage": "issue",
+        "what": "authored identity: name and commander (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/teach-white/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state teach-white archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
+      }
+    ]
+  },
+  "brief": {
+    "playstyle": null,
+    "commander_rationale": null,
+    "mana": null,
+    "design_rules": [],
+    "win_conditions": null,
+    "targets": {},
+    "notes": null,
+    "must_include": [],
+    "must_exclude": []
+  },
+  "branches": [],
+  "diagnostic": null,
+  "bracket": null,
+  "deckcheck": null,
+  "combos": {
+    "summary": {
+      "excluded_commander_assumption": 0,
+      "highest_bracket": null,
+      "included": 0,
+      "infinite": 0,
+      "near": 1,
+      "near_total": 1,
+      "two_card_infinite": 0
+    },
+    "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
+    "top": []
+  },
+  "paper": null,
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "first_played": null,
+    "undebriefed": [],
+    "causes": {},
+    "cause_counts": {},
+    "feel": {},
+    "feel_n": 0,
+    "marks": {},
+    "marks_n": 0,
+    "marked": {}
+  },
+  "model": {
+    "goldfish": {
+      "title": "Goldfish",
+      "facts": {
+        "run": {
+          "absent_because": "not modelled for Modern — the goldfish is Commander-only",
+          "weight": "body"
+        }
+      },
+      "tier": "data",
+      "source": "goldfish_metrics.json"
+    }
+  },
+  "goldfish": null,
+  "engine_health": null,
+  "engine": null,
+  "diagnosis": null,
+  "audit": {
+    "archetype": null,
+    "under": [
+      "interaction"
+    ],
+    "over": [
+      "creatures"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [],
+  "simulation": null,
+  "experiments": null,
+  "decisions": null,
+  "next": [
+    "not marked as built in paper — if it is sleeved, `deck-version teach-white paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "nothing in the captain's log — play it, then `deck-notes teach-white add \"…\" --result win|loss --opponents N`",
+    "the goldfish loop (`try`, `net-change`) and the Forge probe are Commander-only — not offered for Modern; `mana-analysis`, `deck-combos` and `deck-audit` are the measures here"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}
