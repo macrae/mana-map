@@ -18,7 +18,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "rating.json"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -2895,13 +2897,15 @@
     "release": "v1.1.0"
   },
   "record": {
-    "games": 2,
+    "games": 3,
     "win": 1,
-    "loss": 1,
+    "loss": 2,
     "draw": 0,
-    "last_played": "2026-09-15",
+    "last_played": "2026-10-29",
     "first_played": "2026-08-28",
-    "undebriefed": [],
+    "undebriefed": [
+      "003"
+    ],
     "causes": {
       "001": "won",
       "002": "politics"
@@ -3463,6 +3467,8 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (rating.json) — `deck-status gishath` names them; fix before anything else reads them",
+    "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"

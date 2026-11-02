@@ -1,6 +1,6 @@
 # Gishath, Sun's Avatar — Deck Context
 
-<!-- ctx:written-for version=v1.1.0 sha=80701018c37d at=2026-10-07 -->
+<!-- ctx:written-for version=v1.1.0 sha=80701018c37d at=2026-11-02 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Gishath, Sun's Avatar](https://manamap.seanmacrae.com/viz/index.html?cards=Gishath%2C+Sun%27s+Avatar)
@@ -14,19 +14,21 @@
 
 Gishath is a Naya dinosaur deck built around one swing. [Gishath, Sun's Avatar](https://manamap.seanmacrae.com/viz/index.html?cards=Gishath%2C+Sun%27s+Avatar) has haste, vigilance and trample, and when he connects he reveals that many cards and drops every dinosaur in them onto the battlefield. The rest of the deck gets him there: ramp and cost reducers to cast him, haste and pumps so the 7/6 connects, and a pile of dinosaurs worth revealing.
 
-The pilot's read after two games: the commander and his trigger are the real threat, and the mid-size dinosaurs ahead of him soak up the table's removal. The deck is a fair battlecruiser at bracket 3. It has no infinite combo, and the famous Marauding Raptor plus Polyraptor line is a draw machine, not an infinite (see Open questions).
+The pilot's read after three games: the commander and his trigger are the real threat, and the mid-size dinosaurs ahead of him soak up the table's removal. The deck is a fair battlecruiser at bracket 3. It has no infinite combo, and the famous Marauding Raptor plus Polyraptor line is a draw machine, not an infinite (see Open questions).
 
 ## How it plays
 
 **The plan.** Ramp early with [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring), [Arcane Signet](https://manamap.seanmacrae.com/viz/index.html?cards=Arcane+Signet), [Nature's Lore](https://manamap.seanmacrae.com/viz/index.html?cards=Nature%27s+Lore), [Skyshroud Claim](https://manamap.seanmacrae.com/viz/index.html?cards=Skyshroud+Claim) and [Bloom Tender](https://manamap.seanmacrae.com/viz/index.html?cards=Bloom+Tender). Cheapen the dinosaurs with [Knight of the Stampede](https://manamap.seanmacrae.com/viz/index.html?cards=Knight+of+the+Stampede), [Otepec Huntmaster](https://manamap.seanmacrae.com/viz/index.html?cards=Otepec+Huntmaster), [Urza's Incubator](https://manamap.seanmacrae.com/viz/index.html?cards=Urza%27s+Incubator) and [Hunting Velociraptor](https://manamap.seanmacrae.com/viz/index.html?cards=Hunting+Velociraptor). Land Gishath, swing, reveal, and the board fills itself. The Numbers section says how often the engine is online by turn five and how late the commander is usually cast.
 
-**Why one connect ends it.** A big reveal puts several dinosaurs out at once, and [Pantlaza, Sun-Favored](https://manamap.seanmacrae.com/viz/index.html?cards=Pantlaza%2C+Sun-Favored), [Quartzwood Crasher](https://manamap.seanmacrae.com/viz/index.html?cards=Quartzwood+Crasher), [Curious Altisaur](https://manamap.seanmacrae.com/viz/index.html?cards=Curious+Altisaur) and [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes) turn each arrival into cards, tokens or damage. [Hunter's Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Hunter%27s+Insight), [Overwhelming Stampede](https://manamap.seanmacrae.com/viz/index.html?cards=Overwhelming+Stampede) and [Savage Stomp](https://manamap.seanmacrae.com/viz/index.html?cards=Savage+Stomp) still make the swing bigger. A bigger swing means a bigger reveal and more commander damage. Commander damage has ended both of the pilot's Gishath wins.
+**Why one connect ends it.** A big reveal puts several dinosaurs out at once, and [Pantlaza, Sun-Favored](https://manamap.seanmacrae.com/viz/index.html?cards=Pantlaza%2C+Sun-Favored), [Quartzwood Crasher](https://manamap.seanmacrae.com/viz/index.html?cards=Quartzwood+Crasher), [Curious Altisaur](https://manamap.seanmacrae.com/viz/index.html?cards=Curious+Altisaur) and turn each arrival into cards, tokens or damage. [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes) does its part only for dinosaurs that arrive before the attack (see Pilot notes). [Hunter's Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Hunter%27s+Insight), [Overwhelming Stampede](https://manamap.seanmacrae.com/viz/index.html?cards=Overwhelming+Stampede) and [Savage Stomp](https://manamap.seanmacrae.com/viz/index.html?cards=Savage+Stomp) still make the swing bigger. A bigger swing means a bigger reveal and more commander damage. Commander damage has ended both of the pilot's Gishath wins.
 
 **Surviving the wraths.** Tables wipe a lot. The pilot's best games came from rebuilding faster than the table could answer, and from holding creatures back through wipe waves on purpose. [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act) is the one-sided wipe when your own board is empty. [Eerie Interlude](https://manamap.seanmacrae.com/viz/index.html?cards=Eerie+Interlude), [Heroic Intervention](https://manamap.seanmacrae.com/viz/index.html?cards=Heroic+Intervention) and [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver) save the board when it is not. [Temple Altisaur](https://manamap.seanmacrae.com/viz/index.html?cards=Temple+Altisaur) shrugs off damage wipes.
 
 **Weak spots.** Green is the pain. The pilot got stuck holding double-green dinosaurs, and the Numbers section shows red is the thinnest colour on curve. The enrage package ([Trapjaw Tyrant](https://manamap.seanmacrae.com/viz/index.html?cards=Trapjaw+Tyrant), [Wrathful Raptors](https://manamap.seanmacrae.com/viz/index.html?cards=Wrathful+Raptors)) idles because the deck has too few ways to ping its own dinosaurs. The goldfish has no blockers and no removal, so it flatters the board.
 
-**Closing.** The pilot's own lesson from the loss: when lethal is on the board, swing everything at everyone. Holding back cost a game that was won.
+**Closing.** The pilot's own lesson from both losses: once the board is ahead, commit the attacks. Swing everything at everyone, and deal with the real threat at the table. Holding back cost games that were won.
+
+**Accept losing dinosaurs.** The pilot's game plan point from game 003: this is a creature deck, and it wins through trample and big attacks. Trading dinosaurs to hurt their boards is fine. Being shy with them is how the deck loses.
 
 ## Cards by role
 
@@ -103,24 +105,27 @@ Goldfish, 10,000 seeded games, measured on v1.1.0 (V5), 2026-09-20. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **2 game(s):** 1 won, 1 lost · 2026-08-28 to 2026-09-15
+- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-29
 - **How games ended:** politics 1, won 1
+- **Not yet read:** 003
 <!-- /ctx:gen record -->
 
-Two games are logged. The Record block has the count.
+Three games are logged. The Record block has the count.
 
 - **001, win, three-player pod (28 Aug).** The table spent its wraths on mid-tier dinosaurs, then [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act) cleared their side for free while the pilot's board was empty. Gishath hit for 7, revealed 7 and found five dinosaurs. Next turn a pump made it 14 and lethal by commander damage. That list had Enlarge; it has since been cut.
 - **002, loss, four-player pod (15 Sep).** Played on the v1.0.0 list. Early Sol Ring and Signet, then long green screw. Gishath pumped to 16/16 and killed one opponent by commander damage. The pilot then attacked only Oliver, Alex saved him, and Oliver drained the pilot out. Swinging at both would have won.
+- **003, loss, five-player pod at the pilot's house (29 Oct).** The first game on v1.1.0. The start was slow, as the pilot says Gishath always is: four mana on turn four and nothing on the board. Then [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) doubled the mana and Gishath came down. [Sunfrill Imitator](https://manamap.seanmacrae.com/viz/index.html?cards=Sunfrill+Imitator) copied him for a big first swing, and the dinosaurs kept arriving in waves. An opponent's removal later cleared enchantments and artifacts, [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) among them. [Regal Behemoth](https://manamap.seanmacrae.com/viz/index.html?cards=Regal+Behemoth) doubled the mana again, and Gishath came back through commander tax with a very large dinosaur board. The pilot calls the loss his own piloting error. He had the momentum and the table was targeting him, but in the last turns he swung with only a few dinosaurs and did not commit. He was nervous about losing them. He left Alex's growing board of robots, treasure and one huge creature alone, and he skipped the weaker decks he could have hit. Alex won, late in the game.
 
-**Patterns.** The commander plus the trigger is the threat, and the bodies ahead of him soak removal. Commander damage ends games. The two logged mistakes were about closing, not the list.
+**Patterns.** The commander plus the trigger is the threat, and the bodies ahead of him soak removal. Commander damage ends games. All three games turned on closing, not the list: the two losses (002, 003) were both a board that was ahead and attacks that were not committed. In 003 the pilot also says the doubling effects carried the deck back after removal. On [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes), the pilot found in play that it works less well with Gishath than he expected, because Gishath's dinosaurs arrive after the attack. He only gets copies of creatures cast earlier, and of arrivals with enter-the-battlefield effects. See Open questions.
 
-**The pilot's follow-ups.** Audit the green sources. Rethink the enrage package. Close lethal when it is on the board, and protect planeswalkers. The v1.1.0 land and mana changes were made after the green complaint; neither game has been played on v1.1.0 yet.
+**The pilot's follow-ups.** Audit the green sources. Rethink the enrage package. Close lethal when it is on the board, and protect planeswalkers. The v1.1.0 land and mana changes were made after the green complaint; game 003 was the first on v1.1.0, and it raised no green complaint in his words. Commit attacks when ahead, and pick the real threat at the table to hit.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.1.0 · V5** (2026-09-20) — in: Arid Mesa, Bloodstained Mire, Bloom Tender, Hunting Velociraptor, Molten Echoes, Purphoros, God of the Forge, Savage Order, Savage Stomp …; out: Alpine Meadow, Arctic Treeline, Austere Command, Beast Within, Boros Signet, Clifftop Retreat, Commercial District, Enlarge …
   - merge `mana-v1`: objective stall read **not met** — The pilot has directed the merge and is buying the cards; sourcing is not a question this gate needs to answer here.
+  - played 1: 0W 1L
 - **v1.0.0 · V4** (2026-09-11) — in: Earthshaker Dreadmaw, Enlarge, Kinjalli's Sunwing, Knight of the Stampede, Runic Armasaur, Sunfrill Imitator; out: Cultivate, Forerunner of the Empire, Intrepid Paleontologist, Polyraptor, Ranging Raptors, Ripjaw Raptor. _the pilot's sleeved Gishath list, checked in and locked 2026-09-11 (six swaps on the bench list, now v0.9.0). The staged cart-v1 branch is reserved the name v1.1.0 for when the cards are green-lit._
   - played 1: 0W 1L
 - **v0.9.0 · V3** (2026-08-05) — in: Arctic Treeline, Commercial District, Windswept Heath; out: . _the bench list before the paper check-in: what the repo held from 2026-07-28 until the pilot's sleeved list arrived. Was v1.0.0 until 2026-09-11, when the pilot named the sleeved list v1.0.0._
@@ -139,7 +144,9 @@ Before that, v1.0.0 (11 Sep) was the pilot's sleeved paper list, six swaps off t
 - Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
 <!-- /ctx:gen queue -->
 
-- **Does v1.1.0 fix the green problem?** Testable: with the new fetches and Bloom Tender, hands with double-green dinosaurs get cast on time. The Numbers section's colour-on-curve line is where to read it. Needs real games on v1.1.0.
+- **Does [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes) earn its slot with Gishath?** The pilot's view, not a decision: it does not work as well as he expected, since Gishath's dinosaurs come in after the attack, so it only copies what was cast before and enter-the-battlefield effects. He wants this explored and thinks there may be a better way to do what he is after. Testable: swap it for a different payoff for creatures that arrive before combat, and look at how much the swing grows. The Numbers section has no figure for this. Missing: how often it is on the board before Gishath attacks.
+- **Does the pilot's habit of attacking small fix the closing problem?** Nothing to test in the list. A claim to try in the next game: once the board is clearly ahead, swing every dinosaur at the biggest threat and accept losses. Expected effect: games end in a win rather than a loss to the player left alone.
+- **Does v1.1.0 fix the green problem?** Testable: with the new fetches and Bloom Tender, hands with double-green dinosaurs get cast on time. The Numbers section's colour-on-curve line is where to read it. One game on v1.1.0 so far, 003, and the pilot raised no green trouble there.
 - **Is the enrage package worth its slots?** The pilot says it idles for lack of pingers. [Trapjaw Tyrant](https://manamap.seanmacrae.com/viz/index.html?cards=Trapjaw+Tyrant) and [Wrathful Raptors](https://manamap.seanmacrae.com/viz/index.html?cards=Wrathful+Raptors) are the test cases. The Numbers section's enrage line shows how rarely it is drawn.
 - **Marauding Raptor plus Polyraptor** was refuted as an infinite: it is a draw machine for the whole table. Neither card is in the 99 now. Only revisit if someone proposes a way to stop the table drawing.
 - **Forge:** the last run was on V4, an older list. Whether the AI plays the new cards has not been probed.
@@ -149,3 +156,4 @@ Before that, v1.0.0 (11 Sep) was the pilot's sleeved paper list, six swaps off t
 
 - 2026-10-07 · scaffolded by `manamap pilot context`
 - 2026-10-07 · Keeper · seed: first context, from the log, the verified stacks and the older agent prose
+- 2026-11-02 · Keeper · pilot log 003 (2026-10-29): a piloting loss with the board ahead; Molten Echoes questioned

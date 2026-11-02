@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=v2.2.0 sha=8df06ee13607 at=2026-10-27 -->
+<!-- ctx:written-for version=v2.2.0 sha=8df06ee13607 at=2026-11-02 -->
 
 
 <!-- ctx:gen summary -->
@@ -199,8 +199,9 @@ The goldfish does not model the modal plan, the equipment, or interaction, so tr
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **4 game(s):** 0 won, 2 lost · 2026-10-06 to 2026-10-27
+- **5 game(s):** 0 won, 3 lost · 2026-10-06 to 2026-10-29
 - **How games ended:** raced 2, combo 1, won 1
+- **Not yet read:** 005
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -252,11 +253,24 @@ The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003
 Read with the earlier games: 002 said wheels are finishers and need the commanders out first, 003 said slow and no removal, and 004 says the commanders-first plan can stall on a hand with no wheel and no creature to carry it. The engine pieces worked in this game. The problem was the hand and the opponent's speed, and one game cannot split those. It is the first game on v2.2.0 and neither [Razorkin Needlehead](https://manamap.seanmacrae.com/viz/index.html?cards=Razorkin+Needlehead) nor [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) is mentioned in the log.
 
 
+**005 (2026-10-29, three-player game at the pilot's house, a loss).** Alex piloted the pilot's own Goblin Storm deck and won; David played a new golem deck. Sean was on Sharknado. Purphoros pinged the table while goblins kept arriving, and Electro Duplicate finished it. Sean's read, partly piloting and maybe some tuning. No cuts are named.
+
+- **The keep again.** Ramp, small creatures and a wheel. Sean now questions keeping wheels in an opening hand at all. His view: wheels are payoffs, not setup, and small ones may be the exception.
+- **The wheel that worked.** [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako) got huge off a wheel. With the Mako out, Sean discarded six or seven cards for about +6/+6, with a +1/+1-and-trample effect on the table and [Glint-Horn Buccaneer](https://manamap.seanmacrae.com/viz/index.html?cards=Glint-Horn+Buccaneer) ready. Sean thought he could then bring out a commander with flying. The Mako stays, per the pilot.
+- **Sequencing felt off.** He does not think he kept the right hand or played it in the right order, and he says he needs to pilot the deck more to learn what to look for.
+- **Discard without draw is awkward.** Some cards say discard a card, and if you do, get a counter or an effect, with no card back. With two or three cards in hand he wants the effect but does not want to discard any of them. He needs the draw on the other end.
+- **The commanders are expensive and arrive too slowly.** He compares it to the Ur-Dragon deck, which needed ramp to get its commanders out. Some win lines want both out. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Embercleave](https://manamap.seanmacrae.com/viz/index.html?cards=Embercleave) were in hand and he never had a commander to carry them.
+- **Distracted by small creatures.** The small discarding creatures are fine and block, but he spent resources on them instead of the win line. His two lines: a commander out, wheel into it, make it big and give it flying; or [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) out, discard, keep wheeling and pinging, then combat damage.
+
+His words: "it's there... some piloting stuff and maybe some tuning... it's all good." He still rates the deck.
+
+Read with 002 and 004: the hand he keeps is the doubt in three games out of five. Games 002, 004 and 005 all describe a keep heavy on wheels or lands with little to cast. The commanders-first plan needs a hand that gets a commander down.
+
 ## Change history
 <!-- ctx:gen history -->
 - **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
   - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
-  - played 1: 0W 1L
+  - played 2: 0W 2L
 - **v2.1.1 · V11** (2026-10-27) — in: Adarkar Wastes, Sea of Clouds; out: Mystic Monastery, Opal Palace. _powertune-v1 merged: a land pass (Sea of Clouds, Adarkar Wastes)_
   - merge `powertune-v1`: objective kill_by_6 read **not met** — the pilot's word 2026-10-27: merge the land pass for now
 - **v2.1.0 · V10** (2026-10-26) — in: Chaos Warp, Consecrated Sphinx, Deflecting Swat, Faerie Mastermind, Get Lost, Ghostly Pilferer, Grand Abolisher, Hallowed Fountain …; out: Alhammarret's Archive, Campfire, Champion's Helm, Chasm Skulker, Collector's Vault, Ferrous Lake, Fireshrieker, Genji Glove …. _answers-v1 merged: interaction and standing draw; Jeska's Will out for Magmakin Artillerist (three Game Changers, bracket 3)_
@@ -303,7 +317,7 @@ Cuts worth watching: Swiftfoot Boots carried the protection in game 001, and Lib
 - 5 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list has had four games, one of them on v2.2.0 (004, a loss to a faster deck), so these are things to test, not swaps.
+The list has had five games, two of them on v2.2.0 (004 and 005, both losses to faster decks), so these are things to test, not swaps.
 - Interaction: with removal, counters and Grand Abolisher added, does the commander survive to swing more often on a real table? Needs games on v2.1.0, with a note of what was aimed at it.
 - Slow start (003; 004 is a different shape of stall): Sean suspects either sequencing or the draw. Does the first commander land on turn four or five more often than before, and what was in hand when it did not? The deploy-turn read for the new list is missing and needs a game or two with the opening hand noted.
 - Modal choice: does Shabraz-first, with Brallin as the pivot when Torbran or Gratuitous Violence arrives, put 21 on one defender more often than holding both back?
@@ -314,6 +328,8 @@ The list has had four games, one of them on v2.2.0 (004, a loss to a faster deck
 - Red: after the land pass, is red still the colour that stalls the hand? Sean's opening-hand log answers it.
 - Tutors: do Idyllic Tutor and Stoneforge Mystic find a line in real games, or sit as slow cards?
 - Mana: Sean logs his opening hand, whether he kept it, and his lands by turn, so a land-count problem can be told from a sequencing one (Q011).
+- Opening hands (005, 002, 004): when Sean keeps a hand with a wheel and no commander line, does he reach a commander on the battlefield later than when he keeps ramp plus a commander or payoff? Expected: a wheel in the opening seven adds nothing until a commander is out. His opening-hand log can show it.
+- Focus (005): if Sean plays only the commander lines (a commander out, wheel into it; or Brallin, discard, ping) and holds small creatures back, does a game end sooner or does the table get ahead? Expected: fewer turns spent on side plays. Needs two or three games with a note of what he held back.
 - Which good cards are discarded to fire a wheel, and is there a way to play them out first?
 
 ## Context changelog
@@ -330,3 +346,4 @@ The list has had four games, one of them on v2.2.0 (004, a loss to a faster deck
 - 2026-10-27 · Keeper · deck change: powertune-v1 merged as v2.1.1 (land pass)
 - 2026-10-27 · Keeper · deck change: sharks-v1 merged as v2.2.0 (Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass)
 - 2026-10-27 · Keeper · pilot log 004: first v2.2.0 game, raced by Alex's warp deck; no wheel, land-heavy keep
+- 2026-11-02 · Keeper · pilot log 005 (2026-10-29): keep, sequencing and slow commanders; piloting first, maybe tuning
