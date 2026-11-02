@@ -1,0 +1,128 @@
+{
+  "slug": "teach-green",
+  "decklist_sha256": "5ac2c16908bffdec0023ab82d745920601ca44258b2d539c10334365b3ec39b8",
+  "format": "modern",
+  "lands": {
+    "total": 22,
+    "entries": 1,
+    "life": {
+      "recurring_per_tap_cycle": 0,
+      "one_time_on_entry": 0
+    },
+    "enters_tapped": 0,
+    "enters_tapped_always": 0,
+    "classes": {
+      "basic": 22
+    },
+    "list": [
+      {
+        "name": "Forest",
+        "copies": 22,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "G"
+        ]
+      }
+    ]
+  },
+  "sources": {
+    "lands": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 22
+    },
+    "nonland": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 7
+    },
+    "total": {
+      "W": 0,
+      "U": 0,
+      "B": 0,
+      "R": 0,
+      "G": 29
+    },
+    "gated": {
+      "count": 0,
+      "names": [],
+      "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
+    },
+    "producers": [
+      {
+        "name": "Drumhunter",
+        "kind": "ramp:dork",
+        "cmc": 4.0,
+        "produces": []
+      },
+      {
+        "name": "Llanowar Elves",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "G"
+        ]
+      },
+      {
+        "name": "Sakura-Tribe Springcaller",
+        "kind": "ramp:dork",
+        "cmc": 4.0,
+        "produces": [
+          "G"
+        ]
+      }
+    ]
+  },
+  "pips": {
+    "G": {
+      "total_pips": 41.0,
+      "max_pips": 2,
+      "cards": 38,
+      "earliest_turn": 1,
+      "effective_pips": 1
+    }
+  },
+  "shares": {
+    "G": {
+      "pip_share": 1.0,
+      "source_share": 1.0
+    }
+  },
+  "source_targets": {
+    "G": 13
+  },
+  "on_curve_probability": {
+    "lands_only": {
+      "G": 0.989
+    },
+    "with_rocks_and_dorks": {
+      "G": 0.999
+    },
+    "lands_only_ungated": {
+      "G": 0.989
+    }
+  },
+  "ramp": {
+    "ramp:dork": 10,
+    "ramp:land": 4
+  },
+  "goldfish": {
+    "land_drop_hit_rate_by_turn": {},
+    "mean_available_mana_by_turn": {}
+  },
+  "assumptions": [
+    "Colour probabilities are hypergeometric draws from a 60-card library — no mulligans, no card selection, no fetching decisions.",
+    "A source counts only for mana it produces unconditionally; restricted mana (“spend this mana only…”) counts for nothing (the deck-builder's rule).",
+    "Hybrid pips charge half a pip to each side.",
+    "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
+  ],
+  "notes": [
+    "the goldfish is Commander-only; not run for Modern"
+  ]
+}
