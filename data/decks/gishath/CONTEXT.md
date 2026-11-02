@@ -106,7 +106,7 @@ Goldfish, 10,000 seeded games, measured on v1.1.0 (V5), 2026-09-20. Each group b
 
 <!-- ctx:gen record -->
 - **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-29
-- **How games ended:** politics 1, won 1
+- **How games ended:** politics 2, won 1
 - **Not yet read:** 003
 <!-- /ctx:gen record -->
 
