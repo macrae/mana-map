@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · W · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
 - **Colours:** W · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 1 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-white) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-white)
@@ -90,7 +90,7 @@ Nothing has been played. Everything above is the design intent, not something a 
 ## Change history
 
 <!-- ctx:gen history -->
-- **v1.0.0 · V1** (2026-11-02) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
+- **v1.0.0 · V1** (2026-11-03) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
 <!-- /ctx:gen history -->
 
 The first list had Karametra's Blessing as the trick and a third Nyx-Fleece Ram. Both are gone before any game. We took out all three Blessings and one Ram and put in two Mighty Leap and two Pacifism. Why: white gained its first answer to big creatures, and a cleaner trick. Mighty Leap replaces the Blessing as the trick in the stack lesson. Saved and tagged v1.0.0, unplayed, calibrated by argument only.

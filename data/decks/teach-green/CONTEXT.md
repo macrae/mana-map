@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · G · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** v1.1.0 (V2) · **status:** on the bench (dev)
 - **Colours:** G · **lands:** 23
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-green) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-green)
@@ -95,7 +95,7 @@ No games by people yet. Fill this after the first game against teach-black, noti
 ## Change history
 
 <!-- ctx:gen history -->
-- **v1.1.0 · V2** (2026-11-02) — in: Penumbra Spider, Sentinel Spider, Thornweald Archer; out: Giant Spider. _G2: Forge round robins showed Green flooding and losing to flyers; 42% in the confirming sample, up from about 28%_
+- **v1.1.0 · V2** (2026-11-03) — in: Penumbra Spider, Sentinel Spider, Thornweald Archer; out: Giant Spider. _G2: Forge round robins showed Green flooding and losing to flyers; 42% in the confirming sample, up from about 28%_
 - **v1.0.0 · V1** (2026-11-02) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
 <!-- /ctx:gen history -->
 

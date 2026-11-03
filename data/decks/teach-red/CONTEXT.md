@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · R · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** V2 · **status:** on the bench (dev)
 - **Colours:** R · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-red) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-red)

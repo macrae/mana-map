@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · U · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
 - **Colours:** U · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-blue) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-blue)
@@ -92,7 +92,7 @@ Things to explain at the table: hexproof on Plumecreed Escort, casting Mystic Re
 ## Change history
 
 <!-- ctx:gen history -->
-- **v1.0.0 · V1** (2026-11-02) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
+- **v1.0.0 · V1** (2026-11-03) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
 <!-- /ctx:gen history -->
 
 v1.0.0, first teaching list, unplayed, calibrated by argument only. Three mana was overloaded and two mana empty. Out: Wind Drake (all copies), Frost Lynx (some copies), Claustrophobia (one copy), Cloudkin Seer (one copy), Geist of the Archives (one copy), Pestermite (one copy). In: Plumecreed Escort, Merfolk Looter, Mystic Restraints, Curator of Mysteries. Wind Drake went because Air Elemental and the other flyers already teach flying. Whether it plays better is not yet known.

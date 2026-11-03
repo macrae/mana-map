@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · B · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
 - **Colours:** B · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-black) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-black)
@@ -86,7 +86,7 @@ Unplayed. No games logged, so nothing to learn from yet.
 
 
 <!-- ctx:gen history -->
-- **v1.0.0 · V1** (2026-11-02) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
+- **v1.0.0 · V1** (2026-11-03) — first list, 60 cards. _first teaching list: calibrated by argument, unplayed_
 <!-- /ctx:gen history -->
 
 v1.0.0, 2026-11-02: the strategist read black as the strongest of the five, so we trimmed one copy each of [Murder](https://manamap.seanmacrae.com/viz/index.html?cards=Murder), [Phyrexian Arena](https://manamap.seanmacrae.com/viz/index.html?cards=Phyrexian+Arena) and [Vampire Nighthawk](https://manamap.seanmacrae.com/viz/index.html?cards=Vampire+Nighthawk) (clean removal and card flow; all three are still in the list) and put three [Child of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Child+of+Night) in the two-mana gap, a simple lifelink body. Argued, not played.
