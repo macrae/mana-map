@@ -140,11 +140,10 @@ METRICS = {
                 "Spell wheels and activated wheels both count; the discard "
                 "wheels the model cannot parse are named in the goldfish "
                 "declaration and are in no figure here.",
-        "why": "The pilot's thesis as an output the deck produces (sharknado log "
-               "002): a wheel is a finisher dropped onto Brallin or Shabraz, "
-               "never early tempo. Under a hold policy every wheel waits for a "
-               "commander, so this row is when the first one LANDS — the clock "
-               "the thesis sets — and a list that cannot get a commander down "
+        "why": "A wheel played as a finisher dropped onto a commander rather "
+               "than as early tempo. Under a hold policy every wheel waits for a "
+               "commander, so this row is when the first one LANDS, and a list "
+               "that cannot get a commander down "
                "with a wheel in hand by turn 8 reads low here before it reads "
                "low anywhere else.",
     },
@@ -153,8 +152,8 @@ METRICS = {
         "scale": "against the wheel-shaped cards the declaration names",
         "what": "Wheels resolved — spell or activated — cumulative to the end "
                 "of turn 10, averaged over every game.",
-        "why": "The engine's trigger count: every payoff in this deck is a tax "
-               "collector with nothing to tax until a hand empties. Reported "
+        "why": "A wheel engine's trigger count: a discard or draw payoff has "
+               "nothing to do until a hand empties. Reported "
                "with a direction for the report's sake, but the table's dislike "
                "of a wheel is in no figure here — this counts what the model "
                "fired, not what a pod forgave — so read it beside the finisher "
@@ -166,7 +165,7 @@ METRICS = {
         "what": "Wheel cards held at the end of turn 5 while no discard or draw "
                 "payoff is on the battlefield, averaged over every game; zero "
                 "whenever a payoff is out.",
-        "why": "The clog: \"one playable creature and a bunch of wheels\" as a "
+        "why": "The clog: a hand of wheels with little else to play, as a "
                "number. It rises with the wheel count and with a hold policy, "
                "which is the point — a branch that cuts wheels is graded here, "
                "and a branch that cannot land a commander shows up here before "
@@ -181,9 +180,7 @@ METRICS = {
                 "of a needed class) would also have kept.",
         "why": "REPORTED and never enforced, so it cannot restate a figure on "
                "any deck, and absent on a deck that has written no rule. It "
-               "prices the question the log raises about a hand of one creature "
-               "and four wheels: how often does the list deal the pilot a seven "
-               "he would ship?",
+               "prices how often the list deals a seven the pilot would ship.",
     },
     "extra cards by T8": {
         "unit": "mean",
@@ -197,10 +194,9 @@ METRICS = {
                 "sacrifice and death channels produce and no others. Activated, "
                 "X-based and priced draw ('you may pay 2 life. If you do') are "
                 "NOT counted and the cards are named in the goldfish artifact.",
-        "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the "
-               "most-repeated line in this deck's log, and until 2026-08-28 the "
-               "model could not see it: it drew one card a turn whatever the "
-               "list said. Read it against the count of draw cards, not alone — "
+        "why": "A board with nothing in hand has no way to rebuild, and until "
+               "2026-08-28 the model could not see it: it drew one card a turn "
+               "whatever the list said. Read it against the count of draw cards, not alone — "
                "a deck listing twelve draw sources whose modelled figure is one "
                "has almost no UNCONDITIONAL card advantage, and that is a fact "
                "about the deck rather than a limit of the parser.",
@@ -213,11 +209,8 @@ METRICS = {
                 "where the turn also ended with enough unspent mana to cast it. "
                 "The suite is removal + sweepers + protection, the same set "
                 "`deck-audit` counts.",
-        "why": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and "
-               "Teferi's Protection sat in my hand uncast for the entire game "
-               "... my mana was spent casting vampires, so there was never open "
-               "mana to hold up.\" This is that claim as a number. It is "
-               "CONDITIONAL on purpose: the raw castable rate falls when you "
+        "why": "Whether the deck can spend its mana developing and still hold "
+               "up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you "
                "simply cut interaction, which answers a different question. "
                "Measured at the END OF THE MAIN PHASE, before combat is paid "
                "for. And it is a FLOOR — the model casts everything it can "
@@ -242,8 +235,7 @@ METRICS = {
                 "over every game.",
         "why": "The second axis, and the only one that is not combat. It is "
                "near-uncorrelated with damage, power and kill (r = 0.08-0.25 "
-               "across the fleet), so it can fall while they rise and mean it. "
-               "For this deck Treasures are incidental ramp, never an engine.",
+               "across the fleet), so it can fall while they rise and mean it.",
     },
     "hoard @T6": {
         "unit": "mean",
@@ -336,18 +328,18 @@ DERIVED = (
     ("THE OBJECTIVE",
      "One falsifiable threshold, written when the branch was OPENED and before "
      "anything was measured.",
-     "It is the only thing here that can fail. Everything else is a "
-     "description of what changed; this is the claim the branch made about "
-     "itself, graded against its own minimum detectable difference."),
+     "Optional. When one is named it is the claim the branch made about itself, "
+     "graded against its own minimum detectable difference, and it sets the "
+     "rule's word. The branch is still judged on the whole profile."),
     ("THE MANA",
      "Karsten's hypergeometric source targets against the pip distribution "
      "each list actually has, and the on-curve probability the base achieves.",
-     "Deterministic, and the nine sampled rows cannot see it. A branch that "
+     "Deterministic, and the sampled rows cannot see it. A branch that "
      "changes its spells changes its pip distribution, so the target moves "
      "underneath the base — which is why the GAP is the figure and not the "
      "source count."),
     ("PRIMARY AND EXPLORATORY",
-     "The objective is the one pre-registered test. The sixteen rows are a "
+     "The objective is the one pre-registered test. The rows are a "
      "family of looks, each with an interval on its difference, and a row's "
      "verdict is Holm-corrected across the family.",
      "Twelve rows at alpha 0.05 with no correction is one false 'better' in "
@@ -1519,9 +1511,8 @@ def _death_limit(slug, branch):
     if not (deaths and decl.get("model_drain")):
         return ["Death-triggered drain and damage are NOT modelled on this deck: "
                 "it declares no `model_deaths` rate, so nothing dies in this "
-                "simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons "
-                "and Bastion of Remembrance contribute nothing to any damage or "
-                "kill row. A branch built on them is understated by however much "
+                "simulation and a death trigger contributes nothing to any damage "
+                "or kill row. A branch built on them is understated by however much "
                 "that line is worth, and `simulate` against a real pod is the "
                 "only place it can be measured."]
     return [f"Deaths ARE modelled here, at a MEASURED rate: "

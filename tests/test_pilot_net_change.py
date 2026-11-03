@@ -2017,3 +2017,44 @@ def test_a_rounding_tie_reads_the_same_as_the_page():
     assert net_change._fixed(-0.25, 1, plus=True) == "-0.3"
     assert net_change._fixed(0.0, 1, plus=True) == "+0.0"
 
+
+# EVERY DECK READS THESE. The registry was written while Edgar was under test, and
+# Gishath's report told the pilot "Vampires on board" was the most-repeated line in
+# its log (2026-11-03). Names of a deck, its cards or its branches stay out.
+_ONE_DECKS_WORDS = ("vampire", "edgar", "vito", "sanguine", "blood artist", "zulaport",
+                    "pashalik", "bastion", "vish kal", "brallin", "shabraz", "sharknado",
+                    "deflecting swat", "teferi", "this deck's log", "drain-v1", "boss-v1",
+                    "eminence", "the champion makes", "for this deck")
+
+
+def _shared_sentences():
+    from manamap.pilot import candidates
+    for name, spec in net_change.METRICS.items():
+        yield from ((name, spec.get(k)) for k in ("what", "why", "scale"))
+    for name, what, why in net_change.DERIVED:
+        yield name, what
+        yield name, why
+    for name, spec in candidates.FORGE_OBJECTIVE_AXES.items():
+        yield from ((name, spec.get(k)) for k in ("what", "why"))
+
+
+def test_no_definition_shown_on_every_deck_belongs_to_one_deck():
+    checked = 0
+    for name, text in _shared_sentences():
+        if not text:
+            continue
+        checked += 1
+        low = text.lower()
+        hit = [w for w in _ONE_DECKS_WORDS if w in low]
+        assert not hit, f"{name} is on every deck's report and names {hit}: {text}"
+    assert checked >= 60
+
+
+def test_the_death_limit_names_no_card(monkeypatch):
+    """It named four cards on decks that may not run any of them."""
+    from manamap.pilot import common
+    monkeypatch.setattr(common, "deck_file", lambda *a, **k: "x")
+    monkeypatch.setattr(common, "load_json", lambda *a, **k: {})
+    said = " ".join(net_change._death_limit("s", None))
+    assert "nothing dies in this simulation" in said
+    assert not [w for w in _ONE_DECKS_WORDS if w in said.lower()], said

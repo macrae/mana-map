@@ -233,8 +233,8 @@ FORGE_OBJECTIVE_AXES = {
     "forge.drain_dealt": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "drain_dealt",
-        "what": "life LOSS dealt to opponents that was not damage, per game — Blood "
-                "Artist, Vito, Sanguine Bond — credited to the seat whose life-loss "
+        "what": "life LOSS dealt to opponents that was not damage, per game, "
+                "credited to the seat whose life-loss "
                 "ability resolved last that turn; a floor",
         "why": "the drain engine's output, which no damage total sees"},
     "forge.life_gained": {
@@ -242,7 +242,7 @@ FORGE_OBJECTIVE_AXES = {
         "per_game": "life_gained",
         "what": "life gained per game, all sources (the record splits it: lifelink, "
                 "trigger, other)",
-        "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"},
+        "why": "the gain half of a gain/drain deck, and the input to any lifegain payoff"},
     "forge.biggest_hit": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "biggest_hit",
@@ -255,14 +255,13 @@ FORGE_OBJECTIVE_AXES = {
         "what": "share of our combat damage to players dealt by sources with flying, "
                 "trample, menace or another evasion keyword, per game with any combat "
                 "damage (from the deck's own keywords, so our seat only)",
-        "why": "'big scary vampires with all sorts of ways to hurt people' — measured "
-               "as the damage that got through because it could not be blocked"},
+        "why": "the damage that got through because it could not be blocked"},
     "forge.kills_by_ability": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "kills_by_ability",
         "what": "opposing permanents that left the battlefield directly after one of "
-                "our activated abilities resolved, per game — Vish Kal's -X/-X, an "
-                "outlet's kill; a ceiling per card",
+                "our activated abilities resolved, per game, such as a -X/-X "
+                "ability or an outlet's kill; a ceiling per card",
         "why": "removal the deck does with its own creatures rather than with spells"},
     # THE DRAW AXIS (2026-09-30): the pilot's oldest Edgar complaint — "running out of
     # steam post turn 7/8 ... trying to rebuild with 1 or 2 cards (or zero) in hand" —
@@ -292,24 +291,22 @@ FORGE_OBJECTIVE_AXES = {
                 "damage plus noncombat damage plus drain, summed, with the median beside "
                 "the mean because the sample has a long tail",
         "why": "the only axis that cannot be gamed by trading one kind of output for a "
-               "smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 "
-               "while losing ~17 combat damage, and this row would have said so"},
+               "smaller amount of another: a list can raise drain while losing more "
+               "combat damage, and this row says so"},
     "forge.noncombat_damage_dealt_to_players": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "noncombat_damage_dealt_to_players",
         "what": "damage to players that did not come from combat, per game — an ETB pinger, "
                 "a Purphoros, a direct-damage spell",
         "why": "the output an ENTRY payoff produces, which needs no attack step and no "
-               "blocker maths; the champion makes 8.04 eminence tokens a game and converts "
-               "almost none of them"},
+               "blocker maths"},
     "forge.combat_damage_dealt_to_players": {
         "kind": "mean", "lower_is_better": False, "conditional": False,
         "per_game": "combat_damage_dealt_to_players",
         "what": "combat damage our seat dealt to players, mean per game, with "
                 "the median beside it because the sample is mostly zeros with a "
                 "tail",
-        "why": "the shape of the kill on a combat deck; the figure that fell "
-               "29.07 -> 18.20 when a go-wide refactor cut every lord"},
+        "why": "the shape of the kill on a combat deck"},
     "forge.first_attack_turn": {
         "kind": "mean", "lower_is_better": True, "conditional": True,
         "per_game": "first_attack_turn",
@@ -344,14 +341,13 @@ FORGE_OBJECTIVE_AXES = {
         "counts": ("wheels_with_commander", "wheels_cast_total"),
         "what": "of the wheel spells our seat cast, the share cast on an own turn whose "
                 "cleanup board held a commander, pooled over every game (`wheel_timing`)",
-        "why": "the pilot's thesis at a table: a wheel is a finisher dropped onto Brallin "
-               "or Shabraz. Forge's AI fires on its own rule, so this reads whether the "
+        "why": "a wheel as a finisher dropped onto a commander, read at a table. Forge's AI fires on its own rule, so this reads whether the "
                "LIST gets a commander down before the AI's wheels fire, never the hold"},
     "forge.first_wheel_turn": {
         "kind": "mean", "lower_is_better": False, "conditional": True,
         "per_game": "first_wheel_turn",
         "what": "the own turn our seat's first wheel spell resolved, over games with one",
-        "why": "later is the thesis (a finisher, not an opening); read beside the share "
+        "why": "later means a finisher rather than an opening; read beside the share "
                "above, since a deck that never wheels reads nothing here"},
     "forge.mulligans": {
         "kind": "mean", "lower_is_better": True, "conditional": False,

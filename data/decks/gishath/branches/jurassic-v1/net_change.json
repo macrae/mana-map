@@ -1395,16 +1395,16 @@
    {
     "name": "THE OBJECTIVE",
     "what": "One falsifiable threshold, written when the branch was OPENED and before anything was measured.",
-    "why": "It is the only thing here that can fail. Everything else is a description of what changed; this is the claim the branch made about itself, graded against its own minimum detectable difference."
+    "why": "Optional. When one is named it is the claim the branch made about itself, graded against its own minimum detectable difference, and it sets the rule's word. The branch is still judged on the whole profile."
    },
    {
     "name": "THE MANA",
     "what": "Karsten's hypergeometric source targets against the pip distribution each list actually has, and the on-curve probability the base achieves.",
-    "why": "Deterministic, and the nine sampled rows cannot see it. A branch that changes its spells changes its pip distribution, so the target moves underneath the base \u2014 which is why the GAP is the figure and not the source count."
+    "why": "Deterministic, and the sampled rows cannot see it. A branch that changes its spells changes its pip distribution, so the target moves underneath the base \u2014 which is why the GAP is the figure and not the source count."
    },
    {
     "name": "PRIMARY AND EXPLORATORY",
-    "what": "The objective is the one pre-registered test. The sixteen rows are a family of looks, each with an interval on its difference, and a row's verdict is Holm-corrected across the family.",
+    "what": "The objective is the one pre-registered test. The rows are a family of looks, each with an interval on its difference, and a row's verdict is Holm-corrected across the family.",
     "why": "Twelve rows at alpha 0.05 with no correction is one false 'better' in every other report. `experiment.py` pre-registers `win_rate` for the same reason. Measured over 42 tracked reports before shipping: Holm flips no verdict \u2014 the MDE rule was already near Bonferroni at the top rank \u2014 so this is what a verdict means, not which rows carry one."
    },
    {
@@ -1441,7 +1441,7 @@
     "lower_is_better": false,
     "per_game": "combat_damage_dealt_to_players",
     "what": "combat damage our seat dealt to players, mean per game, with the median beside it because the sample is mostly zeros with a tail",
-    "why": "the shape of the kill on a combat deck; the figure that fell 29.07 -> 18.20 when a go-wide refactor cut every lord"
+    "why": "the shape of the kill on a combat deck"
    },
    "forge.commander_damage_max_on_one_defender": {
     "conditional": false,
@@ -1479,7 +1479,7 @@
     "kind": "mean",
     "lower_is_better": false,
     "per_game": "drain_dealt",
-    "what": "life LOSS dealt to opponents that was not damage, per game \u2014 Blood Artist, Vito, Sanguine Bond \u2014 credited to the seat whose life-loss ability resolved last that turn; a floor",
+    "what": "life LOSS dealt to opponents that was not damage, per game, credited to the seat whose life-loss ability resolved last that turn; a floor",
     "why": "the drain engine's output, which no damage total sees"
    },
    "forge.eliminated_turn": {
@@ -1504,7 +1504,7 @@
     "lower_is_better": false,
     "per_game": "evasive_damage_share",
     "what": "share of our combat damage to players dealt by sources with flying, trample, menace or another evasion keyword, per game with any combat damage (from the deck's own keywords, so our seat only)",
-    "why": "'big scary vampires with all sorts of ways to hurt people' \u2014 measured as the damage that got through because it could not be blocked"
+    "why": "the damage that got through because it could not be blocked"
    },
    "forge.extra_draw_per_turn": {
     "conditional": false,
@@ -1528,7 +1528,7 @@
     "lower_is_better": false,
     "per_game": "first_wheel_turn",
     "what": "the own turn our seat's first wheel spell resolved, over games with one",
-    "why": "later is the thesis (a finisher, not an opening); read beside the share above, since a deck that never wheels reads nothing here"
+    "why": "later means a finisher rather than an opening; read beside the share above, since a deck that never wheels reads nothing here"
    },
    "forge.interaction_cast": {
     "conditional": false,
@@ -1551,7 +1551,7 @@
     "kind": "mean",
     "lower_is_better": false,
     "per_game": "kills_by_ability",
-    "what": "opposing permanents that left the battlefield directly after one of our activated abilities resolved, per game \u2014 Vish Kal's -X/-X, an outlet's kill; a ceiling per card",
+    "what": "opposing permanents that left the battlefield directly after one of our activated abilities resolved, per game, such as a -X/-X ability or an outlet's kill; a ceiling per card",
     "why": "removal the deck does with its own creatures rather than with spells"
    },
    "forge.life_gained": {
@@ -1560,7 +1560,7 @@
     "lower_is_better": false,
     "per_game": "life_gained",
     "what": "life gained per game, all sources (the record splits it: lifelink, trigger, other)",
-    "why": "the gain half of a gain/drain deck, and Vito's and Sanguine Bond's input"
+    "why": "the gain half of a gain/drain deck, and the input to any lifegain payoff"
    },
    "forge.life_removed_total": {
     "conditional": false,
@@ -1568,7 +1568,7 @@
     "lower_is_better": false,
     "per_game": "life_removed_total",
     "what": "every point of life this seat removed from opponents in a game \u2014 combat damage plus noncombat damage plus drain, summed, with the median beside the mean because the sample has a long tail",
-    "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: drain-v1 and boss-v1 each raised drain by ~4.5 while losing ~17 combat damage, and this row would have said so"
+    "why": "the only axis that cannot be gamed by trading one kind of output for a smaller amount of another: a list can raise drain while losing more combat damage, and this row says so"
    },
    "forge.mulligans": {
     "conditional": false,
@@ -1584,7 +1584,7 @@
     "lower_is_better": false,
     "per_game": "noncombat_damage_dealt_to_players",
     "what": "damage to players that did not come from combat, per game \u2014 an ETB pinger, a Purphoros, a direct-damage spell",
-    "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths; the champion makes 8.04 eminence tokens a game and converts almost none of them"
+    "why": "the output an ENTRY payoff produces, which needs no attack step and no blocker maths"
    },
    "forge.protection_cast": {
     "conditional": false,
@@ -1603,7 +1603,7 @@
     "kind": "proportion",
     "lower_is_better": false,
     "what": "of the wheel spells our seat cast, the share cast on an own turn whose cleanup board held a commander, pooled over every game (`wheel_timing`)",
-    "why": "the pilot's thesis at a table: a wheel is a finisher dropped onto Brallin or Shabraz. Forge's AI fires on its own rule, so this reads whether the LIST gets a commander down before the AI's wheels fire, never the hold"
+    "why": "a wheel as a finisher dropped onto a commander, read at a table. Forge's AI fires on its own rule, so this reads whether the LIST gets a commander down before the AI's wheels fire, never the hold"
    },
    "forge.win_rate": {
     "conditional": false,
@@ -1629,19 +1629,19 @@
     "scale": "against the cards in hand at the end of turn 5",
     "unit": "mean",
     "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
-    "why": "The clog: \"one playable creature and a bunch of wheels\" as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
+    "why": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
    },
    "extra cards by T8": {
     "scale": "against the 8 cards every deck draws for free by then",
     "unit": "mean",
     "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others. Activated, X-based and priced draw ('you may pay 2 life. If you do') are NOT counted and the cards are named in the goldfish artifact.",
-    "why": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+    "why": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    "finisher wheel by T8": {
     "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
     "unit": "rate",
     "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield and a hand the model's thin-hand rule would not have thrown away on its own. Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
-    "why": "The pilot's thesis as an output the deck produces (sharknado log 002): a wheel is a finisher dropped onto Brallin or Shabraz, never early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS \u2014 the clock the thesis sets \u2014 and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
+    "why": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
    },
    "hand can act by T3": {
     "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
@@ -1652,7 +1652,7 @@
    "hoard @T10": {
     "unit": "mean",
     "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
-    "why": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
+    "why": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it."
    },
    "hoard @T6": {
     "unit": "mean",
@@ -1663,13 +1663,13 @@
     "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
     "unit": "rate",
     "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-    "why": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
+    "why": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    "kept hand passes the pilot's keep rule": {
     "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
     "unit": "rate",
     "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
-    "why": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices the question the log raises about a hand of one creature and four wheels: how often does the list deal the pilot a seven he would ship?"
+    "why": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship."
    },
    "killed by T10": {
     "scale": "a CLOCK against one unblocking opponent, never a win rate",
@@ -1705,7 +1705,7 @@
     "scale": "against the wheel-shaped cards the declaration names",
     "unit": "mean",
     "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
-    "why": "The engine's trigger count: every payoff in this deck is a tax collector with nothing to tax until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
+    "why": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
    }
   }
  },
@@ -1752,7 +1752,7 @@
   "The goldfish has no opponents and nothing blocks: its kill turn is a CLOCK, not a win rate, and it cannot see interaction, removal or any alternate win.",
   "Nothing here reads `goldfish_targets.json`'s `required` flags. The engine lift did, and was deleted for it: the declaration is authored, so the same hand set the target and read the verdict.",
   "Card advantage is measured only where the model can price it. Activated, X-based, sacrifice-gated and death-triggered draw are unmodelled and named per deck in `goldfish_metrics.json`; on a sacrifice-based list that is most of it.",
-  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and Blood Artist, Zulaport Cutthroat, Pashalik Mons and Bastion of Remembrance contribute nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
+  "Death-triggered drain and damage are NOT modelled on this deck: it declares no `model_deaths` rate, so nothing dies in this simulation and a death trigger contributes nothing to any damage or kill row. A branch built on them is understated by however much that line is worth, and `simulate` against a real pod is the only place it can be measured."
  ],
  "mana": {
   "available": true,
@@ -1965,7 +1965,7 @@
    {
     "measure": "hoard @T10",
     "reads_as": "0.52 -> 0.66, a change of +0.14 (+27%)",
-    "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine."
+    "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it."
    },
    {
     "measure": "damage @T10",
@@ -2124,7 +2124,7 @@
    "unit": "mean",
    "verdict": "better",
    "what": "Treasures sitting in the hoard at the end of turn 10, averaged over every game.",
-   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it. For this deck Treasures are incidental ramp, never an engine.",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
    "z": 10.508
   },
   {
@@ -2376,7 +2376,7 @@
    "unit": "mean",
    "verdict": "noise",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others. Activated, X-based and priced draw ('you may pay 2 life. If you do') are NOT counted and the cards are named in the goldfish artifact.",
-   "why_we_care": "\"Vampires on board, nothing in hand, no way to rebuild\" is the most-repeated line in this deck's log, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
+   "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
    "z": -1.058
   },
   {
@@ -2404,7 +2404,7 @@
    "unit": "rate",
    "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-   "why_we_care": "The pilot's own diagnosis of a lost game: \"Deflecting Swat and Teferi's Protection sat in my hand uncast for the entire game ... my mana was spent casting vampires, so there was never open mana to hold up.\" This is that claim as a number. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
+   "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
    "z": 2.287
   },
   {
