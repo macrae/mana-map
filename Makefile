@@ -204,9 +204,18 @@ manuals:  ## Re-render every handbook + the version lists (deterministic; should
 # because nothing in the gate ever rewrote one. A gate that rebuilds a file
 # without comparing it is a gate that cannot fail; one that compares a file
 # without rebuilding it is the same thing wearing a different hat.
+# A BREWING DECK WITH NO HANDBOOK DOES NOT GET ONE (2026-11-02). A page here makes a
+# deck "published", and a published deck cannot be deleted, only archived, so this
+# loop was pressing every list somebody started the moment CI ran it. A deck earns its
+# page by moving up from `dev` or by the pilot asking (`build-poh <slug>`). A page that
+# already exists is always rebuilt, whatever the deck's stage, or the gate stops
+# covering it. Only a deck with no page pays for the Python start.
 	@for slug in $$(ls data/decks | grep -v '^index.json$$'); do \
-	  test -f data/decks/$$slug/cards.json \
-	    && $(MANAMAP) pilot build-poh $$slug >/dev/null \
+	  test -f data/decks/$$slug/cards.json || continue; \
+	  if [ ! -f manuals/p/$$slug.html ] && [ "$$($(PY) -c "from manamap.pilot import promote; print(promote.stage('$$slug'))")" = dev ]; then \
+	    echo "    no handbook while brewing: $$slug"; continue; \
+	  fi; \
+	  $(MANAMAP) pilot build-poh $$slug >/dev/null \
 	    && echo "    manuals/p/$$slug.html"; \
 	done
 	$(MANAMAP) pilot build-index

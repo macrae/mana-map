@@ -159,4 +159,9 @@ stacks proven on it, and the way to its siblings were all on disk and none were 
   by side. `.dossier #panels { display: block }` says which page it means.
 - **An empty state states the deck's own stage.** "This deck is sleeved" was a literal, shown
   on every deck with no logged games.
+- **A rebuild step can publish.** `make manuals` built a handbook for any deck with
+  `cards.json`, which flips it to `published` and makes it undeletable, so five brewing decks
+  failed CI's byte gate on the first push after they were saved. `make prepush` does not run
+  that rebuild, so only CI saw it. It now skips a `dev` deck with no page, and still rebuilds
+  every page that exists.
 
