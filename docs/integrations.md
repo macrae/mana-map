@@ -87,8 +87,15 @@ prints a line and falls through to Scryfall (`/cards/collection`'s `prices.usd` 
 `usd_foil`, `source: "scryfall"`), never a traceback; `--source scryfall` asks for that
 directly.
 
+**`order --check` reads this feed too** (2026-11-03): per printing it has a price and a
+stock count, so it can name a pinned line that cannot be filled. It cannot see shipping,
+fees or packages. `POST /buyer/optimizer` would, and the OpenAPI spec lists no security on
+it, but it answered 401 "authenticate with an API key" anonymously on 2026-11-03: **the spec
+is wrong about that endpoint, so test before trusting it.** `pending-orders` and `purchase`
+need the token as well; the bench calls none of them and never places an order.
+
 The token (`X-ManaPool-Access-Token` + `X-ManaPool-Email`) is needed only for accounts,
-orders, `POST /deck` validation and seller inventory — none of which the bench calls. If
+orders, the optimizer, `POST /deck` validation and seller inventory — none of which the bench calls. If
 both halves are set they ride along on the feed request and change nothing:
 
 ```bash

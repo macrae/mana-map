@@ -1595,6 +1595,13 @@ depends on no `MM`, and reads only committed artifacts. Neither page loads the m
 
 ## The deck dossier (`deck.html`)
 
+**The art (`#panel-art`, 2026-11-03).** Every line of the list as the card it is: art, artist,
+set and number, foil, and a "not pinned" mark on a card nobody chose. Viewing is static.
+With a server, a tile opens its printings (`Printings.stripHtml`, shared with Build) and a pick
+posts `art/set`, polled as a job; **Pin everything shown** is `art/pin-shown`, **Undo** is
+`art/undo`, and **Copy for Mana Pool** is `order --check`, or on the static site the same lines
+written from the list. Moving one tile of a split card posts all its arts, so the others stay.
+
 ### It is a DOSSIER, not a report — nine sections with a spine
 
 A report has a conclusion; a dossier has a **latest entry**. The page renders

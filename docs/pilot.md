@@ -71,6 +71,11 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
                                         # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
                                         #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
                                         #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
+manamap pilot art <slug> [--set "NAME=SET CN [*F*]"]… [--split "NAME=SET CN:N,SET CN:N"]… [--pin-shown] [--branch B] [--dry-run] [--note "…"] [--no-chain] [--json] | undo | redo
+                                        #   which physical card each line is, on any live deck, sleeved included: not a
+                                        #   version, not a swap, journalled, a paper lock holds. No flags: the table
+manamap pilot order <slug> [<slug>…] [--check] [--plain] [--out F] [--json]  # one or more decks' pinned lists as ONE paste
+                                        #   for Mana Pool's mass entry; --check reads the public feed: price, stock, what cannot be filled
 manamap pilot buy-list <slug> --branch N [--exact] [--out F] [--json]  # the bill's BUY rows as the paste Mana Pool's
                                         #   mass entry takes (manapool.com/add-deck): `N Name`, or --exact `N Name (SET) CN`;
                                         #   footer `N cards to buy` + a figure only when prices.json sits beside the branch
@@ -1606,6 +1611,33 @@ with Secret Lair printings cost 0 tokens), so the prose about the card is as tru
 the swap as before. `serve`'s `printings` (GETTABLE, `?name=`) lists every printing
 Scryfall knows for a name through `net.get_json` under the `scryfall` cache for a week,
 digital-only printings dropped unless `digital=true`.
+
+**Pinning a whole deck (`art`, `order`; 2026-11-03).** `manamap pilot art` is the same
+idea for a deck at once, and the reason an order can arrive with the art the pilot chose.
+It shows every line (printing, artist, foil, pinned or only shown), and writes through
+`deck_edit.replace_list`, so it journals and `art <slug> undo` restores the exact bytes.
+`--pin-shown` pins every unpinned card to what `cards.json` shows, skipping and naming a
+digital-only row; `--split` gives one card several arts, copies summing to its count
+(`cards.json` then carries a `printings` list on that card, and only that card). It refuses
+a printing that does not exist, is another card, was never on paper, or a foil pin on a
+printing never foiled; a foil-only printing is marked `*F*` and said so. A sleeved deck may
+do all of this: nothing about the 99 changes, so `deck_versions.same_list` keeps every stamp
+current across a change of art, and cards moving still reads stale. The refresh covers what
+a list's sha reaches: the deck's measurements, prices, its handbook, the manifest and the
+fleet file. `edit --swap "A=A (SET) CN"` routes here; `try` says there is nothing to measure,
+and `deck-branch stage` points at `art --branch`.
+
+`prices.py` keeps a pin honest: a pinned printing the feed does not list keeps its own
+`printing`, reads `pinned_unavailable: true` with the cheapest other listing as
+`cheapest_other`, and stays out of the totals. A foil pin costs `foil_cents` (a foil-only
+printing has no NM price, so these once counted for nothing). Split art prices each printing.
+
+`order` merges any number of decks: the same printing adds up, different printings stay
+separate lines, non-lands then lands, each alphabetical. A line with no pin is said out loud.
+`--check` reads the public feed, which carries a price and a stock count per printing. It
+does not know shipping, fees or packages: `POST /buyer/optimizer` needs a key despite what its
+spec implies (401 anonymously, 2026-11-03), and the bench holds no token and places no order.
+Stock covers a printing across finishes, so a foil line can read in stock on non-foil copies.
 
 ### 60-card formats — what runs, what is skipped, and why (2026-10-09)
 
