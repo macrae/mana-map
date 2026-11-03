@@ -65,6 +65,9 @@
             "name": "Marshal's Anthem"
           },
           {
+            "name": "Natural Order"
+          },
+          {
             "name": "Palani's Hatcher"
           },
           {
@@ -138,18 +141,18 @@
             ]
           }
         ],
-        "blocking": 15,
+        "blocking": 16,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 23,
+      "out": 23,
       "counts": {
-        "in_deck": 70,
+        "in_deck": 69,
         "box": 4,
         "elsewhere": 4,
-        "buy": 11,
+        "buy": 12,
         "free": 1
       },
       "unsourced": [
@@ -163,6 +166,7 @@
         "Ixalli's Lorekeeper",
         "Karplusan Forest",
         "Marshal's Anthem",
+        "Natural Order",
         "Palani's Hatcher",
         "Prismatic Vista",
         "Roaming Throne",
@@ -562,6 +566,13 @@
           "is_new": false
         },
         {
+          "name": "Natural Order",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Nature's Lore",
           "state": "in_deck",
           "where": [],
@@ -828,13 +839,6 @@
           "is_new": false
         },
         {
-          "name": "Wakening Sun's Avatar",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Windswept Heath",
           "state": "in_deck",
           "where": [],
@@ -908,7 +912,8 @@
         "Sunpetal Grove",
         "Thrashing Brontodon",
         "Tranquil Frillback",
-        "Trapjaw Tyrant"
+        "Trapjaw Tyrant",
+        "Wakening Sun's Avatar"
       ],
       "impact": {
         "state": "no objective",
@@ -926,48 +931,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 33.5769,
+            "delta": 30.581,
             "ci95_diff": [
-              32.1302,
-              35.0236
+              29.1861,
+              31.9759
             ],
-            "mde": 2.0679,
+            "mde": 1.9939,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0729,
+            "delta": 0.071,
             "ci95_diff": [
-              0.0659,
-              0.0799
+              0.0639,
+              0.0781
             ],
-            "mde": 0.01,
+            "mde": 0.0101,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 5.6604,
+            "delta": 5.2036,
             "ci95_diff": [
-              5.2277,
-              6.0931
+              4.7805,
+              5.6267
             ],
-            "mde": 0.6185,
+            "mde": 0.6048,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.1423,
+            "delta": 0.0634,
             "ci95_diff": [
-              0.0303,
-              0.2543
+              -0.0457,
+              0.1725
             ],
-            "mde": 0.1602,
+            "mde": 0.1559,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
@@ -4424,8 +4429,8 @@
   },
   "next": [
     "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
-    "branch `jurassic-v1`: 13 unproven add(s) under the current harness — `manamap pilot forge-cast-check gishath --branch jurassic-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `jurassic-v1` needs 15 card(s) sourced — `manamap pilot deck-branch gishath source jurassic-v1`",
+    "branch `jurassic-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check gishath --branch jurassic-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `jurassic-v1` needs 16 card(s) sourced — `manamap pilot deck-branch gishath source jurassic-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"
