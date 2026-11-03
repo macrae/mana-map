@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · U · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
+- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
 - **Colours:** U · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-blue) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-blue)
