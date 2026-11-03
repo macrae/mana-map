@@ -596,6 +596,8 @@ def add_pilot_parser(subparsers):
                              help="several arts of one card; copies must sum to the card's count")
             cmd.add_argument("--pin-shown", action="store_true", dest="pin_shown",
                              help="pin every unpinned card to the printing cards.json shows")
+            cmd.add_argument("--unpin", action="append", metavar="NAME",
+                             help="back to any printing: the shop chooses (repeat)")
             cmd.add_argument("--branch", default=None, metavar="NAME",
                              help="a branch's own list")
             cmd.add_argument("--note", default=None, help="kept in the journal")

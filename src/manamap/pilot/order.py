@@ -7,7 +7,8 @@ takes `N Name (SET) CN *F*`; a line without the printing lets it choose the chea
 which is how orders arrive with art the pilot does not like. So this merges every
 list's lines: the same printing adds up, different printings stay separate lines,
 non-lands then lands, each alphabetical (`check_in.render_line`, the one line form).
-A line nobody pinned is said out loud, with the command that fixes it.
+A line nobody pinned is said out loud, with the command that fixes it, unless it is a
+basic land: any Mountain will do, so it stays a bare `24 Mountain`.
 
 `--check` READS MANA POOL'S PUBLIC PRICE FEED, which is keyed by exact printing and
 carries a price and a stock count for each. It says what each pinned line costs,
@@ -25,7 +26,7 @@ import json
 from pathlib import Path
 
 from manamap import net
-from manamap.pilot import check_in, common, prices
+from manamap.pilot import check_in, common, deck_edit, prices
 from manamap.pilot.common import deck_dir
 from manamap.pilot.fetch_deck import parse_decklist
 
@@ -60,13 +61,15 @@ def build(slugs):
                 "name": e["name"], "quantity": 0, "set": e.get("set"),
                 "collector_number": e.get("collector_number"), "foil": bool(e.get("foil")),
                 "pinned": bool(e.get("set")), "land": _land(card),
+                "basic": deck_edit._is_basic(e["name"]),
                 "scryfall_id": _ids(card).get((e.get("set"), str(e.get("collector_number")))),
             })
             row["quantity"] += int(e["quantity"])
     lines = sorted(merged.values(), key=lambda r: (r["land"], r["name"].lower(),
                                                    str(r["set"]), str(r["collector_number"])))
     return {"slugs": list(slugs), "lines": lines,
-            "unpinned": [r["name"] for r in lines if not r["pinned"]],
+            # A basic land is any basic land: not a line to warn about.
+            "unpinned": [r["name"] for r in lines if not r["pinned"] and not r["basic"]],
             "count": sum(r["quantity"] for r in lines)}
 
 

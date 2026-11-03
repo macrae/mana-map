@@ -96,6 +96,17 @@ def test_a_split_card_has_a_tile_per_art_and_lands_come_last(page):
     assert srcs[2] == IMG.format("m1") and srcs[3] == IMG.format("m2")
 
 
+def test_a_loose_basic_reads_any_printing_and_is_not_counted(page):
+    state = _serve(page, api=False)
+    state["list"] += "20 Island\n"
+    state["doc"]["cards"].append({"name": "Island", "quantity": 20, "type_line": "Basic Land — Island",
+                                  "set": "mdd", "collector_number": "294", "image": IMG.format("i")})
+    _open(page)
+    assert page.inner_text("#panel-art .art-count") == "3 of 4 lines pinned, basics any printing"
+    tile = page.locator("#panel-art .art-tile").filter(has_text="Island")
+    assert "any printing" in tile.inner_text() and "not pinned" not in tile.inner_text()
+
+
 def test_only_not_pinned_filter_hides_the_rest(page):
     _serve(page, api=False)
     _open(page)

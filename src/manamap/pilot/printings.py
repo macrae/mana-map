@@ -8,6 +8,7 @@ that is not archived:
     art <slug> --set "Name=SET CN [*F*]" ...     batch: one write, one rebuild
     art <slug> --split "Mountain=SLD 2418:8,SLD 2419:7,SLD 2420:7"
     art <slug> --pin-shown [--dry-run]           pin every unpinned card to what it shows
+    art <slug> --unpin "Name" ...                back to any printing: the shop chooses
     art <slug> undo | redo
 
 NOT A VERSION AND NOT A SWAP. `deck_versions` keys a version on names and copies, so
@@ -29,6 +30,14 @@ from manamap.pilot.fetch_deck import fetch_printings, parse_decklist
 
 SOURCE = "printing"
 _key = deck_edit._key
+#: A pin with no printing: the line goes back to a bare name.
+UNPIN = {"set": None, "collector_number": None, "foil": False, "quantity": None}
+
+
+def is_basic(name):
+    """"Basic lands are basic lands" (the pilot, 2026-11-03): nothing bulk-pins one and
+    nothing warns that one is loose. One pinned on purpose stays pinned."""
+    return deck_edit._is_basic(name)
 
 
 def guard(slug):
@@ -131,7 +140,7 @@ def rewrite(text, pins):
             first, entry, cmdr = group[0]
             replace[first] = [
                 render_line({"name": entry["name"], "quantity": p.get("quantity") or total,
-                             "set": p["set"], "collector_number": p["collector_number"],
+                             "set": p.get("set"), "collector_number": p.get("collector_number"),
                              "foil": p.get("foil")},
                             cmdr_marker=cmdr) for p in wanted]
             drop |= {h[0] for h in group[1:]}
@@ -151,11 +160,14 @@ def check_pins(slug, pins):
     printing with no foil is refused, and a foil-only printing is corrected to foil
     and said so, since the copy cannot be anything else.
     """
-    wanted = sorted({(p["set"], p["collector_number"]) for ps in pins.values() for p in ps})
+    wanted = sorted({(p["set"], p["collector_number"]) for ps in pins.values() for p in ps
+                     if p.get("set")})
     found = fetch_printings(wanted) if wanted else {}
     errors, notes = [], []
     for name, ps in pins.items():
         for p in ps:
+            if not p.get("set"):
+                continue
             label = f"{name} ({p['set'].upper()}) {p['collector_number']}"
             sc = found.get((p["set"], p["collector_number"]))
             if sc is None:
@@ -203,7 +215,8 @@ def rows(slug, branch=None):
                     "set": e.get("set") or card.get("set"),
                     "collector_number": e.get("collector_number") or card.get("collector_number"),
                     "foil": bool(e.get("foil")), "artist": art.get("artist"),
-                    "image": art.get("image"), "land": _is_land(card)})
+                    "image": art.get("image"), "land": _is_land(card),
+                    "basic": is_basic(e["name"])})
     out.sort(key=lambda r: (r["land"], r["name"].lower(), str(r["collector_number"])))
     return out
 
@@ -211,6 +224,7 @@ def rows(slug, branch=None):
 def unpinned_pins(slug, branch=None):
     """`(pins, skipped)`: what `--pin-shown` would write, and the cards it will not.
 
+    A basic land is left alone, and is not even named: any Mountain will do.
     What the deck SHOWS is `cards.json`. A digital-only row is skipped and named:
     pinning it would order art nobody can buy. A card with some lines pinned and
     some not is the pilot's half-finished split, which only the pilot can finish.
@@ -221,7 +235,7 @@ def unpinned_pins(slug, branch=None):
         lines.setdefault(_key(r["name"]), []).append(r)
     pins, skipped = {}, []
     for rs in lines.values():
-        if all(r["pinned"] for r in rs):
+        if all(r["pinned"] for r in rs) or (is_basic(rs[0]["name"]) and not any(r["pinned"] for r in rs)):
             continue
         if any(r["pinned"] for r in rs):
             skipped.append((rs[0]["name"], "some lines are pinned and some are not"))
@@ -332,7 +346,7 @@ def _print_table(table):
         for r in part:
             where = f"({str(r['set']).upper()}) {r['collector_number']}" if r["set"] else "—"
             print(f"  {r['quantity']:>2} {r['name'][:38]:38} {where:18} "
-                  f"{'foil' if r['foil'] else '    '} {'pinned' if r['pinned'] else 'shown '} "
+                  f"{'foil' if r['foil'] else '    '} {'pinned' if r['pinned'] else ('any   ' if r['basic'] else 'shown ')} "
                   f"{r['artist'] or ''}")
 
 
@@ -364,6 +378,8 @@ def main(args):
     if getattr(args, "pin_shown", False):
         shown, skipped = unpinned_pins(slug, branch)
         pins = {**shown, **pins}
+    for name in getattr(args, "unpin", None) or []:
+        pins[name] = [dict(UNPIN)]
 
     if not pins and not getattr(args, "pin_shown", False):
         table = rows(slug, branch)
@@ -385,7 +401,8 @@ def main(args):
             for name in sorted(pins):
                 p = pins[name][0]
                 print(f"  {name} ({p['set'].upper()}) {p['collector_number']}"
-                      + (" *F*" if p.get("foil") else ""))
+                      + (" *F*" if p.get("foil") else "") if p.get("set")
+                      else f"  {name}: any printing")
             for name, why in skipped:
                 print(f"  SKIPPED {name}: {why}")
         return

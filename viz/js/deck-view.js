@@ -2828,7 +2828,9 @@
       return { name: e.name, quantity: e.quantity, pinned: !!e.set, foil: !!e.foil,
                set: e.set || card.set || '', collector_number: e.collector_number || card.collector_number || '',
                artist: art.artist || '', image: art.image || '',
-               land: /\bLand\b/.test(card.type_line || '') };
+               land: /\bLand\b/.test(card.type_line || ''),
+               // "Basic lands are basic lands": a loose one is any basic, not a gap.
+               anyBasic: !e.set && /^Basic\b/.test(card.type_line || '') };
     }).sort(function (a, b) {
       return (a.land - b.land) || a.name.toLowerCase().localeCompare(b.name.toLowerCase()) ||
         String(a.collector_number).localeCompare(String(b.collector_number));
@@ -2837,21 +2839,24 @@
 
   function artTile(r, i, canPick) {
     var tag = canPick ? 'button' : 'div';
-    var where = r.set ? '(' + String(r.set).toUpperCase() + ') ' + r.collector_number : 'no printing';
+    var where = r.anyBasic ? 'any printing'
+      : r.set ? '(' + String(r.set).toUpperCase() + ') ' + r.collector_number : 'no printing';
     return '<' + tag + (canPick ? ' type="button"' : '') + ' class="art-tile' + (canPick ? ' can-pick' : '') +
-        (r.pinned ? '' : ' is-loose') + '" data-art="' + i + '"' + (r.pinned ? '' : ' data-loose="1"') + '>' +
+        (r.pinned || r.anyBasic ? '' : ' is-loose') + '" data-art="' + i + '"' +
+        (r.pinned || r.anyBasic ? '' : ' data-loose="1"') + '>' +
       (r.image ? '<img src="' + esc(r.image) + '" alt="' + esc(r.name) + '" loading="lazy">' : '<img alt="' + esc(r.name) + '">') +
       '<span class="art-name">' + esc(r.quantity + ' ' + r.name) + '</span>' +
       '<span class="art-meta">' + esc(where) + (r.foil ? ' \u00b7 foil' : '') + '</span>' +
       (r.artist ? '<span class="art-meta">' + esc(r.artist) + '</span>' : '') +
-      (r.pinned ? '' : '<span class="art-mark">not pinned</span>') +
+      (r.pinned || r.anyBasic ? '' : '<span class="art-mark">not pinned</span>') +
       '</' + tag + '>';
   }
 
   function artBody(d) {
     var rows = artRows(d);
     var canPick = !!(window.Api && Api.has && Api.has('art/set') && window.Printings);
-    var loose = rows.filter(function (r) { return !r.pinned; }).length;
+    var counted = rows.filter(function (r) { return !r.anyBasic; });
+    var loose = counted.filter(function (r) { return !r.pinned; }).length;
     var grid = function (land) {
       var part = rows.map(function (r, i) { return [r, i]; }).filter(function (x) { return x[0].land === land; });
       return part.length
@@ -2860,7 +2865,8 @@
         : '';
     };
     return '<div class="art-tools">' +
-        '<span class="art-count">' + (rows.length - loose) + ' of ' + rows.length + ' lines pinned</span>' +
+        '<span class="art-count">' + (counted.length - loose) + ' of ' + counted.length + ' lines pinned' +
+          (rows.length > counted.length ? ', basics any printing' : '') + '</span>' +
         (loose ? '<label><input type="checkbox" data-act="art-loose"> only not pinned</label>' : '') +
         (canPick && loose ? '<button type="button" data-act="art-pin">Pin everything shown</button>' : '') +
         (canPick ? '<button type="button" data-act="art-undo" hidden>Undo</button>' : '') +

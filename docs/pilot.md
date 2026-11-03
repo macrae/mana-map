@@ -71,7 +71,7 @@ manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--car
                                         # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
                                         #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
                                         #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
-manamap pilot art <slug> [--set "NAME=SET CN [*F*]"]… [--split "NAME=SET CN:N,SET CN:N"]… [--pin-shown] [--branch B] [--dry-run] [--note "…"] [--no-chain] [--json] | undo | redo
+manamap pilot art <slug> [--set "NAME=SET CN [*F*]"]… [--split "NAME=SET CN:N,SET CN:N"]… [--pin-shown] [--unpin NAME]… [--branch B] [--dry-run] [--note "…"] [--no-chain] [--json] | undo | redo
                                         #   which physical card each line is, on any live deck, sleeved included: not a
                                         #   version, not a swap, journalled, a paper lock holds. No flags: the table
 manamap pilot order <slug> [<slug>…] [--check] [--plain] [--out F] [--json]  # one or more decks' pinned lists as ONE paste
@@ -1617,7 +1617,8 @@ idea for a deck at once, and the reason an order can arrive with the art the pil
 It shows every line (printing, artist, foil, pinned or only shown), and writes through
 `deck_edit.replace_list`, so it journals and `art <slug> undo` restores the exact bytes.
 `--pin-shown` pins every unpinned card to what `cards.json` shows, skipping and naming a
-digital-only row; `--split` gives one card several arts, copies summing to its count
+digital-only row and leaving basic lands alone (the pilot: "basic lands are basic lands"; one
+pinned on purpose stays, `--unpin` frees it, and neither `order` nor the gallery warns about a loose one); `--split` gives one card several arts, copies summing to its count
 (`cards.json` then carries a `printings` list on that card, and only that card). It refuses
 a printing that does not exist, is another card, was never on paper, or a foil pin on a
 printing never foiled; a foil-only printing is marked `*F*` and said so. A sleeved deck may

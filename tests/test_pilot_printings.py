@@ -233,6 +233,21 @@ def test_pin_shown_pins_what_shows_and_leaves_pinned_alone(deck):
     assert "Mountain" not in pins and "Zada, Hedron Grinder" not in pins
 
 
+def test_pin_shown_leaves_a_loose_basic_alone_and_keeps_a_chosen_one(deck):
+    text = LIST + "20 Island\n"
+    (deck / "decklist.txt").write_text(text, encoding="utf-8")
+    pins, skipped = printings.unpinned_pins("gs")
+    assert "Island" not in pins and "Island" not in [n for n, _ in skipped]
+    assert "Mountain" not in pins      # pinned on purpose: nothing touches it
+    assert "Mountain (SLD) 2418" in _text(deck)
+
+
+def test_unpin_frees_a_card_and_keeps_its_count(deck):
+    out = printings.rewrite(LIST, {"Mountain": [dict(printings.UNPIN)]})
+    assert "97 Mountain\n" in out and "(SLD) 241" not in out
+    assert printings.check_pins("gs", {"Mountain": [dict(printings.UNPIN)]}) == []
+
+
 def test_pin_shown_skips_a_digital_only_row(deck, monkeypatch):
     monkeypatch.setitem(PRINTS, ("c21", "263"), {"name": "Sol Ring", "games": ["arena"],
                                                  "finishes": ["nonfoil"]})
@@ -380,6 +395,17 @@ def test_order_merges_same_printing_and_keeps_different_art_apart(two):
         "2 Shock (M21) 159", "8 Shock (MSC) 809", "3 Sol Ring",
         "10 Mountain (10E) 378"]
     assert doc["count"] == 23 and doc["unpinned"] == ["Sol Ring"]
+
+
+def test_a_loose_basic_is_not_a_line_to_warn_about(deck):
+    root = deck.parent
+    (root / "c").mkdir()
+    (root / "c" / "decklist.txt").write_text("4 Shock\n24 Mountain\n", encoding="utf-8")
+    (root / "c" / "cards.json").write_text(json.dumps({"deck": "c", "cards": [
+        _card("Shock", 4), _card("Mountain", 24)]}))
+    doc = order.build(["c"])
+    assert doc["unpinned"] == ["Shock"]
+    assert "24 Mountain" in order.paste(doc)
 
 
 def test_plain_order_drops_every_printing(two):
