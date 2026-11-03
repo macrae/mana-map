@@ -225,7 +225,7 @@ def test_deck_html_busts_its_own_assets():
     # `decklist` joined with "Copy for Moxfield": on a static host the page parses
     # `decklist.txt` and renders it as `deck-export` would.
     assert set(busts) == {"deck-view", "context-md", "tokens", "shell", "session", "api",
-                          "page-state", "decklist"}, busts
+                          "page-state", "decklist", "printings"}, busts
     assert all(int(v) > 0 for v in busts.values())
 
 

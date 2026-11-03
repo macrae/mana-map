@@ -93,7 +93,7 @@ def test_the_manifest_version_is_not_the_card_map_version():
         "mana-map.js no longer declares DATA_VERSION")
 
 
-_WORDS = {"one": 1, "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+_WORDS = {"one": 1, "two": 2, "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
           "fifteen": 15, "sixteen": 16, "seventeen": 17}
 
 
@@ -107,7 +107,7 @@ def test_claude_md_counts_index_htmls_busts():
     sheets = re.findall(r'<link rel="stylesheet" href="css/[^"]+\?v=\d+"', page)
     assert len(_busts(VIZ / "index.html")) == len(scripts) + len(sheets)
     claude = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
-    m = re.search(r"`index\.html`'s (\w+) busts \((\w+) scripts, (\w+) stylesheet\)", claude)
+    m = re.search(r"`index\.html`'s (\w+) busts \((\w+) scripts, (\w+) stylesheets?\)", claude)
     assert m, "CLAUDE.md no longer states index.html's bust count"
     said = tuple(_WORDS.get(w) for w in m.groups())
     assert said == (len(scripts) + len(sheets), len(scripts), len(sheets)), (
