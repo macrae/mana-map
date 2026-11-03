@@ -141,7 +141,9 @@ Before that, v1.0.0 (11 Sep) was the pilot's sleeved paper list, six swaps off t
 ## Open questions
 
 <!-- ctx:gen queue -->
-- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+- **Q015** decided — Molten Echoes (Dinosaur) adds hasty attackers from every nontoken Dinosaur that enters before declare attackers, but cannot add attackers from Gishath's reveal, which resolves in the combat damage step after attackers are declared. → _supported: Confirmed by the rules agent: a Dinosaur entering before declare attackers makes a hasty token that can attack; Gishath's reveal resolves in the combat damage step (CR 508.1a), so its tokens cannot attack without an extra combat. Tokens' ETBs fire (CR 603.6a, 707.2) and both Dinosaur and token trigger Purphoros: 6 reveal Dinosaurs = 12 triggers = 24 to each opponent. ETB Dinosaurs in the list: Bronzebeak Foragers, Earthshaker Dreadmaw, Itzquinth, Regal Behemoth, Regisaur Alpha, Trumpeting Carnosaur, Wakening Sun's Avatar, Zacama._
+- **Q016** promoted — In the goldfish, the share of games with a dead-hand opening pattern (nothing castable early) is a rate to read, not a stall to assume. Log 003 is one hand; the goldfish figure says whether that hand is typical.
+- 1 dropped or killed: `manamap pilot queue list --deck gishath --all`
 <!-- /ctx:gen queue -->
 
 - **Does [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes) earn its slot with Gishath?** The pilot's view, not a decision: it does not work as well as he expected, since Gishath's dinosaurs come in after the attack, so it only copies what was cast before and enter-the-battlefield effects. He wants this explored and thinks there may be a better way to do what he is after. Testable: swap it for a different payoff for creatures that arrive before combat, and look at how much the swing grows. The Numbers section has no figure for this. Missing: how often it is on the board before Gishath attacks.
