@@ -142,10 +142,17 @@ def test_the_decklist_shows_every_copy_in_the_standing_order(browser, viz_server
         got = {re.sub(r"\s*\{.*$", "", t) for t in shown}
         for c in doc["cards"]:
             assert f"{c['quantity']} {c['name']}" in got, c["name"]
+        # By type is the default, and every copy sits in exactly one group.
         blocks = page.locator("#panel-decklist .dl-h").all_inner_texts()
-        assert "Lands" in " ".join(blocks)
-        page.click("#panel-decklist .dl-view[data-view=cost]")
-        assert page.locator("#panel-decklist .dl-row").count() == len(doc["cards"])
+        joined = " ".join(blocks).lower()
+        assert "lands" in joined and "creatures" in joined, blocks
+        assert joined.rindex("lands") > joined.index("creatures"), "lands come last"
+        main = sum(c["quantity"] for c in doc["cards"] if not c.get("is_commander"))
+        counted = [int(b.split()[-1]) for b in blocks if not b.lower().startswith("commander")]
+        assert sum(counted) == main, blocks
+        for view in ("alpha", "cost", "type"):
+            page.click(f"#panel-decklist .dl-view[data-view={view}]")
+            assert page.locator("#panel-decklist .dl-row").count() == len(doc["cards"]), view
         assert errors == []
     finally:
         page.close()

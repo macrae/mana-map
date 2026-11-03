@@ -706,8 +706,8 @@
   /* ── THE DECKLIST: the thing a researcher came for, and it was not on the page ──
    *
    * No copy count appeared anywhere: "3 Penumbra Spider" was not in the rendered text
-   * of any deck. Rows are `cards.json`'s, in the standing order (non-lands, then
-   * lands, each alphabetical). The curve counts copies from the same rows, lands
+   * of any deck. Rows are `cards.json`'s, split by card type by default (the pilot's
+   * choice, 2026-11-02), alphabetical inside each group. The curve counts copies from the same rows, lands
    * excluded, and carries nothing the list beside it does not. */
   function isLand(c) { return /\bLand\b/.test(String(c.type_line || '').split('//')[0]); }
   function qty(c) { return c.quantity || 1; }
@@ -724,12 +724,38 @@
   }
   function byName(a, b) { return a.name < b.name ? -1 : a.name > b.name ? 1 : 0; }
 
+  /* EVERY CARD IN ONE GROUP, so the counts add up to the deck. A card with two types
+   * sits under the first of these it has: an Artifact Creature is a Creature, because
+   * that is how it plays. A double-faced card goes by its front face. */
+  var TYPE_GROUPS = [['Land', 'Lands'], ['Creature', 'Creatures'],
+                     ['Planeswalker', 'Planeswalkers'], ['Battle', 'Battles'],
+                     ['Instant', 'Instants'], ['Sorcery', 'Sorceries'],
+                     ['Enchantment', 'Enchantments'], ['Artifact', 'Artifacts']];
+  var TYPE_ORDER = ['Creature', 'Planeswalker', 'Battle', 'Instant', 'Sorcery',
+                    'Enchantment', 'Artifact', 'Other', 'Land'];
+  function typeOf(c) {
+    var front = String(c.type_line || '').split('//')[0];
+    for (var i = 0; i < TYPE_GROUPS.length; i++) {
+      if (new RegExp('\\b' + TYPE_GROUPS[i][0] + '\\b').test(front)) return TYPE_GROUPS[i][0];
+    }
+    return 'Other';
+  }
+  function typeLabel(t) {
+    var hit = TYPE_GROUPS.filter(function (g) { return g[0] === t; })[0];
+    return hit ? hit[1] : t;
+  }
+
   function dlView(d, view) {
     var cards = ((d.cards || {}).cards || []);
     var main = cards.filter(function (c) { return !c.is_commander; });
     var head = dlBlock('Commander', cards.filter(function (c) { return c.is_commander; }));
     var side = ((d.cards || {}).sideboard || []).slice().sort(byName);
     var tail = dlBlock('Sideboard', side);
+    if (view === 'type') {
+      return head + TYPE_ORDER.map(function (t) {
+        return dlBlock(typeLabel(t), main.filter(function (c) { return typeOf(c) === t; }).sort(byName));
+      }).join('') + tail;
+    }
     if (view === 'cost') {
       var nonland = main.filter(function (c) { return !isLand(c); });
       var costs = {};
@@ -768,10 +794,11 @@
     return panel('decklist', theN(d), 'Every card and how many copies. Hover a name for the card.',
       ['data'], 'var(--tier-data)',
       '<div class="dl-tools" role="group" aria-label="Sort the list">' +
-        '<button class="dl-view is-on" data-view="alpha">A to Z</button>' +
+        '<button class="dl-view is-on" data-view="type">By type</button>' +
+        '<button class="dl-view" data-view="alpha">A to Z</button>' +
         '<button class="dl-view" data-view="cost">By cost</button>' +
         '<button class="dl-view" data-view="job" hidden>By job</button></div>' +
-      '<div class="dl-grid"><div class="dl-cols" id="dlCols">' + dlView(d, 'alpha') + '</div>' +
+      '<div class="dl-grid"><div class="dl-cols" id="dlCols">' + dlView(d, 'type') + '</div>' +
       '<div class="dl-side">' + curveHtml(d) + moxfieldExport() + '</div></div>');
   }
 

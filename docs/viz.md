@@ -1606,7 +1606,7 @@ answerable only by reading the assembly line.
 | # | chapter | what it holds | from |
 |---|---|---|---|
 | 1 | **Overview** | stage, price, three numbers, the Context's summary, what to do next | `info.json`, the manifest, `prices.json`, `CONTEXT.md` |
-| 2 | **Decklist** | every card with its copies, by name, cost or job, and the curve | `cards.json` |
+| 2 | **Decklist** | every card with its copies, by type (the default), name, cost or job, and the curve | `cards.json` |
 | 3 | **How it plays** | the game plan, cards by job, deck regions and map, what to fetch | `CONTEXT.md`, `deck_map.json`, `tutor_guide.json` |
 | 4 | **Mana** | the mana base and the deck targets | `mana_analysis.json`, `info.audit`, `audit.json` |
 | 5 | **Games** | every game, the pilot's words, pilot notes | `log.jsonl`, `log_causes.json`, `CONTEXT.md` |
