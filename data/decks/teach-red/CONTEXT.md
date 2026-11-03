@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · R · 60 cards
-- **Version:** v1.0.0 (V1) · **status:** on the bench (dev)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (dev)
 - **Colours:** R · **lands:** 24
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 0 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=teach-red) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=teach-red)
@@ -80,7 +80,7 @@ Against teach-white, combat is the thing to watch. The Numbers section says the 
 
 <!-- ctx:gen numbers -->
 - Goldfish: not modelled for Modern — the goldfish is Commander-only (docs/simulation.md).
-- Colour on curve (lands + rocks): R 94%
+- Colour on curve (lands + rocks): R 99%
 <!-- /ctx:gen numbers -->
 
 ## Pilot notes
