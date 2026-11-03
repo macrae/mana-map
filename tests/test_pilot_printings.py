@@ -330,6 +330,25 @@ def test_a_foil_pin_costs_the_foil_price():
     assert prices.unit_cents({"nm_cents": 10, "foil_cents": 99, "quantity": 1}) == 10
 
 
+def test_the_validator_adds_foil_and_split_art_the_way_prices_does():
+    from manamap.pilot import validate_prices
+    rows = {
+        "Zada": {"scryfall_id": "a", "printing": "(SLD) 2406", "nm_cents": None, "lp_cents": None,
+                 "foil_cents": 782, "url": None, "quantity": 1, "note": None, "foil": True},
+        "Mountain": {"scryfall_id": "b", "printing": "(SLD) 2418", "nm_cents": None, "lp_cents": None,
+                     "foil_cents": 268, "url": None, "quantity": 3, "note": None, "foil": True,
+                     "printings": [{"foil": True, "foil_cents": 268, "nm_cents": None, "quantity": 2},
+                                   {"foil": True, "foil_cents": 300, "nm_cents": None, "quantity": 1}]},
+    }
+    doc = {"slug": "gs", "branch": None, "as_of": "2026-11-03", "source": "manapool", "currency": "USD",
+           "decklist_sha256": "x", "cards": rows, "missing": [], **prices._totals(rows)}
+    assert doc["total_cents"] == 782 + 268 * 2 + 300
+    errors = validate_prices.validate("gs", None, doc)
+    assert not [e for e in errors if "total" in e], errors
+    doc["total_cents"] += 1
+    assert [e for e in validate_prices.validate("gs", None, doc) if "total_cents" in e]
+
+
 def test_split_art_totals_each_printing():
     row = {"nm_cents": None, "foil_cents": 268, "quantity": 15, "foil": True, "printings": [
         {"foil": True, "foil_cents": 268, "nm_cents": None, "quantity": 8},

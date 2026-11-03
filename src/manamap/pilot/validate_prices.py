@@ -15,6 +15,7 @@ from urllib.parse import urlsplit
 
 from manamap.pilot.common import deck_dir, load_json, report_errors
 from manamap.pilot.prices import ALLOWED_HOSTS, ARTIFACT, SOURCES
+from manamap.pilot.prices import _totals as prices_totals
 
 REQUIRED = ("slug", "branch", "as_of", "source", "currency", "decklist_sha256",
             "cards", "total_cents", "total_nm_cents", "missing")
@@ -93,6 +94,13 @@ def validate(slug, branch, doc, deck_names=None):
         if _is_cents(nm) and nm is not None:
             total += nm * qty
             total_nm += nm
+    # THE SAME SUM `prices` WROTE: a foil pin at the foil price, split art per printing.
+    # Only a malformed row, already reported above, falls back to the plain NM sum.
+    try:
+        said = prices_totals(doc["cards"])
+        total, total_nm = said["total_cents"], said["total_nm_cents"]
+    except (TypeError, KeyError, AttributeError):
+        pass
     if doc["total_cents"] != total:
         errors.append(f"total_cents {doc['total_cents']!r} != sum of nm_cents x quantity "
                       f"({total})")
