@@ -7888,16 +7888,22 @@ def test_a_card_named_in_a_report_can_be_inspected(browser, viz_server):
         # test fails for a reason that has nothing to do with the code. Routing
         # it also proves the request is made to the endpoint we think it is.
         seen = []
-        page.route(
-            "**/api.scryfall.com/**",
-            lambda route: (seen.append(route.request.url),
-                           route.fulfill(status=200, content_type="image/png",
-                                         body=_ONE_PIXEL_PNG)))
+        for host in ("**/api.scryfall.com/**", "**/cards.scryfall.io/**"):
+            page.route(host, lambda route: (seen.append(route.request.url),
+                                            route.fulfill(status=200, content_type="image/png",
+                                                          body=_ONE_PIXEL_PNG)))
         first.hover()
         page.wait_for_selector("img.cardpop:not([hidden])", timeout=15000)
         assert page.locator("img.cardpop").count() == 1, "one reused element"
-        assert seen and "format=image" in seen[0], seen
-        assert "exact=" in seen[0], "the image is looked up by NAME"
+        # THE BRANCH'S OWN ART when its `cards.json` holds the card (2026-11-03), by name
+        # only when it does not: a hover shows the printing the list says.
+        from manamap.config import DECKS_DIR
+        rows = json.loads((DECKS_DIR / "ur-dragon" / "branches" / A_BRANCH / "cards.json")
+                          .read_text(encoding="utf-8"))["cards"]
+        own = next((c.get("image") for c in rows
+                    if c["name"] == first.get_attribute("data-card")), None)
+        assert seen, "the hover asked for art"
+        assert (seen[0] == own) if own else ("format=image" in seen[0] and "exact=" in seen[0]), (seen, own)
     finally:
         page.close()
 
