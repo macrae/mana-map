@@ -4,8 +4,8 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
-- **Version:** v1.2.1 (V5) · **status:** sleeved since 2026-10-28
-- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-28, 5 readings)
+- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-28
+- **Colours:** R · **lands:** 36 · **bracket floor:** 1 (Exhibition) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-28, 5 readings) — older list
 - **Combos:** 2 known lines (0 infinite, 0 two-card) · 41 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=goblin-storm) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=goblin-storm)
 <!-- /ctx:gen summary -->
@@ -96,7 +96,7 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on v1.2.1 (V5), 2026-10-28. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
