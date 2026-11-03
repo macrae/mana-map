@@ -717,11 +717,7 @@ a.cardref:hover .card-pop, a.cardref:focus .card-pop { display: block; }
 .obj-result { font-size: 20px; margin: 10px 0 4px; }
 .obj-reading { font-family: var(--mono, monospace); }
 
-#panels { display: grid; gap: 22px; grid-template-columns: 1fr; }
-@media (min-width: 1020px) {
-  #panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  #panels > .panel:nth-child(1), #panels > .panel.limits { grid-column: 1 / -1; }
-}
+#panels { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
 
 /* Wide content scrolls inside its own box; the page body never scrolls sideways. */
 .tablewrap { overflow-x: auto; }
@@ -863,6 +859,111 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
 .swap-act button:hover:not(:disabled) { border-color: var(--ink); }
 .swap-act button:disabled { opacity: .5; cursor: default; }
 .panel.staged ul.cardlist li { font-variant-numeric: tabular-nums; }
+
+/* ── The net-change report (branch.html), a reader's pass, 2026-11-03 ───────
+   One column in the order a decision is read: the profile, what it cannot see,
+   the mana, the cost, the cards, the definitions. Scoped to `.branch-report`
+   because this stylesheet is shared with five other pages. 12px is the floor for
+   anything a reader has to read. */
+.branch-report .branch-blurb { max-width: 74ch; margin: 6px 0 0; font-size: 15px; line-height: 1.45; color: var(--ink); }
+.branch-report .dossier-head .slug-line { letter-spacing: .1em; font-size: 12px; }
+.branch-report #objective:empty { display: none; }
+.branch-report #objective { margin-bottom: 14px; }
+.branch-report .panel { min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 56px; }
+.branch-report #slotEvidence { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
+.branch-report #slotEvidence:empty { display: none; }
+.branch-report .ev { font-size: 13px; line-height: 1.5; max-width: 80ch; }
+.branch-report .lede { font-size: 15px; max-width: 74ch; }
+.branch-report table.netchange { min-width: 0; }
+.branch-report table.netchange th { font-size: 12px; }
+.branch-report table.netchange td, .branch-report table.netchange tbody th { font-size: 14px; }
+.branch-report .tile .t, .branch-report .lift .who, .branch-report .forge .who,
+.branch-report .ledger-list .kind, .branch-report .swap-head .src { font-size: 12px; }
+.branch-report h1 { font-size: clamp(26px, 3vw, 38px); line-height: 1.12; margin: 4px 0 2px; }
+.branch-report #slotActions { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
+.branch-report #slotActions:empty { display: none; }
+.nc-duo { display: grid; gap: 8px 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 900px) { .nc-duo { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.nc-fold summary { cursor: pointer; color: var(--ink-soft); font-size: 13px; margin-top: 8px; }
+@media (min-width: 900px) { .nc-defs dl { columns: 2; column-gap: 32px; } }
+.nc-def { break-inside: avoid; }
+.branch-report .difflist li { align-items: baseline; }
+.branch-report ul.difflist .paired { flex: 0 1 auto; padding-left: 0; font-size: 13px; color: var(--ink-soft); }
+.branch-report ul.difflist .cname { flex: 0 1 auto; }
+.branch-report ul.difflist .mv { font-size: 13px; }
+.branch-report ul.difflist .chip { font-size: 12px; }
+.branch-report ul.difflist li { line-height: 1.4; }
+.branch-report ul.difflist .why { font-size: 13px; }
+.nc-count { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 4px 0 12px; font-size: 16px; }
+.nc-count b { font-size: 26px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; margin-right: 4px; }
+.nc-count .c-better b { color: var(--slime-green); }
+.nc-count .c-worse b { color: var(--power-red); }
+.nc-count .c-noise b { color: var(--ink-soft); }
+.nc-forge-warn { border-left: 3px solid var(--burst-yellow); padding: 6px 10px; margin: 0 0 12px; max-width: 80ch; }
+.nc-table { width: 100%; }
+.nc-table thead th { position: static; white-space: nowrap; }
+.nc-table tr.nc-group th {
+  font-family: var(--condensed); font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-soft); padding: 12px 10px 4px; border-bottom: 1px solid var(--rule);
+}
+.nc-table tbody th.nc-name { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--ink); white-space: nowrap; }
+.nc-table .nc-name a { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--ink-soft); }
+.nc-table .nc-name a:hover { border-bottom-style: solid; }
+.nc-low { font-size: 12px; color: var(--ink-soft); margin-left: 6px; white-space: nowrap; }
+.nc-table td.n { white-space: nowrap; }
+.nc-arrow { color: var(--ink-soft); }
+.nc-range { color: var(--ink-soft); }
+.nc-table td.verdict { white-space: nowrap; }
+.nc-table .nc-res { display: inline; white-space: nowrap; font-size: 12px; }
+.nc-table td.verdict b { font-weight: 600; }
+.nc-table tr.v-noise td.verdict b { font-weight: 400; }
+.nc-res { margin-left: 6px; }
+.nc-key { margin: 10px 0 0; }
+.branch-report .guard { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.guard-line { margin: 0 0 4px; font-size: 15px; }
+.guard.failed .guard-line b:first-child { color: var(--power-red); }
+.guard.met .guard-line b:first-child { color: var(--slime-green); }
+.guard.unresolved .guard-line b:first-child { color: var(--burst-yellow); }
+.branch-report .verdict { margin-top: 6px; }
+.branch-report .verdict-why { font-size: 14px; line-height: 1.5; margin: 0 0 6px; max-width: 80ch; }
+.nc-blind { list-style: none; padding: 0; margin: 10px 0 14px; display: grid; gap: 10px; }
+.nc-blind li { font-size: 14px; }
+.nc-blind li b { font-weight: 600; }
+.nc-blind-why { display: block; color: var(--ink-soft); font-size: 13px; max-width: 80ch; }
+.nc-limits { padding-left: 18px; margin: 6px 0 0; }
+.nc-limits li { font-size: 13px; color: var(--ink-soft); margin-bottom: 6px; max-width: 80ch; }
+.nc-facts { list-style: none; padding: 0; margin: 10px 0; display: flex; flex-wrap: wrap; gap: 4px 22px; font-size: 14px; font-variant-numeric: tabular-nums; }
+.nc-where, .nc-auto { margin-top: 12px; }
+.nc-where summary, .nc-auto summary { cursor: pointer; color: var(--ink-soft); font-size: 13px; }
+.nc-auto ul { padding-left: 18px; margin: 6px 0 0; }
+.nc-auto li { font-size: 13px; margin-bottom: 4px; }
+.nc-defs dl { margin: 8px 0 0; }
+.nc-def { padding: 10px 0; border-top: 1px solid var(--rule); scroll-margin-top: 56px; }
+.nc-def:target { background: var(--panel-hi); }
+.nc-def dt { font-weight: 600; font-size: 14px; }
+.nc-def dd { margin: 3px 0 0; }
+.nc-def dd p { margin: 3px 0 0; font-size: 14px; line-height: 1.45; max-width: 80ch; }
+.nc-def dd p.ev { font-size: 13px; }
+.nc-here { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.branch-report .difflist .why { font-size: 13px; }
+.branch-report .chip { font-size: 12px; }
+.branch-report .badge, .branch-report .br-state, .branch-report button.vt, .branch-report .br-jarvis { font-size: 12px; }
+@media (max-width: 640px) {
+  .branch-report .panel { padding: 14px 12px; }
+  .branch-report .dossier-nav { flex-wrap: nowrap; overflow-x: auto; }
+  .branch-report .dossier-nav a { white-space: nowrap; }
+  .nc-table thead { display: none; }
+  .nc-table, .nc-table tbody { display: block; }
+  .nc-table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 7px 0; border-bottom: 1px solid var(--rule); }
+  .nc-table tr.nc-group { display: block; border-bottom: 0; padding: 10px 0 0; }
+  .nc-table tr th, .nc-table tr td { border: 0; padding: 1px 0; white-space: normal; }
+  .nc-table tr.nc-group th { display: block; padding: 0 0 2px; border-bottom: 1px solid var(--rule); }
+  .nc-table tr td.verdict { grid-column: 2; grid-row: 1; text-align: right; white-space: nowrap; }
+  .nc-table tr .nc-name { grid-column: 1; grid-row: 1; white-space: normal; }
+  .nc-table tr td.nc-ab { grid-column: 1; text-align: left; }
+  .nc-table tr td.nc-change { grid-column: 2; grid-row: 2; text-align: right; }
+  .nc-table tr td.nc-range { grid-column: 1 / -1; text-align: left; font-size: 13px; }
+}
 
 /* ── The dossier (deck.html) ─────────────────────────────────────────────
    A file kept ABOUT a deck, not a report on one. The grammar is the dark

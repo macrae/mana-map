@@ -29,6 +29,18 @@
       .catch(function () { return null; });
   }
 
+  /* THE REPORT, READ STRICTLY. A 404 is a branch nobody has measured. A report
+   * that will not parse, or a request that failed, is something else, and saying
+   * "not measured" over it sends the pilot to re-run a report that exists. */
+  function getReport(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (r.status === 404) return { doc: null };
+      if (!r.ok) return { doc: null, failed: 'the server answered ' + r.status };
+      return r.json().then(function (doc) { return { doc: doc }; },
+                           function () { return { doc: null, failed: 'net_change.json will not parse' }; });
+    }).catch(function (e) { return { doc: null, failed: 'the request failed: ' + e.message }; });
+  }
+
   /* A CARD NAME IS A LINK EVERYWHERE ON THIS PAGE, and it is `Shell`'s so that
    * deck.html and workbench.html get the same one. This file used to carry its
    * own `cardref` + `card-pop` markup inside `cardList` and nowhere else, so the
@@ -64,24 +76,19 @@
     var o = (nc && nc.objective) || (meta && meta.objective);
     var g = nc && nc.objective_grade;
     if (!o) {
-      return '<section class="panel objective none"><h2>Objective</h2>' +
-        '<p class="ev">This branch states none. It predates the requirement, so ' +
-        'it cannot be graded — it can only be described.</p>' +
-        '<p class="ev">A branch without a testable objective gets judged on ' +
-        'whether it did what it does, which is not the same question as ' +
-        'whether it was worth doing.</p></section>';
+      return '<div class="guard none" id="guard"><p class="guard-line"><b>Guard:</b> none set.</p></div>';
     }
     var state = g ? g.state : 'not measured';
     var cls = { 'met': 'met', 'not met': 'failed',
                 'not resolvable': 'unresolved' }[state] || 'unknown';
-    var out = '<section class="panel objective ' + cls + '"><h2>Objective</h2>' +
-      '<p class="obj-expr"><code>' + esc(o.axis) + ' ' + esc(o.op) + ' ' +
-      esc(o.value) + (o.pod ? ' @' + esc(o.pod) : '') + '</code></p>';
-    if (o.why) out += '<p class="ev">' + esc(o.why) + '</p>';
+    var word = { 'met': 'Guard met', 'not met': 'Guard not met',
+                 'not resolvable': 'Guard not resolved',
+                 'not measured': 'Guard not measured' }[state] || 'Guard';
+    var out = '<div class="guard ' + cls + '" id="guard"><p class="guard-line"><b>' + esc(word) +
+      ':</b> <code>' + esc(o.axis) + ' ' + esc(o.op) + ' ' + esc(o.value) +
+      (o.pod ? ' @' + esc(o.pod) : '') + '</code>' +
+      (g && g.reading != null ? ', read <b>' + esc(num(g.reading)) + '</b>' : '') + '</p>';
     if (g) {
-      out += '<p class="obj-result"><span class="obj-reading">' +
-             esc(num(g.reading)) + '</span> &rarr; <b>' +
-             esc(state.toUpperCase()) + '</b></p>';
       if (g.why) out += '<p class="ev">' + esc(g.why) + '</p>';
       // A FORGE OBJECTIVE TRAVELS WITH THE INTERVAL ON THE DIFFERENCE and the
       // table's null — the two numbers the reading was actually read against.
@@ -96,118 +103,201 @@
           ' (' + esc(String(g.null.games)) + ' games) at ' + esc(g.null.pod) + '</p>';
       }
     }
-    return out + '</section>';
+    if (o.why) out += '<p class="ev">Written when the branch was opened: ' + esc(o.why) + '</p>';
+    return out + '</div>';
   }
 
-  /* EVERY ROW CARRIES ITS OWN DEFINITION, because a figure whose meaning is not
-   * on the page beside it gets guessed at, and the guesses go one way: a mean
-   * read as a rate, a clock read as a win rate, a hoard read as mana. All three
-   * have happened on this bench. `reads_as` and `what`/`why_we_care` are built
-   * by `net_change.build` and travel in the artifact, so this page still
-   * computes nothing. */
-  function tablePanel(nc) {
+  /* THE ROWS, GROUPED BY WHAT THEY MEAN AT A TABLE. Mirrors
+   * `net_change.ROW_GROUPS` (a test holds the two equal). A row named nowhere
+   * lands in Other, so a new metric cannot drop off the page by being forgotten. */
+  var ROW_GROUPS = [
+    ['Speed', ['killed by T6', 'killed by T10', 'damage @T10']],
+    ['Board', ['board power @T6', 'hoard @T6', 'hoard @T10']],
+    ['Mana and hands', ['stall, 2 in a row', 'missed drop by T5', 'mulliganed',
+                        'hand can act by T3', "kept hand passes the pilot's keep rule"]],
+    ['Cards and answers', ['extra cards by T8', 'interaction affordable @T6',
+                           'finisher wheel by T8', 'wheels cast by T10',
+                           'dead wheels in hand @T5']]
+  ];
+  var READ_WORD = { better: 'Better', worse: 'Worse', noise: 'No call' };
+
+  /* DISPLAY ONLY, the same rule as `net_change.format_row`: a rate as a percentage
+   * and its change in points, a mean to the precision its size earns. The verdict
+   * is the artifact's and is never recomputed. */
+  function rowFigures(r) {
+    var rate = r.unit === 'rate', scale = rate ? 100 : 1;
+    var top = Math.max(Math.abs(r.champion), Math.abs(r.branch));
+    var dp = rate ? 1 : top < 1 ? 3 : top < 10 ? 2 : 1;
+    function fig(v) { return num(v * scale, dp) + (rate ? '%' : ''); }
+    // ZERO CARRIES ITS SIGN, as the terminal's does: an A/A reads +0.0, not 0.0.
+    function sign(v) { var x = v * scale; return (x >= 0 ? '+' : '') + x.toFixed(dp); }
+    var ci = r.ci95_diff;
+    return {
+      now: fig(r.champion), branch: fig(r.branch),
+      change: sign(r.delta) + (rate ? ' pts' : ''),
+      range: ci ? '[' + sign(ci[0]) + ', ' + sign(ci[1]) + ']' : '',
+      read: READ_WORD[r.verdict] || r.verdict,
+      resolves: r.mde == null ? '' : num(r.mde * scale, dp) + (rate ? ' pts' : '')
+    };
+  }
+
+  function defId(name) {
+    return 'def-' + String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+
+  function profileCount(table) {
+    var n = { better: 0, worse: 0, noise: 0 };
+    table.forEach(function (r) { if (r.verdict in n) n[r.verdict]++; });
+    return n;
+  }
+
+  function rowHtml(r) {
+    var f = rowFigures(r);
+    return '<tr class="v-' + esc(r.verdict) + '">' +
+      '<th scope="row" class="nc-name"><a href="#' + defId(r.measure) + '">' + esc(r.measure) + '</a>' +
+      (r.better_is === 'lower' ? ' <span class="nc-low" title="Lower is better on this row">lower is better</span>' : '') + '</th>' +
+      '<td class="n nc-ab">' + esc(f.now) + ' <span class="nc-arrow">&rarr;</span> ' + esc(f.branch) + '</td>' +
+      '<td class="n nc-change">' + esc(f.change) + '</td>' +
+      '<td class="n nc-range">' + esc(f.range) + '</td>' +
+      '<td class="verdict"><b>' + esc(f.read) + '</b>' +
+      (r.verdict === 'noise' && f.resolves
+        ? ' <span class="ev nc-res">resolves ' + esc(f.resolves) + '</span>' : '') +
+      '</td></tr>';
+  }
+
+  /* THE PROFILE LEADS, and no single word sits on top of it. The bench judges the
+   * whole profile, so the first thing read is the count and the rows; the rule's
+   * stated word and the guard sit directly under them, labelled as what they are.
+   * `#measured` is the deep link the workbench's rack points at. */
+  function tablePanel(nc, meta) {
     if (!nc) return '';
-    var rows = (nc.table || []).map(function (r) {
-      var head = '<tr class="v-' + esc(r.verdict) + '"><td>' + esc(r.measure) +
-        (r.better_is ? ' <span class="ev">' + esc(r.better_is) +
-                       ' is better</span>' : '') +
-        '</td><td class="n">' + num(r.champion) + '</td><td class="n">' +
-        num(r.branch) + '</td><td class="n">' + signed(r.delta) +
-        // THE INTERVAL ON THE DIFFERENCE, beside the delta it bounds.
-        (r.ci95_diff ? ' <span class="ev">[' + signed(r.ci95_diff[0]) + ', ' +
-                       signed(r.ci95_diff[1]) + ']</span>' : '') +
-        '</td><td class="verdict">' + esc(r.verdict) +
-        (r.verdict === 'noise' ? ' <span class="ev">MDE ' + num(r.mde) + '</span>' : '') +
-        '</td></tr>';
-      if (!r.reads_as && !r.what) return head;
-      return head + '<tr class="reading"><td colspan="5">' +
-        (r.reads_as ? '<p class="reads">' + esc(r.reads_as) + '</p>' : '') +
-        (r.what ? '<details><summary>What is this, and why do we care?</summary>' +
-          '<p>' + esc(r.what) + '</p>' +
-          (r.scale ? '<p class="ev">Scale: ' + esc(r.scale) + '</p>' : '') +
-          '<p class="ev"><b>Why:</b> ' + esc(r.why_we_care) + '</p></details>' : '') +
-        '</td></tr>';
+    var table = nc.table || [];
+    var byName = {}, placed = {};
+    table.forEach(function (r) { byName[r.measure] = r; });
+    var groups = ROW_GROUPS.map(function (g) {
+      var rows = g[1].filter(function (n) { return byName[n]; }).map(function (n) {
+        placed[n] = 1; return byName[n];
+      });
+      return [g[0], rows];
+    });
+    groups.push(['Other', table.filter(function (r) { return !placed[r.measure]; })]);
+    var body = groups.filter(function (g) { return g[1].length; }).map(function (g) {
+      return '<tbody><tr class="nc-group"><th colspan="5" scope="rowgroup">' + esc(g[0]) + '</th></tr>' +
+        g[1].map(rowHtml).join('') + '</tbody>';
     }).join('');
-    var derived = ((nc.definitions || {}).derived || []).map(function (d) {
-      return '<details><summary>' + esc(d.name) + '</summary><p>' +
-        esc(d.what) + '</p><p class="ev"><b>Why:</b> ' + esc(d.why) +
-        '</p></details>';
-    }).join('');
-    return '<section class="panel" id="measured"><h2>Measured</h2>' +
-      '<p class="ev">' + esc(nc.harness.iterations.toLocaleString()) +
-      ' games each, shared seed. A delta smaller than the run could detect is ' +
-      'marked noise rather than ranked — that is no answer, not no change.' +
-      (nc.design ? ' These ' + esc(String(nc.design.exploratory_rows)) +
-        ' rows are EXPLORATORY and Holm-corrected as a family; the primary is ' +
-        (nc.design.primary ? esc(nc.design.primary) : 'not declared') + '.' : '') +
-      '</p>' +
-      '<div class="tablewrap"><table class="netchange"><thead><tr><th>Measure</th>' +
-      '<th class="n">Deck</th><th class="n">Branch</th><th class="n">&Delta;</th>' +
-      '<th>Verdict</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
-      (derived ? '<h3>The figures that are not rows</h3>' + derived : '') +
+    var n = profileCount(table);
+    var rec = nc.recommendation || {};
+    return '<section class="panel nc-profile" id="measured">' +
+      '<h2>The profile</h2>' +
+      '<p class="nc-count"><span class="c-better"><b>' + n.better + '</b> better</span>' +
+      '<span class="c-worse"><b>' + n.worse + '</b> worse</span>' +
+      '<span class="c-noise"><b>' + n.noise + '</b> no call</span></p>' +
+      (rec.forge_warning ? '<p class="warn nc-forge-warn" id="forgeWarning">' + esc(rec.forge_warning) + '</p>' : '') +
+      '<div class="tablewrap"><table class="netchange nc-table"><thead><tr>' +
+      '<th scope="col">Measure</th><th class="n" scope="col">Now &rarr; Branch</th>' +
+      '<th class="n" scope="col">Change</th><th class="n" scope="col">95% range</th>' +
+      '<th scope="col">Read</th></tr></thead>' + body + '</table></div>' +
+      '<p class="ev nc-key"><b>No call:</b> smaller than this run can resolve, which is not the same as ' +
+      'no change. <b>Pts:</b> games per 100. The range is the 95% interval on the difference; ' +
+      'the read is Holm-corrected across the ' + table.length + ' rows. ' +
+      esc((nc.harness.iterations || 0).toLocaleString()) + ' games per list, same seeds.' +
+      (nc.design && nc.design.primary ? ' The primary is ' + esc(nc.design.primary) + '.' : '') + '</p>' +
+      objectivePanel(meta, nc) + verdictPanel(nc) +
       '</section>';
   }
 
-  /* VALUE AND RISK, SIDE BY SIDE AND NEVER MERGED. The four risk kinds are the
-   * point: a row that fell is a priced cost, a row inside the MDE is an open
-   * question, and an effect this harness cannot see is neither. All three read
-   * alike as prose, so each one is badged with what kind of claim it is. */
-  var RISK_COPY = {
-    paid: 'measured cost',
-    unresolved: 'no answer',
-    unmeasured: 'the model cannot see this',
-    structural: 'true of the whole harness'
-  };
+  /* DEFINITIONS AT THE FOOT, ONE PANEL. Twelve folds on twelve rows put the same
+   * question on the page twelve times; each row name links to its entry here, so a
+   * definition is one click away and the table still scans in one pass. */
+  function definitionsPanel(nc) {
+    if (!nc) return '';
+    var defs = nc.definitions || {};
+    var n = (nc.table || []).length;
+    function fix(t) { return String(t == null ? '' : t).replace('The sixteen rows', 'The ' + n + ' rows'); }
+    var rows = (nc.table || []).filter(function (r) { return r.what; }).map(function (r) {
+      return '<div class="nc-def" id="' + defId(r.measure) + '"><dt>' + esc(r.measure) +
+        ' <span class="ev">' + esc(r.unit) + ', ' + esc(r.better_is) + ' is better</span></dt><dd>' +
+        (r.reads_as ? '<p class="nc-here">' + esc(r.reads_as) + '</p>' : '') +
+        '<p>' + esc(r.what) + '</p>' +
+        (r.scale ? '<p class="ev">Scale: ' + esc(r.scale) + '</p>' : '') +
+        '<p class="ev"><b>Why:</b> ' + esc(r.why_we_care) + '</p></dd></div>';
+    }).join('');
+    var derived = (defs.derived || []).map(function (d) {
+      return '<div class="nc-def"><dt>' + esc(d.name) + '</dt><dd><p>' + esc(fix(d.what)) +
+        '</p><p class="ev"><b>Why:</b> ' + esc(fix(d.why)) + '</p></dd></div>';
+    }).join('');
+    var fe = defs.forge_endpoints || {};
+    var ep = nc.forge && nc.forge.available ? Object.keys(fe).map(function (k) {
+      var d = fe[k] || {};
+      return '<div class="nc-def"><dt>' + esc(k) + '</dt><dd><p>' + esc(d.what) + '</p>' +
+        (d.why ? '<p class="ev"><b>Why:</b> ' + esc(d.why) + '</p>' : '') + '</dd></div>';
+    }).join('') : '';
+    return '<section class="panel nc-defs" id="definitions"><h2>What the figures mean</h2><dl>' + rows +
+      (derived ? '</dl><h3>The figures that are not rows</h3><dl>' + derived : '') +
+      (ep ? '</dl><h3>Forge</h3><dl>' + ep : '') + '</dl></section>';
+  }
 
-  function ledgerPanel(nc) {
+  /* WHAT `recommend` SAID THAT NOTHING ELSE ON THE PAGE SAYS. The reward and paid
+   * rows are the table's and the unmeasured rows are the blind spots', so only the
+   * unresolved line (which row came closest) and the structural one remain. */
+  var RISK_COPY = { unresolved: 'no answer', structural: 'true of the whole harness' };
+
+  function otherRisks(nc) {
     var r = nc && nc.recommendation;
-    if (!r || (!r.reward && !r.risk)) return '';
-    var out = '<section class="panel ledger-panel"><h2>Reward, risk and cost</h2>';
+    var rows = ((r && r.risk) || []).filter(function (x) {
+      return x.kind !== 'paid' && x.kind !== 'unmeasured';
+    });
+    if (!rows.length) return '';
+    return '<h3>Also true of this run</h3><ul class="ledger-list">' + rows.map(function (x) {
+      return '<li class="risk k-' + esc(x.kind) + '"><span class="kind">' +
+        esc(RISK_COPY[x.kind] || x.kind) + '</span><b>' + esc(x.what) + '</b>' +
+        (x.detail ? '<span class="reads">' + esc(x.detail) + '</span>' : '') +
+        (x.why_it_matters ? '<span class="ev">' + esc(x.why_it_matters) + '</span>' : '') +
+        '</li>';
+    }).join('') + '</ul>';
+  }
 
-    out += '<h3>The reward <span class="ev">(' + (r.reward || []).length +
-           ')</span></h3>';
-    if (!(r.reward || []).length) {
-      out += '<p class="ev">Nothing beat its own minimum detectable ' +
-             'difference.</p>';
-    } else {
-      out += '<ul class="ledger-list">' + r.reward.map(function (x) {
-        return '<li class="gain"><b>' + esc(x.measure) + '</b>' +
-          '<span class="reads">' + esc(x.reads_as) + '</span>' +
-          (x.why_we_care ? '<span class="ev">' + esc(x.why_we_care) +
-                           '</span>' : '') + '</li>';
-      }).join('') + '</ul>';
+  /* THE MANA, which this page used to define and never show. For a land swap it is
+   * the whole of the evidence: the rows cannot rank two lands that make the same
+   * colours. A colour the deck never touches is not a row. */
+  var COLOUR_NAME = { W: 'White', U: 'Blue', B: 'Black', R: 'Red', G: 'Green' };
+
+  function manaPanel(nc) {
+    var m = nc && nc.mana;
+    if (!m) return '';
+    if (!m.available) {
+      return absent('The mana', m.why || 'Not measured for this report.', null).replace('<section class="panel absent"', '<section class="panel absent" id="mana"');
     }
-
-    out += '<h3>The risk <span class="ev">(' + (r.risk || []).length +
-           ')</span></h3><ul class="ledger-list">' +
-      (r.risk || []).map(function (x) {
-        return '<li class="risk k-' + esc(x.kind) + '">' +
-          '<span class="kind">' + esc(RISK_COPY[x.kind] || x.kind) + '</span>' +
-          '<b>' + esc(x.what) + '</b>' +
-          (x.detail ? '<span class="reads">' + esc(x.detail) + '</span>' : '') +
-          (x.cards && x.cards.length
-            ? '<span class="ev">' + esc(x.cards.join(', ')) + '</span>' : '') +
-          (x.why_it_matters ? '<span class="ev">' + esc(x.why_it_matters) +
-                              '</span>' : '') + '</li>';
-      }).join('') + '</ul>';
-
-    var c = r.cost;
-    if (c) {
-      out += '<h3>The cost</h3><p class="lede">' + esc(c.reads_as) + '</p>';
-      if (c.mergeable === false) {
-        out += '<p class="ev warn">NOT MERGEABLE YET — <code>deck-branch ' +
-               'merge</code> refuses while any card is unsourced. That is a ' +
-               'question about cardboard, not about whether the branch is ' +
-               'right.</p>';
-      }
-      if ((c.free_to_raid || []).length) {
-        out += '<p class="ev">Free to take, because the deck it sits in is ' +
-               'already apart: ' + esc(c.free_to_raid.map(function (x) {
-                 return x.name + ' (' + x.decks.join(', ') + ')';
-               }).join('; ')) + '.</p>';
-      }
+    function ab(pair, fn) {
+      return esc(fn(pair[0])) + ' <span class="nc-arrow">&rarr;</span> ' + esc(fn(pair[1]));
     }
-    return out + '</section>';
+    function same(v) { return v; }
+    function pct(v) { return v == null ? '—' : Math.round(v * 100) + '%'; }
+    function gap(v) { return (v > 0 ? '+' : '') + v; }
+    var rows = (m.colours || []).filter(function (r) {
+      return r.target[0] || r.target[1] || r.have[0] || r.have[1];
+    }).map(function (r) {
+      var oc = (m.on_curve || {})[r.colour] || [null, null];
+      return '<tr><th scope="row">' + esc(COLOUR_NAME[r.colour] || r.colour) + '</th>' +
+        '<td class="n">' + ab(r.have, same) + '</td><td class="n">' + ab(r.target, same) + '</td>' +
+        '<td class="n">' + ab(r.gap, gap) + '</td><td class="n">' + ab(oc, pct) + '</td></tr>';
+    }).join('');
+    var life = m.life || [];
+    var la = life[0] || {}, lb = life[1] || {};
+    function lifeRow(key, label) {
+      if (la[key] == null || lb[key] == null) return '<li>' + esc(label) + ': not measured</li>';
+      return '<li>' + esc(label) + ': ' + esc(la[key]) + ' &rarr; ' + esc(lb[key]) + '</li>';
+    }
+    return '<section class="panel nc-mana" id="mana"><h2>The mana</h2>' +
+      '<p class="ev">Deterministic, so no interval. For a land swap this table is the evidence: the rows above cannot rank two lands that make the same colours.</p>' +
+      '<div class="nc-duo"><div class="tablewrap"><table class="netchange nc-mana-table"><thead><tr><th scope="col">Colour</th>' +
+      '<th class="n" scope="col">Sources</th><th class="n" scope="col">Target</th>' +
+      '<th class="n" scope="col">Gap</th><th class="n" scope="col">On curve</th></tr></thead><tbody>' + rows + '</tbody></table></div><div>' +
+      '<ul class="nc-facts"><li>Lands: ' + ab(m.lands, same) + '</li><li>Always tapped: ' + ab(m.enters_tapped_always, same) + '</li>' +
+      (life.length ? lifeRow('recurring_per_tap_cycle', 'Life, every tap-cycle') + lifeRow('one_time_on_entry', 'Life, once on entry') : '') + '</ul>' +
+      '<p class="ev"><b>On curve:</b> the chance the base casts a spell of that colour on the turn Karsten’s table sizes it for. The gap is the figure, not the source count: a branch that changes its spells moves the target under the base. ' +
+      (life.length ? 'The two life figures are never summed: a painland charges on every activation, a fetch or a shock once. ' : '') +
+      (m.note ? esc(m.note) : '') + '</p></div></div></section>';
   }
 
   /* THE MISMATCH RENDERS ABOVE THE RATE, for the reason the CLI prints it
@@ -231,7 +321,7 @@
     if (!nc || !nc.forge) return '';
     var f = nc.forge;
     if (!f.available) {
-      return absent('The real table', f.why, null);
+      return absent('The real table', f.why, null).replace('<section class="panel absent"', '<section class="panel absent" id="forge"');
     }
     function routes(r) {
       var keys = Object.keys(r.won_by || {});
@@ -241,7 +331,7 @@
       }).join(' · ') + '</div>';
     }
     var under = f.mde != null && Math.abs(f.delta) < f.mde;
-    return '<section class="panel"><h2>The real table</h2>' +
+    return '<section class="panel" id="forge"><h2>The real table</h2>' +
       mismatchNote(f) +
       (f.pod ? '<p class="ev">at <b>' + esc(f.pod) + '</b> — ' + esc(f.basis || '') +
         '</p>' : '') +
@@ -298,16 +388,29 @@
       return r.state === 'elsewhere' && !r.free;
     });
     var cost = nc.recommendation && nc.recommendation.cost;
-    return '<section class="panel"><h2>The bill</h2>' +
+    var rc = cost || {};
+    var raid = rc.free_to_raid || [];
+    var where = elsewhere.length || raid.length
+      ? '<details class="nc-where"><summary>Where the owned cards are</summary>' +
+        cardList('To unsleeve from other decks', elsewhere) +
+        (raid.length ? '<p class="ev">Free to take, because the deck it sits in is ' +
+          'already apart: ' + esc(raid.map(function (x) {
+            return x.name + ' (' + x.decks.join(', ') + ')';
+          }).join('; ')) + '.</p>' : '') + '</details>'
+      : '';
+    return '<section class="panel" id="bill"><h2>The bill</h2>' +
       '<div class="tiles">' + tiles + '</div>' +
+      (rc.reads_as ? '<p class="ev">' + esc(rc.reads_as) + '</p>' : '') +
+      (rc.mergeable === false ? '<p class="ev warn">NOT MERGEABLE YET — <code>deck-branch ' +
+        'merge</code> refuses while any card is unsourced. That is a question about ' +
+        'cardboard, not about whether the branch is right.</p>' : '') +
       '<p class="lede">You already own <b>' + owned + ' of ' + total + '</b>.</p>' +
       (buy.length
         ? '<p class="ev bill-price" id="billPrice">' +
           (cost && typeof cost.buy_cents === 'number' ? pricedLine(cost) : 'pricing…') +
           '</p>'
         : '') +
-      cardList('To buy', buy) + buyListBlock(buy) +
-      cardList('To unsleeve from other decks', elsewhere) +
+      '<div class="nc-duo"><div>' + cardList('To buy', buy) + '</div><div>' + buyListBlock(buy) + '</div></div>' + where +
       '</section>';
   }
 
@@ -519,7 +622,7 @@
   function trailPanel(meta) {
     if (!meta) return '';
     var commits = meta.commits || [];
-    var out = '<section class="panel"><h2>The trail</h2>';
+    var out = '<section class="panel" id="trail"><h2>The trail</h2>';
     out += '<p class="ev">Opened ' + esc(meta.opened) + ' from V' +
            esc(meta.base_version) + '.</p>';
     if (!commits.length) {
@@ -571,7 +674,7 @@
         mount.insertAdjacentHTML('afterbegin',
           '<p class="ev warn" id="baseMoved">' + esc(row.base_moved) + '</p>');
       }
-      var panels = document.getElementById('panels');
+      var panels = document.getElementById('slotEvidence') || document.getElementById('panels');
       if (!panels) return;
       /* AT THE TABLE (2026-10-21). The pilot's own per-game counts for this deck
        * — when the commanders landed, when the first wheel fired and whether a
@@ -618,7 +721,7 @@
       // THE SIBLINGS: the deck's other branches, newest first, with their state.
       var others = rows.filter(function (b) { return b && b.name && b.name !== name && !b.unreadable; });
       if (others.length && !document.getElementById('branchSiblings')) {
-        panels.insertAdjacentHTML('beforeend',
+        (document.getElementById('slotActions') || panels).insertAdjacentHTML('beforeend',
           '<section class="panel siblings" id="branchSiblings"><h2>The deck\u2019s other branches</h2><ul class="br-siblings">'
           + others.map(function (b) {
               var st = String(b.state || ''), v = b.verdict || {};
@@ -637,14 +740,24 @@
   // WHAT THE GOLDFISH CANNOT SEE: net-change's own `blind_spots`, rendered
   // beside the table so a "worse" row is read with the cards it is blind to.
   function blindSpotsPanel(nc) {
-    var bs = (nc && nc.blind_spots) || [];
-    if (!bs.length) return '';
-    return '<section class="panel blind" id="blindSpots"><h2>What the goldfish cannot see</h2>'
-      + '<p class="lede">Cards in the change whose effect no row above can price \u2014 the figure is a floor for them, not a zero.</p><ul>'
-      + bs.map(function (b) {
-          return '<li><b>' + esc((b.cards || []).join(', ')) + '</b>' + (b.what ? ' \u2014 ' + esc(b.what) : '')
-               + (b.detail ? ' <span class="ev">' + esc(b.detail) + '</span>' : '') + '</li>';
-        }).join('') + '</ul></section>';
+    if (!nc) return '';
+    var bs = nc.blind_spots || [];
+    var limits = nc.limits || [];
+    if (!bs.length && !limits.length) return '';
+    var why = ((nc.recommendation || {}).risk || []).filter(function (r) {
+      return r.kind === 'unmeasured' && r.why_it_matters;
+    })[0];
+    return '<section class="panel blind" id="blindSpots"><h2>What this cannot see</h2>' +
+      '<div class="nc-duo"><div>' + (bs.length ? '<p class="ev">Cards in the change whose effect no row can price. The figure is a floor for them, not a zero' +
+        (why ? ': ' + esc(why.why_it_matters) : '') + '.</p><ul class="nc-blind">' +
+        bs.map(function (b) {
+          return '<li><b>' + (b.cards || []).map(card).join(', ') + '</b>' +
+            '<span class="nc-blind-why">' + esc(b.why || b.detail || '') + '</span></li>';
+        }).join('') + '</ul>' : '') + '</div><div>' +
+      otherRisks(nc) +
+      (limits.length ? '<h3>What no goldfish can tell you</h3><ul class="nc-limits">' +
+        limits.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' : '') +
+      '</div></div></section>';
   }
 
   // WHAT FORGE'S AI DID WITH EACH ADD: `cast_proofs.json`, one row per card,
@@ -653,7 +766,7 @@
   function wireCastProofs(base) {
     getJSON(base + 'cast_proofs.json').then(function (cp) {
       var cards = cp && cp.cards;
-      var panels = document.getElementById('panels');
+      var panels = document.getElementById('slotEvidence') || document.getElementById('panels');
       if (!cards || !panels || document.getElementById('castProofs')) return;
       var names = Object.keys(cards).sort();
       panels.insertAdjacentHTML('beforeend',
@@ -678,7 +791,7 @@
     Promise.all([getJSON(DATA + 'decks/' + encodeURIComponent(slug) + '/goldfish_metrics.json'),
                  getJSON(base + 'goldfish_metrics.json')]).then(function (got) {
       var champ = got[0], br = got[1];
-      var panels = document.getElementById('panels');
+      var panels = document.getElementById('slotEvidence') || document.getElementById('panels');
       if (!champ || !br || !panels || document.getElementById('profileFigures')) return;
       var cm = champ.metrics || champ, bm = br.metrics || br;
       function at(m, path, t) {
@@ -704,17 +817,10 @@
     });
   }
 
-  function limitsPanel(nc) {
-    if (!nc || !nc.limits || !nc.limits.length) return '';
-    return '<section class="panel limits"><h2>What this cannot tell you</h2><ul>' +
-      nc.limits.map(function (l) { return '<li>' + esc(l) + '</li>'; }).join('') +
-      '</ul></section>';
-  }
-
-  /* THE VERDICT LEADS, because it is the question the page exists to answer.
-   * It is derived by `net_change.recommend` from the same document the table
-   * below it renders, so the two can never disagree — the reason this page
-   * computes nothing itself. */
+  /* THE RULE'S WORD, UNDER THE ROWS IT SUMMARISES. `recommend` derives it from the
+   * same document the table renders, so the two cannot disagree; it no longer sits
+   * on top because the bench judges the profile, not the word. The rows it names
+   * are already above, so it does not list them again. */
   /* THE STATE BANNER. A branch had two observable conditions before `propose`
    * existed — the directory is there, or `merged` is — so one the pilot had
    * DECIDED ON rendered identically to a half-finished experiment. This is the
@@ -775,23 +881,15 @@
     var cls = { 'merge': 'met', 'a trade': 'unresolved',
                 'do not merge': 'failed', 'inconclusive': 'unknown',
                 'no objective': 'unknown' }[r.state] || 'unknown';
-    var out = '<section class="panel verdict ' + cls + '"><h2>' +
-      esc(r.state.toUpperCase()) + '</h2>' +
-      '<p class="verdict-why">' + esc(r.because) + '</p>';
-    var groups = [['rose', 'Rose'], ['fell', 'Fell'],
-                  ['no_call', 'Could not tell apart']];
-    out += '<ul class="ledger">';
-    groups.forEach(function (g) {
-      var rows = r[g[0]] || [];
-      if (!rows.length) return;
-      out += '<li class="led-' + g[0] + '"><b>' + esc(g[1]) + '</b> ' +
-             esc(rows.join(' · ')) + '</li>';
-    });
-    out += '</ul>';
+    var because = String(r.because || '');
+    if (r.forge_warning) because = because.replace(r.forge_warning, '').trim();
+    var out = '<div class="verdict ' + cls + '" id="verdict"><p class="verdict-why">' +
+      (r.state === 'no objective' ? '' : 'The rule\u2019s word is <b>' + esc(r.state) + '</b>. ') +
+      esc(because) + '</p>';
     (r.notes || []).forEach(function (n) {
       out += '<p class="ev">' + esc(n) + '</p>';
     });
-    return out + '</section>';
+    return out + '</div>';
   }
 
   /* THE STAGING AREA. Every row carries what the card COSTS as well as what it
@@ -807,7 +905,10 @@
       return out + '</section>';
     }
     out += '<p class="ev">Ranked by the obsolescence index\u2019s own strength. ' +
-           'It PROPOSES; nothing here has been measured.</p><ul class="swaplist">';
+           'It PROPOSES; nothing here has been measured.</p>' +
+           '<details class="nc-fold"' + (location.hash === '#swaps' ? ' open' : '') + '><summary>' +
+           doc.swaps.length + ' candidate' + (doc.swaps.length === 1 ? '' : 's') +
+           '</summary><ul class="swaplist">';
     doc.swaps.forEach(function (r) {
       var band = r.strength >= 0.65 ? 'strong'
                : r.strength >= 0.4 ? 'mild' : 'weak';
@@ -894,9 +995,17 @@
              '<span class="cname">' + card(r.name) + '</span>' +
              '<span class="mv">mv' + (r.cmc == null ? '?' : r.cmc) + '</span>' +
              tag + link +
-             (adding && r.why ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
+             (adding && r.why && !isAutoWhy(r.why) ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
              '</li>';
     }).join('') + '</ul>';
+  }
+
+  /* `try --stage` WRITES ITS OWN SCREENING LINE AS THE REASON. It repeats on every
+   * swap of a run and argues nothing, so it collapses to one line under the lists. */
+  function isAutoWhy(why) { return /^try: /.test(String(why || '')); }
+
+  function alpha(rows) {
+    return rows.slice().sort(function (a, b) { return String(a.name).localeCompare(String(b.name)); });
   }
 
   /* THE SAME ROWS AS PICTURES, because a name is not a card you can judge.
@@ -953,7 +1062,7 @@
              '<a class="lib-open"' + href + ' title="' + esc(r.name) + '">' + img +
              '<span class="lib-name">' + esc(r.name) + '</span></a>' +
              '<span class="difftile-sign">' + sign + '</span>' + tag +
-             (adding && r.why ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
+             (adding && r.why && !isAutoWhy(r.why) ? '<span class="ev why">' + esc(r.why) + '</span>' : '') +
              '</div>';
     }).join('') + '</div>';
   }
@@ -990,7 +1099,7 @@
      * are rendered and CSS picks — the gallery's images are `loading="lazy"`,
      * so the one you are not looking at costs nothing. */
     var out = '<section class="panel netchange" id="net-change" data-view="list">' +
-      '<h2>Net change' +
+      '<h2>The cards' +
       '<span class="viewtoggle">' +
       '<button type="button" class="vt is-on" data-view="list">list</button>' +
       '<button type="button" class="vt" data-view="gallery">gallery</button>' +
@@ -1005,10 +1114,10 @@
       ' \u2192 ' + d.names + ' distinct cards, ' + d.base_size + ' \u2192 ' +
       d.size + ' copies. A basic cut from four to two changes no name.</p>';
 
-    [['Spells', 'spell', c.spells_out, c.spells_in],
+    [['Non-lands', 'spell', c.spells_out, c.spells_in],
      ['Lands', 'land', c.lands_out, c.lands_in]].forEach(function (g) {
-      var outs = d.out.filter(function (r) { return r.kind === g[1]; });
-      var ins = d['in'].filter(function (r) { return r.kind === g[1]; });
+      var outs = alpha(d.out.filter(function (r) { return r.kind === g[1]; }));
+      var ins = alpha(d['in'].filter(function (r) { return r.kind === g[1]; }));
       if (!outs.length && !ins.length) return;
       /* A COPY COUNT THAT MOVED IS A REMOVAL TOO. Rendered in the column it
        * belongs to rather than a third list, so the two sides still add up. */
@@ -1041,6 +1150,14 @@
      * a swap is STAGED, before any figure below exists, so it cannot have been
      * fitted to them. A branch opened from a whole list has none, and that is
      * worth saying out loud rather than rendering as blank space. */
+    var autoRows = d['in'].filter(function (r) { return isAutoWhy(r.why); });
+    if (autoRows.length) {
+      out += '<details class="nc-auto"><summary>' + autoRows.length +
+        ' add' + (autoRows.length === 1 ? '' : 's') + ' carry only the automatic note from <code>try</code></summary><ul>' +
+        alpha(autoRows).map(function (r) {
+          return '<li><b>' + esc(r.name) + '</b> <span class="ev">' + esc(r.why) + '</span></li>';
+        }).join('') + '</ul></details>';
+    }
     var u = d.unexplained || {};
     if (u.out || u['in']) {
       out += '<p class="ev unexplained">' + (u.out + u['in']) +
@@ -1099,8 +1216,8 @@
       '(~15s, no model call) and writes <code>net_change.json</code>.</p>' +
       '<div class="swap-act"><button type="button" data-act="measure">Measure</button>' +
       ' <span class="ev" id="measureState"></span></div>' +
-      (rows ? '<h3>Staged swaps <span class="ev">(' + staged.length + ')</span></h3>' +
-              '<ul class="swaplist">' + rows + '</ul>'
+      (rows ? '<details class="nc-fold"' + (staged.length <= 8 ? ' open' : '') + '><summary>Staged swaps (' +
+              staged.length + ')</summary><ul class="swaplist">' + rows + '</ul></details>'
             : '<p class="ev">Nothing staged.</p>') +
       '</section>';
   }
@@ -1196,9 +1313,9 @@
 
     var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
                encodeURIComponent(name) + '/';
-    Promise.all([getJSON(base + 'branch.json'), getJSON(base + 'net_change.json')])
+    Promise.all([getJSON(base + 'branch.json'), getReport(base + 'net_change.json')])
       .then(function (got) {
-        var meta = got[0], nc = got[1];
+        var meta = got[0], nc = got[1].doc, failed = got[1].failed;
         if (!meta) {
           document.getElementById('panels').innerHTML = absent(
             'No such branch',
@@ -1206,24 +1323,41 @@
             'manamap pilot deck-branch ' + slug + ' list');
           return;
         }
-        document.getElementById('branchWhy').textContent = meta.why || '';
-        document.getElementById('objective').innerHTML =
-          proposalPanel(meta, slug, name) + verdictPanel(nc) +
-          objectivePanel(meta, nc);
-        document.getElementById('panels').innerHTML = netChangePanel(meta, nc) + (nc
-          ? (tablePanel(nc) + blindSpotsPanel(nc) + ledgerPanel(nc) + forgePanel(nc) +
-             billPanel(nc, meta) + trailPanel(meta) + limitsPanel(nc))
-          : (trailPanel(meta) + absent(
+        // THE SUMMARY, NOT THE AUTOMATIC NOTE. `meta.why` on a branch opened by
+        // `try --stage` is the screening line of its first swap.
+        var sum = meta.summary || {};
+        if (sum.title) document.getElementById('branchName').textContent = sum.title;
+        var sub = document.getElementById('branchSub');
+        if (sub) sub.textContent = sum.title ? slug + ' @ ' + name : '';
+        document.getElementById('branchWhy').textContent =
+          sum.blurb || (isAutoWhy(meta.why) ? '' : (meta.why || ''));
+        document.getElementById('objective').innerHTML = proposalPanel(meta, slug, name);
+        var unread = failed ? absent('The report could not be read',
+          'A net_change.json exists but did not load (' + failed + '). This is not an unmeasured branch; re-running only replaces the file.',
+          'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write') : '';
+        document.getElementById('panels').innerHTML = (nc
+          ? (tablePanel(nc, meta) + blindSpotsPanel(nc) + manaPanel(nc) + billPanel(nc, meta) +
+             forgePanel(nc) + netChangePanel(meta, nc) +
+             '<div id="slotEvidence"></div>' + trailPanel(meta) +
+             benchPanel(meta, slug, name) + '<div id="slotActions"></div>' + definitionsPanel(nc))
+          : (unread || (objectivePanel(meta, nc) + absent(
               'The net change',
               'This branch has not been measured against the deck yet. Until it ' +
               'is, there is nothing here to decide on.',
-              'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write')));
-        document.getElementById('panels').insertAdjacentHTML('afterbegin',
-          benchPanel(meta, slug, name));
+              'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write'))) +
+            '<div id="slotEvidence"></div>' + trailPanel(meta) + benchPanel(meta, slug, name) +
+            '<div id="slotActions"></div>');
+        paintNav();
         wireViewToggle();
         wireBaseMoved(slug, name);
         wireCastProofs(base);
         wireProfileFigures(slug, name, base);
+        // Late panels arrive by fetch; the nav follows them in.
+        var slot = document.getElementById('panels');
+        if (window.MutationObserver && slot && !slot._navWatch) {
+          slot._navWatch = new MutationObserver(function () { paintNav(); });
+          slot._navWatch.observe(slot, { childList: true, subtree: true });
+        }
         if (nc && nc.bill) {
           var buy = (nc.bill.cards || []).filter(function (r) {
             return r.state === 'buy';
@@ -1275,6 +1409,36 @@
    * CALL SITE, not the queue. A page of numbers fetches no art until the gallery
    * is asked for. */
 
+  /* THE JUMP NAV, the dossier's own. Built from what actually rendered, and repainted
+   * as the late panels land, so a link never points at a section that is not there. */
+  var NAV = [['measured', 'Profile'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
+             ['bill', 'Cost'], ['forge', 'Forge'], ['net-change', 'Cards'],
+             ['table-marks', 'At the table'], ['castProofs', 'Cast proofs'],
+             ['branchStacks', 'Proven'], ['profileFigures', 'Goldfish'],
+             ['trail', 'Trail'], ['benchActions', 'Bench'], ['swaps', 'Swaps'],
+             ['branchSiblings', 'Other branches'], ['definitions', 'Definitions']];
+
+  function paintNav() {
+    var host = document.getElementById('branchNav');
+    if (!host) return;
+    var here = NAV.filter(function (n) { return document.getElementById(n[0]); });
+    host.innerHTML = here.map(function (n) {
+      return '<a href="#' + n[0] + '" data-ch="' + n[0] + '">' + esc(n[1]) + '</a>';
+    }).join('');
+    host.hidden = !here.length;
+    if (!window.IntersectionObserver) return;
+    if (host._io) host._io.disconnect();
+    var io = host._io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        Array.prototype.forEach.call(host.querySelectorAll('a'), function (a) {
+          a.classList.toggle('is-here', a.getAttribute('data-ch') === e.target.id);
+        });
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    here.forEach(function (n) { io.observe(document.getElementById(n[0])); });
+  }
+
   function wireViewToggle() {
     var panels = document.getElementById('panels');
     if (!panels) return;
@@ -1304,7 +1468,7 @@
   function loadSwaps(slug, branch) {
     var host = document.createElement('div');
     host.id = 'swaps';
-    document.getElementById('panels').appendChild(host);
+    (document.getElementById('slotActions') || document.getElementById('panels')).insertAdjacentElement('afterbegin', host);
     if (!window.Api || !Api.ready) {
       host.innerHTML = absent(
         'Swaps to consider',

@@ -290,14 +290,18 @@ manamap pilot edit <slug> [--add N]… [--cut N]… [--swap OUT=IN]… [--set N=
 manamap pilot edit <slug> undo|redo|history [--json]           # the journal, replayed
 manamap pilot save-version <slug> --note "…" [--json]          # the edits -> a git version, then its version list
 manamap pilot validate-protected <slug>                        # protected.json: the pilot's keep list, gated
-manamap pilot net-change <slug> --branch N [--write] [--json]
-                                        #   THE REPORT A PURCHASE RESTS ON: THE CHANGE
-                                        #   (every swap, with the reason it was staged,
-                                        #   lands split from spells), the guard
-                                        #   GRADED when one was named, every row with its MDE and a plain-
-                                        #   language reading, WHAT EACH ROW MEASURES and
-                                        #   why we care, the deterministic mana half,
-                                        #   Forge, and REWARD / RISK / COST.
+manamap pilot net-change <slug> --branch N [--write] [--full] [--json]
+                                        #   THE REPORT A PURCHASE RESTS ON, opening on
+                                        #   THE PROFILE: rows grouped by what they mean,
+                                        #   each with now -> branch, change and 95% range,
+                                        #   then the guard GRADED when one was named and
+                                        #   the rule's word, what it cannot see, the
+                                        #   deterministic mana half, the cost, Forge, the
+                                        #   cards (non-lands then lands, alphabetical) and
+                                        #   a line on what each row measures. `--full` adds
+                                        #   the long definitions, `try`'s automatic notes,
+                                        #   reward and risk, and where each card sits.
+                                        #   `--json` is only JSON on stdout.
                                         #   ONE GUARD, TWELVE EXPLORATORY (2026-09-29;
                                         #   the guard OPTIONAL since 2026-10-28): the
                                         #   objective, when named, is one row written down

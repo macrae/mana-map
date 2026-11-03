@@ -10,14 +10,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;800&family=Michroma&family=Oswald:wght@500;700&family=Special+Elite&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/tokens.css?v=275">
+<link rel="stylesheet" href="css/tokens.css?v=276">
 </head><body>
-<div class="trim">
+<div class="trim branch-report">
   <div class="dossier-head">
     <div>
       <div class="slug-line">Mana Map · Branch</div>
       <h1 id="branchName">Loading…</h1>
-      <div class="slug-line" id="branchWhy"></div>
+      <div class="slug-line" id="branchSub"></div>
+      <p class="branch-blurb" id="branchWhy"></p>
     </div>
     <div class="head-links">
       <a id="deckLink" href="#">The deck's dossier →</a>
@@ -25,15 +26,15 @@
     </div>
   </div>
 
-  <!-- The objective and its grade lead, because a branch that cannot be
-       falsified gets graded on whether it did what it does. -->
+  <!-- What a person did about this branch; then the sections, the profile first. -->
   <div id="objective"></div>
+  <nav class="dossier-nav" id="branchNav" aria-label="Sections of this report" hidden></nav>
   <div id="panels"></div>
 </div>
 
-<script src="js/api.js?v=275"></script>
-<script src="js/page-state.js?v=275"></script>
-<script src="js/session.js?v=275"></script>
-<script src="js/shell.js?v=275"></script>
-<script src="js/branch-view.js?v=275"></script>
+<script src="js/api.js?v=276"></script>
+<script src="js/page-state.js?v=276"></script>
+<script src="js/session.js?v=276"></script>
+<script src="js/shell.js?v=276"></script>
+<script src="js/branch-view.js?v=276"></script>
 </body></html>

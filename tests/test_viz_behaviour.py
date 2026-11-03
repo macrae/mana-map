@@ -7777,14 +7777,15 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         # 2026-08-27 issue). Both states are asserted; neither is assumed.
         if "has not been measured" in body:
             assert "net-change" in body, "an absent report must name the command"
-            assert "objective" in body, "a branch states one before it is measured"
+            assert "guard" in body, "a branch's guard shows before it is measured"
             return
         # The measured table, the ledger, the bill — the three things that
         # decide it. Lower-cased because `.panel h2` uppercases in CSS, and
         # asserting the source casing would be testing my own string rather
         # than the page.
-        assert "measured" in body
-        assert "reward, risk and cost" in body
+        assert "the profile" in body
+        assert "what this cannot see" in body
+        assert "the mana" in body
         assert "the bill" in body
         assert "already own" in body
         # THE ENGINE LIFT WAS DELETED 2026-08-28: it split games by the
@@ -7793,8 +7794,11 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         # +0.014 over the same 10,000 games. The page must not show it again.
         assert "does the engine make it win?" not in body
         # Every row states what it measures and how to read it, so a mean is
-        # never taken for a rate nor a clock for a win rate.
-        assert "what is this, and why do we care?" in body
+        # never taken for a rate nor a clock for a win rate: one panel at the
+        # foot, each row's name linking to its entry.
+        assert "what the figures mean" in body
+        first = page.locator("#measured th.nc-name a").first.get_attribute("href")
+        assert page.locator(first).count() == 1, first
         # And the figures are TEXT, not markup arriving as data — the `facts()`
         # escaping defect one page over.
         assert "<b>" not in body and "&amp;" not in body
@@ -7804,7 +7808,7 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
 
 @requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
-def test_the_branch_page_leads_with_the_diff_and_names_what_left(
+def test_the_branch_page_names_what_left(
         browser, viz_server):
     """THE DELETIONS WERE MISSING FROM THE PAGE ENTIRELY.
 
@@ -7813,7 +7817,7 @@ def test_the_branch_page_leads_with_the_diff_and_names_what_left(
     whole 99 at once. So a 17-for-17 refactor rendered as "The change (0)" while
     the table beneath it measured all 34 cards. The incoming cards appeared on
     the bill; the outgoing cards appeared NOWHERE. A diff that omits its
-    deletions is not a diff, and this is the panel a spending decision opens on.
+    deletions is not a diff.
     """
     page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     try:
@@ -7821,7 +7825,7 @@ def test_the_branch_page_leads_with_the_diff_and_names_what_left(
         body = page.inner_text("body").lower()
         if "has not been measured" in body:
             pytest.skip("this branch has no report to diff against")
-        assert "net change" in body
+        assert "the cards" in body
         assert page.locator("li.del").count() >= 1, "removals must be visible"
         assert page.locator("li.add").count() >= 1
 
@@ -7921,11 +7925,11 @@ def test_a_branch_with_no_objective_says_so_rather_than_hiding_the_panel(
         }""")
         if got is None:
             # The panel builder is not exported; fall back to the live page,
-            # which must at minimum name the objective either way.
-            assert "objective" in page.inner_text("body").lower()
+            # which must at minimum name the guard either way.
+            assert "guard" in page.inner_text("body").lower()
             return
-        assert "objective" in got.lower()
-        assert "cannot be graded" in got.lower()
+        assert "guard" in got.lower()
+        assert "none set" in got.lower()
     finally:
         page.close()
 
@@ -7944,26 +7948,30 @@ def test_an_unknown_branch_names_the_command_instead_of_breaking(browser, viz_se
 
 @requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
-def test_the_verdict_leads_the_branch_page(browser, viz_server):
+def test_the_profile_leads_the_branch_page_and_the_word_follows_it(browser, viz_server):
     """THE QUESTION THE PAGE EXISTS TO ANSWER, and it is the acceptance case.
 
-    Whatever the verdict is, it is a LEDGER — measures named on both sides —
-    and never a single score. The axes move in both directions on purpose, so a
-    composite would have to weight them and every weight would be invented.
+    The bench judges the whole profile, so the count and the rows come first and
+    the rule's word sits under them. Never a single score: the axes move in both
+    directions on purpose, so a composite would have to weight them and every
+    weight would be invented.
     """
     page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     assert page.js_errors == []
     body = page.inner_text("body").lower()
     if "has not been measured" in body:
-        # Unmeasured: no verdict panel, but the objective still leads, because a
-        # branch declares one before anything is run against it.
-        assert page.locator("section.panel.verdict").count() == 0
-        assert "objective" in body
+        # Unmeasured: no verdict, but the guard still shows, because a branch
+        # may declare one before anything is run against it.
+        assert page.locator("#verdict").count() == 0
+        assert "guard" in body
         page.close()
         return
-    assert page.locator("section.panel.verdict").count() == 1
-    assert ("rose" in body or "fell" in body
-            or "could not tell apart" in body), "a verdict with no ledger"
+    assert page.locator("#measured .nc-count").count() == 1, "a verdict with no ledger"
+    assert page.locator("#verdict").count() == 1
+    assert page.evaluate("""() => {
+      const pos = sel => document.querySelector(sel).getBoundingClientRect().top;
+      return pos('#measured .nc-table') < pos('#verdict');
+    }"""), "the rule's word sits above the rows it summarises"
     page.close()
 
 
@@ -9599,3 +9607,141 @@ def test_the_pages_show_the_pilots_marks_as_the_table_instrument(browser, viz_se
         assert page.locator("#table-marks").count() == 0
     finally:
         page.close()
+
+
+# ── the net-change report, a reader's pass (2026-11-03) ───────────────────────
+
+_NC_REPORT = {
+    "slug": "ur-dragon", "branch": "x", "decklist_sha256": "0" * 64, "staged": [],
+    "harness": {"iterations": 10000, "seed": 1, "model_version": "m"},
+    "design": {"exploratory_rows": 2, "primary": None},
+    "table": [
+        {"measure": "killed by T6", "unit": "rate", "better_is": "higher", "champion": 0.083,
+         "branch": 0.161, "delta": 0.078, "ci95_diff": [0.07, 0.087], "mde": 0.01, "verdict": "better",
+         "reads_as": "8 games in 100 -> 16 in 100", "what": "Share of games.", "why_we_care": "A clock."},
+        {"measure": "a metric from next year", "unit": "mean", "better_is": "lower", "champion": 12.0,
+         "branch": 12.5, "delta": 0.5, "ci95_diff": [-0.1, 1.1], "mde": 0.9, "verdict": "noise",
+         "reads_as": "no call", "what": "New.", "why_we_care": "New."},
+    ],
+    "recommendation": {"state": "do not merge", "because": "Guard missed. WARNING — a Forge run lost.",
+                       "forge_warning": "WARNING — a Forge run lost.", "notes": [],
+                       "reward": [], "risk": [], "rose": [], "fell": [], "no_call": [],
+                       "cost": {"reads_as": "1 to buy", "mergeable": False,
+                                "free_to_raid": [{"name": "Spire Garden", "decks": ["sisay"]}]}},
+    "objective": {"axis": "stall", "op": "<=", "value": 0.11, "why": "because"},
+    "objective_grade": {"state": "not met", "reading": 0.145, "why": "it did not"},
+    "blind_spots": [{"class": "removal", "cards": ["Swords to Plowshares"], "headline": "1 card",
+                     "why": "a removal spell has nothing to remove"}],
+    "limits": ["The goldfish has no opponents."],
+    "mana": {"available": True, "note": "Deterministic.", "lands": [35, 36], "enters_tapped_always": [4, 2],
+             "life": [{"recurring_per_tap_cycle": 1, "one_time_on_entry": 9},
+                      {"recurring_per_tap_cycle": 4, "one_time_on_entry": 9}],
+             "on_curve": {"G": [0.82, 0.88], "U": [None, None]},
+             "colours": [{"colour": "U", "target": [0, 0], "have": [0, 0], "gap": [0, 0], "delta": 0},
+                         {"colour": "G", "target": [36, 36], "have": [30, 34], "gap": [-6, -2], "delta": 4}]},
+    "bill": {"counts": {"buy": 1}, "cards": []},
+    "forge": {"available": False, "why": "no Forge run"},
+    "changes": {},
+    "definitions": {"derived": [{"name": "PRIMARY", "what": "The sixteen rows are a family.", "why": "y"}],
+                    "forge_endpoints": {}, "rows": {}},
+}
+
+
+def _report_page(browser, viz_server, body, status=200, width=1440):
+    """The branch page over a stated report, so the shapes no tracked branch has
+    today (a Forge warning, a metric nobody grouped, a broken file) are reachable."""
+    page = browser.new_page(viewport={"width": width, "height": 900})
+    page.js_errors = []
+    page.on("pageerror", lambda e: page.js_errors.append(str(e)))
+    page.route("**/net_change.json*", lambda r: r.fulfill(
+        status=status, content_type="application/json", body=body))
+    page.goto(f"{viz_server}/viz/branch.html?deck=ur-dragon&branch={A_BRANCH}")
+    idle(page)
+    return page
+
+
+@requires_branch
+@pytest.mark.browser
+def test_the_report_draws_what_it_used_to_drop(browser, viz_server):
+    """Four things the artifact carried and the page lost, each proven by the old
+    code: blind spots read `what`/`detail` where the keys are `headline`/`why`;
+    `nc.mana` was never read; a guard row printed as the headline; a colour the
+    deck never touches printed as a row."""
+    page = _report_page(browser, viz_server, json.dumps(_NC_REPORT))
+    try:
+        assert page.js_errors == []
+        assert "a removal spell has nothing to remove" in page.inner_text("#blindSpots")
+        mana = page.inner_text("#mana")
+        assert "green" in mana.lower() and "88%" in mana and "blue" not in mana.lower()
+        assert "Guard not met" in page.inner_text("#guard") and "0.145" in page.inner_text("#guard")
+        assert "do not merge" in page.inner_text("#verdict")
+        assert "The 2 rows are a family" in page.inner_text("#definitions")
+    finally:
+        page.close()
+
+
+@requires_branch
+@pytest.mark.browser
+def test_a_row_nobody_grouped_is_still_on_the_page(browser, viz_server):
+    page = _report_page(browser, viz_server, json.dumps(_NC_REPORT))
+    try:
+        table = page.inner_text("#measured table")
+        assert "OTHER" in table.upper() and "a metric from next year" in table
+        assert "8.3%" in table and "16.1%" in table and "+7.8 pts" in table, table
+        assert "No call" in table
+        assert page.locator("#measured .c-better b").inner_text() == "1"
+    finally:
+        page.close()
+
+
+@requires_branch
+@pytest.mark.browser
+def test_a_forge_warning_sits_beside_the_table_once(browser, viz_server):
+    """A warning, never a gate, and `because` carries the same sentence: printed in
+    both places it reads as two findings."""
+    page = _report_page(browser, viz_server, json.dumps(_NC_REPORT))
+    try:
+        assert "a Forge run lost" in page.inner_text("#forgeWarning")
+        assert "a Forge run lost" not in page.inner_text("#verdict")
+        assert page.locator("#measured .nc-table").count() == 1, "the warning replaced the table"
+    finally:
+        page.close()
+
+
+@requires_branch
+@pytest.mark.browser
+def test_a_broken_report_is_not_called_unmeasured(browser, viz_server):
+    """It told the pilot to measure a branch that had been measured."""
+    page = _report_page(browser, viz_server, "{not json")
+    try:
+        body = page.inner_text("#panels").lower()
+        assert "could not be read" in body and "will not parse" in body
+        assert "has not been measured" not in body
+    finally:
+        page.close()
+
+
+@requires_branch
+@pytest.mark.browser
+def test_the_report_fits_a_phone_and_keeps_its_figures(browser, viz_server):
+    page = _report_page(browser, viz_server, json.dumps(_NC_REPORT), width=390)
+    try:
+        assert page.evaluate("document.documentElement.scrollWidth") <= 390
+        assert "16.1%" in page.inner_text("#measured")
+        assert "[+7.0, +8.7]" in page.inner_text("#measured")
+    finally:
+        page.close()
+
+
+def test_the_page_groups_rows_exactly_as_the_terminal_does():
+    """Two copies of one list, and only this holds them equal."""
+    from manamap.pilot import net_change
+    js = pathlib.Path("viz/js/branch-view.js").read_text()
+    block = js[js.index("var ROW_GROUPS = ["):js.index("var READ_WORD")]
+    for title, names in net_change.ROW_GROUPS:
+        at = block.index(f"['{title}'")
+        for name in names:
+            quoted = f"'{name}'" if "'" not in name else f'"{name}"'
+            assert quoted in block[at:], f"{name} is not under {title} on the page"
+    grouped = sum(len(n) for _, n in net_change.ROW_GROUPS)
+    assert len(re.findall(r"""['"][^'"]*(?:@T|by T|mulliganed|in a row|keep rule)[^'"]*['"]""", block)) == grouped

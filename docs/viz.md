@@ -15,8 +15,10 @@ directory and, between the families, nothing else:
   `rating.json`), floor against DTI with the Spearman refusal, interval bars, the kill /
   mana / land curves as hand-written SVG, the twelve DeckCheck grades. It computes nothing.
 - **`deck.html` — the deck dossier.** One deck, one screen. The Deck Context leads it (`context-md.js`).
-- **`branch.html` — the branch workbench.** One candidate 99: the proposal, the verdict,
-  the measured table with each row's definition, reward/risk/cost, the bill — and under
+- **`branch.html` — the branch workbench.** One candidate 99, read in the order a decision is made:
+  the profile (grouped rows, with the guard and the rule's word under them), what it cannot
+  see, the mana, the bill, Forge, the cards, and one definitions panel at the foot that each
+  row name links to, with a sticky jump nav over all of it. Under
   the bill's BUY rows a buy list for Mana Pool's mass entry (`manapool.com/add-deck`,
   paste only): with a local server, "Copy for Mana Pool" calls `branch/buy-list` (the
   same function as `manamap pilot buy-list --json`), copies the text and opens the shop;
