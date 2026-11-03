@@ -324,6 +324,13 @@
           "is_new": false
         },
         {
+          "name": "Congregation at Dawn",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Curious Altisaur",
           "state": "in_deck",
           "where": [],
@@ -693,13 +700,6 @@
           "is_new": true
         },
         {
-          "name": "Savage Order",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Secluded Courtyard",
           "state": "in_deck",
           "where": [],
@@ -877,9 +877,9 @@
       "has_cards": true,
       "summary": {
         "title": "Jurassic Park: fast mana, huge attacks, no burn",
-        "blurb": "Swaps non-creature damage and slow cheats for early mana creatures, Roaming Throne and Berserkers' Onslaught so Gishath lands sooner and flips far more often, adds recursion and artifact answers, and rebuilds the lands so green is untapped on turn one.",
+        "blurb": "Swaps non-creature damage and slow cheats for early mana creatures, Natural Order, Roaming Throne and Berserkers' Onslaught so Gishath lands sooner and flips far more often, adds recursion and artifact answers, and rebuilds the lands so green leads.",
         "by": "jarvis",
-        "at": "2026-11-02"
+        "at": "2026-11-03"
       },
       "verdict": {
         "state": "no objective",
@@ -907,6 +907,7 @@
         "Roaming Throne",
         "Rogue's Passage",
         "Rootbound Crag",
+        "Savage Order",
         "Savage Stomp",
         "Spire Garden",
         "Sunpetal Grove",
@@ -919,60 +920,60 @@
         "state": "no objective",
         "rose": [
           "hoard @T10",
-          "hoard @T6",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "missed drop by T5",
+          "mulliganed",
           "hand can act by T3"
         ],
         "fell": [],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 30.581,
+            "delta": 27.7663,
             "ci95_diff": [
-              29.1861,
-              31.9759
+              26.4251,
+              29.1075
             ],
-            "mde": 1.9939,
+            "mde": 1.9171,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.071,
+            "delta": 0.0655,
             "ci95_diff": [
-              0.0639,
-              0.0781
+              0.0583,
+              0.0727
             ],
-            "mde": 0.0101,
+            "mde": 0.0102,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 5.2036,
+            "delta": 4.5927,
             "ci95_diff": [
-              4.7805,
-              5.6267
+              4.1771,
+              5.0083
             ],
-            "mde": 0.6048,
+            "mde": 0.594,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.0634,
+            "delta": -0.057,
             "ci95_diff": [
-              -0.0457,
-              0.1725
+              -0.1626,
+              0.0486
             ],
-            "mde": 0.1559,
+            "mde": 0.151,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
@@ -3842,14 +3843,15 @@
     "release": "v1.1.0"
   },
   "record": {
-    "games": 3,
+    "games": 4,
     "win": 1,
     "loss": 2,
     "draw": 0,
-    "last_played": "2026-10-29",
+    "last_played": "2026-11-03",
     "first_played": "2026-08-28",
     "undebriefed": [
-      "003"
+      "003",
+      "004"
     ],
     "causes": {
       "001": "won",
@@ -4428,7 +4430,7 @@
     ]
   },
   "next": [
-    "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
+    "2 logged game(s) not yet debriefed (003, 004) — `/debrief gishath`",
     "branch `jurassic-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check gishath --branch jurassic-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `jurassic-v1` needs 16 card(s) sourced — `manamap pilot deck-branch gishath source jurassic-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",

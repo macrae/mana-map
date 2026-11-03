@@ -1,6 +1,6 @@
 # Gishath, Sun's Avatar — Deck Context
 
-<!-- ctx:written-for version=v1.1.0 sha=80701018c37d at=2026-11-02 -->
+<!-- ctx:written-for version=v1.1.0 sha=80701018c37d at=2026-11-03 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Gishath, Sun's Avatar](https://manamap.seanmacrae.com/viz/index.html?cards=Gishath%2C+Sun%27s+Avatar)
@@ -105,16 +105,16 @@ Goldfish, 10,000 seeded games, measured on v1.1.0 (V5), 2026-09-20. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-29
+- **4 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-11-03
 - **How games ended:** politics 2, won 1
-- **Not yet read:** 003
+- **Not yet read:** 003, 004
 <!-- /ctx:gen record -->
 
 Three games are logged. The Record block has the count.
 
 - **001, win, three-player pod (28 Aug).** The table spent its wraths on mid-tier dinosaurs, then [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act) cleared their side for free while the pilot's board was empty. Gishath hit for 7, revealed 7 and found five dinosaurs. Next turn a pump made it 14 and lethal by commander damage. That list had Enlarge; it has since been cut.
 - **002, loss, four-player pod (15 Sep).** Played on the v1.0.0 list. Early Sol Ring and Signet, then long green screw. Gishath pumped to 16/16 and killed one opponent by commander damage. The pilot then attacked only Oliver, Alex saved him, and Oliver drained the pilot out. Swinging at both would have won.
-- **003, loss, five-player pod at the pilot's house (29 Oct).** The first game on v1.1.0. The start was slow, as the pilot says Gishath always is: four mana on turn four and nothing on the board. Then [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) doubled the mana and Gishath came down. [Sunfrill Imitator](https://manamap.seanmacrae.com/viz/index.html?cards=Sunfrill+Imitator) copied him for a big first swing, and the dinosaurs kept arriving in waves. An opponent's removal later cleared enchantments and artifacts, [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) among them. [Regal Behemoth](https://manamap.seanmacrae.com/viz/index.html?cards=Regal+Behemoth) doubled the mana again, and Gishath came back through commander tax with a very large dinosaur board. The pilot calls the loss his own piloting error. He had the momentum and the table was targeting him, but in the last turns he swung with only a few dinosaurs and did not commit. He was nervous about losing them. He left Alex's growing board of robots, treasure and one huge creature alone, and he skipped the weaker decks he could have hit. Alex won, late in the game.
+- **003, loss, five-player pod at the pilot's house (29 Oct).** The first game on v1.1.0. The start was slow, as the pilot says Gishath always is: four mana on turn four and nothing on the board. Then [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) doubled the mana and Gishath came down. [Sunfrill Imitator](https://manamap.seanmacrae.com/viz/index.html?cards=Sunfrill+Imitator) copied him for a big first swing, and the dinosaurs kept arriving in waves. An opponent's removal later cleared enchantments and artifacts, [Mirari's Wake](https://manamap.seanmacrae.com/viz/index.html?cards=Mirari%27s+Wake) among them. [Regal Behemoth](https://manamap.seanmacrae.com/viz/index.html?cards=Regal+Behemoth) doubled the mana again, and Gishath came back through commander tax with a very large dinosaur board. The pilot calls the loss his own piloting error. He had the momentum and the table was targeting him, but in the last turns he swung with only a few dinosaurs and did not commit. He was nervous about losing them. He left Alex's growing board of robots, treasure and one huge creature alone, and he skipped the weaker decks he could have hit. Alex won, late in the game. Addendum from the pilot, logged after the game (004, not a fourth game): [Kinjalli's Sunwing](https://manamap.seanmacrae.com/viz/index.html?cards=Kinjalli%27s+Sunwing) was really showing up. It landed on a Gishath connect and hurt the momentum of the opponents, because their creatures that enter with haste enter tapped and could not do what they wanted that turn. He also likes having flying in a dinosaur deck.
 
 **Patterns.** The commander plus the trigger is the threat, and the bodies ahead of him soak removal. Commander damage ends games. All three games turned on closing, not the list: the two losses (002, 003) were both a board that was ahead and attacks that were not committed. In 003 the pilot also says the doubling effects carried the deck back after removal. On [Molten Echoes](https://manamap.seanmacrae.com/viz/index.html?cards=Molten+Echoes), the pilot found in play that it works less well with Gishath than he expected, because Gishath's dinosaurs arrive after the attack. He only gets copies of creatures cast earlier, and of arrivals with enter-the-battlefield effects. See Open questions.
 
@@ -125,7 +125,7 @@ Three games are logged. The Record block has the count.
 <!-- ctx:gen history -->
 - **v1.1.0 · V5** (2026-09-20) — in: Arid Mesa, Bloodstained Mire, Bloom Tender, Hunting Velociraptor, Molten Echoes, Purphoros, God of the Forge, Savage Order, Savage Stomp …; out: Alpine Meadow, Arctic Treeline, Austere Command, Beast Within, Boros Signet, Clifftop Retreat, Commercial District, Enlarge …
   - merge `mana-v1`: objective stall read **not met** — The pilot has directed the merge and is buying the cards; sourcing is not a question this gate needs to answer here.
-  - played 1: 0W 1L
+  - played 2: 0W 1L
 - **v1.0.0 · V4** (2026-09-11) — in: Earthshaker Dreadmaw, Enlarge, Kinjalli's Sunwing, Knight of the Stampede, Runic Armasaur, Sunfrill Imitator; out: Cultivate, Forerunner of the Empire, Intrepid Paleontologist, Polyraptor, Ranging Raptors, Ripjaw Raptor. _the pilot's sleeved Gishath list, checked in and locked 2026-09-11 (six swaps on the bench list, now v0.9.0). The staged cart-v1 branch is reserved the name v1.1.0 for when the cards are green-lit._
   - played 1: 0W 1L
 - **v0.9.0 · V3** (2026-08-05) — in: Arctic Treeline, Commercial District, Windswept Heath; out: . _the bench list before the paper check-in: what the repo held from 2026-07-28 until the pilot's sleeved list arrived. Was v1.0.0 until 2026-09-11, when the pilot named the sleeved list v1.0.0._
@@ -159,3 +159,4 @@ Before that, v1.0.0 (11 Sep) was the pilot's sleeved paper list, six swaps off t
 - 2026-10-07 · scaffolded by `manamap pilot context`
 - 2026-10-07 · Keeper · seed: first context, from the log, the verified stacks and the older agent prose
 - 2026-11-02 · Keeper · pilot log 003 (2026-10-29): a piloting loss with the board ahead; Molten Echoes questioned
+- 2026-11-03 · Keeper · pilot log 004: addendum to game 003, Kinjalli's Sunwing landed on a Gishath connect
