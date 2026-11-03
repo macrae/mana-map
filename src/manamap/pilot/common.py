@@ -147,6 +147,10 @@ def clear_memo():
     """
     _JSON_MEMO.clear()
     _MTIME_MEMO.clear()
+    import sys
+    versions = sys.modules.get("manamap.pilot.deck_versions")
+    if versions is not None:
+        versions._SAME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
     _RULES_DB_MEMO.clear()
     # Imported here rather than at module scope: `collection` imports `expand_faces`
@@ -634,6 +638,35 @@ def deck_is_apart(slug):
 #: `read_text` WINS, deliberately. It translates newlines, so the sha is a
 #: property of the LIST rather than of the file's encoding, and a CRLF re-save
 #: is the same deck instead of a phantom version.
+
+
+#: `(SET) CN` at the end of a decklist name. THE ONE COPY: `fetch_deck.parse_decklist`
+#: and `split_printing` both read it. `★` and `†` are real collector numbers
+#: (`10E 224★`), which the older `[\\w-]+` could not read back.
+PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w★†-]+)$")
+FOIL_MARKERS = ("*F*", "*E*")
+
+
+def split_printing(text):
+    """A typed or listed name -> `{name, set, collector_number, foil}`.
+
+    THE ONE NORMALISER. A printing is not part of a card's identity, so anything
+    comparing cards reads `name` from here: `Raging Goblin (EVG) 47` is Raging
+    Goblin, and moving a deck to it is not a swap. `set` is lower-case, as
+    `parse_decklist` stores it, and absent (None) on a plain name.
+    """
+    s = " ".join(str(text or "").split())
+    foil = False
+    for marker in FOIL_MARKERS:
+        if s.upper().endswith(marker):
+            foil = True
+            s = s[: s.upper().rfind(marker)].strip()
+            break
+    m = PRINTING_RE.search(s)
+    if not m:
+        return {"name": s, "set": None, "collector_number": None, "foil": foil}
+    return {"name": s[: m.start()].strip(), "set": m.group(1).lower(),
+            "collector_number": m.group(2), "foil": foil}
 
 
 def list_sha256(text):

@@ -195,6 +195,9 @@ def apply_ops(slug, branch, ops):
     keep list included) BEFORE anything is measured."""
     from manamap.pilot import deck_edit
     p = deck_edit.plan(slug, ops, branch=branch)
+    if p["ops"] and all(o["op"] == "printing" for o in p["ops"]):
+        raise SystemExit(f"That only changes art, so there is nothing to measure — "
+                         f"`manamap pilot art {slug} --set \"Name=SET CN\"`")
     if p["blocking"]:
         raise SystemExit("Refusing that swap set:\n  - " + "\n  - ".join(p["blocking"]))
     doc = build_doc(slug, branch, p)

@@ -74,6 +74,39 @@ def _version_key(blob):
     return out
 
 
+def same_list(slug, stamped, truth, branch=None):
+    """Does a stamp still describe the deck: the same bytes, or only different art?
+
+    A printing change rewrites the file, so every stamp reads old by bytes while
+    the cards it measured are exactly the cards in the deck. Every committed blob
+    of the list is hashed and any whose `_version_key` equals today's list counts,
+    so changing art never marks a bracket report or a Deck Context stale. Cards
+    moving does, as ever. Only reached on a byte mismatch, which is rare, so the
+    git walk costs nothing on the common path. A branch has no such history here.
+    """
+    if common.sha_matches(stamped, truth):
+        return True
+    if not stamped or not truth or branch:
+        return False
+    hit = _SAME_MEMO.get((slug, truth))
+    if hit is None:
+        try:
+            path = common.deck_dir(slug) / "decklist.txt"
+        except FileNotFoundError:
+            return False
+        if not path.exists():
+            return False
+        key = _version_key(path.read_text(encoding="utf-8"))
+        revs = dh.revisions(slug)
+        blobs = dh._blobs(revs, f"data/decks/{slug}/decklist.txt")
+        hit = {_sha(b) for b in blobs.values() if b is not None and _version_key(b) == key}
+        _SAME_MEMO[(slug, truth)] = hit
+    return any(common.sha_matches(stamped, s) for s in hit)
+
+
+_SAME_MEMO = {}
+
+
 def versions(slug):
     """Every content-distinct decklist, oldest first, each with the byte-shas that
     map to it (a comment-only edit adds a sha, not a version)."""

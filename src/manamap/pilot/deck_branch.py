@@ -956,7 +956,19 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
     if not path.is_dir():
         raise SystemExit(f"No branch '{branch}' on {slug}.")
     entries = _parsed(slug, branch)
+    typed = _common.split_printing(in_name)
+    in_name = typed["name"]
+    if typed["set"] and in_name.split(" // ")[0].lower() == str(out_name).split(" // ")[0].lower():
+        raise SystemExit(f"That only changes {in_name}'s art, which needs no branch swap — "
+                         f"`manamap pilot art {slug} --branch {branch} --set "
+                         f"\"{in_name}={typed['set'].upper()} {typed['collector_number']}\"`")
     staged_entries, out_e, in_e = swap_entries(slug, branch, entries, out_name, in_name)
+    if typed["set"]:
+        # The list keeps the printing; the staged row and every reader keep the name.
+        for e in staged_entries:
+            if e["name"] == in_name:
+                e.update(set=typed["set"], collector_number=typed["collector_number"],
+                         foil=typed["foil"])
     # The sideboard rides through untouched: a swap is a mainboard edit.
     text = check_in.render_decklist(staged_entries + _sideboard(slug, branch))
     checked = check_in.analyze(slug, text)

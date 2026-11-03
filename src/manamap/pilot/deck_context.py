@@ -88,6 +88,12 @@ _LINK_RE = re.compile(r"\[([^\]]+)\]\(" + re.escape(CARD_HREF) + r"([^)]+)\)")
 
 # ── the deck, as the gates see it ─────────────────────────────────────────────
 
+def _same_list(slug, stamped, truth):
+    """Prose describes cards, not art: a printing change leaves it current."""
+    from manamap.pilot import deck_versions
+    return deck_versions.same_list(slug, stamped, truth)
+
+
 def _deck_names(slug):
     """`{lowercased name: canonical name}` over the 99 and the commanders.
 
@@ -488,7 +494,7 @@ def check_text(slug, text, blocks=None, strict=False):
 
     truth = common.decklist_sha256(slug)
     st = stamp(text)
-    current = bool(st and truth and common.sha_matches(st.get("sha", ""), truth))
+    current = bool(st and truth and _same_list(slug, st.get("sha", ""), truth))
     if st is None:
         warnings.append("prose not written yet — the Context Keeper's `seed` pass writes it")
     elif not current:
@@ -599,7 +605,7 @@ def list_change(slug, before_text=None):
     outs, ins = sorted((before - after).elements()), sorted((after - before).elements())
     st = stamp(p.read_text())
     truth = common.decklist_sha256(slug)
-    stale = not (st and truth and common.sha_matches(st.get("sha", ""), truth))
+    stale = not (st and truth and _same_list(slug, st.get("sha", ""), truth))
     keeper = (f"spawn context-keeper MODE deck-change for {slug}"
               f" — out: {', '.join(outs) or 'nothing'}; in: {', '.join(ins) or 'nothing'}")
     install = (f"manamap pilot context {slug} --install "

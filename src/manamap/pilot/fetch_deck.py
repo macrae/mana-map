@@ -17,6 +17,8 @@ import json
 import re
 import time
 
+import requests
+
 from manamap import net
 from manamap.config import (
     SCRYFALL_BATCH_SIZE,
@@ -37,6 +39,7 @@ from manamap.pilot.common import (
 #: every test of the fetch patches `fetch_deck.SESSION.post`, and `_post_collection`
 #: passes it through by name so that seam keeps intercepting.
 SESSION = net.SESSION
+SCRYFALL_SEARCH_URL = "https://api.scryfall.com/cards/search"
 
 
 # The premium-finish markers a pasted list can end with. `*E*` is Moxfield's
@@ -47,10 +50,10 @@ SESSION = net.SESSION
 # not resolve a decklist. Both markers mean the same thing to this repo, which
 # asks only whether the pilot's copy is a premium finish. Counted across every
 # list the repo holds when the gap was found: *F* 37, *CMDR* 5, *E* 2.
-_FOIL_MARKERS = ("*F*", "*E*")
+_FOIL_MARKERS = _common.FOIL_MARKERS
 
 # Moxfield-style printing annotation: "Card Name (SET) COLLECTOR [*F*]"
-_PRINTING_RE = re.compile(r"\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$")
+_PRINTING_RE = _common.PRINTING_RE
 
 
 def _comment_marker(line):
@@ -357,8 +360,34 @@ def fetch_collection(names, cached=False):
                 if card["name"] in missing:
                     remember({"name": card["name"]}, card)
         missing = [n for n in missing if n not in found]
-    by_name = {card["name"].lower(): card for card in cards}
+    by_name = {card["name"].lower(): _paper_print(card) for card in cards}
     return by_name, missing
+
+
+def _paper_print(card):
+    """A name lookup's answer, moved off a digital-only printing.
+
+    Scryfall's default printing of a name can be one that exists only on Arena
+    (Raging Goblin's was the New Player Experience print, 2026-11-03), and a list
+    a pilot means to buy must not show art nobody can buy. Takes the newest paper
+    printing. A card with no paper printing, or an answer that does not say what
+    games it is on, stays as it came.
+    """
+    games = card.get("games")
+    if not games or "paper" in games:
+        return card
+    try:
+        doc = net.get_json(SCRYFALL_SEARCH_URL, params={
+            "q": f'!"{card["name"]}" game:paper', "unique": "prints",
+            "order": "released", "dir": "desc"},
+            service="scryfall", ttl_s=COLLECTION_TTL_S, session=SESSION)
+    except (net.Offline, requests.HTTPError):
+        return card
+    # THE SAME CARD, BY FULL NAME. `!"Wheel of Fortune"` also matches a card with that
+    # FACE, and `Naktamun Lorespinner // Wheel of Fortune` is newer than any Wheel:
+    # taking the first row swapped a card in Sharknado's list (caught 2026-11-03).
+    rows = [r for r in (doc or {}).get("data") or [] if r.get("name") == card["name"]]
+    return rows[0] if rows else card
 
 
 def fetch_printings(printings, cached=False):
@@ -493,6 +522,7 @@ def resolve_entries(entries, by_name, by_printing=None, board="main"):
 
     cards, unmatched = [], []
     merged = {}  # name_lower -> shaped card
+    arts = {}    # name_lower -> every printing the list asks for, in list order
     for entry in entries:
         if entry.get("board", "main") != board:
             continue
@@ -509,15 +539,37 @@ def resolve_entries(entries, by_name, by_printing=None, board="main"):
             unmatched.append(entry["name"])
             continue
         merge_key = sc["name"].lower()
+        shaped = shape_card(sc, entry["quantity"], entry["is_commander"],
+                            entry.get("foil", False))
+        arts.setdefault(merge_key, []).append(shaped)
         if merge_key in merged:
             merged[merge_key]["quantity"] += entry["quantity"]
             merged[merge_key]["is_commander"] |= entry["is_commander"]
             continue
-        shaped = shape_card(sc, entry["quantity"], entry["is_commander"],
-                            entry.get("foil", False))
-        merged[merge_key] = shaped
-        cards.append(shaped)
+        # A copy, so the running total never leaks into the art list below.
+        merged[merge_key] = dict(shaped)
+        cards.append(merged[merge_key])
+    # SPLIT ART: only when a card really is on more than one printing, so every
+    # card on one printing keeps exactly the bytes it had.
+    for key, rows in arts.items():
+        split = _art_rows(rows)
+        if len(split) > 1:
+            merged[key]["printings"] = split
     return cards, unmatched
+
+
+def _art_rows(shaped):
+    """One row per distinct printing and finish, copies summed, in list order."""
+    out = {}
+    for c in shaped:
+        k = (c.get("set"), c.get("collector_number"), c.get("foil"))
+        if k in out:
+            out[k]["quantity"] += c["quantity"]
+        else:
+            out[k] = {f: c.get(f) for f in ("set", "set_name", "collector_number", "quantity",
+                                            "foil", "image", "art_crop", "artist",
+                                            "scryfall_id", "finishes")}
+    return list(out.values())
 
 
 def main(args):
@@ -565,6 +617,12 @@ def main(args):
     by_printing = fetch_printings(wanted_printings, **cached) if wanted_printings else {}
     if wanted_printings:
         print(f"  Resolved {len(by_printing)}/{len(wanted_printings)} exact printing(s)")
+    # NEVER QUIETLY: the fallback below shows the default art for a line that
+    # names a specific card, which is the one thing the annotation exists to stop.
+    for e in entries:
+        if "set" in e and (e["set"], e["collector_number"]) not in by_printing:
+            print(f"  WARNING: {e['name']} ({e['set'].upper()}) {e['collector_number']} "
+                  f"did not resolve — showing Scryfall's default art for this line")
 
     # Names still needing resolution: unannotated lines, plus any printing
     # Scryfall couldn't find.

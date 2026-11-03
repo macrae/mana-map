@@ -594,7 +594,11 @@ def is_stale(doc, deck_doc):
     current = deck_doc.get("decklist_sha256")
     if not (stamped and current):
         return False
-    return not common.sha_matches(stamped, current)
+    if common.sha_matches(stamped, current):
+        return False
+    from manamap.pilot import deck_versions
+    slug = deck_doc.get("deck")
+    return not (slug and deck_versions.same_list(slug, stamped, current))
 
 
 def main(args):

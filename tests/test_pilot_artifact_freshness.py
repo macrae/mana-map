@@ -429,3 +429,14 @@ def test_every_deck_with_a_decklist_has_a_tracked_version_list():
         f"commit. The deck page fetches this file and renders an empty rap "
         f"sheet without it.")
     assert len(want) >= 5
+
+
+def test_the_fleet_file_matches_a_fresh_run():
+    """`data/fleet/analytics.json` quotes every deck's list sha and prices, so editing
+    ANY deck moves it. The deck checks passed teach-red V2 without it, and CI's
+    `make manuals` caught it after the push (2026-11-03). Re-introduce the gap by
+    leaving the file behind after a deck edit, and this fails before the push."""
+    from manamap.pilot import fleet_analytics as fa
+    assert fa.ARTIFACT.read_text(encoding="utf-8") == fa.dumps(fa.build()), (
+        "data/fleet/analytics.json is behind the decks — "
+        "`manamap pilot fleet-analytics --write` and commit it")

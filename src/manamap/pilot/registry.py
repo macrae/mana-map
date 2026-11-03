@@ -25,6 +25,8 @@ import importlib
 # (name, dotted module, description)
 PILOT_STEPS = [
     ("check-in", "manamap.pilot.check_in", "a paper decklist -> decklist.txt (diff, refuse, apply, re-derive)"),
+    ("art", "manamap.pilot.printings", "Pin each card's exact printing and art, on any live deck: not a version, not a swap"),
+    ("order", "manamap.pilot.order", "One or several decks' pinned lists as one Mana Pool paste, checked against stock"),
     ("targeting", "manamap.sim.threat", "who the pod attacks, measured from sim logs (opponent modelling)"),
     ("fetch-deck", "manamap.pilot.fetch_deck", "decklist.txt -> cards.json via Scryfall"),
     ("validate-deck", "manamap.pilot.validate_deck",
@@ -353,7 +355,7 @@ _DECK_COMMANDS = {
     "deck-export", "deck-link", "validate-links", "deckcheck", "validate-deckcheck",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
-    "check-in", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
+    "check-in", "art", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
@@ -585,6 +587,32 @@ def add_pilot_parser(subparsers):
                              help="permutation iterations (default 10000)")
             cmd.add_argument("--json", action="store_true", dest="as_json",
                              help="print instead of writing threat/targeting.json")
+        if name == "art":
+            cmd.add_argument("action", nargs="?", choices=("undo", "redo"), default=None)
+            cmd.add_argument("--set", action="append", metavar="\"NAME=SET CN [*F*]\"",
+                             help="pin every copy of a card to one printing (repeat)")
+            cmd.add_argument("--split", action="append",
+                             metavar="\"NAME=SET CN:N,SET CN:N\"",
+                             help="several arts of one card; copies must sum to the card's count")
+            cmd.add_argument("--pin-shown", action="store_true", dest="pin_shown",
+                             help="pin every unpinned card to the printing cards.json shows")
+            cmd.add_argument("--branch", default=None, metavar="NAME",
+                             help="a branch's own list")
+            cmd.add_argument("--note", default=None, help="kept in the journal")
+            cmd.add_argument("--dry-run", action="store_true", dest="dry_run")
+            cmd.add_argument("--no-chain", action="store_true", dest="no_chain",
+                             help="write the list only; skip the refresh")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "order":
+            cmd.add_argument("slugs", nargs="+", metavar="SLUG",
+                             help="one or more decks, merged into one paste")
+            cmd.add_argument("--check", action="store_true",
+                             help="check every line against Mana Pool's public feed: price, "
+                                  "stock, what cannot be filled")
+            cmd.add_argument("--plain", action="store_true",
+                             help="`N Name` with no printings: Mana Pool chooses the art")
+            cmd.add_argument("--out", default=None, help="write the paste to this file")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "check-in":
             # `--from` is optional only because `--set-printing` is the other
             # way in; `check_in.main` refuses a call that gives neither.

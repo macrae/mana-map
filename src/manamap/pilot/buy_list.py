@@ -6,7 +6,8 @@ WHAT IT IS. The bill on a branch (`net-change`, the branch page) already says
 which cards nobody owns; what it could not do was hand you those cards in a form
 a shop accepts. Mana Pool's mass entry (https://manapool.com/add-deck) takes a
 pasted decklist — one `N Name` per line, or `N Name (SET) CN` to pin the
-printing — and nothing else: no URL prefill, no API. So this prints exactly that
+printing — and has no URL prefill (`order` is the same paste for whole decks; carts
+sit behind an account's token, which the bench does not hold). So this prints exactly that
 text, and the branch page copies it to the clipboard and opens the page.
 
 WHERE THE ROWS COME FROM. `deck_branch.source` is the one place that decides

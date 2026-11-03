@@ -67,7 +67,7 @@ LOCK_TIMEOUT = 10.0
 #: How long a rebuild waits for another rebuild of the same deck.
 REBUILD_TIMEOUT = 300.0
 
-OPS = ("add", "cut", "swap", "set")
+OPS = ("add", "cut", "swap", "set", "printing")
 BOARDS = ("main", "side")
 SOURCES = ("cli", "ui", "jarvis", "check-in", "restore", "build", "merge", "printing")
 KINDS = ("edit", "undo", "redo", "external", "save")
@@ -202,9 +202,21 @@ def normalize_op(op):
     o["board"] = o.get("board") or "main"
     if o["board"] not in BOARDS:
         raise SystemExit(f"board is main or side, not {o['board']!r}")
+    if o["op"] == "printing":
+        if not (o.get("name") and o.get("set") and o.get("collector_number")):
+            raise SystemExit(f"a printing op names the card, set and collector number: {op!r}")
+        return o
     if o["op"] == "swap":
         if not o.get("out") or not o.get("in"):
             raise SystemExit(f"a swap names the card OUT and the card IN: {op!r}")
+        # THE SAME CARD ON BOTH SIDES IS NOT A SWAP. `A=A (EVG) 47` used to read
+        # as one card out and another in, so the keep list and the commander
+        # guard refused a change of art, and legality warned about a "new" card.
+        p = common.split_printing(o["in"])
+        if p["set"] and _key(p["name"]) == _key(o["out"]):
+            return {"op": "printing", "board": o["board"], "name": p["name"],
+                    "set": p["set"], "collector_number": p["collector_number"],
+                    "foil": p["foil"]}
         return o
     if not o.get("name"):
         raise SystemExit(f"{o['op']} needs a card name: {op!r}")
@@ -297,6 +309,23 @@ def plan(slug, ops, branch=None):
             blocking.append(f"{spec.name} has no sideboard — --side is for a 60-card deck")
             continue
         row = {"op": kind, "board": board}
+        if kind == "printing":
+            e = _find(ents, op["name"])
+            if e is None:
+                blocking.append(f"{op['name']!r} is not in {where}{label} — a printing is "
+                                f"set on a card the list holds")
+                continue
+            # Every line of the card, one printing: its copies gather on the first.
+            twins = [x for x in ents if x is not e and _key(x["name"]) == _key(e["name"])]
+            e["quantity"] = int(e.get("quantity") or 1) + sum(int(x.get("quantity") or 1)
+                                                               for x in twins)
+            ents[:] = [x for x in ents if not any(x is t for t in twins)]
+            e.update(set=op["set"], collector_number=op["collector_number"],
+                     foil=bool(op.get("foil")))
+            row.update(name=e["name"], set=op["set"],
+                       collector_number=op["collector_number"], foil=bool(op.get("foil")))
+            resolved.append(row)
+            continue
         if kind in ("cut", "swap"):
             name = op["name"] if kind == "cut" else op["out"]
             q = op.get("qty", 1) if kind == "cut" else 1
@@ -316,7 +345,8 @@ def plan(slug, ops, branch=None):
             row["out" if kind == "swap" else "name"] = e["name"]
             row["qty"] = q
         if kind in ("add", "swap"):
-            name = canonical_name(op["name"] if kind == "add" else op["in"])
+            typed = common.split_printing(op["name"] if kind == "add" else op["in"])
+            name = canonical_name(typed["name"])
             q = op.get("qty", 1) if kind == "add" else 1
             e = _find(ents, name)
             if e is not None and e["quantity"] > 0 and spec.singleton and not _is_basic(e["name"]):
@@ -325,12 +355,17 @@ def plan(slug, ops, branch=None):
             if e is not None:
                 e["quantity"] = int(e.get("quantity") or 0) + q
             else:
-                ents.append({"name": name, "quantity": q, "board": board})
-            row["in" if kind == "swap" else "name"] = (e or {}).get("name") or name
+                e = {"name": name, "quantity": q, "board": board}
+                ents.append(e)
+            if typed["set"]:
+                e.update(set=typed["set"], collector_number=typed["collector_number"],
+                         foil=typed["foil"])
+            row["in" if kind == "swap" else "name"] = e["name"]
             row["qty"] = q
         if kind == "set":
             q = op["qty"]
-            e = _find(ents, op["name"])
+            typed = common.split_printing(op["name"])
+            e = _find(ents, typed["name"])
             if e is not None and e.get("is_commander"):
                 if q != 1:
                     blocking.append(deck_branch.COMMANDER_REFUSAL.format(name=e["name"]))
@@ -340,11 +375,13 @@ def plan(slug, ops, branch=None):
                 continue
             if e is not None:
                 e["quantity"] = q
-                row["name"] = e["name"]
             else:
-                name = canonical_name(op["name"])
-                ents.append({"name": name, "quantity": q, "board": board})
-                row["name"] = name
+                e = {"name": canonical_name(typed["name"]), "quantity": q, "board": board}
+                ents.append(e)
+            if typed["set"]:
+                e.update(set=typed["set"], collector_number=typed["collector_number"],
+                         foil=typed["foil"])
+            row["name"] = e["name"]
             row["qty"] = q
         resolved.append(row)
 
@@ -352,6 +389,11 @@ def plan(slug, ops, branch=None):
     after = {b: _copies(after_entries[b]) for b in BOARDS}
     entries_after = after_entries["main"] + after_entries["side"]
     text_after = check_in.render_decklist(entries_after)
+    # ONLY ART MOVED: the file keeps every other byte, comments and order included,
+    # rather than being re-rendered, so the commit is the lines that changed.
+    if ops and all(o["op"] == "printing" for o in ops) and not blocking:
+        from manamap.pilot import printings
+        text_after = printings.rewrite(text_before, printings.pins_from_ops(ops))
     out_main, in_main = _delta(before["main"], after["main"])
     out_side, in_side = _delta(before["side"], after["side"])
     diff = {"out": out_main, "in": in_main}
@@ -687,7 +729,16 @@ def edit(slug, ops, *, source="cli", note=None, expect_sha=None, dry_run=False):
     well under a second."""
     if source not in SOURCES:
         raise SystemExit(f"source is one of {', '.join(SOURCES)}")
-    guard(slug)
+    normal = [normalize_op(o) for o in ops]
+    if normal and all(o["op"] == "printing" for o in normal):
+        # Art is not a change to the 99, so a sleeved deck may have it: the
+        # cardboard already is what the pilot says it is.
+        from manamap.pilot import printings
+        printings.guard(slug)
+        if not dry_run:
+            printings.check_pins(slug, printings.pins_from_ops(normal))
+    else:
+        guard(slug)
     p = plan(slug, ops)
     if expect_sha and p["base_sha"] != expect_sha:
         raise SystemExit(STALE)
@@ -701,8 +752,14 @@ def edit(slug, ops, *, source="cli", note=None, expect_sha=None, dry_run=False):
     return {"plan": p, "written": rec is not None, "entry": rec}
 
 
-def _step(slug, kind, *, source="cli", expect_sha=None):
-    guard(slug)
+def _step(slug, kind, *, source="cli", expect_sha=None, art_only=False):
+    """`art_only` is `art undo`: allowed on a sleeved deck, and refused unless the
+    entry it would reverse changed no card."""
+    if art_only:
+        from manamap.pilot import printings
+        printings.guard(slug)
+    else:
+        guard(slug)
     path = deck_dir(slug) / "decklist.txt"
     directory = path.parent
     with locked(directory, f"{kind} on {slug}"):
@@ -723,6 +780,9 @@ def _step(slug, kind, *, source="cli", expect_sha=None):
                              + (" — " + OUTSIDE.format(slug=slug) if barrier and kind == "undo"
                                 else ""))
         target = stack[-1]
+        if art_only and ((target.get("diff") or {}).get("out") or (target.get("diff") or {}).get("in")):
+            raise SystemExit(f"the last edit on {slug} moved cards, not art — "
+                             f"`manamap pilot edit {slug} {kind}`")
         new_text = target["before"] if kind == "undo" else target["after"]
         if new_text is None:
             raise SystemExit(f"{kind}: that entry has no list to return to "
@@ -736,14 +796,14 @@ def _step(slug, kind, *, source="cli", expect_sha=None):
         return rec
 
 
-def undo(slug, *, source="cli", expect_sha=None):
+def undo(slug, *, source="cli", expect_sha=None, art_only=False):
     """Put back the list before the last edit. Returns the journal entry."""
-    return _step(slug, "undo", source=source, expect_sha=expect_sha)
+    return _step(slug, "undo", source=source, expect_sha=expect_sha, art_only=art_only)
 
 
-def redo(slug, *, source="cli", expect_sha=None):
+def redo(slug, *, source="cli", expect_sha=None, art_only=False):
     """Re-apply the last undone edit. Returns the journal entry."""
-    return _step(slug, "redo", source=source, expect_sha=expect_sha)
+    return _step(slug, "redo", source=source, expect_sha=expect_sha, art_only=art_only)
 
 
 def history(slug, limit=30):

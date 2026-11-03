@@ -214,9 +214,26 @@ def _row_nm(row):
     return _cents(row.get("price_cents")) if nm is None else nm
 
 
-def _manapool_row(card, sid, feed, by_name):
+def _manapool_row(card, sid, feed, by_name, pinned=False):
     row = feed.get(sid) if sid else None
     note = None
+    if row is None and pinned:
+        # THE PILOT CHOSE THIS ART, so another printing's price is not its price:
+        # overwriting the row is how an order quietly came to mean different cards.
+        # Absent from the totals (absent, never zero); the cheapest other listing
+        # rides along, labelled, so the pilot can decide.
+        cheapest = by_name.get(card["name"].lower())
+        return {
+            "scryfall_id": sid,
+            "printing": _printing(card.get("set"), card.get("collector_number")),
+            "nm_cents": None, "lp_cents": None, "foil_cents": None, "url": None,
+            "quantity": int(card.get("quantity") or 1),
+            "note": "pinned printing not listed on Mana Pool",
+            "pinned_unavailable": True,
+            "cheapest_other": None if cheapest is None else {
+                "printing": _printing(cheapest.get("set_code"), cheapest.get("number")),
+                "nm_cents": _row_nm(cheapest)},
+        }
     if row is None:
         # The deck's exact printing is not listed; the cheapest listing of the
         # NAME is still a price, said as such.
@@ -240,17 +257,29 @@ def _manapool_row(card, sid, feed, by_name):
     }
 
 
+def unit_cents(row):
+    """One copy of this row as the pilot means to buy it: a foil pin at the foil
+    price, everything else at NM. Foil-only printings have no NM price at all, so
+    Goblin Storm's foil Zada used to count for nothing. None means unpriced."""
+    if row.get("foil") and row.get("foil_cents") is not None:
+        return row["foil_cents"]
+    return row.get("nm_cents")
+
+
 def _totals(cards):
     """The document's two totals over its priced rows — `build` and `prune` both
     say them through here, so a pruned file re-adds exactly as a fresh one."""
-    priced = [r for r in cards.values() if r.get("nm_cents") is not None]
-    return {
-        # Every copy, at NM: what buying the list as sleeved would cost.
-        "total_cents": sum(r["nm_cents"] * r["quantity"] for r in priced),
+    every, singles = 0, 0
+    for r in cards.values():
+        parts = r.get("printings") or [r]
+        priced = [p for p in parts if unit_cents(p) is not None]
+        # Every copy: what buying the list as sleeved would cost.
+        every += sum(unit_cents(p) * p["quantity"] for p in priced)
         # ONE copy of each priced card — the "singles" figure, where eleven
         # Islands count once.
-        "total_nm_cents": sum(r["nm_cents"] for r in priced),
-    }
+        if priced:
+            singles += unit_cents(priced[0])
+    return {"total_cents": every, "total_nm_cents": singles}
 
 
 def build(slug, branch=None, source="auto", session=None):
@@ -289,6 +318,14 @@ def build(slug, branch=None, source="auto", session=None):
             if name not in by_name or nm < _row_nm(by_name[name]):
                 by_name[name] = row
 
+    # A line that names a printing is the pilot's choice; the rest is what Scryfall
+    # happened to show, and any listing of the name will do.
+    from manamap.pilot.fetch_deck import parse_decklist
+    list_path = deck_dir(slug, branch) / "decklist.txt"
+    pinned = ({e["name"].lower().split(" // ")[0]
+               for e in parse_decklist(list_path.read_text(encoding="utf-8")) if e.get("set")}
+              if list_path.exists() else set())
+
     out_cards, missing = {}, []
     for card in cards:
         sc = (sc_map.get(card.get("scryfall_id"))
@@ -296,12 +333,25 @@ def build(slug, branch=None, source="auto", session=None):
               or sc_map.get(card["name"].lower()))
         if used == "manapool":
             sid = card.get("scryfall_id") or (sc or {}).get("id")
-            row = _manapool_row(card, sid, feed, by_name)
+            is_pin = card["name"].lower().split(" // ")[0] in pinned
+            row = _manapool_row(card, sid, feed, by_name, pinned=is_pin)
+            if row is not None and card.get("printings"):
+                # Split art: each printing has its own price, under the one card.
+                row["printings"] = []
+                for art in card["printings"]:
+                    sub = _manapool_row(dict(card, **art), art.get("scryfall_id"), feed, by_name,
+                                        pinned=is_pin)
+                    if sub is not None:
+                        if art.get("foil"):
+                            sub["foil"] = True
+                        row["printings"].append(sub)
         else:
             row, _sid = _scryfall_row(card, sc)
         if row is None:
             missing.append(card["name"])
         else:
+            if card.get("foil"):
+                row["foil"] = True
             out_cards[card["name"]] = row
 
     extra = {"feed_as_of": feed_meta["as_of"]} if used == "manapool" and feed_meta.get("as_of") else {}

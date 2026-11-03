@@ -879,6 +879,12 @@ def test_every_parse_decklist_caller_is_allow_listed_with_its_reason():
                              "(C3 holds it to the spec) and `render_decklist` "
                              "must write it back; `set_printing` parses one "
                              "line, which has no section",
+        "pilot/order.py": "an order is the WHOLE list, and a line's printing is the "
+                          "point; `cards.json` merges split art",
+        "pilot/printings.py": "reads the lines as written, section by section, to "
+                              "pin them; the sideboard's art is the pilot's too",
+        "pilot/prices.py": "a printing named on any line is a pin, and a pin's price "
+                           "is never another printing's",
         "pilot/deck_export.py": "an export is the WHOLE list — Moxfield's and "
                                 "Arena's import take the sideboard, and a 60-card "
                                 "deck's fifteen must ride along",

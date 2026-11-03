@@ -226,7 +226,7 @@ def _dig(doc, path):
 # 2026-08-24 at 46-of-57, 217-of-220, 2-of-4 and one-false-positive-fleet-wide.
 
 
-def _stamp_is_stale(stamped, truth):
+def _stamp_is_stale(stamped, truth, slug=None):
     """Compare a stamp to the truth, tolerating a PREFIX.
 
     The other half of why the frame went unchecked: the comparison was
@@ -241,7 +241,13 @@ def _stamp_is_stale(stamped, truth):
     """
     from manamap.pilot import common
 
-    return not common.sha_matches(str(stamped), str(truth))
+    if common.sha_matches(str(stamped), str(truth)):
+        return False
+    if slug is None:
+        return True
+    # Different bytes, same cards: only the art moved (`deck_versions.same_list`).
+    from manamap.pilot import deck_versions
+    return not deck_versions.same_list(slug, str(stamped), str(truth))
 
 
 def sim_run_describes(doc, slug, sha):
@@ -353,7 +359,7 @@ def status(slug, validate=True):
                     state, detail = "INVALID", why
         elif sha_path and truth:
             stamped = _dig(doc, sha_path)
-            if stamped and _stamp_is_stale(stamped, truth):
+            if stamped and _stamp_is_stale(stamped, truth, slug):
                 state = "STALE"
                 detail = f"built against {str(stamped)[:12]}…, deck is {truth[:12]}…"
             elif not stamped:
