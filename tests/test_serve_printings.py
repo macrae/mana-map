@@ -55,7 +55,7 @@ def test_printings_projects_scryfall_to_the_strip_and_drops_digital(scryfall):
         "art_crop": "https://cards.scryfall.io/art_crop/front/5/1/51d00000-0000-4000-8000-000000001234.jpg",
         "faces": [], "artist": "Seb McKinnon", "border_color": "borderless",
         "frame_effects": ["inverted"], "released_at": "2024-02-05", "promo": False,
-        "digital": False, "prices_usd": "12.00",
+        "digital": False, "prices_usd": "12.00", "prices_usd_foil": None, "scryfall_id": None,
     }, "the cache-buster is stripped, the fields are exactly the strip's"
     # The ask is exact-name, every printing, oldest first, cached a week.
     assert scryfall[0]["params"] == {"q": '!"Arcane Signet"', "unique": "prints",
@@ -149,3 +149,59 @@ def test_a_get_carries_its_query_string_and_a_write_is_refused_on_get(scryfall):
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+def _wait(job):
+    import time
+    for _ in range(200):
+        row = serve.call("job", {"id": job["id"]})
+        if row["state"] != "running":
+            return row
+        time.sleep(0.01)
+    raise AssertionError("job never finished")
+
+
+def test_art_endpoints_are_post_only_jobs_through_the_one_writer(monkeypatch):
+    from manamap.pilot import printings
+    for name in ("art/set", "art/pin-shown", "art/undo", "order"):
+        assert name in serve.ENDPOINTS and name not in serve.GETTABLE
+    seen = {}
+
+    def fake(slug, pins, branch=None, note=None):
+        seen.update(slug=slug, pins=pins, branch=branch)
+        return {"changed": True, "cards": sorted(pins), "notes": [], "refresh": {"failures": []}}
+    monkeypatch.setattr(printings, "apply", fake)
+    out = serve.call("art/set", {"slug": "d", "pins": [
+        {"card": "Mountain", "set": "SLD", "collector_number": "2418", "foil": True, "quantity": 8},
+        {"card": "Mountain", "set": "SLD", "collector_number": "2419", "foil": True, "quantity": 7}]})
+    row = _wait(out["job"])
+    assert row["state"] == "done" and row["result"]["cards"] == ["Mountain"]
+    assert [(p["set"], p["collector_number"], p["quantity"]) for p in seen["pins"]["Mountain"]] == [
+        ("sld", "2418", 8), ("sld", "2419", 7)]
+
+
+@pytest.mark.parametrize("pins", [
+    [], "Mountain", [{"card": "Mountain"}],
+    [{"card": "Mountain", "set": "SLD", "collector_number": "1", "evil": 1}],
+])
+def test_art_set_refuses_a_malformed_pin(pins):
+    with pytest.raises(ValueError):
+        serve.call("art/set", {"slug": "d", "pins": pins})
+
+
+def test_a_refused_pin_is_the_jobs_error_sentence(monkeypatch):
+    from manamap.pilot import printings
+
+    def refuse(*a, **k):
+        raise SystemExit("Refusing that art: never on paper")
+    monkeypatch.setattr(printings, "apply", refuse)
+    out = serve.call("art/set", {"slug": "d", "pins": [
+        {"card": "Raging Goblin", "set": "oana", "collector_number": "71"}]})
+    row = _wait(out["job"])
+    assert row["state"] == "failed" and "never on paper" in row["error"]
+
+
+def test_printings_carry_the_foil_price_and_the_id(scryfall):
+    out = serve.call("printings", {"name": "Arcane Signet"})
+    assert out["printings"] and all("prices_usd_foil" in p and "scryfall_id" in p
+                                    for p in out["printings"])

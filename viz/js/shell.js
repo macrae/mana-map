@@ -164,6 +164,10 @@ window.Shell = (function () {
     return upsize(entry[want] || entry.image || null, version);
   }
 
+  /* The `cards.json` rows of the list this page is about, so a hover draws its art. */
+  var deckRows = null;
+  function setDeckRows(byName) { deckRows = byName || null; }
+
   function cardImageUrl(name, version, entry) {
     var own = entryImageUrl(entry, name, version);
     if (own) return own;
@@ -268,7 +272,7 @@ window.Shell = (function () {
     if (el.dataset.card !== name) {
       el.dataset.card = name;
       delete el.dataset.retried;
-      el.src = cardImageUrl(name, 'normal');
+      el.src = cardImageUrl(name, 'normal', deckRows && deckRows[name]);
     }
     popAnchor = a;
     placePop(a);
@@ -926,6 +930,7 @@ window.Shell = (function () {
     libraryCount: libraryCount,
     libraryNames: libraryNames,
     cardImageUrl: cardImageUrl,
+    setDeckRows: setDeckRows,
     wireCardArt: wireCardArt,
     queueArt: queueArt,
     __artGap: ART_GAP,

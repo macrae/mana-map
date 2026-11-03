@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 154 pilot subcommands answer in JSON, instantly, for free.
+  design: 156 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -786,6 +786,8 @@ LOCAL_COSTS = {
                "mana-analysis and the deck's existing artifacts, this deck only",
     "preview": "~4s — the paired 10,000-game goldfish on both lists; instant when "
                "the champion and the candidate are cached",
+    "art": "~20-60s on a Commander deck, ~10s on a 60-card one — this deck's "
+           "measurements, prices, handbook, the manifest and the fleet file",
     "save-version": "~30-60s — the consistency pass (regen with branches, "
                     "deck-map, the handbook, build-index), then one git commit",
 }
@@ -1624,6 +1626,8 @@ def project_printing(sc):
         "promo": bool(sc.get("promo")),
         "digital": bool(sc.get("digital")),
         "prices_usd": (sc.get("prices") or {}).get("usd"),
+        "prices_usd_foil": (sc.get("prices") or {}).get("usd_foil"),
+        "scryfall_id": sc.get("id"),
     }
 
 
@@ -1671,7 +1675,7 @@ def _printings(name=None, digital=False):
             "truncated": truncated}
 
 
-def _printing_set(slug=None, card=None, set=None, collector_number=None, foil=False):
+def _printing_set(slug=None, card=None, set=None, collector_number=None, foil=False, branch=None):
     """Write one card's printing through `check_in.set_printing` — the one writer
     of that line — and run its chain. POST-only: it writes decklist.txt,
     cards.json and two measurements. A refusal (unknown card, two lines) is the
@@ -1680,10 +1684,86 @@ def _printing_set(slug=None, card=None, set=None, collector_number=None, foil=Fa
     if not (slug and card and set and collector_number):
         raise ValueError("printing/set needs slug, card, set and collector_number")
     try:
-        r = check_in.set_printing(slug, card, set, collector_number, foil=bool(foil))
+        r = check_in.set_printing(slug, card, set, collector_number, foil=bool(foil),
+                                  branch=branch)
     except SystemExit as exc:
         raise ValueError(str(exc)) from None
     return dict(r, slug=slug, card=card)
+
+
+_ART_KEYS = {"card", "set", "collector_number", "foil", "quantity"}
+
+
+def _art_pins(v):
+    """The page's pins, strictly: a list of objects with whitelisted keys."""
+    if not isinstance(v, list) or not v or not all(isinstance(p, dict) for p in v):
+        raise ValueError("pins is a non-empty list of objects")
+    for p in v:
+        if set(p) - _ART_KEYS:
+            raise ValueError(f"a pin has keys {sorted(_ART_KEYS)}, not {sorted(set(p) - _ART_KEYS)}")
+        if not (p.get("card") and p.get("set") and p.get("collector_number")):
+            raise ValueError("a pin names the card, set and collector_number")
+    return v
+
+
+def _art_guard(fn):
+    """A refusal is a job's error sentence, never a dead process."""
+    def run(*a, **k):
+        try:
+            return fn(*a, **k)
+        except SystemExit as exc:
+            raise RuntimeError(str(exc)) from None
+    return run
+
+
+def _art_set(slug=None, pins=None, branch=None, note=None):
+    """Pin cards on any live deck, as a polled job: `printings.apply` writes the list
+    and brings along everything that quotes it, which takes tens of seconds."""
+    from manamap.pilot import printings
+    if not (slug and pins):
+        raise ValueError("art/set needs a slug and pins")
+    wanted = {}
+    for p in pins:
+        wanted.setdefault(p["card"], []).append({
+            "set": str(p["set"]).lower(), "collector_number": str(p["collector_number"]),
+            "foil": bool(p.get("foil")),
+            "quantity": int(p["quantity"]) if p.get("quantity") else None})
+    return {"job": _local_job("art", _art_guard(
+        lambda: printings.apply(slug, wanted, branch=branch, note=note)))}
+
+
+def _art_pin_shown(slug=None, branch=None):
+    """`art --pin-shown` as a polled job. Skipped cards come back named."""
+    from manamap.pilot import printings
+    if not slug:
+        raise ValueError("art/pin-shown needs a slug")
+
+    def run():
+        pins, skipped = printings.unpinned_pins(slug, branch)
+        got = printings.apply(slug, pins, branch=branch) if pins else {"changed": False}
+        return dict(got, skipped=[{"name": n, "why": w} for n, w in skipped])
+    return {"job": _local_job("art", _art_guard(run))}
+
+
+def _art_undo(slug=None):
+    """`art undo`: reverses a change of art and refuses to reverse a card move."""
+    from manamap.pilot import deck_edit, printings
+    if not slug:
+        raise ValueError("art/undo needs a slug")
+
+    def run():
+        deck_edit.undo(slug, source="ui", art_only=True)
+        return {"changed": True, "refresh": printings.refresh(slug)}
+    return {"job": _local_job("art", _art_guard(run))}
+
+
+def _order(slugs=None, check=False, plain=False):
+    """One or more decks' lists as one Mana Pool paste. Reads the public feed when
+    asked and writes nothing; POST-only because a list does not fit a query string."""
+    from manamap.pilot import order
+    if not slugs:
+        raise ValueError("order needs at least one slug")
+    return order.payload(slugs, run_check=bool(check), plain=bool(plain))
 
 
 #: Endpoints a GET may run. Everything else is POST-only.
@@ -1773,7 +1853,12 @@ ENDPOINTS = {
     # a write to decklist.txt and its chain, so POST-only.
     "printings": (_printings, {"name": _str, "digital": _bool}),
     "printing/set": (_printing_set, {"slug": _str, "card": _str, "set": _str,
-                                     "collector_number": _str, "foil": _bool}),
+                                     "collector_number": _str, "foil": _bool, "branch": _str}),
+    # Pinning a deck's art from the gallery, and ordering it. See `_art_set`, `_order`.
+    "art/set": (_art_set, {"slug": _str, "pins": _art_pins, "branch": _str, "note": _str}),
+    "art/pin-shown": (_art_pin_shown, {"slug": _str, "branch": _str}),
+    "art/undo": (_art_undo, {"slug": _str}),
+    "order": (_order, {"slugs": _strlist, "check": _bool, "plain": _bool}),
     # Editing a bench deck in place (Build's tray). Every guard is `deck_edit`'s;
     # all POST-only but the history read. See `_deck_edit`.
     "deck/edit": (_deck_edit, {"slug": _str, "ops": _oplist, "note": _str,

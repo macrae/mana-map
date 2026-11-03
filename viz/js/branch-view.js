@@ -16,6 +16,8 @@
   'use strict';
 
   var DATA = '../data/';
+  // This branch's own `cards.json` rows by name, so its gallery and hovers draw its art.
+  var branchRows = {};
 
   function esc(v) {
     return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
@@ -1052,7 +1054,7 @@
        * WITHIN an open gallery, which is a real cost and a smaller one than a
        * grid of empty boxes. */
       var img = art
-        ? '<img data-src="' + esc(Shell.cardImageUrl(r.name)) + '" alt="' +
+        ? '<img data-src="' + esc(Shell.cardImageUrl(r.name, undefined, branchRows[r.name])) + '" alt="' +
           esc(r.name) + '">'
         : '';
       var tag = r.state
@@ -1554,6 +1556,15 @@
 
   if (window.Shell && Shell.mount) Shell.mount();
   wire();
+  (function () {
+    var q = new URLSearchParams(location.search);
+    if (!q.get('deck') || !q.get('branch')) return;
+    getJSON(DATA + 'decks/' + encodeURIComponent(q.get('deck')) + '/branches/' +
+            encodeURIComponent(q.get('branch')) + '/cards.json').then(function (doc) {
+      ((doc && doc.cards) || []).forEach(function (c) { if (c && c.name) branchRows[c.name] = c; });
+      if (window.Shell && Shell.setDeckRows) Shell.setDeckRows(branchRows);
+    }).catch(function () { /* no cards.json: hovers fall back to the default print */ });
+  })();
   // Probe WITHOUT blocking the first paint — the artifacts render either way.
   if (window.Api && Api.probe) { Api.probe().then(main, main); } else { main(); }
 })();

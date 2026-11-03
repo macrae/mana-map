@@ -1004,6 +1004,8 @@ window.DeckEdit = (function () {
     // Read-only probes for the browser suite.
     get tray() { return JSON.parse(JSON.stringify(S.tray)); },
     get baseSha() { return S.baseSha; },
+    /* Another writer on this page moved the list (Build's printing strip). */
+    listMoved: function () { return S.slug ? loadHistory(true) : Promise.resolve(); },
     __wireOps: wireOps,
     // What a landed job (history, apply, save) calls: with no tray on screen it
     // falls back to `repaintPanel`, which off the Change tab paints only the counts.

@@ -711,7 +711,7 @@
         '" data-card="' + esc(c.name) + '" tabindex="0">' +
       '<button class="cg-art-btn" data-select="1" title="Show on the map">' +
         '<img class="cg-art" alt="' + esc(c.name) + '" data-src="' +
-        esc(MM.cardImageUrl ? MM.cardImageUrl(c.name.split(' // ')[0], 'normal') : '') + '"></button>' +
+        esc(MM.cardImageUrl ? MM.cardImageUrl(c.name.split(' // ')[0], 'normal', deckCard(c.name)) : '') + '"></button>' +
       '<div class="cg-body">' +
         '<div class="cg-head"><span class="cg-name">' + esc(c.name) + '</span>' +
           (r.m != null ? '<span class="cg-mv" title="mana value">' + esc(r.m) + '</span>' : '') + '</div>' +
@@ -1106,19 +1106,9 @@
     return Api.call('printings', { name: name }).then(function (res) {
       const list = (res && res.printings) || [];
       if (!list.length) { stripStatus(name, 'Scryfall lists no printings for this name'); return false; }
-      const html = '<label class="printing-foil"><input type="checkbox"' + (card.foil ? ' checked' : '') +
-          '> foil</label>' +
-        list.map(function (p) {
-          const cur = p.set === card.set && String(p.collector_number) === String(card.collector_number);
-          const cap = '(' + String(p.set || '').toUpperCase() + ') ' + esc(String(p.collector_number || ''));
-          return '<button class="printing-thumb' + (cur ? ' is-current' : '') + '" type="button"' +
-            ' data-set="' + esc(p.set || '') + '" data-cn="' + esc(String(p.collector_number || '')) + '"' +
-            ' title="' + esc([p.set_name, p.artist ? 'art by ' + p.artist : '', p.released_at,
-                              p.prices_usd ? '$' + p.prices_usd : ''].filter(Boolean).join(' · ')) + '"' +
-            ' onclick="Build.pickPrinting(' + esc(JSON.stringify(name)) + ', this)">' +
-            (p.image ? '<img src="' + esc(p.image) + '" alt="" loading="lazy">' : '<span class="printing-noart"></span>') +
-            '<span class="printing-thumb-cap">' + cap + '</span></button>';
-        }).join('') +
+      const html = Printings.stripHtml(list, card, {
+          attrs: function () { return 'onclick="Build.pickPrinting(' + esc(JSON.stringify(name)) + ', this)"'; }
+        }) +
         (res.truncated ? '<span class="printing-status">more printings than the strip shows</span>' : '');
       printingStrips(name).forEach(el => { el.hidden = false; el.innerHTML = html; });
       return true;
@@ -1133,9 +1123,13 @@
     const strip = btn.closest('.printing-strip');
     const foilBox = strip && strip.querySelector('.printing-foil input');
     const payload = { slug: active.slug, card: name, set: btn.getAttribute('data-set'),
-                      collector_number: btn.getAttribute('data-cn'), foil: !!(foilBox && foilBox.checked) };
+                      collector_number: btn.getAttribute('data-cn'),
+                      foil: Printings.foilFor(btn, !!(foilBox && foilBox.checked)) };
     stripStatus(name, 'writing…');
     return Api.call('printing/set', payload).then(function (res) {
+      // The file moved, so the tray's next Apply must say so: without this it was
+      // refused with "the list moved" over a change of art nobody else made.
+      if (window.DeckEdit && DeckEdit.listMoved) DeckEdit.listMoved();
       return reloadCards().then(function () {
         if (window.MM && MM.refreshDeckContext) MM.refreshDeckContext(name);
         MM.setStatus(res && res.changed === false

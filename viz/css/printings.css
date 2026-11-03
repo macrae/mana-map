@@ -1,0 +1,42 @@
+/* The printing strip: every printing Scryfall knows, the deck's one ringed. Loaded by the
+ * two pages that pick art (Build, the deck page), which share no other stylesheet. */
+.printing-strip { flex-basis: 100%; display: flex; align-items: flex-start; flex-wrap: nowrap;
+  gap: 6px; overflow-x: auto; padding: 6px 0 2px; }
+.printing-strip[hidden] { display: none; }
+.printing-foil { flex: 0 0 auto; align-self: center; color: #aaa; font-size: 0.7rem;
+  display: inline-flex; align-items: center; gap: 4px; padding-right: 4px; }
+.printing-status { flex: 0 0 auto; color: #8a8aa0; font-size: 0.7rem; }
+.printing-thumb { flex: 0 0 auto; width: 64px; background: none; border: 2px solid transparent;
+  border-radius: 5px; padding: 0; cursor: pointer; color: #aaa; font-size: 0.6rem; line-height: 1.2; }
+.printing-thumb img, .printing-thumb .printing-noart { display: block; width: 60px; height: 84px;
+  object-fit: cover; border-radius: 3px; background: #2a2a4a; }
+.printing-thumb-cap { display: block; padding: 2px 0; white-space: nowrap; overflow: hidden;
+  text-overflow: ellipsis; }
+.printing-thumb:hover { border-color: #8a8aa0; }
+.printing-thumb.is-current { border-color: #c4a747; color: #c4a747; }
+
+/* The deck page's art gallery. */
+.art-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0 12px; font-size: 13px; }
+.art-tools .art-count { color: var(--ink); font-weight: 600; margin-right: auto; }
+.art-tools button { background: var(--panel); color: var(--ink); border: 1px solid #3a352c; border-radius: 4px;
+  padding: 5px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+.art-tools button:hover:not(:disabled) { border-color: #8a8aa0; }
+.art-tools button:disabled { opacity: 0.55; cursor: default; }
+.art-tools label { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; }
+.art-say { flex-basis: 100%; font-size: 12px; min-height: 1em; }
+.art-heading { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 14px 0 6px; }
+.art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: 12px; align-items: start; }
+.art-tile { background: none; border: 2px solid transparent; border-radius: 8px; padding: 0; text-align: left;
+  color: inherit; font: inherit; min-width: 0; }
+.art-tile.can-pick { cursor: pointer; }
+.art-tile.can-pick:hover, .art-tile.can-pick:focus-visible, .art-tile.is-open { border-color: #c4a747; }
+.art-tile img { display: block; width: 100%; aspect-ratio: 63 / 88; object-fit: cover; border-radius: 6px; background: #2a2a4a; }
+.art-tile.is-loose img { outline: 1px dashed #8a8aa0; outline-offset: -1px; }
+.art-name { display: block; font-size: 12px; font-weight: 600; padding: 5px 2px 0; overflow-wrap: anywhere; }
+.art-meta { display: block; font-size: 12px; padding: 1px 2px 0; opacity: 0.8; overflow-wrap: anywhere; }
+.art-mark { display: inline-block; font-size: 12px; padding: 0 2px; font-weight: 600; }
+.art-picker { grid-column: 1 / -1; border-top: 1px solid #3a352c; border-bottom: 1px solid #3a352c; padding: 6px 0; }
+.art-picker .printing-thumb { width: 112px; font-size: 12px; }
+.art-picker .printing-thumb img, .art-picker .printing-thumb .printing-noart { width: 108px; height: 151px; }
+.art-picker[hidden] { display: none; }
+@media (max-width: 480px) { .art-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

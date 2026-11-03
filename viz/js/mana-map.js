@@ -1225,7 +1225,7 @@
       hoverRow = row;
       const el = ensurePopup();
       el.innerHTML =
-        '<img src="' + cardImageUrl(d.n) + '" alt="' + escHtml(d.n) + '"' +
+        '<img src="' + cardImageUrl(d.n, 'normal', deckEntry(d, row)) + '" alt="' + escHtml(d.n) + '"' +
         ' onerror="this.onerror=null;this.parentElement.classList.add(\'card-popup-failed\');' +
         'this.parentElement.textContent=' + JSON.stringify(d.n).replace(/"/g, '&quot;') + '">';
       el.style.display = 'block';

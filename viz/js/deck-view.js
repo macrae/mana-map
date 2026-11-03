@@ -179,7 +179,7 @@
    * wall. Membership is a property of the content, not of the id, but the id is
    * what the caller has. */
   var WIDE = { context: 1, kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1,
-               decklist: 1, coverage: 1, logs: 1 };
+               decklist: 1, art: 1, coverage: 1, logs: 1 };
 
   function panel(id, title, promise, tiers, accent, body) {
     // A branch's roster names the branch; every other title is the plain one.
@@ -2760,7 +2760,7 @@
       ? d.ctxParts.by['context-changelog'].body : '';
     var content = {
       overview: [coverPanel(d), summaryPanel(d), nextPanel(d)],
-      decklist: [decklistPanel(d)],
+      decklist: [decklistPanel(d), artPanel(d)],
       plays: [contextPanel(d), rosterPanel(d), constellationPanel(d), tutorPanel(d)],
       mana: [manaPanel(d), auditPanel(d)],
       games: [priorsPanel(d), logPanel(d),
@@ -2793,6 +2793,7 @@
     wireContext(d);
     wireDecklist(d);
     wireMoxfield(d);
+    wireArt(d);
     wireNav();
     var bits = [d.stacks.length + ' verified line(s)'];
     if ((d.sims || []).length) bits.push(d.sims.length + ' sim run(s)');
@@ -2800,6 +2801,250 @@
     if (!d.info) bits.push('no info.json — run `deck-info ' + slug + ' --write`');
     document.getElementById('status').textContent =
       bits.join(' · ') + ' · artifacts read from data/decks/' + slug + '/';
+  }
+
+  /* ── The art ──────────────────────────────────────────────────────────────
+   *
+   * Every line of the list as the card it is: the art, the artist, foil, and
+   * whether the pilot chose it or it is merely what Scryfall showed. Viewing is
+   * static. Choosing writes, so it is local: with no server the tiles are not
+   * buttons and the tools below are gone (`Api.has`). The rows come from THE LIST
+   * (a split card has one tile per art) and the art from `cards.json`.
+   */
+  function artKey(name) { return String(name || '').split(' // ')[0].toLowerCase(); }
+
+  function artRows(d) {
+    if (!window.Decklist || !d.listText) return [];
+    var byName = {};
+    (((d.cards || {}).cards || []).concat((d.cards || {}).sideboard || [])).forEach(function (c) {
+      byName[artKey(c.name)] = c;
+    });
+    return Decklist.parse(d.listText, { printings: true }).map(function (e) {
+      var card = byName[artKey(e.name)] || {};
+      var arts = card.printings || [];
+      var art = arts.filter(function (a) {
+        return e.set && a.set === e.set && String(a.collector_number) === String(e.collector_number);
+      })[0] || card;
+      return { name: e.name, quantity: e.quantity, pinned: !!e.set, foil: !!e.foil,
+               set: e.set || card.set || '', collector_number: e.collector_number || card.collector_number || '',
+               artist: art.artist || '', image: art.image || '',
+               land: /\bLand\b/.test(card.type_line || '') };
+    }).sort(function (a, b) {
+      return (a.land - b.land) || a.name.toLowerCase().localeCompare(b.name.toLowerCase()) ||
+        String(a.collector_number).localeCompare(String(b.collector_number));
+    });
+  }
+
+  function artTile(r, i, canPick) {
+    var tag = canPick ? 'button' : 'div';
+    var where = r.set ? '(' + String(r.set).toUpperCase() + ') ' + r.collector_number : 'no printing';
+    return '<' + tag + (canPick ? ' type="button"' : '') + ' class="art-tile' + (canPick ? ' can-pick' : '') +
+        (r.pinned ? '' : ' is-loose') + '" data-art="' + i + '"' + (r.pinned ? '' : ' data-loose="1"') + '>' +
+      (r.image ? '<img src="' + esc(r.image) + '" alt="' + esc(r.name) + '" loading="lazy">' : '<img alt="' + esc(r.name) + '">') +
+      '<span class="art-name">' + esc(r.quantity + ' ' + r.name) + '</span>' +
+      '<span class="art-meta">' + esc(where) + (r.foil ? ' \u00b7 foil' : '') + '</span>' +
+      (r.artist ? '<span class="art-meta">' + esc(r.artist) + '</span>' : '') +
+      (r.pinned ? '' : '<span class="art-mark">not pinned</span>') +
+      '</' + tag + '>';
+  }
+
+  function artBody(d) {
+    var rows = artRows(d);
+    var canPick = !!(window.Api && Api.has && Api.has('art/set') && window.Printings);
+    var loose = rows.filter(function (r) { return !r.pinned; }).length;
+    var grid = function (land) {
+      var part = rows.map(function (r, i) { return [r, i]; }).filter(function (x) { return x[0].land === land; });
+      return part.length
+        ? '<div class="art-heading">' + (land ? 'Lands' : 'Non-lands') + '</div><div class="art-grid">' +
+          part.map(function (x) { return artTile(x[0], x[1], canPick); }).join('') + '</div>'
+        : '';
+    };
+    return '<div class="art-tools">' +
+        '<span class="art-count">' + (rows.length - loose) + ' of ' + rows.length + ' lines pinned</span>' +
+        (loose ? '<label><input type="checkbox" data-act="art-loose"> only not pinned</label>' : '') +
+        (canPick && loose ? '<button type="button" data-act="art-pin">Pin everything shown</button>' : '') +
+        (canPick ? '<button type="button" data-act="art-undo" hidden>Undo</button>' : '') +
+        '<button type="button" data-act="art-copy">Copy for Mana Pool</button>' +
+        '<div class="art-say" role="status"></div>' +
+      '</div>' +
+      '<div data-art-grids>' + grid(false) + grid(true) + '</div>';
+  }
+
+  function artPanel(d) {
+    if (!d.listText || !d.cards) return '';
+    return panel('art', 'The art', 'Which physical card each line is. An order buys what is pinned here; ' +
+      'a card that is not pinned lets the shop choose.', ['data'], 'var(--tier-data, #888)',
+      '<div data-art-body>' + artBody(d) + '</div>');
+  }
+
+  /* The paste. With a server it is the `order` command's; the static site writes the
+   * same lines from the list, because a shop paste should not need a server. */
+  function artPaste(d) {
+    if (window.Api && Api.has && Api.has('order')) {
+      return Api.call('order', { slugs: [d.slug], check: true });
+    }
+    var merged = {};
+    artRows(d).forEach(function (r) {
+      var line = r.name + (r.pinned ? ' (' + String(r.set).toUpperCase() + ') ' + r.collector_number : '') +
+        (r.foil ? ' *F*' : '');
+      merged[line] = (merged[line] || 0) + r.quantity;
+    });
+    var seen = {}, lines = [];
+    artRows(d).forEach(function (r) {
+      var line = r.name + (r.pinned ? ' (' + String(r.set).toUpperCase() + ') ' + r.collector_number : '') +
+        (r.foil ? ' *F*' : '');
+      if (!seen[line]) { seen[line] = 1; lines.push(merged[line] + ' ' + line); }
+    });
+    return Promise.resolve({ text: lines.join('\n') + '\n', check: null });
+  }
+
+  function artPoll(id) {
+    return new Promise(function (resolve, reject) {
+      (function tick() {
+        Api.call('job', { id: id }).then(function (row) {
+          if (row.state === 'running') { setTimeout(tick, 700); return; }
+          if (row.state === 'done') { resolve(row.result); return; }
+          reject(new Error(row.error || 'the job failed'));
+        }).catch(reject);
+      })();
+    });
+  }
+
+  function wireArt(d) {
+    var host = document.querySelector('[data-art-body]');
+    if (!host) return;
+    var say = function (t) { var el = host.querySelector('.art-say'); if (el) el.textContent = t; };
+    var reread = function () {
+      return Promise.all([
+        fetch(BASE + d.slug + '/decklist.txt', { cache: 'no-store' }).then(function (r) { return r.text(); }),
+        fetch(BASE + d.slug + '/cards.json', { cache: 'no-store' }).then(function (r) { return r.json(); })
+      ]).then(function (got) {
+        d.listText = got[0];
+        d.cards = got[1];
+        deckCards = {};
+        (got[1].cards || []).forEach(function (c) { deckCards[c.name] = c; });
+        host.innerHTML = artBody(d);
+      });
+    };
+    var run = function (start, doing, undoable) {
+      say(doing);
+      return start.then(function (res) { return artPoll(res.job.id); }).then(function (done) {
+        return reread().then(function () {
+          var undo = host.querySelector('[data-act="art-undo"]');
+          if (undo && undoable) undo.hidden = false;
+          say(artDoneLine(done));
+          return done;
+        });
+      }).catch(function (e) { say('Not written: ' + e.message); });
+    };
+    host.addEventListener('change', function (ev) {
+      if (!ev.target.matches('[data-act="art-loose"]')) return;
+      var only = ev.target.checked;
+      Array.prototype.forEach.call(host.querySelectorAll('.art-tile'), function (t) {
+        t.hidden = only && !t.hasAttribute('data-loose');
+        t.style.display = t.hidden ? 'none' : '';
+      });
+    });
+    host.addEventListener('click', function (ev) {
+      var act = ev.target.closest('[data-act]');
+      var name = act && act.getAttribute('data-act');
+      if (name === 'art-copy') {
+        act.disabled = true;
+        artPaste(d).then(function (o) {
+          var copied = navigator.clipboard && navigator.clipboard.writeText
+            ? navigator.clipboard.writeText(o.text).then(function () { return true; }, function () { return false; })
+            : Promise.resolve(false);
+          return copied.then(function (ok) {
+            say((ok ? 'Copied. Paste it at manapool.com/add-deck.' : 'Could not reach the clipboard.') +
+                artCheckLine(o.check, o.unpinned));
+            act.setAttribute('data-paste-lines', String(o.text.split('\n').filter(Boolean).length));
+          });
+        }).catch(function (e) { say('Could not build the paste: ' + e.message); })
+          .then(function () { act.disabled = false; });
+        return;
+      }
+      if (name === 'art-pin') {
+        act.disabled = true;
+        run(Api.call('art/pin-shown', { slug: d.slug }), 'Pinning every card to the art shown\u2026', true);
+        return;
+      }
+      if (name === 'art-undo') {
+        act.disabled = true;
+        run(Api.call('art/undo', { slug: d.slug }), 'Undoing\u2026', false);
+        return;
+      }
+      var thumb = ev.target.closest('.printing-thumb');
+      if (thumb) {
+        var picker = thumb.closest('.art-picker');
+        var row = artRows(d)[Number(picker.getAttribute('data-for'))];
+        var foilBox = picker.querySelector('.printing-foil input');
+        var pick = { card: row.name, set: thumb.getAttribute('data-set'),
+                     collector_number: thumb.getAttribute('data-cn'),
+                     foil: Printings.foilFor(thumb, !!(foilBox && foilBox.checked)) };
+        // A SPLIT CARD KEEPS ITS OTHER ARTS: this tile moves, its copies with it.
+        var mine = artRows(d).filter(function (r) { return artKey(r.name) === artKey(row.name) && r.pinned; });
+        var pins = mine.length > 1 ? mine.map(function (r) {
+          var same = r.set === row.set && String(r.collector_number) === String(row.collector_number);
+          return same ? Object.assign({}, pick, { quantity: r.quantity })
+                      : { card: r.name, set: r.set, collector_number: r.collector_number,
+                          foil: r.foil, quantity: r.quantity };
+        }) : [pick];
+        run(Api.call('art/set', { slug: d.slug, pins: pins }), 'Writing ' + row.name + '\u2026', true);
+        return;
+      }
+      var tile = ev.target.closest('.art-tile.can-pick');
+      if (!tile) return;
+      var open = host.querySelector('.art-picker');
+      var wasThis = open && open.getAttribute('data-for') === tile.getAttribute('data-art');
+      if (open) open.remove();
+      Array.prototype.forEach.call(host.querySelectorAll('.art-tile.is-open'), function (t) { t.classList.remove('is-open'); });
+      if (wasThis) return;
+      tile.classList.add('is-open');
+      var rowNow = artRows(d)[Number(tile.getAttribute('data-art'))];
+      var box = document.createElement('div');
+      box.className = 'art-picker printing-strip';
+      box.setAttribute('data-for', tile.getAttribute('data-art'));
+      box.innerHTML = '<span class="printing-status">loading printings\u2026</span>';
+      // After the tile's row, so the strip opens under the card rather than at the foot.
+      var after = tile;
+      var top = tile.offsetTop;
+      while (after.nextElementSibling && after.nextElementSibling.offsetTop === top) after = after.nextElementSibling;
+      after.parentNode.insertBefore(box, after.nextElementSibling);
+      Api.call('printings', { name: rowNow.name }).then(function (res) {
+        var list = (res && res.printings) || [];
+        box.innerHTML = list.length
+          ? Printings.stripHtml(list.slice().reverse(), rowNow, { prices: true }) +
+            (res.truncated ? '<span class="printing-status">more printings than this shows</span>' : '')
+          : '<span class="printing-status">Scryfall lists no printings for this name</span>';
+      }).catch(function (e) {
+        box.innerHTML = '<span class="printing-status">could not list printings: ' + esc(e.message) + '</span>';
+      });
+    });
+  }
+
+  function artDoneLine(done) {
+    if (!done) return 'Done.';
+    var bits = [];
+    if (done.changed === false) bits.push('Already on that art.');
+    else if (done.cards) bits.push(done.cards.length + ' card(s) pinned. Not a version; undo is here.');
+    else bits.push('Done.');
+    (done.notes || []).forEach(function (n) { bits.push(n + '.'); });
+    (done.skipped || []).forEach(function (s) { bits.push('Skipped ' + s.name + ': ' + s.why + '.'); });
+    ((done.refresh || {}).failures || []).forEach(function (f) { bits.push('Failed: ' + f + '.'); });
+    return bits.join(' ');
+  }
+
+  function artCheckLine(check, unpinned) {
+    var bits = [];
+    if (unpinned && unpinned.length) bits.push(unpinned.length + ' line(s) not pinned: the shop chooses their art.');
+    if (check && check.error) bits.push('Stock check did not run: ' + check.error);
+    if (check && !check.error) {
+      bits.push('Cards $' + (check.subtotal_cents / 100).toFixed(2) + ' at NM as of ' +
+                String(check.as_of || '').slice(0, 10) + ', before shipping and fees.');
+      (check.unfillable || []).forEach(function (l) { bits.push('Cannot fill ' + l.line + ': ' + l.status + '.'); });
+      (check.unpriced || []).forEach(function (l) { bits.push('No price for ' + l.line + ': ' + l.status + '.'); });
+    }
+    return bits.length ? ' ' + bits.join(' ') : '';
   }
 
   /* Which chapter you are reading, marked in the nav. Presentation only. */
@@ -2885,6 +3130,9 @@
         : Promise.resolve('');
       // The Decklist reads it on every deck now, Context or not.
       var cardsJob = getJSON(BASE + entry.slug + '/cards.json');
+      // The art gallery reads the list as written: only a line can say it is pinned.
+      var listJob = fetch(BASE + entry.slug + '/decklist.txt', { cache: 'no-cache' })
+        .then(function (r) { return r.ok ? r.text() : ''; }).catch(function () { return ''; });
       var picardJob = (entry.has || {}).captains_log
         ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
       // `audit.json` for its `not_measured` map, which `info.audit` does not carry.
@@ -2895,7 +3143,7 @@
       return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
                           Promise.all(simJobs), Promise.all(expJobs),
                           Promise.all(rxJobs), logJob, debriefJob, picardJob,
-                          contextJob, cardsJob, auditJob])
+                          contextJob, cardsJob, auditJob, listJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
@@ -2903,6 +3151,7 @@
           d.context = both[8] || '';
           d.cards = both[9];
           d.audit = both[10];
+          d.listText = both[11] || '';
           // By name, for every panel that draws a card's art: the row IS the
           // sleeved printing. Empty when the page did not fetch cards.json.
           deckCards = {};

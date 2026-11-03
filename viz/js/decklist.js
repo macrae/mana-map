@@ -39,7 +39,7 @@ window.Decklist = (function () {
   const MAIN = new Set(['deck', 'mainboard', 'main']);
   const SIDEBOARD = new Set(['sideboard', 'side', 'maybeboard', 'considering']);
 
-  const PRINTING = /\s+\(([A-Z0-9]{2,6})\)\s+([\w-]+)$/;
+  const PRINTING = /\s+\(([A-Z0-9]{2,6})\)\s+([\w★†-]+)$/;
   // Mirrors `_FOIL_MARKERS` in pilot/fetch_deck.py (`*E*` is etched).
   const FOIL_MARKERS = ['*F*', '*E*'];
 
