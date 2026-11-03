@@ -812,6 +812,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--seed", type=int, default=None)
             cmd.add_argument("--write", action="store_true",
                              help="write net_change.json beside the branch")
+            cmd.add_argument("--full", action="store_true",
+                             help="add the long definitions, every automatic note, "
+                                  "the ledger and where each card is")
             cmd.add_argument("--json", action="store_true")
         if name == "close":
             cmd.add_argument("--component", default=None, metavar="SUBSTRING",

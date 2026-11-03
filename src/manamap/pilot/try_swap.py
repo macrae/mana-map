@@ -652,12 +652,11 @@ def render(r):
         w("    colour sources vs target: " + (", ".join(moved) if moved else "unchanged")
           + (f"   SHORT after: {', '.join(short)}" if short else ""))
     w("")
-    w("  GOLDFISH   champion -> swapped, interval on the difference, Holm across the rows")
-    for row in r["table"]:
-        ci = row.get("ci95_diff")
-        cis = f"[{ci[0]:+.3f}, {ci[1]:+.3f}]" if ci else ""
-        w(f"    {row['measure'][:26]:26} {row['champion']:>8.3f} -> {row['branch']:>8.3f}  "
-          f"{row['delta']:+.3f} {cis:22} {row['verdict'].upper() if row['verdict'] != 'noise' else 'no call'}")
+    # THE SAME ROWS AS `net-change`, the same way, so the two reports read as one
+    # instrument: `net_change.profile_lines` is the one formatter.
+    w(f"  GOLDFISH   {net_change.profile_count(r['table'])}; now -> swapped, "
+      "interval on the difference, Holm across the rows")
+    L.extend(net_change.profile_lines(r["table"], indent="    "))
     blind = [c for c in r["cards"] if c["state"] != "seen"]
     if blind:
         w("    these rows cannot see: " + "; ".join(

@@ -1895,3 +1895,125 @@ def test_the_headline_measures_are_rows_the_table_prints():
     rendered = {label for label, *_ in net_change.ROWS}
     assert set(net_change.IMPACT_MEASURES) <= rendered, set(net_change.IMPACT_MEASURES) - rendered
     assert len(net_change.IMPACT_MEASURES) == len(set(net_change.IMPACT_MEASURES))
+
+
+# ── the report as a reader meets it (2026-11-03) ──────────────────────────────
+
+def _printable():
+    row = {"measure": "killed by T6", "unit": "rate", "better_is": "higher", "champion": 0.083,
+           "branch": 0.161, "delta": 0.078, "ci95_diff": [0.07, 0.087], "mde": 0.01,
+           "verdict": "better", "reads_as": "8 in 100 -> 16 in 100", "what": "Share of games. More.",
+           "why_we_care": "A clock."}
+    return {"slug": None, "branch": None, "harness": {"iterations": 500, "seed": 7},
+            "table": [row, {**row, "measure": "new metric", "unit": "mean", "champion": 12.0,
+                            "branch": 12.5, "delta": 0.5, "ci95_diff": [-0.1, 1.1], "mde": 0.9,
+                            "verdict": "noise"}],
+            "recommendation": {"state": "do not merge", "because": "Missed. WARNING - lost.",
+                               "forge_warning": "WARNING - lost.", "notes": [], "reward": [],
+                               "risk": [], "cost": {"reads_as": "1 to buy", "mergeable": False,
+                                                    "must_unsleeve": [{"name": "Brushland", "decks": ["sleeved-deck"]}]}},
+            "objective": {"axis": "stall", "op": "<=", "value": 0.11},
+            "objective_grade": {"state": "not met", "reading": 0.145},
+            "blind_spots": [{"cards": ["Swords"], "why": "nothing to remove"}],
+            "limits": ["No opponents here. And more."],
+            "mana": {"available": True, "lands": [35, 36], "enters_tapped_always": [4, 2], "life": [],
+                     "on_curve": {"G": [0.82, None]},
+                     "colours": [{"colour": "U", "target": [0, 0], "have": [0, 0], "gap": [0, 0]},
+                                 {"colour": "G", "target": [36, 36], "have": [30, 34], "gap": [-6, -2]}]},
+            "bill": {"counts": {"buy": 1}}, "forge": {"available": False, "why": "no run"},
+            "changes": {"count": 1, "counts": {"in": 1, "out": 1, "rows": 1},
+                        "diff": {"base_size": 100, "size": 100, "counts": {"out_copies": 1, "in_copies": 1},
+                                 "changed": [],
+                                 "out": [{"name": "Zed", "kind": "spell"}, {"name": "Abe", "kind": "spell"}],
+                                 "in": [{"name": "Yak", "kind": "spell", "why": "try: trade - partial"},
+                                        {"name": "Bo", "kind": "spell", "why": "the pilot's call"}]}},
+            "definitions": {"derived": [{"name": "PRIMARY", "what": "The sixteen rows.", "why": "y"}]}}
+
+
+def _printed(doc, **kw):
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        net_change._print(doc, **kw)
+    return buf.getvalue()
+
+
+def test_the_profile_prints_first_and_the_rules_word_follows_the_rows():
+    out = _printed(_printable())
+    assert out.index("THE PROFILE") < out.index("killed by T6") < out.index("do not merge")
+    assert out.index("do not merge") < out.index("WHAT THIS CANNOT SEE") < out.index("THE MANA")
+    assert out.index("THE COST") < out.index("THE CHANGE") < out.index("WHAT THE ROWS MEASURE")
+    assert "1 better, 0 worse, 1 no call" in out
+    assert "==>" not in out, "a single word on top of the profile again"
+
+
+def test_a_row_carries_its_interval_in_units_a_reader_uses():
+    out = _printed(_printable())
+    assert "8.3% -> 16.1%" in out and "+7.8 pts" in out and "[+7.0, +8.7]" in out
+    assert "No call (resolves 0.9)" in out, "a no-call row lost the size it could resolve"
+
+
+def test_a_row_nobody_grouped_prints_under_other():
+    out = _printed(_printable())
+    assert "OTHER" in out and "new metric" in out
+
+
+def test_every_rendered_row_has_a_group_or_is_knowingly_other():
+    grouped = {n for _, names in net_change.ROW_GROUPS for n in names}
+    assert {label for label, *_ in net_change.ROWS} <= grouped
+
+
+def test_a_colour_the_deck_does_not_play_is_not_a_row_and_absent_is_not_zero():
+    out = _printed(_printable())
+    mana = out[out.index("THE MANA"):out.index("THE COST")]
+    assert "\n    G " in mana and "\n    U " not in mana
+    assert "82% -> —" in mana, "an unmeasured on-curve figure read as zero"
+
+
+def test_the_row_count_is_this_reports_not_a_constant():
+    out = _printed(_printable(), full=True)
+    assert "The 2 rows." in out and "sixteen" not in out
+    assert "the 2 rows cannot rank lands" in _printed(_printable())
+
+
+def test_the_cards_are_alphabetical_and_the_automatic_note_collapses():
+    out = _printed(_printable())
+    assert out.index("- Abe") < out.index("- Zed") and out.index("+ Bo") < out.index("+ Yak")
+    assert "the pilot's call" in out, "a person's reason is dropped"
+    assert "try: trade" not in out, "the automatic note is back on the default view"
+    assert "try: trade" in _printed(_printable(), full=True), "--full lost it"
+
+
+def test_where_a_card_sits_is_only_on_the_full_report():
+    assert "sleeved-deck" not in _printed(_printable())
+    assert "sleeved-deck" in _printed(_printable(), full=True)
+    assert "Not mergeable yet" in _printed(_printable()), "the blocker must stay visible"
+
+
+def test_the_forge_warning_prints_beside_the_table_once():
+    out = _printed(_printable())
+    assert out.count("WARNING - lost.") == 1
+    assert out.index("WARNING - lost.") < out.index("WHAT THIS CANNOT SEE")
+
+
+def test_json_on_stdout_is_only_json(monkeypatch, capsys):
+    """The preflight lines printed ahead of the document, so `--json | jq` broke."""
+    import argparse
+    monkeypatch.setattr(net_change, "build", lambda *a, **k: {"ok": True})
+    from manamap.pilot import model_coverage
+    monkeypatch.setattr(model_coverage, "analyze", lambda *a, **k: {})
+    monkeypatch.setattr(model_coverage, "headline", lambda *a, **k: "a preflight line")
+    net_change.main(argparse.Namespace(slug="s", branch="b", json=True, as_json=False, write=False))
+    got = capsys.readouterr()
+    assert json.loads(got.out) == {"ok": True}
+    assert "a preflight line" in got.err
+
+
+def test_a_rounding_tie_reads_the_same_as_the_page():
+    """0.25 is an exact tie: Python's format gives 0.2 and JavaScript's toFixed 0.3,
+    so the terminal and the page disagreed on ten rows of the fleet's reports."""
+    assert net_change._fixed(0.25, 1) == "0.3"
+    assert net_change._fixed(-0.25, 1, plus=True) == "-0.3"
+    assert net_change._fixed(0.0, 1, plus=True) == "+0.0"
+

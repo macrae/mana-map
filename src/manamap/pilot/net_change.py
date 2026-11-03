@@ -59,6 +59,11 @@ deleted a six-factor card scorer for exactly that. Which side of a trade is
 worth taking stays the pilot's call; the report's job is that the call is made
 on figures whose meaning is on the page beside them.
 
+THE WORD DOES NOT LEAD THE PRINT (2026-11-03). `recommend`'s word stays in the
+artifact unchanged, but both surfaces open on the whole profile, grouped, with the
+word and the guard under the rows they summarise: the bench judges the profile, and
+30 of 58 reports read `do not merge` off one optional threshold.
+
 EVERY FIGURE CARRIES ITS DEFINITION. `METRICS` is the registry — what each row
 measures, why a pilot should care, and the unit it is in — and it renders with
 the table rather than living in a doc nobody has open. A number a reader has to
@@ -74,6 +79,7 @@ import os
 import re
 import hashlib
 import json
+import sys
 
 from manamap.pilot import deck_branch
 from manamap.pilot.common import deck_dir, load_deck_cards, load_json
@@ -1764,6 +1770,9 @@ def main(args):
             f"net-change compares a BRANCH against the deck. "
             f"`--branch <name>`; `manamap pilot deck-branch {args.slug} list` "
             f"shows what there is.")
+    as_json = getattr(args, "as_json", False) or getattr(args, "json", False)
+    # `--json` IS PURE JSON ON STDOUT: everything said around it goes to stderr.
+    aside = sys.stderr if as_json else sys.stdout
     # 20,000 simulated games are about to be spent comparing two lists. If the
     # model cannot see a third of either one, say so first — every expensive
     # fidelity surprise on this bench was found after the run, not before it.
@@ -1774,7 +1783,7 @@ def main(args):
             line = model_coverage.headline(
                 model_coverage.analyze(args.slug, scope))
             if line:
-                print(f"  {'branch' if scope else 'deck  '}  {line}")
+                print(f"  {'branch' if scope else 'deck  '}  {line}", file=aside)
     except Exception:                              # noqa: BLE001 - never block
         pass
     # MEASURE TWICE, said here too: which of the branch's adds the Forge AI has been
@@ -1788,21 +1797,22 @@ def main(args):
             print(f"  branch  CAST PROOFS — {len(_cp['proven'])}/{n} adds PLAYED under the current harness"
                   + (f"; HELD: {', '.join(_cp['held'])}" if _cp["held"] else "")
                   + (f"; CAST-LATE: {', '.join(_cp['late'])}" if _cp["late"] else "")
-                  + (f"; unproven: {', '.join(_cp['unproven'])}" if _cp["unproven"] else ""))
+                  + (f"; unproven: {', '.join(_cp['unproven'])}" if _cp["unproven"] else ""),
+                  file=aside)
     except (Exception, SystemExit):                # noqa: BLE001 - never block; no Forge exits
         pass
     doc = build(args.slug, branch,
                 iterations=getattr(args, "iterations", None),
                 seed=getattr(args, "seed", None))
-    if getattr(args, "as_json", False) or getattr(args, "json", False):
+    if as_json:
         print(json.dumps(doc, indent=1))
     else:
-        _print(doc)
+        _print(doc, full=getattr(args, "full", False))
     if getattr(args, "write", False):
         out = deck_dir(args.slug, branch) / ARTIFACT
         out.write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n",
                        encoding="utf-8")
-        print(f"\n  Wrote {out}")
+        print(f"\n  Wrote {out}", file=aside)
 
 
 #: The states a recommendation may be in. A merge decision is not a scalar, and
@@ -2144,16 +2154,192 @@ def _and(names):
     return ", ".join(names[:-1]) + " and " + names[-1]
 
 
-def _wrap(text, width=74, indent="        "):
-    """Prose wrapped to a terminal, because a definition nobody can read is not
-    a definition. `textwrap` with an explicit width beats relying on the tty."""
+def _width():
+    """The terminal's width, held to a readable measure. Display only: a pipe gets
+    the fallback, and nothing here reaches an artifact."""
+    import shutil
+    return max(60, min(100, shutil.get_terminal_size((88, 24)).columns))
+
+
+def _wrap(text, width=None, indent="        "):
+    """Prose wrapped to the terminal, because a definition nobody can read is not
+    a definition."""
     import textwrap
-    return "\n".join(textwrap.wrap(str(text or ""), width=width,
+    return "\n".join(textwrap.wrap(str(text or ""), width=width or _width(),
                                    initial_indent=indent,
                                    subsequent_indent=indent))
 
 
-def _print_changes(doc):
+def _clip(text, room):
+    """One line of `text`: its first sentence, cut at a word if it still will not
+    fit. `--full` and the page carry the whole definition."""
+    first = re.split(r"(?<=[.!?])\s", str(text or "").strip(), maxsplit=1)[0]
+    if len(first) <= room:
+        return first
+    return first[:max(1, room - 1)].rsplit(" ", 1)[0] + "\u2026"
+
+
+# ── the profile: how a row reads, on the terminal and in `try` ────────────────
+
+#: THE ROWS GROUPED BY WHAT THEY MEAN AT A TABLE. Display only, and mirrored in
+#: `viz/js/branch-view.js` (a test holds the two equal). A row named nowhere here
+#: falls into "Other" rather than vanishing, so a new metric cannot drop off a
+#: report by being forgotten.
+ROW_GROUPS = (
+    ("Speed", ("killed by T6", "killed by T10", "damage @T10")),
+    ("Board", ("board power @T6", "hoard @T6", "hoard @T10")),
+    ("Mana and hands", ("stall, 2 in a row", "missed drop by T5", "mulliganed",
+                        "hand can act by T3",
+                        "kept hand passes the pilot's keep rule")),
+    ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
+                           "finisher wheel by T8", "wheels cast by T10",
+                           "dead wheels in hand @T5")),
+)
+
+ROW_KEY = ("No call: smaller than this run can resolve, which is not the same as no "
+           "change. Pts: games per 100. The range is the 95% interval on the "
+           "difference, Holm-corrected across the rows for the read.")
+
+READ_WORD = {"better": "Better", "worse": "Worse", "noise": "No call"}
+
+
+def grouped_rows(table):
+    """`[(group, rows)]` in reading order, empty groups dropped, unknowns in Other."""
+    placed, out = set(), []
+    by_name = {r["measure"]: r for r in table}
+    for title, names in ROW_GROUPS:
+        rows = [by_name[n] for n in names if n in by_name]
+        placed.update(r["measure"] for r in rows)
+        if rows:
+            out.append((title, rows))
+    rest = [r for r in table if r["measure"] not in placed]
+    if rest:
+        out.append(("Other", rest))
+    return out
+
+
+def _fixed(v, dp, plus=False):
+    """`v` to `dp` places, rounding exactly as JavaScript's `toFixed` does (half away
+    from zero on the float's exact value). Python's format rounds half to even, so a
+    tie read 0.2 here and 0.3 on the page: one figure, two surfaces, two answers."""
+    from decimal import ROUND_HALF_UP, Decimal
+    d = Decimal(float(v) + 0.0).quantize(Decimal(1).scaleb(-dp), rounding=ROUND_HALF_UP)
+    return f"{d:+f}" if plus else f"{d:f}"
+
+
+def format_row(r):
+    """One row's figures as strings. A rate reads as a percentage and its change in
+    points, a mean to the precision its size earns. Never recomputed: the verdict
+    is the artifact's, and only the display moves."""
+    lo_hi = r.get("ci95_diff")
+    mde = r.get("mde")
+    rate = r.get("unit") == "rate"
+    scale = 100 if rate else 1
+    top = max(abs(r["champion"]), abs(r["branch"]))
+    dp = 1 if rate else 3 if top < 1 else 2 if top < 10 else 1
+
+    def fig(v):
+        return _fixed(v * scale, dp) + ("%" if rate else "")
+
+    def sign(v):
+        return _fixed(v * scale, dp, plus=True)
+    change = sign(r["delta"]) + (" pts" if rate else "")
+    spread = f"[{sign(lo_hi[0])}, {sign(lo_hi[1])}]" if lo_hi else ""
+    floor = (_fixed(mde * scale, dp) + (" pts" if rate else "")) if mde is not None else ""
+    return {"now": fig(r["champion"]), "branch": fig(r["branch"]), "change": change,
+            "range": spread, "read": READ_WORD.get(r["verdict"], r["verdict"]),
+            "resolves": floor}
+
+
+def profile_count(table):
+    """"7 better, 0 worse, 5 no call": the shape of the profile, in the artifact's
+    own verdicts, and deliberately not a score."""
+    n = {v: sum(1 for r in table if r["verdict"] == v) for v in READ_WORD}
+    return f"{n['better']} better, {n['worse']} worse, {n['noise']} no call"
+
+
+def profile_lines(table, indent="  "):
+    """The table: one line per row, grouped, with the interval beside its change."""
+    rows = [(r, format_row(r)) for r in table]
+    if not rows:
+        return []
+    nm = max(len(r["measure"]) for r, _ in rows)
+    ab = max(max(len(f["now"]) + len(f["branch"]) + 4 for _, f in rows), 13)
+    ch = max(len(f["change"]) for _, f in rows)
+    rg = max([len(f["range"]) for _, f in rows] + [9])
+    pad = indent + "  "
+    out = [f"{pad}{'':{nm}}  {'now -> branch':>{ab}}  {'change':>{ch}}  "
+           f"{'95% range':>{rg}}  read"]
+    for title, group in grouped_rows(table):
+        out.append(f"{indent}{title.upper()}")
+        for r in group:
+            f = format_row(r)
+            call = f["read"]
+            if r["verdict"] == "noise" and f["resolves"]:
+                call += f" (resolves {f['resolves']})"
+            out.append(f"{pad}{r['measure']:{nm}}  "
+                       f"{f['now'] + ' -> ' + f['branch']:>{ab}}  {f['change']:>{ch}}  "
+                       f"{f['range']:>{rg}}  {call}")
+    return out
+
+
+def _is_auto_why(why):
+    """`try --stage` writes its own screening line as a swap's reason. It repeats on
+    every swap of a run and argues nothing, so it collapses to one line."""
+    return str(why or "").startswith("try: ")
+
+
+def _copies_label(r):
+    n = r.get("copies") or 1
+    return r["name"] + (f" x{n}" if n > 1 else "")
+
+
+def _print_columns(left, right, room):
+    """Out and in, side by side. They are two lists, not a pairing: order is
+    alphabetical, because a pile of cards is searched by name."""
+    each = max(20, (room - 8) // 2)
+    for i in range(max(len(left), len(right))):
+        x = left[i] if i < len(left) else ""
+        y = right[i] if i < len(right) else ""
+        print(f"      {('- ' + x) if x else '':{each}} {('+ ' + y) if y else ''}".rstrip())
+
+
+def _print_diff(ch, full):
+    """The whole change from `changes.diff`: non-lands then lands, each alphabetical."""
+    d = ch["diff"]
+    room = _width()
+    for title, kind in (("NON-LANDS", "spell"), ("LANDS", "land")):
+        outs = [_copies_label(r) for r in d.get("out") or [] if r.get("kind") == kind]
+        ins = [_copies_label(r) for r in d.get("in") or [] if r.get("kind") == kind]
+        for r in d.get("changed") or []:
+            if r.get("kind") == kind:
+                (outs if r["delta"] < 0 else ins).append(
+                    f"{r['name']} {r['from']} -> {r['to']}")
+        if outs or ins:
+            print(f"\n    {title}")
+            _print_columns(sorted(outs), sorted(ins), room)
+    # THE REASONS. A person's goes under the list; `try`'s own screening line,
+    # which repeats on every swap, collapses to a count unless `--full` asks.
+    rows = [r for r in d.get("in") or [] if r.get("why")]
+    auto = [r for r in rows if _is_auto_why(r["why"])]
+    human = [r for r in rows if not _is_auto_why(r["why"])]
+    if human:
+        print("\n    WHY")
+        said = {}
+        for r in sorted(human, key=lambda x: x["name"]):
+            said.setdefault(r["why"], []).append(r["name"])
+        for why, names in said.items():
+            print(_wrap(f"{', '.join(names)}: {why}", indent="      "))
+    if auto and not full:
+        print(_wrap(f"{len(auto)} add(s) carry only the automatic note from `try`; "
+                    "--full prints them.", indent="    "))
+    elif auto:
+        print("\n    `try`'s automatic notes")
+        for r in sorted(auto, key=lambda x: x["name"]):
+            print(_wrap(f"{r['name']}: {r['why']}", indent="      "))
+
+
+def _print_changes(doc, full=True):
     """The change section, apart from `_print` so a test can state the row mix
     that exposed the header bug without standing up a whole report."""
     ch = doc.get("changes") or {}
@@ -2171,6 +2357,13 @@ def _print_changes(doc):
                 head += "  (" + ", ".join(aside) + ")"
         print(f"\n  THE CHANGE   {head}"
               + (f", branch opened {ch['opened']}" if ch.get("opened") else ""))
+        if ch.get("diff"):
+            dc = ch["diff"].get("counts") or {}
+            if dc.get("out_copies") is not None:
+                print(f"    {dc['out_copies']} cards out, {dc['in_copies']} in; "
+                      f"{ch['diff'].get('base_size')} -> {ch['diff'].get('size')} in the deck")
+            _print_diff(ch, full)
+            return
         cuts = []
         for title, rows in (("spells", ch.get("spells") or []),
                             ("lands", ch.get("lands") or [])):
@@ -2184,7 +2377,7 @@ def _print_changes(doc):
             for r in swaps:
                 print(f"      - {str(r['out'] or '')[:30]:32} + {str(r['in'])[:30]}"
                       if r["out"] else f"      {'':34} + {str(r['in'])[:30]}")
-                if r.get("why"):
+                if r.get("why") and (full or not _is_auto_why(r["why"])):
                     print(_wrap(r["why"], indent="          "))
         if cuts:
             print(f"\n    CUT, NOTHING IN ITS SLOT  ({len(cuts)})")
@@ -2202,7 +2395,7 @@ def _print_changes(doc):
                         "change, unpaired.", indent="      "))
             for r in cuts:
                 print(f"      - {str(r['out'])[:30]}")
-                if r.get("why"):
+                if r.get("why") and (full or not _is_auto_why(r["why"])):
                     print(_wrap(r["why"], indent="          "))
 
 
@@ -2268,7 +2461,7 @@ def _print_real_table(doc):
               f"{sum(r['games'] for r in rows)} game(s) on "
               f"{_and(sorted({r['played'] for r in rows}))}")
     if not f.get("available"):
-        print(f"    {f['why']}")
+        print(_wrap(f["why"], indent="    "))
     else:
         print(f"    at {f.get('pod', '?')} — {f.get('basis', '')}")
         _cpf = f.get("cast_proofs")
@@ -2368,139 +2561,160 @@ def _print_real_table(doc):
             print(f"    {axis:38} {ep['champion']['value']:>8} -> {ep['branch']['value']:>8}"
                   f"  {ep['delta']:+.3f}  CI [{ep['ci95'][0]:+.3f}, {ep['ci95'][1]:+.3f}]"
                   f"  MDE {ep['mde']}{'  (conditional)' if ep.get('conditional') else ''}")
+            spec = ((doc.get("definitions") or {}).get("forge_endpoints") or {}).get(axis)
+            if spec and spec.get("what"):
+                print(f"      {_clip(spec['what'], _width() - 6)}")
 
 
-def _print(doc):
-    h = doc["harness"]
-    print(f"\nNET CHANGE — {doc['slug']} vs branch {doc['branch']}"
-          f"   ({h['iterations']:,} games each, seed {h['seed']})")
-
-    rec = doc.get("recommendation") or {}
-
-    # ---------------------------------------------------------- the verdict
-    if rec:
-        print(f"\n  ==> {rec['state'].upper()}")
-        print(_wrap(rec["because"], indent="      "))
-        for n in rec.get("notes") or []:
-            print(_wrap(n, indent="      "))
-
-    # ---------------------------------------------------------- the change
-    _print_changes(doc)
-
-    # ---------------------------------------------------------- objective
-    o, g = doc.get("objective"), doc.get("objective_grade")
-    print("\n  THE OBJECTIVE   the one thing here that can FAIL")
+def _guard_line(doc):
+    """The guard, named as what it is: one optional threshold, not the headline.
+    `objective_grade.state` is the artifact's word; this only labels it."""
+    o, g = doc.get("objective"), doc.get("objective_grade") or {}
     if not o:
-        print("    NONE — this branch predates the requirement and cannot be graded.")
+        return "Guard: none set."
+    label = {"met": "Guard met", "not met": "Guard not met",
+             "not resolvable": "Guard not resolved",
+             "not measured": "Guard not measured"}.get(g.get("state"), "Guard")
+    cp = (doc.get("forge") or {}).get("cast_proofs") or {}
+    floor = ""
+    if cp.get("floor"):
+        floor = (f" A floor: {len(cp['held'])} add(s) held"
+                 + (f", {len(cp['late'])} cast late" if cp.get("late") else "") + ".")
+    read = g.get("reading")
+    read = f", read {read}" if read is not None else ""
+    return f"{label}: {o['axis']} {o['op']} {o['value']}{read}.{floor}"
+
+
+def _base_label(doc):
+    """"v1.0.0" from the branch's own record, or None. A label, never a gate."""
+    try:
+        meta = load_json(deck_dir(doc.get("slug"), doc.get("branch")) / "branch.json")
+    except (FileNotFoundError, TypeError, ValueError, OSError):
+        return None
+    v = (meta or {}).get("base_version")
+    if v is None:
+        return None
+    return f"V{v}" if str(v).isdigit() else str(v)
+
+
+def _rows_word(doc, text):
+    """`DERIVED` says "the sixteen rows" in every stored report, and a report has
+    10 to 16. The stored sentence stays; the print says how many this one has."""
+    return str(text).replace("The sixteen rows", f"The {len(doc['table'])} rows")
+
+
+def _print_profile(doc):
+    rec = doc.get("recommendation") or {}
+    print(f"\n  THE PROFILE   {profile_count(doc['table'])}")
+    print()
+    for line in profile_lines(doc["table"]):
+        print(line)
+    print()
+    print(_wrap(ROW_KEY, indent="  "))
+    warn = rec.get("forge_warning")
+    if warn:
+        print()
+        print(_wrap(warn, indent="  !! "))
+    print()
+    print(_wrap(_guard_line(doc), indent="  "))
+    o, g = doc.get("objective"), doc.get("objective_grade") or {}
+    if g.get("why"):
+        print(_wrap(g["why"], indent="    "))
+    if o and o.get("why"):
+        print(_wrap("Written when the branch was opened: " + o["why"], indent="    "))
+    if rec:
+        because = str(rec.get("because") or "")
+        if warn:
+            because = because.replace(warn, "").strip()
+        print(_wrap(because if not o else f"The rule's word is \"{rec['state']}\": {because}",
+                    indent="  "))
+        for n in rec.get("notes") or []:
+            print(_wrap(n, indent="  "))
+
+
+def _print_blind(doc, full=False):
+    print("\n  WHAT THIS CANNOT SEE")
+    spots = doc.get("blind_spots") or []
+    if spots:
+        for b in spots:
+            print(_wrap(f"{', '.join(b.get('cards') or [])}: {b.get('why', '')}", indent="    "))
+        why = next((r.get("why_it_matters") for r in
+                    (doc.get("recommendation") or {}).get("risk") or []
+                    if r.get("kind") == "unmeasured"), None)
+        if why:
+            print(_wrap(f"So {why}.", indent="    "))
     else:
-        print(f"    {o['axis']} {o['op']} {o['value']}")
-        state = (g or {}).get("state", "?").upper()
-        _cpf = (doc.get("forge") or {}).get("cast_proofs") or {}
-        floor = (f"   FLOOR ({len(_cpf['held'])} add(s) held" + (f", {len(_cpf['late'])} cast late" if _cpf.get("late") else "") + ")"
-                 if _cpf.get("floor") else "")
-        print(f"    RESULT   {(g or {}).get('reading', '—')}   ->   {state}{floor}")
-        if (g or {}).get("why"):
-            print(_wrap(g["why"], indent="             "))
-        if o.get("why"):
-            print(_wrap("Written when the branch was opened: " + o["why"],
-                        indent="    "))
+        print("    No card in this change is flagged.")
+    for line in doc.get("limits") or []:
+        if full:
+            print(_wrap(line, indent="  · ").replace("\n  · ", "\n    "))
+        else:
+            print(f"  · {_clip(line, _width() - 4)}")
 
-    # ---------------------------------------------------------- the table
-    print("\n  MEASURED   10,000 goldfish games per list, same seed, same harness")
-    dz = doc.get("design") or {}
-    if dz:
-        print(f"    {dz.get('exploratory_rows')} exploratory rows, Holm-corrected; "
-              f"the primary is {dz.get('primary') or 'NOT DECLARED (no objective)'}")
-    print(f"    {'measure':20} {'v1.0.1':>9} {'branch':>9} {'delta':>9}  verdict")
-    for r in doc["table"]:
-        print(f"    {r['measure']:20} {r['champion']:>9.3f} {r['branch']:>9.3f} "
-              f"{r['delta']:>+9.3f}  {r['verdict']}"
-              + (f" (MDE {r['mde']:.3f})" if r["verdict"] == "noise" else ""))
-        print(f"      {r['reads_as']}")
 
-    # ---------------------------------------------------------- definitions
-    print("\n  WHAT THESE MEASURE, AND WHY THEY ARE ON THE PAGE")
-    for r in doc["table"]:
-        if not r.get("what"):
-            continue
-        print(f"\n    {r['measure']}   ({r['unit']}, {r['better_is']} is better"
-              + (f"; {r['scale']}" if r.get("scale") else "") + ")")
-        print(_wrap(r["what"]))
-        print(_wrap("WHY: " + str(r["why_we_care"])))
-    for d in (doc.get("definitions") or {}).get("derived") or []:
-        print(f"\n    {d['name']}")
-        print(_wrap(d["what"]))
-        print(_wrap("WHY: " + d["why"]))
-
-    # ---------------------------------------------------------- mana
+def _print_mana(doc, full):
     m = doc.get("mana") or {}
-    print("\n  THE MANA — deterministic, and the nine rows above cannot see it")
+    print(f"\n  THE MANA   deterministic; for a land swap this is the evidence, "
+          f"the {len(doc['table'])} rows cannot rank lands")
     if not m.get("available"):
         print(f"    {m.get('why', 'not measured')}")
-    else:
-        print(f"    {'':2} {'target':>13} {'have':>13} {'gap':>13}   on curve")
-        for r in m["colours"]:
-            t, hv, gp = r["target"], r["have"], r["gap"]
-            oc = m["on_curve"][r["colour"]]
-            arrow = "" if gp[1] == gp[0] else ("  " + f"{r['delta']:+d}")
-            print(f"    {r['colour']:2} {t[0]:>6} -> {t[1]:<5} {hv[0]:>6} -> {hv[1]:<5} "
-                  f"{gp[0]:>+6} -> {gp[1]:<+5}  "
-                  f"{(oc[0] or 0):.3f} -> {(oc[1] or 0):.3f}{arrow}")
-        print(f"    lands {m['lands'][0]} -> {m['lands'][1]} "
-              f"({m['enters_tapped_always'][0]} -> {m['enters_tapped_always'][1]} "
-              f"always tapped)")
-        print(_wrap("`on curve` is the probability the base casts a spell of "
-                    "that colour on the turn Karsten's table sizes it for. "
-                    "The GAP is the figure, not the source count: a branch "
-                    "that changes its spells moves the target underneath the "
-                    "base.", indent="    "))
-        la, lb = (m.get("life") or [{}, {}])[0], (m.get("life") or [{}, {}])[1]
-        if la or lb:
-            def _life(key):
-                x, y = la.get(key), lb.get(key)
-                if x is None or y is None:
-                    return "     — not measured"
-                return f"{x:>6} -> {y:<5}{'' if y == x else f'  {y - x:+d}'}"
-            print("\n    WHAT THE BASE CHARGES IN LIFE")
-            print(f"      every tap-cycle   {_life('recurring_per_tap_cycle')}")
-            print(f"      once, on entry    {_life('one_time_on_entry')}")
-            print(_wrap("Two figures, never summed: a painland charges again "
-                        "on EVERY activation and a fetch or a shock charges "
-                        "ONCE, so a list that trades the first for the second "
-                        "pays less the longer the game runs. Nothing else on "
-                        "this page can see it — the goldfish models no life, "
-                        "so a base that stops charging 3 a turn reads "
-                        "identically to one that does not.", indent="      "))
+        return
+    def pct(v):
+        return "—" if v is None else f"{v * 100:.0f}%"
+    print(f"    {'':2} {'sources':>9} {'target':>9} {'gap':>11}   on curve")
+    for r in m["colours"]:
+        t, hv, gp = r["target"], r["have"], r["gap"]
+        # A COLOUR THE DECK NEVER TOUCHES IS NOT A ROW: a Naya list has no blue.
+        if not any(t) and not any(hv):
+            continue
+        oc = m["on_curve"].get(r["colour"]) or [None, None]
+        print(f"    {r['colour']:2} {str(hv[0]) + ' -> ' + str(hv[1]):>9} "
+              f"{str(t[0]) + ' -> ' + str(t[1]):>9} "
+              f"{f'{gp[0]:+d} -> {gp[1]:+d}':>11}   {pct(oc[0])} -> {pct(oc[1])}")
+    print(f"    lands {m['lands'][0]} -> {m['lands'][1]}, "
+          f"always tapped {m['enters_tapped_always'][0]} -> {m['enters_tapped_always'][1]}")
+    la, lb = (m.get("life") or [{}, {}])[0], (m.get("life") or [{}, {}])[1]
+    def _life(key):
+        x, y = la.get(key), lb.get(key)
+        return "not measured" if x is None or y is None else f"{x} -> {y}"
+    if la or lb:
+        print(f"    life charged: every tap-cycle {_life('recurring_per_tap_cycle')}, "
+              f"once on entry {_life('one_time_on_entry')}")
+    print(_wrap("On curve: the chance the base casts a spell of that colour on the turn "
+                "Karsten's table sizes it for. The gap is the figure, not the source count.",
+                indent="    "))
+    if full:
+        if m.get("note"):
+            print(_wrap(m["note"], indent="    "))
+        print(_wrap("Two life figures, never summed: a painland charges again on EVERY "
+                    "activation and a fetch or a shock charges ONCE, so a list that "
+                    "trades the first for the second pays less the longer the game runs. "
+                    "The goldfish models no life, so nothing else here can see it.",
+                    indent="    "))
 
-    # ---------------------------------------------------------- real table
-    _print_real_table(doc)
 
-    # ---------------------------------------------------------- the ledger
-    print("\n  THE REWARD")
-    for r in rec.get("reward") or []:
-        print(f"    + {r['measure']}")
-        print(_wrap(r["reads_as"]))
-    if not rec.get("reward"):
-        print("    nothing beat its own MDE.")
-
-    print("\n  THE RISK")
-    for r in rec.get("risk") or []:
-        print(f"    [{r['kind']}] {r['what']}")
-        if r.get("detail"):
-            print(_wrap(r["detail"]))
-        if r.get("cards"):
-            print(_wrap("cards: " + ", ".join(r["cards"])))
-
+def _print_cost(doc, full):
     c = doc["bill"]["counts"]
+    rec = doc.get("recommendation") or {}
     cst = rec.get("cost") or {}
-    print("\n  THE COST   " + "   ".join(f"{k}={v}" for k, v in c.items()))
+    words = (("buy", "to buy"), ("box", "in a box"), ("elsewhere", "in other decks"),
+             ("free", "free"), ("in_deck", "already in the deck"))
+    known = [f"{c[k]} {w}" for k, w in words if k in c]
+    known += [f"{v} {k}" for k, v in c.items() if k not in dict(words)]
+    print("\n  THE COST   " + ", ".join(known))
     print(_wrap(cst.get("reads_as", ""), indent="    "))
-    _priced = priced_bill_line(doc)
-    if _priced:
-        print(_wrap(_priced, indent="    "))
+    priced = priced_bill_line(doc)
+    if priced:
+        print(_wrap(priced, indent="    "))
     if cst.get("buy_cards"):
-        print(f"\n    BUY ({len(cst['buy_cards'])})")
-        print(_wrap(", ".join(cst["buy_cards"]), indent="      "))
+        print(_wrap(f"To buy ({len(cst['buy_cards'])}): " + ", ".join(cst["buy_cards"]),
+                    indent="    "))
+    if cst.get("mergeable") is False:
+        print(_wrap("Not mergeable yet: `deck-branch merge` refuses while any card is "
+                    "unsourced. That is a question about cardboard, not about whether "
+                    "the branch is right.", indent="    "))
+    if not full:
+        return
     if cst.get("must_unsleeve"):
         print(f"\n    UNSLEEVE ({len(cst['must_unsleeve'])}) — these come out "
               f"of a deck that is still together")
@@ -2511,14 +2725,71 @@ def _print(doc):
               f"broken-down deck, so nothing has to be disturbed")
         for r in cst["free_to_raid"]:
             print(f"      {r['name'][:34]:36} {', '.join(r['decks'])}")
-    if cst.get("mergeable") is False:
-        print(_wrap("NOT MERGEABLE YET — `deck-branch merge` refuses while any "
-                    "card is unsourced. That is a question about cardboard, "
-                    "not about whether the branch is right.", indent="    "))
 
-    for line in doc["limits"]:
-        print()
-        print(_wrap(line, indent="  · ").replace("\n  · ", "\n    "))
+
+def _print_definitions(doc, full):
+    if not full:
+        print("\n  WHAT THE ROWS MEASURE   --full adds why each one matters")
+        room = _width() - 4
+        for r in doc["table"]:
+            if r.get("what"):
+                print(f"    {r['measure']}: "
+                      + _clip(r["what"], max(20, room - len(r["measure"]) - 2)))
+        return
+    print("\n  WHAT THESE MEASURE, AND WHY THEY ARE ON THE PAGE")
+    for r in doc["table"]:
+        if not r.get("what"):
+            continue
+        print(f"\n    {r['measure']}   ({r['unit']}, {r['better_is']} is better"
+              + (f"; {r['scale']}" if r.get("scale") else "") + ")")
+        print(_wrap(r.get("reads_as")))
+        print(_wrap(r["what"]))
+        print(_wrap("WHY: " + str(r["why_we_care"])))
+    for d in (doc.get("definitions") or {}).get("derived") or []:
+        print(f"\n    {d['name']}")
+        print(_wrap(_rows_word(doc, d["what"])))
+        print(_wrap("WHY: " + _rows_word(doc, d["why"])))
+
+
+def _print_ledger(doc):
+    """Reward and risk as `recommend` stated them: `--full` only, because each line
+    is a row, a blind spot or a limit already printed above."""
+    rec = doc.get("recommendation") or {}
+    print("\n  THE REWARD")
+    for r in rec.get("reward") or []:
+        print(f"    + {r['measure']}")
+        print(_wrap(r["reads_as"]))
+    if not rec.get("reward"):
+        print("    nothing beat its own MDE.")
+    print("\n  THE RISK")
+    for r in rec.get("risk") or []:
+        print(f"    [{r['kind']}] {r['what']}")
+        if r.get("detail"):
+            print(_wrap(r["detail"]))
+        if r.get("cards"):
+            print(_wrap("cards: " + ", ".join(r["cards"])))
+
+
+def _print(doc, full=False):
+    """The report, in the order a reader decides: the profile, what it cannot see,
+    the mana, the cost, then the cards and the definitions. No single word sits on
+    top, because the bench judges the whole profile (`no-single-metric`); the rule's
+    word is still printed, under the table it summarises. `--full` adds the long
+    definitions, every automatic note, the ledger and where each card is."""
+    h = doc["harness"]
+    base = _base_label(doc)
+    print(f"\nNET CHANGE   {doc['slug']} @ {doc['branch']}")
+    print(f"  {'against ' + base + ', ' if base else ''}"
+          f"{h['iterations']:,} goldfish games per list, same seeds (seed {h['seed']})")
+    _print_profile(doc)
+    _print_blind(doc, full)
+    _print_mana(doc, full)
+    _print_cost(doc, full)
+    _print_real_table(doc)
+    _print_changes(doc, full)
+    _print_definitions(doc, full)
+    if full:
+        _print_ledger(doc)
 
 
 if __name__ == "__main__":
