@@ -431,6 +431,8 @@ def test_every_deck_with_a_decklist_has_a_tracked_version_list():
     assert len(want) >= 5
 
 
+@pytest.mark.skipif(not __import__("manamap.config", fromlist=["x"]).FLEET_ANALYTICS_PATH.exists(),
+                    reason="no tracked fleet file")  # also what makes this the regression tier
 def test_the_fleet_file_matches_a_fresh_run():
     """`data/fleet/analytics.json` quotes every deck's list sha and prices, so editing
     ANY deck moves it. The deck checks passed teach-red V2 without it, and CI's
