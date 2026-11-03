@@ -8748,6 +8748,9 @@ def test_sorting_and_filtering_re_request_no_card_art_at_all(browser, viz_server
         page.wait_for_function("() => document.querySelectorAll('.cur-tile img').length >= 6"
                                " && document.querySelectorAll('.cur-tile img[data-src]')"
                                "        .length === 0", timeout=BOOT_TIMEOUT_MS)
+        # The marker clears when the `src` is SET, and the request reaches this
+        # route a moment later: under load the count read 5 of 6 (2026-11-02).
+        idle(page)
         drained = len(seen)
         assert drained >= 6, f"the queue never ran: {drained} requests for 6 cards"
 
