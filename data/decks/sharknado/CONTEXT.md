@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=v2.2.0 sha=8df06ee13607 at=2026-11-02 -->
+<!-- ctx:written-for version=v2.2.0 sha=8df06ee13607 at=2026-11-04 -->
 
 
 <!-- ctx:gen summary -->
@@ -199,9 +199,9 @@ The goldfish does not model the modal plan, the equipment, or interaction, so tr
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **5 game(s):** 0 won, 3 lost · 2026-10-06 to 2026-10-29
-- **How games ended:** raced 3, combo 1, won 1
-- **Not yet read:** 005
+- **6 game(s):** 0 won, 4 lost · 2026-10-06 to 2026-11-03
+- **How games ended:** raced 3, combo 2, won 1
+- **Not yet read:** 005, 006
 <!-- /ctx:gen record -->
 
 **001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
@@ -266,11 +266,23 @@ His words: "it's there... some piloting stuff and maybe some tuning... it's all 
 
 Read with 002 and 004: the hand he keeps is the doubt in three games out of five. Games 002, 004 and 005 all describe a keep heavy on wheels or lands with little to cast. The commanders-first plan needs a hand that gets a commander down.
 
+**006 (2026-11-03, Oliver's five-player pod, a loss).** The table stepped up to bracket 4. Sean was on Sharknado in game 2 and lost to Ryan's Teval going infinite around turn 8 or 9. (Heliod won game 1 of the night; that is the Heliod deck's story.) The deck sha on the log matches the list on disk, so this is the sleeved v2.2.0.
+
+- **Everything but the wheel.** He had [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) with trample, [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation) tripling damage, [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) with 36 Treasure banked, [Mystic Remora](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Remora) and [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight) drawing, and a tutor in hand aimed at [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon). The planned line was to tutor the Typhoon, cycle it with the Treasure for a big flying shark, give it trample off Brallin and triple it. His words: one wheel would have closed it from any seat.
+- **The dig.** He went 9 or 10 cards deep off Remora and Teferi looking for any wheel, ideally an instant-speed one for another player's turn. None came. Afterwards he flipped through the library and the first wheel sat deep.
+- **Defence was fine.** The deck stayed alive through several wraths and wipes.
+- **[Embercleave](https://manamap.seanmacrae.com/viz/index.html?cards=Embercleave) keeps showing up early and getting discarded to the loot engine.** His suspicion, as a suspicion: equipment and artifact multipliers may be too slow for this deck's tempo, or there are too many multipliers per wheel.
+- **Forced discard can be a cost.** He says the forced-discard half of the draw engine is sometimes a cost, not a benefit, and that optional discard would fit the hand better. This echoes 005 ("discard without draw is awkward").
+
+His own pattern line, quoted: "Second straight log with the same note: payoffs lag the engine." Checked against the earlier log. In 004 he said the engine ran well and no wheel came. In 005 he said he gets distracted by small creatures and "stuck in the sequencing", the commanders arrive too slowly, and he needs "that card draw" on the other end of a discard. Neither 004 nor 005 put it in the words 006 does, but both describe an engine that runs and a finisher that does not show. 006 is where he names it as one pattern.
+
+He is explicitly cautious: no change to the list off one data point. About a third of the deck is still proxies and he is holding off buying until the list feels final. His research requests from this night are held as hypotheses, listed under Open questions, until two or three more games are logged. [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) and [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako) are keeps and stay out of any of it.
+
 ## Change history
 <!-- ctx:gen history -->
 - **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
   - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
-  - played 2: 0W 2L
+  - played 3: 0W 3L
 - **v2.1.1 · V11** (2026-10-27) — in: Adarkar Wastes, Sea of Clouds; out: Mystic Monastery, Opal Palace. _powertune-v1 merged: a land pass (Sea of Clouds, Adarkar Wastes)_
   - merge `powertune-v1`: objective kill_by_6 read **not met** — the pilot's word 2026-10-27: merge the land pass for now
 - **v2.1.0 · V10** (2026-10-26) — in: Chaos Warp, Consecrated Sphinx, Deflecting Swat, Faerie Mastermind, Get Lost, Ghostly Pilferer, Grand Abolisher, Hallowed Fountain …; out: Alhammarret's Archive, Campfire, Champion's Helm, Chasm Skulker, Collector's Vault, Ferrous Lake, Fireshrieker, Genji Glove …. _answers-v1 merged: interaction and standing draw; Jeska's Will out for Magmakin Artillerist (three Game Changers, bracket 3)_
@@ -317,7 +329,15 @@ Cuts worth watching: Swiftfoot Boots carried the protection in game 001, and Lib
 - 5 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-The list has had five games, two of them on v2.2.0 (004 and 005, both losses to faster decks), so these are things to test, not swaps.
+Games 001 to 006 are logged, with 004, 005 and 006 on v2.2.0 (all losses; 004 and 005 to faster decks, 006 to an infinite combo at a bracket-4 table). These are things to test, not swaps.
+
+**Held until two or three more games are logged (006).** These are Sean's research requests from 2026-11-03. They are hypotheses he wants answered, not recommendations. No swap off one game, and buying is on hold.
+- Wheel count and timing: how many wheels are in the list, at what mana values, and when the first one typically shows next to when the engine pieces land? Expected: the engine lands before the first wheel, which would match what he saw. The Numbers section has the wheel-drawn line; the expected turn of the first wheel is not in a block and is missing.
+- Tutor lines: which tutors in the 99 can find a wheel, and what to fetch when (multipliers but no wheel; a wheel but no commander)? Expected: a short map he can use at the table. [Idyllic Tutor](https://manamap.seanmacrae.com/viz/index.html?cards=Idyllic+Tutor) and [Stoneforge Mystic](https://manamap.seanmacrae.com/viz/index.html?cards=Stoneforge+Mystic) find enchantments and equipment, so this may turn up a gap.
+- Wheels on legs: are there repeatable wheels (creature, artifact, enchantment) that stay on the table, so one draw becomes every turn? Expected: fewer games where the finisher never shows. A card-search can list them.
+- Modal draw: are there draw effects with optional discard to replace some forced-discard loot pieces? Expected: a fuller hand when he wants the effect but not the discard (also 005).
+- Multiplier density: does [Embercleave](https://manamap.seanmacrae.com/viz/index.html?cards=Embercleave) earn its slot at this deck's tempo, and are there more multipliers than wheels to feed them? Expected: if it is mostly discarded or cast with no commander, it is slow here. This one touches a card he has been discarding, so judge it by play, not by one game.
+
 - Interaction: with removal, counters and Grand Abolisher added, does the commander survive to swing more often on a real table? Needs games on v2.1.0, with a note of what was aimed at it.
 - Slow start (003; 004 is a different shape of stall): Sean suspects either sequencing or the draw. Does the first commander land on turn four or five more often than before, and what was in hand when it did not? The deploy-turn read for the new list is missing and needs a game or two with the opening hand noted.
 - Modal choice: does Shabraz-first, with Brallin as the pivot when Torbran or Gratuitous Violence arrives, put 21 on one defender more often than holding both back?
@@ -347,3 +367,4 @@ The list has had five games, two of them on v2.2.0 (004 and 005, both losses to 
 - 2026-10-27 · Keeper · deck change: sharks-v1 merged as v2.2.0 (Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass)
 - 2026-10-27 · Keeper · pilot log 004: first v2.2.0 game, raced by Alex's warp deck; no wheel, land-heavy keep
 - 2026-11-02 · Keeper · pilot log 005 (2026-10-29): keep, sequencing and slow commanders; piloting first, maybe tuning
+- 2026-11-04 · Keeper · pilot log 006: lost to Teval with the board assembled and no wheel; research held as hypotheses

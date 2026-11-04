@@ -2,7 +2,7 @@
 
 The table's read of this seat, from the pilot's games. The decklist beside this file is
 EDHREC's average Teval deck, a stand-in for Ryan's real list (a modified precon, per the
-pilot). The pilot calls it Ryan's best deck. (The 2026-10-27 log spells it "T'Vol".)
+pilot). The pilot calls it Ryan's best deck. (Logs of 2026-10-27 and 2026-11-03 spell it "T'Vol"; the pilot corrected the name 2026-11-04.)
 
 ## How it wins
 
@@ -31,6 +31,7 @@ pilot). The pilot calls it Ryan's best deck. (The 2026-10-27 log spells it "T'Vo
 
 ## Games
 
+- 2026-11-03, Oliver's five-player pod: Ryan "assembled his infinite combo" and won game 2 around turn 8-9 against Sharknado (sharknado 006). The log does not name the pieces, so this may or may not be the Altar loop above.
 - 2026-10-27, Ryan's house: Sean won with Goblin Storm (goblin-storm 003) after killing
   the Altar; Alex then killed Ryan.
 - 2026-09-29, Oliver's: at the table for edgar-vampires 006.

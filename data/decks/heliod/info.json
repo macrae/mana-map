@@ -4051,20 +4051,24 @@
     "release": "v1.4.0"
   },
   "record": {
-    "games": 2,
-    "win": 0,
+    "games": 3,
+    "win": 1,
     "loss": 2,
     "draw": 0,
-    "last_played": "2026-09-08",
+    "last_played": "2026-11-03",
     "first_played": "2026-08-28",
-    "undebriefed": [],
+    "undebriefed": [
+      "003"
+    ],
     "causes": {
       "001": "removal",
-      "002": "combo"
+      "002": "combo",
+      "003": "won"
     },
     "cause_counts": {
       "combo": 1,
-      "removal": 1
+      "removal": 1,
+      "won": 1
     },
     "feel": {},
     "feel_n": 0,
@@ -4685,6 +4689,7 @@
     ]
   },
   "next": [
+    "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"

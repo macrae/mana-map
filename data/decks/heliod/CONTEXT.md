@@ -1,6 +1,6 @@
 # Heliod, the Radiant Dawn // Heliod, the Warped Eclipse — Deck Context
 
-<!-- ctx:written-for version=v1.4.0 sha=f7e21dc6a8bb at=2026-10-07 -->
+<!-- ctx:written-for version=v1.4.0 sha=f7e21dc6a8bb at=2026-11-04 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Heliod, the Radiant Dawn // Heliod, the Warped Eclipse](https://manamap.seanmacrae.com/viz/index.html?cards=Heliod%2C+the+Radiant+Dawn+%2F%2F+Heliod%2C+the+Warped+Eclipse)
@@ -14,7 +14,7 @@
 
 Heliod is a blue-white control deck that makes the whole table draw, then bills the table for it. Counterspells keep the stack quiet, the draw-punishers turn opponents' extra cards into our cards and treasure, and Heliod, the Warped Eclipse makes it all cheaper and gives us instant speed. It wins by casting [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) twice, and the second cast is the whole plan.
 
-Nobody is in a hurry here. The commander does not have to come down early, and the pilot's own lesson from both games is to live long enough to set up the win. The Numbers section has the honest picture: the engine shows up a lot, the win condition access is the thin part.
+Nobody is in a hurry here. The commander does not have to come down early, and the pilot's lesson from the first two games was to live long enough to set up the win. The third game showed the same deck can win without its commander. The Numbers section has the honest picture: the engine shows up a lot, the win condition access is the thin part.
 
 Its soft spot is the commander. Lose [Heliod, the Radiant Dawn // Heliod, the Warped Eclipse](https://manamap.seanmacrae.com/viz/index.html?cards=Heliod%2C+the+Radiant+Dawn+%2F%2F+Heliod%2C+the+Warped+Eclipse) and the discount is gone. Protection came first in the v1.1 to v1.2 rebuilds for that reason.
 
@@ -30,7 +30,7 @@ Its soft spot is the commander. Lose [Heliod, the Radiant Dawn // Heliod, the Wa
 
 **Sequencing rules from the pilot.** Wipe first, then resolve Heliod. A deck with [Supreme Verdict](https://manamap.seanmacrae.com/viz/index.html?cards=Supreme+Verdict) and [Day of Judgment](https://manamap.seanmacrae.com/viz/index.html?cards=Day+of+Judgment) can kill its own commander. Tutor Approach to third from the top right away. Do not play [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) into an empty board, because it makes you the target. Do not use the channel-tutor spirit as a blocker when it should be tutoring.
 
-**Playing it.** The commander can wait. Keep hands with two or three lands, a draw piece and a counter. The pilot admits momentum, tempo and table optics are the recurring gap, and that it is the pilot, not the deck.
+**Playing it.** The commander can wait, but one removal does not end the commander line (the pilot's read after game 003). Hands with a discount-and-flash package are built around the transformed Heliod. Keep hands with two or three lands, a draw piece and a counter. The pilot admits momentum, tempo and table optics are the recurring gap, and that it is the pilot, not the deck.
 
 ## Cards by role
 
@@ -91,22 +91,36 @@ Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group 
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **2 game(s):** 0 won, 2 lost · 2026-08-28 to 2026-09-08
-- **How games ended:** combo 1, removal 1
+- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-11-03
+- **How games ended:** combo 1, removal 1, won 1
+- **Not yet read:** 003
 <!-- /ctx:gen record -->
 
-Two games on record, both losses, both in the pilot's words in the log.
+Three games on record. The first two were losses, the third a win. All are in the pilot's words in the log.
 
 - **001 (Alex's, 2026-08-28):** the deck did its job and still lost the commander in a stack war. Alex countered a counter, then redirected [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) onto Heliod. [Psychosis Crawler](https://manamap.seanmacrae.com/viz/index.html?cards=Psychosis+Crawler) sat stranded. The pilot's read: too many axes, protection first. The v1.1.0 and v1.2.0 changes answered this.
 - **002 (Oliver's, 2026-09-08):** three sequencing errors, listed under How it plays. Oliver's one-card Cranko line won while the table beat on the pilot. Pilot's wish: more ways to turn opponents' draws into value; the hand-size punishers only ever pinged and are gone.
+- **003 (Oliver's five-player pod, 2026-11-03, a win on the current v1.4.0 list):** the table had stepped up to bracket 4. The early game was the deck's best case: [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study) plus a no-maximum-hand-size effect left the pilot with a huge hand, and Ryan said he did not mind the draw because the pilot "gets lost in the sauce". Ryan then cast an Armageddon effect. The pilot countered it to keep his lands, and Ryan answered by removing Heliod before any protection was equipped. With the commander gone, the pilot spent all his mana on tutors, cast [Dig Through Time](https://manamap.seanmacrae.com/viz/index.html?cards=Dig+Through+Time) off delve, took [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) and cast it twice, using a one-mana white discount from an artifact. He won on Approach. He read the table as explosive and the clock as real, and he stands by the all-in.
 
-Recurring pattern: tempo and optics, not the list. The pilot has also avoided playing Heliod much. Neither game was on the current list, so v1.4.0 is untested at the table.
+The pilot's own reads on 003, kept as his and not settled:
+- Countering the Armageddon was a "possible misstep". [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) was in hand, and letting the spell resolve while the table rebuilt might have left him alone with mana.
+- Abandoning the commander line was "gave up too soon". Heliod was never recast at the two-mana tax, and the hand held flash-speed and generic-discount cards built around the transformed Heliod. None were cast.
+- Going all-in on Approach was right, in his words.
+- Both unused lines were open to him. In his words the deck gave him three ways to win and he saw one.
+
+Three rules for the pilot's manual, from the pilot, after this one game:
+1. The Armageddon spot: with Tithe in hand, letting a mass land-destruction spell resolve can be the stronger line.
+2. Do not abandon the commander line after one removal. Recasting at the tax with a discount-and-flash hand is usually still the best play, even while assembling Approach.
+3. Protection must be on Heliod before the pilot counters a table-favourite spell. A counterspell on a table-favourite card is a provocation.
+
+Recurring pattern: tempo and optics, and now what to do after the commander is removed. The pilot calls these gaps in the piloting, not the list. He has also avoided playing Heliod much, and 003 is the clearest case. The list on disk was the list played in 003, so v1.4.0 has now been to the table once.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v1.4.0 · V12** (2026-09-20) — in: Gleaming Splendor, Greater Auramancy; out: Alhammarret's Archive, Lightning Greaves
   - merge `splendor-v2`: objective interaction_6 read **not met** — The pilot has made the swaps in paper and directed the merge.
+  - played 1: 1W 0L
 - **v1.3.0 · V11** (2026-09-16) — in: Horn of Greed, Isochron Scepter, Mind Stone; out: Angelic Wall, Forced Fruition, Mikaeus, the Lunarch. _merged branch artifacts-v1 on 2026-09-16; the pilot's paper swap_
   - merge `artifacts-v1`: objective damage_8 read **met** — the artifact half of the 2026-09-16 audit: Heliod's discount makes a generic-cost artifact a free cast, and three owned ones fit the plan. Isochron Scepter (thi
 - **v1.2.1 · V10** (2026-09-08) — in: Archangel of Tithes; out: White Sun's Zenith. _Archangel of Tithes in for White Sun's Zenith. Pip-neutral at three white either way; it deepens the flier-and-taxer axis v1.2.0 opened rather than adding a new one, which is why it is a patch and not_
@@ -129,7 +143,9 @@ The big turns: v1.0.0 was the pilot's own sleeved list. v1.1.0 and v1.2.0 added 
 - Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
 <!-- /ctx:gen queue -->
 
-- Does protection now hold up when Heliod gets targeted in a counter war? Game 001 was the test and it predates the fix.
+- Does protection now hold up when Heliod gets targeted? Game 001 predates the fix. In game 003 Heliod was removed before any protection was equipped, so it did not test it.
+- Recasting Heliod after a removal: with a discount-and-flash hand, does the recast line beat going all-in on Approach? Testable by replaying the 003 spot in a goldfish or a scenario. Expected effect: the pilot's rule 2 says recasting is usually still best.
+- Letting a mass land-destruction spell resolve with Smothering Tithe in hand: does that leave the pilot better off than countering it? Expected effect: it keeps the counter and avoids provoking the table. Judged from the table, not the goldfish.
 - Win condition access in the Numbers section is the thinnest line. Is one more way to find [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) worth a slot, or is the tutor package enough?
 - The latest merge (Gleaming Splendor, Greater Auramancy) did not meet its goal in the measured read, though the pilot made the swap anyway. What does it do at the table?
 - Which seat kills us most in play? Forge saw one table take most of the eliminations, but that is an older list.
@@ -139,3 +155,4 @@ The big turns: v1.0.0 was the pilot's own sleeved list. v1.1.0 and v1.2.0 added 
 
 - 2026-10-07 · scaffolded by `manamap pilot context`
 - 2026-10-07 · Keeper · seed: first context, from the log, the verified stacks and the older agent prose
+- 2026-11-04 · Keeper · pilot log 003: win on Approach after Heliod was removed; three manual rules from the pilot
