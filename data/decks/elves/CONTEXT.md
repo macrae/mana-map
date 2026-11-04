@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · G · 60 cards
-- **Version:** V2 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** G · **lands:** 16
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 6 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=elves) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=elves)
