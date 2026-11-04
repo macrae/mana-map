@@ -174,7 +174,7 @@ Goldfish, 10,000 seeded games, measured on v2.2.0 (V12), 2026-10-27. Each group 
 
 - share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 4.909**
+- mean turn the commander is first cast: **turn 4.922**
 - A WHEEL drawn — the ignition; nothing else in the deck starts itself: **73%**
 - A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **73%**
 - A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **33%**
@@ -185,7 +185,7 @@ Goldfish, 10,000 seeded games, measured on v2.2.0 (V12), 2026-10-27. Each group 
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **80%**
 - A real answer drawn — a counter, a sweeper or a tax: **84%**
 - A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **78%**
-- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **46%**
+- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **45%**
 - share of opening sevens the model would keep: **79%**
 - Engine online by turn 5: **72%** (95% CI 71%–73%) — exceptional
 - A win route assembled by turn 6: **42%** (95% CI 41%–43%)

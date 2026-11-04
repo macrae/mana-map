@@ -23,6 +23,9 @@
     "complete": 16,
     "of": 19,
     "stale": [],
+    "older_model": [
+      "goldfish"
+    ],
     "invalid": [
       "diagnosis.json"
     ],
@@ -76,7 +79,10 @@
     "causes": {},
     "cause_counts": {},
     "feel": {},
-    "feel_n": 0
+    "feel_n": 0,
+    "marks": {},
+    "marks_n": 0,
+    "marked": {}
   },
   "model": {
     "goldfish": {
@@ -399,6 +405,7 @@
   "next": [
     "retired — the play/measure loop is closed for this deck (retired); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
     "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status sisay` names them; fix before anything else reads them",
+    "measured under an older simulator: goldfish — the figures were right when taken; `manamap pilot regen --slug sisay` re-reads them when you want, never on its own",
     "open questions routed: goldfish ×2, research-strategy ×1, resolve-stack ×6"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
