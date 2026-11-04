@@ -29,7 +29,8 @@ from manamap.pilot.common import checker_passed, load_json
 #: Present only when the deck has the thing: `links` is `links.json` as `deck-link`
 #: wrote it (sharknado's DeckCheck link was the first, 2026-10-17), omitted rather than
 #: null so a deck with no links stays absent (`deck_manifest`).
-OPTIONAL_KEYS = {"links"}
+#: `purpose` the same way: only on a teaching deck (2026-11-03).
+OPTIONAL_KEYS = {"links", "purpose"}
 
 MANIFEST_KEYS = {
     # `volume` and `coverline` went with the magazine (2026-09-13).
