@@ -196,6 +196,7 @@ def channels_for(profile):
             "cast_draw", "x_draw_multiplier",
             # 2026-09-11: draw for greatest power, draw per type on entry.
             "spell_draw_greatest_power", "etb_draw_per_type",
+            "spell_draw_greatest_mv", "life_gain_paid_draw",
             # THE FOURTH DRIFT OF THIS MIRROR, and the file predicted it two
             # channels up. `activated_draw` and `draw_multiplier` shipped on
             # 2026-09-14 and were taught to `never_cast` — which asks whether a
@@ -332,7 +333,8 @@ def never_cast(profile, flags):
     if flags.get("model_draw") and _nonzero(profile.get("draw"), (
             "spell_draw", "etb_draw", "recurring_draw", "arrival_draw", "cast_draw",
             "x_draw_multiplier",
-            "spell_draw_greatest_power", "etb_draw_per_type")):
+            "spell_draw_greatest_power", "etb_draw_per_type",
+            "spell_draw_greatest_mv", "life_gain_paid_draw")):
         return False
     # A wheel is selected by the draw loop under model_discard; a payoff
     # permanent by the engine loop.

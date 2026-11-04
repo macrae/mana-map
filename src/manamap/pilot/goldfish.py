@@ -25,6 +25,7 @@ import json
 import pathlib
 import random
 import re
+import statistics
 
 from manamap import console
 from manamap.config import (
@@ -961,6 +962,22 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         **({"mean_extra_cards_drawn_by_turn": {
             str(t): _round(sum(r["drawn_extra_by_turn"][t - 1] for r in results) / n)
             for t in turns}} if model_draw else {}),
+        # HOW MANY CARDS HE HOLDS at the end of each turn: kept per game all along and never
+        # reported, while the pilot's complaint is running out (2026-11-04).
+        "mean_hand_size_by_turn": {
+            str(t): _round(sum(r["hand_size_by_turn"][t - 1] for r in results) / n)
+            for t in turns},
+        # 21 COMMANDER DAMAGE (CR 903.10a), one commander on the one seat. No blockers and
+        # no removal, so it is a clock, not a kill. Absent for a deck it never happens in.
+        "commander_lethal": {
+            "games_by_turn": {
+                str(t): _round(sum(1 for r in results if r["commander_lethal_turn"] is not None
+                                   and r["commander_lethal_turn"] <= t) / n)
+                for t in turns},
+            "median_turn": (lambda v: statistics.median(v) if v else None)(
+                [r["commander_lethal_turn"] for r in results
+                 if r["commander_lethal_turn"] is not None]),
+        },
         # THE DISCARD CHANNEL. Cumulative cards discarded, and the damage the
         # discard/draw payoffs dealt, by turn. Absent when the deck did not opt
         # in -- not zero.
@@ -1831,6 +1848,11 @@ def main(args):
         f"Wrote {out}\n  {commander}: mean cast turn {stats['mean_cast_turn']}, "
         f"cast by turn 6 in {stats['cast_by_turn_6_rate']:.0%} of games"
     )
+    lethal = doc["metrics"].get("commander_lethal") or {}
+    if lethal.get("median_turn") is not None:
+        by = lethal["games_by_turn"]
+        print(f"  21 commander damage: median turn {lethal['median_turn']:g}, by turn 8 in "
+              f"{by.get('8', 0):.0%} of games (a clock: nothing blocks and nothing removes)")
     for target in doc["metrics"]["targets"]:
         print(f"  {target['label']}: by turn 6 in {target['by_turn_6_rate']:.0%} of games")
     _print_band(doc.get("commander_ability_band"))

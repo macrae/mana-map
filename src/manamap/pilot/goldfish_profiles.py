@@ -166,6 +166,17 @@ _DRAW_GREATEST_POWER_RE = re.compile(
     r"draw cards equal to (?:the greatest power among (?:creatures|other creatures|"
     r"non-Human creatures) you control|(?:the|that creature's|its) power"
     r"(?: of target creature you control)?)", re.I)
+# DRAW EQUAL TO THE GREATEST MANA VALUE (Rush of Knowledge, 2026-11-04): read as drawing
+# nothing, silently, on the branch that added it to fix a deck with no pure draw.
+_DRAW_GREATEST_MV_RE = re.compile(
+    r"draw cards equal to the greatest mana value among permanents you control", re.I)
+# MANA INTO CARDS OFF A LIFE GAIN (Well of Lost Dreams): a chain, not a rate. Each {1}
+# draws a card, and with a card that gains life per draw (Shabraz) that draw arms the
+# next trigger, so the spare mana is the budget. See the turn loop for the policy.
+_LIFE_PAID_DRAW_RE = re.compile(
+    r"whenever you gain life, you may pay \{X\}[^.]{0,70}\. If you do, draw X cards", re.I)
+# A DRAW NO CHANNEL READS, so it is NAMED rather than scored a silent zero.
+_DRAW_UNREAD_RE = re.compile(r"\bdraws? cards\b", re.I)
 # DRAW A CARD FOR EACH <TYPE> ON ENTRY (Earthshaker Dreadmaw): ten corpus
 # cards. `_ETB_DRAW_RE` read the "draw a card" and priced it at ONE.
 _ETB_DRAW_PER_TYPE_RE = re.compile(
@@ -1930,6 +1941,7 @@ def draw_profile(card):
            # on their draws (Needlehead, Nekusar, Tithe) have the event.
            "recurring_each_player_draw": 0,
            "spell_draw_greatest_power": False, "etb_draw_per_type": None,
+           "spell_draw_greatest_mv": False, "life_gain_paid_draw": False,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
            "arrival_mv_max": None,
@@ -2070,18 +2082,28 @@ def draw_profile(card):
             and _DRAW_GREATEST_POWER_RE.search(text)
             and not _DRAW_ADDITIONAL_COST_RE.search(text)):
         out["spell_draw_greatest_power"] = True
+    if (("Instant" in type_line or "Sorcery" in type_line)
+            and _DRAW_GREATEST_MV_RE.search(text)):
+        out["spell_draw_greatest_mv"] = True
+    if _LIFE_PAID_DRAW_RE.search(text):
+        out["life_gain_paid_draw"] = True
     per_type = _ETB_DRAW_PER_TYPE_RE.search(text)
     if per_type:
         out["etb_draw_per_type"] = per_type.group(1)
     if (not _DRAW_RE.search(text) and not out["wheel_draws"]
             and not out["activated_wheel"]
             and not out["recurring_draw"] and not out["spell_draw_greatest_power"]
+            and not out["spell_draw_greatest_mv"] and not out["life_gain_paid_draw"]
             # "Each player draws three cards" never says "draw N card".
             and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)
             # "each player's draw step, that player DRAWS" never does either
             # (2026-10-18): the recurring path below reads it.
             and not out["recurring_each_player_draw"]
             and not _RECURRING_DRAW_RE.search(text)):
+        # NOT A SILENT ZERO (2026-11-04). "draw cards equal to ..." missed `_DRAW_RE`, so
+        # the card read as not drawing at all, and a branch report said nothing was blind.
+        if _DRAW_UNREAD_RE.search(text):
+            out["unmodelled"] = card.get("name")
         return out
 
     m = _ARRIVAL_DRAW_RE.search(text)
@@ -2177,7 +2199,8 @@ def draw_profile(card):
                 out["x_draw_multiplier"], out["wheel_draws"],
                 out["activated_wheel"], out["activated_draw"],
                 out["draw_multiplier"] > 1,
-                out["spell_draw_greatest_power"], out["etb_draw_per_type"])):
+                out["spell_draw_greatest_power"], out["etb_draw_per_type"],
+                out["spell_draw_greatest_mv"], out["life_gain_paid_draw"])):
         out["unmodelled"] = card.get("name")
     return out
 

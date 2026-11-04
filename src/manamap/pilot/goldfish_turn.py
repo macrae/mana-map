@@ -70,6 +70,7 @@ from manamap.config import (
     GOLDFISH_SEED,
     OPPONENT_HAND,
     OPPONENT_CASTS_PER_TURN,
+    LIFE_CHAIN_LIBRARY_FLOOR,
     TITHE_PAY_RATE,
 )
 from manamap.pilot import manabase
@@ -358,6 +359,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Skulker's profile is byte-identical to Shabraz's and is not a commander.
     commander_counters = 0
     commander_counters_by_turn = []
+    # 21 COMMANDER DAMAGE (CR 903.10a), against the one seat this model has: this deck's
+    # main way to win, read as a clock nowhere until 2026-11-04. One commander's combat
+    # damage, cumulative, on the swing that reaches it. No blockers, first combat only.
+    commander_counter_of = {}
+    commander_damage_of = {}
+    commander_lethal_turn = None
+    # Well of Lost Dreams in play. Armed at the end of the turn both pieces are out.
+    life_paid_draws = 0
+    life_chain_armed = False
     commander_event_objs = []
     partner_turn = None
 
@@ -1168,6 +1178,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """THE DRAW LOOP'S RESOLUTION, after the cast. One body for the
             loop and the free cast, so a discovered or cascaded cantrip resolves
             exactly as a paid one does — Zada's copies included."""
+            nonlocal life_paid_draws
             nonlocal opponent_draws_this_turn
             # THE FACE HALF OF A MODAL DRAW SPELL, dealt at resolution and
             # before its own discard (Fateful Showdown counts the hand it is
@@ -1222,6 +1233,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # every body the way it does at the attack step.
                 draw_n(max((p + team_anthem + lb_ for (p, *_), lb_
                             in zip(battlefield, _lord_bonuses())), default=0))
+            if card["draw"]["spell_draw_greatest_mv"]:
+                draw_n(max(battlefield_mv, default=0))
+            if card["draw"]["life_gain_paid_draw"]:
+                life_paid_draws += 1
             if model_discard and card["draw"]["spell_discard"]:
                 discard_n(card["draw"]["spell_discard"])
             if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
@@ -1274,7 +1289,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             d = c["draw"]
             return bool(c["face_damage"]["kind"] and not c["is_land"]
                         and not (d["spell_draw"] or d["wheel_draws"]
-                                 or d["x_draw_multiplier"] or d["spell_draw_greatest_power"])
+                                 or d["x_draw_multiplier"] or d["spell_draw_greatest_power"]
+                                 or d["spell_draw_greatest_mv"])
                         and not _pump_castable(c)
                         and not c["spell_count"]["storm"]
                         and not c["combat"]["spell_treasure"]
@@ -2399,6 +2415,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          c["draw"]["arrival_draw"],
                                          c["draw"]["cast_draw"],
                                          c["draw"]["spell_draw_greatest_power"],
+                                         c["draw"]["spell_draw_greatest_mv"],
+                                         c["draw"]["life_gain_paid_draw"],
                                          # A WHEEL IS A DRAW SPELL, and is in the
                                          # predicate in the same commit as the
                                          # channel -- cast under model_discard
@@ -2897,6 +2915,23 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _note_cast(_best)
                 draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
 
+        # ── MANA INTO CARDS ─────────────────────────────────────────────
+        #
+        # WELL OF LOST DREAMS WITH A LIFE-PER-DRAW CARD (Shabraz): every {1} is a card,
+        # that card is a counter, and its life gain arms the next payment (rules checked
+        # 2026-11-04: CR 603.5, 118.12, 119.9, 605.3a). `draw_n` applies a doubler, so
+        # Bard or Teferi's Ageless Insight make it two cards a mana. Spends what is left,
+        # Treasure included, for the reason the block below gives. CONSERVATIVE on the
+        # seed: both pieces must have been out at the end of LAST turn, so this turn's
+        # draw step armed it; a pair arriving mid-turn waits. It stops at
+        # `LIFE_CHAIN_LIBRARY_FLOOR`, because the pilot chooses to stop and a goldfish
+        # that decks itself on a may-pay is not a reading of anything.
+        if model_draw and life_chain_armed:
+            while len(deck) > LIFE_CHAIN_LIBRARY_FLOOR and spend(1):
+                draw_n(1)
+        life_chain_armed = bool(life_paid_draws and any(
+            _e["per_draw_gain"] for _e in event_payoff_permanents))
+
         # ── BLOOD, AND THE DRAWS YOU BUY ────────────────────────────────
         #
         # LAST, ON WHAT IS LEFT, for the same reason the X spells above are:
@@ -3073,6 +3108,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 counter_power += _ctr
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr
+                    commander_counter_of[id(_e)] = commander_counter_of.get(id(_e), 0) + _ctr
                 if drawn_this_turn >= 2:
                     if _e["second_draw_damage"]:
                         _evt_dmg += _e["second_draw_damage"] + _b
@@ -3193,6 +3229,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 spell_each_opponent = 0
             if counter_power and attackers and commander_turn is not None and turn > commander_turn:
                 swing += counter_power
+            for _cp, _ce, _t0 in ((commander_combat, commander_event, commander_turn),
+                                  ((partner or {}).get("combat"), (partner or {}).get("event"),
+                                   partner_turn)):
+                if not _cp or not _cp["is_creature"] or _t0 is None or (turn <= _t0 and not _cp["haste"]):
+                    continue
+                _hit = ((_cp["power"] + team_anthem + turn_pump
+                         + commander_counter_of.get(id(_ce), 0)) * turn_power_mult
+                        * (2 if _cp["double_strike"] or turn_double_strike else 1)
+                        * team_damage_multiplier)
+                commander_damage_of[id(_cp)] = commander_damage_of.get(id(_cp), 0) + _hit
+                if commander_lethal_turn is None and commander_damage_of[id(_cp)] >= 21:
+                    commander_lethal_turn = turn
             # ATTACKING TAPS (CR 508.1f). Vigilance is not modelled and is named
             # as a gap rather than assumed: no deck in the fleet grants it today.
             for _i in _able:
@@ -3793,6 +3841,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "mana_by_turn": mana_by_turn,
         "commander_turn": commander_turn,
         "commander_counters_by_turn": commander_counters_by_turn,
+        "commander_lethal_turn": commander_lethal_turn,
         # The stockpile STANDING at the end of each turn, not what was made:
         # the same reading `treasures_by_turn` takes, so the two can be read
         # beside each other without a footnote.

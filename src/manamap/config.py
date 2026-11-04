@@ -1497,6 +1497,10 @@ GOLDFISH_OPPONENTS = 3
 #: table, and nothing here can measure it. Half is the stated middle; `try` and
 #: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
 TITHE_PAY_RATE = 0.5
+# AUTHORED (2026-11-04). The cards a pilot leaves in the library when a may-pay draw chain
+# could run it out (Well of Lost Dreams with Shabraz): he chooses when to stop, and decking
+# himself on purpose is not a line. A guess at the sensible margin, not a measure.
+LIFE_CHAIN_LIBRARY_FLOOR = 10
 #: HOW MANY SPELLS AN OPPONENT CASTS ON THEIR TURN — MEASURED, not authored
 #: (2026-10-11). `sim/pod_behaviour.POD["casts_per_turn"]`, read from 137,717
 #: logged opponent turns at the standard tables; a test holds the two equal so

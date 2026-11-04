@@ -480,6 +480,25 @@ measured at a table and not by the goldfish ("fuck the goldfish"):
   rotation-safe seat map; until 2026-10-22 it knew only `Ai(1)` and re-derived a rotated
   300-a-side A/B as 0.04 a side.
 
+### Mana into cards, and the clock on 21 (2026-11-04)
+
+Three things this model could not see on Sharknado's `draw-engine-v1`, each read now. **Rush
+of Knowledge** (`spell_draw_greatest_mv`) draws the greatest mana value on the board; it missed
+`_DRAW_RE`, so it scored a silent zero and was not even named. A `draw cards` no channel reads
+is `unmodelled` now, and net-change's blind spots flag it even with no `draw:` role, because
+"no card in this change is flagged" was false on that branch. **Well of Lost Dreams**
+(`life_gain_paid_draw`) spends what is left of the mana, Treasure included, at one mana a card
+(two under a doubler, through `draw_n`) while a life-per-draw source such as Shabraz is out. It
+is conservative on the seed, since both pieces must have been out at the end of last turn, and
+it stops at the authored `LIFE_CHAIN_LIBRARY_FLOOR`. The swap to the new channel left every
+existing figure on the deck's list byte-identical.
+
+Two readings, on `metrics`, outside net-change's Holm family: `commander_lethal` is the turn one
+commander's cumulative combat damage reaches 21 against the one seat (first combat only, no
+blockers, no removal, so it is a clock and not a kill), and `mean_hand_size_by_turn`. **Known
+gap: there is no cleanup step.** A hand above seven stays, so a big draw is over-credited late,
+which matters most for exactly this chain. Adding one moves every deck, so it waits on the pilot.
+
 ### Still open
 
 - **Our seat's AI profile rests on six games.** `mde_proportion(0.5, 6, 6)`

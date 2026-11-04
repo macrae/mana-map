@@ -928,6 +928,11 @@ def blind_spots(slug, branch, change_doc):
                 if head == "draw" and not _draw_is_blind(slug, branch, name):
                     continue
                 found.setdefault(head, set()).add(name)
+            # A DRAW WITH NO ROLE IS STILL A DRAW (2026-11-04). Rush of Knowledge has no
+            # `draw:` role and its draw was unread, so this said "no card is flagged".
+            if (name and not any(r.startswith("draw:") for r in roles.get(name) or [])
+                    and "draw" in BLIND and _draw_is_blind(slug, branch, name)):
+                found.setdefault("draw", set()).add(name)
     out = [{"class": head, "why": BLIND[head], "cards": sorted(names),
             "headline": f"{len(names)} card(s) carrying a {head} effect"}
            for head, names in sorted(found.items())]
