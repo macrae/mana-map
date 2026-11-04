@@ -114,6 +114,51 @@ def test_the_chain_waits_a_turn_after_the_pieces_land():
         "life_chain_armed = bool(life_paid_draws"), "armed before it is read would fire a turn early"
 
 
+NO_MAX = "You have no maximum hand size."
+
+
+@pytest.mark.parametrize("text,type_line,want", [
+    (NO_MAX, "Land", True),
+    (NO_MAX, "Artifact", True),
+    ("Players have no maximum hand size. {T}: Add {C}.", "Artifact", True),
+    ("You have no maximum hand size for the rest of the game.", "Sorcery", True),
+    (NO_MAX, "Sorcery", False),
+    ("{T}: You have no maximum hand size until end of turn.", "Artifact", False),
+    ("You have no maximum hand size until end of turn.", "Enchantment", False),
+    ("Your maximum hand size is ten.", "Artifact", False),
+    ("As long as you control a Wizard, you have no maximum hand size.", "Artifact", False),
+    ("Draw two cards.", "Sorcery", False),
+])
+def test_only_a_standing_no_maximum_switches_the_limit_off(text, type_line, want):
+    from manamap.pilot.goldfish_profiles import no_max_hand
+    assert no_max_hand({"oracle_text": text, "type_line": type_line}) is want
+
+
+def _big_draw(*extra):
+    # Enough draw to run a hand well over seven every game.
+    return _doc(_c("Draw", "Draw three cards.", 1, "Sorcery", quantity=30), *extra)
+
+
+def test_the_hand_limit_holds_a_hand_at_seven():
+    free = _run(_big_draw(), iterations=60)
+    held = _run(_big_draw(), iterations=60, model_hand_limit=True)
+    assert max(max(r["hand_size_by_turn"]) for r in free) > 7, "the test never ran a big hand"
+    assert all(max(r["hand_size_by_turn"]) <= 7 for r in held)
+
+
+def test_cleanup_is_a_discard_and_it_counts():
+    free = _run(_big_draw(), iterations=60)
+    held = _run(_big_draw(), iterations=60, model_hand_limit=True)
+    assert sum(r["discarded_by_turn"][-1] for r in held) > sum(r["discarded_by_turn"][-1] for r in free)
+
+
+@pytest.mark.parametrize("type_line,cost", [("Land", 0), ("Artifact", 1)])
+def test_a_no_maximum_card_in_play_lifts_the_limit(type_line, cost):
+    tower = _c("Tower", NO_MAX, cost, type_line, quantity=25)
+    held = _run(_big_draw(tower), iterations=60, model_hand_limit=True)
+    assert max(max(r["hand_size_by_turn"]) for r in held) > 7
+
+
 def test_the_results_carry_the_clock_and_the_hand():
     r = _run(_well_doc(), iterations=5)[0]
     assert "commander_lethal_turn" in r and len(r["hand_size_by_turn"]) == 10

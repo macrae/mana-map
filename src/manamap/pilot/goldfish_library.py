@@ -33,6 +33,7 @@ from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
 from manamap.pilot.goldfish_profiles import (
+    no_max_hand,
     cascade_n,
     copy_fodder,
     discover_n,
@@ -188,6 +189,7 @@ def classify(card, pool=None):
         "attack_enabler": bool(_ATTACK_ENABLER_RE.search(
             card.get("oracle_text", "") or "")),
         "draw": draw_profile(card),
+        "no_max_hand": no_max_hand(card),
         # Discard- and draw-triggered payoffs, read on every card and acted on
         # under `model_discard` only.
         "event": event_payoffs(card),

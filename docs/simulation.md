@@ -493,11 +493,18 @@ is conservative on the seed, since both pieces must have been out at the end of 
 it stops at the authored `LIFE_CHAIN_LIBRARY_FLOOR`. The swap to the new channel left every
 existing figure on the deck's list byte-identical.
 
-Two readings, on `metrics`, outside net-change's Holm family: `commander_lethal` is the turn one
-commander's cumulative combat damage reaches 21 against the one seat (first combat only, no
-blockers, no removal, so it is a clock and not a kill), and `mean_hand_size_by_turn`. **Known
-gap: there is no cleanup step.** A hand above seven stays, so a big draw is over-credited late,
-which matters most for exactly this chain. Adding one moves every deck, so it waits on the pilot.
+**The hand limit is opt-in, `model_hand_limit`, like every channel.** A hand over seven discards
+down at end of turn (CR 514.1), through `discard_n`'s stated policy, unless a permanent or a
+rest-of-the-game sorcery says no maximum hand size (`no_max_hand`; a land counts, a one-turn or
+conditional grant does not). The discards pay Brallin NEXT turn, a floor. Sharknado was first: its
+hand at T10 fell from 6.7 to about 4. A deck that has not opted in keeps every figure it had,
+and goes on over-crediting late draws until it does. A commander's own text and a raised limit
+("your maximum hand size is ten") are not read.
+
+With that flag come two readings on `metrics`, outside net-change's Holm family:
+`commander_lethal` is the turn one commander's cumulative combat damage reaches 21 against the
+one seat (first combat only, no blockers, no removal, so it is a clock and not a kill), and
+`mean_hand_size_by_turn`.
 
 ### Still open
 

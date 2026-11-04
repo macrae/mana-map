@@ -383,6 +383,9 @@ _LOADED_VERSION = _hash_sources()
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
     "Draw every turn including turn 1 (multiplayer Commander).",
+    "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a "
+    "permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text "
+    "and a raised limit ('your maximum hand size is ten') are not read.",
     "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
     "One land drop per turn when available.",
     # MEASURED, NOT ASSUMED. A `candidates` sweep of twelve lands against
@@ -793,7 +796,7 @@ def _round(x):
 def aggregate(results, targets, max_turn, model_treasures=False,
               model_combat=False, model_draw=False, model_sacrifice=False,
               model_drain=False, attack_tutor_rate=None, model_discard=False,
-              partner=False, commander_reveal=None):
+              partner=False, commander_reveal=None, model_hand_limit=False):
     n = len(results)
     turns = list(range(1, max_turn + 1))
 
@@ -962,22 +965,23 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         **({"mean_extra_cards_drawn_by_turn": {
             str(t): _round(sum(r["drawn_extra_by_turn"][t - 1] for r in results) / n)
             for t in turns}} if model_draw else {}),
-        # HOW MANY CARDS HE HOLDS at the end of each turn: kept per game all along and never
-        # reported, while the pilot's complaint is running out (2026-11-04).
-        "mean_hand_size_by_turn": {
+        # HOW MANY CARDS HE HOLDS, and 21 COMMANDER DAMAGE (CR 903.10a; one commander on the
+        # one seat, no blockers, so a clock and not a kill). With the hand limit, because a
+        # hand with no cleanup step is not a reading of a hand; absent otherwise (absent is
+        # not zero), so a deck that has not opted in keeps every byte it had.
+        **({"mean_hand_size_by_turn": {
             str(t): _round(sum(r["hand_size_by_turn"][t - 1] for r in results) / n)
             for t in turns},
-        # 21 COMMANDER DAMAGE (CR 903.10a), one commander on the one seat. No blockers and
-        # no removal, so it is a clock, not a kill. Absent for a deck it never happens in.
-        "commander_lethal": {
-            "games_by_turn": {
-                str(t): _round(sum(1 for r in results if r["commander_lethal_turn"] is not None
-                                   and r["commander_lethal_turn"] <= t) / n)
-                for t in turns},
-            "median_turn": (lambda v: statistics.median(v) if v else None)(
-                [r["commander_lethal_turn"] for r in results
-                 if r["commander_lethal_turn"] is not None]),
-        },
+            "commander_lethal": {
+                "games_by_turn": {
+                    str(t): _round(sum(1 for r in results
+                                       if r["commander_lethal_turn"] is not None
+                                       and r["commander_lethal_turn"] <= t) / n)
+                    for t in turns},
+                "median_turn": (lambda v: statistics.median(v) if v else None)(
+                    [r["commander_lethal_turn"] for r in results
+                     if r["commander_lethal_turn"] is not None]),
+            }} if model_hand_limit else {}),
         # THE DISCARD CHANNEL. Cumulative cards discarded, and the damage the
         # discard/draw payoffs dealt, by turn. Absent when the deck did not opt
         # in -- not zero.
@@ -1220,6 +1224,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # UnboundLocalError, and so did the band's floor run, which supplies the
     # declaration directly instead of reading it.
     declared_drain = False
+    declared_hand_limit = False
     declared_discard = False        # the same lesson, one flag later
     declared_deaths = None
     # Bound before the branch: a deck with no declaration still has colours,
@@ -1257,6 +1262,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         declared_draw = bool(targets_doc.get("model_draw"))
         declared_sacrifice = bool(targets_doc.get("model_sacrifice"))
         declared_drain = bool(targets_doc.get("model_drain"))
+        declared_hand_limit = bool(targets_doc.get("model_hand_limit"))
         declared_discard = bool(targets_doc.get("model_discard"))
         # THE RATE MUST NAME WHERE IT CAME FROM. A death rate somebody invented
         # driving a damage figure is the deleted engine lift; a rate read off a
@@ -1618,6 +1624,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_sacrifice=model_sacrifice,
                               model_drain=model_drain,
                               model_deaths=model_deaths,
+                              model_hand_limit=declared_hand_limit,
                               commander_copy=commander_copy,
                               hold_until=_hold_until, keep_rule=_keep_rule,
                               interaction_names=interaction_names,
@@ -1631,7 +1638,7 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     _metrics = aggregate(results, targets, max_turn, model_treasures,
                          model_combat, model_draw, model_sacrifice,
                          model_drain, attack_tutor, model_discard=model_discard,
-                         partner=bool(partner),
+                         partner=bool(partner), model_hand_limit=declared_hand_limit,
                          commander_reveal=commander_reveal if model_combat else None)
     _band_doc = _ability_band(slug, branch, targets_doc, _metrics, iterations,
                               seed, max_turn, model_treasures, model_combat,

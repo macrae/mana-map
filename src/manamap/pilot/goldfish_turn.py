@@ -109,7 +109,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_cast_token=None, interaction_names=frozenset(),
                   attack_tutor=None, model_discard=False, partner=None,
                   commander_event=None, commander_reveal=None,
-                  commander_damage=None,
+                  commander_damage=None, model_hand_limit=False,
                   commander_copy=False, hold_until=None, keep_rule=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
@@ -365,6 +365,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     commander_counter_of = {}
     commander_damage_of = {}
     commander_lethal_turn = None
+    # THE CLEANUP STEP (CR 514.1), opt-in like every channel (`model_hand_limit`): a hand
+    # over seven discards down at end of turn, unless something says no maximum hand size.
+    hand_limit_off = False
     # Well of Lost Dreams in play. Armed at the end of the turn both pieces are out.
     life_paid_draws = 0
     life_chain_armed = False
@@ -636,6 +639,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if land_index is not None:
             played = hand.pop(land_index)
             lands_in_play += 1
+            if played.get("no_max_hand"):
+                hand_limit_off = True
             # TRACKED UNCONDITIONALLY. `sources` was maintained only under
             # `model_colors`, and a colour-scaling producer READS it to size its
             # own output — so the flag was not a constraint at all. See the note
@@ -1058,8 +1063,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             source for `hand.remove` and fails if the call is not this helper —
             that is the only thing that keeps it correct as the file grows.
             """
-            nonlocal spells_cast_this_turn, spells_cast_total, etb_damage
+            nonlocal spells_cast_this_turn, spells_cast_total, etb_damage, hand_limit_off
             hand.remove(card)
+            if card.get("no_max_hand"):
+                hand_limit_off = True
             spells_cast_this_turn += 1
             spells_cast_total += 1
             tl = card.get("type_line") or ""
@@ -2417,6 +2424,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          c["draw"]["spell_draw_greatest_power"],
                                          c["draw"]["spell_draw_greatest_mv"],
                                          c["draw"]["life_gain_paid_draw"],
+                                         # Cast, or the limit it lifts is never lifted.
+                                         model_hand_limit and c["no_max_hand"],
                                          # A WHEEL IS A DRAW SPELL, and is in the
                                          # predicate in the same commit as the
                                          # channel -- cast under model_discard
@@ -3795,6 +3804,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for _rs in ritual_sources:          # ritual mana does not outlive its turn
             if _rs in sources:
                 sources.remove(_rs)
+        # THE HAND LIMIT. After `discarded_by_turn` is taken, so these discards pay Brallin
+        # and friends NEXT turn: a turn late against a table, a floor. `discard_n`'s stated
+        # policy picks them, spare lands first and then the most expensive.
+        if model_hand_limit and not hand_limit_off and len(hand) > 7:
+            discard_n(len(hand) - 7)
         hand_size_by_turn.append(len(hand))
         dead_wheels_in_hand_by_turn.append(_dead_wheels())
         # AT THE END OF THE TURN, because the sacrifice step runs inside combat.

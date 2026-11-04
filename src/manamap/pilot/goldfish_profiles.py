@@ -175,6 +175,22 @@ _DRAW_GREATEST_MV_RE = re.compile(
 # next trigger, so the spare mana is the budget. See the turn loop for the policy.
 _LIFE_PAID_DRAW_RE = re.compile(
     r"whenever you gain life, you may pay \{X\}[^.]{0,70}\. If you do, draw X cards", re.I)
+# NO MAXIMUM HAND SIZE: a standing fact on a permanent, or a sorcery for the rest of the
+# game. Not a one-turn or conditional grant, which is why the sentence is read as a whole.
+_NO_MAX_HAND_RE = re.compile(r"(?:^|[.\n]\s*)((?:you|players) have no maximum hand size[^.\n]*)",
+                             re.I)
+
+
+def no_max_hand(card):
+    """Does having this card out switch the cleanup discard off for good? (CR 514.1)"""
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text") or "")
+    m = _NO_MAX_HAND_RE.search(text)
+    if not m or "until end of turn" in m.group(1).lower():
+        return False
+    is_spell = any(t in (card.get("type_line") or "") for t in ("Instant", "Sorcery"))
+    return "for the rest of the game" in m.group(1).lower() if is_spell else True
+
+
 # A DRAW NO CHANNEL READS, so it is NAMED rather than scored a silent zero.
 _DRAW_UNREAD_RE = re.compile(r"\bdraws? cards\b", re.I)
 # DRAW A CARD FOR EACH <TYPE> ON ENTRY (Earthshaker Dreadmaw): ten corpus
