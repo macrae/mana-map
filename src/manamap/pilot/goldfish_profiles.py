@@ -191,6 +191,12 @@ def no_max_hand(card):
     return "for the rest of the game" in m.group(1).lower() if is_spell else True
 
 
+# RIELLE, THE EVERWISE, read at last (2026-11-04): "one or more ... for the first time each
+# turn, draw that many". A wheel under her draws the whole hand again. She read as unmodelled,
+# a body with no value, and a sweep scored her below a blank; the pilot caught it.
+_FIRST_DISCARD_DRAW_RE = re.compile(
+    r"whenever you discard one or more cards for the first time each turn, draw that many cards",
+    re.I)
 # A DRAW NO CHANNEL READS, so it is NAMED rather than scored a silent zero.
 _DRAW_UNREAD_RE = re.compile(r"\bdraws? cards\b", re.I)
 # DRAW A CARD FOR EACH <TYPE> ON ENTRY (Earthshaker Dreadmaw): ten corpus
@@ -934,6 +940,7 @@ def event_payoffs(card):
     text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "").replace(" // ", "\n")
     out = {"per_discard_damage": 0, "per_discard_counter": 0,
            "per_discard_draw": 0, "per_discard_token_power": 0,
+           "first_discard_draw": bool(_FIRST_DISCARD_DRAW_RE.search(text)),
            "per_draw_damage": 0, "per_draw_counter": 0,
            "per_draw_token_power": 0,
            "second_draw_damage": 0, "second_draw_token_power": 0,
@@ -1958,6 +1965,7 @@ def draw_profile(card):
            "recurring_each_player_draw": 0,
            "spell_draw_greatest_power": False, "etb_draw_per_type": None,
            "spell_draw_greatest_mv": False, "life_gain_paid_draw": False,
+           "first_discard_draw": False,
            "arrival_draw": 0, "arrival_draw_once": False,
            "arrival_power_min": None, "arrival_power_max": None,
            "arrival_mv_max": None,
@@ -2103,6 +2111,8 @@ def draw_profile(card):
         out["spell_draw_greatest_mv"] = True
     if _LIFE_PAID_DRAW_RE.search(text):
         out["life_gain_paid_draw"] = True
+    if _FIRST_DISCARD_DRAW_RE.search(text):
+        out["first_discard_draw"] = True
     per_type = _ETB_DRAW_PER_TYPE_RE.search(text)
     if per_type:
         out["etb_draw_per_type"] = per_type.group(1)
@@ -2110,6 +2120,7 @@ def draw_profile(card):
             and not out["activated_wheel"]
             and not out["recurring_draw"] and not out["spell_draw_greatest_power"]
             and not out["spell_draw_greatest_mv"] and not out["life_gain_paid_draw"]
+            and not out["first_discard_draw"]
             # "Each player draws three cards" never says "draw N card".
             and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)
             # "each player's draw step, that player DRAWS" never does either
@@ -2216,7 +2227,8 @@ def draw_profile(card):
                 out["activated_wheel"], out["activated_draw"],
                 out["draw_multiplier"] > 1,
                 out["spell_draw_greatest_power"], out["etb_draw_per_type"],
-                out["spell_draw_greatest_mv"], out["life_gain_paid_draw"])):
+                out["spell_draw_greatest_mv"], out["life_gain_paid_draw"],
+                out["first_discard_draw"])):
         out["unmodelled"] = card.get("name")
     return out
 

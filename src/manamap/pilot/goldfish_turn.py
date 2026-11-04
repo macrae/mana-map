@@ -368,6 +368,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # THE CLEANUP STEP (CR 514.1), opt-in like every channel (`model_hand_limit`): a hand
     # over seven discards down at end of turn, unless something says no maximum hand size.
     hand_limit_off = False
+    first_discard_batch = 0
     # Well of Lost Dreams in play. Armed at the end of the turn both pieces are out.
     life_paid_draws = 0
     life_chain_armed = False
@@ -621,6 +622,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         event_gain_events = 0
         event_gain_total = 0
         drawn_this_turn = 0
+        first_discard_batch = 0
         # THE OPPONENT'S DRAWS, so the tax on them has an event to fire on.
         # ONE SEAT, the same convention the damage pillar already uses: Brallin
         # says "1 damage to EACH opponent" and this model counts it once
@@ -768,12 +770,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             a loot pitches lands beyond the next drop first, then the most
             expensive nonland. A discarded card stays in `seen` -- assembly is
             "drawn by", and it was."""
-            nonlocal discarded
+            nonlocal discarded, first_discard_batch
             if everything:
                 if not shuffled:
                     discarded += len(hand)
+                    first_discard_batch = first_discard_batch or len(hand)
                 hand.clear()
                 return
+            _had = len(hand)
             for _ in range(int(n)):
                 if not hand:
                     return
@@ -785,6 +789,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                key=lambda c: c["cmc"], default=hand[0])
                     hand.remove(pick)
                 discarded += 1
+            first_discard_batch = first_discard_batch or (_had - len(hand))
 
         # Recurring draw engines already in play fire in the upkeep, BEFORE the
         # mana is spent, so a card drawn this way is castable this turn.
@@ -3065,6 +3070,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         draw_n(_paid * _e["per_opponent_draw_paid_draw"])
         if model_discard and event_payoff_permanents:
             _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
+            # Before the loop, so Shabraz is paid for them. The first BATCH of the turn, read
+            # here rather than when it happened, so these cards are not castable this turn: a
+            # floor. A cleanup discard does not fire her: another floor.
+            for _e in event_payoff_permanents:
+                if _e["first_discard_draw"] and first_discard_batch:
+                    draw_n(first_discard_batch)
             for _e in event_payoff_permanents:
                 # +N PER DAMAGE INSTANCE (Torbran), before the multiplier. One
                 # instance per discard and per draw — each is its own trigger —

@@ -159,6 +159,32 @@ def test_a_no_maximum_card_in_play_lifts_the_limit(type_line, cost):
     assert max(max(r["hand_size_by_turn"]) for r in held) > 7
 
 
+RIELLE = ("Rielle gets +1/+0 for each instant and sorcery card in your graveyard.\n"
+          "Whenever you discard one or more cards for the first time each turn, draw that many cards.")
+
+
+def test_rielle_is_read_not_named():
+    p = goldfish.classify(_c("Rielle", RIELLE, 3, "Legendary Creature — Human Wizard", power="0", toughness="3"))
+    assert p["event"]["first_discard_draw"] is True
+    assert p["draw"]["unmodelled"] is None
+
+
+def test_rielle_draws_the_first_batch_each_turn():
+    wheel = _c("Wheel", "Each player discards their hand, then draws seven cards.", 3, "Sorcery", quantity=12)
+    body = dict(power="0", toughness="3")
+    withr = _run(_doc(wheel, _c("Rielle", RIELLE, 3, "Legendary Creature — Human Wizard", quantity=12, **body)), iterations=150)
+    blank = _run(_doc(wheel, _c("Plain", "", 3, "Creature — Human", quantity=12, **body)), iterations=150)
+    assert _mean_extra(withr) > _mean_extra(blank) + 5
+
+
+def test_the_first_batch_counts_a_loot_not_only_a_wheel():
+    loot = _c("Loot", "Draw two cards, then discard two cards.", 1, "Sorcery", quantity=20)
+    body = dict(power="0", toughness="3")
+    withr = _run(_doc(loot, _c("Rielle", RIELLE, 2, "Legendary Creature — Human Wizard", quantity=12, **body)), iterations=150)
+    blank = _run(_doc(loot, _c("Plain", "", 2, "Creature — Human", quantity=12, **body)), iterations=150)
+    assert _mean_extra(withr) > _mean_extra(blank) + 2
+
+
 def test_the_results_carry_the_clock_and_the_hand():
     r = _run(_well_doc(), iterations=5)[0]
     assert "commander_lethal_turn" in r and len(r["hand_size_by_turn"]) == 10

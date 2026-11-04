@@ -501,6 +501,12 @@ hand at T10 fell from 6.7 to about 4. A deck that has not opted in keeps every f
 and goes on over-crediting late draws until it does. A commander's own text and a raised limit
 ("your maximum hand size is ten") are not read.
 
+**Rielle, the Everwise** (`first_discard_draw`) draws the first batch of discards each turn again,
+so a wheel under her draws the hand twice. She read as `unmodelled`, a body worth nothing, and
+a sweep scored her below a blank until the pilot objected; on the wheel-heavy branch, removing her
+costs about 5.9 damage by T10. Her +1/+0 per instant and sorcery in the graveyard is still unread,
+and a cleanup discard does not fire her: both floors.
+
 With that flag come two readings on `metrics`, outside net-change's Holm family:
 `commander_lethal` is the turn one commander's cumulative combat damage reaches 21 against the
 one seat (first combat only, no blockers, no removal, so it is a clock and not a kill), and
