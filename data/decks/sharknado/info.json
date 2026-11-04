@@ -114,27 +114,44 @@
       "base_moved": null,
       "proposal": null,
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Concentrate"
+          },
+          {
+            "name": "Well of Lost Dreams"
+          }
+        ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Rush of Knowledge",
+            "where": [
+              "Mystery Booster 2"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 3,
+      "out": 3,
       "counts": {
-        "in_deck": 98,
-        "box": 0,
+        "in_deck": 95,
+        "box": 1,
         "elsewhere": 0,
-        "buy": 0,
+        "buy": 2,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Concentrate",
+        "Well of Lost Dreams"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -250,6 +267,13 @@
           "is_new": false
         },
         {
+          "name": "Concentrate",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Consecrated Sphinx",
           "state": "in_deck",
           "where": [],
@@ -258,13 +282,6 @@
         },
         {
           "name": "Deflecting Swat",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Embercleave",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -307,13 +324,6 @@
         },
         {
           "name": "Flawless Maneuver",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Frantic Search",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -621,6 +631,18 @@
           "is_new": false
         },
         {
+          "name": "Rush of Knowledge",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Sacred Foundry",
           "state": "in_deck",
           "where": [],
@@ -671,13 +693,6 @@
         },
         {
           "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Sorcerer Class",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -810,6 +825,13 @@
           "is_new": false
         },
         {
+          "name": "Well of Lost Dreams",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Wheel of Fortune",
           "state": "in_deck",
           "where": [],
@@ -824,12 +846,102 @@
           "is_new": false
         }
       ],
-      "has_cards": false,
+      "has_cards": true,
       "summary": {
         "title": "More cards in hand: steady draw, wheel reach and mana into cards",
         "blurb": "Opened to experiment with pure card draw, tutors that reach a wheel and a way to turn spare mana into cards, because the deck runs out of cards while its engine floods with mana. Nothing is staged yet.",
         "by": "jarvis",
         "at": "2026-11-04"
+      },
+      "verdict": {
+        "state": "no objective",
+        "rose": 4,
+        "fell": 4,
+        "no_call": 8
+      },
+      "measured": true,
+      "blind_spots": null,
+      "impact": {
+        "state": "no objective",
+        "rose": [
+          "damage @T10",
+          "board power @T6",
+          "finisher wheel by T8",
+          "wheels cast by T10"
+        ],
+        "fell": [
+          "killed by T10",
+          "missed drop by T5",
+          "hand can act by T3",
+          "dead wheels in hand @T5"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": 3.4224,
+            "ci95_diff": [
+              2.3467,
+              4.4981
+            ],
+            "mde": 1.5376,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0026,
+            "ci95_diff": [
+              -0.0038,
+              -0.0014
+            ],
+            "mde": 0.0017,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": 0.0394,
+            "ci95_diff": [
+              0.02,
+              0.0588
+            ],
+            "mde": 0.0277,
+            "verdict": "better",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": 0.1327,
+            "ci95_diff": [
+              0.0012,
+              0.2642
+            ],
+            "mde": 0.188,
+            "verdict": "noise",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
+      },
+      "cast_proofs": {
+        "played": 2,
+        "held": 0,
+        "unplayed": 0,
+        "as_of": "2026-11-04",
+        "harness": {
+          "overrides": "ecdad552212b",
+          "patches": "9473cf359146",
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          },
+          "jar": "forge-gui-desktop-2.0.14-mm-telemetry.jar",
+          "profile": null,
+          "profile_sha": null
+        }
       }
     },
     {
@@ -15794,6 +15906,7 @@
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
+    "branch `draw-engine-v1` needs 2 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
