@@ -18,6 +18,7 @@ import json
 import re
 
 from manamap import config
+from manamap.pilot.common import deck_purpose
 from manamap.pilot.common import (
     deck_lifecycle, expand_faces, load_json, presentable, withheld)
 
@@ -450,6 +451,7 @@ def gather_entries():
             # rather than re-deriving it from `status` and `locked`, which would
             # be a second ladder free to disagree with `manamap pilot promote`.
             "stage": promote.stage(slug),
+            "purpose": deck_purpose(slug),
             "stack_files": stack_files,
             "stack_cards": stack_cards,
         })
@@ -503,7 +505,9 @@ def write_manifest(entries):
                                   # The ladder rung: the pickers' one predicate.
                                   "stage")},
              # Only when the deck has any (`deck-link`): absent means absent.
-             **({"links": e["links"]} if e.get("links") else {})}
+             **({"links": e["links"]} if e.get("links") else {}),
+             # Only on a teaching deck, so no other deck's entry moves a byte.
+             **({"purpose": e["purpose"]} if e.get("purpose") else {})}
             for e in entries if not e.get("draft")
         ]
     }

@@ -136,8 +136,10 @@
  *            the workbench fetches it for its grade chip only where one exists
  *            (2026-10-20). A cached manifest without `cards` would show no deck
  *            on any card, which reads as "in no deck".
+ *   13       `purpose`: a teaching deck has its own rack (2026-11-03). A cached
+ *            manifest without it files the five in Brewing.
  */
-window.MANIFEST_VERSION = 12;
+window.MANIFEST_VERSION = 13;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── A branch's state badge — ONE home (2026-10-20) ──────────────────────────

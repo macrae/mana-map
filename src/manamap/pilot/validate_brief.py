@@ -55,8 +55,13 @@ from manamap.pilot.common import commander_rejection, deck_dir, report_errors
 #: this list cannot quietly fall behind the code it describes.
 CONSUMED = frozenset({
     "slug", "commander", "partner", "bracket", "must_include", "must_exclude",
-    "pool", "pool_files", "theme", "format",
+    "pool", "pool_files", "theme", "format", "purpose",
 })
+
+#: What a deck is FOR, when it is not the fleet. A closed list: a misspelt purpose
+#: would quietly put a deck back in the Commander racks. `purpose`, like `format`, is
+#: read by the pages and not the builder.
+PURPOSES = frozenset({"teaching"})
 
 #: Keys that appear in real briefs and are read by nothing. Reported, never
 #: failed — see the module docstring. `format` is NOT here: `serve` reads it.
@@ -106,6 +111,10 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
         errors.append(
             f"slug is {doc.get('slug')!r} but the brief sits in {slug}/ — the "
             f"two must agree, or a build writes into the wrong deck")
+
+    purpose = doc.get("purpose")
+    if purpose is not None and purpose not in PURPOSES:
+        errors.append(f"purpose must be one of {sorted(PURPOSES)}, got {purpose!r}")
 
     bracket = doc.get("bracket")
     if bracket is not None and bracket not in range(1, BRACKET_MAX + 1):

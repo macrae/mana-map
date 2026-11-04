@@ -1593,6 +1593,9 @@ wrong chip would have been reported in a day.
 `workbench.js` shares `deck-view.js`'s shape deliberately: an IIFE that exports nothing,
 depends on no `MM`, and reads only committed artifacts. Neither page loads the map.
 
+**The workbench's Teaching rack (2026-11-03).** A manifest entry with `purpose: "teaching"` sits on
+its own rack under Sleeved, and in no other rack or the Fleet table, whatever its rung or lock.
+
 ## The deck dossier (`deck.html`)
 
 **The art (`#panel-art`, 2026-11-03).** Every line of the list as the card it is: art, artist,

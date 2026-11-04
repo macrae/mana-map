@@ -669,6 +669,19 @@ def split_printing(text):
             "collector_number": m.group(2), "foil": foil}
 
 
+def deck_purpose(slug):
+    """`brief.json`'s `purpose` ("teaching"), or None for every other deck.
+
+    A teaching deck is real cardboard the pilot still tunes, and it is not in the
+    fleet: it sits on its own rack and is never told to get a paper lock. One read,
+    so the manifest and `deck-info` cannot disagree about which decks those are.
+    """
+    path = deck_dir(slug) / "brief.json"
+    if not path.exists():
+        return None
+    return (load_json(path) or {}).get("purpose")
+
+
 def list_sha256(text):
     """THE algorithm. One definition, so the six cannot drift again."""
     return hashlib.sha256(text.encode("utf-8")).hexdigest()

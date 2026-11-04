@@ -5,7 +5,7 @@
  * is authored, in `deck_versions.json`'s `paper` block, and it arrives here
  * through `data/decks/index.json` as `locked`.
  *
- * Three racks, and the split is the whole point. SLEEVED decks are built in paper
+ * Three racks plus Teaching, and the split is the whole point. SLEEVED decks are built in paper
  * and sleeved; everything else is on the bench — build plans, broken-down lists,
  * decks being researched. A deck that exists only as JSON and a deck you can put
  * on a table are different objects, and the old picker (one line of text links)
@@ -191,7 +191,8 @@
      * thing you might finish tonight, four is a plan. Absent when the gate
      * could not be computed, which reads as "not known" and never as "zero". */
     var g = info && info.gates;
-    if (g && g.of) {
+    // A teaching deck climbs no ladder: it is finished cardboard, tuned in place.
+    if (g && g.of && !(e && e.purpose === 'teaching')) {
       out += chip(g.met + '/' + g.of + ' gates to ' + g.to,
                   g.met === g.of ? 'ok' : (g.of - g.met === 1 ? 'warn' : ''));
     }
@@ -782,6 +783,11 @@
      * a command having been run correctly to be right about cardboard. */
     var dead = decks.filter(function (e) { return e.status; });
     var living = decks.filter(function (e) { return !e.status; });
+    /* TEACHING IS ITS OWN SHELF (2026-11-03): real cardboard, tuned in place, not in the
+     * fleet. Lifted out here, so no other rack and no fleet table can show one. */
+    var teaching = living.filter(function (e) { return e.purpose === 'teaching'; });
+    var notTeaching = function (e) { return e.purpose !== 'teaching'; };
+    living = living.filter(notTeaching);
     var locked = living.filter(function (e) { return e.locked; });
 
     /* THE LADDER IS READ, NOT INVENTED. This line used to BE the definition of
@@ -816,7 +822,7 @@
 
     var html;
     if (state.view === 'table') {
-      html = toggle + fleetTable(decks, infos, state.sort, ratings);
+      html = toggle + fleetTable(decks.filter(notTeaching), infos, state.sort, ratings);
     } else {
       // WAITING ON CARDBOARD SITS ABOVE SLEEVED, because it is the only rack
       // that names something the pilot is blocked on rather than something they
@@ -837,6 +843,9 @@
                waiting, infos, false, ratings)
         + rack('Sleeved', 'Built in paper — you can play these tonight.',
                locked, infos, false, ratings)
+        + rack('Teaching', 'Decks for teaching newcomers, played against each other. Not part of '
+               + 'the fleet, and tuned in place as games teach you what is not working.',
+               teaching, infos, false, ratings)
         + rack('On the bench', 'Lists, build plans and decks under research. Nothing here is '
                + 'sleeved yet.', live, infos, false, ratings)
         + rack('Brewing', 'Fresh builds in dev. Optimised for throughput, not rigour \u2014 '

@@ -218,7 +218,7 @@ def test_consumed_names_exactly_what_the_builder_reads():
                      (build_deck.load_brief, build_deck.resolve_pool,
                       build_deck.role_budget_for, build_deck.build,
                       build_deck.deck_printings))
-    for key in CONSUMED - {"format"}:            # `format` is read by serve.py
+    for key in CONSUMED - {"format", "purpose"}:            # `format` is read by serve.py
         assert f'"{key}"' in source or f"'{key}'" in source, key
 
     for key in INERT:

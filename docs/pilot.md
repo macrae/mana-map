@@ -1640,6 +1640,13 @@ does not know shipping, fees or packages: `POST /buyer/optimizer` needs a key de
 spec implies (401 anonymously, 2026-11-03), and the bench holds no token and places no order.
 Stock covers a printing across finishes, so a foil line can read in stock on non-foil copies.
 
+**Teaching decks (`brief.json` `"purpose": "teaching"`; 2026-11-03).** The five teach decks are
+cardboard the pilot still tunes, and they are not the fleet. The key (validated: `PURPOSES`, one
+value) puts a deck on the workbench's Teaching rack and takes it out of every other rack and the
+Fleet table, and `deck-info` stops asking for a paper lock, because a lock would send each tweak
+through a branch. They stay on their rung, edited in place with `edit` / `undo` / `save-version`;
+`regen` bootstraps nothing for them. No rating, DeckCheck or handbook until the pilot says.
+
 ### 60-card formats — what runs, what is skipped, and why (2026-10-09)
 
 A deck is Commander unless it says otherwise. `formats.for_deck(slug)` is THE resolver —

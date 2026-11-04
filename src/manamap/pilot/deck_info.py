@@ -63,6 +63,11 @@ from manamap.sim.experiment import list_all as experiments_of
 from manamap.sim.forge import list_runs as sim_runs
 
 
+def _common_purpose(slug):
+    from manamap.pilot import common
+    return common.deck_purpose(slug)
+
+
 def _pct(x):
     return None if x is None else round(100 * float(x))
 
@@ -861,7 +866,9 @@ def _next(info, today=None):
     # sleeved; a dead `status` means it demonstrably is not; and ABSENT means
     # nobody has said either way — which is most decks, and is the state every
     # build plan sits in. Only the first earns "go and play it".
-    unknown = not closed and not info.get("paper")
+    # A TEACHING DECK IS ASKED NOTHING (2026-11-03): it is sleeved AND edited in place,
+    # and a paper lock would send every tweak through a branch.
+    unknown = not closed and not info.get("paper") and _common_purpose(slug) != "teaching"
     if unknown:
         nxt.append(f"not marked as built in paper — if it is sleeved, "
                    f"`deck-version {slug} paper --note \"…\"` locks the list you hold "
