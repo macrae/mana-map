@@ -116,7 +116,10 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Concentrate"
+            "name": "Boros Signet"
+          },
+          {
+            "name": "Cathartic Reunion"
           },
           {
             "name": "Well of Lost Dreams"
@@ -127,28 +130,42 @@
         "free": [],
         "box": [
           {
+            "name": "Mind Stone",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
             "name": "Rush of Knowledge",
             "where": [
               "Mystery Booster 2"
             ]
+          },
+          {
+            "name": "Thought Vessel",
+            "where": [
+              "Mystery Booster 2",
+              "Zur Parts"
+            ]
           }
         ],
-        "blocking": 2,
+        "blocking": 3,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 95,
-        "box": 1,
+        "in_deck": 92,
+        "box": 3,
         "elsewhere": 0,
-        "buy": 2,
+        "buy": 3,
         "free": 0
       },
       "unsourced": [
-        "Concentrate",
+        "Boros Signet",
+        "Cathartic Reunion",
         "Well of Lost Dreams"
       ],
       "mergeable": false,
@@ -211,6 +228,13 @@
           "is_new": false
         },
         {
+          "name": "Boros Signet",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Brallin, Skyshark Rider",
           "state": "in_deck",
           "where": [],
@@ -223,6 +247,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Cathartic Reunion",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Chaos Warp",
@@ -265,13 +296,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Concentrate",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Consecrated Sphinx",
@@ -470,13 +494,6 @@
           "is_new": false
         },
         {
-          "name": "Ledger Shredder",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Lightning Greaves",
           "state": "in_deck",
           "where": [],
@@ -485,13 +502,6 @@
         },
         {
           "name": "Loran's Escape",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magmakin Artillerist",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -524,6 +534,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Mind Stone",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -611,13 +633,6 @@
         },
         {
           "name": "Riverpyre Verge",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Robe of Stars",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -797,6 +812,22 @@
           "is_new": false
         },
         {
+          "name": "Thought Vessel",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Thundering Falls",
           "state": "in_deck",
           "where": [],
@@ -855,72 +886,77 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 5,
-        "fell": 4,
-        "no_call": 7
+        "rose": 8,
+        "fell": 2,
+        "no_call": 6
       },
       "measured": true,
-      "blind_spots": null,
+      "blind_spots": [
+        "Ledger Shredder",
+        "Magmakin Artillerist",
+        "Robe of Stars"
+      ],
       "impact": {
         "state": "no objective",
         "rose": [
           "damage @T10",
-          "stall, 2 in a row",
+          "killed by T6",
+          "killed by T10",
           "extra cards by T8",
-          "finisher wheel by T8",
-          "wheels cast by T10"
+          "interaction affordable @T6",
+          "kept hand passes the pilot's keep rule",
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
         ],
         "fell": [
-          "board power @T6",
-          "killed by T10",
-          "hand can act by T3",
-          "dead wheels in hand @T5"
+          "stall, 2 in a row",
+          "missed drop by T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 8.7229,
+            "delta": 15.4578,
             "ci95_diff": [
-              7.8588,
-              9.587
+              14.173,
+              16.7426
             ],
-            "mde": 1.2351,
+            "mde": 1.8365,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0031,
+            "delta": 0.0055,
             "ci95_diff": [
-              -0.0044,
-              -0.0018
+              0.0038,
+              0.0072
             ],
-            "mde": 0.0019,
-            "verdict": "worse",
+            "mde": 0.0025,
+            "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0333,
+            "delta": 0.0087,
             "ci95_diff": [
-              -0.0529,
-              -0.0137
+              -0.0206,
+              0.038
             ],
-            "mde": 0.028,
-            "verdict": "worse",
+            "mde": 0.0419,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.8403,
+            "delta": 1.5129,
             "ci95_diff": [
-              0.7322,
-              0.9484
+              1.356,
+              1.6698
             ],
-            "mde": 0.1545,
+            "mde": 0.2243,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -15908,7 +15944,7 @@
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "branch `draw-engine-v1` needs 2 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
+    "branch `draw-engine-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
