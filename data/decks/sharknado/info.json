@@ -122,10 +122,27 @@
             "name": "Cathartic Reunion"
           },
           {
+            "name": "Heartwarming Redemption"
+          },
+          {
+            "name": "Mind Spring"
+          },
+          {
+            "name": "Shattered Perception"
+          },
+          {
             "name": "Well of Lost Dreams"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Reliquary Tower",
+            "where": [
+              "goblin-storm",
+              "heliod"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
@@ -149,23 +166,27 @@
             ]
           }
         ],
-        "blocking": 3,
+        "blocking": 7,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 10,
+      "out": 10,
       "counts": {
-        "in_deck": 92,
+        "in_deck": 88,
         "box": 3,
-        "elsewhere": 0,
-        "buy": 3,
+        "elsewhere": 1,
+        "buy": 6,
         "free": 0
       },
       "unsourced": [
         "Boros Signet",
         "Cathartic Reunion",
+        "Heartwarming Redemption",
+        "Mind Spring",
+        "Reliquary Tower",
+        "Shattered Perception",
         "Well of Lost Dreams"
       ],
       "mergeable": false,
@@ -319,13 +340,6 @@
           "is_new": false
         },
         {
-          "name": "Faithless Looting",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Fateful Showdown",
           "state": "in_deck",
           "where": [],
@@ -410,6 +424,13 @@
           "is_new": false
         },
         {
+          "name": "Heartwarming Redemption",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Hengegate Pathway // Mistgate Pathway",
           "state": "in_deck",
           "where": [],
@@ -432,13 +453,6 @@
         },
         {
           "name": "Inspiring Vantage",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Inti, Seneschal of the Sun",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -536,6 +550,13 @@
           "is_new": false
         },
         {
+          "name": "Mind Spring",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Mind Stone",
           "state": "box",
           "where": [
@@ -609,6 +630,28 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Reliquary Tower",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Rhystic Study",
@@ -686,6 +729,13 @@
           "is_new": false
         },
         {
+          "name": "Shattered Perception",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Shivan Reef",
           "state": "in_deck",
           "where": [],
@@ -736,13 +786,6 @@
         },
         {
           "name": "Steam Vents",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Stoneforge Mystic",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -849,13 +892,6 @@
           "is_new": false
         },
         {
-          "name": "Training Center",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Well of Lost Dreams",
           "state": "buy",
           "where": [],
@@ -886,77 +922,79 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 8,
-        "fell": 2,
+        "rose": 7,
+        "fell": 3,
         "no_call": 6
       },
       "measured": true,
       "blind_spots": [
         "Ledger Shredder",
         "Magmakin Artillerist",
-        "Robe of Stars"
+        "Reliquary Tower",
+        "Robe of Stars",
+        "Training Center"
       ],
       "impact": {
         "state": "no objective",
         "rose": [
+          "hoard @T10",
           "damage @T10",
           "killed by T6",
           "killed by T10",
           "extra cards by T8",
-          "interaction affordable @T6",
-          "kept hand passes the pilot's keep rule",
-          "wheels cast by T10",
-          "dead wheels in hand @T5"
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "fell": [
-          "stall, 2 in a row",
-          "missed drop by T5"
+          "board power @T6",
+          "hand can act by T3",
+          "kept hand passes the pilot's keep rule"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 15.4578,
+            "delta": 32.827,
             "ci95_diff": [
-              14.173,
-              16.7426
+              30.9712,
+              34.6828
             ],
-            "mde": 1.8365,
+            "mde": 2.6526,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0055,
+            "delta": 0.006,
             "ci95_diff": [
-              0.0038,
-              0.0072
+              0.0039,
+              0.0081
             ],
-            "mde": 0.0025,
+            "mde": 0.003,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0087,
+            "delta": -0.3514,
             "ci95_diff": [
-              -0.0206,
-              0.038
+              -0.3884,
+              -0.3144
             ],
-            "mde": 0.0419,
-            "verdict": "noise",
+            "mde": 0.0529,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 1.5129,
+            "delta": 3.3134,
             "ci95_diff": [
-              1.356,
-              1.6698
+              3.11,
+              3.5168
             ],
-            "mde": 0.2243,
+            "mde": 0.2908,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -14793,50 +14831,50 @@
           "n": 10000
         },
         "5": {
-          "rate": 0.7236,
+          "rate": 0.7238,
           "ci95": [
-            0.7147,
-            0.7323
+            0.715,
+            0.7325
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7765,
+          "rate": 0.7774,
           "ci95": [
-            0.7682,
-            0.7846
+            0.7691,
+            0.7854
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8221,
+          "rate": 0.824,
           "ci95": [
-            0.8145,
-            0.8295
+            0.8164,
+            0.8313
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.8586,
+          "rate": 0.861,
           "ci95": [
-            0.8516,
-            0.8653
+            0.8541,
+            0.8676
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.8888,
+          "rate": 0.8916,
           "ci95": [
-            0.8825,
-            0.8948
+            0.8854,
+            0.8975
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9117,
+          "rate": 0.9141,
           "ci95": [
-            0.906,
-            0.9171
+            0.9084,
+            0.9194
           ],
           "n": 10000
         }
@@ -14867,58 +14905,58 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.2358,
+          "rate": 0.236,
           "ci95": [
-            0.2276,
-            0.2442
+            0.2278,
+            0.2444
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.3165,
+          "rate": 0.3171,
           "ci95": [
-            0.3075,
-            0.3257
+            0.3081,
+            0.3263
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.4181,
+          "rate": 0.4203,
           "ci95": [
-            0.4085,
-            0.4278
+            0.4107,
+            0.43
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.5146,
+          "rate": 0.5199,
           "ci95": [
-            0.5048,
-            0.5244
+            0.5101,
+            0.5297
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.5959,
+          "rate": 0.6067,
           "ci95": [
-            0.5862,
-            0.6055
+            0.5971,
+            0.6162
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.6658,
+          "rate": 0.6811,
           "ci95": [
-            0.6565,
-            0.675
+            0.6719,
+            0.6902
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.7274,
+          "rate": 0.7426,
           "ci95": [
-            0.7186,
-            0.736
+            0.7339,
+            0.7511
           ],
           "n": 10000
         }
@@ -14971,127 +15009,127 @@
           "n": 10000
         },
         "5": {
-          "rate": 0.0061,
+          "rate": 0.0059,
           "ci95": [
-            0.0048,
-            0.0078
+            0.0046,
+            0.0076
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0222,
+          "rate": 0.0208,
           "ci95": [
-            0.0195,
-            0.0253
+            0.0182,
+            0.0238
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0487,
+          "rate": 0.0447,
           "ci95": [
-            0.0447,
-            0.0531
+            0.0408,
+            0.0489
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0819,
+          "rate": 0.0737,
           "ci95": [
-            0.0767,
-            0.0874
+            0.0687,
+            0.079
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1103,
+          "rate": 0.096,
           "ci95": [
-            0.1043,
-            0.1166
+            0.0904,
+            0.1019
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1334,
+          "rate": 0.117,
           "ci95": [
-            0.1269,
-            0.1402
+            0.1108,
+            0.1234
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1117,
+        "rate": 0.1002,
         "ci95": [
-          0.1057,
-          0.118
+          0.0945,
+          0.1062
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5244,
-        "hand_empty": 1568,
-        "mana_short": 3676
+        "stall_turns": 4799,
+        "hand_empty": 1409,
+        "mana_short": 3390
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 3743,
-        "hand_empty": 1541,
-        "mana_short": 2202,
+        "stall_turns": 3314,
+        "hand_empty": 1383,
+        "mana_short": 1931,
         "stall_rate": {
-          "rate": 0.0936,
+          "rate": 0.0828,
           "ci95": [
-            0.0908,
-            0.0965
+            0.0802,
+            0.0856
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
           "floor_rate": 0.0025,
-          "diff": 0.0911,
+          "diff": 0.0803,
           "ci95": [
-            0.088,
-            0.0941
+            0.0774,
+            0.0832
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 4.5249,
+            "rate": 4.6334,
             "ci95": [
-              4.489,
-              4.5608
+              4.5975,
+              4.6693
             ],
-            "sd": 1.8293,
+            "sd": 1.8304,
             "n": 10000
           },
           "8": {
-            "rate": 4.2499,
+            "rate": 4.4063,
             "ci95": [
-              4.2096,
-              4.2902
+              4.366,
+              4.4466
             ],
-            "sd": 2.0572,
+            "sd": 2.0584,
             "n": 10000
           },
           "9": {
-            "rate": 4.1078,
+            "rate": 4.3196,
             "ci95": [
-              4.0641,
-              4.1515
+              4.2759,
+              4.3633
             ],
-            "sd": 2.2297,
+            "sd": 2.2281,
             "n": 10000
           },
           "10": {
-            "rate": 4.0282,
+            "rate": 4.28,
             "ci95": [
-              3.9819,
-              4.0745
+              4.2337,
+              4.3263
             ],
-            "sd": 2.3625,
+            "sd": 2.3602,
             "n": 10000
           }
         },
@@ -15108,7 +15146,7 @@
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1803,
+      "missed_land_drop_rate": 0.1777,
       "mulliganed": {
         "rate": 0.2118,
         "ci95": [
@@ -15123,11 +15161,11 @@
         "3": 3.506,
         "4": 4.391,
         "5": 5.192,
-        "6": 6.027,
-        "7": 7.025,
-        "8": 8.125,
-        "9": 9.204,
-        "10": 10.28
+        "6": 6.028,
+        "7": 7.029,
+        "8": 8.142,
+        "9": 9.243,
+        "10": 10.35
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
@@ -15354,7 +15392,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)": {
-          "value": 45,
+          "value": 46,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)' by turn six",
@@ -15434,15 +15472,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 10.298,
+            "10": 10.373,
             "2": 2.146,
             "3": 3.493,
             "4": 4.383,
             "5": 5.183,
-            "6": 6.027,
-            "7": 7.017,
-            "8": 8.121,
-            "9": 9.196
+            "6": 6.028,
+            "7": 7.021,
+            "8": 8.139,
+            "9": 9.237
           },
           "tier": "data",
           "weight": "detail",
@@ -15453,15 +15491,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.771,
+            "10": 0.781,
             "2": 0.996,
             "3": 0.903,
             "4": 0.799,
-            "5": 0.699,
+            "5": 0.7,
             "6": 0.704,
-            "7": 0.757,
-            "8": 0.785,
-            "9": 0.78
+            "7": 0.759,
+            "8": 0.791,
+            "9": 0.787
           },
           "tier": "data",
           "weight": "detail",
@@ -15472,15 +15510,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.056,
-            "10": 3.961,
+            "10": 4.046,
             "2": 0.309,
             "3": 0.595,
             "4": 0.734,
-            "5": 1.045,
-            "6": 1.564,
-            "7": 2.146,
-            "8": 2.742,
-            "9": 3.339
+            "5": 1.046,
+            "6": 1.565,
+            "7": 2.152,
+            "8": 2.764,
+            "9": 3.385
           },
           "tier": "data",
           "weight": "detail",
@@ -15506,13 +15544,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 149,
+            "10": 145,
             "4": 1,
-            "5": 445,
-            "6": 2751,
-            "7": 4284,
-            "8": 1698,
-            "9": 512
+            "5": 448,
+            "6": 2769,
+            "7": 4289,
+            "8": 1687,
+            "9": 502
           },
           "tier": "data",
           "weight": "detail",
@@ -15573,33 +15611,33 @@
       },
       {
         "label": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
-        "by_turn_6_pct": 45
+        "by_turn_6_pct": 46
       }
     ],
     "combat": {
-      "mean_kill_turn": 6.952,
+      "mean_kill_turn": 6.945,
       "median_kill_turn": 7,
       "kill_by_turn_6_pct": 32,
       "kill_by_turn_8_pct": 92,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 2,
       "kill_turn_histogram": {
-        "10": 149,
+        "10": 145,
         "4": 1,
-        "5": 445,
-        "6": 2751,
-        "7": 4284,
-        "8": 1698,
-        "9": 512
+        "5": 448,
+        "6": 2769,
+        "7": 4289,
+        "8": 1687,
+        "9": 502
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.7236,
+    "rate": 0.7238,
     "ci95": [
-      0.7147,
-      0.7323
+      0.715,
+      0.7325
     ],
     "n": 10000,
     "turn": 5,
@@ -15944,7 +15982,7 @@
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "branch `draw-engine-v1` needs 3 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
+    "branch `draw-engine-v1` needs 7 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"

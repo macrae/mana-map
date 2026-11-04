@@ -1,7 +1,7 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "11cf0f759f524b6e6151ae5823b9900f9a1759d84df9788e64a55a7226719e47",
-  "model_version": "104daf6331bc",
+  "decklist_sha256": "54acbc9802d3bc9cac13695b726965a176cfad058f6f76d2caa306e9b8ab5d9e",
+  "model_version": "b844247957fd",
   "lands": {
     "total": 36,
     "entries": 34,
@@ -9,13 +9,13 @@
       "recurring_per_tap_cycle": 7,
       "one_time_on_entry": 6
     },
-    "enters_tapped": 16,
+    "enters_tapped": 15,
     "enters_tapped_always": 4,
     "classes": {
       "basic": 3,
       "fixing": 5,
       "mdfc": 3,
-      "tapped": 16,
+      "tapped": 15,
       "untapped-dual": 15,
       "utility": 11
     },
@@ -232,6 +232,12 @@
         ]
       },
       {
+        "name": "Reliquary Tower",
+        "copies": 1,
+        "classes": [],
+        "produces": []
+      },
+      {
         "name": "Riverglide Pathway // Lavaglide Pathway",
         "copies": 1,
         "classes": [
@@ -400,26 +406,15 @@
           "R",
           "U"
         ]
-      },
-      {
-        "name": "Training Center",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "U"
-        ]
       }
     ]
   },
   "sources": {
     "lands": {
       "W": 20,
-      "U": 22,
+      "U": 21,
       "B": 0,
-      "R": 30,
+      "R": 29,
       "G": 0
     },
     "nonland": {
@@ -431,9 +426,9 @@
     },
     "total": {
       "W": 23,
-      "U": 26,
+      "U": 25,
       "B": 0,
-      "R": 34,
+      "R": 33,
       "G": 0
     },
     "gated": {
@@ -517,11 +512,11 @@
       "effective_pips": 2
     },
     "U": {
-      "total_pips": 28.0,
+      "total_pips": 30.0,
       "max_pips": 2,
-      "cards": 24,
+      "cards": 25,
       "earliest_turn": 1,
-      "effective_pips": 1
+      "effective_pips": 2
     },
     "W": {
       "total_pips": 17.0,
@@ -533,38 +528,38 @@
   },
   "shares": {
     "R": {
-      "pip_share": 0.451,
-      "source_share": 0.417
+      "pip_share": 0.44,
+      "source_share": 0.414
     },
     "U": {
-      "pip_share": 0.341,
-      "source_share": 0.306
+      "pip_share": 0.357,
+      "source_share": 0.3
     },
     "W": {
-      "pip_share": 0.207,
-      "source_share": 0.278
+      "pip_share": 0.202,
+      "source_share": 0.286
     }
   },
   "source_targets": {
     "R": 36,
-    "U": 22,
+    "U": 36,
     "W": 22
   },
   "on_curve_probability": {
     "lands_only": {
       "W": 0.881,
-      "U": 0.907,
-      "R": 0.822
+      "U": 0.61,
+      "R": 0.804
     },
     "with_rocks_and_dorks": {
       "W": 0.918,
-      "U": 0.944,
-      "R": 0.882
+      "U": 0.718,
+      "R": 0.869
     },
     "lands_only_ungated": {
       "W": 0.881,
-      "U": 0.907,
-      "R": 0.822
+      "U": 0.61,
+      "R": 0.804
     }
   },
   "ramp": {
@@ -574,27 +569,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.798,
+      "10": 0.841,
       "2": 0.996,
-      "3": 0.905,
-      "4": 0.784,
-      "5": 0.697,
-      "6": 0.707,
-      "7": 0.773,
-      "8": 0.8,
-      "9": 0.798
+      "3": 0.913,
+      "4": 0.788,
+      "5": 0.701,
+      "6": 0.72,
+      "7": 0.804,
+      "8": 0.834,
+      "9": 0.853
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 11.561,
-      "2": 2.147,
-      "3": 3.696,
+      "10": 12.047,
+      "2": 2.136,
+      "3": 3.692,
       "4": 4.6,
-      "5": 5.48,
-      "6": 6.465,
-      "7": 7.63,
-      "8": 8.912,
-      "9": 10.21
+      "5": 5.477,
+      "6": 6.473,
+      "7": 7.678,
+      "8": 9.07,
+      "9": 10.51
     }
   },
   "assumptions": [
@@ -604,8 +599,9 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
+    "R: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
+    "U: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 25.",
     "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
-    "16 of 36 lands enter tapped (44%) — over the one-in-three budget the deck builder allows itself."
+    "15 of 36 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

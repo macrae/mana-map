@@ -185,11 +185,11 @@ Goldfish, 10,000 seeded games, measured on v2.2.0 (V12), 2026-10-27. Each group 
 - Commander protection drawn — the whole engine is one 4-drop that dies to everything: **80%**
 - A real answer drawn — a counter, a sweeper or a tax: **84%**
 - A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **78%**
-- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **45%**
+- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **46%**
 - share of opening sevens the model would keep: **79%**
-- Engine online by turn 5: **72%** (95% CI 71%–73%) — exceptional
+- Engine online by turn 5: **72%** (95% CI 72%–73%) — exceptional
 - A win route assembled by turn 6: **42%** (95% CI 41%–43%)
-- A win route assembled by turn 8: **60%** (95% CI 59%–61%)
+- A win route assembled by turn 8: **61%** (95% CI 60%–62%)
 - Colour on curve (lands + rocks): W 91%, U 95%, R 88%
 - Forge (an optional probe, not a gate): last run 2026-10-25, 6/40 won (15% (95% CI 7%–29%)) on V9 — on an older list
 <!-- /ctx:gen numbers -->
