@@ -87,6 +87,9 @@ NOT_A_CHANNEL = {
     # all; the cards that PAY OFF a death are already covered by `sacrifice`
     # and `drain`, and a death payoff with no outlet is dark on those.
     "model_deaths": "gates a game event, not a casting channel",
+    # A RULE OF THE GAME (CR 514.1), not a card's channel: every deck has a cleanup step
+    # whether or not it declares one. Opt-in so a deck keeps its figures until it is re-read.
+    "model_hand_limit": "the cleanup step, a rule rather than a casting channel",
     # ONE CARD IN THE CORPUS EACH. Declared per deck rather than parsed,
     # because a commander ability only one card has is not a pattern — see
     # zur-enchantress, where modelling both of Zur's abilities took kill-by-t8
