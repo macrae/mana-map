@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Format:** Modern · G · 60 cards
-- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
+- **Version:** V2 · **status:** on the bench (bench)
 - **Colours:** G · **lands:** 16
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 6 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=elves) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=elves)
@@ -106,7 +106,7 @@ No games are logged for this deck yet, so there is nothing to recount. The first
 ## Change history
 
 <!-- ctx:gen history -->
-- **V2** (2026-10-11) — in: Collected Company, Elvish Archdruid, Elvish Visionary, Leaf-Crowned Visionary, Overrun, Triumph of the Hordes; out: Elvish Clancaller
+- **V2** (2026-11-04) — in: Collected Company, Elvish Archdruid, Elvish Visionary, Leaf-Crowned Visionary, Overrun, Triumph of the Hordes; out: Elvish Clancaller
 - **V1** (2026-10-09) — first list, 60 cards
 <!-- /ctx:gen history -->
 
