@@ -855,9 +855,9 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 4,
-        "fell": 4,
-        "no_call": 8
+        "rose": 5,
+        "fell": 5,
+        "no_call": 6
       },
       "measured": true,
       "blind_spots": null,
@@ -865,11 +865,13 @@
         "state": "no objective",
         "rose": [
           "damage @T10",
-          "board power @T6",
+          "stall, 2 in a row",
+          "extra cards by T8",
           "finisher wheel by T8",
           "wheels cast by T10"
         ],
         "fell": [
+          "board power @T6",
           "killed by T10",
           "missed drop by T5",
           "hand can act by T3",
@@ -878,49 +880,49 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 3.4224,
+            "delta": 13.5582,
             "ci95_diff": [
-              2.3467,
-              4.4981
+              12.2564,
+              14.86
             ],
-            "mde": 1.5376,
+            "mde": 1.8608,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0026,
+            "delta": -0.0032,
             "ci95_diff": [
-              -0.0038,
-              -0.0014
+              -0.0045,
+              -0.0019
             ],
-            "mde": 0.0017,
+            "mde": 0.0018,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0394,
+            "delta": -0.0475,
             "ci95_diff": [
-              0.02,
-              0.0588
+              -0.0668,
+              -0.0282
             ],
-            "mde": 0.0277,
-            "verdict": "better",
+            "mde": 0.0276,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.1327,
+            "delta": 1.0668,
             "ci95_diff": [
-              0.0012,
-              0.2642
+              0.9305,
+              1.2031
             ],
-            "mde": 0.188,
-            "verdict": "noise",
+            "mde": 0.1948,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           }
