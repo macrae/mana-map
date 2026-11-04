@@ -1,5 +1,7 @@
 """Tests for the deckbuilding role classifier (analysis/card_roles.py)."""
 
+import pytest
+import re
 import json
 
 import pandas as pd
@@ -250,3 +252,17 @@ class TestGeneratedRoles:
         assert "tutor:unrestricted" in roles["Demonic Tutor"]
         assert "removal:sweeper" in roles["Wrath of God"]
         assert "counterspell" in roles["Counterspell"]
+
+
+@pytest.mark.parametrize("text,wheel,burst", [
+    ("Each player discards their hand, then draws seven cards.", True, True),
+    ("Each player may discard their hand and draw cards equal to the greatest number.", True, False),
+    ("Each player shuffles their hand and graveyard into their library, then draws seven cards.", True, True),
+    # A shared draw: nothing leaves the hand, so a Temple Bell is not a Windfall.
+    ("{T}: Each player draws a card.", False, True),
+    ("{3}{U}: Each player draws a card.", False, True),
+])
+def test_a_wheel_takes_the_hand_away(text, wheel, burst):
+    from manamap import config
+    assert bool(re.search(config.ROLE_PATTERNS["draw:wheel"], text, re.I)) is wheel, text
+    assert bool(re.search(config.ROLE_PATTERNS["draw:burst"], text, re.I)) is burst, text

@@ -535,7 +535,8 @@ CARD_ROLES_PATH = DATA_DIR / "card_roles.json"
 ROLE_PATTERNS = {
     # Card advantage
     "draw:engine": r"(?:whenever|at the beginning of).{0,80}?draws? (?:a |two |three |\d+ )?cards?",
-    "draw:burst": r"draws? (?:two|three|four|five|six|seven|\d+) cards",
+    # "each player draws" is a shared draw, not a wheel: nothing leaves the hand.
+    "draw:burst": r"draws? (?:two|three|four|five|six|seven|\d+) cards|each player draws",
     "draw:impulse": r"exile the top (?:\w+ )?cards?.{0,60}?(?:you may (?:play|cast)|until)",
     # Selection plus a replacement — Ponder, Opt, Preordain. Not card advantage
     # and not an engine: a cantrip smooths a draw step, which is a different job
@@ -544,7 +545,13 @@ ROLE_PATTERNS = {
         r"(?:scry \d+|surveil \d+|look at the top [\w\s]{0,30}? of your library)"
         r"[\w\s,.—]{0,80}?draws? a card"
     ),
-    "draw:wheel": r"discards? (?:their|your) hand.{0,60}?draws?|each player draws",
+    # A WHEEL TAKES THE HAND AWAY: discards it, or shuffles it back. "each player draws"
+    # also matched 42 cards that only share a draw (Temple Bell, Prosperity, Faerie
+    # Mastermind's activation); those moved to `draw:burst`, swept 2026-11-04.
+    "draw:wheel": (
+        r"discards? (?:their|your) hand.{0,60}?draws?"
+        r"|each player shuffles.{0,40}?hand.{0,160}?draws?"
+    ),
     # Interaction
     # "exile all" must be scoped to permanents: Demonic Consultation says
     # "exile all cards from your library named that card" and is a tutor, not a
