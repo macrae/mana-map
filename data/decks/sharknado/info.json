@@ -116,9 +116,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Boros Signet"
-          },
-          {
             "name": "Borrowed Knowledge"
           },
           {
@@ -145,6 +142,20 @@
         ],
         "unsleeve": [
           {
+            "name": "Arid Mesa",
+            "where": [
+              "edgar-vampires",
+              "gishath",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Flooded Strand",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
             "name": "Gleaming Splendor",
             "where": [
               "heliod"
@@ -164,16 +175,35 @@
             ]
           },
           {
-            "name": "Reliquary Tower",
+            "name": "Scalding Tarn",
             "where": [
-              "goblin-storm",
-              "heliod"
+              "ur-dragon"
             ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Polluted Delta",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [
+          {
+            "name": "Exotic Orchard",
+            "where": [
+              "Auntie Ool",
+              "Shabraz Parts"
+            ]
+          },
+          {
+            "name": "Ferrous Lake",
+            "where": [
+              "Shabraz Parts"
+            ]
+          },
           {
             "name": "Mind Stone",
             "where": [
@@ -193,6 +223,12 @@
             ]
           },
           {
+            "name": "Talisman of Progress",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
             "name": "Thought Vessel",
             "where": [
               "Mystery Booster 2",
@@ -200,37 +236,38 @@
             ]
           }
         ],
-        "blocking": 13,
+        "blocking": 14,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 17,
-      "out": 17,
+      "add": 22,
+      "out": 22,
       "counts": {
-        "in_deck": 81,
-        "box": 4,
-        "elsewhere": 4,
-        "buy": 9,
-        "free": 0
+        "in_deck": 78,
+        "box": 7,
+        "elsewhere": 6,
+        "buy": 8,
+        "free": 1
       },
       "unsourced": [
-        "Boros Signet",
+        "Arid Mesa",
         "Borrowed Knowledge",
         "Cathartic Reunion",
+        "Flooded Strand",
         "Gleaming Splendor",
         "Heartwarming Redemption",
         "Magus of the Wheel",
         "Mind Spring",
         "Prosperity",
         "Psychosis Crawler",
-        "Reliquary Tower",
+        "Scalding Tarn",
         "Shattered Perception",
         "Xorn",
         "Zirda, the Dawnwaker"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -252,6 +289,42 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Arid Mesa",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -280,13 +353,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Boros Signet",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Borrowed Knowledge",
@@ -345,13 +411,6 @@
           "is_new": false
         },
         {
-          "name": "Command Beacon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Command Tower",
           "state": "in_deck",
           "where": [],
@@ -371,6 +430,22 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -394,6 +469,18 @@
           "is_new": false
         },
         {
+          "name": "Ferrous Lake",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Fiery Emancipation",
           "state": "in_deck",
           "where": [],
@@ -413,6 +500,28 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Flooded Strand",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -452,13 +561,6 @@
         },
         {
           "name": "Glint-Horn Buccaneer",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Glittering Massif",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -643,6 +745,21 @@
           "is_new": false
         },
         {
+          "name": "Polluted Delta",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
+        },
+        {
           "name": "Prismari Command",
           "state": "in_deck",
           "where": [],
@@ -708,28 +825,6 @@
           "is_new": false
         },
         {
-          "name": "Reliquary Tower",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "goblin-storm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Rhystic Study",
           "state": "in_deck",
           "where": [],
@@ -784,6 +879,28 @@
           "is_new": false
         },
         {
+          "name": "Scalding Tarn",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Sea of Clouds",
           "state": "in_deck",
           "where": [],
@@ -827,13 +944,6 @@
         },
         {
           "name": "Sol Ring",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Spectator Seating",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -889,13 +999,6 @@
           "is_new": false
         },
         {
-          "name": "Sundown Pass",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Swords to Plowshares",
           "state": "in_deck",
           "where": [],
@@ -908,6 +1011,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Talisman of Progress",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Teferi's Ageless Insight",
@@ -961,6 +1076,13 @@
           "is_new": false
         },
         {
+          "name": "Training Center",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Wheel of Fortune",
           "state": "in_deck",
           "where": [],
@@ -991,30 +1113,38 @@
       ],
       "has_cards": true,
       "summary": {
-        "title": "The contender: steady draw, Tithe loops and more wheels",
-        "blurb": "The draw engine plus the combo package: pure draw, cheap rocks and one-sided wheels, with three-card Smothering Tithe loops that turn the table's draws into mana and damage. Open for the pilot to read and play before anything merges.",
+        "title": "The contender: steady draw, Tithe loops, more wheels and tightened mana",
+        "blurb": "Adds steady draw, loops through Smothering Tithe and more wheels, then retunes the lands and a rock so all three colours are castable on curve from what the deck draws.",
         "by": "jarvis",
-        "at": "2026-11-04"
+        "at": "2026-11-05"
       },
       "verdict": {
         "state": "no objective",
         "rose": 10,
-        "fell": 4,
-        "no_call": 2
+        "fell": 2,
+        "no_call": 4
       },
       "measured": true,
       "blind_spots": [
+        "Arid Mesa",
         "Artist's Talent",
+        "Command Beacon",
+        "Exotic Orchard",
+        "Ferrous Lake",
+        "Flooded Strand",
+        "Glittering Massif",
         "Izzet Charm",
         "Jeskai Ascendancy",
         "Ledger Shredder",
         "Magmakin Artillerist",
         "March of Swirling Mist",
         "Mystic Remora",
+        "Polluted Delta",
         "Psychosis Crawler",
-        "Reliquary Tower",
         "Robe of Stars",
-        "Training Center"
+        "Scalding Tarn",
+        "Spectator Seating",
+        "Sundown Pass"
       ],
       "impact": {
         "state": "no objective",
@@ -1031,56 +1161,54 @@
           "wheels cast by T10"
         ],
         "fell": [
-          "missed drop by T5",
           "hand can act by T3",
-          "kept hand passes the pilot's keep rule",
-          "dead wheels in hand @T5"
+          "kept hand passes the pilot's keep rule"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 105.2805,
+            "delta": 101.5521,
             "ci95_diff": [
-              98.3534,
-              112.2076
+              93.6073,
+              109.4969
             ],
-            "mde": 9.9015,
+            "mde": 11.3561,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0056,
+            "delta": 0.0064,
             "ci95_diff": [
-              0.0034,
-              0.0078
+              0.0037,
+              0.0091
             ],
-            "mde": 0.0031,
+            "mde": 0.0039,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 1.7385,
+            "delta": 1.8674,
             "ci95_diff": [
-              1.6005,
-              1.8765
+              1.65,
+              2.0848
             ],
-            "mde": 0.1973,
+            "mde": 0.3108,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 3.3104,
+            "delta": 3.2796,
             "ci95_diff": [
-              3.0836,
-              3.5372
+              2.9799,
+              3.5793
             ],
-            "mde": 0.3242,
+            "mde": 0.4283,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -1088,12 +1216,12 @@
         ]
       },
       "cast_proofs": {
-        "played": 14,
+        "played": 12,
         "held": 0,
         "unplayed": 2,
         "as_of": "2026-11-05",
         "harness": {
-          "overrides": "c897a28dd05b",
+          "overrides": "3e55deaadb82",
           "patches": "9473cf359146",
           "forge": {
             "version": "2.0.14",
@@ -16073,8 +16201,8 @@
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "branch `draw-engine-v1`: 2 HELD add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch draw-engine-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `draw-engine-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
+    "branch `draw-engine-v1`: 2 HELD, 2 cast-late add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch draw-engine-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `draw-engine-v1` needs 14 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"

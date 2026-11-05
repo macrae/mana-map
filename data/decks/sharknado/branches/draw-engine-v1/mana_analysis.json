@@ -1,23 +1,24 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "7be5e01d4c44f84ede4ae1d79613dbcb03721aaed383b0ebe907ab6dd70dc186",
+  "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
   "model_version": "0a80d704fd6a",
   "lands": {
     "total": 36,
-    "entries": 34,
+    "entries": 36,
     "life": {
       "recurring_per_tap_cycle": 7,
-      "one_time_on_entry": 6
+      "one_time_on_entry": 10
     },
-    "enters_tapped": 15,
-    "enters_tapped_always": 4,
+    "enters_tapped": 13,
+    "enters_tapped_always": 3,
     "classes": {
-      "basic": 3,
-      "fixing": 5,
+      "basic": 1,
+      "fetch": 4,
+      "fixing": 6,
       "mdfc": 3,
-      "tapped": 15,
-      "untapped-dual": 15,
-      "utility": 11
+      "tapped": 13,
+      "untapped-dual": 17,
+      "utility": 13
     },
     "list": [
       {
@@ -28,6 +29,19 @@
           "utility"
         ],
         "produces": [
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Arid Mesa",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "R",
           "U",
           "W"
         ]
@@ -70,14 +84,6 @@
         ]
       },
       {
-        "name": "Command Beacon",
-        "copies": 1,
-        "classes": [
-          "utility"
-        ],
-        "produces": []
-      },
-      {
         "name": "Command Tower",
         "copies": 1,
         "classes": [
@@ -91,6 +97,30 @@
         ]
       },
       {
+        "name": "Exotic Orchard",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "Ferrous Lake",
+        "copies": 1,
+        "classes": [
+          "untapped-dual"
+        ],
+        "produces": [
+          "R",
+          "U"
+        ]
+      },
+      {
         "name": "Fiery Islet",
         "copies": 1,
         "classes": [
@@ -100,6 +130,19 @@
         "produces": [
           "R",
           "U"
+        ]
+      },
+      {
+        "name": "Flooded Strand",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "R",
+          "U",
+          "W"
         ]
       },
       {
@@ -123,18 +166,6 @@
         "produces": [
           "R",
           "U",
-          "W"
-        ]
-      },
-      {
-        "name": "Glittering Massif",
-        "copies": 1,
-        "classes": [
-          "tapped",
-          "utility"
-        ],
-        "produces": [
-          "R",
           "W"
         ]
       },
@@ -188,7 +219,7 @@
       },
       {
         "name": "Mountain",
-        "copies": 3,
+        "copies": 1,
         "classes": [
           "basic"
         ],
@@ -219,6 +250,19 @@
         ]
       },
       {
+        "name": "Polluted Delta",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Raugrin Triome",
         "copies": 1,
         "classes": [
@@ -230,12 +274,6 @@
           "U",
           "W"
         ]
-      },
-      {
-        "name": "Reliquary Tower",
-        "copies": 1,
-        "classes": [],
-        "produces": []
       },
       {
         "name": "Riverglide Pathway // Lavaglide Pathway",
@@ -283,6 +321,19 @@
         ]
       },
       {
+        "name": "Scalding Tarn",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Sea of Clouds",
         "copies": 1,
         "classes": [
@@ -303,17 +354,6 @@
         "produces": [
           "R",
           "U"
-        ]
-      },
-      {
-        "name": "Spectator Seating",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "R",
-          "W"
         ]
       },
       {
@@ -386,18 +426,18 @@
         ]
       },
       {
-        "name": "Sundown Pass",
+        "name": "Thundering Falls",
         "copies": 1,
         "classes": [
           "tapped"
         ],
         "produces": [
           "R",
-          "W"
+          "U"
         ]
       },
       {
-        "name": "Thundering Falls",
+        "name": "Training Center",
         "copies": 1,
         "classes": [
           "tapped"
@@ -411,29 +451,31 @@
   },
   "sources": {
     "lands": {
-      "W": 20,
-      "U": 21,
+      "W": 22,
+      "U": 28,
       "B": 0,
-      "R": 29,
+      "R": 31,
       "G": 0
     },
     "nonland": {
       "W": 3,
-      "U": 4,
+      "U": 5,
       "B": 0,
-      "R": 4,
+      "R": 3,
       "G": 0
     },
     "total": {
-      "W": 23,
-      "U": 25,
+      "W": 25,
+      "U": 33,
       "B": 0,
-      "R": 33,
+      "R": 34,
       "G": 0
     },
     "gated": {
-      "count": 0,
-      "names": [],
+      "count": 1,
+      "names": [
+        "Ferrous Lake"
+      ],
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
     },
     "producers": [
@@ -453,15 +495,6 @@
         "cmc": 2.0,
         "produces": [
           "U",
-          "W"
-        ]
-      },
-      {
-        "name": "Boros Signet",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
-        "produces": [
-          "R",
           "W"
         ]
       },
@@ -493,6 +526,15 @@
         "produces": [
           "R",
           "U"
+        ]
+      },
+      {
+        "name": "Talisman of Progress",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "U",
+          "W"
         ]
       },
       {
@@ -529,15 +571,15 @@
   "shares": {
     "R": {
       "pip_share": 0.463,
-      "source_share": 0.414
+      "source_share": 0.383
     },
     "U": {
       "pip_share": 0.317,
-      "source_share": 0.3
+      "source_share": 0.346
     },
     "W": {
       "pip_share": 0.22,
-      "source_share": 0.286
+      "source_share": 0.272
     }
   },
   "source_targets": {
@@ -547,19 +589,19 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.881,
-      "U": 0.61,
-      "R": 0.804
+      "W": 0.907,
+      "U": 0.785,
+      "R": 0.839
     },
     "with_rocks_and_dorks": {
-      "W": 0.918,
-      "U": 0.718,
-      "R": 0.869
+      "W": 0.936,
+      "U": 0.869,
+      "R": 0.882
     },
     "lands_only_ungated": {
-      "W": 0.881,
-      "U": 0.61,
-      "R": 0.804
+      "W": 0.907,
+      "U": 0.764,
+      "R": 0.822
     }
   },
   "ramp": {
@@ -569,27 +611,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.878,
-      "2": 0.996,
-      "3": 0.91,
-      "4": 0.81,
-      "5": 0.725,
-      "6": 0.71,
-      "7": 0.74,
-      "8": 0.801,
-      "9": 0.847
+      "10": 0.877,
+      "2": 0.997,
+      "3": 0.911,
+      "4": 0.807,
+      "5": 0.73,
+      "6": 0.717,
+      "7": 0.746,
+      "8": 0.792,
+      "9": 0.849
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 11.165,
-      "2": 2.135,
-      "3": 3.507,
-      "4": 4.404,
-      "5": 5.206,
-      "6": 6.144,
-      "7": 7.189,
-      "8": 8.374,
-      "9": 9.69
+      "10": 11.184,
+      "2": 2.146,
+      "3": 3.52,
+      "4": 4.409,
+      "5": 5.22,
+      "6": 6.164,
+      "7": 7.226,
+      "8": 8.399,
+      "9": 9.709
     }
   },
   "assumptions": [
@@ -599,9 +641,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
-    "U: 21 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 25.",
-    "W: 20 land sources against the 22 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 23.",
-    "15 of 36 lands enter tapped (42%) — over the one-in-three budget the deck builder allows itself."
+    "R: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
+    "U: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
+    "13 of 36 lands enter tapped (36%) — over the one-in-three budget the deck builder allows itself."
   ]
 }

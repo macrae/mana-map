@@ -192,6 +192,12 @@ KNOWN_FLAGGED = {
     # side (docs/gotchas-bench.md, "The sacrifice suite, activated").
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n20-da677689"
     "-s1664213641-podExperimental-c600-ov8bf04cfc-tlfe64c503.json",
+    # 2026-11-05, sharknado@draw-engine-v1, a 40-game screen at olivers-table-3p run with
+    # `--anyway`. Land ratio 0.831, beside 0.862 for the older list at this table: the
+    # AI cracks the new fetches, so this is not them, and at n=40 the gate carries no
+    # interval on the difference. Kept as the branch's one read at a table, a floor.
+    "araumi-edict-vs-teval-graveyard-n40-8f31c5f7"
+    "-s402403831-podExperimental-c600-ov3e55deaa-tl9473cf35.json",
 }
 
 
