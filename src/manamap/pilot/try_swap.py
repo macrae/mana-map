@@ -636,6 +636,7 @@ def preview(slug, ops, branch=None, goldfish=True, iterations=None, seed=None):
 
 
 def render(r):
+    from manamap.pilot import net_change
     L = []
     w = L.append
     where = r["slug"] + (f"@{r['branch']}" if r["branch"] else "")

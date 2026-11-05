@@ -226,7 +226,9 @@ def classify(card, pool=None):
             (_TUTOR_TO_BATTLEFIELD_RE.search(text).group(1) or "")
             if is_tutor_card and _TUTOR_TO_BATTLEFIELD_RE.search(text) else None),
         "treasure_n": 0 if is_land else treasure_profile(card)[0],
-        "treasure_trigger": None if is_land else treasure_profile(card)[1],
+        # A one-a-turn mode (Monument to Endurance) is paid by the discard channel, not here.
+        "treasure_trigger": None if is_land or event_payoffs(card)["per_discard_modes"]
+                            else treasure_profile(card)[1],
         # BLOOD, shaped exactly like Treasure beside it: `(count, trigger)`.
         # A LAND CAN MAKE BLOOD -- Voldaren Estate does, for {5} and a tap --
         # so this one is deliberately NOT gated on `is_land` the way Treasure

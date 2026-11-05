@@ -390,7 +390,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         """ONE DOOR FOR A STATIC REPLACEMENT ARRIVING: counter replacements
         (Lae'zel, Doubling Season) and damage replacements (Torbran). Called at
         every door a permanent enters by, the lesson `_register_wheel` records."""
-        nonlocal counter_plus, counter_times, activation_discount
+        nonlocal counter_plus, counter_times, activation_discount, end_step_wheels
         counter_plus += card["counter_mod"]["plus"]
         counter_times *= card["counter_mod"]["times"]
         # THE ENGINES THAT WORK ON A CAST OR AN EQUIP, and the doubler that came in through a
@@ -409,6 +409,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if _eng["loyalty_loot"]:
             loyalty_looters.append(_eng)
         activation_discount += _eng["activation_discount"]
+        end_step_wheels += bool(_eng["end_step_wheel"])
         if card["damage_bonus"]["amount"]:
             damage_bonuses.append((card["damage_bonus"]["amount"],
                                    card["damage_bonus"]["scope"]))
@@ -470,6 +471,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     discarded = 0
     discarded_by_turn = []
     drawn_this_turn = 0
+    # NARSET'S DRAWS (2026-11-04), made at the end step and paid at the next main phase's payoffs.
+    carried_draws = 0
+    end_step_wheels = 0
     event_payoff_permanents = []
     # WHEN EACH OF THOSE ARRIVED, index-aligned (2026-11-04). The payoffs are read at the end
     # of the main phase, on the whole turn's events, so a Smothering Tithe cast after that
@@ -3516,13 +3520,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # {X}{X}{U}{U} buys one card per two mana. Largest X first: with two in
         # hand the deck casts the one that draws more, and the second is left
         # for a later turn rather than cast for nothing.
+        # A SYMMETRIC X DRAW IS A DIFFERENT CARD (2026-11-04): Prosperity hands the table X each, so
+        # it waits for something that pays on their draws, and then those draws are paid for.
+        def _table_draws_pay():
+            return bool(any(_e["per_opponent_draw_damage"] or _e["per_opponent_draw_our_draw"]
+                            or _e["opponent_second_draw_our_draw"]
+                            for _e in event_payoff_permanents)
+                        or any(_r["trigger"] in ("opponent_draw_tax", "opponent_second_draw")
+                               for _r in treasure_engines))
+
         if model_draw:
             while True:
                 _avail = pool + treasures
                 _best, _bx = None, 0
                 for _c in hand:
                     _m = _c["draw"]["x_draw_multiplier"]
-                    if not _m:
+                    if not _m or (_c["draw"]["x_draw_each_player"] and not _table_draws_pay()):
                         continue
                     _x = (_avail - _c["cmc"]) // _m
                     if _x > _bx:
@@ -3534,6 +3547,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     break
                 _note_cast(_best)
                 draw_n(max(0, _bx - _best["draw"]["x_draw_discard"]))
+                if _best["draw"]["x_draw_each_player"]:
+                    opponent_draws_this_turn += _bx
+                    _tax_opponent_draws()
 
         # ── MANA INTO CARDS ─────────────────────────────────────────────
         #
@@ -3853,11 +3869,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _d0 = discarded - max(_t0_disc, _ar["disc"])
                     if _d0:
                         draw_n(_e["per_discard_draw"] * _d0)
+                # ONE MODE A DISCARD, EACH ONCE A TURN (Monument to Endurance): the card, then the
+                # Treasure, then the life loss, a stated order and no rng.
+                if _e["per_discard_modes"]:
+                    _d0 = discarded - max(_t0_disc, _ar["disc"])
+                    _modes = _e["per_discard_modes"]
+                    if _d0 >= 1 and _modes["draw"]:
+                        draw_n(1)
+                    if _d0 >= 2 and _modes["treasure"] and model_treasures:
+                        treasures += (1 + treasure_bonus) * treasure_multiplier
+                    if _d0 >= 3:
+                        _evt_by["life"] += _modes["life"]
             for _e, _ar in zip(list(event_payoff_permanents), list(event_arrivals)):
                 # WHAT HAS HAPPENED SINCE THIS PAYOFF ARRIVED, and only that.
                 _same = _ar["turn"] == turn
                 _disc_t = discarded - max(_t0_disc, _ar["disc"])
-                _drawn_t = drawn_this_turn - (_ar["drawn"] if _same else 0)
+                _drawn_t = drawn_this_turn - _ar["drawn"] if _same else drawn_this_turn + carried_draws
                 _opp_t = opponent_draws_this_turn - (_ar["opp"] if _same else 0)
                 _one_t = opponent_one_seat_draws - (_ar["one"] if _same else 0)
                 # +N PER DAMAGE INSTANCE (Torbran), before the multiplier. One
@@ -3922,6 +3949,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                          colors=_e["token_colors"])
                         bodies_cum += 1
         # THE MULTIPLIERS APPLY LAST, each to what it reaches.
+        carried_draws = 0
         _evt_dmg = sum(_n * _noncombat_mult(_kind) for _kind, _n in _evt_by.items())
         if _evt_dmg:
             opponent_life -= _evt_dmg
@@ -4677,6 +4705,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         for _rs in ritual_sources:          # ritual mana does not outlive its turn
             if _rs in sources:
                 sources.remove(_rs)
+        # NARSET'S END STEP (2026-11-04). After `discarded_by_turn` for the same reason as the hand
+        # limit below: a discard here pays next main phase, a turn late for a ping and in time
+        # for a counter's next swing. The draws are carried beside it. Taken when the turn cast
+        # at least as many spells as the hand holds, so it never loses cards. A floor: Rielle's
+        # first discard of the turn is not fired off it.
+        if end_step_wheels and model_draw and model_discard and spells_cast_this_turn \
+                and spells_cast_this_turn >= len(hand) and len(deck) > LIFE_CHAIN_LIBRARY_FLOOR:
+            _before = drawn_this_turn
+            discard_n(0, everything=True)
+            draw_n(spells_cast_this_turn)
+            carried_draws = drawn_this_turn - _before
         # THE HAND LIMIT. After `discarded_by_turn` is taken, so these discards pay Brallin
         # and friends NEXT turn: a turn late against a table, a floor. `discard_n`'s stated
         # policy picks them, spare lands first and then the most expensive.

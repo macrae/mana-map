@@ -358,6 +358,11 @@ _WHEEL_RE = re.compile(
     r"(?: and graveyard)?(?: into (?:their|your) librar(?:y|ies))?, then draws? "
     r"(seven|six|five|four|three|two|a|one|X|that many|cards equal to the greatest number)",
     re.I)
+#: A ONE-SIDED WHEEL THAT COUNTS AN OPPONENT'S HAND (2026-11-04): Borrowed Knowledge, whose other mode
+#: counts your own. "Cards equal to" never matched `_WHEEL_RE`, so it read as nothing at all. The
+#: pilot takes the bigger of the two, which `wheel_greatest` already says; only the caster draws.
+_WHEEL_OPP_HAND_RE = re.compile(
+    r"discard your hand, then draw cards equal to the number of cards in target opponent's hand", re.I)
 #: The LOOT rider on a spell's own draw: "Draw two cards, then discard two
 #: cards" (Faithless Looting). The X-path riders (`_X_DRAW_DISCARD_*`) do not
 #: match it -- they know "a card" and "X cards" -- so Looting read +2 and
@@ -428,6 +433,11 @@ _EVENT_THAT_MANY_COUNTERS_RE = re.compile(r"put that many \+1/\+1 counters on", 
 #: tapped Treasure token." The one corpus shape; a tapped Treasure is spendable next turn.
 _DISCARD_TYPED_TREASURE_RE = re.compile(
     r"whenever you discard an? ([A-Za-z, ]+?) card, create a tapped Treasure token", re.I)
+#: A DISCARD PAYOFF WITH ONE-A-TURN MODES (2026-11-04): Monument to Endurance. Its "Draw a card." read
+#: as a draw on EVERY discard, and its Treasure and life loss not at all.
+_DISCARD_MODES_RE = re.compile(
+    r"whenever you discard a card, choose one that hasn't been chosen this turn", re.I)
+_MODE_LIFE_RE = re.compile(r"each opponent loses (\d+) life", re.I)
 #: Cumulative upkeep {N}, read for a card whose payoff the model reads (Mystic Remora).
 _CUMULATIVE_UPKEEP_RE = re.compile(r"\bCumulative upkeep \{(\d+)\}", re.I)
 #: DAMAGE ON THEIR TURN, FROM A PERMANENT (2026-10-18). "At the beginning of each
@@ -987,7 +997,7 @@ def event_payoffs(card):
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
            "per_discard_batch": False, "per_discard_counter_batch": False,
-           "per_discard_typed_treasure": (), "cumulative_upkeep": 0,
+           "per_discard_typed_treasure": (), "cumulative_upkeep": 0, "per_discard_modes": None,
            "per_opponent_cast_noncreature": False,
            "per_draw_gain": 0, "per_discard_gain": 0, "token_colors": [],
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
@@ -1068,6 +1078,12 @@ def event_payoffs(card):
     if _dtt:
         out["per_discard_typed_treasure"] = tuple(
             w.strip() for w in re.split(r",|\bor\b", _dtt.group(1)) if w.strip())
+    if _DISCARD_MODES_RE.search(text):
+        _life = _MODE_LIFE_RE.search(text)
+        out["per_discard_draw"] = out["per_discard_damage"] = 0
+        out["per_discard_modes"] = {"draw": bool(re.search(r"\u2022 draw a card", text, re.I)),
+                                    "treasure": bool(re.search(r"\u2022 create a treasure", text, re.I)),
+                                    "life": int(_life.group(1)) if _life else 0}
     if hit and not any(v for k, v in out.items() if k != "unmodelled"):
         out["unmodelled"] = card.get("name")
     # READ LAST, so a card with the upkeep and no read payoff is not a payoff.
@@ -2075,6 +2091,8 @@ def draw_profile(card):
            "cast_draw": 0, "cast_draw_gate": None,
            "cast_draw_gate_mv": 0, "cast_draw_cost": 0,
            "x_draw_multiplier": 0, "x_draw_discard": 0,
+           # Prosperity, Fascination: the table draws X too (2026-11-04).
+           "x_draw_each_player": False,
            # A WHEEL: discard the hand, draw `wheel_draws` (-1 = as many as
            # were discarded). A LOOT: `spell_discard` cards leave hand after
            # the spell's own draw. Both are ACTED ON only under model_discard.
@@ -2138,6 +2156,8 @@ def draw_profile(card):
         out["wheel_symmetric"] = _w.group(0).lstrip(". \u2022").lower().startswith("each player")
         # Khorvath's Fury: "draws that many cards plus one".
         out["wheel_plus"] = 1 if re.match(r" cards? plus one", text[_w.end():], re.I) else 0
+    elif _WHEEL_OPP_HAND_RE.search(text) and ("Instant" in type_line or "Sorcery" in type_line):
+        out["wheel_draws"], out["wheel_greatest"] = -1, True
     # THE PERMANENT'S COPY OF THE SAME SENTENCE. Deliberately NOT gated on the
     # type line: a Sorcery cannot carry an activated ability, so the two paths
     # are disjoint by construction rather than by an `elif` somebody can break.
@@ -2224,6 +2244,7 @@ def draw_profile(card):
             and not _DRAW_ADDITIONAL_COST_RE.search(text)
             and not _X_DRAW_ALT_COST_RE.search(text)):
         out["x_draw_multiplier"] = _mc.count("{X}")
+        out["x_draw_each_player"] = bool(re.search(r"each player draws? X cards?", text, re.I))
         out["x_draw_discard"] = 1 if _X_DRAW_DISCARD_ONE_RE.search(text) else 0
 
     if _UPKEEP_REVEAL_RE.search(text):
@@ -4009,6 +4030,10 @@ _COPY_ENTRY_RE = re.compile(
 _LOYALTY_LOOT_RE = re.compile(r"\+\d+: Draw a card, then discard a card", re.I)
 _ACTIVATION_DISCOUNT_RE = re.compile(
     r"abilities you activate that aren't mana abilities cost \{(\d+)\} less to activate", re.I)
+#: Narset, Jeskai Waymaster: the wheel at the end of a turn that cast spells (2026-11-04).
+_END_STEP_WHEEL_RE = re.compile(
+    r"at the beginning of your end step, you may discard your hand\. if you do, draw cards equal to "
+    r"the number of spells you've cast this turn", re.I)
 _FREE_WITH_COMMANDER_RE = re.compile(
     r"if you control a commander, you may cast this spell without paying its mana cost", re.I)
 
@@ -4022,7 +4047,7 @@ def engine_profile(card):
            "cast_double_strike_cost": None, "cast_double_strike_pips": [],
            "draw_pump": False, "equip_haste": None, "copy_entry": False,
            "loyalty_loot": False, "activation_discount": 0, "free_with_commander": False,
-           "cycling": None, "flashback": None}
+           "cycling": None, "flashback": None, "end_step_wheel": False}
     _cy = _CYCLING_RE.search(text)
     if _cy:
         _dmg = _CYCLE_DAMAGE_RE.search(text)
@@ -4050,6 +4075,7 @@ def engine_profile(card):
         out["cast_double_strike_cost"] = _activation_mana(_ds.group(1))
         out["cast_double_strike_pips"] = cast_pips(_ds.group(1))
     out["draw_pump"] = bool(_DRAW_PUMP_RE.search(text))
+    out["end_step_wheel"] = bool(_END_STEP_WHEEL_RE.search(text))
     if "Equipment" in tl and _EQUIP_HASTE_RE.search(text):
         _ec = _EQUIP_COST_RE.search(text)
         out["equip_haste"] = _activation_mana(_ec.group(1)) if _ec else None

@@ -392,7 +392,8 @@ def draw_is_read_elsewhere(card):
     return bool(any(ev[k] for k in ("per_opponent_cast_draw", "per_opponent_draw_our_draw",
                                     "opponent_second_draw_our_draw", "per_opponent_draw_paid_draw",
                                     "per_discard_draw", "first_discard_draw"))
-                or eng["cycling"] or eng["cast_loot"] or eng["loyalty_loot"])
+                or ev["per_discard_modes"]
+                or eng["cycling"] or eng["cast_loot"] or eng["loyalty_loot"] or eng["end_step_wheel"])
 
 
 MODEL_ASSUMPTIONS = [
@@ -417,6 +418,11 @@ MODEL_ASSUMPTIONS = [
     "A doubler reaches what its text says: double strike and doubled power, combat only; 'a "
     "creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', "
     "that. Life loss is not damage and is never multiplied or bonused.",
+    "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws "
+    "out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its "
+    "modes in the printed order. Narset's end step is taken when the turn cast at least as many "
+    "spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late "
+    "for pings and on time for counters.",
     "One land drop per turn when available.",
     # MEASURED, NOT ASSUMED. A `candidates` sweep of twelve lands against
     # ur-dragon returned exactly TWO distinct readings: 45.304 for every

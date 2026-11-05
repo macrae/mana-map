@@ -240,7 +240,7 @@ def channels_for(profile):
             or any(v for k, v in (profile.get("artifact_sac") or {}).items()
                    if k != "unmodelled") \
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled") \
-            or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling")):
+            or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")):
         found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
             # `death_damage` listed WITH the field, not after somebody hits the
@@ -347,7 +347,8 @@ def never_cast(profile, flags):
         return False
     # CYCLING IS NOT A CAST, and it is what the card is used for: `_cycle_what_is_left`.
     if flags.get("model_draw") and flags.get("model_discard") \
-            and (_eng.get("cast_loot") or _eng.get("loyalty_loot") or _eng.get("cycling")):
+            and (_eng.get("cast_loot") or _eng.get("loyalty_loot") or _eng.get("cycling")
+                 or _eng.get("end_step_wheel")):
         return False
     # Gated like goldfish_turn's `_engine_permanent`: combat OR discard.
     if (flags.get("model_combat") or flags.get("model_discard")) \

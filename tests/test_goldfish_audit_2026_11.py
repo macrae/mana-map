@@ -1083,3 +1083,82 @@ def test_a_tithe_on_the_table_is_a_reason_to_wheel(monkeypatch):
     hand = [LAND, LAND, LAND, rock, TITHE, WHEEL, BLANK]
     r = _play(hand + [BLANK] * 4 + [LAND] * 10, lands_below=30, turns=4)
     assert r["first_wheel_turn"] == 2
+
+
+# ── The pilot's library, taught 2026-11-04 ───────────────────────────────────
+
+BORROWED = _c("Borrowed Knowledge", "Choose one \u2014\n\u2022 Discard your hand, then draw cards equal to the number "
+              "of cards in target opponent's hand.\n\u2022 Discard your hand, then draw cards equal to the "
+              "number of cards discarded this way.", "{2}{R}{W}", colors="RW")
+PROSPERITY = _c("Prosperity", "Each player draws X cards.", "{X}{U}", colors="U")
+BRAINGEYSER = _c("Braingeyser", "Target player draws X cards.", "{X}{U}{U}", colors="U")
+MONUMENT = _c("Monument to Endurance", "Whenever you discard a card, choose one that hasn't been chosen this "
+              "turn \u2014 \u2022 Draw a card. \u2022 Create a Treasure token. \u2022 Each opponent loses 3 life.",
+              "{3}", "Artifact")
+NARSET = _c("Narset, Jeskai Waymaster", "At the beginning of your end step, you may discard your hand. If you "
+            "do, draw cards equal to the number of spells you've cast this turn.", "{U}{R}{W}",
+            "Legendary Creature \u2014 Human Monk", "3", "2", "URW")
+SPHINX = _c("Consecrated Sphinx", "Flying\nWhenever an opponent draws a card, you may draw two cards.",
+            "{4}{U}{U}", "Creature \u2014 Sphinx", "4", "6", "U")
+RICH = _c("Rock", "{T}: Add {C}{C}{C}{C}{C}{C}{C}{C}{C}{C}.", "{1}", "Artifact")
+TRI = _c("Tri-Land", "{T}: Add {U}, {R}, or {W}.", tl="Land")
+
+
+def test_borrowed_knowledge_is_a_one_sided_wheel_at_the_bigger_count():
+    d = goldfish.draw_profile(BORROWED)
+    assert d["wheel_draws"] == -1 and d["wheel_greatest"] and not d["wheel_symmetric"]
+    r = _play(_seq((RICH, BORROWED), [BLANK] * 2), turns=2)
+    assert r["first_wheel_turn"] == 2
+    assert r["drawn_extra_by_turn"][1] >= OPPONENT_HAND, "drew the opponent's hand count off a thin hand"
+
+
+def test_a_symmetric_x_draw_waits_for_a_payoff_and_pays_it():
+    alone = _play(_seq((RICH, PROSPERITY), [BLANK] * 6), turns=4)
+    assert alone["drawn_extra_by_turn"][-1] == 0, "with nothing on their draws, the table's cards are the cost"
+    tithe = _play(_seq((RICH, TITHE), [PROSPERITY] + [BLANK] * 6), turns=4)
+    plain = _play(_seq((RICH, TITHE), [BRAINGEYSER] + [BLANK] * 6), turns=4)
+    assert tithe["drawn_extra_by_turn"][-1] > 0
+    assert tithe["treasures_by_turn"][-1] > plain["treasures_by_turn"][-1]
+    sphinx = _play(_seq((RICH, SPHINX), [PROSPERITY] + [BLANK] * 6), turns=4)
+    one_sided = _play(_seq((RICH, SPHINX), [BRAINGEYSER] + [BLANK] * 6), turns=4)
+    assert sphinx["drawn_extra_by_turn"][-1] > one_sided["drawn_extra_by_turn"][-1]
+
+
+def test_monument_pays_each_mode_once_a_turn_and_never_a_draw_per_discard():
+    ev = goldfish.event_payoffs(MONUMENT)
+    assert ev["per_discard_draw"] == 0 and ev["per_discard_modes"]["life"] == 3
+    assert goldfish.classify(MONUMENT)["treasure_trigger"] is None
+    r = _play(_seq((RICH, MONUMENT), [WHEEL, BLANK, BLANK, BLANK]), turns=5)
+    t = r["first_wheel_turn"] - 1
+    assert r["discarded_by_turn"][t] >= 3
+    assert r["event_damage_by_turn"][t] == 3, "the life loss, once, whatever the wheel discarded"
+    assert r["treasures_by_turn"][t] >= 1
+    assert r["drawn_extra_by_turn"][t] <= 8, "seven off the wheel and one off the mode, not one per discard"
+
+
+def _narset_deal(narset, last=None):
+    """Turn two empties the hand: two lands and a big rock, then four spells on twelve mana."""
+    a, b, c = (_c(f"Trinket {i}", "{T}: Add {C}.", "{1}", "Artifact") for i in "abc")
+    return [TRI, TRI, RICH, narset, a, b, last or c, LAND, BLANK, LAND, BLANK, LAND, BLANK]
+
+
+def test_narset_wheels_at_the_end_step_and_pays_next_main_phase():
+    assert goldfish.classify(NARSET)["engine"]["end_step_wheel"]
+    r = _play(_narset_deal(NARSET), lands_below=20, turns=4)
+    assert r["discarded_by_turn"][-1] > 0, "a turn of spells earns the end step"
+    without = _play(_narset_deal(_c("Trinket d", "{T}: Add {C}.", "{1}", "Artifact")), lands_below=20, turns=4)
+    assert without["discarded_by_turn"][-1] == 0
+    assert r["drawn_extra_by_turn"][-1] > without["drawn_extra_by_turn"][-1]
+
+
+def test_narsets_draws_pay_a_payoff_already_out_at_the_next_main_phase():
+    ping = _c("Pinger", "Whenever you draw a card, each opponent loses 1 life.", "{1}", "Artifact")
+    r = _play(_narset_deal(NARSET, ping), lands_below=20, turns=4)
+    other = _play(_narset_deal(_c("Trinket d", "{T}: Add {C}.", "{1}", "Artifact"), ping), lands_below=20, turns=4)
+    assert sum(r["event_damage_by_turn"]) > sum(other["event_damage_by_turn"]) + 2, \
+        "the end step's draws were paid at the next main phase"
+
+
+def test_narset_never_trades_down_a_full_hand():
+    r = _play([TRI, TRI, TRI, NARSET, BLANK, BLANK, BLANK] + [BLANK] * 3 + [LAND] * 30, turns=5)
+    assert r["discarded_by_turn"][-1] == 0

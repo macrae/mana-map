@@ -119,10 +119,16 @@
             "name": "Boros Signet"
           },
           {
+            "name": "Borrowed Knowledge"
+          },
+          {
             "name": "Cathartic Reunion"
           },
           {
             "name": "Heartwarming Redemption"
+          },
+          {
+            "name": "Magus of the Wheel"
           },
           {
             "name": "Mind Spring"
@@ -131,10 +137,32 @@
             "name": "Shattered Perception"
           },
           {
-            "name": "Well of Lost Dreams"
+            "name": "Xorn"
+          },
+          {
+            "name": "Zirda, the Dawnwaker"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Gleaming Splendor",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Prosperity",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
+            "name": "Psychosis Crawler",
+            "where": [
+              "heliod",
+              "keen-engineering"
+            ]
+          },
           {
             "name": "Reliquary Tower",
             "where": [
@@ -153,6 +181,12 @@
             ]
           },
           {
+            "name": "Mirrormade",
+            "where": [
+              "Zur Parts"
+            ]
+          },
+          {
             "name": "Rush of Knowledge",
             "where": [
               "Mystery Booster 2"
@@ -166,28 +200,34 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 13,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 10,
-      "out": 10,
+      "add": 17,
+      "out": 17,
       "counts": {
-        "in_deck": 88,
-        "box": 3,
-        "elsewhere": 1,
-        "buy": 6,
+        "in_deck": 81,
+        "box": 4,
+        "elsewhere": 4,
+        "buy": 9,
         "free": 0
       },
       "unsourced": [
         "Boros Signet",
+        "Borrowed Knowledge",
         "Cathartic Reunion",
+        "Gleaming Splendor",
         "Heartwarming Redemption",
+        "Magus of the Wheel",
         "Mind Spring",
+        "Prosperity",
+        "Psychosis Crawler",
         "Reliquary Tower",
         "Shattered Perception",
-        "Well of Lost Dreams"
+        "Xorn",
+        "Zirda, the Dawnwaker"
       ],
       "mergeable": false,
       "free": 0,
@@ -208,13 +248,6 @@
         },
         {
           "name": "Arcane Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Artist's Talent",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -250,6 +283,13 @@
         },
         {
           "name": "Boros Signet",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Borrowed Knowledge",
           "state": "buy",
           "where": [],
           "free": false,
@@ -340,6 +380,13 @@
           "is_new": false
         },
         {
+          "name": "Faithless Looting",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Fateful Showdown",
           "state": "in_deck",
           "where": [],
@@ -387,6 +434,21 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Gleaming Splendor",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -459,13 +521,6 @@
           "is_new": false
         },
         {
-          "name": "Izzet Charm",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Izzet Signet",
           "state": "in_deck",
           "where": [],
@@ -480,21 +535,7 @@
           "is_new": false
         },
         {
-          "name": "Jeskai Ascendancy",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Kitsa, Otterball Elite",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Knowledge Is Power",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -522,6 +563,13 @@
           "is_new": false
         },
         {
+          "name": "Magus of the Wheel",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Mana Confluence",
           "state": "in_deck",
           "where": [],
@@ -530,20 +578,6 @@
         },
         {
           "name": "Marauding Mako",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "March of Swirling Mist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Mary Read and Anne Bonny",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -569,14 +603,19 @@
           "is_new": true
         },
         {
-          "name": "Mountain",
-          "state": "in_deck",
-          "where": [],
+          "name": "Mirrormade",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
-          "name": "Mystic Remora",
+          "name": "Mountain",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -609,6 +648,43 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Prosperity",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Psychosis Crawler",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Raugrin Triome",
@@ -737,13 +813,6 @@
         },
         {
           "name": "Shivan Reef",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Shu Yun, the Silent Tempest",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -892,13 +961,6 @@
           "is_new": false
         },
         {
-          "name": "Well of Lost Dreams",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Wheel of Fortune",
           "state": "in_deck",
           "where": [],
@@ -911,25 +973,45 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Xorn",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Zirda, the Dawnwaker",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true,
       "summary": {
-        "title": "More cards in hand: steady draw, wheel reach and mana into cards",
-        "blurb": "Swaps equipment, loots and slower bodies for pure draw, cheap rocks and Well of Lost Dreams, because the deck ran out of cards while it flooded with mana. Open for the pilot to read card by card and play before anything merges.",
+        "title": "The contender: steady draw, Tithe loops and more wheels",
+        "blurb": "The draw engine plus the combo package: pure draw, cheap rocks and one-sided wheels, with three-card Smothering Tithe loops that turn the table's draws into mana and damage. Open for the pilot to read and play before anything merges.",
         "by": "jarvis",
         "at": "2026-11-04"
       },
       "verdict": {
         "state": "no objective",
-        "rose": 9,
-        "fell": 2,
-        "no_call": 5
+        "rose": 10,
+        "fell": 4,
+        "no_call": 2
       },
       "measured": true,
       "blind_spots": [
+        "Artist's Talent",
+        "Izzet Charm",
+        "Jeskai Ascendancy",
         "Ledger Shredder",
         "Magmakin Artillerist",
+        "March of Swirling Mist",
+        "Mystic Remora",
+        "Psychosis Crawler",
         "Reliquary Tower",
         "Robe of Stars",
         "Training Center"
@@ -937,65 +1019,68 @@
       "impact": {
         "state": "no objective",
         "rose": [
+          "hoard @T10",
+          "hoard @T6",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6",
           "finisher wheel by T8",
           "wheels cast by T10"
         ],
         "fell": [
+          "missed drop by T5",
           "hand can act by T3",
-          "kept hand passes the pilot's keep rule"
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 57.1896,
+            "delta": 105.2805,
             "ci95_diff": [
-              51.8841,
-              62.4951
+              98.3534,
+              112.2076
             ],
-            "mde": 7.5837,
+            "mde": 9.9015,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0048,
+            "delta": 0.0056,
             "ci95_diff": [
-              0.0027,
-              0.0069
+              0.0034,
+              0.0078
             ],
-            "mde": 0.003,
+            "mde": 0.0031,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.5858,
+            "delta": 1.7385,
             "ci95_diff": [
-              0.4669,
-              0.7047
+              1.6005,
+              1.8765
             ],
-            "mde": 0.1699,
+            "mde": 0.1973,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 1.9414,
+            "delta": 3.3104,
             "ci95_diff": [
-              1.7665,
-              2.1163
+              3.0836,
+              3.5372
             ],
-            "mde": 0.25,
+            "mde": 0.3242,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -15410,6 +15495,7 @@
             "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
             "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
             "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+            "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
             "One land drop per turn when available.",
             "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
             "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -15987,7 +16073,8 @@
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "branch `draw-engine-v1` needs 7 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
+    "branch `draw-engine-v1`: 15 unproven add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch draw-engine-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `draw-engine-v1` needs 13 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
