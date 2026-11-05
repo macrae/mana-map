@@ -1367,9 +1367,12 @@ def test_a_branch_never_declares_a_model_channel_its_deck_does_not():
                 f"{sorted(want)} — the arms would be measured under different "
                 f"models, so no row of the comparison means anything")
             checked += 1
-    assert checked >= 1, (
-        "no branch on this checkout carries its own declaration, so this test "
-        "proved nothing")
+    if checked == 0:
+        # Every branch that carried its own declaration has since been decided
+        # (meren-recursion's drain-density-v1 was rejected 2026-11-05). Say so
+        # out loud as a SKIP rather than pass having checked nothing.
+        pytest.skip("no live branch on this checkout carries its own "
+                    "goldfish_targets.json, so there is nothing to compare")
 
 
 @pytest.mark.slow

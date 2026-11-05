@@ -34,7 +34,8 @@ from test_viz_page_state import serve_server  # noqa: F401  (the fixture)
 
 pytestmark = pytest.mark.browser
 
-BRANCH = "drain-density-v1"     # meren-recursion's live branch (its info.json)
+BRANCH_DECK, BRANCH = "sharknado", "draw-engine-v1"   # a live (proposed) branch in its info.json;
+# meren-recursion's drain-density-v1 was the one until it was rejected 2026-11-05
 EMB = "embeddings_cardbert.bin"
 
 
@@ -197,7 +198,7 @@ def test_a_branch_row_asks_for_a_review_and_without_serve_says_so(browser, viz_s
     page = _watch(ctx.new_page())
     serve_card_images_locally(page)
     try:
-        page.goto(f"{viz_server}/viz/index.html?deck={BENCH}&tab=change")
+        page.goto(f"{viz_server}/viz/index.html?deck={BRANCH_DECK}&tab=change")
         # No serve: the tray says so in one line and the live branches still list.
         page.wait_for_selector("#deckInner .de-branches .br-jarvis", timeout=BOOT_TIMEOUT_MS)
         page.click("#deckInner .de-branches .br-jarvis")
@@ -205,16 +206,16 @@ def test_a_branch_row_asks_for_a_review_and_without_serve_says_so(browser, viz_s
         assert page.input_value("#mmAsk .mm-ask-text") == f"Review branch {BRANCH} on {name}"
         got = _send(page)
         assert got["posted"] == "static" and got["copied"] == "copied", got
-        assert got["ask"]["branch"] == BRANCH and got["ask"]["deck"] == BENCH
+        assert got["ask"]["branch"] == BRANCH and got["ask"]["deck"] == BRANCH_DECK
         assert "No local serve" in _note(page), _note(page)
         assert page.evaluate("() => navigator.clipboard.readText()") == \
             f"/jarvis Review branch {BRANCH} on {name}"
         assert page.state_posts == []
 
-        page.goto(f"{viz_server}/viz/branch.html?deck={BENCH}&branch={BRANCH}")
+        page.goto(f"{viz_server}/viz/branch.html?deck={BRANCH_DECK}&branch={BRANCH}")
         page.wait_for_selector("#branchAsk .br-jarvis", timeout=BOOT_TIMEOUT_MS)
         page.click("#branchAsk .br-jarvis")
-        assert page.input_value("#mmAsk .mm-ask-text") == f"Review branch {BRANCH} on Meren Recursion"
+        assert page.input_value("#mmAsk .mm-ask-text") == f"Review branch {BRANCH} on Sharknado"
         assert page.js_errors == []
     finally:
         ctx.close()

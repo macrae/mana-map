@@ -251,9 +251,13 @@ def test_the_workbench_card_links_to_moxfield(browser, viz_server):
               ".wb-card a.wb-title[href='deck.html?deck=sharknado']").closest('.wb-card');
             const a = card.querySelector('a.wb-moxfield');
             return { text: a && a.textContent, href: a && a.getAttribute('href'),
-                     others: document.querySelectorAll('a.wb-moxfield').length };
+                     // A proposed deck sits in BOTH "Waiting on cardboard" and
+                     // "Sleeved", so count the links on any OTHER deck's card.
+                     others: [...document.querySelectorAll('a.wb-moxfield')].filter(a =>
+                       !a.closest('.wb-card').querySelector(
+                         "a.wb-title[href='deck.html?deck=sharknado']")).length };
         }""")
-        assert got == {"text": "Moxfield ↗", "href": MOX_URL, "others": 1}, got
+        assert got == {"text": "Moxfield ↗", "href": MOX_URL, "others": 0}, got
         assert errors == []
     finally:
         page.close()
