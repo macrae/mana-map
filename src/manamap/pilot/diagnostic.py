@@ -570,7 +570,8 @@ def wheels(rows, got):
             "a wheel is a card the model reads as one (spell or activated "
             "engine); the discard wheels it cannot parse are named in the "
             "goldfish declaration and are in none of these figures. A finisher "
-            "needs a COMMANDER out, not merely any payoff. The table's dislike "
+            "needs a COMMANDER out, not merely any payoff, and is read once the turn has "
+            "deployed. The table's dislike "
             "of a wheel is in no figure here: this counts what the model "
             "fired, not what a pod forgave."),
     }
@@ -638,6 +639,11 @@ def output(got):
         got_series = series(field, present)
         if got_series:
             out[name] = got_series
+    # ALL THE DAMAGE (2026-11-04): present only on a deck with the discard channel.
+    total = series("total_damage_by_turn",
+                   (m.get("discard") or {}).get("mean_total_damage_by_turn"))
+    if total:
+        out["total_damage_by_turn"] = total
     # A kill is a RATE, not a mean — it is the share of games closed by turn N,
     # so it takes a Wilson bound like every other proportion here.
     if com.get("kill_by_turn_rate") and rows:
@@ -683,6 +689,7 @@ PER_GAME = {
     ("output", "hoard_by_turn", "10"): _at("treasures_by_turn", 9),
     ("output", "hoard_by_turn", "6"): _at("treasures_by_turn", 5),
     ("output", "damage_by_turn", "10"): _at("damage_by_turn", 9),
+    ("output", "total_damage_by_turn", "10"): _at("total_damage_by_turn", 9),
     ("output", "board_power_by_turn", "6"): _at("board_power_by_turn", 5),
     ("output", "kill_by_turn", "6"):
         lambda r: 1 if r.get("kill_turn") is not None and r["kill_turn"] <= 6 else 0,
@@ -1185,7 +1192,8 @@ def _print(doc):
         else:
             for key, label in (("hoard_by_turn", "treasures in hoard"),
                                ("board_power_by_turn", "board power"),
-                               ("damage_by_turn", "damage dealt"),
+                               ("damage_by_turn", "damage dealt (swing and triggers)"),
+                               ("total_damage_by_turn", "all damage, event pings and drain too"),
                                ("kill_by_turn", "killed by")):
                 series = o.get(key)
                 if not series:

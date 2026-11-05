@@ -1497,6 +1497,16 @@ GOLDFISH_OPPONENTS = 3
 #: table, and nothing here can measure it. Half is the stated middle; `try` and
 #: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
 TITHE_PAY_RATE = 0.5
+#: AUTHORED (2026-11-04). What share of an opponent's casts are noncreature spells, for "whenever
+#: an opponent casts a noncreature spell" (Mystic Remora). Nothing in the pod logs splits a cast by
+#: type yet, so it is the stated middle. `OPPONENT_CASTS_PER_TURN` below is the measured half.
+OPPONENT_NONCREATURE_SHARE = 0.5
+#: AUTHORED (2026-11-04). The age at which a pilot stops paying cumulative upkeep: Remora at age
+#: four costs four a turn, and the deck has better uses for it. A guess at the sensible point.
+CUMULATIVE_UPKEEP_MAX_AGE = 3
+#: AUTHORED (2026-11-04). The mana a deck must still have after sacrificing a rock or a land for a
+#: card (Mind Stone, Fiery Islet). Below this the mana is worth more than the card.
+ROCK_SAC_MIN_MANA = 7
 # AUTHORED (2026-11-04). The cards a pilot leaves in the library when a may-pay draw chain
 # could run it out (Well of Lost Dreams with Shabraz): he chooses when to stop, and decking
 # himself on purpose is not a line. A guess at the sensible margin, not a measure.

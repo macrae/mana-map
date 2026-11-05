@@ -59,7 +59,7 @@ def test_face_damage_and_the_choose_one_rule():
 @requires_deck
 def test_collective_defiance_deals_and_wheels_in_a_game():
     """Same seeds on the sharknado list: one Sorcery becomes Collective
-    Defiance's text or a blank. Damage by turn ten and cards discarded by turn
+    Defiance's text or a blank. Damage over the first six turns and cards discarded by turn
     eight must both rise. Re-introduce either bug (drop "target player" from
     `_WHEEL_RE`, or `_face_spell`) and one of them reads identical."""
     from manamap.pilot.common import load_deck_cards
@@ -78,7 +78,9 @@ def test_collective_defiance_deals_and_wheels_in_a_game():
                 c["cmc"] = 3
         m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
                          _band=False)["metrics"]
-        return (m["combat"]["mean_damage_by_turn"]["10"],
+        # THE EARLY TURNS, not turn ten (2026-11-04): by then nearly every game is over and the
+        # mean is overkill, whose noise is far bigger than one spell's 3 damage.
+        return (sum(m["combat"]["mean_damage_by_turn"][str(t)] for t in range(1, 7)),
                 m["discard"]["mean_cards_discarded_by_turn"]["8"])
 
     wheel_only = text.split("\u2022 Collective Defiance deals 3")[0]

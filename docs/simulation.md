@@ -556,6 +556,17 @@ a card that does not help**, and that confusion has cost this project a whole br
 | *(always on)* Discover | an instant or sorcery with "Discover N" is cast through the normal cast path (it counts for storm, magecraft and per-cast damage) and each resolution, plus one per Zada copy, walks the library to the first nonland card with mana value N or less and **casts it free** through the resolution a paid cast of it gets — ritual, draw spell (Zada's copies included), discover, storm, pump / token copy, or a body (every registration a cast permanent makes). A hit with no free door (a rock, a reducer, an engine permanent, a wheel, an untap-only card, interaction) goes to HAND, its other option; the rest go to the bottom in a random order. A chain stops at `FREE_CAST_DEPTH_LIMIT` (8), reported in `metrics.free_cast` (2026-10-11; a floor since C1, the hand half only) |
 | *(always on)* Cascade | the card's OWN keyword, counted (Maelstrom Wanderer 2, Apex Devastator 4): on every CAST — paid, free, or a cascade hit's own — walk to the first nonland card with mana value STRICTLY LESS, cast it free through the same dispatcher, and put every card not cast on the bottom in a random order. Copies do not cascade (a copy is never cast). A cascade card no other loop selects is cast late in the main phase for its cascade (2026-10-11) |
 
+| *(always on, 2026-11-04)* What a doubler reaches | `permanent_damage_scale`, read off the sentence's subject. Double strike grants and doubled power reach combat only, and a second strike does not stack; "a creature you control" reaches combat and a creature's noncombat damage; "a source" reaches all damage (triple too: Fiery Emancipation); "noncombat" reaches noncombat. **Life loss is not damage**: nothing multiplies it and Torbran does not add to it. |
+| *(`model_draw` + `model_discard`, 2026-11-04)* Cast, equip and activation engines | `engine_profile`. On a noncreature cast: Shark Typhoon's X/X, Jeskai Ascendancy's pump and loot, Artist's Talent's rummage, Shu Yun's bought strike (one attacker, `{R/W}{R/W}` from what is left). Cycling, with a stated policy (`_cycle_what_is_left`). Flashback for a wheel or a loot. Lightning Greaves' haste, one fresh creature a turn. Teferi's +1 on every seat's turn. Mirrormade as the best artifact or enchantment on the board. Knowledge Is Power on the turn's draws. Zirda's {2} off an activation. |
+| *(`model_draw` + `model_discard`, 2026-11-04)* Activations repeat | Faerie Mastermind's `{3}{U}` and Gleaming Splendor's `{2}{W}` are read and a Tithe taxes each one as it happens, so the Tithe + Mastermind + Bard line and its Needlehead and Crawler kills can be seen. Stops on mana, on `LIFE_CHAIN_LIBRARY_FLOOR` (authored 10) and on a hand of seven unless a draw is being paid for. Treasure pays a repeat only under Tithe, at the authored `TITHE_PAY_RATE`. A symmetric draw with nothing paying for it is not bought. **A floor**: what these draws find is not castable this turn. |
+
+**The main phase runs in the pilot's order since 2026-11-04**: commander, `_deploy`, `_fire_wheels`
+on what is left, `_deploy` again on what the wheel found. A wheel or a loot fires ahead of that only
+to dig (`_digging`: no land in hand, and a commander still in the zone or under four lands). With no
+payoff out, a wheel waits for a card or a commander next turn's mana can pay. A loot waits for a
+payoff like a wheel. A payoff is paid only for what happens after it arrives (`event_arrivals`, and
+the `seen` on a Treasure engine); every draw is made before any payoff reads the turn's count.
+
 **The copy channel is the one that needs no authored rate**, and that is why it can be
 trusted more than its neighbours. `model_commander_attack_tutor` reported 5.70 fires a
 game against Forge's 1.22 and cost half a day's measured gains when corrected. The copy
@@ -611,6 +622,21 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
 
 ### Named gaps
 
+- **Left unmodelled by the 2026-11-04 audit, each with its reason.** Reforge the Soul's miracle (it
+  fires in the draw step, ahead of the land and the deploy the turn is built on). Embercleave (an
+  attacker-count cost and an equip, invisible and said so). Artist's Talent's and Sorcerer Class's
+  levels (nothing buys a level). Akroma's Will's protection mode and every counterspell: no opposing
+  action to answer. Frantic Search's untap. An `X` spell's mana value on a Shark (read as 0). 41 corpus
+  cards make an X/X token sized by something other than a cast or a cycling: still a 0-power body.
+  A filter land's mana past one and any net-zero filter rock's colour fixing (Prophetic Prism). A
+  Pathway's face is chosen by what the hand wants, once. Mirrormade's copy fires no enters trigger.
+  Prismari Command takes its loot and Treasure, never its 2 to the face. A loot's discard policy is
+  still the stated one, most expensive nonland, so a loot can pitch a payoff a pilot would keep.
+  Counters beyond an event payoff's are not read per body. Teferi is never attacked: a ceiling.
+- **`manabase.land_colors` still answers the mana-base question and was left alone**: Gemstone Caverns
+  and Spire of Industry read five colours there, a Pathway both faces, in `mana_analysis` and
+  `mana-fit`. Only the turn loop reads `land_gate`.
+- **Vigilance is read for a tap ability only** (Kitsa loots and swings); attacking still taps.
 - **Death-triggered draw fires only on the deaths this model produces** (2026-10-19): a
   deck with neither `model_sacrifice` nor `model_deaths` on has no deaths, so Liliana,
   Dreadhorde General and Morbid Opportunist are ABSENT there, not zero. A granted
@@ -623,8 +649,6 @@ is why `mana-analysis` and `mana-fit` remain the whole of the evidence for a lan
   of a cast creature) is NOT counted — conservative. `card_state` still reports a card
   whose death payload is `unreadable` as "seen" when its body is read (known-issues §29).
 
-- **Vigilance is not modelled.** No deck in the fleet grants it; a deck that did would
-  make every extra-combat card live again.
 - **X-based pumps and X-based counters are not read** — X is a count this reader has no
   board to resolve, the same refusal `land_colors` makes for a fetchland without a pool.
 - **A ritual with an additional cost or restricted mana is refused**, not read as free

@@ -1931,7 +1931,7 @@ def _dispatch(args):
         raise SystemExit(f"`deck-branch {slug} {action}` needs a branch name.")
     if action == "new":
         # THE OBJECTIVE IS OPTIONAL (the pilot, 2026-10-28). A branch is judged on
-        # its whole paired profile — twelve Holm-corrected rows — and an objective,
+        # its whole paired profile — sixteen Holm-corrected rows — and an objective,
         # when one is given, is a GUARD: one row written down before the run that
         # the branch must not fail, shown among the others. It is still parsed by
         # `parse_objective` whenever it is given, so a guard names an axis the bench
@@ -1960,7 +1960,7 @@ def _dispatch(args):
             print(f"  guard: {objective['axis']} {objective['op']} {objective['value']}"
                   + (f" @{objective['pod']}" if objective.get("pod") else ""))
         else:
-            print("  guard: none — net-change reads the whole profile, twelve rows, "
+            print("  guard: none — net-change reads the whole profile, sixteen rows, "
                   "Holm-corrected; add one with `deck-branch "
                   f"{slug} objective {branch} --objective \"<axis> <op> <n>\"`")
         # ANCHOR THE THRESHOLD TO THE CONTROL THAT WILL GRADE IT.

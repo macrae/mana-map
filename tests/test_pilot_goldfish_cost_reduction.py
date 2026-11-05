@@ -196,6 +196,12 @@ def test_pricing_a_deck_correctly_moves_what_it_casts_and_not_what_it_draws(monk
     drawing does not care what anything costs — so every assembly rate must be
     UNCHANGED while everything about casting moves. A change that moved both
     would mean the reduction had leaked into the shuffle."""
+    # TUTORS OUT OF BOTH ARMS (2026-11-04). A tutor now moves a card out of the library and which
+    # one depends on the mana, as it does at a table, so it changes later draws honestly. This
+    # asks whether a REDUCTION leaks into the shuffle, which a tutor would only hide.
+    real_classify = goldfish.classify
+    patch_model(monkeypatch, "classify",
+                lambda card, **kw: dict(real_classify(card, **kw), tutor=False))
     with_red = goldfish.run("ur-dragon", iterations=400, seed=7, quiet=True)
     # Re-run with every reduction stripped: same seed, same shuffle, and the
     # ONLY difference is what things cost.

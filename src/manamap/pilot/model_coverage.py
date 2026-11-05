@@ -185,7 +185,13 @@ def channels_for(profile):
             # token copy had been listed, so Haze of Rage read as invisible.
             "spell_pump_single", "spell_pump_team", "spell_counters",
             "spell_double_strike", "spell_power_to_each_opponent",
-            "spell_extra_combat", "spell_untap")) \
+            "spell_extra_combat", "spell_untap",
+            # With their channels, 2026-11-04.
+            "spell_team_double_strike", "power_scales", "prowess")) \
+            or ((profile.get("combat") or {}).get("team_damage_multiplier") or 1) > 1 \
+            or _nonzero(profile.get("engine"), (
+                "cast_team_pump", "cast_token_x", "draw_pump", "cast_double_strike_cost")) \
+            or (profile.get("engine") or {}).get("equip_haste") is not None \
             or ((profile.get("combat") or {}).get("spell_power_multiplier") or 1) > 1 \
             or (profile.get("counter_mod") or {}).get("plus") \
             or ((profile.get("counter_mod") or {}).get("times") or 1) > 1 \
@@ -214,7 +220,8 @@ def channels_for(profile):
             # APPLIED, not whether an applied effect is REPORTED. Found by the
             # deck-engineer, which read both figures in one sitting and said
             # they could not both be true.
-            "activated_draw")) or (profile.get("draw") or {}).get("draw_multiplier", 1) > 1:
+            "activated_draw")) or (profile.get("draw") or {}).get("draw_multiplier", 1) > 1 \
+            or _nonzero(profile.get("engine"), ("activation_discount", "copy_entry")):
         found.add("draw")
     # THE DISCARD CHANNEL: a wheel, a loot's rider, or a payoff on a discard
     # or a draw. Named keys, never the dict's truthiness.
@@ -232,7 +239,8 @@ def channels_for(profile):
             or (profile.get("blood") or (0, None))[1] in _MODELLED_BLOOD_TRIGGERS \
             or any(v for k, v in (profile.get("artifact_sac") or {}).items()
                    if k != "unmodelled") \
-            or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled"):
+            or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled") \
+            or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling")):
         found.add("discard")
     if profile["sac_outlet"] or _nonzero(profile.get("death"), (
             # `death_damage` listed WITH the field, not after somebody hits the
@@ -315,7 +323,12 @@ def never_cast(profile, flags):
                 (cb.get("spell_power_multiplier") or 1) > 1,
                 cb.get("spell_power_to_each_opponent"),
                 cb.get("spell_extra_combat"), cb.get("spell_token_copy"),
-                cb.get("spell_untap"))):
+                cb.get("spell_untap"), cb.get("spell_team_double_strike"),
+                # `_engine_permanent`'s engines, mirrored (2026-11-04).
+                (profile.get("engine") or {}).get("cast_team_pump"),
+                (profile.get("engine") or {}).get("draw_pump"),
+                (profile.get("engine") or {}).get("equip_haste") is not None,
+                (profile.get("engine") or {}).get("cast_double_strike_cost") is not None)):
             return False
         if cb.get("extra_combat_cost") is not None or cb.get("extra_combat_free"):
             return False
@@ -326,6 +339,16 @@ def never_cast(profile, flags):
         # Mirrors goldfish_turn's burn loop (`_is_burn`), 2026-10-11.
         if (profile.get("face_damage") or {}).get("kind"):
             return False
+    # `_engine_permanent` again: these ask no flag beyond what they say (2026-11-04).
+    _eng = profile.get("engine") or {}
+    if _eng.get("activation_discount") or _eng.get("copy_entry"):
+        return False
+    if _eng.get("cast_token_x") and (flags.get("model_combat") or flags.get("model_draw")):
+        return False
+    # CYCLING IS NOT A CAST, and it is what the card is used for: `_cycle_what_is_left`.
+    if flags.get("model_draw") and flags.get("model_discard") \
+            and (_eng.get("cast_loot") or _eng.get("loyalty_loot") or _eng.get("cycling")):
+        return False
     # Gated like goldfish_turn's `_engine_permanent`: combat OR discard.
     if (flags.get("model_combat") or flags.get("model_discard")) \
             and (profile.get("damage_bonus") or {}).get("amount"):
@@ -478,7 +501,12 @@ def card_state(card, flags, named=()):
     from manamap.pilot import goldfish
     profile = goldfish.classify(card)
     possible = channels_for(profile)
-    if card["name"] in named:
+    # BEING NAMED IN A TARGET GROUP IS NOT BEING READ (2026-11-04). It is what `seen`-by-drawing
+    # asks and nothing more: Fiery Emancipation, Mystic Remora, Akroma's Will and seven others
+    # read "seen" here for being named, were never cast, and did nothing. "target" is listed so a
+    # reader sees the declaration beside what reads the card, and it cannot lift a card out of
+    # `invisible` on its own: a card nothing reads has no channel, named or not.
+    if card["name"] in named and possible:
         possible.add("target")
     active = {c for c in possible
               if CHANNELS[c] is None or flags.get(CHANNELS[c])}

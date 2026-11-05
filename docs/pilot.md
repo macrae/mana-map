@@ -365,7 +365,7 @@ manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit
                                         #   refused; `candidates.FORGE_OBJECTIVE_AXES`. Given,
                                         #   it is still parsed by `parse_objective` alone and
                                         #   shown among the rows; absent, net-change's state
-                                        #   is `no objective` and the twelve rows are the
+                                        #   is `no objective` and the sixteen rows are the
                                         #   whole read. Serve's `branch/new` and Build's
                                         #   branch form follow the same rule. `commit` freezes a
                                         #   list with a message and is allowed while cards

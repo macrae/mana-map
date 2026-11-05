@@ -172,24 +172,24 @@ Colours are red and white first, then blue. The special ones: [Gemstone Caverns]
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v2.2.0 (V12), 2026-10-27. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **88%**
+- share of seeded games where the commander was CAST by turn six: **86%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 4.922**
-- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **73%**
-- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **73%**
-- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **33%**
-- A discard converted to board or cards (the non-damage half of the tax): **64%**
-- A per-draw BOARD source drawn (the air force the commanders fly with): **18%**
-- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **34%**
-- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **69%**
-- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **80%**
-- A real answer drawn — a counter, a sweeper or a tax: **84%**
-- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **78%**
-- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **46%**
+- mean turn the commander is first cast: **turn 5.138**
+- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **76%**
+- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **76%**
+- A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel): **31%**
+- A discard converted to board or cards (the non-damage half of the tax): **62%**
+- A per-draw BOARD source drawn (the air force the commanders fly with): **17%**
+- THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source: **33%**
+- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **67%**
+- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **78%**
+- A real answer drawn — a counter, a sweeper or a tax: **82%**
+- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **76%**
+- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **44%**
 - share of opening sevens the model would keep: **79%**
-- Engine online by turn 5: **72%** (95% CI 72%–73%) — exceptional
-- A win route assembled by turn 6: **42%** (95% CI 41%–43%)
-- A win route assembled by turn 8: **61%** (95% CI 60%–62%)
+- Engine online by turn 5: **70%** (95% CI 69%–71%) — exceptional
+- A win route assembled by turn 6: **33%** (95% CI 33%–34%)
+- A win route assembled by turn 8: **54%** (95% CI 53%–55%)
 - Colour on curve (lands + rocks): W 91%, U 95%, R 88%
 - Forge (an optional probe, not a gate): last run 2026-10-25, 6/40 won (15% (95% CI 7%–29%)) on V9 — on an older list
 <!-- /ctx:gen numbers -->

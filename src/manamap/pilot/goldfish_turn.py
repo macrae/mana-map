@@ -70,7 +70,10 @@ from manamap.config import (
     GOLDFISH_SEED,
     OPPONENT_HAND,
     OPPONENT_CASTS_PER_TURN,
+    OPPONENT_NONCREATURE_SHARE,
+    CUMULATIVE_UPKEEP_MAX_AGE,
     LIFE_CHAIN_LIBRARY_FLOOR,
+    ROCK_SAC_MIN_MANA,
     TITHE_PAY_RATE,
 )
 from manamap.pilot import manabase
@@ -93,6 +96,7 @@ from manamap.pilot.goldfish_profiles import (
     reduced_cost,
     apply_counter_mod,
     bonus_for,
+    tutor_reaches,
 )
 from manamap.pilot.goldfish_library import (X_DRAW_MIN, _target_met, keep_rule_passes,
                                             keepable)
@@ -158,6 +162,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         rng.shuffle(deck)
         hand = deck[:7]
         deck = deck[7:]
+    # A MULLIGAN COSTS A CARD (CR 103.5, 2026-11-04), and this model redrew a free seven every
+    # time. The first in a multiplayer game IS free (103.5c); each one after it bottoms a card.
+    # What goes: lands past the fourth first, then the most expensive card.
+    for _ in range(max(0, mulligans - 1)):
+        _lands = [c for c in hand if c["is_land"]]
+        _pick = (_lands[-1] if len(_lands) > 4 else
+                 max((c for c in hand if not c["is_land"]), key=lambda c: c["cmc"],
+                     default=hand[-1]))
+        del hand[next(i for i, c in enumerate(hand) if c is _pick)]
+        deck.append(_pick)
 
     kept_hand_lands = sum(1 for c in hand if c["is_land"])
     # A STRICTER KEEP TEST, REPORTED AND NEVER ENFORCED. `keepable` asks only
@@ -186,7 +200,55 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # exactly why leaving it unmodelled mispriced the whole deck rather than
     # just its late game. Reducers cast from hand are appended as they land.
     reductions = list(command_zone_reduction)
-    team_damage_multiplier = 1
+    # WHAT A DOUBLER REACHES, kept apart since 2026-11-04 (`permanent_damage_scale`). A
+    # double strike grant is not a multiplier at all: it is one more strike, it does not stack
+    # with itself or a creature's own, and it is read where strikes are counted.
+    mult_any = 1              # a source you control: all damage
+    mult_creature = 1         # a creature you control: combat and its noncombat damage
+    mult_combat = 1           # "combat damage"
+    mult_noncombat = 1        # "noncombat damage" (Solphim)
+    team_double_strike = False
+    team_power_mult = 1
+
+    def _register_damage_scale(cb):
+        """ONE DOOR FOR A STANDING DOUBLER, at every site a permanent arrives."""
+        nonlocal mult_any, mult_creature, mult_combat, mult_noncombat
+        nonlocal team_double_strike, team_power_mult
+        times, scope = cb["team_damage_multiplier"], cb["team_damage_scope"]
+        if times <= 1:
+            return
+        if scope == "strike":
+            team_double_strike = True
+        elif scope == "power":
+            team_power_mult *= times
+        elif scope == "any":
+            mult_any *= times
+        elif scope == "creature":
+            mult_creature *= times
+        elif scope == "combat":
+            mult_combat *= times
+        elif scope == "noncombat":
+            mult_noncombat *= times
+
+    def _combat_mult():
+        return mult_any * mult_creature * mult_combat
+
+    def _noncombat_mult(kind):
+        """`kind` is what `_damage_kind` says: LIFE LOSS IS NOT DAMAGE and no doubler
+        touches it (Psychosis Crawler), a spell is not a creature (Gratuitous Violence)."""
+        if kind == "life":
+            return 1
+        return mult_any * mult_noncombat * (mult_creature if kind == "creature" else 1)
+
+    def _damage_kind(source):
+        """"creature", "other" or "life" for a damage source. An unregistered source is a
+        commander declared without a colour read: a creature, and it deals damage."""
+        if source is None:
+            return "creature"
+        if not source["deals"]:
+            return "life"
+        return "creature" if source["creature"] else "other"
+
     etb_engines = []              # payoffs in play that fire on a creature entering
     # DRAW. `draw_engines` holds permanents that keep drawing — an upkeep
     # trigger or an arrival trigger; `drawn_extra_by_turn` is the series the
@@ -253,6 +315,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # no way to point at the battlefield entry it belongs to. One dict per
     # permanent: {"draw", "power", "is_creature"}.
     wheel_engines = []
+    artifact_sac_arrivals = []    # index-aligned with `artifact_sac_payoff_permanents`
     # A DRAW YOU BUY, and the stockpile of one-shot ones.
     #
     # `bought_draws` IS NOT `draw_engines` TWENTY LINES UP, and the first cut of
@@ -283,17 +346,73 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Ageless Insights really do draw four.
     draw_multiplier = 1
 
+    gated_lands = []              # `land_gate` lands in play and what they pay right now
+    _lands_played = []
+
+    def _pathway_face(colors):
+        """WHICH FACE, as the land is played: the colour the hand most wants that the sources
+        do not yet make, alphabetically on a tie. A choice, so no rng."""
+        def want(c):
+            need = sum(1 for k in hand if not k["is_land"] for p in k["pips"] if c in p)
+            return (need - sum(1 for s in sources if c in s), c)
+        return frozenset({max(sorted(colors), key=want)}) if colors else frozenset()
+
+    def _refresh_gated_lands():
+        """Swap each gated land's source for what the board now lets it pay. The sources are
+        read by `can_pay` as a list, so the entry itself moves."""
+        for rec in gated_lands:
+            g = rec["gate"]
+            others = [s for s in sources if s is not rec["now"]]
+            live = ((g["artifact"] and any("Artifact" in (c.get("type_line") or "")
+                                           for c in permanents_in_play))
+                    or (g["types"] and any(w in (c.get("type_line") or "")
+                                           for c in _lands_played for w in g["types"]))
+                    or (g["colors"] and any(s & g["colors"] for s in others)))
+            now = g["base"] | g["gated"] if live else g["base"]
+            if now != rec["now"]:
+                sources.remove(rec["now"])
+                sources.append(now)
+                rec["now"] = now
+
+    permanents_in_play = []       # every classified permanent, for a copy to choose from
+    cast_engines = []             # Typhoon, Shu Yun, Jeskai Ascendancy, Artist's Talent
+    draw_pumps = []               # Knowledge Is Power: +X/+X, X = cards drawn this turn
+    equip_haste_costs = []        # Lightning Greaves: haste for the creature that needs it
+    loyalty_looters = []          # Teferi, Master of Time: +1 loots on every player's turn
+    activation_discount = 0       # Zirda: {2} off a non-mana activation, never below one
+
+    def _act_cost(n):
+        """What an activated ability costs under Zirda: "can't reduce the mana in that cost
+        to less than one mana", and a free ability stays free."""
+        return max(1, n - activation_discount) if n > 0 else 0
+
     def _register_statics(card):
         """ONE DOOR FOR A STATIC REPLACEMENT ARRIVING: counter replacements
         (Lae'zel, Doubling Season) and damage replacements (Torbran). Called at
         every door a permanent enters by, the lesson `_register_wheel` records."""
-        nonlocal counter_plus, counter_times
+        nonlocal counter_plus, counter_times, activation_discount
         counter_plus += card["counter_mod"]["plus"]
         counter_times *= card["counter_mod"]["times"]
+        # THE ENGINES THAT WORK ON A CAST OR AN EQUIP, and the doubler that came in through a
+        # door other than the body loop (2026-11-04). Mirrormade copies from this list.
+        permanents_in_play.append(card)
+        if "Artifact" in (card.get("type_line") or ""):
+            _refresh_gated_lands()    # Spire of Industry
+        _eng = card["engine"]
+        if _eng["cast_loot"] or _eng["cast_team_pump"] or _eng["cast_token_x"] \
+                or _eng["cast_double_strike_cost"] is not None:
+            cast_engines.append(_eng)
+        if _eng["draw_pump"]:
+            draw_pumps.append(_eng)
+        if _eng["equip_haste"] is not None:
+            equip_haste_costs.append(_eng["equip_haste"])
+        if _eng["loyalty_loot"]:
+            loyalty_looters.append(_eng)
+        activation_discount += _eng["activation_discount"]
         if card["damage_bonus"]["amount"]:
             damage_bonuses.append((card["damage_bonus"]["amount"],
                                    card["damage_bonus"]["scope"]))
-        for _prof in (card["event"], card["spell_count"], card["combat"]):
+        for _prof in (card["event"], card["spell_count"], card["combat"], card["artifact_sac"]):
             damage_sources[id(_prof)] = card["damage_source"]
 
     def _register_wheel(card):
@@ -327,16 +446,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             draw_multiplier *= card["draw"]["draw_multiplier"]
         if any(v for k, v in card["artifact_sac"].items() if k != "unmodelled"):
             artifact_sac_payoff_permanents.append(card["artifact_sac"])
+            artifact_sac_arrivals.append({"turn": turn, "sacs": artifact_sacs_this_turn})
         if card["draw"]["activated_draw"]:
             bought_draws.append({
                 "draw": card["draw"],
-                "power": card["combat"]["power"],
+                "name": card["name"],
+                "produces": card["produces"],
+                "colors": card["colors"],
+                "is_land": card["is_land"],
                 "is_creature": card["combat"]["is_creature"]})
         if not card["draw"]["activated_wheel"]:
             return
         wheel_engines.append({
             "draw": card["draw"],
-            "power": card["combat"]["power"],
+            "name": card["name"],
             "is_creature": card["combat"]["is_creature"]})
     drawn_extra = 0
     drawn_extra_by_turn = []
@@ -348,6 +471,41 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     discarded_by_turn = []
     drawn_this_turn = 0
     event_payoff_permanents = []
+    # WHEN EACH OF THOSE ARRIVED, index-aligned (2026-11-04). The payoffs are read at the end
+    # of the main phase, on the whole turn's events, so a Smothering Tithe cast after that
+    # turn's wheel made 24 Treasure, a Glint-Horn cast after a wheel paid double and Shabraz
+    # took a counter for the draw step before he landed. A payoff is paid for what happens
+    # AFTER it arrives: `drawn`, `disc` and `opp` are the counters as they stood then.
+    event_arrivals = []
+    opponent_activated_draws = 0
+    opponent_one_seat_draws = 0
+
+    def _opp_extras():
+        """Opponents' draws beyond this cycle's draw step. Their draw step comes after our
+        turn, so an engine that lands in our main phase is paid for that one."""
+        return opponent_draws_this_turn - 1
+
+    def _payoff_arrives(ev):
+        """ONE DOOR FOR A DISCARD OR DRAW PAYOFF ARRIVING."""
+        event_payoff_permanents.append(ev)
+        event_arrivals.append({"turn": turn, "drawn": drawn_this_turn, "disc": discarded,
+                               "opp": _opp_extras(), "act": opponent_activated_draws,
+                               "one": opponent_one_seat_draws,
+                               "first_batch": bool(first_discard_batch), "counters": 0,
+                               "haste": False, "age": 0})
+
+    def _second_draw_seats(base_extras, base_act, base_one, same_turn):
+        """HOW MANY SEATS DREW THEIR SECOND CARD ON THIS CYCLE, after an engine arrived. A
+        wheel or a step's extra draw reaches every seat. One activation of Faerie Mastermind
+        or Gleaming Splendor, used on an opponent's turn after their draw step, is ONE seat's
+        second card; the rest of the table's are their first."""
+        act = opponent_activated_draws - (base_act if same_turn else 0)
+        one = opponent_one_seat_draws - (base_one if same_turn else 0)
+        extras = _opp_extras() - (base_extras if same_turn else 0)
+        if extras - act >= 1:
+            return GOLDFISH_OPPONENTS
+        return min(act + one, GOLDFISH_OPPONENTS)
+
     event_damage_by_turn = []
     counter_power = 0             # +1/+1 counters the payoffs put on their bodies
     # THE COMMANDERS' OWN SHARE OF THAT, tracked apart because it is the
@@ -388,36 +546,60 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     def _cmd_out():
         return (commander_turn is not None) + (partner_turn is not None)
 
+    def _wheel_payoffs():
+        """WHAT A WHEEL CASHES IN: a discard or draw payoff, or a tax on the table's draws. A
+        Smothering Tithe is no `event` payoff, so with one out and no commander the wheel it
+        exists for waited on the hand (2026-11-04, read off the audit's own diff)."""
+        return len(event_payoff_permanents) + sum(
+            1 for _r in treasure_engines
+            if _r["trigger"] in ("opponent_draw_tax", "opponent_second_draw"))
+
     def _wheel_castable(nonlands_in_hand):
-        if not (nonlands_in_hand <= WHEEL_MIN_HAND or event_payoff_permanents):
+        if not (nonlands_in_hand <= WHEEL_MIN_HAND or _wheel_payoffs() or _digging()):
             return False          # the hand is worth more than seven fresh cards
-        return (len(event_payoff_permanents) >= _hold_wheel.get("event_payoffs", 0)
+        return (_wheel_payoffs() >= _hold_wheel.get("event_payoffs", 0)
                 and _cmd_out() >= _hold_wheel.get("commanders_out", 0))
+
+    def _digging():
+        """THE ONE EXCEPTION TO THE PILOT'S HOLD (2026-11-04): a loot or a wheel fires early
+        only to find mana that is not there. No land left in hand, and a commander still in
+        the command zone or a land count that has not reached one."""
+        if any(c["is_land"] for c in hand):
+            return False
+        return _cmd_out() < (2 if partner else 1) or lands_in_play < 4
+
+    def _loot_ok():
+        """A LOOT WAITS FOR A PAYOFF, LIKE A WHEEL (2026-11-04). Faithless Looting fired on
+        turn one and Cathartic Reunion on turn two, before anything paid for them, because
+        only wheels were held."""
+        return bool(event_payoff_permanents) or _digging()
 
     # WHAT THE WHEELS DID, observed and never decided on. The model was firing
     # wheels and throwing the timing away; the pilot's thesis is ABOUT the timing.
-    # A FINISHER is a wheel that resolved with a COMMANDER (not merely any payoff)
-    # on the battlefield AND with a hand the thin-hand clause alone would not have
-    # thrown away — the complement of the built-in gate, so no new authored
-    # constant. `_note_wheel` is called at both fire sites with the hand as it
-    # stands when the wheel resolves (the spell has already left it, which is the
-    # same `- 1` the gate applies; an activated engine sits on the battlefield).
+    # A FINISHER is a wheel that resolved with a COMMANDER (not merely any payoff) on the
+    # battlefield. 2026-11-04: it also asked for four nonlands left in hand, the complement of
+    # the thin-hand gate, and once the turn deploys before it wheels (the pilot's plan, and the
+    # model's now) that describes a hand the pilot failed to spend, not a finisher.
     wheels_cast = 0
     wheels_with_payoff = 0
     first_wheel_turn = None
     finisher_wheel_turn = None
     wheels_cast_by_turn = []
     dead_wheels_in_hand_by_turn = []
+    # THE TIME TO THE RIGHT CARDS (2026-11-04): the turn the first wheel or engine piece
+    # RESOLVED. `targets` says only that it was drawn.
+    first_right_card_turn = None
 
     def _note_wheel():
         nonlocal wheels_cast, wheels_with_payoff, first_wheel_turn, finisher_wheel_turn
-        thin = sum(1 for c in hand if not c["is_land"]) <= WHEEL_MIN_HAND
+        nonlocal first_right_card_turn
         wheels_cast += 1
+        first_right_card_turn = first_right_card_turn or turn
         if first_wheel_turn is None:
             first_wheel_turn = turn
         if event_payoff_permanents:
             wheels_with_payoff += 1
-        if finisher_wheel_turn is None and not thin and _cmd_out() >= 1:
+        if finisher_wheel_turn is None and _cmd_out() >= 1:
             finisher_wheel_turn = turn
 
     def _dead_wheels():
@@ -428,7 +610,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         return sum(1 for c in hand if not c["is_land"]
                    and (c["draw"]["wheel_draws"] or c["draw"]["activated_wheel"]))
     arrival_draw_used = set()     # ids of `once each turn` engines, per turn
-    etb_damage = 0                # noncombat damage dealt this turn by those
+    # NONCOMBAT DAMAGE THIS TURN, by what a doubler may ask of it (2026-11-04): `_damage_kind`.
+    etb_by = {"creature": 0, "other": 0, "life": 0}
     etb_chain_hits = 0            # times the chain guard stopped a cascade
     # THE FREE CAST (Discover's hit, Cascade's hit), 2026-10-11. Counted per
     # game, the depth reached and the times the guard stopped a chain reported
@@ -449,7 +632,53 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # never reached and the colourless arithmetic is untouched.
     sources = []
     treasures = 0                 # a STOCKPILE: each one is spendable once
-    treasure_engines = []         # (per_event, trigger) for modelled sources in play
+    tapped_treasures = 0          # Mary Read's enter tapped: spendable next turn
+    # WHAT THE GRAVEYARD HOLDS THAT ANYTHING READS (2026-11-04): instants and sorceries for
+    # Rielle's power, and the flashback cards that can be cast again.
+    yard_spells = 0
+    flashback_yard = []
+    noncreature_casts_this_turn = 0
+    first_noncreature_turn = None
+    treasure_engines = []         # one record per modelled source in play
+
+    def _treasure_engine_arrives(per_event, trigger):
+        """ONE DOOR. `seen` and `seats` are what this engine has been paid for this cycle:
+        a Tithe cast after the turn's wheel is not paid for the wheel (2026-11-04)."""
+        nonlocal first_right_card_turn
+        if trigger in ("opponent_draw_tax", "opponent_second_draw"):
+            first_right_card_turn = first_right_card_turn or turn
+        treasure_engines.append({"n": per_event, "trigger": trigger,
+                                 "seen": _opp_extras(), "act": opponent_activated_draws,
+                                 "one": opponent_one_seat_draws, "turn": turn,
+                                 "one_seen": opponent_one_seat_draws, "seats": 0})
+
+    def _tax_opponent_draws(natural=False):
+        """TREASURE OFF THEIR DRAWS (Smothering Tithe, Gleaming Splendor), from every opponent
+        at the table. Each tax is decided per draw on this game's own stream against
+        TITHE_PAY_RATE, an AUTHORED assumption and said so in MODEL_ASSUMPTIONS.
+
+        CALLED ON THE EVENT since 2026-11-04, so a draw loop can spend what it makes:
+        `natural` adds this cycle's draw step, once, at the end of the main phase."""
+        nonlocal treasures
+        if not model_treasures:
+            return
+        for rec in treasure_engines:
+            if rec["trigger"] == "opponent_draw_tax":
+                new = (_opp_extras() - rec["seen"]) * GOLDFISH_OPPONENTS \
+                    + (opponent_one_seat_draws - rec["one_seen"]) \
+                    + (GOLDFISH_OPPONENTS if natural else 0)
+                rec["seen"] = _opp_extras()
+                rec["one_seen"] = opponent_one_seat_draws
+                made = sum(1 for _ in range(new) if rng.random() >= TITHE_PAY_RATE)
+            elif rec["trigger"] == "opponent_second_draw":
+                seats = _second_draw_seats(rec["seen"] if rec["turn"] == turn else 0,
+                                           rec["act"], rec["one"], rec["turn"] == turn)
+                made = max(0, seats - rec["seats"])
+                rec["seats"] = max(rec["seats"], seats)
+            else:
+                continue
+            treasures += made * (rec["n"] + treasure_bonus) * treasure_multiplier
+
     treasure_bonus = 0            # Xorn-style +N per creation event
     # Procession-style xN. Multiplicative and applied AFTER the additive bonus,
     # which is the order a player would choose: replacement effects on one event
@@ -524,20 +753,33 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Anthem, Crucible of Fire) sits here, because nothing here removes one.
     static_anthems = []
 
-    def _lord_bonuses():
-        """Each creature's power from static lords, INDEX-ALIGNED with
+    def _read_power(entry, transient):
+        """POWER THE ENTRY READS RATHER THAN CARRIES (field 13, 2026-11-04): the hand for
+        Psychosis Crawler, the graveyard's spells for Rielle, and, while a turn's pump is in
+        force, prowess. `transient` is False for the end-of-turn board: prowess has worn off."""
+        info = entry[12]
+        if not info:
+            return 0
+        n = len(hand) if info["scales"] == "hand" else (
+            yard_spells if info["scales"] == "yard_spells" else 0)
+        if transient and info["prowess"]:
+            n += noncreature_casts_this_turn
+        return n
+
+    def _lord_bonuses(transient=True):
+        """Each creature's power from static lords and what it reads, INDEX-ALIGNED with
         `battlefield`. "Other" spares the lord itself; a typed lord pumps only
         what `lord_applies` matches. Zero-cost when no lord is in play."""
         lords = [(j, e[10]) for j, e in enumerate(battlefield)
                  if len(e) > 10 and e[10]]
         if not lords and not static_anthems:
-            return [0] * len(battlefield)
+            return [_read_power(e, transient) for e in battlefield]
         out = []
         for i, tl_ in enumerate(creature_types):
             b = sum(L["n"] for L in static_anthems if lord_applies(L, tl_))
             b += sum(L["n"] for j, L in lords
                      if not (L["other"] and j == i) and lord_applies(L, tl_))
-            out.append(b)
+            out.append(b + _read_power(battlefield[i], transient))
         return out
     # Who has been granted haste by permanents in play: "all", "nontoken",
     # "flying" or a creature type. Read at the attack step only.
@@ -584,10 +826,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     creature_flying = []          # index-aligned with `battlefield`, like the types
     mass_animate_threshold = 0
     damage_by_turn = []
+    total_damage_by_turn = []
     board_power_by_turn = []
     target_turns = [None] * len(targets)
     target_turns_unassisted = [None] * len(targets)
     tutor_ready_turns = []
+    library_types = {c["name"]: c.get("type_line") for c in library} if targets else {}
+    # HOW LONG FROM A COMMANDER'S ARRIVAL TO ITS FIRST +1/+1 COUNTER (2026-11-04), a speed the
+    # pilot named: turns after it landed, by the commander's event profile.
+    commander_first_counter = {}
 
     for turn in range(1, max_turn + 1):
         # A PUMP LASTS ONE TURN. `team_anthem` is permanent and a pump must
@@ -630,7 +877,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # wheel refills that one seat. A real table has three, which makes
         # every figure downstream of this a FLOOR and is stated as one.
         opponent_draws_this_turn = 1
+        opponent_activated_draws = 0
+        opponent_one_seat_draws = 0
+        for _rec in treasure_engines:
+            _rec["seen"] = _rec["seats"] = _rec["one_seen"] = 0
         artifact_sacs_this_turn = 0
+        noncreature_casts_this_turn = 0
+        treasures += tapped_treasures      # Mary Read's, tapped since last turn
+        tapped_treasures = 0
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -647,21 +901,35 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # `model_colors`, and a colour-scaling producer READS it to size its
             # own output — so the flag was not a constraint at all. See the note
             # at the `scales_with_colors` branch below.
-            sources.append(played["colors"])
+            # A LAND PAYS WHAT THE BOARD ALLOWS (`land_gate`, 2026-11-04).
+            _lands_played.append(played)
+            _lg = played["land_gate"]
+            if _lg is None:
+                sources.append(played["colors"])
+            elif _lg["one_of"]:
+                sources.append(_pathway_face(played["colors"]))
+            else:
+                _rec = {"gate": _lg, "now": _lg["base"]}
+                sources.append(_rec["now"])
+                gated_lands.append(_rec)
+            _refresh_gated_lands()
             land_hits.append(True)
+            # A LAND THAT SACRIFICES ITSELF FOR A CARD (Fiery Islet, 2026-11-04) was flagged
+            # and never used: this door did not call the door every other permanent uses.
+            _register_wheel(played)
         else:
             land_hits.append(False)
 
         # Recurring Treasure engines already in play fire before you spend.
         # `landfall` only pays out on a turn a land actually entered, which is
         # what makes Tireless Provisioner worth less than an upkeep trigger.
-        for per_event, trigger in treasure_engines:
-            if trigger == "landfall" and not land_hits[-1]:
+        for _rec in treasure_engines:
+            if _rec["trigger"] == "landfall" and not land_hits[-1]:
                 continue
-            if trigger in ("upkeep", "landfall"):
-                treasures += (per_event + treasure_bonus) * treasure_multiplier
+            if _rec["trigger"] in ("upkeep", "landfall"):
+                treasures += (_rec["n"] + treasure_bonus) * treasure_multiplier
 
-        etb_damage = 0
+        etb_by.update(creature=0, other=0, life=0)
         bodies_cum_bump[0] = 0
         arrival_draw_used = set()
         # "THIS ABILITY TRIGGERS ONLY ONCE EACH TURN" (Morbid Opportunist, Vraan):
@@ -764,29 +1032,50 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _free_cast(hit, route)
             return hit
 
-        def discard_n(n, everything=False, shuffled=False):
+        def _to_yard(cards):
+            """WHAT A DISCARD LEAVES BEHIND (2026-11-04): spells for Rielle, flashback cards to
+            cast again, and the tapped Treasure Mary Read and Anne Bonny make for an Island,
+            Pirate or Vehicle card. The tokens arrive through the doublers like any other."""
+            nonlocal yard_spells, tapped_treasures
+            for c in cards:
+                tl = c.get("type_line") or ""
+                if "Instant" in tl or "Sorcery" in tl:
+                    yard_spells += 1
+                    if c["engine"]["flashback"]:
+                        flashback_yard.append(c)
+                if model_treasures:
+                    for _e in event_payoff_permanents:
+                        if any(w in tl for w in _e["per_discard_typed_treasure"]):
+                            tapped_treasures += (1 + treasure_bonus) * treasure_multiplier
+
+        def discard_n(n, everything=False, shuffled=False, which=None):
             """Put n cards from hand into the yard. AUTHORED POLICY, stated in
             MODEL_ASSUMPTIONS: a wheel discards the whole hand, lands included;
             a loot pitches lands beyond the next drop first, then the most
             expensive nonland. A discarded card stays in `seen` -- assembly is
-            "drawn by", and it was."""
+            "drawn by", and it was. `which` names the card when the cost does:
+            cycling discards the card that cycles."""
             nonlocal discarded, first_discard_batch
             if everything:
                 if not shuffled:
                     discarded += len(hand)
                     first_discard_batch = first_discard_batch or len(hand)
+                    _to_yard(hand)
                 hand.clear()
                 return
             _had = len(hand)
             for _ in range(int(n)):
                 if not hand:
-                    return
+                    break
                 lands = [c for c in hand if c["is_land"]]
-                if len(lands) > 1:
+                if which is None and len(lands) > 1:
+                    _to_yard([lands[-1]])
                     hand.remove(lands[-1])
                 else:
-                    pick = max((c for c in hand if not c["is_land"]),
-                               key=lambda c: c["cmc"], default=hand[0])
+                    pick = which if which is not None else max(
+                        (c for c in hand if not c["is_land"]),
+                        key=lambda c: c["cmc"], default=hand[0])
+                    _to_yard([pick])
                     hand.remove(pick)
                 discarded += 1
             first_discard_batch = first_discard_batch or (_had - len(hand))
@@ -808,15 +1097,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # what it has always meant: repeatable mana per turn. Treasures are a
         # one-shot reserve and get their own series.
         mana_by_turn.append(pool)
-        treasures_by_turn.append(treasures)
         treasure_online_by_turn.append(bool(treasure_engines))
+        # CUMULATIVE UPKEEP (Mystic Remora, 2026-11-04): an age counter and that many times its
+        # cost, out of this turn's mana, while the age is one a pilot keeps paying
+        # (`CUMULATIVE_UPKEEP_MAX_AGE`, AUTHORED). Then it is sacrificed.
+        for _i in reversed(range(len(event_arrivals))):
+            _cu = event_payoff_permanents[_i]["cumulative_upkeep"]
+            if not _cu:
+                continue
+            event_arrivals[_i]["age"] += 1
+            _owed = _cu * event_arrivals[_i]["age"]
+            if event_arrivals[_i]["age"] <= CUMULATIVE_UPKEEP_MAX_AGE and pool >= _owed:
+                pool -= _owed
+            else:
+                del event_payoff_permanents[_i], event_arrivals[_i]
 
         def creature_entered(power, arrived, haste=False, mult=1, depth=0,
                              toughness=1,
                              is_token=False, is_legendary=False, type_line="",
                              infect=False, toxic=0, flying=False,
                              temporary=False, attack_gate=None, lord=None, colors=(),
-                             mv=None):
+                             mv=None, info=None):
             """ONE DOOR ONTO THE BATTLEFIELD, so every payoff fires every time.
 
             Casting a creature, a token being made and a copy being made are the
@@ -829,7 +1130,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             reported, because a loop that terminates silently cannot be told
             from one that never ran.
             """
-            nonlocal etb_damage, etb_chain_hits
+            nonlocal etb_chain_hits
             # The sixth field is the poison pair (infect, toxic). It rides IN
             # the entry rather than in a parallel list, because the sacrifice
             # site below rebuilds `battlefield` and a parallel list would not
@@ -862,9 +1163,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # tuple for the reason the tenth is: a pop cannot desynchronise it.
             # THE TWELFTH IS ITS COLOURS (2026-10-11), for a damage replacement
             # that asks what colour the attacker is (Torbran: red sources +2).
+            # THE THIRTEENTH IS WHAT THE ENTRY READS AND WHO IT IS (`_entry_info`, 2026-11-04):
+            # the name a tap ability or a sacrifice finds its own row by, never its power.
             battlefield.append((power, arrived, haste, mult, is_token,
                                 (infect, toxic), toughness, False, temporary,
-                                attack_gate, lord, frozenset(colors)))
+                                attack_gate, lord, frozenset(colors), info))
             # INDEX-ALIGNED WITH `battlefield`, appended at the same one door, so
             # the two can never drift the way the zip that preceded this did.
             creature_types.append(type_line)
@@ -916,26 +1219,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     want = chosen_type if gate == "chosen" else gate
                     if not want or want not in type_line:
                         continue
+                _ek = "creature" if eng["is_creature"] else "other"
                 if eng["etb_damage_self_power"]:
-                    etb_damage += power
+                    # "That creature deals damage equal to its power", whoever's trigger.
+                    etb_by["creature"] += power
                 if eng["etb_damage_fixed"]:
-                    etb_damage += eng["etb_damage_fixed"]
+                    etb_by[_ek] += eng["etb_damage_fixed"]
                 if eng["etb_life_loss_fixed"]:
                     # Corpse Knight. Same event, same cadence and same number as
                     # Impact Tremors above; it read as zero until the payload
                     # regex learned the second way of wording it.
-                    etb_damage += eng["etb_life_loss_fixed"]
+                    etb_by["life"] += eng["etb_life_loss_fixed"]
                 if is_token and eng["token_created_life_loss"]:
                     # Mirkwood Bats, and only on CREATURE tokens, because those
                     # are the only tokens this model makes. Bats also fires on a
                     # Blood token and on a sacrifice, and neither exists here.
-                    etb_damage += eng["token_created_life_loss"]
+                    etb_by["life"] += eng["token_created_life_loss"]
                 if eng["etb_damage_count"]:
                     # X is "the number of Dragons you control". The board is
                     # counted whole rather than by subtype — exact in a deck
                     # whose creatures are Dragons, generous otherwise, and
                     # stated in model_assumptions.
-                    etb_damage += len(battlefield)
+                    etb_by[_ek] += len(battlefield)
                 if eng["etb_copy"]:
                     # A COPY IS LEGENDARY UNLESS THE CARD STRIPS IT. Miirym says
                     # "except the token isn't legendary" and is played for
@@ -963,6 +1268,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 bodies_cum_bump[0] += 1
                 creature_entered(pw, arrived, hs, mt, depth + 1, is_token=True)
 
+        def _entry_info(name, combat):
+            return {"name": name, "scales": combat["power_scales"],
+                    "prowess": combat["prowess"], "vigilance": combat["vigilance"]}
+
         def spend(cost, pips=None):
             """Pay from lands and rocks first, then break Treasures.
 
@@ -987,7 +1296,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """ONE DOOR FOR A COMMANDER'S ARRIVAL, used by both of a pair.
             `cdamage` is `{"bonus", "source"}`: a Torbran in the command zone,
             and what this commander is as a damage source (Brallin is red)."""
-            nonlocal team_damage_multiplier, extra_combat_free
+            nonlocal extra_combat_free
             if cdamage:
                 if cdamage["bonus"]["amount"]:
                     damage_bonuses.append((cdamage["bonus"]["amount"],
@@ -1005,9 +1314,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  toughness=cprof["toughness"],
                                  attack_gate=cprof.get("attack_gate"),
                                  lord=cprof.get("static_lord"),
-                                 colors=(cdamage["source"]["colors"] if cdamage else ()))
-                if cprof["team_damage_multiplier"] > 1:
-                    team_damage_multiplier *= cprof["team_damage_multiplier"]
+                                 colors=(cdamage["source"]["colors"] if cdamage else ()),
+                                 info={"name": None, "scales": cprof.get("power_scales"),
+                                       "prowess": cprof.get("prowess"),
+                                       "vigilance": cprof.get("vigilance")})
+                _register_damage_scale(cprof)
                 if any((cprof["attack_mana"], cprof["attack_damage"],
                         cprof["attack_treasure"], cprof["attack_draw"],
                         cprof["attack_token_bodies"],
@@ -1018,7 +1329,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if cprof["extra_combat_cost"] is not None:
                     extra_combat_costs.append(cprof["extra_combat_cost"])
             if model_discard and has_event_payoff(cevent):
-                event_payoff_permanents.append(cevent)
+                _payoff_arrives(cevent)
                 commander_event_objs.append(cevent)
 
         def _cast_triggers(cmc, tl, power, is_creature):
@@ -1026,7 +1337,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             through: the mana-value and paid cast-draws (Up the Beanstalk,
             Lifecrafter's Bestiary) and power-gated cast damage (Sarkhan's
             Unsealing). Engines already in play only."""
-            nonlocal pool, etb_damage
+            nonlocal pool
             if model_draw:
                 for _eng in draw_engines:
                     if not _eng["cast_draw"]:
@@ -1044,8 +1355,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_combat and is_creature:
                 for _eng in cast_damage_engines:
                     if power >= _eng["cast_damage_power_min"]:
-                        etb_damage += _eng["cast_damage"] + bonus_for(
-                            damage_sources.get(id(_eng)), damage_bonuses)
+                        etb_by["creature" if _eng["is_creature"] else "other"] += (
+                            _eng["cast_damage"] + bonus_for(damage_sources.get(id(_eng)),
+                                                            damage_bonuses))
 
         def _magecraft(events):
             """Fire magecraft `events` times. CAST OR COPY — that wording is the
@@ -1058,7 +1370,31 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _eng in magecraft_engines:
                 treasures += _eng["magecraft_treasure"] * events
 
-        def _note_cast(card):
+        def _fire_cast_engines(card, is_spell):
+            """"WHENEVER YOU CAST A NONCREATURE SPELL" (2026-11-04). Engines already in play
+            only: the spell that IS the engine reaches `_register_statics` after this."""
+            nonlocal turn_pump, bodies_cum
+            for _eng in cast_engines:
+                turn_pump += _eng["cast_team_pump"]
+                _gate = _eng["cast_token_x"]
+                # A token of the spell's MANA VALUE (Shark Typhoon). X read as 0 on an X
+                # spell, a floor, and a 0/0 Shark is not a body.
+                if _gate and card["cmc"] > 0 and (_gate == "noncreature" or is_spell) \
+                        and (model_combat or model_draw):
+                    for _ in range(token_multiplier):
+                        creature_entered(card["cmc"], turn, False, 1, is_token=True, flying=True,
+                                         toughness=card["cmc"], type_line="Creature — Shark")
+                    bodies_cum += token_multiplier
+                # "You may": taken when it pays, which is the rule every loot here keeps.
+                if _eng["cast_loot"] and model_draw and model_discard and _loot_ok():
+                    if _eng["cast_loot"] == "draw":
+                        draw_n(1)
+                        discard_n(1)
+                    elif hand:
+                        discard_n(1)
+                        draw_n(1)
+
+        def _note_cast(card, from_yard=False):
             """EVERY cast goes through here: the card leaves hand, the spell
             count moves, and the cast-triggered payoffs fire.
 
@@ -1068,7 +1404,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             source for `hand.remove` and fails if the call is not this helper —
             that is the only thing that keeps it correct as the file grows.
             """
-            nonlocal spells_cast_this_turn, spells_cast_total, etb_damage, hand_limit_off
+            nonlocal spells_cast_this_turn, spells_cast_total, hand_limit_off
+            nonlocal noncreature_casts_this_turn, yard_spells
             hand.remove(card)
             if card.get("no_max_hand"):
                 hand_limit_off = True
@@ -1088,10 +1425,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         continue
                     if gate == "a noncreature" and is_creature:
                         continue
-                    etb_damage += _eng["per_cast_damage"] + bonus_for(
-                        damage_sources.get(id(_eng)), damage_bonuses)
+                    _src = damage_sources.get(id(_eng))
+                    etb_by[_damage_kind(_src)] += _eng["per_cast_damage"] + bonus_for(
+                        _src, damage_bonuses)
             if is_spell:
                 _magecraft(1)
+                # IT RESOLVES INTO THE GRAVEYARD, which is what Rielle counts and what
+                # flashback reads. A card cast from there is exiled instead.
+                if not from_yard:
+                    yard_spells += 1
+                    if card["engine"]["flashback"]:
+                        flashback_yard.append(card)
+            if not is_creature:
+                noncreature_casts_this_turn += 1
+                _fire_cast_engines(card, is_spell)
             # CASCADE TRIGGERS ON THE CAST, so it lives here and nowhere else:
             # every cast — paid, free, or a cascade hit with cascade of its
             # own — comes through this helper, and a COPY never does (Zada's
@@ -1106,7 +1453,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             declared reveal). The same door and the same registrations as a
             cast body, minus what a cast is: no cast-triggered tokens, no
             cast-draw, no spend. Devotion-gated gods are held like any other."""
-            nonlocal bodies_cum, team_damage_multiplier, extra_combat_free
+            nonlocal bodies_cum, extra_combat_free
             nonlocal lifelink_power, token_multiplier, treasures
             combat = card["combat"]
             seen.add(card["name"])
@@ -1140,7 +1487,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      flying=combat["flying"],
                                      toughness=combat["toughness"],
                                      attack_gate=combat.get("attack_gate"),
-                            lord=combat.get("static_lord"))
+                                     lord=combat.get("static_lord"),
+                                     info=_entry_info(card["name"], combat))
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
@@ -1148,8 +1496,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_combat:
                 if combat["team_haste"]:
                     haste_grants.append(combat["team_haste"])
-                if combat["team_damage_multiplier"] > 1:
-                    team_damage_multiplier *= combat["team_damage_multiplier"]
+                _register_damage_scale(combat)
                 if combat["extra_combat_free"]:
                     extra_combat_free += 1
                 if combat["extra_combat_cost"] is not None:
@@ -1169,7 +1516,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_treasures:
                 if card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
                                                 "opponent_second_draw"):
-                    treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
+                    _treasure_engine_arrives(card["treasure_n"], card["treasure_trigger"])
                 elif card["treasure_trigger"] == "etb":
                     treasures += (card["treasure_n"] + treasure_bonus) * treasure_multiplier
 
@@ -1177,20 +1524,41 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """A spell's damage to the opponent's face, through Torbran-class
             bonuses, into this turn's noncombat damage (folded at the combat
             step, under the team multiplier)."""
-            nonlocal etb_damage
             fd = card["face_damage"]
             if not model_combat or not fd["kind"] or (as_mode and fd["choose_one"]):
                 return
+            # A SECOND MODE ON AN ESCALATE CARD IS PAID FOR (2026-11-04): {1} more for the
+            # 3 on Collective Defiance, or the wheel resolves alone.
+            if as_mode and fd["escalate"] and not spend(fd["escalate"]):
+                return
             amount = (fd["amount"] if fd["kind"] == "fixed"
-                      else hand_size if fd["kind"] == "hand" else OPPONENT_HAND)
+                      else hand_size if fd["kind"] == "hand" else _opp_hand_now())
             if amount > 0:
-                etb_damage += amount + bonus_for(card["damage_source"], damage_bonuses)
+                etb_by["other"] += amount + bonus_for(card["damage_source"], damage_bonuses)
+
+        def _opp_hand_now():
+            """THEIR HAND, the authored OPPONENT_HAND, seven on a turn a wheel refilled them
+            (the rule Jeska's Will and Fevered Visions read)."""
+            return 7 if opponent_draws_this_turn >= 7 else OPPONENT_HAND
+
+        def _wheel_counts(held, drawn_word, greatest):
+            """`(ours, theirs)` per seat, read off who holds what (2026-11-04). "The greatest
+            number a player discarded" (Windfall, Jace's Archivist) gives both the bigger of
+            the two hands, at least their OPPONENT_HAND: read on ours alone, a Windfall off an
+            empty hand drew nothing. "Draws that many" gives each player their own count back.
+            A fixed wheel is what it says."""
+            if drawn_word >= 0:
+                return drawn_word, drawn_word
+            theirs = _opp_hand_now()
+            if greatest:
+                return max(held, theirs), max(held, theirs)
+            return held, theirs
 
         def _resolve_draw(card):
             """THE DRAW LOOP'S RESOLUTION, after the cast. One body for the
             loop and the free cast, so a discovered or cascaded cantrip resolves
             exactly as a paid one does — Zada's copies included."""
-            nonlocal life_paid_draws
+            nonlocal life_paid_draws, treasures, event_gain_events, event_gain_total
             nonlocal opponent_draws_this_turn
             # THE FACE HALF OF A MODAL DRAW SPELL, dealt at resolution and
             # before its own discard (Fateful Showdown counts the hand it is
@@ -1203,19 +1571,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 held = len(hand)
                 _note_wheel()
                 discard_n(0, everything=True, shuffled=card["draw"]["wheel_shuffles"])
-                _n = held if card["draw"]["wheel_draws"] < 0 else card["draw"]["wheel_draws"]
+                _n, _theirs = _wheel_counts(held, card["draw"]["wheel_draws"],
+                                            card["draw"]["wheel_greatest"])
                 draw_n(_n + card["draw"]["wheel_plus"])
                 # A WHEEL IS SYMMETRICAL AND THIS IS THE HALF THE MODEL
                 # NEVER SAW. "Each player draws seven" refills the opponent
                 # too, which is the cost of every wheel in this deck and
-                # the reason the tax cards exist. A "that many" wheel draws
-                # each player their OWN discard count and this model does
-                # not track the opponent's hand, so ours stands in for it.
+                # the reason the tax cards exist.
                 # ONLY "EACH PLAYER" (2026-10-11): a wheel of OUR hand alone
                 # refills nobody else.
                 if card["draw"]["wheel_symmetric"]:
-                    opponent_draws_this_turn += _n
+                    opponent_draws_this_turn += _theirs
+                    _tax_opponent_draws()
+                # Heartwarming Redemption's life, on the hand it just drew: one gain event.
+                if card["draw"]["spell_gain_hand"] and hand:
+                    event_gain_events += 1
+                    event_gain_total += len(hand)
                 return
+            # AN ADDITIONAL COST IS PAID AT CAST, BEFORE THE DRAW (2026-11-04): Cathartic
+            # Reunion discarded the two best of the three cards it had just drawn.
+            if model_discard and card["draw"]["spell_discard_is_cost"]:
+                discard_n(card["draw"]["spell_discard"])
             draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
             # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
             # Zada, Hedron Grinder's whole deck: a {R} cantrip targeting
@@ -1249,8 +1625,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 draw_n(max(battlefield_mv, default=0))
             if card["draw"]["life_gain_paid_draw"]:
                 life_paid_draws += 1
-            if model_discard and card["draw"]["spell_discard"]:
+            if model_discard and card["draw"]["spell_discard"] \
+                    and not card["draw"]["spell_discard_is_cost"]:
                 discard_n(card["draw"]["spell_discard"])
+            # The Treasure half of a spell cast for its draw (Prismari Command's other mode).
+            if model_treasures and card["combat"]["spell_treasure"]:
+                treasures += ((card["combat"]["spell_treasure"] + treasure_bonus)
+                              * treasure_multiplier)
             if (card["draw"]["recurring_draw"] or card["draw"]["arrival_draw"]
                     or card["draw"]["cast_draw"] or card["draw"]["recurring_each_player_draw"]):
                 draw_engines.append(card["draw"])
@@ -1271,14 +1652,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         def _resolve_storm(card, copies):
             """THE STORM LOOP'S RESOLUTION. `copies` is the spell count taken
             BEFORE the cast, which the caller must read before `_note_cast`."""
-            nonlocal bodies_cum, etb_damage
+            nonlocal bodies_cum
             sc = card["spell_count"]
             total = 1 + copies
             if model_combat and sc["storm_damage"]:
                 # Each copy is its own damage instance, so a +N replacement
                 # (Torbran on a red Grapeshot) applies per copy.
-                etb_damage += (sc["storm_damage"]
-                               + bonus_for(card["damage_source"], damage_bonuses)) * total
+                etb_by["other"] += (sc["storm_damage"]
+                                    + bonus_for(card["damage_source"], damage_bonuses)) * total
             if sc["storm_token_bodies"]:
                 each = sc["storm_token_power"] // max(sc["storm_token_bodies"], 1)
                 for _ in range(sc["storm_token_bodies"] * total * token_multiplier):
@@ -1287,7 +1668,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # short entry that every `e[8]` read would raise on. The
                     # tenth, the attack gate, is None: a Goblin token attacks.
                     battlefield.append((each, turn, False, 1, True, (0, 0), 1,
-                                        False, False, None, None, frozenset("R")))
+                                        False, False, None, None, frozenset("R"), None))
                     creature_types.append("Creature — Goblin")
                     creature_flying.append(False)
                     bodies_cum += 1
@@ -1515,7 +1896,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal attack_enabler_out, bodies_cum, creatures_entered_this_turn
             nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
             nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
-            nonlocal team_damage_multiplier, token_multiplier, treasure_bonus
+            nonlocal token_multiplier, treasure_bonus, first_right_card_turn
             nonlocal treasure_multiplier, treasures
             # AN INSTANT OR SORCERY THAT MAKES TOKENS reaches this loop because
             # its tokens count as bodies — and until 2026-10-11 its own spell
@@ -1523,9 +1904,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # cards, and its discard paid nobody. The spell half resolves first.
             _tl0 = card.get("type_line") or ""
             if "Instant" in _tl0 or "Sorcery" in _tl0:
+                _cost_first = model_discard and card["draw"]["spell_discard_is_cost"]
+                if _cost_first:
+                    discard_n(card["draw"]["spell_discard"])
                 if model_draw and card["draw"]["spell_draw"]:
                     draw_n(card["draw"]["spell_draw"])
-                if model_discard and card["draw"]["spell_discard"]:
+                if model_discard and card["draw"]["spell_discard"] and not _cost_first:
                     discard_n(card["draw"]["spell_discard"])
                 if model_treasures and card["combat"]["spell_treasure"]:
                     treasures += card["combat"]["spell_treasure"]
@@ -1623,7 +2007,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         "gain_team_counters", "gain_self_counter")):
                     drain_permanents.append(card["drain"])
                 if model_discard and has_event_payoff(card.get("event")):
-                    event_payoff_permanents.append(card["event"])
+                    _payoff_arrives(card["event"])
+                    first_right_card_turn = first_right_card_turn or turn
                 if card["drain"]["lifelink"] and combat["is_creature"]:
                     lifelink_power += combat["power"]
                 if card["drain"]["grants_lifelink_to"]:
@@ -1657,7 +2042,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         attack_gate=combat.get("attack_gate"),
                         lord=combat.get("static_lord"),
                         colors=card["damage_source"]["colors"],
-                        mv=card["cmc"])
+                        mv=card["cmc"], toughness=combat["toughness"],
+                        info=_entry_info(card["name"], combat))
                     creatures_entered_this_turn += 1
             # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
             # whether or not the commander has ever been cast. "Another"
@@ -1677,8 +2063,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 for _ in range(combat["token_bodies"] * token_multiplier):
                     creature_entered(each, turn, False, 1, is_token=True)
             if model_combat:
-                if combat["team_damage_multiplier"] > 1:
-                    team_damage_multiplier *= combat["team_damage_multiplier"]
+                _register_damage_scale(combat)
                 if combat["extra_combat_free"]:
                     extra_combat_free += 1
                 if combat["extra_combat_cost"] is not None:
@@ -1778,7 +2163,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pass
             elif card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
                                               "opponent_second_draw"):
-                treasure_engines.append((card["treasure_n"], card["treasure_trigger"]))
+                _treasure_engine_arrives(card["treasure_n"], card["treasure_trigger"])
             elif card["treasure_trigger"] in ("etb", "cast"):
                 treasures += ((card["treasure_n"] + treasure_bonus)
                               * treasure_multiplier)
@@ -1824,7 +2209,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 route = "ritual"
             elif (model_draw and is_spell and card["bodies"] == 0
                   and card["produces"] == 0 and not card["tutor"]
-                  and card["draw"]["spell_draw"] and not card["draw"]["wheel_draws"]):
+                  and card["draw"]["spell_draw"] and not card["draw"]["wheel_draws"]
+                  and not (model_discard and card["draw"]["spell_discard_is_cost"]
+                           and len(hand) < card["draw"]["spell_discard"])):
                 route = "draw"
             elif card["discover_n"]:
                 route = "discover"
@@ -2122,221 +2509,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool += reduced_cost(fetched, reductions, chosen_type)
                 attack_tutor_fired += 1
 
-        # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
-        # to fall through this hole, after Aggravated Assault and Primal Vigor.
-        # Urza's Incubator and Herald's Horn are artifacts with `produces` 0 and
-        # `bodies` 0, so every existing loop skips them and they would sit in
-        # hand for ten turns while being the deck's stated curve fixer. Cast
-        # BEFORE anything else affordable, because a reducer's whole value is
-        # what it makes the rest of the turn cost.
-        for card in sorted((c for c in hand if c["reduces"] and c["bodies"] == 0
-                            and c["produces"] == 0),
-                           key=lambda c: c["cmc"]):
-            if card not in hand:      # a free cast's discard took it
-                continue
-            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                reductions.append(card["reduces"])
-                _note_cast(card)
-
-        # AN ETB PAYOFF THAT IS NOT A BODY falls through every other loop —
-        # Dragon Tempest is an enchantment with `bodies` 0 and `produces` 0, so
-        # it sat in hand for ten turns while being half of the deck's stated win
-        # condition. Fourth card to find this hole, after Aggravated Assault,
-        # Primal Vigor and the cost reducers. Cast early: its whole value is
-        # what the creatures behind it are worth.
-        if model_combat:
-            for card in sorted((c for c in hand
-                                if c["bodies"] == 0 and c["produces"] == 0
-                                and not c["is_land"] and not c["tutor"]
-                                and any((c["combat"]["etb_damage_self_power"],
-                                         c["combat"]["etb_damage_count"],
-                                         c["combat"]["etb_damage_fixed"],
-                                         c["combat"]["etb_token_bodies"],
-                                         c["combat"]["etb_copy"],
-                                         # A DAMAGE DOUBLER THAT IS NOT A BODY
-                                         # fell through here too — Gratuitous
-                                         # Violence and Dictate of the Twin Gods
-                                         # are enchantments, read correctly and
-                                         # never cast.
-                                         c["combat"]["team_damage_multiplier"] > 1,
-                                         # A HASTE ENABLER IS AN ENGINE PERMANENT:
-                                         # Fervor has no body, and without this
-                                         # line it is read and never cast.
-                                         c["combat"]["team_haste"],
-                                         c["combat"]["cast_damage"],
-                                         # Chandra's Ignition needs a body to aim.
-                                         c["combat"]["spell_damage_greatest_power"] and battlefield))),
-                               key=lambda c: c["cmc"]):
-                if card not in hand:      # a free cast's discard took it
-                    continue
-                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                    if is_etb_engine(card["combat"]):
-                        etb_engines.append(card["combat"])
-                    if card["combat"]["team_haste"]:
-                        haste_grants.append(card["combat"]["team_haste"])
-                    if card["combat"]["cast_damage"]:
-                        cast_damage_engines.append(card["combat"])
-                    if card["combat"]["spell_damage_greatest_power"]:
-                        # THE BIGGEST BODY'S POWER, once, to the one opponent;
-                        # the wipe half has nothing to hit here.
-                        etb_damage += max((p + team_anthem + lb_ for (p, *_), lb_
-                                           in zip(battlefield, _lord_bonuses())), default=0)
-                    if card["combat"]["team_damage_multiplier"] > 1:
-                        team_damage_multiplier *= card["combat"]["team_damage_multiplier"]
-                    _note_cast(card)
-
-        # Cast rocks cheapest-first; they produce starting next turn.
-        for card in sorted((c for c in hand if c["produces"] > 0 or c["land_mana_bonus"]),
-                           key=lambda c: c["cmc"]):
-            if card not in hand:      # a free cast's discard took it
-                continue
-            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                if card["reduces"]:
-                    reductions.append(card["reduces"])
-                # A LAND-MANA BONUS IS A ROCK THAT PAYS PER LAND, from next turn.
-                land_mana_bonus += card["land_mana_bonus"]
-                made, colors = card["produces"], card["colors"] or frozenset()
-                if card["scales_with_colors"]:
-                    # SNAPSHOT AT CAST, and deliberately the conservative end of
-                    # the range: it counts the colours on the board the turn it
-                    # resolves and never grows, so a Faeburrow Elder cast on two
-                    # colours and living to see five is UNDERSTATED. Understating
-                    # is recoverable; overstating is how a mana base comes out
-                    # looking fine and cannot cast its spells.
-                    #
-                    # AND IT READS `sources`, WHICH IS WHY THEY ARE NOW TRACKED
-                    # UNCONDITIONALLY (#35, 2026-09-13). `sources` used to be
-                    # appended to only under `model_colors`, so with the flag OFF
-                    # this branch found an EMPTY list and every colour-scaling
-                    # producer fell to `max(1, 0)` = one mana. Bloom Tender and
-                    # Faeburrow Elder made 1 blind and up to 5 under the flag.
-                    #
-                    # So `model_colors` added a castability PENALTY and unlocked
-                    # a production BONUS at the same time, and on a five-colour
-                    # deck the bonus won: turning on a CONSTRAINT made ur-dragon
-                    # read BETTER — `[0.219, 0.319]`, a move of +0.100 against an
-                    # SE of 0.022. `test_a_mono_colour_deck_is_barely_affected_
-                    # and_a_five_colour_one_is` caught it because a
-                    # constraint-only flag cannot raise a cast rate.
-                    colors = frozenset().union(*sources) if sources else frozenset()
-                    made = max(1, min(len(colors), 5))
-                rock_production += made
-                # A rock adds as many sources as it makes mana — tracked always,
-                # for the same reason the land above is.
-                sources.extend([colors] * made)
-                _note_cast(card)
-
-        # Cast tutors before bodies: a tutor is a setup spell, and it competes
-        # for the same mana. Previously tutors had bodies=0 and produces=0, so
-        # they were never cast at all and their mana silently went to creatures.
-        for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
-            if card not in hand:      # a free cast's discard took it
-                continue
-            if card["tutor_needs_body"] and bodies_cum < 1:
-                continue
-            if card["tutor_to_battlefield"] is not None and (model_combat or model_draw):
-                # SAVAGE ORDER: sacrifice a 4-power body, the best creature of
-                # the named type enters from the library. Held until a
-                # nontoken body of power 4+ is on the board, and until the
-                # library holds one to fetch.
-                _fodder = [i for i, (p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
-                           if not _tok and p >= 4]
-                if card["tutor_needs_body"] and not _fodder:
-                    continue
-                _want = card["tutor_to_battlefield"]
-                _pick = max((c for c in deck if "Creature" in (c.get("type_line") or "")
-                             and (not _want or _want in (c.get("type_line") or ""))),
-                            key=lambda c: c["combat"]["power"], default=None)
-                if _pick is None:
-                    continue
-                if not spend(card["tutor_cmc"], card["pips"]):
-                    continue
-                _note_cast(card)
-                if card["tutor_needs_body"]:
-                    _i = min(_fodder, key=lambda i: battlefield[i][0])
-                    battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
-                deck.remove(_pick)
-                _free_creature_enters(_pick)
-                tutor_ready_turns.append(turn)
-                continue
-            if not spend(card["tutor_cmc"], card["pips"]):
-                continue
-            _note_cast(card)
-            tutor_ready_turns.append(turn + card["tutor_delay"])
-
-        # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
-        # a tutor nor a body, so the resource-only loop never cast it at all --
-        # Aggravated Assault sat in hand for ten turns while being the deck's
-        # only verified win line. Bought before creatures, because it is the
-        # thing the creatures are for.
-        if model_combat:
-            for card in sorted((c for c in hand
-                                if not c["is_land"] and c["bodies"] == 0
-                                and (c["combat"]["extra_combat_cost"] is not None
-                                     or c["combat"]["extra_combat_free"])),
-                               key=lambda c: c["cmc"]):
-                if card not in hand:      # a free cast's discard took it
-                    continue
-                if spend(card["cmc"], card["pips"]):
-                    _note_cast(card)
-                    if card["combat"]["extra_combat_cost"] is not None:
-                        extra_combat_costs.append(card["combat"]["extra_combat_cost"])
-                    else:
-                        extra_combat_free += 1
-
-        # A TREASURE MULTIPLIER IS NEITHER A ROCK, A TUTOR NOR A BODY — the
-        # same hole Aggravated Assault fell through two loops up. `bodies` is
-        # the model's proxy for "is this worth casting", and it happens to be 1
-        # for Anointed Procession, Parallel Lives and Doubling Season (their
-        # text reads as token creation) and 0 for Primal Vigor, which is the
-        # identical card. So Primal Vigor sat in hand for ten turns while
-        # carrying the flag that says it changes what the deck produces, and a
-        # candidate sweep read it as byte-identical to a card that does nothing.
-        # A flag the model set is a claim the model must act on.
-        if model_treasures:
-            for card in sorted((c for c in hand if not c["is_land"]
-                                and c["bodies"] == 0 and c["produces"] == 0
-                                and not c["tutor"]
-                                and (c["treasure_doubler"] or c["treasure_bonus"])),
-                               key=lambda c: c["cmc"]):
-                if card not in hand:      # a free cast's discard took it
-                    continue
-                if not spend(card["cmc"], card["pips"]):
-                    continue
-                _note_cast(card)
-                if card["treasure_doubler"]:
-                    treasure_multiplier *= 2
-                if card["treasure_bonus"]:
-                    treasure_bonus += 1
-
-        # THE WHEEL THAT IS ALREADY ON THE TABLE, AND WHEELS AGAIN NEXT TURN.
-        #
-        # Jace's Archivist reads `{U}, {T}: Each player discards their hand,
-        # then draws cards equal to the greatest number a player discarded` —
-        # every turn, forever, for one blue mana. The model saw a 2/2 Vedalken
-        # Wizard with no text, because `wheel_draws` is credited on an Instant
-        # or a Sorcery only and a permanent's copy of that sentence is an
-        # ACTIVATED ability. Three of sharknado's twelve wheel-shaped cards were
-        # invisible this way on a deck whose whole plan is wheeling.
-        #
-        # FIRED HERE, and the position is doing three jobs:
-        #
-        #   * BEFORE the draw spells, so what a wheel finds is castable on the
-        #     turn it is found. Wheel, then spend, is the line a pilot takes.
-        #   * AFTER `pool` is set, because unlike an upkeep trigger this one
-        #     costs mana and has to compete for it like everything else.
-        #   * BEFORE the loops that put permanents into play, which is what
-        #     gives a `{T}` ability its summoning sickness for free: a wheel
-        #     joins `wheel_engines` inside this turn's casting loops, which run
-        #     below, so the earliest it can fire is the turn after it lands. No
-        #     tapped state is tracked and none is needed.
-        #
-        # THE AUTHORED GATE IS THE SPELL'S, minus its off-by-one. `WHEEL_MIN_HAND`
-        # counts the nonlands that would be thrown away; the spell subtracts
-        # itself from that count because it is in the hand being emptied, and
-        # this one is on the battlefield. Without the gate the Archivist wheels
-        # away a good hand every turn from turn four, forever, and reports it
-        # as card advantage.
         # ── CRACK A BLOOD ─────────────────────────────────────────────────
         #
         # BEFORE THE CASTING LOOPS, WHICH IS WHERE THE DECISION ACTUALLY SITS.
@@ -2367,536 +2539,970 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             discard_n(1)
             draw_n(1)
 
-        if model_draw and model_discard and wheel_engines:
-            for _we in list(wheel_engines):
-                _wp = _we["draw"]
-                if not _wheel_castable(sum(1 for c in hand if not c["is_land"])):
-                    continue
-                if not spend(_wp["activated_wheel_cost"],
-                             _wp["activated_wheel_pips"]):
-                    continue
-                _held = len(hand)
-                _note_wheel()
-                discard_n(0, everything=True,
-                          shuffled=_wp["activated_wheel_shuffles"])
-                _an = _held if _wp["activated_wheel"] < 0 else _wp["activated_wheel"]
-                draw_n(_an)
-                opponent_draws_this_turn += _an   # symmetrical, as above
-                if not _wp["activated_wheel_once"]:
-                    continue
-                wheel_engines.remove(_we)
-                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT.
-                # Magus of the Wheel and Whirlpool Warrior both say "Sacrifice
-                # this creature", and leaving a 3/3 on the board after it has
-                # been sacrificed is the over-credit that the sacrifice channel
-                # already learned to avoid. Matched on power against a
-                # NON-TOKEN entry — the same shape `tutor_needs_body` uses two
-                # loops up, and the closest a profile can get to pointing at
-                # its own battlefield row.
-                if not (_wp["activated_wheel_sacs_self"] and _we["is_creature"]):
-                    continue
-                _own = [i for i, (_p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
-                        if _p == _we["power"] and not _tok]
-                if _own:
-                    _i = _own[0]
-                    battlefield.pop(_i)
-                    creature_types.pop(_i)
-                    creature_flying.pop(_i)
+        # THE WHEEL THAT IS ALREADY ON THE TABLE, AND WHEELS AGAIN NEXT TURN.
+        #
+        # Jace's Archivist reads `{U}, {T}: Each player discards their hand,
+        # then draws cards equal to the greatest number a player discarded` —
+        # every turn, forever, for one blue mana. The model saw a 2/2 Vedalken
+        # Wizard with no text, because `wheel_draws` is credited on an Instant
+        # or a Sorcery only and a permanent's copy of that sentence is an
+        # ACTIVATED ability. Three of sharknado's twelve wheel-shaped cards were
+        # invisible this way on a deck whose whole plan is wheeling.
+        #
+        # THE AUTHORED GATE IS THE SPELL'S, minus its off-by-one. `WHEEL_MIN_HAND`
+        # counts the nonlands that would be thrown away; the spell subtracts
+        # itself from that count because it is in the hand being emptied, and
+        # this one is on the battlefield. Without the gate the Archivist wheels
+        # away a good hand every turn from turn four, forever, and reports it
+        # as card advantage. `_fire_engine_wheels` below is the loop.
 
-        # A DRAW SPELL IS NEITHER A ROCK, A TUTOR, A BODY NOR AN ETB PAYOFF —
-        # the fifth card to fall through every loop here, after Aggravated
-        # Assault, Primal Vigor, the cost reducers and Dragon Tempest. Night's
-        # Whisper is a sorcery with `bodies` 0 and `produces` 0, so it sat in
-        # hand for ten turns while being the only unconditional card advantage
-        # in edgar-vampires. Cast BEFORE bodies, cheapest first: a cantrip you
-        # cast first can find the body, and one you cast last cannot.
-        if model_draw:
-            for card in sorted((c for c in hand if not c["is_land"]
-                                and c["bodies"] == 0 and c["produces"] == 0
-                                and not c["tutor"]
-                                # cast_draw IS IN THE PREDICATE, in the same
-                                # commit as the channel. A card the model reads
-                                # and never casts is the failure this file has
-                                # documented six times: Mesa Enchantress has no
-                                # body, makes no mana and tutors nothing, so
-                                # without this line she sits in hand for ten
-                                # turns while her profile says what she'd draw.
-                                and any((c["draw"]["spell_draw"],
-                                         c["draw"]["etb_draw"],
-                                         c["draw"]["recurring_draw"],
-                                         c["draw"]["arrival_draw"],
-                                         c["draw"]["cast_draw"],
-                                         c["draw"]["spell_draw_greatest_power"],
-                                         c["draw"]["spell_draw_greatest_mv"],
-                                         c["draw"]["life_gain_paid_draw"],
-                                         # Cast, or the limit it lifts is never lifted.
-                                         model_hand_limit and c["no_max_hand"],
-                                         # A WHEEL IS A DRAW SPELL, and is in the
-                                         # predicate in the same commit as the
-                                         # channel -- cast under model_discard
-                                         # only, since a wheel that draws seven
-                                         # and discards nothing is the
-                                         # over-credit the flag exists to prevent.
-                                         model_discard and c["draw"]["wheel_draws"],
-                                         # AND THE WHEEL THAT IS A PERMANENT.
-                                         # Every card in that family so far is
-                                         # a creature and is cast by the bodies
-                                         # loop below, so this line is doing
-                                         # nothing today -- it is here because
-                                         # the next Memory Jar will have no
-                                         # body, and the rule is that the
-                                         # casting predicate ships in the same
-                                         # commit as the channel rather than in
-                                         # the session that notices.
-                                         model_discard and c["draw"]["activated_wheel"],
-                                         # AND THE TWO CHANNELS ADDED WITH THIS
-                                         # SENTENCE. A rock that cashes itself
-                                         # in for a card, and anything that
-                                         # makes Blood. Both need only to reach
-                                         # the battlefield: `_register_wheel`
-                                         # picks them up from there, and
-                                         # `never_cast` was taught the same
-                                         # pair in the same commit. Unlike the
-                                         # line above, these are NOT all
-                                         # creatures -- Blood Fountain, Sanguine
-                                         # Statuette and Mind Stone have no body
-                                         # at all, so without this they are
-                                         # read perfectly and never played.
-                                         # A DRAW YOU BUY AND A DRAW DOUBLER ARE
-                                         # DRAW CARDS, gated on `model_draw`
-                                         # ALONE. Requiring `model_discard` too
-                                         # was wrong and the fleet guard said so
-                                         # within the hour: heliod runs
-                                         # Alhammarret's Archive and Teferi's
-                                         # Ageless Insight with model_draw ON and
-                                         # model_discard OFF, so the model read
-                                         # both doublers, priced both, and no
-                                         # casting loop would ever put either on
-                                         # the table.
-                                         model_draw
-                                         and (c["draw"]["activated_draw"]
-                                              or c["draw"]["draw_multiplier"] > 1),
-                                         # BLOOD NEEDS BOTH HALVES and keeps the
-                                         # pair: cracking one is a discard AND a
-                                         # draw, and a deck that has not opted
-                                         # into discard cannot be paid for it.
-                                         model_discard and model_draw
-                                         and (c["blood"][1]
-                                              in ("etb", "per_opponent", "spell")
-                                              or any(v for k, v in c["artifact_sac"].items()
-                                                     if k != "unmodelled"))))),
-                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
-                # THE LOOP WALKS A SNAPSHOT OF THE HAND, and a wheel cast two
-                # iterations ago emptied it: a card that has since been
-                # discarded is not here to cast.
-                if card not in hand:
+        def _tutor_fetch(filt):
+            """WHAT A TUTOR TAKES, a stated policy: a nonland card it can reach, the biggest that
+            next turn's mana can pay, else the cheapest. It stays out of `seen`, as the attack
+            tutor's does: `seen` is what was drawn, and a tutor's reach is counted apart."""
+            _next = lands_in_play * (1 + land_mana_bonus) + rock_production + treasures + 1
+            hits = [c for c in deck if not c["is_land"] and tutor_reaches(filt, c.get("type_line"))]
+            payable = [c for c in hits if c["cmc"] <= _next]
+            if payable:
+                return max(payable, key=lambda c: c["cmc"])
+            return min(hits, key=lambda c: c["cmc"], default=None)
+
+        def _copy_worth(c):
+            """How much a copy of this permanent is worth, for Mirrormade's choice: a Tithe, then
+            a payoff, then a doubler, then mana. A legendary copy dies to the legend rule."""
+            if "Legendary" in (c.get("type_line") or ""):
+                return -1
+            return ((100 if c["treasure_trigger"] == "opponent_draw_tax" else 0)
+                    + (50 if has_event_payoff(c["event"]) else 0)
+                    + (40 if c["combat"]["team_damage_multiplier"] > 1 else 0)
+                    + c["produces"] * 10 + c["cmc"])
+
+        def _copy_target():
+            """The best artifact or enchantment on the battlefield, or None."""
+            cand = [c for c in permanents_in_play
+                    if ("Artifact" in (c.get("type_line") or "")
+                        or "Enchantment" in (c.get("type_line") or ""))
+                    and not c["engine"]["copy_entry"] and _copy_worth(c) >= 0]
+            return max(cand, key=_copy_worth, default=None)
+
+        def _enter_as_copy(c):
+            """MIRRORMADE ENTERS AS IT (2026-11-04): every standing thing the original registered.
+            Its enters-the-battlefield triggers fire too by the rules; those are not read here,
+            a floor, and named in the channel table."""
+            nonlocal rock_production, token_multiplier, treasure_multiplier, treasure_bonus
+            nonlocal first_right_card_turn
+            if c["produces"] > 0:
+                rock_production += c["produces"]
+                sources.extend([c["colors"] or frozenset()] * max(c["produces"], c["produces_gross"]))
+            if model_discard and has_event_payoff(c["event"]):
+                _payoff_arrives(c["event"])
+                first_right_card_turn = first_right_card_turn or turn
+            if model_treasures and c["treasure_trigger"] in (
+                    "upkeep", "landfall", "opponent_draw_tax", "opponent_second_draw"):
+                _treasure_engine_arrives(c["treasure_n"], c["treasure_trigger"])
+            if model_treasures and c["treasure_doubler"]:
+                treasure_multiplier *= 2
+            if c["token_doubler"]:
+                token_multiplier *= 2
+            if model_combat:
+                _register_damage_scale(c["combat"])
+            _register_wheel(c)
+            _register_statics(c)
+
+        # ── THE MAIN PHASE, IN THE PILOT'S ORDER (2026-11-04) ────────────────
+        #
+        # THE COMMANDER ON CURVE, THE PAYOFFS DOWN, THEN THE WHEEL (sharknado log 002, and the
+        # audit that read this file against it). Wheels used to fire inside the draw loop,
+        # before the rocks, bodies and engines: on a turn four with six mana and Razorkin
+        # Needlehead (2) beside Wheel of Fortune (3), the wheel threw Needlehead away and the
+        # mana it could have paid sat unspent. Tithe was seen by turn ten in 54% of games and
+        # online in 12.8%. Now `_deploy` runs first, `_fire_wheels` spends what is left, and
+        # `_deploy` runs again on what the wheel found.
+        #
+        # THE EXCEPTION IS DIGGING (`_digging`): no land in hand and a commander still in the
+        # zone. Then the wheel or the loot goes first, because it is what finds the mana.
+        #
+        # `hold_until.wheel` still ANDs onto the gate, untouched, inside `_wheel_castable`.
+        def _deploy():
+            nonlocal attack_enabler_out, bodies_cum, enchantments_entered
+            nonlocal etb_drained, etb_gained, extra_combat_free
+            nonlocal first_right_card_turn, free_sac_outlet, land_mana_bonus
+            nonlocal lifelink_power, mass_animate_threshold, rock_production
+            nonlocal team_anthem, treasure_bonus, treasure_multiplier
+
+            # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
+            # to fall through this hole, after Aggravated Assault and Primal Vigor.
+            # Urza's Incubator and Herald's Horn are artifacts with `produces` 0 and
+            # `bodies` 0, so every existing loop skips them and they would sit in
+            # hand for ten turns while being the deck's stated curve fixer. Cast
+            # BEFORE anything else affordable, because a reducer's whole value is
+            # what it makes the rest of the turn cost.
+            for card in sorted((c for c in hand if c["reduces"] and c["bodies"] == 0
+                                and c["produces"] == 0),
+                               key=lambda c: c["cmc"]):
+                if card not in hand:      # a free cast's discard took it
                     continue
-                if card["draw"]["wheel_draws"] and not _wheel_castable(
-                        sum(1 for c in hand if not c["is_land"]) - 1):
-                    continue          # the hand is worth more than seven fresh cards
-                if card["draw"]["spell_draw_greatest_power"] and not battlefield:
-                    continue          # draws nothing with no creature; held
-                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    reductions.append(card["reduces"])
+                    _note_cast(card)
+
+            # AN ETB PAYOFF THAT IS NOT A BODY falls through every other loop —
+            # Dragon Tempest is an enchantment with `bodies` 0 and `produces` 0, so
+            # it sat in hand for ten turns while being half of the deck's stated win
+            # condition. Fourth card to find this hole, after Aggravated Assault,
+            # Primal Vigor and the cost reducers. Cast early: its whole value is
+            # what the creatures behind it are worth.
+            if model_combat:
+                for card in sorted((c for c in hand
+                                    if c["bodies"] == 0 and c["produces"] == 0
+                                    and not c["is_land"] and not c["tutor"]
+                                    and any((c["combat"]["etb_damage_self_power"],
+                                             c["combat"]["etb_damage_count"],
+                                             c["combat"]["etb_damage_fixed"],
+                                             c["combat"]["etb_token_bodies"],
+                                             c["combat"]["etb_copy"],
+                                             # A DAMAGE DOUBLER THAT IS NOT A BODY
+                                             # fell through here too — Gratuitous
+                                             # Violence and Dictate of the Twin Gods
+                                             # are enchantments, read correctly and
+                                             # never cast.
+                                             c["combat"]["team_damage_multiplier"] > 1,
+                                             # A HASTE ENABLER IS AN ENGINE PERMANENT:
+                                             # Fervor has no body, and without this
+                                             # line it is read and never cast.
+                                             c["combat"]["team_haste"],
+                                             c["combat"]["cast_damage"],
+                                             # Chandra's Ignition needs a body to aim.
+                                             c["combat"]["spell_damage_greatest_power"] and battlefield))),
+                                   key=lambda c: c["cmc"]):
+                    if card not in hand:      # a free cast's discard took it
+                        continue
+                    if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        if is_etb_engine(card["combat"]):
+                            etb_engines.append(card["combat"])
+                        if card["combat"]["team_haste"]:
+                            haste_grants.append(card["combat"]["team_haste"])
+                        if card["combat"]["cast_damage"]:
+                            cast_damage_engines.append(card["combat"])
+                        if card["combat"]["spell_damage_greatest_power"]:
+                            # THE BIGGEST BODY'S POWER, once, to the one opponent;
+                            # the wipe half has nothing to hit here.
+                            etb_by["creature"] += max((p + team_anthem + lb_ for (p, *_), lb_
+                                                       in zip(battlefield, _lord_bonuses())), default=0)
+                        _register_damage_scale(card["combat"])
+                        _note_cast(card)
+                        _register_wheel(card)
+                        _register_statics(card)
+
+            # Cast rocks cheapest-first; they produce starting next turn.
+            for card in sorted((c for c in hand if c["produces"] > 0 or c["land_mana_bonus"]),
+                               key=lambda c: c["cmc"]):
+                if card not in hand:      # a free cast's discard took it
+                    continue
+                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    if card["reduces"]:
+                        reductions.append(card["reduces"])
+                    # A LAND-MANA BONUS IS A ROCK THAT PAYS PER LAND, from next turn.
+                    land_mana_bonus += card["land_mana_bonus"]
+                    made, colors = card["produces"], card["colors"] or frozenset()
+                    if card["scales_with_colors"]:
+                        # SNAPSHOT AT CAST, and deliberately the conservative end of
+                        # the range: it counts the colours on the board the turn it
+                        # resolves and never grows, so a Faeburrow Elder cast on two
+                        # colours and living to see five is UNDERSTATED. Understating
+                        # is recoverable; overstating is how a mana base comes out
+                        # looking fine and cannot cast its spells.
+                        #
+                        # AND IT READS `sources`, WHICH IS WHY THEY ARE NOW TRACKED
+                        # UNCONDITIONALLY (#35, 2026-09-13). `sources` used to be
+                        # appended to only under `model_colors`, so with the flag OFF
+                        # this branch found an EMPTY list and every colour-scaling
+                        # producer fell to `max(1, 0)` = one mana. Bloom Tender and
+                        # Faeburrow Elder made 1 blind and up to 5 under the flag.
+                        #
+                        # So `model_colors` added a castability PENALTY and unlocked
+                        # a production BONUS at the same time, and on a five-colour
+                        # deck the bonus won: turning on a CONSTRAINT made ur-dragon
+                        # read BETTER — `[0.219, 0.319]`, a move of +0.100 against an
+                        # SE of 0.022. `test_a_mono_colour_deck_is_barely_affected_
+                        # and_a_five_colour_one_is` caught it because a
+                        # constraint-only flag cannot raise a cast rate.
+                        colors = frozenset().union(*sources) if sources else frozenset()
+                        made = max(1, min(len(colors), 5))
+                    rock_production += made
+                    # A rock adds as many sources as it makes mana — tracked always,
+                    # for the same reason the land above is. A SIGNET'S GROSS, not its
+                    # net (2026-11-04): {1}, {T}: Add {W}{U} adds one mana to the turn
+                    # and still pays both of its colours.
+                    sources.extend([colors] * max(made, card["produces_gross"]))
+                    _note_cast(card)
+                    # THE FLAG THE ROCK SET IS ACTED ON (2026-11-04): Mind Stone's draw was read
+                    # and this door never told anyone. Spent at the end of the main phase.
+                    _register_wheel(card)
+                    _register_statics(card)
+
+            # Cast tutors before bodies: a tutor is a setup spell, and it competes
+            # for the same mana. Previously tutors had bodies=0 and produces=0, so
+            # they were never cast at all and their mana silently went to creatures.
+            for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
+                if card not in hand:      # a free cast's discard took it
+                    continue
+                if card["tutor_needs_body"] and bodies_cum < 1:
+                    continue
+                if card["tutor_to_battlefield"] is not None and (model_combat or model_draw):
+                    # SAVAGE ORDER: sacrifice a 4-power body, the best creature of
+                    # the named type enters from the library. Held until a
+                    # nontoken body of power 4+ is on the board, and until the
+                    # library holds one to fetch.
+                    _fodder = [i for i, (p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
+                               if not _tok and p >= 4]
+                    if card["tutor_needs_body"] and not _fodder:
+                        continue
+                    _want = card["tutor_to_battlefield"]
+                    _pick = max((c for c in deck if "Creature" in (c.get("type_line") or "")
+                                 and (not _want or _want in (c.get("type_line") or ""))),
+                                key=lambda c: c["combat"]["power"], default=None)
+                    if _pick is None:
+                        continue
+                    if not spend(card["tutor_cmc"], card["pips"]):
+                        continue
+                    _note_cast(card)
+                    if card["tutor_needs_body"]:
+                        _i = min(_fodder, key=lambda i: battlefield[i][0])
+                        battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
+                    deck.remove(_pick)
+                    _free_creature_enters(_pick)
+                    tutor_ready_turns.append((turn, None))
+                    continue
+                if not spend(card["tutor_cmc"], card["pips"]):
                     continue
                 _note_cast(card)
-                _resolve_draw(card)
+                tutor_ready_turns.append((turn + card["tutor_delay"], card["tutor_filter"]))
+                # IT FETCHES THE CARD (2026-11-04). This loop spent the mana and moved nothing:
+                # Idyllic Tutor cost three and put no enchantment in hand. What it takes is the
+                # stated policy `_tutor_fetch` reads; a top-of-library tutor leaves it on top.
+                _got = _tutor_fetch(card["tutor_filter"])
+                if _got is not None:
+                    deck.remove(_got)
+                    if card["tutor_delay"]:
+                        deck.insert(0, _got)
+                    else:
+                        hand.append(_got)
 
-        # DISCOVER, THE FLOOR. A discover spell is not a body, a draw, a pump or
-        # a storm card, so until this loop it fell through every loop above and
-        # sat in hand: Daring Discovery read as a dead card on the deck it was
-        # printed for. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
-        #
-        # Cast BEFORE the storm loop, through `spend` -> `_note_cast`, so it is a
-        # spell for storm, per-cast damage and magecraft like any other. Each
-        # resolution puts one card into hand (`_discover`); a Zada-style copy
-        # resolves once more per other creature, under the same predicate every
-        # other copy site uses, and each copy is a magecraft event (cast OR
-        # copy). The hit is NOT cast free — it waits in hand for the loops to
-        # pick it up at full cost, on a later pass or a later turn — so this is
-        # a floor, and labelled one in docs/simulation.md.
-        for card in sorted((c for c in hand if c["discover_n"]),
-                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
-            if card not in hand:
-                continue
-            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                continue
-            _note_cast(card)
-            _resolve_discover(card)
+            # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
+            # a tutor nor a body, so the resource-only loop never cast it at all --
+            # Aggravated Assault sat in hand for ten turns while being the deck's
+            # only verified win line. Bought before creatures, because it is the
+            # thing the creatures are for.
+            if model_combat:
+                for card in sorted((c for c in hand
+                                    if not c["is_land"] and c["bodies"] == 0
+                                    and (c["combat"]["extra_combat_cost"] is not None
+                                         or c["combat"]["extra_combat_free"])),
+                                   key=lambda c: c["cmc"]):
+                    if card not in hand:      # a free cast's discard took it
+                        continue
+                    if spend(card["cmc"], card["pips"]):
+                        _note_cast(card)
+                        _register_wheel(card)
+                        _register_statics(card)
+                        if card["combat"]["extra_combat_cost"] is not None:
+                            extra_combat_costs.append(card["combat"]["extra_combat_cost"])
+                        else:
+                            extra_combat_free += 1
 
-        # STORM. A copy for each spell cast BEFORE it this turn — so the spell
-        # count IS the card, and until this commit there was no count to read.
-        # Cast LAST in the main phase, because every earlier cast raises the
-        # copy count and a storm spell cast first copies nothing.
-        #
-        # THE PAYOFF SHAPES a red deck actually has: a copy that deals damage
-        # (Grapeshot) and a copy that makes bodies (Empty the Warrens). A storm
-        # spell whose effect is neither still COUNTS as a cast and its copies do
-        # nothing — understating, the documented safe direction.
-        #
-        # MAGECRAFT FIRES ON EVERY COPY, which is why the count matters twice:
-        # Storm-Kiln Artist turns a five-copy Grapeshot into five more Treasures.
-        for card in sorted((c for c in hand if c["spell_count"]["storm"]),
-                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
-            if card not in hand:
-                continue
-            sc = card["spell_count"]
-            if not (sc["storm_damage"] or sc["storm_token_bodies"]):
-                continue          # nothing this model can price; left in hand
-            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                continue
-            copies = spells_cast_this_turn      # the count BEFORE this cast
-            _note_cast(card)                    # ...which this then increments
-            _resolve_storm(card, copies)
+            # A TREASURE MULTIPLIER IS NEITHER A ROCK, A TUTOR NOR A BODY — the
+            # same hole Aggravated Assault fell through two loops up. `bodies` is
+            # the model's proxy for "is this worth casting", and it happens to be 1
+            # for Anointed Procession, Parallel Lives and Doubling Season (their
+            # text reads as token creation) and 0 for Primal Vigor, which is the
+            # identical card. So Primal Vigor sat in hand for ten turns while
+            # carrying the flag that says it changes what the deck produces, and a
+            # candidate sweep read it as byte-identical to a card that does nothing.
+            # A flag the model set is a claim the model must act on.
+            if model_treasures:
+                for card in sorted((c for c in hand if not c["is_land"]
+                                    and c["bodies"] == 0 and c["produces"] == 0
+                                    and not c["tutor"]
+                                    and (c["treasure_doubler"] or c["treasure_bonus"])),
+                                   key=lambda c: c["cmc"]):
+                    if card not in hand:      # a free cast's discard took it
+                        continue
+                    if not spend(card["cmc"], card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _register_wheel(card)
+                    _register_statics(card)
+                    if card["treasure_doubler"]:
+                        treasure_multiplier *= 2
+                    if card["treasure_bonus"]:
+                        treasure_bonus += 1
 
-        # A PUMP SPELL IS NOT A BODY, A DRAW, A TUTOR OR A ROCK — so it fell
-        # through every loop above, which is why Haze of Rage and every other
-        # pump in the corpus contributed nothing to any damage figure. THE
-        # CASTING PREDICATE SHIPS IN THE SAME COMMIT AS THE CHANNEL; this file
-        # has documented six cards read perfectly and never played.
-        #
-        # Cast LAST in the main phase and only with attackers already out: a
-        # pump on an empty board does nothing, and a pilot holds it until the
-        # swing. Most expensive first, because the biggest pump is the one you
-        # want when the mana is there.
-        if model_combat and battlefield:
-            for card in sorted((c for c in hand if _pump_castable(c)),
+            # A DRAW SPELL IS NEITHER A ROCK, A TUTOR, A BODY NOR AN ETB PAYOFF —
+            # the fifth card to fall through every loop here, after Aggravated
+            # Assault, Primal Vigor, the cost reducers and Dragon Tempest. Night's
+            # Whisper is a sorcery with `bodies` 0 and `produces` 0, so it sat in
+            # hand for ten turns while being the only unconditional card advantage
+            # in edgar-vampires. Cast BEFORE bodies, cheapest first: a cantrip you
+            # cast first can find the body, and one you cast last cannot.
+            if model_draw:
+                for card in sorted((c for c in hand if not c["is_land"]
+                                    and c["bodies"] == 0 and c["produces"] == 0
+                                    and not c["tutor"]
+                                    # cast_draw IS IN THE PREDICATE, in the same
+                                    # commit as the channel. A card the model reads
+                                    # and never casts is the failure this file has
+                                    # documented six times: Mesa Enchantress has no
+                                    # body, makes no mana and tutors nothing, so
+                                    # without this line she sits in hand for ten
+                                    # turns while her profile says what she'd draw.
+                                    and any((c["draw"]["spell_draw"],
+                                             c["draw"]["etb_draw"],
+                                             c["draw"]["recurring_draw"],
+                                             c["draw"]["arrival_draw"],
+                                             c["draw"]["cast_draw"],
+                                             c["draw"]["spell_draw_greatest_power"],
+                                             c["draw"]["spell_draw_greatest_mv"],
+                                             c["draw"]["life_gain_paid_draw"],
+                                             # Cast, or the limit it lifts is never lifted.
+                                             model_hand_limit and c["no_max_hand"],
+                                             # A WHEEL IS A DRAW SPELL, cast under model_discard
+                                             # only, since a wheel that draws seven and discards
+                                             # nothing is the over-credit the flag exists to
+                                             # prevent. SINCE 2026-11-04 `_fire_wheels` casts it,
+                                             # after the turn has deployed; this loop never does.
+                                             # AND THE WHEEL THAT IS A PERMANENT.
+                                             # Every card in that family so far is
+                                             # a creature and is cast by the bodies
+                                             # loop below, so this line is doing
+                                             # nothing today -- it is here because
+                                             # the next Memory Jar will have no
+                                             # body, and the rule is that the
+                                             # casting predicate ships in the same
+                                             # commit as the channel rather than in
+                                             # the session that notices.
+                                             model_discard and c["draw"]["activated_wheel"],
+                                             # AND THE TWO CHANNELS ADDED WITH THIS
+                                             # SENTENCE. A rock that cashes itself
+                                             # in for a card, and anything that
+                                             # makes Blood. Both need only to reach
+                                             # the battlefield: `_register_wheel`
+                                             # picks them up from there, and
+                                             # `never_cast` was taught the same
+                                             # pair in the same commit. Unlike the
+                                             # line above, these are NOT all
+                                             # creatures -- Blood Fountain, Sanguine
+                                             # Statuette and Mind Stone have no body
+                                             # at all, so without this they are
+                                             # read perfectly and never played.
+                                             # A DRAW YOU BUY AND A DRAW DOUBLER ARE
+                                             # DRAW CARDS, gated on `model_draw`
+                                             # ALONE. Requiring `model_discard` too
+                                             # was wrong and the fleet guard said so
+                                             # within the hour: heliod runs
+                                             # Alhammarret's Archive and Teferi's
+                                             # Ageless Insight with model_draw ON and
+                                             # model_discard OFF, so the model read
+                                             # both doublers, priced both, and no
+                                             # casting loop would ever put either on
+                                             # the table.
+                                             model_draw
+                                             and (c["draw"]["activated_draw"]
+                                                  or c["draw"]["draw_multiplier"] > 1),
+                                             # BLOOD NEEDS BOTH HALVES and keeps the
+                                             # pair: cracking one is a discard AND a
+                                             # draw, and a deck that has not opted
+                                             # into discard cannot be paid for it.
+                                             model_discard and model_draw
+                                             and (c["blood"][1]
+                                                  in ("etb", "per_opponent", "spell")
+                                                  or any(v for k, v in c["artifact_sac"].items()
+                                                         if k != "unmodelled"))))),
+                                   key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                    # THE LOOP WALKS A SNAPSHOT OF THE HAND, and a wheel cast two
+                    # iterations ago emptied it: a card that has since been
+                    # discarded is not here to cast.
+                    if card not in hand:
+                        continue
+                    # A LOOT WAITS FOR A PAYOFF, unless it is digging (2026-11-04). A spell whose
+                    # discard is an ADDITIONAL COST needs that many OTHER cards to be castable at
+                    # all: Cathartic Reunion fired off one.
+                    if model_discard and card["draw"]["spell_discard"] and not _loot_ok():
+                        continue
+                    if model_discard and card["draw"]["spell_discard_is_cost"] \
+                            and len(hand) - 1 < card["draw"]["spell_discard"]:
+                        continue
+                    if card["draw"]["wheel_draws"]:
+                        continue          # `_fire_wheels`, after the turn has deployed
+                    if card["draw"]["spell_draw_greatest_power"] and not battlefield:
+                        continue          # draws nothing with no creature; held
+                    if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _resolve_draw(card)
+
+            # DISCOVER, THE FLOOR. A discover spell is not a body, a draw, a pump or
+            # a storm card, so until this loop it fell through every loop above and
+            # sat in hand: Daring Discovery read as a dead card on the deck it was
+            # printed for. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
+            #
+            # Cast BEFORE the storm loop, through `spend` -> `_note_cast`, so it is a
+            # spell for storm, per-cast damage and magecraft like any other. Each
+            # resolution puts one card into hand (`_discover`); a Zada-style copy
+            # resolves once more per other creature, under the same predicate every
+            # other copy site uses, and each copy is a magecraft event (cast OR
+            # copy). The hit is NOT cast free — it waits in hand for the loops to
+            # pick it up at full cost, on a later pass or a later turn — so this is
+            # a floor, and labelled one in docs/simulation.md.
+            for card in sorted((c for c in hand if c["discover_n"]),
                                key=lambda c: -reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:
                     continue
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
                 _note_cast(card)
-                _resolve_pump(card)
+                _resolve_discover(card)
 
-        # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
-        #
-        # Every casting loop above this one selects on a channel: cards that
-        # draw, cards that ramp, cards that make Treasure, and below, cards with
-        # bodies. A card with none of those — Sanctum of Stone Fangs, Northern
-        # Air Temple: not creatures, no draw, no mana — matched no loop and sat
-        # in hand for ten turns.
-        #
-        # That is why zur-enchantress's two Shrines measured as EXACTLY nothing
-        # when they were added: not because two Shrines are weak, but because
-        # the model never put them on the battlefield. A synthetic library of
-        # twenty of them drained 0.
-        #
-        # Cheapest-first, like every other loop here, and each arm guarded by
-        # its own flag so a deck that has not opted in is byte-identical.
-        #
-        # THE FLEET AUDIT THAT FOUND THE REST. Sweeping every deck for cards
-        # that feed an ACTIVE channel and match no casting predicate returned
-        # four, on two decks, and both classes are here:
-        #
-        #   edgar-vampires  Ashnod's Altar, Altar of Dementia — free sacrifice
-        #       outlets with no body. `free_sac_outlet` is set inside the BODIES
-        #       loop, so an outlet that is not a creature could never register:
-        #       the deck's engine ran on 2 of its 4 outlets and its redundancy
-        #       read as half what it is.
-        #
-        #   zur-enchantress  Steel of the Godhead, Sheltered by Ghosts — Auras
-        #       that GRANT lifelink. They feed the drain channel and matched
-        #       nothing.
-        def _engine_permanent(c):
-            if c["is_land"] or c["bodies"] > 0:
-                return False
-            if model_drain and (any(c["drain"][k] for k in (
-                    "payoff_equal", "payoff_fixed", "gain_recurring",
-                    "gain_per_enchantment", "gain_per_creature",
-                    "drain_recurring", "drain_per_enchantment",
-                        "gain_team_counters", "gain_self_counter"))
-                    or c["drain"]["lifelink"]):
-                return True
-            # A DEATH ENGINE IS A PERMANENT TOO, and this is the third time
-            # this exact gap has bitten: a card gains a modelled ability and the
-            # CASTING predicate is not taught about it, so the model reads it
-            # perfectly and never puts it on the table. The Meathook Massacre
-            # went straight back into the never-cast bucket the moment its death
-            # triggers started working.
-            # ...AND `death_damage` MADE IT THE FOURTH TIME, on 2026-09-28, in
-            # this very branch. The channel was added so Pashalik Mons and
-            # Boggart Shenanigans would stop reading as blanks, and Boggart
-            # Shenanigans — an enchantment with no body and no drain clause —
-            # then matched no casting loop: the model priced its damage and never
-            # put it on the table. `test_no_deck_computes_an_effect_it_never_gets
-            # _to_apply` named it within the hour. Use `is_death_engine`, which is
-            # the one predicate that knows every death payoff, instead of listing
-            # the fields here and forgetting the next one.
-            if model_deaths and is_death_engine(c["death"]):
-                return True
-            # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
-            # has bitten, and the worst of them, because it was a DEADLOCK. Four
-            # of zur-enchantress's six enablers matched no casting loop,
-            # including both one-mana ones, so the only route to an enabler was
-            # the tutor — which needs an attack, which needs an enabler. The
-            # model had made the deck unable to start its own engine.
-            if attack_tutor and c["attack_enabler"]:
-                return True
-            # MASS ANIMATION IS A BODY ENGINE, and a card that stands the whole
-            # board up must be castable or it does nothing at all — the sixth
-            # time this class has bitten.
-            if model_combat and c["combat"]["mass_animate_threshold"]:
-                return True
-            # A DISCARD OR DRAW PAYOFF WITH NO BODY -- Improbable Alliance is
-            # an enchantment that draws nothing and makes no mana -- is an
-            # engine permanent, in the predicate in the same commit as the
-            # channel, the eighth time this class has bitten.
-            if model_discard and has_event_payoff(c.get("event")):
-                return True
-            # A CAST-TOKEN ENGINE IS A BODY ENGINE. Sigil of the Empty Throne
-            # has no body of its own, makes no mana and draws nothing, so
-            # without this it sits in hand while its profile says what it would
-            # have minted — the seventh time this class has bitten.
-            if model_combat and c["cast_token"]:
-                return True
-            # A COUNTER REPLACEMENT IS A PERMANENT TOO (2026-10-11), taught in
-            # the same commit as the channel: Hardened Scales has no body, no
-            # mana and no draw, and without this it reads perfectly and sits in
-            # hand — the class this predicate has now caught nine times.
-            if model_combat and (c["counter_mod"]["plus"] or c["counter_mod"]["times"] > 1):
-                return True
-            # A DAMAGE REPLACEMENT with no body (Mechanized Warfare, Aether
-            # Revolt) — the same class, the same commit as its channel.
-            if (model_combat or model_discard) and c["damage_bonus"]["amount"]:
-                return True
-            # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
-            # Sanctum of Tranquil Light does almost nothing on its own — its job
-            # is to be a SHRINE, so that the two cards reading "X is the number
-            # of Shrines you control" see a bigger number. It feeds no channel,
-            # so nothing would ever cast it, so the count it exists to raise
-            # stayed low and the whole package measured worse than it is.
+            # STORM. A copy for each spell cast BEFORE it this turn — so the spell
+            # count IS the card, and until this commit there was no count to read.
+            # Cast LAST in the main phase, because every earlier cast raises the
+            # copy count and a storm spell cast first copies nothing.
             #
-            # Derived from the deck, not declared: if any card here scales with
-            # a type, a permanent of that type is worth playing.
-            if model_drain and scaled_types and not c["is_land"]:
-                tl = c["type_line"] or ""
-                if any(s in tl for s in scaled_types):
+            # THE PAYOFF SHAPES a red deck actually has: a copy that deals damage
+            # (Grapeshot) and a copy that makes bodies (Empty the Warrens). A storm
+            # spell whose effect is neither still COUNTS as a cast and its copies do
+            # nothing — understating, the documented safe direction.
+            #
+            # MAGECRAFT FIRES ON EVERY COPY, which is why the count matters twice:
+            # Storm-Kiln Artist turns a five-copy Grapeshot into five more Treasures.
+            for card in sorted((c for c in hand if c["spell_count"]["storm"]),
+                               key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:
+                    continue
+                sc = card["spell_count"]
+                if not (sc["storm_damage"] or sc["storm_token_bodies"]):
+                    continue          # nothing this model can price; left in hand
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
+                copies = spells_cast_this_turn      # the count BEFORE this cast
+                _note_cast(card)                    # ...which this then increments
+                _resolve_storm(card, copies)
+
+            # A PUMP SPELL IS NOT A BODY, A DRAW, A TUTOR OR A ROCK — so it fell
+            # through every loop above, which is why Haze of Rage and every other
+            # pump in the corpus contributed nothing to any damage figure. THE
+            # CASTING PREDICATE SHIPS IN THE SAME COMMIT AS THE CHANNEL; this file
+            # has documented six cards read perfectly and never played.
+            #
+            # Cast LAST in the main phase and only with attackers already out: a
+            # pump on an empty board does nothing, and a pilot holds it until the
+            # swing. Most expensive first, because the biggest pump is the one you
+            # want when the mana is there.
+            if model_combat and battlefield:
+                for card in sorted((c for c in hand if _pump_castable(c)),
+                                   key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+                    if card not in hand:
+                        continue
+                    if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _resolve_pump(card)
+
+            # A PERMANENT THAT ONLY DRAINS WAS NEVER CAST AT ALL.
+            #
+            # Every casting loop above this one selects on a channel: cards that
+            # draw, cards that ramp, cards that make Treasure, and below, cards with
+            # bodies. A card with none of those — Sanctum of Stone Fangs, Northern
+            # Air Temple: not creatures, no draw, no mana — matched no loop and sat
+            # in hand for ten turns.
+            #
+            # That is why zur-enchantress's two Shrines measured as EXACTLY nothing
+            # when they were added: not because two Shrines are weak, but because
+            # the model never put them on the battlefield. A synthetic library of
+            # twenty of them drained 0.
+            #
+            # Cheapest-first, like every other loop here, and each arm guarded by
+            # its own flag so a deck that has not opted in is byte-identical.
+            #
+            # THE FLEET AUDIT THAT FOUND THE REST. Sweeping every deck for cards
+            # that feed an ACTIVE channel and match no casting predicate returned
+            # four, on two decks, and both classes are here:
+            #
+            #   edgar-vampires  Ashnod's Altar, Altar of Dementia — free sacrifice
+            #       outlets with no body. `free_sac_outlet` is set inside the BODIES
+            #       loop, so an outlet that is not a creature could never register:
+            #       the deck's engine ran on 2 of its 4 outlets and its redundancy
+            #       read as half what it is.
+            #
+            #   zur-enchantress  Steel of the Godhead, Sheltered by Ghosts — Auras
+            #       that GRANT lifelink. They feed the drain channel and matched
+            #       nothing.
+            def _engine_permanent(c):
+                # A TAX ON THEIR DRAWS IS A PAYOFF, not a body (2026-11-04). `bodies` counts its
+                # Treasure token, so Smothering Tithe waited in the last loop behind every cheap
+                # creature: seen by turn ten in 54% of games and online in 12.8%.
+                if model_treasures and c["creature_bodies"] == 0 and not c["is_land"] \
+                        and c["treasure_trigger"] in ("opponent_draw_tax", "opponent_second_draw"):
                     return True
-            return bool(model_sacrifice and c["sac_outlet"])
+                if c["is_land"] or c["bodies"] > 0:
+                    return False
+                if model_drain and (any(c["drain"][k] for k in (
+                        "payoff_equal", "payoff_fixed", "gain_recurring",
+                        "gain_per_enchantment", "gain_per_creature",
+                        "drain_recurring", "drain_per_enchantment",
+                            "gain_team_counters", "gain_self_counter"))
+                        or c["drain"]["lifelink"]):
+                    return True
+                # A DEATH ENGINE IS A PERMANENT TOO, and this is the third time
+                # this exact gap has bitten: a card gains a modelled ability and the
+                # CASTING predicate is not taught about it, so the model reads it
+                # perfectly and never puts it on the table. The Meathook Massacre
+                # went straight back into the never-cast bucket the moment its death
+                # triggers started working.
+                # ...AND `death_damage` MADE IT THE FOURTH TIME, on 2026-09-28, in
+                # this very branch. The channel was added so Pashalik Mons and
+                # Boggart Shenanigans would stop reading as blanks, and Boggart
+                # Shenanigans — an enchantment with no body and no drain clause —
+                # then matched no casting loop: the model priced its damage and never
+                # put it on the table. `test_no_deck_computes_an_effect_it_never_gets
+                # _to_apply` named it within the hour. Use `is_death_engine`, which is
+                # the one predicate that knows every death payoff, instead of listing
+                # the fields here and forgetting the next one.
+                if model_deaths and is_death_engine(c["death"]):
+                    return True
+                # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
+                # has bitten, and the worst of them, because it was a DEADLOCK. Four
+                # of zur-enchantress's six enablers matched no casting loop,
+                # including both one-mana ones, so the only route to an enabler was
+                # the tutor — which needs an attack, which needs an enabler. The
+                # model had made the deck unable to start its own engine.
+                if attack_tutor and c["attack_enabler"]:
+                    return True
+                # MASS ANIMATION IS A BODY ENGINE, and a card that stands the whole
+                # board up must be castable or it does nothing at all — the sixth
+                # time this class has bitten.
+                if model_combat and c["combat"]["mass_animate_threshold"]:
+                    return True
+                # A DISCARD OR DRAW PAYOFF WITH NO BODY -- Improbable Alliance is
+                # an enchantment that draws nothing and makes no mana -- is an
+                # engine permanent, in the predicate in the same commit as the
+                # channel, the eighth time this class has bitten.
+                if model_discard and has_event_payoff(c.get("event")):
+                    return True
+                # A CAST-TOKEN ENGINE IS A BODY ENGINE. Sigil of the Empty Throne
+                # has no body of its own, makes no mana and draws nothing, so
+                # without this it sits in hand while its profile says what it would
+                # have minted — the seventh time this class has bitten.
+                if model_combat and c["cast_token"]:
+                    return True
+                # A COUNTER REPLACEMENT IS A PERMANENT TOO (2026-10-11), taught in
+                # the same commit as the channel: Hardened Scales has no body, no
+                # mana and no draw, and without this it reads perfectly and sits in
+                # hand — the class this predicate has now caught nine times.
+                if model_combat and (c["counter_mod"]["plus"] or c["counter_mod"]["times"] > 1):
+                    return True
+                # A DAMAGE REPLACEMENT with no body (Mechanized Warfare, Aether
+                # Revolt) — the same class, the same commit as its channel.
+                if (model_combat or model_discard) and c["damage_bonus"]["amount"]:
+                    return True
+                # THE ENGINES THAT WORK ON A CAST, AN EQUIP OR A LOYALTY ABILITY (2026-11-04), taught
+                # with `engine_profile` and mirrored in `model_coverage.never_cast`: named in a
+                # target group and read as seen, and never once on the table.
+                _eng = c["engine"]
+                if _eng["cast_token_x"] and (model_combat or model_draw):
+                    return True
+                if model_combat and (_eng["cast_team_pump"] or _eng["draw_pump"]
+                                     or _eng["equip_haste"] is not None
+                                     or _eng["cast_double_strike_cost"] is not None):
+                    return True
+                if model_draw and model_discard and (_eng["cast_loot"] or _eng["loyalty_loot"]):
+                    return True
+                if _eng["activation_discount"]:
+                    return True
+                # A COPY NEEDS SOMETHING WORTH COPYING. Mirrormade is taken once one is out.
+                if _eng["copy_entry"] and _copy_target() is not None:
+                    return True
+                # A PERMANENT WHOSE VALUE IS BEING COUNTED BY SOMETHING ELSE.
+                # Sanctum of Tranquil Light does almost nothing on its own — its job
+                # is to be a SHRINE, so that the two cards reading "X is the number
+                # of Shrines you control" see a bigger number. It feeds no channel,
+                # so nothing would ever cast it, so the count it exists to raise
+                # stayed low and the whole package measured worse than it is.
+                #
+                # Derived from the deck, not declared: if any card here scales with
+                # a type, a permanent of that type is worth playing.
+                if model_drain and scaled_types and not c["is_land"]:
+                    tl = c["type_line"] or ""
+                    if any(s in tl for s in scaled_types):
+                        return True
+                return bool(model_sacrifice and c["sac_outlet"])
 
-        # THE LOOP'S OWN GATE HAD DRIFTED FROM ITS PREDICATE (2026-10-11).
-        # `_engine_permanent` answers True for a discard payoff under
-        # model_discard and for cast-token, mass-animate, counter and damage
-        # replacements under model_combat, but this loop only ran under the four
-        # channels below — so on sharknado (combat + discard + draw, none of the
-        # four) Rhystic Study and Mind's Eye were read, called castable by
-        # `model_coverage`, and never cast. Fleet check: those two were the only
-        # cards it held back.
-        if model_drain or model_sacrifice or model_deaths or attack_tutor \
-                or model_discard or model_combat:
-            for card in sorted((c for c in hand if _engine_permanent(c)),
+            # THE LOOP'S OWN GATE HAD DRIFTED FROM ITS PREDICATE (2026-10-11).
+            # `_engine_permanent` answers True for a discard payoff under
+            # model_discard and for cast-token, mass-animate, counter and damage
+            # replacements under model_combat, but this loop only ran under the four
+            # channels below — so on sharknado (combat + discard + draw, none of the
+            # four) Rhystic Study and Mind's Eye were read, called castable by
+            # `model_coverage`, and never cast. Fleet check: those two were the only
+            # cards it held back.
+            if model_drain or model_sacrifice or model_deaths or attack_tutor \
+                    or model_discard or model_combat:
+                for card in sorted((c for c in hand if _engine_permanent(c)),
+                                   key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                    if card not in hand:      # a free cast's discard took it
+                        continue
+                    if not spend(reduced_cost(card, reductions, chosen_type),
+                                 card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _register_wheel(card)
+                    _register_statics(card)
+                    if card["engine"]["copy_entry"]:
+                        _enter_as_copy(_copy_target())
+                    battlefield_pips.append(card["pips"])
+                    battlefield_types.append(card.get("type_line") or "")
+                    # THREE PARALLEL LISTS AND THIS LOOP FED TWO OF THEM. Every
+                    # permanent cast here — a drain payoff, a sac outlet, a death
+                    # engine, an attack enabler — grew `battlefield_types` while
+                    # `battlefield_mv` stood still, so the animate scan's
+                    # `zip(battlefield_types, battlefield_mv)` paired a type line
+                    # with ANOTHER card's mana value and then truncated at the
+                    # shorter list, hiding every later permanent from animation
+                    # entirely. It bites exactly the deck that has both halves:
+                    # zur-enchantress runs model_drain AND model_commander_animate.
+                    battlefield_mv.append(card["cmc"])
+                    battlefield_rooms.append(dict(card["room"], open=False)
+                                             if card["room"] else None)
+                    if "Enchantment" in (card.get("type_line") or ""):
+                        enchantments_entered += 1
+                    # CAST-TRIGGERED BODIES, same door and the same rule: engines
+                    # already in play only. `gate_kind` decides what is matched —
+                    # a CARD TYPE against the type line (Sigil: any enchantment) or
+                    # a creature SUBTYPE against the card's subtypes (eminence:
+                    # Vampire). Matching a card type against subtypes is what made
+                    # this channel invisible.
+                    if model_combat or model_draw:   # `arrivals_matter` is bound at the other door only
+                        _tl2 = card.get("type_line") or ""
+                        for _eng in cast_token_engines:
+                            if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
+                                    else _eng["subtype"] in card["subtypes"]):
+                                _n = _eng["bodies"] * token_multiplier
+                                for _ in range(_n):
+                                    creature_entered(_eng["power"], turn, False, 1,
+                                                     is_token=True)
+                                bodies_cum += _n
+                    if card["cast_token"]:
+                        cast_token_engines.append(card["cast_token"])
+                    # CAST-TRIGGERED DRAW fires here because in this model a
+                    # permanent spell is CAST and ENTERS in the same step, so
+                    # this door is every cast of one. Engines already in play
+                    # only — a card does not trigger itself, and the registration
+                    # below happens after this loop for exactly that reason.
+                    if model_draw:
+                        _tl = card.get("type_line") or ""
+                        for _eng in draw_engines:
+                            # gate first: a mana-value gate has no type gate
+                            if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
+                                    and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
+                                draw_n(_eng["cast_draw"])
+                    _cast_triggers(card["cmc"], card.get("type_line") or "",
+                                   card["combat"]["power"] if card["combat"]["is_creature"] else 0,
+                                   card["combat"]["is_creature"])
+                    if model_discard and has_event_payoff(card.get("event")):
+                        _payoff_arrives(card["event"])
+                        first_right_card_turn = first_right_card_turn or turn
+                    if model_treasures and card["treasure_trigger"] in (
+                            "opponent_draw_tax", "opponent_second_draw"):
+                        _treasure_engine_arrives(card["treasure_n"], card["treasure_trigger"])
+                    if model_drain:
+                        if any(card["drain"][k] for k in (
+                                "payoff_equal", "payoff_fixed", "gain_recurring",
+                                "gain_per_enchantment", "gain_per_creature",
+                                "drain_recurring", "drain_per_enchantment",
+                            "gain_team_counters", "gain_self_counter")):
+                            drain_permanents.append(card["drain"])
+                        # AN AURA GRANTS LIFELINK TO ONE CREATURE, so it is worth
+                        # the power of the body you would put it on — the biggest
+                        # one — and nothing at all with an empty board. Capped by
+                        # total board power so two Auras cannot credit more life
+                        # than the whole team can deal.
+                        if card["drain"]["lifelink"] and battlefield:
+                            best = max(p for p, *_ in battlefield)
+                            total = sum(p for p, *_ in battlefield)
+                            lifelink_power = min(lifelink_power + best, total)
+                    if model_sacrifice:
+                        if is_death_engine(card["death"]):
+                            death_engines.append(card["death"])
+                        if card["sac_outlet"] == "free":
+                            free_sac_outlet = True
+                    if model_deaths:
+                        # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
+                        # body door above; `_deaths_after_combat` fires them all.
+                        if is_death_engine(card["death"]):
+                            death_drains.append(card["death"])
+                        if card["death"]["gain_on_opponent_death"]:
+                            opponent_death_gains.append(card["death"])
+                    if card["attack_enabler"]:
+                        attack_enabler_out = True
+                    if card["combat"]["mass_animate_threshold"]:
+                        # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
+                        # cards in the corpus mass-animate and they do it
+                        # independently: Opalescence at 1 (unconditional) and
+                        # Starfield of Nyx at 5. Either one being satisfied stands
+                        # the board up, so holding both must not be WORSE than
+                        # holding the unconditional one alone — which is exactly
+                        # what a plain assignment did, silently, whenever Starfield
+                        # happened to resolve second.
+                        _mat = card["combat"]["mass_animate_threshold"]
+                        mass_animate_threshold = (
+                            _mat if not mass_animate_threshold
+                            else min(mass_animate_threshold, _mat))
+                    if model_drain:
+                        d_ = card["drain"]
+                        # PAYS ONCE, ON ENTRY — scaled by its own named type if it
+                        # names one, counted on the board it is joining.
+                        if d_["drain_etb"] or d_["gain_etb"]:
+                            x_ = 1
+                            if d_["scales_with"]:
+                                x_ = max(1, sum(1 for tl_ in battlefield_types
+                                                if d_["scales_with"] in tl_))
+                            etb_drained += d_["drain_etb"] * x_
+                            etb_gained += d_["gain_etb"] * x_
+                        # And every permanent of a named type that lands afterwards
+                        # pays the ones already out.
+                        for prof_ in per_type_watchers:
+                            if prof_["per_type"] in (card.get("type_line") or ""):
+                                etb_drained += prof_["drain_per_type"]
+                                etb_gained += prof_["gain_per_type"]
+                        if d_["per_type"]:
+                            per_type_watchers.append(d_)
+                    # THE SPELL-COUNT ENGINES, registered where every other engine is.
+                    # A card read perfectly and never registered is this file's
+                    # documented failure; both registries are populated here.
+                    sc_ = card["spell_count"]
+                    if sc_["per_cast_damage"]:
+                        per_cast_engines.append(sc_)
+                    if sc_["magecraft_treasure"]:
+                        magecraft_engines.append(sc_)
+                    cb_ = card["combat"]
+                    if model_combat and cb_["team_haste"]:
+                        haste_grants.append(cb_["team_haste"])
+                    if cb_["team_counters_etb"]:
+                        n_ = cb_["team_counters_etb"]
+                        if n_ < 0:            # X = the count of its own named type
+                            ty_ = cb_["team_counters_scale_type"] or ""
+                            n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
+                        team_anthem += apply_counter_mod(n_, counter_plus, counter_times)
+                    if cb_["team_counters_scale_type"]:
+                        team_anthem_on_type.append(
+                            (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
+                    for ty_, per_ in team_anthem_on_type:
+                        if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
+                            team_anthem += apply_counter_mod(per_, counter_plus, counter_times)
+
+            # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
+            # same commit as the channel (the never-cast class, a ninth time): it
+            # matches no other loop, so without this Glorious Anthem sits in hand.
+            # Two bodies is the bar — below it the mana buys more on a body.
+            if model_combat and len(battlefield) >= 2:
+                for card in sorted((c for c in hand if not c["is_land"]
+                                    and not c["combat"]["is_creature"]
+                                    and c["combat"]["static_lord"]),
+                                   key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                    if card not in hand:      # a free cast's discard took it
+                        continue
+                    if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        continue
+                    _note_cast(card)
+                    battlefield_pips.append(card["pips"])
+                    battlefield_types.append(card.get("type_line") or "")
+                    battlefield_mv.append(card["cmc"])
+                    battlefield_rooms.append(None)
+                    if "Enchantment" in (card.get("type_line") or ""):
+                        enchantments_entered += 1
+                    static_anthems.append(card["combat"]["static_lord"])
+                    _register_wheel(card)
+                    _register_statics(card)
+
+            # Spend what's left on bodies, cheapest-first.
+            for card in sorted((c for c in hand if c["bodies"] > 0),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:      # a free cast's discard took it
                     continue
-                if not spend(reduced_cost(card, reductions, chosen_type),
-                             card["pips"]):
-                    continue
-                _note_cast(card)
-                _register_statics(card)
-                battlefield_pips.append(card["pips"])
-                battlefield_types.append(card.get("type_line") or "")
-                # THREE PARALLEL LISTS AND THIS LOOP FED TWO OF THEM. Every
-                # permanent cast here — a drain payoff, a sac outlet, a death
-                # engine, an attack enabler — grew `battlefield_types` while
-                # `battlefield_mv` stood still, so the animate scan's
-                # `zip(battlefield_types, battlefield_mv)` paired a type line
-                # with ANOTHER card's mana value and then truncated at the
-                # shorter list, hiding every later permanent from animation
-                # entirely. It bites exactly the deck that has both halves:
-                # zur-enchantress runs model_drain AND model_commander_animate.
-                battlefield_mv.append(card["cmc"])
-                battlefield_rooms.append(dict(card["room"], open=False)
-                                         if card["room"] else None)
-                if "Enchantment" in (card.get("type_line") or ""):
-                    enchantments_entered += 1
-                # CAST-TRIGGERED BODIES, same door and the same rule: engines
-                # already in play only. `gate_kind` decides what is matched —
-                # a CARD TYPE against the type line (Sigil: any enchantment) or
-                # a creature SUBTYPE against the card's subtypes (eminence:
-                # Vampire). Matching a card type against subtypes is what made
-                # this channel invisible.
-                if model_combat or model_draw:   # `arrivals_matter` is bound at the other door only
-                    _tl2 = card.get("type_line") or ""
-                    for _eng in cast_token_engines:
-                        if (_eng["subtype"] in _tl2 if _eng["gate_kind"] == "type"
-                                else _eng["subtype"] in card["subtypes"]):
-                            _n = _eng["bodies"] * token_multiplier
-                            for _ in range(_n):
-                                creature_entered(_eng["power"], turn, False, 1,
-                                                 is_token=True)
-                            bodies_cum += _n
-                if card["cast_token"]:
-                    cast_token_engines.append(card["cast_token"])
-                # CAST-TRIGGERED DRAW fires here because in this model a
-                # permanent spell is CAST and ENTERS in the same step, so
-                # this door is every cast of one. Engines already in play
-                # only — a card does not trigger itself, and the registration
-                # below happens after this loop for exactly that reason.
-                if model_draw:
-                    _tl = card.get("type_line") or ""
-                    for _eng in draw_engines:
-                        # gate first: a mana-value gate has no type gate
-                        if (_eng["cast_draw_gate"] and not _eng["cast_draw_cost"]
-                                and _eng["cast_draw"] and _eng["cast_draw_gate"] in _tl):
-                            draw_n(_eng["cast_draw"])
-                _cast_triggers(card["cmc"], card.get("type_line") or "",
-                               card["combat"]["power"] if card["combat"]["is_creature"] else 0,
-                               card["combat"]["is_creature"])
-                if model_discard and has_event_payoff(card.get("event")):
-                    event_payoff_permanents.append(card["event"])
-                if model_drain:
-                    if any(card["drain"][k] for k in (
-                            "payoff_equal", "payoff_fixed", "gain_recurring",
-                            "gain_per_enchantment", "gain_per_creature",
-                            "drain_recurring", "drain_per_enchantment",
-                        "gain_team_counters", "gain_self_counter")):
-                        drain_permanents.append(card["drain"])
-                    # AN AURA GRANTS LIFELINK TO ONE CREATURE, so it is worth
-                    # the power of the body you would put it on — the biggest
-                    # one — and nothing at all with an empty board. Capped by
-                    # total board power so two Auras cannot credit more life
-                    # than the whole team can deal.
-                    if card["drain"]["lifelink"] and battlefield:
-                        best = max(p for p, *_ in battlefield)
-                        total = sum(p for p, *_ in battlefield)
-                        lifelink_power = min(lifelink_power + best, total)
-                if model_sacrifice:
-                    if is_death_engine(card["death"]):
-                        death_engines.append(card["death"])
-                    if card["sac_outlet"] == "free":
-                        free_sac_outlet = True
-                if model_deaths:
-                    # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
-                    # body door above; `_deaths_after_combat` fires them all.
-                    if is_death_engine(card["death"]):
-                        death_drains.append(card["death"])
-                    if card["death"]["gain_on_opponent_death"]:
-                        opponent_death_gains.append(card["death"])
-                if card["attack_enabler"]:
-                    attack_enabler_out = True
-                if card["combat"]["mass_animate_threshold"]:
-                    # THE EASIEST THRESHOLD WINS, not the last one drawn. Two
-                    # cards in the corpus mass-animate and they do it
-                    # independently: Opalescence at 1 (unconditional) and
-                    # Starfield of Nyx at 5. Either one being satisfied stands
-                    # the board up, so holding both must not be WORSE than
-                    # holding the unconditional one alone — which is exactly
-                    # what a plain assignment did, silently, whenever Starfield
-                    # happened to resolve second.
-                    _mat = card["combat"]["mass_animate_threshold"]
-                    mass_animate_threshold = (
-                        _mat if not mass_animate_threshold
-                        else min(mass_animate_threshold, _mat))
-                if model_drain:
-                    d_ = card["drain"]
-                    # PAYS ONCE, ON ENTRY — scaled by its own named type if it
-                    # names one, counted on the board it is joining.
-                    if d_["drain_etb"] or d_["gain_etb"]:
-                        x_ = 1
-                        if d_["scales_with"]:
-                            x_ = max(1, sum(1 for tl_ in battlefield_types
-                                            if d_["scales_with"] in tl_))
-                        etb_drained += d_["drain_etb"] * x_
-                        etb_gained += d_["gain_etb"] * x_
-                    # And every permanent of a named type that lands afterwards
-                    # pays the ones already out.
-                    for prof_ in per_type_watchers:
-                        if prof_["per_type"] in (card.get("type_line") or ""):
-                            etb_drained += prof_["drain_per_type"]
-                            etb_gained += prof_["gain_per_type"]
-                    if d_["per_type"]:
-                        per_type_watchers.append(d_)
-                # THE SPELL-COUNT ENGINES, registered where every other engine is.
-                # A card read perfectly and never registered is this file's
-                # documented failure; both registries are populated here.
-                sc_ = card["spell_count"]
-                if sc_["per_cast_damage"]:
-                    per_cast_engines.append(sc_)
-                if sc_["magecraft_treasure"]:
-                    magecraft_engines.append(sc_)
-                cb_ = card["combat"]
-                if model_combat and cb_["team_haste"]:
-                    haste_grants.append(cb_["team_haste"])
-                if cb_["team_counters_etb"]:
-                    n_ = cb_["team_counters_etb"]
-                    if n_ < 0:            # X = the count of its own named type
-                        ty_ = cb_["team_counters_scale_type"] or ""
-                        n_ = sum(1 for tl_ in battlefield_types if ty_ and ty_ in tl_)
-                    team_anthem += apply_counter_mod(n_, counter_plus, counter_times)
-                if cb_["team_counters_scale_type"]:
-                    team_anthem_on_type.append(
-                        (cb_["team_counters_scale_type"], cb_["team_counters_per_type"]))
-                for ty_, per_ in team_anthem_on_type:
-                    if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
-                        team_anthem += apply_counter_mod(per_, counter_plus, counter_times)
+                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+                    _note_cast(card)
+                    _resolve_body(card)
 
-        # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
-        # same commit as the channel (the never-cast class, a ninth time): it
-        # matches no other loop, so without this Glorious Anthem sits in hand.
-        # Two bodies is the bar — below it the mana buys more on a body.
-        if model_combat and len(battlefield) >= 2:
-            for card in sorted((c for c in hand if not c["is_land"]
-                                and not c["combat"]["is_creature"]
-                                and c["combat"]["static_lord"]),
-                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
-                if card not in hand:      # a free cast's discard took it
+            # CASCADE, CAST FOR THE CASCADE. A cascade card that is a body, a pump
+            # or anything else a loop above selects was cast there, and its
+            # cascade fired in `_note_cast`. What is LEFT is a card whose only
+            # effect this model can price IS the cascade — Demonic Dread, Captured
+            # Sunlight, Ardent Plea, Bituminous Blast — and without this loop it
+            # would be read and never cast, the failure this file has documented
+            # nine times. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
+            #
+            # Last, on what is left, most expensive first (a bigger spell cascades
+            # into a bigger hit), and after the storm loop, so it adds nothing to
+            # this turn's storm count — understated, the safe direction. An
+            # interaction spell is cast too: at a real table its target exists
+            # (a goldfish has no opponent's creature to Blast), and the cascade is
+            # what it is played for. A noncreature permanent joins the
+            # battlefield's parallel lists like the anthem loop's.
+            for card in sorted((c for c in hand if c["cascade"] and not c["is_land"]),
+                               key=lambda c: -reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:
                     continue
                 if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
                     continue
+                if card["bodies"] > 0:
+                    bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+                    _note_cast(card)
+                    _resolve_body(card)
+                    continue
                 _note_cast(card)
-                battlefield_pips.append(card["pips"])
-                battlefield_types.append(card.get("type_line") or "")
-                battlefield_mv.append(card["cmc"])
-                battlefield_rooms.append(None)
-                if "Enchantment" in (card.get("type_line") or ""):
-                    enchantments_entered += 1
-                static_anthems.append(card["combat"]["static_lord"])
+                _tl = card.get("type_line") or ""
+                if "Instant" not in _tl and "Sorcery" not in _tl:
+                    battlefield_pips.append(card["pips"])
+                    battlefield_types.append(_tl)
+                    battlefield_mv.append(card["cmc"])
+                    battlefield_rooms.append(None)
+                    if "Enchantment" in _tl:
+                        enchantments_entered += 1
+                    _register_wheel(card)
+                    _register_statics(card)
 
-        # Spend what's left on bodies, cheapest-first.
-        for card in sorted((c for c in hand if c["bodies"] > 0),
-                           key=lambda c: reduced_cost(c, reductions, chosen_type)):
-            if card not in hand:      # a free cast's discard took it
-                continue
-            if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
-                _note_cast(card)
-                _resolve_body(card)
 
-        # CASCADE, CAST FOR THE CASCADE. A cascade card that is a body, a pump
-        # or anything else a loop above selects was cast there, and its
-        # cascade fired in `_note_cast`. What is LEFT is a card whose only
-        # effect this model can price IS the cascade — Demonic Dread, Captured
-        # Sunlight, Ardent Plea, Bituminous Blast — and without this loop it
-        # would be read and never cast, the failure this file has documented
-        # nine times. THE CASTING PREDICATE SHIPS WITH THE CHANNEL.
-        #
-        # Last, on what is left, most expensive first (a bigger spell cascades
-        # into a bigger hit), and after the storm loop, so it adds nothing to
-        # this turn's storm count — understated, the safe direction. An
-        # interaction spell is cast too: at a real table its target exists
-        # (a goldfish has no opponent's creature to Blast), and the cascade is
-        # what it is played for. A noncreature permanent joins the
-        # battlefield's parallel lists like the anthem loop's.
-        for card in sorted((c for c in hand if c["cascade"] and not c["is_land"]),
-                           key=lambda c: -reduced_cost(c, reductions, chosen_type)):
-            if card not in hand:
-                continue
-            if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
-                continue
-            if card["bodies"] > 0:
-                bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+        def _can_tap(name):
+            """The row a {T} ability belongs to, or None: it must be on the battlefield,
+            untapped, and not summoning sick (CR 302.6). A haste creature may tap the turn it
+            lands; a noncreature has no row and no sickness, and answers -1."""
+            for i, e in enumerate(battlefield):
+                if e[12] and e[12]["name"] == name and not e[7]:
+                    if e[1] < turn or e[2]:
+                        return i
+            return None
+
+        def _attack_worth(i):
+            """What this creature would swing for, near enough: its power as the attack reads it."""
+            return battlefield[i][0] + team_anthem + _lord_bonuses()[i] + turn_pump
+
+        def _tap_for_loot(i):
+            """A {T} LOOT AGAINST AN ATTACK (2026-11-04). Mary Read and Anne Bonny looted and
+            swung every turn; she has no vigilance, so she does one. Policy: loot when the card
+            it pays through is worth at least her swing, each point of damage or counter a
+            discard and a draw pay counted as a point. Vigilance (Kitsa) gets both."""
+            if battlefield[i][12]["vigilance"]:
+                return True
+            value = sum(_e["per_discard_damage"] + _e["per_discard_counter"]
+                        + _e["per_draw_damage"] + _e["per_draw_counter"]
+                        for _e in event_payoff_permanents)
+            return value >= _attack_worth(i) or _digging()
+
+        def _pop_own_row(name):
+            """A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT, and only that body. This
+            matched on power: Magus of the Wheel's sacrifice could pop a 3/3 commander."""
+            for i, e in enumerate(battlefield):
+                if e[12] and e[12]["name"] == name:
+                    battlefield.pop(i)
+                    creature_types.pop(i)
+                    creature_flying.pop(i)
+                    return
+
+        def _hand_is_next_turns():
+            """WITH NOTHING ON THE TABLE TO PAY, A WHEEL WAITS FOR WHAT IS ABOUT TO LAND (2026-11-04).
+            The thin-hand clause threw away a Tithe on turn three to draw seven with no payoff
+            out, and a commander on curve the same way: next turn's mana can pay them. Once a
+            payoff is out the wheel is the play, and digging is the exception as ever."""
+            if _wheel_payoffs() or _digging():
+                return False
+            _next = (lands_in_play * (1 + land_mana_bonus) + rock_production + treasures
+                     + (1 if any(c["is_land"] for c in hand) else 0))
+            if commander_turn is None and commander_cmc <= _next:
+                return True
+            return any(not c["is_land"] and not c["draw"]["wheel_draws"]
+                       and reduced_cost(c, reductions, chosen_type) <= _next for c in hand)
+
+        def _fire_wheels():
+            """THE WHEELS: the spells and the one a permanent carries. One gate, `_wheel_castable`,
+            and the hand has been spent before it is asked (2026-11-04)."""
+            if not (model_discard and model_draw) or _hand_is_next_turns():
+                return
+            _fire_engine_wheels()
+            for card in sorted((c for c in hand if not c["is_land"] and c["draw"]["wheel_draws"]),
+                               key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                if card not in hand:
+                    continue
+                if not _wheel_castable(sum(1 for c in hand if not c["is_land"]) - 1):
+                    continue          # the hand is worth more than seven fresh cards
+                if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    continue
                 _note_cast(card)
-                _resolve_body(card)
-                continue
-            _note_cast(card)
-            _tl = card.get("type_line") or ""
-            if "Instant" not in _tl and "Sorcery" not in _tl:
-                battlefield_pips.append(card["pips"])
-                battlefield_types.append(_tl)
-                battlefield_mv.append(card["cmc"])
-                battlefield_rooms.append(None)
-                if "Enchantment" in _tl:
-                    enchantments_entered += 1
+                _resolve_draw(card)
+            # A WHEEL IN THE GRAVEYARD IS A WHEEL (Shattered Perception), a loot a loot (Faithless
+            # Looting), 2026-11-04. The gates are the same; the card goes to exile, so `_note_cast`
+            # does not put it back. Other flashback spells are not cast from there: a floor.
+            for card in sorted((c for c in flashback_yard
+                                if c["draw"]["wheel_draws"] or c["draw"]["spell_draw"]),
+                               key=lambda c: c["engine"]["flashback"]["cost"]):
+                if card["draw"]["wheel_draws"]:
+                    if not _wheel_castable(sum(1 for c in hand if not c["is_land"])):
+                        continue
+                elif not _loot_ok():
+                    continue
+                if not spend(card["engine"]["flashback"]["cost"],
+                             card["engine"]["flashback"]["pips"]):
+                    continue
+                flashback_yard.remove(card)
+                hand.append(card)
+                _note_cast(card, from_yard=True)
+                _resolve_draw(card)
+
+        def _fire_engine_wheels():
+            """THE WHEEL THAT IS ALREADY ON THE TABLE (the comment above `_can_tap`'s block)."""
+            nonlocal opponent_draws_this_turn
+            for _we in list(wheel_engines):
+                _wp = _we["draw"]
+                if not _wheel_castable(sum(1 for c in hand if not c["is_land"])):
+                    continue
+                # A {T} COST TAPS IT (2026-11-04): Jace's Archivist never tapped, so he wheeled
+                # and swung every turn. And it cannot fire the turn he lands: the old placement
+                # gave that for free, before the casting loops, and this one does not.
+                _row = None
+                if _wp["activated_wheel_taps"] and _we["is_creature"]:
+                    _row = _can_tap(_we["name"])
+                    if _row is None:
+                        continue
+                if not spend(_act_cost(_wp["activated_wheel_cost"]),
+                             _wp["activated_wheel_pips"]):
+                    continue
+                if _row is not None:
+                    _e = battlefield[_row]
+                    battlefield[_row] = _e[:7] + (True,) + _e[8:]
+                _held = len(hand)
+                _note_wheel()
+                discard_n(0, everything=True,
+                          shuffled=_wp["activated_wheel_shuffles"])
+                _an, _theirs = _wheel_counts(_held, _wp["activated_wheel"],
+                                             _wp["activated_wheel_greatest"])
+                draw_n(_an)
+                opponent_draws_this_turn += _theirs   # symmetrical, as above
+                _tax_opponent_draws()
+                if not _wp["activated_wheel_once"]:
+                    continue
+                wheel_engines.remove(_we)
+                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT. Magus of the Wheel and
+                # Whirlpool Warrior both say "Sacrifice this creature", and leaving a 3/3 on the
+                # board after it has been sacrificed is the over-credit that the sacrifice
+                # channel already learned to avoid.
+                if _wp["activated_wheel_sacs_self"] and _we["is_creature"]:
+                    _pop_own_row(_we["name"])
+
+        if _digging() and (model_draw and model_discard):
+            _fire_wheels()
+        _deploy()
+        _fire_wheels()
+        _deploy()
 
         # ── X SPELLS: the mana sink, cast LAST with whatever is left ─────
         #
@@ -2959,38 +3565,195 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # the EVENTS are the whole point. A deck whose commanders charge for a
         # discard and for a draw is paid twice for every token it cracks, which
         # is why this arrived for sharknado and not for anybody else.
-        if model_draw and model_discard:
-            for _de in list(bought_draws):
-                _dp = _de["draw"]
-                if _dp["activated_draw_discards"] and not hand:
-                    continue
-                if not spend(_dp["activated_draw_cost"], _dp["activated_draw_pips"]):
-                    continue
-                if _dp["activated_draw_discards"]:
-                    discard_n(_dp["activated_draw_discards"])
-                draw_n(_dp["activated_draw"])
-                if _dp["activated_draw_sacs_self"] and not _de["is_creature"]:
-                    # Mind Stone, Commander's Sphere, a Blood token: the cost
-                    # ate an ARTIFACT, which is the event Jaws charges for.
+        #
+        # REPEATABLE, AND THE STOP IS STATED (2026-11-04). This fired once per engine per
+        # turn, so Faerie Mastermind with fifteen spare mana drew one card and the Tithe +
+        # Mastermind + Bard line could not be seen. An activation now runs until one of:
+        #   MANA     untapped mana pays for it. TREASURE pays the first of each engine, as it
+        #            always did, and a repeat only where Smothering Tithe is out: there the
+        #            activation makes Treasure back, at the AUTHORED `TITHE_PAY_RATE`.
+        #   LIBRARY  `LIFE_CHAIN_LIBRARY_FLOOR` cards stay in it: a pilot stops, and decking
+        #            himself on a may-pay is not a line.
+        #   HAND     it stops at seven cards, unless the draw is being paid for by a per-draw
+        #            or per-opponent-draw payoff (Shabraz, Crawler, Needlehead, Sphinx), or the
+        #            limit is off: then the cards are the point and cleanup pays Brallin.
+        #   {T}      once a turn, by `_can_tap` and `_tap_for_loot`.
+        # A SYMMETRIC DRAW IS NOT FREE: "each player draws" hands the table cards, so it runs
+        # only while something pays for their half or ours.
+        #
+        # THE FLOOR: what these draws find is not castable this turn, wheel Treasure and engine
+        # draws arrive after casting, and an activation's Treasure can pay only for more
+        # activations.
+        def _draw_is_paid():
+            return any(_e["per_draw_damage"] or _e["per_draw_counter"]
+                       or _e["per_opponent_draw_damage"] or _e["per_opponent_draw_our_draw"]
+                       or _e["opponent_second_draw_our_draw"]
+                       for _e in event_payoff_permanents)
+
+        def _tithe_out():
+            return any(_r["trigger"] == "opponent_draw_tax" for _r in treasure_engines)
+
+        def _one_activation(_de, tapped_once, repeat):
+            """One go of a bought draw. True if it fired."""
+            nonlocal opponent_draws_this_turn, opponent_activated_draws, opponent_one_seat_draws
+            nonlocal artifact_sacs_this_turn, artifact_sacs, rock_production, lands_in_play
+            nonlocal pool
+            _dp = _de["draw"]
+            _players = _dp["activated_draw_players"]
+            if _dp["activated_draw_discards"] and not hand:
+                return False
+            if len(deck) <= LIFE_CHAIN_LIBRARY_FLOOR:
+                return False
+            if len(hand) >= 7 and not (hand_limit_off or _draw_is_paid()):
+                return False
+            if _players and not (_draw_is_paid() or _tithe_out()):
+                return False
+            # A DISCARD IN THE COST OR THE RIDER IS A LOOT, and it keeps the loot's rule.
+            if _dp["activated_draw_discards"] and not _dp["activated_draw_sacs_self"] \
+                    and not _loot_ok() and not blood:
+                return False
+            _cost = _act_cost(_dp["activated_draw_cost"])
+            # A ROCK OR A LAND THAT EATS ITSELF (Mind Stone, Fiery Islet): only once the deck
+            # has the mana to spare and nothing in hand wants it (ROCK_SAC_MIN_MANA, AUTHORED),
+            # and it must be untapped, so its own mana is not in the pool that pays.
+            _self_mana = 0
+            if _dp["activated_draw_sacs_self"] and not _de["is_creature"] \
+                    and (_de["produces"] or _de["is_land"]):
+                _self_mana = 1 if _de["is_land"] else _de["produces"]
+                _left = (lands_in_play * (1 + land_mana_bonus) + rock_production) - _self_mana
+                if _left < ROCK_SAC_MIN_MANA or pool < _cost + _self_mana:
+                    return False
+                if any(not c["is_land"] and c["cmc"] <= _left + 1 for c in hand):
+                    return False
+            # {T} IS ONCE A TURN ON ANY PERMANENT (2026-11-04). The noncreature has no row to tap,
+            # and the repeat loop read Jayemdae Tome as four draws off sixteen mana.
+            _row = None
+            if _dp["activated_draw_taps"]:
+                if _de["name"] in tapped_once:
+                    return False
+                if _de["is_creature"]:
+                    _row = _can_tap(_de["name"])
+                    if _row is None or not _tap_for_loot(_row):
+                        return False
+            # "ACTIVATE ONLY IF THIS CREATURE IS ATTACKING" (Glint-Horn): the body must be able
+            # to attack this turn. Spent here, read at the end of the main phase like the rest.
+            if _dp["activated_draw_needs_attack"]:
+                _i = next((i for i, e in enumerate(battlefield)
+                           if e[12] and e[12]["name"] == _de["name"]), None)
+                if _i is None or battlefield[_i][7] or not (battlefield[_i][1] < turn
+                                                            or battlefield[_i][2]):
+                    return False
+            if repeat and not _tithe_out() and pool < _cost:
+                return False
+            if not spend(_cost, _dp["activated_draw_pips"]):
+                return False
+            if _dp["activated_draw_taps"]:
+                tapped_once.add(_de["name"])
+            if _row is not None:
+                if not battlefield[_row][12]["vigilance"]:
+                    _e = battlefield[_row]
+                    battlefield[_row] = _e[:7] + (True,) + _e[8:]
+            if _dp["activated_draw_discards"]:
+                discard_n(_dp["activated_draw_discards"])
+            draw_n(_dp["activated_draw"])
+            if _players == "each":
+                opponent_draws_this_turn += _dp["activated_draw"]
+                opponent_activated_draws += _dp["activated_draw"]
+            elif _players == "two":
+                # "Two target players": ourselves and one seat, and that seat is one draw.
+                opponent_one_seat_draws += _dp["activated_draw"]
+            if _players:
+                _tax_opponent_draws()
+            if _dp["activated_draw_sacs_self"] and not _de["is_creature"]:
+                # Mind Stone, Commander's Sphere, a Blood token: the cost
+                # ate an ARTIFACT, which is the event Jaws charges for.
+                if not _de["is_land"]:
                     artifact_sacs_this_turn += 1
                     artifact_sacs += 1
-                if not _dp["activated_draw_once"]:
-                    continue
+                if _self_mana:
+                    pool -= _self_mana
+                    if _de["is_land"]:
+                        lands_in_play -= 1
+                    else:
+                        rock_production -= _self_mana
+                    _gone = _de["colors"] or frozenset()
+                    for _ in range(_self_mana):
+                        if _gone in sources:
+                            sources.remove(_gone)
+            if _dp["activated_draw_once"]:
                 bought_draws.remove(_de)
-                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT --
-                # the same correction the wheel loop above carries, and for
-                # the same reason: Living Lectern says "Sacrifice this
-                # creature" and leaving its body on the board is an over-credit
-                # the sacrifice channel already learned to avoid.
-                if not (_dp["activated_draw_sacs_self"] and _de["is_creature"]):
+                # A COST THAT EATS ITS OWN SOURCE TAKES THE BODY WITH IT -- Living Lectern says
+                # "Sacrifice this creature" -- and only that body.
+                if _dp["activated_draw_sacs_self"] and _de["is_creature"]:
+                    _pop_own_row(_de["name"])
+            return True
+
+        def _cycle_what_is_left():
+            """CYCLING (2026-11-04), read on no card until now: Marauding Mako, Magmakin
+            Artillerist, Shark Typhoon, Glittering Massif, Raugrin Triome. A discard and a draw
+            at instant speed on what the turn did not spend, so it pays Brallin and Shabraz.
+            Policy, stated: a nonland card that could not be cast cycles while a payoff is out
+            or the deck is digging; a land cycles only as a spare beyond the next drop; an {X}
+            cost takes all the spare mana, X of at least `X_DRAW_MIN`, and holds for a hard
+            cast it can reach next turn unless X is four or more."""
+            nonlocal bodies_cum, pool
+            if not (model_draw and model_discard):
+                return
+            for card in sorted((c for c in hand if c["engine"]["cycling"]),
+                               key=lambda c: c["engine"]["cycling"]["cost"]):
+                if card not in hand:
                     continue
-                _own = [i for i, (_p, _a, _h, _m, _tok, *_) in enumerate(battlefield)
-                        if _p == _de["power"] and not _tok]
-                if _own:
-                    _i = _own[0]
-                    battlefield.pop(_i)
-                    creature_types.pop(_i)
-                    creature_flying.pop(_i)
+                _cy = card["engine"]["cycling"]
+                if card["is_land"]:
+                    if sum(1 for c in hand if c["is_land"]) < 2:
+                        continue
+                elif not _loot_ok():
+                    continue
+                _cost = _act_cost(_cy["cost"])
+                _x = 0
+                if _cy["x"]:
+                    _x = pool - _cost
+                    _reach = (lands_in_play * (1 + land_mana_bonus) + rock_production + treasures
+                              + (1 if any(c["is_land"] for c in hand) else 0))
+                    if _x < X_DRAW_MIN or (_x < 4 and _reach >= card["cmc"]):
+                        continue
+                    _cost += _x
+                if len(deck) <= LIFE_CHAIN_LIBRARY_FLOOR or not spend(_cost, _cy["pips"]):
+                    continue
+                discard_n(1, which=card)
+                draw_n(1)
+                if _cy["damage"]:
+                    _b_ = bonus_for(card["damage_source"], damage_bonuses)
+                    _evt_extra["creature" if card["is_creature"] else "other"] += _cy["damage"] + _b_
+                if _cy["token_x"] and _x > 0 and (model_combat or model_draw):
+                    for _ in range(token_multiplier):
+                        creature_entered(_x, turn, False, 1, is_token=True, flying=True,
+                                         toughness=_x, type_line="Creature — Shark")
+                    bodies_cum += token_multiplier
+
+        # Spent once a cycle on each of the seats' turns, Teferi's own wording: a loot a turn on
+        # every player's turn, from the turn he lands. Nothing here attacks him: a ceiling.
+        _evt_extra = {"creature": 0, "other": 0, "life": 0}
+        if model_draw and model_discard:
+            for _ in loyalty_looters:
+                for _seat in range(1 + GOLDFISH_OPPONENTS):
+                    if len(deck) <= LIFE_CHAIN_LIBRARY_FLOOR or not _loot_ok():
+                        break
+                    draw_n(1)
+                    discard_n(1)
+            _cycle_what_is_left()
+            _tapped_once = set()
+            _fired = set()
+            _progress = True
+            while _progress:
+                _progress = False
+                for _de in list(bought_draws):
+                    if _de not in bought_draws:
+                        continue
+                    if _one_activation(_de, _tapped_once, repeat=id(_de) in _fired):
+                        _fired.add(id(_de))
+                        # A ONE-SHOT'S SECOND GO DOES NOT EXIST; everything else tries again.
+                        _progress = True
 
         # THE DISCARD AND DRAW PAYOFFS, paid on the turn's events. Applied
         # OUTSIDE the combat gate, the way drain is, so Brallin's ping counts
@@ -2998,36 +3761,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # `if model_combat:` -- and multiplied by the team damage multiplier
         # explicitly, because it is damage. Counters accumulate as power the
         # swing adds while the commander is out (an approximation, stated).
-        _evt_dmg = 0
-        # WHAT THE SACRIFICES PAID. Folded into `_evt_dmg` so it is multiplied
-        # by the team damage multiplier and checked against the kill exactly
-        # like Brallin's ping, which is the same kind of number. Counters go to
-        # `counter_power` the same way, and a draw off a sacrifice terminates by
-        # construction: cracking a token is not caused by drawing.
+        # THREE BUCKETS SINCE 2026-11-04, because a doubler asks what dealt it: a creature, any
+        # other source, or life loss, which is not damage and which nothing multiplies.
+        _evt_by = _evt_extra
+        # WHAT THE SACRIFICES PAID. Folded in so it is multiplied and checked against the kill
+        # exactly like Brallin's ping, which is the same kind of number. Counters go to
+        # `counter_power` the same way, and a draw off a sacrifice terminates by construction:
+        # cracking a token is not caused by drawing. A payoff is paid for what happened after
+        # it arrived.
         if model_discard and model_draw and artifact_sac_payoff_permanents \
                 and artifact_sacs_this_turn:
-            for _a in artifact_sac_payoff_permanents:
-                _evt_dmg += _a["per_artifact_sac_damage"] * artifact_sacs_this_turn
+            for _a, _ar in zip(artifact_sac_payoff_permanents, artifact_sac_arrivals):
+                _sacs = artifact_sacs_this_turn - (_ar["sacs"] if _ar["turn"] == turn else 0)
+                _evt_by[_damage_kind(damage_sources.get(id(_a)))] += (
+                    _a["per_artifact_sac_damage"] * _sacs)
                 counter_power += apply_counter_mod(_a["per_artifact_sac_counter"],
-                                                   counter_plus, counter_times) \
-                    * artifact_sacs_this_turn
+                                                   counter_plus, counter_times) * _sacs
                 if _a["per_artifact_sac_draw"]:
-                    draw_n(_a["per_artifact_sac_draw"] * artifact_sacs_this_turn)
-        # TREASURE OFF THEIR DRAWS (Smothering Tithe, Gleaming Splendor), from
-        # every opponent at the table. Each tax is decided per draw on this game's
-        # own stream against TITHE_PAY_RATE — an AUTHORED assumption, said so in
-        # MODEL_ASSUMPTIONS — so a wheel that hands three opponents seven cards
-        # is up to 21 Treasure, about half of it at the stated rate.
-        if model_treasures and treasure_engines:
-            for per_event, trigger in treasure_engines:
-                if trigger == "opponent_draw_tax":
-                    made = sum(1 for _ in range(opponent_draws_this_turn * GOLDFISH_OPPONENTS)
-                               if rng.random() >= TITHE_PAY_RATE)
-                elif trigger == "opponent_second_draw" and opponent_draws_this_turn >= 2:
-                    made = GOLDFISH_OPPONENTS
-                else:
-                    continue
-                treasures += made * (per_event + treasure_bonus) * treasure_multiplier
+                    draw_n(_a["per_artifact_sac_draw"] * _sacs)
+        # This cycle's draw step for every Tithe; a wheel's and an activation's were taxed as
+        # they happened. See `_tax_opponent_draws`.
+        _tax_opponent_draws(natural=True)
         # BURN, WITH WHAT IS LEFT (2026-10-11). A spell whose only read effect
         # is damage to the opponent's face (Lava Spike, Boros Charm's other
         # mode is read and keeps it out) is cast at the end of the main phase,
@@ -3046,110 +3800,134 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # this turn's draws, so Shabraz and every per-draw payoff are paid for
         # them. Rhystic Study: each opponent casts OPPONENT_CASTS_PER_TURN
         # spells (MEASURED, sim/pod_behaviour) and each pays the tax at
-        # TITHE_PAY_RATE (AUTHORED). Mind's Eye: one paid draw per opponent draw,
+        # TITHE_PAY_RATE (AUTHORED). Mystic Remora thins that by the
+        # OPPONENT_NONCREATURE_SHARE (AUTHORED) and takes the same pay rate for its {4},
+        # stated rather than guessed at. Mind's Eye: one paid draw per opponent draw,
         # paid from the mana left untapped at the end of our turn — a floor,
         # since Treasure could pay too.
         if model_discard and event_payoff_permanents:
-            for _e in list(event_payoff_permanents):
+            for _e, _ar in list(zip(event_payoff_permanents, event_arrivals)):
                 if _e["per_opponent_cast_draw"]:
                     _whole = int(OPPONENT_CASTS_PER_TURN)
                     _frac = OPPONENT_CASTS_PER_TURN - _whole
                     _casts = sum(_whole + (rng.random() < _frac)
                                  for _ in range(GOLDFISH_OPPONENTS))
+                    if _e["per_opponent_cast_noncreature"]:
+                        _casts = sum(1 for _ in range(_casts)
+                                     if rng.random() < OPPONENT_NONCREATURE_SHARE)
                     _drawn = sum(1 for _ in range(_casts)
                                  if not _e["per_opponent_cast_taxed"]
                                  or rng.random() >= TITHE_PAY_RATE)
                     if _drawn:
                         draw_n(_drawn * _e["per_opponent_cast_draw"])
-                if _e["per_opponent_draw_paid_draw"] and opponent_draws_this_turn:
+                _same = _ar["turn"] == turn
+                _opp_t = opponent_draws_this_turn - (_ar["opp"] if _same else 0)
+                _one_t = opponent_one_seat_draws - (_ar["one"] if _same else 0)
+                if _e["per_opponent_draw_paid_draw"] and _opp_t:
                     _cost = max(_e["per_opponent_draw_paid_cost"], 1)
-                    _paid = min(opponent_draws_this_turn * GOLDFISH_OPPONENTS,
-                                pool // _cost)
+                    _paid = min(_opp_t * GOLDFISH_OPPONENTS + _one_t, pool // _cost)
                     if _paid > 0:
                         pool -= _paid * _cost
                         draw_n(_paid * _e["per_opponent_draw_paid_draw"])
+                # EVERY DRAW COMES BEFORE ANY PAYOFF READS THE COUNT (2026-11-04). Consecrated
+                # Sphinx added six cards a turn and paid Shabraz one counter, because she drew
+                # inside the loop below, after he had read `drawn_this_turn`. These draws are
+                # safe where the same field on our own draws is refused as a Curiosity loop: our
+                # draws do not cause theirs, and nothing here discards.
+                if _e["per_opponent_draw_our_draw"] and (_opp_t or _one_t):
+                    draw_n(_e["per_opponent_draw_our_draw"]
+                           * (_opp_t * GOLDFISH_OPPONENTS + _one_t))
+                _seats = _second_draw_seats(_ar["opp"], _ar["act"], _ar["one"], _same)
+                if _e["opponent_second_draw_our_draw"] and _seats:
+                    draw_n(_e["opponent_second_draw_our_draw"] * _seats)
         if model_discard and event_payoff_permanents:
-            _disc_t = discarded - (discarded_by_turn[-1] if discarded_by_turn else 0)
+            _t0_disc = discarded_by_turn[-1] if discarded_by_turn else 0
             # Before the loop, so Shabraz is paid for them. The first BATCH of the turn, read
             # here rather than when it happened, so these cards are not castable this turn: a
             # floor. A cleanup discard does not fire her: another floor.
-            for _e in event_payoff_permanents:
-                if _e["first_discard_draw"] and first_discard_batch:
+            for _e, _ar in zip(event_payoff_permanents, event_arrivals):
+                if _e["first_discard_draw"] and first_discard_batch \
+                        and not (_ar["turn"] == turn and _ar["first_batch"]):
                     draw_n(first_discard_batch)
-            for _e in event_payoff_permanents:
+                if _e["per_discard_draw"]:
+                    _d0 = discarded - max(_t0_disc, _ar["disc"])
+                    if _d0:
+                        draw_n(_e["per_discard_draw"] * _d0)
+            for _e, _ar in zip(list(event_payoff_permanents), list(event_arrivals)):
+                # WHAT HAS HAPPENED SINCE THIS PAYOFF ARRIVED, and only that.
+                _same = _ar["turn"] == turn
+                _disc_t = discarded - max(_t0_disc, _ar["disc"])
+                _drawn_t = drawn_this_turn - (_ar["drawn"] if _same else 0)
+                _opp_t = opponent_draws_this_turn - (_ar["opp"] if _same else 0)
+                _one_t = opponent_one_seat_draws - (_ar["one"] if _same else 0)
                 # +N PER DAMAGE INSTANCE (Torbran), before the multiplier. One
                 # instance per discard and per draw — each is its own trigger —
                 # except a "one or more cards" payoff (Magmakin), which is ONE
                 # instance per batch; a turn's discards are taken as one batch,
                 # a floor where a turn holds a loot and a wheel.
-                _b = bonus_for(damage_sources.get(id(_e)), damage_bonuses)
-                if _e["per_draw_gain"] and drawn_this_turn:
-                    event_gain_events += drawn_this_turn
-                    event_gain_total += _e["per_draw_gain"] * drawn_this_turn
+                _src = damage_sources.get(id(_e))
+                _b = bonus_for(_src, damage_bonuses)
+                _k = _damage_kind(_src)
+                if _e["per_draw_gain"] and _drawn_t:
+                    event_gain_events += _drawn_t
+                    event_gain_total += _e["per_draw_gain"] * _drawn_t
                 if _e["per_discard_gain"] and _disc_t:
                     event_gain_events += _disc_t
                     event_gain_total += _e["per_discard_gain"] * _disc_t
                 if _e["per_discard_damage"] and _disc_t:
-                    _evt_dmg += _e["per_discard_damage"] * _disc_t \
+                    _evt_by[_k] += _e["per_discard_damage"] * _disc_t \
                         + (_b if _e["per_discard_batch"] else _b * _disc_t)
                 # DAMAGE ON THEIR TURN (2026-10-18): one instance a turn against
                 # the one seat, when its hand meets the card's condition. The
                 # hand is the authored OPPONENT_HAND, 7 on a turn a wheel
                 # refilled it — the same rule Jeska's Will reads.
                 if _e["per_opponent_turn_damage"]:
-                    _opp_hand = 7 if opponent_draws_this_turn >= 7 else OPPONENT_HAND
-                    if _opp_hand >= _e["per_opponent_turn_damage_hand_min"]:
-                        _evt_dmg += _e["per_opponent_turn_damage"] + _b
+                    if _opp_hand_now() >= _e["per_opponent_turn_damage_hand_min"]:
+                        _evt_by[_k] += _e["per_opponent_turn_damage"] + _b
                 if _e["per_draw_damage"]:
-                    _evt_dmg += (_e["per_draw_damage"] + _b) * drawn_this_turn
-                # THE TAX ON THEIR HALF. Their draws are the event; our draw
-                # off it is safe where the same field on our own draws is
-                # refused as a Curiosity loop, because our draws do not cause
-                # theirs.
-                # DAMAGE stays one seat (the clock is per seat); what WE draw off
-                # their draws is paid by EVERY opponent, so it scales with the
-                # seats at the table (`GOLDFISH_OPPONENTS`, 2026-10-04).
+                    _evt_by[_k] += (_e["per_draw_damage"] + _b) * _drawn_t
+                # THE TAX ON THEIR HALF. DAMAGE stays one seat (the clock is per seat).
                 if _e["per_opponent_draw_damage"]:
-                    _evt_dmg += (_e["per_opponent_draw_damage"] + _b) * opponent_draws_this_turn
-                if _e["per_opponent_draw_our_draw"] and opponent_draws_this_turn:
-                    draw_n(_e["per_opponent_draw_our_draw"] * opponent_draws_this_turn
-                           * GOLDFISH_OPPONENTS)
-                if opponent_draws_this_turn >= 2:
-                    if _e["opponent_second_draw_damage"]:
-                        _evt_dmg += _e["opponent_second_draw_damage"] + _b
-                    if _e["opponent_second_draw_our_draw"]:
-                        draw_n(_e["opponent_second_draw_our_draw"] * GOLDFISH_OPPONENTS)
+                    _evt_by[_k] += (_e["per_opponent_draw_damage"] + _b) * (_opp_t + _one_t)
+                if _second_draw_seats(_ar["opp"], _ar["act"], _ar["one"], _same) \
+                        and _e["opponent_second_draw_damage"]:
+                    _evt_by[_k] += _e["opponent_second_draw_damage"] + _b
                 # EACH TRIGGER IS ITS OWN COUNTER EVENT — Shabraz is paid once
                 # per card drawn — so a +1 replacement adds per card, not once.
-                _ctr = (apply_counter_mod(_e["per_discard_counter"], counter_plus,
-                                          counter_times) * _disc_t
-                        + apply_counter_mod(_e["per_draw_counter"], counter_plus,
-                                            counter_times) * drawn_this_turn)
+                # A "THAT MANY" TRIGGER IS ONE EVENT (Marauding Mako): that many, then the +1.
+                _ctr_disc = (apply_counter_mod(_disc_t, counter_plus, counter_times)
+                             if _e["per_discard_counter_batch"] and _disc_t
+                             else apply_counter_mod(_e["per_discard_counter"], counter_plus,
+                                                    counter_times) * _disc_t)
+                _ctr = _ctr_disc + apply_counter_mod(_e["per_draw_counter"], counter_plus,
+                                                     counter_times) * _drawn_t
                 counter_power += _ctr
+                _ar["counters"] += _ctr
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr
+                    if _ctr and id(_e) not in commander_first_counter:
+                        commander_first_counter[id(_e)] = turn - _ar["turn"]
                     commander_counter_of[id(_e)] = commander_counter_of.get(id(_e), 0) + _ctr
-                if drawn_this_turn >= 2:
+                if drawn_this_turn >= 2 and (not _same or _ar["drawn"] < 2):
                     if _e["second_draw_damage"]:
-                        _evt_dmg += _e["second_draw_damage"] + _b
+                        _evt_by[_k] += _e["second_draw_damage"] + _b
                     if _e["second_draw_token_power"]:
                         creature_entered(_e["second_draw_token_power"], turn, False, 1,
                                          is_token=True, colors=_e["token_colors"])
                         bodies_cum += 1
                 for _pw, _n in ((_e["per_discard_token_power"], _disc_t),
-                                (_e["per_draw_token_power"], drawn_this_turn)):
+                                (_e["per_draw_token_power"], _drawn_t)):
                     for _ in range(_n if _pw else 0):
                         creature_entered(_pw, turn, False, 1, is_token=True,
                                          colors=_e["token_colors"])
                         bodies_cum += 1
-                if _e["per_discard_draw"] and _disc_t:
-                    draw_n(_e["per_discard_draw"] * _disc_t)
-            _evt_dmg *= team_damage_multiplier
-            if _evt_dmg:
-                opponent_life -= _evt_dmg
-                if kill_turn is None and opponent_life <= 0:
-                    kill_turn = turn
-                    kill_by = "life"
+        # THE MULTIPLIERS APPLY LAST, each to what it reaches.
+        _evt_dmg = sum(_n * _noncombat_mult(_kind) for _kind, _n in _evt_by.items())
+        if _evt_dmg:
+            opponent_life -= _evt_dmg
+            if kill_turn is None and opponent_life <= 0:
+                kill_turn = turn
+                kill_by = "life"
         event_damage_by_turn.append(_evt_dmg)
         blood_by_turn.append(blood)
         artifact_sacs_by_turn.append(artifact_sacs)
@@ -3163,8 +3941,44 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         bodies_by_turn.append(bodies_cum)
         held = [c for c in hand if c["name"] in interaction_names]
         interaction_in_hand_by_turn.append(bool(held))
+        # "IF YOU CONTROL A COMMANDER, YOU MAY CAST THIS SPELL WITHOUT PAYING" (2026-11-04):
+        # Deflecting Swat and Flawless Maneuver were priced at three they do not cost.
         interaction_castable_by_turn.append(
-            any(c["cmc"] <= pool + treasures for c in held))
+            any(c["cmc"] <= pool + treasures
+                or (c["engine"]["free_with_commander"] and _cmd_out() >= 1) for c in held))
+
+        # ONE-TURN GRANTS WITH WHAT IS LEFT (2026-11-04). Akroma's Will's first mode is the team
+        # double striking: held by the pump loop's rule it would be cast on the first attacker
+        # with four mana a body wanted, so it waits here, on mana nothing spent, for a board
+        # that attacks. Shu Yun's trigger pays {R/W}{R/W} per noncreature spell cast this turn
+        # for double strike on one attacker: bought here, on the same mana, from the biggest
+        # attacker down, and a floor against the mana a pilot would hold back for it.
+        _single_ds = set()
+        if model_combat and battlefield:
+            _ready = [i for i, e in enumerate(battlefield) if not e[7] and (e[1] < turn or e[2])]
+            if _ready:
+                for card in sorted((c for c in hand if not c["is_land"]
+                                    and c["combat"]["spell_team_double_strike"]),
+                                   key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                    if turn_double_strike or team_double_strike:
+                        break
+                    if card not in hand or not spend(reduced_cost(card, reductions, chosen_type),
+                                                     card["pips"]):
+                        continue
+                    _note_cast(card)
+                    turn_double_strike = True
+                _by_power = sorted((i for i in _ready if battlefield[i][3] <= 1),
+                                   key=lambda i: -_attack_worth(i))
+                if not (turn_double_strike or team_double_strike):
+                    for _eng in cast_engines:
+                        if _eng["cast_double_strike_cost"] is None:
+                            continue
+                        for _ in range(noncreature_casts_this_turn):
+                            if len(_single_ds) >= len(_by_power) or not spend(
+                                    _act_cost(_eng["cast_double_strike_cost"]),
+                                    _eng["cast_double_strike_pips"]):
+                                break
+                            _single_ds.add(_by_power[len(_single_ds)])
 
         # ── Combat step ────────────────────────────────────────────────────
         # Nothing blocks, so every creature that can attack does. Each combat
@@ -3206,10 +4020,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     e = battlefield[i]
                     if e[5][0]:
                         continue
-                    strikes = e[3] if e[3] > 1 else (2 if turn_double_strike else 1)
-                    total += strikes * bonus_for({"colors": e[11], "deals": True},
-                                                 damage_bonuses, combat=True)
+                    total += _strikes(i) * bonus_for({"colors": e[11], "deals": True},
+                                                     damage_bonuses, combat=True)
                 return total
+
+            def _strikes(i):
+                """One attacker's strikes this combat. DOUBLE STRIKE DOES NOT STACK: its own, a
+                standing grant (Blade Historian), this turn's spell or one bought for it."""
+                return 2 if (battlefield[i][3] > 1 or team_double_strike or turn_double_strike
+                             or i in _single_ds) else 1
 
             def _may_attack(entry):
                 """The attack gate (field 10): Defender and "can't attack" never;
@@ -3223,15 +4042,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         return len(hand) >= gate["min_hand"]
                     return len(hand) <= gate.get("max_hand", 0)
                 return False
+            # EQUIP FOR HASTE (Lightning Greaves, 2026-11-04): one creature, the biggest one that
+            # landed this turn, for the equip cost. The other half of "Greaves on the commander".
+            _haste_idx = set()
+            for _ec in equip_haste_costs:
+                _fresh = [i for i, e in enumerate(battlefield)
+                          if e[1] == turn and not e[2] and not e[7] and i not in _haste_idx
+                          and _may_attack(e)]
+                if _fresh and spend(_act_cost(_ec)):
+                    _haste_idx.add(max(_fresh, key=lambda i: battlefield[i][0]))
+            # KNOWLEDGE IS POWER reads the turn's draws here, after the main phase has drawn them.
+            for _ in draw_pumps:
+                turn_pump += drawn_this_turn
+            _power_mult = turn_power_mult * team_power_mult
             _able = [i for i, ((p, arrived, haste, mult, _tok, pz, _t, tapped, *_), tl_, fl_)
                      in enumerate(zip(battlefield, creature_types, creature_flying))
                      if not tapped and _may_attack(battlefield[i])
-                     and (haste or arrived < turn
+                     and (haste or arrived < turn or i in _haste_idx
                           or (haste_grants and _granted(tl_, fl_, _tok)))]
             _lbs = _lord_bonuses()
-            attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * turn_power_mult)
-                          * (battlefield[i][3] if battlefield[i][3] > 1
-                             else (2 if turn_double_strike else 1)), battlefield[i][5])
+            attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * _power_mult)
+                          * _strikes(i), battlefield[i][5])
                          for i in _able]
             # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
             # (702.90b) and never touches the life total; a toxic attacker
@@ -3245,19 +4076,36 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Chandra's Ignition is NOT combat damage — it is dealt on resolution,
             # so it does not need an attacker and is not doubled by double strike.
             if spell_each_opponent:
-                swing += spell_each_opponent
+                etb_by["creature"] += spell_each_opponent
                 spell_each_opponent = 0
-            if counter_power and attackers and commander_turn is not None and turn > commander_turn:
-                swing += counter_power
-            for _cp, _ce, _t0 in ((commander_combat, commander_event, commander_turn),
-                                  ((partner or {}).get("combat"), (partner or {}).get("event"),
-                                   partner_turn)):
+            # THE COUNTERS ARE POWER, ON BODIES THAT CAN SWING (2026-11-04). A payoff's counters
+            # ride on the permanent that made them, so they wait for THAT body, not for the
+            # commander: Mako's are worth nothing until Mako can attack. Double strike doubles
+            # them with the rest of its power where the grant is the whole team's. Anything else
+            # adding to `counter_power` (a sacrifice payoff, a life-gain counter) keeps the old rule.
+            _event_ctrs = sum(_ar["counters"] for _ar in event_arrivals)
+            _ready_ctrs = sum(_ar["counters"] for _ar in event_arrivals if _ar["turn"] < turn)
+            _other_ctrs = counter_power - _event_ctrs
+            _ctr_strikes = 2 if (team_double_strike or turn_double_strike) else 1
+            if attackers:
+                swing += _ready_ctrs * _power_mult * _ctr_strikes
+                if _other_ctrs and commander_turn is not None and turn > commander_turn:
+                    swing += _other_ctrs * _power_mult * _ctr_strikes
+            for _cp, _ce, _t0, _src in (
+                    (commander_combat, commander_event, commander_turn,
+                     (commander_damage or {}).get("source")),
+                    ((partner or {}).get("combat"), (partner or {}).get("event"), partner_turn,
+                     ((partner or {}).get("damage") or {}).get("source"))):
                 if not _cp or not _cp["is_creature"] or _t0 is None or (turn <= _t0 and not _cp["haste"]):
                     continue
-                _hit = ((_cp["power"] + team_anthem + turn_pump
-                         + commander_counter_of.get(id(_ce), 0)) * turn_power_mult
-                        * (2 if _cp["double_strike"] or turn_double_strike else 1)
-                        * team_damage_multiplier)
+                # A STRIKE IS A DAMAGE INSTANCE, so Torbran's +2 on red Brallin is per strike and
+                # before the doublers (2026-11-04): this read 21 two swings late on his deck.
+                _strk = 2 if (_cp["double_strike"] or team_double_strike or turn_double_strike) else 1
+                _b_c = bonus_for({"colors": (_src or {}).get("colors", ()), "deals": True},
+                                 damage_bonuses, combat=True)
+                _hit = (((_cp["power"] + team_anthem + turn_pump
+                          + commander_counter_of.get(id(_ce), 0)) * _power_mult + _b_c)
+                        * _strk * _combat_mult())
                 commander_damage_of[id(_cp)] = commander_damage_of.get(id(_cp), 0) + _hit
                 if commander_lethal_turn is None and commander_damage_of[id(_cp)] >= 21:
                     commander_lethal_turn = turn
@@ -3300,12 +4148,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _ab = [i for i, ((p_, arr_, hs_, ml_, tok_, pz_, _t_, tp_, *_), tl_, fl_)
                        in enumerate(zip(battlefield, creature_types, creature_flying))
                        if not tp_ and _may_attack(battlefield[i])
-                       and (hs_ or arr_ < turn
+                       and (hs_ or arr_ < turn or i in _haste_idx
                             or (haste_grants and _granted(tl_, fl_, tok_)))]
                 _lbs = _lord_bonuses()
-                _at = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * turn_power_mult)
-                        * (battlefield[i][3] if battlefield[i][3] > 1
-                           else (2 if turn_double_strike else 1)), battlefield[i][5])
+                _at = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * _power_mult)
+                        * _strikes(i), battlefield[i][5])
                        for i in _ab]
                 return _ab, _at
 
@@ -3345,7 +4192,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                     + sum(pz[1] for _d, pz in attackers))
                     ping_life = ping * sum(1 for _d, pz in attackers if not pz[0])
                     ping_poison = ping * sum(1 for _d, pz in attackers if pz[0])
-                dealt += swing + bonus + ping_life
+                dealt += swing
+                # A TRIGGER ON THE ATTACK IS NOT COMBAT DAMAGE, whoever deals it (2026-11-04):
+                # double strike and combat doublers do not reach it.
+                etb_by["other"] += bonus
+                etb_by["creature"] += ping_life
                 # and THIS phase's attackers tap
                 for _i in _able:
                     _e = battlefield[_i]
@@ -3353,7 +4204,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 poisoned += swing_poison + ping_poison
                 for engine in combat_engines:
                     pool += engine["attack_mana"]
-                    dealt += engine["attack_damage"]
+                    etb_by["creature" if engine["is_creature"] else "other"] += engine["attack_damage"]
                     if model_treasures:
                         treasures += engine["attack_treasure"]
                     for _ in range(engine["attack_draw"]):
@@ -3444,9 +4295,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             if id(eng) in death_once_used:
                                 continue  # "triggers only once each turn"
                             death_once_used.add(id(eng))
-                        # Life loss is damage here for the same reason the
-                        # arrival channel says so: one opponent, 40 life.
-                        etb_damage += eng["death_drain"]
+                        # Life loss comes off the same number for the same reason the arrival
+                        # channel says so, one opponent at 40 life, and no doubler reaches it.
+                        etb_by["life"] += eng["death_drain"]
                         draw_n(eng["death_draw"])
                         if model_treasures:
                             treasures += eng["death_treasure"]
@@ -3462,13 +4313,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 creature_types[:] = [creature_types[i] for i in kept_idx]
                 creature_flying[:] = [creature_flying[i] for i in kept_idx]
                 sacrifices += n_sac
-            dealt += etb_damage
-            dealt *= team_damage_multiplier
+            dealt = dealt * _combat_mult() + sum(_n * _noncombat_mult(_kind)
+                                                 for _kind, _n in etb_by.items())
             opponent_life -= dealt
             damage_by_turn.append(dealt)
             # A damage doubler doubles the damage a source deals, and infect
             # converts what is dealt, so the multiplier applies to counters too.
-            poisoned *= team_damage_multiplier
+            poisoned *= _combat_mult()
             opponent_poison += poisoned
             poison_by_turn.append(poisoned)
             # THE ONE-TURN TOKEN COPIES LEAVE, at the end step, after they have
@@ -3529,10 +4380,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         still.append((card, combat))
                 pending_gods[:] = still
 
+            # THE COUNTERS ARE ON THE BOARD (2026-11-04). `counter_power` was folded into the swing
+            # and left out of here, so a 3/3 with twenty counters read as three: "Total power on
+            # the battlefield" meant printed power. A prowess pump has worn off by now.
             board_power_by_turn.append(
                 sum(p for p, *_ in battlefield)
                 + team_anthem * len(battlefield)
-                + sum(_lord_bonuses()))
+                + sum(_lord_bonuses(transient=False))
+                + counter_power)
             if kill_turn is None and (opponent_life <= 0
                                       or opponent_poison >= GOLDFISH_POISON_TO_LOSE):
                 kill_turn = turn
@@ -3805,6 +4660,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     kill_turn = turn
                     kill_by = "life"
 
+        # ALL THE DAMAGE THIS TURN (2026-11-04): the swing and its triggers, the discard and draw
+        # payoffs, and the drain. `damage_by_turn` holds the first alone, so "damage @T10" could
+        # not see a Brallin ping or a Needlehead, on the deck that wins with them.
+        total_damage_by_turn.append(
+            (damage_by_turn[-1] if model_combat else 0) + _evt_dmg
+            + (drain_by_turn[-1] if model_drain else 0))
+
         # Measured against the turn's FULL mana — lands, rocks and the
         # Treasure stockpile — because a Treasure you are holding is mana you
         # could have spent. `pool` has already been drawn down by the main
@@ -3822,6 +4684,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             discard_n(len(hand) - 7)
         hand_size_by_turn.append(len(hand))
         dead_wheels_in_hand_by_turn.append(_dead_wheels())
+        # AT THE END OF THE TURN, which is what the row has always said (2026-11-04). This was
+        # recorded before the turn spent anything, so "hoard @T10" counted Treasure the same
+        # turn then broke. Mary Read's tapped ones are standing too.
+        treasures_by_turn.append(treasures + tapped_treasures)
         # AT THE END OF THE TURN, because the sacrifice step runs inside combat.
         # This was recorded BEFORE the combat step, so every entry held the
         # total as it stood at the START of its turn — the series was shifted by
@@ -3837,10 +4703,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # the defect #34 fixed for `sacrifices_by_turn`, one series over.
         drawn_extra_by_turn.append(drawn_extra)
 
-        tutors = sum(1 for t in tutor_ready_turns if t <= turn)
+        # A TUTOR FILLS ONLY WHAT IT CAN REACH (2026-11-04): Idyllic Tutor filled a wheel group.
+        tutors = [f for t, f in tutor_ready_turns if t <= turn]
         for i, target in enumerate(targets):
             commander_cast = commander_turn is not None
-            if target_turns[i] is None and _target_met(target, seen, commander_cast, tutors):
+            if target_turns[i] is None and _target_met(target, seen, commander_cast, tutors,
+                                                       library_types):
                 target_turns[i] = turn
             if target_turns_unassisted[i] is None and _target_met(target, seen, commander_cast):
                 target_turns_unassisted[i] = turn
@@ -3867,6 +4735,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "commander_turn": commander_turn,
         "commander_counters_by_turn": commander_counters_by_turn,
         "commander_lethal_turn": commander_lethal_turn,
+        "commander_first_counter_delays": sorted(commander_first_counter.values()),
+        "first_right_card_turn": first_right_card_turn,
         # The stockpile STANDING at the end of each turn, not what was made:
         # the same reading `treasures_by_turn` takes, so the two can be read
         # beside each other without a footnote.
@@ -3895,6 +4765,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "treasures_by_turn": treasures_by_turn,
         "treasure_online_by_turn": treasure_online_by_turn,
         "damage_by_turn": damage_by_turn,
+        "total_damage_by_turn": total_damage_by_turn,
         "board_power_by_turn": board_power_by_turn,
         "kill_turn": kill_turn,
         "poison_by_turn": poison_by_turn,

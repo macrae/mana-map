@@ -23,7 +23,7 @@ that becomes the proposal's note and the merge's reason.
    anything already red (engine, tutors, prose, build_plan) so it is not blamed on the merge.
 
 1. **Measure.** `net-change <slug> --branch <branch> --write` — the paired goldfish on the
-   pre-registered objective plus twelve Holm rows. Report the primary row with its MDE; a
+   pre-registered objective plus sixteen Holm rows. Report the primary row with its MDE; a
    Forge loss is a warning. `forge-cast-check <slug> --branch <branch> --adds --write` only if
    the harness moved since `cast_proofs.json`. `propose` refuses without `net_change.json`.
 

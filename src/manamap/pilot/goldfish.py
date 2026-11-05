@@ -258,6 +258,7 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     manabase,
     pathlib,
     produced_mana,
+    engine_profile,
     random,
     re,
     reduced_cost,
@@ -380,13 +381,42 @@ _LOADED_VERSION = _hash_sources()
 
 
 
+def draw_is_read_elsewhere(card):
+    """READ BY ANOTHER CHANNEL, NOT BLIND (2026-11-04). Rhystic Study, Consecrated Sphinx and Faerie
+    Mastermind draw through `event_payoffs`; cycling, Jeskai Ascendancy and Teferi through
+    `engine_profile`. `draw_profile` knows neither, so a list saying what the model cannot see
+    named cards it was reading, under the discard channel both of those run on."""
+    card = dict(card, oracle_text=card.get("oracle_text") or "")
+    ev = event_payoffs(card)
+    eng = engine_profile(card)
+    return bool(any(ev[k] for k in ("per_opponent_cast_draw", "per_opponent_draw_our_draw",
+                                    "opponent_second_draw_our_draw", "per_opponent_draw_paid_draw",
+                                    "per_discard_draw", "first_discard_draw"))
+                or eng["cycling"] or eng["cast_loot"] or eng["loyalty_loot"])
+
+
 MODEL_ASSUMPTIONS = [
     "Simulates resource development, not full games (no interaction, no removal).",
     "Draw every turn including turn 1 (multiplayer Commander).",
     "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a "
     "permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text "
     "and a raised limit ('your maximum hand size is ten') are not read.",
-    "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+    "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is "
+    "free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+    "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a "
+    "wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to "
+    "dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+    "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, "
+    "authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. "
+    "Treasure pays a repeat only under Smothering Tithe, whose return is the authored "
+    "TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+    "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) "
+    "left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age "
+    "CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN "
+    "(measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+    "A doubler reaches what its text says: double strike and doubled power, combat only; 'a "
+    "creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', "
+    "that. Life loss is not damage and is never multiplied or bonused.",
     "One land drop per turn when available.",
     # MEASURED, NOT ASSUMED. A `candidates` sweep of twelve lands against
     # ur-dragon returned exactly TWO distinct readings: 45.304 for every
@@ -614,11 +644,11 @@ DISCARD_ASSUMPTIONS = [
     "activation costs are REFUSED and named, never priced at zero.",
     "DISCARD: a wheel discards the WHOLE hand, lands included, and is cast only "
     "when the hand holds at most three nonland cards or a discard payoff is on "
-    "the battlefield; a loot pitches lands beyond the next drop first, then the "
+    "the battlefield, after the turn has deployed; a loot waits for the same payoff and pitches lands beyond the next drop first, then the "
     "most expensive nonland. A discarded card stays 'seen' for target assembly "
     "(assembly is 'drawn by', and it was). Wheel of Misfortune is excluded "
-    "(conditional). Activated loots and rummages, cycling and madness are NOT "
-    "modelled and are named in meta.draw_not_modelled. Discard- and draw-"
+    "(conditional). Activated loots, cycling and flashback are read (2026-11-04); madness is "
+    "NOT modelled and is named in meta.draw_not_modelled. Discard- and draw-"
     "triggered payoffs pay a flat amount per event, outside the combat gate; "
     "+1/+1 counters they put on their own body are added to the swing while the "
     "commander is out, an approximation. Payoffs that DRAW on a draw are not "
@@ -1006,11 +1036,31 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "mean_commander_counters_by_turn": {
                 str(t): _round(sum(r["commander_counters_by_turn"][t - 1] for r in results) / n)
                 for t in turns},
+            # ALL THE DAMAGE, per turn (2026-11-04). `combat.mean_damage_by_turn` is the swing and
+            # what fires around it, and it has never held an event ping: this is that, plus the
+            # discard and draw payoffs, plus the drain. Inside this block, so a deck with no
+            # discard channel keeps every byte it had.
+            "mean_total_damage_by_turn": {
+                str(t): _round(sum(r["total_damage_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            # THE SPEEDS THE PILOT NAMED (2026-11-04), read in turns. `time_to_first_counter`: from
+            # a commander's arrival to its first +1/+1 counter, 0 meaning the turn it landed, over
+            # commanders that got one in the games they did. `first_right_card`: the first wheel
+            # or engine piece RESOLVED, which `targets` cannot say: it reads what was drawn.
+            "time_to_first_counter": (lambda got: {
+                "mean": _round(sum(got) / len(got)) if got else None,
+                "median": statistics.median(got) if got else None,
+                "n": len(got)})([d for r in results for d in r["commander_first_counter_delays"]]),
+            "first_right_card_turn": (lambda got: {
+                "mean": _round(sum(got) / len(got)) if got else None,
+                "median": statistics.median(got) if got else None,
+                "n": len(got)})([r["first_right_card_turn"] for r in results
+                                 if r["first_right_card_turn"] is not None]),
             # THE WHEELS' TIMING (2026-10-21). The model fired wheels and threw
             # the turn away; the pilot's thesis is about the turn. A FINISHER is
-            # a wheel resolved with a COMMANDER out and a hand the thin-hand
-            # clause alone would not have thrown away (the complement of the
-            # built-in gate). `wheel_with_payoff_rate` is pooled over WHEELS,
+            # a wheel resolved with a COMMANDER out (2026-11-04: no longer also
+            # four nonlands left, which the turn now spends first).
+            # `wheel_with_payoff_rate` is pooled over WHEELS,
             # not games, and reads 1.0 by construction under a hold policy —
             # it is the policy-on vs policy-off reading, not a branch row.
             "wheel_cast_rate_by_turn": {
@@ -1531,6 +1581,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         if c.get("is_commander"):
             continue
         d = draw_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
+        if d["unmodelled"] and model_discard and draw_is_read_elsewhere(c):
+            continue
         if d["unmodelled"]:
             # A CARD IS ONLY UNMODELLED IF NO CHANNEL READS IT — the rule
             # `drain_unmodelled` below already keeps. Liliana, Dreadhorde

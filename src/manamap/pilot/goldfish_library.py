@@ -34,6 +34,10 @@ from manamap.pilot.common import (
 
 from manamap.pilot.goldfish_profiles import (
     no_max_hand,
+    land_gate,
+    engine_profile,
+    tutor_filter,
+    tutor_reaches,
     cascade_n,
     copy_fodder,
     discover_n,
@@ -68,7 +72,7 @@ from manamap.pilot.goldfish_profiles import (
     front_field,
     is_tutor,
     manabase,
-    produced_mana,
+    net_produced_mana,
     room_profile,
     sac_outlet_profile,
     subtypes_of,
@@ -166,9 +170,13 @@ def classify(card, pool=None):
         "tutor_cmc": int(card.get("cmc") or 0) + (int(mode_cost.group(1)) if mode_cost else 0),
         # A SCALING DORK PRODUCES AT LEAST ONE. Without this it never reaches
         # the rock loop at all, which is how it came to read as zero.
+        # NET OF THE ABILITY'S OWN COST (2026-11-04): a Signet adds one mana to a turn,
+        # not two. `produces_gross` is what it stands for in colours.
         "produces": 0 if "Land" in type_line else (
-            produced_mana(card.get("oracle_text"), type_line)
+            net_produced_mana(card.get("oracle_text"), type_line)[0]
             or (1 if _SCALING_COLOR_MANA_RE.search(text) else 0)),
+        "produces_gross": 0 if "Land" in type_line else (
+            net_produced_mana(card.get("oracle_text"), type_line)[1]),
         "land_mana_bonus": 0 if "Land" in type_line else _land_mana_bonus(text),
         "bodies": 0 if "Land" in type_line else body_count(card),
         # Creature-only body count and the combat profile ride along always;
@@ -190,6 +198,8 @@ def classify(card, pool=None):
             card.get("oracle_text", "") or "")),
         "draw": draw_profile(card),
         "no_max_hand": no_max_hand(card),
+        # What it does on a cast, an equip, an upkeep or an activation (2026-11-04).
+        "engine": engine_profile(card),
         # Discard- and draw-triggered payoffs, read on every card and acted on
         # under `model_discard` only.
         "event": event_payoffs(card),
@@ -205,6 +215,8 @@ def classify(card, pool=None):
         "face_damage": spell_face_damage(card),
         "sac_outlet": sac_outlet_profile(card),
         "tutor": is_tutor_card,
+        # What it can reach: a tutor fills only a target group it can fetch for.
+        "tutor_filter": tutor_filter(card) if is_tutor_card else None,
         # A top-of-library tutor delivers on the next draw step, not this turn.
         "tutor_delay": 1 if is_tutor_card and _TUTOR_TO_TOP_RE.search(text) else 0,
         "tutor_needs_body": bool(is_tutor_card and _TUTOR_SAC_RE.search(text)),
@@ -246,6 +258,8 @@ def classify(card, pool=None):
         # `pool` resolves a fetchland against what it can actually go and get.
         # A non-land is unaffected: `fetch_profile` gates on the type line.
         "colors": frozenset(manabase.land_colors(card, pool=pool)),
+        # What of that the board has to allow, in play (2026-11-04); None for a plain land.
+        "land_gate": land_gate(card),
         # WHETHER A ZADA-STYLE ABILITY CAN MULTIPLY THIS SPELL. Read here so the
         # casting loop can see it; the ability itself is declared per deck.
         "copy_fodder": copy_fodder(card),
@@ -308,7 +322,9 @@ def keepable(hand):
 KEEP_CLASS_PREDICATES = {
     "wheel": lambda c: (not c["is_land"]) and bool(
         c["draw"]["wheel_draws"] or c["draw"]["activated_wheel"]),
-    "body": lambda c: (not c["is_land"]) and c["bodies"] > 0,
+    # A CREATURE, not a card that makes a Treasure (2026-11-04): `bodies` counts every token,
+    # so Smothering Tithe passed "needs a body". Shark Typhoon's bodies left with its X tokens.
+    "body": lambda c: (not c["is_land"]) and c["creature_bodies"] > 0,
     "ramp": lambda c: (not c["is_land"]) and c["produces"] > 0,
 }
 
@@ -327,8 +343,29 @@ def keep_rule_passes(hand, rule):
     return (not needs) or any(counts[cls] > 0 for cls in needs)
 
 
-def _target_met(target, names_in_hand, commander_cast, tutors=0):
+def _tutors_fill(unmet, tutors, type_lines):
+    """Can each unmet need take a tutor that can reach one of its names? One tutor, one need;
+    the need with the fewest tutors in reach chooses first, exact at these sizes."""
+    def reach(need, filt):
+        return any(tutor_reaches(filt, type_lines.get(n)) for n in need["any_of"])
+    free = list(tutors)
+    for need in sorted(unmet, key=lambda n: sum(reach(n, f) for f in tutors)):
+        hit = next((f for f in free if reach(need, f)), _NO_TUTOR)
+        if hit is _NO_TUTOR:
+            return False
+        free.remove(hit)
+    return True
+
+
+_NO_TUTOR = object()
+
+
+def _target_met(target, names_in_hand, commander_cast, tutors=0, type_lines=None):
     """Is this target assembled, allowing `tutors` wildcards to fill holes?
+
+    `tutors` is a count of unrestricted wildcards, or (2026-11-04) a list of the ready tutors'
+    `tutor_filter`s with `type_lines` naming each card's type: Idyllic Tutor filled a WHEEL
+    group, which it cannot fetch, on every deck that named one.
 
     `tutors` is applied per target independently — each target is a separate
     counterfactual ("could this have been assembled by now"), exactly as the
@@ -352,14 +389,17 @@ def _target_met(target, names_in_hand, commander_cast, tutors=0):
     # because the raw need dicts never reach the artifact — `target_stats`
     # takes only `target["label"]` — so there is nothing for a private key to
     # leak into.
-    unmet = 0
+    budget = len(tutors) if isinstance(tutors, list) else tutors
+    unmet = []
     for need in target["need"]:
         names = need.get("_any_of_set")
         if names is None:
             names = need["_any_of_set"] = frozenset(need["any_of"])
         if names.isdisjoint(names_in_hand):
-            unmet += 1
+            unmet.append(need)
             # Counting past the tutor budget cannot change the answer.
-            if unmet > tutors:
+            if len(unmet) > budget:
                 return False
+    if unmet and isinstance(tutors, list):
+        return _tutors_fill(unmet, tutors, type_lines or {})
     return True

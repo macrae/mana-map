@@ -52,7 +52,7 @@ colour sources before and after, and `net-change`'s rows with a PAIRED interval 
 difference — each goldfish game seeded on its own (`seed:i`) and the two lists aligned slot
 for slot, so the noise of two independent samples cancels and a list against itself reads
 exactly zero. A swap that survives becomes a branch (`try … --stage NAME`), and
-`net-change` grades the branch on one pre-registered objective plus twelve Holm-corrected
+`net-change` grades the branch on one pre-registered objective plus sixteen Holm-corrected
 rows. Never a comparison of two marginal intervals — that is the overlap fallacy, and it
 was deleted from the code.
 
@@ -61,7 +61,7 @@ was deleted from the code.
 | you want to… | the bench gives you | tier |
 |---|---|---|
 | screen a swap | `try` — the paired goldfish delta in ~10 s, every card's visibility, the keep list | ◆ seeded, paired |
-| grade a candidate 99 | `deck-branch` + `net-change` — one primary objective, twelve Holm-corrected rows, a Forge loss as a warning | ◆ seeded, paired |
+| grade a candidate 99 | `deck-branch` + `net-change` — one primary objective, sixteen Holm-corrected rows, a Forge loss as a warning | ◆ seeded, paired |
 | know whether the AI plays a card | `forge-cast-check` — a two-seat Forge shell: drawn / cast / activated / held while castable | ◆ seeded |
 | measure a deck against a **table** (optional) | `simulate`, `experiment` — Forge games against a named pod, every rate with its interval; graded only beside an A/A at the same N | ◆ seeded |
 | measure it against nobody | `goldfish` — Monte Carlo resource development, 10,000 seeded games. **Every channel is opt-in per deck** (draw, combat, Treasure, sacrifice, discard, the spell count, four commander abilities), so what it can see is declared and checkable with `model-coverage` | ◆ seeded |

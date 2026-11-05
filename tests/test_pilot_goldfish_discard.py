@@ -116,7 +116,10 @@ def test_the_corpus_sweep_is_locked():
 # Spoils, Tormenting Voice, Cathartic Reunion and nine more), the rummage mode
 # (Cathartic Pyre) and "each player draws, then discards" (Burning Inquiry,
 # Urza's Guilt). Sixteen in all, every one a draw that does discard.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 56, 13, 28, 20)
+# LOOTS +7 on 2026-11-04: `_MODE_LOOT_RE` reads a loot on a bullet. Read card by card: Sultai Charm,
+# Confusticate and Bebother, Very Cryptic Command, Izzet Charm, Treva's Charm, Prismari Command, Artistic Refusal.
+# DISC +3: Marauding Mako and Scrounging Skyray read at last (`that many` counters), and one from corpus drift.
+WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 63, 16, 28, 20)
 
 
 @requires_data
@@ -139,7 +142,9 @@ def test_sharknado_wheels_and_the_partner_is_cast(monkeypatch):
         d = real(card); d["wheel_draws"] = 0; return d
     patch_model(monkeypatch, "draw_profile", blind)
     blinded = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=True)["metrics"]
-    assert blinded["mean_extra_cards_drawn_by_turn"]["8"] < on["mean_extra_cards_drawn_by_turn"]["8"] * 0.6
+    # 0.85, was 0.6 (2026-11-04): the wheels hold a smaller share because Rhystic, Sphinx, Teferi,
+    # cycling and the repeat activations are read now, and the wheel fires after the turn deploys.
+    assert blinded["mean_extra_cards_drawn_by_turn"]["8"] < on["mean_extra_cards_drawn_by_turn"]["8"] * 0.85
 
 
 def test_scry_then_draw_and_upkeep_reveal_are_draw():
@@ -307,40 +312,46 @@ def test_the_activated_wheel_is_in_the_casting_predicate():
 
 
 def test_every_door_onto_the_battlefield_registers_the_wheel():
-    """Three loops put a permanent into play, and a channel wired to two of them
-    undercounts silently on whichever loop caught the card. `_register_wheel` is
-    one door precisely so this can be counted."""
+    """Every loop that puts a permanent into play, and a channel wired to some of them
+    undercounts silently on whichever loop caught the card. `_register_wheel` is one door
+    precisely so this can be counted. TEN since 2026-11-04: the rock loop never called it,
+    which is why Mind Stone's draw was read and never used, and five more loops were the same."""
     from conftest import simulator_source
 
     src = simulator_source()
     doors = re.findall(r"(?<!def )_register_wheel\(card\)", src)
-    assert len(doors) == 3, (
+    assert len(doors) == 10, (
         "a registration site was added or lost — count the loops that append "
         f"to draw_engines and match them; found {len(doors)}")
 
 
-def test_the_wheel_fires_before_anything_joins_the_battlefield():
-    """SUMMONING SICKNESS, WITHOUT TRACKING A TAPPED STATE. Every activated
-    wheel in the corpus but one pays `{T}`, so it cannot fire on the turn it
-    lands. The fire site sits ABOVE every casting loop, so a permanent that
-    joins `wheel_engines` this turn is first seen next turn — and if the block
-    ever moves below a registration site, an Archivist wheels the turn she
-    resolves and this fails."""
-    from conftest import simulator_source
+def test_a_tapped_wheel_waits_out_summoning_sickness():
+    """SUMMONING SICKNESS, DRIVEN (2026-11-04). This asserted the fire site sat above every
+    casting loop in the file, which gave a {T} wheel its sickness for free. The turn now deploys
+    before it wheels, so the row is asked: she does not wheel the turn she lands."""
+    import random
 
-    src = simulator_source()
-    fires = src.index("if model_draw and model_discard and wheel_engines:")
-    draw_loop = src.index("# A DRAW SPELL IS NEITHER A ROCK")
-    # The bodies LOOP, not its resolution: `_resolve_body` (where
-    # `pending_draw_engine` lives since 2026-10-11) is a helper defined above
-    # the casting loops, and its position says nothing about when it runs.
-    bodies_loop = src.index("# Spend what's left on bodies, cheapest-first.")
-    assert fires < draw_loop < bodies_loop, (
-        "the fire site has moved below a casting loop — a wheel now fires on "
-        "the turn it lands, which is a tap ability with no summoning sickness")
-    # The third door, `_free_creature_enters`, is a helper for the declared
-    # reveal and runs in combat, later still; its position in the file says
-    # nothing about when it is called, so it is not asserted on here.
+    from manamap.pilot import goldfish as gf
+
+    class Stack(random.Random):
+        def shuffle(self, x):
+            pass
+
+    land = {"name": "Island", "quantity": 1, "oracle_text": "({T}: Add {U}.)", "cmc": 0.0,
+            "type_line": "Basic Land — Island", "mana_cost": "", "colors": [], "power": None,
+            "toughness": None, "is_commander": False, "layout": "normal"}
+    arch = dict(land, name="Jace's Archivist", type_line="Creature — Vedalken Wizard", cmc=3.0,
+                mana_cost="{1}{U}{U}", power="2", toughness="2",
+                oracle_text="{U}, {T}: Each player discards their hand, then draws cards equal "
+                            "to the greatest number of cards a player discarded this way.")
+    doc = {"cards": [dict(land, name=f"Island {i}") for i in range(6)] + [arch]}
+    lib, _ = gf.build_library(doc)
+    # Six lands first, so she lands on turn three with every land after her in hand.
+    deck = [lib[i] for i in range(6)] + [lib[6]] + [lib[0]] * 40
+    r = gf.simulate_once(Stack(1), deck, 99, [], 5, model_draw=True, model_discard=True,
+                         model_combat=True)
+    assert r["wheels_cast_by_turn"][2] == 0, "she wheeled the turn she landed"
+    assert r["first_wheel_turn"] == 4
 
 
 @pytest.mark.slow

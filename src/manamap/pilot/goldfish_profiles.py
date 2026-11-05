@@ -323,6 +323,14 @@ _DRAW_WORDS = {"a": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
 _DISCARD_COST_RE = re.compile(
     r"as an additional cost to cast this spell, discard (a|one|two|three) cards?\.", re.I)
 _RUMMAGE_RE = re.compile(r"discard up to (two|three) cards, then draw that many cards", re.I)
+#: A LOOT ON A MODE: "• Draw two cards, then discard two cards." (Izzet Charm) and "• Target
+#: player draws two cards, then discards two cards." (Prismari Command, the target being us).
+#: `_SPELL_DRAW_RE` anchors to a sentence, so a bullet read as nothing. Sweep 2026-11-04: seven
+#: corpus cards, all charms and commands whose other modes want a target a goldfish lacks.
+_MODE_LOOT_RE = re.compile(
+    r"\u2022 (?:target player draws|draw) (a|one|two|three) cards?, then discards? (a|one|two|three) cards?",
+    re.I)
+_GAIN_HAND_RE = re.compile(r"you gain life equal to the number of cards in your hand", re.I)
 #: Burning Inquiry: "Each player draws three cards, then discards three cards at
 #: random." Ours is a draw and a discard; theirs is an opponent draw.
 _EACH_DRAWS_THEN_DISCARDS_RE = re.compile(
@@ -395,8 +403,11 @@ _EVENT_PAID_DRAW_RE = re.compile(
 #: THEIR CASTS: Rhystic Study, "whenever an opponent casts a spell, you may draw
 #: a card unless that player pays {1}". The cast count is MEASURED
 #: (`config.OPPONENT_CASTS_PER_TURN`); the tax is TITHE_PAY_RATE, authored.
+#: AND A NONCREATURE SPELL (2026-11-04): Mystic Remora said "casts a noncreature spell" and
+#: read as a blank that the coverage report called seen. `OPPONENT_NONCREATURE_SHARE` is
+#: what thins the cast count. Sweep: Remora and Nezahal gain; Rhystic and its white twin hold.
 _OPP_CAST_DRAW_RE = re.compile(
-    r"whenever an opponent casts a spell, (?:you may )?draw (a|two) cards?"
+    r"whenever an opponent casts a (?P<noncreature>noncreature )?spell, (?:you may )?draw (a|two) cards?"
     r"(?P<tax> unless that player pays \{\d+\})?", re.I)
 _EVENT_OPP_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:them|that player|that opponent)"
@@ -409,6 +420,16 @@ _EVENT_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:each opponent|any target|each opponent and each)"
     r"|each opponent loses (\d+) life", re.I)
 _EVENT_COUNTER_RE = re.compile(r"put a \+1/\+1 counter on", re.I)
+#: "PUT THAT MANY +1/+1 COUNTERS ON" (2026-11-04): Marauding Mako and Scrounging Skyray, the
+#: only two corpus cards. Read as `unmodelled` until now. One card, one counter; one EVENT
+#: for a replacement to add to, which is what `per_discard_counter_batch` carries.
+_EVENT_THAT_MANY_COUNTERS_RE = re.compile(r"put that many \+1/\+1 counters on", re.I)
+#: Mary Read and Anne Bonny: "Whenever you discard an Island, Pirate, or Vehicle card, create a
+#: tapped Treasure token." The one corpus shape; a tapped Treasure is spendable next turn.
+_DISCARD_TYPED_TREASURE_RE = re.compile(
+    r"whenever you discard an? ([A-Za-z, ]+?) card, create a tapped Treasure token", re.I)
+#: Cumulative upkeep {N}, read for a card whose payoff the model reads (Mystic Remora).
+_CUMULATIVE_UPKEEP_RE = re.compile(r"\bCumulative upkeep \{(\d+)\}", re.I)
 #: DAMAGE ON THEIR TURN, FROM A PERMANENT (2026-10-18). "At the beginning of each
 #: player's / each opponent's <step>, ~ deals N damage to that player" — Sulfuric
 #: Vortex, Lavaborn Muse, Ebony Owl Netsuke, and Fevered Visions' second
@@ -669,7 +690,17 @@ _DRAW_DOUBLER_RE = re.compile(
 #: The EFFECT of an activated draw, anchored at the colon. A later sentence
 #: that happens to draw is a TRIGGER, not this ability — the same rule
 #: `activated_wheel` states and for the same reason.
-_ACTIVATED_DRAW_RE = re.compile(r"draws? (a|one|two|three|four|X) cards?", re.I)
+#: "EACH PLAYER DRAWS" (2026-11-04): Faerie Mastermind's {3}{U} and Gleaming Splendor's {2}{W}
+#: ("Two target players each draw") were unparsed, so the deck's draw-into-Tithe line was
+#: invisible. "A card FOR EACH" is refused here: a count this reader does not have.
+_ACTIVATED_DRAW_RE = re.compile(
+    r"(?P<who>each player |two target players each )?draws? (a|one|two|three|four|X) cards?"
+    r"(?! for each)", re.I)
+#: A CONDITION ON THE ACTIVATION. "Attacking" is one a goldfish can check (Glint-Horn);
+#: anything else is refused and named, or the land door would read Arch of Orazca as a
+#: free draw every turn.
+_ACTIVATE_ONLY_IF_RE = re.compile(r"\s*activate only if ([^.\n]*)", re.I)
+_ATTACKING_RE = re.compile(r"\bthis creature is attacking\b", re.I)
 
 
 def activated_draw(text):
@@ -726,6 +757,11 @@ def activated_draw(text):
         # a six-energy draw-three and an X-cost draw engine into gifts.
         if _ACTIVATED_UNPRICEABLE_RE.search(cost):
             return cost, drew, "an unpriceable cost"
+        _only = _ACTIVATE_ONLY_IF_RE.match(rest[rest.find(".", drew.end()) + 1:]) \
+            if "." in rest[drew.end():] else None
+        if _only and not _ATTACKING_RE.search(_only.group(1)) \
+                and not _ACTIVATE_ONLY_ONCE_RE.search(_only.group(0)):
+            return cost, drew, "a condition"
         elsewhere = _ACTIVATED_ELSEWHERE_RE.search(cost)
         return cost, drew, (elsewhere.group(1).lower() if elsewhere else None)
     return None
@@ -950,7 +986,9 @@ def event_payoffs(card):
            # so it terminates by construction.
            "per_opponent_draw_damage": 0, "per_opponent_draw_our_draw": 0,
            "opponent_second_draw_damage": 0, "opponent_second_draw_our_draw": 0,
-           "per_discard_batch": False,
+           "per_discard_batch": False, "per_discard_counter_batch": False,
+           "per_discard_typed_treasure": (), "cumulative_upkeep": 0,
+           "per_opponent_cast_noncreature": False,
            "per_draw_gain": 0, "per_discard_gain": 0, "token_colors": [],
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
            "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
@@ -1000,6 +1038,9 @@ def event_payoffs(card):
         if prefix != "second_draw":
             if _EVENT_COUNTER_RE.search(effect):
                 out[prefix + "_counter"] += 1
+            elif prefix == "per_discard" and _EVENT_THAT_MANY_COUNTERS_RE.search(effect):
+                out["per_discard_counter"] += 1
+                out["per_discard_counter_batch"] = True
             # "you gain N life" IS read since 2026-10-11, as GAIN EVENTS the
             # drain pillar counts (it has no own life total, and needs none).
             g = _EVENT_GAIN_RE.search(effect)
@@ -1020,10 +1061,19 @@ def event_payoffs(card):
                                          if re.search(rf"\b{w}\b", tok.group(0), re.I))
     oc = _OPP_CAST_DRAW_RE.search(text)
     if oc:
-        out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group(1).lower()]
+        out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group(2).lower()]
         out["per_opponent_cast_taxed"] = bool(oc.group("tax"))
+        out["per_opponent_cast_noncreature"] = bool(oc.group("noncreature"))
+    _dtt = _DISCARD_TYPED_TREASURE_RE.search(text)
+    if _dtt:
+        out["per_discard_typed_treasure"] = tuple(
+            w.strip() for w in re.split(r",|\bor\b", _dtt.group(1)) if w.strip())
     if hit and not any(v for k, v in out.items() if k != "unmodelled"):
         out["unmodelled"] = card.get("name")
+    # READ LAST, so a card with the upkeep and no read payoff is not a payoff.
+    _cu = _CUMULATIVE_UPKEEP_RE.search(text)
+    if _cu and any(v for k, v in out.items() if k != "unmodelled"):
+        out["cumulative_upkeep"] = int(_cu.group(1))
     return out
 
 
@@ -1236,15 +1286,55 @@ def _permanent_damage_multiplier(text, type_line=""):
     which is why looking backwards alone (as the token doubler does, for a
     phrase that reads the other way) is not enough here.
     """
+    return permanent_damage_scale(text, type_line)[0] > 1
+
+
+#: WHAT A DOUBLER REACHES (2026-11-04). The model had one multiplier and every doubler fed
+#: it, so Blade Historian doubled Brallin's noncombat pings and Gratuitous Violence ("if a
+#: CREATURE you control would deal damage") doubled spell burn and Psychosis Crawler's life
+#: loss. The scopes, each read from the subject of the sentence:
+#:   strike      a double strike grant: one more strike for an attacker, combat only, and
+#:               a second grant adds nothing (double strike does not stack)
+#:   power       power doubled: combat only
+#:   combat      "would deal combat damage": combat only
+#:   creature    a creature you control: combat AND a creature's noncombat damage
+#:   any         a source: all damage
+#:   noncombat   "noncombat damage" (Solphim): noncombat only
+#: LIFE LOSS IS NOT DAMAGE and no scope reaches it. Sweep of the doubler wording: 27 corpus
+#: cards. Newly read: Fiery Emancipation and City on Fire ("triple"). Newly refused:
+#: Lightning, Army of One ("until your next turn", off a combat trigger).
+def _doubler_scope(text, match):
+    start = max(text.rfind(".", 0, match.start()), text.rfind("\n", 0, match.start())) + 1
+    subject = text[start:match.start()].lower()
+    said = match.group(0).lower()
+    if "noncombat" in said:
+        return "noncombat"
+    if "combat damage" in said:
+        return "combat"
+    if "source" in subject and not re.search(r"\b[a-z]+ source\b", subject.replace("a source", "")
+                                             .replace("any source", "")):
+        return "any"
+    return "creature"
+
+
+def permanent_damage_scale(text, type_line=""):
+    """`(times, scope)` of the standing multiplier this card is, or `(1, None)`."""
     text, type_line = text or "", type_line or ""
-    for pattern in (_DAMAGE_DOUBLER_RE, _TEAM_DOUBLE_STRIKE_RE, _TEAM_POWER_DOUBLE_RE):
+    for pattern, scope in ((_DAMAGE_DOUBLER_RE, None), (_TEAM_DOUBLE_STRIKE_RE, "strike"),
+                           (_TEAM_POWER_DOUBLE_RE, "power")):
         match = pattern.search(text)
         if not match:
             continue
+        times = 3 if "triple" in match.group(0).lower() else 2
+        scope = scope or _doubler_scope(text, match)
         stop = text.find(".", match.end())
         window = text[max(0, match.start() - 90):(stop if stop != -1 else len(text))]
+        # A LOYALTY ABILITY AND A STAGGER LAST "until your next turn", and that is no
+        # standing multiplier either.
+        if re.search(r"until your next turn", window, re.I):
+            continue
         if not _TEMPORARY_EFFECT_RE.search(window):
-            return True                 # a static grant; plainly permanent
+            return times, scope         # a static grant; plainly permanent
         # IT WEARS OFF — SO DOES IT COME BACK? A one-shot is a combat trick; a
         # grant re-applied by a trigger the permanent carries is a multiplier
         # the model will see every single turn.
@@ -1258,9 +1348,9 @@ def _permanent_damage_multiplier(text, type_line=""):
             # it was doubling every point of damage the deck dealt.
             continue
         if _RECURRING_TRIGGER_RE.search(window):
-            return True                 # Atarka, Thrakkus: every combat
+            return times, scope         # Atarka, Thrakkus: every combat
         continue
-    return False
+    return 1, None
 
 
 def token_doubler(card):
@@ -1376,8 +1466,11 @@ def damage_source(card):
     and the event fields fold "each opponent loses N life" in beside it)."""
     text = card.get("oracle_text", "") or ""
     colours = card.get("colors") or []
+    # "DEALS DAMAGE EQUAL TO" IS DAMAGE (2026-11-04): Fateful Showdown read as dealing none,
+    # so a red spell got no Torbran bonus. `creature` is which doublers reach it.
     return {"colors": sorted(colours),
-            "deals": bool(re.search(r"\bdeals? (?:\d+|that much|X) damage", text, re.I))}
+            "creature": "Creature" in (card.get("type_line") or ""),
+            "deals": bool(re.search(r"\bdeals? (?:\d+ |that much |X )?damage", text, re.I))}
 
 
 def bonus_for(source, bonuses, combat=False):
@@ -1412,18 +1505,28 @@ _FACE_HAND_RE = re.compile(
 _FACE_OPP_HAND_RE = re.compile(
     r"deals damage to each foe equal to the number of cards in their hand", re.I)
 _CHOOSE_ONE_RE = re.compile(r"\bchoose one\b(?! or more)", re.I)
+#: ESCALATE IS A PRICE (2026-11-04): Collective Defiance dealt its 3 at {1}{R}{R} with its
+#: wheel mode, when the second mode costs {1} more.
+_ESCALATE_RE = re.compile(r"\bEscalate \{(\d+)\}", re.I)
+#: CHOOSE TWO OF THREE READ MODES IS A CHOICE (Prismari Command: loot, Treasure, 2 damage).
+#: The face mode gives way to the two that feed the engine; named in the channel table.
+_CHOOSE_TWO_RE = re.compile(r"\bchoose two\b", re.I)
 
 
 def spell_face_damage(card):
     """`{"kind": "fixed"|"hand"|"opp_hand"|None, "amount": N}` for an Instant or
     a Sorcery. `hand` is our hand size at cast (Fateful Showdown, before its
     own discard); `opp_hand` is the opponent's, the authored OPPONENT_HAND."""
-    out = {"kind": None, "amount": 0, "choose_one": False}
+    out = {"kind": None, "amount": 0, "choose_one": False, "escalate": 0}
     tl = card.get("type_line") or ""
     if "Instant" not in tl and "Sorcery" not in tl:
         return out
     text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
     out["choose_one"] = bool(_CHOOSE_ONE_RE.search(text))
+    _esc = _ESCALATE_RE.search(text)
+    out["escalate"] = int(_esc.group(1)) if _esc else 0
+    if _CHOOSE_TWO_RE.search(text) and _MODE_LOOT_RE.search(text) and _SPELL_TREASURE_RE.search(text):
+        return out
     m = _FACE_FIXED_RE.search(text)
     if m:
         out["kind"], out["amount"] = "fixed", int(m.group(1))
@@ -1997,6 +2100,19 @@ def draw_profile(card):
            "activated_draw": 0, "activated_draw_cost": 0,
            "activated_draw_pips": [], "activated_draw_once": False,
            "activated_draw_discards": 0, "activated_draw_sacs_self": False,
+           # 2026-11-04: whether the OPPONENTS draw too ("each" = every seat, "two" = the
+           # one you target beside yourself), whether it costs {T}, and whether it may
+           # only be used by an attacker.
+           "activated_draw_players": None, "activated_draw_taps": False,
+           "activated_draw_needs_attack": False,
+           # A "greatest number" wheel takes the bigger of the two hands; a "that many"
+           # wheel gives each player their own count back.
+           "wheel_greatest": False, "activated_wheel_greatest": False,
+           "activated_wheel_taps": False,
+           # An ADDITIONAL COST is paid at cast, BEFORE the draw, from the other cards.
+           "spell_discard_is_cost": False,
+           # Heartwarming Redemption: "You gain life equal to the number of cards in your hand."
+           "spell_gain_hand": False,
            "unmodelled": None}
     _dd = _DRAW_DOUBLER_RE.search(text)
     if _dd:
@@ -2007,6 +2123,8 @@ def draw_profile(card):
     if _w and card.get("name") not in _WHEEL_EXCLUDED and str(card.get("mana_cost") or "") \
             and ("Instant" in type_line or "Sorcery" in type_line):
         _word = _w.group(2).lower()
+        out["wheel_greatest"] = _word.startswith("cards equal")
+        out["spell_gain_hand"] = bool(_GAIN_HAND_RE.search(text))
         out["wheel_draws"] = (-1 if _word.startswith("cards equal") or _word in ("x", "that many")
                               else _DRAW_WORDS.get(_word, {"seven": 7, "six": 6}.get(_word, 7)))
         # A SHUFFLE WHEEL (Echo of Eons, Time Reversal, Molten Psyche) empties
@@ -2033,6 +2151,8 @@ def draw_profile(card):
     elif _aw and card.get("name") not in _WHEEL_EXCLUDED:
         _cost, _wm, _ = _aw
         _word = _wm.group(2).lower()
+        out["activated_wheel_greatest"] = _word.startswith("cards equal")
+        out["activated_wheel_taps"] = "{T}" in _cost.upper()
         out["activated_wheel"] = (
             -1 if _word.startswith("cards equal") or _word in ("x", "that many")
             else _DRAW_WORDS.get(_word, {"seven": 7, "six": 6}.get(_word, 7)))
@@ -2053,8 +2173,14 @@ def draw_profile(card):
         out["unmodelled"] = card.get("name")
     elif _ad:
         _cost, _dm, _ = _ad
-        _word = _dm.group(1).lower()
+        _word = _dm.group(2).lower()
         out["activated_draw"] = _DRAW_WORDS.get(_word, _NUMBER_WORDS.get(_word, 1)) or 1
+        _who = (_dm.group("who") or "").strip().lower()
+        out["activated_draw_players"] = ("each" if _who.startswith("each")
+                                         else "two" if _who else None)
+        out["activated_draw_taps"] = "{T}" in _cost.upper()
+        out["activated_draw_needs_attack"] = bool(
+            _ATTACKING_RE.search(_REMINDER_RE.sub(" ", text)[text.index(_cost) if _cost in text else 0:]))
         out["activated_draw_cost"] = _activation_mana(_cost)
         out["activated_draw_pips"] = cast_pips(_cost)
         out["activated_draw_sacs_self"] = bool(_ACTIVATED_SAC_SELF_RE.search(_cost))
@@ -2123,6 +2249,8 @@ def draw_profile(card):
             and not out["first_discard_draw"]
             # "Each player draws three cards" never says "draw N card".
             and not _EACH_DRAWS_THEN_DISCARDS_RE.search(text)
+            # "• Target player draws two cards, then discards two" never does either.
+            and not _MODE_LOOT_RE.search(text)
             # "each player's draw step, that player DRAWS" never does either
             # (2026-10-18): the recurring path below reads it.
             and not out["recurring_each_player_draw"]
@@ -2205,6 +2333,11 @@ def draw_profile(card):
                 out["spell_discard"] = _DRAW_WORDS[td.group(1).lower()]
             elif _dc:
                 out["spell_discard"] = _DRAW_WORDS[_dc.group(1).lower()]
+                out["spell_discard_is_cost"] = True
+        _ml = _MODE_LOOT_RE.search(_sentences)
+        if _ml and not out["spell_draw"]:
+            out["spell_draw"] = _DRAW_WORDS[_ml.group(1).lower()]
+            out["spell_discard"] = _DRAW_WORDS[_ml.group(2).lower()]
         # A RUMMAGE MODE: Cathartic Pyre, "Discard up to two cards, then draw
         # that many cards" — read at its full size, the pilot's choice.
         _rm = _RUMMAGE_RE.search(_sentences)
@@ -2637,6 +2770,23 @@ def _stat(value):
         return 0
 
 
+#: AN X/X TOKEN WHOSE X THE CHANNEL SIZES (2026-11-04): Shark Typhoon's sentence on a cast and
+#: its cycling read as two 0/0 tokens the card made on arrival. Sweep: 44 corpus cards make an
+#: X/X token outside an activation. These trigger-sized three are read by `engine_profile`; the
+#: other 41 stay a 0-power body, a floor on what they make, and are named in the channel table.
+_TRIGGER_X_TOKEN_RE = re.compile(
+    r"(?:that spell's mana value|when you cycle this card)", re.I)
+
+
+def _is_trigger_x_token(text, pos):
+    """Is the token created at `pos` an X/X sized by a trigger the channel reads?"""
+    if not re.match(r"create \w+ X/X", text[pos:pos + 16], re.I):
+        return False
+    stop = text.find(".", pos)
+    start = text.rfind(".", 0, pos) + 1
+    return bool(_TRIGGER_X_TOKEN_RE.search(text[start:stop if stop != -1 else len(text)]))
+
+
 def creature_body_count(card):
     """Bodies counting CREATURES only — a Treasure token is not a blocker.
 
@@ -2648,7 +2798,7 @@ def creature_body_count(card):
     bodies = 1 if "Creature" in card.get("type_line", "") else 0
     for match in _TOKEN_RE.finditer(text):
         clause = text[match.start():match.end() + 60].lower()
-        if any(k in clause for k in _NONCREATURE_TOKENS):
+        if any(k in clause for k in _NONCREATURE_TOKENS) or _is_trigger_x_token(text, match.start()):
             continue
         word = match.group(1).lower()
         bodies += int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
@@ -2873,7 +3023,7 @@ FREE_CAST_DEPTH_LIMIT = 8
 #: prices and one it reads as a vanilla body.
 _DAMAGE_DOUBLER_RE = re.compile(
     r"would deal (?:\w+ )?damage to[^.\n]{0,80}?(?:opponent|player|permanent)"
-    r"[^.\n]{0,80}?deals? double that damage", re.IGNORECASE)
+    r"[^.\n]{0,80}?deals? (?:double|triple) that damage", re.IGNORECASE)
 _TEAM_DOUBLE_STRIKE_RE = re.compile(
     r"(?:creatures?|dragons?)[^.\n]{0,60}?you control[^.\n]{0,60}?"
     r"(?:gains?|have|has) double strike", re.IGNORECASE)
@@ -2881,7 +3031,11 @@ _TEAM_POWER_DOUBLE_RE = re.compile(
     r"double the power of each[^.\n]{0,40}?you control", re.IGNORECASE)
 #: The keyword on the card itself — its own damage counts twice, and nobody
 #: else's. A different scope from the three above and kept separate for it.
-_SELF_DOUBLE_STRIKE_RE = re.compile(r"(?:^|[\s,;(])double strike", re.IGNORECASE)
+#: THE KEYWORD, NOT THE WORDS (2026-11-04). "target creature gains double strike" matched,
+#: so Shu Yun, the Silent Tempest swung for free double every turn on a trigger that costs
+#: {R/W}{R/W}. `_KEYWORD_NOT_GRANTED` is the rule haste and flying already learned.
+_SELF_DOUBLE_STRIKE_RE = re.compile(
+    _KEYWORD_NOT_GRANTED + r"(?:^|(?<=[\s,;(]))double strike(?! counter)", re.IGNORECASE)
 
 
 #: WHAT MAKES A CARD AN ETB ENGINE. Listed twice in the loop before this
@@ -3289,7 +3443,7 @@ _SPELL_PUMP_TEAM_RE = re.compile(
 #: (already sleeved in goblin-storm), Reckless Ransacking, Sudden Breakthrough,
 #: Furnace Reins and Involuntary Employment.
 _SPELL_TREASURE_RE = re.compile(
-    r"create (a|one|two|three) treasure tokens?", re.I)
+    r"(?:\bcreate|target player creates) (a|one|two|three) treasure tokens?", re.I)
 
 
 #: +1/+1 COUNTERS FROM A SPELL, and they are PERMANENT — which is the whole point
@@ -3332,6 +3486,10 @@ _SPELL_COUNTERS_RE = re.compile(
 #: opponent at once; and an extra combat multiplies all of it again.
 _SPELL_DOUBLE_STRIKE_RE = re.compile(
     r"target creature (?:you control )?gains? (?:trample and )?double strike", re.I)
+#: THE WHOLE TEAM, FOR ONE TURN, uncopied (2026-11-04): Akroma's Will. The pattern above is
+#: single-target only, so she read as a protection spell with no combat half at all.
+_SPELL_TEAM_DOUBLE_STRIKE_RE = re.compile(
+    r"creatures you control gain [^.\n]{0,40}?double strike[^.\n]{0,40}?until end of turn", re.I)
 _SPELL_POWER_DOUBLE_RE = re.compile(
     r"double (?:target creature's|the power of target creature)", re.I)
 _SPELL_POWER_TO_EACH_RE = re.compile(
@@ -3367,12 +3525,13 @@ def spell_combat_effects(card):
     the whole reason they are worth reading on this deck.
     """
     type_line = str(card.get("type_line", "") or "")
-    out = {"double_strike": False, "power_multiplier": 1,
+    out = {"double_strike": False, "power_multiplier": 1, "team_double_strike": False,
            "power_to_each_opponent": False, "extra_combat": 0}
     if "Instant" not in type_line and "Sorcery" not in type_line:
         return out
     text = _REMINDER_RE.sub(" ", str(card.get("oracle_text", "") or ""))
     out["double_strike"] = bool(_SPELL_DOUBLE_STRIKE_RE.search(text))
+    out["team_double_strike"] = bool(_SPELL_TEAM_DOUBLE_STRIKE_RE.search(text))
     if _SPELL_POWER_DOUBLE_RE.search(text):
         out["power_multiplier"] = 2
     out["power_to_each_opponent"] = bool(_SPELL_POWER_TO_EACH_RE.search(text))
@@ -3749,6 +3908,179 @@ def ritual_profile(card):
     return None
 
 
+#: WHAT A LAND PAYS IN THE GAME (2026-11-04), which is narrower than what `manabase.land_colors`
+#: says it can make. That function answers a mana-base question and `mana_analysis` and `mana-fit`
+#: read it; it is left alone. Read off the classify audit of sharknado, four shapes this loop was
+#: crediting in full from the turn they landed:
+#:   one_of      a Pathway is ONE of its faces, chosen as it is played, never both
+#:   types       a Verge's second colour needs an Island or a Mountain
+#:   artifact    Spire of Industry's five need an artifact
+#:   colors      a filter (Rugged Prairie) needs a source of its own colours to run
+#: Gemstone Caverns' colours need a luck counter, from an opening hand on the draw and a card
+#: exiled: read as {C}, a floor. Corpus sweep of 1,274 lands: 10 Pathways, 10 hybrid filters, 15
+#: on a basic type (the seven Verges, the four Tainted lands, Nimbus Maze and kin), Spire, Caverns.
+#: A filter's mana past one is not read: a floor.
+_LAND_GATED_MODE_RE = re.compile(
+    r"\{T\}[^:\n]*: ?Add ([^.\n]+)\.\s*Activate only if you control (an? [^.\n]+)", re.I)
+_LAND_FILTER_RE = re.compile(r"\{([WUBRG])/([WUBRG])\}, \{T\}: Add ([^.\n]+)", re.I)
+
+
+def land_gate(card):
+    """How this land's colours depend on the board. `None` for a plain land; else
+    `{"base", "gated", "types", "artifact", "colors", "one_of"}`."""
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text") or "")
+    type_line = card.get("type_line") or ""
+    if "Land" not in type_line:
+        return None
+    gate = {"base": frozenset(), "gated": frozenset(), "types": (), "artifact": False,
+            "colors": frozenset(), "one_of": False}
+    if card.get("layout") == "modal_dfc" and type_line.count("Land") >= 2:
+        return dict(gate, one_of=True)
+    if re.search(r"luck counter", text, re.I):
+        return gate
+    _sym = lambda clause: frozenset(c.upper() for c in re.findall(r"\{([wubrg])\}", clause, re.I))
+    _any = lambda clause: frozenset("WUBRG") if "any color" in clause.lower() else _sym(clause)
+    m = _LAND_GATED_MODE_RE.search(text)
+    if m:
+        head = text[:m.start()]
+        base = _sym(" ".join(re.findall(r"add[^.\n]*", head, re.I)))
+        cond = m.group(2)
+        if re.search(r"\bartifact\b", cond, re.I):
+            return dict(gate, base=base, gated=_any(m.group(1)), artifact=True)
+        types = tuple(w for w in re.findall(r"\b(Plains|Island|Swamp|Mountain|Forest)\b", cond))
+        if types:
+            return dict(gate, base=base, gated=_any(m.group(1)), types=types)
+        return None
+    f = _LAND_FILTER_RE.search(text)
+    if f:
+        return dict(gate, gated=_sym(f.group(3)),
+                    colors=frozenset((f.group(1).upper(), f.group(2).upper())))
+    return None
+
+
+#: POWER THAT IS READ, NOT PRINTED (2026-11-04). `_stat("*")` is 0, so Psychosis Crawler swung
+#: for nothing with seven cards in hand and Rielle stayed at 0 with a full graveyard. Sweep: 17
+#: corpus cards word it on the hand, Glamdring and Rielle on the graveyard's spells (Glamdring
+#: is an Equipment and is not a creature here).
+_POWER_HAND_RE = re.compile(
+    r"power (?:and toughness are each|is) equal to the number of cards in your hand", re.I)
+_POWER_YARD_SPELLS_RE = re.compile(
+    r"gets \+1/\+0 for each instant and sorcery card in your graveyard", re.I)
+_PROWESS_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bprowess\b", re.I)
+_VIGILANCE_RE = re.compile(_KEYWORD_NOT_GRANTED + r"\bvigilance\b", re.I)
+
+
+def power_scales(card):
+    """What a creature's power counts, or None for printed power."""
+    text = card.get("oracle_text", "") or ""
+    if _POWER_HAND_RE.search(text):
+        return "hand"
+    if _POWER_YARD_SPELLS_RE.search(text):
+        return "yard_spells"
+    return None
+
+
+#: THE PERMANENTS THAT DO THEIR WORK ON A CAST, AN EQUIP OR AN ACTIVATION (2026-11-04). Every
+#: one of these was named in a target group, so `model-coverage` called it seen, and no casting
+#: loop ever selected it. `engine_profile` holds the readers in one place, because a card that
+#: is read here must also be taught to `_engine_permanent` and `never_cast`.
+_CYCLING_RE = re.compile(r"(?:^|[\s.])Cycling ((?:\{[^}]+\})+)")
+_CYCLE_DAMAGE_RE = re.compile(
+    r"when you cycle this card, it deals (\d+) damage to each opponent", re.I)
+_FLASHBACK_RE = re.compile(r"\bFlashback ((?:\{[^}]+\})+)")
+_CAST_LOOT_DRAW_FIRST_RE = re.compile(
+    r"whenever you cast a noncreature spell, you may draw a card\. if you do, discard a card", re.I)
+_CAST_LOOT_DISCARD_FIRST_RE = re.compile(
+    r"whenever you cast a noncreature spell, you may discard a card\. if you do, draw a card", re.I)
+_CAST_TEAM_PUMP_RE = re.compile(
+    r"whenever you cast a noncreature spell, creatures you control get \+(\d+)/\+\d+ until end of turn", re.I)
+_CAST_TOKEN_X_RE = re.compile(
+    r"whenever you cast (a noncreature|an instant or sorcery) spell, create an X/X [^.]*?creature token"
+    r"[^.]*?where X is that spell's mana value", re.I)
+_CAST_DOUBLE_STRIKE_RE = re.compile(
+    r"whenever you cast a noncreature spell, you may pay ((?:\{[^}]+\})+)\. "
+    r"if you do, target creature gains double strike until end of turn", re.I)
+_DRAW_PUMP_RE = re.compile(
+    r"creatures you control get \+X/\+X, where X is the number of cards you've drawn this turn", re.I)
+_EQUIP_HASTE_RE = re.compile(r"equipped creature (?:gets [^.]*? and )?has [^.]*?\bhaste\b", re.I)
+_EQUIP_COST_RE = re.compile(r"\bEquip ((?:\{[^}]+\})+)")
+_COPY_ENTRY_RE = re.compile(
+    r"you may have this (?:artifact|enchantment|creature) enter as a copy of any artifact or enchantment", re.I)
+_LOYALTY_LOOT_RE = re.compile(r"\+\d+: Draw a card, then discard a card", re.I)
+_ACTIVATION_DISCOUNT_RE = re.compile(
+    r"abilities you activate that aren't mana abilities cost \{(\d+)\} less to activate", re.I)
+_FREE_WITH_COMMANDER_RE = re.compile(
+    r"if you control a commander, you may cast this spell without paying its mana cost", re.I)
+
+
+def engine_profile(card):
+    """What this card does on a cast, an equip, an upkeep or an activation. See above."""
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
+    tl = card.get("type_line") or ""
+    is_spell = "Instant" in tl or "Sorcery" in tl
+    out = {"cast_loot": None, "cast_team_pump": 0, "cast_token_x": None,
+           "cast_double_strike_cost": None, "cast_double_strike_pips": [],
+           "draw_pump": False, "equip_haste": None, "copy_entry": False,
+           "loyalty_loot": False, "activation_discount": 0, "free_with_commander": False,
+           "cycling": None, "flashback": None}
+    _cy = _CYCLING_RE.search(text)
+    if _cy:
+        _dmg = _CYCLE_DAMAGE_RE.search(text)
+        out["cycling"] = {"cost": _activation_mana(_cy.group(1)), "pips": cast_pips(_cy.group(1)),
+                          "x": "{X}" in _cy.group(1).upper(),
+                          "damage": int(_dmg.group(1)) if _dmg else 0,
+                          "token_x": bool(re.search(r"when you cycle this card, create an X/X", text, re.I))}
+    _fb = _FLASHBACK_RE.search(text)
+    if _fb and is_spell:
+        out["flashback"] = {"cost": _activation_mana(_fb.group(1)), "pips": cast_pips(_fb.group(1))}
+    out["free_with_commander"] = bool(_FREE_WITH_COMMANDER_RE.search(text))
+    if is_spell or "Land" in tl:
+        return out
+    if _CAST_LOOT_DRAW_FIRST_RE.search(text):
+        out["cast_loot"] = "draw"
+    elif _CAST_LOOT_DISCARD_FIRST_RE.search(text):
+        out["cast_loot"] = "discard"
+    _p = _CAST_TEAM_PUMP_RE.search(text)
+    out["cast_team_pump"] = int(_p.group(1)) if _p else 0
+    _t = _CAST_TOKEN_X_RE.search(text)
+    if _t:
+        out["cast_token_x"] = "noncreature" if "noncreature" in _t.group(1).lower() else "spell"
+    _ds = _CAST_DOUBLE_STRIKE_RE.search(text)
+    if _ds:
+        out["cast_double_strike_cost"] = _activation_mana(_ds.group(1))
+        out["cast_double_strike_pips"] = cast_pips(_ds.group(1))
+    out["draw_pump"] = bool(_DRAW_PUMP_RE.search(text))
+    if "Equipment" in tl and _EQUIP_HASTE_RE.search(text):
+        _ec = _EQUIP_COST_RE.search(text)
+        out["equip_haste"] = _activation_mana(_ec.group(1)) if _ec else None
+    out["copy_entry"] = bool(_COPY_ENTRY_RE.search(text))
+    out["loyalty_loot"] = "Planeswalker" in tl and bool(_LOYALTY_LOOT_RE.search(text))
+    _d = _ACTIVATION_DISCOUNT_RE.search(text)
+    out["activation_discount"] = int(_d.group(1)) if _d else 0
+    return out
+
+
+def tutor_filter(card):
+    """WHAT A TUTOR CAN REACH (2026-11-04). None for "a card"; otherwise a tuple of
+    alternatives, each a tuple of words the type line must hold: Idyllic Tutor is
+    `(("Enchantment",),)` and Enlightened Tutor `(("Artifact",), ("Enchantment",))`."""
+    m = re.search(r"search your library for (?:a|an|up to \w+) ([\w' -]{0,40}?)cards?\b",
+                  card.get("oracle_text") or "", re.I)
+    if not m or not m.group(1).strip():
+        return None
+    words = m.group(1).strip()
+    return tuple(tuple(w.capitalize() for w in alt.split())
+                 for alt in re.split(r"\s+or\s+", words))
+
+
+def tutor_reaches(filt, type_line):
+    """Can a tutor with this filter fetch a card of this type line?"""
+    if filt is None:
+        return True
+    tl = type_line or ""
+    return any(all(w in tl for w in alt) for alt in filt)
+
+
 def combat_profile(card):
     """What this card does once there is a combat step.
 
@@ -3805,6 +4137,8 @@ def combat_profile(card):
         "extra_combat_cost": None,
         # x2 per source, multiplied together across everything in play.
         "team_damage_multiplier": 1,
+        # What it reaches: `permanent_damage_scale` has the list, 2026-11-04.
+        "team_damage_scope": None,
         # A ONE-TURN PUMP FROM A SPELL. Power only; see `spell_pump`.
         # `single` is what a commander-copy ability multiplies across the
         # board; `team` already hits everything and must not be doubled.
@@ -3814,6 +4148,7 @@ def combat_profile(card):
         # `spell_token_copy` for the sweep and what it excludes.
         "spell_token_copy": 0,
         "spell_double_strike": False,
+        "spell_team_double_strike": False,
         "spell_power_multiplier": 1,
         "spell_power_to_each_opponent": False,
         "spell_extra_combat": 0,
@@ -3821,6 +4156,12 @@ def combat_profile(card):
         "spell_pump_single": 0,
         "spell_pump_team": 0,
         "double_strike": False,
+        # 2026-11-04. `power_scales`: "hand" (Psychosis Crawler) or "yard_spells" (Rielle),
+        # read at the moment power is asked for. `prowess` and `vigilance` are the keywords:
+        # +1/+0 a noncreature cast this turn, and a creature that attacks and can still tap.
+        "power_scales": power_scales(card) if is_creature else None,
+        "prowess": is_creature and bool(_PROWESS_RE.search(_REMINDER_RE.sub(" ", text))),
+        "vigilance": is_creature and bool(_VIGILANCE_RE.search(_REMINDER_RE.sub(" ", text))),
         # POISON, see the regexes above. `infect` turns this creature's damage
         # into counters; `toxic` adds N counters per connect; the ping is a
         # per-attacker trigger on some OTHER permanent, credited to the attacker.
@@ -3905,9 +4246,13 @@ def combat_profile(card):
                 profile["etb_token_bodies"] += count
                 profile["etb_token_power"] += count * _stat(tok.group(2))
 
-    if _permanent_damage_multiplier(text, type_line):
-        profile["team_damage_multiplier"] = 2
-    elif is_creature and _SELF_DOUBLE_STRIKE_RE.search(text):
+    _times, _scope = permanent_damage_scale(text, type_line)
+    if _times > 1:
+        profile["team_damage_multiplier"] = _times
+        profile["team_damage_scope"] = _scope
+    elif is_creature and _SELF_DOUBLE_STRIKE_RE.search(text) \
+            and not re.search(r"(?:true for|process for|choice of|instance of)[^.\n]*?double strike",
+                              text, re.I):
         # Its OWN damage twice. `elif` because a card that grants the team
         # double strike and also has it would otherwise be counted twice for
         # its own body — the grant already covers it.
@@ -3927,7 +4272,7 @@ def combat_profile(card):
         tail = (match.group(4) or "").lower()
         if any(k in tail for k in _NONCREATURE_TOKENS):
             continue
-        if _inside_activation(text, match.start()):
+        if _inside_activation(text, match.start()) or _is_trigger_x_token(text, match.start()):
             continue
         word = match.group(1).lower()
         count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
@@ -4071,6 +4416,7 @@ def combat_profile(card):
     profile["spell_token_copy"] = spell_token_copy(card)
     _sce = spell_combat_effects(card)
     profile["spell_double_strike"] = _sce["double_strike"]
+    profile["spell_team_double_strike"] = _sce["team_double_strike"]
     profile["spell_power_multiplier"] = _sce["power_multiplier"]
     profile["spell_power_to_each_opponent"] = _sce["power_to_each_opponent"]
     profile["spell_extra_combat"] = _sce["extra_combat"]
@@ -4385,10 +4731,63 @@ def produced_mana(oracle_text, type_line=""):
     return _MANA_WORDS[word.group(1).lower()] if word else 0
 
 
+#: WHAT A ROCK IS WORTH A TURN, NET OF WHAT ITS OWN ABILITY COSTS (2026-11-04).
+#: `produced_mana` counts what an ability ADDS, so "{1}, {T}: Add {W}{U}" read as two
+#: mana a turn: every Signet was a Sol Ring, and sharknado's curve ran a mana ahead per
+#: Signet. The turn loop wants the net, the rate the rest of the turn can spend.
+#:
+#: `produced_mana` STAYS GROSS AND UNTOUCHED ON PURPOSE. CardBERT's `mana_repeatable`
+#: delegates to it (`training/card_fields.py`), so moving that number moves a
+#: model-facing field and asks for a retrain over a question the embedding does not ask.
+#:
+#: THE COST IS THE ABILITY'S OWN CLAUSE, not the 40 characters before `{T}`. That window
+#: crossed sentences, so an earlier "Sacrifice a creature: ..." read as this ability
+#: consuming its source (`cards.csv` is flattened, so a boundary is ". ", a quote, a
+#: closing bracket or the previous ability's colon, as well as a line break). The first
+#: ability that does not eat its source is the rate: a later "{T}: Add {G}{G}. Spend this
+#: mana only ..." or "Activate only if ..." is a condition, and the sweep says reading the
+#: best of them over-credits twenty mana dorks.
+_COST_CLAUSE_BOUNDARY = ("\n", ". ", '"', ")", ": ")
+
+
+def _add_clause_mana(body):
+    """Mana one "Add ..." clause yields (see `produced_mana` for the rules it keeps)."""
+    runs = [len(re.findall(r"\{[WUBRGC0-9]\}", r))
+            for r in re.findall(r"(?:\{[WUBRGC0-9]\})+", body)]
+    if runs:
+        return max(runs)
+    word = re.match(r"\s*(one|two|three|four|five|X)\b", body, re.IGNORECASE)
+    return _MANA_WORDS[word.group(1).lower()] if word else 0
+
+
+def net_produced_mana(oracle_text, type_line=""):
+    """`(net, gross)`: the mana a persistent producer adds to a turn's total, its own
+    activation cost taken off, and what the same ability adds before that. The gross
+    is the colour sources it stands for: a Signet is {W} AND {U} off one other land."""
+    text = _strip_foreign_grants(oracle_text, type_line)
+    for match in _TAP_ADD_RE.finditer(text or ""):
+        head = text[:match.start()]
+        start = max(head.rfind(b) + len(b) if b in head else 0 for b in _COST_CLAUSE_BOUNDARY)
+        cost = text[start:match.start() + match.group(0).index(":")]
+        if _CONSUMING_COST.search(cost):
+            continue
+        gross = _add_clause_mana(match.group(1))
+        # A BOARD-DEPENDENT YIELD IS ALREADY THE CONSERVATIVE ONE (Selvala's X, Magus of
+        # the Coffers' "for each Swamp"), so its cost is not taken off a guess of 1.
+        if re.match(r"\s*X\b", match.group(1), re.I) or re.search(r"\bfor each\b", match.group(1), re.I):
+            return gross, gross
+        return max(0, gross - _activation_mana(cost)), gross
+    return 0, 0
+
+
 def body_count(card):
     """Bodies this card contributes when cast: itself (if creature) + tokens."""
     bodies = 1 if "Creature" in card.get("type_line", "") else 0
-    for word in _TOKEN_RE.findall(card.get("oracle_text", "") or ""):
+    text = card.get("oracle_text", "") or ""
+    for match in _TOKEN_RE.finditer(text):
+        if _is_trigger_x_token(text, match.start()):
+            continue
+        word = match.group(1)
         bodies += _NUMBER_WORDS.get(word.lower(), 1 if not word.isdigit() else int(word))
     return bodies
 

@@ -381,6 +381,21 @@ def authored_rate_notes(base_doc, doc):
         notes.append(f"Rhystic Study assumes each opponent casts {OPPONENT_CASTS_PER_TURN} "
                      f"spells a turn (measured in Forge) and pays its tax "
                      f"{TITHE_PAY_RATE:.0%} of the time (an authored rate)")
+    # THE 2026-11-04 AUDIT'S RATES, named where a figure rests on them.
+    if any(e["per_opponent_cast_noncreature"] for e in _ev):
+        from manamap.config import CUMULATIVE_UPKEEP_MAX_AGE, OPPONENT_NONCREATURE_SHARE
+        notes.append(f"Mystic Remora assumes {OPPONENT_NONCREATURE_SHARE:.0%} of those spells are "
+                     f"noncreature and a pilot pays its upkeep to age {CUMULATIVE_UPKEEP_MAX_AGE} "
+                     f"(both authored rates)")
+    if any(_gp.draw_profile(c)["activated_draw_players"] for c in both):
+        from manamap.config import LIFE_CHAIN_LIBRARY_FLOOR
+        notes.append(f"A repeated activation stops {LIFE_CHAIN_LIBRARY_FLOOR} cards short of the "
+                     f"library (an authored floor)")
+    if any(_gp.draw_profile(c)["activated_draw_sacs_self"]
+           and _gp.net_produced_mana(c.get("oracle_text"), c.get("type_line"))[0] for c in both):
+        from manamap.config import ROCK_SAC_MIN_MANA
+        notes.append(f"A rock or land cashes in for its card only with {ROCK_SAC_MIN_MANA} mana "
+                     f"left after it (an authored rate)")
     for c, e in zip(both, _ev):
         if e["per_opponent_turn_damage_hand_min"]:
             notes.append(f"{c['name']} deals its {e['per_opponent_turn_damage']} on every opponent "

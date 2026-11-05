@@ -135,8 +135,9 @@ METRICS = {
         "scale": "against the games themselves — one finisher per game counts, "
                  "however many wheels followed it",
         "what": "The share of games in which, by the end of turn 8, a wheel "
-                "resolved with a COMMANDER on the battlefield and a hand the "
-                "model's thin-hand rule would not have thrown away on its own. "
+                "resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also "
+                "needed four nonlands left in hand, which the model's deploy-first turn "
+                "now spends before it wheels.) "
                 "Spell wheels and activated wheels both count; the discard "
                 "wheels the model cannot parse are named in the goldfish "
                 "declaration and are in no figure here.",
@@ -191,9 +192,12 @@ METRICS = {
                 "that draws, an upkeep trigger, a trigger that draws when "
                 "other creatures or tokens enter, and (since 2026-10-19) a "
                 "trigger that draws when a creature dies, on the deaths the "
-                "sacrifice and death channels produce and no others. Activated, "
-                "X-based and priced draw ('you may pay 2 life. If you do') are "
-                "NOT counted and the cards are named in the goldfish artifact.",
+                "sacrifice and death channels produce and no others, activated draws "
+                "at the end of the main phase while spare mana pays and X-cost draw "
+                "spells with what is left (2026-11-04: this said those were not counted, "
+                "and they have been). A draw whose cost has no reader ('you may pay 2 "
+                "life. If you do') is NOT counted, and the card is named in the "
+                "goldfish artifact.",
         "why": "A board with nothing in hand has no way to rebuild, and until "
                "2026-08-28 the model could not see it: it drew one card a turn "
                "whatever the list said. Read it against the count of draw cards, not alone — "
@@ -206,7 +210,8 @@ METRICS = {
         "scale": "conditional on holding one — the denominator is games where "
                  "an answer was in hand, not all games",
         "what": "Of the games where an answer was in hand on turn 6, the share "
-                "where the turn also ended with enough unspent mana to cast it. "
+                "where the turn also ended with enough unspent mana to cast it, or where "
+                "it is free for controlling a commander and one is out. "
                 "The suite is removal + sweepers + protection, the same set "
                 "`deck-audit` counts.",
         "why": "Whether the deck can spend its mana developing and still hold "
@@ -231,8 +236,9 @@ METRICS = {
     },
     "hoard @T10": {
         "unit": "mean",
-        "what": "Treasures sitting in the hoard at the end of turn 10, averaged "
-                "over every game.",
+        "what": "Treasures still standing at the END of turn 10, after the turn has "
+                "spent what it spent, averaged over every game. (Until 2026-11-04 the "
+                "number was read before the turn's spending, under this same label.)",
         "why": "The second axis, and the only one that is not combat. It is "
                "near-uncorrelated with damage, power and kill (r = 0.08-0.25 "
                "across the fleet), so it can fall while they rise and mean it.",
@@ -263,7 +269,9 @@ METRICS = {
         # cumulative reading.
         "what": "Damage dealt to the single goldfish opponent ON turn 10, "
                 "averaged over every game — the clock at its tenth turn, not a "
-                "running total. The cumulative series does not exist for this "
+                "running total. THE SWING AND WHAT FIRES AROUND IT: combat damage, attack "
+                "triggers, arrival and burn. IT EXCLUDES the payoffs on a discard or a draw "
+                "and the drain; `output.total_damage_by_turn` in the diagnostic is the figure with them (not a row: it tracks this one game for game, one measurement twice). The cumulative series does not exist for this "
                 "pillar; `mean_cumulative_event_damage_by_turn` is the only "
                 "running total the model keeps, and it covers event damage "
                 "alone.",
@@ -275,7 +283,10 @@ METRICS = {
     },
     "board power @T6": {
         "unit": "mean",
-        "what": "Total power on the battlefield at the end of turn 6.",
+        "what": "Total power on the battlefield at the end of turn 6: printed power, "
+                "anthems, lords, power that reads the hand or the graveyard, and +1/+1 "
+                "counters (since 2026-11-04; they had been left out). "
+                "One-turn pumps and prowess have worn off.",
         "why": "The deck's turn-6 threat, before any of it has connected. It is "
                "what a table sees and decides to answer, and it moves earlier "
                "than damage does.",

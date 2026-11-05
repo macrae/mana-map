@@ -48,6 +48,7 @@ notes (agents, the cache, the frontend bridge, drafts) and are not indexed indiv
 
 **The goldfish — channels, casting, what it can see**
 
+- [The Sharknado audit, 2026-11-04: read every card against the turn it fires on](#the-sharknado-audit-2026-11-04-read-every-card-against-the-turn-it-fires-on)
 - [2026-09-04/05 — A card read correctly and never played](#2026-09-0405--a-card-read-correctly-and-never-played)
 - [2026-09-06 — The commander was doing nothing, twice over](#2026-09-06--the-commander-was-doing-nothing-twice-over)
 - [The drain angle, measured against Forge rather than argued](#the-drain-angle-measured-against-forge-rather-than-argued)
@@ -3612,6 +3613,33 @@ anchored on must come from the champion flown by the same hand that will fly the
 and then read the whole profile, because the row the argument was about may be the one that
 barely moved.
 
+## The Sharknado audit, 2026-11-04: read every card against the turn it fires on
+
+A read-only audit walked the goldfish through one deck, card by card, and found 22 defects. They share
+two shapes, and both are worth checking for before trusting a figure.
+
+**A reader that answers the wrong question.** `produced_mana` counted what an ability ADDS, so a Signet
+was a Sol Ring (`net_produced_mana` nets it; `produced_mana` stays gross on purpose, because CardBERT's
+`mana_repeatable` reads it and a model-facing field does not move for a turn-loop question). One
+multiplier stood for every doubler, so Blade Historian doubled Brallin's noncombat pings and Gratuitous
+Violence doubled spell burn and Psychosis Crawler's life loss. "Target creature gains double strike"
+read as Shu Yun's own keyword. Shark Typhoon was two 0/0 bodies. `model_coverage` called a card "seen"
+for being named in a target group, which is why ten cards that were never cast looked covered.
+
+**A loop that reads the whole turn at its end.** Payoffs read the turn's counters at the end of the main
+phase, so anything cast after a wheel was paid for it: a Tithe made 24 Treasure off a wheel it missed, and
+Shabraz took a counter for a draw step before he landed. Draws made inside that same loop came after he
+had read the count, so Consecrated Sphinx added six cards and paid him one. The wheels fired inside the
+draw loop, ahead of the rocks and bodies, so a turn with the mana for both threw the body away.
+
+**What to do with it.** Every figure on every deck moved, and an older stamp is a state, not a failure:
+`regen --slug` the deck being iterated. Read a sleeved list's old numbers as the old model's. The pilot's
+new figures: `output.total_damage_by_turn` in the diagnostic holds the pings (a figure, not a row: r = 0.99 with damage @T10 on sharknado, so a row would be one measurement twice), `board power` now holds the counters, the
+hoard is read at the end of the turn, and a finisher no longer needs four nonlands left. The authored rates
+it added are `OPPONENT_NONCREATURE_SHARE`, `CUMULATIVE_UPKEEP_MAX_AGE` and `ROCK_SAC_MIN_MANA`, and `try`
+names them. What stayed unmodelled is listed under Named gaps in `docs/simulation.md`, and the tests are
+`tests/test_goldfish_audit_2026_11.py`, each proved by re-introducing its bug.
+
 ## CLAUDE.md's rule digest, verbatim as of 2026-10-05
 
 > Moved here VERBATIM when CLAUDE.md was compacted on 2026-10-05: CLAUDE.md now carries
@@ -3626,7 +3654,7 @@ wrong first attempt, the number — is in the page named beside it.
 **Evidence**
 - **A validator that fires on correct data is worse than no validator, and the only way to know is to MEASURE IT AGAINST THE WHOLE FLEET FIRST.** Six proposed checks have been prototyped and rejected on this ground; one fired on 27% of correct authored data, another on 29 of 91 components. → `docs/gotchas-evidence.md`
 - **Absent means ABSENT, never zero.** A figure nobody measured must be a missing key with a stated reason. `0.0` is a measurement, and a reader cannot tell it from one. → `docs/gotchas-bench.md`
-- **Every rate carries its interval, and a comparison carries the interval on the DIFFERENCE.** Two marginal intervals overlapping implies nothing at all. **And a FAMILY of comparisons carries its correction**: `net-change`'s twelve rows are exploratory and Holm-corrected; the objective is the one pre-registered primary, as `win_rate` is in `experiment`. → `docs/gotchas-bench.md`, `docs/simulation.md`
+- **Every rate carries its interval, and a comparison carries the interval on the DIFFERENCE.** Two marginal intervals overlapping implies nothing at all. **And a FAMILY of comparisons carries its correction**: `net-change`'s sixteen rows are exploratory and Holm-corrected; the objective is the one pre-registered primary, as `win_rate` is in `experiment`. → `docs/gotchas-bench.md`, `docs/simulation.md`
 - **Never `cache-record` to make a board green**, and never hand-patch an agent's prose to make a gate pass. Editing prose to satisfy a check puts a fresh claim under an old byline. → `docs/gotchas-bench.md`
 - **NO BRANCH IS GRADED ON A FORGE RATE OR MEAN WITHOUT AN A/A AT THE SAME N, because the bench had never run one.** `experiment --aa` is one list against itself and no A/A record existed for ANY deck until 2026-10-02. The robust half of what it showed needs no significance test at all: **the champion measuring its OWN total life removed read 74.39 at 84 games, 48.77 at 116 and 59.53 at 200** — a 26-point spread on one list across independent samples, against branch objectives set 19.5 points above the mean. That alone makes drain-v1, boss-v1, entry-v1 and treasury-v1's verdicts unreadable; the measurements are real, the VERDICTS are not evidence. The A/A's first look agrees but only suggestively — arm A 7/42, arm B 15/41, gap 0.199, plain interval [+0.009, +0.373] excluding zero, and ONE GAME EITHER WAY FLIPS THAT (8/42 vs 15/41 spans zero), so it is a marginal firing at small n and not a demonstration. **Completed 2026-10-03 at 200/arm: 40/176 (0.227) against 48/171 (0.281), gap 0.054, plain interval [−0.038, +0.144] — spans zero, and every one of the eleven endpoints spans zero too.** The look-1 firing shrank as the sample grew, as noise does, so there is no arm asymmetry to chase. What the A/A FIXES is scale: at 200 games/arm ONE list reads 5.4 points apart from itself and the interval is ±0.09 wide, so a branch effect under ~0.14 cannot be seen. Worth noting which guard worked: the O'Brien-Fleming boundary (z 4.049 at look 1) refuses it and the PLAIN interval does not — and the plain interval is what `net_change` prints. Mechanism endpoints stay readable throughout, because a cast, a trigger and an activation are COUNTS rather than estimated rates. → `docs/gotchas-bench.md`
 - **A mean is not a result.** Carry median, min and max: a mean of 17.42 against 2.25 read as a sevenfold win when the median was 0 in both arms and two games were the whole difference. → `docs/gotchas-bench.md`

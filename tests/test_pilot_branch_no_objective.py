@@ -1,6 +1,6 @@
 """A branch's objective is OPTIONAL (the pilot, 2026-10-28).
 
-A branch is judged on its whole paired profile — twelve Holm-corrected rows — and an
+A branch is judged on its whole paired profile — sixteen Holm-corrected rows — and an
 objective, when one is given, is a GUARD: one row written down before the run that the
 branch must not fail, shown among the others. `deck-branch new` and serve's
 `branch/new` both refused a branch without one; Build's branch form could not open a
