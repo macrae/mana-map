@@ -177,3 +177,120 @@ def test_a_held_card_is_marked_gated_or_reactive_and_a_plain_hold_is_not(monkeyp
         "Plain": "Name:Plain\nTypes:Sorcery\nA:SP$ Draw | NumCards$ 2\n"})
     assert seat_audit._held_marks(["Gated Wheel", "Negate", "Plain"]) == {
         "Gated Wheel": ["gated"], "Negate": ["reactive"]}
+
+
+def test_a_wheel_rate_under_one_a_game_fails_the_stated_minimum():
+    """The definition says at least one a game; `if not rate` passed 0.35 (olivers-table-3p,
+    run caeeec41). Proven by restoring the truthiness: 0.35 and 0.99 read PILOTABLE."""
+    st = {"flagged": [], "unfound": [], "floors": []}
+    def wheels(rate):
+        return {"commander_resolved_rate": 0.9, "engine": {},
+                "wheel_timing": {"wheels_per_game": rate, "with_commander": 0.95}}
+    for rate in (0, None, 0.35, 0.99):
+        verdict, why = seat_audit._verdict("x", st, wheels(rate), ours=True)
+        assert verdict == "NOT" and any("wheels a game" in w for w in why), rate
+    assert seat_audit._verdict("x", st, wheels(1.0), ours=True) == ("PILOTABLE", [])
+    assert seat_audit._verdict("x", st, wheels(0.35), ours=False) == ("PILOTABLE", []), "our seat's rule"
+
+
+def test_our_seat_is_judged_on_the_decks_own_engine(monkeypatch):
+    """Our seat is not in the pod file, so `engine` never named it and the definition's
+    engine line never read it (2026-11-04). Proven by deleting the `_our_engine` call:
+    `seen` has no row for ours. A branch seat reads the branch's list."""
+    from manamap.sim import engine_casts, forge, pods
+    asked = {}
+    def engine_set(slug, branch=None):
+        asked[slug] = branch
+        return {"cards": ["Windfall"], "scaffolded": slug == "scaffold", "sources": ["engine.json"]}
+    monkeypatch.setattr(engine_casts, "engine_set", engine_set)
+    assert seat_audit._our_engine("d@b") == ["Windfall"] and asked["d"] == "b"
+    assert seat_audit._our_engine("scaffold") == [], "a scaffold is role axes, not an engine"
+
+    seen = {}
+    def dynamic(rec, texts, engine_by_slug=None):
+        seen.update(engine_by_slug)
+        return {"d@b": {"engine": {"Windfall": {"cast": 0, "held": False, "never_cast": True}}}}
+    monkeypatch.setattr(seat_audit, "dynamic_seats", dynamic)
+    monkeypatch.setattr(seat_audit, "static_seat", lambda slug: {"flagged": [], "unfound": [], "floors": []})
+    monkeypatch.setattr(seat_audit, "_find_run", lambda run_id: _Rec())
+    monkeypatch.setattr(seat_audit, "_logs_for", lambda path, rec: ["log"])
+    monkeypatch.setattr(pods, "load", lambda name: {"seats": [{"slug": "opp", "engine": ["Opp Card"]}]})
+    monkeypatch.setattr(forge, "card_overrides", lambda: {"sha": "x"})
+    monkeypatch.setattr(forge, "telemetry_tag", lambda: "")
+    doc = seat_audit.audit("p", run_id="r")
+    assert seen == {"opp": ["Opp Card"], "d@b": ["Windfall"]}
+    ours = next(r for r in doc["seats"] if r["ours"])
+    assert ours["verdict"] == "NOT" and any("Windfall" in w for w in ours["why"])
+
+
+class _Rec:
+    """`_find_run`'s path, read back as a one-seat record."""
+    def read_text(self, encoding=None):
+        return json.dumps({"seats": [{"slug": "d@b"}], "summary": {"decided": 1}})
+
+
+def test_a_branch_seat_reads_its_decks_floors(monkeypatch, tmp_path):
+    """Hints live on the deck; `seat_home("d@b")` is a folder with no such file, so a branch
+    seat read no floors and failed on a card the pilot had named one. Proven by passing
+    the raw slug to `seat_home`: `_floors` reads []."""
+    from manamap.sim import forge
+    (tmp_path / "d").mkdir()
+    (tmp_path / "d" / "forge_hints.json").write_text(json.dumps({"hints": [], "floors": ["Ghostly Pilferer"]}))
+    monkeypatch.setattr(forge, "seat_home", lambda slug: tmp_path / slug.replace("@", "/branches/"))
+    assert seat_audit._floors("d@b") == ["Ghostly Pilferer"]
+
+
+def test_an_engine_list_is_a_form_and_says_why(tmp_path, monkeypatch):
+    from manamap.sim import pods
+    monkeypatch.setattr(pods, "PODS_DIR", tmp_path)
+    def pod(**seat):
+        (tmp_path / "p.json").write_text(json.dumps({"seats": [{"slug": "s", **seat}]}))
+    pod(engine=["A"], engine_why="its plan")
+    assert pods.load("p")["seats"][0]["engine"] == ["A"]
+    pod(engine=["A"])
+    with pytest.raises(pods.PodError, match="engine_why"):
+        pods.load("p")
+    pod(engine="A", engine_why="x")
+    with pytest.raises(pods.PodError, match="non-empty list"):
+        pods.load("p")
+
+
+@requires_deck
+def test_every_engine_card_a_pod_names_is_in_that_seats_list_and_pods_agree():
+    """An engine card the list does not hold reads as `cast 0, not held, not never`: a
+    silent pass. And one seat at two tables is one plan. Proven by renaming a card in
+    a pod: the first assertion names it."""
+    from manamap.sim import forge, pods
+    checked, by_slug = 0, {}
+    for name in pods.available():
+        for seat in pods.load(name)["seats"]:
+            for card in seat.get("engine") or []:
+                assert card in forge._seat_names(seat["slug"]), f"{name}/{seat['slug']}: {card}"
+                checked += 1
+            if seat.get("engine"):
+                assert by_slug.setdefault(seat["slug"], seat["engine"]) == seat["engine"], seat["slug"]
+    assert checked >= 30 and len(by_slug) >= 6
+
+
+def test_the_audit_judges_a_hold_net_of_the_gate_and_names_what_that_cleared(monkeypatch):
+    """Driven through `dynamic_seats` on the real telemetry fixture. Goblin Bombardment read
+    six raw turns; gated with no commander on the board, none of them was a hold. Proven by
+    judging on `raw_held` again: it stays on the held list."""
+    from pathlib import Path
+    from manamap.sim import forge
+    text = (Path(__file__).parent / "fixtures" / "forge" / "two-seat-one-game-telemetry.log").read_text()
+    cmc = {"Goblin Bombardment": 2, "Great Train Heist": 1}
+    monkeypatch.setattr(forge, "cmc_map", lambda slug, doc=None: dict(cmc))
+    monkeypatch.setattr(forge, "keyword_map", lambda slug, doc=None: {})
+    monkeypatch.setattr(forge, "played_doc", lambda slug, rec: None)
+    monkeypatch.setattr(forge, "record_commanders", lambda rec: {})
+    monkeypatch.setattr(seat_audit, "commander_gated_names", lambda names: {"Goblin Bombardment"})
+    monkeypatch.setattr(seat_audit, "_held_marks", lambda held: {})
+    rec = {"seats": [{"slug": "goblin-storm", "forge_name": "mm-goblin-storm"},
+                     {"slug": "giada-angels", "forge_name": "mm-giada-angels"}]}
+    ours = seat_audit.dynamic_seats(rec, [text])["goblin-storm"]
+    assert "Great Train Heist" in ours["held_while_castable"]
+    assert "Goblin Bombardment" not in ours["held_while_castable"]
+    assert ours["raw_only"] == ["Goblin Bombardment"]
+    row = ours["held_turns"]["Great Train Heist"]
+    assert row["payable"] <= row["raw"] and row["raw"] > 0

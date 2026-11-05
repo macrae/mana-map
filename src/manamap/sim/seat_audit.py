@@ -16,8 +16,9 @@ seat's hints file names (a card the engine has no logic for, kept on purpose).
 
 DYNAMIC (`--run`, a pod run with its logs on disk): from the logs, for every seat —
 did the commander resolve, which cards were never cast or held while castable (the
-corpus gives every seat its mana values since today), which of the cards the pod names
-as the seat's `engine` were cast; for our seat the wheel timing.
+corpus gives every seat its mana values since today; held is net of the lands tapped and
+a shut commander gate since 2026-11-04), which of the cards the pod names as the seat's
+`engine` were cast (our seat: the deck's own engine set); for our seat the wheel timing.
 
 THE DEFINITION is written into the audit so the pilot can tighten it, and a seat that
 fails it is fixed or the run does not happen. `--anyway` runs a screen and the record
@@ -41,7 +42,8 @@ DEFINITION = {
     ],
     "dynamic": [
         f"the commander resolved in at least {80}% of the games the seat played",
-        "no card the pod names as the seat's `engine` was never cast or held while castable",
+        "no card the pod names as the seat's `engine` (our seat: the deck's own engine set) was never "
+        "cast or held while castable",
         "our seat: wheels fired with a commander out at least 90% of the time, and at "
         "least one wheel a game (a wheel deck only)",
     ],
@@ -49,6 +51,7 @@ DEFINITION = {
 }
 COMMANDER_RESOLVED_MIN = 0.80
 WHEELS_WITH_COMMANDER_MIN = 0.90
+WHEELS_PER_GAME_MIN = 1.0  # the DEFINITION's "at least one wheel a game", a mean over the run
 HELD_TURNS = 2             # engine_casts.HELD_CASTABLE_TURNS, restated for a seat with no record
 NEVER_CAST_IN_HAND_GAMES = 2
 
@@ -74,7 +77,9 @@ def _floors(slug):
     """Cards the seat's hints file names as floors — engine has no logic, kept on purpose."""
     from manamap.sim import forge
     try:
-        home = forge.seat_home(slug)
+        # A BRANCH SEAT READS ITS DECK'S FILE: hints live on the deck (`forge_pilot._hints_path`)
+        # and `seat_home` of `slug@branch` is a folder with no such file.
+        home = forge.seat_home(forge.split_seat(slug)[0])
     except Exception:
         return []
     p = Path(home) / "forge_hints.json"
@@ -119,6 +124,18 @@ def _commander_gated(gates):
     return any(g.startswith("NeedsToPlay:") and "IsCommander" in g for g in gates or [])
 
 
+def commander_gated_names(names):
+    """Of `names`, the cards whose INSTALLED script waits for a commander: the same
+    predicate `static_seat` and `_held_marks` read, for `parse.hand_facts`'s `net`."""
+    from manamap.sim import forge_cards
+    out = set()
+    for n in names:
+        text = forge_cards.script(n, installed_copy=True) or ""
+        if _commander_gated(f"{k}:{v.strip()}" for k, v in _GATE.findall(text)):
+            out.add(n)
+    return out
+
+
 def _ungated_wheels(doc, gated):
     """A wheel SPELL with no commander gate (2026-10-25): Incendiary Command and Wheel of
     Fortune both fired, or sat, on their own rules until a hint said otherwise, and
@@ -159,14 +176,20 @@ def dynamic_seats(rec, texts, engine_by_slug=None):
         cmc.update(forge.cmc_map(s, doc))
         kws.update(forge.keyword_map(s, doc))
     facts, analysis = sim_parse.analyze_logs(texts, label, forge.record_commanders(rec), cmc, kws)
+    # NET OF SPENT MANA AND THE GATE (2026-11-04): a turn the seat had already tapped the
+    # lands, or a commander gate was shut, is not a hold. `raw_only` keeps what that cleared.
+    payable = sim_parse.held_payable_by_seat(texts, label, cmc, forge.record_commanders(rec),
+                                             commander_gated_names(cmc))
     out = {}
     for s in slugs:
         meta = forge.deck_meta_name(s)
         ec = sim_parse.engine_casts(facts, label, meta)
         by = ec.get("by_card") or {}
-        held = sorted(n for n, r in by.items()
-                      if (r.get("castable_uncast") or 0) >= HELD_TURNS
-                      and (r.get("cast", 0) + r.get("activated", 0)) <= 1)
+        net = payable.get(meta) or {}
+        raw_held = {n for n, r in by.items()
+                    if (r.get("castable_uncast") or 0) >= HELD_TURNS
+                    and (r.get("cast", 0) + r.get("activated", 0)) <= 1}
+        held = sorted(n for n in raw_held if net.get(n, 0) >= HELD_TURNS)
         never = sorted(n for n, r in by.items()
                        if (r.get("cast", 0) + r.get("activated", 0)) == 0
                        and (r.get("in_hand_games") or 0) >= NEVER_CAST_IN_HAND_GAMES)
@@ -178,6 +201,8 @@ def dynamic_seats(rec, texts, engine_by_slug=None):
                   "commander_resolved_rate": ca.get("resolved_rate"),
                   "commander_resolved_games": ca.get("games_resolved"),
                   "held_while_castable": held, "never_cast": never,
+                  "held_turns": {n: {"payable": net.get(n, 0), "raw": by[n].get("castable_uncast", 0)} for n in held},
+                  "raw_only": sorted(raw_held - set(held)),
                   "held_marks": _held_marks(held),
                   "engine": engine_rows}
     wt = rec.get("wheel_timing")
@@ -191,10 +216,9 @@ def dynamic_seats(rec, texts, engine_by_slug=None):
 
 def _held_marks(held):
     """Why a held card may not be a hold (2026-10-25): `gated` — its script waits for a
-    commander, and the castable count (lands only) ignores the gate, so some of those
-    turns had no commander to wait for; `reactive` — it answers something, and a table
-    with nothing to answer holds it. A LABEL, never a recount: recounting would change
-    `parse.hand_facts`, which every committed run record re-derives from."""
+    commander, so the turns the AI could have cast it were only the ones with a commander
+    out; `reactive` — it answers something, and a table with nothing to answer holds it.
+    A LABEL on a list already net of spent mana and shut gates (`held_payable`)."""
     from manamap.sim import cast_check, forge_cards
     out = {}
     for n in held:
@@ -230,9 +254,24 @@ def _verdict(seat, static, dynamic, ours):
             if wt["with_commander"] < WHEELS_WITH_COMMANDER_MIN:
                 why.append(f"wheels fired with a commander out {wt['with_commander']:.0%} of the time "
                            f"(< {WHEELS_WITH_COMMANDER_MIN:.0%})")
-            if not wt.get("wheels_per_game"):
-                why.append("no wheel was cast")
+            # THE RATE, NOT THE TRUTHINESS (2026-11-04): `if not rate` passed sharknado at
+            # 0.35 wheels a game (olivers-table-3p, run caeeec41) under a definition that
+            # says at least one. Zero and an unmeasured mean fail the same line.
+            wpg = wt.get("wheels_per_game") or 0
+            if wpg < WHEELS_PER_GAME_MIN:
+                why.append(f"{wpg:g} wheels a game (< {WHEELS_PER_GAME_MIN:g})")
     return ("PILOTABLE" if not why else "NOT"), why
+
+
+def _our_engine(slug):
+    """OUR SEAT IS NOT IN THE POD FILE, so a pod's `engine` can never name it and the
+    definition's engine line never read our seat (2026-11-04). The deck declares its own
+    in `goldfish_targets.json` and `engine.json`, the set `engine_casts` already judges
+    with, answers and mana excluded; a scaffolded declaration is role axes, not an engine."""
+    from manamap.sim import engine_casts, forge
+    base, branch = forge.split_seat(slug)
+    eng = engine_casts.engine_set(base, branch)
+    return [] if not eng or eng["scaffolded"] else eng["cards"]
 
 
 def audit(pod, run_id=None, ours=None):
@@ -248,6 +287,8 @@ def audit(pod, run_id=None, ours=None):
         rec = json.loads(path.read_text(encoding="utf-8"))
         texts = _logs_for(path, rec)
         ours = (rec.get("seats") or [{}])[0].get("slug")
+    if ours and ours not in engine_by_slug:
+        engine_by_slug[ours] = _our_engine(ours)
     dyn = dynamic_seats(rec, texts, engine_by_slug) if rec else {}
     seat_slugs = ([ours] if ours else []) + [s["slug"] for s in doc["seats"]]
     rows = []
@@ -271,7 +312,8 @@ def audit(pod, run_id=None, ours=None):
             "limits": [
                 "STATIC reads the installed scripts: a card that is castable but that the AI "
                 "holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
-                "DYNAMIC castable counts are lands-only (colours ignored), the engine_casts floor.",
+                "DYNAMIC held counts are lands left untapped and a commander gate open (colours "
+                "and rocks ignored); `raw_only` names what the lands-only count alone would call held.",
                 "An opponent seat is an EDHREC average list unless its decklist was pasted over.",
             ]}
 
@@ -350,6 +392,7 @@ def _print(doc):
         if dy:
             cr = dy.get("commander_resolved_rate")
             print(f"      commander resolved {cr if cr is None else f'{cr:.0%}'} · held {len(dy['held_while_castable'])}"
+                  f" (+{len(dy.get('raw_only') or [])} on lands alone)"
                   f" · never cast {len(dy['never_cast'])}"
                   + (f" · wheels {dy['wheel_timing']['wheels_per_game']}/game, "
                      f"{dy['wheel_timing']['with_commander']:.0%} with a commander" if dy.get("wheel_timing") else ""))

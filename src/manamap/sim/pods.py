@@ -53,7 +53,8 @@ PODS_DIR = DATA_DIR / "pods"
 #: used by nothing else — a Forge run still seats the stand-in's decklist.
 #: `engine` (2026-10-21): the cards the seat's plan depends on, by name, so the seat
 #: audit can say whether the AI played the deck rather than merely cast cards from it.
-SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note", "deckcheck", "engine"})
+#: `engine_why` (2026-11-04): the citation for that authored list; a list needs one.
+SEAT_KEYS = frozenset({"slug", "archetype", "bracket", "profile", "note", "deckcheck", "engine", "engine_why"})
 
 
 class PodError(ValueError):
@@ -94,6 +95,12 @@ def load(name):
         if unknown:
             raise PodError(f"{path} seat {seat['slug']} has unknown key(s): "
                            f"{', '.join(sorted(unknown))}")
+        if "engine" in seat:
+            names = seat["engine"]
+            if not isinstance(names, list) or not names or not all(isinstance(n, str) and n for n in names):
+                raise PodError(f"{path} seat {seat['slug']}: `engine` is a non-empty list of card names")
+            if not seat.get("engine_why"):
+                raise PodError(f"{path} seat {seat['slug']}: `engine` is authored, so it says why (`engine_why`)")
     slugs = [s["slug"] for s in seats]
     if len(set(slugs)) != len(slugs):
         # Forge installs one .dck per slug, so the same deck twice is one deck

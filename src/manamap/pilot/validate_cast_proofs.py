@@ -59,6 +59,10 @@ def validate(slug, branch, doc):
         for k in ("drawn_games", "cast", "activated", "triggered", "castable_uncast_turns"):
             if not isinstance(r[k], int) or r[k] < 0:
                 errors.append(f"{where}: {k} {r[k]!r} is not a count")
+        # THE NET COUNTS (2026-11-04), a subset of the raw turns; absent on an older row.
+        if "held_payable_turns" in r and not (isinstance(r["held_payable_turns"], int)
+                                              and 0 <= r["held_payable_turns"] <= r["castable_uncast_turns"]):
+            errors.append(f"{where}: held_payable_turns {r['held_payable_turns']!r} is not a subset of the raw castable turns")
         if r["verdict_word"] == "PLAYED" and r["cast"] + r["activated"] == 0:
             errors.append(f"{where}: PLAYED with zero casts and activations")
         if r["verdict_word"] == "HELD" and r["cast"] + r["activated"] > 0:

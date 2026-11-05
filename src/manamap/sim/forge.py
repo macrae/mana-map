@@ -1330,6 +1330,9 @@ def run(slug, opponents, games=SIM_DEFAULT_GAMES, jobs=None, clock=SIM_GAME_CLOC
         # cast, by corpus role; absent when the roles artifact is not on disk.
         **({"answers": _an} if (_an := _answers().from_logs(
             texts, deck_meta_name(slug), _wt_doc)) else {}),
+        # HELD NET OF SPENT MANA AND THE GATE (2026-11-04), read by `held_while_castable`.
+        **({"held_payable": _hp} if (_hp := _held_payable(
+            texts, label, slug, cmc_map(slug), commanders)) else {}),
         # THE CAST PROOFS the gate read before this arm (a branch seat only): which adds
         # were PLAYED / HELD / CAST-LATE / unproven under this harness, and whether the
         # pilot ran it anyway. None on a deck seat and on every earlier record.
@@ -1410,6 +1413,12 @@ def analyze(slug, run_id_or_path):
         rec["answers"] = _an
     else:
         rec.pop("answers", None)
+    _hp = _held_payable([l.read_text(encoding="utf-8", errors="replace") for l in logs], label, slug,
+                        cmc_map(slug, played_doc(slug, rec)), record_commanders(rec))
+    if _hp:
+        rec["held_payable"] = _hp
+    else:
+        rec.pop("held_payable", None)
     # THE POD, BACKFILLED — and marked `named: false`, because a record written
     # before pods existed faced a table nobody named and this is a reading of
     # today's files rather than a fact about the run. A stamp made by `--pod`
@@ -1481,6 +1490,16 @@ def _board_series():
     which imports from this module — a cycle the first install tripped on."""
     from manamap.sim import board_series
     return board_series
+
+
+def _held_payable(texts, label, slug, cmc, commanders, gated=None):
+    """The record's `held_payable` block for our seat. `gated` None reads the commander
+    gates off the installed scripts (a new run, `--analyze`); `validate-sim` passes the
+    stored list."""
+    from manamap.sim import parse as _parse, seat_audit as _sa
+    if gated is None:
+        gated = _sa.commander_gated_names(cmc)
+    return _parse.held_payable_block(texts, label, deck_meta_name(slug), cmc, commanders, gated)
 
 
 def _wheel_timing():

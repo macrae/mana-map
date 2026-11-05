@@ -10,6 +10,8 @@ import pytest
 from manamap import config
 from manamap.sim import cast_check as cc
 
+import pathlib
+
 from conftest import requires_corpus, requires_deck
 
 OURS = "Ai(1)-mm-castcheck-edgar-vampires"
@@ -160,6 +162,20 @@ def test_the_documented_limitations_replace_a_wrong_remedy(monkeypatch):
             "A:SP$ Phases | ValidTgts$ Creature | TargetMax$ X\nSVar:X:Count$xPaid\n")
     d = cc.diagnose("March of Swirling Mist")
     assert cc.LIMITATIONS["phases-x"] in d["remedies"] and "reactive" in d["classes"]
+
+
+def test_a_filter_mana_ability_is_named_and_a_free_one_is_not(monkeypatch):
+    """Boros Signet read PLAYED, cast 15 times, and never tapped: the AI skips a mana ability
+    with a mana cost (`getAIPlayableMana`, 2.0.14). Proven by dropping the class in `diagnose`:
+    the row reads `unknown` and the verdict stands alone."""
+    from manamap.sim import forge_cards
+    scripts = {"Signet": "Name:Signet\nTypes:Artifact\nA:AB$ Mana | Cost$ 1 T | Produced$ R W | SpellDescription$ x\n",
+               "Sol Ring": "Name:Sol Ring\nTypes:Artifact\nA:AB$ Mana | Cost$ T | Produced$ C | Amount$ 2 | SpellDescription$ x\n",
+               "Lotus": "Name:Lotus\nTypes:Artifact\nA:AB$ Mana | Cost$ T Sac<1/CARDNAME> | Produced$ Any | SpellDescription$ x\n"}
+    monkeypatch.setattr(forge_cards, "script", lambda name, installed_copy=False: scripts[name])
+    assert "filter-mana" in cc.diagnose("Signet")["classes"]
+    assert "filter-mana" not in cc.diagnose("Sol Ring")["classes"]
+    assert "filter-mana" not in cc.diagnose("Lotus")["classes"]
 
 
 def test_cast_late_is_bastions_shape_and_played_needs_a_play():
@@ -347,6 +363,7 @@ def test_run_many_reports_each_shell_as_it_finishes_and_counts_games_on_the_band
     monkeypatch.setattr(_progress, "DIR", tmp_path / "band")
     monkeypatch.setattr(cc, "read_proofs", lambda slug, branch: None)
     monkeypatch.setattr(cc, "current_harness", lambda slug, branch=None, profile=None: dict(HARNESS))
+    monkeypatch.setattr(cc, "probe_log_dir", lambda slug, branch=None: tmp_path / "logs")
     seen_logs = {}
 
     def fake_run(slug, card, branch=None, log_path=None, games=8, **kw):
@@ -369,23 +386,83 @@ def test_run_many_reports_each_shell_as_it_finishes_and_counts_games_on_the_band
     assert doc["label"] == "forge-cast-check d@x" and "2/2 cards" in doc["detail"]
 
 
-def test_run_many_removes_its_shell_logs_when_done(tmp_path, monkeypatch):
-    """The streamed logs exist for the band; the proof carries the counts. A run that left
-    them would pile up a few hundred KB per card per run under the system temp dir."""
+def test_run_many_keeps_its_shell_logs_and_each_doc_names_its_own(tmp_path, monkeypatch):
+    """A probe can be re-read (2026-11-04): until now the logs were deleted with the temp
+    dir, so a surprising verdict meant replaying the shell. Proven by restoring the
+    `shutil.rmtree`: the log is gone and the assertion on its bytes fails."""
     import pathlib
     from manamap import progress as _progress
     monkeypatch.setattr(_progress, "DIR", tmp_path / "band")
     monkeypatch.setattr(cc, "read_proofs", lambda slug, branch: None)
     monkeypatch.setattr(cc, "current_harness", lambda slug, branch=None, profile=None: dict(HARNESS))
-    seen = {}
+    monkeypatch.setattr(cc, "probe_log_dir", lambda slug, branch=None: tmp_path / "logs" / f"{slug}-{branch}")
 
     def fake_run(slug, card, branch=None, log_path=None, games=8, **kw):
-        seen["dir"] = pathlib.Path(log_path).parent
-        pathlib.Path(log_path).write_text("Game Result: Game 1 ended in a win\n")
+        pathlib.Path(log_path).write_text(f"Game Result: Game 1 of {card} ended in 100 ms.\n")
         return {"card": card, "verdict_word": "PLAYED", "counts": {}, "diagnosis": {"classes": []}}, "log"
     monkeypatch.setattr(cc, "run", fake_run)
-    cc.run_many("d", ["Alpha"], branch="x", jobs=1, games=1)
-    assert seen["dir"].name.startswith("mm-castcheck-") and not seen["dir"].exists()
+    _, docs, _ = cc.run_many("d", ["Alpha", "Beta"], branch="x", jobs=2, games=1)
+    for card, doc in docs.items():
+        assert pathlib.Path(doc["log"]).parent == tmp_path / "logs" / "d-x"
+        assert card in pathlib.Path(doc["log"]).read_text()
+
+
+def test_the_probe_logs_land_where_git_ignores_them_and_a_new_invocation_gets_a_new_folder(tmp_path, monkeypatch):
+    """The band counts `*.log` in the folder, so reusing one reads a dead run's games as
+    this one's; and a kept log must never be a tracked artifact. The paths are the real
+    `.gitignore` asked of git, not a restatement of it."""
+    import subprocess
+    root = pathlib.Path(__file__).resolve().parent.parent
+    from manamap.pilot import common
+    monkeypatch.setattr(common, "decks_root", lambda: root / "data" / "decks")
+    for branch in (None, "some-branch"):
+        one, two = cc.probe_log_dir("some-deck", branch), cc.probe_log_dir("some-deck", branch)
+        assert one != two and one.parent == two.parent
+        assert ("branches" in one.parts) == bool(branch)
+        got = subprocess.run(["git", "check-ignore", "-q", str(one / "x.log")], cwd=root)
+        assert got.returncode == 0, f"{one} is not gitignored"
+
+
+def _spent_game(**turn3):
+    """A two-land game: the card (mv 2) in hand from T1, castable on lands from T3. `tap`
+    lands tapped for mana on T3; a commander zone line if `commander`."""
+    lines = [f"Turn: Turn 1 ({OURS})", f"Zone Change: Toxic Deluge (211) was put into Hand from Library. owner {OURS}",
+             f"Land: {OURS} played Swamp (1)", f"Turn: Turn 2 ({OPP})",
+             f"Turn: Turn 3 ({OURS})", f"Land: {OURS} played Swamp (2)"]
+    if turn3.get("commander"):
+        lines.append(f"Zone Change: Edgar Markov (9) was put into Battlefield from Stack. owner {OURS}")
+    for i in range(turn3.get("tap", 0)):
+        lines.append(f"Mana: Swamp ({i + 1}) - {{T}}: Add {{B}}.")
+    lines.append(f"Turn: Turn 4 ({OPP})")
+    return _game(lines)
+
+
+def test_a_turn_the_mana_was_spent_or_the_gate_was_shut_is_not_a_hold():
+    """THE FIX (2026-11-04): Windfall read 25 castable turns in run caeeec41 and 2 once the
+    tapped lands and the commander gate were subtracted. The raw count stays beside it.
+    Proven by dropping `free >= mv` and the gate test in `hand_facts`: both turns read held."""
+    free = cc.count(_spent_game(), "Toxic Deluge", OURS, 2)
+    assert (free["castable_uncast_turns"], free["held_payable_turns"], free["held_payable_games"]) == (1, 1, 1)
+    assert cc.verdict_word(free) == "HELD"
+
+    spent = cc.count(_spent_game(tap=1), "Toxic Deluge", OURS, 2)
+    assert (spent["castable_uncast_turns"], spent["held_payable_turns"]) == (1, 0), "one land left cannot pay two"
+    assert cc.verdict_word(spent) == "UNPLAYED", "never payable is inconclusive, not the AI holding it"
+    assert "1 own turn" in cc.verdict(spent), "the raw count is still said"
+
+    shut = cc.count(_spent_game(), "Toxic Deluge", OURS, 2, gated=True, commander="Edgar Markov")
+    assert (shut["castable_uncast_turns"], shut["held_payable_turns"]) == (1, 0), "no commander, the gate is shut"
+    open_ = cc.count(_spent_game(commander=True), "Toxic Deluge", OURS, 2, gated=True, commander="Edgar Markov")
+    assert open_["held_payable_turns"] == 1
+
+
+def test_a_proof_row_written_before_the_net_count_reads_the_raw_one():
+    old = {"drawn_games": 3, "cast": 0, "activated": 0, "triggered": 0, "castable_uncast_turns": 9, "held_castable_games": 3}
+    assert cc.verdict_word(old) == "HELD"
+    assert cc.verdict_word({**old, "held_payable_turns": 0, "held_payable_games": 0}) == "UNPLAYED"
+    played = {**old, "cast": 1, "drawn_games": 4, "held_payable_turns": 2, "held_payable_games": 1}
+    assert cc.verdict_word(played) == "PLAYED", "the two payable turns are under Bastion's bar, the nine raw ones are not"
+    assert cc.verdict_word({k: v for k, v in played.items() if not k.startswith("held_payable")}) == "CAST-LATE"
 
 
 def test_a_land_add_is_listed_and_never_proven_held_or_unproven(tmp_path, monkeypatch, capsys):

@@ -438,13 +438,15 @@ def generate_unflag(stems, out_dir=None):
     return written
 
 
-def unflag_candidates(include_pods=False):
+def unflag_candidates(include_pods=False, include_branches=False):
     """Every `RemoveDeck:All` non-land card in a LIVE deck that `unflag.txt` does not
     name — the sweep behind the list. `[(slug, card name, stem)]`. With
-    `include_pods`, every pod's OPPONENT seats too (2026-10-21), which is what
-    `forge-install --generate` prints and the seat audit reads."""
+    `include_pods`, every pod's OPPONENT seats too (2026-10-21), and with
+    `include_branches`, every live deck's OPEN branches as `slug@branch` (2026-11-04: a
+    branch's add is a card a seat would play, and a decided branch is not an arm). Both
+    are what `forge-install --generate` prints."""
     import json
-    from manamap.pilot import formats
+    from manamap.pilot import deck_branch, formats
     from manamap.pilot.common import deck_is_apart
     from manamap.sim import forge_cards
     listed = set(unflag_list())
@@ -462,6 +464,17 @@ def unflag_candidates(include_pods=False):
             stem = forge_cards.stem(c["name"])
             if stem not in listed:
                 out.append((d.name, c["name"], stem))
+        if not include_branches:
+            continue
+        for bj in sorted((d / "branches").glob("*/cards.json")):
+            if deck_branch.is_decided(d.name, bj.parent.name):
+                continue
+            for c in json.loads(bj.read_text(encoding="utf-8")).get("cards", []):
+                if forge_cards.ai_flag(c["name"]) != "All" or "Land" in (c.get("type_line") or ""):
+                    continue
+                stem = forge_cards.stem(c["name"])
+                if stem not in listed and (d.name, c["name"], stem) not in out:
+                    out.append((f"{d.name}@{bj.parent.name}", c["name"], stem))
     # EVERY POD'S OPPONENT SEATS TOO (2026-10-21): Araumi of the Dead Tide — Oliver's
     # commander — was `All` and this sweep never saw it, because it only walked our
     # decks. A seat the AI cannot pilot is a table nobody checked.
@@ -812,6 +825,15 @@ def main(args=None):
         # so a withdrawn hint would otherwise survive in the override it was written
         # into (measured: Altar of Dementia's preference line outlived its hint and the
         # fingerprint did not move). Deleting first makes the set exactly the lists.
+        # VALIDATE BEFORE THE DELETE (2026-11-04): a stale hints file used to be refused
+        # half way through, with the override tree already gone and the engine untouched.
+        for slug in hinted_decks():
+            # THE WHOLE FILE, floors included: a floors-only opponent file (purphoros-
+            # pingers) passed `validate-forge-hints` and was refused here, because this
+            # call dropped its floors (found 2026-10-25).
+            errs = validate_hints(slug, {"hints": hints_for(slug), "floors": floors_for(slug)})
+            if errs:
+                raise SystemExit(f"{slug}/{HINTS_FILE}: " + "; ".join(errs))
         for stale in OVERRIDE_DIR.rglob("*.txt"):
             stale.unlink()
         written, unsteerable = generate_overrides(OVERRIDDEN)
@@ -824,17 +846,11 @@ def main(args=None):
         print(f"unflagged {len(unflagged)} card(s) the AI would never cast ({UNFLAG_FILE.name})")
         # PER-DECK HINTS LAST, so they layer on an unflag or an aim override.
         for slug in hinted_decks():
-            # THE WHOLE FILE, floors included: a floors-only opponent file (purphoros-
-            # pingers) passed `validate-forge-hints` and was refused here, because this
-            # call dropped its floors (found 2026-10-25).
-            errs = validate_hints(slug, {"hints": hints_for(slug), "floors": floors_for(slug)})
-            if errs:
-                raise SystemExit(f"{slug}/{HINTS_FILE}: " + "; ".join(errs))
             hinted = generate_hints(slug)
             print(f"hinted {len(hinted)} card(s) for {slug} ({HINTS_FILE}): {', '.join(hinted)}")
-        missing = unflag_candidates(include_pods=True)
+        missing = unflag_candidates(include_pods=True, include_branches=True)
         if missing:
-            print(f"  NOT YET UNFLAGGED — RemoveDeck:All cards in live decks the AI will not cast:")
+            print(f"  NOT YET UNFLAGGED — RemoveDeck:All cards in live decks, open branches and pod seats the AI will not cast:")
             for slug, name, stem in missing:
                 print(f"    {slug}: {name}  ({stem})")
 

@@ -28,11 +28,9 @@ import json
 import os
 import pathlib
 import re
-import shutil
 import subprocess
-import tempfile
 import time
-from datetime import date
+from datetime import date, datetime
 
 from manamap import config
 from manamap.sim import forge, parse, telemetry
@@ -95,6 +93,8 @@ _ABILITY = re.compile(r"^A:(?P<prefix>(?:SP|AB)\$ (?P<api>\w+))(?P<rest>.*)$", r
 _SVAR_X = re.compile(r"^SVar:X:(.+)$", re.M)
 _TYPES = re.compile(r"^Types:(.+)$", re.M)
 _COST_RE = re.compile(r"\bCost\$ ([^|]+)")
+#: A generic or coloured symbol in an ability's cost, as `1 T` in a Signet's `Cost$ 1 T`.
+_MANA_SYMBOL = re.compile(r"(?:^| )(?:\d+|[WUBRGC]+)(?: |$)")
 #: APIs whose AI class refuses a shape unless a known `AILogic$` names it — the three the
 #: patch set added logic for, keyed by the signature of the shape they refuse.
 _NEEDS_LOGIC = {
@@ -117,6 +117,10 @@ LIMITATIONS = {
     "phases-x": (
         "KNOWN LIMITATION, not patched (2026-10-25): PhasesAi never chooses X, so an X phase-out "
         "(March of Swirling Mist) is never cast for value; the card is a floor in any run"),
+    "filter-mana": (
+        "KNOWN LIMITATION, not patched (2026-11-04): `ComputerUtilMana.getAIPlayableMana` skips a mana ability "
+        "with a mana cost, so the AI casts a filter Signet and can never tap it: PLAYED here means two mana spent "
+        "on a blank (Boros Signet cast 15, Izzet Signet 12, no `Mana:` line for either). A floor in any run"),
 }
 
 #: The answer-only shapes: they wait for something to answer, so a hold can be an empty
@@ -192,6 +196,9 @@ def diagnose(card, installed_copy=True):
                 remedies.append(LIMITATIONS["self-unblockable-effect"])
             else:
                 remedies.append(f"ai_logic hint on `{prefix}`: {need[1]}")
+        if prefix == "AB$ Mana" and _MANA_SYMBOL.search(cost):
+            classes.append("filter-mana")
+            remedies.append(LIMITATIONS["filter-mana"])
         if api == "Phases" and x is not None:
             classes.append("no-ai-logic")
             remedies.append(LIMITATIONS["phases-x"])
@@ -243,11 +250,16 @@ def same_harness(a, b):
     return bool(a) and bool(b) and all(a.get(k) == b.get(k) for k in ("overrides", "patches", "profile", "profile_sha"))
 
 
-def count(text, card, ours_suffix, cmc):
-    """What happened to `card` in our seat across the games in one log text."""
+def count(text, card, ours_suffix, cmc, gated=False, commander=None):
+    """What happened to `card` in our seat across the games in one log text. `gated`: the
+    installed script waits for a commander, `commander` names the shell's; the two
+    `held_payable_*` counts are net of the lands tapped and of a shut gate
+    (`parse.hand_facts`), and the verdict reads them. `castable_uncast_turns` stays the
+    raw lands-only count."""
     games = parse.parse_games(text)
     out = {"games": len(games), "drawn_games": 0, "drawn": 0, "cast": 0, "activated": 0, "triggered": 0, "discarded": 0,
-           "castable_uncast_turns": 0, "held_at_end_games": 0, "held_castable_games": 0, "timeouts": text.count("AI eval thread at timeout")}
+           "castable_uncast_turns": 0, "held_at_end_games": 0, "held_castable_games": 0,
+           "held_payable_turns": 0, "held_payable_games": 0, "timeouts": text.count("AI eval thread at timeout")}
     stem = re.escape(card)
     ours = re.escape(ours_suffix)
     out["cast"] = len(re.findall(ours + r" cast " + stem + r"\b", text))
@@ -264,12 +276,18 @@ def count(text, card, ours_suffix, cmc):
             out["drawn"] += drawn
         out["discarded"] += sum(1 for ev in g["events"] if ev.get("kind") == "zone" and ev.get("owner") == seat
                                 and ev.get("card") == card and ev.get("from") == "Hand" and ev.get("to") == "Graveyard")
-        hf = parse.hand_facts(g["events"], g["seats"], cmc={card: cmc}).get(seat) or {}
+        hf = parse.hand_facts(g["events"], g["seats"], cmc={card: cmc},
+                              net={"gated": {card} if gated else set(),
+                                   "commanders": {seat: [commander]} if commander else {}}).get(seat) or {}
         row = (hf.get("cards") or {}).get(card) or {}
         cu = row.get("castable_uncast", 0)
         out["castable_uncast_turns"] += cu
         if cu:
             out["held_castable_games"] += 1
+        payable = row.get("held_payable", 0)
+        out["held_payable_turns"] += payable
+        if payable:
+            out["held_payable_games"] += 1
         if any(c["card"] == card for c in hf.get("hand_at_end", [])):
             out["held_at_end_games"] += 1
     return out
@@ -281,20 +299,25 @@ VERDICTS = ("PLAYED", "CAST-LATE", "HELD", "UNPLAYED", "NOT DRAWN")
 def verdict(c):
     """One word a gate can read, then the sentence. CAST-LATE is Bastion's shape: played in
     fewer than half the games it was drawn while castable and uncast on at least two
-    own turns per drawn game — not dead, but a floor on whatever it is for."""
+    own turns per drawn game — not dead, but a floor on whatever it is for. A hold is
+    read net of the lands already tapped and a shut gate where the counts carry that
+    (`held_payable_*`, 2026-11-04); a row written before then reads the raw count."""
     plays = c["cast"] + c["activated"]
+    held_turns = c.get("held_payable_turns", c["castable_uncast_turns"])
+    held_games = c.get("held_payable_games", c["held_castable_games"])
     if not c["drawn_games"]:
         return "NOT DRAWN — the shell never put it in hand; raise --copies or --games"
-    if plays == 0 and c["held_castable_games"]:
-        return (f"HELD: in hand in {c['drawn_games']} game(s), castable and uncast on {c['castable_uncast_turns']} own turn(s) "
-                f"across {c['held_castable_games']} game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch")
+    if plays == 0 and held_games:
+        return (f"HELD: in hand in {c['drawn_games']} game(s), castable and uncast on {held_turns} own turn(s) "
+                f"across {held_games} game(s), cast 0 — the AI will not play it; a hint or a patch BEFORE a branch")
     if plays == 0:
-        return f"UNPLAYED: never castable in {c['drawn_games']} drawn game(s) — the shell did not give it the mana; inconclusive"
-    if plays * 2 < c["drawn_games"] and c["castable_uncast_turns"] >= 2 * c["drawn_games"]:
+        return (f"UNPLAYED: never payable in {c['drawn_games']} drawn game(s) (lands alone said {c['castable_uncast_turns']} "
+                f"own turn(s); the mana was spent or its commander gate was shut) — inconclusive")
+    if plays * 2 < c["drawn_games"] and held_turns >= 2 * c["drawn_games"]:
         return (f"CAST-LATE: cast {c['cast']} / activated {c['activated']} in {c['drawn_games']} drawn game(s) while castable and "
-                f"uncast on {c['castable_uncast_turns']} own turn(s) — the AI plays it behind everything else; a FLOOR")
+                f"uncast on {held_turns} own turn(s) — the AI plays it behind everything else; a FLOOR")
     return (f"PLAYED: cast {c['cast']} / activated {c['activated']} / triggered {c.get('triggered', 0)} across {c['drawn_games']} "
-            f"drawn game(s); held castable and uncast on {c['castable_uncast_turns']} own turn(s)")
+            f"drawn game(s); held castable and uncast on {held_turns} own turn(s)")
 
 
 def verdict_word(c):
@@ -325,7 +348,9 @@ def run(slug, card, copies=DEFAULT_COPIES, games=DEFAULT_GAMES, vs=DEFAULT_VS, c
         profiles = [profile, forge.STANDARD_POD_PROFILE]
     argv = forge.command([meta, opp], games, clock, jar=jar, seed=seed, profiles=profiles)
     log = _play(argv, log_path)
-    c = count(log, card, meta, facts["cmc"])
+    from manamap.sim import seat_audit as _sa
+    c = count(log, card, meta, facts["cmc"], gated=bool(_sa.commander_gated_names([card])),
+              commander=facts["commander"])
     from manamap.sim import forge_pilot as _fpl
     stamp = dict(harness(), profile=profile, profile_sha=_fpl.profile_content_sha(profile) if profile else None)
     return {"slug": slug, "branch": branch, "card": card, "as_of": date.today().isoformat(), "shell": facts,
@@ -333,7 +358,7 @@ def run(slug, card, copies=DEFAULT_COPIES, games=DEFAULT_GAMES, vs=DEFAULT_VS, c
             "telemetry": (fp or {}).get("sha"), "profiles": profiles, "harness": stamp,
             "counts": c, "verdict": verdict(c), "verdict_word": verdict_word(c), "diagnosis": diagnose(card),
             "limits": ["A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
-                       "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
+                       "Held is lands left untapped with a commander gate open (colours and rocks ignored); `castable_uncast_turns` is the raw lands-only count.",
                        "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table."]}, log
 
 
@@ -360,6 +385,19 @@ def _progress(label, total, log_glob):
 
 
 PROOFS = "cast_proofs.json"
+
+
+def probe_log_dir(slug, branch=None):
+    """Where one invocation's shell logs land: `<deck or branch>/sim/logs/cast-check/<stamp>/`,
+    one `<card stem>.log` and its `.err` per shell. Under the `sim/logs/` the repo already
+    gitignores (`data/decks/*/sim/logs/`, `data/decks/*/branches/*/sim/logs/`), so a probe
+    can be re-read and is never a tracked artifact. A fresh folder per invocation, so the
+    job band's game counter over `*.log` sees this run and no earlier one."""
+    from manamap.pilot.common import decks_root
+    base = decks_root() / slug
+    if branch:
+        base = base / "branches" / branch
+    return base / "sim" / "logs" / "cast-check" / datetime.now().strftime("%Y%m%d-%H%M%S-%f")
 
 
 def adds(slug, branch):
@@ -492,10 +530,11 @@ def run_many(slug, cards, branch=None, jobs=2, force=False, on_done=None, **kw):
     """One shell per card, `jobs` at a time; a card already PLAYED under the same harness
     in the existing proof file is kept rather than re-run unless `force`.
 
-    Live, not blind (2026-10-18): every shell streams its log to a temp dir the job band
-    counts games from, and `on_done(card, doc, i, n)` fires AS EACH SHELL FINISHES, in
-    completion order — the command prints the card's row then, not after the last shell.
-    The returned docs are keyed by card, so the order a caller reads is its own."""
+    Live, not blind (2026-10-18): every shell streams its log to `probe_log_dir` (kept
+    since 2026-11-04, so a probe can be re-read), the job band counts games from it, and
+    `on_done(card, doc, i, n)` fires AS EACH SHELL FINISHES, in completion order — the
+    command prints the card's row then, not after the last shell. The returned docs are
+    keyed by card, so the order a caller reads is its own; each doc names its `log`."""
     from concurrent.futures import ThreadPoolExecutor, as_completed
     existing = read_proofs(slug, branch) if branch else None
     current = current_harness(slug, branch)
@@ -514,23 +553,22 @@ def run_many(slug, cards, branch=None, jobs=2, force=False, on_done=None, **kw):
         return kept, docs, current
     from manamap.sim import forge_cards
     games = kw.get("games", DEFAULT_GAMES)
-    tmp = pathlib.Path(tempfile.mkdtemp(prefix="mm-castcheck-"))
+    logs = probe_log_dir(slug, branch)
+    logs.mkdir(parents=True, exist_ok=True)
     label = f"forge-cast-check {slug}" + (f"@{branch}" if branch else "")
-    try:
-        with _progress(label, len(todo) * games, str(tmp / "*.log")) as prog, \
-                ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
-            prog.set(detail=f"0/{len(todo)} cards · {jobs} shells at a time")
-            futures = {ex.submit(run, slug, c, branch=branch, log_path=tmp / f"{forge_cards.stem(c)[:40]}.log", **kw): c
-                       for c in todo}
-            for i, fut in enumerate(as_completed(futures), 1):
-                card = futures[fut]
-                doc, _log = fut.result()
-                docs[card] = doc
-                prog.set(detail=f"{i}/{len(todo)} cards · last {card}: {doc['verdict_word']}")
-                if on_done:
-                    on_done(card, doc, i, len(todo))
-    finally:
-        shutil.rmtree(tmp, ignore_errors=True)       # the logs fed the band; the docs carry the counts
+    with _progress(label, len(todo) * games, str(logs / "*.log")) as prog, \
+            ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
+        prog.set(detail=f"0/{len(todo)} cards · {jobs} shells at a time")
+        paths = {c: logs / f"{forge_cards.stem(c)[:40]}.log" for c in todo}
+        futures = {ex.submit(run, slug, c, branch=branch, log_path=paths[c], **kw): c for c in todo}
+        for i, fut in enumerate(as_completed(futures), 1):
+            card = futures[fut]
+            doc, _log = fut.result()
+            doc["log"] = str(paths[card])
+            docs[card] = doc
+            prog.set(detail=f"{i}/{len(todo)} cards · last {card}: {doc['verdict_word']}")
+            if on_done:
+                on_done(card, doc, i, len(todo))
     return kept, docs, current
 
 
@@ -544,7 +582,7 @@ def write_proofs(slug, branch, kept, docs, current, shell=None):
            "shell": shell or {"vs": DEFAULT_VS, "games": DEFAULT_GAMES, "copies": DEFAULT_COPIES, "clock": DEFAULT_CLOCK, "seed": 4343},
            "cards": dict(sorted(rows.items())),
            "limits": ["A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
-                      "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
+                      "Held is lands left untapped with a commander gate open (colours and rocks ignored); `castable_uncast_turns` is the raw lands-only count.",
                       "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table.",
                       "A COMBAT-GATED TRIGGER CANNOT BE PROVEN HERE. Measured 2026-10-01: our seat declared ZERO attacks "
                       "across Shared Animosity's shells, so its `triggered` count is 0 and means nothing — the shell's filler "
@@ -561,8 +599,9 @@ def write_proofs(slug, branch, kept, docs, current, shell=None):
 
 
 def render_row(card, r):
+    held = r.get("held_payable_turns")
     return (f"  {card:28s} {r['verdict_word']:9s} drawn {r['drawn_games']:2d}g  cast {r['cast']:2d}  act {r['activated']:2d}  "
-            f"trig {r.get('triggered', 0):2d}  castable-uncast {r['castable_uncast_turns']:3d}t  "
+            f"trig {r.get('triggered', 0):2d}  held {'-' if held is None else f'{held:3d}':>3s}/{r['castable_uncast_turns']:3d}t  "
             + (f"[{', '.join(r['classes'])}]" if r.get("classes") and r["classes"] != ["unknown"] else ""))
 
 
@@ -596,6 +635,8 @@ def main(args):
                                        force=getattr(args, "force", False), on_done=_live, **kw)
         shell = {"vs": kw["vs"], "games": kw["games"], "copies": kw["copies"], "clock": kw["clock"], "seed": kw["seed"]}
         print(f"CAST PROOFS — {args.slug}@{branch}: {len(cards)} add(s), {len(docs)} shell(s) run, {len(kept)} kept from the file")
+        if docs:
+            print(f"  shell logs (gitignored): {pathlib.Path(next(iter(docs.values()))['log']).parent}")
         rows = {**kept, **{c: {**d["counts"], "verdict_word": d["verdict_word"], "classes": d["diagnosis"]["classes"]} for c, d in docs.items()}}
         for c in cards:
             print(render_row(c, rows[c]))
@@ -610,15 +651,16 @@ def main(args):
     if not getattr(args, "card", None):
         raise SystemExit("--card NAME, or --adds with --branch")
     games = getattr(args, "games", None) or DEFAULT_GAMES
-    tmp = pathlib.Path(tempfile.mkdtemp(prefix="mm-castcheck-"))
-    try:
-        with _progress(f"forge-cast-check {args.slug}: {args.card}", games, str(tmp / "*.log")):
-            doc, log = run(args.slug, args.card, copies=getattr(args, "copies", None) or DEFAULT_COPIES,
-                           games=games, vs=getattr(args, "vs", None) or DEFAULT_VS,
-                           clock=getattr(args, "clock", None) or DEFAULT_CLOCK, branch=getattr(args, "branch", None),
-                           seed=getattr(args, "seed", None) or 4343, log_path=tmp / "shell.log")
-    finally:
-        shutil.rmtree(tmp, ignore_errors=True)
+    from manamap.sim import forge_cards
+    logs = probe_log_dir(args.slug, getattr(args, "branch", None))
+    logs.mkdir(parents=True, exist_ok=True)
+    log_path = logs / f"{forge_cards.stem(args.card)[:40]}.log"
+    with _progress(f"forge-cast-check {args.slug}: {args.card}", games, str(logs / "*.log")):
+        doc, log = run(args.slug, args.card, copies=getattr(args, "copies", None) or DEFAULT_COPIES,
+                       games=games, vs=getattr(args, "vs", None) or DEFAULT_VS,
+                       clock=getattr(args, "clock", None) or DEFAULT_CLOCK, branch=getattr(args, "branch", None),
+                       seed=getattr(args, "seed", None) or 4343, log_path=log_path)
+    doc["log"] = str(log_path)
     if getattr(args, "as_json", False):
         print(json.dumps(doc, indent=2, ensure_ascii=False))
     else:
@@ -626,8 +668,9 @@ def main(args):
         print(f"CAST CHECK — {doc['card']} for {doc['slug']}" + (f"@{doc['branch']}" if doc["branch"] else "")
               + f" · {doc['shell']['copies']} copies, {doc['games']} games vs {doc['vs']}, {doc['jar']}")
         print(f"  drawn in {c['drawn_games']} game(s) ({c['drawn']} draws) · cast {c['cast']} · activated {c['activated']} · "
-              f"discarded {c['discarded']} · castable-uncast turns {c['castable_uncast_turns']} · held at end {c['held_at_end_games']} · AI timeouts {c['timeouts']}")
+              f"discarded {c['discarded']} · held {c['held_payable_turns']} of {c['castable_uncast_turns']} lands-only castable turns · held at end {c['held_at_end_games']} · AI timeouts {c['timeouts']}")
         print(f"  {doc['verdict']}")
+        print(f"  shell log (gitignored): {log_path}")
         if doc["verdict_word"] in ("HELD", "CAST-LATE", "UNPLAYED"):
             print(f"  script: {doc['diagnosis']['classes']}")
             for rem in doc["diagnosis"]["remedies"]:

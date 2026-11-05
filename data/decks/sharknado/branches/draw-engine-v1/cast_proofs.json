@@ -1,9 +1,9 @@
 {
   "slug": "sharknado",
   "branch": "draw-engine-v1",
-  "as_of": "2026-11-04",
+  "as_of": "2026-11-05",
   "harness": {
-    "overrides": "ecdad552212b",
+    "overrides": "c897a28dd05b",
     "patches": "9473cf359146",
     "forge": {
       "version": "2.0.14",
@@ -21,21 +21,131 @@
     "seed": 4343
   },
   "cards": {
-    "Concentrate": {
-      "as_of": "2026-11-04",
+    "Boros Signet": {
+      "as_of": "2026-11-05",
       "games": 8,
-      "drawn_games": 6,
-      "drawn": 11,
-      "cast": 1,
+      "drawn_games": 3,
+      "drawn": 4,
+      "cast": 3,
       "activated": 0,
       "triggered": 0,
       "discarded": 1,
-      "castable_uncast_turns": 12,
-      "held_at_end_games": 5,
-      "held_castable_games": 4,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
       "timeouts": 0,
-      "verdict": "CAST-LATE: cast 1 / activated 0 in 6 drawn game(s) while castable and uncast on 12 own turn(s) — the AI plays it behind everything else; a FLOOR",
-      "verdict_word": "CAST-LATE",
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "filter-mana"
+      ],
+      "remedies": [
+        "KNOWN LIMITATION, not patched (2026-11-04): `ComputerUtilMana.getAIPlayableMana` skips a mana ability with a mana cost, so the AI casts a filter Signet and can never tap it: PLAYED here means two mana spent on a blank (Boros Signet cast 15, Izzet Signet 12, no `Mana:` line for either). A floor in any run"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Mana"
+        ],
+        "apis": [
+          "Mana"
+        ],
+        "x": null,
+        "types": "Artifact",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 18,
+          "Plains": 18
+        },
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Borrowed Knowledge": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 7,
+      "cast": 1,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 12,
+      "held_at_end_games": 3,
+      "held_castable_games": 4,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 1 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "SP$ Charm"
+        ],
+        "apis": [
+          "Charm"
+        ],
+        "x": "TargetedPlayer$CardsInHand",
+        "types": "Sorcery",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 18,
+          "Plains": 18
+        },
+        "cmc": 4.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Cathartic Reunion": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 5,
+      "cast": 2,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 6,
+      "held_at_end_games": 3,
+      "held_castable_games": 2,
+      "held_payable_turns": 6,
+      "held_payable_games": 2,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 0 across 5 drawn game(s); held castable and uncast on 6 own turn(s)",
+      "verdict_word": "PLAYED",
       "classes": [
         "unknown"
       ],
@@ -61,7 +171,114 @@
         "filler": 59,
         "lands": 36,
         "basics": {
-          "Island": 36
+          "Mountain": 36
+        },
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Gleaming Splendor": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 7,
+      "drawn": 9,
+      "cast": 7,
+      "activated": 0,
+      "triggered": 5,
+      "discarded": 0,
+      "castable_uncast_turns": 5,
+      "held_at_end_games": 3,
+      "held_castable_games": 1,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 7 / activated 0 / triggered 5 across 7 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Draw"
+        ],
+        "apis": [
+          "Draw"
+        ],
+        "x": null,
+        "types": "Enchantment",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Plains": 36
+        },
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Heartwarming Redemption": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 6,
+      "cast": 0,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 1,
+      "castable_uncast_turns": 10,
+      "held_at_end_games": 5,
+      "held_castable_games": 4,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "UNPLAYED: never payable in 5 drawn game(s) (lands alone said 10 own turn(s); the mana was spent or its commander gate was shut) — inconclusive",
+      "verdict_word": "UNPLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "SP$ Discard"
+        ],
+        "apis": [
+          "Discard"
+        ],
+        "x": "Remembered$Amount/Plus.1",
+        "types": "Instant",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 18,
+          "Plains": 18
         },
         "cmc": 4.0,
         "identity": [
@@ -72,20 +289,340 @@
       },
       "vs": "giada-angels"
     },
-    "Rush of Knowledge": {
-      "as_of": "2026-11-04",
+    "Magus of the Wheel": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 4,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 0,
+      "held_at_end_games": 1,
+      "held_castable_games": 0,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Discard"
+        ],
+        "apis": [
+          "Discard"
+        ],
+        "x": null,
+        "types": "Creature Human Wizard",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Mind Spring": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 7,
+      "drawn": 7,
+      "cast": 7,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 7 / activated 0 / triggered 0 across 7 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "SP$ Draw"
+        ],
+        "apis": [
+          "Draw"
+        ],
+        "x": "Count$xPaid",
+        "types": "Sorcery",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Island": 36
+        },
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Mind Stone": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 6,
+      "drawn": 8,
+      "cast": 6,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 1,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "held_payable_turns": 1,
+      "held_payable_games": 1,
+      "timeouts": 3,
+      "verdict": "PLAYED: cast 6 / activated 0 / triggered 0 across 6 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Mana",
+          "AB$ Draw"
+        ],
+        "apis": [
+          "Draw",
+          "Mana"
+        ],
+        "x": null,
+        "types": "Artifact",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 12,
+          "Island": 12,
+          "Plains": 12
+        },
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Mirrormade": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 6,
+      "cast": 7,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 3,
+      "held_castable_games": 2,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 1,
+      "verdict": "PLAYED: cast 7 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "permanent-cast-priority",
+        "author-gate"
+      ],
+      "remedies": [
+        "svars {\"PlayMain1\": \"TRUE\"} in forge_hints.json — the permanent AI then casts it in the first main phase instead of after every creature in hand (Smothering Tithe, Teferi and Jeskai Ascendancy on sharknado; `AICastPreference` cannot do it, it only delays a cast)",
+        "the script's own NeedsToPlayVar (Z GE1) holds the cast until it is met — if it never opens, `drop_svars: [\"NeedsToPlayVar\"]` in forge_hints.json, with a NeedsToPlay of the deck's own rule in its place (Reforge the Soul, Wheel of Fortune)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Enchantment",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Island": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Prosperity": {
+      "as_of": "2026-11-05",
       "games": 8,
       "drawn_games": 3,
+      "drawn": 4,
+      "cast": 4,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
+      "held_payable_turns": 1,
+      "held_payable_games": 1,
+      "timeouts": 2,
+      "verdict": "PLAYED: cast 4 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 1 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "SP$ Draw"
+        ],
+        "apis": [
+          "Draw"
+        ],
+        "x": "Count$xPaid",
+        "types": "Sorcery",
+        "ai_flag": "Random",
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Island": 36
+        },
+        "cmc": 1.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Psychosis Crawler": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 5,
+      "drawn": 6,
+      "cast": 2,
+      "activated": 0,
+      "triggered": 9,
+      "discarded": 2,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 3,
+      "held_castable_games": 1,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 2 / activated 0 / triggered 9 across 5 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "author-gate"
+      ],
+      "remedies": [
+        "the script's own NeedsToPlayVar (X GE3) holds the cast until it is met — if it never opens, `drop_svars: [\"NeedsToPlayVar\"]` in forge_hints.json, with a NeedsToPlay of the deck's own rule in its place (Reforge the Soul, Wheel of Fortune)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": "Count$ValidHand Card.YouOwn",
+        "types": "Artifact Creature Phyrexian Horror",
+        "ai_flag": null,
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 12,
+          "Island": 12,
+          "Plains": 12
+        },
+        "cmc": 5.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Rush of Knowledge": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 6,
       "drawn": 6,
       "cast": 1,
       "activated": 0,
       "triggered": 0,
-      "discarded": 3,
-      "castable_uncast_turns": 3,
-      "held_at_end_games": 2,
-      "held_castable_games": 1,
+      "discarded": 1,
+      "castable_uncast_turns": 5,
+      "held_at_end_games": 5,
+      "held_castable_games": 2,
+      "held_payable_turns": 1,
+      "held_payable_games": 1,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 1 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 3 own turn(s)",
+      "verdict": "PLAYED: cast 1 / activated 0 / triggered 0 across 6 drawn game(s); held castable and uncast on 1 own turn(s)",
       "verdict_word": "PLAYED",
       "classes": [
         "unknown"
@@ -123,37 +660,94 @@
       },
       "vs": "giada-angels"
     },
-    "Well of Lost Dreams": {
-      "as_of": "2026-11-04",
+    "Shattered Perception": {
+      "as_of": "2026-11-05",
       "games": 8,
-      "drawn_games": 6,
-      "drawn": 13,
-      "cast": 6,
+      "drawn_games": 4,
+      "drawn": 5,
+      "cast": 0,
       "activated": 0,
-      "triggered": 135,
-      "discarded": 2,
-      "castable_uncast_turns": 17,
+      "triggered": 0,
+      "discarded": 1,
+      "castable_uncast_turns": 23,
       "held_at_end_games": 3,
       "held_castable_games": 4,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
       "timeouts": 0,
-      "verdict": "PLAYED: cast 6 / activated 0 / triggered 135 across 6 drawn game(s); held castable and uncast on 17 own turn(s)",
-      "verdict_word": "PLAYED",
+      "verdict": "UNPLAYED: never payable in 4 drawn game(s) (lands alone said 23 own turn(s); the mana was spent or its commander gate was shut) — inconclusive",
+      "verdict_word": "UNPLAYED",
       "classes": [
-        "permanent-cast-priority"
+        "unknown"
       ],
       "remedies": [
-        "svars {\"PlayMain1\": \"TRUE\"} in forge_hints.json — the permanent AI then casts it in the first main phase instead of after every creature in hand (Smothering Tithe, Teferi and Jeskai Ascendancy on sharknado; `AICastPreference` cannot do it, it only delays a cast)"
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
       ],
       "script": {
-        "abilities": [],
-        "apis": [],
-        "x": "Count$ChosenNumber",
-        "types": "Artifact",
-        "ai_flag": "Random",
-        "is_curse": null,
-        "ai_logic": [
-          "OptionalDraw"
+        "abilities": [
+          "SP$ Discard"
+        ],
+        "apis": [
+          "Discard"
+        ],
+        "x": "Remembered$Amount",
+        "types": "Sorcery",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
         ]
+      },
+      "vs": "giada-angels"
+    },
+    "Thought Vessel": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 5,
+      "cast": 5,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 2,
+      "held_castable_games": 2,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 5 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Mana"
+        ],
+        "apis": [
+          "Mana"
+        ],
+        "x": null,
+        "types": "Artifact",
+        "ai_flag": null,
+        "is_curse": false,
+        "ai_logic": []
       },
       "shell": {
         "commander": "Shabraz, the Skyshark",
@@ -165,7 +759,110 @@
           "Island": 12,
           "Plains": 12
         },
-        "cmc": 4.0,
+        "cmc": 2.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Xorn": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 3,
+      "drawn": 4,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 1,
+      "held_at_end_games": 1,
+      "held_castable_games": 1,
+      "held_payable_turns": 0,
+      "held_payable_games": 0,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 3 drawn game(s); held castable and uncast on 0 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [],
+        "apis": [],
+        "x": null,
+        "types": "Creature Elemental",
+        "ai_flag": "Random",
+        "is_curse": null,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 36
+        },
+        "cmc": 3.0,
+        "identity": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      "vs": "giada-angels"
+    },
+    "Zirda, the Dawnwaker": {
+      "as_of": "2026-11-05",
+      "games": 8,
+      "drawn_games": 4,
+      "drawn": 6,
+      "cast": 3,
+      "activated": 0,
+      "triggered": 0,
+      "discarded": 0,
+      "castable_uncast_turns": 2,
+      "held_at_end_games": 2,
+      "held_castable_games": 1,
+      "held_payable_turns": 2,
+      "held_payable_games": 1,
+      "timeouts": 0,
+      "verdict": "PLAYED: cast 3 / activated 0 / triggered 0 across 4 drawn game(s); held castable and uncast on 2 own turn(s)",
+      "verdict_word": "PLAYED",
+      "classes": [
+        "unknown"
+      ],
+      "remedies": [
+        "no known class matches — read the API's AI class (forge-ai/.../<Api>Ai.java)"
+      ],
+      "script": {
+        "abilities": [
+          "AB$ Pump"
+        ],
+        "apis": [
+          "Pump"
+        ],
+        "x": null,
+        "types": "Legendary Creature Elemental Fox",
+        "ai_flag": null,
+        "is_curse": true,
+        "ai_logic": []
+      },
+      "shell": {
+        "commander": "Shabraz, the Skyshark",
+        "copies": 4,
+        "filler": 59,
+        "lands": 36,
+        "basics": {
+          "Mountain": 18,
+          "Plains": 18
+        },
+        "cmc": 3.0,
         "identity": [
           "R",
           "U",
@@ -177,7 +874,7 @@
   },
   "limits": [
     "A shell, not the deck: the card's VALUE is not measured here, only whether the AI plays it.",
-    "Castable is a lands-only floor (colours ignored), the same floor engine_casts carries.",
+    "Held is lands left untapped with a commander gate open (colours and rocks ignored); `castable_uncast_turns` is the raw lands-only count.",
     "Two seats, short clock: a card that needs a four-player board or a long game can read HELD here and play at the table.",
     "A COMBAT-GATED TRIGGER CANNOT BE PROVEN HERE. Measured 2026-10-01: our seat declared ZERO attacks across Shared Animosity's shells, so its `triggered` count is 0 and means nothing — the shell's filler is the deck's cheapest spells against one opposing board, and the AI does not swing. `cast` is the verdict this tool owns; a trigger that needs combat is read in the pod arm, where `first_attack_turn` says whether the deck attacked at all.",
     "A proof is a measurement under one harness (overrides, profile, patch set); a changed harness voids it, like model_version.",

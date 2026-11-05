@@ -694,10 +694,21 @@ audit of OURS AND EVERY OPPONENT.
 **The definition** (written into every audit, `seat_audit.DEFINITION`, tighten there):
 static — no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's
 overrides, and every card has a script; dynamic, from a run's logs — the commander resolved
-in at least 80% of games, no card the pod names as the seat's `engine` was never cast or held
+in at least 80% of games, no card the pod names as the seat's `engine` (our seat: the deck's
+own `engine_casts.engine_set`, since our seat is not in the pod file) was never cast or held
 while castable, and for our wheel deck the wheels fired with a commander out at least 90% of
 the time with at least one wheel a game. A card named in the seat's hints as a FLOOR is
 reported and never fails the seat.
+
+**Held means could have been paid (2026-11-04).** `castable_uncast` counts own turns that ended
+with the card in hand and enough lands on the battlefield, whatever those lands had just done:
+Windfall read 25 such turns at `olivers-table-3p` (run caeeec41) and 2 once the lands tapped for
+mana (a `Mana:` log line each) and its commander gate were subtracted. `held_payable` is that
+net figure; the seat audit, `forge-cast-check`'s verdict and `held_while_castable` judge on it.
+The raw count stays, because `validate-sim` holds `engine_casts` and `analysis` to exact equality
+against the logs and because `net-change`'s post-hoc CAST-LATE read, `try` and
+`sim_findings` print it. So `held_payable` is a top-level record block beside `engine_casts`,
+validated only where present, and an older record reads raw. Colours and rocks stay ignored.
 
 **The command.** `manamap pilot forge-seat-audit <pod> [--run RUN_ID] [--write]` prints one
 row per seat and, with `--write`, `data/pods/<name>.audit.json` under the overrides sha
@@ -722,6 +733,18 @@ per-card `NeedsToPlayVar`. The pilot's rule — a wheel is a finisher dropped on
 engine honours for any spell or ability; `data/decks/sharknado/forge_hints.json` carries it,
 with `PlayMain1` on the rocks the wheel turn needs and `Main1` on Silence. Every hint is a
 harness change (`data/forge_overrides/README.md`).
+
+**What `PlayMain1` reaches, and what no hint reaches (2.0.14 bytecode, 2026-11-04).**
+`castPermanentInMain1` reads `TRUE` only with a creature of ours in play and `ALWAYS` always;
+draw-engine-v1's rocks went from 0 of 13 casts in Main 1 to 7 of 13 under `TRUE`, the rest on an
+empty board. `DrawAi` waits for Main 2 unless `PlayMain1:ALWAYS`. `DiscardAi`, every hand-wheel,
+never reads `PlayMain1`: it waits for Main 2 unless the ability has `ActivationPhases` or an
+`AILogic$ AnyPhase`. `getAIPlayableMana` skips a mana ability with a mana cost, so **the AI casts
+a filter Signet and never taps it** (`filter-mana`: 0 `Mana:` lines over 187 casts in the
+sharknado and edgar logs). And a creature's own sacrifice cost waits for danger, so Magus of the
+Wheel is a 3/3 here (cast 17, activated 0). Unflagged can also be false: **Knollspine Dragon** took
+its optional trigger with no target 7 times of 7, discarding 18 cards and drawing none, so it stays
+flagged (`unflag.txt` says why) and tannuk-warp fails the static half on it.
 
 ## Scenario slices: one board, a few turns (2026-10-08, PRD v2)
 
@@ -1424,7 +1447,9 @@ discarded, castable-and-uncast own turns, held at game end, and prints one verdi
 PLAYED (with the counts), HELD (castable in N games, cast 0 — a hint or a patch before any
 branch), or NOT DRAWN / inconclusive. It measures nothing about the card's value. The rule
 it enforces: every add a branch objective depends on being cast or activated runs this
-first, and the result goes in the stage `--why`.
+first, and the result goes in the stage `--why`. Every shell's log is kept (2026-11-04) under
+`<deck or branch>/sim/logs/cast-check/<stamp>/<card stem>.log`, inside the `sim/logs/` the repo
+already gitignores, so a surprising verdict can be re-read rather than replayed.
 
 **The gate (2026-10-01, the same day, after Bastion of Remembrance read CAST-LATE in the
 same arm — cast in 10 of 30 games it was drawn, castable on 48 turns).** The pilot: "no

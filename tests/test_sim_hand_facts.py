@@ -143,3 +143,49 @@ def test_turns_on_the_battlefield_are_counted_from_the_arrivals_and_lands_are_no
     assert all(v >= 1 for v in on_board.values())
     ec = parse.engine_casts(facts, LABEL, "goblin-storm")
     assert any("turns_on_battlefield" in r for r in ec["by_card"].values())
+
+
+def test_the_net_count_is_asked_for_so_every_record_re_derives_byte_for_byte():
+    """`validate-sim` holds `analysis` and `engine_casts` to exact equality against the
+    logs, so a key added by default reddens every committed record. Proven by defaulting
+    `net` on in `hand_facts`: this `==` fails."""
+    text = (FIX_DIR / "two-seat-one-game-telemetry.log").read_text()
+    facts, _ = parse.analyze_logs([text], LABEL, cmc=CMC)
+    assert facts[0]["per_seat"][GS]["hand"]["cards"]["Goblin Bombardment"] == {"turns_in_hand": 7, "castable_uncast": 6}
+    net = parse.held_payable_by_seat([text], LABEL, CMC)
+    assert net["goblin-storm"]["Goblin Bombardment"] <= 6
+    assert parse.held_payable_by_seat([(FIX_DIR / "two-seat-one-game.log").read_text()],
+                                      {"Ai(1)-radagast": "radagast"}, {"Sol Ring": 1}) == {}, \
+        "a plain-formatter log has no hand: nothing measured, not a zero"
+
+
+def test_held_while_castable_is_judged_on_the_net_block_and_keeps_the_raw_count():
+    """Proven by judging on `cu` alone: Windfall stays on the list at 25 raw turns."""
+    from manamap.sim import engine_casts as ec_mod
+    by = {"Windfall": {"cast": 0, "activated": 0, "discarded": 0, "in_hand_games": 9, "castable_uncast": 25},
+          "Negate": {"cast": 1, "activated": 0, "discarded": 0, "in_hand_games": 4, "castable_uncast": 16}}
+    rec = {"engine_casts": {"by_card": by}}
+    assert [r["card"] for r in ec_mod.held_while_castable(rec)] == ["Windfall", "Negate"], "no block: the raw count"
+    assert all("held_payable" not in r for r in ec_mod.held_while_castable(rec))
+    rec["held_payable"] = {"by_card": {"Windfall": 1, "Negate": 3}, "gated": ["Windfall"]}
+    held = ec_mod.held_while_castable(rec)
+    assert [(r["card"], r["held_payable"], r["castable_uncast"]) for r in held] == [("Negate", 3, 16)]
+    assert "x3/16 turns" in " ".join(ec_mod.render({"games": 8, "own_turns": 40, "expected_natural_draws_per_card": 9,
+                                                    "never_cast": [], "covered": True, "reading": "r",
+                                                    "held_while_castable": held}))
+
+
+def test_the_record_block_validates_only_where_present_and_is_a_subset_of_the_raw_turns():
+    from manamap.sim import validate_sim
+    text = (FIX_DIR / "two-seat-one-game-telemetry.log").read_text()
+    block = parse.held_payable_block([text], LABEL, "goblin-storm", CMC, {}, ["Goblin Bombardment"])
+    assert block["gated"] == ["Goblin Bombardment"] and block["by_card"]["Goblin Bombardment"] == 0, \
+        "a gated card with no commander on the board is never payable"
+    assert parse.held_payable_block([text], LABEL, "nobody-here", CMC, {}, []) is None
+    check = validate_sim._held_payable_errors
+    by = {"engine_casts": {"by_card": {"A": {"castable_uncast": 3}}}}
+    assert check(by) == [], "an older record reads not measured"
+    assert check({**by, "held_payable": {"by_card": {"A": 3}, "gated": []}}) == []
+    assert any("subset" in e for e in check({**by, "held_payable": {"by_card": {"A": 4}, "gated": []}}))
+    assert any("shape" in e for e in check({**by, "held_payable": {"by_card": {"A": -1}, "gated": []}}))
+    assert any("shape" in e for e in check({**by, "held_payable": {"by_card": {}}}))

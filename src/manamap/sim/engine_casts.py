@@ -219,7 +219,7 @@ def from_record(rec, deck_names=None, engine=None):
     eng_cards = set((out.get("engine") or {}).get("cards") or [])
     held_engine = [r for r in (out["held_while_castable"] or []) if r["card"] in eng_cards]
     if held_engine:
-        out["reading"] += (" BUT " + ", ".join(f"{r['card']} sat castable and uncast on {r['castable_uncast']} own turns"
+        out["reading"] += (" BUT " + ", ".join(f"{r['card']} sat castable and uncast on {r.get('held_payable', r['castable_uncast'])} own turns"
                                               for r in held_engine[:3])
                            + (f" (+{len(held_engine) - 3} more)" if len(held_engine) > 3 else "")
                            + " — measured from the hand, not inferred.")
@@ -234,21 +234,28 @@ HELD_CASTABLE_TURNS = 2
 
 def held_while_castable(rec):
     """`[{card, castable_uncast, cast, in_hand_games}]` for cards the record's telemetry
-    hand facts show held on >= HELD_CASTABLE_TURNS castable own turns and cast at most
-    once; [] when the record has no measured hand (a plain-formatter run), and None
-    when there is no engine_casts block at all."""
+    hand facts show held on >= HELD_CASTABLE_TURNS own turns and cast at most once; [] when
+    the record has no measured hand (a plain-formatter run), and None when there is no
+    engine_casts block at all.
+
+    Judged on `held_payable` where the record carries that block (the row says so), so a
+    turn the mana was already spent or a commander gate was shut is not a hold; on the raw
+    lands-only count otherwise. `castable_uncast` stays in the row either way."""
     ec = rec.get("engine_casts")
     if not ec:
         return None
+    net = (rec.get("held_payable") or {}).get("by_card")
     rows = []
     for name, row in ec.get("by_card", {}).items():
         cu = row.get("castable_uncast")
         if cu is None:
             continue
-        if cu >= HELD_CASTABLE_TURNS and row.get("cast", 0) <= 1:
+        judged = cu if net is None else net.get(name, 0)
+        if judged >= HELD_CASTABLE_TURNS and row.get("cast", 0) <= 1:
             rows.append({"card": _front(name), "castable_uncast": cu, "cast": row.get("cast", 0),
-                         "in_hand_games": row.get("in_hand_games", 0)})
-    return sorted(rows, key=lambda r: (-r["castable_uncast"], r["card"]))
+                         "in_hand_games": row.get("in_hand_games", 0),
+                         **({"held_payable": judged} if net is not None else {})})
+    return sorted(rows, key=lambda r: (-r.get("held_payable", r["castable_uncast"]), r["card"]))
 
 
 #: An outlet on the battlefield this many own turns with no activation is the AI not
@@ -310,6 +317,10 @@ def render(q):
     lines.append("    " + q["reading"])
     held = q.get("held_while_castable")
     if held:
-        lines.append("    HELD WHILE CASTABLE (MEASURED from the telemetry hand; lands only, so a floor): "
-                     + ", ".join(f"{r['card']} (x{r['castable_uncast']} turns, cast {r['cast']})" for r in held[:8]))
+        netted = "held_payable" in held[0]
+        lines.append("    HELD WHILE CASTABLE (MEASURED from the telemetry hand; "
+                     + ("lands left untapped and the gate open, of the raw lands-only count" if netted else "lands only, so a floor")
+                     + "): " + ", ".join(
+                         f"{r['card']} (x{r['held_payable']}/{r['castable_uncast']} turns, cast {r['cast']})" if netted
+                         else f"{r['card']} (x{r['castable_uncast']} turns, cast {r['cast']})" for r in held[:8]))
     return lines

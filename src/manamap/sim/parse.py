@@ -380,7 +380,7 @@ HAND_LIMIT = (
     "on records played under the patched formatter; a plain record has no `hand` key.")
 
 
-def hand_facts(events, seats, cmc=None):
+def hand_facts(events, seats, cmc=None, net=None):
     """Per-seat hand facts from owner-bearing zone events, or {} when the log carries
     none — the shipped formatter's log has no Hand lines at all, so a plain record
     gets NO key rather than a zero, and every record written before the telemetry
@@ -399,6 +399,16 @@ def hand_facts(events, seats, cmc=None):
     (rocks and colours ignored), and a card cast that turn is not counted for it. It is
     the exact form of the question engine_casts could only infer: was the card HELD
     when it could have been played.
+
+    `net` (2026-11-04), `{"gated": names, "commanders": {seat: names}}`, adds
+    `held_payable` beside `castable_uncast`: of those turns, the ones the seat could
+    really have paid for and was allowed to. Lands it tapped for mana that own turn
+    are gone (a `Mana:` line per tap, so a spell, an activation or commander tax all
+    count, and a spell paid by a rock leaves the lands free), and a card under a
+    commander gate (`gated`) counts only if a commander was on the battlefield when
+    the turn ended. Asked for, never by default: `analyze_logs` does not pass it,
+    so every committed record's `analysis` and `engine_casts` re-derive byte for byte.
+    Still a floor on castable and blind to colours, as the raw count is.
     """
     if not any(ev.get("kind") == "zone" and ev.get("owner") for ev in events):
         return {}
@@ -416,18 +426,30 @@ def hand_facts(events, seats, cmc=None):
     field_turns = {s: defaultdict(int) for s in seats}
     cmc = cmc or {}
     cur_turn, cur_active = None, None
+    held_payable = {s: defaultdict(int) for s in seats}
+    played_lands = {s: set() for s in seats}  # ids of the lands `lands_out` counts
+    tapped = {s: set() for s in seats}        # of those, tapped for mana this own turn
+    gated = set((net or {}).get("gated") or ())
+    commander_names = {s: {str(c).split(" // ")[0].strip() for c in ((net or {}).get("commanders") or {}).get(s) or []}
+                       for s in seats}
 
     def close_turn():
         if cur_active in hand and cur_turn:
             end_size[cur_active][cur_turn] = len(hand[cur_active])
             end_lands[cur_active][cur_turn] = any(n in land_names for n in hand[cur_active].values())
+            free = lands_out[cur_active] - len(tapped[cur_active])
+            commander_out = any(str(n).split(" // ")[0].strip() in commander_names[cur_active]
+                                for n in field[cur_active].values())
             for n in hand[cur_active].values():
                 in_hand_turns[cur_active][n] += 1
                 mv = cmc.get(n)
                 if mv is not None and lands_out[cur_active] >= mv:
                     castable_uncast[cur_active][n] += 1
+                    if free >= mv and (n not in gated or commander_out):
+                        held_payable[cur_active][n] += 1
             for n in field[cur_active].values():
                 field_turns[cur_active][n] += 1
+            tapped[cur_active].clear()
 
     for ev in events:
         t = ev.get("turn")
@@ -438,6 +460,9 @@ def hand_facts(events, seats, cmc=None):
         if k == "land" and ev.get("seat") in hand:
             land_turns.add((ev["seat"], t))
             lands_out[ev["seat"]] += 1
+            played_lands[ev["seat"]].add(ev.get("id"))
+        elif k == "mana" and cur_active in hand and ev["perm"][1] in played_lands[cur_active]:
+            tapped[cur_active].add(ev["perm"][1])
         elif k == "zone" and ev.get("owner") in hand:
             s = ev["owner"]
             if ev["to"] == "Hand":
@@ -471,9 +496,27 @@ def hand_facts(events, seats, cmc=None):
             # the lands to cast it (only for cards whose mana value is known).
             "cards": {n: {"turns_in_hand": in_hand_turns[s][n],
                           **({"castable_uncast": castable_uncast[s][n]} if n in cmc else {}),
+                          **({"held_payable": held_payable[s][n]} if net is not None and n in cmc else {}),
                           **({"turns_on_battlefield": field_turns[s][n]} if field_turns[s][n] else {})}
                       for n in sorted(set(in_hand_turns[s]) | set(field_turns[s]))},
         }
+    return out
+
+
+def held_payable_by_seat(texts, label, cmc, commanders=None, gated=None):
+    """`{seat: {card: own turns held while payable}}` across a run's logs, keyed through
+    `label` as `engine_casts` keys its seat, or {} when no log carries the hand. A second
+    walk over the logs on purpose: nothing here enters `game_facts` or a record's
+    `analysis` (see `hand_facts`, `net`)."""
+    out = {}
+    for text in texts:
+        for g in parse_games(text):
+            per = hand_facts(g["events"], g["seats"], cmc, net={"gated": gated, "commanders": commanders})
+            for seat, facts in per.items():
+                row = out.setdefault(label.get(seat, seat), {})
+                for name, h in (facts.get("cards") or {}).items():
+                    if "held_payable" in h:
+                        row[name] = row.get(name, 0) + h["held_payable"]
     return out
 
 
@@ -1612,3 +1655,16 @@ def analyze_logs(log_texts, label, commanders=None, cmc=None, keywords=None):
             facts.append(game_facts(g, commanders, cmc, keywords))
     slug_label = next(iter(label)) if label else None
     return facts, aggregate(facts, slug_label, label, commanders)
+
+
+def held_payable_block(texts, label, ours, cmc, commanders, gated):
+    """The record's top-level `held_payable` (2026-11-04): of the own turns our seat held
+    a card castable on lands alone, the ones it could really have paid for and was
+    allowed to (`parse.hand_facts`, `net`). `gated` is STORED, because it is read from the
+    installed scripts and a record re-derives from itself and its logs alone. None when
+    the logs carry no hand. Beside `engine_casts`, never inside it: that block is held to
+    exact equality against the logs, so a new key there reddens every older record."""
+    by_seat = held_payable_by_seat(texts, label, cmc, commanders, gated)
+    if ours not in by_seat:
+        return None
+    return {"by_card": {k: by_seat[ours][k] for k in sorted(by_seat[ours])}, "gated": sorted(gated or [])}

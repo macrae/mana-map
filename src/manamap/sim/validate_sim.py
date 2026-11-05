@@ -106,6 +106,20 @@ def _cast_proofs_errors(rec):
     return errors
 
 
+def _held_payable_errors(rec):
+    """The `held_payable` block's form, and that it is a subset of the raw turns."""
+    hp = rec.get("held_payable")
+    if hp is None:
+        return []
+    if (not isinstance(hp, dict) or set(hp) != {"by_card", "gated"} or not isinstance(hp.get("by_card"), dict)
+            or any(not isinstance(v, int) or v < 0 for v in hp["by_card"].values())
+            or not isinstance(hp.get("gated"), list)):
+        return ["held_payable: wrong shape"]
+    by = (rec.get("engine_casts") or {}).get("by_card") or {}
+    over = [k for k, v in hp["by_card"].items() if v > (by.get(k) or {}).get("castable_uncast", 0)]
+    return [f"held_payable exceeds castable_uncast for {over[:3]} — it is a subset of those turns"] if over else []
+
+
 def validate(rec, slug, logs_text=None):
     errors = []
     errors += _card_overrides_errors(rec)
@@ -187,6 +201,9 @@ def validate(rec, slug, logs_text=None):
                    or any(not isinstance(x, int) or x < 0 for x in v.values())]
             if bad:
                 errors.append(f"engine_casts.by_card: malformed rows for {bad[:3]}")
+    # HELD NET OF SPENT MANA AND THE GATE (2026-11-04), checked only where PRESENT.
+    hp = rec.get("held_payable")
+    errors += _held_payable_errors(rec)
     # THE CAST PROOFS, checked only where PRESENT and not None — the same rule.
     errors += _cast_proofs_errors(rec)
     # THE BOARD SERIES, checked only where PRESENT — the `engine_casts` rule.
@@ -237,6 +254,11 @@ def validate(rec, slug, logs_text=None):
             from manamap.sim.forge import _deck_doc, deck_meta_name
             if _an.from_logs(logs_text, deck_meta_name(slug), doc or _deck_doc(slug)) != ans:
                 errors.append(f"answers does not match what the logs derive — "
+                              f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
+        if isinstance(hp, dict) and "gated" in hp:
+            from manamap.sim.forge import _held_payable
+            if _held_payable(logs_text, label, slug, cmc_map(slug, doc), record_commanders(rec), hp["gated"]) != hp:
+                errors.append(f"held_payable does not match what the logs derive — "
                               f"`simulate {slug} --analyze {rec['run_id']}` rewrites it")
     return errors
 

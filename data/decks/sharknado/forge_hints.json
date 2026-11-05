@@ -1,5 +1,5 @@
 {
-  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one. 2026-10-22: equip-on-commander and attack hints (EquipMe, HasAttackEffect, AttachAi) for the voltron branch; Brotherhood Regalia (a restricted second Equip keyword) and Lizard Blades (Reconfigure ignores AttachAi) rely on the commanders' EquipMe. 2026-10-25: Wheel of Fortune (commander gate, author's NeedsToPlayVar dropped), Incendiary Command (commander gate on the whole card, the pilot's call) and Jeskai Ascendancy (PlayMain1) for answers-v1 and the seat-audit fail. Same date: hints for five cards no longer in the 99 or an open branch (Echo of Eons, Magus of the Wheel, Molten Psyche, Swiftfoot Boots, Thought Vessel) removed — the gate had failed on them since they were cut; git history keeps them.",
+  "_note": "THE PILOT'S WHEEL RULE, WRITTEN ONTO THE CARDS FORGE PLAYS (2026-10-21). captain's log 002: 'those should be finisher kind of things ... Shabraz and Brallin are already out, they're kind of big, and I'm gonna drop a wheel on them'. The goldfish reads the same sentence from pilot_policy.json (rule wheel-is-a-finisher); Forge reads it here, as a NeedsToPlay hold on each wheel — the engine's cast gate honours it for any spell or ability (ComputerUtilCard.checkNeedsToPlayReqs, 2.0.14) and DiscardAi then fires the wheel in the first Main 2 it can afford. A hold is one-directional: it stops a cast, it does not cause one. 2026-10-22: equip-on-commander and attack hints (EquipMe, HasAttackEffect, AttachAi) for the voltron branch; Brotherhood Regalia (a restricted second Equip keyword) and Lizard Blades (Reconfigure ignores AttachAi) rely on the commanders' EquipMe. 2026-10-25: Wheel of Fortune (commander gate, author's NeedsToPlayVar dropped), Incendiary Command (commander gate on the whole card, the pilot's call) and Jeskai Ascendancy (PlayMain1) for answers-v1 and the seat-audit fail. Same date: hints for five cards no longer in the 99 or an open branch (Echo of Eons, Magus of the Wheel, Molten Psyche, Swiftfoot Boots, Thought Vessel) removed — the gate had failed on them since they were cut; git history keeps them. 2026-11-04: hints for nine cards no longer in the 99 or an open branch (Alhammarret's Archive, Silence, Khorvath's Fury, Talisman of Conviction, Champion's Helm, Fireshrieker, Genji Glove, Mask of Memory, Zephyr Boots) and the Ghostly Pilferer floor removed: `validate-forge-hints` had failed on them since v2.1.0 and v2.2.0 cut them, and `forge-install --generate` refuses a file that fails it. Git history keeps them.",
   "hints": [
     {
       "card": "Windfall",
@@ -72,6 +72,54 @@
       ]
     },
     {
+      "card": "Borrowed Knowledge",
+      "svars": {
+        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
+      },
+      "why": "draw-engine-v1 adds it: both modes discard the hand, so it is a wheel and reads the pilot's rule; the seat audit named it an ungated wheel (2026-11-04)",
+      "cites": [
+        "log 002",
+        "pilot_policy.json wheel-is-a-finisher",
+        "Sean 2026-11-05"
+      ]
+    },
+    {
+      "card": "Collective Defiance",
+      "svars": {
+        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
+      },
+      "why": "the seat audit named it an ungated wheel (2026-11-04). NeedsToPlay gates the whole card, so its burn modes wait for a commander too, the cost the pilot accepted on Incendiary Command",
+      "cites": [
+        "log 002",
+        "pilot_policy.json wheel-is-a-finisher",
+        "Sean 2026-11-05"
+      ]
+    },
+    {
+      "card": "Heartwarming Redemption",
+      "svars": {
+        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
+      },
+      "why": "draw-engine-v1 adds it: discard the hand, draw that many plus one, so it is a wheel and reads the pilot's rule; the seat audit named it an ungated wheel (2026-11-04)",
+      "cites": [
+        "log 002",
+        "pilot_policy.json wheel-is-a-finisher",
+        "Sean 2026-11-05"
+      ]
+    },
+    {
+      "card": "Shattered Perception",
+      "svars": {
+        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
+      },
+      "why": "draw-engine-v1 adds it: discard the hand, draw that many, so it is a wheel and reads the pilot's rule; cast 9 times in its shell with no commander out (2026-11-04)",
+      "cites": [
+        "log 002",
+        "pilot_policy.json wheel-is-a-finisher",
+        "Sean 2026-11-05"
+      ]
+    },
+    {
       "card": "Smothering Tithe",
       "svars": {
         "PlayMain1": "TRUE"
@@ -89,26 +137,6 @@
       "why": "a noncreature permanent with no ETB is held behind creatures by the permanent AI — castable and uncast 6 turns on answers-v1 (2026-10-25 cast proof, flagged permanent-cast-priority); the same fix Smothering Tithe and Teferi carry",
       "cites": [
         "answers-v1 cast_proofs.json 2026-10-25"
-      ]
-    },
-    {
-      "card": "Alhammarret's Archive",
-      "svars": {
-        "PlayMain1": "TRUE"
-      },
-      "why": "the same permanent-cast-priority hold on a five-mana artifact the wheel turn needs out first",
-      "cites": [
-        "V6 engine_casts"
-      ]
-    },
-    {
-      "card": "Silence",
-      "ability": "SP$ Effect",
-      "ai_logic": "Main1",
-      "replace": true,
-      "why": "shipped as BeginningOfOppTurn, cast at an opponent's upkeep to protect nothing of ours; Main1 (Jace, Cunning Castaway's logic) casts it on our own turn, which is the wheel turn",
-      "cites": [
-        "log 002"
       ]
     },
     {
@@ -142,16 +170,6 @@
       ]
     },
     {
-      "card": "Khorvath's Fury",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "the same run: 3 of 5 fired with no commander out, once discarding both Brallin and Shabraz from hand; the author's gate (an opponent holding four or more) stays and ANDs with the commander gate",
-      "cites": [
-        "olivers-table n20 e9cc7abe ov86dd61c1"
-      ]
-    },
-    {
       "card": "Izzet Signet",
       "svars": {
         "PlayMain1": "TRUE"
@@ -162,13 +180,33 @@
       ]
     },
     {
-      "card": "Talisman of Conviction",
+      "card": "Boros Signet",
       "svars": {
         "PlayMain1": "TRUE"
       },
-      "why": "finisher-v1 adds it (2026-10-21): the A/B of the deck against the branch must pilot both arms under the same rules, and the champion's Arcane Signet and Sol Ring carry PlayMain1 — a rock is cast before combat",
+      "why": "draw-engine-v1 adds it (2026-11-04). All 13 rock casts in the branch's shells landed in Main 2 (Boros Signet 3 of 3, Mind Stone 6 of 6, Thought Vessel 4 of 4), and an A/B must pilot both arms under the same rules: the deck's own Sol Ring, Arcane Signet and Izzet Signet carry PlayMain1. Generated per card stem, so every seat that runs it reads it too.",
       "cites": [
-        "branch finisher-v1"
+        "branch draw-engine-v1 cast check logs 20261104-223801"
+      ]
+    },
+    {
+      "card": "Mind Stone",
+      "svars": {
+        "PlayMain1": "TRUE"
+      },
+      "why": "draw-engine-v1 adds it (2026-11-04). All 13 rock casts in the branch's shells landed in Main 2 (Boros Signet 3 of 3, Mind Stone 6 of 6, Thought Vessel 4 of 4), and an A/B must pilot both arms under the same rules: the deck's own Sol Ring, Arcane Signet and Izzet Signet carry PlayMain1. Generated per card stem, so every seat that runs it reads it too.",
+      "cites": [
+        "branch draw-engine-v1 cast check logs 20261104-223801"
+      ]
+    },
+    {
+      "card": "Thought Vessel",
+      "svars": {
+        "PlayMain1": "TRUE"
+      },
+      "why": "draw-engine-v1 adds it (2026-11-04). All 13 rock casts in the branch's shells landed in Main 2 (Boros Signet 3 of 3, Mind Stone 6 of 6, Thought Vessel 4 of 4), and an A/B must pilot both arms under the same rules: the deck's own Sol Ring, Arcane Signet and Izzet Signet carry PlayMain1. Generated per card stem, so every seat that runs it reads it too.",
+      "cites": [
+        "branch draw-engine-v1 cast check logs 20261104-223801"
       ]
     },
     {
@@ -207,40 +245,7 @@
       ]
     },
     {
-      "card": "Champion's Helm",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
       "card": "Embercleave",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
-      "card": "Fireshrieker",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
-      "card": "Genji Glove",
       "svars": {
         "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
       },
@@ -262,28 +267,6 @@
       ]
     },
     {
-      "card": "Mask of Memory",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
-      "card": "Zephyr Boots",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
       "card": "Teferi, Master of Time",
       "svars": {
         "PlayMain1": "TRUE"
@@ -295,7 +278,8 @@
     }
   ],
   "floors": [
-    "Ghostly Pilferer",
-    "March of Swirling Mist"
+    "March of Swirling Mist",
+    "Boros Signet",
+    "Izzet Signet"
   ]
 }

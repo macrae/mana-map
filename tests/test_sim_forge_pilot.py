@@ -376,6 +376,34 @@ def test_the_stem_is_forges_script_name():
     assert forge_cards.stem("Elesh Norn // The Argent Etchings") == "elesh_norn"
 
 
+def test_the_sweep_reads_an_open_branchs_add_and_never_a_decided_one(tmp_path, monkeypatch):
+    """draw-engine-v1 added Boros Signet, Heartwarming Redemption and Shattered Perception:
+    three cards the AI would never cast, and the sweep read `cards.json` of the deck alone,
+    so `forge-install --generate` printed nothing (2026-11-04). Proven by deleting the
+    branch loop: `open-b`'s row goes and the first assertion fails."""
+    import json as _json
+    import types
+    from manamap import config
+    from manamap.pilot import common, deck_branch, formats
+    from manamap.sim import forge_cards
+    deck = tmp_path / "d"
+    for sub, cards in ((deck, ["Plain Flagged"]), (deck / "branches" / "open-b", ["Plain Flagged", "Branch Flagged", "Unflagged Add"]),
+                       (deck / "branches" / "shut-b", ["Decided Flagged"])):
+        sub.mkdir(parents=True)
+        (sub / "cards.json").write_text(_json.dumps({"cards": [{"name": n, "type_line": "Sorcery"} for n in cards]}))
+    monkeypatch.setattr(config, "DECKS_DIR", tmp_path)
+    monkeypatch.setattr(common, "deck_is_apart", lambda slug: False)
+    monkeypatch.setattr(formats, "for_doc", lambda doc: types.SimpleNamespace(commanders=True))
+    monkeypatch.setattr(deck_branch, "is_decided", lambda slug, branch, doc=None: branch == "shut-b")
+    monkeypatch.setattr(forge_cards, "ai_flag", lambda name: None if name == "Unflagged Add" else "All")
+    monkeypatch.setattr(fp, "unflag_list", lambda: [])
+    got = fp.unflag_candidates(include_branches=True)
+    assert ("d@open-b", "Branch Flagged", forge_cards.stem("Branch Flagged")) in got
+    assert not any(n == "Decided Flagged" for _, n, _s in got), "a decided branch is not an arm"
+    assert sum(n == "Plain Flagged" for _, n, _s in got) == 1, "the deck's own card is one row, not two"
+    assert not any("@" in s for s, _n, _s in fp.unflag_candidates()), "the fleet gate stays on live decks"
+
+
 @pytest.mark.skipif(not __import__("manamap.sim.forge_cards", fromlist=["installed"]).installed(),
                     reason="needs the Forge card scripts")
 def test_no_live_deck_carries_a_removedeck_all_card_the_list_does_not_unflag():
@@ -521,6 +549,24 @@ def test_a_hint_may_name_an_open_branchs_card_but_not_a_decided_ones(tmp_path, m
     assert any("not in the 99 or an open branch" in e for e in fp.validate_hints("d", hints))
 
 
+def test_generate_refuses_a_stale_hints_file_before_it_deletes_anything(tmp_path, monkeypatch):
+    """A hint naming a card the list no longer holds was refused half way through
+    `--generate`: every override file already deleted, 31 of them gone from the tree
+    (2026-11-04). Proven by moving the validation back below the delete: the file is gone."""
+    import types
+    from manamap.sim import forge_pilot as fp
+    keep = tmp_path / "k" / "keep.txt"
+    keep.parent.mkdir()
+    keep.write_text("Name:Keep\n")
+    monkeypatch.setattr(fp, "OVERRIDE_DIR", tmp_path)
+    monkeypatch.setattr(fp, "hinted_decks", lambda: ["stale"])
+    monkeypatch.setattr(fp, "validate_hints", lambda slug, doc: ["hints[0]: 'Gone' is not in the 99 or an open branch"])
+    monkeypatch.setattr(fp, "_hints_doc", lambda slug: {"hints": [{"card": "Gone"}]})
+    with pytest.raises(SystemExit, match="not in the 99"):
+        fp.main(types.SimpleNamespace(generate=True, verify=False, revert=False))
+    assert keep.read_text() == "Name:Keep\n"
+
+
 def test_generate_accepts_a_floors_only_hints_file(tmp_path, monkeypatch):
     """purphoros-pingers' file names two floors and no hints: `validate-forge-hints`
     passed it and `forge-install --generate` refused it, because the generate loop
@@ -535,6 +581,6 @@ def test_generate_accepts_a_floors_only_hints_file(tmp_path, monkeypatch):
     monkeypatch.setattr(fp, "hinted_decks", lambda: ["floors-only"])
     monkeypatch.setattr(fp, "_hints_doc", lambda slug: {"hints": [], "floors": ["Grinning Ignus"]})
     monkeypatch.setattr(fp, "generate_hints", lambda slug: [])
-    monkeypatch.setattr(fp, "unflag_candidates", lambda include_pods=False: [])
+    monkeypatch.setattr(fp, "unflag_candidates", lambda **kw: [])
     monkeypatch.setattr(fp, "render", lambda: [])
     fp.main(types.SimpleNamespace(generate=True, verify=True, revert=False))
