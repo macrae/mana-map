@@ -114,8 +114,8 @@
       "name": "drain-density-v1",
       "opened": "2026-09-17",
       "why": "The authored declaration measured the deck's required kill at 34% by turn 6: only three cards in the 99 read 'each opponent loses' on a death, against a brief that asks the deck to threaten the table by turn 6. Two more table-wide drains.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-11-05: Abandoned, cleared by the pilot 2026-11-05 ('clean up old/abandoned feature bran",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -1443,7 +1443,27 @@
   "open_questions": [],
   "simulation": null,
   "experiments": null,
-  "decisions": null,
+  "decisions": {
+    "count": 1,
+    "awaiting_outcome": [],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-11-05T10:57:43-08:00",
+        "kind": "reject",
+        "branch": "drain-density-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug meren-recursion` re-reads them when you want, never on its own",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",

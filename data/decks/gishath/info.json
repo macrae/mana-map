@@ -41,10 +41,29 @@
       "name": "jurassic-v1",
       "opened": "2026-11-02",
       "why": "try: trade — partial — the model cannot fully see Berserkers' Onslaught, Hunter's Insight, Three Visits, Triumphant Chomp, so its rows are silent about them",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "PROPOSED · BLOCKED",
+      "state_why": "18 card(s) still to find",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-11-05",
+        "as_version": "v1.2.0",
+        "why": "The pilot, 2026-11-05: going in; proxies printed and sleeved today; merge only after he places the card order",
+        "base_version": 5,
+        "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+        "accepted_on": {
+          "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+          "state": "no objective",
+          "objective": null,
+          "grade": null,
+          "reading": null,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "0a80d704fd6a",
+            "seed": 20260826
+          }
+        }
+      },
       "pull_list": {
         "buy": [
           {
@@ -52,6 +71,9 @@
           },
           {
             "name": "Atzocan Seer"
+          },
+          {
+            "name": "Copperline Gorge"
           },
           {
             "name": "Devil Dinosaur"
@@ -66,9 +88,6 @@
             "name": "Karplusan Forest"
           },
           {
-            "name": "Marshal's Anthem"
-          },
-          {
             "name": "Natural Order"
           },
           {
@@ -76,6 +95,12 @@
           },
           {
             "name": "Prismatic Vista"
+          },
+          {
+            "name": "Rydia's Return"
+          },
+          {
+            "name": "Thornspire Verge"
           },
           {
             "name": "Thrashing Brontodon"
@@ -145,7 +170,7 @@
             ]
           }
         ],
-        "blocking": 16,
+        "blocking": 18,
         "procurement": null
       },
       "base_version": 5,
@@ -153,10 +178,10 @@
       "add": 23,
       "out": 23,
       "counts": {
-        "in_deck": 69,
+        "in_deck": 70,
         "box": 4,
         "elsewhere": 4,
-        "buy": 12,
+        "buy": 14,
         "free": 1
       },
       "unsourced": [
@@ -164,16 +189,18 @@
         "Atzocan Seer",
         "Brushland",
         "Cavern of Souls",
+        "Copperline Gorge",
         "Devil Dinosaur",
         "Faeburrow Elder",
         "Intrepid Paleontologist",
         "Ixalli's Lorekeeper",
         "Karplusan Forest",
-        "Marshal's Anthem",
         "Natural Order",
         "Palani's Hatcher",
         "Prismatic Vista",
         "Roaming Throne",
+        "Rydia's Return",
+        "Thornspire Verge",
         "Thrashing Brontodon",
         "Tranquil Frillback"
       ],
@@ -333,6 +360,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Copperline Gorge",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Curious Altisaur",
@@ -556,13 +590,6 @@
           "is_new": true
         },
         {
-          "name": "Marshal's Anthem",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Mirari's Wake",
           "state": "in_deck",
           "where": [],
@@ -704,6 +731,13 @@
           "is_new": true
         },
         {
+          "name": "Rydia's Return",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Secluded Courtyard",
           "state": "in_deck",
           "where": [],
@@ -761,6 +795,13 @@
           "is_new": false
         },
         {
+          "name": "Sunpetal Grove",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Swords to Plowshares",
           "state": "in_deck",
           "where": [],
@@ -780,6 +821,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Thornspire Verge",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Thrashing Brontodon",
@@ -880,16 +928,16 @@
       ],
       "has_cards": true,
       "summary": {
-        "title": "Jurassic Park: fast mana, huge attacks, no burn",
-        "blurb": "Swaps non-creature damage and slow cheats for early mana creatures, Natural Order, Roaming Throne and Berserkers' Onslaught so Gishath lands sooner and flips far more often, adds recursion and artifact answers, and rebuilds the lands so green leads.",
+        "title": "Dinosaur creature plan with fast mana and a rebuilt land base",
+        "blurb": "Trades the enchantment and enrage pieces for mana creatures, double strike and Natural Order, and lands that cast red and white on curve without giving up green.",
         "by": "jarvis",
-        "at": "2026-11-03"
+        "at": "2026-11-05"
       },
       "verdict": {
         "state": "no objective",
-        "rose": 8,
+        "rose": 9,
         "fell": 0,
-        "no_call": 4
+        "no_call": 3
       },
       "measured": true,
       "blind_spots": [
@@ -898,23 +946,25 @@
         "Bloodstained Mire",
         "Brushland",
         "Cavern of Souls",
+        "Copperline Gorge",
         "Devil Dinosaur",
         "Forbidden Orchard",
+        "Hunter's Insight",
         "Intrepid Paleontologist",
         "Karplusan Forest",
         "Krosan Verge",
         "Mana Confluence",
-        "Marshal's Anthem",
         "Myriad Landscape",
         "Prismatic Vista",
         "Purphoros, God of the Forge",
         "Roaming Throne",
         "Rogue's Passage",
         "Rootbound Crag",
+        "Runic Armasaur",
         "Savage Order",
         "Savage Stomp",
         "Spire Garden",
-        "Sunpetal Grove",
+        "Thornspire Verge",
         "Thrashing Brontodon",
         "Tranquil Frillback",
         "Trapjaw Tyrant",
@@ -930,54 +980,55 @@
           "killed by T10",
           "missed drop by T5",
           "mulliganed",
+          "interaction affordable @T6",
           "hand can act by T3"
         ],
         "fell": [],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 27.7663,
+            "delta": 32.4069,
             "ci95_diff": [
-              26.4251,
-              29.1075
+              30.8539,
+              33.9599
             ],
-            "mde": 1.9171,
+            "mde": 2.2198,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0655,
+            "delta": 0.0703,
             "ci95_diff": [
-              0.0583,
-              0.0727
+              0.0633,
+              0.0773
             ],
-            "mde": 0.0102,
+            "mde": 0.01,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 4.5927,
+            "delta": 4.555,
             "ci95_diff": [
-              4.1771,
-              5.0083
+              4.1417,
+              4.9683
             ],
-            "mde": 0.594,
+            "mde": 0.5908,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.057,
+            "delta": -0.0068,
             "ci95_diff": [
-              -0.1626,
-              0.0486
+              -0.116,
+              0.1024
             ],
-            "mde": 0.151,
+            "mde": 0.1561,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
@@ -4356,7 +4407,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 4,
+    "count": 5,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -4429,14 +4480,28 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "005",
+        "at": "2026-11-05T10:57:28-08:00",
+        "kind": "propose",
+        "branch": "jurassic-v1",
+        "as_version": "v1.2.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug gishath` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
-    "branch `jurassic-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check gishath --branch jurassic-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `jurassic-v1` needs 16 card(s) sourced — `manamap pilot deck-branch gishath source jurassic-v1`",
+    "`jurassic-v1` is PROPOSED as v1.2.0 and waiting on cardboard — 18 card(s) (14 to buy, 4 to unsleeve) — `manamap pilot deck-branch gishath show jurassic-v1` has the pull list",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"

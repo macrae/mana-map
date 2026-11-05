@@ -109,10 +109,29 @@
       "name": "draw-engine-v1",
       "opened": "2026-11-04",
       "why": "Pilot, 2026-11-04: the deck spends cards faster than it replaces them. A place to experiment with steady card draw, wheel tutors and mana-to-cards sinks while the list stays high bracket three; he will play it before anything is merged.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "PROPOSED · BLOCKED",
+      "state_why": "14 card(s) still to find",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-11-05",
+        "as_version": "v2.3.0",
+        "why": "The pilot, 2026-11-05: going in; proxies printed and sleeved today; merge only after he places the card order",
+        "base_version": 12,
+        "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
+        "accepted_on": {
+          "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
+          "state": "no objective",
+          "objective": null,
+          "grade": null,
+          "reading": null,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "0a80d704fd6a",
+            "seed": 20260826
+          }
+        }
+      },
       "pull_list": {
         "buy": [
           {
@@ -16048,7 +16067,7 @@
     }
   },
   "decisions": {
-    "count": 17,
+    "count": 18,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -16123,21 +16142,6 @@
     ],
     "latest": [
       {
-        "id": "013",
-        "at": "2026-10-26T14:37:28-07:00",
-        "kind": "propose",
-        "branch": "answers-v1",
-        "as_version": "v2.1.0",
-        "predicted": {
-          "endpoint": "forge.interaction_cast",
-          "grade": "not measured",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
         "id": "014",
         "at": "2026-10-26T14:40:37-07:00",
         "kind": "merge",
@@ -16196,13 +16200,27 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "018",
+        "at": "2026-11-05T10:57:34-08:00",
+        "kind": "propose",
+        "branch": "draw-engine-v1",
+        "as_version": "v2.3.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "branch `draw-engine-v1`: 2 HELD, 2 cast-late add(s) under the current harness — `manamap pilot forge-cast-check sharknado --branch draw-engine-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `draw-engine-v1` needs 14 card(s) sourced — `manamap pilot deck-branch sharknado source draw-engine-v1`",
+    "`draw-engine-v1` is PROPOSED as v2.3.0 and waiting on cardboard — 14 card(s) (8 to buy, 6 to unsleeve) — `manamap pilot deck-branch sharknado show draw-engine-v1` has the pull list",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"

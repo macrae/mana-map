@@ -1,7 +1,7 @@
 {
  "slug": "gishath",
  "branch": "jurassic-v1",
- "v": 2,
+ "v": 3,
  "opened": "2026-11-02",
  "why": "try: trade \u2014 partial \u2014 the model cannot fully see Berserkers' Onslaught, Hunter's Insight, Three Visits, Triumphant Chomp, so its rows are silent about them",
  "objective": null,
@@ -20,6 +20,11 @@
    "at": "2026-11-03",
    "decklist_sha256": "34a0d705035844cd9f40fcc9cd92037358d63213f3ba19dfa6e81a093d6a35d5",
    "message": "jurassic-v1: Congregation at Dawn stays, Savage Order goes"
+  },
+  {
+   "at": "2026-11-05",
+   "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+   "message": "jurassic-v1: Rydia's Return for Marshal's Anthem; three Forests become Copperline Gorge, Thornspire Verge, Sunpetal Grove"
   }
  ],
  "base_version": 5,
@@ -199,12 +204,60 @@
    "in": "Congregation at Dawn",
    "strength": null,
    "why": "the pilot kept Congregation: stacking Dinosaurs on top is what Gishath's reveal pays for; Natural Order covers Savage Order's job"
+  },
+  {
+   "at": "2026-11-05",
+   "out": "Forest",
+   "in": "Copperline Gorge",
+   "strength": null,
+   "why": "red fix: double-red Dinosaurs at five and six, no green lost; pilot 2026-11-05"
+  },
+  {
+   "at": "2026-11-05",
+   "out": "Forest",
+   "in": "Thornspire Verge",
+   "strength": null,
+   "why": "red fix: double-red Dinosaurs at five and six, no green lost; pilot 2026-11-05"
+  },
+  {
+   "at": "2026-11-05",
+   "out": "Marshal's Anthem",
+   "in": "Rydia's Return",
+   "strength": null,
+   "why": "pilot's pick 2026-11-05: double white was 64 percent on curve; team pump or two permanents back, on green"
+  },
+  {
+   "at": "2026-11-05",
+   "out": "Forest",
+   "in": "Sunpetal Grove",
+   "strength": null,
+   "why": "white tune: single white on turn three, no green lost; pilot 2026-11-05 tune up the mana"
   }
  ],
  "summary": {
-  "title": "Jurassic Park: fast mana, huge attacks, no burn",
-  "blurb": "Swaps non-creature damage and slow cheats for early mana creatures, Natural Order, Roaming Throne and Berserkers' Onslaught so Gishath lands sooner and flips far more often, adds recursion and artifact answers, and rebuilds the lands so green leads.",
+  "title": "Dinosaur creature plan with fast mana and a rebuilt land base",
+  "blurb": "Trades the enchantment and enrage pieces for mana creatures, double strike and Natural Order, and lands that cast red and white on curve without giving up green.",
   "by": "jarvis",
-  "at": "2026-11-03"
+  "at": "2026-11-05"
+ },
+ "proposal": {
+  "at": "2026-11-05",
+  "as_version": "v1.2.0",
+  "why": "The pilot, 2026-11-05: going in; proxies printed and sleeved today; merge only after he places the card order",
+  "base_version": 5,
+  "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+  "accepted_on": {
+   "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+   "state": "no objective",
+   "objective": null,
+   "grade": null,
+   "reading": null,
+   "harness": {
+    "cast_proofs": null,
+    "iterations": 10000,
+    "model_version": "0a80d704fd6a",
+    "seed": 20260826
+   }
+  }
  }
 }

@@ -848,8 +848,8 @@
       "name": "protection-v1",
       "opened": "2026-09-18",
       "why": "final-v2 split. The Forge run (177 games, standard-v3) separated the seven spell swaps cleanly: Mithril Coat cast 40 and activated 35, Steel Hellkite 36 and 53, both colourless and both the standout performers of the whole 99. The two cards dropped here are Marang River Regent and Whirlwing Stormbrood, which are VALUE DRAGONS RATHER THAN PROTECTION and which Forge cannot load at all — it logged 'an unsupported card was requested' 14 times each, so the run measured a 98-card deck and those two can never be simulated. This branch is the protection half alone, on an unchanged manabase.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-11-05: Abandoned, cleared by the pilot 2026-11-05 ('clean up old/abandoned feature bran",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -8361,7 +8361,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 8,
+    "count": 9,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -8372,21 +8372,6 @@
       }
     ],
     "latest": [
-      {
-        "id": "004",
-        "at": "2026-10-19T16:37:31-07:00",
-        "kind": "reject",
-        "branch": "responses-v2",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "005",
         "at": "2026-10-19T16:37:39-07:00",
@@ -8440,6 +8425,21 @@
         "as_version": null,
         "predicted": {
           "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "009",
+        "at": "2026-11-05T10:57:49-08:00",
+        "kind": "reject",
+        "branch": "protection-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "interaction_6",
           "grade": "not met",
           "forge_delta": null,
           "forge_ci95": null,
