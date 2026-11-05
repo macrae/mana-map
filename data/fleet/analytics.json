@@ -3,11 +3,11 @@
   "benchmark_grades": {
    "distribution": {
     "A1": {
-     "A": 3,
+     "A": 4,
      "B": 3,
      "C": 0,
      "F": 0,
-     "S": 1
+     "S": 0
     },
     "A2": {
      "A": 3,
@@ -80,11 +80,11 @@
      "S": 0
     },
     "S3": {
-     "A": 3,
+     "A": 2,
      "B": 4,
      "C": 0,
      "F": 0,
-     "S": 0
+     "S": 1
     }
    },
    "group_names": {
@@ -120,7 +120,7 @@
    },
    "rows": {
     "edgar-vampires": {
-     "A1": "S",
+     "A1": "A",
      "A2": "S",
      "I1": "B",
      "I2": "B",
@@ -131,7 +131,7 @@
      "R2": "A",
      "S1": "B",
      "S2": "A",
-     "S3": "A"
+     "S3": "S"
     },
     "gishath": {
      "A1": "A",
@@ -234,6 +234,13 @@
      "current_list": true,
      "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
      "score": 46
+    },
+    {
+     "as_of": "2026-11-05",
+     "bracket": 3,
+     "current_list": true,
+     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
+     "score": 44
     }
    ],
    "gishath": [
@@ -349,11 +356,11 @@
   },
   "floor_vs_dti": [
    {
-    "dti_bracket": 4,
-    "dti_score": 46,
+    "dti_bracket": 3,
+    "dti_score": 44,
     "floor": 4,
-    "reading_as_of": "2026-10-20",
-    "relation": "equal",
+    "reading_as_of": "2026-11-05",
+    "relation": "dti_lower",
     "slug": "edgar-vampires",
     "stale_list": false,
     "target": 4
@@ -976,7 +983,7 @@
     }
    },
    "bracket": {
-    "dti_bracket": 4,
+    "dti_bracket": 3,
     "floor": 4,
     "floor_name": "Optimized",
     "group": "B4",
@@ -1021,9 +1028,9 @@
     }
    },
    "dti": {
-    "as_of": "2026-10-20",
+    "as_of": "2026-11-05",
     "benchmarks": {
-     "A1": "S",
+     "A1": "A",
      "A2": "S",
      "I1": "B",
      "I2": "B",
@@ -1034,21 +1041,22 @@
      "R2": "A",
      "S1": "B",
      "S2": "A",
-     "S3": "A"
+     "S3": "S"
     },
-    "bracket": 4,
+    "bracket": 3,
     "floor_vs_dti": {
      "floor": 4,
      "floor_decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
      "floor_name": "Optimized",
-     "reading_as_of": "2026-10-20",
-     "relation": "equal",
-     "their_bracket": 4
+     "note": "DeckCheck can only RAISE its own rules floor, so a bracket below ours means their copy is probably an older list — compare source_updated_at; the floor is not lowered",
+     "reading_as_of": "2026-11-05",
+     "relation": "dti_lower",
+     "their_bracket": 3
     },
     "max_score": 96,
     "omni": {
      "benchmarks": {
-      "A1": "S",
+      "A1": "A",
       "A2": "S",
       "I1": "B",
       "I2": "B",
@@ -1061,19 +1069,19 @@
       "S2": "A",
       "S3": "A"
      },
-     "median_bracket": 4,
-     "median_score": 46,
-     "n": 1
+     "median_bracket": 3,
+     "median_score": 44,
+     "n": 2
     },
-    "readings_n": 2,
+    "readings_n": 3,
     "score": {
-     "as_of": "2026-10-20",
+     "as_of": "2026-11-05",
      "basis": "of 96; an LLM's read, dated",
      "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
-     "n": 2,
+     "n": 3,
      "source": "deckcheck.json#readings[-1].score",
      "stale": false,
-     "value": 46
+     "value": 44
     },
     "stale_list": false
    },
