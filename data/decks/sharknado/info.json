@@ -25,6 +25,7 @@
     "older_model": [],
     "invalid": [
       "log",
+      "CONTEXT.md",
       "log_annotations.json"
     ],
     "verified": true,
@@ -16605,11 +16606,13 @@
       "003": "raced",
       "004": "raced",
       "005": "raced",
-      "006": "combo"
+      "006": "combo",
+      "007": "stalled"
     },
     "cause_counts": {
       "combo": 2,
       "raced": 3,
+      "stalled": 1,
       "won": 1
     },
     "feel": {},
@@ -17344,7 +17347,7 @@
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (log, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "3 artifact(s) fail their own gate (log, CONTEXT.md, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V12, sleeved is V13 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",

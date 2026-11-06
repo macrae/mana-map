@@ -213,7 +213,7 @@ The goldfish does not model the modal plan, the equipment, or interaction, so tr
 
 <!-- ctx:gen record -->
 - **7 game(s):** 0 won, 4 lost · 2026-10-06 to 2026-11-05
-- **How games ended:** raced 3, combo 2, won 1
+- **How games ended:** raced 3, combo 2, stalled 1, won 1
 - **Not yet read:** 005, 006, 007
 <!-- /ctx:gen record -->
 
