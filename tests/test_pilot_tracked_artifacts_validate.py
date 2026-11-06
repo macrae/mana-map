@@ -203,6 +203,14 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 #: is wrong and the test says so rather than going quiet" is for. A non-strict
 #: xfail would have swallowed both and left two rebuilt artifacts ungated.
 STALE_XFAIL = {
+    # STALE BY A MERGE (2026-11-05): sharknado v2.3.0 (draw-engine-v1, 22 swaps,
+    # played on printed proxies). The engine names Command Beacon and the tutor
+    # guide fetches Knowledge Is Power, both cut; /analyze-engine and pilot-notes
+    # re-run them. The debrief of game 004 names Ledger Shredder, which that game
+    # played and the list has since cut — a /debrief re-run, never a hand patch.
+    "sharknado/engine.json": "v2.3.0 cut cards its stages name; /analyze-engine",
+    "sharknado/tutor_guide.json": "v2.3.0 cut a tutor target; pilot-notes",
+    "sharknado/log_annotations.json": "game 004's debrief names a card v2.3.0 cut; /debrief",
     # STALE BY A MERGE, NOT BY A DEFECT (2026-10-06). The pilot sleeved edgar
     # v2.0.0 (mardu-combo-v1, 27 swaps) and sharknado v1.2.0 (momentum-v1); the
     # agent artifacts below were written against the previous lists and name

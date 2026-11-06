@@ -15,11 +15,19 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 19,
+    "complete": 14,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "frame",
+      "tutors",
+      "prose"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "engine",
+      "log",
+      "log_annotations.json"
+    ],
     "verified": true,
     "missing": [],
     "todo": []
@@ -109,8 +117,8 @@
       "name": "draw-engine-v1",
       "opened": "2026-11-04",
       "why": "Pilot, 2026-11-04: the deck spends cards faster than it replaces them. A place to experiment with steady card draw, wheel tutors and mana-to-cards sinks while the list stays high bracket three; he will play it before anything is merged.",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "14 card(s) still to find",
+      "state": "MERGED",
+      "state_why": "merged 2026-11-05 into the list after VNone",
       "base_moved": null,
       "proposal": {
         "at": "2026-11-05",
@@ -133,160 +141,28 @@
         }
       },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Borrowed Knowledge"
-          },
-          {
-            "name": "Cathartic Reunion"
-          },
-          {
-            "name": "Heartwarming Redemption"
-          },
-          {
-            "name": "Magus of the Wheel"
-          },
-          {
-            "name": "Mind Spring"
-          },
-          {
-            "name": "Shattered Perception"
-          },
-          {
-            "name": "Xorn"
-          },
-          {
-            "name": "Zirda, the Dawnwaker"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Arid Mesa",
-            "where": [
-              "edgar-vampires",
-              "gishath",
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Flooded Strand",
-            "where": [
-              "heliod"
-            ]
-          },
-          {
-            "name": "Gleaming Splendor",
-            "where": [
-              "heliod"
-            ]
-          },
-          {
-            "name": "Prosperity",
-            "where": [
-              "heliod"
-            ]
-          },
-          {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
-            "name": "Scalding Tarn",
-            "where": [
-              "ur-dragon"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Polluted Delta",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Mind Stone",
-            "where": [
-              "Zur Parts"
-            ]
-          },
-          {
-            "name": "Mirrormade",
-            "where": [
-              "Zur Parts"
-            ]
-          },
-          {
-            "name": "Rush of Knowledge",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Talisman of Progress",
-            "where": [
-              "Zur Parts"
-            ]
-          },
-          {
-            "name": "Thought Vessel",
-            "where": [
-              "Mystery Booster 2",
-              "Zur Parts"
-            ]
-          }
-        ],
-        "blocking": 14,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 22,
-      "out": 22,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 78,
-        "box": 7,
-        "elsewhere": 6,
-        "buy": 8,
-        "free": 1
+        "in_deck": 100,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Arid Mesa",
-        "Borrowed Knowledge",
-        "Cathartic Reunion",
-        "Flooded Strand",
-        "Gleaming Splendor",
-        "Heartwarming Redemption",
-        "Magus of the Wheel",
-        "Mind Spring",
-        "Prosperity",
-        "Psychosis Crawler",
-        "Scalding Tarn",
-        "Shattered Perception",
-        "Xorn",
-        "Zirda, the Dawnwaker"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -311,39 +187,10 @@
         },
         {
           "name": "Arid Mesa",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "edgar-vampires",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "gishath",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Azorius Signet",
@@ -375,10 +222,10 @@
         },
         {
           "name": "Borrowed Knowledge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -396,10 +243,10 @@
         },
         {
           "name": "Cathartic Reunion",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Chaos Warp",
@@ -452,19 +299,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faerie Mastermind",
@@ -489,15 +327,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Emancipation",
@@ -522,25 +355,10 @@
         },
         {
           "name": "Flooded Strand",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Frostboil Snarl",
@@ -565,18 +383,10 @@
         },
         {
           "name": "Gleaming Splendor",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Glint-Horn Buccaneer",
@@ -608,10 +418,10 @@
         },
         {
           "name": "Heartwarming Redemption",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Hengegate Pathway // Mistgate Pathway",
@@ -685,10 +495,10 @@
         },
         {
           "name": "Magus of the Wheel",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -706,34 +516,24 @@
         },
         {
           "name": "Mind Spring",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mind Stone",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mirrormade",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mountain",
@@ -765,18 +565,10 @@
         },
         {
           "name": "Polluted Delta",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Prismari Command",
@@ -787,40 +579,17 @@
         },
         {
           "name": "Prosperity",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Raugrin Triome",
@@ -880,15 +649,10 @@
         },
         {
           "name": "Rush of Knowledge",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sacred Foundry",
@@ -899,25 +663,10 @@
         },
         {
           "name": "Scalding Tarn",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Sea of Clouds",
@@ -942,10 +691,10 @@
         },
         {
           "name": "Shattered Perception",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Shivan Reef",
@@ -1033,15 +782,10 @@
         },
         {
           "name": "Talisman of Progress",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Teferi's Ageless Insight",
@@ -1059,19 +803,10 @@
         },
         {
           "name": "Thought Vessel",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            },
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Thundering Falls",
@@ -1117,17 +852,17 @@
         },
         {
           "name": "Xorn",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Zirda, the Dawnwaker",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true,
@@ -1286,28 +1021,117 @@
         "forced_reason": "the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change; kill_by_6 rose 0.314 -> 0.334 with five rows better and one worse, and Needlehead adds a rules-checked wheel kill the bar does not measure"
       },
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Artist's Talent"
+          },
+          {
+            "name": "Command Beacon"
+          },
+          {
+            "name": "Embercleave"
+          },
+          {
+            "name": "Frantic Search"
+          },
+          {
+            "name": "Glittering Massif"
+          },
+          {
+            "name": "Inti, Seneschal of the Sun"
+          },
+          {
+            "name": "Izzet Charm"
+          },
+          {
+            "name": "Jeskai Ascendancy"
+          },
+          {
+            "name": "Knowledge Is Power"
+          },
+          {
+            "name": "Ledger Shredder"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "March of Swirling Mist"
+          },
+          {
+            "name": "Mary Read and Anne Bonny"
+          },
+          {
+            "name": "Robe of Stars"
+          },
+          {
+            "name": "Shu Yun, the Silent Tempest"
+          },
+          {
+            "name": "Sorcerer Class"
+          },
+          {
+            "name": "Stoneforge Mystic"
+          },
+          {
+            "name": "Sundown Pass"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Mystic Remora",
+            "where": [
+              "heliod"
+            ]
+          }
+        ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [],
-        "blocking": 0,
+        "blocking": 19,
         "procurement": null
       },
       "base_version": 11,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 22,
+      "out": 22,
       "counts": {
-        "in_deck": 98,
+        "in_deck": 78,
         "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "elsewhere": 1,
+        "buy": 18,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Artist's Talent",
+        "Command Beacon",
+        "Embercleave",
+        "Frantic Search",
+        "Glittering Massif",
+        "Inti, Seneschal of the Sun",
+        "Izzet Charm",
+        "Jeskai Ascendancy",
+        "Knowledge Is Power",
+        "Ledger Shredder",
+        "Magmakin Artillerist",
+        "March of Swirling Mist",
+        "Mary Read and Anne Bonny",
+        "Mystic Remora",
+        "Robe of Stars",
+        "Shu Yun, the Silent Tempest",
+        "Sorcerer Class",
+        "Stoneforge Mystic",
+        "Sundown Pass"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -1332,10 +1156,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -1409,10 +1233,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -1437,10 +1261,10 @@
         },
         {
           "name": "Embercleave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -1486,10 +1310,10 @@
         },
         {
           "name": "Frantic Search",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -1521,10 +1345,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grand Abolisher",
@@ -1577,17 +1401,17 @@
         },
         {
           "name": "Inti, Seneschal of the Sun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Charm",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Signet",
@@ -1605,10 +1429,10 @@
         },
         {
           "name": "Jeskai Ascendancy",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kitsa, Otterball Elite",
@@ -1619,10 +1443,10 @@
         },
         {
           "name": "Knowledge Is Power",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
@@ -1633,10 +1457,10 @@
         },
         {
           "name": "Ledger Shredder",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -1654,10 +1478,10 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -1675,17 +1499,17 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mary Read and Anne Bonny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -1696,10 +1520,25 @@
         },
         {
           "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Needleverge Pathway // Pillarverge Pathway",
@@ -1780,10 +1619,10 @@
         },
         {
           "name": "Robe of Stars",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rugged Prairie",
@@ -1829,10 +1668,10 @@
         },
         {
           "name": "Shu Yun, the Silent Tempest",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -1850,17 +1689,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -1885,10 +1732,10 @@
         },
         {
           "name": "Stoneforge Mystic",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stormcarved Coast",
@@ -1920,10 +1767,10 @@
         },
         {
           "name": "Sundown Pass",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swords to Plowshares",
@@ -2084,7 +1931,26 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist"
+          ]
+        },
+        {
+          "id": "012",
+          "title": "Cycling Shark Typhoon for X=4: Brallin, Marauding Mako and Shabraz all paid, and a 4/4 flying Shark",
+          "checker": "pass",
+          "names": [
+            "Sundown Pass"
+          ]
+        }
+      ]
     },
     {
       "name": "powertune-v1",
@@ -2097,7 +1963,58 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Artist's Talent"
+          },
+          {
+            "name": "Command Beacon"
+          },
+          {
+            "name": "Embercleave"
+          },
+          {
+            "name": "Frantic Search"
+          },
+          {
             "name": "Ghostly Pilferer"
+          },
+          {
+            "name": "Glittering Massif"
+          },
+          {
+            "name": "Inti, Seneschal of the Sun"
+          },
+          {
+            "name": "Izzet Charm"
+          },
+          {
+            "name": "Jeskai Ascendancy"
+          },
+          {
+            "name": "Knowledge Is Power"
+          },
+          {
+            "name": "Ledger Shredder"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "March of Swirling Mist"
+          },
+          {
+            "name": "Mary Read and Anne Bonny"
+          },
+          {
+            "name": "Robe of Stars"
+          },
+          {
+            "name": "Shu Yun, the Silent Tempest"
+          },
+          {
+            "name": "Sorcerer Class"
+          },
+          {
+            "name": "Stoneforge Mystic"
           }
         ],
         "unsleeve": [
@@ -2109,6 +2026,12 @@
             ]
           },
           {
+            "name": "Mystic Remora",
+            "where": [
+              "heliod"
+            ]
+          },
+          {
             "name": "Talon Gates of Madara",
             "where": [
               "emiel-blink",
@@ -2117,7 +2040,14 @@
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Cascade Bluffs",
@@ -2126,27 +2056,45 @@
             ]
           }
         ],
-        "blocking": 3,
+        "blocking": 21,
         "procurement": null
       },
       "base_version": 10,
       "size": 100,
-      "add": 4,
-      "out": 4,
+      "add": 25,
+      "out": 25,
       "counts": {
-        "in_deck": 94,
+        "in_deck": 75,
         "box": 1,
-        "elsewhere": 2,
-        "buy": 1,
-        "free": 0
+        "elsewhere": 3,
+        "buy": 18,
+        "free": 1
       },
       "unsourced": [
+        "Artist's Talent",
         "Boros Charm",
+        "Command Beacon",
+        "Embercleave",
+        "Frantic Search",
         "Ghostly Pilferer",
+        "Glittering Massif",
+        "Inti, Seneschal of the Sun",
+        "Izzet Charm",
+        "Jeskai Ascendancy",
+        "Knowledge Is Power",
+        "Ledger Shredder",
+        "Magmakin Artillerist",
+        "March of Swirling Mist",
+        "Mary Read and Anne Bonny",
+        "Mystic Remora",
+        "Robe of Stars",
+        "Shu Yun, the Silent Tempest",
+        "Sorcerer Class",
+        "Stoneforge Mystic",
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -2171,10 +2119,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -2289,10 +2237,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -2317,10 +2265,10 @@
         },
         {
           "name": "Embercleave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -2366,10 +2314,10 @@
         },
         {
           "name": "Frantic Search",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -2408,10 +2356,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grand Abolisher",
@@ -2464,17 +2412,17 @@
         },
         {
           "name": "Inti, Seneschal of the Sun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Charm",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Signet",
@@ -2492,10 +2440,10 @@
         },
         {
           "name": "Jeskai Ascendancy",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kitsa, Otterball Elite",
@@ -2506,10 +2454,10 @@
         },
         {
           "name": "Knowledge Is Power",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
@@ -2520,10 +2468,10 @@
         },
         {
           "name": "Ledger Shredder",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -2541,10 +2489,10 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -2562,17 +2510,17 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mary Read and Anne Bonny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -2583,10 +2531,25 @@
         },
         {
           "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Needleverge Pathway // Pillarverge Pathway",
@@ -2660,10 +2623,10 @@
         },
         {
           "name": "Robe of Stars",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rugged Prairie",
@@ -2702,10 +2665,10 @@
         },
         {
           "name": "Shu Yun, the Silent Tempest",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -2723,17 +2686,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -2758,10 +2729,10 @@
         },
         {
           "name": "Stoneforge Mystic",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stormcarved Coast",
@@ -2978,6 +2949,15 @@
       },
       "stacks": [
         {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist"
+          ]
+        },
+        {
           "id": "010",
           "title": "Kitsa copies Wheel of Fortune on the stack: two wheels for one cast, Brallin paid for both discards",
           "checker": "pass",
@@ -3036,7 +3016,58 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Artist's Talent"
+          },
+          {
+            "name": "Command Beacon"
+          },
+          {
+            "name": "Embercleave"
+          },
+          {
+            "name": "Frantic Search"
+          },
+          {
             "name": "Ghostly Pilferer"
+          },
+          {
+            "name": "Glittering Massif"
+          },
+          {
+            "name": "Inti, Seneschal of the Sun"
+          },
+          {
+            "name": "Izzet Charm"
+          },
+          {
+            "name": "Jeskai Ascendancy"
+          },
+          {
+            "name": "Knowledge Is Power"
+          },
+          {
+            "name": "Ledger Shredder"
+          },
+          {
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "March of Swirling Mist"
+          },
+          {
+            "name": "Mary Read and Anne Bonny"
+          },
+          {
+            "name": "Robe of Stars"
+          },
+          {
+            "name": "Shu Yun, the Silent Tempest"
+          },
+          {
+            "name": "Sorcerer Class"
+          },
+          {
+            "name": "Stoneforge Mystic"
           }
         ],
         "unsleeve": [
@@ -3062,8 +3093,22 @@
             ]
           }
         ],
-        "proxy": [],
-        "free": [],
+        "proxy": [
+          {
+            "name": "Mystic Remora",
+            "where": [
+              "heliod"
+            ]
+          }
+        ],
+        "free": [
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Cascade Bluffs",
@@ -3079,7 +3124,7 @@
             ]
           }
         ],
-        "blocking": 4,
+        "blocking": 21,
         "procurement": {
           "at": "2026-10-26",
           "note": "printed proxies sleeved 2026-10-26; unowned cards to order"
@@ -3087,23 +3132,40 @@
       },
       "base_version": 9,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 27,
+      "out": 27,
       "counts": {
-        "in_deck": 92,
+        "in_deck": 73,
         "box": 2,
-        "elsewhere": 3,
-        "buy": 1,
-        "free": 0
+        "elsewhere": 4,
+        "buy": 18,
+        "free": 1
       },
       "unsourced": [
+        "Artist's Talent",
         "Boros Charm",
+        "Command Beacon",
+        "Embercleave",
+        "Frantic Search",
         "Ghostly Pilferer",
+        "Glittering Massif",
+        "Inti, Seneschal of the Sun",
+        "Izzet Charm",
+        "Jeskai Ascendancy",
+        "Knowledge Is Power",
+        "Ledger Shredder",
+        "Magmakin Artillerist",
+        "March of Swirling Mist",
+        "Mary Read and Anne Bonny",
         "Opal Palace",
+        "Robe of Stars",
+        "Shu Yun, the Silent Tempest",
+        "Sorcerer Class",
+        "Stoneforge Mystic",
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -3121,10 +3183,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -3239,10 +3301,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -3267,10 +3329,10 @@
         },
         {
           "name": "Embercleave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -3316,10 +3378,10 @@
         },
         {
           "name": "Frantic Search",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -3358,10 +3420,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grand Abolisher",
@@ -3414,17 +3476,17 @@
         },
         {
           "name": "Inti, Seneschal of the Sun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Charm",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Izzet Signet",
@@ -3442,10 +3504,10 @@
         },
         {
           "name": "Jeskai Ascendancy",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Kitsa, Otterball Elite",
@@ -3456,10 +3518,10 @@
         },
         {
           "name": "Knowledge Is Power",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
@@ -3470,10 +3532,10 @@
         },
         {
           "name": "Ledger Shredder",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -3491,10 +3553,10 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -3512,17 +3574,17 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mary Read and Anne Bonny",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -3549,10 +3611,25 @@
         },
         {
           "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Needleverge Pathway // Pillarverge Pathway",
@@ -3655,10 +3732,10 @@
         },
         {
           "name": "Robe of Stars",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rugged Prairie",
@@ -3690,10 +3767,10 @@
         },
         {
           "name": "Shu Yun, the Silent Tempest",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Smothering Tithe",
@@ -3711,17 +3788,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -3746,10 +3831,10 @@
         },
         {
           "name": "Stoneforge Mystic",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stormcarved Coast",
@@ -4011,6 +4096,15 @@
       },
       "stacks": [
         {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist"
+          ]
+        },
+        {
           "id": "010",
           "title": "Kitsa copies Wheel of Fortune on the stack: two wheels for one cast, Brallin paid for both discards",
           "checker": "pass",
@@ -4115,6 +4209,9 @@
             "name": "Alhammarret's Archive"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Campfire"
           },
           {
@@ -4124,10 +4221,25 @@
             "name": "Collector's Vault"
           },
           {
+            "name": "Command Beacon"
+          },
+          {
+            "name": "Embercleave"
+          },
+          {
             "name": "Fireshrieker"
           },
           {
+            "name": "Frantic Search"
+          },
+          {
             "name": "Genji Glove"
+          },
+          {
+            "name": "Glittering Massif"
+          },
+          {
+            "name": "Inti, Seneschal of the Sun"
           },
           {
             "name": "Iroh's Demonstration"
@@ -4142,7 +4254,19 @@
             "name": "Khorvath's Fury"
           },
           {
+            "name": "Knowledge Is Power"
+          },
+          {
             "name": "Lizard Blades"
+          },
+          {
+            "name": "March of Swirling Mist"
+          },
+          {
+            "name": "Sorcerer Class"
+          },
+          {
+            "name": "Stoneforge Mystic"
           },
           {
             "name": "Zephyr Boots"
@@ -4191,6 +4315,12 @@
             "where": [
               "sisay"
             ]
+          },
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -4208,12 +4338,6 @@
             ]
           },
           {
-            "name": "Ferrous Lake",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Mask of Memory",
             "where": [
               "Zur Parts"
@@ -4227,7 +4351,7 @@
             ]
           }
         ],
-        "blocking": 15,
+        "blocking": 25,
         "procurement": {
           "at": "2026-10-24",
           "note": "played on printed proxies from 2026-10-24; the unowned cards are on the order list"
@@ -4235,34 +4359,44 @@
       },
       "base_version": 8,
       "size": 100,
-      "add": 23,
-      "out": 23,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 75,
-        "box": 5,
+        "in_deck": 65,
+        "box": 4,
         "elsewhere": 4,
-        "buy": 12,
-        "free": 2
+        "buy": 22,
+        "free": 3
       },
       "unsourced": [
         "Alhammarret's Archive",
+        "Artist's Talent",
         "Boros Charm",
         "Campfire",
         "Champion's Helm",
         "Collector's Vault",
+        "Command Beacon",
+        "Embercleave",
         "Fireshrieker",
+        "Frantic Search",
         "Genji Glove",
+        "Glittering Massif",
+        "Inti, Seneschal of the Sun",
         "Iroh's Demonstration",
         "Jeska's Will",
         "Key to the City",
         "Khorvath's Fury",
+        "Knowledge Is Power",
         "Lizard Blades",
+        "March of Swirling Mist",
         "Opal Palace",
+        "Sorcerer Class",
+        "Stoneforge Mystic",
         "Talon Gates of Madara",
         "Zephyr Boots"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 3,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -4287,10 +4421,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Azorius Signet",
@@ -4435,10 +4569,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -4449,10 +4583,10 @@
         },
         {
           "name": "Embercleave",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Faithless Looting",
@@ -4470,15 +4604,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Emancipation",
@@ -4510,10 +4639,10 @@
         },
         {
           "name": "Frantic Search",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Frostboil Snarl",
@@ -4545,10 +4674,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gratuitous Violence",
@@ -4587,10 +4716,10 @@
         },
         {
           "name": "Inti, Seneschal of the Sun",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Iroh's Demonstration",
@@ -4658,10 +4787,10 @@
         },
         {
           "name": "Knowledge Is Power",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lae'zel, Vlaakith's Champion",
@@ -4707,10 +4836,10 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mask of Memory",
@@ -4898,17 +5027,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -4933,10 +5070,10 @@
         },
         {
           "name": "Stoneforge Mystic",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Stormcarved Coast",
@@ -5230,6 +5367,14 @@
       },
       "stacks": [
         {
+          "id": "004",
+          "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
+          "checker": "pass",
+          "names": [
+            "Artist's Talent"
+          ]
+        },
+        {
           "id": "006",
           "title": "Shabraz at 10/10 double strike: a loot between the two damage steps makes 10 + 11 = 21 commander damage",
           "checker": "pass",
@@ -5272,7 +5417,13 @@
             "name": "Anje's Ravager"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Campfire"
+          },
+          {
+            "name": "Command Beacon"
           },
           {
             "name": "Echo of Eons"
@@ -5282,6 +5433,9 @@
           },
           {
             "name": "Floodfarm Verge"
+          },
+          {
+            "name": "Glittering Massif"
           },
           {
             "name": "Hobgoblin, Mantled Marauder"
@@ -5296,10 +5450,16 @@
             "name": "Jeska's Will"
           },
           {
+            "name": "Ledger Shredder"
+          },
+          {
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "March of Swirling Mist"
           },
           {
             "name": "Mischievous Mystic"
@@ -5318,6 +5478,9 @@
           },
           {
             "name": "Snapback"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Spider-Man, New Champion"
@@ -5354,13 +5517,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Scrawling Crawler",
             "where": [
               "heliod",
@@ -5388,6 +5544,12 @@
             "where": [
               "sisay"
             ]
+          },
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -5401,12 +5563,6 @@
             "name": "Chasm Skulker",
             "where": [
               "Heliod Parts",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
               "Shabraz Parts"
             ]
           },
@@ -5448,53 +5604,51 @@
               "Shabraz Parts",
               "Zur Parts"
             ]
-          },
-          {
-            "name": "Thought Vessel",
-            "where": [
-              "Mystery Booster 2",
-              "Zur Parts"
-            ]
           }
         ],
-        "blocking": 29,
+        "blocking": 34,
         "procurement": null
       },
       "base_version": 8,
       "size": 100,
-      "add": 40,
-      "out": 40,
+      "add": 44,
+      "out": 44,
       "counts": {
-        "in_deck": 60,
-        "box": 10,
-        "elsewhere": 7,
-        "buy": 22,
-        "free": 1
+        "in_deck": 56,
+        "box": 8,
+        "elsewhere": 6,
+        "buy": 28,
+        "free": 2
       },
       "unsourced": [
         "Alhammarret's Archive",
         "Anje's Ravager",
+        "Artist's Talent",
         "Boros Charm",
         "Campfire",
+        "Command Beacon",
         "Curator of Mysteries",
         "Echo of Eons",
         "Fevered Visions",
         "Floodfarm Verge",
+        "Glittering Massif",
         "Hobgoblin, Mantled Marauder",
         "Irencrag Pyromancer",
         "Jaxis, the Troublemaker",
         "Jeska's Will",
+        "Ledger Shredder",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
+        "March of Swirling Mist",
         "Mischievous Mystic",
         "Nezahal, Primal Tide",
         "Nimble Obstructionist",
         "Niv-Mizzet, Parun",
         "Opal Palace",
-        "Psychosis Crawler",
         "Scrawling Crawler",
         "Scrounging Skyray",
         "Snapback",
+        "Sorcerer Class",
         "Spider-Man, New Champion",
         "Surly Badgersaur",
         "Talisman of Conviction",
@@ -5503,7 +5657,7 @@
         "The Locust God"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -5528,10 +5682,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Boros Charm",
@@ -5620,10 +5774,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -5677,15 +5831,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fevered Visions",
@@ -5743,10 +5892,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hallowed Fountain",
@@ -5860,10 +6009,10 @@
         },
         {
           "name": "Ledger Shredder",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Library of Leng",
@@ -5888,17 +6037,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -5916,10 +6065,10 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mischievous Mystic",
@@ -6017,25 +6166,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Raugrin Triome",
@@ -6195,17 +6329,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spider-Man, New Champion",
@@ -6360,19 +6502,10 @@
         },
         {
           "name": "Thought Vessel",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            },
-            {
-              "kind": "box",
-              "name": "Zur Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Thundering Falls",
@@ -6549,6 +6682,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Swiftfoot Boots"
           ]
         },
@@ -6634,10 +6769,16 @@
             "name": "Arjun, the Shifting Flame"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Burning Inquiry"
           },
           {
             "name": "Campfire"
+          },
+          {
+            "name": "Command Beacon"
           },
           {
             "name": "Commit // Memory"
@@ -6650,6 +6791,9 @@
           },
           {
             "name": "Floodfarm Verge"
+          },
+          {
+            "name": "Glittering Massif"
           },
           {
             "name": "Irencrag Pyromancer"
@@ -6667,7 +6811,10 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
+          },
+          {
+            "name": "March of Swirling Mist"
           },
           {
             "name": "Molten Psyche"
@@ -6686,6 +6833,9 @@
           },
           {
             "name": "Snapback"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Spider-Man, New Champion"
@@ -6724,13 +6874,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Scrawling Crawler",
             "where": [
               "heliod",
@@ -6760,6 +6903,12 @@
             "where": [
               "sisay"
             ]
+          },
+          {
+            "name": "Spectator Seating",
+            "where": [
+              "sisay"
+            ]
           }
         ],
         "box": [
@@ -6779,12 +6928,6 @@
             "name": "Chasm Skulker",
             "where": [
               "Heliod Parts",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
               "Shabraz Parts"
             ]
           },
@@ -6828,47 +6971,51 @@
             ]
           }
         ],
-        "blocking": 32,
+        "blocking": 36,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 44,
-      "out": 44,
+      "add": 48,
+      "out": 48,
       "counts": {
-        "in_deck": 56,
-        "box": 10,
-        "elsewhere": 7,
-        "buy": 26,
-        "free": 1
+        "in_deck": 52,
+        "box": 9,
+        "elsewhere": 6,
+        "buy": 31,
+        "free": 2
       },
       "unsourced": [
         "Alhammarret's Archive",
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Burning Inquiry",
         "Campfire",
+        "Command Beacon",
         "Commit // Memory",
         "Curator of Mysteries",
         "Echo of Eons",
         "Fevered Visions",
         "Floodfarm Verge",
+        "Glittering Massif",
         "Irencrag Pyromancer",
         "Jaxis, the Troublemaker",
         "Jeska's Will",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
+        "March of Swirling Mist",
         "Mind's Eye",
         "Molten Psyche",
         "Nezahal, Primal Tide",
         "Nimble Obstructionist",
         "Niv-Mizzet, Parun",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Scrawling Crawler",
         "Snapback",
+        "Sorcerer Class",
         "Spider-Man, New Champion",
         "Talon Gates of Madara",
         "Teferi's Puzzle Box",
@@ -6877,7 +7024,7 @@
         "Time Reversal"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 2,
       "cards": [
         {
           "name": "Alhammarret's Archive",
@@ -6909,10 +7056,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Big Score",
@@ -7020,10 +7167,10 @@
         },
         {
           "name": "Command Beacon",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Command Tower",
@@ -7084,15 +7231,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fevered Visions",
@@ -7150,10 +7292,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hallowed Fountain",
@@ -7274,17 +7416,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -7302,10 +7444,10 @@
         },
         {
           "name": "March of Swirling Mist",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mind's Eye",
@@ -7411,25 +7553,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -7589,17 +7716,25 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spectator Seating",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Spider-Man, New Champion",
@@ -7925,6 +8060,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Swiftfoot Boots"
           ]
         },
@@ -8023,6 +8160,9 @@
             "name": "Arjun, the Shifting Flame"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Burning Inquiry"
           },
           {
@@ -8047,6 +8187,9 @@
             "name": "Floodfarm Verge"
           },
           {
+            "name": "Glittering Massif"
+          },
+          {
             "name": "Improbable Alliance"
           },
           {
@@ -8065,7 +8208,7 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
           },
           {
             "name": "Mana Geyser"
@@ -8096,6 +8239,9 @@
           },
           {
             "name": "Queen Kayla bin-Kroog"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Sticky Fingers"
@@ -8137,13 +8283,6 @@
             "where": [
               "emiel-blink",
               "meren-recursion"
-            ]
-          },
-          {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
             ]
           },
           {
@@ -8205,19 +8344,6 @@
             ]
           },
           {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Glacial Fortress",
             "where": [
               "Shabraz Parts"
@@ -8269,7 +8395,7 @@
             ]
           }
         ],
-        "blocking": 44,
+        "blocking": 46,
         "procurement": null
       },
       "base_version": 6,
@@ -8278,14 +8404,15 @@
       "out": 56,
       "counts": {
         "in_deck": 44,
-        "box": 12,
-        "elsewhere": 10,
-        "buy": 34,
+        "box": 10,
+        "elsewhere": 9,
+        "buy": 37,
         "free": 0
       },
       "unsourced": [
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Burning Inquiry",
         "Calciform Pools",
         "Commit // Memory",
@@ -8295,13 +8422,14 @@
         "Drake Haven",
         "Echo of Eons",
         "Floodfarm Verge",
+        "Glittering Massif",
         "Improbable Alliance",
         "Irencrag Pyromancer",
         "Jaxis, the Troublemaker",
         "Jeska's Will",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
         "Mana Geyser",
         "Mind's Eye",
         "Mindless Automaton",
@@ -8313,12 +8441,12 @@
         "Niv-Mizzet, Parun",
         "Ominous Seas",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Scrawling Crawler",
         "Seachrome Coast",
         "Skycloud Expanse",
+        "Sorcerer Class",
         "Sticky Fingers",
         "Talon Gates of Madara",
         "Teferi's Protection",
@@ -8362,10 +8490,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -8482,19 +8610,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faerie Mastermind",
@@ -8512,15 +8631,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -8564,10 +8678,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hallowed Fountain",
@@ -8681,17 +8795,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -8851,25 +8965,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -9064,10 +9163,10 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -9431,6 +9530,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Sticky Fingers",
             "Swiftfoot Boots"
           ]
@@ -9469,6 +9570,9 @@
             "name": "Arjun, the Shifting Flame"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Burning Inquiry"
           },
           {
@@ -9496,6 +9600,9 @@
             "name": "Generous Plunderer"
           },
           {
+            "name": "Glittering Massif"
+          },
+          {
             "name": "Improbable Alliance"
           },
           {
@@ -9511,7 +9618,7 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
           },
           {
             "name": "Mindless Automaton"
@@ -9542,6 +9649,9 @@
           },
           {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Sticky Fingers"
@@ -9598,13 +9708,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Reliquary Tower",
             "where": [
               "goblin-storm",
@@ -9651,19 +9754,6 @@
             "name": "Chasm Skulker",
             "where": [
               "Heliod Parts",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
               "Shabraz Parts"
             ]
           },
@@ -9719,7 +9809,7 @@
             ]
           }
         ],
-        "blocking": 45,
+        "blocking": 47,
         "procurement": null
       },
       "base_version": 5,
@@ -9728,14 +9818,15 @@
       "out": 58,
       "counts": {
         "in_deck": 42,
-        "box": 12,
-        "elsewhere": 9,
-        "buy": 36,
+        "box": 10,
+        "elsewhere": 8,
+        "buy": 39,
         "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Burning Inquiry",
         "Calciform Pools",
         "Commit // Memory",
@@ -9746,13 +9837,14 @@
         "Echo of Eons",
         "Floodfarm Verge",
         "Generous Plunderer",
+        "Glittering Massif",
         "Improbable Alliance",
         "Irencrag Pyromancer",
         "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
         "Mind's Eye",
         "Mindless Automaton",
         "Molten Psyche",
@@ -9763,12 +9855,12 @@
         "Niv-Mizzet, Parun",
         "Ominous Seas",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
         "Silent Hallcreeper",
         "Skycloud Expanse",
+        "Sorcerer Class",
         "Sticky Fingers",
         "Talon Gates of Madara",
         "Teferi's Puzzle Box",
@@ -9813,10 +9905,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -9948,19 +10040,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faithless Looting",
@@ -9971,15 +10054,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -10030,10 +10108,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hallowed Fountain",
@@ -10155,17 +10233,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -10318,25 +10396,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -10509,10 +10572,10 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -10735,6 +10798,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Sticky Fingers",
             "Swiftfoot Boots",
             "Treasure Map"
@@ -10774,6 +10839,9 @@
             "name": "Arjun, the Shifting Flame"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Burning Inquiry"
           },
           {
@@ -10804,6 +10872,9 @@
             "name": "Generous Plunderer"
           },
           {
+            "name": "Glittering Massif"
+          },
+          {
             "name": "Gossip's Talent"
           },
           {
@@ -10822,7 +10893,7 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
           },
           {
             "name": "Marketback Walker"
@@ -10856,6 +10927,9 @@
           },
           {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Sticky Fingers"
@@ -10915,13 +10989,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Reliquary Tower",
             "where": [
               "goblin-storm",
@@ -10972,19 +11039,6 @@
             ]
           },
           {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Glacial Fortress",
             "where": [
               "Shabraz Parts"
@@ -11030,7 +11084,7 @@
             ]
           }
         ],
-        "blocking": 49,
+        "blocking": 51,
         "procurement": null
       },
       "base_version": 4,
@@ -11039,14 +11093,15 @@
       "out": 61,
       "counts": {
         "in_deck": 39,
-        "box": 11,
-        "elsewhere": 9,
-        "buy": 40,
+        "box": 9,
+        "elsewhere": 8,
+        "buy": 43,
         "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Burning Inquiry",
         "Calciform Pools",
         "Commit // Memory",
@@ -11058,6 +11113,7 @@
         "Echo of Eons",
         "Floodfarm Verge",
         "Generous Plunderer",
+        "Glittering Massif",
         "Gossip's Talent",
         "Improbable Alliance",
         "Irencrag Pyromancer",
@@ -11065,7 +11121,7 @@
         "Kefnet the Mindful",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
         "Marketback Walker",
         "Mind's Eye",
         "Mindless Automaton",
@@ -11077,12 +11133,12 @@
         "Niv-Mizzet, Parun",
         "Ominous Seas",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
         "Silent Hallcreeper",
         "Skycloud Expanse",
+        "Sorcerer Class",
         "Sticky Fingers",
         "Stromkirk Noble",
         "Talon Gates of Madara",
@@ -11128,10 +11184,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -11270,19 +11326,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faithless Looting",
@@ -11293,15 +11340,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -11352,10 +11394,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gossip's Talent",
@@ -11484,17 +11526,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -11628,25 +11670,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -11819,10 +11846,10 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -12159,6 +12186,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Sticky Fingers",
             "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
@@ -12221,6 +12250,9 @@
             "name": "Arjun, the Shifting Flame"
           },
           {
+            "name": "Artist's Talent"
+          },
+          {
             "name": "Burning Inquiry"
           },
           {
@@ -12254,6 +12286,9 @@
             "name": "Gleaming Bastion"
           },
           {
+            "name": "Glittering Massif"
+          },
+          {
             "name": "Gossip's Talent"
           },
           {
@@ -12272,7 +12307,7 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
           },
           {
             "name": "Marketback Walker"
@@ -12306,6 +12341,9 @@
           },
           {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Sticky Fingers"
@@ -12365,13 +12403,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Reliquary Tower",
             "where": [
               "goblin-storm",
@@ -12422,19 +12453,6 @@
             ]
           },
           {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Ferrous Lake",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Glacial Fortress",
             "where": [
               "Shabraz Parts"
@@ -12474,7 +12492,7 @@
             ]
           }
         ],
-        "blocking": 50,
+        "blocking": 52,
         "procurement": null
       },
       "base_version": 3,
@@ -12483,14 +12501,15 @@
       "out": 61,
       "counts": {
         "in_deck": 39,
-        "box": 10,
-        "elsewhere": 9,
-        "buy": 41,
+        "box": 8,
+        "elsewhere": 8,
+        "buy": 44,
         "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Burning Inquiry",
         "Calciform Pools",
         "Commit // Memory",
@@ -12503,6 +12522,7 @@
         "Floodfarm Verge",
         "Generous Plunderer",
         "Gleaming Bastion",
+        "Glittering Massif",
         "Gossip's Talent",
         "Improbable Alliance",
         "Irencrag Pyromancer",
@@ -12510,7 +12530,7 @@
         "Kefnet the Mindful",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
         "Marketback Walker",
         "Mind's Eye",
         "Mindless Automaton",
@@ -12522,12 +12542,12 @@
         "Niv-Mizzet, Parun",
         "Ominous Seas",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
         "Silent Hallcreeper",
         "Skycloud Expanse",
+        "Sorcerer Class",
         "Sticky Fingers",
         "Stromkirk Noble",
         "Talon Gates of Madara",
@@ -12573,10 +12593,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Brallin, Skyshark Rider",
@@ -12715,19 +12735,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faithless Looting",
@@ -12738,15 +12749,10 @@
         },
         {
           "name": "Ferrous Lake",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fiery Islet",
@@ -12804,10 +12810,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gossip's Talent",
@@ -12924,17 +12930,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -13068,25 +13074,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -13259,10 +13250,10 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -13601,6 +13592,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Sticky Fingers",
             "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
@@ -13630,6 +13623,9 @@
           },
           {
             "name": "Arjun, the Shifting Flame"
+          },
+          {
+            "name": "Artist's Talent"
           },
           {
             "name": "Astral Drift"
@@ -13668,6 +13664,9 @@
             "name": "Gleaming Bastion"
           },
           {
+            "name": "Glittering Massif"
+          },
+          {
             "name": "Gossip's Talent"
           },
           {
@@ -13686,7 +13685,7 @@
             "name": "Library of Leng"
           },
           {
-            "name": "Magus of the Wheel"
+            "name": "Magmakin Artillerist"
           },
           {
             "name": "Marketback Walker"
@@ -13720,6 +13719,9 @@
           },
           {
             "name": "Silent Hallcreeper"
+          },
+          {
+            "name": "Sorcerer Class"
           },
           {
             "name": "Sticky Fingers"
@@ -13779,13 +13781,6 @@
             ]
           },
           {
-            "name": "Psychosis Crawler",
-            "where": [
-              "heliod",
-              "keen-engineering"
-            ]
-          },
-          {
             "name": "Reliquary Tower",
             "where": [
               "goblin-storm",
@@ -13836,13 +13831,6 @@
             ]
           },
           {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
             "name": "Glacial Fortress",
             "where": [
               "Shabraz Parts"
@@ -13876,23 +13864,24 @@
             ]
           }
         ],
-        "blocking": 51,
+        "blocking": 53,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 60,
-      "out": 60,
+      "add": 61,
+      "out": 61,
       "counts": {
-        "in_deck": 40,
-        "box": 8,
-        "elsewhere": 9,
-        "buy": 42,
+        "in_deck": 39,
+        "box": 7,
+        "elsewhere": 8,
+        "buy": 45,
         "free": 1
       },
       "unsourced": [
         "Anje's Ravager",
         "Arjun, the Shifting Flame",
+        "Artist's Talent",
         "Astral Drift",
         "Burning Inquiry",
         "Calciform Pools",
@@ -13906,6 +13895,7 @@
         "Floodfarm Verge",
         "Generous Plunderer",
         "Gleaming Bastion",
+        "Glittering Massif",
         "Gossip's Talent",
         "Improbable Alliance",
         "Irencrag Pyromancer",
@@ -13913,7 +13903,7 @@
         "Kefnet the Mindful",
         "Khorvath's Fury",
         "Library of Leng",
-        "Magus of the Wheel",
+        "Magmakin Artillerist",
         "Marketback Walker",
         "Mind's Eye",
         "Mindless Automaton",
@@ -13925,12 +13915,12 @@
         "Niv-Mizzet, Parun",
         "Ominous Seas",
         "Opal Palace",
-        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Seachrome Coast",
         "Silent Hallcreeper",
         "Skycloud Expanse",
+        "Sorcerer Class",
         "Sticky Fingers",
         "Stromkirk Noble",
         "Talon Gates of Madara",
@@ -13976,10 +13966,10 @@
         },
         {
           "name": "Artist's Talent",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Astral Drift",
@@ -14139,19 +14129,10 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Faithless Looting",
@@ -14209,10 +14190,10 @@
         },
         {
           "name": "Glittering Massif",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Gossip's Talent",
@@ -14336,17 +14317,17 @@
         },
         {
           "name": "Magmakin Artillerist",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Magus of the Wheel",
           "state": "buy",
           "where": [],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Magus of the Wheel",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Mana Confluence",
@@ -14480,25 +14461,10 @@
         },
         {
           "name": "Psychosis Crawler",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "heliod",
-              "locked": true,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
-              "slug": "keen-engineering",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Queen Kayla bin-Kroog",
@@ -14652,10 +14618,10 @@
         },
         {
           "name": "Sorcerer Class",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Spire of Industry",
@@ -14999,6 +14965,8 @@
           "title": "Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast",
           "checker": "pass",
           "names": [
+            "Artist's Talent",
+            "Magmakin Artillerist",
             "Sticky Fingers",
             "Swiftfoot Boots",
             "Treasure Map // Treasure Cove"
@@ -15032,164 +15000,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.4818,
+          "rate": 0.6293,
           "ci95": [
-            0.472,
-            0.4916
+            0.6198,
+            0.6387
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.5345,
+          "rate": 0.6802,
           "ci95": [
-            0.5247,
-            0.5443
+            0.671,
+            0.6893
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5924,
+          "rate": 0.7317,
           "ci95": [
-            0.5827,
-            0.602
+            0.7229,
+            0.7403
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.6397,
+          "rate": 0.7791,
           "ci95": [
-            0.6302,
-            0.6491
+            0.7709,
+            0.7871
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.6975,
+          "rate": 0.8297,
           "ci95": [
-            0.6884,
-            0.7064
+            0.8222,
+            0.8369
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7569,
+          "rate": 0.8799,
           "ci95": [
-            0.7484,
-            0.7652
+            0.8734,
+            0.8861
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8165,
+          "rate": 0.9214,
           "ci95": [
-            0.8088,
-            0.824
+            0.916,
+            0.9265
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.8693,
+          "rate": 0.9535,
           "ci95": [
-            0.8626,
-            0.8758
+            0.9492,
+            0.9575
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9095,
+          "rate": 0.9729,
           "ci95": [
-            0.9037,
-            0.915
+            0.9695,
+            0.9759
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9384,
+          "rate": 0.9849,
           "ci95": [
-            0.9335,
-            0.9429
+            0.9823,
+            0.9871
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.0908,
+          "rate": 0.12,
           "ci95": [
-            0.0853,
-            0.0966
+            0.1138,
+            0.1265
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1179,
+          "rate": 0.1531,
           "ci95": [
-            0.1117,
-            0.1244
+            0.1462,
+            0.1603
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.1564,
+          "rate": 0.19,
           "ci95": [
-            0.1494,
-            0.1637
+            0.1824,
+            0.1978
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.196,
+          "rate": 0.2362,
           "ci95": [
-            0.1883,
-            0.2039
+            0.228,
+            0.2446
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.2555,
+          "rate": 0.2988,
           "ci95": [
-            0.247,
-            0.2641
+            0.2899,
+            0.3078
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.3347,
+          "rate": 0.385,
           "ci95": [
-            0.3255,
-            0.344
+            0.3755,
+            0.3946
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.4257,
+          "rate": 0.4954,
           "ci95": [
-            0.416,
-            0.4354
+            0.4856,
+            0.5052
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.5353,
+          "rate": 0.6244,
           "ci95": [
-            0.5255,
-            0.5451
+            0.6149,
+            0.6338
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.635,
+          "rate": 0.7433,
           "ci95": [
-            0.6255,
-            0.6444
+            0.7346,
+            0.7518
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.7355,
+          "rate": 0.8425,
           "ci95": [
-            0.7268,
-            0.7441
+            0.8352,
+            0.8495
           ],
           "n": 10000
         }
@@ -15197,10 +15165,10 @@
       "bottleneck": {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
         "by_turn_three": {
-          "rate": 0.5924,
+          "rate": 0.7317,
           "ci95": [
-            0.5827,
-            0.602
+            0.7229,
+            0.7403
           ],
           "n": 10000
         }
@@ -15210,159 +15178,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.5692,
+          "rate": 0.5978,
           "ci95": [
-            0.5595,
-            0.5789
+            0.5882,
+            0.6074
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.1124,
+          "rate": 0.1119,
           "ci95": [
-            0.1064,
-            0.1187
+            0.1059,
+            0.1182
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0157,
+          "rate": 0.0194,
           "ci95": [
-            0.0134,
-            0.0183
+            0.0169,
+            0.0223
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0031,
+          "rate": 0.0038,
           "ci95": [
-            0.0022,
-            0.0044
+            0.0028,
+            0.0052
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0064,
+          "rate": 0.0066,
           "ci95": [
-            0.005,
-            0.0082
+            0.0052,
+            0.0084
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0224,
+          "rate": 0.026,
           "ci95": [
-            0.0197,
-            0.0255
+            0.0231,
+            0.0293
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0547,
+          "rate": 0.0568,
           "ci95": [
-            0.0504,
-            0.0593
+            0.0524,
+            0.0615
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.094,
+          "rate": 0.0742,
           "ci95": [
-            0.0884,
-            0.0999
+            0.0692,
+            0.0795
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.1207,
+          "rate": 0.0912,
           "ci95": [
-            0.1145,
-            0.1272
+            0.0857,
+            0.097
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.1386,
+          "rate": 0.1135,
           "ci95": [
-            0.132,
-            0.1455
+            0.1074,
+            0.1199
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1063,
+        "rate": 0.0874,
         "ci95": [
-          0.1004,
-          0.1125
+          0.082,
+          0.0931
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 5680,
-        "hand_empty": 1808,
-        "mana_short": 3872
+        "stall_turns": 5034,
+        "hand_empty": 1527,
+        "mana_short": 3507
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 4080,
-        "hand_empty": 1766,
-        "mana_short": 2314,
+        "stall_turns": 3357,
+        "hand_empty": 1496,
+        "mana_short": 1861,
         "stall_rate": {
-          "rate": 0.102,
+          "rate": 0.0839,
           "ci95": [
-            0.0991,
-            0.105
+            0.0812,
+            0.0867
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 4,
-          "floor_rate": 0.0031,
-          "diff": 0.0989,
+          "floor_rate": 0.0038,
+          "diff": 0.0801,
           "ci95": [
-            0.0957,
-            0.102
+            0.0771,
+            0.0831
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 4.4101,
+            "rate": 4.7943,
             "ci95": [
-              4.372,
-              4.4482
+              4.7384,
+              4.8502
             ],
-            "sd": 1.9443,
+            "sd": 2.8499,
             "n": 10000
           },
           "8": {
-            "rate": 4.2248,
+            "rate": 5.1935,
             "ci95": [
-              4.1826,
-              4.267
+              5.113,
+              5.274
             ],
-            "sd": 2.1508,
+            "sd": 4.1074,
             "n": 10000
           },
           "9": {
-            "rate": 4.2665,
+            "rate": 6.3377,
             "ci95": [
-              4.2211,
-              4.3119
+              6.2032,
+              6.4722
             ],
-            "sd": 2.3162,
+            "sd": 6.86,
             "n": 10000
           },
           "10": {
-            "rate": 4.3582,
+            "rate": 7.7603,
             "ci95": [
-              4.3101,
-              4.4063
+              7.5849,
+              7.9357
             ],
-            "sd": 2.4561,
+            "sd": 8.9465,
             "n": 10000
           }
         },
@@ -15372,39 +15340,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.3991,
+        "rate": 0.4169,
         "ci95": [
-          0.3895,
-          0.4087
+          0.4073,
+          0.4266
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.1687,
+      "missed_land_drop_rate": 0.1559,
       "mulliganed": {
-        "rate": 0.2118,
+        "rate": 0.203,
         "ci95": [
-          0.2039,
-          0.2199
+          0.1952,
+          0.211
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
         "2": 2.153,
-        "3": 3.367,
-        "4": 4.261,
-        "5": 5.045,
-        "6": 5.853,
-        "7": 6.762,
-        "8": 7.728,
-        "9": 8.763,
-        "10": 9.874
+        "3": 3.536,
+        "4": 4.418,
+        "5": 5.238,
+        "6": 6.177,
+        "7": 7.252,
+        "8": 8.425,
+        "9": 9.735,
+        "10": 11.216
       },
       "fleet": "below the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.0105
+      "mana_stdev_turn_five": 1.0214
     },
-    "decklist_sha256": "8df06ee13607611d3c34e9af48f7b0745a2db19165c0e0da1095c3a040fbfcb4"
+    "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
   },
   "bracket": {
     "floor": 3,
@@ -15419,7 +15387,7 @@
     "as_of": "2026-10-28",
     "source_updated_at": "2026-10-28T17:58:31.150697+00:00",
     "url": "https://deckcheck.co/app/decklist/N381DOgjy9ZU",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 5,
     "omni": {
       "benchmarks": {
@@ -15455,15 +15423,114 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": null,
-      "included": 0,
-      "infinite": 0,
+      "highest_bracket": 3,
+      "included": 6,
+      "infinite": 6,
       "near": 50,
-      "near_total": 69,
+      "near_total": 63,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
-    "top": []
+    "top": [
+      {
+        "id": "184-2210-4682",
+        "cards": [
+          "Faerie Mastermind",
+          "Smothering Tithe",
+          "Mirrormade"
+        ],
+        "produces": [
+          "Near-infinite colored mana",
+          "Infinite draw triggers for all players",
+          "Near-infinite Treasure tokens",
+          "Infinite card draw for all players"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 16322,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "4682-7824-7890",
+        "cards": [
+          "Gleaming Splendor",
+          "Smothering Tithe",
+          "Bard, King of Dale"
+        ],
+        "produces": [
+          "Infinite card draw for any number of players",
+          "Infinite draw triggers for any number of players",
+          "Near-infinite Treasure tokens",
+          "Near-infinite colored mana",
+          "Near-infinite artifact ETB",
+          "Near-infinite artifact LTB",
+          "Near-infinite artifact sacrifice triggers"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 3758,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "4682-5184-7890",
+        "cards": [
+          "Gleaming Splendor",
+          "Smothering Tithe",
+          "Xorn"
+        ],
+        "produces": [
+          "Infinite card draw for any number of players",
+          "Infinite draw triggers for any number of players",
+          "Near-infinite Treasure tokens",
+          "Near-infinite colored mana",
+          "Near-infinite artifact ETB",
+          "Near-infinite artifact LTB",
+          "Near-infinite artifact sacrifice triggers"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 2949,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "184-2713-4682",
+        "cards": [
+          "Faerie Mastermind",
+          "Smothering Tithe",
+          "Zirda, the Dawnwaker"
+        ],
+        "produces": [
+          "Infinite card draw for all players",
+          "Infinite draw triggers for all players",
+          "Near-infinite colored mana",
+          "Near-infinite colorless mana",
+          "Near-infinite Treasure tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 1879,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "184-4682-5184",
+        "cards": [
+          "Faerie Mastermind",
+          "Smothering Tithe",
+          "Xorn"
+        ],
+        "produces": [
+          "Infinite card draw for all players",
+          "Infinite draw triggers for all players",
+          "Near-infinite colored mana",
+          "Near-infinite colorless mana",
+          "Near-infinite Treasure tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 1203,
+        "assumes_other_commander": false
+      }
+    ]
   },
   "paper": {
     "version": 12,
@@ -15519,7 +15586,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 86,
+          "value": 93,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -15537,7 +15604,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.138,
+          "value": 4.782,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -15545,7 +15612,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
-          "value": 76,
+          "value": 87,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
@@ -15553,7 +15620,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)": {
-          "value": 76,
+          "value": 87,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)' by turn six",
@@ -15561,7 +15628,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)": {
-          "value": 31,
+          "value": 18,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)\" by turn six",
@@ -15569,7 +15636,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 62,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
@@ -15577,7 +15644,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
-          "value": 17,
+          "value": 18,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
@@ -15585,7 +15652,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source": {
-          "value": 33,
+          "value": 38,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source' by turn six",
@@ -15593,7 +15660,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading": {
-          "value": 67,
+          "value": 81,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading' by turn six",
@@ -15601,7 +15668,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Commander protection drawn — the whole engine is one 4-drop that dies to everything": {
-          "value": 78,
+          "value": 68,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Commander protection drawn — the whole engine is one 4-drop that dies to everything' by turn six",
@@ -15609,7 +15676,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A real answer drawn — a counter, a sweeper or a tax": {
-          "value": 82,
+          "value": 73,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
@@ -15617,7 +15684,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
-          "value": 76,
+          "value": 66,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
@@ -15709,16 +15776,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 9.872,
+            "1": 0.999,
+            "10": 11.184,
             "2": 2.146,
-            "3": 3.355,
-            "4": 4.25,
-            "5": 5.034,
-            "6": 5.846,
-            "7": 6.754,
-            "8": 7.73,
-            "9": 8.758
+            "3": 3.52,
+            "4": 4.409,
+            "5": 5.22,
+            "6": 6.164,
+            "7": 7.226,
+            "8": 8.399,
+            "9": 9.709
           },
           "tier": "data",
           "weight": "detail",
@@ -15728,16 +15795,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 1.0,
-            "10": 0.831,
-            "2": 0.996,
-            "3": 0.919,
-            "4": 0.828,
-            "5": 0.731,
-            "6": 0.708,
-            "7": 0.732,
-            "8": 0.761,
-            "9": 0.802
+            "1": 0.999,
+            "10": 0.877,
+            "2": 0.997,
+            "3": 0.911,
+            "4": 0.807,
+            "5": 0.73,
+            "6": 0.717,
+            "7": 0.746,
+            "8": 0.792,
+            "9": 0.849
           },
           "tier": "data",
           "weight": "detail",
@@ -15747,16 +15814,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.049,
-            "10": 4.703,
-            "2": 0.234,
-            "3": 0.486,
-            "4": 0.579,
-            "5": 0.811,
-            "6": 1.304,
-            "7": 1.964,
-            "8": 2.739,
-            "9": 3.64
+            "1": 0.051,
+            "10": 5.167,
+            "2": 0.153,
+            "3": 0.352,
+            "4": 0.422,
+            "5": 0.662,
+            "6": 1.153,
+            "7": 1.839,
+            "8": 2.67,
+            "9": 3.766
           },
           "tier": "data",
           "weight": "detail",
@@ -15766,14 +15833,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 365,
-            "1": 1607,
-            "2": 2965,
-            "3": 2904,
-            "4": 1569,
-            "5": 482,
-            "6": 100,
-            "7": 8
+            "0": 326,
+            "1": 1663,
+            "2": 2909,
+            "3": 2903,
+            "4": 1595,
+            "5": 511,
+            "6": 92,
+            "7": 1
           },
           "tier": "data",
           "weight": "detail",
@@ -15782,13 +15849,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 215,
-            "4": 2,
-            "5": 295,
-            "6": 2057,
-            "7": 4707,
-            "8": 1928,
-            "9": 674
+            "10": 89,
+            "4": 3,
+            "5": 336,
+            "6": 2794,
+            "7": 5014,
+            "8": 1422,
+            "9": 273
           },
           "tier": "data",
           "weight": "detail",
@@ -15804,48 +15871,48 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.138,
-    "commander_cast_by_turn_6_pct": 86,
+    "commander_mean_cast_turn": 4.782,
+    "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-        "by_turn_6_pct": 76
+        "by_turn_6_pct": 87
       },
       {
         "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "by_turn_6_pct": 76
+        "by_turn_6_pct": 87
       },
       {
         "label": "A second per-discard DAMAGE source drawn (doubles Brallin's half of every wheel)",
-        "by_turn_6_pct": 31
+        "by_turn_6_pct": 18
       },
       {
         "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 44
       },
       {
         "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "by_turn_6_pct": 17
+        "by_turn_6_pct": 18
       },
       {
         "label": "THE WHEEL KILL — a DISCARD wheel plus a stacked per-card damage source",
-        "by_turn_6_pct": 33
+        "by_turn_6_pct": 38
       },
       {
         "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
-        "by_turn_6_pct": 67
+        "by_turn_6_pct": 81
       },
       {
         "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-        "by_turn_6_pct": 78
+        "by_turn_6_pct": 68
       },
       {
         "label": "A real answer drawn — a counter, a sweeper or a tax",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 73
       },
       {
         "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "by_turn_6_pct": 76
+        "by_turn_6_pct": 66
       },
       {
         "label": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
@@ -15853,29 +15920,29 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.128,
+      "mean_kill_turn": 6.875,
       "median_kill_turn": 7,
-      "kill_by_turn_6_pct": 24,
-      "kill_by_turn_8_pct": 90,
+      "kill_by_turn_6_pct": 31,
+      "kill_by_turn_8_pct": 96,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 1,
       "kill_turn_histogram": {
-        "10": 215,
-        "4": 2,
-        "5": 295,
-        "6": 2057,
-        "7": 4707,
-        "8": 1928,
-        "9": 674
+        "10": 89,
+        "4": 3,
+        "5": 336,
+        "6": 2794,
+        "7": 5014,
+        "8": 1422,
+        "9": 273
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.6975,
+    "rate": 0.8297,
     "ci95": [
-      0.6884,
-      0.7064
+      0.8222,
+      0.8369
     ],
     "n": 10000,
     "turn": 5,
@@ -15897,7 +15964,7 @@
         "WEAK"
       ]
     ],
-    "why": "the engine is online by turn 5 in 70% of 10,000 seeded games",
+    "why": "the engine is online by turn 5 in 83% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": {
@@ -15914,9 +15981,7 @@
       "sweepers",
       "interaction-breadth"
     ],
-    "over": [
-      "protection"
-    ],
+    "over": [],
     "stale": []
   },
   "prescriptions": {
@@ -16013,7 +16078,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
     "ran_on_version": 9,
-    "current_version": 12,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 40,
     "wins": 6,
@@ -16037,7 +16102,7 @@
     "engine_casts": {
       "covered": true,
       "never_cast": [],
-      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck. BUT Teferi's Ageless Insight sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 13 own turns, Tolarian Winds sat castable and uncast on 12 own turns (+3 more) — measured from the hand, not inferred."
+      "reading": "the AI played the deck's declared engine; a win rate from this run is about the deck. BUT Teferi's Ageless Insight sat castable and uncast on 15 own turns, Jace's Archivist sat castable and uncast on 13 own turns, Tolarian Winds sat castable and uncast on 12 own turns (+2 more) — measured from the hand, not inferred."
     },
     "eliminated_by": {
       "purphoros-pingers": 18,
@@ -16067,7 +16132,7 @@
     }
   },
   "decisions": {
-    "count": 18,
+    "count": 19,
     "awaiting_outcome": [
       {
         "id": "001",
@@ -16138,24 +16203,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "019",
+        "branch": "draw-engine-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "014",
-        "at": "2026-10-26T14:40:37-07:00",
-        "kind": "merge",
-        "branch": "answers-v1",
-        "as_version": "v2.1.0",
-        "predicted": {
-          "endpoint": "forge.interaction_cast",
-          "grade": "not measured",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "015",
         "at": "2026-10-27T07:34:01-07:00",
@@ -16215,12 +16272,30 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "019",
+        "at": "2026-11-05T18:55:29-08:00",
+        "kind": "merge",
+        "branch": "draw-engine-v1",
+        "as_version": "v2.3.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
+    "3 artifact(s) fail their own gate (engine, log, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
+    "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "2 logged game(s) not yet debriefed (005, 006) — `/debrief sharknado`",
-    "`draw-engine-v1` is PROPOSED as v2.3.0 and waiting on cardboard — 14 card(s) (8 to buy, 6 to unsleeve) — `manamap pilot deck-branch sharknado show draw-engine-v1` has the pull list",
     "open questions routed: diagnose ×4, goldfish ×3, research-strategy ×2, resolve-stack ×7",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
