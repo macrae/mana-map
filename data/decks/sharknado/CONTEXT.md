@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=36d865a66e2c at=2026-11-05 -->
+<!-- ctx:written-for version=v2.3.0 sha=36d865a66e2c at=2026-11-05 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
@@ -20,7 +20,7 @@ Since v2.3.0 (2026-11-05) the deck is built around one fix: it was spending card
 
 The wheels are still the finishers, fired with a commander already out, and [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune) under [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) is a proved kill line. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) and [Consecrated Sphinx](https://manamap.seanmacrae.com/viz/index.html?cards=Consecrated+Sphinx) are the Game Changers the earlier lists carried. The bracket line above is the gate's word on where the list sits.
 
-Sean plays this list on printed proxies, sleeved 2026-11-05. No game has been logged on it yet.
+Sean plays this list on printed proxies, sleeved 2026-11-05. The first game on it (007) found the wheels and the commanders got big, but he called it clunky, slow and not fun: the draw and discard is laborious. The Pilot notes have his words.
 
 ## How it plays
 
@@ -212,90 +212,41 @@ The goldfish does not model the modal plan, the equipment, or interaction, so tr
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **6 game(s):** 0 won, 4 lost · 2026-10-06 to 2026-11-03
+- **7 game(s):** 0 won, 4 lost · 2026-10-06 to 2026-11-05
 - **How games ended:** raced 3, combo 2, won 1
-- **Not yet read:** 005, 006
+- **Not yet read:** 005, 006, 007
 <!-- /ctx:gen record -->
 
-All six logged games were played on lists before v2.3.0 (001 to 003 on v1.2.0 to v2.0.0, 004 to 006 on v2.2.0). The cards the notes below name, such as Embercleave, Ledger Shredder and Mary Read and Anne Bonny, have since left. The pattern the pilot named in 006, that payoffs lag the engine, is what v2.3.0 is aimed at. It has not been played yet.
+All seven logged games are in this section. 001 to 006 were played on lists before v2.3.0 (001 to 003 on v1.2.0 to v2.0.0, 004 to 006 on v2.2.0), and the cards they name, such as Embercleave, Ledger Shredder and Mary Read and Anne Bonny, have since left. Game 007 is the first on v2.3.0. The older games are boiled down to what they taught; the full retelling is in the log.
 
-**001 (2026-10-06, three-player pod at home, first game with the deck).** Opponents were Stuart (Rock Cleaver zombie tokens) and Steven (a card-draw deck with a lot of counterspells). Sean called the game good. No result is recorded.
+**007 (2026-11-05, the first game on v2.3.0, the sleeved proxies).** The log sha matches the list on disk. No result and no opponents are recorded, so none is inferred. Sean's words: "it still feels clunky and slow as hell! and it's brittle--two commanders, two taxes, 9 CMC total to get them out.. I found the wheels, got them big and actually could have won... but something about it didn't feel fun... the card draw and discard is laborious.. and all the stack triggers is fine.. but it just feels convoluted a bit lol"
 
-- **Fast start from [Sol Ring](https://manamap.seanmacrae.com/viz/index.html?cards=Sol+Ring).** It was in the opening hand. Sean says the speed came from that.
-- **Short on wheels early,** and light on ramp. He never drew [Jeska's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Jeska%27s+Will) or [Mana Geyser](https://manamap.seanmacrae.com/viz/index.html?cards=Mana+Geyser). He wants more of that kind of card, or mana creatures.
-- **Two commanders, twice the management.** [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) was removed a couple of times and the tax came on. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots) protected them and were "really good".
-- **The payoff.** Once the discards and draws started, both commanders grew fast. Sean gave one flying, or trample, to get through. [Echo of Eons](https://manamap.seanmacrae.com/viz/index.html?cards=Echo+of+Eons) made everyone discard and draw seven, made Shabraz huge, and nearly killed Stuart on commander damage.
-- **No removal.** At times he needed creature or enchantment removal and had none, so he could not prune the boards. Steven's counterspells made the end grindy.
-- **Discarding useful cards** to fire a wheel hurt him.
-- **Idea he likes:** wheels that also do something else, like counter a spell and wheel, or clear creatures and wheel. He wants more wheels that chain into wheels.
+- **Still clunky and slow.** The v2.3.0 pass was aimed at the early turns and the refill, and his first reaction is that the feel did not change.
+- **Brittle at the front door.** Two commanders, two taxes, nine mana of commander between them. Same complaint as 001, 002 and 005, now on the new list.
+- **The engine worked.** He found the wheels, got the commanders big, and says he actually could have won. The finisher is not the problem this time.
+- **Not fun, and he says it is the draw and discard.** Working through it is laborious. The stack triggers themselves are fine. What he calls convoluted is the amount of stepping through, not any one card.
 
-His words: "it's fun, it's doing what it's supposed to do, but it definitely needs some finesse." He is not itching to change anything. Many cards have not been played yet, and he wants a couple more games before locking anything. He asked for hypotheses to test, not swaps.
+He did not name a card to cut or a card he missed. No change is agreed off this one game.
 
-**002 (2026-10-20, four-person pod at Oliver's, the second game and the first on v1.3.0).** Same pod as before: Oliver, Tom and Ryan. A loss per the log. Sean said the wheels with the commanders out "went pretty well", and that the deck is actually good, but it needs calibrating.
+**What the seven games say together.**
+- **Commanders first, wheels second.** From 001 and 002: both commanders on the table, then the wheel, and wheels are finishers, few and far between. Torbran and Marauding Mako are his keeps.
+- **Slow and expensive to start.** 001, 002, 003, 005 and now 007 all say it: two taxes, a five-drop and a four-drop, nothing cheap to cheat them out. 004 added that a land-heavy keep with no wheel and no payoff found nothing.
+- **Payoffs lag the engine.** 006 named it after 004 and 005 described it: the engine runs (in 006 the Tithe bank, Remora and Teferi were all going) and the finisher does not show. In 007 the wheels did show, so the pattern broke, and the pain moved to how the turns feel.
+- **Discard is a cost.** 005 and 006: discard with no draw on the other end is awkward, forced discard is sometimes a cost. 007 says the same from the other side: the draw and discard is laborious.
+- **The hand he keeps is the doubt** in 002, 004 and 005. 007 gives no opening hand, so Q011 stays open.
+- **Removal and the table.** 001 and 003 missed removal, which v2.1.0 answered. 002 noted that taking the table's hand is not fun for them, which is why wheels are finishers.
+- **Opponents that outrun it.** 004: Alex's warp deck was a faster class of deck. 005: Alex piloting the Goblin Storm deck won. 006: Ryan's Teval went infinite around turn 8 or 9 at a bracket-4 table. Without the other deck's best turns, Sean thinks Sharknado does much more.
+- **Playing the deck.** He keeps saying some of it is piloting (sequencing, small creatures eating resources that belonged to the win line) and that he needs more games.
 
-- **The kept hand.** He mulliganed, and still isn't sure he should have kept what he had: one playable creature and a pile of wheels. A hand of wheels with nothing to cash them in on is a hand that does nothing.
-- **Too many wheels.** His read: "there might be too many wheels in the wheel deck." This is the first time he has said the count itself is wrong, not just the mix.
-- **Two commander taxes.** Two commanders mean two taxes on the board. [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) is the red four-drop, so he arrives late and costs more each time he is removed.
-- **The table does not enjoy it.** Making people discard their hand is not fun for them. Oliver was already discarding creatures off the board and more besides. Sean's point: you are trying to set up, you hold cards, and someone keeps taking them. If the whole deck is built on that, it is annoying politically, and that matters in a pod you play again.
-- **His thesis: wheels are finishers.** "The wheels need to be few and far between; they need to come in and hit when Brallin or Shabraz are on the table." The picture he painted: both commanders already out and big, a wheel lands, the table discards and Brallin pings everyone, everyone draws and Shabraz grows and he gains life, then a second wheel, then red mana for trample, and a flying trampling commander shark swings. Wheels as the turn you win on, not as early tempo.
-- **A note on the goldfish.** He said this is a reminder to downweight those metrics. The goldfish has no removal and no opposing interaction, so it pushes the deck the wrong way. The Numbers section is a ceiling for how often things line up, never a verdict on the table.
+Game by game, in one line each. 001 (2026-10-06, home pod, no result): Sol Ring fast start, no removal, Echo of Eons nearly killed Stuart on commander damage, "fun, needs some finesse". 002 (2026-10-20, Oliver's pod, a loss): a hand of wheels and one creature, "too many wheels in the wheel deck". 003 (2026-10-25, v2.0.0, no result): "slooooowwwww", no removal, mana-starved one round, cause unsplit. 004 (2026-10-27, Ryan's house, a loss, raced): the engine ran, no wheel came, commanders held back. 005 (2026-10-29, a loss): Alex's Goblin Storm won; Marauding Mako got huge off a wheel. 006 (2026-11-03, Oliver's five-player bracket-4 pod, a loss): Brallin with trample, Fiery Emancipation, a Tithe bank, Remora and Teferi drawing, a tutor aimed at Shark Typhoon, and no wheel in nine or ten cards of digging.
 
-Read together with 001: the shape that works is one or both commanders on the table first, then the wheels. Three games' worth of notes now say the same thing in different words (hold the second commander, save the big wheel, wheels as finishers). It is a pattern the pilot is converging on, not a rule yet, and no list change has been agreed.
-
-Of the things Sean said he missed after 001, the v1.3.0 branch added removal and answers, wheels that do something else, and a way to buy a commander back. Ramp is the one it did not add to. Game 002 is the first look at that list, and its main finding is about how many wheels there are, not which.
-
-**After game 002, the plan.** On 2026-10-22 Sean named the deck's main win condition: 21 commander damage from either commander, chosen by the board. That is the base of v2.0.0. The "too many wheels" and "wheels are finishers" notes above became the wheel cut. Game 003 was the first on v2.0.0.
-
-**003 (2026-10-25, the first game on v2.0.0).** No result is recorded, and no opponents. Sean's words: "goddamn, just played shabraz... it's slooooowwwww..... maybe it's a sequencing thing, maybe it's the cards I saw... but no removal, slow to get cards out, got mana starved one round... not the best showing tonight." He had no result to give, so none is inferred here.
-
-- **Slow.** He was playing Shabraz.
-- **Slow to get cards out.** Cards came out of hand slowly.
-- **Mana-starved for one round.** One round stalled for lack of mana.
-- **No removal seen.** The same gap he named after 001.
-- **He does not know why.** He names two suspects himself, his sequencing and the cards he happened to see, and does not pick between them. A single game cannot split them.
-
-The v2.1.0 list (2026-10-26) answers the "no removal" gap that games 001 and 003 both named: it adds removal, counters and a free table-wide silence.
-
-**004 (2026-10-27, Ryan's house, a loss, the first game logged on v2.2.0).** The deck sha on the log entry matches the list on disk, so this is the sleeved v2.2.0. Three players: Sean on Sharknado, Alex on his warp deck, Ryan on Slivers (nothing much popped off for Ryan). The cause is logged as raced. Sean's words: the engine ran well and the sequencing felt right, but Alex's deck was a faster class of deck, and a land-heavy opener without payoffs never found the wheels.
-
-- **The engine ran.** Draw and discard loops moved Sean through the deck all game: the Ledger connive creature ([Ledger Shredder](https://manamap.seanmacrae.com/viz/index.html?cards=Ledger+Shredder), as far as the log says) and [Mary Read and Anne Bonny](https://manamap.seanmacrae.com/viz/index.html?cards=Mary+Read+and+Anne+Bonny) (haste, draw a card, discard a card). He cast a lot of spells, and Alex said things were happening.
-- **[Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) did the ramping.** It made steady Treasure, which was the mana the hand needed. Sean thinks it may have been under-used.
-- **No wheel.** None was drawn. Sean held the commanders back to avoid a wipe and wait for one, and it never showed. [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) was in hand again.
-- **The kept hand.** A lot of lands, ramp, one artifact mana creature and one wheel, with few creatures or payoffs. [Gemstone Caverns](https://manamap.seanmacrae.com/viz/index.html?cards=Gemstone+Caverns) was in it, but Sean won the roll and went first, so it never made any colour. He now thinks the keep was not ideal. This is the second game where the hand is the doubt: game 002 was a pile of wheels and one creature, game 004 a pile of lands and one wheel.
-- **Both commanders, sooner.** He wants both out early and has no clean way to cheat them in or ramp to them faster. The discard-a-card parts of the deck also slow it. A discard-to-top-of-library option came up and costs tempo.
-- **Alex's warp deck.** It ramps very high and warps out a large number of creatures. An artifact lets him end the turn before his end step, so the warped creatures stay. Big threats arrive cheaply and keep coming. Sean's read: without Alex's warp turns, Sharknado does much more.
-
-Read with the earlier games: 002 said wheels are finishers and need the commanders out first, 003 said slow and no removal, and 004 says the commanders-first plan can stall on a hand with no wheel and no creature to carry it. The engine pieces worked in this game. The problem was the hand and the opponent's speed, and one game cannot split those. It is the first game on v2.2.0 and neither [Razorkin Needlehead](https://manamap.seanmacrae.com/viz/index.html?cards=Razorkin+Needlehead) nor [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) is mentioned in the log.
-
-**005 (2026-10-29, three-player game at the pilot's house, a loss).** Alex piloted the pilot's own Goblin Storm deck and won; David played a new golem deck. Sean was on Sharknado. Purphoros pinged the table while goblins kept arriving, and Electro Duplicate finished it. Sean's read, partly piloting and maybe some tuning. No cuts are named.
-
-- **The keep again.** Ramp, small creatures and a wheel. Sean now questions keeping wheels in an opening hand at all. His view: wheels are payoffs, not setup, and small ones may be the exception.
-- **The wheel that worked.** [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako) got huge off a wheel. With the Mako out, Sean discarded six or seven cards for about +6/+6, with a +1/+1-and-trample effect on the table and [Glint-Horn Buccaneer](https://manamap.seanmacrae.com/viz/index.html?cards=Glint-Horn+Buccaneer) ready. Sean thought he could then bring out a commander with flying. The Mako stays, per the pilot.
-- **Sequencing felt off.** He does not think he kept the right hand or played it in the right order, and he says he needs to pilot the deck more to learn what to look for.
-- **Discard without draw is awkward.** Some cards say discard a card, and if you do, get a counter or an effect, with no card back. With two or three cards in hand he wants the effect but does not want to discard any of them. He needs the draw on the other end.
-- **The commanders are expensive and arrive too slowly.** He compares it to the Ur-Dragon deck, which needed ramp to get its commanders out. Some win lines want both out. [Lightning Greaves](https://manamap.seanmacrae.com/viz/index.html?cards=Lightning+Greaves) and [Embercleave](https://manamap.seanmacrae.com/viz/index.html?cards=Embercleave) were in hand and he never had a commander to carry them.
-- **Distracted by small creatures.** The small discarding creatures are fine and block, but he spent resources on them instead of the win line. His two lines: a commander out, wheel into it, make it big and give it flying; or [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) out, discard, keep wheeling and pinging, then combat damage.
-
-His words: "it's there... some piloting stuff and maybe some tuning... it's all good." He still rates the deck.
-
-Read with 002 and 004: the hand he keeps is the doubt in three games out of five. Games 002, 004 and 005 all describe a keep heavy on wheels or lands with little to cast. The commanders-first plan needs a hand that gets a commander down.
-
-**006 (2026-11-03, Oliver's five-player pod, a loss).** The table stepped up to bracket 4. Sean was on Sharknado in game 2 and lost to Ryan's Teval going infinite around turn 8 or 9. (Heliod won game 1 of the night; that is the Heliod deck's story.) The deck sha on the log matches the list on disk, so this is the sleeved v2.2.0.
-
-- **Everything but the wheel.** He had [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider) with trample, [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation) tripling damage, [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) with 36 Treasure banked, [Mystic Remora](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Remora) and [Teferi's Ageless Insight](https://manamap.seanmacrae.com/viz/index.html?cards=Teferi%27s+Ageless+Insight) drawing, and a tutor in hand aimed at [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon). The planned line was to tutor the Typhoon, cycle it with the Treasure for a big flying shark, give it trample off Brallin and triple it. His words: one wheel would have closed it from any seat.
-- **The dig.** He went 9 or 10 cards deep off Remora and Teferi looking for any wheel, ideally an instant-speed one for another player's turn. None came. Afterwards he flipped through the library and the first wheel sat deep.
-- **Defence was fine.** The deck stayed alive through several wraths and wipes.
-- **[Embercleave](https://manamap.seanmacrae.com/viz/index.html?cards=Embercleave) keeps showing up early and getting discarded to the loot engine.** His suspicion, as a suspicion: equipment and artifact multipliers may be too slow for this deck's tempo, or there are too many multipliers per wheel.
-- **Forced discard can be a cost.** He says the forced-discard half of the draw engine is sometimes a cost, not a benefit, and that optional discard would fit the hand better. This echoes 005 ("discard without draw is awkward").
-
-His own pattern line, quoted: "Second straight log with the same note: payoffs lag the engine." Checked against the earlier log. In 004 he said the engine ran well and no wheel came. In 005 he said he gets distracted by small creatures and "stuck in the sequencing", the commanders arrive too slowly, and he needs "that card draw" on the other end of a discard. Neither 004 nor 005 put it in the words 006 does, but both describe an engine that runs and a finisher that does not show. 006 is where he names it as one pattern.
-
-He is explicitly cautious: no change to the list off one data point. About a third of the deck is still proxies and he is holding off buying until the list feels final. His research requests from this night are held as hypotheses, listed under Open questions, until two or three more games are logged. [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) and [Marauding Mako](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Mako) are keeps and stay out of any of it.
+He is cautious about change: about a third of the deck was proxies when he wrote 006, and his research requests from that night are held as hypotheses under Open questions. Torbran and Marauding Mako are keeps and stay out of any of it.
 
 ## Change history
 <!-- ctx:gen history -->
 - **v2.3.0 · V13** (2026-11-05) — in: Arid Mesa, Borrowed Knowledge, Cathartic Reunion, Exotic Orchard, Ferrous Lake, Flooded Strand, Gleaming Splendor, Heartwarming Redemption …; out: Artist's Talent, Command Beacon, Embercleave, Frantic Search, Glittering Massif, Inti, Seneschal of the Sun, Izzet Charm, Jeskai Ascendancy …. _draw-engine-v1: 22 swaps toward a draw engine (new wheels, Psychosis Crawler, Gleaming Splendor, Treasure package)_
   - merge `draw-engine-v1` — played on printed proxies sleeved 2026-11-05; the pilot asked to merge; the unowned cards are on the order list
+  - played 1: 0W 0L
 - **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
   - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
   - played 3: 0W 3L
@@ -356,19 +307,26 @@ Out went the cards that liked a slower game or competed with the new engine: Emb
 - **Q034** decided — On draw-engine-v1, a symmetric X draw (Prosperity, Fascination) is worth more than a one-sided X draw of the same size (Braingeyser, Stroke of Genius on ourselves) only when a payoff is on the table that fires on the opponent's draws (Consecrated Sphinx, Razorkin Needlehead, Smothering Tithe, Faerie Mastermind), and costs the deck's side the same cards the opponent keeps; so the symmetric pair earns a slot as a payoff-conditional sink, not as a better draw. → _supported: Argued from oracle text, not measured. Payoff in play: Prosperity at X on our turn pays Sphinx 6X cards, Tithe 3X taxes at the authored 0.5, Needlehead X pings a seat, Mastermind 3 cards at X>=2, so it beats a one-sided X draw by far. No payoff: it hands three opponents X each for our X, worse than Braingeyser or Stroke. Fascination is the same at one more blue. A conditional sink, not a better draw._
 - **Q035** decided — Of the 14 named blue-cost X draws, the UU and UUU group is castable at its useful X in fewer games than the XU group on the branch's blue sources, and the gap is hypergeometric arithmetic on the source count and the spare-mana turn, not a goldfish measurement. → _supported: Hypergeometric, source count only, no interval: 25 U sources in 98 cards, cards seen = 7 + turn, no extra draws. U 98/98/99/100%, UU 87/90/94/97%, UUU 64/70/80/87% at T5/T6/T8/T10. The -11 gap is paid by the UUU cards (Blue Sun's Zenith, Diviner's Portent, Even the Score, Sea Gate Restoration), about one game in three on T5-T6; XU cards barely pay it._
 - **Q036** decided — Monument to Endurance ({3}) adds to the wheel turn instead of competing with it: with a discard wheel resolving, its three once-a-turn modes (draw a card, a Treasure, each opponent loses 3 life) all fire on discards the deck already makes for Brallin, Torbran, Rielle and Glint-Horn Buccaneer, so it raises extra cards by T8 and hoard while it costs no more than a three-mana permanent, and it does so on a hand where the wheel is held for a commander (Sean's 'wheels as finishers'). → _refuted: Refuted as written, read after teaching the card its one-a-turn modes, with Brotherhood Regalia as a nonland measuring slot only (not a cut). Hoard @T10 0.96 -> 1.16 [+0.17, +0.23], but extra cards by T8 no call [-0.1, +0.1], wheels by T10 1.82 -> 1.79 [-0.04, -0.02], finisher wheel by T8 -1.0 pts [-1.3, -0.7], killed by T6 -0.6 pts [-0.8, -0.4]. It makes Treasure and competes slightly with the wheel. The 3 life loss per opponent is scored on one seat only._
-- 7 dropped or killed: `manamap pilot queue list --deck sharknado --all`
+- **Q040** tested — Among the 99 slots OUTSIDE the keep list, the ones the pilot calls laborious are those that need a decision on the discard side (discard as a cost, or a payoff that pays only on discard), and they are a smaller group than all trigger-heavy cards; naming that group is what a Shabraz-first list needs, not a count of 'discard slots' versus 'draw slots'. The same pass tests the pilot's small-Human idea: Shabraz's {W/U} gives one target Human flying until end of turn per activation (not static), so each Human attacker costs one mana, and every card drawn grows Shabraz by +1/+1 and gains 1 life. Brallin (Human Shaman) counts. Cheap Humans with draw or loot triggers both feed Shabraz and become evasive attackers; there is no flat anthem in it. → _supported: By oracle text, one class per card (label counts, not samples): of the 35 engine cards in v2.3.0, 16 are discard/wheel (14 draw+discard, Mako, Rielle) and 14 feed Shabraz directly (7 pure draw, 3 protection, 4 voltron). No card discards without drawing. Only one Human under four mana draws (Rielle, a keep), so the cheap-Human column is empty today._
+- **Q042** promoted — Mask of Memory is a net-positive draw for Shabraz (draw two on a combat hit, then discard one, so two counters and one more card) that also pays Brallin, Mako and Rielle on the discard, and Sword of Feast and Famine is protection from black and green plus +2/+2 on one commander, not a flat all-creature anthem; both are cheap sinks the pilot named, and the case rests on their text and on what Shabraz must survive to connect, not on a goldfish row.
+- 8 dropped or killed: `manamap pilot queue list --deck sharknado --all`
 <!-- /ctx:gen queue -->
 
-Games 001 to 006 are logged, all before v2.3.0 (004, 005 and 006 are losses on v2.2.0: two to faster decks, one to an infinite combo at a bracket-4 table). These are things to test, not swaps. Q026 above names Well of Lost Dreams, which was staged and then dropped for Psychosis Crawler; the sink question now sits with Mind Spring and Rush of Knowledge.
+Games 001 to 007 are logged. 001 to 006 were before v2.3.0 (004, 005 and 006 are losses on v2.2.0); 007 is the first on v2.3.0 and has no result. These are things to test, not swaps. Q026 above names Well of Lost Dreams, which was staged and then dropped for Psychosis Crawler; the sink question now sits with Mind Spring and Rush of Knowledge.
 
-**The first games on v2.3.0 should answer these.** None is measured yet.
-- Steady draw: do Rush of Knowledge, Mind Spring and Prosperity refill the hand in the games where it is empty and no wheel has come? Expected: fewer games like 006, with the engine up and nothing to cash it on. Sean's note of what he cast and what he held is the evidence.
+**Raised by game 007, to offer Sean.**
+- Laborious draw and discard: if Sean writes down, for each turn of the next game, how many separate draw, discard and trigger steps he walked through and which cards they came from, a few cards will account for most of the stepping. Expected: a short list of the cards he finds tedious, from which a cut or a swap for a simpler card can be argued. Nothing is cut off one game.
+- Slow and brittle front: if both commanders are out by his turn 5 in the next two or three games, the slow feeling should ease; if they are not, the two taxes and nine mana are the cause, not the draw. Q018's four facts record it. Expected: it separates a fix by mana from a fix by cheaper commander plays.
+- Fun as a measure: if each logged game carries his one-line fun call beside the result, we can see whether the fun calls track the games where wheels landed on big commanders or the games where steady draw carried the turns. Expected: 007 reads as wheels-landed yet not fun, which would say the fault is the grind between wheels, not the finisher.
+
+**The first games on v2.3.0 should answer these.** Game 007 touched some; none is measured yet.
+- Steady draw: do Rush of Knowledge, Mind Spring and Prosperity refill the hand in the games where it is empty and no wheel has come? 007 found the wheels, so it does not speak to this; Sean's note of what he cast and what he held is the evidence.
 - Prosperity: does it go in only with a draw payoff out, as Q034 argues? Expected: cast with Sphinx, Needlehead, Tithe or Mastermind out, it pays; cast bare, it feeds the table.
-- The Tithe loop: do Smothering Tithe, Gleaming Splendor, Xorn, Mirrormade and Zirda turn the table's draws into mana and cards in a real game, and does the table pay or let the Treasure through? Expected: Treasure builds faster than the old Tithe alone (game 006 had a large bank and no use for it). Needs a stack file; none exists.
-- Early turns: with the cheap rocks and Cathartic Reunion, does the first commander land earlier, and does the hand have a turn-three play? Sean's opening-hand log is the evidence (Q011). The old deploy-turn read describes the previous list.
+- The Tithe loop: do Smothering Tithe, Gleaming Splendor, Xorn, Mirrormade and Zirda turn the table's draws into mana and cards in a real game? 007 did not say. Needs a stack file; none exists.
+- Early turns: with the cheap rocks and Cathartic Reunion, does the first commander land earlier, and does the hand have a turn-three play? 007 says the feel is still slow. Sean's opening-hand log is the evidence (Q011).
 - Blue and the X spells: Mind Spring and Prosperity need blue, and Q035 holds the source arithmetic. Does the retuned mana cast them when the spare mana is there?
 - Fetches: four fetches cost life and thin the deck. Does the life cost matter at a bracket-3 table, and is the Mountain still needed for the Verges?
-- Tutors: Idyllic Tutor finds no wheel and the equipment tutor is gone. Does Sean miss a way to find a wheel? He asked for the tutor map on 2026-11-03; the answer is now short.
+- Tutors: Idyllic Tutor finds no wheel and the equipment tutor is gone. In 007 he found the wheels without a tutor; does he still miss one?
 
 **Still open from earlier games.**
 - Interaction: with removal, counters and Grand Abolisher added, does the commander survive to swing more often on a real table? Needs games, with a note of what was aimed at it.
@@ -396,3 +354,4 @@ Games 001 to 006 are logged, all before v2.3.0 (004, 005 and 006 are losses on v
 - 2026-11-02 · Keeper · pilot log 005 (2026-10-29): keep, sequencing and slow commanders; piloting first, maybe tuning
 - 2026-11-04 · Keeper · pilot log 006: lost to Teval with the board assembled and no wheel; research held as hypotheses
 - 2026-11-05 · Keeper · deck change: draw-engine-v1 merged as v2.3.0
+- 2026-11-05 · Keeper · pilot log 007: first v2.3.0 game — clunky, slow, brittle, convoluted; wheels landed, not fun
