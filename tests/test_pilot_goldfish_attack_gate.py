@@ -175,10 +175,12 @@ def test_a_ritual_is_cast_when_it_is_the_difference(monkeypatch):
     Geyser, after which one ritual read within noise of none (94.94 against 95.15)
     — so the test puts Geyser back in a Mountain's slot for the measurement: the
     claim is about the READER, not about which list is sleeved today. v2.1.0
-    (2026-10-26) cut Jeska's Will too, so it goes back in a second Mountain's."""
+    (2026-10-26) cut Jeska's Will too, so it goes back in a second land's. v2.3.0
+    (2026-11-05) left one Mountain, so the second slot is Ferrous Lake: both arms
+    run the same doc, so which land makes room changes nothing the test reads."""
     from manamap.pilot import diagnostic, goldfish_library, try_swap
     doc, _, _, _ = try_swap.apply_swaps(
-        "sharknado", None, [("Mountain", "Mana Geyser"), ("Mountain", "Jeska's Will")])
+        "sharknado", None, [("Mountain", "Mana Geyser"), ("Ferrous Lake", "Jeska's Will")])
     on = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)
     monkeypatch.setattr(goldfish_library, "ritual_profile", lambda card: None)
     off = diagnostic.run_on(doc, "sharknado", iterations=1500, seed=9, quiet=True)

@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-27
+- **Version:** v2.3.0 (V13) · **status:** sleeved since 2026-11-05
 - **Colours:** WUR · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-28, 5 readings) — older list
 - **Combos:** 6 known lines (6 infinite, 0 two-card) · 63 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
@@ -184,7 +184,7 @@ Colours are red and white first, then blue. The special ones: [Arid Mesa](https:
 
 ## Numbers
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v2.3.0 (V13), 2026-11-05. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -294,6 +294,8 @@ He is explicitly cautious: no change to the list off one data point. About a thi
 
 ## Change history
 <!-- ctx:gen history -->
+- **v2.3.0 · V13** (2026-11-05) — in: Arid Mesa, Borrowed Knowledge, Cathartic Reunion, Exotic Orchard, Ferrous Lake, Flooded Strand, Gleaming Splendor, Heartwarming Redemption …; out: Artist's Talent, Command Beacon, Embercleave, Frantic Search, Glittering Massif, Inti, Seneschal of the Sun, Izzet Charm, Jeskai Ascendancy …. _draw-engine-v1: 22 swaps toward a draw engine (new wheels, Psychosis Crawler, Gleaming Splendor, Treasure package)_
+  - merge `draw-engine-v1` — played on printed proxies sleeved 2026-11-05; the pilot asked to merge; the unowned cards are on the order list
 - **v2.2.0 · V12** (2026-10-27) — in: Razorkin Needlehead, Shark Typhoon, Sundown Pass, Thundering Falls; out: Boros Charm, Cascade Bluffs, Ghostly Pilferer, Talon Gates of Madara. _sharks-v1: Needlehead, Shark Typhoon, Thundering Falls, Sundown Pass_
   - merge `sharks-v1`: objective kill_by_6 read **not met** — all four cards are in the pilot's hands and sleeved (2026-10-27); the pilot's call, 2026-10-27: the objective bar (0.40) was set too high for a four-card change
   - played 3: 0W 3L
@@ -312,9 +314,7 @@ He is explicitly cautious: no change to the list off one data point. About a thi
   - played 1: 0W 0L
 - **v1.1.0 · V6** (2026-10-01) — in: Marauding Mako, Mask of Memory, Negate, Swords to Plowshares; out: Decree of Silence, Gossip's Talent, Marketback Walker, Stromkirk Noble. _The four swaps the pilot made in cardboard on 2026-10-01: Negate, Mask of Memory, Marauding Mako and Swords to Plowshares for Decree of Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble._
   - merge `swords-v1` — The four swaps were MADE IN CARDBOARD by the pilot on 2026-10-01 before this merge — the sourcing gate predicts whether the cards can be got, and that question 
-- **v1.0.2 · V5** (2026-09-22) — in: Island; out: Gleaming Bastion. _Astral Drift -> Shelter and Gleaming Bastion -> a basic Island, both made in cardboard. The Island is the deck's first basic: Gleaming Bastion's W/U mode is gated on controlling one, so at zero basics_
-  - merge `basic-island-v1`: objective land_drop read **not met** — Gleaming Bastion's W/U mode is gated on controlling a basic land; the deck runs zero basics, so it makes coloured mana only on the turn it enters and is a colou
-- … 4 earlier version(s): `manamap pilot deck-version sharknado list`
+- … 5 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
 **v2.3.0, draw-engine-v1 (merged 2026-11-05, the pilot's call, played on printed proxies sleeved the same day).** A wide change, opened 2026-11-04 on Sean's note that the deck spends cards faster than it replaces them. The first half is the package he called the contender: steady draw (Rush of Knowledge, Mind Spring, Prosperity), flexible and one-sided wheels (Borrowed Knowledge, Heartwarming Redemption, Shattered Perception, Magus of the Wheel), a body that drains per draw (Psychosis Crawler), and a Treasure and Tithe package (Xorn, Gleaming Splendor, Mirrormade, Zirda). The second half is cheap mana from his version X: Mind Stone, Thought Vessel, Talisman of Progress and Cathartic Reunion on turn three. The 2026-11-05 land pass followed his line to cast on curve what the deck draws: four fetches, Exotic Orchard and Ferrous Lake in, and the plain lands, Spectator Seating, Glittering Massif, Sundown Pass and Command Beacon out.

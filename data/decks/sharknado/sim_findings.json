@@ -361,7 +361,7 @@
             }
           },
           "n": 120,
-          "played_share": 1.425,
+          "played_share": 1.22,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -705,7 +705,7 @@
             }
           },
           "n": 200,
-          "played_share": 1.617,
+          "played_share": 1.61,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -895,7 +895,7 @@
             }
           },
           "n": 20,
-          "played_share": 0.982,
+          "played_share": 1.041,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -1199,7 +1199,7 @@
             }
           },
           "n": 20,
-          "played_share": 1.094,
+          "played_share": 1.143,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -1436,7 +1436,7 @@
             }
           },
           "n": 8,
-          "played_share": 1.19,
+          "played_share": 1.25,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -1574,6 +1574,191 @@
       ],
       "prose": {}
     },
+    "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35": {
+      "run": {
+        "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
+        "at": "2026-10-25",
+        "pod": "olivers-table-3p",
+        "games": 40,
+        "decided": 40,
+        "harness": {
+          "card_overrides": "0ed1ecfa5e1b",
+          "telemetry": "9473cf359146",
+          "profile": "Default",
+          "clock": 600,
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          }
+        },
+        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
+        "version": 9,
+        "current": false
+      },
+      "findings": [
+        {
+          "id": "F-8ec5e2db-01",
+          "kind": "rate_vs_null",
+          "text": "19 of 40 decided games (0.475, ci95 [0.329, 0.625]) — no measured null for this table",
+          "figure": 0.475,
+          "ci95": [
+            0.329,
+            0.625
+          ],
+          "n": 40,
+          "excluded": "this run is overridden and is not in the null",
+          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table-3p)"
+        },
+        {
+          "id": "F-8ec5e2db-02",
+          "kind": "pilot_quality",
+          "text": "land drops 0.859 against a 0.85 line — INSIDE the run-to-run noise (the median within-deck spread across the fleet is 0.038), so the verdict is withheld rather than decided on a coin flip. Two decks' verdicts flip between runs at this threshold. The rates are reported; read them, and prefer an A/B where both arms sit on the same side.",
+          "figure": 0.859,
+          "n": 40,
+          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
+          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
+        },
+        {
+          "id": "F-8ec5e2db-03",
+          "kind": "loss_decomposition",
+          "text": "eliminated in 21 of 40 games: teval-graveyard ×14, araumi-edict ×7; how: {\"damage\": 20, \"life loss\": 1}",
+          "eliminated_by": {
+            "teval-graveyard": 14,
+            "araumi-edict": 7
+          },
+          "eliminated_how": {
+            "damage": 20,
+            "life loss": 1
+          },
+          "n": 40,
+          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
+          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
+        },
+        {
+          "id": "F-8ec5e2db-04",
+          "kind": "held",
+          "text": "4 card(s) never cast over 40 games (4 seen discarded, 0 inferred): March of Swirling Mist, Ferrous Lake, Mountain, Spirebluff Canal",
+          "cards": [
+            "March of Swirling Mist",
+            "Ferrous Lake",
+            "Mountain",
+            "Spirebluff Canal"
+          ],
+          "measured": [
+            "March of Swirling Mist",
+            "Ferrous Lake",
+            "Mountain",
+            "Spirebluff Canal"
+          ],
+          "modelled": [],
+          "counts": {
+            "March of Swirling Mist": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 4
+            },
+            "Ferrous Lake": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Mountain": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            },
+            "Spirebluff Canal": {
+              "cast": 0,
+              "activated": 0,
+              "discarded": 3
+            }
+          },
+          "n": 40,
+          "played_share": 1.369,
+          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
+          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
+        },
+        {
+          "id": "F-8ec5e2db-05",
+          "kind": "held_castable",
+          "text": "7 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Loran's Escape x31, March of Swirling Mist x28, Negate x19, Reforge the Soul x14, Boros Charm x13, Teferi's Ageless Insight x11",
+          "cards": [
+            "Loran's Escape",
+            "March of Swirling Mist",
+            "Negate",
+            "Reforge the Soul",
+            "Boros Charm",
+            "Teferi's Ageless Insight",
+            "Knowledge Is Power"
+          ],
+          "counts": {
+            "Loran's Escape": {
+              "castable_uncast": 31,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "March of Swirling Mist": {
+              "castable_uncast": 28,
+              "cast": 0,
+              "in_hand_games": 6
+            },
+            "Negate": {
+              "castable_uncast": 19,
+              "cast": 0,
+              "in_hand_games": 7
+            },
+            "Reforge the Soul": {
+              "castable_uncast": 14,
+              "cast": 1,
+              "in_hand_games": 8
+            },
+            "Boros Charm": {
+              "castable_uncast": 13,
+              "cast": 1,
+              "in_hand_games": 6
+            },
+            "Teferi's Ageless Insight": {
+              "castable_uncast": 11,
+              "cast": 0,
+              "in_hand_games": 3
+            },
+            "Knowledge Is Power": {
+              "castable_uncast": 9,
+              "cast": 1,
+              "in_hand_games": 5
+            }
+          },
+          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
+        },
+        {
+          "id": "F-8ec5e2db-06",
+          "kind": "first_attack",
+          "text": "first attack on global turn 14.86 (median 15.5, n 36 of 40 games — games with no attack are absent)",
+          "figure": 14.86,
+          "ci95": [
+            13.25,
+            16.48
+          ],
+          "n": 36,
+          "source": "analysis.seats[sharknado].first_attack_turn",
+          "basis": "conditional on attacking at all"
+        },
+        {
+          "id": "F-8ec5e2db-07",
+          "kind": "wipe_recovery",
+          "text": "a wipe in 0.4 of games (ci95 [0.219, 0.613]); damage on the wipe turn 3.7",
+          "figure": 0.4,
+          "ci95": [
+            0.219,
+            0.613
+          ],
+          "n": 20,
+          "source": "analysis.wipe_recovery",
+          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
+        }
+      ],
+      "prose": {}
+    },
     "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35": {
       "run": {
         "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ovecdad552-tl9473cf35",
@@ -1702,7 +1887,7 @@
             }
           },
           "n": 40,
-          "played_share": 1.437,
+          "played_share": 1.538,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },
@@ -1787,191 +1972,6 @@
           "id": "F-3c5e5634-07",
           "kind": "wipe_recovery",
           "text": "a wipe in 0.4 of games (ci95 [0.219, 0.613]); damage on the wipe turn 7.5",
-          "figure": 0.4,
-          "ci95": [
-            0.219,
-            0.613
-          ],
-          "n": 20,
-          "source": "analysis.wipe_recovery",
-          "basis": "a heuristic over the log: 3+ permanents leaving across 2+ seats in one turn"
-        }
-      ],
-      "prose": {}
-    },
-    "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35": {
-      "run": {
-        "id": "araumi-edict-vs-teval-graveyard-n40-caeeec41-s1404655681-podExperimental-c600-ov0ed1ecfa-tl9473cf35",
-        "at": "2026-10-25",
-        "pod": "olivers-table-3p",
-        "games": 40,
-        "decided": 40,
-        "harness": {
-          "card_overrides": "0ed1ecfa5e1b",
-          "telemetry": "9473cf359146",
-          "profile": "Default",
-          "clock": 600,
-          "forge": {
-            "version": "2.0.14",
-            "build": "2026-08-08 22:49:26"
-          }
-        },
-        "decklist_sha256": "c9186bd9130848f6ed3457bf6b276929172070a203b661d4612771eb097e13e3",
-        "version": 9,
-        "current": false
-      },
-      "findings": [
-        {
-          "id": "F-8ec5e2db-01",
-          "kind": "rate_vs_null",
-          "text": "19 of 40 decided games (0.475, ci95 [0.329, 0.625]) — no measured null for this table",
-          "figure": 0.475,
-          "ci95": [
-            0.329,
-            0.625
-          ],
-          "n": 40,
-          "excluded": "this run is overridden and is not in the null",
-          "source": "analysis.seats[sharknado].win_rate; pods.calibration(olivers-table-3p)"
-        },
-        {
-          "id": "F-8ec5e2db-02",
-          "kind": "pilot_quality",
-          "text": "land drops 0.859 against a 0.85 line — INSIDE the run-to-run noise (the median within-deck spread across the fleet is 0.038), so the verdict is withheld rather than decided on a coin flip. Two decks' verdicts flip between runs at this threshold. The rates are reported; read them, and prefer an A/B where both arms sit on the same side.",
-          "figure": 0.859,
-          "n": 40,
-          "source": "sim/pilot_quality.from_record (land drops per own turn, ours / pod)",
-          "basis": "a ratio; the verdict is withheld inside the fleet's within-deck spread"
-        },
-        {
-          "id": "F-8ec5e2db-03",
-          "kind": "loss_decomposition",
-          "text": "eliminated in 21 of 40 games: teval-graveyard ×14, araumi-edict ×7; how: {\"damage\": 20, \"life loss\": 1}",
-          "eliminated_by": {
-            "teval-graveyard": 14,
-            "araumi-edict": 7
-          },
-          "eliminated_how": {
-            "damage": 20,
-            "life loss": 1
-          },
-          "n": 40,
-          "source": "analysis.seats[sharknado].eliminated_by / eliminated_how",
-          "basis": "the controller of the last damage source before the life line that crossed zero; a drain kill reads through `eliminated_how`"
-        },
-        {
-          "id": "F-8ec5e2db-04",
-          "kind": "held",
-          "text": "4 card(s) never cast over 40 games (4 seen discarded, 0 inferred): March of Swirling Mist, Ferrous Lake, Mountain, Spirebluff Canal",
-          "cards": [
-            "March of Swirling Mist",
-            "Ferrous Lake",
-            "Mountain",
-            "Spirebluff Canal"
-          ],
-          "measured": [
-            "March of Swirling Mist",
-            "Ferrous Lake",
-            "Mountain",
-            "Spirebluff Canal"
-          ],
-          "modelled": [],
-          "counts": {
-            "March of Swirling Mist": {
-              "cast": 0,
-              "activated": 0,
-              "discarded": 4
-            },
-            "Ferrous Lake": {
-              "cast": 0,
-              "activated": 0,
-              "discarded": 3
-            },
-            "Mountain": {
-              "cast": 0,
-              "activated": 0,
-              "discarded": 3
-            },
-            "Spirebluff Canal": {
-              "cast": 0,
-              "activated": 0,
-              "discarded": 3
-            }
-          },
-          "n": 40,
-          "played_share": 1.382,
-          "source": "engine_casts (top-level) via sim/engine_casts.from_record",
-          "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
-        },
-        {
-          "id": "F-8ec5e2db-05",
-          "kind": "held_castable",
-          "text": "7 card(s) held on >= 2 castable own turns and cast at most once (MEASURED from the telemetry hand; lands only, a floor): Loran's Escape x31, March of Swirling Mist x28, Negate x19, Reforge the Soul x14, Boros Charm x13, Teferi's Ageless Insight x11",
-          "cards": [
-            "Loran's Escape",
-            "March of Swirling Mist",
-            "Negate",
-            "Reforge the Soul",
-            "Boros Charm",
-            "Teferi's Ageless Insight",
-            "Knowledge Is Power"
-          ],
-          "counts": {
-            "Loran's Escape": {
-              "castable_uncast": 31,
-              "cast": 1,
-              "in_hand_games": 8
-            },
-            "March of Swirling Mist": {
-              "castable_uncast": 28,
-              "cast": 0,
-              "in_hand_games": 6
-            },
-            "Negate": {
-              "castable_uncast": 19,
-              "cast": 0,
-              "in_hand_games": 7
-            },
-            "Reforge the Soul": {
-              "castable_uncast": 14,
-              "cast": 1,
-              "in_hand_games": 8
-            },
-            "Boros Charm": {
-              "castable_uncast": 13,
-              "cast": 1,
-              "in_hand_games": 6
-            },
-            "Teferi's Ageless Insight": {
-              "castable_uncast": 11,
-              "cast": 0,
-              "in_hand_games": 3
-            },
-            "Knowledge Is Power": {
-              "castable_uncast": 9,
-              "cast": 1,
-              "in_hand_games": 5
-            }
-          },
-          "basis": "own turns ending with the card in hand and lands >= its mana value; rocks and colours ignored"
-        },
-        {
-          "id": "F-8ec5e2db-06",
-          "kind": "first_attack",
-          "text": "first attack on global turn 14.86 (median 15.5, n 36 of 40 games — games with no attack are absent)",
-          "figure": 14.86,
-          "ci95": [
-            13.25,
-            16.48
-          ],
-          "n": 36,
-          "source": "analysis.seats[sharknado].first_attack_turn",
-          "basis": "conditional on attacking at all"
-        },
-        {
-          "id": "F-8ec5e2db-07",
-          "kind": "wipe_recovery",
-          "text": "a wipe in 0.4 of games (ci95 [0.219, 0.613]); damage on the wipe turn 3.7",
           "figure": 0.4,
           "ci95": [
             0.219,
@@ -2078,7 +2078,7 @@
             }
           },
           "n": 40,
-          "played_share": 0.935,
+          "played_share": 1.008,
           "source": "engine_casts (top-level) via sim/engine_casts.from_record",
           "basis": "measured = the log shows it discarded; modelled = never played across the run's expected natural draws, an inference"
         },

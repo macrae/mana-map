@@ -205,10 +205,10 @@ NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 STALE_XFAIL = {
     # STALE BY A MERGE (2026-11-05): sharknado v2.3.0 (draw-engine-v1, 22 swaps,
     # played on printed proxies). The engine names Command Beacon and the tutor
-    # guide fetches Knowledge Is Power, both cut; /analyze-engine and pilot-notes
-    # re-run them. The debrief of game 004 names Ledger Shredder, which that game
-    # played and the list has since cut — a /debrief re-run, never a hand patch.
-    "sharknado/engine.json": "v2.3.0 cut cards its stages name; /analyze-engine",
+    # guide fetches Knowledge Is Power, both cut; pilot-notes re-runs the guide
+    # (the engine came off the same day: /analyze-engine passed round 2). The
+    # debrief of game 004 names Ledger Shredder, which that game played and the
+    # list has since cut — a /debrief re-run, never a hand patch.
     "sharknado/tutor_guide.json": "v2.3.0 cut a tutor target; pilot-notes",
     "sharknado/log_annotations.json": "game 004's debrief names a card v2.3.0 cut; /debrief",
     # STALE BY A MERGE, NOT BY A DEFECT (2026-10-06). The pilot sleeved edgar

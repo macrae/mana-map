@@ -442,9 +442,16 @@ def test_a_one_shot_that_sacrifices_itself_takes_the_body_with_it():
 
     from manamap.pilot import try_swap
 
-    # Magus of the Wheel left the list in v2.0.0 (2026-10-24), so it is swapped
-    # back in for a Mountain: the claim is about the sacrifice cost, not the list.
-    doc, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Mountain", "Magus of the Wheel")])
+    # Magus of the Wheel left the list in v2.0.0 (2026-10-24) and came back in
+    # v2.3.0 (2026-11-05); it is swapped in only when absent, because the claim is
+    # about the sacrifice cost, not about which list is sleeved today.
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.common import load_json
+
+    doc = load_json(DECKS_DIR / "sharknado" / "cards.json")
+    if not any(c["name"] == "Magus of the Wheel" for c in doc["cards"]):
+        doc, _, _, _ = try_swap.apply_swaps(
+            "sharknado", None, [("Mountain", "Magus of the Wheel")])
 
     def power10(d):
         return goldfish.run("sharknado", doc=d, iterations=4000, seed=3,
