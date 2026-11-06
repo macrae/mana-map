@@ -272,6 +272,7 @@ from manamap.pilot.goldfish_profiles import (  # noqa: F401
     bonus_for,
     damage_bonus,
     damage_source,
+    spell_count_profile,
     spell_face_damage,
     treasure_profile,
 )
@@ -413,6 +414,9 @@ def draw_is_unread(card, *, model_discard, model_combat, model_deaths):
     if model_deaths and death_profile(card)["death_draw"]:
         return False
     if model_combat and combat_profile(card)["attack_draw"]:
+        return False
+    # Magecraft draw (Archmage Emeritus), read by `_magecraft` since 2026-11-06.
+    if spell_count_profile(card)["magecraft_draw"]:
         return False
     return True
 

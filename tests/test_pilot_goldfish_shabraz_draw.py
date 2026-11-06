@@ -301,3 +301,84 @@ def test_the_kit_rides_on_the_commander(kit_doc):
     full = _lethal10(_run(kit_doc, 3000))
     assert full > _lethal10(_run(smaller, 3000))
     assert full > _lethal10(_run(no_ds, 3000))
+
+
+# ── magecraft draw (2026-11-06) ─────────────────────────────────────────
+
+def test_magecraft_draw_is_read():
+    from manamap.pilot.goldfish_profiles import spell_count_profile
+    em = _card("Archmage Emeritus", "Magecraft — Whenever you cast or copy an instant or sorcery "
+               "spell, draw a card.", "Creature — Human Wizard", "{2}{U}{U}", "2", "2")
+    assert spell_count_profile(em)["magecraft_draw"] == 1
+    from manamap.pilot.goldfish import draw_is_unread
+    assert not draw_is_unread(em, model_discard=True, model_combat=True, model_deaths=False)
+
+
+@requires_deck
+def test_magecraft_draws_on_every_spell():
+    """PROVED BY STRIKING THE CLAUSE, with the cantrips as the only other draw: before
+    2026-11-06 `_magecraft` paid Treasure only, so the two arms read equal."""
+    from manamap.pilot import try_swap
+    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Archmage Emeritus"),
+                                                          ("Xorn", "Brainstorm"),
+                                                          ("Mirrormade", "Preordain")])
+    d = _isolated(d, {"Archmage Emeritus", "Brainstorm", "Preordain"})
+    struck = _strike(d, "Archmage Emeritus", ", draw a card.", ", scry 1.")
+    assert _extra(_run(d, 3000), "10") > _extra(_run(struck, 3000), "10")
+
+
+# ── what reads as double strike, and when the commander is equipped (2026-11-06) ──
+
+def test_a_conditional_double_strike_is_not_a_standing_one():
+    """Gavel of the Righteous needs four counters ("As long as …" before the grant) and Brass
+    Knuckles needs two Equipment ("… as long as …" after it). Both read as standing double
+    strike until the sentence was checked; Fireshrieker's plain grant still is."""
+    gavel = combat_profile(_card(
+        "Gavel of the Righteous", "At the beginning of combat on your turn, put a charge counter "
+        "on this Equipment. Equipped creature gets +1/+1 for each counter on this Equipment. As "
+        "long as this Equipment has four or more counters on it, equipped creature has double "
+        "strike.", "Artifact — Equipment", "{2}"))
+    knuckles = combat_profile(_card(
+        "Brass Knuckles", "When you cast this spell, copy it. Equipped creature has double strike "
+        "as long as two or more Equipment are attached to it. Equip {1}",
+        "Artifact — Equipment", "{4}"))
+    shrieker = combat_profile(_card("Fireshrieker", "Equipped creature has double strike. Equip {2}",
+                                    "Artifact — Equipment", "{3}"))
+    assert not gavel["equip_double_strike"] and not knuckles["equip_double_strike"]
+    assert shrieker["equip_double_strike"] and shrieker["equip_cost"] == 2
+
+
+def test_reconfigure_is_an_equip_cost():
+    blades = combat_profile(_card(
+        "Lizard Blades", "Double strike Equipped creature has double strike. Reconfigure {2}",
+        "Artifact Creature — Equipment Lizard", "{1}{R}", "1", "1"))
+    assert blades["equip_double_strike"] and blades["equip_cost"] == 2
+
+
+@requires_deck
+def test_an_equipment_creature_is_equipped_too():
+    """PROVED BY DROPPING THE BODY-DOOR REGISTRATION: Lizard Blades entered as a creature and
+    was never offered to the equip step, so its double strike reached no commander and the
+    two arms read equal."""
+    from manamap.pilot import try_swap
+    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Lizard Blades")])
+    d = _isolated(d, {"Lizard Blades"})
+    vig = _strike(d, "Lizard Blades", "Equipped creature has double strike",
+                  "Equipped creature has vigilance")
+    assert _lethal10(_run(d, 3000)) > _lethal10(_run(vig, 3000))
+
+
+@requires_deck
+def test_the_commander_is_equipped_before_the_turns_spells():
+    """THE PILOT'S ORDER ON A VOLTRON DECK. With the equip only before combat, the main phase
+    spent the {2} first and a double-strike Equipment sat beside Shabraz unattached. On
+    sharknado with Fireshrieker and Lizard Blades, double strike against vigilance by turn six
+    read +3.3 points with the early equip and +1.2 without (2026-11-06)."""
+    from manamap.pilot import try_swap
+    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Fireshrieker"),
+                                                          ("Xorn", "Lizard Blades")])
+    vig = _strike(_strike(d, "Fireshrieker", "has double strike", "has vigilance"),
+                  "Lizard Blades", "Equipped creature has double strike",
+                  "Equipped creature has vigilance")
+    by6 = lambda m: m["commander_lethal"]["games_by_turn"]["6"]
+    assert by6(_run(d, 4000)) - by6(_run(vig, 4000)) >= 0.02

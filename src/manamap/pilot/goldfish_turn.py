@@ -1322,6 +1322,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 pool = 0
             return True
 
+        def _equip_pass(any_attacker):
+            """EQUIP, from the mana on hand (2026-11-06). Sorcery speed, cheapest first; nothing
+            here removes a creature, so an Equipment stays attached. THE PILOT'S PLAN ON A
+            VOLTRON DECK: every Equipment goes on the first commander out (Shabraz before
+            Brallin), and one with stats waits until a commander is. A trigger-only Equipment
+            with no commander out takes any attacker. Embercleave attaches itself when it enters,
+            once, free. Called at the START of the main phase, so the commander is equipped
+            before the turn's spells take the mana -- and again before combat, for what the main
+            phase cast."""
+            _cmdrs = [cp_ for cp_, t_ in ((commander_combat, commander_turn),
+                                          ((partner or {}).get("combat"), partner_turn))
+                      if cp_ and cp_["is_creature"] and t_ is not None]
+            _pend = {id(e): e for e in list(equipment_out) + [
+                e for e in combat_engines if e.get("equip_cost") is not None]}
+            for _eng in sorted((e for k, e in _pend.items() if k not in equipped_engines),
+                               key=lambda e: e["equip_cost"]):
+                _target = id(_cmdrs[0]) if _cmdrs else None
+                if _target is None and (_eng["equip_power"] or _eng["equip_double_strike"]
+                                        or not any_attacker):
+                    continue
+                if not ((_eng["attach_on_enter"] and _target is not None
+                         and id(_eng) not in attach_used)
+                        or spend(_act_cost(_eng["equip_cost"]))):
+                    continue
+                attach_used.add(id(_eng))
+                equipped_engines.add(id(_eng))
+                equip_on[id(_eng)] = _target
+
         def _cast_partner():
             """THE PARTNER, through the commanders' door, if the mana is there. One home for
             both slots: on its own curve after the first commander, or last in the main phase
@@ -1421,10 +1449,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             and six other bodies, one {R} cantrip is SEVEN magecraft triggers,
             and Storm-Kiln Artist turns each into a Treasure."""
             nonlocal treasures
-            if events <= 0 or not model_treasures:
+            if events <= 0:
                 return
             for _eng in magecraft_engines:
-                treasures += _eng["magecraft_treasure"] * events
+                if model_treasures:
+                    treasures += _eng["magecraft_treasure"] * events
+                # ARCHMAGE EMERITUS (2026-11-06): a card per cast OR copy.
+                if model_draw and _eng.get("magecraft_draw"):
+                    draw_n(_eng["magecraft_draw"] * events)
 
         def _fire_cast_engines(card, is_spell):
             """"WHENEVER YOU CAST A NONCREATURE SPELL" (2026-11-04). Engines already in play
@@ -1568,6 +1600,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"])):
                     combat_engines.append(combat)
+                # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
+                # (2026-11-06). Its body stays on the battlefield after it attaches -- a
+                # small over-credit, named here.
+                if combat["equip_cost"] is not None and (combat["equip_power"]
+                                                         or combat["equip_double_strike"]):
+                    equipment_out.append(combat)
             if model_draw and any(card["draw"][k] for k in
                                   ("recurring_draw", "arrival_draw", "cast_draw")):
                 draw_engines.append(card["draw"])
@@ -2139,6 +2177,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"])):
                     combat_engines.append(combat)
+                # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
+                # (2026-11-06). Its body stays on the battlefield after it attaches -- a
+                # small over-credit, named here.
+                if combat["equip_cost"] is not None and (combat["equip_power"]
+                                                         or combat["equip_double_strike"]):
+                    equipment_out.append(combat)
             if pending_draw_engine is not None:
                 draw_engines.append(pending_draw_engine)
             _register_wheel(card)
@@ -2198,7 +2242,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             sc_ = card["spell_count"]
             if sc_["per_cast_damage"]:
                 per_cast_engines.append(sc_)
-            if sc_["magecraft_treasure"]:
+            if sc_["magecraft_treasure"] or sc_.get("magecraft_draw"):
                 magecraft_engines.append(sc_)
             cb_ = card["combat"]
             if model_combat and cb_["team_haste"]:
@@ -2468,6 +2512,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # slot before combat, below, and for the commanders the rule counts.
         if not _hold_partner:
             _cast_partner()
+        # THE COMMANDER IS EQUIPPED FIRST (2026-11-06): before the turn's spells spend the mana.
+        # Measured on sharknado@shabraz-v1: with the equip only before combat, a double-strike
+        # Equipment sat unequipped beside Shabraz on most turns, its {2} spent on cards first.
+        if model_combat and (equipment_out or combat_engines):
+            _equip_pass(any_attacker=False)
 
         # THE COMMANDER'S OWN ATTACK TUTOR — an APPROXIMATION, declared per deck.
         #
@@ -3347,7 +3396,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     sc_ = card["spell_count"]
                     if sc_["per_cast_damage"]:
                         per_cast_engines.append(sc_)
-                    if sc_["magecraft_treasure"]:
+                    if sc_["magecraft_treasure"] or sc_.get("magecraft_draw"):
                         magecraft_engines.append(sc_)
                     cb_ = card["combat"]
                     if model_combat and cb_["team_haste"]:
@@ -4199,24 +4248,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # out (Shabraz before Brallin), and one with stats waits until a commander is. A
             # trigger-only Equipment with no commander out takes any attacker. Embercleave
             # attaches itself when it enters, once, free.
-            _cmdrs = [cp_ for cp_, t_ in ((commander_combat, commander_turn),
-                                          ((partner or {}).get("combat"), partner_turn))
-                      if cp_ and cp_["is_creature"] and t_ is not None]
+            _equip_pass(any_attacker=bool(_able))
             _pending = {id(e): e for e in list(equipment_out) + [
                 e for e in combat_engines if e.get("equip_cost") is not None]}
-            for _eng in sorted((e for k, e in _pending.items() if k not in equipped_engines),
-                               key=lambda e: e["equip_cost"]):
-                _target = id(_cmdrs[0]) if _cmdrs else None
-                if _target is None and (_eng["equip_power"] or _eng["equip_double_strike"]
-                                        or not _able):
-                    continue
-                if not ((_eng["attach_on_enter"] and _target is not None
-                         and id(_eng) not in attach_used)
-                        or spend(_act_cost(_eng["equip_cost"]))):
-                    continue
-                attach_used.add(id(_eng))
-                equipped_engines.add(id(_eng))
-                equip_on[id(_eng)] = _target
             # What the commanders carry, read off `equip_on` (an Equipment on "any attacker"
             # adds no stats: only a trigger-only one goes there).
             _eq_pow, _eq_ds = {}, set()

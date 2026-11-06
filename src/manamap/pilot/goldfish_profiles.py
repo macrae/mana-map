@@ -2749,8 +2749,22 @@ _EQUIPPED_TRIGGER_RE = re.compile(r"whenever equipped creature (?:deals combat d
 #: A bonus that LOWERS toughness (Skullclamp's +1/-1) is not one a pilot hangs on a commander:
 #: Skullclamp is played for its death draw. Plus-plus only.
 _EQUIP_GETS_RE = re.compile(r"equipped creature gets \+(\d+)/\+\d+(?! for each)", re.I)
+#: Sentence-anchored: a grant behind "As long as ..." is a condition this reader cannot check
+#: (Gavel of the Righteous needs four counters), so it is not read as a standing grant.
 _EQUIP_DOUBLE_STRIKE_RE = re.compile(
     r"equipped creature (?:gets [^.]*? and )?has [^.]*?\bdouble strike\b", re.I)
+
+
+def _standing_equip_double_strike(text):
+    """A double-strike grant with no "as long as" ahead of it in its own sentence."""
+    for m in _EQUIP_DOUBLE_STRIKE_RE.finditer(text):
+        start = max(text.rfind(".", 0, m.start()), text.rfind("\n", 0, m.start())) + 1
+        end = text.find(".", m.end())
+        sentence = text[start:end if end >= 0 else len(text)]
+        # The condition may sit before the grant (Gavel) or after it (Brass Knuckles).
+        if not re.search(r"\bas long as\b", sentence, re.I):
+            return True
+    return False
 #: Embercleave: "When Embercleave enters, attach it to target creature you control."
 _ATTACH_ON_ENTER_RE = re.compile(
     r"when (?:this equipment|[A-Z][\w' ,-]{2,30}) enters, attach it to target creature you control",
@@ -3745,6 +3759,11 @@ _PER_CAST_DAMAGE_RE = re.compile(
 _MAGECRAFT_TREASURE_RE = re.compile(
     r"magecraft\s*[\u2014-]\s*whenever you cast or copy an instant or sorcery "
     r"spell[^.]{0,40}?create a treasure", re.I)
+#: ARCHMAGE EMERITUS (2026-11-06): "Magecraft — Whenever you cast or copy an instant or sorcery
+#: spell, draw a card." Fired by `_magecraft`, so a copy draws too, which is the rule.
+_MAGECRAFT_DRAW_RE = re.compile(
+    r"magecraft\s*[\u2014-]\s*whenever you cast or copy an instant or sorcery "
+    r"spell, (?:you may )?draw a card", re.I)
 _MAGECRAFT_ANY_RE = re.compile(
     r"magecraft\s*[\u2014-]\s*whenever you cast or copy an instant or sorcery", re.I)
 
@@ -3769,7 +3788,7 @@ def spell_count_profile(card):
     out = {"storm": False, "storm_damage": 0, "storm_token_bodies": 0,
            "storm_token_power": 0, "per_cast_damage": 0,
            "per_cast_damage_gate": None, "magecraft_treasure": 0,
-           "magecraft": False}
+           "magecraft": False, "magecraft_draw": 0}
     if _STORM_RE.search(raw) and ("Instant" in type_line or "Sorcery" in type_line):
         out["storm"] = True
         d = _STORM_DAMAGE_RE.search(text)
@@ -3790,6 +3809,8 @@ def spell_count_profile(card):
         out["magecraft"] = True
         if _MAGECRAFT_TREASURE_RE.search(text):
             out["magecraft_treasure"] = 1
+        if _MAGECRAFT_DRAW_RE.search(text):
+            out["magecraft_draw"] = 1
     return out
 
 
@@ -4086,7 +4107,8 @@ _CAST_DOUBLE_STRIKE_RE = re.compile(
 _DRAW_PUMP_RE = re.compile(
     r"creatures you control get \+X/\+X, where X is the number of cards you've drawn this turn", re.I)
 _EQUIP_HASTE_RE = re.compile(r"equipped creature (?:gets [^.]*? and )?has [^.]*?\bhaste\b", re.I)
-_EQUIP_COST_RE = re.compile(r"\bEquip ((?:\{[^}]+\})+)")
+#: "Reconfigure {2}" attaches an Equipment creature the same way (Lizard Blades, 2026-11-06).
+_EQUIP_COST_RE = re.compile(r"\b(?:Equip|Reconfigure) ((?:\{[^}]+\})+)")
 _COPY_ENTRY_RE = re.compile(
     r"you may have this (?:artifact|enchantment|creature) enter as a copy of any artifact or enchantment", re.I)
 _LOYALTY_LOOT_RE = re.compile(r"\+\d+: Draw a card, then discard a card", re.I)
@@ -4472,7 +4494,7 @@ def combat_profile(card):
     if "Equipment" in type_line:
         _gets = _EQUIP_GETS_RE.search(text)
         profile["equip_power"] = int(_gets.group(1)) if _gets else 0
-        profile["equip_double_strike"] = bool(_EQUIP_DOUBLE_STRIKE_RE.search(text))
+        profile["equip_double_strike"] = _standing_equip_double_strike(text)
         profile["attach_on_enter"] = bool(_ATTACH_ON_ENTER_RE.search(text))
         if (profile["equip_power"] or profile["equip_double_strike"]
                 or (combat_trigger and _EQUIPPED_TRIGGER_RE.search(text))):
