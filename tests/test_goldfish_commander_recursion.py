@@ -52,9 +52,10 @@ def test_absent_when_not_declared():
 
 
 @requires_deck
-def test_meren_returns_creatures_and_her_sacrifices_pay_the_drain():
+def test_meren_returns_creatures_and_her_sacrifices_count():
     """PROVED BY REMOVING THE DECLARATION: no experience, no returns, and the sacrifices
-    and the drain fall back to the token sweep alone."""
+    fall back to the token sweep alone. (The drain is not asserted: V3 cut every drain
+    payoff on 2026-11-06, so it reads zero either way. That is the list, not the engine.)"""
     on = _run(_targets(model_commander_recursion={"sacrifice": "one_fodder_per_turn"}))
     off_t = _targets()
     off_t.pop("model_commander_recursion", None)
@@ -63,8 +64,6 @@ def test_meren_returns_creatures_and_her_sacrifices_pay_the_drain():
     assert rec["mean_experience_by_turn"]["10"] > 1
     assert rec["mean_returned_to_battlefield"] > 0.5
     assert on["mean_sacrifices_by_turn"]["10"] > off["mean_sacrifices_by_turn"]["10"]
-    assert (on["drain"]["mean_cumulative_drain_by_turn"]["10"]
-            > off["drain"]["mean_cumulative_drain_by_turn"]["10"])
 
 
 @requires_deck
