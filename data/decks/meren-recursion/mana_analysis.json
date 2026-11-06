@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
+  "decklist_sha256": "0750f047703cbe135491a50595a6fbfba1b66014ccf0fb3731e4fca144bdcf0c",
   "model_version": "25f3c2b93a87",
   "lands": {
     "total": 36,
@@ -454,16 +454,16 @@
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 3,
+      "B": 5,
       "R": 0,
-      "G": 3
+      "G": 7
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 35,
+      "B": 37,
       "R": 0,
-      "G": 38
+      "G": 42
     },
     "gated": {
       "count": 8,
@@ -496,6 +496,15 @@
         "produces": []
       },
       {
+        "name": "Birds of Paradise",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
         "name": "Chrome Mox",
         "kind": "ramp:rock",
         "cmc": 0.0,
@@ -507,6 +516,22 @@
         "cmc": 1.0,
         "produces": [
           "B",
+          "G"
+        ]
+      },
+      {
+        "name": "Elvish Mystic",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "G"
+        ]
+      },
+      {
+        "name": "Llanowar Elves",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
           "G"
         ]
       },
@@ -526,6 +551,15 @@
         ]
       },
       {
+        "name": "Skull Prophet",
+        "kind": "ramp:dork",
+        "cmc": 2.0,
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
         "name": "Sol Ring",
         "kind": "ramp:rock",
         "cmc": 1.0,
@@ -535,76 +569,77 @@
   },
   "pips": {
     "B": {
-      "total_pips": 50.5,
+      "total_pips": 53.5,
       "max_pips": 3,
-      "cards": 44,
+      "cards": 41,
       "earliest_turn": 1,
-      "effective_pips": 1
+      "effective_pips": 2
     },
     "G": {
-      "total_pips": 32.5,
-      "max_pips": 2,
-      "cards": 26,
+      "total_pips": 37.5,
+      "max_pips": 3,
+      "cards": 30,
       "earliest_turn": 1,
       "effective_pips": 2
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.608,
+      "pip_share": 0.588,
       "source_share": 0.478
     },
     "G": {
-      "pip_share": 0.392,
+      "pip_share": 0.412,
       "source_share": 0.522
     }
   },
   "source_targets": {
-    "B": 22,
+    "B": 36,
     "G": 36
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.975,
+      "B": 0.855,
       "G": 0.895
     },
     "with_rocks_and_dorks": {
-      "B": 0.984,
-      "G": 0.925
+      "B": 0.916,
+      "G": 0.955
     },
     "lands_only_ungated": {
-      "B": 0.927,
+      "B": 0.694,
       "G": 0.764
     }
   },
   "ramp": {
-    "ramp:dork": 2,
+    "ramp:dork": 6,
+    "ramp:land": 3,
     "ramp:rock": 5
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.496,
+      "1": 1.0,
+      "10": 0.446,
       "2": 0.996,
-      "3": 0.897,
-      "4": 0.771,
-      "5": 0.654,
-      "6": 0.571,
-      "7": 0.526,
-      "8": 0.505,
-      "9": 0.492
+      "3": 0.895,
+      "4": 0.772,
+      "5": 0.66,
+      "6": 0.566,
+      "7": 0.502,
+      "8": 0.465,
+      "9": 0.453
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.581,
-      "2": 2.219,
-      "3": 3.226,
-      "4": 4.035,
-      "5": 4.721,
-      "6": 5.356,
-      "7": 5.932,
-      "8": 6.485,
-      "9": 7.028
+      "1": 1.0,
+      "10": 8.057,
+      "2": 2.382,
+      "3": 3.519,
+      "4": 4.389,
+      "5": 5.136,
+      "6": 5.814,
+      "7": 6.407,
+      "8": 6.964,
+      "9": 7.516
     }
   },
   "assumptions": [
@@ -614,6 +649,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "G: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 38."
+    "B: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37.",
+    "G: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 42."
   ]
 }

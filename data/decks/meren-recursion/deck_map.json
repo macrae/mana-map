@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "7da890b954601bcfbdfab8fb2a48c1e3c1448b866d7398a2c1259cb059cc9c9b",
+  "decklist_sha256": "0750f047703cbe135491a50595a6fbfba1b66014ccf0fb3731e4fca144bdcf0c",
   "meta": {
     "space": "embeddings_cardbert.npy",
     "space_digest": "1c7fb3995420711c",
@@ -8,30 +8,15 @@
     "clustering": "average-linkage agglomerative on cosine distance, 2 levels",
     "cards": 100,
     "unresolved": [],
-    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so.",
-    "named_by": "deck-cartographer",
-    "cartographer_notes": [
-      "No strategic_frame.json exists for this deck; the engine reading came from CONTEXT.md (Meren attrition, win on a count of deaths with drains).",
-      "No region carries a verified_count above zero: no rules-verified line touches this list yet, so no city is the engine on the record.",
-      "The drain package is split three ways by card type, which reads as CardBERT clustering on type over function: Zulaport Cutthroat and Blood Artist in THE SMALL DEATHS, Starscape Cleric (the multiplier per CONTEXT.md) in THE MUSCLE, Grave Venerations, The Meathook Massacre and Boggart Mischief in DEATH PAYS.",
-      "city-6 has a single neighbourhood with identical membership (all seven enchantments); it is left unnamed because any name would repeat its parent.",
-      "city-0-hood-0 mixes four tutors with three catch-all answers (Assassin's Trophy, Beast Within, Trystan's Command); named FIND OR FIX for the two jobs visible, the join is the any-target flexibility, not a shared role.",
-      "city-1-hood-1 (Garruk's Uprising, Icetill Explorer, Ribtruss Roaster) is three unrelated green engines -- card draw on big bodies, lands from the graveyard, token growth; the split from the parent looks arbitrary.",
-      "city-2-hood-0 is mostly bodies that return or pay on entry (Graveshifter, Scrapwork Rager, Teacher's Pest, Dawnhand Eulogist); Obelisk Spider is the odd member, a -1/-1 counter drain that fits better beside the drains in SAC, DIE, DRAIN.",
-      "city-3 splits the two altars by what they make, not what they do: Ashnod's Altar sits with Sol Ring (two colourless), Phyrexian Altar with Arcane Signet and Chrome Mox (coloured). Both are sac outlets functionally closer to THE SMALL DEATHS than to rocks.",
-      "city-3-hood-0 is 19 any-colour lands in a two-colour deck, almost all of them conditional (pay {1}, life, or a creature); that mass is a shape worth noticing, though judging it is not this agent's job.",
-      "Phyrexian Tower sits among the untapped duals in ON-TIME DUALS but is a free sacrifice outlet that makes {B}{B}; it is the most engine-relevant land in HOME SOIL.",
-      "city-5-hood-0 is lands that enter tapped or conditionally tapped; Boseiju, Who Endures (untapped, a channel answer) is the odd member.",
-      "Supernatural Stamina has no role tag; in KILL AND RAISE it is a self-recursion trick, which matches the neighbourhood's reanimation half."
-    ]
+    "note": "Positions are LOCAL to this deck and are not atlas positions — the deck is re-laid-out from its own cards, which is the whole point. Anything that draws this must say so."
   },
   "cards": [
     {
       "name": "Meren of Clan Nel Toth",
-      "x": -0.24642,
-      "y": 0.4534,
+      "x": 0.33888,
+      "y": -0.06371,
       "city": 4,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "threat:body"
       ],
@@ -39,11 +24,25 @@
       "commander": true
     },
     {
-      "name": "Animate Dead",
-      "x": -0.30134,
-      "y": -0.77774,
-      "city": 0,
+      "name": "Abstergo Entertainment",
+      "x": -0.50408,
+      "y": 0.13148,
+      "city": 1,
       "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Animate Dead",
+      "x": 0.18927,
+      "y": 0.85151,
+      "city": 3,
+      "hood": 0,
       "roles": [
         "buff:attached",
         "removal:debuff",
@@ -54,10 +53,10 @@
     },
     {
       "name": "Arcane Signet",
-      "x": 0.66988,
-      "y": -0.36808,
-      "city": 3,
-      "hood": 3,
+      "x": -0.63201,
+      "y": 0.37803,
+      "city": 1,
+      "hood": 0,
       "roles": [
         "ramp:rock",
         "utility:activated"
@@ -67,9 +66,9 @@
     },
     {
       "name": "Ashnod's Altar",
-      "x": 0.37052,
-      "y": -0.30567,
-      "city": 3,
+      "x": -0.24439,
+      "y": 0.42371,
+      "city": 1,
       "hood": 2,
       "roles": [
         "ramp:rock",
@@ -81,10 +80,10 @@
     },
     {
       "name": "Assassin's Trophy",
-      "x": -0.41025,
-      "y": 0.68831,
+      "x": 0.43499,
+      "y": -0.61762,
       "city": 0,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "removal:spot"
       ],
@@ -92,11 +91,23 @@
       "commander": false
     },
     {
+      "name": "Bayou",
+      "x": -0.24737,
+      "y": -0.25208,
+      "city": 5,
+      "hood": 1,
+      "roles": [
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Beast Within",
-      "x": -0.08586,
-      "y": 0.81757,
+      "x": 0.15901,
+      "y": -0.75366,
       "city": 0,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "removal:spot",
         "threat:tokens"
@@ -105,39 +116,49 @@
       "commander": false
     },
     {
-      "name": "Blood Artist",
-      "x": -0.46177,
-      "y": -0.4692,
-      "city": 2,
-      "hood": 1,
+      "name": "Birds of Paradise",
+      "x": -0.65312,
+      "y": -0.3854,
+      "city": 1,
+      "hood": 3,
       "roles": [
+        "ramp:dork",
         "threat:body",
-        "wincon:drain"
+        "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
-      "name": "Boggart Mischief",
-      "x": -0.17788,
-      "y": -0.66558,
-      "city": 6,
+      "name": "Blooming Marsh",
+      "x": -0.3333,
+      "y": -0.15931,
+      "city": 5,
       "hood": 0,
       "roles": [
-        "removal:debuff",
-        "threat:tokens",
-        "value:etb",
-        "wincon:drain"
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Boseiju, Who Endures",
+      "x": -0.32196,
+      "y": -0.43411,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "land:utility"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Buried Alive",
-      "x": -0.26175,
-      "y": 0.23209,
+      "x": 0.31924,
+      "y": -0.32431,
       "city": 0,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "tutor:narrow"
       ],
@@ -146,9 +167,9 @@
     },
     {
       "name": "Carrion Feeder",
-      "x": -0.82257,
-      "y": -0.19229,
-      "city": 1,
+      "x": 0.79462,
+      "y": 0.27093,
+      "city": 2,
       "hood": 0,
       "roles": [
         "buff:counters",
@@ -160,11 +181,35 @@
       "commander": false
     },
     {
+      "name": "Castle Garenbrig",
+      "x": -0.51095,
+      "y": -0.20171,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Chord of Calling",
+      "x": -0.19223,
+      "y": -0.76829,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Chrome Mox",
-      "x": 0.49892,
-      "y": -0.53978,
-      "city": 3,
-      "hood": 3,
+      "x": -0.49437,
+      "y": 0.57472,
+      "city": 1,
+      "hood": 0,
       "roles": [
         "ramp:rock",
         "utility:activated",
@@ -174,11 +219,63 @@
       "commander": false
     },
     {
+      "name": "City of Brass",
+      "x": -0.70878,
+      "y": 0.17204,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Command Tower",
+      "x": -0.65057,
+      "y": 0.12661,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Conduit Pylons",
+      "x": -0.51435,
+      "y": 0.18794,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Darkbore Pathway // Slitherbore Pathway",
+      "x": -0.23718,
+      "y": -0.12267,
+      "city": 5,
+      "hood": 2,
+      "roles": [
+        "land:mdfc"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Dawnhand Eulogist",
-      "x": -0.26383,
-      "y": -0.39027,
-      "city": 2,
-      "hood": 0,
+      "x": 0.31497,
+      "y": 0.43769,
+      "city": 3,
+      "hood": 1,
       "roles": [
         "threat:body",
         "value:etb",
@@ -189,21 +286,9 @@
       "commander": false
     },
     {
-      "name": "Deadbridge Chant",
-      "x": -0.13719,
-      "y": 0.31488,
-      "city": 6,
-      "hood": 0,
-      "roles": [
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
       "name": "Deadly Rollick",
-      "x": -1.0,
-      "y": 0.10518,
+      "x": 1.0,
+      "y": -0.04469,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -214,10 +299,10 @@
     },
     {
       "name": "Deathrite Shaman",
-      "x": -0.09433,
-      "y": -0.11408,
+      "x": 0.14901,
+      "y": 0.03055,
       "city": 4,
-      "hood": 1,
+      "hood": 0,
       "roles": [
         "hate:graveyard",
         "ramp:dork",
@@ -231,10 +316,10 @@
     },
     {
       "name": "Diabolic Intent",
-      "x": -0.43218,
-      "y": 0.16786,
+      "x": 0.45074,
+      "y": -0.27109,
       "city": 0,
-      "hood": 0,
+      "hood": 2,
       "roles": [
         "tutor:unrestricted"
       ],
@@ -242,47 +327,9 @@
       "commander": false
     },
     {
-      "name": "Diabolic Servitude",
-      "x": -0.39291,
-      "y": -0.57149,
-      "city": 6,
-      "hood": 0,
-      "roles": [
-        "recursion",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Dose of Dawnglow",
-      "x": -0.66104,
-      "y": -0.19233,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "recursion",
-        "removal:debuff"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Dread Return",
-      "x": -0.38971,
-      "y": -0.29836,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "recursion"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Eldritch Evolution",
-      "x": -0.19504,
-      "y": 0.56788,
+      "name": "Dina's Guidance",
+      "x": 0.24709,
+      "y": -0.5948,
       "city": 0,
       "hood": 0,
       "roles": [
@@ -292,11 +339,61 @@
       "commander": false
     },
     {
-      "name": "Eternal Witness",
-      "x": 0.05702,
-      "y": -0.62112,
+      "name": "Dread Return",
+      "x": 0.61811,
+      "y": -0.08073,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "recursion"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Eldritch Evolution",
+      "x": 0.27378,
+      "y": -0.4764,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Elvish Mystic",
+      "x": -0.36319,
+      "y": -0.49075,
       "city": 4,
       "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Entomb",
+      "x": 0.46761,
+      "y": -0.33506,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "tutor:unrestricted"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Eternal Witness",
+      "x": 0.03605,
+      "y": -0.62612,
+      "city": 4,
+      "hood": 0,
       "roles": [
         "recursion",
         "threat:body",
@@ -306,11 +403,24 @@
       "commander": false
     },
     {
+      "name": "Exotic Orchard",
+      "x": -0.61471,
+      "y": 0.09736,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Fauna Shaman",
-      "x": 0.00244,
-      "y": 0.8399,
+      "x": -0.00147,
+      "y": -0.7572,
       "city": 4,
-      "hood": 0,
+      "hood": 1,
       "roles": [
         "threat:body",
         "tutor:narrow",
@@ -321,8 +431,8 @@
     },
     {
       "name": "Feed the Swarm",
-      "x": -0.57254,
-      "y": 0.32423,
+      "x": 0.63003,
+      "y": -0.22623,
       "city": 0,
       "hood": 1,
       "roles": [
@@ -332,24 +442,80 @@
       "commander": false
     },
     {
-      "name": "Garruk's Uprising",
-      "x": 0.34088,
-      "y": 0.87607,
+      "name": "Festering Thicket",
+      "x": -0.1821,
+      "y": -0.24435,
+      "city": 5,
+      "hood": 1,
+      "roles": [
+        "land:tapped",
+        "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Fiend Artisan",
+      "x": 0.48624,
+      "y": 0.0475,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "sac-cost",
+        "sac-outlet",
+        "threat:body",
+        "tutor:narrow",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Forbidden Orchard",
+      "x": -0.66249,
+      "y": 0.13926,
       "city": 1,
       "hood": 1,
       "roles": [
-        "draw:engine",
-        "value:etb"
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gemstone Caverns",
+      "x": -0.54849,
+      "y": 0.27464,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gemstone Mine",
+      "x": -0.59587,
+      "y": 0.17793,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual",
+        "land:utility"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Glissa Sunslayer",
-      "x": -0.70578,
-      "y": 0.04799,
-      "city": 1,
-      "hood": 0,
+      "x": 0.70486,
+      "y": 0.28075,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "draw:engine",
         "removal:spot",
@@ -360,9 +526,9 @@
     },
     {
       "name": "Golgari Grave-Troll",
-      "x": -0.89066,
-      "y": 0.04228,
-      "city": 1,
+      "x": 0.8407,
+      "y": 0.10388,
+      "city": 2,
       "hood": 0,
       "roles": [
         "recursion",
@@ -372,9 +538,34 @@
       "commander": false
     },
     {
+      "name": "Golgari Rot Farm",
+      "x": -0.22399,
+      "y": -0.07397,
+      "city": 5,
+      "hood": 0,
+      "roles": [
+        "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Gond Gate",
+      "x": -0.6094,
+      "y": 0.07945,
+      "city": 1,
+      "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Grave Pact",
-      "x": -0.43082,
-      "y": 0.4147,
+      "x": 0.69684,
+      "y": -0.21806,
       "city": 6,
       "hood": 0,
       "roles": [
@@ -384,24 +575,24 @@
       "commander": false
     },
     {
-      "name": "Grave Venerations",
-      "x": -0.23881,
-      "y": 0.11374,
-      "city": 6,
-      "hood": 0,
+      "name": "Grave Titan",
+      "x": 0.57464,
+      "y": 0.15636,
+      "city": 3,
+      "hood": 1,
       "roles": [
-        "recursion",
-        "value:etb",
-        "wincon:drain"
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Grave-Shell Scarab",
-      "x": -0.63125,
-      "y": -0.32109,
-      "city": 1,
+      "x": 0.51691,
+      "y": 0.38961,
+      "city": 2,
       "hood": 0,
       "roles": [
         "recursion",
@@ -413,10 +604,10 @@
     },
     {
       "name": "Graveshifter",
-      "x": -0.2753,
-      "y": -0.62001,
-      "city": 2,
-      "hood": 0,
+      "x": 0.27254,
+      "y": 0.67614,
+      "city": 3,
+      "hood": 1,
       "roles": [
         "recursion",
         "threat:body",
@@ -427,10 +618,10 @@
     },
     {
       "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
-      "x": -0.65386,
-      "y": 0.21004,
-      "city": 1,
-      "hood": 0,
+      "x": 0.61211,
+      "y": 0.04631,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "removal:spot",
         "threat:body",
@@ -441,9 +632,9 @@
     },
     {
       "name": "Grist, the Hunger Tide",
-      "x": -0.47877,
-      "y": 0.61008,
-      "city": 4,
+      "x": 0.56886,
+      "y": -0.47221,
+      "city": 6,
       "hood": 0,
       "roles": [
         "removal:spot",
@@ -454,11 +645,24 @@
       "commander": false
     },
     {
-      "name": "Icetill Explorer",
-      "x": 0.49136,
-      "y": -0.64358,
+      "name": "Hidden Grotto",
+      "x": -0.5209,
+      "y": 0.19562,
       "city": 1,
       "hood": 1,
+      "roles": [
+        "land:fixing",
+        "land:untapped-dual"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Icetill Explorer",
+      "x": -0.32984,
+      "y": 0.65954,
+      "city": 0,
+      "hood": 0,
       "roles": [
         "threat:body",
         "value:etb"
@@ -468,391 +672,9 @@
     },
     {
       "name": "Izoni, Thousand-Eyed",
-      "x": -0.25959,
-      "y": -0.12026,
+      "x": 0.26288,
+      "y": 0.13635,
       "city": 4,
-      "hood": 1,
-      "roles": [
-        "sac-cost",
-        "sac-outlet",
-        "threat:body",
-        "threat:tokens",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Liliana, Death Wielder",
-      "x": -0.54671,
-      "y": 0.66429,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "recursion",
-        "removal:debuff",
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Obelisk Spider",
-      "x": -0.75345,
-      "y": 0.46378,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "payoff:counters",
-        "removal:debuff",
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Pawn of Ulamog",
-      "x": -0.00093,
-      "y": -0.44625,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "ramp:dork",
-        "threat:body",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Phyrexian Altar",
-      "x": 0.52595,
-      "y": -0.39753,
-      "city": 3,
-      "hood": 3,
-      "roles": [
-        "ramp:rock",
-        "sac-cost",
-        "sac-outlet"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Phyrexian Reclamation",
-      "x": -0.32762,
-      "y": 0.29099,
-      "city": 6,
-      "hood": 0,
-      "roles": [
-        "recursion"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Pitiless Plunderer",
-      "x": 0.3879,
-      "y": -0.60305,
-      "city": 3,
-      "hood": 1,
-      "roles": [
-        "ramp:dork",
-        "ramp:treasure",
-        "threat:body",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Postmortem Professor",
-      "x": -0.69192,
-      "y": -0.25185,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "recursion",
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Professor Dellian Fel",
-      "x": -0.32228,
-      "y": 0.71823,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "removal:spot",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Reassembling Skeleton",
-      "x": -0.50538,
-      "y": -0.23162,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "recursion",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Requiting Hex",
-      "x": -0.65007,
-      "y": -0.4996,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "removal:debuff",
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Ribtruss Roaster",
-      "x": -0.53823,
-      "y": -0.04975,
-      "city": 1,
-      "hood": 1,
-      "roles": [
-        "threat:body",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Scrapwork Rager",
-      "x": -0.23814,
-      "y": -0.68376,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "recursion",
-        "threat:body",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Sedgemoor Witch",
-      "x": -0.54985,
-      "y": -0.38954,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "protection:self",
-        "threat:body",
-        "threat:tokens"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "x": -0.09113,
-      "y": -0.85998,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "draw:engine",
-        "threat:body",
-        "value:etb",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Sol Ring",
-      "x": 0.78127,
-      "y": 0.02027,
-      "city": 3,
-      "hood": 2,
-      "roles": [
-        "ramp:rock",
-        "utility:activated"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Starscape Cleric",
-      "x": -0.44471,
-      "y": -0.76914,
-      "city": 1,
-      "hood": 0,
-      "roles": [
-        "threat:body",
-        "value:etb",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Supernatural Stamina",
-      "x": -0.82836,
-      "y": -0.04073,
-      "city": 0,
-      "hood": 1,
-      "roles": [],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Survival of the Fittest",
-      "x": -0.18531,
-      "y": 0.84969,
-      "city": 4,
-      "hood": 0,
-      "roles": [
-        "tutor:narrow"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Teacher's Pest",
-      "x": -0.61788,
-      "y": -0.02222,
-      "city": 2,
-      "hood": 0,
-      "roles": [
-        "recursion",
-        "threat:body",
-        "wincon:combat"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "The Meathook Massacre",
-      "x": -0.45101,
-      "y": 0.46877,
-      "city": 6,
-      "hood": 0,
-      "roles": [
-        "removal:sweeper",
-        "value:etb",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Tireless Provisioner",
-      "x": 0.59349,
-      "y": -0.38783,
-      "city": 3,
-      "hood": 1,
-      "roles": [
-        "ramp:dork",
-        "ramp:treasure",
-        "threat:body",
-        "utility:activated",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Titania, Protector of Argoth",
-      "x": 0.18242,
-      "y": 0.70218,
-      "city": 4,
-      "hood": 1,
-      "roles": [
-        "recursion",
-        "threat:body",
-        "threat:tokens",
-        "value:etb"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Trystan's Command",
-      "x": -0.18646,
-      "y": 0.63884,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "buff:pump",
-        "removal:spot"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Trystan, Callous Cultivator // Trystan, Penitent Culler",
-      "x": -0.2323,
-      "y": -0.02709,
-      "city": 4,
-      "hood": 1,
-      "roles": [
-        "threat:body",
-        "value:etb",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Vampiric Tutor",
-      "x": -0.50816,
-      "y": 0.16497,
-      "city": 0,
-      "hood": 0,
-      "roles": [
-        "tutor:unrestricted"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Village Rites",
-      "x": -0.07603,
-      "y": -0.63834,
-      "city": 0,
-      "hood": 1,
-      "roles": [
-        "draw:burst"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Viscera Seer",
-      "x": -0.52232,
-      "y": -0.50112,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "sac-cost",
-        "sac-outlet",
-        "threat:body"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Woe Strider",
-      "x": -0.68423,
-      "y": -0.42036,
-      "city": 1,
       "hood": 0,
       "roles": [
         "sac-cost",
@@ -865,11 +687,11 @@
       "commander": false
     },
     {
-      "name": "Zask, Skittering Swarmlord",
-      "x": -0.72087,
-      "y": 0.1557,
-      "city": 1,
-      "hood": 0,
+      "name": "Junji, the Midnight Sky",
+      "x": 0.10087,
+      "y": 0.68274,
+      "city": 2,
+      "hood": 1,
       "roles": [
         "threat:body"
       ],
@@ -877,240 +699,21 @@
       "commander": false
     },
     {
-      "name": "Zulaport Cutthroat",
-      "x": -0.44888,
-      "y": -0.62276,
-      "city": 2,
-      "hood": 1,
-      "roles": [
-        "threat:body",
-        "wincon:drain"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Abstergo Entertainment",
-      "x": 0.5935,
-      "y": -0.04157,
-      "city": 3,
+      "name": "Kalonian Hydra",
+      "x": 0.6701,
+      "y": -0.69383,
+      "city": 0,
       "hood": 0,
       "roles": [
-        "land:fixing",
-        "land:untapped-dual",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Bayou",
-      "x": 0.31873,
-      "y": 0.37148,
-      "city": 5,
-      "hood": 1,
-      "roles": [
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Blooming Marsh",
-      "x": 0.37659,
-      "y": 0.2613,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Boseiju, Who Endures",
-      "x": 0.38701,
-      "y": 0.52457,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Castle Garenbrig",
-      "x": 0.54738,
-      "y": 0.29236,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "City of Brass",
-      "x": 0.72739,
-      "y": -0.14752,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Command Tower",
-      "x": 0.67608,
-      "y": -0.16112,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Conduit Pylons",
-      "x": 0.54692,
-      "y": -0.12476,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Darkbore Pathway // Slitherbore Pathway",
-      "x": 0.28745,
-      "y": 0.20949,
-      "city": 5,
-      "hood": 2,
-      "roles": [
-        "land:mdfc"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Exotic Orchard",
-      "x": 0.67117,
-      "y": -0.08297,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Festering Thicket",
-      "x": 0.27384,
-      "y": 0.38773,
-      "city": 5,
-      "hood": 1,
-      "roles": [
-        "land:tapped",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Forbidden Orchard",
-      "x": 0.68466,
-      "y": -0.14014,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Gemstone Caverns",
-      "x": 0.60112,
-      "y": -0.22458,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Gemstone Mine",
-      "x": 0.61269,
-      "y": -0.1536,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual",
-        "land:utility"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Golgari Rot Farm",
-      "x": 0.25947,
-      "y": 0.2418,
-      "city": 5,
-      "hood": 0,
-      "roles": [
-        "land:tapped"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Gond Gate",
-      "x": 0.66378,
-      "y": 0.03439,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
-      ],
-      "verified": false,
-      "commander": false
-    },
-    {
-      "name": "Hidden Grotto",
-      "x": 0.55251,
-      "y": -0.13629,
-      "city": 3,
-      "hood": 0,
-      "roles": [
-        "land:fixing",
-        "land:untapped-dual"
+        "threat:body"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Khalni Garden",
-      "x": 0.45685,
-      "y": 0.3579,
+      "x": -0.43756,
+      "y": -0.27278,
       "city": 5,
       "hood": 0,
       "roles": [
@@ -1120,25 +723,66 @@
       "commander": false
     },
     {
-      "name": "Lazotep Quarry",
-      "x": 0.54231,
-      "y": -0.02209,
-      "city": 3,
+      "name": "Kodama's Reach",
+      "x": -0.34795,
+      "y": -0.69086,
+      "city": 0,
       "hood": 0,
+      "roles": [
+        "ramp:land",
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Lazotep Quarry",
+      "x": -0.46984,
+      "y": 0.10451,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
         "land:utility"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Liliana, Death Wielder",
+      "x": 0.68689,
+      "y": -0.47217,
+      "city": 6,
+      "hood": 0,
+      "roles": [
+        "recursion",
+        "removal:debuff",
+        "removal:spot"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Llanowar Elves",
+      "x": -0.41601,
+      "y": -0.48097,
+      "city": 4,
+      "hood": 1,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
       ],
       "verified": false,
       "commander": false
     },
     {
       "name": "Mana Confluence",
-      "x": 0.6455,
-      "y": -0.13249,
-      "city": 3,
-      "hood": 0,
+      "x": -0.59684,
+      "y": 0.14217,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1148,9 +792,35 @@
       "commander": false
     },
     {
+      "name": "Nature's Lore",
+      "x": -0.21256,
+      "y": -0.58818,
+      "city": 0,
+      "hood": 0,
+      "roles": [
+        "ramp:land",
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Noxious Gearhulk",
+      "x": 0.70664,
+      "y": 0.50304,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Nurturing Peatland",
-      "x": 0.25857,
-      "y": 0.1714,
+      "x": -0.23096,
+      "y": -0.11433,
       "city": 5,
       "hood": 2,
       "roles": [
@@ -1162,10 +832,10 @@
     },
     {
       "name": "Opal Palace",
-      "x": 0.60309,
-      "y": -0.03504,
-      "city": 3,
-      "hood": 0,
+      "x": -0.53177,
+      "y": 0.11597,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -1175,8 +845,8 @@
     },
     {
       "name": "Overgrown Tomb",
-      "x": 0.2475,
-      "y": 0.32313,
+      "x": -0.17281,
+      "y": -0.19816,
       "city": 5,
       "hood": 1,
       "roles": [
@@ -1186,9 +856,37 @@
       "commander": false
     },
     {
+      "name": "Pawn of Ulamog",
+      "x": 0.03082,
+      "y": 0.54725,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Phyrexian Altar",
+      "x": -0.50364,
+      "y": 0.41555,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "ramp:rock",
+        "sac-cost",
+        "sac-outlet"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Phyrexian Tower",
-      "x": 0.32626,
-      "y": 0.12154,
+      "x": -0.23592,
+      "y": 0.04386,
       "city": 5,
       "hood": 2,
       "roles": [
@@ -1198,11 +896,163 @@
       "commander": false
     },
     {
-      "name": "Spire of Industry",
-      "x": 0.64987,
-      "y": -0.04431,
+      "name": "Pitiless Plunderer",
+      "x": -0.41215,
+      "y": 0.59697,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "ramp:treasure",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Postmortem Professor",
+      "x": 0.64449,
+      "y": 0.40469,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "recursion",
+        "threat:body",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Professor Dellian Fel",
+      "x": 0.46304,
+      "y": -0.56158,
+      "city": 6,
+      "hood": 0,
+      "roles": [
+        "removal:spot",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Ravenous Chupacabra",
+      "x": 0.86404,
+      "y": 0.42749,
       "city": 3,
       "hood": 0,
+      "roles": [
+        "removal:spot",
+        "threat:body",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Reassembling Skeleton",
+      "x": 0.46401,
+      "y": 0.28451,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "recursion",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Requiting Hex",
+      "x": 0.5396,
+      "y": 0.63455,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "removal:debuff",
+        "removal:spot"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sakura-Tribe Elder",
+      "x": -0.0758,
+      "y": -0.74785,
+      "city": 4,
+      "hood": 1,
+      "roles": [
+        "ramp:land",
+        "threat:body",
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sedgemoor Witch",
+      "x": 0.52547,
+      "y": 0.5412,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "protection:self",
+        "threat:body",
+        "threat:tokens"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sheoldred // The True Scriptures",
+      "x": 0.62273,
+      "y": 0.25084,
+      "city": 2,
+      "hood": 1,
+      "roles": [
+        "removal:edict",
+        "threat:body",
+        "value:etb",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Skull Prophet",
+      "x": 0.03058,
+      "y": 0.18009,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "threat:body",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Sol Ring",
+      "x": -0.44212,
+      "y": 0.41517,
+      "city": 1,
+      "hood": 2,
+      "roles": [
+        "ramp:rock",
+        "utility:activated"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Spire of Industry",
+      "x": -0.5654,
+      "y": 0.13444,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1212,11 +1062,23 @@
       "commander": false
     },
     {
-      "name": "Survivors' Encampment",
-      "x": 0.57288,
-      "y": 0.01819,
-      "city": 3,
+      "name": "Survival of the Fittest",
+      "x": 0.23939,
+      "y": -0.79125,
+      "city": 6,
       "hood": 0,
+      "roles": [
+        "tutor:narrow"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Survivors' Encampment",
+      "x": -0.50995,
+      "y": 0.05254,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1227,8 +1089,8 @@
     },
     {
       "name": "Tainted Wood",
-      "x": 0.28615,
-      "y": 0.21968,
+      "x": -0.22255,
+      "y": -0.10021,
       "city": 5,
       "hood": 2,
       "roles": [
@@ -1239,10 +1101,10 @@
     },
     {
       "name": "Talon Gates of Madara",
-      "x": 0.66744,
-      "y": -0.09829,
-      "city": 3,
-      "hood": 0,
+      "x": -0.63031,
+      "y": 0.1787,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -1252,10 +1114,10 @@
     },
     {
       "name": "Tarnished Citadel",
-      "x": 0.61046,
-      "y": -0.02862,
-      "city": 3,
-      "hood": 0,
+      "x": -0.53464,
+      "y": 0.1062,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1266,10 +1128,10 @@
     },
     {
       "name": "The Grey Havens",
-      "x": 0.58341,
-      "y": -0.0965,
-      "city": 3,
-      "hood": 0,
+      "x": -0.53709,
+      "y": 0.19215,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual"
@@ -1278,11 +1140,25 @@
       "commander": false
     },
     {
-      "name": "The Mycosynth Gardens",
-      "x": 0.64152,
-      "y": -0.04215,
-      "city": 3,
+      "name": "The Meathook Massacre",
+      "x": 0.70395,
+      "y": -0.28739,
+      "city": 6,
       "hood": 0,
+      "roles": [
+        "removal:sweeper",
+        "value:etb",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "The Mycosynth Gardens",
+      "x": -0.56058,
+      "y": 0.1191,
+      "city": 1,
+      "hood": 1,
       "roles": [
         "land:fixing",
         "land:untapped-dual",
@@ -1293,8 +1169,8 @@
     },
     {
       "name": "Thriving Grove",
-      "x": 0.56966,
-      "y": 0.17592,
+      "x": -0.55872,
+      "y": -0.13373,
       "city": 5,
       "hood": 0,
       "roles": [
@@ -1304,9 +1180,52 @@
       "commander": false
     },
     {
+      "name": "Tireless Provisioner",
+      "x": -0.71108,
+      "y": -0.05628,
+      "city": 1,
+      "hood": 0,
+      "roles": [
+        "ramp:dork",
+        "ramp:treasure",
+        "threat:body",
+        "utility:activated",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Trystan's Command",
+      "x": 0.20926,
+      "y": -0.56502,
+      "city": 0,
+      "hood": 1,
+      "roles": [
+        "buff:pump",
+        "removal:spot"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Trystan, Callous Cultivator // Trystan, Penitent Culler",
+      "x": 0.28139,
+      "y": 0.11325,
+      "city": 4,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "value:etb",
+        "wincon:drain"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Twilight Mire",
-      "x": 0.23842,
-      "y": 0.22438,
+      "x": -0.17582,
+      "y": -0.10962,
       "city": 5,
       "hood": 2,
       "roles": [
@@ -1316,9 +1235,21 @@
       "commander": false
     },
     {
+      "name": "Vampiric Tutor",
+      "x": 0.49912,
+      "y": -0.30492,
+      "city": 0,
+      "hood": 2,
+      "roles": [
+        "tutor:unrestricted"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Vernal Fen",
-      "x": 0.31481,
-      "y": 0.38595,
+      "x": -0.24085,
+      "y": -0.26652,
       "city": 5,
       "hood": 1,
       "roles": [
@@ -1328,9 +1259,37 @@
       "commander": false
     },
     {
+      "name": "Vile Entomber",
+      "x": 0.44199,
+      "y": 0.46574,
+      "city": 3,
+      "hood": 1,
+      "roles": [
+        "threat:body",
+        "tutor:unrestricted",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Viscera Seer",
+      "x": 0.32024,
+      "y": 0.59653,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "sac-cost",
+        "sac-outlet",
+        "threat:body"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Wastewood Verge",
-      "x": 0.34516,
-      "y": 0.22028,
+      "x": -0.29745,
+      "y": -0.13803,
       "city": 5,
       "hood": 2,
       "roles": [
@@ -1340,13 +1299,42 @@
       "commander": false
     },
     {
+      "name": "Woe Strider",
+      "x": 0.46298,
+      "y": 0.65725,
+      "city": 2,
+      "hood": 0,
+      "roles": [
+        "sac-cost",
+        "sac-outlet",
+        "threat:body",
+        "threat:tokens",
+        "value:etb"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
       "name": "Woodland Cemetery",
-      "x": 0.35149,
-      "y": 0.26008,
+      "x": -0.30901,
+      "y": -0.16096,
       "city": 5,
       "hood": 0,
       "roles": [
         "land:tapped"
+      ],
+      "verified": false,
+      "commander": false
+    },
+    {
+      "name": "Zulaport Cutthroat",
+      "x": 0.3689,
+      "y": 0.77681,
+      "city": 3,
+      "hood": 0,
+      "roles": [
+        "threat:body",
+        "wincon:drain"
       ],
       "verified": false,
       "commander": false
@@ -1356,216 +1344,101 @@
     {
       "id": "city-0",
       "level": 0,
-      "label": "THE ONE-SHOTS",
-      "fallback": "Interaction",
-      "cx": -0.43725,
-      "cy": 0.08399,
-      "count": 15,
+      "label": null,
+      "fallback": "Tutors",
+      "cx": 0.28803,
+      "cy": -0.39271,
+      "count": 17,
       "cards": [
-        "Animate Dead",
         "Assassin's Trophy",
         "Beast Within",
         "Buried Alive",
+        "Chord of Calling",
         "Deadly Rollick",
         "Diabolic Intent",
-        "Dose of Dawnglow",
+        "Dina's Guidance",
         "Dread Return",
         "Eldritch Evolution",
+        "Entomb",
         "Feed the Swarm",
-        "Requiting Hex",
-        "Supernatural Stamina",
+        "Icetill Explorer",
+        "Kalonian Hydra",
+        "Kodama's Reach",
+        "Nature's Lore",
         "Trystan's Command",
-        "Vampiric Tutor",
-        "Village Rites"
+        "Vampiric Tutor"
       ],
-      "verified_count": 0,
-      "gloss": "Spells that do one job and leave: find the missing piece, kill a blocker, or pull a body back from the yard."
+      "verified_count": 0
     },
     {
       "id": "city-0-hood-0",
       "level": 1,
       "parent": "city-0",
-      "label": "FIND OR FIX",
+      "label": null,
       "fallback": "Tutors",
-      "cx": -0.2971,
-      "cy": 0.46822,
+      "cx": 0.01548,
+      "cy": -0.4504,
       "count": 7,
       "cards": [
-        "Assassin's Trophy",
-        "Beast Within",
-        "Buried Alive",
-        "Diabolic Intent",
+        "Chord of Calling",
+        "Dina's Guidance",
         "Eldritch Evolution",
-        "Trystan's Command",
-        "Vampiric Tutor"
+        "Icetill Explorer",
+        "Kalonian Hydra",
+        "Kodama's Reach",
+        "Nature's Lore"
       ],
-      "verified_count": 0,
-      "gloss": "Tutors beside the catch-all answers that hit any permanent."
+      "verified_count": 0
     },
     {
       "id": "city-0-hood-1",
       "level": 1,
       "parent": "city-0",
-      "label": "KILL AND RAISE",
-      "fallback": "Interaction",
-      "cx": -0.55989,
-      "cy": -0.25221,
-      "count": 8,
+      "label": null,
+      "fallback": "Interaction II",
+      "cx": 0.48666,
+      "cy": -0.44144,
+      "count": 5,
       "cards": [
-        "Animate Dead",
+        "Assassin's Trophy",
+        "Beast Within",
         "Deadly Rollick",
-        "Dose of Dawnglow",
-        "Dread Return",
         "Feed the Swarm",
-        "Requiting Hex",
-        "Supernatural Stamina",
-        "Village Rites"
+        "Trystan's Command"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
+    },
+    {
+      "id": "city-0-hood-2",
+      "level": 1,
+      "parent": "city-0",
+      "label": null,
+      "fallback": "Tutors II",
+      "cx": 0.47096,
+      "cy": -0.26322,
+      "count": 5,
+      "cards": [
+        "Buried Alive",
+        "Diabolic Intent",
+        "Dread Return",
+        "Entomb",
+        "Vampiric Tutor"
+      ],
+      "verified_count": 0
     },
     {
       "id": "city-1",
       "level": 0,
-      "label": "THE MUSCLE",
-      "fallback": "Bodies",
-      "cx": -0.47092,
-      "cy": -0.18325,
-      "count": 14,
-      "cards": [
-        "Carrion Feeder",
-        "Garruk's Uprising",
-        "Glissa Sunslayer",
-        "Golgari Grave-Troll",
-        "Grave-Shell Scarab",
-        "Grist, Voracious Larva // Grist, the Plague Swarm",
-        "Icetill Explorer",
-        "Postmortem Professor",
-        "Ribtruss Roaster",
-        "Sedgemoor Witch",
-        "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-        "Starscape Cleric",
-        "Woe Strider",
-        "Zask, Skittering Swarmlord"
-      ],
-      "verified_count": 0,
-      "gloss": "Mid-curve creatures that pressure and grind; each is a threat alone and a better one when Meren returns it."
-    },
-    {
-      "id": "city-1-hood-0",
-      "level": 1,
-      "parent": "city-1",
-      "label": "ENGINES WITH LEGS",
-      "fallback": "Bodies",
-      "cx": -0.62608,
-      "cy": -0.24984,
-      "count": 11,
-      "cards": [
-        "Carrion Feeder",
-        "Glissa Sunslayer",
-        "Golgari Grave-Troll",
-        "Grave-Shell Scarab",
-        "Grist, Voracious Larva // Grist, the Plague Swarm",
-        "Postmortem Professor",
-        "Sedgemoor Witch",
-        "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-        "Starscape Cleric",
-        "Woe Strider",
-        "Zask, Skittering Swarmlord"
-      ],
-      "verified_count": 0,
-      "gloss": null
-    },
-    {
-      "id": "city-1-hood-1",
-      "level": 1,
-      "parent": "city-1",
-      "label": "THE SIDE BETS",
-      "fallback": "Card Flow",
-      "cx": 0.098,
-      "cy": 0.06091,
-      "count": 3,
-      "cards": [
-        "Garruk's Uprising",
-        "Icetill Explorer",
-        "Ribtruss Roaster"
-      ],
-      "verified_count": 0,
-      "gloss": null
-    },
-    {
-      "id": "city-2",
-      "level": 0,
-      "label": "THE SMALL DEATHS",
-      "fallback": "Recursion",
-      "cx": -0.40879,
-      "cy": -0.35234,
-      "count": 10,
-      "cards": [
-        "Blood Artist",
-        "Dawnhand Eulogist",
-        "Graveshifter",
-        "Obelisk Spider",
-        "Pawn of Ulamog",
-        "Reassembling Skeleton",
-        "Scrapwork Rager",
-        "Teacher's Pest",
-        "Viscera Seer",
-        "Zulaport Cutthroat"
-      ],
-      "verified_count": 0,
-      "gloss": "Cheap bodies meant to die: the free outlet, the fodder that comes back, and the drains that count each death."
-    },
-    {
-      "id": "city-2-hood-0",
-      "level": 1,
-      "parent": "city-2",
-      "label": "THE ENCORES",
-      "fallback": "Recursion",
-      "cx": -0.42972,
-      "cy": -0.25049,
-      "count": 5,
-      "cards": [
-        "Dawnhand Eulogist",
-        "Graveshifter",
-        "Obelisk Spider",
-        "Scrapwork Rager",
-        "Teacher's Pest"
-      ],
-      "verified_count": 0,
-      "gloss": null
-    },
-    {
-      "id": "city-2-hood-1",
-      "level": 1,
-      "parent": "city-2",
-      "label": "SAC, DIE, DRAIN",
-      "fallback": "Ramp",
-      "cx": -0.38786,
-      "cy": -0.45419,
-      "count": 5,
-      "cards": [
-        "Blood Artist",
-        "Pawn of Ulamog",
-        "Reassembling Skeleton",
-        "Viscera Seer",
-        "Zulaport Cutthroat"
-      ],
-      "verified_count": 0,
-      "gloss": "The whole loop in five cards: an outlet, two bodies that return, two drains."
-    },
-    {
-      "id": "city-3",
-      "level": 0,
-      "label": "FUEL AND FIXING",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.60286,
-      "cy": -0.16312,
-      "count": 26,
+      "cx": -0.55403,
+      "cy": 0.18854,
+      "count": 27,
       "cards": [
         "Abstergo Entertainment",
         "Arcane Signet",
         "Ashnod's Altar",
+        "Birds of Paradise",
         "Chrome Mox",
         "City of Brass",
         "Command Tower",
@@ -1590,17 +1463,34 @@
         "The Mycosynth Gardens",
         "Tireless Provisioner"
       ],
-      "verified_count": 0,
-      "gloss": "Puts Meren down early and keeps colours honest; the altars turn every death into the mana for the next one."
+      "verified_count": 0
     },
     {
-      "id": "city-3-hood-0",
+      "id": "city-1-hood-0",
       "level": 1,
-      "parent": "city-3",
-      "label": "THE RAINBOW LANDS",
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Ramp",
+      "cx": -0.55065,
+      "cy": 0.3818,
+      "count": 5,
+      "cards": [
+        "Arcane Signet",
+        "Chrome Mox",
+        "Phyrexian Altar",
+        "Pitiless Plunderer",
+        "Tireless Provisioner"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-1-hood-1",
+      "level": 1,
+      "parent": "city-1",
+      "label": null,
       "fallback": "Mana",
-      "cx": 0.62349,
-      "cy": -0.08734,
+      "cx": -0.5719,
+      "cy": 0.14358,
       "count": 19,
       "cards": [
         "Abstergo Entertainment",
@@ -1623,128 +1513,224 @@
         "The Grey Havens",
         "The Mycosynth Gardens"
       ],
-      "verified_count": 0,
-      "gloss": "Lands that make any colour, most of them for a toll: a tax, life, or a creature."
+      "verified_count": 0
     },
     {
-      "id": "city-3-hood-1",
+      "id": "city-1-hood-2",
       "level": 1,
-      "parent": "city-3",
-      "label": "TREASURE MAKERS",
-      "fallback": "Ramp III",
-      "cx": 0.49069,
-      "cy": -0.49544,
-      "count": 2,
-      "cards": [
-        "Pitiless Plunderer",
-        "Tireless Provisioner"
-      ],
-      "verified_count": 0,
-      "gloss": null
-    },
-    {
-      "id": "city-3-hood-2",
-      "level": 1,
-      "parent": "city-3",
-      "label": "DOUBLE COLOURLESS",
-      "fallback": "Ramp IIII",
-      "cx": 0.5759,
-      "cy": -0.1427,
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Ramp II",
+      "cx": -0.34325,
+      "cy": 0.41944,
       "count": 2,
       "cards": [
         "Ashnod's Altar",
         "Sol Ring"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
     },
     {
-      "id": "city-3-hood-3",
+      "id": "city-1-hood-3",
+      "level": 1,
+      "parent": "city-1",
+      "label": null,
+      "fallback": "Bodies III",
+      "cx": -0.65312,
+      "cy": -0.3854,
+      "count": 1,
+      "cards": [
+        "Birds of Paradise"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-2",
+      "level": 0,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.57865,
+      "cy": 0.31345,
+      "count": 10,
+      "cards": [
+        "Carrion Feeder",
+        "Fiend Artisan",
+        "Glissa Sunslayer",
+        "Golgari Grave-Troll",
+        "Grave-Shell Scarab",
+        "Grist, Voracious Larva // Grist, the Plague Swarm",
+        "Junji, the Midnight Sky",
+        "Postmortem Professor",
+        "Sheoldred // The True Scriptures",
+        "Woe Strider"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-2-hood-0",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Recursion",
+      "cx": 0.62432,
+      "cy": 0.31231,
+      "count": 6,
+      "cards": [
+        "Carrion Feeder",
+        "Fiend Artisan",
+        "Golgari Grave-Troll",
+        "Grave-Shell Scarab",
+        "Postmortem Professor",
+        "Woe Strider"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-2-hood-1",
+      "level": 1,
+      "parent": "city-2",
+      "label": null,
+      "fallback": "Card Flow",
+      "cx": 0.51014,
+      "cy": 0.31516,
+      "count": 4,
+      "cards": [
+        "Glissa Sunslayer",
+        "Grist, Voracious Larva // Grist, the Plague Swarm",
+        "Junji, the Midnight Sky",
+        "Sheoldred // The True Scriptures"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-3",
+      "level": 0,
+      "label": null,
+      "fallback": "Bodies",
+      "cx": 0.43178,
+      "cy": 0.53068,
+      "count": 13,
+      "cards": [
+        "Animate Dead",
+        "Dawnhand Eulogist",
+        "Grave Titan",
+        "Graveshifter",
+        "Noxious Gearhulk",
+        "Pawn of Ulamog",
+        "Ravenous Chupacabra",
+        "Reassembling Skeleton",
+        "Requiting Hex",
+        "Sedgemoor Witch",
+        "Vile Entomber",
+        "Viscera Seer",
+        "Zulaport Cutthroat"
+      ],
+      "verified_count": 0
+    },
+    {
+      "id": "city-3-hood-0",
       "level": 1,
       "parent": "city-3",
-      "label": "COLOURED ROCKS",
-      "fallback": "Ramp II",
-      "cx": 0.56492,
-      "cy": -0.43513,
-      "count": 3,
+      "label": null,
+      "fallback": "Interaction",
+      "cx": 0.37288,
+      "cy": 0.58068,
+      "count": 6,
       "cards": [
-        "Arcane Signet",
-        "Chrome Mox",
-        "Phyrexian Altar"
+        "Animate Dead",
+        "Pawn of Ulamog",
+        "Ravenous Chupacabra",
+        "Reassembling Skeleton",
+        "Viscera Seer",
+        "Zulaport Cutthroat"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
+    },
+    {
+      "id": "city-3-hood-1",
+      "level": 1,
+      "parent": "city-3",
+      "label": null,
+      "fallback": "Bodies",
+      "cx": 0.48226,
+      "cy": 0.48782,
+      "count": 7,
+      "cards": [
+        "Dawnhand Eulogist",
+        "Grave Titan",
+        "Graveshifter",
+        "Noxious Gearhulk",
+        "Requiting Hex",
+        "Sedgemoor Witch",
+        "Vile Entomber"
+      ],
+      "verified_count": 0
     },
     {
       "id": "city-4",
       "level": 0,
-      "label": "THE ENGINE ROOM",
-      "fallback": "Finishers",
-      "cx": -0.19308,
-      "cy": 0.35956,
-      "count": 11,
+      "label": null,
+      "fallback": "Ramp",
+      "cx": 0.02423,
+      "cy": -0.27064,
+      "count": 10,
       "cards": [
         "Deathrite Shaman",
+        "Elvish Mystic",
         "Eternal Witness",
         "Fauna Shaman",
-        "Grist, the Hunger Tide",
         "Izoni, Thousand-Eyed",
-        "Liliana, Death Wielder",
+        "Llanowar Elves",
         "Meren of Clan Nel Toth",
-        "Professor Dellian Fel",
-        "Survival of the Fittest",
-        "Titania, Protector of Argoth",
+        "Sakura-Tribe Elder",
+        "Skull Prophet",
         "Trystan, Callous Cultivator // Trystan, Penitent Culler"
       ],
-      "verified_count": 0,
-      "gloss": "The permanents you lean on every turn: Meren, the planeswalkers and the repeatable tutors that turn a graveyard into next turn."
+      "verified_count": 0
     },
     {
       "id": "city-4-hood-0",
       "level": 1,
       "parent": "city-4",
-      "label": "WALKERS AND SEEKERS",
-      "fallback": "Interaction II",
-      "cx": -0.30613,
-      "cy": 0.73644,
-      "count": 5,
-      "cards": [
-        "Fauna Shaman",
-        "Grist, the Hunger Tide",
-        "Liliana, Death Wielder",
-        "Professor Dellian Fel",
-        "Survival of the Fittest"
-      ],
-      "verified_count": 0,
-      "gloss": null
-    },
-    {
-      "id": "city-4-hood-1",
-      "level": 1,
-      "parent": "city-4",
-      "label": "THE GRAVEDIGGERS",
-      "fallback": "Finishers",
-      "cx": -0.09887,
-      "cy": 0.0455,
+      "label": null,
+      "fallback": "Value",
+      "cx": 0.18313,
+      "cy": -0.03827,
       "count": 6,
       "cards": [
         "Deathrite Shaman",
         "Eternal Witness",
         "Izoni, Thousand-Eyed",
         "Meren of Clan Nel Toth",
-        "Titania, Protector of Argoth",
+        "Skull Prophet",
         "Trystan, Callous Cultivator // Trystan, Penitent Culler"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
+    },
+    {
+      "id": "city-4-hood-1",
+      "level": 1,
+      "parent": "city-4",
+      "label": null,
+      "fallback": "Bodies II",
+      "cx": -0.21412,
+      "cy": -0.61919,
+      "count": 4,
+      "cards": [
+        "Elvish Mystic",
+        "Fauna Shaman",
+        "Llanowar Elves",
+        "Sakura-Tribe Elder"
+      ],
+      "verified_count": 0
     },
     {
       "id": "city-5",
       "level": 0,
-      "label": "HOME SOIL",
+      "label": null,
       "fallback": "Mana II",
-      "cx": 0.34384,
-      "cy": 0.27935,
+      "cx": -0.2905,
+      "cy": -0.17286,
       "count": 17,
       "cards": [
         "Bayou",
@@ -1765,17 +1751,16 @@
         "Wastewood Verge",
         "Woodland Cemetery"
       ],
-      "verified_count": 0,
-      "gloss": "The two-colour manabase: duals that make black and green, plus utility lands that sacrifice, cycle or answer."
+      "verified_count": 0
     },
     {
       "id": "city-5-hood-0",
       "level": 1,
       "parent": "city-5",
-      "label": "THE LATE ARRIVALS",
+      "label": null,
       "fallback": "Mana II",
-      "cx": 0.42121,
-      "cy": 0.30199,
+      "cx": -0.38507,
+      "cy": -0.20523,
       "count": 7,
       "cards": [
         "Blooming Marsh",
@@ -1786,17 +1771,16 @@
         "Thriving Grove",
         "Woodland Cemetery"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
     },
     {
       "id": "city-5-hood-1",
       "level": 1,
       "parent": "city-5",
-      "label": "SWAMP-FORESTS",
+      "label": null,
       "fallback": "Mana IIII",
-      "cx": 0.28872,
-      "cy": 0.36707,
+      "cx": -0.21078,
+      "cy": -0.24028,
       "count": 4,
       "cards": [
         "Bayou",
@@ -1804,17 +1788,16 @@
         "Overgrown Tomb",
         "Vernal Fen"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
     },
     {
       "id": "city-5-hood-2",
       "level": 1,
       "parent": "city-5",
-      "label": "ON-TIME DUALS",
+      "label": null,
       "fallback": "Mana III",
-      "cx": 0.29033,
-      "cy": 0.19446,
+      "cx": -0.23331,
+      "cy": -0.09017,
       "count": 6,
       "cards": [
         "Darkbore Pathway // Slitherbore Pathway",
@@ -1824,45 +1807,41 @@
         "Twilight Mire",
         "Wastewood Verge"
       ],
-      "verified_count": 0,
-      "gloss": null
+      "verified_count": 0
     },
     {
       "id": "city-6",
       "level": 0,
-      "label": "DEATH PAYS",
-      "fallback": "Value",
-      "cx": -0.30803,
-      "cy": 0.05228,
-      "count": 7,
+      "label": null,
+      "fallback": "Finishers",
+      "cx": 0.55983,
+      "cy": -0.46711,
+      "count": 6,
       "cards": [
-        "Boggart Mischief",
-        "Deadbridge Chant",
-        "Diabolic Servitude",
         "Grave Pact",
-        "Grave Venerations",
-        "Phyrexian Reclamation",
+        "Grist, the Hunger Tide",
+        "Liliana, Death Wielder",
+        "Professor Dellian Fel",
+        "Survival of the Fittest",
         "The Meathook Massacre"
       ],
-      "verified_count": 0,
-      "gloss": "Enchantments that make each of your creatures' deaths worth something: the table loses life, loses a creature, or you get it back."
+      "verified_count": 0
     },
     {
       "id": "city-6-hood-0",
       "level": 1,
       "parent": "city-6",
       "label": null,
-      "fallback": "Value",
-      "cx": -0.30803,
-      "cy": 0.05228,
-      "count": 7,
+      "fallback": "Finishers",
+      "cx": 0.55983,
+      "cy": -0.46711,
+      "count": 6,
       "cards": [
-        "Boggart Mischief",
-        "Deadbridge Chant",
-        "Diabolic Servitude",
         "Grave Pact",
-        "Grave Venerations",
-        "Phyrexian Reclamation",
+        "Grist, the Hunger Tide",
+        "Liliana, Death Wielder",
+        "Professor Dellian Fel",
+        "Survival of the Fittest",
         "The Meathook Massacre"
       ],
       "verified_count": 0
@@ -1871,683 +1850,713 @@
   "edges": [
     {
       "a": 0,
-      "b": 55,
-      "d": 0.1884
-    },
-    {
-      "a": 0,
-      "b": 57,
+      "b": 90,
       "d": 0.3225
     },
     {
-      "a": 1,
-      "b": 16,
-      "d": 0.3611
+      "a": 0,
+      "b": 50,
+      "d": 0.326
     },
     {
       "a": 1,
-      "b": 49,
-      "d": 0.4826
+      "b": 86,
+      "d": 0.0209
+    },
+    {
+      "a": 1,
+      "b": 78,
+      "d": 0.0259
     },
     {
       "a": 2,
-      "b": 37,
+      "b": 68,
+      "d": 0.5517
+    },
+    {
+      "a": 2,
+      "b": 70,
+      "d": 0.5877
+    },
+    {
+      "a": 3,
+      "b": 65,
       "d": 0.0248
     },
     {
-      "a": 2,
-      "b": 83,
+      "a": 3,
+      "b": 58,
       "d": 0.1392
     },
     {
-      "a": 3,
-      "b": 48,
+      "a": 4,
+      "b": 77,
       "d": 0.0521
     },
     {
-      "a": 3,
-      "b": 88,
+      "a": 4,
+      "b": 78,
       "d": 0.385
     },
     {
-      "a": 4,
-      "b": 56,
+      "a": 5,
+      "b": 89,
       "d": 0.2187
     },
     {
-      "a": 4,
-      "b": 19,
+      "a": 5,
+      "b": 26,
       "d": 0.2688
     },
     {
-      "a": 5,
-      "b": 56,
-      "d": 0.1952
-    },
-    {
-      "a": 4,
-      "b": 5,
-      "d": 0.32
+      "a": 6,
+      "b": 93,
+      "d": 0.0039
     },
     {
       "a": 6,
       "b": 63,
-      "d": 0.1751
-    },
-    {
-      "a": 6,
-      "b": 36,
-      "d": 0.2399
+      "d": 0.018
     },
     {
       "a": 7,
-      "b": 27,
-      "d": 0.3279
+      "b": 89,
+      "d": 0.1952
     },
     {
-      "a": 7,
-      "b": 16,
-      "d": 0.3411
-    },
-    {
-      "a": 8,
-      "b": 15,
-      "d": 0.1424
+      "a": 5,
+      "b": 7,
+      "d": 0.32
     },
     {
       "a": 8,
-      "b": 58,
-      "d": 0.1658
+      "b": 65,
+      "d": 0.3566
+    },
+    {
+      "a": 3,
+      "b": 8,
+      "d": 0.3767
     },
     {
       "a": 9,
-      "b": 40,
-      "d": 0.1175
+      "b": 98,
+      "d": 0.0026
     },
     {
       "a": 9,
-      "b": 25,
-      "d": 0.1439
-    },
-    {
-      "a": 2,
-      "b": 10,
-      "d": 0.1833
+      "b": 13,
+      "d": 0.065
     },
     {
       "a": 10,
-      "b": 37,
+      "b": 96,
+      "d": 0.2002
+    },
+    {
+      "a": 10,
+      "b": 19,
+      "d": 0.2172
+    },
+    {
+      "a": 11,
+      "b": 28,
+      "d": 0.0708
+    },
+    {
+      "a": 11,
+      "b": 23,
+      "d": 0.1424
+    },
+    {
+      "a": 12,
+      "b": 68,
+      "d": 0.1175
+    },
+    {
+      "a": 12,
+      "b": 39,
+      "d": 0.1439
+    },
+    {
+      "a": 13,
+      "b": 98,
+      "d": 0.0743
+    },
+    {
+      "a": 14,
+      "b": 26,
+      "d": 0.3928
+    },
+    {
+      "a": 14,
+      "b": 24,
+      "d": 0.406
+    },
+    {
+      "a": 3,
+      "b": 15,
+      "d": 0.1833
+    },
+    {
+      "a": 15,
+      "b": 65,
       "d": 0.1882
     },
     {
-      "a": 11,
-      "b": 29,
-      "d": 0.333
+      "a": 16,
+      "b": 35,
+      "d": 0.03
     },
     {
-      "a": 11,
-      "b": 45,
-      "d": 0.3556
+      "a": 16,
+      "b": 82,
+      "d": 0.1044
     },
     {
-      "a": 12,
-      "b": 27,
-      "d": 0.0793
-    },
-    {
-      "a": 12,
-      "b": 26,
-      "d": 0.2142
-    },
-    {
-      "a": 13,
-      "b": 22,
-      "d": 0.3073
-    },
-    {
-      "a": 13,
-      "b": 43,
-      "d": 0.4412
-    },
-    {
-      "a": 14,
-      "b": 33,
-      "d": 0.1344
-    },
-    {
-      "a": 14,
-      "b": 21,
-      "d": 0.2467
-    },
-    {
-      "a": 15,
+      "a": 17,
       "b": 58,
-      "d": 0.1031
-    },
-    {
-      "a": 16,
-      "b": 27,
-      "d": 0.1591
-    },
-    {
-      "a": 16,
-      "b": 26,
-      "d": 0.2435
+      "d": 0.0418
     },
     {
       "a": 17,
-      "b": 43,
-      "d": 0.2118
-    },
-    {
-      "a": 17,
-      "b": 22,
-      "d": 0.3338
-    },
-    {
-      "a": 8,
-      "b": 18,
-      "d": 0.2321
+      "b": 30,
+      "d": 0.0438
     },
     {
       "a": 18,
-      "b": 59,
-      "d": 0.4007
+      "b": 48,
+      "d": 0.0016
     },
     {
-      "a": 15,
-      "b": 19,
-      "d": 0.2418
+      "a": 18,
+      "b": 84,
+      "d": 0.0392
     },
     {
-      "a": 14,
-      "b": 20,
-      "d": 0.3401
+      "a": 19,
+      "b": 96,
+      "d": 0.0113
+    },
+    {
+      "a": 19,
+      "b": 91,
+      "d": 0.0263
     },
     {
       "a": 20,
-      "b": 21,
-      "d": 0.3768
+      "b": 94,
+      "d": 0.1583
+    },
+    {
+      "a": 20,
+      "b": 45,
+      "d": 0.333
     },
     {
       "a": 21,
-      "b": 51,
-      "d": 0.3634
+      "b": 32,
+      "d": 0.3073
+    },
+    {
+      "a": 21,
+      "b": 72,
+      "d": 0.4412
+    },
+    {
+      "a": 22,
+      "b": 76,
+      "d": 0.0509
     },
     {
       "a": 22,
       "b": 50,
-      "d": 0.2099
-    },
-    {
-      "a": 4,
-      "b": 22,
-      "d": 0.2996
-    },
-    {
-      "a": 12,
-      "b": 23,
-      "d": 0.5657
+      "d": 0.1344
     },
     {
       "a": 23,
-      "b": 95,
-      "d": 0.5663
+      "b": 28,
+      "d": 0.0789
+    },
+    {
+      "a": 23,
+      "b": 92,
+      "d": 0.1031
     },
     {
       "a": 24,
-      "b": 47,
-      "d": 0.2518
+      "b": 28,
+      "d": 0.1706
     },
     {
-      "a": 24,
-      "b": 46,
-      "d": 0.3254
+      "a": 11,
+      "b": 24,
+      "d": 0.1885
+    },
+    {
+      "a": 11,
+      "b": 25,
+      "d": 0.2321
     },
     {
       "a": 25,
       "b": 28,
-      "d": 0.1809
+      "d": 0.3292
     },
     {
-      "a": 26,
-      "b": 53,
-      "d": 0.1145
-    },
-    {
-      "a": 26,
-      "b": 27,
-      "d": 0.117
-    },
-    {
-      "a": 28,
-      "b": 61,
-      "d": 0.2259
-    },
-    {
-      "a": 29,
-      "b": 45,
-      "d": 0.1574
-    },
-    {
-      "a": 30,
-      "b": 62,
-      "d": 0.2839
+      "a": 23,
+      "b": 26,
+      "d": 0.2418
     },
     {
       "a": 24,
-      "b": 30,
-      "d": 0.3589
-    },
-    {
-      "a": 31,
-      "b": 41,
-      "d": 0.0849
-    },
-    {
-      "a": 31,
-      "b": 34,
-      "d": 0.1337
-    },
-    {
-      "a": 32,
-      "b": 44,
-      "d": 0.3307
-    },
-    {
-      "a": 32,
-      "b": 54,
-      "d": 0.4356
-    },
-    {
-      "a": 33,
-      "b": 57,
-      "d": 0.2277
-    },
-    {
-      "a": 34,
-      "b": 41,
-      "d": 0.0662
-    },
-    {
-      "a": 35,
-      "b": 52,
-      "d": 0.2736
-    },
-    {
-      "a": 35,
-      "b": 44,
-      "d": 0.5732
-    },
-    {
-      "a": 36,
-      "b": 63,
-      "d": 0.3288
-    },
-    {
-      "a": 37,
-      "b": 83,
-      "d": 0.1854
-    },
-    {
-      "a": 26,
-      "b": 38,
-      "d": 0.2454
+      "b": 26,
+      "d": 0.2571
     },
     {
       "a": 27,
-      "b": 38,
-      "d": 0.2729
+      "b": 57,
+      "d": 0.0088
     },
     {
-      "a": 39,
-      "b": 54,
-      "d": 0.2759
+      "a": 27,
+      "b": 73,
+      "d": 0.1955
     },
     {
-      "a": 10,
-      "b": 39,
-      "d": 0.3185
+      "a": 28,
+      "b": 92,
+      "d": 0.049
     },
     {
-      "a": 40,
-      "b": 61,
-      "d": 0.1742
+      "a": 22,
+      "b": 29,
+      "d": 0.3401
     },
     {
-      "a": 42,
-      "b": 60,
-      "d": 0.3361
-    },
-    {
-      "a": 14,
-      "b": 42,
-      "d": 0.3482
-    },
-    {
-      "a": 43,
-      "b": 46,
-      "d": 0.3891
-    },
-    {
-      "a": 44,
-      "b": 61,
-      "d": 0.3208
-    },
-    {
-      "a": 45,
-      "b": 46,
-      "d": 0.3706
-    },
-    {
-      "a": 46,
-      "b": 47,
-      "d": 0.446
-    },
-    {
-      "a": 48,
-      "b": 88,
-      "d": 0.2302
-    },
-    {
-      "a": 40,
-      "b": 49,
-      "d": 0.3949
-    },
-    {
-      "a": 46,
-      "b": 49,
-      "d": 0.415
-    },
-    {
-      "a": 50,
-      "b": 59,
-      "d": 0.3141
-    },
-    {
-      "a": 41,
-      "b": 51,
-      "d": 0.2768
+      "a": 29,
+      "b": 31,
+      "d": 0.3768
     },
     {
       "a": 30,
-      "b": 52,
-      "d": 0.3875
-    },
-    {
-      "a": 27,
-      "b": 53,
-      "d": 0.1585
-    },
-    {
-      "a": 54,
-      "b": 70,
-      "d": 0.2638
-    },
-    {
-      "a": 55,
-      "b": 57,
-      "d": 0.4754
-    },
-    {
-      "a": 6,
-      "b": 60,
-      "d": 0.4278
-    },
-    {
-      "a": 25,
-      "b": 62,
-      "d": 0.1894
-    },
-    {
-      "a": 64,
-      "b": 94,
-      "d": 0.0209
-    },
-    {
-      "a": 64,
-      "b": 88,
-      "d": 0.0259
-    },
-    {
-      "a": 65,
-      "b": 97,
-      "d": 0.0039
-    },
-    {
-      "a": 65,
-      "b": 86,
-      "d": 0.018
-    },
-    {
-      "a": 66,
-      "b": 99,
-      "d": 0.0026
-    },
-    {
-      "a": 66,
-      "b": 68,
-      "d": 0.065
-    },
-    {
-      "a": 67,
-      "b": 98,
-      "d": 0.2002
-    },
-    {
-      "a": 67,
-      "b": 72,
-      "d": 0.2172
-    },
-    {
-      "a": 68,
-      "b": 99,
-      "d": 0.0743
-    },
-    {
-      "a": 69,
-      "b": 75,
-      "d": 0.03
-    },
-    {
-      "a": 69,
-      "b": 91,
-      "d": 0.1044
-    },
-    {
-      "a": 70,
-      "b": 83,
-      "d": 0.0418
-    },
-    {
-      "a": 70,
-      "b": 73,
-      "d": 0.0438
-    },
-    {
-      "a": 71,
-      "b": 80,
-      "d": 0.0016
-    },
-    {
-      "a": 71,
-      "b": 93,
-      "d": 0.0392
-    },
-    {
-      "a": 72,
-      "b": 98,
-      "d": 0.0113
-    },
-    {
-      "a": 72,
-      "b": 96,
-      "d": 0.0263
-    },
-    {
-      "a": 73,
-      "b": 83,
+      "b": 58,
       "d": 0.0079
     },
     {
-      "a": 65,
-      "b": 74,
+      "a": 31,
+      "b": 73,
+      "d": 0.1464
+    },
+    {
+      "a": 27,
+      "b": 31,
+      "d": 0.2448
+    },
+    {
+      "a": 5,
+      "b": 32,
+      "d": 0.2996
+    },
+    {
+      "a": 6,
+      "b": 33,
       "d": 0.048
     },
     {
-      "a": 74,
-      "b": 97,
+      "a": 33,
+      "b": 93,
       "d": 0.0589
     },
     {
-      "a": 70,
-      "b": 75,
+      "a": 34,
+      "b": 44,
+      "d": 0.2191
+    },
+    {
+      "a": 22,
+      "b": 34,
+      "d": 0.2484
+    },
+    {
+      "a": 17,
+      "b": 35,
       "d": 0.0627
     },
     {
-      "a": 76,
-      "b": 77,
+      "a": 36,
+      "b": 37,
       "d": 0.1119
     },
     {
-      "a": 76,
-      "b": 83,
+      "a": 36,
+      "b": 58,
       "d": 0.1193
     },
     {
-      "a": 77,
-      "b": 79,
+      "a": 37,
+      "b": 41,
       "d": 0.1076
     },
     {
-      "a": 78,
-      "b": 81,
+      "a": 38,
+      "b": 75,
+      "d": 0.1292
+    },
+    {
+      "a": 38,
+      "b": 74,
+      "d": 0.3254
+    },
+    {
+      "a": 39,
+      "b": 44,
+      "d": 0.1809
+    },
+    {
+      "a": 40,
+      "b": 53,
       "d": 0.0706
     },
     {
-      "a": 78,
-      "b": 84,
+      "a": 40,
+      "b": 61,
       "d": 0.1774
     },
     {
-      "a": 79,
-      "b": 85,
+      "a": 41,
+      "b": 62,
       "d": 0.1201
     },
     {
-      "a": 80,
-      "b": 93,
+      "a": 42,
+      "b": 85,
+      "d": 0.1145
+    },
+    {
+      "a": 11,
+      "b": 42,
+      "d": 0.4971
+    },
+    {
+      "a": 43,
+      "b": 60,
+      "d": 0.1374
+    },
+    {
+      "a": 43,
+      "b": 94,
+      "d": 0.176
+    },
+    {
+      "a": 45,
+      "b": 94,
+      "d": 0.3213
+    },
+    {
+      "a": 46,
+      "b": 75,
+      "d": 0.2135
+    },
+    {
+      "a": 38,
+      "b": 46,
+      "d": 0.3589
+    },
+    {
+      "a": 47,
+      "b": 69,
+      "d": 0.0849
+    },
+    {
+      "a": 47,
+      "b": 56,
+      "d": 0.1337
+    },
+    {
+      "a": 48,
+      "b": 84,
       "d": 0.0402
     },
     {
-      "a": 81,
-      "b": 98,
+      "a": 49,
+      "b": 88,
+      "d": 0.4356
+    },
+    {
+      "a": 36,
+      "b": 49,
+      "d": 0.5372
+    },
+    {
+      "a": 50,
+      "b": 76,
+      "d": 0.167
+    },
+    {
+      "a": 51,
+      "b": 75,
+      "d": 0.3509
+    },
+    {
+      "a": 38,
+      "b": 51,
+      "d": 0.394
+    },
+    {
+      "a": 39,
+      "b": 52,
+      "d": 0.5236
+    },
+    {
+      "a": 43,
+      "b": 52,
+      "d": 0.5549
+    },
+    {
+      "a": 53,
+      "b": 96,
       "d": 0.2502
     },
     {
-      "a": 82,
-      "b": 92,
+      "a": 54,
+      "b": 59,
+      "d": 0.0482
+    },
+    {
+      "a": 24,
+      "b": 54,
+      "d": 0.3469
+    },
+    {
+      "a": 55,
+      "b": 83,
       "d": 0.0218
     },
     {
-      "a": 82,
-      "b": 94,
+      "a": 55,
+      "b": 86,
       "d": 0.0276
     },
     {
-      "a": 84,
-      "b": 98,
+      "a": 56,
+      "b": 69,
+      "d": 0.0662
+    },
+    {
+      "a": 57,
+      "b": 73,
+      "d": 0.2138
+    },
+    {
+      "a": 24,
+      "b": 59,
+      "d": 0.2801
+    },
+    {
+      "a": 60,
+      "b": 94,
+      "d": 0.2006
+    },
+    {
+      "a": 61,
+      "b": 96,
       "d": 0.0538
     },
     {
-      "a": 72,
-      "b": 84,
+      "a": 19,
+      "b": 61,
       "d": 0.0607
     },
     {
-      "a": 85,
-      "b": 89,
+      "a": 62,
+      "b": 80,
       "d": 0.0237
     },
     {
-      "a": 85,
-      "b": 92,
+      "a": 62,
+      "b": 83,
       "d": 0.0384
     },
     {
-      "a": 86,
-      "b": 97,
+      "a": 63,
+      "b": 93,
       "d": 0.0182
     },
     {
-      "a": 87,
-      "b": 96,
+      "a": 64,
+      "b": 99,
+      "d": 0.3288
+    },
+    {
+      "a": 0,
+      "b": 64,
+      "d": 0.4397
+    },
+    {
+      "a": 58,
+      "b": 65,
+      "d": 0.1854
+    },
+    {
+      "a": 66,
+      "b": 91,
       "d": 0.0857
     },
     {
-      "a": 87,
-      "b": 90,
+      "a": 66,
+      "b": 81,
       "d": 0.0895
     },
     {
-      "a": 88,
-      "b": 94,
-      "d": 0.0075
+      "a": 67,
+      "b": 88,
+      "d": 0.2759
     },
     {
-      "a": 88,
-      "b": 92,
-      "d": 0.0094
-    },
-    {
-      "a": 82,
-      "b": 89,
-      "d": 0.0501
-    },
-    {
-      "a": 90,
-      "b": 96,
-      "d": 0.0187
-    },
-    {
-      "a": 72,
-      "b": 90,
-      "d": 0.038
-    },
-    {
-      "a": 91,
-      "b": 93,
-      "d": 0.0598
-    },
-    {
-      "a": 71,
-      "b": 91,
-      "d": 0.0762
-    },
-    {
-      "a": 92,
-      "b": 94,
-      "d": 0.0121
+      "a": 15,
+      "b": 67,
+      "d": 0.3185
     },
     {
       "a": 68,
+      "b": 97,
+      "d": 0.1742
+    },
+    {
+      "a": 70,
+      "b": 99,
+      "d": 0.4306
+    },
+    {
+      "a": 68,
+      "b": 70,
+      "d": 0.4391
+    },
+    {
+      "a": 71,
       "b": 95,
-      "d": 0.1171
+      "d": 0.3361
+    },
+    {
+      "a": 71,
+      "b": 76,
+      "d": 0.3462
+    },
+    {
+      "a": 72,
+      "b": 74,
+      "d": 0.3891
+    },
+    {
+      "a": 74,
+      "b": 75,
+      "d": 0.2702
     },
     {
       "a": 77,
-      "b": 95,
+      "b": 78,
+      "d": 0.2302
+    },
+    {
+      "a": 78,
+      "b": 86,
+      "d": 0.0075
+    },
+    {
+      "a": 78,
+      "b": 83,
+      "d": 0.0094
+    },
+    {
+      "a": 69,
+      "b": 79,
+      "d": 0.2768
+    },
+    {
+      "a": 31,
+      "b": 79,
+      "d": 0.3634
+    },
+    {
+      "a": 55,
+      "b": 80,
+      "d": 0.0501
+    },
+    {
+      "a": 81,
+      "b": 91,
+      "d": 0.0187
+    },
+    {
+      "a": 19,
+      "b": 81,
+      "d": 0.038
+    },
+    {
+      "a": 82,
+      "b": 84,
+      "d": 0.0598
+    },
+    {
+      "a": 18,
+      "b": 82,
+      "d": 0.0762
+    },
+    {
+      "a": 83,
+      "b": 86,
+      "d": 0.0121
+    },
+    {
+      "a": 56,
+      "b": 85,
+      "d": 0.3762
+    },
+    {
+      "a": 13,
+      "b": 87,
+      "d": 0.1171
+    },
+    {
+      "a": 37,
+      "b": 87,
       "d": 0.1642
     },
     {
-      "a": 90,
-      "b": 98,
+      "a": 17,
+      "b": 88,
+      "d": 0.2638
+    },
+    {
+      "a": 50,
+      "b": 90,
+      "d": 0.2277
+    },
+    {
+      "a": 44,
+      "b": 95,
+      "d": 0.4414
+    },
+    {
+      "a": 81,
+      "b": 96,
       "d": 0.0464
     },
     {
-      "a": 98,
-      "b": 99,
+      "a": 44,
+      "b": 97,
+      "d": 0.2259
+    },
+    {
+      "a": 96,
+      "b": 98,
       "d": 0.0731
+    },
+    {
+      "a": 71,
+      "b": 99,
+      "d": 0.4163
     }
   ]
 }
