@@ -952,22 +952,17 @@
       "has_cards": true,
       "verdict": {
         "state": "no objective",
-        "rose": 7,
-        "fell": 7,
-        "no_call": 2
+        "rose": 5,
+        "fell": 8,
+        "no_call": 3
       },
       "measured": true,
       "blind_spots": [
         "Champion's Helm",
-        "Esper Sentinel",
         "Incendiary Command",
-        "Leitmotif Composer",
         "Lightning Greaves",
-        "Mask of Memory",
         "Psychosis Crawler",
-        "Shang-Chi and the Ten Rings",
         "Slip Out the Back",
-        "Sokka, Lateral Strategist",
         "Swiftfoot Boots",
         "Sword of Fire and Ice",
         "Willie Lumpkin, Postman"
@@ -977,8 +972,6 @@
         "rose": [
           "stall, 2 in a row",
           "missed drop by T5",
-          "extra cards by T8",
-          "interaction affordable @T6",
           "hand can act by T3",
           "kept hand passes the pilot's keep rule",
           "dead wheels in hand @T5"
@@ -989,55 +982,56 @@
           "damage @T10",
           "board power @T6",
           "killed by T6",
+          "extra cards by T8",
           "finisher wheel by T8",
           "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -58.051,
+            "delta": -70.9512,
             "ci95_diff": [
-              -64.6344,
-              -51.4676
+              -77.4329,
+              -64.4695
             ],
-            "mde": 9.4102,
+            "mde": 9.2649,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0006,
+            "delta": -0.0018,
             "ci95_diff": [
-              -0.002,
-              0.0008
+              -0.0033,
+              -0.0003
             ],
-            "mde": 0.0021,
+            "mde": 0.0022,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.2021,
+            "delta": -2.0251,
             "ci95_diff": [
-              -1.3385,
-              -1.0657
+              -2.1593,
+              -1.8909
             ],
-            "mde": 0.1949,
+            "mde": 0.1919,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.7606,
+            "delta": -0.6214,
             "ci95_diff": [
-              0.5305,
-              0.9907
+              -0.8525,
+              -0.3903
             ],
-            "mde": 0.3289,
-            "verdict": "better",
+            "mde": 0.3303,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }

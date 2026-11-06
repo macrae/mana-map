@@ -728,6 +728,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # dicts are shared across games, so the state lives here, never on them.
     equipped_engines = set()
     tenth_counter_fires = []      # payoffs whose tenth counter landed this settlement
+    # Equipment with stats cast and on the battlefield, and what each is attached to: the id of
+    # a commander's combat profile, or None for "any attacker" (a trigger-only Equipment with no
+    # commander out). Per game, like `equipped_engines`.
+    equipment_out = []
+    equip_on = {}
+    attach_used = set()           # Embercleave's free attach, spent once
+    _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
     extra_combat_costs = []       # Aggravated Assault-style, buy each time
     opponent_life = GOLDFISH_OPPONENT_LIFE
@@ -1339,7 +1346,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                  colors=(cdamage["source"]["colors"] if cdamage else ()),
                                  info={"name": None, "scales": cprof.get("power_scales"),
                                        "prowess": cprof.get("prowess"),
-                                       "vigilance": cprof.get("vigilance")})
+                                       "vigilance": cprof.get("vigilance"),
+                                       # WHICH COMMANDER this entry is, for the Equipment
+                                       # attached to it (2026-11-06). `name` stays None so
+                                       # no by-name lookup starts finding commanders.
+                                       "commander": id(cprof)})
                 _register_damage_scale(cprof)
                 if any((cprof["attack_mana"], cprof["attack_damage"],
                         cprof["attack_treasure"], cprof["attack_draw"],
@@ -3120,7 +3131,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # and no loop ever cast the card -- the class this predicate keeps relearning.
                 # Mirrored in `model_coverage.never_cast`.
                 if model_combat and any(c["combat"][k] for k in (
-                        "attack_draw", "attack_damage", "attack_mana", "attack_treasure")):
+                        "attack_draw", "attack_damage", "attack_mana", "attack_treasure",
+                        # and an Equipment cast for its stats (Champion's Helm, Embercleave)
+                        "equip_power", "equip_double_strike")):
                     return True
                 # A DISCARD OR DRAW PAYOFF WITH NO BODY -- Improbable Alliance is
                 # an enchantment that draws nothing and makes no mana -- is an
@@ -3345,6 +3358,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             "attack_mana", "attack_treasure", "attack_draw",
                             "attack_damage", "attack_token_bodies")):
                         combat_engines.append(cb_)
+                    if model_combat and cb_["equip_cost"] is not None:
+                        equipment_out.append(cb_)
 
             # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
             # same commit as the channel (the never-cast class, a ninth time): it
@@ -4115,11 +4130,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                                      damage_bonuses, combat=True)
                 return total
 
+            def _cmdr_of(i):
+                """The id of the commander's combat profile this entry IS, else None."""
+                _inf = battlefield[i][12] if len(battlefield[i]) > 12 else None
+                return _inf.get("commander") if _inf else None
+
             def _strikes(i):
                 """One attacker's strikes this combat. DOUBLE STRIKE DOES NOT STACK: its own, a
-                standing grant (Blade Historian), this turn's spell or one bought for it."""
+                standing grant (Blade Historian), this turn's spell, one bought for it, or an
+                Equipment on the commander (2026-11-06)."""
                 return 2 if (battlefield[i][3] > 1 or team_double_strike or turn_double_strike
-                             or i in _single_ds) else 1
+                             or i in _single_ds or _cmdr_of(i) in _eq_ds) else 1
 
             def _may_attack(entry):
                 """The attack gate (field 10): Defender and "can't attack" never;
@@ -4151,20 +4172,45 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                      if not tapped and _may_attack(battlefield[i])
                      and (haste or arrived < turn or i in _haste_idx
                           or (haste_grants and _granted(tl_, fl_, _tok)))]
+            # EQUIP, BEFORE THE SWING (2026-11-06). Sorcery speed, from what the main phase left,
+            # cheapest first; nothing here removes a creature, so an Equipment stays attached.
+            # THE PILOT'S PLAN ON A VOLTRON DECK: every Equipment goes on the first commander
+            # out (Shabraz before Brallin), and one with stats waits until a commander is. A
+            # trigger-only Equipment with no commander out takes any attacker. Embercleave
+            # attaches itself when it enters, once, free.
+            _cmdrs = [cp_ for cp_, t_ in ((commander_combat, commander_turn),
+                                          ((partner or {}).get("combat"), partner_turn))
+                      if cp_ and cp_["is_creature"] and t_ is not None]
+            _pending = {id(e): e for e in list(equipment_out) + [
+                e for e in combat_engines if e.get("equip_cost") is not None]}
+            for _eng in sorted((e for k, e in _pending.items() if k not in equipped_engines),
+                               key=lambda e: e["equip_cost"]):
+                _target = id(_cmdrs[0]) if _cmdrs else None
+                if _target is None and (_eng["equip_power"] or _eng["equip_double_strike"]
+                                        or not _able):
+                    continue
+                if not ((_eng["attach_on_enter"] and _target is not None
+                         and id(_eng) not in attach_used)
+                        or spend(_act_cost(_eng["equip_cost"]))):
+                    continue
+                attach_used.add(id(_eng))
+                equipped_engines.add(id(_eng))
+                equip_on[id(_eng)] = _target
+            # What the commanders carry, read off `equip_on` (an Equipment on "any attacker"
+            # adds no stats: only a trigger-only one goes there).
+            _eq_pow, _eq_ds = {}, set()
+            for _eng in _pending.values():
+                _t = equip_on.get(id(_eng))
+                if _t is None:
+                    continue
+                _eq_pow[_t] = _eq_pow.get(_t, 0) + _eng["equip_power"]
+                if _eng["equip_double_strike"]:
+                    _eq_ds.add(_t)
             _lbs = _lord_bonuses()
-            attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * _power_mult)
+            attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump
+                            + _eq_pow.get(_cmdr_of(i), 0)) * _power_mult)
                           * _strikes(i), battlefield[i][5])
                          for i in _able]
-            # EQUIP, ONCE, BEFORE THE FIRST SWING THAT HAS AN ATTACKER (2026-11-06). Sorcery
-            # speed, from what the main phase left; nothing here removes the creature, so it
-            # stays attached. Cheapest equip first.
-            if attackers:
-                for _eng in sorted((e for e in combat_engines
-                                    if e.get("equip_cost") is not None
-                                    and id(e) not in equipped_engines),
-                                   key=lambda e: e["equip_cost"]):
-                    if spend(_act_cost(_eng["equip_cost"])):
-                        equipped_engines.add(id(_eng))
             # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
             # (702.90b) and never touches the life total; a toxic attacker
             # deals its damage AND adds N counters on connecting, which with
@@ -4201,12 +4247,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     continue
                 # A STRIKE IS A DAMAGE INSTANCE, so Torbran's +2 on red Brallin is per strike and
                 # before the doublers (2026-11-04): this read 21 two swings late on his deck.
-                _strk = 2 if (_cp["double_strike"] or team_double_strike or turn_double_strike) else 1
+                _strk = 2 if (_cp["double_strike"] or team_double_strike or turn_double_strike
+                              or id(_cp) in _eq_ds) else 1
                 _b_c = bonus_for({"colors": (_src or {}).get("colors", ()), "deals": True},
                                  damage_bonuses, combat=True)
-                _hit = (((_cp["power"] + team_anthem + turn_pump
+                _hit = (((_cp["power"] + team_anthem + turn_pump + _eq_pow.get(id(_cp), 0)
                           + commander_counter_of.get(id(_ce), 0)) * _power_mult + _b_c)
                         * _strk * _combat_mult())
+                # HIS COUNTERS STRIKE TWICE TOO when the double strike is his own Equipment's
+                # (a team grant already doubled them in `_ctr_strikes` above).
+                if id(_cp) in _eq_ds and not (team_double_strike or turn_double_strike) \
+                        and attackers:
+                    swing += commander_counter_of.get(id(_ce), 0) * _power_mult
                 commander_damage_of[id(_cp)] = commander_damage_of.get(id(_cp), 0) + _hit
                 if commander_lethal_turn is None and commander_damage_of[id(_cp)] >= 21:
                     commander_lethal_turn = turn
@@ -4252,7 +4304,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                        and (hs_ or arr_ < turn or i in _haste_idx
                             or (haste_grants and _granted(tl_, fl_, tok_)))]
                 _lbs = _lord_bonuses()
-                _at = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * _power_mult)
+                _at = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump
+                          + _eq_pow.get(_cmdr_of(i), 0)) * _power_mult)
                         * _strikes(i), battlefield[i][5])
                        for i in _ab]
                 return _ab, _at
@@ -4307,6 +4360,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # AN EQUIPMENT ONLY TRIGGERS ON A CREATURE IT IS ATTACHED TO, and its equip
                     # was paid before the attack (2026-11-06). Sokka needs company.
                     if engine.get("equip_cost") is not None and id(engine) not in equipped_engines:
+                        continue
+                    # ...and only when the creature carrying it is one of this phase's attackers.
+                    _carrier = equip_on.get(id(engine))
+                    if _carrier is not None and not any(_cmdr_of(i) == _carrier for i in _able):
                         continue
                     if engine.get("attack_needs_company") \
                             and len(attackers) < 1 + engine["attack_needs_company"]:

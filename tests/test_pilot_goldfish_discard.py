@@ -119,7 +119,10 @@ def test_the_corpus_sweep_is_locked():
 # LOOTS +7 on 2026-11-04: `_MODE_LOOT_RE` reads a loot on a bullet. Read card by card: Sultai Charm,
 # Confusticate and Bebother, Very Cryptic Command, Izzet Charm, Treva's Charm, Prismari Command, Artistic Refusal.
 # DISC +3: Marauding Mako and Scrounging Skyray read at last (`that many` counters), and one from corpus drift.
-WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 63, 16, 28, 20)
+# LOOTS 63 -> 68 on 2026-11-06, on purpose: "draw four" joined `_SPELL_DRAW_RE`, and five
+# draw-four-then-discard spells now read as loots -- Control of the Court, Goblin Lore,
+# Practical Research, Prying Eyes, Thoughtflare. Breakthrough and Meditate stay unread.
+WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 68, 16, 28, 20)
 
 
 @requires_data

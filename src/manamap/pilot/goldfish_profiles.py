@@ -2744,6 +2744,17 @@ _COMBAT_DMG_RE = re.compile(
 #: deals combat damage" read as a free engine from the turn the artifact landed, with no
 #: creature carrying it and the equip never paid. The turn loop pays the equip once.
 _EQUIPPED_TRIGGER_RE = re.compile(r"whenever equipped creature (?:deals combat damage|attacks)", re.I)
+#: "Equipped creature gets +2/+2" -- power only, the goldfish's currency. A "for each"
+#: or "X" bonus is board-dependent and not read (the `\d` requires a printed number).
+#: A bonus that LOWERS toughness (Skullclamp's +1/-1) is not one a pilot hangs on a commander:
+#: Skullclamp is played for its death draw. Plus-plus only.
+_EQUIP_GETS_RE = re.compile(r"equipped creature gets \+(\d+)/\+\d+(?! for each)", re.I)
+_EQUIP_DOUBLE_STRIKE_RE = re.compile(
+    r"equipped creature (?:gets [^.]*? and )?has [^.]*?\bdouble strike\b", re.I)
+#: Embercleave: "When Embercleave enters, attach it to target creature you control."
+_ATTACH_ON_ENTER_RE = re.compile(
+    r"when (?:this equipment|[A-Z][\w' ,-]{2,30}) enters, attach it to target creature you control",
+    re.I)
 #: Mask of Memory: "you may draw two cards. If you do, discard a card."
 _ATTACK_DRAW_THEN_DISCARD_RE = re.compile(
     r"draw (?:\w+) cards?\.? (?:if you do, |then )?discard (a|one|two) cards?", re.I)
@@ -4209,6 +4220,10 @@ def combat_profile(card):
         "attack_discard": 0,
         "attack_needs_company": 0,
         "equip_cost": None,
+        # 2026-11-06: what an Equipment gives the creature it is attached to.
+        "equip_power": 0,
+        "equip_double_strike": False,
+        "attach_on_enter": False,
         "attack_damage": 0,
         "attack_token_power": 0,
         "attack_token_bodies": 0,
@@ -4408,9 +4423,7 @@ def combat_profile(card):
         if combat_trigger.groupdict().get("company"):
             profile["attack_needs_company"] = _NUMBER_WORDS.get(
                 combat_trigger.group("company").lower(), 1)
-        if "Equipment" in type_line and _EQUIPPED_TRIGGER_RE.search(text):
-            _eq = _EQUIP_COST_RE.search(text)
-            profile["equip_cost"] = _activation_mana(_eq.group(1)) if _eq else 0
+
         if _DMG_EQUAL_TREASURE_RE.search(window):
             profile["damage_scales_with_treasure"] = True
         # Direct damage on attack (Drakuseth). Only the FIRST "deals N damage"
@@ -4452,6 +4465,19 @@ def combat_profile(card):
                     # effect IS modelled makes the not-modelled list a liar.
                     _EXTRA_COMBAT_RE.search(text))):
             profile["unreadable"] = card.get("name")
+
+    # AN EQUIPMENT'S STATS RIDE ON WHAT IT IS ATTACHED TO (2026-11-06): "+2/+2" from a Sword,
+    # double strike from Embercleave. The turn loop attaches it to a commander -- the pilot's
+    # plan on a voltron deck -- and adds both to every swing and to the commander's damage.
+    if "Equipment" in type_line:
+        _gets = _EQUIP_GETS_RE.search(text)
+        profile["equip_power"] = int(_gets.group(1)) if _gets else 0
+        profile["equip_double_strike"] = bool(_EQUIP_DOUBLE_STRIKE_RE.search(text))
+        profile["attach_on_enter"] = bool(_ATTACH_ON_ENTER_RE.search(text))
+        if (profile["equip_power"] or profile["equip_double_strike"]
+                or (combat_trigger and _EQUIPPED_TRIGGER_RE.search(text))):
+            _eq = _EQUIP_COST_RE.search(text)
+            profile["equip_cost"] = _activation_mana(_eq.group(1)) if _eq else 0
 
     if _EXTRA_COMBAT_RE.search(text):
         activated = _ACTIVATED_COMBAT_RE.search(text)

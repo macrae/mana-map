@@ -255,3 +255,49 @@ def test_put_back_leaves_two_fewer_in_hand(doc):
                     "library in any order", "")
     hand8 = lambda m: m["mean_hand_size_by_turn"]["8"]
     assert hand8(_run(d)) < hand8(_run(plain))
+
+
+# ── the kit on the commander (2026-11-06) ───────────────────────────────
+
+HELM = _card("Champion's Helm", "Equipped creature gets +2/+2.\nAs long as equipped creature is "
+             "legendary, it has hexproof.\nEquip {1}", "Artifact — Equipment", "{3}")
+CLEAVE = _card("Embercleave", "Flash\nThis spell costs {1} less to cast for each attacking "
+               "creature you control.\nWhen Embercleave enters, attach it to target creature you "
+               "control.\nEquipped creature gets +1/+1 and has double strike and trample.\n"
+               "Equip {3}", "Legendary Artifact — Equipment", "{4}{R}{R}")
+
+
+def test_an_equipments_stats_are_read():
+    h, e = combat_profile(HELM), combat_profile(CLEAVE)
+    assert (h["equip_power"], h["equip_double_strike"], h["equip_cost"]) == (2, False, 1)
+    assert (e["equip_power"], e["equip_double_strike"], e["attach_on_enter"]) == (1, True, True)
+    # Protection-only Equipment carries no stats and is not cast for them.
+    boots = combat_profile(_card("Swiftfoot Boots", "Equipped creature has hexproof and haste.\n"
+                                 "Equip {1}", "Artifact — Equipment", "{2}"))
+    assert (boots["equip_power"], boots["equip_double_strike"], boots["equip_cost"]) == (0, False, None)
+
+
+_KIT_SWAPS = [("Prosperity", "Champion's Helm"), ("Xorn", "Embercleave")]
+
+
+@pytest.fixture(scope="module")
+def kit_doc():
+    from manamap.pilot import try_swap
+    d, _, _, _ = try_swap.apply_swaps("sharknado", None, _KIT_SWAPS)
+    return _isolated(d, {"Champion's Helm", "Embercleave"})
+
+
+def _lethal10(m):
+    return m["commander_lethal"]["games_by_turn"]["10"]
+
+
+@requires_deck
+def test_the_kit_rides_on_the_commander(kit_doc):
+    """The same cards cast on the same seeds, the bonus smaller: +2/+2 against +1/+1 on the
+    Helm, double strike against vigilance on Embercleave. Before 2026-11-06 an Equipment's
+    stats reached nobody, so the arms read equal."""
+    smaller = _strike(kit_doc, "Champion's Helm", "gets +2/+2", "gets +1/+1")
+    no_ds = _strike(kit_doc, "Embercleave", "double strike and trample", "vigilance and trample")
+    full = _lethal10(_run(kit_doc, 3000))
+    assert full > _lethal10(_run(smaller, 3000))
+    assert full > _lethal10(_run(no_ds, 3000))

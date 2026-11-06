@@ -310,7 +310,7 @@ def never_cast(profile, flags):
                 # a bodiless combat trigger (an Equipment's hit) is cast by
                 # `_engine_permanent` since 2026-11-06
                 cb.get("attack_draw"), cb.get("attack_damage"), cb.get("attack_mana"),
-                cb.get("attack_treasure"),
+                cb.get("attack_treasure"), cb.get("equip_power"), cb.get("equip_double_strike"),
                 # a haste enabler is cast by the combat-payoff loop
                 cb.get("team_haste"), cb.get("cast_damage"),
                 cb.get("spell_damage_greatest_power"),
