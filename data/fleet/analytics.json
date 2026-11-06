@@ -513,15 +513,15 @@
    },
    "sharknado": {
     "1": 0.0,
-    "10": 0.993,
+    "10": 0.989,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
-    "5": 0.034,
-    "6": 0.313,
-    "7": 0.815,
-    "8": 0.957,
-    "9": 0.984
+    "5": 0.016,
+    "6": 0.192,
+    "7": 0.707,
+    "8": 0.927,
+    "9": 0.974
    },
    "ur-dragon": {
     "1": 0.0,
@@ -623,15 +623,15 @@
    },
    "sharknado": {
     "1": 0.999,
-    "10": 0.877,
+    "10": 0.882,
     "2": 0.997,
-    "3": 0.911,
-    "4": 0.807,
-    "5": 0.73,
-    "6": 0.717,
-    "7": 0.746,
-    "8": 0.792,
-    "9": 0.849
+    "3": 0.912,
+    "4": 0.823,
+    "5": 0.749,
+    "6": 0.782,
+    "7": 0.853,
+    "8": 0.876,
+    "9": 0.891
    },
    "ur-dragon": {
     "1": 0.999,
@@ -733,15 +733,15 @@
    },
    "sharknado": {
     "1": 0.999,
-    "10": 11.184,
+    "10": 11.7,
     "2": 2.146,
-    "3": 3.52,
-    "4": 4.409,
-    "5": 5.22,
-    "6": 6.164,
-    "7": 7.226,
-    "8": 8.399,
-    "9": 9.709
+    "3": 3.558,
+    "4": 4.611,
+    "5": 5.458,
+    "6": 6.429,
+    "7": 7.617,
+    "8": 8.874,
+    "9": 10.238
    },
    "ur-dragon": {
     "1": 0.999,
@@ -1111,7 +1111,7 @@
      "dti_score": "above the fleet median",
      "kill_by_turn_6": "below the fleet median",
      "kill_by_turn_8": "below the fleet median",
-     "mana_at_turn_five": "above the fleet median",
+     "mana_at_turn_five": "below the fleet median",
      "missed_land_drop_by_five": "below the fleet median",
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
@@ -3506,38 +3506,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.9912,
-      0.9945
+      0.9868,
+      0.9909
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.993
+     "value": 0.989
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.304,
-      0.3222
+      0.1844,
+      0.1998
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.313
+     "value": 0.192
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.9528,
-      0.9608
+      0.9217,
+      0.9319
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.957
+     "value": 0.927
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -3545,14 +3545,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 5.22
+     "value": 5.458
     },
     "mana_stdev_turn_five": {
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.0254
+     "value": 1.1746
     },
     "median_kill_turn": {
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
@@ -3564,14 +3564,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.1604,
-      0.175
+      0.1406,
+      0.1545
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.1676
+     "value": 0.1474
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -3588,14 +3588,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0055,
-      0.0088
+      0.0091,
+      0.0132
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.007
+     "value": 0.011
     }
    },
    "bracket": {
@@ -3611,14 +3611,14 @@
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.4073,
-      0.4266
+      0.3588,
+      0.3777
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.4169
+     "value": 0.3682
     },
     "mulliganed": {
      "ci95": [
@@ -3633,14 +3633,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.082,
-      0.0931
+      0.1151,
+      0.1279
      ],
      "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.0874
+     "value": 0.1214
     }
    },
    "dti": {
@@ -3704,7 +3704,7 @@
    "lifecycle": null,
    "member": true,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.929,
+    "commander_cast_by_turn_6_rate": 0.925,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -3714,7 +3714,7 @@
      "model_hand_limit": true,
      "model_treasures": true
     },
-    "model_version": "7ed9897e92af",
+    "model_version": "af456a5c07d0",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -3723,7 +3723,7 @@
      "dti_score": "below the fleet median",
      "kill_by_turn_6": "above the fleet median",
      "kill_by_turn_8": "above the fleet median",
-     "mana_at_turn_five": "below the fleet median",
+     "mana_at_turn_five": "above the fleet median",
      "missed_land_drop_by_five": "below the fleet median",
      "missed_land_drop_rate": "below the fleet median",
      "mulligan_rate": "below the fleet median",
@@ -5148,20 +5148,20 @@
    "n": 7
   },
   "kill_by_turn_6": {
-   "max": 0.313,
+   "max": 0.238,
    "median": 0.052,
    "min": 0.0,
    "n": 7
   },
   "kill_by_turn_8": {
-   "max": 0.957,
+   "max": 0.927,
    "median": 0.511,
    "min": 0.003,
    "n": 7
   },
   "mana_at_turn_five": {
    "max": 5.944,
-   "median": 5.22,
+   "median": 5.323,
    "min": 4.706,
    "n": 7
   },
@@ -5174,7 +5174,7 @@
   "missed_land_drop_rate": {
    "max": 0.2466,
    "median": 0.2238,
-   "min": 0.1498,
+   "min": 0.1474,
    "n": 7
   },
   "mulligan_rate": {
@@ -5186,12 +5186,12 @@
   "never_kills_rate": {
    "max": 0.888,
    "median": 0.138,
-   "min": 0.007,
+   "min": 0.011,
    "n": 7
   },
   "stall_two_in_a_row": {
    "max": 0.1788,
-   "median": 0.0922,
+   "median": 0.1214,
    "min": 0.0072,
    "n": 7
   }
@@ -5260,33 +5260,33 @@
      "n": 4
     },
     "kill_by_turn_6": {
-     "max": 0.313,
-     "median": 0.158,
+     "max": 0.238,
+     "median": 0.135,
      "min": 0.052,
      "n": 4
     },
     "kill_by_turn_8": {
-     "max": 0.957,
+     "max": 0.927,
      "median": 0.673,
      "min": 0.511,
      "n": 4
     },
     "mana_at_turn_five": {
      "max": 5.944,
-     "median": 5.182,
+     "median": 5.301,
      "min": 4.706,
      "n": 4
     },
     "missed_land_drop_by_five": {
      "max": 0.4918,
-     "median": 0.4429,
+     "median": 0.4186,
      "min": 0.3628,
      "n": 4
     },
     "missed_land_drop_rate": {
      "max": 0.2436,
      "median": 0.2007,
-     "min": 0.1676,
+     "min": 0.1474,
      "n": 4
     },
     "mulligan_rate": {
@@ -5298,12 +5298,12 @@
     "never_kills_rate": {
      "max": 0.138,
      "median": 0.081,
-     "min": 0.007,
+     "min": 0.011,
      "n": 4
     },
     "stall_two_in_a_row": {
      "max": 0.1602,
-     "median": 0.1164,
+     "median": 0.1333,
      "min": 0.0746,
      "n": 4
     }
@@ -5476,7 +5476,7 @@
    "keen-engineering": "f5b4b19d2254",
    "meren-recursion": "ddec1ff58e1d",
    "radagast": "9ea49ecb247d",
-   "sharknado": "7ed9897e92af",
+   "sharknado": "af456a5c07d0",
    "sisay": "9ea49ecb247d",
    "teach-black": null,
    "teach-blue": null,

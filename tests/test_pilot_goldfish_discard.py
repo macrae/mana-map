@@ -128,6 +128,10 @@ WHEELS, LOOTS, DISC, DRAW, SECOND = (30, 68, 16, 28, 20)
 @requires_data
 @requires_deck
 def test_sharknado_wheels_and_the_partner_is_cast(monkeypatch):
+    # THE CHANNEL, NOT THE POLICY (2026-11-06): the deck's `brallin-comes-late` rule holds the
+    # partner to the main phase's last slot; this test asks whether the partner is CAST at all.
+    from manamap.pilot import pilot_policy
+    monkeypatch.setattr(pilot_policy, "load", lambda slug, branch=None: {})
     on = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=True)["metrics"]
     off = goldfish.run("sharknado", iterations=1200, quiet=True, model_discard=False)["metrics"]
     assert "discard" in on and "discard" not in off, "absent, not zero, when the flag is off"

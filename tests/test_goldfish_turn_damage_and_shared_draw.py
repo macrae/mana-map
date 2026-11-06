@@ -80,7 +80,8 @@ def test_damage_at_the_start_of_their_step_reads_with_its_hand_condition():
 
 @requires_data
 @requires_deck
-def test_the_turn_damage_lands_on_the_clock_and_the_seven_card_condition_waits_for_a_wheel():
+def test_the_turn_damage_lands_on_the_clock_and_the_seven_card_condition_waits_for_a_wheel(
+        monkeypatch):
     """Same seeds on sharknado, the clause written onto Brallin — the one permanent
     every game casts early, so the test measures the channel and not the cast
     policy (an enchantment at three lands behind two commanders and the wheels
@@ -91,8 +92,12 @@ def test_the_turn_damage_lands_on_the_clock_and_the_seven_card_condition_waits_f
     Re-introduce the bug (zero `per_opponent_turn_damage` in the turn loop) and
     all three read the same."""
     from manamap.pilot.common import deck_file, load_deck_cards
+    from manamap.pilot import pilot_policy
     import json
 
+    # The deck's policy holds Brallin to the last slot since 2026-11-06; this test needs him
+    # cast early, so it flies the deck by the built-in rules.
+    monkeypatch.setattr(pilot_policy, "load", lambda slug, branch=None: {})
     targets = json.loads(deck_file("sharknado", "goldfish_targets.json").read_text())
     doc = load_deck_cards("sharknado")
 

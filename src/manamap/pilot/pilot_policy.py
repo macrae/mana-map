@@ -51,7 +51,7 @@ from manamap.pilot.common import deck_file, load_json
 
 #: What a rule may key on. A `when.channel` names a profile field the simulator
 #: already computes, so a policy can never invent a card property.
-CHANNELS = ("spell_token_copy", "wheel")
+CHANNELS = ("spell_token_copy", "wheel", "partner")
 
 #: What a rule may DO. One verb for now, deliberately: a hold threshold is the
 #: decision the evidence supports, and a vocabulary that grows one proven verb at a
@@ -85,8 +85,13 @@ COUNTERS = ("other_creatures", "event_payoffs", "commanders_out")
 #:   wheel: `event_payoffs` — discard/draw payoff permanents on the battlefield,
 #:       commanders included (any tax collector); `commanders_out` — commanders on
 #:       the battlefield, 0–2 (the pilot's literal sentence).
+#:   partner (2026-11-06): `commanders_out` — commanders on the battlefield. A HELD
+#:       PARTNER IS ALSO CAST LAST: in the main phase's last slot, from what the turn
+#:       left, never on its own curve ahead of the cards that turn wanted. Sharknado:
+#:       "Brallin only comes in to give sharks trample at the end".
 CHANNEL_COUNTERS = {"spell_token_copy": ("other_creatures",),
-                    "wheel": ("event_payoffs", "commanders_out")}
+                    "wheel": ("event_payoffs", "commanders_out"),
+                    "partner": ("commanders_out",)}
 
 
 class PolicyError(ValueError):
@@ -254,7 +259,10 @@ def render(doc):
         else:
             hold = r.get("hold_until") or {}
             what = ", ".join(f"{k} >= {v}" for k, v in sorted(hold.items()))
-            lines.append(f"{r['id']}: hold a {r['when']['channel']} until {what}")
+            if r['when']['channel'] == "partner":
+                lines.append(f"{r['id']}: hold the partner until {what}, then cast it last")
+            else:
+                lines.append(f"{r['id']}: hold a {r['when']['channel']} until {what}")
         lines.append(f"    {r['why']}")
     return lines
 

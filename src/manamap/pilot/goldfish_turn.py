@@ -547,6 +547,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # unreachable by algebra. Both wheel doors (the spell in the draw loop, the
     # activated engine) ask this one closure, so the two can never disagree.
     _hold_wheel = (hold_until or {}).get("wheel") or {}
+    _hold_partner = (hold_until or {}).get("partner") or {}
 
     def _cmd_out():
         return (commander_turn is not None) + (partner_turn is not None)
@@ -1319,6 +1320,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             else:
                 treasures -= cost - pool
                 pool = 0
+            return True
+
+        def _cast_partner():
+            """THE PARTNER, through the commanders' door, if the mana is there. One home for
+            both slots: on its own curve after the first commander, or last in the main phase
+            when the pilot's policy holds it (`hold_until.partner`)."""
+            nonlocal partner_turn
+            if not partner or partner_turn is not None or not spend(
+                    reduced_cost({"is_commander": True, "is_creature": True,
+                                  "subtypes": partner.get("subtypes", frozenset()),
+                                  "cmc": partner["cmc"], "pips": partner["pips"]},
+                                 reductions, chosen_type),
+                    partner["pips"]):
+                return False
+            partner_turn = turn
+            battlefield_pips.append(partner["pips"] or [])
+            battlefield_types.append(partner.get("type_line") or "")
+            battlefield_mv.append(partner["cmc"])
+            battlefield_rooms.append(None)
+            if partner.get("grants_lifelink_to"):
+                lifelink_granted_types.add(partner["grants_lifelink_to"])
+            _commander_arrives(partner["combat"], partner.get("event"), partner.get("damage"))
             return True
 
         def _commander_arrives(cprof, cevent, cdamage=None):
@@ -2441,20 +2464,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # `commanders[0]` was the only commander the model knew, so half of a
         # Partner pair -- the discard half of sharknado -- scored zero however
         # well its trigger parsed.
-        if partner and partner_turn is None and spend(
-                reduced_cost({"is_commander": True, "is_creature": True,
-                              "subtypes": partner.get("subtypes", frozenset()),
-                              "cmc": partner["cmc"], "pips": partner["pips"]},
-                             reductions, chosen_type),
-                partner["pips"]):
-            partner_turn = turn
-            battlefield_pips.append(partner["pips"] or [])
-            battlefield_types.append(partner.get("type_line") or "")
-            battlefield_mv.append(partner["cmc"])
-            battlefield_rooms.append(None)
-            if partner.get("grants_lifelink_to"):
-                lifelink_granted_types.add(partner["grants_lifelink_to"])
-            _commander_arrives(partner["combat"], partner.get("event"), partner.get("damage"))
+        # A PARTNER THE POLICY HOLDS (2026-11-06) is not cast here: it waits for the late
+        # slot before combat, below, and for the commanders the rule counts.
+        if not _hold_partner:
+            _cast_partner()
 
         # THE COMMANDER'S OWN ATTACK TUTOR — an APPROXIMATION, declared per deck.
         #
@@ -4059,6 +4072,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # that attacks. Shu Yun's trigger pays {R/W}{R/W} per noncreature spell cast this turn
         # for double strike on one attacker: bought here, on the same mana, from the biggest
         # attacker down, and a floor against the mana a pilot would hold back for it.
+        # THE HELD PARTNER, LAST IN THE MAIN PHASE (2026-11-06): from what the turn left, once
+        # the commanders the rule counts are out. Before the one-turn grants, so it can
+        # attack next turn like any creature cast this main phase. Sharknado's pilot: "Brallin
+        # only comes in to give sharks trample at the end".
+        if _hold_partner and partner and partner_turn is None:
+            _out = (commander_turn is not None) + (partner_turn is not None)
+            if all(_out >= n for c, n in _hold_partner.items() if c == "commanders_out"):
+                _cast_partner()
         _single_ds = set()
         if model_combat and battlefield:
             _ready = [i for i, e in enumerate(battlefield) if not e[7] and (e[1] < turn or e[2])]

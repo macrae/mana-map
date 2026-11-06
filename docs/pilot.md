@@ -488,7 +488,7 @@ manamap pilot validate-poh-procedures <slug>     # and over the JSON, which had 
                                         #   honest and never an error
 manamap pilot validate-pilot-policy <slug>       # the declared piloting rules: every rule
                                         #   named, reasoned, keyed on a channel the
-                                        #   simulator computes (`spell_token_copy`, `wheel`)
+                                        #   simulator computes (`spell_token_copy`, `wheel`, `partner`)
                                         #   and a counter that channel's gate reads, and —
                                         #   for a `forge` section — on an AiProps key Forge
                                         #   reads whose MASTER TOGGLE is on. A `keep` rule

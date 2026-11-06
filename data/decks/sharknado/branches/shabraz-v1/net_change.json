@@ -1567,7 +1567,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "7ed9897e92af",
+  "model_version": "af456a5c07d0",
   "seed": 20260826
  },
  "limits": [
@@ -1769,12 +1769,12 @@
   "reward": [
    {
     "measure": "stall, 2 in a row",
-    "reads_as": "9 games in 100 -> 3 in 100, a swing of 5 games per 100",
+    "reads_as": "12 games in 100 -> 4 in 100, a swing of 8 games per 100",
     "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
     "measure": "missed drop by T5",
-    "reads_as": "42 games in 100 -> 40 in 100, a swing of 2 games per 100",
+    "reads_as": "37 games in 100 -> 35 in 100, a swing of 2 games per 100",
     "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
    },
    {
@@ -1789,61 +1789,61 @@
    },
    {
     "measure": "dead wheels in hand @T5",
-    "reads_as": "0.03 -> 0.02, a change of -0.02 (-54%)",
+    "reads_as": "0.11 -> 0.05, a change of -0.06 (-52%)",
     "why_we_care": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
    }
   ],
   "risk": [
    {
-    "detail": "3.09 -> 0.58, a change of -2.51 (-81%)",
+    "detail": "3.59 -> 0.58, a change of -3.01 (-84%)",
     "kind": "paid",
     "what": "hoard @T10",
     "why_it_matters": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it."
    },
    {
-    "detail": "0.17 -> 0.11, a change of -0.06 (-36%)",
+    "detail": "0.26 -> 0.15, a change of -0.11 (-43%)",
     "kind": "paid",
     "what": "hoard @T6",
     "why_it_matters": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
    },
    {
-    "detail": "249.29 -> 178.34, a change of -70.95 (-28%)",
+    "detail": "212.75 -> 175.37, a change of -37.38 (-18%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "16.47 -> 14.45, a change of -2.03 (-12%)",
+    "detail": "15.72 -> 14.15, a change of -1.57 (-10%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "32 games in 100 -> 22 in 100, a swing of 10 games per 100",
+    "detail": "20 games in 100 -> 17 in 100, a swing of 3 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "15.11 -> 14.49, a change of -0.62 (-4%)",
+    "detail": "21.55 -> 19.99, a change of -1.56 (-7%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "73 games in 100 -> 38 in 100, a swing of 34 games per 100",
+    "detail": "85 games in 100 -> 57 in 100, a swing of 28 games per 100",
     "kind": "paid",
     "what": "finisher wheel by T8",
     "why_it_matters": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
    },
    {
-    "detail": "2.37 -> 0.83, a change of -1.55 (-65%)",
+    "detail": "3.11 -> 1.17, a change of -1.94 (-62%)",
     "kind": "paid",
     "what": "wheels cast by T10",
     "why_it_matters": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
    },
    {
-    "detail": "the largest is interaction affordable @T6 at +0.022 against an MDE of 0.023. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is killed by T10 at -0.003 against an MDE of 0.003. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -1909,69 +1909,13 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 0.58,
-   "champion": 3.0873,
+   "branch": 0.5786,
+   "champion": 3.5935,
    "ci95_diff": [
-    -2.8645,
-    -2.1501
+    -3.4031,
+    -2.6267
    ],
-   "delta": -2.5073,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 8,
-    "significant": true,
-    "threshold": 2.773
-   },
-   "mde": 0.5106,
-   "measure": "hoard @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "3.09 -> 0.58, a change of -2.51 (-81%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
-   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
-   "z": -13.757
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.1104,
-   "champion": 0.1713,
-   "ci95_diff": [
-    -0.0712,
-    -0.0506
-   ],
-   "delta": -0.0609,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 9,
-    "significant": true,
-    "threshold": 2.734
-   },
-   "mde": 0.0148,
-   "measure": "hoard @T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.17 -> 0.11, a change of -0.06 (-36%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
-   "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
-   "z": -11.558
-  },
-  {
-   "better_is": "higher",
-   "branch": 178.3428,
-   "champion": 249.294,
-   "ci95_diff": [
-    -77.4329,
-    -64.4695
-   ],
-   "delta": -70.9512,
+   "delta": -3.0149,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -1979,55 +1923,83 @@
     "significant": true,
     "threshold": 2.838
    },
-   "mde": 9.2649,
+   "mde": 0.5549,
+   "measure": "hoard @T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "3.59 -> 0.58, a change of -3.01 (-84%)",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
+   "z": -15.222
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.149,
+   "champion": 0.2632,
+   "ci95_diff": [
+    -0.143,
+    -0.0854
+   ],
+   "delta": -0.1142,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 11,
+    "significant": true,
+    "threshold": 2.638
+   },
+   "mde": 0.0412,
+   "measure": "hoard @T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "0.26 -> 0.15, a change of -0.11 (-43%)",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
+   "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
+   "z": -7.766
+  },
+  {
+   "better_is": "higher",
+   "branch": 175.3694,
+   "champion": 212.745,
+   "ci95_diff": [
+    -43.6035,
+    -31.1477
+   ],
+   "delta": -37.3756,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 8,
+    "significant": true,
+    "threshold": 2.773
+   },
+   "mde": 8.9022,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "249.29 -> 178.34, a change of -70.95 (-28%)",
+   "reads_as": "212.75 -> 175.37, a change of -37.38 (-18%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. THE SWING AND WHAT FIRES AROUND IT: combat damage, attack triggers, arrival and burn. IT EXCLUDES the payoffs on a discard or a draw and the drain; `output.total_damage_by_turn` in the diagnostic is the figure with them (not a row: it tracks this one game for game, one measurement twice). The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -21.455
+   "z": -11.762
   },
   {
    "better_is": "higher",
-   "branch": 14.4467,
-   "champion": 16.4718,
+   "branch": 14.1527,
+   "champion": 15.7225,
    "ci95_diff": [
-    -2.1593,
-    -1.8909
+    -1.7332,
+    -1.4064
    ],
-   "delta": -2.0251,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 4,
-    "significant": true,
-    "threshold": 2.891
-   },
-   "mde": 0.1919,
-   "measure": "board power @T6",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "16.47 -> 14.45, a change of -2.03 (-12%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
-   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -29.572
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.2245,
-   "champion": 0.3234,
-   "ci95_diff": [
-    -0.1069,
-    -0.0909
-   ],
-   "delta": -0.0989,
+   "delta": -1.5698,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2035,83 +2007,27 @@
     "significant": true,
     "threshold": 2.865
    },
-   "mde": 0.0114,
-   "measure": "killed by T6",
+   "mde": 0.2336,
+   "measure": "board power @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "32 games in 100 -> 22 in 100, a swing of 10 games per 100",
+   "reads_as": "15.72 -> 14.15, a change of -1.57 (-10%)",
    "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
+   "scale": null,
+   "unit": "mean",
    "verdict": "worse",
-   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
-   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -24.308
+   "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
+   "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
+   "z": -18.83
   },
   {
    "better_is": "higher",
-   "branch": 0.9919,
-   "champion": 0.9937,
+   "branch": 0.1698,
+   "champion": 0.2023,
    "ci95_diff": [
-    -0.0033,
-    -0.0003
+    -0.0396,
+    -0.0254
    ],
-   "delta": -0.0018,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 15,
-    "significant": true,
-    "threshold": 2.241
-   },
-   "mde": 0.0022,
-   "measure": "killed by T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.002 this run can resolve",
-   "role": "exploratory",
-   "scale": "a CLOCK against one unblocking opponent, never a win rate",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
-   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -2.286
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.0329,
-   "champion": 0.0874,
-   "ci95_diff": [
-    -0.0602,
-    -0.0488
-   ],
-   "delta": -0.0545,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 7,
-    "significant": true,
-    "threshold": 2.807
-   },
-   "mde": 0.0081,
-   "measure": "stall, 2 in a row",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "9 games in 100 -> 3 in 100, a swing of 5 games per 100",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
-   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": -18.767
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.3968,
-   "champion": 0.4169,
-   "ci95_diff": [
-    -0.0242,
-    -0.016
-   ],
-   "delta": -0.0201,
+   "delta": -0.0325,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2119,17 +2035,101 @@
     "significant": true,
     "threshold": 2.69
    },
-   "mde": 0.0059,
+   "mde": 0.0102,
+   "measure": "killed by T6",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "20 games in 100 -> 17 in 100, a swing of 3 games per 100",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
+   "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
+   "z": -8.91
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.9882,
+   "champion": 0.991,
+   "ci95_diff": [
+    -0.0047,
+    -0.0009
+   ],
+   "delta": -0.0028,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 14,
+    "significant": true,
+    "threshold": 2.394
+   },
+   "mde": 0.0028,
+   "measure": "killed by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.003 this run can resolve",
+   "role": "exploratory",
+   "scale": "a CLOCK against one unblocking opponent, never a win rate",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
+   "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
+   "z": -2.829
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0445,
+   "champion": 0.1214,
+   "ci95_diff": [
+    -0.0836,
+    -0.0702
+   ],
+   "delta": -0.0769,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.891
+   },
+   "mde": 0.0096,
+   "measure": "stall, 2 in a row",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "12 games in 100 -> 4 in 100, a swing of 8 games per 100",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
+   "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
+   "z": -22.368
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.3497,
+   "champion": 0.3682,
+   "ci95_diff": [
+    -0.0233,
+    -0.0137
+   ],
+   "delta": -0.0185,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 12,
+    "significant": true,
+    "threshold": 2.576
+   },
+   "mde": 0.0068,
    "measure": "missed drop by T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "42 games in 100 -> 40 in 100, a swing of 2 games per 100",
+   "reads_as": "37 games in 100 -> 35 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "better",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": -9.615
+   "z": -7.593
   },
   {
    "better_is": "lower",
@@ -2161,59 +2161,59 @@
   },
   {
    "better_is": "higher",
-   "branch": 14.4858,
-   "champion": 15.1072,
+   "branch": 19.9852,
+   "champion": 21.5487,
    "ci95_diff": [
-    -0.8525,
-    -0.3903
+    -1.8684,
+    -1.2586
    ],
-   "delta": -0.6214,
+   "delta": -1.5635,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 12,
+    "rank": 9,
     "significant": true,
-    "threshold": 2.576
+    "threshold": 2.734
    },
-   "mde": 0.3303,
+   "mde": 0.4359,
    "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "15.11 -> 14.49, a change of -0.62 (-4%)",
+   "reads_as": "21.55 -> 19.99, a change of -1.56 (-7%)",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "worse",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
    "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -5.271
+   "z": -10.05
   },
   {
    "better_is": "higher",
-   "branch": 0.5129,
-   "champion": 0.4908,
+   "branch": 0.5532,
+   "champion": 0.5307,
    "ci95_diff": [
-    0.0065,
-    0.0376
+    0.0067,
+    0.0384
    ],
-   "delta": 0.0221,
+   "delta": 0.0225,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 14,
+    "rank": 15,
     "significant": true,
-    "threshold": 2.394
+    "threshold": 2.241
    },
-   "mde": 0.0229,
+   "mde": 0.0235,
    "measure": "interaction affordable @T6",
    "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "no call \u2014 the gap of 0.022 is smaller than the 0.023 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.022 is smaller than the 0.024 this run can resolve",
    "role": "exploratory",
    "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
    "unit": "rate",
    "verdict": "noise",
    "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it, or where it is free for controlling a commander and one is out. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
    "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": 2.791
+   "z": 2.782
   },
   {
    "better_is": "higher",
@@ -2273,13 +2273,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 0.3849,
-   "champion": 0.7257,
+   "branch": 0.5688,
+   "champion": 0.8469,
    "ci95_diff": [
-    -0.3514,
-    -0.3302
+    -0.2881,
+    -0.2681
    ],
-   "delta": -0.3408,
+   "delta": -0.2781,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2287,27 +2287,27 @@
     "significant": true,
     "threshold": 2.935
    },
-   "mde": 0.0152,
+   "mde": 0.0143,
    "measure": "finisher wheel by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "73 games in 100 -> 38 in 100, a swing of 34 games per 100",
+   "reads_as": "85 games in 100 -> 57 in 100, a swing of 28 games per 100",
    "role": "exploratory",
    "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
    "unit": "rate",
    "verdict": "worse",
    "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also needed four nonlands left in hand, which the model's deploy-first turn now spends before it wheels.) Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
    "why_we_care": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else.",
-   "z": -62.823
+   "z": -54.625
   },
   {
    "better_is": "higher",
-   "branch": 0.8262,
-   "champion": 2.3717,
+   "branch": 1.1708,
+   "champion": 3.1114,
    "ci95_diff": [
-    -1.5785,
-    -1.5125
+    -1.9797,
+    -1.9015
    ],
-   "delta": -1.5455,
+   "delta": -1.9406,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2315,45 +2315,45 @@
     "significant": true,
     "threshold": 2.955
    },
-   "mde": 0.0472,
+   "mde": 0.0558,
    "measure": "wheels cast by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "2.37 -> 0.83, a change of -1.55 (-65%)",
+   "reads_as": "3.11 -> 1.17, a change of -1.94 (-62%)",
    "role": "exploratory",
    "scale": "against the wheel-shaped cards the declaration names",
    "unit": "mean",
    "verdict": "worse",
    "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
    "why_we_care": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone.",
-   "z": -91.773
+   "z": -97.363
   },
   {
    "better_is": "lower",
-   "branch": 0.0156,
-   "champion": 0.0341,
+   "branch": 0.0505,
+   "champion": 0.1058,
    "ci95_diff": [
-    -0.0231,
-    -0.0139
+    -0.0635,
+    -0.0471
    ],
-   "delta": -0.0185,
+   "delta": -0.0553,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 11,
+    "rank": 7,
     "significant": true,
-    "threshold": 2.638
+    "threshold": 2.807
    },
-   "mde": 0.0066,
+   "mde": 0.0118,
    "measure": "dead wheels in hand @T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.03 -> 0.02, a change of -0.02 (-54%)",
+   "reads_as": "0.11 -> 0.05, a change of -0.06 (-52%)",
    "role": "exploratory",
    "scale": "against the cards in hand at the end of turn 5",
    "unit": "mean",
    "verdict": "better",
    "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
    "why_we_care": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage.",
-   "z": -7.806
+   "z": -13.179
   }
  ]
 }
