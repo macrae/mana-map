@@ -876,7 +876,6 @@ def _draw_is_blind(slug, branch, name):
     draw really is one a turn.
     """
     from manamap.pilot.common import load_deck_cards
-    from manamap.pilot.goldfish_profiles import death_profile, draw_profile
 
     try:
         targets = json.loads(deck_file_or_none(slug, branch).read_text())
@@ -884,17 +883,16 @@ def _draw_is_blind(slug, branch, name):
         targets = {}
     if not targets.get("model_draw"):
         return True
-    deaths_on = bool(targets.get("model_sacrifice") or targets.get("model_deaths"))
+    from manamap.pilot.goldfish import draw_is_unread
 
     def blind(card):
-        # A CARD IS ONLY BLIND IF NO CHANNEL READS IT — the rule
-        # `meta.draw_not_modelled` keeps since 2026-10-19: Morbid Opportunist's
-        # draw is a death trigger, priced on every death the sacrifice sweep or
-        # the death rate produces, and this report called it unmeasured on the
-        # very branch that taught the model to read it.
-        if deaths_on and death_profile(card)["death_draw"]:
-            return False
-        return bool(draw_profile(card)["unmodelled"])
+        # THE SAME PREDICATE AS `meta.draw_not_modelled` (2026-11-06), one home: this list
+        # kept its own copy, missed the event and combat channels, and called Sword of Fire
+        # and Ice unread on the branch whose figures had just priced its draw.
+        return draw_is_unread(
+            card, model_discard=bool(targets.get("model_discard")),
+            model_combat=bool(targets.get("model_combat")),
+            model_deaths=bool(targets.get("model_sacrifice") or targets.get("model_deaths")))
 
     try:
         doc = load_deck_cards(slug, branch)

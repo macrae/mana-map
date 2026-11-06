@@ -81,6 +81,7 @@ from manamap.pilot.common import (
     deck_dir, deck_file, front_field, load_deck_cards)
 
 from manamap.pilot.goldfish_profiles import (
+    SPELL_CAST_GATE,
     lord_applies,
     ETB_CHAIN_LIMIT,
     FREE_CAST_DEPTH_LIMIT,
@@ -723,6 +724,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # Kept only under model_combat so the resource-only path allocates nothing.
     battlefield = []
     combat_engines = []           # per-attack triggers of creatures in play
+    # ids of the Equipment engines whose equip has been paid (2026-11-06). Per game: the profile
+    # dicts are shared across games, so the state lives here, never on them.
+    equipped_engines = set()
+    tenth_counter_fires = []      # payoffs whose tenth counter landed this settlement
     extra_combat_free = 0         # Scourge-style, one additional phase
     extra_combat_costs = []       # Aggravated Assault-style, buy each time
     opponent_life = GOLDFISH_OPPONENT_LIFE
@@ -1084,6 +1089,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 discarded += 1
             first_discard_batch = first_discard_batch or (_had - len(hand))
 
+        def _put_back(n):
+            """BRAINSTORM'S SECOND HALF (2026-11-06): n cards from the hand to the top of the
+            library. The same AUTHORED pick as a loot's discard -- a spare land first, then the
+            most expensive nonland -- and they are drawn again next, so nothing is lost but
+            tempo. A fetch's shuffle is not modelled: a floor."""
+            for _ in range(int(n)):
+                if not hand:
+                    break
+                lands = [c for c in hand if c["is_land"]]
+                pick = lands[-1] if len(lands) > 1 else max(
+                    (c for c in hand if not c["is_land"]), key=lambda c: c["cmc"], default=hand[0])
+                deck.insert(0, hand.pop(next(i for i, c in enumerate(hand) if c is pick)))
+
         # Recurring draw engines already in play fire in the upkeep, BEFORE the
         # mana is spent, so a card drawn this way is castable this turn.
         if model_draw:
@@ -1433,6 +1451,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     etb_by[_damage_kind(_src)] += _eng["per_cast_damage"] + bonus_for(
                         _src, damage_bonuses)
             if is_spell:
+                # ARCHMAGE OF RUNES (2026-11-06): "Whenever you cast an instant or sorcery
+                # spell, draw a card." A cast, never a copy, which is why it lives here.
+                if model_draw:
+                    for _eng in draw_engines:
+                        if _eng["cast_draw"] and _eng["cast_draw_gate"] == SPELL_CAST_GATE:
+                            draw_n(_eng["cast_draw"])
                 _magecraft(1)
                 # IT RESOLVES INTO THE GRAVEYARD, which is what Rielle counts and what
                 # flashback reads. A card cast from there is exiled instead.
@@ -1597,6 +1621,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_discard and card["draw"]["spell_discard_is_cost"]:
                 discard_n(card["draw"]["spell_discard"])
             draw_n(card["draw"]["spell_draw"] + card["draw"]["etb_draw"])
+            if card["draw"]["spell_put_back"]:
+                _put_back(card["draw"]["spell_put_back"])
             # THE COMMANDER COPIES IT FOR EACH OTHER CREATURE YOU CONTROL.
             # Zada, Hedron Grinder's whole deck: a {R} cantrip targeting
             # only her draws ONE card, and with six other bodies out it
@@ -1913,6 +1939,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     discard_n(card["draw"]["spell_discard"])
                 if model_draw and card["draw"]["spell_draw"]:
                     draw_n(card["draw"]["spell_draw"])
+                    if card["draw"]["spell_put_back"]:
+                        _put_back(card["draw"]["spell_put_back"])
                 if model_discard and card["draw"]["spell_discard"] and not _cost_first:
                     discard_n(card["draw"]["spell_discard"])
                 if model_treasures and card["combat"]["spell_treasure"]:
@@ -3087,6 +3115,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # time this class has bitten.
                 if model_combat and c["combat"]["mass_animate_threshold"]:
                     return True
+                # A COMBAT-TRIGGER PERMANENT WITH NO BODY (2026-11-06): Sword of Fire and Ice,
+                # Mask of Memory, Coastal Piracy. The trigger was read and registered on arrival,
+                # and no loop ever cast the card -- the class this predicate keeps relearning.
+                # Mirrored in `model_coverage.never_cast`.
+                if model_combat and any(c["combat"][k] for k in (
+                        "attack_draw", "attack_damage", "attack_mana", "attack_treasure")):
+                    return True
                 # A DISCARD OR DRAW PAYOFF WITH NO BODY -- Improbable Alliance is
                 # an enchantment that draws nothing and makes no mana -- is an
                 # engine permanent, in the predicate in the same commit as the
@@ -3303,6 +3338,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     for ty_, per_ in team_anthem_on_type:
                         if ty_ in (card.get("type_line") or "") and cb_ is not card["combat"]:
                             team_anthem += apply_counter_mod(per_, counter_plus, counter_times)
+                    # ITS COMBAT TRIGGER, registered at the door it was cast through
+                    # (2026-11-06): an Equipment's hit, Coastal Piracy. The body door
+                    # registers a creature's; this one registered none.
+                    if model_combat and any(cb_[k] for k in (
+                            "attack_mana", "attack_treasure", "attack_draw",
+                            "attack_damage", "attack_token_bodies")):
+                        combat_engines.append(cb_)
 
             # A NONCREATURE ANTHEM IS CAST WHEN THERE IS A BOARD FOR IT, taught in the
             # same commit as the channel (the never-cast class, a ninth time): it
@@ -3826,11 +3868,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if _e["per_opponent_cast_draw"]:
                     _whole = int(OPPONENT_CASTS_PER_TURN)
                     _frac = OPPONENT_CASTS_PER_TURN - _whole
-                    _casts = sum(_whole + (rng.random() < _frac)
-                                 for _ in range(GOLDFISH_OPPONENTS))
+                    _per_seat = [_whole + (rng.random() < _frac)
+                                 for _ in range(GOLDFISH_OPPONENTS)]
                     if _e["per_opponent_cast_noncreature"]:
-                        _casts = sum(1 for _ in range(_casts)
-                                     if rng.random() < OPPONENT_NONCREATURE_SHARE)
+                        _per_seat = [sum(1 for _ in range(_n)
+                                         if rng.random() < OPPONENT_NONCREATURE_SHARE)
+                                     for _n in _per_seat]
+                    # ESPER SENTINEL (2026-11-06): their FIRST such spell each turn, so one
+                    # trigger at most per seat.
+                    if _e.get("per_opponent_cast_first"):
+                        _per_seat = [min(_n, 1) for _n in _per_seat]
+                    _casts = sum(_per_seat)
                     _drawn = sum(1 for _ in range(_casts)
                                  if not _e["per_opponent_cast_taxed"]
                                  or rng.random() >= TITHE_PAY_RATE)
@@ -3930,6 +3978,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                                      counter_times) * _drawn_t
                 counter_power += _ctr
                 _ar["counters"] += _ctr
+                # SHANG-CHI'S TENTH COUNTER (2026-11-06): once, on the payoff's own counters.
+                # Fired after this loop, so every payoff here has already read the turn's draws.
+                if _e.get("tenth_counter_draw") and not _ar.get("tenth_fired") \
+                        and _ar["counters"] >= 10:
+                    _ar["tenth_fired"] = True
+                    tenth_counter_fires.append(_e)
                 if any(_e is _c for _c in commander_event_objs):
                     commander_counters += _ctr
                     if _ctr and id(_e) not in commander_first_counter:
@@ -3950,6 +4004,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         bodies_cum += 1
         # THE MULTIPLIERS APPLY LAST, each to what it reaches.
         carried_draws = 0
+        # The tenth-counter draws, CARRIED like a combat draw: the payoffs have settled.
+        for _e in tenth_counter_fires:
+            _b4 = drawn_this_turn
+            draw_n(_e["tenth_counter_draw"])
+            carried_draws += drawn_this_turn - _b4
+            if _e["tenth_counter_gain"]:
+                event_gain_events += 1
+                event_gain_total += _e["tenth_counter_gain"]
+        tenth_counter_fires.clear()
         _evt_dmg = sum(_n * _noncombat_mult(_kind) for _kind, _n in _evt_by.items())
         if _evt_dmg:
             opponent_life -= _evt_dmg
@@ -4092,6 +4155,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump) * _power_mult)
                           * _strikes(i), battlefield[i][5])
                          for i in _able]
+            # EQUIP, ONCE, BEFORE THE FIRST SWING THAT HAS AN ATTACKER (2026-11-06). Sorcery
+            # speed, from what the main phase left; nothing here removes the creature, so it
+            # stays attached. Cheapest equip first.
+            if attackers:
+                for _eng in sorted((e for e in combat_engines
+                                    if e.get("equip_cost") is not None
+                                    and id(e) not in equipped_engines),
+                                   key=lambda e: e["equip_cost"]):
+                    if spend(_act_cost(_eng["equip_cost"])):
+                        equipped_engines.add(id(_eng))
             # TWO CLOCKS FROM ONE SWING. An infect attacker's damage is poison
             # (702.90b) and never touches the life total; a toxic attacker
             # deals its damage AND adds N counters on connecting, which with
@@ -4231,15 +4304,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     battlefield[_i] = _e[:7] + (True,) + _e[8:]
                 poisoned += swing_poison + ping_poison
                 for engine in combat_engines:
+                    # AN EQUIPMENT ONLY TRIGGERS ON A CREATURE IT IS ATTACHED TO, and its equip
+                    # was paid before the attack (2026-11-06). Sokka needs company.
+                    if engine.get("equip_cost") is not None and id(engine) not in equipped_engines:
+                        continue
+                    if engine.get("attack_needs_company") \
+                            and len(attackers) < 1 + engine["attack_needs_company"]:
+                        continue
                     pool += engine["attack_mana"]
                     etb_by["creature" if engine["is_creature"] else "other"] += engine["attack_damage"]
                     if model_treasures:
                         treasures += engine["attack_treasure"]
-                    for _ in range(engine["attack_draw"]):
-                        if deck:
-                            extra = deck.pop(0)
-                            hand.append(extra)
-                            seen.add(extra["name"])
+                    # A COMBAT DRAW IS A DRAW (2026-11-06). These went straight from the deck to
+                    # the hand, so no doubler touched them and no per-draw payoff saw them:
+                    # Shabraz never grew off a Sword of Fire and Ice hit. Through `draw_n` now,
+                    # and CARRIED, because the payoffs settled before combat this turn; they are
+                    # paid at the next settlement, before the next swing -- when a counter counts.
+                    if engine["attack_draw"]:
+                        _b4 = drawn_this_turn
+                        draw_n(engine["attack_draw"])
+                        carried_draws += drawn_this_turn - _b4
+                        if model_discard and engine.get("attack_discard"):
+                            discard_n(engine["attack_discard"])
                     # Tokens made mid-combat are summoning-sick, so they swell
                     # the board for NEXT turn rather than this swing.
                     if engine["attack_token_bodies"]:
@@ -4715,7 +4801,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _before = drawn_this_turn
             discard_n(0, everything=True)
             draw_n(spells_cast_this_turn)
-            carried_draws = drawn_this_turn - _before
+            # `+=` since 2026-11-06: combat draws are carried too.
+            carried_draws += drawn_this_turn - _before
         # THE HAND LIMIT. After `discarded_by_turn` is taken, so these discards pay Brallin
         # and friends NEXT turn: a turn late against a table, a floor. `discard_n`'s stated
         # policy picks them, spare lands first and then the most expensive.

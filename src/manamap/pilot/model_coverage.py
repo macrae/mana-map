@@ -307,6 +307,10 @@ def never_cast(profile, flags):
                 # added here in the same edit as the channel, because the fleet
                 # test failed the moment the channel alone was taught.
                 cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"),
+                # a bodiless combat trigger (an Equipment's hit) is cast by
+                # `_engine_permanent` since 2026-11-06
+                cb.get("attack_draw"), cb.get("attack_damage"), cb.get("attack_mana"),
+                cb.get("attack_treasure"),
                 # a haste enabler is cast by the combat-payoff loop
                 cb.get("team_haste"), cb.get("cast_damage"),
                 cb.get("spell_damage_greatest_power"),

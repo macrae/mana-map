@@ -63,7 +63,11 @@ def test_a_card_with_no_such_trigger_returns_none():
 def test_the_type_gates_are_the_same_four_as_the_draw_channel():
     """One rule, two channels: a cast trigger fires where a non-land PERMANENT
     joins the battlefield, so only permanent-type gates are counted completely."""
-    assert set(goldfish._CAST_TOKEN_TYPE_GATES) == set(goldfish._CAST_DRAW_GATES)
+    # The instant-or-sorcery gate (Archmage of Runes, 2026-11-06) is a SPELL gate, fired by
+    # `_note_cast` on every instant or sorcery cast, never at a permanent's door.
+    from manamap.pilot.goldfish_profiles import SPELL_CAST_GATE
+    permanent_gates = {k for k, v in goldfish._CAST_DRAW_GATES.items() if v != SPELL_CAST_GATE}
+    assert set(goldfish._CAST_TOKEN_TYPE_GATES) == permanent_gates
 
 
 # ── it must actually be cast, and actually fire ───────────────────────────

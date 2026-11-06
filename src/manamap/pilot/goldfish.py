@@ -391,9 +391,30 @@ def draw_is_read_elsewhere(card):
     eng = engine_profile(card)
     return bool(any(ev[k] for k in ("per_opponent_cast_draw", "per_opponent_draw_our_draw",
                                     "opponent_second_draw_our_draw", "per_opponent_draw_paid_draw",
-                                    "per_discard_draw", "first_discard_draw"))
+                                    "per_discard_draw", "first_discard_draw",
+                                    "tenth_counter_draw"))
                 or ev["per_discard_modes"]
                 or eng["cycling"] or eng["cast_loot"] or eng["loyalty_loot"] or eng["end_step_wheel"])
+
+
+def draw_is_unread(card, *, model_discard, model_combat, model_deaths):
+    """THE ONE ANSWER TO "DOES THE MODEL READ THIS CARD'S DRAW?" (2026-11-06).
+
+    Two readers asked it two ways -- `meta.draw_not_modelled` here and net-change's blind
+    spots -- and drifted: the report named Sword of Fire and Ice as unread on the branch whose
+    figures it had just priced. A card is unread only if `draw_profile` names it AND no other
+    channel the deck runs reads its draw: the event and engine channels (under discard), a
+    death trigger (sacrifice or deaths), or a combat trigger (combat)."""
+    card = dict(card, oracle_text=card.get("oracle_text") or "")
+    if not draw_profile(card)["unmodelled"]:
+        return False
+    if model_discard and draw_is_read_elsewhere(card):
+        return False
+    if model_deaths and death_profile(card)["death_draw"]:
+        return False
+    if model_combat and combat_profile(card)["attack_draw"]:
+        return False
+    return True
 
 
 MODEL_ASSUMPTIONS = [
@@ -1586,18 +1607,9 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     for c in doc.get("cards", []):
         if c.get("is_commander"):
             continue
-        d = draw_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
-        if d["unmodelled"] and model_discard and draw_is_read_elsewhere(c):
-            continue
-        if d["unmodelled"]:
-            # A CARD IS ONLY UNMODELLED IF NO CHANNEL READS IT — the rule
-            # `drain_unmodelled` below already keeps. Liliana, Dreadhorde
-            # General draws on every death the sacrifice sweep or the death
-            # rate produces, and was listed here as not modelled (2026-10-19).
-            dp = death_profile(dict(c, oracle_text=c.get("oracle_text") or ""))
-            if (model_sacrifice or model_deaths) and dp["death_draw"]:
-                continue
-            draw_unmodelled.append(d["unmodelled"])
+        if draw_is_unread(c, model_discard=model_discard, model_combat=model_combat,
+                          model_deaths=bool(model_sacrifice or model_deaths)):
+            draw_unmodelled.append(c["name"])
     restricted = sorted({
         f"{c['name']} ({produced_mana(c.get('oracle_text'), c.get('type_line'))})"
         for c in doc.get("cards", [])

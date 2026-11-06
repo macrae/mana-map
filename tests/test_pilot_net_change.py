@@ -991,8 +991,11 @@ def test_a_draw_the_model_prices_is_not_reported_as_unmeasured():
         "the draw blind spot is decided by ROLE rather than by whether the "
         "model can read the card")
     # The predicate asks the PROFILE, which is the thing that knows.
+    # Since 2026-11-06 through the ONE predicate `meta.draw_not_modelled` uses too.
+    from manamap.pilot import goldfish
     probe = inspect.getsource(net_change._draw_is_blind)
-    assert 'draw_profile(card)["unmodelled"]' in probe
+    assert "draw_is_unread(" in probe
+    assert 'draw_profile(card)["unmodelled"]' in inspect.getsource(goldfish.draw_is_unread)
     assert 'targets.get("model_draw")' in probe, (
         "a deck that never opted in really does draw one a turn")
 

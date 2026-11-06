@@ -224,7 +224,7 @@ _ETB_DRAW_PER_TYPE_RE = re.compile(
 #: Witch's Mark would read +2 when it is net +1. It needs the paired discard
 #: read in the same commit, which is a modelling change, not a regex fix.
 _SPELL_DRAW_RE = re.compile(
-    r"(?:^|\.\s+|^\s*)(?:you )?draw (a|one|two|three) cards?", re.I)
+    r"(?:^|\.\s+|^\s*)(?:you )?draw (a|one|two|three|four) cards?", re.I)
 #: "Scry 2, then draw two cards" (Read the Bones) -- the draw is the second
 #: clause of its sentence and the sentence-anchored pattern above never saw
 #: it. Corpus sweep 2026-09-10: 34 instants and sorceries, ONE of which was
@@ -285,8 +285,18 @@ _CAST_DRAW_RE = re.compile(
     r"whenever you cast (?:a|an|another) ([\w' -]{0,28}?)spell[^.]{0,50}?,\s*"
     r"(?:you may )?draw (a|one|two|three) cards?", re.I)
 #: gate -> the substring that must appear in the CAST card's type line.
+SPELL_CAST_GATE = "instant or sorcery"
 _CAST_DRAW_GATES = {"enchantment": "Enchantment", "creature": "Creature",
-                    "artifact": "Artifact", "aura": "Aura"}
+                    "artifact": "Artifact", "aura": "Aura",
+                    # ARCHMAGE OF RUNES (2026-11-06). Not a type-line substring on purpose: no
+                    # permanent's type line contains it, so the permanent-cast sites never fire
+                    # it, and `_note_cast` fires it for every instant or sorcery CAST (never a copy).
+                    "instant or sorcery": SPELL_CAST_GATE}
+#: "Draw N cards, then put two cards from your hand on top of your library" (Brainstorm,
+#: Brainsurge). The draw is real and every card of it pays Shabraz; the hand keeps N - 2.
+_DRAW_UNPAYABLE_PRICE_RE = re.compile(r"discard the rest|skip your next turn", re.I)
+_DRAW_PUT_BACK_RE = re.compile(
+    r"then put (a|one|two|three) cards? from your hand on top of your library", re.I)
 _DRAW_POWER_MAX_RE = re.compile(r"power (\d+) or less", re.I)
 _DRAW_POWER_MIN_RE = re.compile(r"power (\d+) or greater", re.I)
 _DRAW_ONCE_RE = re.compile(r"once each turn", re.I)
@@ -411,9 +421,18 @@ _EVENT_PAID_DRAW_RE = re.compile(
 #: AND A NONCREATURE SPELL (2026-11-04): Mystic Remora said "casts a noncreature spell" and
 #: read as a blank that the coverage report called seen. `OPPONENT_NONCREATURE_SHARE` is
 #: what thins the cast count. Sweep: Remora and Nezahal gain; Rhystic and its white twin hold.
+#: ESPER SENTINEL'S SHAPE TOO (2026-11-06): "Whenever an opponent casts THEIR FIRST noncreature
+#: spell EACH TURN, draw a card unless that player pays {X}, where X is this creature's power."
+#: At most one trigger per opponent a turn (`first`). The {X} tax is paid at the same authored
+#: TITHE_PAY_RATE as a fixed one.
 _OPP_CAST_DRAW_RE = re.compile(
-    r"whenever an opponent casts a (?P<noncreature>noncreature )?spell, (?:you may )?draw (a|two) cards?"
-    r"(?P<tax> unless that player pays \{\d+\})?", re.I)
+    r"whenever an opponent casts (?:a (?P<noncreature>noncreature )?spell"
+    r"|their (?P<first>first) (?P<noncreature_first>noncreature )?spell each turn), "
+    r"(?:you may )?draw (?P<n>a|two) cards?"
+    r"(?P<tax> unless that player pays \{(?:\d+|X)\})?", re.I)
+_TENTH_COUNTER_DRAW_RE = re.compile(
+    r"when the tenth \+1/\+1 counter is put on [^,.]{1,40}, you draw (\w+) cards?"
+    r"(?: and gain (\d+) life)?", re.I)
 _EVENT_OPP_DAMAGE_RE = re.compile(
     r"deals (\d+) damage to (?:them|that player|that opponent)"
     r"|that (?:player|opponent) loses (\d+) life", re.I)
@@ -1002,6 +1021,8 @@ def event_payoffs(card):
            "per_draw_gain": 0, "per_discard_gain": 0, "token_colors": [],
            "per_opponent_draw_paid_draw": 0, "per_opponent_draw_paid_cost": 0,
            "per_opponent_cast_draw": 0, "per_opponent_cast_taxed": False,
+           "per_opponent_cast_first": False,
+           "tenth_counter_draw": 0, "tenth_counter_gain": 0,
            # DAMAGE ON THEIR TURN (Fevered Visions, Sulfuric Vortex): N a turn
            # against the one seat, when its hand meets `_hand_min` (0 = always).
            "per_opponent_turn_damage": 0, "per_opponent_turn_damage_hand_min": 0,
@@ -1071,9 +1092,17 @@ def event_payoffs(card):
                                          if re.search(rf"\b{w}\b", tok.group(0), re.I))
     oc = _OPP_CAST_DRAW_RE.search(text)
     if oc:
-        out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group(2).lower()]
+        out["per_opponent_cast_draw"] += _DRAW_WORDS[oc.group("n").lower()]
         out["per_opponent_cast_taxed"] = bool(oc.group("tax"))
-        out["per_opponent_cast_noncreature"] = bool(oc.group("noncreature"))
+        out["per_opponent_cast_noncreature"] = bool(oc.group("noncreature")
+                                                    or oc.group("noncreature_first"))
+        out["per_opponent_cast_first"] = bool(oc.group("first"))
+    # SHANG-CHI'S TENTH COUNTER (2026-11-06): one trigger, once, when the payoff's own
+    # counters reach ten. The counters are the per-draw ones read above.
+    _tc = _TENTH_COUNTER_DRAW_RE.search(text)
+    if _tc:
+        out["tenth_counter_draw"] = _DRAW_WORDS.get(_tc.group(1).lower(), 0)
+        out["tenth_counter_gain"] = int(_tc.group(2) or 0)
     _dtt = _DISCARD_TYPED_TREASURE_RE.search(text)
     if _dtt:
         out["per_discard_typed_treasure"] = tuple(
@@ -2131,6 +2160,8 @@ def draw_profile(card):
            "spell_discard_is_cost": False,
            # Heartwarming Redemption: "You gain life equal to the number of cards in your hand."
            "spell_gain_hand": False,
+           # Brainstorm, Brainsurge: cards put back on top after the draw (2026-11-06).
+           "spell_put_back": 0,
            "unmodelled": None}
     _dd = _DRAW_DOUBLER_RE.search(text)
     if _dd:
@@ -2347,8 +2378,16 @@ def draw_profile(card):
         # has one, and it pays Brallin. Only a cost that is EXACTLY a discard is
         # read; a sacrifice or anything else keeps the refusal.
         _dc = _DISCARD_COST_RE.search(text)
+        # A PRICE THIS MODEL CANNOT CHARGE (2026-11-06, the draw-four sweep): Breakthrough
+        # keeps X and discards the rest; Meditate skips your next turn. Read as a plain draw
+        # both were free card advantage. Left unread, and named by the guard below.
+        if sp and _DRAW_UNPAYABLE_PRICE_RE.search(text):
+            sp = None
         if sp and (not _DRAW_ADDITIONAL_COST_RE.search(text) or _dc):
             out["spell_draw"] = _DRAW_WORDS[sp.group(1).lower()]
+            _pb = _DRAW_PUT_BACK_RE.search(text)
+            if _pb:
+                out["spell_put_back"] = _DRAW_WORDS[_pb.group(1).lower()]
             td = _DRAW_THEN_DISCARD_RE.search(text)
             if td:
                 out["spell_discard"] = _DRAW_WORDS[td.group(1).lower()]
@@ -2691,11 +2730,23 @@ def team_haste_grant(text):
 # "create a 1/1 red Dragon creature token", "create two 2/2 ... tokens"
 _TOKEN_PT_RE = re.compile(r"create (\w+) ([\dX]+)/([\dX]+)([^.]*?)tokens?", re.IGNORECASE)
 _ATTACKS_RE = re.compile(
-    r"whenever you attack\b|whenever (?:this creature|[A-Z][\w' ,-]{2,30}|one or more [\w ]+ you control) attacks",
+    r"whenever you attack\b|whenever (?:this creature|[A-Z][\w' ,-]{2,30}|one or more [\w ]+ you control) attacks"
+    # SOKKA (2026-11-06): "Whenever Sokka and at least one other creature attack" -- `attack`,
+    # plural verb, so the alternative above never saw it. Gated on company in the turn loop.
+    r"|whenever (?:this creature|[A-Z][\w' ,-]{2,30}?) and at least (?P<company>one|two) other creatures? attack\b",
     re.IGNORECASE)
 _COMBAT_DMG_RE = re.compile(
-    r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}) deals combat damage to a player",
+    # "TO AN OPPONENT" IS "TO A PLAYER" WITH NO BLOCKERS AND ONE SEAT (2026-11-06): Willie
+    # Lumpkin. The goldfish only ever damages an opponent, so the two read the same here.
+    r"whenever (?:this creature|[A-Z][\w' ,-]{2,30}) deals combat damage to (?:a player|an opponent)",
     re.IGNORECASE)
+#: AN EQUIPMENT'S COMBAT TRIGGER WAITS FOR ITS EQUIP (2026-11-06). "Whenever equipped creature
+#: deals combat damage" read as a free engine from the turn the artifact landed, with no
+#: creature carrying it and the equip never paid. The turn loop pays the equip once.
+_EQUIPPED_TRIGGER_RE = re.compile(r"whenever equipped creature (?:deals combat damage|attacks)", re.I)
+#: Mask of Memory: "you may draw two cards. If you do, discard a card."
+_ATTACK_DRAW_THEN_DISCARD_RE = re.compile(
+    r"draw (?:\w+) cards?\.? (?:if you do, |then )?discard (a|one|two) cards?", re.I)
 # POISON. Infect makes every point of damage a source deals to a player a poison
 # counter instead (CR 702.90b) — combat or not — and ten counters lose the game
 # (704.5c). Toxic N adds N counters when the creature deals COMBAT damage, on top
@@ -4153,6 +4204,11 @@ def combat_profile(card):
         "attack_mana": 0,
         "attack_treasure": 0,
         "attack_draw": 0,
+        # 2026-11-06: Mask of Memory's discard after its draw; Sokka's "and at least one
+        # other creature attack"; an Equipment's equip, paid once before its trigger counts.
+        "attack_discard": 0,
+        "attack_needs_company": 0,
+        "equip_cost": None,
         "attack_damage": 0,
         "attack_token_power": 0,
         "attack_token_bodies": 0,
@@ -4346,6 +4402,15 @@ def combat_profile(card):
             word = drawn.group(1).lower()
             profile["attack_draw"] = int(word) if word.isdigit() else \
                 _NUMBER_WORDS.get(word, 1)
+            _ad = _ATTACK_DRAW_THEN_DISCARD_RE.search(window)
+            if _ad:
+                profile["attack_discard"] = _NUMBER_WORDS.get(_ad.group(1).lower(), 1) or 1
+        if combat_trigger.groupdict().get("company"):
+            profile["attack_needs_company"] = _NUMBER_WORDS.get(
+                combat_trigger.group("company").lower(), 1)
+        if "Equipment" in type_line and _EQUIPPED_TRIGGER_RE.search(text):
+            _eq = _EQUIP_COST_RE.search(text)
+            profile["equip_cost"] = _activation_mana(_eq.group(1)) if _eq else 0
         if _DMG_EQUAL_TREASURE_RE.search(window):
             profile["damage_scales_with_treasure"] = True
         # Direct damage on attack (Drakuseth). Only the FIRST "deals N damage"
