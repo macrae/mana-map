@@ -79,9 +79,9 @@ Mostly two-colour fixing and pain lands. [Phyrexian Tower](https://manamap.seanm
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v0.1.0 (V1), 2026-09-17. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **92%**
+- share of seeded games where the commander was CAST by turn six: **91%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.138**
+- mean turn the commander is first cast: **turn 4.168**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **51%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **34%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **24%**
@@ -89,7 +89,7 @@ Goldfish, 10,000 seeded games, measured on v0.1.0 (V1), 2026-09-17. Each group b
 - RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **74%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **11%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **69%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **59%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **58%**
 - RAMP drawn — an accelerant of any kind: **69%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **80%**
 - A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**

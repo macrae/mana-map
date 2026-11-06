@@ -4,14 +4,12 @@
       "cards_that_draw": 11,
       "draw_not_modelled": [
         "Festering Thicket",
-        "Glissa Sunslayer",
         "Golgari Grave-Troll",
         "Izoni, Thousand-Eyed",
         "Professor Dellian Fel",
-        "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
         "Village Rites"
       ],
-      "modelled": 4,
+      "modelled": 6,
       "why": "ETB, spell, upkeep, arrival and death-triggered draw are modelled (death draw only on the deaths the sacrifice and death channels produce); activated, X-based and attack-triggered draw are not, and the cards are named in `draw_not_modelled`. Read the two numbers together: a deck whose count is twelve and whose modelled figure is one has almost no UNCONDITIONAL card advantage, which is a finding about the deck."
     },
     "combat_effects_not_modelled": [
@@ -61,7 +59,13 @@
     "model_assumptions": [
       "Simulates resource development, not full games (no interaction, no removal).",
       "Draw every turn including turn 1 (multiplayer Commander).",
-      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+      "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+      "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+      "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+      "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+      "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
       "One land drop per turn when available.",
       "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
       "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -90,6 +94,8 @@
       "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
       "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
       "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
+      "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+      "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
       "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
       "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
@@ -102,56 +108,60 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN FIRES ONLY ON THE DEATHS THIS MODEL PRODUCES. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance, Vraan and Vein Ripper key on a creature DYING, and a death happens here in three places and nowhere else: a free sacrifice outlet converting tokens (`model_sacrifice`), a one-turn copy leaving at the end step, and the per-turn rate read off a Forge run (`model_deaths`). No blockers and no removal, so a deck with neither channel on has no deaths and the contribution is ABSENT, not zero; a deck whose kill runs through them is understated by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "ddec1ff58e1d",
-    "seed": 42
+    "model_version": "25f3c2b93a87",
+    "seed": 42,
+    "targets_sha256": "3735346ee468e2d1019c3d28dc819a19ce37bce5174605fd15311274f89d3389",
+    "treasure_sources_not_modelled": [
+      "Pitiless Plunderer"
+    ]
   },
   "metrics": {
     "combat": {
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.812,
+        "10": 0.777,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
         "5": 0.0,
         "6": 0.001,
-        "7": 0.042,
-        "8": 0.265,
-        "9": 0.594
+        "7": 0.036,
+        "8": 0.229,
+        "9": 0.54
       },
       "kill_turn_histogram": {
-        "10": 2177,
+        "10": 2375,
         "6": 10,
-        "7": 409,
-        "8": 2235,
-        "9": 3290
+        "7": 347,
+        "8": 1933,
+        "9": 3107
       },
       "mean_board_power_by_turn": {
-        "1": 0.162,
-        "10": 14.181,
-        "2": 0.98,
-        "3": 2.279,
-        "4": 4.607,
-        "5": 6.272,
-        "6": 8.127,
-        "7": 9.832,
-        "8": 11.415,
-        "9": 12.872
+        "1": 0.142,
+        "10": 13.675,
+        "2": 0.916,
+        "3": 2.08,
+        "4": 4.277,
+        "5": 5.766,
+        "6": 7.468,
+        "7": 9.142,
+        "8": 10.745,
+        "9": 12.273
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 12.897,
-        "2": 0.193,
-        "3": 1.048,
-        "4": 2.318,
-        "5": 4.693,
-        "6": 6.296,
-        "7": 8.159,
-        "8": 9.858,
-        "9": 11.443
+        "10": 12.442,
+        "2": 0.168,
+        "3": 0.981,
+        "4": 2.126,
+        "5": 4.393,
+        "6": 5.857,
+        "7": 7.585,
+        "8": 9.283,
+        "9": 10.901
       },
-      "mean_kill_turn": 8.888,
+      "mean_kill_turn": 8.964,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -165,124 +175,152 @@
         "9": 0.0
       },
       "median_kill_turn": 9,
-      "no_kill_by_max_turn_rate": 0.188
+      "no_kill_by_max_turn_rate": 0.223
     },
     "commander": {
-      "cast_by_turn_6_rate": 0.919,
+      "cast_by_turn_6_rate": 0.914,
       "cast_turn_histogram": {
-        "10": 69,
-        "2": 735,
-        "3": 1446,
-        "4": 5881,
-        "5": 668,
-        "6": 458,
-        "7": 307,
-        "8": 206,
-        "9": 107,
-        "not_by_max_turn": 123
+        "10": 70,
+        "2": 632,
+        "3": 1545,
+        "4": 5811,
+        "5": 681,
+        "6": 472,
+        "7": 332,
+        "8": 217,
+        "9": 112,
+        "not_by_max_turn": 128
       },
-      "mean_cast_turn": 4.138,
+      "mean_cast_turn": 4.168,
       "median_cast_turn": 4
+    },
+    "commander_recursion": {
+      "mean_experience_by_turn": {
+        "1": 0.0,
+        "10": 2.528,
+        "2": 0.0,
+        "3": 0.008,
+        "4": 0.095,
+        "5": 0.302,
+        "6": 0.611,
+        "7": 0.999,
+        "8": 1.46,
+        "9": 1.972
+      },
+      "mean_returned_to_battlefield": 1.602,
+      "mean_returned_to_hand": 0.455
     },
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 0.0,
+        "10": 1.113,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.0,
-        "5": 0.0,
-        "6": 0.0,
-        "7": 0.0,
-        "8": 0.0,
-        "9": 0.0
+        "4": 0.008,
+        "5": 0.053,
+        "6": 0.152,
+        "7": 0.308,
+        "8": 0.52,
+        "9": 0.79
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 0.0,
+        "10": 0.323,
         "2": 0.0,
         "3": 0.0,
-        "4": 0.0,
-        "5": 0.0,
-        "6": 0.0,
-        "7": 0.0,
-        "8": 0.0,
-        "9": 0.0
+        "4": 0.008,
+        "5": 0.045,
+        "6": 0.099,
+        "7": 0.156,
+        "8": 0.212,
+        "9": 0.269
       },
-      "share_of_games_draining_by_turn_10": 0.0
+      "share_of_games_draining_by_turn_10": 0.243
     },
     "interaction_castable_by_turn": {
-      "1": 0.052,
-      "10": 0.707,
-      "2": 0.15,
-      "3": 0.125,
-      "4": 0.101,
-      "5": 0.275,
-      "6": 0.362,
-      "7": 0.468,
-      "8": 0.558,
-      "9": 0.64
+      "1": 0.07,
+      "10": 0.735,
+      "2": 0.163,
+      "3": 0.127,
+      "4": 0.171,
+      "5": 0.332,
+      "6": 0.419,
+      "7": 0.51,
+      "8": 0.591,
+      "9": 0.66
     },
     "interaction_in_hand_by_turn": {
       "1": 0.778,
-      "10": 0.885,
-      "2": 0.816,
-      "3": 0.825,
-      "4": 0.84,
-      "5": 0.818,
-      "6": 0.817,
-      "7": 0.831,
-      "8": 0.849,
-      "9": 0.869
+      "10": 0.905,
+      "2": 0.818,
+      "3": 0.838,
+      "4": 0.854,
+      "5": 0.837,
+      "6": 0.838,
+      "7": 0.854,
+      "8": 0.87,
+      "9": 0.889
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.489,
-      "2": 0.997,
-      "3": 0.902,
-      "4": 0.777,
-      "5": 0.657,
-      "6": 0.577,
-      "7": 0.531,
-      "8": 0.508,
-      "9": 0.49
+      "10": 0.496,
+      "2": 0.996,
+      "3": 0.897,
+      "4": 0.771,
+      "5": 0.654,
+      "6": 0.571,
+      "7": 0.526,
+      "8": 0.505,
+      "9": 0.492
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.603,
+      "10": 7.581,
       "2": 2.219,
-      "3": 3.228,
-      "4": 4.045,
-      "5": 4.734,
-      "6": 5.376,
-      "7": 5.959,
-      "8": 6.514,
-      "9": 7.058
+      "3": 3.226,
+      "4": 4.035,
+      "5": 4.721,
+      "6": 5.356,
+      "7": 5.932,
+      "8": 6.485,
+      "9": 7.028
     },
     "mean_bodies_by_turn": {
-      "1": 0.33,
-      "10": 7.455,
-      "2": 0.885,
-      "3": 1.587,
-      "4": 2.02,
-      "5": 3.034,
-      "6": 4.073,
-      "7": 5.0,
-      "8": 5.865,
-      "9": 6.682
+      "1": 0.287,
+      "10": 9.681,
+      "2": 0.846,
+      "3": 1.437,
+      "4": 1.863,
+      "5": 2.963,
+      "6": 4.224,
+      "7": 5.515,
+      "8": 6.855,
+      "9": 8.257
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 0.231,
+      "10": 1.928,
+      "2": 0.001,
+      "3": 0.03,
+      "4": 0.104,
+      "5": 0.263,
+      "6": 0.501,
+      "7": 0.799,
+      "8": 1.144,
+      "9": 1.523
+    },
+    "mean_sacrifices_by_turn": {
+      "1": 0.0,
+      "10": 2.556,
       "2": 0.0,
-      "3": 0.0,
-      "4": 0.005,
-      "5": 0.029,
-      "6": 0.071,
-      "7": 0.113,
-      "8": 0.156,
-      "9": 0.195
+      "3": 0.013,
+      "4": 0.104,
+      "5": 0.316,
+      "6": 0.631,
+      "7": 1.021,
+      "8": 1.485,
+      "9": 1.998
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -302,113 +340,139 @@
         "1": 61,
         "2": 3815,
         "3": 3542,
-        "4": 1944,
-        "5": 617,
-        "6": 6,
-        "7": 1
+        "4": 1955,
+        "5": 612,
+        "6": 1
       },
       "mean_mulligans": 0.248
     },
+    "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.645,
+        "assembled_rate": 0.644,
         "assembled_rate_assisted": 0.81,
-        "by_turn_6_rate": 0.509,
+        "by_turn_6_rate": 0.507,
         "by_turn_6_rate_assisted": 0.676,
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "mean_turn": 3.448,
-        "mean_turn_assisted": 3.354
+        "mean_turn": 3.452,
+        "mean_turn_assisted": 3.364
       },
       {
-        "assembled_rate": 0.46,
-        "assembled_rate_assisted": 0.717,
-        "by_turn_6_rate": 0.34,
-        "by_turn_6_rate_assisted": 0.569,
+        "assembled_rate": 0.459,
+        "assembled_rate_assisted": 0.715,
+        "by_turn_6_rate": 0.339,
+        "by_turn_6_rate_assisted": 0.567,
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "mean_turn": 3.845,
-        "mean_turn_assisted": 3.847
+        "mean_turn": 3.819,
+        "mean_turn_assisted": 3.865
       },
       {
-        "assembled_rate": 0.318,
-        "assembled_rate_assisted": 0.625,
+        "assembled_rate": 0.319,
+        "assembled_rate_assisted": 0.624,
         "by_turn_6_rate": 0.242,
-        "by_turn_6_rate_assisted": 0.498,
+        "by_turn_6_rate_assisted": 0.496,
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
         "mean_turn": 3.693,
-        "mean_turn_assisted": 3.947
+        "mean_turn_assisted": 3.977
       },
       {
-        "assembled_rate": 0.106,
+        "assembled_rate": 0.105,
         "assembled_rate_assisted": 0.377,
-        "by_turn_6_rate": 0.057,
-        "by_turn_6_rate_assisted": 0.22,
+        "by_turn_6_rate": 0.055,
+        "by_turn_6_rate_assisted": 0.221,
         "label": "STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss",
-        "mean_turn": 5.699,
-        "mean_turn_assisted": 5.731
+        "mean_turn": 5.726,
+        "mean_turn_assisted": 5.699
       },
       {
-        "assembled_rate": 0.852,
-        "assembled_rate_assisted": 0.923,
-        "by_turn_6_rate": 0.742,
-        "by_turn_6_rate_assisted": 0.839,
+        "assembled_rate": 0.85,
+        "assembled_rate_assisted": 0.922,
+        "by_turn_6_rate": 0.74,
+        "by_turn_6_rate_assisted": 0.836,
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "mean_turn": 2.713,
-        "mean_turn_assisted": 2.551
+        "mean_turn": 2.727,
+        "mean_turn_assisted": 2.582
       },
       {
         "assembled_rate": 0.234,
-        "assembled_rate_assisted": 0.479,
-        "by_turn_6_rate": 0.109,
-        "by_turn_6_rate_assisted": 0.259,
+        "assembled_rate_assisted": 0.476,
+        "by_turn_6_rate": 0.108,
+        "by_turn_6_rate_assisted": 0.257,
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "mean_turn": 6.304,
-        "mean_turn_assisted": 6.039
+        "mean_turn": 6.355,
+        "mean_turn_assisted": 6.038
       },
       {
         "assembled_rate": 0.819,
-        "assembled_rate_assisted": 0.909,
-        "by_turn_6_rate": 0.693,
-        "by_turn_6_rate_assisted": 0.809,
+        "assembled_rate_assisted": 0.908,
+        "by_turn_6_rate": 0.691,
+        "by_turn_6_rate_assisted": 0.806,
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "mean_turn": 2.87,
-        "mean_turn_assisted": 2.713
+        "mean_turn": 2.889,
+        "mean_turn_assisted": 2.741
       },
       {
-        "assembled_rate": 0.726,
-        "assembled_rate_assisted": 0.726,
-        "by_turn_6_rate": 0.586,
-        "by_turn_6_rate_assisted": 0.586,
+        "assembled_rate": 0.725,
+        "assembled_rate_assisted": 0.725,
+        "by_turn_6_rate": 0.584,
+        "by_turn_6_rate_assisted": 0.584,
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "mean_turn": 3.231,
-        "mean_turn_assisted": 3.231
+        "mean_turn": 3.243,
+        "mean_turn_assisted": 3.243
       },
       {
-        "assembled_rate": 0.818,
+        "assembled_rate": 0.815,
         "assembled_rate_assisted": 0.904,
-        "by_turn_6_rate": 0.694,
+        "by_turn_6_rate": 0.691,
         "by_turn_6_rate_assisted": 0.801,
         "label": "RAMP drawn — an accelerant of any kind",
-        "mean_turn": 2.884,
-        "mean_turn_assisted": 2.723
+        "mean_turn": 2.883,
+        "mean_turn_assisted": 2.743
       },
       {
-        "assembled_rate": 0.891,
-        "assembled_rate_assisted": 0.948,
-        "by_turn_6_rate": 0.797,
-        "by_turn_6_rate_assisted": 0.876,
+        "assembled_rate": 0.896,
+        "assembled_rate_assisted": 0.946,
+        "by_turn_6_rate": 0.799,
+        "by_turn_6_rate_assisted": 0.875,
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "mean_turn": 2.402,
-        "mean_turn_assisted": 2.276
+        "mean_turn": 2.436,
+        "mean_turn_assisted": 2.293
       },
       {
-        "assembled_rate": 0.188,
-        "assembled_rate_assisted": 0.563,
-        "by_turn_6_rate": 0.134,
-        "by_turn_6_rate_assisted": 0.426,
+        "assembled_rate": 0.184,
+        "assembled_rate_assisted": 0.453,
+        "by_turn_6_rate": 0.133,
+        "by_turn_6_rate_assisted": 0.333,
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "mean_turn": 4.063,
-        "mean_turn_assisted": 4.392
+        "mean_turn": 4.037,
+        "mean_turn_assisted": 4.477
       }
-    ]
+    ],
+    "treasure": {
+      "engine_online_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.167,
+        "2": 0.0,
+        "3": 0.002,
+        "4": 0.025,
+        "5": 0.04,
+        "6": 0.072,
+        "7": 0.105,
+        "8": 0.129,
+        "9": 0.149
+      },
+      "mean_treasures_in_hoard_by_turn": {
+        "1": 0.0,
+        "10": 0.512,
+        "2": 0.0,
+        "3": 0.001,
+        "4": 0.02,
+        "5": 0.037,
+        "6": 0.079,
+        "7": 0.147,
+        "8": 0.243,
+        "9": 0.36
+      }
+    }
   }
 }

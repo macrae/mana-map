@@ -96,6 +96,9 @@ NOT_A_CHANNEL = {
     # from 0.153 to 0.327 on an unchanged 99.
     "model_commander_animate": "a per-deck commander declaration, not a channel",
     "model_commander_combat_reveal": "a per-deck commander declaration, not a channel",
+    # MEREN OF CLAN NEL TOTH (2026-11-06): experience and the end-step return, with a stated
+    # sacrifice policy; checked against the commander's text.
+    "model_commander_recursion": "a per-deck commander declaration, not a channel",
     # ZADA, HEDRON GRINDER, and she is the only card in the corpus with the
     # ability. What the copies multiply is the spell's DRAW, so the cards that
     # FEED this are already covered by `draw` and a fodder spell whose draw is

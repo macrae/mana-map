@@ -25,10 +25,7 @@
     "complete": 12,
     "of": 19,
     "stale": [],
-    "older_model": [
-      "goldfish",
-      "mana"
-    ],
+    "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -1091,7 +1088,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 92,
+          "value": 91,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1109,7 +1106,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.138,
+          "value": 4.168,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1173,7 +1170,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 59,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1208,7 +1205,13 @@
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
             "Draw every turn including turn 1 (multiplayer Commander).",
-            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+            "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+            "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+            "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+            "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+            "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+            "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
             "One land drop per turn when available.",
             "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
             "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -1237,6 +1240,8 @@
             "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
             "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
             "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
+            "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+            "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
             "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
             "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
             "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
@@ -1266,15 +1271,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.603,
+            "10": 7.581,
             "2": 2.219,
-            "3": 3.228,
-            "4": 4.045,
-            "5": 4.734,
-            "6": 5.376,
-            "7": 5.959,
-            "8": 6.514,
-            "9": 7.058
+            "3": 3.226,
+            "4": 4.035,
+            "5": 4.721,
+            "6": 5.356,
+            "7": 5.932,
+            "8": 6.485,
+            "9": 7.028
           },
           "tier": "data",
           "weight": "detail",
@@ -1285,15 +1290,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.489,
-            "2": 0.997,
-            "3": 0.902,
-            "4": 0.777,
-            "5": 0.657,
-            "6": 0.577,
-            "7": 0.531,
-            "8": 0.508,
-            "9": 0.49
+            "10": 0.496,
+            "2": 0.996,
+            "3": 0.897,
+            "4": 0.771,
+            "5": 0.654,
+            "6": 0.571,
+            "7": 0.526,
+            "8": 0.505,
+            "9": 0.492
           },
           "tier": "data",
           "weight": "detail",
@@ -1303,16 +1308,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.33,
-            "10": 7.455,
-            "2": 0.885,
-            "3": 1.587,
-            "4": 2.02,
-            "5": 3.034,
-            "6": 4.073,
-            "7": 5.0,
-            "8": 5.865,
-            "9": 6.682
+            "1": 0.287,
+            "10": 9.681,
+            "2": 0.846,
+            "3": 1.437,
+            "4": 1.863,
+            "5": 2.963,
+            "6": 4.224,
+            "7": 5.515,
+            "8": 6.855,
+            "9": 8.257
           },
           "tier": "data",
           "weight": "detail",
@@ -1338,11 +1343,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2177,
+            "10": 2375,
             "6": 10,
-            "7": 409,
-            "8": 2235,
-            "9": 3290
+            "7": 347,
+            "8": 1933,
+            "9": 3107
           },
           "tier": "data",
           "weight": "detail",
@@ -1358,8 +1363,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.138,
-    "commander_cast_by_turn_6_pct": 92,
+    "commander_mean_cast_turn": 4.168,
+    "commander_cast_by_turn_6_pct": 91,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
@@ -1391,7 +1396,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 59
+        "by_turn_6_pct": 58
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -1407,18 +1412,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.888,
+      "mean_kill_turn": 8.964,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 26,
+      "kill_by_turn_8_pct": 23,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 19,
+      "no_kill_by_max_turn_pct": 22,
       "kill_turn_histogram": {
-        "10": 2177,
+        "10": 2375,
         "6": 10,
-        "7": 409,
-        "8": 2235,
-        "9": 3290
+        "7": 347,
+        "8": 1933,
+        "9": 3107
       }
     }
   },
@@ -1465,7 +1470,6 @@
     ]
   },
   "next": [
-    "measured under an older simulator: goldfish, mana — the figures were right when taken; `manamap pilot regen --slug meren-recursion` re-reads them when you want, never on its own",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 2 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

@@ -115,7 +115,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   attack_tutor=None, model_discard=False, partner=None,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None, model_hand_limit=False,
-                  commander_copy=False, hold_until=None, keep_rule=None):
+                  commander_copy=False, hold_until=None, keep_rule=None,
+                  commander_recursion=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -734,6 +735,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # commander out). Per game, like `equipped_engines`.
     equipment_out = []
     equip_on = {}
+    # MEREN (2026-11-06, `model_commander_recursion`): the creature cards in the graveyard, her
+    # experience, and what her end step returned. Absent unless declared.
+    yard_creatures = []
+    experience = 0
+    experience_by_turn = []
+    recursion_to_battlefield = 0
+    recursion_to_hand = 0
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -1056,6 +1064,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal yard_spells, tapped_treasures
             for c in cards:
                 tl = c.get("type_line") or ""
+                if commander_recursion and "Creature" in tl:
+                    yard_creatures.append(c)
                 if "Instant" in tl or "Sorcery" in tl:
                     yard_spells += 1
                     if c["engine"]["flashback"]:
@@ -1542,6 +1552,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _ in range(card["cascade"]):
                 _cascade(card["cmc"])
 
+        def _is_fodder(card):
+            """WHAT A MEREN PILOT FEEDS THE OUTLET (2026-11-06): a creature card that is not
+            itself a payoff, an engine or an outlet. Sacrificing one of those would leave its
+            registrations behind -- this model has no removal, so a registered engine never
+            leaves -- and a pilot keeps them anyway. What remains is the body whose value is
+            dying and coming back: Reassembling Skeleton, an ETB creature, a vanilla blocker."""
+            if not card or card.get("is_commander"):
+                return False
+            c = card["combat"]
+            if not c["is_creature"] or card["sac_outlet"]:
+                return False
+            if is_death_engine(card["death"]) or has_event_payoff(card.get("event")):
+                return False
+            if any(card["draw"][k] for k in ("recurring_draw", "arrival_draw", "cast_draw")):
+                return False
+            if card["reduces"] or card["token_doubler"] or is_etb_engine(c):
+                return False
+            if c["static_lord"] or c["team_haste"] or c["attack_ping_per_attacker"] \
+                    or c["team_damage_multiplier"] > 1 or c["extra_combat_free"]:
+                return False
+            if any(card["drain"].get(k) for k in (
+                    "payoff_equal", "payoff_fixed", "gain_recurring", "gain_per_enchantment",
+                    "gain_per_creature", "drain_recurring", "drain_per_enchantment",
+                    "gain_team_counters", "gain_self_counter", "per_type")):
+                return False
+            return card["treasure_trigger"] not in ("upkeep", "landfall", "opponent_draw_tax",
+                                                    "opponent_second_draw")
+
         def _free_creature_enters(card):
             """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
             declared reveal). The same door and the same registrations as a
@@ -1582,7 +1620,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      toughness=combat["toughness"],
                                      attack_gate=combat.get("attack_gate"),
                                      lord=combat.get("static_lord"),
-                                     info=_entry_info(card["name"], combat))
+                                     info=dict(_entry_info(card["name"], combat), card=card))
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
@@ -2147,7 +2185,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         lord=combat.get("static_lord"),
                         colors=card["damage_source"]["colors"],
                         mv=card["cmc"], toughness=combat["toughness"],
-                        info=_entry_info(card["name"], combat))
+                        info=dict(_entry_info(card["name"], combat), card=card))
                     creatures_entered_this_turn += 1
             # EMINENCE MINTS ITS TOKEN ON THE CAST, from the command zone,
             # whether or not the commander has ever been cast. "Another"
@@ -4539,6 +4577,44 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 creature_types[:] = [creature_types[i] for i in kept_idx]
                 creature_flying[:] = [creature_flying[i] for i in kept_idx]
                 sacrifices += n_sac
+                if commander_recursion and commander_turn is not None:
+                    experience += n_sac
+            # MEREN'S HALF OF THE OUTLET (2026-11-06): one non-token fodder creature, the
+            # smallest body, after combat, so the end step has something to return. Its death
+            # pays every death payoff (nontoken ones included) and an experience counter.
+            if (commander_recursion and commander_turn is not None and model_sacrifice
+                    and free_sac_outlet):
+                _fod = [i for i, e in enumerate(battlefield)
+                        if len(e) > 12 and e[12] and _is_fodder(e[12].get("card"))]
+                # "all_fodder_with_payoff": with a death payoff out, every fodder body goes, a
+                # drain for each; Meren still returns one. Otherwise the smallest one alone.
+                _all = (commander_recursion["sacrifice"] == "all_fodder_with_payoff"
+                        and (death_engines or death_drains))
+                for _i in sorted(_fod if _all else _fod[:0] + ([min(
+                        _fod, key=lambda i: battlefield[i][0])] if _fod else []), reverse=True):
+                    _card = battlefield[_i][12]["card"]
+                    del battlefield[_i]
+                    del creature_types[_i]
+                    del creature_flying[_i]
+                    yard_creatures.append(_card)
+                    sacrifices += 1
+                    experience += 1
+                    _deaths_after_combat(1, is_token=False)
+            # MEREN'S END STEP: the best creature card in the graveyard. To the battlefield if
+            # its mana value is within the experience, through the one free-entry door (its
+            # ETB fires, its payoffs register); otherwise to hand. Best = highest mana value,
+            # a stated policy.
+            if commander_recursion and commander_turn is not None and yard_creatures:
+                _ok = [c for c in yard_creatures if c["cmc"] <= experience]
+                _pick = max(_ok or yard_creatures, key=lambda c: c["cmc"])
+                yard_creatures.remove(_pick)
+                if _ok:
+                    recursion_to_battlefield += 1
+                    _free_creature_enters(_pick)
+                else:
+                    recursion_to_hand += 1
+                    hand.append(_pick)
+                    seen.add(_pick["name"])
             dealt = dealt * _combat_mult() + sum(_n * _noncombat_mult(_kind)
                                                  for _kind, _n in etb_by.items())
             opponent_life -= dealt
@@ -4935,6 +5011,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # converted on turn ten, and the only field that could have shown it had
         # already been written (#34).
         sacrifices_by_turn.append(sacrifices)
+        experience_by_turn.append(experience)
         # THE SAME FIX FOR THE DRAW SERIES (2026-10-19): it was appended before
         # combat, so every draw made in the sacrifice sweep, on an attack or on
         # a death landed one turn late and turn ten's were never recorded —
@@ -4995,6 +5072,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "dead_wheels_in_hand_by_turn": dead_wheels_in_hand_by_turn if model_discard else None,
         "keep_rule_pass": keep_rule_pass,
         "sacrifices_by_turn": sacrifices_by_turn,
+        **({"experience_by_turn": experience_by_turn,
+            "recursion_to_battlefield": recursion_to_battlefield,
+            "recursion_to_hand": recursion_to_hand} if commander_recursion else {}),
         "sac_cap_hits": sac_cap_hits,
         "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
         "interaction_castable_by_turn": interaction_castable_by_turn,

@@ -1007,6 +1007,15 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         # HOW MANY TOKENS THE POLICY ATE. Reported so the reader can see the
         # size of the assumption rather than only its consequence: a run showing
         # 30 sacrifices by turn ten is a very different claim from one showing 3.
+        # MEREN'S ENGINE (2026-11-06), only where `model_commander_recursion` is declared.
+        **({"commander_recursion": {
+            "mean_experience_by_turn": {
+                str(t): _round(sum(r["experience_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
+            "mean_returned_to_battlefield": _round(
+                sum(r["recursion_to_battlefield"] for r in results) / n),
+            "mean_returned_to_hand": _round(sum(r["recursion_to_hand"] for r in results) / n)}}
+           if results and "experience_by_turn" in results[0] else {}),
         **({"mean_sacrifices_by_turn": {
             str(t): _round(sum(r["sacrifices_by_turn"][t - 1] for r in results) / n)
             for t in turns},
@@ -1542,6 +1551,28 @@ def run(slug, iterations=None, seed=None, max_turn=None,
             print("  WARNING model_commander_copy is set without model_draw: "
                   "what the copies multiply is the spell's DRAW, so nothing "
                   "will be counted.")
+    # MEREN OF CLAN NEL TOTH (2026-11-06): experience on every other creature that dies, and
+    # at each end step the best creature card in the graveyard comes back -- to the battlefield
+    # if its mana value is within the experience, to hand if not. Declared per deck and CHECKED
+    # AGAINST THE COMMANDER'S TEXT, like `model_commander_copy`. The pilot half is a stated
+    # policy, `sacrifice: "one_fodder_per_turn"`: with a free outlet and the commander out, one
+    # non-token creature that is not itself a payoff or an outlet is sacrificed after combat,
+    # so the end step has something to return.
+    commander_recursion = targets_doc.get("model_commander_recursion") or None
+    if commander_recursion:
+        if not commanders or not any(
+                re.search(r"experience counter", c.get("oracle_text") or "", re.I)
+                and re.search(r"at the beginning of your end step, choose target creature card "
+                              r"in your graveyard", c.get("oracle_text") or "", re.I)
+                for c in commanders):
+            raise DeclarationError(
+                "model_commander_recursion is set but no commander has Meren of Clan Nel Toth's "
+                "experience counters and end-step return.")
+        commander_recursion = {"sacrifice": str(commander_recursion.get("sacrifice",
+                                                                        "one_fodder_per_turn"))}
+        if not model_sacrifice and not quiet:
+            print("  WARNING model_commander_recursion is set without model_sacrifice: with no "
+                  "outlet the only deaths are discards, and the recursion returns those alone.")
     creature_types = _corpus_creature_types()
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
@@ -1706,7 +1737,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               commander_pips=commander_pips,
                               model_discard=model_discard, partner=partner,
                               commander_event=commander_event,
-                              commander_damage=commander_damage))
+                              commander_damage=commander_damage,
+                              commander_recursion=commander_recursion))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,
