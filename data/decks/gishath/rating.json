@@ -51,8 +51,8 @@
    "weight_effective": 0.1,
    "sub_score": 71.43,
    "sub_ci": [
-    64.86,
-    77.88
+    65.05,
+    77.73
    ],
    "placement": 33.33,
    "anchor": 100.0,
@@ -91,12 +91,12 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.15,
-   "sub_score": 60.0,
+   "sub_score": 74.29,
    "sub_ci": [
-    53.46,
-    66.43
+    67.84,
+    80.86
    ],
-   "placement": 33.33,
+   "placement": 66.67,
    "anchor": 80.0,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
@@ -241,8 +241,8 @@
    "weight_effective": 0.1875,
    "sub_score": 80.95,
    "sub_ci": [
-    73.53,
-    84.04
+    73.52,
+    83.87
    ],
    "placement": 100.0,
    "anchor": 66.67,
@@ -277,7 +277,7 @@
  "withheld": [
   {
    "component": "table_record",
-   "reason": "2 game(s) logged; 5 needed"
+   "reason": "3 game(s) logged; 5 needed"
   },
   {
    "component": "pilot_feel",
@@ -311,7 +311,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
- "fleet_sha": "a29575e16551",
+ "fleet_sha": "aaad07493f04",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -346,12 +346,12 @@
   ],
   "iterations": 2
  },
- "code_score": 71.8,
- "score_point": 71.9,
- "score": 71.6,
+ "code_score": 74.7,
+ "score_point": 74.0,
+ "score": 73.7,
  "score_ci": [
-  67.5,
-  75.2
+  70.3,
+  76.9
  ],
  "grade": "B",
  "grade_range": [
@@ -360,9 +360,9 @@
  ],
  "grade_display": "B",
  "grade_probabilities": {
-  "A": 0.0,
-  "B": 0.995,
-  "C": 0.005,
+  "A": 0.001,
+  "B": 1.0,
+  "C": 0.0,
   "D": 0.0,
   "F": 0.0
  },
@@ -380,11 +380,11 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 72.0,
+    "score": 74.5,
     "grade": "B"
    },
    "mana": {
-    "score": 71.9,
+    "score": 74.3,
     "grade": "B"
    },
    "resilience": {
@@ -392,31 +392,23 @@
     "grade": "B"
    },
    "construction": {
-    "score": 71.7,
+    "score": 74.2,
     "grade": "B"
    },
    "dti": {
-    "score": 69.8,
+    "score": 72.4,
     "grade": "B"
    },
    "judgment": {
-    "score": 71.8,
+    "score": 74.7,
     "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "resilience",
-    "share_now": 0.15,
-    "share_at_flip": 0.642,
-    "boundary": 65,
-    "grade_at_flip": "C",
-    "direction": "raise"
-   },
-   {
     "component": "dti",
     "share_now": 0.187,
-    "share_at_flip": 0.915,
+    "share_at_flip": 0.889,
     "boundary": 80,
     "grade_at_flip": "A",
     "direction": "raise"
@@ -424,38 +416,26 @@
   ]
  },
  "concordance": {
-  "level": "mixed",
+  "level": "concordant",
   "instruments": {
    "construction": 2.0,
-   "dti": 1.0,
    "judgment": 2.0,
    "mana": 3.0,
-   "resilience": 3.0,
+   "resilience": 2.0,
    "speed": 3.0
   },
   "of": 4,
-  "spread": 0.667,
-  "outliers": [
-   {
-    "instrument": "construction",
-    "rank": 2.0,
-    "side": "better"
-   },
-   {
-    "instrument": "dti",
-    "rank": 1.0,
-    "side": "better"
-   }
-  ],
+  "spread": 0.333,
+  "outliers": [],
   "group": {
-   "kendall_w": 0.344,
-   "p": 0.112,
-   "p_method": "permutation, 5000 draws, seed 20261019",
-   "m": 6,
+   "kendall_w": 0.325,
+   "p": 0.3241,
+   "p_method": "exact over 13824 relabellings",
+   "m": 4,
    "n": 4
   }
  },
- "resolution": "the 90% interval spans 0 grade boundaries; concordance mixed",
+ "resolution": "the 90% interval spans 0 grade boundaries; concordance concordant",
  "judgment": {
   "sub_score": 72,
   "argument": "The measured components cannot see the table. The goldfish has no blockers and no removal, the table record is withheld, no survey exists, and Forge has not run this list. Both logged games were played before the V5 payoff layer, so nothing here has watched the current 99 at a table.\n\nWhat the record does say: log 002 shows Gishath online and killing a player with commander damage, and the pilot puts the loss on his own closing, not on the list. The engine thesis is real: the reveal fired in most of the goldfish's games, and V5 added Purphoros and Molten Echoes so entries pay without a combat step.\n\nThe colours cut the other way. The context's own line reads red at 61% on curve against 82% for green, and the pilot's green complaint is the one follow-up he wrote down. The missed-land-drop rate counts any land, so it cannot see a colour shortfall. But the V5 upside has no figure from a table game, and the colour concern has only a goldfish figure, so I cannot size either against the other. Construction and mana already carry the land structure, and DeckCheck already ranks this deck first in the bracket, so moving off the measured score would double count.\n\nSo I sit at the measured score, rounded: no game has been played on this list, and neither the V5 upside nor the red shortfall is sized well enough to argue a gap.",
@@ -488,8 +468,8 @@
   "weight": 0.2,
   "weight_effective": 0.25,
   "sub_ci": [
-   63.64,
-   79.85
+   63.99,
+   80.27
   ]
  },
  "rank": {
@@ -502,22 +482,22 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.029,
-   "2": 0.871,
-   "3": 0.098,
-   "4": 0.002
+   "1": 0.009,
+   "2": 0.94,
+   "3": 0.051,
+   "4": 0.0
   },
   "basis": {
    "gishath": "this document",
-   "goblin-storm": "rating.json judgment",
+   "goblin-storm": "skeleton",
    "sharknado": "rating.json judgment",
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 80.5,
-   "gishath": 71.6,
-   "ur-dragon": 63.6,
-   "goblin-storm": 60.9
+   "sharknado": 86.1,
+   "gishath": 73.7,
+   "ur-dragon": 63.4,
+   "goblin-storm": 62.6
   }
  }
 }

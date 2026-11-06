@@ -39,6 +39,7 @@ because no logged game is on a current list; `rating --calibrate` refuses at six
 **The fleet.** Six decks are sleeved — edgar-vampires, gishath, goblin-storm, heliod,
 sharknado, ur-dragon (`deck-version <slug>`); emiel-blink, meren-recursion and elves are
 on the bench; the rest are retired or broken down. Every live deck and branch is priced.
+Sharknado v2.3.0 (draw-engine-v1, 22 swaps) was sleeved on proxies 2026-11-05 and rated A in B3 (86.1, verifier pass); its engine, tutor guide, prose and frame await their agents.
 
 **The push gate** (`make prepush`, `docs/testing.md`) runs only the tiers a diff can break
 and leaves the fleet regen to CI. CI's browser job runs two workers (a hosted runner has
