@@ -207,6 +207,14 @@ KNOWN_UNCAST = {
     # docs/gotchas-bench.md "sharknado is a deck Forge cannot pilot". The
     # record is kept because `engine_casts` is the evidence FOR that claim.
     "sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n120-ebff4d05-s1959377157-podExperimental-c600.json",
+    # 2026-11-05, sharknado@draw-engine-v1 (the v2.3.0 list, the same sha), 40
+    # games: Cathartic Reunion cast 0 (castable and held on 21 own turns, five
+    # discarded) and Mind Spring cast 0 (16 turns, four discarded). Both were
+    # PROVEN castable in the two-seat shell the same day (cast_proofs: 1 and 3
+    # casts), so this is the table AI holding the deck's draw, the same class as
+    # the wheel entries above. The rebuilt engine model put both in fuel and
+    # flagged the record. It is a floor.
+    "araumi-edict-vs-teval-graveyard-n40-8f31c5f7-s402403831-podExperimental-c600-ov3e55deaa-tl9473cf35.json",
     # THE SACRIFICE CLASS, edgar-vampires, every run since 2026-08-24: Viscera
     # Seer, Altar of Dementia, Ashnod's Altar, Bloodflow Connoisseur, Vish Kal
     # never cast. docs/gotchas-bench.md "The Forge AI will not press a sacrifice
