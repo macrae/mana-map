@@ -420,7 +420,8 @@ def never_cast(profile, flags):
     # channel ON. ONE PREDICATE, ONE HOME — both sides now ask
     # `is_death_engine`, which is the only thing that knows every death payoff,
     # so adding the next field cannot desynchronise them.
-    if flags.get("model_deaths") and is_death_engine(profile.get("death") or {}):
+    if (flags.get("model_deaths") or flags.get("model_sacrifice")) \
+            and is_death_engine(profile.get("death") or {}):
         return False
     # An attack enabler is only meaningful where a commander attack trigger is
     # declared; there it is the card that lets the engine start at all.

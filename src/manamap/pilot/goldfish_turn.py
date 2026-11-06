@@ -3211,7 +3211,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # _to_apply` named it within the hour. Use `is_death_engine`, which is
                 # the one predicate that knows every death payoff, instead of listing
                 # the fields here and forgetting the next one.
-                if model_deaths and is_death_engine(c["death"]):
+                # ...AND UNDER model_sacrifice TOO (2026-11-06): the sweep registers a death
+                # engine under either flag, so either must cast it. Meren declares sacrifice
+                # without deaths, and The Meathook Massacre was read and never cast.
+                if (model_deaths or model_sacrifice) and is_death_engine(c["death"]):
                     return True
                 # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
                 # has bitten, and the worst of them, because it was a DEADLOCK. Four

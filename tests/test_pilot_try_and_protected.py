@@ -201,8 +201,8 @@ def test_each_reads_every_swap_against_the_champion(tmp_path, monkeypatch):
     from manamap.pilot import try_swap as ts
     monkeypatch.setattr(ts, "CACHE", tmp_path)
     out = ts.run("meren-recursion",
-                 [("Deadly Rollick", "Putrefy"), ("Dose of Dawnglow", "Victimize")],
+                 [("Deadly Rollick", "Putrefy"), ("Dread Return", "Victimize")],
                  iterations=200, each=True)
     per = out["per_swap"]
     assert [(p["out"], p["in"]) for p in per] == [("Deadly Rollick", "Putrefy"),
-                                                  ("Dose of Dawnglow", "Victimize")]
+                                                  ("Dread Return", "Victimize")]

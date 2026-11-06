@@ -78,7 +78,7 @@ Goldfish, 10,000 seeded games, measured on V2, 2026-11-06. Each group below is t
 
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 3.795**
+- mean turn the commander is first cast: **turn 3.796**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **50%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **23%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
@@ -126,7 +126,8 @@ Still true from V1: the builder left out Chain of Smog, Exquisite Blood, Gravecr
 ## Open questions
 
 <!-- ctx:gen queue -->
-- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+- **Q049** promoted — Under the stated one_fodder_per_turn policy, in games where a free outlet is out by T4 Meren still reaches fewer than 3 experience counters by T8 in most games, so the to-hand mode is the normal midgame and the fat creatures arrive by cost, not by counters.
+- **Q050** promoted — The deck's supply of free outlets plus recurring fodder is thin against its graveyard fillers, so if a logged game shows a full yard with low counters, the missing piece is a free outlet, not another filler.
 <!-- /ctx:gen queue -->
 
 - Does Meren's choice work the way the plan says? The claim is that a low experience count means a creature to hand and a high count means a free return. The Numbers need a reading of how often she is cast early and how her counters grow. That figure is not in the block yet.

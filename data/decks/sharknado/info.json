@@ -22,7 +22,11 @@
       "tutors",
       "prose"
     ],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [
       "log",
       "log_annotations.json"
@@ -17348,6 +17352,7 @@
   "next": [
     "2 artifact(s) fail their own gate (log, log_annotations.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V13 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "3 logged game(s) not yet debriefed (005, 006, 007) — `/debrief sharknado`",
