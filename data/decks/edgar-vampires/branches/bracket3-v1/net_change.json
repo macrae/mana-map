@@ -261,7 +261,7 @@
     "where": []
    },
    {
-    "free": true,
+    "free": false,
     "name": "Grim Haruspex",
     "state": "elsewhere",
     "where": [
@@ -271,6 +271,13 @@
       "locked": false,
       "slug": "hapatra",
       "status": "broken-down"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "meren-recursion",
+      "status": null
      }
     ]
    },
@@ -601,8 +608,8 @@
   "counts": {
    "box": 1,
    "buy": 1,
-   "elsewhere": 0,
-   "free": 1,
+   "elsewhere": 1,
+   "free": 0,
    "in_deck": 94
   },
   "counts_are": "distinct names",
@@ -632,12 +639,13 @@
    ],
    "size": 100
   },
-  "free": 1,
+  "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 0,
+  "owned_but_elsewhere": 1,
   "proxy": false,
   "slug": "edgar-vampires",
   "unsourced": [
+   "Grim Haruspex",
    "Kalitas, Traitor of Ghet"
   ]
  },
@@ -1237,7 +1245,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "0a80d704fd6a",
+  "model_version": "a18364c317e2",
   "seed": 20260826
  },
  "limits": [
@@ -1379,8 +1387,8 @@
   "bill": {
    "box": 1,
    "buy": 1,
-   "elsewhere": 0,
-   "free": 1,
+   "elsewhere": 1,
+   "free": 0,
    "in_deck": 94
   },
   "cost": {
@@ -1391,22 +1399,22 @@
    "counts": {
     "box": 1,
     "buy": 1,
-    "elsewhere": 0,
-    "free": 1,
+    "elsewhere": 1,
+    "free": 0,
     "in_deck": 94
    },
-   "free_to_raid": [
+   "free_to_raid": [],
+   "mergeable": false,
+   "must_unsleeve": [
     {
      "decks": [
-      "hapatra"
+      "meren-recursion"
      ],
      "name": "Grim Haruspex"
     }
    ],
-   "mergeable": false,
-   "must_unsleeve": [],
    "owned": 96,
-   "reads_as": "1 to buy; 1 sitting in a retired or broken-down deck, which cost nothing; 96 of 97 already owned",
+   "reads_as": "1 to buy; 1 to pull out of a deck that is still together; 96 of 97 already owned",
    "total": 97
   },
   "fell": [],
@@ -1437,7 +1445,7 @@
    },
    {
     "measure": "extra cards by T8",
-    "reads_as": "1.75 -> 2.37, a change of +0.62 (+36%)",
+    "reads_as": "2.23 -> 2.84, a change of +0.62 (+28%)",
     "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    }
   ],
@@ -1673,13 +1681,13 @@
   },
   {
    "better_is": "higher",
-   "branch": 2.3684,
-   "champion": 1.7455,
+   "branch": 2.8419,
+   "champion": 2.2265,
    "ci95_diff": [
-    0.5586,
-    0.6872
+    0.5482,
+    0.6826
    ],
-   "delta": 0.6229,
+   "delta": 0.6154,
    "excludes_zero": true,
    "holm": {
     "family": 10,
@@ -1687,17 +1695,17 @@
     "significant": true,
     "threshold": 2.807
    },
-   "mde": 0.0919,
+   "mde": 0.096,
    "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "1.75 -> 2.37, a change of +0.62 (+36%)",
+   "reads_as": "2.23 -> 2.84, a change of +0.62 (+28%)",
    "role": "exploratory",
    "scale": "against the 8 cards every deck draws for free by then",
    "unit": "mean",
    "verdict": "better",
    "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
    "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": 18.986
+   "z": 17.956
   },
   {
    "better_is": "higher",

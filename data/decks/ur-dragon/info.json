@@ -1656,35 +1656,36 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
+              "gishath"
             ]
           },
           {
             "name": "Marsh Flats",
             "where": [
-              "edgar-vampires"
+              "edgar-vampires",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Misty Rainforest",
+            "where": [
+              "meren-recursion"
             ]
           },
           {
             "name": "Polluted Delta",
             "where": [
+              "meren-recursion",
               "sharknado"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
             ]
           }
         ],
         "proxy": [],
         "free": [
           {
-            "name": "Misty Rainforest",
+            "name": "Tarnished Citadel",
             "where": [
-              "sisay"
+              "hapatra"
             ]
           }
         ],
@@ -1716,9 +1717,9 @@
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
+        "Misty Rainforest",
         "Polluted Delta",
-        "Prismatic Vista",
-        "Tarnished Citadel"
+        "Prismatic Vista"
       ],
       "mergeable": false,
       "free": 1,
@@ -1995,13 +1996,6 @@
             },
             {
               "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
@@ -2150,6 +2144,13 @@
             },
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
@@ -2172,13 +2173,20 @@
           "where": [
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
               "apart": true
             }
           ],
-          "free": true,
+          "free": false,
           "is_new": true
         },
         {
@@ -2241,6 +2249,13 @@
           "name": "Polluted Delta",
           "state": "elsewhere",
           "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
             {
               "kind": "deck",
               "slug": "sharknado",
@@ -2409,16 +2424,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -2529,7 +2537,7 @@
       },
       "objective_grade": {
         "state": "met",
-        "reading": 0.7892,
+        "reading": 0.7833,
         "shortfall": null
       },
       "measured": true,
@@ -2539,12 +2547,14 @@
         "Dragonskull Summit",
         "Fabled Passage",
         "Forbidden Orchard",
+        "Hellkite Courser",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Misty Rainforest",
         "Polluted Delta",
         "Prismatic Vista",
         "Sunbaked Canyon",
+        "Talisman of Dominance",
         "Tarnished Citadel",
         "Turbulent Springs",
         "Verdant Catacombs",
@@ -2564,36 +2574,36 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 1.2149,
+            "delta": 1.2852,
             "ci95_diff": [
-              -0.06,
-              2.4898
+              0.3336,
+              2.2368
             ],
-            "mde": 1.8223,
+            "mde": 1.3602,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0065,
+            "delta": 0.0057,
             "ci95_diff": [
-              0.0008,
-              0.0122
+              0.0,
+              0.0114
             ],
-            "mde": 0.0082,
+            "mde": 0.0081,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.5283,
+            "delta": 0.5663,
             "ci95_diff": [
-              0.3079,
-              0.7487
+              0.3467,
+              0.7859
             ],
-            "mde": 0.315,
+            "mde": 0.3139,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -2637,8 +2647,7 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
+              "gishath"
             ]
           },
           {
@@ -2646,16 +2655,17 @@
             "where": [
               "gishath"
             ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
-            ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "hapatra"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Return of the Wildspeaker",
@@ -2670,7 +2680,7 @@
             ]
           }
         ],
-        "blocking": 10,
+        "blocking": 9,
         "procurement": null
       },
       "base_version": 4,
@@ -2680,9 +2690,9 @@
       "counts": {
         "in_deck": 84,
         "box": 2,
-        "elsewhere": 3,
+        "elsewhere": 2,
         "buy": 7,
-        "free": 0
+        "free": 1
       },
       "unsourced": [
         "Dragonlord Kolaghan",
@@ -2693,11 +2703,10 @@
         "Rishkar's Expertise",
         "Rising of the Day",
         "Sarkhan, Fireblood",
-        "Tarnished Citadel",
         "Utvara Hellkite"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -2968,13 +2977,6 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             },
             {
               "kind": "deck",
@@ -3353,16 +3355,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -3457,29 +3452,41 @@
       "verdict": {
         "state": "do not merge",
         "rose": 2,
-        "fell": 6,
-        "no_call": 3
+        "fell": 5,
+        "no_call": 4
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.7235,
-        "shortfall": 0.0965
+        "reading": 0.721,
+        "shortfall": 0.099
       },
       "measured": true,
       "blind_spots": [
         "Arid Mesa",
         "Asceticism",
         "Bloodstained Mire",
+        "Dragonlord Kolaghan",
         "Fabled Passage",
+        "Faeburrow Elder",
         "Forbidden Orchard",
         "Mithril Coat",
         "Prismatic Vista",
+        "Return of the Wildspeaker",
+        "Rhythm of the Wild",
+        "Rishkar's Expertise",
+        "Rising of the Day",
+        "Sarkhan, Fireblood",
         "Scalding Tarn",
         "Steel Hellkite",
         "Stubborn Denial",
+        "Talisman of Dominance",
         "Tarnished Citadel",
+        "Thrakkus the Butcher",
         "Transcendent Dragon",
-        "Wooded Foothills"
+        "Utvara Hellkite",
+        "Whirlwing Stormbrood // Dynamic Soar",
+        "Wooded Foothills",
+        "Worldly Tutor"
       ],
       "impact": {
         "state": "do not merge",
@@ -3488,7 +3495,6 @@
           "mulliganed"
         ],
         "fell": [
-          "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
@@ -3498,36 +3504,36 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -3.9008,
+            "delta": -1.2881,
             "ci95_diff": [
-              -5.1945,
-              -2.6071
+              -2.2888,
+              -0.2874
             ],
-            "mde": 1.8492,
-            "verdict": "worse",
+            "mde": 1.4303,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0236,
+            "delta": -0.0208,
             "ci95_diff": [
-              -0.0303,
-              -0.0169
+              -0.0275,
+              -0.0141
             ],
-            "mde": 0.0096,
+            "mde": 0.0095,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.4016,
+            "delta": -1.1043,
             "ci95_diff": [
-              -1.6585,
-              -1.1447
+              -1.3611,
+              -0.8475
             ],
-            "mde": 0.3672,
+            "mde": 0.3671,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -3559,35 +3565,36 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
+              "gishath"
             ]
           },
           {
             "name": "Marsh Flats",
             "where": [
-              "edgar-vampires"
+              "edgar-vampires",
+              "meren-recursion"
+            ]
+          },
+          {
+            "name": "Misty Rainforest",
+            "where": [
+              "meren-recursion"
             ]
           },
           {
             "name": "Polluted Delta",
             "where": [
+              "meren-recursion",
               "sharknado"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
             ]
           }
         ],
         "proxy": [],
         "free": [
           {
-            "name": "Misty Rainforest",
+            "name": "Tarnished Citadel",
             "where": [
-              "sisay"
+              "hapatra"
             ]
           }
         ],
@@ -3625,9 +3632,9 @@
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
+        "Misty Rainforest",
         "Polluted Delta",
-        "Prismatic Vista",
-        "Tarnished Citadel"
+        "Prismatic Vista"
       ],
       "mergeable": false,
       "free": 1,
@@ -3904,13 +3911,6 @@
             },
             {
               "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
@@ -4052,6 +4052,13 @@
             },
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
@@ -4074,13 +4081,20 @@
           "where": [
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sisay",
               "locked": false,
               "status": "retired",
               "apart": true
             }
           ],
-          "free": true,
+          "free": false,
           "is_new": true
         },
         {
@@ -4143,6 +4157,13 @@
           "name": "Polluted Delta",
           "state": "elsewhere",
           "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
             {
               "kind": "deck",
               "slug": "sharknado",
@@ -4311,16 +4332,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -4437,14 +4451,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 4,
-        "fell": 1,
-        "no_call": 6
+        "rose": 8,
+        "fell": 0,
+        "no_call": 3
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.0864,
-        "shortfall": 0.0264
+        "reading": 0.0935,
+        "shortfall": 0.0335
       },
       "measured": true,
       "blind_spots": [
@@ -4453,62 +4467,68 @@
         "Dragonskull Summit",
         "Fabled Passage",
         "Forbidden Orchard",
+        "Gadrak, the Crown-Scourge",
+        "Hellkite Courser",
         "Marang River Regent // Coil and Catch",
         "Marsh Flats",
         "Misty Rainforest",
         "Polluted Delta",
         "Prismatic Vista",
         "Sunbaked Canyon",
+        "Talisman of Dominance",
         "Tarnished Citadel",
         "Turbulent Springs",
         "Verdant Catacombs",
-        "Wooded Foothills"
+        "Wooded Foothills",
+        "Worldly Tutor"
       ],
       "impact": {
         "state": "do not merge",
         "rose": [
+          "hoard @T10",
+          "hoard @T6",
+          "damage @T10",
+          "board power @T6",
           "killed by T6",
           "killed by T10",
           "missed drop by T5",
           "mulliganed"
         ],
-        "fell": [
-          "stall, 2 in a row"
-        ],
+        "fell": [],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 1.3776,
+            "delta": 2.665,
             "ci95_diff": [
-              0.0884,
-              2.6668
+              1.6882,
+              3.6418
             ],
-            "mde": 1.8428,
-            "verdict": "noise",
+            "mde": 1.3963,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0083,
+            "delta": 0.0102,
             "ci95_diff": [
-              0.0026,
-              0.014
+              0.0046,
+              0.0158
             ],
-            "mde": 0.0082,
+            "mde": 0.008,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0412,
+            "delta": 0.3761,
             "ci95_diff": [
-              -0.2633,
-              0.1809
+              0.1516,
+              0.6006
             ],
-            "mde": 0.3174,
-            "verdict": "noise",
+            "mde": 0.3209,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -4542,19 +4562,19 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
+              "gishath"
             ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "hapatra"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Return of the Wildspeaker",
@@ -4569,7 +4589,7 @@
             ]
           }
         ],
-        "blocking": 6,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 4,
@@ -4579,20 +4599,19 @@
       "counts": {
         "in_deck": 88,
         "box": 2,
-        "elsewhere": 2,
+        "elsewhere": 1,
         "buy": 4,
-        "free": 0
+        "free": 1
       },
       "unsourced": [
         "Fabled Passage",
         "Forbidden Orchard",
         "Prismatic Vista",
         "Radiant Destiny",
-        "Sarkhan, Fireblood",
-        "Tarnished Citadel"
+        "Sarkhan, Fireblood"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -4863,13 +4882,6 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             },
             {
               "kind": "deck",
@@ -5226,16 +5238,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -5344,13 +5349,13 @@
       "verdict": {
         "state": "do not merge",
         "rose": 2,
-        "fell": 4,
-        "no_call": 5
+        "fell": 2,
+        "no_call": 7
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.7366,
-        "shortfall": 0.0434
+        "reading": 0.7363,
+        "shortfall": 0.0437
       },
       "measured": true,
       "blind_spots": [
@@ -5359,12 +5364,18 @@
         "Bloodstained Mire",
         "Fabled Passage",
         "Forbidden Orchard",
+        "Hellkite Courser",
         "Mithril Coat",
         "Prismatic Vista",
+        "Radiant Destiny",
+        "Return of the Wildspeaker",
+        "Sarkhan, Fireblood",
         "Scalding Tarn",
         "Steel Hellkite",
+        "Talisman of Dominance",
         "Tarnished Citadel",
-        "Wooded Foothills"
+        "Wooded Foothills",
+        "Worldly Tutor"
       ],
       "impact": {
         "state": "do not merge",
@@ -5373,44 +5384,42 @@
           "mulliganed"
         ],
         "fell": [
-          "damage @T10",
           "board power @T6",
-          "killed by T6",
           "killed by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.7107,
+            "delta": -1.3956,
             "ci95_diff": [
-              -4.0424,
-              -1.379
+              -2.4168,
+              -0.3744
             ],
-            "mde": 1.9035,
-            "verdict": "worse",
+            "mde": 1.4597,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0171,
+            "delta": -0.0142,
             "ci95_diff": [
-              -0.0236,
-              -0.0106
+              -0.0207,
+              -0.0077
             ],
-            "mde": 0.0094,
+            "mde": 0.0092,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.0734,
+            "delta": -0.789,
             "ci95_diff": [
-              -1.3187,
-              -0.8281
+              -1.0345,
+              -0.5435
             ],
-            "mde": 0.3506,
+            "mde": 0.351,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -5442,19 +5451,19 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
+              "gishath"
             ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "hapatra"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Return of the Wildspeaker",
@@ -5476,7 +5485,7 @@
             ]
           }
         ],
-        "blocking": 5,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 4,
@@ -5486,19 +5495,18 @@
       "counts": {
         "in_deck": 89,
         "box": 3,
-        "elsewhere": 2,
+        "elsewhere": 1,
         "buy": 3,
-        "free": 0
+        "free": 1
       },
       "unsourced": [
         "Fabled Passage",
         "Forbidden Orchard",
         "Prismatic Vista",
-        "Radiant Destiny",
-        "Tarnished Citadel"
+        "Radiant Destiny"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -5776,13 +5784,6 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             },
             {
               "kind": "deck",
@@ -6132,16 +6133,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -6265,14 +6259,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 4,
-        "fell": 3,
-        "no_call": 4
+        "rose": 7,
+        "fell": 2,
+        "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.7555,
-        "shortfall": 0.0245
+        "reading": 0.7613,
+        "shortfall": 0.0187
       },
       "measured": true,
       "blind_spots": [
@@ -6280,16 +6274,25 @@
         "Bloodstained Mire",
         "Fabled Passage",
         "Forbidden Orchard",
+        "Gadrak, the Crown-Scourge",
+        "Hellkite Courser",
         "Prismatic Vista",
+        "Radiant Destiny",
+        "Return of the Wildspeaker",
         "Scalding Tarn",
         "Steel Hellkite",
+        "Talisman of Dominance",
         "Tarnished Citadel",
         "Verdant Catacombs",
-        "Wooded Foothills"
+        "Wooded Foothills",
+        "Worldly Tutor"
       ],
       "impact": {
         "state": "do not merge",
         "rose": [
+          "hoard @T10",
+          "hoard @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -6297,42 +6300,41 @@
         ],
         "fell": [
           "damage @T10",
-          "board power @T6",
-          "killed by T10"
+          "board power @T6"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.6871,
+            "delta": -1.324,
             "ci95_diff": [
-              -3.281,
-              -2.0932
+              -1.8099,
+              -0.8381
             ],
-            "mde": 0.8488,
+            "mde": 0.6946,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0073,
+            "delta": -0.0045,
             "ci95_diff": [
-              -0.0115,
-              -0.0031
+              -0.0087,
+              -0.0003
             ],
             "mde": 0.0059,
-            "verdict": "worse",
+            "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.3058,
+            "delta": -1.0036,
             "ci95_diff": [
-              -1.4317,
-              -1.1799
+              -1.1358,
+              -0.8714
             ],
-            "mde": 0.18,
+            "mde": 0.1889,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -6364,19 +6366,19 @@
             "name": "Forbidden Orchard",
             "where": [
               "emiel-blink",
-              "gishath",
-              "meren-recursion"
-            ]
-          },
-          {
-            "name": "Tarnished Citadel",
-            "where": [
-              "meren-recursion"
+              "gishath"
             ]
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Tarnished Citadel",
+            "where": [
+              "hapatra"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Verdant Catacombs",
@@ -6392,7 +6394,7 @@
             ]
           }
         ],
-        "blocking": 5,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 4,
@@ -6402,19 +6404,18 @@
       "counts": {
         "in_deck": 90,
         "box": 2,
-        "elsewhere": 2,
+        "elsewhere": 1,
         "buy": 3,
-        "free": 0
+        "free": 1
       },
       "unsourced": [
         "Fabled Passage",
         "Forbidden Orchard",
         "Marang River Regent // Coil and Catch",
-        "Prismatic Vista",
-        "Tarnished Citadel"
+        "Prismatic Vista"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Ancient Gold Dragon",
@@ -6692,13 +6693,6 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             },
             {
               "kind": "deck",
@@ -7043,16 +7037,9 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
             }
           ],
-          "free": false,
+          "free": true,
           "is_new": true
         },
         {
@@ -7176,13 +7163,13 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 2,
-        "fell": 2,
-        "no_call": 7
+        "rose": 7,
+        "fell": 1,
+        "no_call": 3
       },
       "objective_grade": {
         "state": "met",
-        "reading": 0.7793,
+        "reading": 0.7876,
         "shortfall": null
       },
       "measured": true,
@@ -7191,56 +7178,64 @@
         "Bloodstained Mire",
         "Fabled Passage",
         "Forbidden Orchard",
+        "Gadrak, the Crown-Scourge",
+        "Hellkite Courser",
         "Marang River Regent // Coil and Catch",
         "Prismatic Vista",
         "Scalding Tarn",
+        "Talisman of Dominance",
         "Tarnished Citadel",
         "Verdant Catacombs",
-        "Wooded Foothills"
+        "Wooded Foothills",
+        "Worldly Tutor"
       ],
       "impact": {
         "state": "a trade",
         "rose": [
+          "hoard @T10",
+          "hoard @T6",
+          "damage @T10",
+          "killed by T6",
+          "killed by T10",
           "missed drop by T5",
           "mulliganed"
         ],
         "fell": [
-          "board power @T6",
-          "stall, 2 in a row"
+          "board power @T6"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 0.3805,
+            "delta": 1.4944,
             "ci95_diff": [
-              -0.1337,
-              0.8947
+              1.0912,
+              1.8976
             ],
-            "mde": 0.735,
-            "verdict": "noise",
+            "mde": 0.5764,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0045,
+            "delta": 0.0064,
             "ci95_diff": [
-              0.0011,
-              0.0079
+              0.0031,
+              0.0097
             ],
-            "mde": 0.0049,
-            "verdict": "noise",
+            "mde": 0.0047,
+            "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.5145,
+            "delta": -0.2153,
             "ci95_diff": [
-              -0.6137,
-              -0.4153
+              -0.3221,
+              -0.1085
             ],
-            "mde": 0.1418,
+            "mde": 0.1526,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"

@@ -1,31 +1,31 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "0750f047703cbe135491a50595a6fbfba1b66014ccf0fb3731e4fca144bdcf0c",
+  "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
   "model_version": "a18364c317e2",
   "lands": {
     "total": 36,
-    "entries": 36,
+    "entries": 35,
     "life": {
-      "recurring_per_tap_cycle": 7,
-      "one_time_on_entry": 2
+      "recurring_per_tap_cycle": 3,
+      "one_time_on_entry": 8
     },
-    "enters_tapped": 9,
+    "enters_tapped": 11,
     "enters_tapped_always": 4,
     "classes": {
-      "fixing": 19,
+      "basic": 2,
+      "fetch": 6,
+      "fixing": 5,
       "mdfc": 1,
-      "tapped": 9,
-      "untapped-dual": 25,
-      "utility": 13
+      "tapped": 11,
+      "untapped-dual": 12,
+      "utility": 15
     },
     "list": [
       {
-        "name": "Abstergo Entertainment",
+        "name": "Bayou",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
+          "untapped-dual"
         ],
         "produces": [
           "B",
@@ -33,10 +33,11 @@
         ]
       },
       {
-        "name": "Bayou",
+        "name": "Bloodstained Mire",
         "copies": 1,
         "classes": [
-          "untapped-dual"
+          "fetch",
+          "utility"
         ],
         "produces": [
           "B",
@@ -75,32 +76,7 @@
         ]
       },
       {
-        "name": "City of Brass",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
         "name": "Command Tower",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Conduit Pylons",
         "copies": 1,
         "classes": [
           "fixing",
@@ -124,11 +100,10 @@
         ]
       },
       {
-        "name": "Exotic Orchard",
+        "name": "Deathcap Glade",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual"
+          "tapped"
         ],
         "produces": [
           "B",
@@ -148,39 +123,12 @@
         ]
       },
       {
-        "name": "Forbidden Orchard",
+        "name": "Gaea's Cradle",
         "copies": 1,
         "classes": [
-          "fixing",
           "untapped-dual"
         ],
         "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Gemstone Caverns",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Gemstone Mine",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
           "G"
         ]
       },
@@ -196,28 +144,12 @@
         ]
       },
       {
-        "name": "Gond Gate",
+        "name": "High Market",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual"
+          "utility"
         ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Hidden Grotto",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
+        "produces": []
       },
       {
         "name": "Khalni Garden",
@@ -243,6 +175,18 @@
         ]
       },
       {
+        "name": "Llanowar Wastes",
+        "copies": 1,
+        "classes": [
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
         "name": "Mana Confluence",
         "copies": 1,
         "classes": [
@@ -256,10 +200,10 @@
         ]
       },
       {
-        "name": "Nurturing Peatland",
+        "name": "Marsh Flats",
         "copies": 1,
         "classes": [
-          "untapped-dual",
+          "fetch",
           "utility"
         ],
         "produces": [
@@ -268,11 +212,23 @@
         ]
       },
       {
-        "name": "Opal Palace",
+        "name": "Misty Rainforest",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual"
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
+        "name": "Nurturing Peatland",
+        "copies": 1,
+        "classes": [
+          "untapped-dual",
+          "utility"
         ],
         "produces": [
           "B",
@@ -301,11 +257,10 @@
         ]
       },
       {
-        "name": "Spire of Industry",
+        "name": "Polluted Delta",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual",
+          "fetch",
           "utility"
         ],
         "produces": [
@@ -314,16 +269,13 @@
         ]
       },
       {
-        "name": "Survivors' Encampment",
-        "copies": 1,
+        "name": "Swamp",
+        "copies": 2,
         "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
+          "basic"
         ],
         "produces": [
-          "B",
-          "G"
+          "B"
         ]
       },
       {
@@ -338,28 +290,13 @@
         ]
       },
       {
-        "name": "Talon Gates of Madara",
+        "name": "Takenuma, Abandoned Mire",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Tarnished Citadel",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
           "utility"
         ],
         "produces": [
-          "B",
-          "G"
+          "B"
         ]
       },
       {
@@ -375,12 +312,10 @@
         ]
       },
       {
-        "name": "The Mycosynth Gardens",
+        "name": "Twilight Mire",
         "copies": 1,
         "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
+          "untapped-dual"
         ],
         "produces": [
           "B",
@@ -388,20 +323,41 @@
         ]
       },
       {
-        "name": "Thriving Grove",
+        "name": "Underground Mortuary",
         "copies": 1,
         "classes": [
           "tapped"
         ],
         "produces": [
+          "B",
           "G"
         ]
       },
       {
-        "name": "Twilight Mire",
+        "name": "Undergrowth Stadium",
         "copies": 1,
         "classes": [
-          "untapped-dual"
+          "tapped"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
+        "name": "Urborg, Tomb of Yawgmoth",
+        "copies": 1,
+        "classes": [
+          "fixing"
+        ],
+        "produces": []
+      },
+      {
+        "name": "Verdant Catacombs",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
         ],
         "produces": [
           "B",
@@ -431,6 +387,18 @@
         ]
       },
       {
+        "name": "Wooded Foothills",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
         "name": "Woodland Cemetery",
         "copies": 1,
         "classes": [
@@ -447,35 +415,28 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 32,
+      "B": 30,
       "R": 0,
-      "G": 35
+      "G": 30
     },
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 5,
+      "B": 6,
       "R": 0,
       "G": 7
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 37,
+      "B": 36,
       "R": 0,
-      "G": 42
+      "G": 37
     },
     "gated": {
-      "count": 8,
+      "count": 1,
       "names": [
-        "Abstergo Entertainment",
-        "Conduit Pylons",
-        "Gond Gate",
-        "Hidden Grotto",
-        "Opal Palace",
-        "Talon Gates of Madara",
-        "The Grey Havens",
-        "The Mycosynth Gardens"
+        "The Grey Havens"
       ],
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
     },
@@ -505,18 +466,20 @@
         ]
       },
       {
-        "name": "Chrome Mox",
-        "kind": "ramp:rock",
-        "cmc": 0.0,
-        "produces": []
-      },
-      {
         "name": "Deathrite Shaman",
         "kind": "ramp:dork",
         "cmc": 1.0,
         "produces": [
           "B",
           "G"
+        ]
+      },
+      {
+        "name": "Elves of Deep Shadow",
+        "kind": "ramp:dork",
+        "cmc": 1.0,
+        "produces": [
+          "B"
         ]
       },
       {
@@ -534,12 +497,6 @@
         "produces": [
           "G"
         ]
-      },
-      {
-        "name": "Pawn of Ulamog",
-        "kind": "ramp:dork",
-        "cmc": 3.0,
-        "produces": []
       },
       {
         "name": "Phyrexian Altar",
@@ -571,26 +528,26 @@
     "B": {
       "total_pips": 53.5,
       "max_pips": 3,
-      "cards": 41,
+      "cards": 37,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 37.5,
+      "total_pips": 35.5,
       "max_pips": 3,
-      "cards": 30,
+      "cards": 29,
       "earliest_turn": 1,
       "effective_pips": 2
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.588,
-      "source_share": 0.478
+      "pip_share": 0.601,
+      "source_share": 0.5
     },
     "G": {
-      "pip_share": 0.412,
-      "source_share": 0.522
+      "pip_share": 0.399,
+      "source_share": 0.5
     }
   },
   "source_targets": {
@@ -599,47 +556,47 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.855,
-      "G": 0.895
+      "B": 0.822,
+      "G": 0.822
     },
     "with_rocks_and_dorks": {
-      "B": 0.916,
-      "G": 0.955
+      "B": 0.906,
+      "G": 0.916
     },
     "lands_only_ungated": {
-      "B": 0.694,
-      "G": 0.764
+      "B": 0.804,
+      "G": 0.804
     }
   },
   "ramp": {
     "ramp:dork": 6,
-    "ramp:land": 3,
-    "ramp:rock": 5
+    "ramp:land": 2,
+    "ramp:rock": 4
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 1.0,
-      "10": 0.446,
+      "1": 0.999,
+      "10": 0.489,
       "2": 0.996,
-      "3": 0.895,
-      "4": 0.772,
-      "5": 0.66,
-      "6": 0.565,
-      "7": 0.502,
-      "8": 0.464,
-      "9": 0.452
+      "3": 0.903,
+      "4": 0.78,
+      "5": 0.665,
+      "6": 0.579,
+      "7": 0.525,
+      "8": 0.494,
+      "9": 0.488
     },
     "mean_available_mana_by_turn": {
-      "1": 1.0,
-      "10": 8.054,
-      "2": 2.382,
-      "3": 3.519,
-      "4": 4.389,
-      "5": 5.136,
-      "6": 5.812,
-      "7": 6.404,
-      "8": 6.96,
-      "9": 7.512
+      "1": 0.999,
+      "10": 8.255,
+      "2": 2.331,
+      "3": 3.512,
+      "4": 4.396,
+      "5": 5.157,
+      "6": 5.856,
+      "7": 6.475,
+      "8": 7.07,
+      "9": 7.661
     }
   },
   "assumptions": [
@@ -649,7 +606,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 32 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37.",
-    "G: 35 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 42."
+    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 36.",
+    "G: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 37."
   ]
 }

@@ -51,16 +51,16 @@
             "name": "Kalitas, Traitor of Ghet"
           }
         ],
-        "unsleeve": [],
-        "proxy": [],
-        "free": [
+        "unsleeve": [
           {
             "name": "Grim Haruspex",
             "where": [
-              "hapatra"
+              "meren-recursion"
             ]
           }
         ],
+        "proxy": [],
+        "free": [],
         "box": [
           {
             "name": "Midnight Reaper",
@@ -69,7 +69,7 @@
             ]
           }
         ],
-        "blocking": 1,
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 6,
@@ -79,15 +79,16 @@
       "counts": {
         "in_deck": 94,
         "box": 1,
-        "elsewhere": 0,
+        "elsewhere": 1,
         "buy": 1,
-        "free": 1
+        "free": 0
       },
       "unsourced": [
+        "Grim Haruspex",
         "Kalitas, Traitor of Ghet"
       ],
       "mergeable": false,
-      "free": 1,
+      "free": 0,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -400,9 +401,16 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
             }
           ],
-          "free": true,
+          "free": false,
           "is_new": true
         },
         {
@@ -847,12 +855,12 @@
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.6229,
+            "delta": 0.6154,
             "ci95_diff": [
-              0.5586,
-              0.6872
+              0.5482,
+              0.6826
             ],
-            "mde": 0.0919,
+            "mde": 0.096,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -1734,6 +1742,7 @@
           {
             "name": "Polluted Delta",
             "where": [
+              "meren-recursion",
               "sharknado"
             ]
           }
@@ -2231,6 +2240,13 @@
           "where": [
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sharknado",
               "locked": true,
               "status": null,
@@ -2499,13 +2515,13 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 4,
+        "rose": 5,
         "fell": 3,
-        "no_call": 3
+        "no_call": 2
       },
       "objective_grade": {
         "state": "met",
-        "reading": 1.7718,
+        "reading": 2.2256,
         "shortfall": null
       },
       "measured": true,
@@ -2523,6 +2539,7 @@
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
+          "interaction affordable @T6",
           "hand can act by T3"
         ],
         "fell": [
@@ -2533,22 +2550,22 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -1.4285,
+            "delta": -1.3505,
             "ci95_diff": [
-              -1.617,
-              -1.24
+              -1.5622,
+              -1.1388
             ],
-            "mde": 0.2695,
+            "mde": 0.3026,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0512,
+            "delta": -0.0462,
             "ci95_diff": [
-              -0.0604,
-              -0.042
+              -0.0553,
+              -0.0371
             ],
             "mde": 0.0131,
             "verdict": "worse",
@@ -2557,24 +2574,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": -0.4698,
+            "delta": -0.4858,
             "ci95_diff": [
-              -0.5694,
-              -0.3702
+              -0.5825,
+              -0.3891
             ],
-            "mde": 0.1423,
+            "mde": 0.1382,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.0079,
+            "delta": -0.0009,
             "ci95_diff": [
-              -0.0404,
-              0.0562
+              -0.0515,
+              0.0497
             ],
-            "mde": 0.069,
+            "mde": 0.0723,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
@@ -2682,6 +2699,7 @@
           {
             "name": "Polluted Delta",
             "where": [
+              "meren-recursion",
               "sharknado"
             ]
           }
@@ -3238,6 +3256,13 @@
           "where": [
             {
               "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
               "slug": "sharknado",
               "locked": true,
               "status": null,
@@ -3504,6 +3529,7 @@
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Bloodghast",
+        "Bloodtracker",
         "Boros Charm",
         "Despark",
         "Drana and Linvala",
@@ -3535,48 +3561,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -3.059,
+            "delta": -3.1192,
             "ci95_diff": [
-              -3.2284,
-              -2.8896
+              -3.316,
+              -2.9224
             ],
-            "mde": 0.2421,
+            "mde": 0.2814,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0955,
+            "delta": -0.0925,
             "ci95_diff": [
-              -0.1053,
-              -0.0857
+              -0.1024,
+              -0.0826
             ],
-            "mde": 0.0139,
+            "mde": 0.0141,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.1193,
+            "delta": -1.1182,
             "ci95_diff": [
-              -1.2116,
-              -1.027
+              -1.209,
+              -1.0274
             ],
-            "mde": 0.132,
+            "mde": 0.1297,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.0934,
+            "delta": -0.5417,
             "ci95_diff": [
-              -0.1383,
-              -0.0485
+              -0.5939,
+              -0.4895
             ],
-            "mde": 0.0642,
+            "mde": 0.0746,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -3645,9 +3671,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Altar of Dementia"
-          },
-          {
             "name": "Bloodflow Connoisseur"
           },
           {
@@ -3709,6 +3732,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -3797,8 +3826,8 @@
       "counts": {
         "in_deck": 64,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 21,
+        "elsewhere": 4,
+        "buy": 20,
         "free": 1
       },
       "unsourced": [
@@ -3839,8 +3868,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -5688,8 +5725,8 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 6,
-        "fell": 2,
+        "rose": 7,
+        "fell": 1,
         "no_call": 2
       },
       "objective_grade": {
@@ -5700,10 +5737,14 @@
       "measured": true,
       "blind_spots": [
         "Ajani Unrelenting",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -5730,6 +5771,7 @@
       "impact": {
         "state": "inconclusive",
         "rose": [
+          "board power @T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -5738,54 +5780,53 @@
           "hand can act by T3"
         ],
         "fell": [
-          "damage @T10",
-          "killed by T10"
+          "damage @T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -1.6135,
+            "delta": -1.5676,
             "ci95_diff": [
-              -1.8331,
-              -1.3939
+              -1.8157,
+              -1.3195
             ],
-            "mde": 0.3138,
+            "mde": 0.3546,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0228,
+            "delta": -0.0144,
             "ci95_diff": [
-              -0.0331,
-              -0.0125
+              -0.0246,
+              -0.0042
             ],
-            "mde": 0.0147,
-            "verdict": "worse",
+            "mde": 0.0146,
+            "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0818,
+            "delta": 0.4251,
             "ci95_diff": [
-              -0.0348,
-              0.1984
+              0.3085,
+              0.5417
             ],
             "mde": 0.1666,
-            "verdict": "noise",
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.8956,
+            "delta": 0.593,
             "ci95_diff": [
-              0.8253,
-              0.9659
+              0.5256,
+              0.6604
             ],
-            "mde": 0.1005,
+            "mde": 0.0963,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -6875,9 +6916,9 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 7,
+        "rose": 8,
         "fell": 2,
-        "no_call": 1
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not measured",
@@ -6886,10 +6927,14 @@
       },
       "measured": true,
       "blind_spots": [
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Crossway Troublemakers",
         "Despark",
         "Drana and Linvala",
@@ -6916,6 +6961,7 @@
       "impact": {
         "state": "inconclusive",
         "rose": [
+          "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
@@ -6931,48 +6977,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.2673,
+            "delta": -2.2896,
             "ci95_diff": [
-              -2.4906,
-              -2.044
+              -2.5418,
+              -2.0374
             ],
-            "mde": 0.3192,
+            "mde": 0.3605,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0164,
+            "delta": 0.0244,
             "ci95_diff": [
-              0.0061,
-              0.0267
+              0.0142,
+              0.0346
             ],
-            "mde": 0.0148,
+            "mde": 0.0145,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0273,
+            "delta": 0.3897,
             "ci95_diff": [
-              -0.0852,
-              0.1398
+              0.277,
+              0.5024
             ],
-            "mde": 0.1608,
-            "verdict": "noise",
+            "mde": 0.1611,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6442,
+            "delta": -0.9852,
             "ci95_diff": [
-              -0.6975,
-              -0.5909
+              -1.0461,
+              -0.9243
             ],
-            "mde": 0.0762,
+            "mde": 0.087,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -7050,9 +7096,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Altar of Dementia"
-          },
-          {
             "name": "Bloodtracker"
           },
           {
@@ -7114,6 +7157,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -7208,8 +7257,8 @@
       "counts": {
         "in_deck": 63,
         "box": 8,
-        "elsewhere": 3,
-        "buy": 21,
+        "elsewhere": 4,
+        "buy": 20,
         "free": 1
       },
       "unsourced": [
@@ -7250,8 +7299,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -8067,10 +8124,14 @@
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -8113,48 +8174,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 2.6213,
+            "delta": 2.7395,
             "ci95_diff": [
-              2.3954,
-              2.8472
+              2.4827,
+              2.9963
             ],
-            "mde": 0.3229,
+            "mde": 0.3671,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.1448,
+            "delta": 0.144,
             "ci95_diff": [
-              0.1363,
-              0.1533
+              0.1356,
+              0.1524
             ],
-            "mde": 0.0121,
+            "mde": 0.012,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 1.9861,
+            "delta": 2.3283,
             "ci95_diff": [
-              1.8721,
-              2.1001
+              2.2145,
+              2.4421
             ],
-            "mde": 0.1629,
+            "mde": 0.1627,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.7645,
+            "delta": -1.0384,
             "ci95_diff": [
-              -0.8175,
-              -0.7115
+              -1.0988,
+              -0.978
             ],
-            "mde": 0.0758,
+            "mde": 0.0864,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -8231,9 +8292,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Altar of Dementia"
-          },
-          {
             "name": "Bloodflow Connoisseur"
           },
           {
@@ -8301,6 +8359,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -8389,8 +8453,8 @@
       "counts": {
         "in_deck": 62,
         "box": 6,
-        "elsewhere": 4,
-        "buy": 23,
+        "elsewhere": 5,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
@@ -8434,8 +8498,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -9237,9 +9309,9 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
+        "rose": 7,
         "fell": 2,
-        "no_call": 2
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not met",
@@ -9249,10 +9321,14 @@
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -9280,6 +9356,7 @@
       "impact": {
         "state": "do not merge",
         "rose": [
+          "board power @T6",
           "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
@@ -9294,48 +9371,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.3761,
+            "delta": -2.45,
             "ci95_diff": [
-              -2.6024,
-              -2.1498
+              -2.7035,
+              -2.1965
             ],
-            "mde": 0.3235,
+            "mde": 0.3624,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0042,
+            "delta": 0.004,
             "ci95_diff": [
-              -0.0146,
-              0.0062
+              -0.0064,
+              0.0144
             ],
-            "mde": 0.0149,
+            "mde": 0.0148,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0308,
+            "delta": 0.2963,
             "ci95_diff": [
-              -0.1509,
-              0.0893
+              0.1766,
+              0.416
             ],
-            "mde": 0.1716,
-            "verdict": "noise",
+            "mde": 0.1711,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.789,
+            "delta": -1.2521,
             "ci95_diff": [
-              -0.8365,
-              -0.7415
+              -1.3061,
+              -1.1981
             ],
-            "mde": 0.0679,
+            "mde": 0.0771,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -10530,9 +10607,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Altar of Dementia"
-          },
-          {
             "name": "Bloodflow Connoisseur"
           },
           {
@@ -10597,6 +10671,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -10685,8 +10765,8 @@
       "counts": {
         "in_deck": 63,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 22,
+        "elsewhere": 4,
+        "buy": 21,
         "free": 1
       },
       "unsourced": [
@@ -10728,8 +10808,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -11527,22 +11615,26 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 5,
+        "rose": 7,
         "fell": 3,
-        "no_call": 2
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4357,
-        "shortfall": 0.2643
+        "reading": 0.4463,
+        "shortfall": 0.2537
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -11568,6 +11660,8 @@
       "impact": {
         "state": "do not merge",
         "rose": [
+          "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -11582,22 +11676,22 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.449,
+            "delta": -2.509,
             "ci95_diff": [
-              -2.6722,
-              -2.2258
+              -2.7584,
+              -2.2596
             ],
-            "mde": 0.3191,
+            "mde": 0.3564,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.038,
+            "delta": -0.0309,
             "ci95_diff": [
-              -0.0486,
-              -0.0274
+              -0.0415,
+              -0.0203
             ],
             "mde": 0.0152,
             "verdict": "worse",
@@ -11606,24 +11700,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0831,
+            "delta": 0.4291,
             "ci95_diff": [
-              -0.0377,
-              0.2039
+              0.3085,
+              0.5497
             ],
-            "mde": 0.1727,
-            "verdict": "noise",
+            "mde": 0.1724,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6557,
+            "delta": -0.942,
             "ci95_diff": [
-              -0.7044,
-              -0.607
+              -1.0001,
+              -0.8839
             ],
-            "mde": 0.0695,
+            "mde": 0.083,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -11682,9 +11776,6 @@
       "proposal": null,
       "pull_list": {
         "buy": [
-          {
-            "name": "Altar of Dementia"
-          },
           {
             "name": "Bloodflow Connoisseur"
           },
@@ -11753,6 +11844,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -11841,8 +11938,8 @@
       "counts": {
         "in_deck": 62,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 23,
+        "elsewhere": 4,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
@@ -11885,8 +11982,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -12684,22 +12789,26 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 5,
+        "rose": 7,
         "fell": 3,
-        "no_call": 2
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4376,
-        "shortfall": 0.2624
+        "reading": 0.4491,
+        "shortfall": 0.2509
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Crippling Fear",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -12726,6 +12835,8 @@
       "impact": {
         "state": "do not merge",
         "rose": [
+          "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -12740,48 +12851,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.2749,
+            "delta": -2.3387,
             "ci95_diff": [
-              -2.5079,
-              -2.0419
+              -2.5981,
+              -2.0793
             ],
-            "mde": 0.3331,
+            "mde": 0.3708,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0346,
+            "delta": -0.0278,
             "ci95_diff": [
-              -0.0454,
-              -0.0238
+              -0.0385,
+              -0.0171
             ],
-            "mde": 0.0155,
+            "mde": 0.0153,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.1562,
+            "delta": 0.489,
             "ci95_diff": [
-              0.0334,
-              0.279
+              0.3673,
+              0.6107
             ],
-            "mde": 0.1755,
-            "verdict": "noise",
+            "mde": 0.1739,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6213,
+            "delta": -0.8964,
             "ci95_diff": [
-              -0.6759,
-              -0.5667
+              -0.9603,
+              -0.8325
             ],
-            "mde": 0.0781,
+            "mde": 0.0913,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -12840,9 +12951,6 @@
       "proposal": null,
       "pull_list": {
         "buy": [
-          {
-            "name": "Altar of Dementia"
-          },
           {
             "name": "Bloodflow Connoisseur"
           },
@@ -12914,6 +13022,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -13002,8 +13116,8 @@
       "counts": {
         "in_deck": 61,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 24,
+        "elsewhere": 4,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
@@ -13040,8 +13154,16 @@
       "cards": [
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -13846,23 +13968,27 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
+        "rose": 7,
         "fell": 3,
-        "no_call": 1
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4509,
-        "shortfall": 0.2491
+        "reading": 0.4528,
+        "shortfall": 0.2472
       },
       "measured": true,
       "blind_spots": [
         "Akroma's Will",
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -13890,6 +14016,7 @@
         "state": "do not merge",
         "rose": [
           "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -13904,22 +14031,22 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -1.7892,
+            "delta": -2.2667,
             "ci95_diff": [
-              -2.0201,
-              -1.5583
+              -2.5175,
+              -2.0159
             ],
-            "mde": 0.33,
+            "mde": 0.3585,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.02,
+            "delta": -0.0181,
             "ci95_diff": [
-              -0.0305,
-              -0.0095
+              -0.0286,
+              -0.0076
             ],
             "mde": 0.015,
             "verdict": "worse",
@@ -13928,24 +14055,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": 0.3811,
+            "delta": 0.7133,
             "ci95_diff": [
-              0.2591,
-              0.5031
+              0.5911,
+              0.8355
             ],
-            "mde": 0.1744,
+            "mde": 0.1747,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6425,
+            "delta": -0.9387,
             "ci95_diff": [
-              -0.6963,
-              -0.5887
+              -1.0013,
+              -0.8761
             ],
-            "mde": 0.0769,
+            "mde": 0.0895,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -14004,9 +14131,6 @@
       "proposal": null,
       "pull_list": {
         "buy": [
-          {
-            "name": "Altar of Dementia"
-          },
           {
             "name": "Blight Mound"
           },
@@ -14078,6 +14202,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -14166,8 +14296,8 @@
       "counts": {
         "in_deck": 61,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 24,
+        "elsewhere": 4,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
@@ -14211,8 +14341,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -15010,23 +15148,27 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 5,
+        "rose": 7,
         "fell": 3,
-        "no_call": 2
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4314,
-        "shortfall": 0.2686
+        "reading": 0.4414,
+        "shortfall": 0.2586
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
         "Anguished Unmaking",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -15053,6 +15195,8 @@
       "impact": {
         "state": "do not merge",
         "rose": [
+          "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -15067,48 +15211,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.2486,
+            "delta": -2.2925,
             "ci95_diff": [
-              -2.4784,
-              -2.0188
+              -2.5492,
+              -2.0358
             ],
-            "mde": 0.3285,
+            "mde": 0.3669,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0344,
+            "delta": -0.0271,
             "ci95_diff": [
-              -0.0452,
-              -0.0236
+              -0.0377,
+              -0.0165
             ],
-            "mde": 0.0154,
+            "mde": 0.0152,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0898,
+            "delta": 0.4144,
             "ci95_diff": [
-              -0.0319,
-              0.2115
+              0.2936,
+              0.5352
             ],
-            "mde": 0.174,
-            "verdict": "noise",
+            "mde": 0.1726,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6315,
+            "delta": -0.9194,
             "ci95_diff": [
-              -0.6859,
-              -0.5771
+              -0.9828,
+              -0.856
             ],
-            "mde": 0.0778,
+            "mde": 0.0906,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -15167,9 +15311,6 @@
       "proposal": null,
       "pull_list": {
         "buy": [
-          {
-            "name": "Altar of Dementia"
-          },
           {
             "name": "Bloodflow Connoisseur"
           },
@@ -15241,6 +15382,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Herald's Horn",
             "where": [
@@ -15322,8 +15469,8 @@
       "counts": {
         "in_deck": 62,
         "box": 7,
-        "elsewhere": 2,
-        "buy": 24,
+        "elsewhere": 3,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
@@ -15366,8 +15513,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -16143,21 +16298,25 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 6,
+        "rose": 7,
         "fell": 3,
-        "no_call": 1
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.4495,
-        "shortfall": 0.2505
+        "reading": 0.4635,
+        "shortfall": 0.2365
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -16185,6 +16344,7 @@
         "state": "do not merge",
         "rose": [
           "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -16199,48 +16359,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.0621,
+            "delta": -2.0472,
             "ci95_diff": [
-              -2.2981,
-              -1.8261
+              -2.3115,
+              -1.7829
             ],
-            "mde": 0.3373,
+            "mde": 0.3778,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0251,
+            "delta": -0.0167,
             "ci95_diff": [
-              -0.0356,
-              -0.0146
+              -0.0271,
+              -0.0063
             ],
-            "mde": 0.015,
+            "mde": 0.0149,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.2914,
+            "delta": 0.6217,
             "ci95_diff": [
-              0.17,
-              0.4128
+              0.5,
+              0.7434
             ],
-            "mde": 0.1736,
+            "mde": 0.1739,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6159,
+            "delta": -0.9003,
             "ci95_diff": [
-              -0.6697,
-              -0.5621
+              -0.9632,
+              -0.8374
             ],
-            "mde": 0.0769,
+            "mde": 0.09,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -16299,9 +16459,6 @@
       "proposal": null,
       "pull_list": {
         "buy": [
-          {
-            "name": "Altar of Dementia"
-          },
           {
             "name": "Bloodflow Connoisseur"
           },
@@ -16370,6 +16527,12 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Altar of Dementia",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Boros Charm",
             "where": [
@@ -16458,8 +16621,8 @@
       "counts": {
         "in_deck": 62,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 23,
+        "elsewhere": 4,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
@@ -16502,8 +16665,16 @@
         },
         {
           "name": "Altar of Dementia",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -17307,16 +17478,20 @@
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.466,
-        "shortfall": 0.234
+        "reading": 0.4789,
+        "shortfall": 0.2211
       },
       "measured": true,
       "blind_spots": [
         "Altar of Dementia",
+        "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
         "Bloodghast",
+        "Bloodtithe Harvester",
+        "Bloodtracker",
         "Boros Charm",
+        "Champion of Dusk",
         "Despark",
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
@@ -17357,48 +17532,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -1.7292,
+            "delta": -1.7402,
             "ci95_diff": [
-              -1.9605,
-              -1.4979
+              -1.9971,
+              -1.4833
             ],
-            "mde": 0.3306,
+            "mde": 0.3671,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0111,
+            "delta": -0.0039,
             "ci95_diff": [
-              -0.0216,
-              -0.0006
+              -0.0143,
+              0.0065
             ],
-            "mde": 0.015,
+            "mde": 0.0149,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.4733,
+            "delta": 0.8202,
             "ci95_diff": [
-              0.3504,
-              0.5962
+              0.698,
+              0.9424
             ],
-            "mde": 0.1757,
+            "mde": 0.1746,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.6618,
+            "delta": -0.9468,
             "ci95_diff": [
-              -0.7108,
-              -0.6128
+              -1.0052,
+              -0.8884
             ],
-            "mde": 0.07,
+            "mde": 0.0835,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -18524,7 +18699,7 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug edgar-vampires` re-reads them when you want, never on its own",
     "branch `bracket3-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch bracket3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `bracket3-v1` needs 1 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bracket3-v1`",
+    "branch `bracket3-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bracket3-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×6",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
