@@ -260,3 +260,63 @@ def test_survival_puts_creatures_in_the_graveyard_for_meren(monkeypatch):
     with pytest.MonkeyPatch.context() as mp:
         off = _routes(mp, {"discard_tutor": None})
     assert on.count("meren") > off.count("meren")
+
+
+def test_hogaak_and_mazirek_read_from_the_text():
+    hog = own_death_profile(_card("Hogaak, Arisen Necropolis", "You can't spend mana to cast "
+                                  "this spell.\nConvoke, delve\nTrample", "Legendary Creature — Avatar"))
+    assert hog["no_mana"] and hog["convoke"] and hog["delve"]
+    maz = own_death_profile(_card("Mazirek, Kraul Death Priest", "Flying\nWhenever a player "
+                                  "sacrifices another permanent, put a +1/+1 counter on each "
+                                  "creature you control.", "Legendary Creature — Insect Shaman"))
+    assert maz["sac_team_counter"]
+
+
+@requires_deck
+@requires_dump
+def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
+    """Under the rule Hogaak lands on turns the mana could not pay seven; read as an ordinary
+    7-drop (the rule removed) it never does. PROVED BY REMOVING THE RULE."""
+    from manamap.pilot import try_swap
+    doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Hogaak, Arisen Necropolis")])[0]
+
+    def cast_mana(mp):
+        out = []
+        orig = goldfish.simulate_once
+
+        def w(*a, **k):
+            r = orig(*a, **k)
+            out.append(r)
+            return r
+        mp.setattr(goldfish, "simulate_once", w)
+        goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False, doc=doc)
+        return [r["mana_by_turn"][t - 1] for r in out
+                for (mv, t, route), n in zip(r["big_arrivals"], r["big_arrival_names"])
+                if n.startswith("Hogaak") and route == "cast"]
+    with pytest.MonkeyPatch.context() as mp:
+        ruled = cast_mana(mp)
+    with pytest.MonkeyPatch.context() as mp:
+        real = goldfish_library.own_death_profile
+        mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "no_mana": False})
+        free = cast_mana(mp)
+    assert ruled and any(m < 7 for m in ruled), "convoke and delve never paid for it"
+    assert free and all(m >= 7 for m in free), "a hard cast needs seven mana"
+
+
+@requires_deck
+@requires_dump
+def test_mazirek_grows_the_board_on_every_sacrifice(monkeypatch):
+    """PROVED BY REMOVING THE TRIGGER: the same games, a smaller board by turn ten."""
+    from manamap.pilot import try_swap
+    doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Mazirek, Kraul Death Priest")])[0]
+
+    def power(mp):
+        m = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
+        return m["combat"]["mean_board_power_by_turn"]["10"] if "mean_board_power_by_turn" in m.get("combat", {}) \
+            else m["mean_damage_by_turn"]["10"]
+    on = power(monkeypatch)
+    with pytest.MonkeyPatch.context() as mp:
+        real = goldfish_library.own_death_profile
+        mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "sac_team_counter": False})
+        off = power(mp)
+    assert on > off, (on, off)

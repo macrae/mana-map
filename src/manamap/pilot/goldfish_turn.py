@@ -756,7 +756,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   # return one every upkeep (Sheoldred, Whispering One), by the turn they arrived.
                   "route": "free", "arrivals": {}, "temp": [], "upkeep_reanimators": [],
                   # discard-a-creature tutors in play (Survival, Fauna Shaman)
-                  "discard_tutors": [], "tap_loaders": []}
+                  "discard_tutors": [], "tap_loaders": [],
+                  # Mazireks in play, and the sacrifices made this turn (2026-11-07)
+                  "sac_counters": 0, "sacs": 0}
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -1651,6 +1653,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if _yd.get("reanimate") and "Creature" in (card.get("type_line") or "") \
                         and "at the beginning of your upkeep" in (card.get("oracle_text") or "").lower():
                     own_deaths["upkeep_reanimators"].append(turn)
+            if enters and od.get("sac_team_counter"):
+                own_deaths["sac_counters"] += 1
             if commander_recursion and (card.get("yard") or {}).get("discard_tutor"):
                 own_deaths["discard_tutors"].append(card["yard"]["discard_tutor"])
             rec = card.get("recurring") or {}
@@ -3657,8 +3661,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _register_wheel(card)
                     _register_statics(card)
 
-            # Spend what's left on bodies, cheapest-first.
-            for card in sorted((c for c in hand if c["bodies"] > 0),
+            # Spend what's left on bodies, cheapest-first. Never a spell no mana may pay for
+            # (Hogaak: convoke and delve, cast after combat below).
+            for card in sorted((c for c in hand if c["bodies"] > 0
+                                and not (c.get("own_death") or {}).get("no_mana")),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:      # a free cast's discard took it
                     continue
@@ -4749,6 +4755,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 creature_types[:] = [creature_types[i] for i in kept_idx]
                 creature_flying[:] = [creature_flying[i] for i in kept_idx]
                 sacrifices += n_sac
+                own_deaths["sacs"] += n_sac
                 if commander_recursion and commander_turn is not None:
                     experience += n_sac
             # MEREN'S HALF OF THE OUTLET (2026-11-06): one non-token fodder creature, the
@@ -4770,10 +4777,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     del creature_flying[_i]
                     yard_creatures.append(_card)
                     sacrifices += 1
+                    own_deaths["sacs"] += 1
                     _deaths_after_combat(1, is_token=False)   # pays her experience counter
             # THE OTHER DEATHS OUR OWN CARDS CAUSE (2026-11-07, `own_death_profile`), after the
             # outlet and before her end step, so what died is there for her to return.
-            def _kill(i):
+            def _kill(i, sacrificed=True):
+                if sacrificed:
+                    own_deaths["sacs"] += 1
                 _e = battlefield.pop(i)
                 creature_types.pop(i)
                 creature_flying.pop(i)
@@ -4874,6 +4884,23 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         if _at is None:
                             break
                         _kill(_at)
+                # HOGAAK (2026-11-07): no mana may pay; convoke taps creatures that did not attack
+                # (here: the ones that arrived this turn, the tokens just made included -- a floor),
+                # and delve exiles graveyard cards, spells first, then the smallest creature cards.
+                # Its two hybrid pips need two convoking creatures.
+                for card in [c for c in hand if (c.get("own_death") or {}).get("no_mana")]:
+                    _cv = sum(1 for e in battlefield if e[1] == turn)
+                    _yard = len(yard_creatures) + yard_spells
+                    if _cv < 2 or _cv + _yard < card["cmc"]:
+                        continue
+                    _delve = max(0, int(card["cmc"]) - _cv)
+                    _from_spells = min(_delve, yard_spells)
+                    yard_spells -= _from_spells
+                    for _c in sorted(yard_creatures, key=lambda c: c["cmc"])[:_delve - _from_spells]:
+                        yard_creatures.remove(_c)
+                    _note_cast(card)
+                    bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
+                    _resolve_body(card)
                 # EVERY TOKEN GOES TO THE OUTLET with Meren out: each one is a counter.
                 if _outlet:
                     for _i in sorted((i for i, e in enumerate(battlefield) if e[4]), reverse=True):
@@ -4897,9 +4924,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                   and battlefield[i][6] <= _clamp["toughness_minus"]]
                         if not _small or not spend(_clamp["equip"]):
                             break
-                        _kill(min(_small, key=lambda i: battlefield[i][0]))
+                        _kill(min(_small, key=lambda i: battlefield[i][0]), sacrificed=False)
                         if model_draw:
                             draw_n(_clamp["draw"])
+            # MAZIREK: a +1/+1 counter on each creature we control for every sacrifice this turn,
+            # through the counter replacements; applied after combat, so it grows next turn's swing.
+            if own_deaths["sac_counters"] and own_deaths["sacs"]:
+                _k = apply_counter_mod(1, counter_plus, counter_times) * own_deaths["sacs"] \
+                    * own_deaths["sac_counters"]
+                for _i, _c in enumerate(battlefield):
+                    battlefield[_i] = (_c[0] + _k,) + _c[1:]
+                commander_counters += _k * _cmd_out()
+            own_deaths["sacs"] = 0
             # END-STEP TOKENS (Jadar): made now, there for the outlet next turn.
             if commander_recursion:
                 for _mk in own_deaths["makers"]:
@@ -5382,6 +5418,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         **({"experience_by_turn": experience_by_turn,
             # (mana value, turn, route) of the first arrival of each big body (2026-11-07)
             "big_arrivals": list(own_deaths["arrivals"].values()),
+            "big_arrival_names": list(own_deaths["arrivals"]),     # same order, for a reader
             "recursion_to_battlefield": recursion_to_battlefield,
             "recursion_to_hand": recursion_to_hand} if commander_recursion else {}),
         "sac_cap_hits": sac_cap_hits,

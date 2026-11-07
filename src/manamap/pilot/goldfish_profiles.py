@@ -1673,8 +1673,19 @@ _CLAMP_DRAW_RE = re.compile(r"whenever equipped creature dies, draw (\w+) cards?
 _CLAMP_EQUIP_RE = re.compile(r"(?:^|\n)equip \{(\d+)\}", re.IGNORECASE)
 
 
+#: HOGAAK, ARISEN NECROPOLIS (2026-11-07): "You can't spend mana to cast this spell. Convoke,
+#: delve." The only card in the corpus with the first sentence; it must never be hard-cast.
+_NO_MANA_RE = re.compile(r"you can't spend mana to cast this spell", re.IGNORECASE)
+#: MAZIREK, KRAUL DEATH PRIEST: "Whenever a player sacrifices another permanent, put a +1/+1
+#: counter on each creature you control" -- the only card in the corpus with this trigger.
+_SAC_TEAM_COUNTER_RE = re.compile(
+    r"whenever (?:a player|you) sacrifices? (?:another|a) (?:permanent|creature)[^.\n]*?"
+    r"put a \+1/\+1 counter on each creature you control", re.IGNORECASE)
+
+
 def own_death_profile(card):
-    """The deaths this card causes among its controller's own creatures (see above)."""
+    """The deaths this card causes among its controller's own creatures (see above), and two
+    neighbours read with them: a spell no mana may pay for, and a counter on every sacrifice."""
     text = card.get("oracle_text", "") or ""
     tl = card.get("type_line", "") or ""
     is_creature = "Creature" in tl
@@ -1692,7 +1703,11 @@ def own_death_profile(card):
     # The mana in front of the sacrifice (Haywire Mite's {G}, Cankerbloom's {1}) is paid.
     sac_cost = sum(int(t) if t.isdigit() else 1 for t in re.findall(r"\{([^}]+)\}", sac.group(0))
                    if t not in ("T", "Q")) if sac else 0
-    return {"self_sac": bool(sac), "self_sac_cost": sac_cost,
+    return {"no_mana": bool(_NO_MANA_RE.search(text)),
+            "convoke": bool(re.search(r"\bconvoke\b", text, re.IGNORECASE)),
+            "delve": bool(re.search(r"\bdelve\b", text, re.IGNORECASE)),
+            "sac_team_counter": bool(_SAC_TEAM_COUNTER_RE.search(text)),
+            "self_sac": bool(sac), "self_sac_cost": sac_cost,
             "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),
             "clamp": clamp}
 
