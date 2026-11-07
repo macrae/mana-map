@@ -4888,17 +4888,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # (here: the ones that arrived this turn, the tokens just made included -- a floor),
                 # and delve exiles graveyard cards, spells first, then the smallest creature cards.
                 # Its two hybrid pips need two convoking creatures.
-                for card in [c for c in hand if (c.get("own_death") or {}).get("no_mana")]:
+                # From the graveyard too: "You may cast this card from your graveyard" (V6's
+                # reason for running it -- a wipe does not strand it).
+                for card in [c for c in hand if (c.get("own_death") or {}).get("no_mana")] + [
+                        c for c in yard_creatures if (c.get("own_death") or {}).get("no_mana")
+                        and c["own_death"].get("cast_from_yard")]:
+                    _in_yard = card in yard_creatures
                     _cv = sum(1 for e in battlefield if e[1] == turn)
-                    _yard = len(yard_creatures) + yard_spells
+                    _yard = len(yard_creatures) + yard_spells - (1 if _in_yard else 0)
                     if _cv < 2 or _cv + _yard < card["cmc"]:
                         continue
+                    if _in_yard:
+                        yard_creatures.remove(card)
                     _delve = max(0, int(card["cmc"]) - _cv)
                     _from_spells = min(_delve, yard_spells)
                     yard_spells -= _from_spells
                     for _c in sorted(yard_creatures, key=lambda c: c["cmc"])[:_delve - _from_spells]:
                         yard_creatures.remove(_c)
-                    _note_cast(card)
+                    if _in_yard:
+                        hand.append(card)
+                    _note_cast(card, from_yard=_in_yard)
                     bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                     _resolve_body(card)
                 # EVERY TOKEN GOES TO THE OUTLET with Meren out: each one is a counter.

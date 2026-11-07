@@ -1706,6 +1706,9 @@ def own_death_profile(card):
     return {"no_mana": bool(_NO_MANA_RE.search(text)),
             "convoke": bool(re.search(r"\bconvoke\b", text, re.IGNORECASE)),
             "delve": bool(re.search(r"\bdelve\b", text, re.IGNORECASE)),
+            # Hogaak again: "You may cast this card from your graveyard."
+            "cast_from_yard": bool(re.search(r"you may cast this card from your graveyard",
+                                             text, re.IGNORECASE)),
             "sac_team_counter": bool(_SAC_TEAM_COUNTER_RE.search(text)),
             "self_sac": bool(sac), "self_sac_cost": sac_cost,
             "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),

@@ -22,11 +22,9 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -1982,7 +1980,7 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.431,
+            "10": 8.429,
             "2": 2.292,
             "3": 3.387,
             "4": 4.244,
@@ -1990,7 +1988,7 @@
             "6": 5.669,
             "7": 6.328,
             "8": 6.999,
-            "9": 7.69
+            "9": 7.689
           },
           "tier": "data",
           "weight": "detail",
@@ -2001,7 +1999,7 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.634,
+            "10": 0.633,
             "2": 0.996,
             "3": 0.905,
             "4": 0.785,
@@ -2020,15 +2018,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.274,
-            "10": 12.194,
+            "10": 12.31,
             "2": 0.735,
             "3": 1.173,
             "4": 1.621,
             "5": 2.678,
-            "6": 4.08,
-            "7": 5.712,
-            "8": 7.575,
-            "9": 9.724
+            "6": 4.083,
+            "7": 5.727,
+            "8": 7.609,
+            "9": 9.788
           },
           "tier": "data",
           "weight": "detail",
@@ -2054,12 +2052,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1909,
+            "10": 1844,
             "5": 4,
-            "6": 87,
-            "7": 1016,
-            "8": 2400,
-            "9": 2741
+            "6": 92,
+            "7": 1045,
+            "8": 2493,
+            "9": 2753
           },
           "tier": "data",
           "weight": "detail",
@@ -2124,19 +2122,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.657,
+      "mean_kill_turn": 8.632,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 35,
+      "kill_by_turn_8_pct": 36,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 18,
       "kill_turn_histogram": {
-        "10": 1909,
+        "10": 1844,
         "5": 4,
-        "6": 87,
-        "7": 1016,
-        "8": 2400,
-        "9": 2741
+        "6": 92,
+        "7": 1045,
+        "8": 2493,
+        "9": 2753
       }
     }
   },
@@ -2186,10 +2184,8 @@
     ]
   },
   "next": [
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V6 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 40 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",

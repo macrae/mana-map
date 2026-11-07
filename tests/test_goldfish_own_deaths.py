@@ -265,7 +265,11 @@ def test_survival_puts_creatures_in_the_graveyard_for_meren(monkeypatch):
 def test_hogaak_and_mazirek_read_from_the_text():
     hog = own_death_profile(_card("Hogaak, Arisen Necropolis", "You can't spend mana to cast "
                                   "this spell.\nConvoke, delve\nTrample", "Legendary Creature — Avatar"))
-    assert hog["no_mana"] and hog["convoke"] and hog["delve"]
+    assert hog["no_mana"] and hog["convoke"] and hog["delve"] and not hog["cast_from_yard"]
+    hog2 = own_death_profile(_card("Hogaak, Arisen Necropolis", "You can't spend mana to cast "
+                                   "this spell.\nConvoke, delve\nYou may cast this card from your "
+                                   "graveyard.\nTrample", "Legendary Creature — Avatar"))
+    assert hog2["cast_from_yard"]
     maz = own_death_profile(_card("Mazirek, Kraul Death Priest", "Flying\nWhenever a player "
                                   "sacrifices another permanent, put a +1/+1 counter on each "
                                   "creature you control.", "Legendary Creature — Insect Shaman"))
