@@ -228,3 +228,35 @@ def test_the_recursion_rows_are_absent_on_a_deck_without_meren():
     from manamap.pilot import diagnostic
     doc = json.loads(deck_file("gishath", "cards.json").read_text())
     assert "recursion" not in diagnostic.run_on(doc, "gishath", iterations=50, seed=1, quiet=True)
+
+
+def test_the_loader_shapes_read_from_the_text():
+    surv = graveyard_profile(_card("Survival of the Fittest", "{G}, Discard a creature card: "
+                                   "Search your library for a creature card, reveal it, put it "
+                                   "into your hand, then shuffle.", "Enchantment"))
+    assert surv["discard_tutor"] == {"cost": 1, "taps": False}
+    shaman = graveyard_profile(_card("Fauna Shaman", "{G}, {T}, Discard a creature card: Search "
+                                     "your library for a creature card, reveal it, put it into "
+                                     "your hand, then shuffle.", "Creature — Elf Shaman"))
+    assert shaman["discard_tutor"] == {"cost": 1, "taps": True}
+    grave = graveyard_profile(_card("Unmarked Grave", "Search your library for a nonlegendary "
+                                    "card, put that card into your graveyard, then shuffle.",
+                                    "Sorcery"))
+    assert grave["to_yard"] == 1 and grave["to_yard_nonlegendary"]
+    orders = graveyard_profile(_card("Jarad's Orders", "Search your library for up to two "
+                                     "creature cards and reveal them. Put one into your hand and "
+                                     "the other into your graveyard. Then shuffle.", "Sorcery"))
+    assert orders["to_yard"] == 1 and orders["to_yard_also_hand"]
+    lore = graveyard_profile(_card("Oriq Loremage", "{T}: Search your library for a card, put "
+                                   "it into your graveyard, then shuffle.", "Creature — Human Warlock"))
+    assert lore["to_yard_tap"], "a tap loader loads every turn, not once"
+
+
+@requires_deck
+def test_survival_puts_creatures_in_the_graveyard_for_meren(monkeypatch):
+    """PROVED BY REMOVING THE SHAPE: without the discard tutor read, Meren's end step finds
+    fewer big bodies, so fewer of them arrive by her route."""
+    on = _routes(monkeypatch)
+    with pytest.MonkeyPatch.context() as mp:
+        off = _routes(mp, {"discard_tutor": None})
+    assert on.count("meren") > off.count("meren")

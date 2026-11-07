@@ -22,13 +22,13 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -1806,7 +1806,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.815,
+          "value": 3.816,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1971,15 +1971,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.534,
+            "10": 8.642,
             "2": 2.332,
             "3": 3.511,
             "4": 4.38,
-            "5": 5.138,
-            "6": 5.849,
-            "7": 6.506,
-            "8": 7.16,
-            "9": 7.841
+            "5": 5.139,
+            "6": 5.853,
+            "7": 6.518,
+            "8": 7.195,
+            "9": 7.902
           },
           "tier": "data",
           "weight": "detail",
@@ -1990,15 +1990,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.561,
+            "10": 0.596,
             "2": 0.997,
             "3": 0.905,
             "4": 0.779,
             "5": 0.666,
-            "6": 0.589,
-            "7": 0.554,
-            "8": 0.543,
-            "9": 0.555
+            "6": 0.592,
+            "7": 0.561,
+            "8": 0.561,
+            "9": 0.577
           },
           "tier": "data",
           "weight": "detail",
@@ -2009,15 +2009,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.291,
-            "10": 13.372,
-            "2": 0.853,
-            "3": 1.283,
-            "4": 1.879,
-            "5": 3.166,
-            "6": 4.797,
-            "7": 6.651,
-            "8": 8.711,
-            "9": 10.957
+            "10": 12.935,
+            "2": 0.821,
+            "3": 1.219,
+            "4": 1.784,
+            "5": 2.991,
+            "6": 4.522,
+            "7": 6.262,
+            "8": 8.242,
+            "9": 10.472
           },
           "tier": "data",
           "weight": "detail",
@@ -2043,11 +2043,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1972,
-            "6": 101,
-            "7": 978,
-            "8": 2509,
-            "9": 2971
+            "10": 2007,
+            "6": 98,
+            "7": 944,
+            "8": 2381,
+            "9": 2835
           },
           "tier": "data",
           "weight": "detail",
@@ -2063,7 +2063,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.815,
+    "commander_mean_cast_turn": 3.816,
     "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
@@ -2112,18 +2112,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.672,
+      "mean_kill_turn": 8.691,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 36,
+      "kill_by_turn_8_pct": 34,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 15,
+      "no_kill_by_max_turn_pct": 17,
       "kill_turn_histogram": {
-        "10": 1972,
-        "6": 101,
-        "7": 978,
-        "8": 2509,
-        "9": 2971
+        "10": 2007,
+        "6": 98,
+        "7": 944,
+        "8": 2381,
+        "9": 2835
       }
     }
   },
@@ -2170,10 +2170,9 @@
     ]
   },
   "next": [
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V4 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 39 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",

@@ -417,6 +417,9 @@ def never_cast(profile, flags):
     # A CLAMP (2026-11-07), mirroring `_engine_permanent` in the same commit.
     if flags.get("model_commander_recursion") and (profile.get("own_death") or {}).get("clamp"):
         return False
+    if flags.get("model_commander_recursion") and ((profile.get("yard") or {}).get("discard_tutor")
+                                                   or (profile.get("yard") or {}).get("to_yard")):
+        return False
     # DEATH ENGINES. Added when `model_deaths` shipped and NOT at the same time
     # as goldfish's own casting predicate — the fleet test caught the drift
     # within the hour, which is the whole reason it exists. A mirror that is

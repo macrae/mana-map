@@ -754,7 +754,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   # first arrival of each big body (mana value 5+) as (mana value, turn, route),
                   # the reanimated bodies that die at the next end step, and the creatures that
                   # return one every upkeep (Sheoldred, Whispering One), by the turn they arrived.
-                  "route": "free", "arrivals": {}, "temp": [], "upkeep_reanimators": []}
+                  "route": "free", "arrivals": {}, "temp": [], "upkeep_reanimators": [],
+                  # discard-a-creature tutors in play (Survival, Fauna Shaman)
+                  "discard_tutors": [], "tap_loaders": []}
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -1606,10 +1608,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     and "Creature" in (card.get("type_line") or ""):
                 own_deaths["arrivals"][card["name"]] = (int(card["cmc"]), turn, route)
 
-        def _entomb(n):
+        def _entomb(n, nonlegendary=False):
             """INTO THE GRAVEYARD, a stated policy: the n biggest creature cards in the library,
-            the reanimation targets (Entomb, Buried Alive, Vile Entomber)."""
-            for _c in sorted((c for c in deck if "Creature" in (c.get("type_line") or "")),
+            the reanimation targets (Entomb, Buried Alive, Vile Entomber); Unmarked Grave may
+            take no legendary one."""
+            for _c in sorted((c for c in deck if "Creature" in (c.get("type_line") or "")
+                              and not (nonlegendary and "Legendary" in (c.get("type_line") or ""))),
                              key=lambda c: -c["cmc"])[:n]:
                 deck.remove(_c)
                 yard_creatures.append(_c)
@@ -1636,13 +1640,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if enters and commander_recursion:
                 _record_arrival(card, own_deaths["route"])
                 _yd = card.get("yard") or {}
-                # Vile Entomber's ETB: the card goes to the graveyard, not to hand.
+                # Vile Entomber's ETB: the card goes to the graveyard, not to hand. A tap loader
+                # (Oriq Loremage) loads every turn from the next one instead.
                 if _yd.get("to_yard") and "Creature" in (card.get("type_line") or ""):
-                    _entomb(_yd["to_yard"])
+                    if _yd.get("to_yard_tap"):
+                        own_deaths["tap_loaders"].append(turn)
+                    else:
+                        _entomb(_yd["to_yard"], _yd.get("to_yard_nonlegendary"))
                 # Sheoldred, Whispering One: a creature that returns one every upkeep.
                 if _yd.get("reanimate") and "Creature" in (card.get("type_line") or "") \
                         and "at the beginning of your upkeep" in (card.get("oracle_text") or "").lower():
                     own_deaths["upkeep_reanimators"].append(turn)
+            if commander_recursion and (card.get("yard") or {}).get("discard_tutor"):
+                own_deaths["discard_tutors"].append(card["yard"]["discard_tutor"])
             rec = card.get("recurring") or {}
             if commander_recursion:
                 for _kind in ("upkeep", "end_step"):
@@ -2961,17 +2971,33 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # Cast tutors before bodies: a tutor is a setup spell, and it competes
             # for the same mana. Previously tutors had bodies=0 and produces=0, so
             # they were never cast at all and their mana silently went to creatures.
-            for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
+            def _loader_spell(c):
+                return bool(commander_recursion and (c.get("yard") or {}).get("to_yard")
+                            and "Creature" not in (c.get("type_line") or ""))
+            for card in sorted((c for c in hand if c["tutor"] or _loader_spell(c)),
+                               key=lambda c: c.get("tutor_cmc") or c["cmc"]):
                 if card not in hand:      # a free cast's discard took it
                     continue
                 # ENTOMB AND BURIED ALIVE PUT THE CARD IN THE GRAVEYARD (2026-11-07), under
                 # Meren's declaration, where a graveyard is tracked. They read as tutors to hand.
-                if commander_recursion and (card.get("yard") or {}).get("to_yard") \
-                        and "Creature" not in (card.get("type_line") or ""):
-                    if not spend(card["tutor_cmc"], card["pips"]):
+                # Jarad's Orders and Final Parting put the other one in hand: a reanimation
+                # spell if the library holds one, else the next biggest creature.
+                if _loader_spell(card):
+                    if not spend(card.get("tutor_cmc") or card["cmc"], card["pips"]):
                         continue
                     _note_cast(card)
-                    _entomb(card["yard"]["to_yard"])
+                    _yd = card["yard"]
+                    _entomb(_yd["to_yard"], _yd.get("to_yard_nonlegendary"))
+                    if _yd.get("to_yard_also_hand"):
+                        _spells = [] if _yd["to_yard_creatures_only"] else [
+                            c for c in deck if (c.get("yard") or {}).get("reanimate")
+                            and "Creature" not in (c.get("type_line") or "")]
+                        _bodies = [c for c in deck if "Creature" in (c.get("type_line") or "")]
+                        _got = (min(_spells, key=lambda c: c["cmc"]) if _spells
+                                else max(_bodies, key=lambda c: c["cmc"]) if _bodies else None)
+                        if _got is not None:
+                            deck.remove(_got)
+                            hand.append(_got)
                     continue
                 if card["tutor_needs_body"] and bodies_cum < 1:
                     continue
@@ -3019,6 +3045,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["tutor_delay"]:
                         deck.insert(0, _got)
                     else:
+                        hand.append(_got)
+
+            # SURVIVAL OF THE FITTEST AND FAUNA SHAMAN (2026-11-07): a stated policy -- discard the
+            # biggest creature card in hand (into the graveyard, for the reanimation below and
+            # Meren) and fetch the biggest one left in the library. Survival as often as there
+            # is mana (three times at most), a Shaman once, it taps.
+            if commander_recursion:
+                # ORIQ LOREMAGE: a creature card into the graveyard every turn after it arrived.
+                for _arr in own_deaths["tap_loaders"]:
+                    if _arr < turn:
+                        _entomb(1)
+                for _dt in own_deaths["discard_tutors"]:
+                    for _ in range(1 if _dt["taps"] else 3):
+                        _cr = [c for c in hand if "Creature" in (c.get("type_line") or "")]
+                        _lib = [c for c in deck if "Creature" in (c.get("type_line") or "")]
+                        if not _cr or not _lib or not spend(_dt["cost"]):
+                            break
+                        discard_n(1, which=max(_cr, key=lambda c: c["cmc"]))
+                        _got = max(_lib, key=lambda c: c["cmc"])
+                        deck.remove(_got)
                         hand.append(_got)
 
             # REANIMATION SPELLS (2026-11-07, under Meren's declaration): Animate Dead, Reanimate,
@@ -3333,6 +3379,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # causes: Skullclamp has no body, no mana and no channel of its own. Mirrored
                 # in `model_coverage.never_cast`.
                 if commander_recursion and (c.get("own_death") or {}).get("clamp"):
+                    return True
+                # A DISCARD TUTOR IS A PERMANENT TOO (Survival of the Fittest, 2026-11-07), in the
+                # same commit as its activation; mirrored in `model_coverage.never_cast`.
+                if commander_recursion and (c.get("yard") or {}).get("discard_tutor"):
                     return True
                 # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
                 # has bitten, and the worst of them, because it was a DEADLOCK. Four

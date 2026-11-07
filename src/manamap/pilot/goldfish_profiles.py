@@ -1763,6 +1763,16 @@ _REANIMATE_RE = re.compile(
     r"(?:return|put) target (nonlegendary )?creature card (?:with mana value (\d+) or less )?"
     r"from (?:a|your) graveyard (?:to|onto) the battlefield"
     r"|return enchanted creature card to the battlefield", re.IGNORECASE)
+#: A DISCARD-A-CREATURE TUTOR (Survival of the Fittest, Fauna Shaman -- the only two in the
+#: corpus, 2026-11-07): each activation puts a creature card from hand into the graveyard
+#: and fetches another, which is a reanimator's loader.
+_DISCARD_TUTOR_RE = re.compile(
+    r"(?:^|\n)((?:\{[^}]+\}(?:,\s*)?)*)discard (?:a|another) creature card: search your "
+    r"library for (?:a|an) [\w' -]{0,30}?creature card[^.]*?into your hand", re.IGNORECASE)
+#: ONE TO HAND, THE OTHER TO THE GRAVEYARD (Jarad's Orders, Final Parting).
+_TO_YARD_SPLIT_RE = re.compile(
+    r"search your library for (?:up to )?two ([\w' -]{0,30}?)cards[^.]*\.\s*"
+    r"put one into your hand and the other into your graveyard", re.IGNORECASE)
 _REANIMATE_TEMP_RE = re.compile(
     r"sacrifice (?:it|that creature) at the beginning of the next end step", re.IGNORECASE)
 
@@ -1771,12 +1781,26 @@ def graveyard_profile(card):
     """What this card puts into the graveyard, or brings back from it (see above)."""
     text = card.get("oracle_text", "") or ""
     m = _TO_YARD_RE.search(text)
+    split = _TO_YARD_SPLIT_RE.search(text)
     n = 0
     if m:
         n = _RECUR_WORDS.get((m.group(1) or "a").lower(), 1) if m.group(1) else 1
+    elif split:
+        n = 1
+    _words = ((m.group(2) if m else split.group(1) if split else "") or "").lower()
+    # Oriq Loremage: "{T}: Search your library ... into your graveyard" -- every turn, not once.
+    _line = next((ln for ln in text.split("\n") if m and m.group(0)[:30] in ln), "")
+    tap = bool(m and re.search(r"\{T\}[^:]*:\s*search your library", _line, re.IGNORECASE))
     r = _REANIMATE_RE.search(text)
-    return {"to_yard": n,
-            "to_yard_creatures_only": bool(m and "creature" in (m.group(2) or "").lower()),
+    d = _DISCARD_TUTOR_RE.search(text)
+    return {"discard_tutor": ({"cost": sum(int(t) if t.isdigit() else 1 for t in
+                                           re.findall(r"\{([^}]+)\}", d.group(1)) if t != "T"),
+                               "taps": "{T}" in d.group(1)} if d else None),
+            "to_yard": n,
+            "to_yard_creatures_only": "creature" in _words,
+            "to_yard_nonlegendary": "nonlegendary" in _words,   # Unmarked Grave
+            "to_yard_tap": tap,
+            "to_yard_also_hand": bool(split),
             "reanimate": bool(r),
             "reanimate_nonlegendary": bool(r and r.group(1)),
             "reanimate_max_mv": int(r.group(2)) if r and r.group(2) else None,
