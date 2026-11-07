@@ -9750,4 +9750,7 @@ def test_the_page_groups_rows_exactly_as_the_terminal_does():
             quoted = f"'{name}'" if "'" not in name else f'"{name}"'
             assert quoted in block[at:], f"{name} is not under {title} on the page"
     grouped = sum(len(n) for _, n in net_change.ROW_GROUPS)
-    assert len(re.findall(r"""['"][^'"]*(?:@T|by T|mulliganed|in a row|keep rule)[^'"]*['"]""", block)) == grouped
+    # every row label's wording, so a label on the page and in no group is counted
+    # ("big bodies": Meren's turns-saved row, 2026-11-07)
+    assert len(re.findall(r"""['"][^'"]*(?:@T|by T|mulliganed|in a row|keep rule|big bodies)[^'"]*['"]""",
+                          block)) == grouped
