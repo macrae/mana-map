@@ -749,7 +749,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     own_deaths = {"costed_outlet": False, "pending_edicts": 0, "clamps": [],
                   # the bodies that come back every turn (`recurring_body_profile`), read under
                   # Meren's declaration: token makers in play, and the turn a land last entered
-                  "makers": [], "landfall_turn": None}
+                  "makers": [], "landfall_turn": None,
+                  # THE REANIMATOR HALF (2026-11-07): how a free entry got here (`route`), the
+                  # first arrival of each big body (mana value 5+) as (mana value, turn, route),
+                  # the reanimated bodies that die at the next end step, and the creatures that
+                  # return one every upkeep (Sheoldred, Whispering One), by the turn they arrived.
+                  "route": "free", "arrivals": {}, "temp": [], "upkeep_reanimators": []}
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -1595,6 +1600,27 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             return card["treasure_trigger"] not in ("upkeep", "landfall", "opponent_draw_tax",
                                                     "opponent_second_draw")
 
+        def _record_arrival(card, route):
+            """The first time each big body (mana value 5+) enters, and how (2026-11-07)."""
+            if card.get("cmc", 0) >= 5 and card["name"] not in own_deaths["arrivals"] \
+                    and "Creature" in (card.get("type_line") or ""):
+                own_deaths["arrivals"][card["name"]] = (int(card["cmc"]), turn, route)
+
+        def _entomb(n):
+            """INTO THE GRAVEYARD, a stated policy: the n biggest creature cards in the library,
+            the reanimation targets (Entomb, Buried Alive, Vile Entomber)."""
+            for _c in sorted((c for c in deck if "Creature" in (c.get("type_line") or "")),
+                             key=lambda c: -c["cmc"])[:n]:
+                deck.remove(_c)
+                yard_creatures.append(_c)
+
+        def _enter_by(card, route):
+            own_deaths["route"] = route
+            try:
+                _free_creature_enters(card)
+            finally:
+                own_deaths["route"] = "free"
+
         def _register_own_death(card, enters):
             """What this permanent will kill among our own creatures (2026-11-07). An edict is
             mandatory and fires its death payoffs wherever deaths are read; a costed outlet and
@@ -1607,6 +1633,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 own_deaths["pending_edicts"] += 1
             if commander_recursion and od.get("clamp"):
                 own_deaths["clamps"].append(od["clamp"])
+            if enters and commander_recursion:
+                _record_arrival(card, own_deaths["route"])
+                _yd = card.get("yard") or {}
+                # Vile Entomber's ETB: the card goes to the graveyard, not to hand.
+                if _yd.get("to_yard") and "Creature" in (card.get("type_line") or ""):
+                    _entomb(_yd["to_yard"])
+                # Sheoldred, Whispering One: a creature that returns one every upkeep.
+                if _yd.get("reanimate") and "Creature" in (card.get("type_line") or "") \
+                        and "at the beginning of your upkeep" in (card.get("oracle_text") or "").lower():
+                    own_deaths["upkeep_reanimators"].append(turn)
             rec = card.get("recurring") or {}
             if commander_recursion:
                 for _kind in ("upkeep", "end_step"):
@@ -2267,7 +2303,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     death_engines.append(card["death"])
                 if card["sac_outlet"] == "free":
                     free_sac_outlet = True
+            own_deaths["route"] = "cast"
             _register_own_death(card, enters=True)
+            own_deaths["route"] = "free"
             if model_deaths:
                 # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19): drain, damage,
                 # draw and Treasure all fire on the measured death rate now,
@@ -2926,6 +2964,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for card in sorted((c for c in hand if c["tutor"]), key=lambda c: c["tutor_cmc"]):
                 if card not in hand:      # a free cast's discard took it
                     continue
+                # ENTOMB AND BURIED ALIVE PUT THE CARD IN THE GRAVEYARD (2026-11-07), under
+                # Meren's declaration, where a graveyard is tracked. They read as tutors to hand.
+                if commander_recursion and (card.get("yard") or {}).get("to_yard") \
+                        and "Creature" not in (card.get("type_line") or ""):
+                    if not spend(card["tutor_cmc"], card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _entomb(card["yard"]["to_yard"])
+                    continue
                 if card["tutor_needs_body"] and bodies_cum < 1:
                     continue
                 if card["tutor_to_battlefield"] is not None and (model_combat or model_draw):
@@ -2956,7 +3003,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             yard_creatures.append(_e[12]["card"])
                         _deaths_after_combat(1, bool(_e[4]))
                     deck.remove(_pick)
-                    _free_creature_enters(_pick)
+                    _enter_by(_pick, "tutor")
                     tutor_ready_turns.append((turn, None))
                     continue
                 if not spend(card["tutor_cmc"], card["pips"]):
@@ -2973,6 +3020,30 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         deck.insert(0, _got)
                     else:
                         hand.append(_got)
+
+            # REANIMATION SPELLS (2026-11-07, under Meren's declaration): Animate Dead, Reanimate,
+            # Dread Return, Footsteps of the Goryo. A stated policy: the biggest creature card in
+            # the graveyard, cast only when it is worth two more mana than the spell.
+            if commander_recursion:
+                for card in sorted((c for c in hand if (c.get("yard") or {}).get("reanimate")
+                                    and "Creature" not in (c.get("type_line") or "")),
+                                   key=lambda c: c["cmc"]):
+                    _yd = card["yard"]
+                    _fits = [c for c in yard_creatures
+                             if (_yd.get("reanimate_max_mv") is None
+                                 or c["cmc"] <= _yd["reanimate_max_mv"])
+                             and not (_yd.get("reanimate_nonlegendary")
+                                      and "Legendary" in (c.get("type_line") or ""))]
+                    if card not in hand or not _fits:
+                        continue
+                    _tgt = max(_fits, key=lambda c: c["cmc"])
+                    if _tgt["cmc"] < card["cmc"] + 2 or not spend(card["cmc"], card["pips"]):
+                        continue
+                    _note_cast(card)
+                    yard_creatures.remove(_tgt)
+                    _enter_by(_tgt, "reanimate")
+                    if card["yard"]["temporary"]:
+                        own_deaths["temp"].append(_tgt)
 
             # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
             # a tutor nor a body, so the resource-only loop never cast it at all --
@@ -4694,6 +4765,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                            for e in battlefield)
             _outlet = bool(free_sac_outlet) and commander_turn is not None
             if commander_recursion:
+                # SHEOLDRED, WHISPERING ONE: one creature card back at each of our upkeeps after
+                # the turn she arrived (made here, after combat: it would be summoning-sick).
+                for _arr in own_deaths["upkeep_reanimators"]:
+                    if _arr < turn and yard_creatures:
+                        _pick = max(yard_creatures, key=lambda c: c["cmc"])
+                        yard_creatures.remove(_pick)
+                        _enter_by(_pick, "reanimate")
+                # FOOTSTEPS OF THE GORYO: the body it returned dies at the end step.
+                for _c in own_deaths["temp"]:
+                    _at = next((i for i in range(len(battlefield) - 1, -1, -1)
+                                if len(battlefield[i]) > 12 and battlefield[i][12]
+                                and battlefield[i][12].get("card") is _c), None)
+                    if _at is not None:
+                        _kill(_at)
+                own_deaths["temp"].clear()
                 for _mk in own_deaths["makers"]:
                     if _mk["kind"] != "upkeep":
                         continue
@@ -4781,7 +4867,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 yard_creatures.remove(_pick)
                 if _ok:
                     recursion_to_battlefield += 1
-                    _free_creature_enters(_pick)
+                    _enter_by(_pick, "meren")
                 else:
                     recursion_to_hand += 1
                     hand.append(_pick)
@@ -5244,6 +5330,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "keep_rule_pass": keep_rule_pass,
         "sacrifices_by_turn": sacrifices_by_turn,
         **({"experience_by_turn": experience_by_turn,
+            # (mana value, turn, route) of the first arrival of each big body (2026-11-07)
+            "big_arrivals": list(own_deaths["arrivals"].values()),
             "recursion_to_battlefield": recursion_to_battlefield,
             "recursion_to_hand": recursion_to_hand} if commander_recursion else {}),
         "sac_cap_hits": sac_cap_hits,

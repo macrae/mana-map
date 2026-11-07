@@ -139,7 +139,7 @@ def _xp_with(monkeypatch, swaps, blank=None, n=1500):
         real = goldfish_library.recurring_body_profile
         monkeypatch.setattr(goldfish_library, "recurring_body_profile",
                             lambda card: {**real(card), **blank})
-    doc = try_swap.apply_swaps(SLUG, None, swaps)[0]
+    doc = try_swap.apply_swaps(SLUG, None, swaps)[0] if swaps else None
     m = goldfish.run(SLUG, iterations=n, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
     return m["commander_recursion"]["mean_experience_by_turn"]["10"]
 
@@ -153,5 +153,78 @@ def _xp_with(monkeypatch, swaps, blank=None, n=1500):
 ])
 def test_a_body_that_comes_back_pays_experience(monkeypatch, card, blank):
     """PROVED BY REMOVING THE SHAPE: the same list, the same seeds, fewer counters."""
-    swaps = [("Assassin's Trophy", card)]
+    # the card may already be in the list (Ophiomancer and Jadar went in on 2026-11-07)
+    have = {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+    swaps = [] if card in have else [("Assassin's Trophy", card)]
     assert _xp_with(monkeypatch, swaps) > _xp_with(monkeypatch, swaps, blank), card
+
+
+# ── the reanimator half and the big bodies' arrival (2026-11-07) ──────────────────────────
+
+from manamap.pilot.goldfish_profiles import graveyard_profile  # noqa: E402
+
+
+def test_the_graveyard_shapes_read_from_the_text():
+    entomb = graveyard_profile(_card("Entomb", "Search your library for a card, put that card "
+                                     "into your graveyard, then shuffle.", "Instant"))
+    assert entomb["to_yard"] == 1 and not entomb["reanimate"]
+    buried = graveyard_profile(_card("Buried Alive", "Search your library for up to three "
+                                     "creature cards, put them into your graveyard, then "
+                                     "shuffle.", "Sorcery"))
+    assert buried["to_yard"] == 3 and buried["to_yard_creatures_only"]
+    ad = graveyard_profile(_card("Animate Dead", "Enchant creature card in a graveyard\nWhen "
+                                 "this Aura enters, if it's on the battlefield, it loses \"enchant "
+                                 "creature card in a graveyard\" and gains \"enchant creature put "
+                                 "onto the battlefield with this Aura.\" Return enchanted creature "
+                                 "card to the battlefield under your control and attach this Aura "
+                                 "to it.", "Enchantment — Aura"))
+    assert ad["reanimate"] and not ad["temporary"]
+    feet = graveyard_profile(_card("Footsteps of the Goryo", "Return target creature card from "
+                                   "your graveyard to the battlefield. Sacrifice that creature at "
+                                   "the beginning of the next end step.", "Sorcery — Arcane"))
+    assert feet["reanimate"] and feet["temporary"]
+    unearth = graveyard_profile(_card("Unearth", "Return target creature card with mana value 3 or "
+                                      "less from your graveyard to the battlefield.", "Sorcery"))
+    assert unearth["reanimate"] and unearth["reanimate_max_mv"] == 3, "the cap is a limit, kept"
+    persist = graveyard_profile(_card("Persist", "Return target nonlegendary creature card from "
+                                      "your graveyard to the battlefield with a -1/-1 counter on "
+                                      "it.", "Sorcery"))
+    assert persist["reanimate"] and persist["reanimate_nonlegendary"]
+    tutor = graveyard_profile(_card("Demonic Tutor", "Search your library for a card, put that "
+                                    "card into your hand, then shuffle.", "Sorcery"))
+    assert tutor["to_yard"] == 0, "a tutor to HAND is not a loader"
+
+
+def _routes(monkeypatch=None, blank=None, n=1500):
+    if blank is not None:
+        real = goldfish_library.graveyard_profile
+        monkeypatch.setattr(goldfish_library, "graveyard_profile", lambda c: {**real(c), **blank})
+    from manamap.pilot import goldfish as g
+    out = []
+    orig = g.simulate_once
+
+    def w(*a, **k):
+        r = orig(*a, **k)
+        out.append(r)
+        return r
+    monkeypatch.setattr(g, "simulate_once", w)
+    g.run(SLUG, iterations=n, seed=7, quiet=True, _band=False)
+    return [route for r in out for _mv, _t, route in r["big_arrivals"]]
+
+
+@requires_deck
+def test_a_reanimation_spell_brings_a_big_body_back(monkeypatch):
+    """PROVED BY REMOVING THE SHAPE: with no card read as a reanimator, no arrival is."""
+    on = _routes(monkeypatch)
+    assert on.count("reanimate") > 0
+    with pytest.MonkeyPatch.context() as mp:
+        off = _routes(mp, {"reanimate": False, "temporary": False})
+    assert off.count("reanimate") == 0
+
+
+@requires_deck
+def test_the_recursion_rows_are_absent_on_a_deck_without_meren():
+    from manamap.pilot import diagnostic
+    doc = json.loads(deck_file("gishath", "cards.json").read_text())
+    assert "recursion" not in diagnostic.run_on(doc, "gishath", iterations=50, seed=1, quiet=True)

@@ -21,7 +21,8 @@ INDEX OF THE READERS, by channel (each takes a card dict and returns a profile):
                      event_payoffs, has_event_payoff
   bodies and tokens  creature_body_count, body_count, cast_token_profile,
                      token_doubler, is_etb_engine
-  sacrifice/deaths   sac_outlet_profile, own_death_profile, recurring_body_profile, death_profile, is_death_engine,
+  sacrifice/deaths   sac_outlet_profile, own_death_profile, recurring_body_profile,
+                     graveyard_profile, death_profile, is_death_engine,
                      artifact_sac_payoffs, drain_profile
   combat             combat_profile (the big one: power, haste, flying, attack_gate,
                      static_lord, every ETB and attack payoff), attack_gate,
@@ -1740,6 +1741,46 @@ def recurring_body_profile(card):
                                      for t in re.findall(r"\{([^}]+)\}", m.group(1)))
         out["return_landfall"] = bool(_RETURN_LANDFALL_RE.search(text))
     return out
+
+
+#: THE GRAVEYARD HALF OF A REANIMATOR (2026-11-07), for Meren's big bodies:
+#:   to_yard    "search your library for <a card | up to three creature cards> ... put
+#:              <that card | them> into your graveyard" (Entomb, Buried Alive, Vile Entomber's
+#:              ETB). These matched the TUTOR pattern and went to HAND, which is the opposite
+#:              of what they do.
+#:   reanimate  "return|put target creature card from a|your graveyard to|onto the
+#:              battlefield" (Reanimate, Dread Return, Footsteps of the Goryo) or Animate
+#:              Dead's "return enchanted creature card to the battlefield"
+#:   temporary  ... "sacrifice it|that creature at the beginning of the next end step"
+#: Living Death (a mass swap that kills Meren too) and Reanimate's life loss are not read.
+_TO_YARD_RE = re.compile(
+    r"search your library for (?:a|an|up to (\w+)) ([\w' -]{0,40}?)cards?\b[^.]{0,40}?"
+    r"put (?:that card|them|it|those cards) into your graveyard", re.IGNORECASE)
+#: "nonlegendary" and "with mana value N or less" are LIMITS on the target, read and kept
+#: (Persist, Unearth): the corpus sweep took the family 127 -> 164 and a cap ignored would let
+#: Unearth return an eight-drop.
+_REANIMATE_RE = re.compile(
+    r"(?:return|put) target (nonlegendary )?creature card (?:with mana value (\d+) or less )?"
+    r"from (?:a|your) graveyard (?:to|onto) the battlefield"
+    r"|return enchanted creature card to the battlefield", re.IGNORECASE)
+_REANIMATE_TEMP_RE = re.compile(
+    r"sacrifice (?:it|that creature) at the beginning of the next end step", re.IGNORECASE)
+
+
+def graveyard_profile(card):
+    """What this card puts into the graveyard, or brings back from it (see above)."""
+    text = card.get("oracle_text", "") or ""
+    m = _TO_YARD_RE.search(text)
+    n = 0
+    if m:
+        n = _RECUR_WORDS.get((m.group(1) or "a").lower(), 1) if m.group(1) else 1
+    r = _REANIMATE_RE.search(text)
+    return {"to_yard": n,
+            "to_yard_creatures_only": bool(m and "creature" in (m.group(2) or "").lower()),
+            "reanimate": bool(r),
+            "reanimate_nonlegendary": bool(r and r.group(1)),
+            "reanimate_max_mv": int(r.group(2)) if r and r.group(2) else None,
+            "temporary": bool(_REANIMATE_TEMP_RE.search(text))}
 
 
 #: "Whenever a creature an opponent controls dies, you gain N life" — the

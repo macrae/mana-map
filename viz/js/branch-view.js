@@ -119,7 +119,8 @@
                         'hand can act by T3', "kept hand passes the pilot's keep rule"]],
     ['Cards and answers', ['extra cards by T8', 'interaction affordable @T6',
                            'finisher wheel by T8', 'wheels cast by T10',
-                           'dead wheels in hand @T5']]
+                           'dead wheels in hand @T5']],
+    ['Big bodies', ['a 6+ drop out by T6', 'turns saved on big bodies', 'experience @T7']]
   ];
   var READ_WORD = { better: 'Better', worse: 'Worse', noise: 'No call' };
 

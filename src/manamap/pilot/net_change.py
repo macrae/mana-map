@@ -111,6 +111,11 @@ ROWS = (
     ("finisher wheel by T8", "wheels", "finisher_by_turn", "8", +1),
     ("wheels cast by T10", "wheels", "wheels_cast_by_turn", "10", +1),
     ("dead wheels in hand @T5", "wheels", "dead_in_hand_by_turn", "5", -1),
+    # MEREN'S CLOCK (2026-11-07). Absent on every deck that does not declare
+    # `model_commander_recursion`, so no other deck's family changes.
+    ("experience @T7", "recursion", "experience_by_turn", "7", +1),
+    ("a 6+ drop out by T6", "recursion", "first_fatty_by_turn", "6", +1),
+    ("turns saved on big bodies", "recursion", "turns_saved", None, +1),
 )
 
 #: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
@@ -130,6 +135,35 @@ IMPACT_MEASURES = ("damage @T10", "killed by T10", "board power @T6", "extra car
 #: says what they are. `scale` is the yardstick the number is only meaningful
 #: against — 40 life for damage, the fleet band for the three consistency rows.
 METRICS = {
+    "experience @T7": {
+        "unit": "mean",
+        "scale": "against the mana values she returns: a 6-drop needs six",
+        "what": "Meren of Clan Nel Toth's experience counters at the end of turn 7, averaged "
+                "over every game: one for every other creature of ours that died while she "
+                "was out.",
+        "why": "Her end step returns the biggest creature card in the graveyard to the "
+               "BATTLEFIELD only if its mana value is within her experience, otherwise to "
+               "hand. This is the clock on the free returns.",
+    },
+    "a 6+ drop out by T6": {
+        "unit": "rate",
+        "scale": "against the games themselves",
+        "what": "The share of games with a creature of mana value 6 or more on the "
+                "battlefield by the end of turn 6, by any route: cast, reanimated, returned "
+                "by Meren or tutored onto it.",
+        "why": "The deck's payoff is its big bodies early. The pilot named it (2026-11-07): "
+               "when the fatties arrive, against the turn they could be cast.",
+    },
+    "turns saved on big bodies": {
+        "unit": "mean",
+        "scale": "turns, summed over the 5+ drops that entered in a game",
+        "what": "For every creature of mana value 5+ that entered by turn 10, the turns "
+                "between its arrival and the first turn that game's own mana could have cast "
+                "it (11 if it never could), floored at zero; summed per game, averaged.",
+        "why": "The cheat dividend: what the graveyard engine buys over hard-casting. A "
+               "hard-cast body saves nothing; a turn-3 Animate Dead on a turn-8 Archon saves "
+               "five.",
+    },
     "finisher wheel by T8": {
         "unit": "rate",
         "scale": "against the games themselves — one finisher per game counts, "
@@ -2199,6 +2233,7 @@ ROW_GROUPS = (
     ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
                            "finisher wheel by T8", "wheels cast by T10",
                            "dead wheels in hand @T5")),
+    ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7")),
 )
 
 ROW_KEY = ("No call: smaller than this run can resolve, which is not the same as no "

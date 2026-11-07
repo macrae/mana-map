@@ -679,6 +679,43 @@ def _two_stalls(r):
     return 1 if any(xs[i] and xs[i + 1] for i in range(i0, len(xs) - 1)) else 0
 
 
+def _first_big(r, mv):
+    """The turn the first creature of mana value `mv`+ entered, or 99 (2026-11-07)."""
+    return min((t for m, t, _route in r.get("big_arrivals") or () if m >= mv), default=99)
+
+
+def _turns_saved(r):
+    """THE CHEAT DIVIDEND, one game: for every big body (mana value 5+) that entered, the
+    turns between its arrival and the first turn this game's own mana could have cast it
+    (11 if it never could by turn ten); a body that came no earlier than its curve saves 0."""
+    total = 0
+    for mv, t, _route in r.get("big_arrivals") or ():
+        curve = next((i for i, m in enumerate(r["mana_by_turn"], 1) if m >= mv), 11)
+        total += max(0, curve - t)
+    return total
+
+
+def recursion(rows):
+    """MEREN'S CLOCK (2026-11-07): her experience, the first big body on the battlefield, and
+    the turns the deck's cheats save over its own curve. Absent on a deck that does not
+    declare `model_commander_recursion` -- there is no graveyard tracked to read."""
+    if not rows or "big_arrivals" not in rows[0]:
+        return None
+    n = len(rows)
+    T = range(len(rows[0]["experience_by_turn"]))
+    first6 = [_first_big(r, 6) for r in rows]
+    return {
+        "experience_by_turn": {str(t + 1): _mean_cell([r["experience_by_turn"][t] for r in rows])
+                               for t in T},
+        "first_fatty_by_turn": {str(t + 1): _rate(sum(1 for f in first6 if f <= t + 1), n)
+                                for t in T},
+        "turns_saved": _mean_cell([_turns_saved(r) for r in rows]),
+        "basis": ("a big body is a creature of mana value 5+; its route is cast, meren (her end "
+                  "step), reanimate or tutor; its curve turn is the first turn THIS game's mana "
+                  "reached its mana value. No opponent, so no removal undoes an arrival."),
+    }
+
+
 #: ONE VALUE PER GAME for each row `net_change.ROWS` reads, keyed by its
 #: (block, key, turn). With a seed per game (`goldfish.run`), game i of two lists
 #: deals the same shuffle, so the difference can be read GAME BY GAME — a paired
@@ -713,6 +750,12 @@ PER_GAME = {
                    1 if r["finisher_wheel_turn"] is not None and r["finisher_wheel_turn"] <= 8
                    else 0),
     ("wheels", "dead_in_hand_by_turn", "5"): _at("dead_wheels_in_hand_by_turn", 4),
+    # Meren's clock (2026-11-07). Absent on a deck with no graveyard tracked.
+    ("recursion", "experience_by_turn", "7"): _at("experience_by_turn", 6),
+    ("recursion", "first_fatty_by_turn", "6"):
+        lambda r: None if "big_arrivals" not in r else (1 if _first_big(r, 6) <= 6 else 0),
+    ("recursion", "turns_saved", None):
+        lambda r: None if "big_arrivals" not in r else _turns_saved(r),
 }
 
 
@@ -811,6 +854,8 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         "steam": steam(rows, got),
         # ABSENT unless the deck opts into `model_discard`, like `commanders`.
         **({"wheels": _w} if (_w := wheels(rows, got)) else {}),
+        # ABSENT unless the deck declares `model_commander_recursion` (Meren, 2026-11-07).
+        **({"recursion": _r} if (_r := recursion(rows)) else {}),
         "output": output(got),
         # Per-game values for paired comparison — only on request, so the
         # tracked diagnostic.json never carries ten thousand numbers per row.
