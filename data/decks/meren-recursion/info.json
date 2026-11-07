@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -1748,7 +1750,7 @@
       "included": 1,
       "infinite": 1,
       "near": 50,
-      "near_total": 173,
+      "near_total": 180,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1815,7 +1817,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.956,
+          "value": 3.96,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1903,7 +1905,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -1980,15 +1982,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.424,
-            "2": 2.29,
-            "3": 3.382,
+            "10": 8.431,
+            "2": 2.292,
+            "3": 3.387,
             "4": 4.244,
-            "5": 4.964,
-            "6": 5.666,
-            "7": 6.323,
-            "8": 6.998,
-            "9": 7.688
+            "5": 4.966,
+            "6": 5.669,
+            "7": 6.328,
+            "8": 6.999,
+            "9": 7.69
           },
           "tier": "data",
           "weight": "detail",
@@ -1999,15 +2001,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.629,
+            "10": 0.634,
             "2": 0.996,
-            "3": 0.904,
-            "4": 0.789,
-            "5": 0.674,
-            "6": 0.599,
-            "7": 0.58,
-            "8": 0.582,
-            "9": 0.593
+            "3": 0.905,
+            "4": 0.785,
+            "5": 0.675,
+            "6": 0.598,
+            "7": 0.581,
+            "8": 0.58,
+            "9": 0.592
           },
           "tier": "data",
           "weight": "detail",
@@ -2018,15 +2020,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.274,
-            "10": 12.24,
-            "2": 0.733,
-            "3": 1.171,
-            "4": 1.62,
-            "5": 2.674,
-            "6": 4.09,
-            "7": 5.729,
-            "8": 7.612,
-            "9": 9.771
+            "10": 12.194,
+            "2": 0.735,
+            "3": 1.173,
+            "4": 1.621,
+            "5": 2.678,
+            "6": 4.08,
+            "7": 5.712,
+            "8": 7.575,
+            "9": 9.724
           },
           "tier": "data",
           "weight": "detail",
@@ -2036,14 +2038,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 379,
-            "1": 1681,
-            "2": 2957,
-            "3": 2772,
-            "4": 1619,
-            "5": 491,
-            "6": 94,
-            "7": 7
+            "0": 385,
+            "1": 1691,
+            "2": 2944,
+            "3": 2784,
+            "4": 1599,
+            "5": 505,
+            "6": 82,
+            "7": 10
           },
           "tier": "data",
           "weight": "detail",
@@ -2052,12 +2054,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1913,
+            "10": 1909,
             "5": 4,
-            "6": 81,
-            "7": 1044,
-            "8": 2336,
-            "9": 2779
+            "6": 87,
+            "7": 1016,
+            "8": 2400,
+            "9": 2741
           },
           "tier": "data",
           "weight": "detail",
@@ -2073,7 +2075,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.956,
+    "commander_mean_cast_turn": 3.96,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2118,23 +2120,23 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.66,
+      "mean_kill_turn": 8.657,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
       "kill_by_turn_8_pct": 35,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 18,
       "kill_turn_histogram": {
-        "10": 1913,
+        "10": 1909,
         "5": 4,
-        "6": 81,
-        "7": 1044,
-        "8": 2336,
-        "9": 2779
+        "6": 87,
+        "7": 1016,
+        "8": 2400,
+        "9": 2741
       }
     }
   },
@@ -2184,8 +2186,10 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V5 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 40 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",

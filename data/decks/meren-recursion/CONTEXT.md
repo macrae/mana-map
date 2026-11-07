@@ -4,9 +4,9 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V5 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 36 · **bracket floor:** 3 (Upgraded)
-- **Combos:** 1 known line (1 infinite, 0 two-card) · 173 one card short
+- **Combos:** 1 known line (1 infinite, 0 two-card) · 180 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
 <!-- /ctx:gen summary -->
 
@@ -82,11 +82,11 @@ Mostly untapped duals and fetches for both colours. [Gaea's Cradle](https://mana
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on V5, 2026-11-07. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **94%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 3.956**
+- mean turn the commander is first cast: **turn 3.96**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **52%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **0%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
@@ -97,7 +97,7 @@ Goldfish, 10,000 seeded games, measured on V5, 2026-11-07. Each group below is t
 - A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **51%**
 - RAMP drawn — an accelerant of any kind: **44%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **51%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **14%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
 - share of opening sevens the model would keep: **78%**
 - Colour on curve (lands + rocks): B 87%, G 90%
 <!-- /ctx:gen numbers -->
