@@ -1,24 +1,24 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "762900b68663558754578bec0a557561c4bcf7455770f807fed5cb5b94c8d255",
+  "decklist_sha256": "1c5cb8d220158cc613d215d71761540083aabda2d8035bc5bd81f6bb4394cfee",
   "model_version": "77886e7c8a40",
   "lands": {
     "total": 34,
     "entries": 33,
     "life": {
-      "recurring_per_tap_cycle": 3,
+      "recurring_per_tap_cycle": 2,
       "one_time_on_entry": 8
     },
-    "enters_tapped": 10,
-    "enters_tapped_always": 4,
+    "enters_tapped": 11,
+    "enters_tapped_always": 5,
     "classes": {
       "basic": 2,
       "fetch": 6,
-      "fixing": 3,
+      "fixing": 2,
       "mdfc": 1,
-      "tapped": 10,
-      "untapped-dual": 11,
-      "utility": 14
+      "tapped": 11,
+      "untapped-dual": 10,
+      "utility": 13
     },
     "list": [
       {
@@ -162,22 +162,19 @@
         "produces": []
       },
       {
-        "name": "Llanowar Wastes",
+        "name": "Khalni Garden",
         "copies": 1,
         "classes": [
-          "untapped-dual",
-          "utility"
+          "tapped"
         ],
         "produces": [
-          "B",
           "G"
         ]
       },
       {
-        "name": "Mana Confluence",
+        "name": "Llanowar Wastes",
         "copies": 1,
         "classes": [
-          "fixing",
           "untapped-dual",
           "utility"
         ],
@@ -390,7 +387,7 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 30,
+      "B": 29,
       "R": 0,
       "G": 26
     },
@@ -404,7 +401,7 @@
     "total": {
       "W": 0,
       "U": 0,
-      "B": 36,
+      "B": 35,
       "R": 0,
       "G": 31
     },
@@ -506,7 +503,7 @@
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 22.0,
+      "total_pips": 21.0,
       "max_pips": 2,
       "cards": 20,
       "earliest_turn": 1,
@@ -515,12 +512,12 @@
   },
   "shares": {
     "B": {
-      "pip_share": 0.744,
-      "source_share": 0.536
+      "pip_share": 0.753,
+      "source_share": 0.527
     },
     "G": {
-      "pip_share": 0.256,
-      "source_share": 0.464
+      "pip_share": 0.247,
+      "source_share": 0.473
     }
   },
   "source_targets": {
@@ -529,15 +526,15 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.822,
+      "B": 0.804,
       "G": 0.944
     },
     "with_rocks_and_dorks": {
-      "B": 0.906,
+      "B": 0.895,
       "G": 0.972
     },
     "lands_only_ungated": {
-      "B": 0.804,
+      "B": 0.785,
       "G": 0.944
     }
   },
@@ -550,27 +547,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.625,
-      "2": 0.996,
+      "10": 0.628,
+      "2": 0.995,
       "3": 0.904,
-      "4": 0.78,
-      "5": 0.684,
-      "6": 0.593,
+      "4": 0.778,
+      "5": 0.669,
+      "6": 0.596,
       "7": 0.569,
-      "8": 0.573,
-      "9": 0.594
+      "8": 0.568,
+      "9": 0.584
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.398,
-      "2": 2.279,
-      "3": 3.368,
-      "4": 4.233,
-      "5": 4.97,
-      "6": 5.66,
-      "7": 6.308,
-      "8": 6.969,
-      "9": 7.658
+      "10": 8.367,
+      "2": 2.273,
+      "3": 3.358,
+      "4": 4.22,
+      "5": 4.942,
+      "6": 5.64,
+      "7": 6.284,
+      "8": 6.94,
+      "9": 7.619
     }
   },
   "assumptions": [
@@ -580,6 +577,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 36."
+    "B: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 35."
   ]
 }

@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 34,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -300,6 +302,13 @@
             ]
           },
           {
+            "name": "Eternal Witness",
+            "where": [
+              "Golgari Parts",
+              "Green"
+            ]
+          },
+          {
             "name": "Exotic Orchard",
             "where": [
               "Auntie Ool",
@@ -364,16 +373,15 @@
             ]
           },
           {
-            "name": "Khalni Garden",
-            "where": [
-              "Green",
-              "Mystery Booster 2"
-            ]
-          },
-          {
             "name": "Liliana, Death Wielder",
             "where": [
               "Golgari Parts"
+            ]
+          },
+          {
+            "name": "Mana Confluence",
+            "where": [
+              "Shabraz Parts"
             ]
           },
           {
@@ -513,11 +521,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 62,
-      "out": 62,
+      "add": 63,
+      "out": 63,
       "counts": {
-        "in_deck": 38,
-        "box": 43,
+        "in_deck": 37,
+        "box": 44,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -815,10 +823,19 @@
         },
         {
           "name": "Eternal Witness",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Exotic Orchard",
@@ -1088,19 +1105,10 @@
         },
         {
           "name": "Khalni Garden",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Lazotep Quarry",
@@ -1138,10 +1146,15 @@
         },
         {
           "name": "Mana Confluence",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Shabraz Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Meren of Clan Nel Toth",
@@ -1827,7 +1840,7 @@
       "included": 0,
       "infinite": 0,
       "near": 50,
-      "near_total": 173,
+      "near_total": 174,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1873,7 +1886,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.9,
+          "value": 3.897,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1937,7 +1950,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 44,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1953,7 +1966,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 59,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -1961,7 +1974,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2027,7 +2040,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 78,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -2038,15 +2051,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.398,
-            "2": 2.279,
-            "3": 3.368,
-            "4": 4.233,
-            "5": 4.97,
-            "6": 5.66,
-            "7": 6.308,
-            "8": 6.969,
-            "9": 7.658
+            "10": 8.367,
+            "2": 2.273,
+            "3": 3.358,
+            "4": 4.22,
+            "5": 4.942,
+            "6": 5.64,
+            "7": 6.284,
+            "8": 6.94,
+            "9": 7.619
           },
           "tier": "data",
           "weight": "detail",
@@ -2057,15 +2070,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.625,
-            "2": 0.996,
+            "10": 0.628,
+            "2": 0.995,
             "3": 0.904,
-            "4": 0.78,
-            "5": 0.684,
-            "6": 0.593,
+            "4": 0.778,
+            "5": 0.669,
+            "6": 0.596,
             "7": 0.569,
-            "8": 0.573,
-            "9": 0.594
+            "8": 0.568,
+            "9": 0.584
           },
           "tier": "data",
           "weight": "detail",
@@ -2075,16 +2088,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.172,
-            "10": 10.66,
-            "2": 0.477,
-            "3": 0.842,
-            "4": 1.208,
-            "5": 2.05,
-            "6": 3.239,
-            "7": 4.673,
-            "8": 6.348,
-            "9": 8.324
+            "1": 0.168,
+            "10": 11.352,
+            "2": 0.472,
+            "3": 0.87,
+            "4": 1.254,
+            "5": 2.161,
+            "6": 3.444,
+            "7": 4.992,
+            "8": 6.792,
+            "9": 8.902
           },
           "tier": "data",
           "weight": "detail",
@@ -2094,14 +2107,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 356,
-            "1": 1713,
-            "2": 2941,
-            "3": 2892,
-            "4": 1522,
-            "5": 497,
-            "6": 75,
-            "7": 4
+            "0": 382,
+            "1": 1654,
+            "2": 3044,
+            "3": 2830,
+            "4": 1530,
+            "5": 491,
+            "6": 64,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -2110,12 +2123,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1874,
-            "5": 2,
-            "6": 130,
-            "7": 1124,
-            "8": 2392,
-            "9": 2552
+            "10": 1818,
+            "5": 5,
+            "6": 142,
+            "7": 1091,
+            "8": 2462,
+            "9": 2610
           },
           "tier": "data",
           "weight": "detail",
@@ -2131,7 +2144,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.9,
+    "commander_mean_cast_turn": 3.897,
     "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
@@ -2164,7 +2177,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 45
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2172,27 +2185,27 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 59
+        "by_turn_6_pct": 58
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.608,
+      "mean_kill_turn": 8.597,
       "median_kill_turn": 9,
-      "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 36,
+      "kill_by_turn_6_pct": 2,
+      "kill_by_turn_8_pct": 37,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 1874,
-        "5": 2,
-        "6": 130,
-        "7": 1124,
-        "8": 2392,
-        "9": 2552
+        "10": 1818,
+        "5": 5,
+        "6": 142,
+        "7": 1091,
+        "8": 2462,
+        "9": 2610
       }
     }
   },
@@ -2203,6 +2216,7 @@
     "archetype": null,
     "under": [
       "mana-base",
+      "colour-sources",
       "card-advantage",
       "protection",
       "interaction-breadth"
@@ -2240,10 +2254,12 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V7 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 42 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 43 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],
