@@ -26,7 +26,7 @@ import pytest
 from manamap.pilot import goldfish
 from manamap.pilot.goldfish_profiles import (
     SPELL_CAST_GATE, combat_profile, draw_profile, event_payoffs)
-from conftest import requires_deck
+from conftest import requires_deck, requires_dump
 
 
 def _card(name, text, type_line, mana_cost="{2}", power=None, toughness=None):
@@ -185,6 +185,7 @@ _SPELLS = {"Brainstorm", "Brainsurge"}
 
 
 @requires_deck
+@requires_dump
 @pytest.mark.parametrize("name,old,new,keep,t", [
     ("Sword of Fire and Ice", " and you draw a card", "", set(), "8"),
     ("Mask of Memory", "you may draw two cards. If you do, discard a card.", "nothing happens.",
@@ -211,6 +212,7 @@ def test_each_draw_is_a_draw_the_deck_makes(doc, name, old, new, keep, t):
 
 
 @requires_deck
+@requires_dump
 def test_a_combat_draw_grows_shabraz(doc):
     """THE BUG ITSELF: the draws a hit makes are paid to every per-draw payoff, and
     Shabraz is one. Before 2026-11-06 a combat draw paid him nothing, so these read equal."""
@@ -240,6 +242,7 @@ def test_a_combat_draw_grows_shabraz(doc):
 
 
 @requires_deck
+@requires_dump
 def test_an_equipment_draws_only_once_it_is_equipped(doc):
     """An equip nobody can pay is an equipment that never triggers. Before 2026-11-06
     the equip was never charged, so the two arms read the same."""
@@ -249,6 +252,7 @@ def test_an_equipment_draws_only_once_it_is_equipped(doc):
 
 
 @requires_deck
+@requires_dump
 def test_put_back_leaves_two_fewer_in_hand(doc):
     d = _isolated(doc, {"Brainsurge"})
     plain = _strike(d, "Brainsurge", ", then put two cards from your hand on top of your "
@@ -292,6 +296,7 @@ def _lethal10(m):
 
 
 @requires_deck
+@requires_dump
 def test_the_kit_rides_on_the_commander(kit_doc):
     """The same cards cast on the same seeds, the bonus smaller: +2/+2 against +1/+1 on the
     Helm, double strike against vigilance on Embercleave. Before 2026-11-06 an Equipment's
@@ -315,6 +320,7 @@ def test_magecraft_draw_is_read():
 
 
 @requires_deck
+@requires_dump
 def test_magecraft_draws_on_every_spell():
     """PROVED BY STRIKING THE CLAUSE, with the cantrips as the only other draw: before
     2026-11-06 `_magecraft` paid Treasure only, so the two arms read equal."""
@@ -356,6 +362,7 @@ def test_reconfigure_is_an_equip_cost():
 
 
 @requires_deck
+@requires_dump
 def test_an_equipment_creature_is_equipped_too():
     """PROVED BY DROPPING THE BODY-DOOR REGISTRATION: Lizard Blades entered as a creature and
     was never offered to the equip step, so its double strike reached no commander and the
@@ -369,6 +376,7 @@ def test_an_equipment_creature_is_equipped_too():
 
 
 @requires_deck
+@requires_dump
 def test_the_commander_is_equipped_before_the_turns_spells():
     """THE PILOT'S ORDER ON A VOLTRON DECK. With the equip only before combat, the main phase
     spent the {2} first and a double-strike Equipment sat beside Shabraz unattached. On

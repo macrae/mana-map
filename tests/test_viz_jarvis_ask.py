@@ -28,14 +28,20 @@ import json
 
 import pytest
 
+from manamap.config import DECKS_DIR
 from conftest_viz import BOOT_TIMEOUT_MS, _record, await_projection, idle, serve_card_images_locally
 from test_viz_deck_edit import ADD, BENCH, COMMANDS, CUT, _card, _fake_api, _manifest, STAGES, _wait_mode
 from test_viz_page_state import serve_server  # noqa: F401  (the fixture)
 
 pytestmark = pytest.mark.browser
 
-BRANCH_DECK, BRANCH = "sharknado", "draw-engine-v1"   # a live (proposed) branch in its info.json;
-# meren-recursion's drain-density-v1 was the one until it was rejected 2026-11-05
+# A LIVE branch read from the deck's info.json, never pinned: meren-recursion's
+# drain-density-v1 was rejected 2026-11-05, then sharknado's draw-engine-v1 merged 2026-11-06,
+# and each pin broke CI the day the pilot decided the branch.
+BRANCH_DECK = "sharknado"
+_INFO = DECKS_DIR / BRANCH_DECK / "info.json"   # absent in the isolation tier, where no browser test runs
+BRANCH = next((b["name"] for b in (json.loads(_INFO.read_text())["branches"] if _INFO.exists() else [])
+               if b.get("state") in ("OPEN", "PROPOSED", "STAGED", "MEASURED")), None)
 EMB = "embeddings_cardbert.bin"
 
 

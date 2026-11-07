@@ -27,7 +27,22 @@ from manamap.config import DECKS_DIR
 pytestmark = pytest.mark.browser
 
 BENCH, SLEEVED, ARCHIVED = "meren-recursion", "heliod", "hapatra"
-CUT, ADD = "Animate Dead", "Llanowar Elves"
+
+
+def _decklist(slug):
+    """The deck's names, or none when the tracked decks are absent (the isolation tier
+    points DECKS_DIR at an empty folder, and no browser test runs there)."""
+    path = DECKS_DIR / slug / "decklist.txt"
+    if not path.exists():
+        return {"Animate Dead"}
+    return {line.split(" ", 1)[1].strip() for line in path.read_text().splitlines() if line[:1].isdigit()}
+
+
+# DERIVED FROM THE LIST, never pinned: Meren's V3 (2026-11-06) took Llanowar Elves in and
+# every edit test lost its "add" button in CI. CUT must be in the 99, ADD must not.
+_LIST = _decklist(BENCH)
+CUT = next(c for c in ("Animate Dead", "Reanimate", "Eternal Witness") if c in _LIST)
+ADD = next(c for c in ("Llanowar Elves", "Fyndhorn Elves", "Arbor Elf", "Boreal Druid") if c not in _LIST)
 BRANCH = "drain-density-v1"
 
 COMMANDS = ["health", "job", "deck/edit", "deck/edit/preview", "deck/edit/undo",

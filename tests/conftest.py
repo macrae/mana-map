@@ -34,6 +34,14 @@ requires_corpus = pytest.mark.skipif(
     reason="requires cards.csv (run `manamap download && manamap extract`)",
 )
 
+# THE RAW SCRYFALL DUMP. `try_swap.apply_swaps` resolves an off-list card from it, and
+# CI's push job has no dump (2026-11-06: the Shabraz draw tests errored there on setup).
+from manamap.ingest.common import dump_exists as _dump_exists
+requires_dump = pytest.mark.skipif(
+    not _dump_exists(config.RAW_JSON_PATH),
+    reason="requires the Scryfall dump (run `manamap download`)",
+)
+
 requires_rules = pytest.mark.skipif(
     not config.RULES_INDEX_PATH.exists(),
     reason="requires the rules DB (run `manamap pilot download-rules && manamap pilot build-rules-db`)",
