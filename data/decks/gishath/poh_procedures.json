@@ -1,28 +1,58 @@
 {
   "emergency": [
     {
-      "condition": "wipe",
-      "condition_text": "a sweeper is coming, or has landed, and the board it takes is the mana as much as the bodies",
+      "condition": "politics",
+      "condition_text": "you have become the table's problem, and the board that ends a seat is already on the table",
       "indications": [
-        "A seat passes on its own turn with four to six mana open, white or black among it, and casts nothing in its main phase.",
-        "Your board is three or more Dinosaurs and nobody else's is. At Alex's the table aimed every wrath at exactly that board and held nothing for the commander (log:001).",
-        "Your mana is standing on creatures: Bloom Tender, Hulking Raptor, Selvala, Regal Behemoth, Huatli. The land drop hits on turn 6 in 57.5% of goldfish games, so the deck rides those bodies after it.",
-        "Wipe after wipe was the whole shape of the four-player game on 15 September (log:002)."
+        "The table names you aloud. On 29 October Mirari's Wake drew \"that's going to be a problem\" the turn it landed, and after the first reveals every seat was dealing with Sean (log:003).",
+        "Your total power is greater than one seat's life plus its untapped blockers. On 15 September it was 8 to 9 Dinosaurs and 30-plus power against Alex at 18 and Oliver at 15 (log:002).",
+        "You have swung two or three creatures out of a full board, or none, for a turn. Both logged losses went this way (log:002, log:003).",
+        "A seat you have named as the danger has not been attacked. On 29 October that was Alex's artifact board and its growing creature, and Alex won (log:003).",
+        "A no-attack deal is standing while you hold the biggest board (log:002)."
       ],
       "immediate": [
-        "Stop casting Dinosaurs. Everything with a body stays in hand until the wipe resolves or that seat taps out.",
-        "Count the mana that survives a creature wipe: lands, Sol Ring, Arcane Signet, Mirari's Wake, Urza's Incubator, Belbe's Portal. Bloom Tender, Hulking Raptor, Selvala, Regal Behemoth, Huatli, Otepec Huntmaster and Knight of the Stampede die with the board. If the survivors do not reach eight, spend this turn on a rock or a land-ramp spell and nothing else.",
-        "Cast Purphoros and Molten Echoes into the wipe. Purphoros is indestructible and is not a creature at all while your devotion to red is under five; Molten Echoes is an enchantment. Neither sits on the board a sweeper takes.",
-        "If Gishath is on the battlefield and Flawless Maneuver is in hand, pass with zero mana open — it costs nothing while you control a commander. Heroic Intervention needs {1}{G}, Boros Charm {R}{W}, Akroma's Will {3}{W}. Hold the mana for the one you hold.",
-        "If Eerie Interlude is in hand with {2}{W} open, cast it with the wipe on the stack and target every creature you want back. They return at the next end step as one wave of entries: 2 damage to each opponent per creature with Purphoros out, and a Molten Echoes copy of each nontoken Dinosaur for 2 more."
+        "Count every seat before you declare an attacker: your power, after Overwhelming Stampede, Berserkers' Onslaught or Kessig Wolf Run, against that seat's life plus its untapped blockers. Say each total aloud. Count Gishath's commander damage per seat toward 21.",
+        "If two or more seats die this turn, attack every one of them. A seat left alive saves the seat you attacked, and on 15 September that seat won (log:002).",
+        "If no seat dies, send everything at the seat whose board beats yours, not at the seat that is easy to hit. On 29 October that was Alex (log:003).",
+        "Declare every creature that can attack. Losing Dinosaurs in blocks is the price of the swing; a Dinosaur held home for fear of a block is the loss on 29 October (log:003).",
+        "Keep one shield castable after attacks. Flawless Maneuver costs nothing while Gishath is on the battlefield; otherwise leave {1}{G} for Heroic Intervention or {R}{W} for Boros Charm untapped."
       ],
       "subsequent": [
-        "Rebuild with the commander, not the hand. There are 29 Dinosaur cards counting him, so seven cards off one connection average about two free bodies.",
-        "Put Purphoros down before a second body. Two damage at every seat per entry pays whether or not the body survives the next sweeper.",
-        "Redeploy one Dinosaur behind him, not three. A second wipe takes what you put in front of him (log:001).",
-        "If your board is empty and theirs is not, cast Blasphemous Act: it costs {1} less for each creature on the battlefield, at nine creatures it is {R}, and it does not touch Purphoros (log:001, stack 004)."
+        "Main two: cast the Dinosaurs in hand. With Hunting Velociraptor out and a Dinosaur having dealt combat damage this turn, each costs prowl {2}{R}.",
+        "Next turn, attack again with everything, including the Dinosaurs the reveal put onto the battlefield. They entered after attackers were declared and could not swing until now.",
+        "Do not stop to rebuild between swings while a seat is in range. Keep attacking until the seat whose board beats yours is dead."
       ],
-      "notes": "Wakening Sun's Avatar destroys all non-Dinosaurs only if you CAST it from your hand. Off Gishath's reveal, off Savage Order, off Belbe's Portal or off a Molten Echoes copy it is a 7/7 and nothing else — the same clause that stops a put-onto-the-battlefield Zacama untapping your lands. Temple Altisaur prevents all but 1 of the damage dealt to ANOTHER Dinosaur you control: not to itself, and not against exile or bounce.",
+      "notes": "Revealed Dinosaurs enter after attackers are declared, so they attack the turn after the reveal. That following turn is the pivot: the board is at its largest and the table has not yet answered it. Both losses in the log were boards that were ahead on that turn and did not commit (log:002, log:003).",
+      "grounded_in": [
+        "log:002",
+        "log:003"
+      ]
+    },
+    {
+      "condition": "wipe",
+      "condition_text": "a sweeper is coming, or has landed, and it takes the mana creatures with the Dinosaurs",
+      "indications": [
+        "A seat passes its own turn with four to six mana open and casts nothing in its main phase.",
+        "Your board is the largest at the table by three or more creatures.",
+        "Your mana stands on creatures: Ixalli's Lorekeeper, Bloom Tender, Drover of the Mighty, Intrepid Paleontologist, Atzocan Seer, Faeburrow Elder, Selvala, Hulking Raptor, Regal Behemoth. A creature sweeper takes all of them.",
+        "The pod has already wiped once. On 15 September it was \"wipe after wipe\" for two and a half hours (log:002).",
+        "On 28 August the table spent its wipes on the mid-tier Dinosaurs and had none left when Gishath landed (log:001)."
+      ],
+      "immediate": [
+        "Stop casting creatures. Every body still in hand waits until the sweeper resolves or that seat taps out.",
+        "Read the sweeper's verb. Destroy or damage: Flawless Maneuver (free with Gishath out), Heroic Intervention {1}{G}, Boros Charm {R}{W}, Akroma's Will {3}{W}. Cast the cheapest one you hold.",
+        "Exile, -X/-X, bounce or sacrifice: cast Eerie Interlude {2}{W} with the sweeper on the stack and target every nontoken creature you want back. They return at the next end step.",
+        "With no shield in hand, sacrifice Atzocan Seer in response to return a Dinosaur card already in your graveyard to your hand.",
+        "If Vaultborn Tyrant is on the battlefield and nothing saves the board, let it die: it leaves a token copy behind."
+      ],
+      "subsequent": [
+        "Count what survived: lands, Sol Ring, Arcane Signet, Urza's Incubator, Mirari's Wake, Garruk's Uprising, Berserkers' Onslaught, Kessig Wolf Run. That is your mana and your next swing.",
+        "Recast Gishath before any second body. His reveal is the rebuild: about two Dinosaurs per seven damage off 28 Dinosaurs in the 99.",
+        "Rydia's Return {3}{G}{G}, mode two: return two permanent cards from your graveyard to your hand. Take Mirari's Wake if it died, otherwise the two largest Dinosaurs.",
+        "Redeploy one threat behind Gishath, not three. Hold the best Dinosaur in hand for the next sweeper.",
+        "If your board is empty and theirs is not, cast Blasphemous Act. It costs {1} less per creature on the battlefield and clears only their side (log:001)."
+      ],
+      "notes": "Temple Altisaur prevents all but 1 of the damage to your OTHER Dinosaurs. It takes the full damage itself, and every non-Dinosaur mana creature dies, so a damage sweeper with Altisaur out still takes the climb. Eerie Interlude returns cards, not tokens: Palani's Hatcher Eggs, the Regisaur Alpha token and Quartzwood Crasher tokens are gone.",
       "grounded_in": [
         "log:001",
         "log:002"
@@ -30,255 +60,210 @@
     },
     {
       "condition": "removal",
-      "condition_text": "a spot removal spell is pointed at Gishath, or at the permanent that cashes his reveal",
+      "condition_text": "a spot removal spell is pointed at Gishath, or at the permanent that makes his cast or his hit",
       "indications": [
-        "A seat passed with {W} or {1}{W} open after you cast Gishath: the Path to Exile and Swords to Plowshares shape.",
-        "Blue mana open while Gishath is on the stack. He can be countered; Carnage Tyrant cannot.",
-        "The removal went at Molten Echoes, Urza's Incubator or Otepec Huntmaster rather than at a body. That seat has read the deck.",
-        "A seat holds two mana and plays nothing on a turn you cast no creature. Your damage is now non-combat, and so is the answer to it."
+        "A seat holds {W} or {1}{W} open after you cast Gishath: the Path to Exile and Swords to Plowshares shape.",
+        "Blue mana is open while Gishath is on the stack.",
+        "An artifact and enchantment sweep is in play at the table. On 29 October Steven's removed Mirari's Wake along with other players' artifacts and enchantments (log:003).",
+        "Removal goes at Mirari's Wake, Urza's Incubator, Berserkers' Onslaught or a reducer rather than at a body. That seat has read the deck."
       ],
       "immediate": [
-        "Read the spell before you answer it. Against destroy: Flawless Maneuver, Heroic Intervention, Boros Charm and Akroma's Will each stop it. Against targeted exile or bounce: only Heroic Intervention's hexproof and Akroma's Will's protection from each colour stop it, and indestructible stops neither Path to Exile nor Swords to Plowshares.",
-        "If the shield in hand does not match the spell and {2}{W} is open, cast Eerie Interlude on Gishath in response. When he is exiled, decline the command-zone replacement and leave him in exile: he returns to the battlefield at the next end step.",
-        "If the target is a reducer and the shield is not free, let the reducer go. The shields are for the commander and the board.",
-        "If nothing in hand answers it, let it resolve and write the recast down: eight, plus {2} for each earlier command-zone cast, less {1} for Otepec Huntmaster, {2} for Knight of the Stampede and {2} for Urza's Incubator on the battlefield. All three reduce generic mana only, so the floor is {R}{G}{W} plus the tax.",
-        "Spend the next turn on that mana, not on a body: Nature's Lore, Skyshroud Claim, a fetch, or Selvala with a power-4 Dinosaur on the table."
+        "Read the spell. Destroy a creature: Flawless Maneuver, Heroic Intervention, Boros Charm or Akroma's Will stops it. Destroy an artifact or enchantment: only Heroic Intervention {1}{G} or Boros Charm {R}{W}, which cover permanents. Exile or bounce: from hand, only Heroic Intervention's hexproof, Akroma's Will's protection from each colour against a coloured source, or Eerie Interlude. Devil Dinosaur on the battlefield already gives Gishath hexproof.",
+        "If the shield in hand does not match and {2}{W} is open, cast Eerie Interlude on Gishath. The removal loses its target. When he is exiled, leave him in exile; he returns at the next end step.",
+        "If the target is a reducer or Mirari's Wake and the shield costs the mana you need for Gishath, let it resolve. Shields are for Gishath and the board.",
+        "If nothing answers it, let it resolve, put Gishath in the command zone, and write down the recast: eight, plus {2} per earlier command-zone cast, less {1} for Otepec Huntmaster, {2} for Knight of the Stampede and {2} for Urza's Incubator."
       ],
       "subsequent": [
-        "Recast him on a turn he can also attack. He has haste; the cast turn is the attack turn.",
-        "While Purphoros is on the battlefield, stop waiting on the commander. Cast Dinosaurs from hand instead: each entry is 2 at every seat and needs no combat step.",
-        "Worldly Tutor finds Purphoros or Knight of the Stampede and puts it on top; Enlightened Tutor finds Molten Echoes, Purphoros, Urza's Incubator or Garruk's Uprising. Each spends your next draw.",
-        "Recast into open blue mana only with Flawless Maneuver or Heroic Intervention in hand; otherwise land a reducer first and recast a turn later for less."
+        "Recast Gishath with Cavern of Souls mana named Dinosaur when a blue seat is open. That spell cannot be countered.",
+        "Put Devil Dinosaur on the battlefield before the next Gishath cast. It gives your other Dinosaurs, Gishath included, hexproof against opponents.",
+        "If Mirari's Wake is gone, the replacement doubler is Regal Behemoth: one extra mana per land tapped while you are the monarch. On 29 October it carried the recast after Wake was removed (log:003).",
+        "Rydia's Return mode two returns Mirari's Wake and one more permanent card to hand."
       ],
-      "notes": "Purphoros is the hardest permanent in this deck to remove — indestructible, and not a creature at all while devotion to red is under five, which is most boards: only 14 permanents in the 99 carry a red pip. He folds to exile, to bounce and to enchantment removal. Hunting Velociraptor gives Dinosaur spells prowl {2}{R} once a Dinosaur has dealt combat damage to a player this turn; whether that alternative cost is available on a command-zone cast, with the commander tax on top, has not been resolved by a stack.",
-      "grounded_in": []
-    },
-    {
-      "condition": "combo",
-      "condition_text": "somebody at the table is going off, and the deck holds no counterspell",
-      "indications": [
-        "A seat tutored twice in one turn, or drew five cards off one spell.",
-        "A sacrifice outlet and a recursion piece on one board.",
-        "A player counting aloud: storm, life, or cards in a graveyard.",
-        "A seat's life total climbing while it attacks nobody."
-      ],
-      "immediate": [
-        "Name the permanent already on the battlefield that the kill needs. That is the target.",
-        "Answer it at instant speed where you can: Path to Exile ({W}) and Swords to Plowshares ({W}) take a creature, Trumpeting Carnosaur is {2}{R} and a discard for 3 damage to a creature, Zacama's {2}{R} deals 3 to a creature and his {2}{G} destroys an artifact or an enchantment.",
-        "If the piece is an artifact or an enchantment and Zacama is not on the battlefield, cast Savage Order ({2}{G}{G}, sacrificing a creature with power 4 or greater) in your main phase and search out Bronzebeak Foragers: it enters, exiles one nonland permanent from each opponent until it leaves, and Savage Order gives it indestructible until your next turn. Take the combo piece, not the biggest body.",
-        "If the kill is a life total rather than a loop, count your own damage before you spend an answer. Each creature entering is 2 at that seat with Purphoros out, 4 on a nontoken Dinosaur with Molten Echoes out, and Boros Charm is 4 more at instant speed.",
-        "With nothing left to answer it, attack that seat with everything every turn and point the next connection at them."
-      ],
-      "subsequent": [
-        "Savage Stomp and Savage Order are sorceries. Cast them in your own main phase on the piece already down; they cannot be held up for the turn the combo goes off.",
-        "From the turn that seat's second piece lands, keep {W} open on its turn while Path to Exile or Swords to Plowshares is in hand.",
-        "Next game against that seat, keep the hand with a reducer and ramp and ship the hand of payoffs.",
-        "Bronzebeak Foragers' exile lasts only while it is on the battlefield. Do not chump-block with it, and do not sacrifice it to Savage Order."
-      ],
-      "notes": "There is no counterspell in the 99, and after V5 the only instant-speed answer to a noncreature permanent is Zacama's {2}{G} — a nine-drop's activated ability. Everything else that touches an artifact or an enchantment is a sorcery-speed creature. A storm turn or an instant-speed kill from hand has no answer in this deck at all; the plan against it is to be the faster clock.",
-      "grounded_in": []
-    },
-    {
-      "condition": "mana-drought",
-      "condition_text": "the mana has stopped short of the commander, in count or in colour — and after V5 the colour that stops is red",
-      "indications": [
-        "Three lands on the battlefield on turn five. The land drop hits on turn 5 in 64.8% of goldfish games and turn 6 in 57.5%; mean available mana is 5.13 on turn 5 and 6.04 on turn 6.",
-        "Eight mana and no {R} among it. From lands alone the deck is on curve in red 55% of the time, against 83% white and 76% green.",
-        "Purphoros ({3}{R}), Molten Echoes ({2}{R}{R}) and Hunting Velociraptor ({2}{R}) sitting in hand behind green mana.",
-        "A hand of double-green Dinosaurs with no green source — the first hour of the game on 15 September (log:002)."
-      ],
-      "immediate": [
-        "Count lands in hand and on the battlefield. Under four lands on turn four, cast the land ramp before anything else: Nature's Lore ({1}{G}) and Skyshroud Claim ({3}{G}) both put Forest CARDS onto the battlefield, and Stomping Ground and Cinder Glade are Forest cards that make {R}.",
-        "Crack a fetch for red. Arid Mesa, Bloodstained Mire and Wooded Foothills search Mountain; Windswept Heath and Verdant Catacombs search Forest; Stomping Ground, Cinder Glade and Jetmir's Garden answer to both. Pay the 2 life to have Stomping Ground enter untapped.",
-        "Do not count Bloom Tender for red. Vivid pays one mana for each colour among the permanents you control and lands are colourless, so with only lands and itself out it makes {G} and nothing more. Play Otepec Huntmaster or Itzquinth first and it makes {R} as well.",
-        "If the shortfall is one or two generic mana, cast a reducer instead of a body: Otepec Huntmaster {1}{R} for {1} off, Knight of the Stampede {3}{G} for {2} off, Urza's Incubator {3} for {2} off. All three on the table put Gishath at {R}{G}{W}.",
-        "If a Dinosaur with power 4 or greater is on the battlefield, cast Selvala: {G} and a tap makes X mana in any combination of colours, X the greatest power you control. With Gishath out that is seven, and it is where the red comes from."
-      ],
-      "subsequent": [
-        "Name Dinosaur on Unclaimed Territory and Secluded Courtyard as they enter. Their coloured mana casts creature spells of that type and nothing else, so keep it off Rogue's Passage and Kessig Wolf Run.",
-        "Krosan Verge fetches a Forest card and a Plains card: take Cinder Glade and Temple Garden and one land drop gives you all three colours, both tapped.",
-        "Cast Up the Beanstalk ({1}{G}) early. It draws as it enters and again for every spell of mana value 5 or greater, which is Gishath and 23 other cards in the deck.",
-        "Wayward Swordtooth's extra land drop pays only with a land in hand. Cast it after Huatli or a fetch, not before."
-      ],
-      "notes": "Ten of the thirty-five lands enter tapped. Five mana on turn six is this deck's normal, not a drought; the drought is three lands and no rock, or eight mana with no red in it. The green audit and the land pass in V5 moved green and white up and left red the colour that strands the new cards.",
+      "notes": "Indestructible stops neither Path to Exile nor Swords to Plowshares. Against exile, Flawless Maneuver and Boros Charm do nothing. Devil Dinosaur's hexproof covers targeting only; it does nothing against a sweeper.",
       "grounded_in": [
-        "log:002"
+        "log:003"
       ]
     },
     {
       "condition": "stalled",
-      "condition_text": "Gishath has not resolved, the window is closing, and another seat's engine is running",
+      "condition_text": "the mana is down but nothing is on the board, and Gishath is not yet castable",
       "indications": [
-        "Turn seven, Gishath in the command zone, no reducer on the battlefield. The goldfish casts him by turn 6 in 26.7% of games, the median is turn 7, and 23% of games never cast him by turn 10.",
-        "Your board is three mid-tier Dinosaurs and the table has stopped answering them.",
-        "The commander has been answered twice and the tax is at {4}.",
-        "Another seat's engine is visibly running: a sacrifice loop, four enchantments, a graveyard past ten cards."
+        "Turn four with four mana and no play that uses it. On 29 October the board was empty until Mirari's Wake (log:003).",
+        "Turn six and Gishath is not cast. The goldfish casts him by turn six in 0.405 of games, median turn 7.",
+        "Your hand is five- and six-drops with no reducer.",
+        "Your board is mana creatures and no Dinosaur."
       ],
       "immediate": [
-        "Stop waiting on the commander and put the clock on the board instead. Purphoros costs {3}{R} and needs no combat step: every creature that enters after him is 2 at each seat, 6 across a three-opponent table.",
-        "Count the cast: mana available, less {1} for Otepec Huntmaster, {2} for Knight of the Stampede, {2} for Urza's Incubator on the battlefield. At or under what you have, cast him and attack the seat with no untapped blocker.",
-        "One or two short, spend the turn on a reducer, not on a body. Each one lowers every Dinosaur cast after it.",
-        "With Dinosaurs in hand and no reducer, put them down through Belbe's Portal ({3}, tap, Dinosaur named) or Monster Manual ({1}{G}, tap). Neither is a cast: take the body and know that Zacama will not untap your lands and Wakening Sun's Avatar will not wipe.",
-        "Keep the mid-tier Dinosaurs home as blockers until he lands. Attack only for lethal or into an empty board."
+        "Count the cast: mana available against eight, plus {2} per earlier command-zone cast, less the reducers on the battlefield.",
+        "If you are short by one or two, cast a reducer before any body: Otepec Huntmaster {1}{R}, Knight of the Stampede {3}{G}, Urza's Incubator {3} named Dinosaur.",
+        "If you have five mana and three or more lands, cast Mirari's Wake. Each land tapped makes one more; on 29 October it took five mana to ten (log:003).",
+        "If you hold Natural Order and a green mana creature, sacrifice the creature for Ghalta, Primal Hunger, Vaultborn Tyrant or Carnage Tyrant. These are threats that need no command zone.",
+        "If a Dinosaur dealt combat damage to a player this turn and Hunting Velociraptor is on the battlefield, cast Dinosaurs in main two for prowl {2}{R}."
       ],
       "subsequent": [
-        "Cast World War Hulk ({3}{G}{G}) as the stall breaker. Chapter I casts your next red or green creature spell for free, Zacama is a red creature spell, and a cast Zacama untaps every land you control.",
-        "Enlightened Tutor finds Purphoros, Molten Echoes or Urza's Incubator; Worldly Tutor finds Purphoros or Knight of the Stampede.",
-        "The turn he lands, attack. Do not hold him back for a wider board.",
-        "Rogue's Passage costs {4} on top of his cast. Hold it for the second attack, not the first."
+        "Enlightened Tutor {W} puts Mirari's Wake, Urza's Incubator or Berserkers' Onslaught on top of your library. Cast it at the end of the opponent's turn before yours.",
+        "Keep the cheap Dinosaurs home as blockers until Gishath lands. Pugnacious Hammerskull gets a stun counter if it attacks alone.",
+        "Cast Ghalta, Primal Hunger when your total power reaches eight; it then costs {G}{G} plus two."
       ],
-      "notes": "World War Hulk's chapters II and III land on your next two turns and both want a creature already on the battlefield. If the game will not last three more turns, spend the five mana on Purphoros and a body instead.",
+      "notes": "Natural Order puts the creature onto the battlefield. Zacama's land untap reads \"if you cast it\", so a Natural Order Zacama does not untap your lands. Ixalli's Lorekeeper's mana pays for Dinosaur spells only: it pays for Gishath, not for Mirari's Wake or Natural Order.",
       "grounded_in": [
-        "log:002"
+        "log:003"
       ]
     },
     {
-      "condition": "politics",
-      "condition_text": "you have become the table's problem — which is now the turn Purphoros lands, not the turn the reveal puts four bodies down",
+      "condition": "mana-drought",
+      "condition_text": "the colours have stopped: lands in play, but not the colour the hand needs",
       "indications": [
-        "Purphoros resolved and every seat took damage off your next creature. Damage at every seat at once reads as a clock nobody can block.",
-        "Two seats attacked you in one rotation.",
-        "The removal is going at Gishath, Molten Echoes and Purphoros, not at the bodies.",
-        "A seat offers you a no-attack deal while a third seat holds the larger board. That deal was made on 15 September, broken to kill Tom, and the seat it was made with won the game (log:002)."
+        "Turn four with fewer than four lands.",
+        "Your hand holds double-red cards (Berserkers' Onslaught, Bonehoard Dracosaur, Quartzwood Crasher, Etali, Trumpeting Carnosaur) and you have one red source or none. Red is on curve from lands alone in 0.548 of goldfish games.",
+        "Double-green cards stranded in hand. On 15 September Selvala, Rishkar's Expertise and the GG Dinosaurs sat in hand through a long green screw (log:002).",
+        "Bloom Tender or Faeburrow Elder makes one colour only."
       ],
       "immediate": [
-        "Count lethal across the whole table before you declare a single attacker: your total power against each seat's life, blockers subtracted. On 15 September it was 8 to 9 Dinosaurs and 30-plus power against Alex at 18 and Oliver at 15 (log:002).",
-        "If two seats die in one alpha strike, swing at both. A seat left alive saves the seat you attacked, and on 15 September that is exactly what happened (log:002).",
-        "If only one seat dies, attack the seat that can answer you rather than the lowest life total.",
-        "Count the shields in hand and leave that mana open on every opponent's turn: Flawless Maneuver is free with a commander out, Heroic Intervention {1}{G}, Boros Charm {R}{W}, Akroma's Will {3}{W}, Eerie Interlude {2}{W}.",
-        "Keep two blockers home. Gishath has vigilance and blocks after attacking; Curious Altisaur and Runic Armasaur are 2/5s and Temple Altisaur a 3/4."
+        "Cast land search before any body. Nature's Lore or Three Visits ({1}{G}) for Stomping Ground, Cinder Glade or Jetmir's Garden when red is short; Skyshroud Claim {3}{G} for two Forest cards.",
+        "Crack fetches for the missing colour. Wooded Foothills and Arid Mesa find a Mountain; Windswept Heath and Verdant Catacombs find Stomping Ground, Cinder Glade or Jetmir's Garden; Prismatic Vista finds a basic. Pay the 2 life to have Stomping Ground or Temple Garden enter untapped.",
+        "Cast a mana creature that makes any colour: Ixalli's Lorekeeper {G}, Drover of the Mighty or Intrepid Paleontologist {1}{G}, Atzocan Seer {1}{G}{W}.",
+        "If you are short of generic mana, not colour, cast a reducer instead of a body.",
+        "If a creature with power 4 or greater is on the battlefield, cast Selvala and tap her with {G} for X mana in any colours, X the greatest power you control."
       ],
       "subsequent": [
-        "Break a deal only to end a seat this turn, and say which board made you do it (log:002).",
-        "When another seat's board is bigger than yours, say so with numbers: total power on each side, cards drawn this rotation.",
-        "Once the table's wipe has landed on you, cast Blasphemous Act into their rebuilt boards (log:001).",
-        "Do not promise a seat you will not damage them while Purphoros is on the battlefield. He hits every opponent for the same 2 and you cannot aim him."
+        "Hold creatures through a wipe-heavy table while the mana catches up. On 15 September the screw kept them out of the early wipes by accident; do it on purpose (log:002).",
+        "Cast Hulking Raptor for {G}{G} each first main phase, and Regal Behemoth to become the monarch for one extra mana per land.",
+        "Cast Itzquinth or Otepec Huntmaster before Bloom Tender or Faeburrow Elder when red is short. A red permanent on the battlefield adds red to what each of them makes."
       ],
-      "notes": "The one logged loss was not lost to a wipe or to removal. Lethal was on the board against two seats, the swing went at one of them, the other saved him, and the drain came back the same rotation (log:002). Purphoros makes this page more urgent, not less: the table's clock on you starts before your combat step does.",
+      "notes": "Bloom Tender and Faeburrow Elder count colours among your permanents, and lands are colourless. With only green permanents out, each makes {G} and nothing else. Ancient Ziggurat pays for creature spells only; Cavern of Souls, Unclaimed Territory and Secluded Courtyard pay colours only for Dinosaur creature spells.",
       "grounded_in": [
-        "log:001",
         "log:002"
       ]
     },
     {
       "condition": "raced",
-      "condition_text": "somebody's clock is faster than the commander, and blockers do not touch it",
+      "condition_text": "a seat will kill you before your board kills anyone, and its clock is not one your blockers stop",
       "indications": [
-        "Under 20 life on turn six with Gishath still in the command zone.",
-        "The clock is a drain, not an attack. Oliver's vampire spell gained, lost and dealt damage on one card and killed from 13 with the game otherwise won (log:002).",
-        "Their board doubled in one turn and yours did not.",
-        "A seat's first attack landed on you by round four."
+        "A seat's damage comes from spells or drains, not attackers. On 15 September Oliver's vampire drain killed Sean from behind a 30-power board (log:002).",
+        "A seat's board grows every turn and you have not attacked it. On 29 October Alex's artifacts, Treasures and growing creature won the game (log:003).",
+        "Your life is under 15 and a seat is gaining what it drains."
       ],
       "immediate": [
-        "Count your turns to Gishath. Two or more away, block with everything that is not a mana creature: chump with the bodies before Bloom Tender, Selvala or Hulking Raptor.",
-        "Against a creature clock, cast Kinjalli's Sunwing ({2}{W}) first. Their creatures enter tapped, which strips the flashed-in blocker and every haste attacker.",
-        "Against a drain or a burn clock, stop blocking and race. Cast Purphoros and then every creature you can: 2 at each seat per entry, 4 on a nontoken Dinosaur with Molten Echoes out, and Vaultborn Tyrant gains you 3 life on each power-4 entry.",
-        "Count the creatures on the whole table for Blasphemous Act: at nine it is {R}. Cast it while your board is the smaller one or empty.",
-        "If Gishath is on the battlefield and Akroma's Will is in hand, cast it after attackers and before blockers and take both modes: flying, double strike, lifelink, indestructible and protection from each colour. Fourteen from him, and the life back."
+        "Count the turns: their kill against yours. If theirs comes first, you attack this turn.",
+        "Remove their best attacker or engine: Path to Exile or Swords to Plowshares {W}; Itzquinth's entry for {2}, one of your Dinosaurs deals its power to it; Zacama {2}{R} for 3; Trumpeting Carnosaur's discard {2}{R} for 3; Thrashing Brontodon {1} for an artifact or enchantment.",
+        "Swing every creature at that seat. Overwhelming Stampede or Berserkers' Onslaught before combat if you hold one.",
+        "Gain life where it costs no attack: Zacama {2}{W} for 3, Tranquil Frillback's {G} for 4, Vaultborn Tyrant's 3 per power-4 entry, Akroma's Will's lifelink."
       ],
       "subsequent": [
-        "Zacama's {2}{W} is 3 life an activation and costs no other card.",
-        "Savage Order ({2}{G}{G}, sacrificing a creature with power 4 or greater) puts Temple Altisaur or Trapjaw Tyrant onto the battlefield with indestructible until your next turn: a blocker their clock cannot kill.",
-        "Point the connection at the seat racing you, not at the lowest life total.",
-        "Purphoros's {2}{R} gives your creatures +1/+0 until end of turn. Activate it before combat damage, not after: Gishath's reveal is as wide as his power."
+        "Keep Gishath home only when he blocks the attacker that kills you. He has vigilance, so an attack costs no block.",
+        "Kinjalli's Sunwing on the battlefield makes the racing seat's new creatures enter tapped. Cast it before your next turn's swing."
       ],
-      "notes": "The goldfish's kill by turn 8 is 0.609 against one opponent with no blockers, and its table counts Purphoros's 'each opponent' once. Read both as tempo, not as a race you are already winning.",
+      "notes": "Blockers do nothing against a drain. Against a seat whose clock is a spell, the only defence is killing that seat first (log:002).",
       "grounded_in": [
-        "log:002"
+        "log:002",
+        "log:003"
       ]
+    },
+    {
+      "condition": "combo",
+      "condition_text": "somebody at the table is assembling a win that does not attack",
+      "indications": [
+        "A seat stops attacking and spends its turns searching its library.",
+        "A known combo piece resolves and its controller passes with mana open.",
+        "An artifact or enchantment enters that does nothing on its own."
+      ],
+      "immediate": [
+        "Name the piece you can reach. A creature: Path to Exile or Swords to Plowshares. An artifact or enchantment: Thrashing Brontodon {1} and sacrifice, or Zacama {2}{G}. A planeswalker: Boros Charm's 4 or Trumpeting Carnosaur's discard.",
+        "Spend the answer now, at instant speed, on the first piece. The deck has no counterspell, and a held answer is useless once the combo resolves.",
+        "With no answer in hand, count your swing against that seat's life. If it dies, attack it with everything this turn.",
+        "Keep Thrashing Brontodon on the battlefield with {1} untapped whenever an artifact or enchantment seat is at the table."
+      ],
+      "subsequent": [
+        "Bronzebeak Foragers' entry exiles one nonland permanent from each opponent. Point it at the combo piece.",
+        "Against a graveyard combo, Tranquil Frillback exiles a graveyard on entry, and Intrepid Paleontologist exiles one card for {2}."
+      ],
+      "notes": "The deck's defence against combo is a fast kill, not answers. Instant-speed interaction is the two white one-drops, Boros Charm, Carnosaur's discard and the on-board activations of Brontodon and Zacama.",
+      "grounded_in": []
     }
   ],
   "normal": {
     "preflight": {
       "keep": [
-        "Two to four lands, one of them making green: 39 cards in the deck carry a green pip.",
-        "A red source, or a fetch that finds one. Red is the deck's worst colour on curve — 0.61 with rocks and dorks against 0.87 white and 0.82 green — and Purphoros, Molten Echoes and Hunting Velociraptor all need it.",
-        "One mana piece castable by turn three (Sol Ring, Arcane Signet, Bloom Tender, Nature's Lore) or one reducer (Otepec Huntmaster, Knight of the Stampede, Urza's Incubator).",
-        "A play on turn two and a play on turn three.",
-        "A hand with a reducer and ramp over a hand with a payoff and ramp."
+        "Two to four lands with a green source.",
+        "One mana piece castable by turn two: Sol Ring, Arcane Signet, Ixalli's Lorekeeper, Bloom Tender, Drover of the Mighty, Intrepid Paleontologist, Nature's Lore, Three Visits, or a reducer.",
+        "A red source, or a fetch or Forest search that finds one.",
+        "A play on turn two and a play on turn three."
       ],
       "ship": [
         "Seven cards with no green source.",
-        "Five or more lands with neither a mana piece nor a reducer.",
-        "A hand whose cheapest action is turn five: Pantlaza, Wrathful Raptors, Trapjaw Tyrant or Vaultborn Tyrant with nothing in front of them.",
-        "A hand whose only red card is Molten Echoes and whose only lands are Forests."
+        "Five or more lands with no mana piece and no reducer.",
+        "A hand whose cheapest action is turn five.",
+        "A hand of mana creatures with no land after the first."
       ],
-      "note": "Purphoros and Molten Echoes are the payoff layer now and both are red. A hand that ramps in green and never finds a Mountain-typed land casts neither of them, and the reveal has nothing to cash into."
+      "note": "The goldfish keeps the first seven in 0.787 of games and draws ramp or fixing in 0.979. Ship to find mana, never to find a named Dinosaur: Gishath is in the command zone."
     },
     "startup": {
       "steps": [
-        "Turn one: play the land that enters tapped if you hold one, then Sol Ring.",
-        "Name Dinosaur on Unclaimed Territory, Secluded Courtyard, Urza's Incubator, Belbe's Portal and Molten Echoes as each enters. Every time.",
-        "Turn two: Otepec Huntmaster if he is in hand; otherwise Arcane Signet, Bloom Tender or Up the Beanstalk.",
-        "Turn three: Nature's Lore for a Forest card that makes red — Stomping Ground or Cinder Glade — or Urza's Incubator. A body waits.",
-        "Attack with nothing before turn four. In the first three turns spend Path to Exile or Swords to Plowshares on one thing only: a creature that kills Gishath on sight, or an engine that wins alone."
+        "Turn one: play the land that enters tapped if you hold one, then Sol Ring or Ixalli's Lorekeeper.",
+        "Name Dinosaur on Cavern of Souls, Unclaimed Territory, Secluded Courtyard, Urza's Incubator and Roaming Throne as each enters. Every time.",
+        "Turn two: a mana creature, Arcane Signet, Otepec Huntmaster, or Nature's Lore or Three Visits for a Forest card that makes red.",
+        "Turn three: Faeburrow Elder, Atzocan Seer, Urza's Incubator or Garruk's Uprising. Mana before bodies.",
+        "Attack with nothing before Gishath. Spend Path to Exile or Swords to Plowshares only on a creature that kills Gishath on sight or an engine that wins alone."
       ]
     },
     "assembly": {
       "steps": [
-        "Mana to five by turn four or five: lands plus one rock or dork.",
-        "Reducers before payoffs. Otepec Huntmaster, Knight of the Stampede and Urza's Incubator lower every Dinosaur cast after them, including the commander's.",
-        "Purphoros before the fourth body. {3}{R} turns every later entry into 2 damage at each seat, and it survives the wipe that fourth body invites.",
-        "Molten Echoes next, naming Dinosaur. From then, every nontoken Dinosaur that enters is two entries and two Purphoros triggers.",
-        "Garruk's Uprising before another creature: it is an enchantment, it survives a creature wipe, and it draws off every power-4 arrival the reveal makes.",
-        "Set the top on the turn he attacks, not before. Congregation at Dawn ({G}{G}{W}, instant) after your draw and before combat puts three Dinosaurs on top in your order, and all three fit inside a seven-card reveal.",
-        "Cast Gishath on a turn he can attack a seat whose blockers do not kill him. He has haste and vigilance, so the cast turn is the attack turn; Flawless Maneuver in hand makes the tap-out safe."
+        "Reducers first: Otepec Huntmaster, Knight of the Stampede and Urza's Incubator lower Gishath and every Dinosaur after him. All three put Gishath at {R}{G}{W} on his first cast.",
+        "Mirari's Wake on the turn it makes Gishath castable next turn, not earlier. The table reads it as the threat (log:003); keep {1}{G} for Heroic Intervention behind it if you hold it.",
+        "Garruk's Uprising before the first reveal. It draws for each power-4 Dinosaur the reveal puts onto the battlefield and gives every creature trample.",
+        "Berserkers' Onslaught or Roaming Throne named Dinosaur on the turn before Gishath attacks. Both multiply his hit; neither is verified by a stack.",
+        "Cast Gishath on a turn he can hit a seat whose untapped blockers do not stop him, with Flawless Maneuver in hand or shield mana open. He has haste: the cast turn is the attack turn.",
+        "Set the top on the swing turn. Cast Congregation at Dawn or Worldly Tutor after your draw step and after Bonehoard Dracosaur's upkeep exile, before combat damage."
       ]
     },
     "cruise": {
       "steps": [
-        "Upkeep: Descendants' Path reveals the top card and CASTS a Dinosaur that shares a type — so a Zacama off it untaps your lands and a Wakening Sun's Avatar off it wipes. Bonehoard Dracosaur exiles two; play the land from among them.",
-        "Main one: land, then a reducer, then Purphoros or Molten Echoes, then one body. Leave the shield mana open — {1}{G} for Heroic Intervention, {R}{W} for Boros Charm. Flawless Maneuver needs none.",
-        "Combat: Gishath attacks the seat with no blocker that survives him. Rogue's Passage is {4} on top of everything else; Kessig Wolf Run is {X}{R}{G} for the extra trample damage.",
-        "On the connection, order the triggers: the Pantlaza discover with the largest toughness on top, the Regisaur Alpha token last so it cannot re-trigger the once-a-turn discover, the Garruk's Uprising and Vaultborn Tyrant draws between (stack 001, decision 002).",
-        "Count the Purphoros damage aloud as the bodies enter: 2 to each opponent per creature, and a second trigger per nontoken Dinosaur while Molten Echoes is out.",
-        "When Molten Echoes copies a legendary Dinosaur — Itzquinth, Pantlaza, Zacama, Etali, either Ghalta — keep the original and put the copy in the graveyard. Its entry triggers are already on the stack and still resolve.",
-        "After the connection, in main two, cast Dinosaurs from hand for prowl {2}{R} while Hunting Velociraptor is on the battlefield. A prowl cast is a cast, so Zacama untaps your lands and Wakening Sun's Avatar destroys all non-Dinosaurs.",
-        "Still in main two: if Savage Order is in hand, sacrifice a Molten Echoes copy with power 4 or greater to it. The copy is exiled at the beginning of the next end step whatever you do.",
-        "The rest of the board attacks only into an empty board or for lethal. The mid-tier Dinosaurs are blockers and wipe-bait (log:001)."
+        "Upkeep: Bonehoard Dracosaur exiles two; play the land among them. Count Huatli's saga chapter.",
+        "Main one: land, then a reducer, then one body. Leave shield mana open.",
+        "Beginning of combat: Palani's Hatcher turns an Egg into a 3/3.",
+        "Declare attackers: Gishath, and Sunfrill Imitator as a copy of Gishath. After the first reveal, every creature that can attack.",
+        "On the connect, put Pantlaza's discover on the entering Dinosaur with the greatest toughness; it fires once a turn. Garruk's Uprising and Vaultborn Tyrant draw once per power-4 entry.",
+        "Main two: cast Dinosaurs from hand, for prowl {2}{R} if Hunting Velociraptor is out and a Dinosaur dealt combat damage.",
+        "End step: hold Flawless Maneuver, Heroic Intervention or Boros Charm through every opponent's turn."
       ]
     },
     "closing": {
       "steps": [
-        "Count commander damage per seat aloud. Twenty-one from Gishath ends a player: on 28 August it was 7 and then 14 (log:001), on 15 September 16 on top of 7 (log:002).",
-        "Count the Purphoros route before the combat route: every creature you can land this turn is 2 at each seat, and each nontoken Dinosaur is 4 with Molten Echoes out.",
-        "Eerie Interlude ({2}{W}) with Purphoros out is a burn spell. Exile your own board, and every creature re-entering at the next end step is 2 at each seat, doubled on the nontoken Dinosaurs.",
-        "Overwhelming Stampede ({3}{G}{G}): +X/+X and trample to every creature, X your greatest power. Add X per attacker and compare the total with the life of the seat holding the fewest blockers.",
-        "World War Hulk's chapter III doubles Gishath's power and gives trample: a 14/12 reveals fourteen cards.",
-        "Akroma's Will with Gishath out, cast after attackers and before blockers, both modes: flying, double strike, lifelink, indestructible and protection from each colour on the whole board.",
-        "Swing at every seat that dies this turn, not at the one that dies most comfortably (log:002).",
-        "Wait a turn only when no shield is in hand and a seat holds four mana open with blue or white among it."
+        "Count every seat aloud: power against life plus untapped blockers, and Gishath's commander damage toward 21.",
+        "Add the multipliers you hold: Overwhelming Stampede {3}{G}{G}, +X/+X and trample with X your greatest power; Rydia's Return +3/+3; Berserkers' Onslaught's double strike; Kessig Wolf Run {X}{R}{G} on one attacker; Huatli's chapter IV double strike and trample.",
+        "Akroma's Will with Gishath out, cast before blockers: both modes, flying, double strike, lifelink, indestructible and protection from each colour.",
+        "Attack every seat that dies this turn (log:002).",
+        "If no seat dies, attack the seat whose board beats yours with everything (log:003).",
+        "Wait a turn only when you hold no shield and a seat has four or more mana open with a sweeper colour among it. Otherwise swing."
       ]
     }
   },
   "handling": {
     "optics": [
-      "Through turn six the table sees a ramp deck with a 4/4. The commander is visible in the command zone the whole time, and an experienced seat prices its wrath for the turn he becomes castable (decision 001).",
-      "Purphoros changes what the table sees. The first time every seat takes 2 off a creature entering, you are the clock — and you are it before you have attacked anybody.",
-      "On 28 August the table read the mid-tier Dinosaurs as the threat, spent its wraths on them and held nothing for the commander (log:001). That is one table on one night.",
-      "On 15 September the pilot's board stayed small through the early wipe waves because he was short on green, and it saved the creatures (log:002). Holding bodies back through a wipe war is a posture, not an accident."
+      "Until Gishath, the table sees mana creatures and a few big Dinosaurs. The commander is visible in the command zone the whole game.",
+      "Mirari's Wake is a tell. On 29 October the table called it a problem the turn it landed, and an artifact and enchantment sweep took it later (log:003).",
+      "After the first reveal you are the archenemy. On 29 October every seat was dealing with Sean (log:003).",
+      "On 28 August the table spent its wipes on the mid-tier Dinosaurs and held nothing for Gishath (log:001). That is one table on one night."
     ],
     "reveal": [
-      "Cast the reducers the turn they are castable. They are the tell and they are the plan; a turn of hiding Otepec Huntmaster is a turn of discount lost.",
-      "Cast Purphoros on a turn no creature enters. A god that has damaged nobody yet draws less removal than one that has.",
-      "Hold Congregation at Dawn and Worldly Tutor for the turn of the swing.",
-      "Pass with zero mana open when Flawless Maneuver is the shield, and let the table read no protection (decision 001).",
-      "Blasphemous Act stays in hand until your board is smaller than theirs or empty (log:001, stack 004)."
+      "Cast reducers the turn they are castable. Each turn one sits in hand is a turn of discount lost.",
+      "Hold Congregation at Dawn and Worldly Tutor for the swing turn.",
+      "Pass with no mana open when Flawless Maneuver is the shield; it costs nothing with Gishath out.",
+      "Hold Blasphemous Act until your board is smaller than theirs or empty (log:001)."
     ],
     "alliances": [
-      "Offer removal, not attacks. A Path to Exile or a Swords to Plowshares on the table's shared problem buys a rotation of not being attacked.",
-      "Do not offer a no-attack deal while Purphoros is on the battlefield. He damages that seat every time a creature enters and you cannot turn him off.",
-      "No alliance survives the first connection. Four bodies off one trigger make you the board.",
-      "Break a deal only to end a seat this turn, and end every seat the swing reaches (log:002).",
-      "A tax seat is the one to break early. Three reducers hold Gishath at {R}{G}{W}; nobody else's eight-drop is castable under a tax."
+      "Offer removal, not attacks. A Path to Exile or Swords to Plowshares on the table's shared problem buys a rotation.",
+      "No deal survives the first reveal. Your board is then the table's problem whatever you promised.",
+      "Break a deal only to kill a seat this turn, and then kill every seat the swing reaches (log:002).",
+      "Make no deal with the seat whose board you named as the danger (log:003)."
     ],
     "targets": [
-      "The first connection goes at the seat with no untapped blocker. The reveal pays the same at any life total, and seven damage is not a kill.",
-      "After that, the seat whose clock is not a creature. A drain or a burn seat is the one blockers do nothing about (log:002).",
-      "Commander damage stacks on one player. The seat that has taken 7 takes the next 14: count toward 21 (log:001).",
-      "Never the lowest life total for its own sake. On 15 September the low seat was saved by the seat left untouched, and that seat won the game (log:002).",
-      "Purphoros picks no target. When two seats are within 6 of dead, land creatures instead of choosing."
+      "First connect: the seat with no untapped blocker that stops Gishath. The reveal pays the same at any life total.",
+      "After that: the seat whose board beats yours, before the seat with the lowest life (log:003).",
+      "A seat whose clock is a drain or burn spell is next, because blockers do nothing against it (log:002).",
+      "Put commander damage on one player. The seat that has taken 7 takes the next hit toward 21 (log:001, log:002)."
     ]
   },
-  "decklist_sha256_prefix": "80701018c37d"
+  "decklist_sha256_prefix": "d58a86fb1182"
 }

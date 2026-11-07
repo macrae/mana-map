@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Gishath, Sun's Avatar](https://manamap.seanmacrae.com/viz/index.html?cards=Gishath%2C+Sun%27s+Avatar)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-09-20
+- **Version:** v1.2.0 (V6) · **status:** sleeved since 2026-11-06
 - **Colours:** WRG · **lands:** 36 · **bracket floor:** 3 (Upgraded) · **DTI:** 40/96 → B3 (deckcheck.co, 2026-10-18, 1 reading) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 31 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=gishath) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=gishath)
@@ -91,7 +91,7 @@ Green first. [Secluded Courtyard](https://manamap.seanmacrae.com/viz/index.html?
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v1.2.0 (V6), 2026-11-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **40%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -136,6 +136,8 @@ Three games are logged, all before v1.2.0. The Record block has the count. The p
 ## Change history
 
 <!-- ctx:gen history -->
+- **v1.2.0 · V6** (2026-11-06) — in: Ancient Ziggurat, Atzocan Seer, Berserkers' Onslaught, Brushland, Cavern of Souls, Copperline Gorge, Devil Dinosaur, Drover of the Mighty …; out: Belbe's Portal, Bloodstained Mire, Descendants' Path, Forbidden Orchard, Hunter's Insight, Krosan Verge, Molten Echoes, Monster Manual …. _jurassic-v1: creatures through and through, Purphoros and Molten Echoes out, mana creatures and fixing in_
+  - merge `jurassic-v1` — played on printed proxies sleeved; the pilot asked for the release 2026-11-06; the unowned cards are on the order list
 - **v1.1.0 · V5** (2026-09-20) — in: Arid Mesa, Bloodstained Mire, Bloom Tender, Hunting Velociraptor, Molten Echoes, Purphoros, God of the Forge, Savage Order, Savage Stomp …; out: Alpine Meadow, Arctic Treeline, Austere Command, Beast Within, Boros Signet, Clifftop Retreat, Commercial District, Enlarge …
   - merge `mana-v1`: objective stall read **not met** — The pilot has directed the merge and is buying the cards; sourcing is not a question this gate needs to answer here.
   - played 1: 0W 1L

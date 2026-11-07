@@ -15,12 +15,12 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.1304,
-   "sub_score": 85.72,
+   "sub_score": 71.43,
    "sub_ci": [
-    79.26,
-    92.09
+    64.91,
+    77.95
    ],
-   "placement": 66.67,
+   "placement": 33.33,
    "anchor": 100.0,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
@@ -52,7 +52,7 @@
    "sub_score": 57.14,
    "sub_ci": [
     57.14,
-    63.57
+    63.53
    ],
    "placement": 0.0,
    "anchor": 100.0,
@@ -93,7 +93,7 @@
    "weight_effective": 0.1304,
    "sub_score": 82.86,
    "sub_ci": [
-    76.38,
+    76.5,
     82.86
    ],
    "placement": 100.0,
@@ -241,8 +241,8 @@
    "weight_effective": 0.163,
    "sub_score": 35.71,
    "sub_ci": [
-    32.85,
-    43.19
+    32.5,
+    42.97
    ],
    "placement": 0.0,
    "anchor": 62.5,
@@ -280,8 +280,8 @@
    "weight_effective": 0.1304,
    "sub_score": 67.62,
    "sub_ci": [
-    44.48,
-    96.93
+    44.22,
+    96.16
    ],
    "placement": null,
    "anchor": 67.62,
@@ -341,7 +341,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
- "fleet_sha": "aaad07493f04",
+ "fleet_sha": "402b9ebf538a",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -385,12 +385,12 @@
   ],
   "iterations": 1
  },
- "code_score": 63.2,
- "score_point": 63.2,
- "score": 63.4,
+ "code_score": 60.8,
+ "score_point": 61.3,
+ "score": 61.7,
  "score_ci": [
-  56.8,
-  71.1
+  55.4,
+  68.4
  ],
  "grade": "C",
  "grade_range": [
@@ -400,8 +400,8 @@
  "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.369,
-  "C": 0.63,
+  "B": 0.206,
+  "C": 0.793,
   "D": 0.001,
   "F": 0.0
  },
@@ -423,27 +423,27 @@
     "grade": "C"
    },
    "mana": {
-    "score": 63.7,
+    "score": 61.7,
     "grade": "C"
    },
    "resilience": {
-    "score": 60.2,
+    "score": 58.1,
     "grade": "C"
    },
    "construction": {
-    "score": 64.4,
+    "score": 62.2,
     "grade": "C"
    },
    "dti": {
-    "score": 68.5,
+    "score": 66.3,
     "grade": "B"
    },
    "table_record": {
-    "score": 62.5,
+    "score": 60.4,
     "grade": "C"
    },
    "judgment": {
-    "score": 63.2,
+    "score": 60.8,
     "grade": "C"
    }
   },
@@ -451,23 +451,23 @@
    {
     "component": "dti",
     "share_now": 0.163,
-    "share_at_flip": 0.107,
+    "share_at_flip": 0.042,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
    },
    {
-    "component": "speed",
+    "component": "resilience",
     "share_now": 0.13,
-    "share_at_flip": 0.201,
+    "share_at_flip": 0.28,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
-    "component": "resilience",
+    "component": "speed",
     "share_now": 0.13,
-    "share_at_flip": 0.211,
+    "share_at_flip": 0.448,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -475,7 +475,7 @@
    {
     "component": "table_record",
     "share_now": 0.13,
-    "share_at_flip": 0.488,
+    "share_at_flip": 0.639,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -489,7 +489,7 @@
    "judgment": 3.0,
    "mana": 4.0,
    "resilience": 1.0,
-   "speed": 2.0
+   "speed": 3.0
   },
   "of": 4,
   "spread": 1.0,
@@ -501,7 +501,7 @@
    },
    {
     "instrument": "speed",
-    "rank": 2.0,
+    "rank": 3.0,
     "side": "better"
    },
    {
@@ -516,8 +516,8 @@
    }
   ],
   "group": {
-   "kendall_w": 0.325,
-   "p": 0.3241,
+   "kendall_w": 0.3,
+   "p": 0.3545,
    "p_method": "exact over 13824 relabellings",
    "m": 4,
    "n": 4
@@ -551,24 +551,24 @@
   "weight": 0.2,
   "weight_effective": 0.2174,
   "sub_ci": [
-   54.78,
-   71.3
+   55.16,
+   70.71
   ]
  },
  "rank": {
-  "position": 3,
+  "position": 4,
   "of": 4,
   "group": [
    "sharknado",
    "gishath",
-   "ur-dragon",
-   "goblin-storm"
+   "goblin-storm",
+   "ur-dragon"
   ],
   "acceptability": {
-   "1": 0.001,
-   "2": 0.03,
-   "3": 0.531,
-   "4": 0.438
+   "1": 0.0,
+   "2": 0.003,
+   "3": 0.442,
+   "4": 0.556
   },
   "basis": {
    "gishath": "rating.json judgment",
@@ -578,9 +578,9 @@
   },
   "scores": {
    "sharknado": 86.1,
-   "gishath": 73.7,
-   "ur-dragon": 63.4,
-   "goblin-storm": 62.6
+   "gishath": 75.6,
+   "goblin-storm": 62.6,
+   "ur-dragon": 61.7
   }
  }
 }

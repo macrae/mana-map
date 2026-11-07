@@ -14,26 +14,26 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.15,
-   "sub_score": 71.43,
+   "weight_effective": 0.1846,
+   "sub_score": 85.72,
    "sub_ci": [
-    64.97,
-    77.91
+    79.26,
+    92.29
    ],
-   "placement": 33.33,
+   "placement": 66.67,
    "anchor": 100.0,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.572,
+     "value": 0.782,
      "ci95": [
-      0.5623,
-      0.5817
+      0.7738,
+      0.79
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     }
    ],
    "citations": [
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1,
+   "weight_effective": 0.1231,
    "sub_score": 71.43,
    "sub_ci": [
-    65.05,
-    77.73
+    65.08,
+    77.89
    ],
    "placement": 33.33,
    "anchor": 100.0,
@@ -60,22 +60,22 @@
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
-     "value": 0.231,
+     "value": 0.2374,
      "ci95": [
-      0.2228,
-      0.2394
+      0.2292,
+      0.2458
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.consistency",
-     "value": 0.892,
+     "value": 0.894,
      "ci95": null,
      "n": null,
      "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     }
    ],
    "citations": [
@@ -90,14 +90,14 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.15,
-   "sub_score": 74.29,
+   "weight_effective": 0.1846,
+   "sub_score": 80.0,
    "sub_ci": [
-    67.84,
-    80.86
+    73.64,
+    86.51
    ],
    "placement": 66.67,
-   "anchor": 80.0,
+   "anchor": 90.0,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
@@ -106,15 +106,15 @@
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.interaction-breadth",
-     "value": 3,
+     "value": 4,
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction-breadth (classes answered of 5)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     }
    ],
    "citations": [
@@ -129,39 +129,39 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1625,
-   "sub_score": 72.86,
+   "weight_effective": 0.2,
+   "sub_score": 64.29,
    "sub_ci": [
-    72.86,
-    72.86
+    64.29,
+    64.29
    ],
    "placement": null,
-   "anchor": 72.86,
+   "anchor": 64.29,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
      "figure": "audit.mana-base",
-     "value": 35,
+     "value": 36,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#mana-base (verdict under)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "source": "deck-audit#mana-base (verdict at)",
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.ramp",
-     "value": 13,
+     "value": 18,
      "ci95": null,
      "n": null,
      "source": "deck-audit#ramp (verdict over)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.card-advantage",
-     "value": 6,
+     "value": 5,
      "ci95": null,
      "n": null,
      "source": "deck-audit#card-advantage (verdict under)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.interaction",
@@ -169,15 +169,15 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction (verdict at)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.sweepers",
-     "value": 1,
+     "value": 0,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#sweepers (verdict at)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "source": "deck-audit#sweepers (verdict under)",
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.protection",
@@ -185,15 +185,15 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#protection (verdict over)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     },
     {
      "figure": "audit.threat-density",
-     "value": 3,
+     "value": 4,
      "ci95": null,
      "n": null,
      "source": "deck-audit#threat-density (verdict at)",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+     "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
     }
    ],
    "citations": [
@@ -233,48 +233,13 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
-  },
-  {
-   "name": "dti",
-   "weight": 0.15,
-   "weight_validity": 1.0,
-   "weight_effective": 0.1875,
-   "sub_score": 80.95,
-   "sub_ci": [
-    73.52,
-    83.87
-   ],
-   "placement": 100.0,
-   "anchor": 66.67,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
-   "inputs": [
-    {
-     "figure": "dti.score",
-     "value": 40,
-     "ci95": null,
-     "n": 1,
-     "source": "deckcheck.json#readings[-1].score",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
-    },
-    {
-     "figure": "dti.rubric_mean",
-     "value": 66.67,
-     "ci95": null,
-     "n": 1,
-     "source": "deckcheck.json#readings[-1].benchmarks",
-     "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
-    }
-   ],
-   "citations": [
-    {
-     "kind": "skeleton",
-     "ref": "skeleton:dti",
-     "quote": "DeckCheck Threat Index"
-    }
-   ]
   }
  ],
  "withheld": [
+  {
+   "component": "dti",
+   "reason": "the DeckCheck reading describes another list — `deckcheck gishath --write` after a rescan"
+  },
   {
    "component": "table_record",
    "reason": "3 game(s) logged; 5 needed"
@@ -306,22 +271,26 @@
    "max_score": 96,
    "bracket": 3,
    "as_of": "2026-10-18",
-   "stale_list": false
+   "stale_list": true
   },
   "floor_vs_target": "floor 3, target 3"
  },
- "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
- "fleet_sha": "aaad07493f04",
+ "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
+ "fleet_sha": "402b9ebf538a",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "How often does the current list have double green on curve, and is red the thinner colour in play?",
-   "settled_by": "goldfish"
+   "question": "The audit's sweepers axis reads zero while the decklist carries Blasphemous Act (stack 004 is built on it). Is that a role-tag miss in cards.json, and what does construction read once it is fixed?",
+   "settled_by": "diagnose"
   },
   {
-   "question": "How does the V5 payoff layer play at a table, since both logged games predate it?",
+   "question": "Re-scan DeckCheck on v1.2.0 so the dti component can be scored.",
    "settled_by": "rate"
+  },
+  {
+   "question": "Which engine lines on the current 99 can be proven, since the passing stacks name cards the list cut?",
+   "settled_by": "resolve-stack"
   }
  ],
  "iterations": 2,
@@ -329,39 +298,54 @@
   "verdict": "pass",
   "findings": [
    {
-    "where": "judgment.citations",
+    "where": "judgment.argument",
     "status": "supported",
-    "note": "Unchanged from round 1; log 002, engine thesis, context numbers and DTI all verified."
-   },
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "72 vs code_score 71.8 is rounding; the argument now says sizes are unavailable and sits at the measured score. Scorecard re-run identical on all non-simulation fields."
+    "note": "Round-1 sweeper miscount fixed: the argument now says the audit's sweepers axis reads zero while decklist line 11 carries Blasphemous Act with passing stack 004, leaves that axis out and raises it as a question. The 'zero sweepers on our side' premise is gone."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "The unsized 'cancel' claim is replaced by a plain statement that neither side can be sized, which is the permitted form."
+    "note": "Round-1 log 003 misattribution fixed: the argument now attributes only the slow start, Molten Echoes and the piloting error to the pilot, and includes 'it went off' and 'swing for 14'. All verified verbatim or faithfully paraphrased in log 003 (seven or eight more dinosaurs; 'all a piloting error on my end'). It concedes the game was on an earlier list."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "76 against code_score 75.5 is a rounding of the stated 'stays on the code score'; argument names no unmeasured fact, so no gap is claimed. Leave-one-out shows the effect is under 0.1 points."
+   },
+   {
+    "where": "judgment.citations",
+    "status": "supported",
+    "note": "log:003 quotes (slow start, Molten Echoes, 'the deck is great. It went off.', 'swing for 14'), engine thesis and stack:004 title quote are all verbatim and used within their meaning. Molten Echoes is -1 in v1.2.0 and mana creatures (Atzocan Seer, Faeburrow Elder, Ixalli's Lorekeeper) are +1, so the 'swaps go at that seam' claim holds."
+   },
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "Re-run rating --json is identical on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity. validate-rating passes. Concordance is concordant, no outliers."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Q1 (sweepers tag miss, settled_by diagnose) is now premised on a true fact and is not answered by the artifacts; Q2 and Q3 unchanged and still hold."
    }
   ],
   "iterations": 2
  },
- "code_score": 74.7,
- "score_point": 74.0,
- "score": 73.7,
+ "code_score": 75.5,
+ "score_point": 75.6,
+ "score": 75.6,
  "score_ci": [
-  70.3,
-  76.9
+  70.8,
+  80.7
  ],
  "grade": "B",
  "grade_range": [
   "B",
-  "B"
+  "A"
  ],
  "grade_display": "B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 1.0,
+  "A": 0.072,
+  "B": 0.927,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -380,37 +364,41 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 74.5,
+    "score": 73.3,
     "grade": "B"
    },
    "mana": {
-    "score": 74.3,
+    "score": 76.2,
     "grade": "B"
    },
    "resilience": {
-    "score": 74.0,
+    "score": 74.6,
     "grade": "B"
    },
    "construction": {
-    "score": 74.2,
-    "grade": "B"
-   },
-   "dti": {
-    "score": 72.4,
+    "score": 78.5,
     "grade": "B"
    },
    "judgment": {
-    "score": 74.7,
+    "score": 75.5,
     "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "dti",
-    "share_now": 0.187,
-    "share_at_flip": 0.889,
+    "component": "speed",
+    "share_now": 0.185,
+    "share_at_flip": 0.538,
     "boundary": 80,
     "grade_at_flip": "A",
+    "direction": "raise"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.2,
+    "share_at_flip": 0.95,
+    "boundary": 65,
+    "grade_at_flip": "C",
     "direction": "raise"
    }
   ]
@@ -418,58 +406,73 @@
  "concordance": {
   "level": "concordant",
   "instruments": {
-   "construction": 2.0,
+   "construction": 3.0,
    "judgment": 2.0,
    "mana": 3.0,
    "resilience": 2.0,
-   "speed": 3.0
+   "speed": 2.0
   },
   "of": 4,
   "spread": 0.333,
   "outliers": [],
   "group": {
-   "kendall_w": 0.325,
-   "p": 0.3241,
+   "kendall_w": 0.3,
+   "p": 0.3545,
    "p_method": "exact over 13824 relabellings",
    "m": 4,
    "n": 4
   }
  },
- "resolution": "the 90% interval spans 0 grade boundaries; concordance concordant",
+ "resolution": "the 90% interval spans 1 grade boundary (80); concordance concordant",
  "judgment": {
-  "sub_score": 72,
-  "argument": "The measured components cannot see the table. The goldfish has no blockers and no removal, the table record is withheld, no survey exists, and Forge has not run this list. Both logged games were played before the V5 payoff layer, so nothing here has watched the current 99 at a table.\n\nWhat the record does say: log 002 shows Gishath online and killing a player with commander damage, and the pilot puts the loss on his own closing, not on the list. The engine thesis is real: the reveal fired in most of the goldfish's games, and V5 added Purphoros and Molten Echoes so entries pay without a combat step.\n\nThe colours cut the other way. The context's own line reads red at 61% on curve against 82% for green, and the pilot's green complaint is the one follow-up he wrote down. The missed-land-drop rate counts any land, so it cannot see a colour shortfall. But the V5 upside has no figure from a table game, and the colour concern has only a goldfish figure, so I cannot size either against the other. Construction and mana already carry the land structure, and DeckCheck already ranks this deck first in the bracket, so moving off the measured score would double count.\n\nSo I sit at the measured score, rounded: no game has been played on this list, and neither the V5 upside nor the red shortfall is sized well enough to argue a gap.",
+  "sub_score": 76,
+  "argument": "The measured components stand on the goldfish and the audit, and the goldfish sees no blockers and no removal. The withheld pieces are DeckCheck (it describes another list), the table record, the pilot's survey, and Forge, so this reads the deck from its engine and the one logged game. The engine is coherent: ramp, one hit land, then the reveal puts Dinosaurs onto the battlefield in batches that pay in cards and bodies, ending in a trampling alpha. The logged game shows it working. The pilot says the deck went off, that he swung for 14 and brought out seven or eight more Dinosaurs at a time, and that he lost on his own piloting, not on the deck. It also shows the seam: Gishath always starts off slow, with nothing to cast on the early turns. The mana-creature swaps go at that seam and Molten Echoes, which he said does not work with Gishath, is out. That game was played on an earlier list, so it does not prove the fix. Speed and mana already score the result, so I add nothing for them. The audit's sweepers axis reads zero, but the list carries Blasphemous Act and a passing stack is built on it, so I leave that axis out of my reading and raise it as a question. I have no unmeasured fact with a size that moves the number, so it stays on the code score.",
   "citations": [
    {
-    "kind": "log",
-    "ref": "log:002",
-    "quote": "Gishath online once green arrived."
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
    },
    {
     "kind": "engine",
     "ref": "engine:thesis",
-    "quote": "it fired at all in 7,300 of them"
+    "quote": "let the reveal put Dinosaurs onto the battlefield in batches whose entry triggers pay in cards and bodies"
    },
    {
-    "kind": "context",
-    "ref": "context:numbers",
-    "quote": "Colour on curve (lands + rocks): W 87%, R 61%, G 82%"
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "Gissath generally and, and always does starts off slow"
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:dti",
-    "quote": "DeckCheck Threat Index"
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "I don't know if Molten Echoes needs to be in there"
+   },
+   {
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "I think the deck is great. It went off."
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:004",
+    "quote": "Wrathful Raptors + Blasphemous Act + Temple Altisaur"
+   },
+   {
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "allowing me to swing for 14"
    }
   ],
   "against": {
-   "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643",
+   "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb",
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.25,
+  "weight_effective": 0.3077,
   "sub_ci": [
-   63.99,
-   80.27
+   68.01,
+   84.24
   ]
  },
  "rank": {
@@ -478,13 +481,13 @@
   "group": [
    "sharknado",
    "gishath",
-   "ur-dragon",
-   "goblin-storm"
+   "goblin-storm",
+   "ur-dragon"
   ],
   "acceptability": {
-   "1": 0.009,
-   "2": 0.94,
-   "3": 0.051,
+   "1": 0.04,
+   "2": 0.939,
+   "3": 0.021,
    "4": 0.0
   },
   "basis": {
@@ -495,9 +498,9 @@
   },
   "scores": {
    "sharknado": 86.1,
-   "gishath": 73.7,
-   "ur-dragon": 63.4,
-   "goblin-storm": 62.6
+   "gishath": 75.6,
+   "goblin-storm": 62.6,
+   "ur-dragon": 61.7
   }
  }
 }

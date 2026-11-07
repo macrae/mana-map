@@ -40,6 +40,7 @@ because no logged game is on a current list; `rating --calibrate` refuses at six
 sharknado, ur-dragon (`deck-version <slug>`); emiel-blink, meren-recursion and elves are
 on the bench; the rest are retired or broken down. Every live deck and branch is priced.
 Sharknado v2.3.0 (draw-engine-v1, 22 swaps) was sleeved on proxies 2026-11-05 and rated A in B3 (86.1, verifier pass); its engine, tutor guide, prose and frame await their agents.
+Gishath v1.2.0 (jurassic-v1, 23 in / 21 out) was sleeved on proxies 2026-11-06 and re-rated B in B3 (75.6, 2 of 4, verifier pass on round 2); engine (critic pass at round 3), frame, notes, tutor guide and procedures rewritten; no passing stack runs on this list yet, and DeckCheck still holds V5.
 
 **The push gate** (`make prepush`, `docs/testing.md`) runs only the tiers a diff can break
 and leaves the fleet regen to CI. CI's browser job runs two workers (a hosted runner has

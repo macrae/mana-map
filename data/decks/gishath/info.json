@@ -14,19 +14,11 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 14,
+    "complete": 18,
     "of": 19,
-    "stale": [
-      "frame",
-      "prose"
-    ],
+    "stale": [],
     "older_model": [],
-    "invalid": [
-      "engine",
-      "tutors",
-      "CONTEXT.md",
-      "rating.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -4523,10 +4515,10 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "The currency of this deck is a Dinosaur ENTERING the battlefield, not a creature attacking: Gishath's combat-damage reveal manufactures entries in batches (goldfish, 10,000 games: it fired at all in 7,300 of them, and AVERAGED OVER ALL 10,000 it fired 2.016 times for 4.08 free bodies — `commander_reveal.mean_fired` and `mean_bodies` divide by iterations, not by the games that fired, so both means are diluted by the 2,700 games with no reveal), and V5 rebuilt the layer that cashes them — Purphoros turns every entry into 2 damage at each seat and Molten Echoes turns every nontoken Dinosaur entry into a second one, so a deck that used to need its 7/6 to keep connecting now has a payoff layer that pays without a combat step.",
+    "thesis": "Cast an eight-mana Gishath off a dork-and-land ramp base, make one hit land, and let the reveal put Dinosaurs onto the battlefield in batches whose entry triggers pay in cards and bodies, until a committed trampling alpha ends it by commander damage.",
     "critic": "pass",
-    "lines": 15,
-    "verified_lines": 3
+    "lines": 8,
+    "verified_lines": 0
   },
   "diagnosis": {
     "verdict": "It functions and it converts once it connects: turn-3 land drop 0.894, ramp assembled 0.964, the modelled reveal fires 1.953 times a game for 4.096 free Dinosaurs, kill by turn 8 is 0.617 against nothing, and Forge v1.0.0 at standard-v3 reads 15 of 36 decided, 0.417 [0.271, 0.578], on a table whose null is 0.317. What limits it is WHEN: Gishath is cast by turn 6 in 25.5% of goldfish games (median 7, never by turn 10 in 23.0%), Forge first resolves him at mean global turn 31.47 (round 8); paired game by game in the v1.0.0 record, the 16 games in which he resolved and the seat was still eliminated show a median gap of 5.5 global turns from his resolution to the elimination (mean 8.75, min 2, max 26 — about a round and a half), and 8 of the 24 eliminations came before he ever resolved. Before he lands the deck's own output is 13.8 mean / 7.5 median cumulative combat damage by round 8. The levers on that turn are mana, which the deck already spends fifteen slots on, and three named reducers at 7.1% of an opener each — dragged by colour (W 0.481 / R 0.515 on curve from lands alone) and by three non-discounting eight-plus drops competing for one cast. The six check-in swaps did not measurably move the Forge rate: +0.0738 on 12/35 to 15/36, Newcombe interval [-0.1465, 0.2839] (stats.diff_proportions), against a minimum detectable difference of 0.32 at the decided 36 and 35 (stats.mde_proportion).",
@@ -4555,27 +4547,32 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "Does Sunfrill Imitator, attacking beside Gishath and copying him, give a second combat-damage reveal — and does the legend rule leave both on the battlefield, given the copy's name stays Sunfrill Imitator?",
+      "question": "Re-resolve stack 001's connect on a reveal drawn only from this 99 (e.g. Regisaur Alpha, Vaultborn Tyrant, Palani's Hatcher, Earthshaker Dreadmaw) with Pantlaza and Garruk's Uprising out.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "With Hunting Velociraptor on the battlefield and a Dinosaur having dealt combat damage to a player this turn, may Gishath be cast FROM THE COMMAND ZONE for his prowl cost of {2}{R} plus the commander tax?",
+      "question": "With Roaming Throne named Dinosaur, does Gishath's combat-damage trigger trigger an additional time (a second reveal off one hit), and how does Pantlaza's 'do this only once each turn' interact with Throne's extra trigger?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "On a board with Gishath connecting for 7, Purphoros and Molten Echoes both out, what is the exact damage to each opponent and the exact order of the entry triggers — specifically whether each Echoes copy's own entry re-triggers Purphoros, and whether Pantlaza's once-a-turn discover can be pointed at a copy rather than the original.",
+      "question": "Berserkers' Onslaught (or Akroma's Will's double-strike mode, or Boros Charm's) on an attacking Gishath: two combat damage steps and two reveals? Do Dinosaurs revealed in the first-strike step (Devil Dinosaur, Regal Imperiosaur) raise the regular-step hit and so the second reveal?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "With Molten Echoes out, does the goldfish price a LEGENDARY Dinosaur's copy at all? Molten Echoes' profile carries `etb_copy_keeps_legendary: true`, and goldfish_turn.py:613 then `continue`s past the legendary enterer entirely — so neither the copy's body nor its entry triggers are counted. By the rules the copy enters, its ETB triggers go on the stack, and only then does the legend rule bin it.",
+      "question": "Re-resolve stack 004 without Ripjaw Raptor: Blasphemous Act with Temple Altisaur, Wrathful Raptors and Gishath out.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "engine",
+      "question": "Does the goldfish read Roaming Throne's trigger doubling on Gishath's reveal, and Berserkers' Onslaught's double strike as two reveals? model-coverage lists both as 'seen' on bodies/combat/target, which does not say either effect is modelled.",
       "settled_by": "goldfish"
     },
     {
       "from": "engine",
-      "question": "Is Wakening Sun's Avatar still worth a slot now that the deck's entries mostly arrive off the reveal and off Molten Echoes, both of which turn its ETB off ('if you cast it from your hand')?",
+      "question": "Nature's Lore, Three Visits and Skyshroud Claim are 'invisible' in model-coverage (no channel reads them) yet sit in the required 'Ramp or fixing drawn' group. Are they modelled as land drops at all?",
       "settled_by": "goldfish"
     },
     {
@@ -4782,13 +4779,11 @@
     ]
   },
   "next": [
-    "4 artifact(s) fail their own gate (engine, tutors, CONTEXT.md, rating.json) — `deck-status gishath` names them; fix before anything else reads them",
-    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V5, sleeved is V6 — `manamap pilot deck-export gishath --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link gishath deckcheck <url>`",
     "DTI (2026-10-18) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck gishath --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
-    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
+    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×10",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

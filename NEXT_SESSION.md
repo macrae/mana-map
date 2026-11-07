@@ -81,6 +81,8 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Next, in order
 
+- **Gishath v1.2.0 (2026-11-06):** paste `~/Desktop/gishath-v1.2.0-deckcheck.txt` on DeckCheck (the copy is V5), rescan, `deckcheck gishath --write`; every stack 001–005 names a cut card, so `/resolve-stack` the core reveal, Roaming Throne doubling Gishath, and Blasphemous Act + Temple Altisaur + Wrathful Raptors on this list; decision 001 needs re-authoring; the sweepers axis reads 0 with Blasphemous Act in the list (role-tag miss?).
+
 1. DECISIONS FOR SEAN, from today's deck work:
    - Q011 is TESTED (`manamap pilot queue show Q011`): stage, drop, watch or more.
    - heliod `proposed_goldfish_edits[6]`: switch on `model_treasures` and `model_discard`
