@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "cf711ee448c37455bf89f301fa38e61ea3d63ccde67c3f1863206f2447ac54b1",
+  "decklist_sha256": "0e56aa6045c7fd0882ac5e1f9716344ed95e3da76e6d1fc2739a1977548ef3d6",
   "model_version": "923a05349569",
   "lands": {
     "total": 36,
@@ -422,16 +422,16 @@
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 6,
+      "B": 3,
       "R": 0,
-      "G": 7
+      "G": 5
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 36,
+      "B": 33,
       "R": 0,
-      "G": 37
+      "G": 35
     },
     "gated": {
       "count": 1,
@@ -466,23 +466,6 @@
         ]
       },
       {
-        "name": "Deathrite Shaman",
-        "kind": "ramp:dork",
-        "cmc": 1.0,
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
-        "name": "Elves of Deep Shadow",
-        "kind": "ramp:dork",
-        "cmc": 1.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
         "name": "Elvish Mystic",
         "kind": "ramp:dork",
         "cmc": 1.0,
@@ -508,15 +491,6 @@
         ]
       },
       {
-        "name": "Skull Prophet",
-        "kind": "ramp:dork",
-        "cmc": 2.0,
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
         "name": "Sol Ring",
         "kind": "ramp:rock",
         "cmc": 1.0,
@@ -526,77 +500,77 @@
   },
   "pips": {
     "B": {
-      "total_pips": 56.5,
+      "total_pips": 59.0,
       "max_pips": 3,
-      "cards": 40,
+      "cards": 41,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 31.5,
+      "total_pips": 28.0,
       "max_pips": 3,
-      "cards": 26,
+      "cards": 22,
       "earliest_turn": 1,
-      "effective_pips": 1
+      "effective_pips": 2
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.642,
+      "pip_share": 0.678,
       "source_share": 0.5
     },
     "G": {
-      "pip_share": 0.358,
+      "pip_share": 0.322,
       "source_share": 0.5
     }
   },
   "source_targets": {
     "B": 36,
-    "G": 22
+    "G": 36
   },
   "on_curve_probability": {
     "lands_only": {
       "B": 0.822,
-      "G": 0.967
+      "G": 0.822
     },
     "with_rocks_and_dorks": {
-      "B": 0.906,
-      "G": 0.988
+      "B": 0.869,
+      "G": 0.895
     },
     "lands_only_ungated": {
       "B": 0.804,
-      "G": 0.962
+      "G": 0.804
     }
   },
   "ramp": {
-    "ramp:dork": 6,
+    "ramp:dork": 3,
     "ramp:land": 2,
     "ramp:rock": 4
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.596,
-      "2": 0.997,
-      "3": 0.905,
-      "4": 0.779,
-      "5": 0.666,
-      "6": 0.592,
-      "7": 0.561,
-      "8": 0.561,
-      "9": 0.577
+      "10": 0.629,
+      "2": 0.996,
+      "3": 0.904,
+      "4": 0.789,
+      "5": 0.674,
+      "6": 0.599,
+      "7": 0.58,
+      "8": 0.582,
+      "9": 0.593
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.642,
-      "2": 2.332,
-      "3": 3.511,
-      "4": 4.38,
-      "5": 5.139,
-      "6": 5.853,
-      "7": 6.518,
-      "8": 7.195,
-      "9": 7.902
+      "10": 8.424,
+      "2": 2.29,
+      "3": 3.382,
+      "4": 4.244,
+      "5": 4.964,
+      "6": 5.666,
+      "7": 6.323,
+      "8": 6.998,
+      "9": 7.688
     }
   },
   "assumptions": [
@@ -606,6 +580,7 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 36."
+    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
+    "G: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 35."
   ]
 }
