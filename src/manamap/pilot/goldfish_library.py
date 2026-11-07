@@ -74,6 +74,7 @@ from manamap.pilot.goldfish_profiles import (
     manabase,
     net_produced_mana,
     room_profile,
+    own_death_profile,
     sac_outlet_profile,
     subtypes_of,
     token_doubler,
@@ -214,6 +215,8 @@ def classify(card, pool=None):
         "damage_source": damage_source(card),
         "face_damage": spell_face_damage(card),
         "sac_outlet": sac_outlet_profile(card),
+        # Deaths it causes among OUR creatures (Meren's experience, 2026-11-07).
+        "own_death": own_death_profile(card),
         "tutor": is_tutor_card,
         # What it can reach: a tutor fills only a target group it can fetch for.
         "tutor_filter": tutor_filter(card) if is_tutor_card else None,

@@ -26,7 +26,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -1785,7 +1787,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 50,
+          "value": 51,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -1841,7 +1843,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 49,
+          "value": 50,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1942,15 +1944,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.255,
+            "10": 8.465,
             "2": 2.331,
             "3": 3.512,
             "4": 4.396,
-            "5": 5.157,
-            "6": 5.856,
-            "7": 6.475,
-            "8": 7.07,
-            "9": 7.661
+            "5": 5.159,
+            "6": 5.868,
+            "7": 6.514,
+            "8": 7.151,
+            "9": 7.8
           },
           "tier": "data",
           "weight": "detail",
@@ -1961,15 +1963,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.489,
+            "10": 0.54,
             "2": 0.996,
             "3": 0.903,
-            "4": 0.78,
-            "5": 0.665,
-            "6": 0.579,
-            "7": 0.525,
-            "8": 0.494,
-            "9": 0.488
+            "4": 0.779,
+            "5": 0.668,
+            "6": 0.587,
+            "7": 0.545,
+            "8": 0.528,
+            "9": 0.531
           },
           "tier": "data",
           "weight": "detail",
@@ -1979,16 +1981,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.313,
-            "10": 10.075,
-            "2": 0.775,
-            "3": 1.153,
-            "4": 1.637,
-            "5": 2.648,
-            "6": 3.879,
-            "7": 5.237,
-            "8": 6.71,
-            "9": 8.322
+            "1": 0.29,
+            "10": 12.228,
+            "2": 0.762,
+            "3": 1.141,
+            "4": 1.664,
+            "5": 2.849,
+            "6": 4.374,
+            "7": 6.091,
+            "8": 7.981,
+            "9": 10.019
           },
           "tier": "data",
           "weight": "detail",
@@ -2014,11 +2016,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2098,
-            "6": 22,
-            "7": 492,
-            "8": 2338,
-            "9": 3273
+            "10": 2412,
+            "6": 21,
+            "7": 361,
+            "8": 1843,
+            "9": 3035
           },
           "tier": "data",
           "weight": "detail",
@@ -2039,7 +2041,7 @@
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 50
+        "by_turn_6_pct": 51
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
@@ -2067,7 +2069,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 49
+        "by_turn_6_pct": 50
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2083,18 +2085,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.843,
+      "mean_kill_turn": 8.972,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 28,
+      "kill_by_turn_8_pct": 22,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 18,
+      "no_kill_by_max_turn_pct": 23,
       "kill_turn_histogram": {
-        "10": 2098,
-        "6": 22,
-        "7": 492,
-        "8": 2338,
-        "9": 3273
+        "10": 2412,
+        "6": 21,
+        "7": 361,
+        "8": 1843,
+        "9": 3035
       }
     }
   },
@@ -2143,6 +2145,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "DeckCheck copy is V1, the list is V3 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",

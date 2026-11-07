@@ -245,7 +245,11 @@ def channels_for(profile):
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled") \
             or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")):
         found.add("discard")
-    if profile["sac_outlet"] or _nonzero(profile.get("death"), (
+    if profile["sac_outlet"] or any((profile.get("own_death") or {}).get(k) for k in (
+            # the deaths a card causes among our own creatures (2026-11-07). NOT the clamp:
+            # it acts only under Meren's commander declaration, which is not a channel, and
+            # crediting it here said goblin-storm's Skullclamp was read when nothing kills with it.
+            "self_sac", "self_edict")) or _nonzero(profile.get("death"), (
             # `death_damage` listed WITH the field, not after somebody hits the
             # gap the expensive way. Pashalik Mons and Boggart Shenanigans read
             # as invisible while the deck's whole conversion was bodies dying.
@@ -409,6 +413,9 @@ def never_cast(profile, flags):
             or (profile.get("drain") or {}).get("lifelink")):
         return False
     if flags.get("model_sacrifice") and profile.get("sac_outlet"):
+        return False
+    # A CLAMP (2026-11-07), mirroring `_engine_permanent` in the same commit.
+    if flags.get("model_commander_recursion") and (profile.get("own_death") or {}).get("clamp"):
         return False
     # DEATH ENGINES. Added when `model_deaths` shipped and NOT at the same time
     # as goldfish's own casting predicate — the fleet test caught the drift

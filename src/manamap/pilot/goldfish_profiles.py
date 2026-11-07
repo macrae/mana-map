@@ -21,7 +21,7 @@ INDEX OF THE READERS, by channel (each takes a card dict and returns a profile):
                      event_payoffs, has_event_payoff
   bodies and tokens  creature_body_count, body_count, cast_token_profile,
                      token_doubler, is_etb_engine
-  sacrifice/deaths   sac_outlet_profile, death_profile, is_death_engine,
+  sacrifice/deaths   sac_outlet_profile, own_death_profile, death_profile, is_death_engine,
                      artifact_sac_payoffs, drain_profile
   combat             combat_profile (the big one: power, haste, flying, attack_gate,
                      static_lord, every ETB and attack payoff), attack_gate,
@@ -1649,6 +1649,51 @@ def sac_outlet_profile(card):
     if _COSTED_SAC_OUTLET_RE.search(text):
         return "costed"
     return None
+
+
+#: DEATHS A CARD CAUSES AMONG ITS OWN CONTROLLER'S CREATURES (2026-11-07), for Meren of
+#: Clan Nel Toth's experience: "whenever another creature you control dies" pays for every
+#: one, and until now the model let a creature die only through a free outlet. Three shapes,
+#: each read from the card's own text:
+#:   self_sac    an activated ability whose COST sacrifices the creature itself (Sakura-Tribe
+#:               Elder, Spore Frog: "Sacrifice this creature: ...")
+#:   self_edict  "When this creature enters, each player sacrifices a creature" (Plaguecrafter):
+#:               mandatory, so one of OUR creatures dies too, possibly itself
+#:   clamp       an Equipment that kills an X/1 and pays on the death (Skullclamp: +1/-1,
+#:               "whenever equipped creature dies, draw two cards", Equip {1})
+#: What the self-sacrifice EFFECT does (Elder's land, Frog's fog) is not read here.
+_SELF_SAC_RE = re.compile(
+    r"(?:^|\n)(?:[^\n:]*,\s*)?sacrifice this creature\s*(?:,[^\n:]*)?:", re.IGNORECASE)
+_SELF_EDICT_RE = re.compile(
+    r"when this creature enters,[^.\n]{0,40}each player sacrifices (?:a|one) creature",
+    re.IGNORECASE)
+_CLAMP_TOUGH_RE = re.compile(r"equipped creature gets [+-]\d+/-(\d+)", re.IGNORECASE)
+_CLAMP_DRAW_RE = re.compile(r"whenever equipped creature dies, draw (\w+) cards?", re.IGNORECASE)
+_CLAMP_EQUIP_RE = re.compile(r"(?:^|\n)equip \{(\d+)\}", re.IGNORECASE)
+
+
+def own_death_profile(card):
+    """The deaths this card causes among its controller's own creatures (see above)."""
+    text = card.get("oracle_text", "") or ""
+    tl = card.get("type_line", "") or ""
+    is_creature = "Creature" in tl
+    clamp = None
+    if "Equipment" in tl:
+        tough, draw, equip = (_CLAMP_TOUGH_RE.search(text), _CLAMP_DRAW_RE.search(text),
+                              _CLAMP_EQUIP_RE.search(text))
+        # PAID ON THE DEATH, or it is an Equipment for stats: the sweep (2026-11-07) matched
+        # Barbed Battlegear (+4/-1, no death clause) beside Skullclamp, the one real clamp.
+        if tough and equip and draw:
+            clamp = {"toughness_minus": int(tough.group(1)),
+                     "draw": _DRAW_WORDS.get(draw.group(1).lower(), 0),
+                     "equip": int(equip.group(1))}
+    sac = _SELF_SAC_RE.search(text) if is_creature else None
+    # The mana in front of the sacrifice (Haywire Mite's {G}, Cankerbloom's {1}) is paid.
+    sac_cost = sum(int(t) if t.isdigit() else 1 for t in re.findall(r"\{([^}]+)\}", sac.group(0))
+                   if t not in ("T", "Q")) if sac else 0
+    return {"self_sac": bool(sac), "self_sac_cost": sac_cost,
+            "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),
+            "clamp": clamp}
 
 
 #: "Whenever a creature an opponent controls dies, you gain N life" — the

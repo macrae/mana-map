@@ -742,6 +742,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     experience_by_turn = []
     recursion_to_battlefield = 0
     recursion_to_hand = 0
+    # DEATHS A CARD CAUSES AMONG OUR OWN CREATURES (2026-11-07, `own_death_profile`): a costed
+    # outlet in play (Birthing Pod, Fiend Artisan), enter-the-battlefield edicts waiting to
+    # resolve (Plaguecrafter), and clamps in play (Skullclamp). One dict, so no closure needs
+    # a `nonlocal` for it.
+    own_deaths = {"costed_outlet": False, "pending_edicts": 0, "clamps": []}
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -977,7 +982,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nontoken scope are honoured; a card registered under both flags
             fires once.
             """
-            nonlocal deaths_drained, deaths_damaged, treasures
+            nonlocal deaths_drained, deaths_damaged, treasures, experience
+            # MEREN'S EXPERIENCE IS PAID HERE, for every death (2026-11-07): "whenever another
+            # creature you control dies". It was counted only where the model's own outlets
+            # sacrificed, so every other death -- an edict, a self-sacrifice, a clamp, the
+            # measured death rate -- left her counter where it was.
+            if commander_recursion and commander_turn is not None:
+                experience += n_died
             fired = set()
             for eng in list(death_engines) + list(death_drains):
                 if id(eng) in fired:
@@ -1580,6 +1591,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             return card["treasure_trigger"] not in ("upkeep", "landfall", "opponent_draw_tax",
                                                     "opponent_second_draw")
 
+        def _register_own_death(card, enters):
+            """What this permanent will kill among our own creatures (2026-11-07). An edict is
+            mandatory and fires its death payoffs wherever deaths are read; a costed outlet and
+            a clamp are the Meren pilot's choices, read under her declaration."""
+            od = card.get("own_death") or {}
+            if model_sacrifice and card["sac_outlet"] == "costed":
+                own_deaths["costed_outlet"] = True
+            if enters and od.get("self_edict") and (model_sacrifice or model_deaths
+                                                    or commander_recursion):
+                own_deaths["pending_edicts"] += 1
+            if commander_recursion and od.get("clamp"):
+                own_deaths["clamps"].append(od["clamp"])
+
         def _free_creature_enters(card):
             """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
             declared reveal). The same door and the same registrations as a
@@ -1589,6 +1613,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal lifelink_power, token_multiplier, treasures
             combat = card["combat"]
             seen.add(card["name"])
+            _register_own_death(card, enters=True)
             bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
             if card["reduces"]:
                 reductions.append(card["reduces"])
@@ -2232,6 +2257,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     death_engines.append(card["death"])
                 if card["sac_outlet"] == "free":
                     free_sac_outlet = True
+            _register_own_death(card, enters=True)
             if model_deaths:
                 # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19): drain, damage,
                 # draw and Treasure all fire on the measured death rate now,
@@ -2912,7 +2938,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _note_cast(card)
                     if card["tutor_needs_body"]:
                         _i = min(_fodder, key=lambda i: battlefield[i][0])
-                        battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
+                        _e = battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
+                        # THE BODY IT COSTS DIES (2026-11-07): a death like any other, paid
+                        # through the one helper (Natural Order, Savage Order, Eldritch Evolution).
+                        if commander_recursion and len(_e) > 12 and _e[12] and _e[12].get("card") \
+                                and not _e[4]:
+                            yard_creatures.append(_e[12]["card"])
+                        _deaths_after_combat(1, bool(_e[4]))
                     deck.remove(_pick)
                     _free_creature_enters(_pick)
                     tutor_ready_turns.append((turn, None))
@@ -3216,6 +3248,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # without deaths, and The Meathook Massacre was read and never cast.
                 if (model_deaths or model_sacrifice) and is_death_engine(c["death"]):
                     return True
+                # A CLAMP IS A PERMANENT TOO (2026-11-07), in the same commit as the deaths it
+                # causes: Skullclamp has no body, no mana and no channel of its own. Mirrored
+                # in `model_coverage.never_cast`.
+                if commander_recursion and (c.get("own_death") or {}).get("clamp"):
+                    return True
                 # AN ATTACK ENABLER IS A PERMANENT TOO — the FOURTH time this gap
                 # has bitten, and the worst of them, because it was a DEADLOCK. Four
                 # of zur-enchantress's six enablers matched no casting loop,
@@ -3390,6 +3427,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             death_engines.append(card["death"])
                         if card["sac_outlet"] == "free":
                             free_sac_outlet = True
+                    _register_own_death(card, enters=False)
                     if model_deaths:
                         # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
                         # body door above; `_deaths_after_combat` fires them all.
@@ -4586,7 +4624,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # smallest body, after combat, so the end step has something to return. Its death
             # pays every death payoff (nontoken ones included) and an experience counter.
             if (commander_recursion and commander_turn is not None and model_sacrifice
-                    and free_sac_outlet):
+                    and (free_sac_outlet or own_deaths["costed_outlet"])):
                 _fod = [i for i, e in enumerate(battlefield)
                         if len(e) > 12 and e[12] and _is_fodder(e[12].get("card"))]
                 # "all_fodder_with_payoff": with a death payoff out, every fodder body goes, a
@@ -4601,8 +4639,59 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     del creature_flying[_i]
                     yard_creatures.append(_card)
                     sacrifices += 1
-                    experience += 1
-                    _deaths_after_combat(1, is_token=False)
+                    _deaths_after_combat(1, is_token=False)   # pays her experience counter
+            # THE OTHER DEATHS OUR OWN CARDS CAUSE (2026-11-07, `own_death_profile`), after the
+            # outlet and before her end step, so what died is there for her to return.
+            def _kill(i):
+                _e = battlefield.pop(i)
+                creature_types.pop(i)
+                creature_flying.pop(i)
+                _c = (_e[12].get("card") if len(_e) > 12 and _e[12] else None)
+                if commander_recursion and _c and not _e[4]:
+                    yard_creatures.append(_c)
+                _deaths_after_combat(1, bool(_e[4]))
+
+            def _expendable(i):
+                # a token, or a spare body that makes no mana: killing a mana creature here
+                # would leave its mana counted, so the policy never picks one
+                _e = battlefield[i]
+                _c = (_e[12].get("card") if len(_e) > 12 and _e[12] else None)
+                if _e[4]:
+                    return True
+                return bool(_c and _is_fodder(_c) and not _c.get("produces"))
+            # An edict is mandatory: one of our creatures dies for each, a spare one if there
+            # is one (the edict creature itself is one), else the smallest that is not the
+            # commander.
+            while own_deaths["pending_edicts"]:
+                own_deaths["pending_edicts"] -= 1
+                _pool = [i for i in range(len(battlefield)) if _expendable(i)] or [
+                    i for i in range(len(battlefield))
+                    if not (len(battlefield[i]) > 12 and battlefield[i][12]
+                            and (battlefield[i][12].get("card") or {}).get("is_commander"))]
+                if _pool:
+                    _kill(min(_pool, key=lambda i: battlefield[i][0]))
+            if commander_recursion and commander_turn is not None:
+                # SELF-SACRIFICE, the Meren pilot's habit: Sakura-Tribe Elder, Spore Frog,
+                # Cankerbloom and Haywire Mite go every turn she is out (paying any mana in front
+                # of the sacrifice), because her end step brings the best of them back. What
+                # the sacrifice does (Elder's land, Frog's fog) is not read.
+                for _i in sorted((i for i, e in enumerate(battlefield)
+                                  if len(e) > 12 and e[12] and e[12].get("card")
+                                  and (e[12]["card"].get("own_death") or {}).get("self_sac")
+                                  and _is_fodder(e[12]["card"])), reverse=True):
+                    if spend(battlefield[_i][12]["card"]["own_death"]["self_sac_cost"]):
+                        _kill(_i)
+                # A CLAMP kills an X/1 for its equip cost and draws on the death, as long as
+                # there is mana and a spare body small enough.
+                for _clamp in own_deaths["clamps"]:
+                    while True:
+                        _small = [i for i in range(len(battlefield)) if _expendable(i)
+                                  and battlefield[i][6] <= _clamp["toughness_minus"]]
+                        if not _small or not spend(_clamp["equip"]):
+                            break
+                        _kill(min(_small, key=lambda i: battlefield[i][0]))
+                        if model_draw:
+                            draw_n(_clamp["draw"])
             # MEREN'S END STEP: the best creature card in the graveyard. To the battlefield if
             # its mana value is within the experience, through the one free-entry door (its
             # ETB fires, its payoffs register); otherwise to hand. Best = highest mana value,

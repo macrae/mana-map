@@ -82,14 +82,14 @@ Goldfish, 10,000 seeded games, measured on V3, 2026-11-06. Each group below is t
 - share of seeded games where the commander was CAST by turn six: **95%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 3.808**
-- A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **50%**
+- A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **51%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **0%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
 - STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
 - RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **34%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **0%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **24%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **49%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **50%**
 - RAMP drawn — an accelerant of any kind: **57%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **50%**
 - A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
