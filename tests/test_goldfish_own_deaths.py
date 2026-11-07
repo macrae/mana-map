@@ -282,7 +282,11 @@ def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
     """Under the rule Hogaak lands on turns the mana could not pay seven; read as an ordinary
     7-drop (the rule removed) it never does. PROVED BY REMOVING THE RULE."""
     from manamap.pilot import try_swap
-    doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Hogaak, Arisen Necropolis")])[0]
+    # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
+    have = {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+    doc = None if "Hogaak, Arisen Necropolis" in have else try_swap.apply_swaps(
+        SLUG, None, [("Assassin's Trophy", "Hogaak, Arisen Necropolis")])[0]
 
     def cast_mana(mp):
         out = []
@@ -312,7 +316,11 @@ def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
 def test_mazirek_grows_the_board_on_every_sacrifice(monkeypatch):
     """PROVED BY REMOVING THE TRIGGER: the same games, a smaller board by turn ten."""
     from manamap.pilot import try_swap
-    doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Mazirek, Kraul Death Priest")])[0]
+    # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
+    have = {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+    doc = None if "Mazirek, Kraul Death Priest" in have else try_swap.apply_swaps(
+        SLUG, None, [("Assassin's Trophy", "Mazirek, Kraul Death Priest")])[0]
 
     def power(mp):
         m = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
