@@ -8,43 +8,45 @@
   "model_treasures": true,
   "model_combat": true
  },
- "decklist_sha256": "c87a4162629482d1bd2c24667b952829505a8be16341e13c1a6d152379d41c82",
+ "decklist_sha256": "762900b68663558754578bec0a557561c4bcf7455770f807fed5cb5b94c8d255",
  "model_version": "77886e7c8a40",
  "metrics": {
   "mana_screw": {
-   "missed_land_drop_rate": 0.2082,
+   "missed_land_drop_rate": 0.2086,
    "worst_turn": "6",
-   "mulligan_rate": 0.217,
-   "mean_mulligans": 0.263,
-   "mana_at_turn_five": 4.966
+   "mulligan_rate": 0.215,
+   "mean_mulligans": 0.26,
+   "mana_at_turn_five": 4.97
   },
   "speed": {
-   "kill_by_turn_6": 0.01,
-   "kill_by_turn_8": 0.363,
-   "kill_by_turn_10": 0.823,
-   "never_kills_rate": 0.177,
+   "kill_by_turn_6": 0.013,
+   "kill_by_turn_8": 0.365,
+   "kill_by_turn_10": 0.807,
+   "never_kills_rate": 0.193,
    "median_kill_turn": 9
   },
   "consistency": {
    "mana_stdev_by_turn": {
-    "4": 0.94,
-    "5": 1.1266,
-    "6": 1.3373
+    "4": 0.9494,
+    "5": 1.1366,
+    "6": 1.3294
    },
-   "mana_stdev_turn_five": 1.1266,
-   "land_drops_by_six_stdev": 1.0847,
+   "mana_stdev_turn_five": 1.1366,
+   "land_drops_by_six_stdev": 1.0865,
    "basis": "spread across all games of a quantity every deck has — not of kill turn, which is censored by how often a deck kills at all"
   },
   "response": {
-   "answer_cards": 19,
-   "answer_share": 0.1939,
-   "classes_covered": 4,
+   "answer_cards": 23,
+   "answer_share": 0.2347,
+   "classes_covered": 6,
    "classes_possible": 15,
    "classes": [
     "protection:fog",
+    "protection:self",
     "removal:debuff",
     "removal:edict",
-    "removal:spot"
+    "removal:spot",
+    "removal:sweeper"
    ],
    "basis": "card_roles.json over the 99 — CAPACITY, not performance"
   }
@@ -56,35 +58,35 @@
    "3": 0.0,
    "4": 0.0,
    "5": 0.0,
-   "6": 0.01,
-   "7": 0.114,
-   "8": 0.363,
-   "9": 0.639,
-   "10": 0.823
+   "6": 0.013,
+   "7": 0.126,
+   "8": 0.365,
+   "9": 0.62,
+   "10": 0.807
   },
   "mean_available_mana_by_turn": {
    "1": 0.999,
-   "2": 2.292,
-   "3": 3.387,
-   "4": 4.244,
-   "5": 4.966,
-   "6": 5.669,
-   "7": 6.328,
-   "8": 6.999,
-   "9": 7.689,
-   "10": 8.429
+   "2": 2.279,
+   "3": 3.368,
+   "4": 4.233,
+   "5": 4.97,
+   "6": 5.66,
+   "7": 6.308,
+   "8": 6.969,
+   "9": 7.658,
+   "10": 8.398
   },
   "land_drop_hit_rate_by_turn": {
    "1": 0.999,
    "2": 0.996,
-   "3": 0.905,
-   "4": 0.785,
-   "5": 0.675,
-   "6": 0.598,
-   "7": 0.581,
-   "8": 0.58,
-   "9": 0.592,
-   "10": 0.633
+   "3": 0.904,
+   "4": 0.78,
+   "5": 0.684,
+   "6": 0.593,
+   "7": 0.569,
+   "8": 0.573,
+   "9": 0.594,
+   "10": 0.625
   }
  },
  "score": null,

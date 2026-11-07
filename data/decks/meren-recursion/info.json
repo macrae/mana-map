@@ -20,11 +20,13 @@
     "G"
   ],
   "size": 100,
-  "lands": 36,
+  "lands": 34,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -188,6 +190,13 @@
             ]
           },
           {
+            "name": "Lazotep Quarry",
+            "where": [
+              "hapatra",
+              "zur-enchantress"
+            ]
+          },
+          {
             "name": "Pawn of Ulamog",
             "where": [
               "yawgmoth-swarm"
@@ -218,10 +227,9 @@
             ]
           },
           {
-            "name": "The Meathook Massacre",
+            "name": "The Grey Havens",
             "where": [
-              "yawgmoth-swarm",
-              "zur-enchantress"
+              "hapatra"
             ]
           },
           {
@@ -248,6 +256,12 @@
             "name": "Boggart Mischief",
             "where": [
               "Auntie Ool"
+            ]
+          },
+          {
+            "name": "Castle Garenbrig",
+            "where": [
+              "Radagast Parts"
             ]
           },
           {
@@ -279,6 +293,12 @@
             "name": "Diabolic Servitude",
             "where": [
               "Mystery Booster 2"
+            ]
+          },
+          {
+            "name": "Eldritch Evolution",
+            "where": [
+              "Hapatra"
             ]
           },
           {
@@ -330,6 +350,26 @@
             "name": "Graveshifter",
             "where": [
               "Black"
+            ]
+          },
+          {
+            "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
+            "where": [
+              "Golgari Parts",
+              "Green"
+            ]
+          },
+          {
+            "name": "Izoni, Thousand-Eyed",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
+            "name": "Khalni Garden",
+            "where": [
+              "Green",
+              "Mystery Booster 2"
             ]
           },
           {
@@ -475,14 +515,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 56,
-      "out": 56,
+      "add": 62,
+      "out": 62,
       "counts": {
-        "in_deck": 44,
-        "box": 38,
+        "in_deck": 38,
+        "box": 43,
         "elsewhere": 4,
         "buy": 1,
-        "free": 13
+        "free": 14
       },
       "unsourced": [
         "Cauldron of Essence",
@@ -492,7 +532,7 @@
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 13,
+      "free": 14,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -617,10 +657,15 @@
         },
         {
           "name": "Castle Garenbrig",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Radagast Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Cauldron of Essence",
@@ -760,10 +805,15 @@
         },
         {
           "name": "Eldritch Evolution",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Eternal Witness",
@@ -990,10 +1040,19 @@
         },
         {
           "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grist, the Hunger Tide",
@@ -1019,24 +1078,53 @@
         },
         {
           "name": "Izoni, Thousand-Eyed",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Khalni Garden",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lazotep Quarry",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Liliana, Death Wielder",
@@ -1436,25 +1524,11 @@
         },
         {
           "name": "The Grey Havens",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "The Meathook Massacre",
           "state": "elsewhere",
           "where": [
             {
               "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "zur-enchantress",
+              "slug": "hapatra",
               "locked": false,
               "status": "broken-down",
               "apart": true
@@ -1462,6 +1536,13 @@
           ],
           "free": true,
           "is_new": true
+        },
+        {
+          "name": "The Meathook Massacre",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "The Mycosynth Gardens",
@@ -1744,36 +1825,15 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": 1,
-      "included": 1,
-      "infinite": 1,
+      "highest_bracket": null,
+      "included": 0,
+      "infinite": 0,
       "near": 50,
-      "near_total": 180,
+      "near_total": 173,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
-    "top": [
-      {
-        "id": "864-2596-4050",
-        "cards": [
-          "Living Death",
-          "Eternal Witness",
-          "Phyrexian Altar"
-        ],
-        "produces": [
-          "Infinite blinking",
-          "Infinite colored mana",
-          "Infinite death triggers",
-          "Infinite creature ETB",
-          "Infinite creature LTB",
-          "Infinite creature sacrifice triggers"
-        ],
-        "infinite": true,
-        "bracket": 1,
-        "popularity": 9896,
-        "assumes_other_commander": false
-      }
-    ]
+    "top": []
   },
   "paper": null,
   "record": {
@@ -1797,7 +1857,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 95,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1815,7 +1875,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.96,
+          "value": 3.9,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1831,7 +1891,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 0,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -1855,7 +1915,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 34,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -1863,7 +1923,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 0,
+          "value": 1,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
@@ -1879,7 +1939,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 51,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1895,7 +1955,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 51,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -1980,15 +2040,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.429,
-            "2": 2.292,
-            "3": 3.387,
-            "4": 4.244,
-            "5": 4.966,
-            "6": 5.669,
-            "7": 6.328,
-            "8": 6.999,
-            "9": 7.689
+            "10": 8.398,
+            "2": 2.279,
+            "3": 3.368,
+            "4": 4.233,
+            "5": 4.97,
+            "6": 5.66,
+            "7": 6.308,
+            "8": 6.969,
+            "9": 7.658
           },
           "tier": "data",
           "weight": "detail",
@@ -1999,15 +2059,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.633,
+            "10": 0.625,
             "2": 0.996,
-            "3": 0.905,
-            "4": 0.785,
-            "5": 0.675,
-            "6": 0.598,
-            "7": 0.581,
-            "8": 0.58,
-            "9": 0.592
+            "3": 0.904,
+            "4": 0.78,
+            "5": 0.684,
+            "6": 0.593,
+            "7": 0.569,
+            "8": 0.573,
+            "9": 0.594
           },
           "tier": "data",
           "weight": "detail",
@@ -2017,16 +2077,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.274,
-            "10": 12.31,
-            "2": 0.735,
-            "3": 1.173,
-            "4": 1.621,
-            "5": 2.678,
-            "6": 4.083,
-            "7": 5.727,
-            "8": 7.609,
-            "9": 9.788
+            "1": 0.172,
+            "10": 10.66,
+            "2": 0.477,
+            "3": 0.842,
+            "4": 1.208,
+            "5": 2.05,
+            "6": 3.239,
+            "7": 4.673,
+            "8": 6.348,
+            "9": 8.324
           },
           "tier": "data",
           "weight": "detail",
@@ -2036,14 +2096,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 385,
-            "1": 1691,
-            "2": 2944,
-            "3": 2784,
-            "4": 1599,
-            "5": 505,
-            "6": 82,
-            "7": 10
+            "0": 356,
+            "1": 1713,
+            "2": 2941,
+            "3": 2892,
+            "4": 1522,
+            "5": 497,
+            "6": 75,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -2052,12 +2112,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1844,
-            "5": 4,
-            "6": 92,
-            "7": 1045,
-            "8": 2493,
-            "9": 2753
+            "10": 1874,
+            "5": 2,
+            "6": 130,
+            "7": 1124,
+            "8": 2392,
+            "9": 2552
           },
           "tier": "data",
           "weight": "detail",
@@ -2073,8 +2133,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.96,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 3.9,
+    "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
@@ -2082,7 +2142,7 @@
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 0
+        "by_turn_6_pct": 14
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -2094,11 +2154,11 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 25
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 0
+        "by_turn_6_pct": 1
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
@@ -2106,7 +2166,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 44
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2114,7 +2174,7 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 51
+        "by_turn_6_pct": 59
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
@@ -2122,19 +2182,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.632,
+      "mean_kill_turn": 8.608,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
       "kill_by_turn_8_pct": 36,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 18,
+      "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 1844,
-        "5": 4,
-        "6": 92,
-        "7": 1045,
-        "8": 2493,
-        "9": 2753
+        "10": 1874,
+        "5": 2,
+        "6": 130,
+        "7": 1124,
+        "8": 2392,
+        "9": 2552
       }
     }
   },
@@ -2144,10 +2204,8 @@
   "audit": {
     "archetype": null,
     "under": [
-      "colour-sources",
-      "ramp",
+      "mana-base",
       "card-advantage",
-      "sweepers",
       "protection",
       "interaction-breadth"
     ],
@@ -2184,10 +2242,12 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V6 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 40 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 42 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],

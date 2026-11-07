@@ -1,24 +1,24 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "c87a4162629482d1bd2c24667b952829505a8be16341e13c1a6d152379d41c82",
+  "decklist_sha256": "762900b68663558754578bec0a557561c4bcf7455770f807fed5cb5b94c8d255",
   "model_version": "77886e7c8a40",
   "lands": {
-    "total": 36,
-    "entries": 35,
+    "total": 34,
+    "entries": 33,
     "life": {
       "recurring_per_tap_cycle": 3,
       "one_time_on_entry": 8
     },
-    "enters_tapped": 11,
+    "enters_tapped": 10,
     "enters_tapped_always": 4,
     "classes": {
       "basic": 2,
       "fetch": 6,
-      "fixing": 5,
+      "fixing": 3,
       "mdfc": 1,
-      "tapped": 11,
-      "untapped-dual": 12,
-      "utility": 15
+      "tapped": 10,
+      "untapped-dual": 11,
+      "utility": 14
     },
     "list": [
       {
@@ -56,6 +56,16 @@
         ]
       },
       {
+        "name": "Bojuka Bog",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "B"
+        ]
+      },
+      {
         "name": "Boseiju, Who Endures",
         "copies": 1,
         "classes": [
@@ -66,13 +76,13 @@
         ]
       },
       {
-        "name": "Castle Garenbrig",
+        "name": "Cabal Coffers",
         "copies": 1,
         "classes": [
-          "tapped"
+          "untapped-dual"
         ],
         "produces": [
-          "G"
+          "B"
         ]
       },
       {
@@ -150,29 +160,6 @@
           "utility"
         ],
         "produces": []
-      },
-      {
-        "name": "Khalni Garden",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "G"
-        ]
-      },
-      {
-        "name": "Lazotep Quarry",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual",
-          "utility"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
       },
       {
         "name": "Llanowar Wastes",
@@ -300,18 +287,6 @@
         ]
       },
       {
-        "name": "The Grey Havens",
-        "copies": 1,
-        "classes": [
-          "fixing",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
         "name": "Twilight Mire",
         "copies": 1,
         "classes": [
@@ -417,30 +392,38 @@
       "U": 0,
       "B": 30,
       "R": 0,
-      "G": 30
+      "G": 26
     },
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 3,
+      "B": 6,
       "R": 0,
       "G": 5
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 33,
+      "B": 36,
       "R": 0,
-      "G": 35
+      "G": 31
     },
     "gated": {
       "count": 1,
       "names": [
-        "The Grey Havens"
+        "Cabal Coffers"
       ],
       "why": "counted in `total` and in every colour they can make, but their coloured mode costs extra mana on top of the tap, so they cannot pay a coloured cost on curve"
     },
     "producers": [
+      {
+        "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
+        "kind": "ramp:ritual",
+        "cmc": 3.0,
+        "produces": [
+          "B"
+        ]
+      },
       {
         "name": "Arcane Signet",
         "kind": "ramp:rock",
@@ -466,6 +449,14 @@
         ]
       },
       {
+        "name": "Dark Ritual",
+        "kind": "ramp:ritual",
+        "cmc": 1.0,
+        "produces": [
+          "B"
+        ]
+      },
+      {
         "name": "Elvish Mystic",
         "kind": "ramp:dork",
         "cmc": 1.0,
@@ -479,6 +470,14 @@
         "cmc": 1.0,
         "produces": [
           "G"
+        ]
+      },
+      {
+        "name": "Malakir Rebirth // Malakir Mire",
+        "kind": "ramp:ritual",
+        "cmc": 1.0,
+        "produces": [
+          "B"
         ]
       },
       {
@@ -500,77 +499,78 @@
   },
   "pips": {
     "B": {
-      "total_pips": 58.0,
+      "total_pips": 64.0,
       "max_pips": 3,
-      "cards": 41,
+      "cards": 44,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 29.0,
-      "max_pips": 3,
-      "cards": 23,
+      "total_pips": 22.0,
+      "max_pips": 2,
+      "cards": 20,
       "earliest_turn": 1,
-      "effective_pips": 2
+      "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.667,
-      "source_share": 0.5
+      "pip_share": 0.744,
+      "source_share": 0.536
     },
     "G": {
-      "pip_share": 0.333,
-      "source_share": 0.5
+      "pip_share": 0.256,
+      "source_share": 0.464
     }
   },
   "source_targets": {
     "B": 36,
-    "G": 36
+    "G": 22
   },
   "on_curve_probability": {
     "lands_only": {
       "B": 0.822,
-      "G": 0.822
+      "G": 0.944
     },
     "with_rocks_and_dorks": {
-      "B": 0.869,
-      "G": 0.895
+      "B": 0.906,
+      "G": 0.972
     },
     "lands_only_ungated": {
       "B": 0.804,
-      "G": 0.804
+      "G": 0.944
     }
   },
   "ramp": {
     "ramp:dork": 3,
     "ramp:land": 2,
+    "ramp:ritual": 3,
     "ramp:rock": 4
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.633,
+      "10": 0.625,
       "2": 0.996,
-      "3": 0.905,
-      "4": 0.785,
-      "5": 0.675,
-      "6": 0.598,
-      "7": 0.581,
-      "8": 0.58,
-      "9": 0.592
+      "3": 0.904,
+      "4": 0.78,
+      "5": 0.684,
+      "6": 0.593,
+      "7": 0.569,
+      "8": 0.573,
+      "9": 0.594
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.429,
-      "2": 2.292,
-      "3": 3.387,
-      "4": 4.244,
-      "5": 4.966,
-      "6": 5.669,
-      "7": 6.328,
-      "8": 6.999,
-      "9": 7.689
+      "10": 8.398,
+      "2": 2.279,
+      "3": 3.368,
+      "4": 4.233,
+      "5": 4.97,
+      "6": 5.66,
+      "7": 6.308,
+      "8": 6.969,
+      "9": 7.658
     }
   },
   "assumptions": [
@@ -580,7 +580,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
-    "G: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 35."
+    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 36."
   ]
 }

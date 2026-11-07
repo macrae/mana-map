@@ -1445,14 +1445,14 @@
         "value": 0.0
       },
       "verdict": {
-        "state": "merge",
+        "state": "a trade",
         "rose": 0,
-        "fell": 0,
-        "no_call": 10
+        "fell": 4,
+        "no_call": 6
       },
       "objective_grade": {
         "state": "met",
-        "reading": 3.65,
+        "reading": 4.1781,
         "shortfall": null
       },
       "measured": true,
@@ -1461,55 +1461,60 @@
         "Lightning Greaves"
       ],
       "impact": {
-        "state": "merge",
+        "state": "a trade",
         "rose": [],
-        "fell": [],
+        "fell": [
+          "damage @T10",
+          "board power @T6",
+          "extra cards by T8",
+          "interaction affordable @T6"
+        ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -0.0274,
+            "delta": -0.2219,
             "ci95_diff": [
-              -0.0982,
-              0.0434
+              -0.3232,
+              -0.1206
             ],
-            "mde": 0.1012,
-            "verdict": "noise",
+            "mde": 0.1447,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0027,
+            "delta": -0.0046,
             "ci95_diff": [
-              -0.0039,
-              0.0093
+              -0.0125,
+              0.0033
             ],
-            "mde": 0.0094,
+            "mde": 0.0112,
             "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0055,
+            "delta": -0.1187,
             "ci95_diff": [
-              -0.0481,
-              0.0591
+              -0.1755,
+              -0.0619
             ],
-            "mde": 0.0766,
-            "verdict": "noise",
+            "mde": 0.0811,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.0974,
+            "delta": -0.1024,
             "ci95_diff": [
-              -0.1692,
-              -0.0256
+              -0.1627,
+              -0.0421
             ],
-            "mde": 0.1027,
-            "verdict": "noise",
+            "mde": 0.0862,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -2203,7 +2208,7 @@
       },
       "objective_grade": {
         "state": "met",
-        "reading": 3.5293,
+        "reading": 3.9218,
         "shortfall": null
       },
       "measured": true,
@@ -2225,48 +2230,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -0.1543,
+            "delta": -0.7431,
             "ci95_diff": [
-              -0.173,
-              -0.1356
+              -0.7993,
+              -0.6869
             ],
-            "mde": 0.0268,
+            "mde": 0.0804,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0081,
+            "delta": -0.0274,
             "ci95_diff": [
-              -0.0106,
-              -0.0056
+              -0.0319,
+              -0.0229
             ],
-            "mde": 0.0035,
+            "mde": 0.0064,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0883,
+            "delta": -0.2774,
             "ci95_diff": [
-              -0.1031,
-              -0.0735
+              -0.3013,
+              -0.2535
             ],
-            "mde": 0.0212,
+            "mde": 0.0341,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.1476,
+            "delta": -0.0858,
             "ci95_diff": [
-              -0.169,
-              -0.1262
+              -0.103,
+              -0.0686
             ],
-            "mde": 0.0305,
+            "mde": 0.0246,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -3686,12 +3691,12 @@
       "verdict": {
         "state": "a trade",
         "rose": 0,
-        "fell": 4,
-        "no_call": 6
+        "fell": 6,
+        "no_call": 4
       },
       "objective_grade": {
         "state": "met",
-        "reading": 3.0369,
+        "reading": 3.0678,
         "shortfall": null
       },
       "measured": true,
@@ -3704,6 +3709,8 @@
         "rose": [],
         "fell": [
           "damage @T10",
+          "board power @T6",
+          "killed by T10",
           "stall, 2 in a row",
           "extra cards by T8",
           "interaction affordable @T6"
@@ -3711,48 +3718,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -0.1377,
+            "delta": -0.6378,
             "ci95_diff": [
-              -0.2081,
-              -0.0673
+              -0.7375,
+              -0.5381
             ],
-            "mde": 0.1007,
+            "mde": 0.1426,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0044,
+            "delta": -0.025,
             "ci95_diff": [
-              -0.0109,
-              0.0021
+              -0.0327,
+              -0.0173
             ],
-            "mde": 0.0092,
-            "verdict": "noise",
+            "mde": 0.011,
+            "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0491,
+            "delta": -0.2256,
             "ci95_diff": [
-              -0.1026,
-              0.0044
+              -0.2824,
+              -0.1688
             ],
-            "mde": 0.0765,
-            "verdict": "noise",
+            "mde": 0.0812,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.1942,
+            "delta": -0.1311,
             "ci95_diff": [
-              -0.2657,
-              -0.1227
+              -0.1916,
+              -0.0706
             ],
-            "mde": 0.1021,
+            "mde": 0.0864,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
