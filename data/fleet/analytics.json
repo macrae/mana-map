@@ -508,15 +508,15 @@
    },
    "meren-recursion": {
     "1": 0.0,
-    "10": 0.822,
+    "10": 0.765,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.0,
     "6": 0.002,
-    "7": 0.051,
-    "8": 0.285,
-    "9": 0.613
+    "7": 0.036,
+    "8": 0.217,
+    "9": 0.523
    },
    "sharknado": {
     "1": 0.0,
@@ -618,15 +618,15 @@
    },
    "meren-recursion": {
     "1": 0.999,
-    "10": 0.489,
+    "10": 0.537,
     "2": 0.996,
     "3": 0.903,
-    "4": 0.78,
-    "5": 0.665,
-    "6": 0.579,
-    "7": 0.525,
-    "8": 0.494,
-    "9": 0.488
+    "4": 0.779,
+    "5": 0.668,
+    "6": 0.586,
+    "7": 0.544,
+    "8": 0.527,
+    "9": 0.529
    },
    "sharknado": {
     "1": 0.999,
@@ -728,15 +728,15 @@
    },
    "meren-recursion": {
     "1": 0.999,
-    "10": 8.255,
+    "10": 8.452,
     "2": 2.331,
     "3": 3.512,
     "4": 4.396,
-    "5": 5.157,
-    "6": 5.856,
-    "7": 6.475,
-    "8": 7.07,
-    "9": 7.661
+    "5": 5.159,
+    "6": 5.868,
+    "7": 6.512,
+    "8": 7.148,
+    "9": 7.793
    },
    "sharknado": {
     "1": 0.999,
@@ -3145,14 +3145,14 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8144,
-      0.8294
+      0.7566,
+      0.7732
      ],
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.822
+     "value": 0.765
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -3169,14 +3169,14 @@
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.2762,
-      0.2939
+      0.209,
+      0.2252
      ],
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.285
+     "value": 0.217
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -3184,14 +3184,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 5.157
+     "value": 5.159
     },
     "mana_stdev_turn_five": {
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.179
+     "value": 1.1804
     },
     "median_kill_turn": {
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
@@ -3203,14 +3203,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.2075,
-      0.2236
+      0.2057,
+      0.2217
      ],
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.2154
+     "value": 0.2136
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -3227,14 +3227,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1706,
-      0.1856
+      0.2258,
+      0.2424
      ],
      "decklist_sha256": "b5abda63f7a85d0a05c1e8c34320b8b6e981d5af588559af36a92812055fb6b2",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.178
+     "value": 0.234
     }
    },
    "bracket": {
@@ -3270,7 +3270,7 @@
      "model_sacrifice": true,
      "model_treasures": true
     },
-    "model_version": "a18364c317e2",
+    "model_version": "9b1430338a82",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {},
@@ -5487,7 +5487,7 @@
    "heliod": "f5b4b19d2254",
    "ingris-infect": "61c2ffdcbefb",
    "keen-engineering": "f5b4b19d2254",
-   "meren-recursion": "a18364c317e2",
+   "meren-recursion": "9b1430338a82",
    "radagast": "9ea49ecb247d",
    "sharknado": "5554af572876",
    "sisay": "9ea49ecb247d",

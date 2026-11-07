@@ -746,7 +746,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # outlet in play (Birthing Pod, Fiend Artisan), enter-the-battlefield edicts waiting to
     # resolve (Plaguecrafter), and clamps in play (Skullclamp). One dict, so no closure needs
     # a `nonlocal` for it.
-    own_deaths = {"costed_outlet": False, "pending_edicts": 0, "clamps": []}
+    own_deaths = {"costed_outlet": False, "pending_edicts": 0, "clamps": [],
+                  # the bodies that come back every turn (`recurring_body_profile`), read under
+                  # Meren's declaration: token makers in play, and the turn a land last entered
+                  "makers": [], "landfall_turn": None}
     attach_used = set()           # Embercleave's free attach, spent once
     _eq_pow, _eq_ds = {}, set()   # what each commander carries; rebuilt before every combat
     extra_combat_free = 0         # Scourge-style, one additional phase
@@ -925,6 +928,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if land_index is not None:
             played = hand.pop(land_index)
             lands_in_play += 1
+            own_deaths["landfall_turn"] = turn       # Bloodghast (2026-11-07)
             if played.get("no_max_hand"):
                 hand_limit_off = True
             # TRACKED UNCONDITIONALLY. `sources` was maintained only under
@@ -1603,6 +1607,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 own_deaths["pending_edicts"] += 1
             if commander_recursion and od.get("clamp"):
                 own_deaths["clamps"].append(od["clamp"])
+            rec = card.get("recurring") or {}
+            if commander_recursion:
+                for _kind in ("upkeep", "end_step"):
+                    if rec.get(_kind):
+                        own_deaths["makers"].append(dict(rec[_kind], kind=_kind, src=card["name"],
+                                                         arrived=turn))
 
         def _free_creature_enters(card):
             """A CREATURE PUT ONTO THE BATTLEFIELD WITHOUT BEING CAST (the
@@ -4670,6 +4680,68 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             and (battlefield[i][12].get("card") or {}).get("is_commander"))]
                 if _pool:
                     _kill(min(_pool, key=lambda i: battlefield[i][0]))
+            # THE BODIES THAT COME BACK (2026-11-07, `recurring_body_profile`), read under
+            # Meren's declaration. A token made at an upkeep is summoning-sick, so making it here,
+            # after combat, changes no attack; it is there for the outlet and her counter.
+            def _maker_token(mk):
+                creature_entered(mk["power"], turn, False, 1, toughness=mk["toughness"],
+                                 is_token=True,
+                                 info={"name": f'{mk["src"]} token', "scales": None,
+                                       "prowess": 0, "vigilance": False, "maker": id(mk)})
+
+            def _maker_has_one(mk):
+                return any(len(e) > 12 and e[12] and e[12].get("maker") == id(mk)
+                           for e in battlefield)
+            _outlet = bool(free_sac_outlet) and commander_turn is not None
+            if commander_recursion:
+                for _mk in own_deaths["makers"]:
+                    if _mk["kind"] != "upkeep":
+                        continue
+                    # EACH upkeep (Ophiomancer): the opponents' upkeeps since our last turn,
+                    # one seat each. With a free outlet and Meren out the token is sacrificed on
+                    # the spot, so "if you control no Snakes" holds again at the next one.
+                    if _mk["each"] and _mk["arrived"] < turn:
+                        for _seat in range(GOLDFISH_OPPONENTS):
+                            if _mk["only_if_none"] and _maker_has_one(_mk):
+                                break
+                            for _ in range(_mk["n"]):
+                                _maker_token(_mk)
+                            if _outlet and _mk["only_if_none"]:
+                                _kill(next(i for i in range(len(battlefield) - 1, -1, -1)
+                                           if len(battlefield[i]) > 12 and battlefield[i][12]
+                                           and battlefield[i][12].get("maker") == id(_mk)))
+                    # our own upkeep
+                    if not (_mk["only_if_none"] and _maker_has_one(_mk)):
+                        for _ in range(_mk["n"]):
+                            _maker_token(_mk)
+                # SELF-RETURNING CREATURES: Bloodghast on the turn a land entered, Reassembling
+                # Skeleton and Teacher's Pest for their cost -- back, then (with a free outlet and
+                # Meren out) sacrificed again. Capped at three trips a turn per card.
+                for _c in [c for c in yard_creatures if (c.get("recurring") or {}).get(
+                        "return_landfall") or (c.get("recurring") or {}).get("return_cost")]:
+                    _rc = _c["recurring"]
+                    _trips = 0
+                    while _c in yard_creatures and _trips < 3:
+                        if _rc["return_landfall"]:
+                            if own_deaths["landfall_turn"] != turn or _trips:
+                                break
+                        elif not spend(_rc["return_cost"]):
+                            break
+                        yard_creatures.remove(_c)
+                        _free_creature_enters(_c)
+                        _trips += 1
+                        if not _outlet:
+                            break
+                        _at = next((i for i in range(len(battlefield) - 1, -1, -1)
+                                    if len(battlefield[i]) > 12 and battlefield[i][12]
+                                    and battlefield[i][12].get("card") is _c), None)
+                        if _at is None:
+                            break
+                        _kill(_at)
+                # EVERY TOKEN GOES TO THE OUTLET with Meren out: each one is a counter.
+                if _outlet:
+                    for _i in sorted((i for i, e in enumerate(battlefield) if e[4]), reverse=True):
+                        _kill(_i)
             if commander_recursion and commander_turn is not None:
                 # SELF-SACRIFICE, the Meren pilot's habit: Sakura-Tribe Elder, Spore Frog,
                 # Cankerbloom and Haywire Mite go every turn she is out (paying any mana in front
@@ -4692,6 +4764,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         _kill(min(_small, key=lambda i: battlefield[i][0]))
                         if model_draw:
                             draw_n(_clamp["draw"])
+            # END-STEP TOKENS (Jadar): made now, there for the outlet next turn.
+            if commander_recursion:
+                for _mk in own_deaths["makers"]:
+                    if _mk["kind"] == "end_step" and not (_mk["only_if_none"]
+                                                          and _maker_has_one(_mk)):
+                        for _ in range(_mk["n"]):
+                            _maker_token(_mk)
             # MEREN'S END STEP: the best creature card in the graveyard. To the battlefield if
             # its mana value is within the experience, through the one free-entry door (its
             # ETB fires, its payoffs register); otherwise to hand. Best = highest mana value,

@@ -18,7 +18,7 @@ from manamap.pilot import goldfish, goldfish_library, model_coverage
 from manamap.pilot.common import deck_file
 from manamap.pilot.goldfish_profiles import own_death_profile
 
-from conftest import requires_deck
+from conftest import requires_deck, requires_dump
 
 SLUG = "meren-recursion"
 
@@ -100,3 +100,58 @@ def test_the_clamp_draws_on_the_death(monkeypatch):
     _, on = _xp()
     _, off = _xp(monkeypatch, {"clamp": None})
     assert on["mean_extra_cards_drawn_by_turn"]["10"] > off["mean_extra_cards_drawn_by_turn"]["10"]
+
+
+# ── the bodies that come back every turn (2026-11-07) ─────────────────────────────────────
+
+from manamap.pilot.goldfish_profiles import recurring_body_profile  # noqa: E402
+
+
+def test_the_recurring_shapes_read_from_the_text():
+    snake = recurring_body_profile(_card("Ophiomancer", "At the beginning of each upkeep, if you "
+                                         "control no Snakes, create a 1/1 black Snake creature "
+                                         "token with deathtouch.", "Creature — Human Shaman"))
+    assert snake["upkeep"] == {"each": True, "only_if_none": True, "n": 1, "power": 1,
+                               "toughness": 1}
+    faerie = recurring_body_profile(_card("Bitterblossom", "At the beginning of your upkeep, you "
+                                          "lose 1 life and create a 1/1 black Faerie Rogue "
+                                          "creature token with flying.", "Kindred Enchantment — Faerie"))
+    assert faerie["upkeep"]["each"] is False and faerie["upkeep"]["n"] == 1
+    jadar = recurring_body_profile(_card("Jadar, Ghoulcaller of Nephalia", "At the beginning of "
+                                         "your end step, if you control no creatures with "
+                                         "decayed, create a 2/2 black Zombie creature token with "
+                                         "decayed.", "Legendary Creature — Human Wizard"))
+    assert jadar["end_step"]["only_if_none"] and jadar["end_step"]["power"] == 2
+    skel = recurring_body_profile(_card("Reassembling Skeleton", "{1}{B}: Return this card from "
+                                        "your graveyard to the battlefield tapped.",
+                                        "Creature — Skeleton Warrior"))
+    assert skel["return_cost"] == 2
+    ghast = recurring_body_profile(_card("Bloodghast", "This creature can't block.\nLandfall — "
+                                         "Whenever a land you control enters, you may return this "
+                                         "card from your graveyard to the battlefield.",
+                                         "Creature — Vampire Spirit"))
+    assert ghast["return_landfall"]
+
+
+def _xp_with(monkeypatch, swaps, blank=None, n=1500):
+    from manamap.pilot import try_swap
+    if blank is not None:
+        real = goldfish_library.recurring_body_profile
+        monkeypatch.setattr(goldfish_library, "recurring_body_profile",
+                            lambda card: {**real(card), **blank})
+    doc = try_swap.apply_swaps(SLUG, None, swaps)[0]
+    m = goldfish.run(SLUG, iterations=n, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
+    return m["commander_recursion"]["mean_experience_by_turn"]["10"]
+
+
+@requires_deck
+@requires_dump
+@pytest.mark.parametrize("card,blank", [
+    ("Ophiomancer", {"upkeep": None}),
+    ("Jadar, Ghoulcaller of Nephalia", {"end_step": None}),
+    ("Reassembling Skeleton", {"return_cost": None}),
+])
+def test_a_body_that_comes_back_pays_experience(monkeypatch, card, blank):
+    """PROVED BY REMOVING THE SHAPE: the same list, the same seeds, fewer counters."""
+    swaps = [("Assassin's Trophy", card)]
+    assert _xp_with(monkeypatch, swaps) > _xp_with(monkeypatch, swaps, blank), card

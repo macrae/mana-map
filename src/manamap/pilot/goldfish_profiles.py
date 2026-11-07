@@ -21,7 +21,7 @@ INDEX OF THE READERS, by channel (each takes a card dict and returns a profile):
                      event_payoffs, has_event_payoff
   bodies and tokens  creature_body_count, body_count, cast_token_profile,
                      token_doubler, is_etb_engine
-  sacrifice/deaths   sac_outlet_profile, own_death_profile, death_profile, is_death_engine,
+  sacrifice/deaths   sac_outlet_profile, own_death_profile, recurring_body_profile, death_profile, is_death_engine,
                      artifact_sac_payoffs, drain_profile
   combat             combat_profile (the big one: power, haste, flying, attack_gate,
                      static_lord, every ETB and attack payoff), attack_gate,
@@ -1694,6 +1694,52 @@ def own_death_profile(card):
     return {"self_sac": bool(sac), "self_sac_cost": sac_cost,
             "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),
             "clamp": clamp}
+
+
+#: BODIES THAT COME BACK EVERY TURN (2026-11-07), for Meren: the supply of things to kill,
+#: which is what bounds her experience once the outlets are there. Read from the text:
+#:   upkeep     "At the beginning of your|each upkeep, [if you control no X,] [... and] create
+#:              N P/T ... creature token" (Bitterblossom, Ophiomancer) -- 40 corpus cards
+#:   end_step   the same at your end step (Jadar's decayed Zombie) -- 18
+#:   return     "{cost}: Return this card from your graveyard to the battlefield"
+#:              (Reassembling Skeleton, Teacher's Pest) -- 28; or on landfall (Bloodghast) -- 1
+_RECUR_N = r"(a|an|one|two|three|four)"
+_UPKEEP_TOKEN_RE = re.compile(
+    r"at the beginning of (your|each) upkeep, (if you control no [^,]+, )?"
+    r"(?:[^.\n]{0,30}? and )?create " + _RECUR_N + r" (\d+)/(\d+)[^.\n]*?creature tokens?",
+    re.IGNORECASE)
+_END_TOKEN_RE = re.compile(
+    r"at the beginning of your end step, (if you control no [^,]+, )?create " + _RECUR_N
+    + r" (\d+)/(\d+)[^.\n]*?creature tokens?", re.IGNORECASE)
+_RETURN_MANA_RE = re.compile(
+    r"(?:^|\n)((?:\{[^}]+\})+): return this card from your graveyard to the battlefield",
+    re.IGNORECASE)
+_RETURN_LANDFALL_RE = re.compile(
+    r"whenever a land you control enters, (?:you may )?return this card from your graveyard"
+    r" to the battlefield", re.IGNORECASE)
+_RECUR_WORDS = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4}
+
+
+def recurring_body_profile(card):
+    """What this card adds to the board every turn, or how it comes back (see above)."""
+    text = card.get("oracle_text", "") or ""
+    out = {"upkeep": None, "end_step": None, "return_cost": None, "return_landfall": False}
+    m = _UPKEEP_TOKEN_RE.search(text)
+    if m:
+        out["upkeep"] = {"each": m.group(1).lower() == "each", "only_if_none": bool(m.group(2)),
+                         "n": _RECUR_WORDS[m.group(3).lower()], "power": int(m.group(4)),
+                         "toughness": int(m.group(5))}
+    m = _END_TOKEN_RE.search(text)
+    if m:
+        out["end_step"] = {"only_if_none": bool(m.group(1)), "n": _RECUR_WORDS[m.group(2).lower()],
+                           "power": int(m.group(3)), "toughness": int(m.group(4))}
+    if "Creature" in (card.get("type_line") or ""):
+        m = _RETURN_MANA_RE.search(text)
+        if m:
+            out["return_cost"] = sum(int(t) if t.isdigit() else 1
+                                     for t in re.findall(r"\{([^}]+)\}", m.group(1)))
+        out["return_landfall"] = bool(_RETURN_LANDFALL_RE.search(text))
+    return out
 
 
 #: "Whenever a creature an opponent controls dies, you gain N life" — the
