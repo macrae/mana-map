@@ -461,8 +461,10 @@ def _dead_searches(cards):
                 continue
             branches = []
             for part in re.split(r"\s+or\s+", phrase):
+                # A "non-" word EXCLUDES (Unmarked Grave's "nonlegendary card", 2026-11-07):
+                # it names nothing a target must have, so it is not a type to find.
                 w = {x for x in part.split()
-                     if x not in _SEARCH_FILLER} - _SEARCH_COLOURS
+                     if x not in _SEARCH_FILLER and not x.startswith("non")} - _SEARCH_COLOURS
                 if w:
                     branches.append(w)
             if not branches:
