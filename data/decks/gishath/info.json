@@ -12,17 +12,20 @@
     "G"
   ],
   "size": 100,
-  "lands": 35,
+  "lands": 36,
   "status": {
-    "complete": 18,
+    "complete": 14,
     "of": 19,
-    "stale": [],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
+    "stale": [
+      "frame",
+      "prose"
     ],
-    "invalid": [],
+    "older_model": [],
+    "invalid": [
+      "engine",
+      "tutors",
+      "rating.json"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -41,8 +44,8 @@
       "name": "jurassic-v1",
       "opened": "2026-11-02",
       "why": "try: trade — partial — the model cannot fully see Berserkers' Onslaught, Hunter's Insight, Three Visits, Triumphant Chomp, so its rows are silent about them",
-      "state": "PROPOSED · BLOCKED",
-      "state_why": "18 card(s) still to find",
+      "state": "MERGED",
+      "state_why": "merged 2026-11-06 into the list after VNone",
       "base_moved": null,
       "proposal": {
         "at": "2026-11-05",
@@ -65,147 +68,28 @@
         }
       },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Ancient Ziggurat"
-          },
-          {
-            "name": "Atzocan Seer"
-          },
-          {
-            "name": "Copperline Gorge"
-          },
-          {
-            "name": "Devil Dinosaur"
-          },
-          {
-            "name": "Intrepid Paleontologist"
-          },
-          {
-            "name": "Ixalli's Lorekeeper"
-          },
-          {
-            "name": "Karplusan Forest"
-          },
-          {
-            "name": "Natural Order"
-          },
-          {
-            "name": "Palani's Hatcher"
-          },
-          {
-            "name": "Prismatic Vista"
-          },
-          {
-            "name": "Rydia's Return"
-          },
-          {
-            "name": "Thornspire Verge"
-          },
-          {
-            "name": "Thrashing Brontodon"
-          },
-          {
-            "name": "Tranquil Frillback"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Brushland",
-            "where": [
-              "emiel-blink"
-            ]
-          },
-          {
-            "name": "Cavern of Souls",
-            "where": [
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Faeburrow Elder",
-            "where": [
-              "ur-dragon"
-            ]
-          },
-          {
-            "name": "Roaming Throne",
-            "where": [
-              "goblin-storm"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
-        "free": [
-          {
-            "name": "Spire Garden",
-            "where": [
-              "sisay"
-            ]
-          }
-        ],
-        "box": [
-          {
-            "name": "Berserkers' Onslaught",
-            "where": [
-              "Mystery Booster 2"
-            ]
-          },
-          {
-            "name": "Drover of the Mighty",
-            "where": [
-              "Green"
-            ]
-          },
-          {
-            "name": "Mana Confluence",
-            "where": [
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Three Visits",
-            "where": [
-              "Green"
-            ]
-          }
-        ],
-        "blocking": 18,
+        "free": [],
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 23,
-      "out": 23,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 70,
-        "box": 4,
-        "elsewhere": 4,
-        "buy": 14,
-        "free": 1
+        "in_deck": 93,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
+        "free": 0
       },
-      "unsourced": [
-        "Ancient Ziggurat",
-        "Atzocan Seer",
-        "Brushland",
-        "Cavern of Souls",
-        "Copperline Gorge",
-        "Devil Dinosaur",
-        "Faeburrow Elder",
-        "Intrepid Paleontologist",
-        "Ixalli's Lorekeeper",
-        "Karplusan Forest",
-        "Natural Order",
-        "Palani's Hatcher",
-        "Prismatic Vista",
-        "Roaming Throne",
-        "Rydia's Return",
-        "Thornspire Verge",
-        "Thrashing Brontodon",
-        "Tranquil Frillback"
-      ],
-      "mergeable": false,
-      "free": 1,
+      "unsourced": [],
+      "mergeable": true,
+      "free": 0,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -216,10 +100,10 @@
         },
         {
           "name": "Ancient Ziggurat",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Arcane Signet",
@@ -237,22 +121,17 @@
         },
         {
           "name": "Atzocan Seer",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Berserkers' Onslaught",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Mystery Booster 2"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Blasphemous Act",
@@ -291,18 +170,10 @@
         },
         {
           "name": "Brushland",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "emiel-blink",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Canopy Vista",
@@ -320,18 +191,10 @@
         },
         {
           "name": "Cavern of Souls",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Cinder Glade",
@@ -363,10 +226,10 @@
         },
         {
           "name": "Copperline Gorge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Curious Altisaur",
@@ -377,22 +240,17 @@
         },
         {
           "name": "Devil Dinosaur",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Drover of the Mighty",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Earthshaker Dreadmaw",
@@ -431,25 +289,10 @@
         },
         {
           "name": "Faeburrow Elder",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "ur-dragon",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Flawless Maneuver",
@@ -523,10 +366,10 @@
         },
         {
           "name": "Intrepid Paleontologist",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Itzquinth, Firstborn of Gishath",
@@ -537,10 +380,10 @@
         },
         {
           "name": "Ixalli's Lorekeeper",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Jetmir's Garden",
@@ -551,10 +394,10 @@
         },
         {
           "name": "Karplusan Forest",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Kessig Wolf Run",
@@ -579,15 +422,10 @@
         },
         {
           "name": "Mana Confluence",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Mirari's Wake",
@@ -605,10 +443,10 @@
         },
         {
           "name": "Natural Order",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Nature's Lore",
@@ -633,10 +471,10 @@
         },
         {
           "name": "Palani's Hatcher",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Pantlaza, Sun-Favored",
@@ -668,10 +506,10 @@
         },
         {
           "name": "Prismatic Vista",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Pugnacious Hammerskull",
@@ -717,25 +555,17 @@
         },
         {
           "name": "Roaming Throne",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "goblin-storm",
-              "locked": true,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Rydia's Return",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Secluded Courtyard",
@@ -767,18 +597,10 @@
         },
         {
           "name": "Spire Garden",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "sisay",
-              "locked": false,
-              "status": "retired",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Stomping Ground",
@@ -824,36 +646,31 @@
         },
         {
           "name": "Thornspire Verge",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Thrashing Brontodon",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Three Visits",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Tranquil Frillback",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Trumpeting Carnosaur",
@@ -1046,10 +863,70 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Belbe's Portal"
+          },
+          {
+            "name": "Descendants' Path"
+          },
+          {
+            "name": "Hunter's Insight"
+          },
+          {
+            "name": "Krosan Verge"
+          },
+          {
+            "name": "Molten Echoes"
+          },
+          {
+            "name": "Monster Manual // Zoological Study"
+          },
+          {
+            "name": "Myriad Landscape"
+          },
+          {
+            "name": "Rogue's Passage"
+          },
+          {
+            "name": "Savage Order"
+          },
+          {
+            "name": "Savage Stomp"
+          },
+          {
             "name": "Taiga"
+          },
+          {
+            "name": "Trapjaw Tyrant"
+          },
+          {
+            "name": "Triumphant Chomp"
+          },
+          {
+            "name": "Up the Beanstalk"
+          },
+          {
+            "name": "Wakening Sun's Avatar"
+          },
+          {
+            "name": "Wayward Swordtooth"
+          },
+          {
+            "name": "World War Hulk"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "emiel-blink"
+            ]
+          },
+          {
+            "name": "Purphoros, God of the Forge",
+            "where": [
+              "goblin-storm"
+            ]
+          },
           {
             "name": "Sacred Foundry",
             "where": [
@@ -1066,25 +943,50 @@
         ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 3,
+        "box": [
+          {
+            "name": "Runic Armasaur",
+            "where": [
+              "Green"
+            ]
+          }
+        ],
+        "blocking": 21,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 24,
+      "out": 24,
       "counts": {
-        "in_deck": 88,
-        "box": 0,
-        "elsewhere": 2,
-        "buy": 1,
+        "in_deck": 69,
+        "box": 1,
+        "elsewhere": 4,
+        "buy": 17,
         "free": 0
       },
       "unsourced": [
+        "Belbe's Portal",
+        "Descendants' Path",
+        "Forbidden Orchard",
+        "Hunter's Insight",
+        "Krosan Verge",
+        "Molten Echoes",
+        "Monster Manual // Zoological Study",
+        "Myriad Landscape",
+        "Purphoros, God of the Forge",
+        "Rogue's Passage",
         "Sacred Foundry",
+        "Savage Order",
+        "Savage Stomp",
         "Savannah",
-        "Taiga"
+        "Taiga",
+        "Trapjaw Tyrant",
+        "Triumphant Chomp",
+        "Up the Beanstalk",
+        "Wakening Sun's Avatar",
+        "Wayward Swordtooth",
+        "World War Hulk"
       ],
       "mergeable": false,
       "free": 0,
@@ -1112,10 +1014,10 @@
         },
         {
           "name": "Belbe's Portal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Blasphemous Act",
@@ -1203,10 +1105,10 @@
         },
         {
           "name": "Descendants' Path",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Earthshaker Dreadmaw",
@@ -1252,10 +1154,39 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -1315,10 +1246,10 @@
         },
         {
           "name": "Hunter's Insight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hunting Velociraptor",
@@ -1364,10 +1295,10 @@
         },
         {
           "name": "Krosan Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mirari's Wake",
@@ -1378,17 +1309,17 @@
         },
         {
           "name": "Molten Echoes",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Monster Manual // Zoological Study",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -1399,10 +1330,10 @@
         },
         {
           "name": "Myriad Landscape",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nature's Lore",
@@ -1462,10 +1393,18 @@
         },
         {
           "name": "Purphoros, God of the Forge",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Quartzwood Crasher",
@@ -1504,17 +1443,22 @@
         },
         {
           "name": "Rogue's Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Runic Armasaur",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sacred Foundry",
@@ -1547,17 +1491,17 @@
         },
         {
           "name": "Savage Order",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savage Stomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savannah",
@@ -1646,17 +1590,17 @@
         },
         {
           "name": "Trapjaw Tyrant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Triumphant Chomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Trumpeting Carnosaur",
@@ -1674,10 +1618,10 @@
         },
         {
           "name": "Up the Beanstalk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Urza's Incubator",
@@ -1702,17 +1646,17 @@
         },
         {
           "name": "Wakening Sun's Avatar",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Wayward Swordtooth",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windswept Heath",
@@ -1730,10 +1674,10 @@
         },
         {
           "name": "World War Hulk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Worldly Tutor",
@@ -1843,7 +1787,17 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "005",
+          "title": "One ping, five payoffs: the enrage web",
+          "checker": "pass",
+          "names": [
+            "Trapjaw Tyrant"
+          ]
+        }
+      ]
     },
     {
       "name": "cart-v1",
@@ -1861,10 +1815,58 @@
             "name": "Arctic Treeline"
           },
           {
+            "name": "Belbe's Portal"
+          },
+          {
             "name": "Chandra's Ignition"
           },
           {
             "name": "Commercial District"
+          },
+          {
+            "name": "Descendants' Path"
+          },
+          {
+            "name": "Hunter's Insight"
+          },
+          {
+            "name": "Krosan Verge"
+          },
+          {
+            "name": "Molten Echoes"
+          },
+          {
+            "name": "Monster Manual // Zoological Study"
+          },
+          {
+            "name": "Myriad Landscape"
+          },
+          {
+            "name": "Rogue's Passage"
+          },
+          {
+            "name": "Savage Order"
+          },
+          {
+            "name": "Savage Stomp"
+          },
+          {
+            "name": "Trapjaw Tyrant"
+          },
+          {
+            "name": "Triumphant Chomp"
+          },
+          {
+            "name": "Up the Beanstalk"
+          },
+          {
+            "name": "Wakening Sun's Avatar"
+          },
+          {
+            "name": "Wayward Swordtooth"
+          },
+          {
+            "name": "World War Hulk"
           }
         ],
         "unsleeve": [
@@ -1873,31 +1875,67 @@
             "where": [
               "sharknado"
             ]
+          },
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "emiel-blink"
+            ]
           }
         ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 5,
+        "box": [
+          {
+            "name": "Rootbound Crag",
+            "where": [
+              "Auntie Ool"
+            ]
+          },
+          {
+            "name": "Runic Armasaur",
+            "where": [
+              "Green"
+            ]
+          }
+        ],
+        "blocking": 22,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 28,
+      "out": 28,
       "counts": {
-        "in_deck": 84,
-        "box": 0,
-        "elsewhere": 1,
-        "buy": 4,
+        "in_deck": 65,
+        "box": 2,
+        "elsewhere": 2,
+        "buy": 20,
         "free": 0
       },
       "unsourced": [
         "Alpine Meadow",
         "Arctic Treeline",
+        "Belbe's Portal",
         "Chandra's Ignition",
         "Clifftop Retreat",
-        "Commercial District"
+        "Commercial District",
+        "Descendants' Path",
+        "Forbidden Orchard",
+        "Hunter's Insight",
+        "Krosan Verge",
+        "Molten Echoes",
+        "Monster Manual // Zoological Study",
+        "Myriad Landscape",
+        "Rogue's Passage",
+        "Savage Order",
+        "Savage Stomp",
+        "Trapjaw Tyrant",
+        "Triumphant Chomp",
+        "Up the Beanstalk",
+        "Wakening Sun's Avatar",
+        "Wayward Swordtooth",
+        "World War Hulk"
       ],
       "mergeable": false,
       "free": 0,
@@ -1932,10 +1970,10 @@
         },
         {
           "name": "Belbe's Portal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Blasphemous Act",
@@ -2052,10 +2090,10 @@
         },
         {
           "name": "Descendants' Path",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Earthshaker Dreadmaw",
@@ -2101,10 +2139,39 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -2164,10 +2231,10 @@
         },
         {
           "name": "Hunter's Insight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hunting Velociraptor",
@@ -2213,10 +2280,10 @@
         },
         {
           "name": "Krosan Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mirari's Wake",
@@ -2227,17 +2294,17 @@
         },
         {
           "name": "Molten Echoes",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Monster Manual // Zoological Study",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -2248,10 +2315,10 @@
         },
         {
           "name": "Myriad Landscape",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nature's Lore",
@@ -2346,38 +2413,48 @@
         },
         {
           "name": "Rogue's Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rootbound Crag",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Runic Armasaur",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savage Order",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savage Stomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Secluded Courtyard",
@@ -2437,17 +2514,17 @@
         },
         {
           "name": "Trapjaw Tyrant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Triumphant Chomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Trumpeting Carnosaur",
@@ -2465,10 +2542,10 @@
         },
         {
           "name": "Up the Beanstalk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Urza's Incubator",
@@ -2486,17 +2563,17 @@
         },
         {
           "name": "Wakening Sun's Avatar",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Wayward Swordtooth",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windswept Heath",
@@ -2507,10 +2584,10 @@
         },
         {
           "name": "World War Hulk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Worldly Tutor",
@@ -2622,7 +2699,17 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "005",
+          "title": "One ping, five payoffs: the enrage web",
+          "checker": "pass",
+          "names": [
+            "Trapjaw Tyrant"
+          ]
+        }
+      ]
     },
     {
       "name": "mana-v1",
@@ -2685,27 +2772,130 @@
         "forced_reason": "a land pass is graded on the deterministic mana half, not the goldfish, which plays the first land in hand and cannot rank two lands (CLAUDE.md): G on curve 0.742 -> 0.822 with rocks and dorks, W 0.61 -> 0.866, always-tapped 7 -> 4, one unsleeve blocker fewer; same ground the 2026-09-11 proposal was accepted on"
       },
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Belbe's Portal"
+          },
+          {
+            "name": "Descendants' Path"
+          },
+          {
+            "name": "Hunter's Insight"
+          },
+          {
+            "name": "Krosan Verge"
+          },
+          {
+            "name": "Molten Echoes"
+          },
+          {
+            "name": "Monster Manual // Zoological Study"
+          },
+          {
+            "name": "Myriad Landscape"
+          },
+          {
+            "name": "Rogue's Passage"
+          },
+          {
+            "name": "Savage Order"
+          },
+          {
+            "name": "Savage Stomp"
+          },
+          {
+            "name": "Trapjaw Tyrant"
+          },
+          {
+            "name": "Triumphant Chomp"
+          },
+          {
+            "name": "Up the Beanstalk"
+          },
+          {
+            "name": "Wakening Sun's Avatar"
+          },
+          {
+            "name": "Wayward Swordtooth"
+          },
+          {
+            "name": "World War Hulk"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Bloodstained Mire",
+            "where": [
+              "edgar-vampires",
+              "meren-recursion",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Forbidden Orchard",
+            "where": [
+              "emiel-blink"
+            ]
+          },
+          {
+            "name": "Purphoros, God of the Forge",
+            "where": [
+              "goblin-storm"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
-        "box": [],
-        "blocking": 0,
+        "box": [
+          {
+            "name": "Rootbound Crag",
+            "where": [
+              "Auntie Ool"
+            ]
+          },
+          {
+            "name": "Runic Armasaur",
+            "where": [
+              "Green"
+            ]
+          }
+        ],
+        "blocking": 19,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 23,
+      "out": 23,
       "counts": {
-        "in_deck": 91,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
+        "in_deck": 70,
+        "box": 2,
+        "elsewhere": 3,
+        "buy": 16,
         "free": 0
       },
-      "unsourced": [],
-      "mergeable": true,
+      "unsourced": [
+        "Belbe's Portal",
+        "Bloodstained Mire",
+        "Descendants' Path",
+        "Forbidden Orchard",
+        "Hunter's Insight",
+        "Krosan Verge",
+        "Molten Echoes",
+        "Monster Manual // Zoological Study",
+        "Myriad Landscape",
+        "Purphoros, God of the Forge",
+        "Rogue's Passage",
+        "Savage Order",
+        "Savage Stomp",
+        "Trapjaw Tyrant",
+        "Triumphant Chomp",
+        "Up the Beanstalk",
+        "Wakening Sun's Avatar",
+        "Wayward Swordtooth",
+        "World War Hulk"
+      ],
+      "mergeable": false,
       "free": 0,
       "cards": [
         {
@@ -2731,10 +2921,10 @@
         },
         {
           "name": "Belbe's Portal",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Blasphemous Act",
@@ -2745,10 +2935,32 @@
         },
         {
           "name": "Bloodstained Mire",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloom Tender",
@@ -2829,10 +3041,10 @@
         },
         {
           "name": "Descendants' Path",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Earthshaker Dreadmaw",
@@ -2878,10 +3090,39 @@
         },
         {
           "name": "Forbidden Orchard",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "emiel-blink",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
@@ -2941,10 +3182,10 @@
         },
         {
           "name": "Hunter's Insight",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hunting Velociraptor",
@@ -2990,10 +3231,10 @@
         },
         {
           "name": "Krosan Verge",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mirari's Wake",
@@ -3004,17 +3245,17 @@
         },
         {
           "name": "Molten Echoes",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Monster Manual // Zoological Study",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mountain",
@@ -3025,10 +3266,10 @@
         },
         {
           "name": "Myriad Landscape",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Nature's Lore",
@@ -3088,10 +3329,18 @@
         },
         {
           "name": "Purphoros, God of the Forge",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "goblin-storm",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Quartzwood Crasher",
@@ -3130,38 +3379,48 @@
         },
         {
           "name": "Rogue's Passage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Rootbound Crag",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Runic Armasaur",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savage Order",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Savage Stomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Secluded Courtyard",
@@ -3235,17 +3494,17 @@
         },
         {
           "name": "Trapjaw Tyrant",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Triumphant Chomp",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Trumpeting Carnosaur",
@@ -3263,10 +3522,10 @@
         },
         {
           "name": "Up the Beanstalk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Urza's Incubator",
@@ -3291,17 +3550,17 @@
         },
         {
           "name": "Wakening Sun's Avatar",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Wayward Swordtooth",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Windswept Heath",
@@ -3319,10 +3578,10 @@
         },
         {
           "name": "World War Hulk",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Worldly Tutor",
@@ -3435,7 +3694,17 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "005",
+          "title": "One ping, five payoffs: the enrage web",
+          "checker": "pass",
+          "names": [
+            "Trapjaw Tyrant"
+          ]
+        }
+      ]
     }
   ],
   "diagnostic": {
@@ -3456,164 +3725,164 @@
       ],
       "online_by_turn": {
         "1": {
-          "rate": 0.5202,
+          "rate": 0.7137,
           "ci95": [
-            0.5104,
-            0.53
+            0.7048,
+            0.7225
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.6125,
+          "rate": 0.7799,
           "ci95": [
-            0.6029,
-            0.622
+            0.7717,
+            0.7879
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.6706,
+          "rate": 0.8286,
           "ci95": [
-            0.6613,
-            0.6797
+            0.8211,
+            0.8359
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.737,
+          "rate": 0.8751,
           "ci95": [
-            0.7283,
-            0.7455
+            0.8685,
+            0.8814
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.7937,
+          "rate": 0.9068,
           "ci95": [
-            0.7857,
-            0.8015
+            0.9009,
+            0.9123
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.8417,
+          "rate": 0.9336,
           "ci95": [
-            0.8344,
-            0.8487
+            0.9286,
+            0.9383
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8834,
+          "rate": 0.9562,
           "ci95": [
-            0.877,
-            0.8895
+            0.952,
+            0.96
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.9205,
+          "rate": 0.9729,
           "ci95": [
-            0.915,
-            0.9256
+            0.9695,
+            0.9759
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.9476,
+          "rate": 0.9847,
           "ci95": [
-            0.9431,
-            0.9518
+            0.9821,
+            0.9869
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.9668,
+          "rate": 0.9912,
           "ci95": [
-            0.9631,
-            0.9701
+            0.9892,
+            0.9929
           ],
           "n": 10000
         }
       },
       "any_route_by_turn": {
         "1": {
-          "rate": 0.4096,
+          "rate": 0.4453,
           "ci95": [
-            0.4,
-            0.4193
+            0.4356,
+            0.4551
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.5036,
+          "rate": 0.5296,
           "ci95": [
-            0.4938,
-            0.5134
+            0.5198,
+            0.5394
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.5647,
+          "rate": 0.5891,
           "ci95": [
-            0.555,
-            0.5744
+            0.5794,
+            0.5987
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.6334,
+          "rate": 0.6539,
           "ci95": [
-            0.6239,
-            0.6428
+            0.6445,
+            0.6632
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.7021,
+          "rate": 0.7223,
           "ci95": [
-            0.6931,
-            0.711
+            0.7134,
+            0.731
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.7618,
+          "rate": 0.779,
           "ci95": [
-            0.7534,
-            0.77
+            0.7708,
+            0.787
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.8132,
+          "rate": 0.8334,
           "ci95": [
-            0.8054,
-            0.8207
+            0.826,
+            0.8406
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.8589,
+          "rate": 0.8772,
           "ci95": [
-            0.8519,
-            0.8656
+            0.8706,
+            0.8835
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.8941,
+          "rate": 0.9167,
           "ci95": [
-            0.8879,
-            0.9
+            0.9111,
+            0.922
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.926,
+          "rate": 0.9459,
           "ci95": [
-            0.9207,
-            0.931
+            0.9413,
+            0.9502
           ],
           "n": 10000
         }
@@ -3621,10 +3890,10 @@
       "bottleneck": {
         "label": "Ramp or fixing drawn",
         "by_turn_three": {
-          "rate": 0.6706,
+          "rate": 0.8286,
           "ci95": [
-            0.6613,
-            0.6797
+            0.8211,
+            0.8359
           ],
           "n": 10000
         }
@@ -3634,159 +3903,159 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.6934,
+          "rate": 0.7143,
           "ci95": [
-            0.6843,
-            0.7024
+            0.7054,
+            0.7231
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.394,
+          "rate": 0.3041,
           "ci95": [
-            0.3845,
-            0.4036
+            0.2952,
+            0.3132
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.1302,
+          "rate": 0.113,
           "ci95": [
-            0.1237,
-            0.1369
+            0.1069,
+            0.1194
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0736,
+          "rate": 0.0684,
           "ci95": [
-            0.0686,
-            0.0789
+            0.0636,
+            0.0735
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0396,
+          "rate": 0.0459,
           "ci95": [
-            0.036,
-            0.0436
+            0.042,
+            0.0502
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.025,
+          "rate": 0.0407,
           "ci95": [
-            0.0221,
-            0.0282
+            0.037,
+            0.0448
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0185,
+          "rate": 0.043,
           "ci95": [
-            0.016,
-            0.0213
+            0.0392,
+            0.0472
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0147,
+          "rate": 0.0447,
           "ci95": [
-            0.0125,
-            0.0173
+            0.0408,
+            0.0489
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0108,
+          "rate": 0.0397,
           "ci95": [
-            0.009,
-            0.013
+            0.036,
+            0.0437
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.008,
+          "rate": 0.0326,
           "ci95": [
-            0.0064,
-            0.0099
+            0.0293,
+            0.0363
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1453,
+        "rate": 0.1533,
         "ci95": [
-          0.1385,
-          0.1523
+          0.1464,
+          0.1605
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7144,
-        "hand_empty": 183,
-        "mana_short": 6961
+        "stall_turns": 7321,
+        "hand_empty": 981,
+        "mana_short": 6340
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 520,
-        "hand_empty": 165,
-        "mana_short": 355,
+        "stall_turns": 1600,
+        "hand_empty": 881,
+        "mana_short": 719,
         "stall_rate": {
-          "rate": 0.013,
+          "rate": 0.04,
           "ci95": [
-            0.0119,
-            0.0142
+            0.0381,
+            0.042
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.025,
-          "diff": -0.012,
+          "floor_rate": 0.0407,
+          "diff": -0.0007,
           "ci95": [
-            -0.0154,
-            -0.0089
+            -0.0052,
+            0.0035
           ],
-          "excludes_zero": true
+          "excludes_zero": false
         },
         "hand_size": {
           "7": {
-            "rate": 5.4276,
+            "rate": 4.5588,
             "ci95": [
-              5.375,
-              5.4802
+              4.5046,
+              4.613
             ],
-            "sd": 2.6837,
+            "sd": 2.7631,
             "n": 10000
           },
           "8": {
-            "rate": 5.9015,
+            "rate": 4.8478,
             "ci95": [
-              5.8365,
-              5.9665
+              4.7824,
+              4.9132
             ],
-            "sd": 3.3187,
+            "sd": 3.3381,
             "n": 10000
           },
           "9": {
-            "rate": 6.4986,
+            "rate": 5.3286,
             "ci95": [
-              6.4186,
-              6.5786
+              5.2473,
+              5.4099
             ],
-            "sd": 4.084,
+            "sd": 4.146,
             "n": 10000
           },
           "10": {
-            "rate": 7.3693,
+            "rate": 5.988,
             "ci95": [
-              7.2695,
-              7.4691
+              5.8911,
+              6.0849
             ],
-            "sd": 5.0915,
+            "sd": 4.9429,
             "n": 10000
           }
         },
@@ -3796,39 +4065,39 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.469,
+        "rate": 0.4692,
         "ci95": [
-          0.4592,
-          0.4788
+          0.4594,
+          0.479
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2898,
+      "missed_land_drop_rate": 0.2881,
       "mulliganed": {
-        "rate": 0.2241,
+        "rate": 0.2107,
         "ci95": [
-          0.216,
-          0.2324
+          0.2028,
+          0.2188
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
         "1": 0.999,
-        "2": 2.14,
-        "3": 3.395,
-        "4": 4.343,
-        "5": 5.154,
-        "6": 6.076,
-        "7": 6.868,
-        "8": 7.718,
-        "9": 8.645,
-        "10": 9.706
+        "2": 2.198,
+        "3": 3.628,
+        "4": 4.935,
+        "5": 5.992,
+        "6": 7.014,
+        "7": 8.005,
+        "8": 9.059,
+        "9": 10.209,
+        "10": 11.494
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.7564
+      "mana_stdev_turn_five": 2.2122
     },
-    "decklist_sha256": "80701018c37d677b1d358ca61669e15262655d598451ae7a6c286a43bd344643"
+    "decklist_sha256": "d58a86fb118247cd6bde75b3694d2f449127ad54e57db553f60b4598cb1d77cb"
   },
   "bracket": {
     "floor": 3,
@@ -3843,7 +4112,7 @@
     "as_of": "2026-10-18",
     "source_updated_at": "2026-10-19T02:06:22.955428+00:00",
     "url": "https://deckcheck.co/app/decklist/6nPSAF6BU0-U",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 1,
     "omni": {
       "benchmarks": {
@@ -3882,8 +4151,8 @@
       "highest_bracket": null,
       "included": 0,
       "infinite": 0,
-      "near": 41,
-      "near_total": 41,
+      "near": 31,
+      "near_total": 31,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -3927,7 +4196,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 26,
+          "value": 40,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -3936,7 +4205,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 8,
+          "value": 7,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -3945,7 +4214,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 7.27,
+          "value": 6.706,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -3953,7 +4222,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 74,
+          "value": 91,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -3961,7 +4230,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Cost reducer or cheat-into-play drawn": {
-          "value": 64,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Cost reducer or cheat-into-play drawn' by turn six",
@@ -3969,7 +4238,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Dinosaur payoff drawn (per-dino trigger engine)": {
-          "value": 62,
+          "value": 65,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Dinosaur payoff drawn (per-dino trigger engine)' by turn six",
@@ -3977,7 +4246,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:The Gishath connection kit (haste or evasion for the 7/6)": {
-          "value": 61,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'The Gishath connection kit (haste or evasion for the 7/6)' by turn six",
@@ -3985,7 +4254,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Enrage engine drawn": {
-          "value": 28,
+          "value": 17,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Enrage engine drawn' by turn six",
@@ -4012,7 +4281,13 @@
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
             "Draw every turn including turn 1 (multiplayer Commander).",
-            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+            "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+            "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+            "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+            "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+            "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+            "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
             "One land drop per turn when available.",
             "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
             "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -4061,7 +4336,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 78,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -4072,15 +4347,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 9.655,
-            "2": 2.14,
-            "3": 3.383,
-            "4": 4.336,
-            "5": 5.144,
-            "6": 6.052,
-            "7": 6.843,
-            "8": 7.677,
-            "9": 8.602
+            "10": 11.423,
+            "2": 2.197,
+            "3": 3.641,
+            "4": 4.943,
+            "5": 5.958,
+            "6": 6.98,
+            "7": 7.945,
+            "8": 8.976,
+            "9": 10.159
           },
           "tier": "data",
           "weight": "detail",
@@ -4091,15 +4366,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.6,
-            "2": 0.995,
-            "3": 0.892,
-            "4": 0.761,
-            "5": 0.639,
-            "6": 0.558,
-            "7": 0.528,
-            "8": 0.53,
-            "9": 0.563
+            "10": 0.601,
+            "2": 0.998,
+            "3": 0.894,
+            "4": 0.747,
+            "5": 0.619,
+            "6": 0.555,
+            "7": 0.536,
+            "8": 0.546,
+            "9": 0.577
           },
           "tier": "data",
           "weight": "detail",
@@ -4110,15 +4385,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.0,
-            "10": 10.832,
-            "2": 0.118,
-            "3": 0.603,
-            "4": 1.319,
-            "5": 2.131,
-            "6": 3.108,
-            "7": 4.453,
-            "8": 6.134,
-            "9": 8.281
+            "10": 12.895,
+            "2": 0.123,
+            "3": 0.581,
+            "4": 1.312,
+            "5": 2.291,
+            "6": 3.594,
+            "7": 5.314,
+            "8": 7.471,
+            "9": 10.026
           },
           "tier": "data",
           "weight": "detail",
@@ -4128,14 +4403,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 399,
-            "1": 1764,
-            "2": 3069,
-            "3": 2785,
-            "4": 1481,
-            "5": 429,
-            "6": 72,
-            "7": 1
+            "0": 369,
+            "1": 1672,
+            "2": 3023,
+            "3": 2885,
+            "4": 1478,
+            "5": 484,
+            "6": 85,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -4144,13 +4419,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1062,
-            "4": 13,
-            "5": 169,
-            "6": 600,
-            "7": 1974,
-            "8": 2963,
-            "9": 2120
+            "10": 477,
+            "4": 23,
+            "5": 323,
+            "6": 1470,
+            "7": 3156,
+            "8": 2848,
+            "9": 1331
           },
           "tier": "data",
           "weight": "detail",
@@ -4166,28 +4441,28 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 7.27,
-    "commander_cast_by_turn_6_pct": 26,
+    "commander_mean_cast_turn": 6.706,
+    "commander_cast_by_turn_6_pct": 40,
     "targets": [
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 74
+        "by_turn_6_pct": 91
       },
       {
         "label": "Cost reducer or cheat-into-play drawn",
-        "by_turn_6_pct": 64
+        "by_turn_6_pct": 52
       },
       {
         "label": "Dinosaur payoff drawn (per-dino trigger engine)",
-        "by_turn_6_pct": 62
+        "by_turn_6_pct": 65
       },
       {
         "label": "The Gishath connection kit (haste or evasion for the 7/6)",
-        "by_turn_6_pct": 61
+        "by_turn_6_pct": 70
       },
       {
         "label": "Enrage engine drawn",
-        "by_turn_6_pct": 28
+        "by_turn_6_pct": 17
       },
       {
         "label": "Protection held for the board",
@@ -4199,29 +4474,29 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.057,
-      "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 8,
-      "kill_by_turn_8_pct": 57,
+      "mean_kill_turn": 7.494,
+      "median_kill_turn": 7,
+      "kill_by_turn_6_pct": 18,
+      "kill_by_turn_8_pct": 78,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 11,
+      "no_kill_by_max_turn_pct": 4,
       "kill_turn_histogram": {
-        "10": 1062,
-        "4": 13,
-        "5": 169,
-        "6": 600,
-        "7": 1974,
-        "8": 2963,
-        "9": 2120
+        "10": 477,
+        "4": 23,
+        "5": 323,
+        "6": 1470,
+        "7": 3156,
+        "8": 2848,
+        "9": 1331
       }
     }
   },
   "engine_health": {
     "word": "EXCEPTIONAL",
-    "rate": 0.7937,
+    "rate": 0.9068,
     "ci95": [
-      0.7857,
-      0.8015
+      0.9009,
+      0.9123
     ],
     "n": 10000,
     "turn": 5,
@@ -4243,7 +4518,7 @@
         "WEAK"
       ]
     ],
-    "why": "the engine is online by turn 5 in 79% of 10,000 seeded games",
+    "why": "the engine is online by turn 5 in 91% of 10,000 seeded games",
     "basis": "diagnostic.json"
   },
   "engine": {
@@ -4260,9 +4535,9 @@
   "audit": {
     "archetype": null,
     "under": [
-      "mana-base",
       "colour-sources",
       "card-advantage",
+      "sweepers",
       "interaction-breadth"
     ],
     "over": [
@@ -4370,7 +4645,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "b394917f7b1bafafc993cbfb8199c4dd3b6349a818e561c58d0aea31c50a4e92",
     "ran_on_version": 4,
-    "current_version": 5,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 40,
     "wins": 15,
@@ -4407,7 +4682,7 @@
   },
   "experiments": null,
   "decisions": {
-    "count": 5,
+    "count": 6,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -4415,24 +4690,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "006",
+        "branch": "jurassic-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "001",
-        "at": "2026-09-16",
-        "kind": "propose",
-        "branch": "mana-v1",
-        "as_version": "v1.1.0",
-        "predicted": {
-          "endpoint": "stall",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
       {
         "id": "002",
         "at": "2026-09-20",
@@ -4495,13 +4762,30 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "006",
+        "at": "2026-11-06T19:34:14-08:00",
+        "kind": "merge",
+        "branch": "jurassic-v1",
+        "as_version": "v1.2.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug gishath` re-reads them when you want, never on its own",
+    "3 artifact(s) fail their own gate (engine, tutors, rating.json) — `deck-status gishath` names them; fix before anything else reads them",
+    "stale: frame, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-10-18) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck gishath --write`",
     "1 logged game(s) not yet debriefed (003) — `/debrief gishath`",
-    "`jurassic-v1` is PROPOSED as v1.2.0 and waiting on cardboard — 18 card(s) (14 to buy, 4 to unsleeve) — `manamap pilot deck-branch gishath show jurassic-v1` has the pull list",
     "diagnosis.json describes an older list — `/diagnose-deck gishath`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×2, resolve-stack ×9",
     "try a swap in seconds — `try gishath --out \"A\" --in \"B\"`"

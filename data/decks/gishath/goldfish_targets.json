@@ -5,15 +5,21 @@
       "need": [
         {
           "any_of": [
-            "Sol Ring",
             "Arcane Signet",
-            "Nature's Lore",
-            "Skyshroud Claim",
-            "Otepec Huntmaster",
+            "Atzocan Seer",
+            "Drover of the Mighty",
+            "Faeburrow Elder",
             "Hulking Raptor",
-            "Selvala, Heart of the Wilds",
+            "Intrepid Paleontologist",
+            "Ixalli's Lorekeeper",
+            "Knight of the Stampede",
+            "Nature's Lore",
+            "Otepec Huntmaster",
             "Regal Behemoth",
-            "Knight of the Stampede"
+            "Selvala, Heart of the Wilds",
+            "Skyshroud Claim",
+            "Sol Ring",
+            "Three Visits"
           ]
         }
       ],
@@ -25,13 +31,11 @@
       "need": [
         {
           "any_of": [
-            "Urza's Incubator",
-            "Otepec Huntmaster",
-            "Descendants' Path",
-            "Belbe's Portal",
-            "Monster Manual // Zoological Study",
             "Huatli, Poet of Unity // Roar of the Fifth People",
-            "Knight of the Stampede"
+            "Knight of the Stampede",
+            "Natural Order",
+            "Otepec Huntmaster",
+            "Urza's Incubator"
           ]
         }
       ]
@@ -41,12 +45,12 @@
       "need": [
         {
           "any_of": [
-            "Pantlaza, Sun-Favored",
-            "Descendants' Path",
-            "Garruk's Uprising",
             "Curious Altisaur",
+            "Garruk's Uprising",
+            "Pantlaza, Sun-Favored",
+            "Quartzwood Crasher",
             "Regisaur Alpha",
-            "Quartzwood Crasher"
+            "Roaming Throne"
           ]
         }
       ]
@@ -56,12 +60,13 @@
       "need": [
         {
           "any_of": [
-            "Regisaur Alpha",
-            "Otepec Huntmaster",
-            "Rogue's Passage",
+            "Berserkers' Onslaught",
             "Kessig Wolf Run",
+            "Knight of the Stampede",
+            "Otepec Huntmaster",
             "Overwhelming Stampede",
-            "Knight of the Stampede"
+            "Palani's Hatcher",
+            "Regisaur Alpha"
           ]
         }
       ],
@@ -72,7 +77,6 @@
       "need": [
         {
           "any_of": [
-            "Trapjaw Tyrant",
             "Wrathful Raptors"
           ]
         }
@@ -118,5 +122,6 @@
     "connects_per_attack": 0.7,
     "source": "sim/sythis-enchantress-vs-jarad-graveyard-vs-abaddon-n40-432faa65 (V3, 40 games): Gishath assigned to attack 60 times, the reveal trigger resolved 42 times = 0.70 per attack, read 2026-09-11 from the logs' `Combat: … assigned … to attack` and `Resolve Stack: Whenever Gishath` lines"
   },
-  "_route_note": "Routes marked 2026-09-21. `required` alone left `engine.any_route_by_turn` present with no rate cell, which fails validate-diagnostic — the figure needs at least one ROUTE to count as a union. The two marked are the deck's real alternative kills: the one-sided wipe (stack 004, Blasphemous Act plus Temple Altisaur) and the connection kit that gets the 7/6 through so the reveal fires at all."
+  "_route_note": "Routes marked 2026-09-21. `required` alone left `engine.any_route_by_turn` present with no rate cell, which fails validate-diagnostic — the figure needs at least one ROUTE to count as a union. The two marked are the deck's real alternative kills: the one-sided wipe (stack 004, Blasphemous Act plus Temple Altisaur) and the connection kit that gets the 7/6 through so the reveal fires at all.",
+  "_jurassic_v1_note": "REPAIRED 2026-11-06 after jurassic-v1 merged as v1.2.0, by oracle text: the cut names removed from every group (Descendants' Path, Belbe's Portal, Monster Manual, Rogue's Passage, Trapjaw Tyrant and the rest). Ramp: Atzocan Seer, Drover of the Mighty, Faeburrow Elder, Intrepid Paleontologist, Ixalli's Lorekeeper (Dinosaur-only mana), Three Visits. Cheat-into-play: Natural Order. Dinosaur payoff: Roaming Throne (a Dinosaur's triggers twice). Connection kit: Palani's Hatcher (other Dinosaurs have haste), Berserkers' Onslaught (attackers double strike). In no group: Devil Dinosaur (a lord plus hexproof), Rydia's Return (pump or regrowth), Thrashing Brontodon and Tranquil Frillback (answers). The enrage group keeps Wrathful Raptors alone, since Trapjaw Tyrant left."
 }
