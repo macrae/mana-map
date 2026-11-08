@@ -107,20 +107,20 @@ Mostly untapped duals and fetches for both colours, and this is where V7 packed 
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **94%**
-- MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 3.9**
-- A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **52%**
+- share of seeded games where the commander was CAST by turn six: **95%**
+- MEDIAN turn the goldfish kills on, not the mean: **turn 8**
+- mean turn the commander is first cast: **turn 3.919**
+- A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **51%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **14%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
 - STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
-- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **25%**
+- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **24%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **1%**
-- A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **24%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **35%**
+- A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **36%**
 - RAMP drawn — an accelerant of any kind: **34%**
-- REMOVAL drawn — a spell or ability that answers a permanent: **58%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
+- REMOVAL drawn — a spell or ability that answers a permanent: **59%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **14%**
 - share of opening sevens the model would keep: **78%**
 - Colour on curve (lands + rocks): B 88%, G 97%
 <!-- /ctx:gen numbers -->
@@ -148,6 +148,7 @@ For V7 he asked for the most competitive bracket 3 list. He wants interaction, p
 ## Change history
 
 <!-- ctx:gen history -->
+- **V11** (2026-11-07) — in: Elves of Deep Shadow; out: Beseech the Mirror
 - **V10** (2026-11-07) — in: Tergrid, God of Fright // Tergrid's Lantern; out: Diabolic Intent, Gaea's Cradle
 - **V9** (2026-11-07) — in: Bitterbloom Bearer, Bloodthrone Vampire, Forest, Necroblossom Snarl, Spawning Pit; out: Arcane Signet, Dina's Guidance, Golgari Rot Farm, Protean Hulk, Vernal Fen
 - **V8** (2026-11-07) — in: Khalni Garden, Scute Swarm; out: Eternal Witness, Mana Confluence
@@ -155,8 +156,7 @@ For V7 he asked for the most competitive bracket 3 list. He wants interaction, p
 - **V6** (2026-11-07) — in: Hogaak, Arisen Necropolis; out: Kokusho, the Evening Star
 - **V5** (2026-11-07) — in: Final Parting, Necromancy, Persist, Unmarked Grave; out: Deathrite Shaman, Elves of Deep Shadow, Fiend Artisan, Skull Prophet
 - **V4** (2026-11-07) — in: Bitterblossom, Jadar, Ghoulcaller of Nephalia, Ophiomancer; out: Golgari Grave-Troll, Icetill Explorer, Tireless Provisioner
-- **V3** (2026-11-06) — in: Accursed Marauder, Altar of Dementia, Archon of Cruelty, Birthing Pod, Bloodstained Mire, Cankerbloom, Deathcap Glade, Demonic Tutor …; out: Abstergo Entertainment, Chrome Mox, City of Brass, Conduit Pylons, Dawnhand Eulogist, Exotic Orchard, Feed the Swarm, Forbidden Orchard …
-- … 2 earlier version(s): `manamap pilot deck-version meren-recursion list`
+- … 3 earlier version(s): `manamap pilot deck-version meren-recursion list`
 <!-- /ctx:gen history -->
 
 **V7 (2026-11-07).** The pilot wanted the most competitive list in bracket 3, so the changes cover what a real table does to the deck.

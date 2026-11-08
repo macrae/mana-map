@@ -311,6 +311,12 @@
             ]
           },
           {
+            "name": "Dread Return",
+            "where": [
+              "Golgari Parts"
+            ]
+          },
+          {
             "name": "Eldritch Evolution",
             "where": [
               "Hapatra"
@@ -548,11 +554,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 67,
-      "out": 67,
+      "add": 68,
+      "out": 68,
       "counts": {
-        "in_deck": 33,
-        "box": 48,
+        "in_deck": 32,
+        "box": 49,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -853,10 +859,15 @@
         },
         {
           "name": "Dread Return",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Eldritch Evolution",
@@ -1927,7 +1938,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 95,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1936,7 +1947,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 9,
+          "value": 8,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -1945,7 +1956,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.9,
+          "value": 3.919,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1953,7 +1964,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 52,
+          "value": 51,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -1985,7 +1996,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 25,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -2001,7 +2012,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count": {
-          "value": 24,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count\" by turn six",
@@ -2009,7 +2020,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 35,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2025,7 +2036,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 58,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -2033,7 +2044,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2109,16 +2120,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 8.389,
-            "2": 2.313,
-            "3": 3.37,
-            "4": 4.235,
-            "5": 4.95,
-            "6": 5.647,
-            "7": 6.293,
-            "8": 6.959,
-            "9": 7.645
+            "1": 0.998,
+            "10": 8.41,
+            "2": 2.302,
+            "3": 3.361,
+            "4": 4.228,
+            "5": 4.948,
+            "6": 5.653,
+            "7": 6.3,
+            "8": 6.97,
+            "9": 7.656
           },
           "tier": "data",
           "weight": "detail",
@@ -2128,16 +2139,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 0.631,
+            "1": 0.998,
+            "10": 0.643,
             "2": 0.996,
-            "3": 0.907,
-            "4": 0.781,
-            "5": 0.667,
-            "6": 0.6,
-            "7": 0.567,
-            "8": 0.571,
-            "9": 0.594
+            "3": 0.903,
+            "4": 0.782,
+            "5": 0.669,
+            "6": 0.602,
+            "7": 0.569,
+            "8": 0.577,
+            "9": 0.591
           },
           "tier": "data",
           "weight": "detail",
@@ -2147,16 +2158,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.166,
-            "10": 12.858,
-            "2": 0.566,
-            "3": 1.047,
-            "4": 1.541,
-            "5": 2.683,
-            "6": 4.189,
-            "7": 5.923,
-            "8": 7.908,
-            "9": 10.217
+            "1": 0.17,
+            "10": 13.074,
+            "2": 0.583,
+            "3": 1.077,
+            "4": 1.562,
+            "5": 2.711,
+            "6": 4.234,
+            "7": 5.988,
+            "8": 8.004,
+            "9": 10.372
           },
           "tier": "data",
           "weight": "detail",
@@ -2166,14 +2177,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 359,
-            "1": 1701,
-            "2": 2924,
-            "3": 2927,
-            "4": 1490,
-            "5": 508,
-            "6": 86,
-            "7": 5
+            "0": 378,
+            "1": 1690,
+            "2": 2961,
+            "3": 2833,
+            "4": 1590,
+            "5": 464,
+            "6": 80,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -2182,12 +2193,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1739,
-            "5": 3,
-            "6": 187,
-            "7": 1344,
-            "8": 2457,
-            "9": 2527
+            "10": 1667,
+            "5": 5,
+            "6": 176,
+            "7": 1464,
+            "8": 2505,
+            "9": 2451
           },
           "tier": "data",
           "weight": "detail",
@@ -2203,12 +2214,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.9,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 3.919,
+    "commander_cast_by_turn_6_pct": 95,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 52
+        "by_turn_6_pct": 51
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
@@ -2224,7 +2235,7 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 24
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
@@ -2232,11 +2243,11 @@
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 13
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 36
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2244,27 +2255,27 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 59
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.518,
-      "median_kill_turn": 9,
+      "mean_kill_turn": 8.478,
+      "median_kill_turn": 8,
       "kill_by_turn_6_pct": 2,
-      "kill_by_turn_8_pct": 40,
+      "kill_by_turn_8_pct": 42,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 17,
       "kill_turn_histogram": {
-        "10": 1739,
-        "5": 3,
-        "6": 187,
-        "7": 1344,
-        "8": 2457,
-        "9": 2527
+        "10": 1667,
+        "5": 5,
+        "6": 176,
+        "7": 1464,
+        "8": 2505,
+        "9": 2451
       }
     }
   },
@@ -2318,7 +2329,7 @@
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 45 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],
