@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "1c5cb8d220158cc613d215d71761540083aabda2d8035bc5bd81f6bb4394cfee",
+  "decklist_sha256": "f03ad2aacc38f20d76c83a457db09094c60faca518c86d5282b10ae10e2777ce",
   "model_version": "77886e7c8a40",
   "lands": {
     "total": 34,
@@ -9,14 +9,14 @@
       "recurring_per_tap_cycle": 2,
       "one_time_on_entry": 8
     },
-    "enters_tapped": 11,
+    "enters_tapped": 10,
     "enters_tapped_always": 5,
     "classes": {
-      "basic": 2,
+      "basic": 3,
       "fetch": 6,
       "fixing": 2,
       "mdfc": 1,
-      "tapped": 11,
+      "tapped": 10,
       "untapped-dual": 10,
       "utility": 13
     },
@@ -133,23 +133,22 @@
         ]
       },
       {
-        "name": "Gaea's Cradle",
+        "name": "Forest",
         "copies": 1,
         "classes": [
-          "untapped-dual"
+          "basic"
         ],
         "produces": [
           "G"
         ]
       },
       {
-        "name": "Golgari Rot Farm",
+        "name": "Gaea's Cradle",
         "copies": 1,
         "classes": [
-          "tapped"
+          "untapped-dual"
         ],
         "produces": [
-          "B",
           "G"
         ]
       },
@@ -201,6 +200,17 @@
         "classes": [
           "fetch",
           "utility"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
+        "name": "Necroblossom Snarl",
+        "copies": 1,
+        "classes": [
+          "tapped"
         ],
         "produces": [
           "B",
@@ -337,17 +347,6 @@
         ]
       },
       {
-        "name": "Vernal Fen",
-        "copies": 1,
-        "classes": [
-          "tapped"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
         "name": "Wastewood Verge",
         "copies": 1,
         "classes": [
@@ -387,23 +386,23 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 29,
+      "B": 28,
       "R": 0,
       "G": 26
     },
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 6,
+      "B": 5,
       "R": 0,
-      "G": 5
+      "G": 4
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 35,
+      "B": 33,
       "R": 0,
-      "G": 31
+      "G": 30
     },
     "gated": {
       "count": 1,
@@ -419,15 +418,6 @@
         "cmc": 3.0,
         "produces": [
           "B"
-        ]
-      },
-      {
-        "name": "Arcane Signet",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
-        "produces": [
-          "B",
-          "G"
         ]
       },
       {
@@ -496,28 +486,28 @@
   },
   "pips": {
     "B": {
-      "total_pips": 64.0,
+      "total_pips": 66.0,
       "max_pips": 3,
-      "cards": 44,
+      "cards": 45,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 21.0,
-      "max_pips": 2,
-      "cards": 20,
+      "total_pips": 18.0,
+      "max_pips": 1,
+      "cards": 18,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.753,
-      "source_share": 0.527
+      "pip_share": 0.786,
+      "source_share": 0.519
     },
     "G": {
-      "pip_share": 0.247,
-      "source_share": 0.473
+      "pip_share": 0.214,
+      "source_share": 0.481
     }
   },
   "source_targets": {
@@ -526,15 +516,15 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.804,
+      "B": 0.785,
       "G": 0.944
     },
     "with_rocks_and_dorks": {
-      "B": 0.895,
-      "G": 0.972
+      "B": 0.869,
+      "G": 0.967
     },
     "lands_only_ungated": {
-      "B": 0.785,
+      "B": 0.764,
       "G": 0.944
     }
   },
@@ -542,32 +532,32 @@
     "ramp:dork": 3,
     "ramp:land": 2,
     "ramp:ritual": 3,
-    "ramp:rock": 4
+    "ramp:rock": 3
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.628,
-      "2": 0.995,
-      "3": 0.904,
-      "4": 0.778,
-      "5": 0.669,
-      "6": 0.596,
-      "7": 0.569,
-      "8": 0.568,
-      "9": 0.584
+      "10": 0.634,
+      "2": 0.996,
+      "3": 0.909,
+      "4": 0.789,
+      "5": 0.671,
+      "6": 0.593,
+      "7": 0.566,
+      "8": 0.571,
+      "9": 0.599
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.367,
-      "2": 2.273,
-      "3": 3.358,
-      "4": 4.22,
-      "5": 4.942,
-      "6": 5.64,
-      "7": 6.284,
-      "8": 6.94,
-      "9": 7.619
+      "10": 8.23,
+      "2": 2.274,
+      "3": 3.298,
+      "4": 4.159,
+      "5": 4.867,
+      "6": 5.547,
+      "7": 6.178,
+      "8": 6.821,
+      "9": 7.502
     }
   },
   "assumptions": [
@@ -577,6 +567,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 35."
+    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 33."
   ]
 }
