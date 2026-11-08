@@ -268,6 +268,12 @@
             ]
           },
           {
+            "name": "Carrion Feeder",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Castle Garenbrig",
             "where": [
               "Radagast Parts"
@@ -400,15 +406,16 @@
             ]
           },
           {
-            "name": "Liliana, Death Wielder",
+            "name": "Khalni Garden",
             "where": [
-              "Golgari Parts"
+              "Green",
+              "Mystery Booster 2"
             ]
           },
           {
-            "name": "Mana Confluence",
+            "name": "Liliana, Death Wielder",
             "where": [
-              "Shabraz Parts"
+              "Golgari Parts"
             ]
           },
           {
@@ -554,11 +561,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 68,
-      "out": 68,
+      "add": 69,
+      "out": 69,
       "counts": {
-        "in_deck": 32,
-        "box": 49,
+        "in_deck": 31,
+        "box": 50,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -706,10 +713,15 @@
         },
         {
           "name": "Carrion Feeder",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Castle Garenbrig",
@@ -1170,10 +1182,19 @@
         },
         {
           "name": "Khalni Garden",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lazotep Quarry",
@@ -1211,15 +1232,10 @@
         },
         {
           "name": "Mana Confluence",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Meren of Clan Nel Toth",
@@ -1910,7 +1926,7 @@
       "included": 0,
       "infinite": 0,
       "near": 50,
-      "near_total": 194,
+      "near_total": 163,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1956,7 +1972,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.898,
+          "value": 3.983,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1964,7 +1980,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 52,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -2028,7 +2044,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 34,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -2036,7 +2052,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 58,
+          "value": 59,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -2044,7 +2060,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2121,15 +2137,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.282,
-            "2": 2.306,
-            "3": 3.368,
-            "4": 4.234,
-            "5": 4.948,
-            "6": 5.64,
-            "7": 6.27,
-            "8": 6.918,
-            "9": 7.575
+            "10": 8.271,
+            "2": 2.279,
+            "3": 3.296,
+            "4": 4.156,
+            "5": 4.873,
+            "6": 5.571,
+            "7": 6.201,
+            "8": 6.843,
+            "9": 7.54
           },
           "tier": "data",
           "weight": "detail",
@@ -2140,15 +2156,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.597,
+            "10": 0.631,
             "2": 0.996,
-            "3": 0.91,
-            "4": 0.781,
-            "5": 0.668,
-            "6": 0.592,
-            "7": 0.552,
-            "8": 0.558,
-            "9": 0.568
+            "3": 0.907,
+            "4": 0.787,
+            "5": 0.683,
+            "6": 0.605,
+            "7": 0.567,
+            "8": 0.571,
+            "9": 0.606
           },
           "tier": "data",
           "weight": "detail",
@@ -2158,16 +2174,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.169,
-            "10": 12.499,
-            "2": 0.559,
-            "3": 1.035,
-            "4": 1.515,
-            "5": 2.638,
-            "6": 4.09,
-            "7": 5.768,
-            "8": 7.698,
-            "9": 9.928
+            "1": 0.134,
+            "10": 11.203,
+            "2": 0.503,
+            "3": 0.957,
+            "4": 1.351,
+            "5": 2.282,
+            "6": 3.538,
+            "7": 5.021,
+            "8": 6.765,
+            "9": 8.809
           },
           "tier": "data",
           "weight": "detail",
@@ -2177,14 +2193,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 386,
-            "1": 1624,
-            "2": 2956,
-            "3": 2920,
-            "4": 1545,
-            "5": 483,
-            "6": 79,
-            "7": 7
+            "0": 392,
+            "1": 1649,
+            "2": 2968,
+            "3": 2834,
+            "4": 1573,
+            "5": 487,
+            "6": 92,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -2193,13 +2209,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1569,
-            "4": 2,
-            "5": 51,
-            "6": 339,
-            "7": 1574,
-            "8": 2493,
-            "9": 2331
+            "10": 1611,
+            "4": 3,
+            "5": 45,
+            "6": 321,
+            "7": 1566,
+            "8": 2428,
+            "9": 2348
           },
           "tier": "data",
           "weight": "detail",
@@ -2215,12 +2231,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.898,
+    "commander_mean_cast_turn": 3.983,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 52
+        "by_turn_6_pct": 44
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
@@ -2252,46 +2268,49 @@
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 35
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 59
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.366,
+      "mean_kill_turn": 8.386,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 45,
+      "kill_by_turn_8_pct": 44,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 16,
+      "no_kill_by_max_turn_pct": 17,
       "kill_turn_histogram": {
-        "10": 1569,
-        "4": 2,
-        "5": 51,
-        "6": 339,
-        "7": 1574,
-        "8": 2493,
-        "9": 2331
+        "10": 1611,
+        "4": 3,
+        "5": 45,
+        "6": 321,
+        "7": 1566,
+        "8": 2428,
+        "9": 2348
       }
     }
   },
   "engine_health": null,
   "engine": null,
-  "diagnosis": null,
+  "diagnosis": {
+    "verdict": "It is fast and deep. Mana is reliable (0.91 turn-3 land drop), there are 10 tutors, and 11 of its 19 interaction pieces are on creatures Meren can return. It also has six answers to a Rest in Peace or Leyline of the Void. What limits it at a real table is that nothing in the 99 stops a counterspell on the reanimate turn, and that its card flow depends on its own graveyard: Meren returns a creature card every end step and five of its seven draw cards need a death, an entry or attack, or combat damage, so a wipe followed by graveyard exile is the hand it cannot rebuild from.",
+    "skeptic": "fail",
+    "stale": true
+  },
   "audit": {
     "archetype": null,
     "under": [
       "mana-base",
       "colour-sources",
       "card-advantage",
-      "protection",
-      "interaction-breadth"
+      "protection"
     ],
     "over": [],
     "stale": []
@@ -2301,7 +2320,23 @@
     "answered": 0,
     "latest": null
   },
-  "open_questions": [],
+  "open_questions": [
+    {
+      "from": "diagnosis",
+      "question": "Rewrite goldfish_targets.json for the reanimator plan: replace the drain, Starscape and core-trio groups with a loader group, a reanimation group (the seven pieces above), a nonlegendary-target group, and the full ten-card outlet group.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Does Necromancy, cast at instant speed in response to Bojuka Bog's trigger or a Soul-Guide Lantern activation, return a creature before the yard is exiled?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "diagnosis",
+      "question": "How often do the pilot's bracket-3 tables run graveyard hate (Rest in Peace, Leyline of the Void, Soul-Guide Lantern, Farewell) and counterspells?",
+      "settled_by": "research-strategy"
+    }
+  ],
   "simulation": null,
   "experiments": null,
   "decisions": {
@@ -2331,8 +2366,10 @@
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
+    "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
+    "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1",
     "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

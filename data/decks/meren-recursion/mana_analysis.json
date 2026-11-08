@@ -1,24 +1,24 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "7c8d527d99ba200c3e39e9e48946612666830f6784c2b9f51c2bbaebc125ffcf",
+  "decklist_sha256": "144318a401d3e2799f550022345d9e92ad93de3643f128fb0be41fd534b58c65",
   "model_version": "a7cdf267dd5d",
   "lands": {
     "total": 34,
     "entries": 32,
     "life": {
-      "recurring_per_tap_cycle": 2,
+      "recurring_per_tap_cycle": 3,
       "one_time_on_entry": 8
     },
-    "enters_tapped": 10,
-    "enters_tapped_always": 5,
+    "enters_tapped": 9,
+    "enters_tapped_always": 4,
     "classes": {
       "basic": 4,
       "fetch": 6,
-      "fixing": 2,
+      "fixing": 3,
       "mdfc": 1,
-      "tapped": 10,
-      "untapped-dual": 9,
-      "utility": 13
+      "tapped": 9,
+      "untapped-dual": 10,
+      "utility": 14
     },
     "list": [
       {
@@ -151,19 +151,22 @@
         "produces": []
       },
       {
-        "name": "Khalni Garden",
+        "name": "Llanowar Wastes",
         "copies": 1,
         "classes": [
-          "tapped"
+          "untapped-dual",
+          "utility"
         ],
         "produces": [
+          "B",
           "G"
         ]
       },
       {
-        "name": "Llanowar Wastes",
+        "name": "Mana Confluence",
         "copies": 1,
         "classes": [
+          "fixing",
           "untapped-dual",
           "utility"
         ],
@@ -376,7 +379,7 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 28,
+      "B": 29,
       "R": 0,
       "G": 26
     },
@@ -385,14 +388,14 @@
       "U": 0,
       "B": 6,
       "R": 0,
-      "G": 4
+      "G": 3
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 34,
+      "B": 35,
       "R": 0,
-      "G": 30
+      "G": 29
     },
     "gated": {
       "count": 1,
@@ -442,14 +445,6 @@
         ]
       },
       {
-        "name": "Elvish Mystic",
-        "kind": "ramp:dork",
-        "cmc": 1.0,
-        "produces": [
-          "G"
-        ]
-      },
-      {
         "name": "Llanowar Elves",
         "kind": "ramp:dork",
         "cmc": 1.0,
@@ -491,21 +486,21 @@
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 22.0,
+      "total_pips": 24.0,
       "max_pips": 3,
-      "cards": 20,
+      "cards": 22,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.735,
-      "source_share": 0.519
+      "pip_share": 0.718,
+      "source_share": 0.527
     },
     "G": {
-      "pip_share": 0.265,
-      "source_share": 0.481
+      "pip_share": 0.282,
+      "source_share": 0.473
     }
   },
   "source_targets": {
@@ -514,20 +509,20 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.785,
+      "B": 0.804,
       "G": 0.944
     },
     "with_rocks_and_dorks": {
-      "B": 0.882,
-      "G": 0.967
+      "B": 0.895,
+      "G": 0.962
     },
     "lands_only_ungated": {
-      "B": 0.764,
+      "B": 0.785,
       "G": 0.944
     }
   },
   "ramp": {
-    "ramp:dork": 4,
+    "ramp:dork": 3,
     "ramp:land": 2,
     "ramp:ritual": 3,
     "ramp:rock": 3
@@ -535,27 +530,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.597,
+      "10": 0.631,
       "2": 0.996,
-      "3": 0.91,
-      "4": 0.781,
-      "5": 0.668,
-      "6": 0.592,
-      "7": 0.552,
-      "8": 0.558,
-      "9": 0.568
+      "3": 0.907,
+      "4": 0.787,
+      "5": 0.683,
+      "6": 0.605,
+      "7": 0.567,
+      "8": 0.571,
+      "9": 0.606
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.282,
-      "2": 2.306,
-      "3": 3.368,
-      "4": 4.234,
-      "5": 4.948,
-      "6": 5.64,
-      "7": 6.27,
-      "8": 6.918,
-      "9": 7.575
+      "10": 8.271,
+      "2": 2.279,
+      "3": 3.296,
+      "4": 4.156,
+      "5": 4.873,
+      "6": 5.571,
+      "7": 6.201,
+      "8": 6.843,
+      "9": 7.54
     }
   },
   "assumptions": [
@@ -565,6 +560,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 34."
+    "B: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 35."
   ]
 }
