@@ -1926,7 +1926,7 @@
       "included": 0,
       "infinite": 0,
       "near": 50,
-      "near_total": 163,
+      "near_total": 144,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1972,7 +1972,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.983,
+          "value": 3.98,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2052,7 +2052,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 59,
+          "value": 58,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -2136,16 +2136,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 8.271,
-            "2": 2.279,
-            "3": 3.296,
-            "4": 4.156,
-            "5": 4.873,
-            "6": 5.571,
-            "7": 6.201,
-            "8": 6.843,
-            "9": 7.54
+            "1": 0.998,
+            "10": 8.145,
+            "2": 2.278,
+            "3": 3.293,
+            "4": 4.152,
+            "5": 4.859,
+            "6": 5.553,
+            "7": 6.178,
+            "8": 6.798,
+            "9": 7.456
           },
           "tier": "data",
           "weight": "detail",
@@ -2155,16 +2155,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 0.631,
+            "1": 0.998,
+            "10": 0.602,
             "2": 0.996,
-            "3": 0.907,
-            "4": 0.787,
-            "5": 0.683,
-            "6": 0.605,
-            "7": 0.567,
-            "8": 0.571,
-            "9": 0.606
+            "3": 0.904,
+            "4": 0.786,
+            "5": 0.673,
+            "6": 0.603,
+            "7": 0.559,
+            "8": 0.552,
+            "9": 0.581
           },
           "tier": "data",
           "weight": "detail",
@@ -2174,16 +2174,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.134,
-            "10": 11.203,
-            "2": 0.503,
-            "3": 0.957,
-            "4": 1.351,
-            "5": 2.282,
-            "6": 3.538,
-            "7": 5.021,
-            "8": 6.765,
-            "9": 8.809
+            "1": 0.136,
+            "10": 11.952,
+            "2": 0.504,
+            "3": 1.005,
+            "4": 1.429,
+            "5": 2.459,
+            "6": 3.861,
+            "7": 5.468,
+            "8": 7.336,
+            "9": 9.483
           },
           "tier": "data",
           "weight": "detail",
@@ -2193,14 +2193,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 392,
-            "1": 1649,
-            "2": 2968,
-            "3": 2834,
-            "4": 1573,
-            "5": 487,
-            "6": 92,
-            "7": 5
+            "0": 376,
+            "1": 1609,
+            "2": 3042,
+            "3": 2788,
+            "4": 1605,
+            "5": 480,
+            "6": 91,
+            "7": 9
           },
           "tier": "data",
           "weight": "detail",
@@ -2209,13 +2209,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1611,
-            "4": 3,
-            "5": 45,
-            "6": 321,
-            "7": 1566,
-            "8": 2428,
-            "9": 2348
+            "10": 1593,
+            "4": 1,
+            "5": 53,
+            "6": 359,
+            "7": 1579,
+            "8": 2507,
+            "9": 2375
           },
           "tier": "data",
           "weight": "detail",
@@ -2231,7 +2231,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.983,
+    "commander_mean_cast_turn": 3.98,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2272,7 +2272,7 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 59
+        "by_turn_6_pct": 58
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
@@ -2280,20 +2280,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.386,
+      "mean_kill_turn": 8.366,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 44,
+      "kill_by_turn_8_pct": 45,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 17,
+      "no_kill_by_max_turn_pct": 15,
       "kill_turn_histogram": {
-        "10": 1611,
-        "4": 3,
-        "5": 45,
-        "6": 321,
-        "7": 1566,
-        "8": 2428,
-        "9": 2348
+        "10": 1593,
+        "4": 1,
+        "5": 53,
+        "6": 359,
+        "7": 1579,
+        "8": 2507,
+        "9": 2375
       }
     }
   },
