@@ -1683,6 +1683,26 @@ _SAC_TEAM_COUNTER_RE = re.compile(
     r"put a \+1/\+1 counter on each creature you control", re.IGNORECASE)
 
 
+#: AN X TEAM PUMP (2026-11-07): "creatures you control gain trample and get +X/+X, where X is
+#: the number of creatures you control | the greatest power among creatures you control" --
+#: Craterhoof Behemoth (on entering), Overwhelming Stampede (a sorcery), Pathbreaker Ibex (on
+#: attacking): the corpus's three.
+_TEAM_PUMP_X_RE = re.compile(
+    r"(When[^.]*?enters|Whenever[^.]*?attacks|Until end of turn)?,? creatures you control gain "
+    r"trample and get \+X/\+X(?: until end of turn)?, where X is (the number of creatures you "
+    r"control|the greatest power among creatures you control)", re.IGNORECASE)
+
+
+def team_pump_x(card):
+    """{"when": "enters"|"attacks"|"spell", "x": "creatures"|"greatest_power"} or None."""
+    m = _TEAM_PUMP_X_RE.search(card.get("oracle_text", "") or "")
+    if not m:
+        return None
+    lead = (m.group(1) or "").lower()
+    return {"when": "enters" if "enters" in lead else "attacks" if "attacks" in lead else "spell",
+            "x": "creatures" if "number of creatures" in m.group(2).lower() else "greatest_power"}
+
+
 def own_death_profile(card):
     """The deaths this card causes among its controller's own creatures (see above), and two
     neighbours read with them: a spell no mana may pay for, and a counter on every sacrifice."""
@@ -1710,6 +1730,7 @@ def own_death_profile(card):
             "cast_from_yard": bool(re.search(r"you may cast this card from your graveyard",
                                              text, re.IGNORECASE)),
             "sac_team_counter": bool(_SAC_TEAM_COUNTER_RE.search(text)),
+            "team_pump_x": team_pump_x(card),
             "self_sac": bool(sac), "self_sac_cost": sac_cost,
             "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),
             "clamp": clamp}
@@ -1791,6 +1812,10 @@ _DISCARD_TUTOR_RE = re.compile(
 _TO_YARD_SPLIT_RE = re.compile(
     r"search your library for (?:up to )?two ([\w' -]{0,30}?)cards[^.]*\.\s*"
     r"put one into your hand and the other into your graveyard", re.IGNORECASE)
+#: VICTIMIZE, the corpus's only one (2026-11-07): two creature cards back, for a sacrifice.
+_REANIMATE_TWO_RE = re.compile(
+    r"choose (two|three) target creature cards in your graveyard\. sacrifice a creature\. "
+    r"if you do, return the chosen cards to the battlefield", re.IGNORECASE)
 _REANIMATE_TEMP_RE = re.compile(
     r"sacrifice (?:it|that creature) at the beginning of the next end step", re.IGNORECASE)
 
@@ -1810,6 +1835,7 @@ def graveyard_profile(card):
     _line = next((ln for ln in text.split("\n") if m and m.group(0)[:30] in ln), "")
     tap = bool(m and re.search(r"\{T\}[^:]*:\s*search your library", _line, re.IGNORECASE))
     r = _REANIMATE_RE.search(text)
+    two = _REANIMATE_TWO_RE.search(text)
     d = _DISCARD_TUTOR_RE.search(text)
     return {"discard_tutor": ({"cost": sum(int(t) if t.isdigit() else 1 for t in
                                            re.findall(r"\{([^}]+)\}", d.group(1)) if t != "T"),
@@ -1819,7 +1845,9 @@ def graveyard_profile(card):
             "to_yard_nonlegendary": "nonlegendary" in _words,   # Unmarked Grave
             "to_yard_tap": tap,
             "to_yard_also_hand": bool(split),
-            "reanimate": bool(r),
+            "reanimate": bool(r or two),
+            "reanimate_n": _RECUR_WORDS[two.group(1).lower()] if two else 1,
+            "reanimate_sac": bool(two),
             "reanimate_nonlegendary": bool(r and r.group(1)),
             "reanimate_max_mv": int(r.group(2)) if r and r.group(2) else None,
             "temporary": bool(_REANIMATE_TEMP_RE.search(text))}

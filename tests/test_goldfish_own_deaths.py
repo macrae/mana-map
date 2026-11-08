@@ -191,6 +191,10 @@ def test_the_graveyard_shapes_read_from_the_text():
                                       "your graveyard to the battlefield with a -1/-1 counter on "
                                       "it.", "Sorcery"))
     assert persist["reanimate"] and persist["reanimate_nonlegendary"]
+    vic = graveyard_profile(_card("Victimize", "Choose two target creature cards in your "
+                                  "graveyard. Sacrifice a creature. If you do, return the chosen "
+                                  "cards to the battlefield tapped.", "Sorcery"))
+    assert vic["reanimate"] and vic["reanimate_n"] == 2 and vic["reanimate_sac"]
     tutor = graveyard_profile(_card("Demonic Tutor", "Search your library for a card, put that "
                                     "card into your hand, then shuffle.", "Sorcery"))
     assert tutor["to_yard"] == 0, "a tutor to HAND is not a loader"
@@ -331,4 +335,36 @@ def test_mazirek_grows_the_board_on_every_sacrifice(monkeypatch):
         real = goldfish_library.own_death_profile
         mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "sac_team_counter": False})
         off = power(mp)
+    assert on > off, (on, off)
+
+
+def test_the_x_team_pumps_read_from_the_text():
+    from manamap.pilot.goldfish_profiles import team_pump_x
+    hoof = team_pump_x(_card("Craterhoof Behemoth", "Haste\nWhen this creature enters, creatures "
+                             "you control gain trample and get +X/+X until end of turn, where X "
+                             "is the number of creatures you control.", "Creature — Beast"))
+    assert hoof == {"when": "enters", "x": "creatures"}
+    stamp = team_pump_x(_card("Overwhelming Stampede", "Until end of turn, creatures you control "
+                              "gain trample and get +X/+X, where X is the greatest power among "
+                              "creatures you control.", "Sorcery"))
+    assert stamp == {"when": "spell", "x": "greatest_power"}
+
+
+@requires_deck
+def test_craterhoof_pumps_the_team(monkeypatch):
+    """PROVED BY REMOVING THE PUMP: the same games, less damage by turn ten."""
+    have = {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+    from manamap.pilot import try_swap
+    doc = None if "Craterhoof Behemoth" in have else try_swap.apply_swaps(
+        SLUG, None, [("Assassin's Trophy", "Craterhoof Behemoth")])[0]
+
+    def dmg(mp):
+        return goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False,
+                            doc=doc)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    on = dmg(monkeypatch)
+    with pytest.MonkeyPatch.context() as mp:
+        real = goldfish_library.own_death_profile
+        mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "team_pump_x": None})
+        off = dmg(mp)
     assert on > off, (on, off)

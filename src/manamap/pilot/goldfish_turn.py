@@ -1627,11 +1627,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             finally:
                 own_deaths["route"] = "free"
 
+        def _pump_x(kind):
+            """X for an X team pump on the board as it is now (2026-11-07)."""
+            if kind == "creatures":
+                return len(battlefield)
+            return max((e[0] for e in battlefield), default=0)
+
         def _register_own_death(card, enters):
             """What this permanent will kill among our own creatures (2026-11-07). An edict is
             mandatory and fires its death payoffs wherever deaths are read; a costed outlet and
             a clamp are the Meren pilot's choices, read under her declaration."""
+            nonlocal turn_pump
             od = card.get("own_death") or {}
+            # CRATERHOOF (under Meren's declaration): entering pumps every creature for the turn.
+            # Through Meren's end step it lands after combat, and the pump buys nothing.
+            if enters and commander_recursion and (od.get("team_pump_x") or {}).get("when") == "enters":
+                turn_pump += _pump_x(od["team_pump_x"]["x"])
             if model_sacrifice and card["sac_outlet"] == "costed":
                 own_deaths["costed_outlet"] = True
             if enters and od.get("self_edict") and (model_sacrifice or model_deaths
@@ -1935,7 +1946,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                          # already out and it wants to be cast
                          # before the swing, because the copies have
                          # haste and attack the turn they arrive.
-                         or c["combat"]["spell_token_copy"])
+                         or c["combat"]["spell_token_copy"]
+                         # OVERWHELMING STAMPEDE (2026-11-07, Meren's declaration)
+                         or (commander_recursion and ((c.get("own_death") or {}).get(
+                             "team_pump_x") or {}).get("when") == "spell"))
                     # AN UNTAPPER IS HELD, NOT CAST ON CURVE. Cast in
                     # the precombat main it untaps creatures that are
                     # already untapped and does nothing — which is the
@@ -1963,6 +1977,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _magecraft(len(battlefield) - 1)
             team = card["combat"]["spell_pump_team"]
             single = card["combat"]["spell_pump_single"]
+            _tpx = (card.get("own_death") or {}).get("team_pump_x")
+            if commander_recursion and _tpx and _tpx["when"] == "spell":
+                turn_pump += _pump_x(_tpx["x"])
             # THE TREASURES THE SPELL MAKES, credited on exactly the same
             # multiplication as the pump. Reckless Ransacking is {1}{R} for
             # +3/+2 AND a Treasure; copied across eight creatures that is
@@ -3086,14 +3103,35 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                       and "Legendary" in (c.get("type_line") or ""))]
                     if card not in hand or not _fits:
                         continue
-                    _tgt = max(_fits, key=lambda c: c["cmc"])
-                    if _tgt["cmc"] < card["cmc"] + 2 or not spend(card["cmc"], card["pips"]):
+                    _tgts = sorted(_fits, key=lambda c: -c["cmc"])[:_yd.get("reanimate_n", 1)]
+                    # VICTIMIZE: a creature of ours is sacrificed first -- a token, else a spare
+                    # body that makes no mana; no such body, no cast. Worth it on the total.
+                    _victim = None
+                    if _yd.get("reanimate_sac"):
+                        _cands = [i for i, e in enumerate(battlefield)
+                                  if e[4] or (len(e) > 12 and e[12] and e[12].get("card")
+                                              and _is_fodder(e[12]["card"])
+                                              and not e[12]["card"].get("produces"))]
+                        if not _cands:
+                            continue
+                        _victim = min(_cands, key=lambda i: battlefield[i][0])
+                    if sum(c["cmc"] for c in _tgts) < card["cmc"] + 2 \
+                            or not spend(card["cmc"], card["pips"]):
                         continue
                     _note_cast(card)
-                    yard_creatures.remove(_tgt)
-                    _enter_by(_tgt, "reanimate")
-                    if card["yard"]["temporary"]:
-                        own_deaths["temp"].append(_tgt)
+                    if _victim is not None:
+                        _ve = battlefield.pop(_victim)
+                        creature_types.pop(_victim)
+                        creature_flying.pop(_victim)
+                        own_deaths["sacs"] += 1
+                        if not _ve[4] and len(_ve) > 12 and _ve[12] and _ve[12].get("card"):
+                            yard_creatures.append(_ve[12]["card"])
+                        _deaths_after_combat(1, bool(_ve[4]))
+                    for _tgt in _tgts:
+                        yard_creatures.remove(_tgt)
+                        _enter_by(_tgt, "reanimate")
+                        if card["yard"]["temporary"]:
+                            own_deaths["temp"].append(_tgt)
 
             # A permanent that grants an ADDITIONAL COMBAT PHASE is neither a rock,
             # a tutor nor a body, so the resource-only loop never cast it at all --
