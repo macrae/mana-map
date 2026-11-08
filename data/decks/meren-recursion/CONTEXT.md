@@ -6,7 +6,7 @@
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
 - **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 34 · **bracket floor:** 3 (Upgraded)
-- **Combos:** 0 known lines (0 infinite, 0 two-card) · 214 one card short
+- **Combos:** 0 known lines (0 infinite, 0 two-card) · 212 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
 <!-- /ctx:gen summary -->
 
@@ -109,19 +109,19 @@ Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each 
 
 - share of seeded games where the commander was CAST by turn six: **94%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 3.996**
+- mean turn the commander is first cast: **turn 4.014**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **52%**
-- A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **13%**
+- A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **14%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
 - STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
 - RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **24%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **1%**
-- A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **24%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **44%**
-- RAMP drawn — an accelerant of any kind: **35%**
+- A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **25%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **34%**
+- RAMP drawn — an accelerant of any kind: **34%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **58%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
-- share of opening sevens the model would keep: **78%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **14%**
+- share of opening sevens the model would keep: **79%**
 - Colour on curve (lands + rocks): B 87%, G 97%
 <!-- /ctx:gen numbers -->
 
@@ -148,6 +148,7 @@ For V7 he asked for the most competitive bracket 3 list. He wants interaction, p
 ## Change history
 
 <!-- ctx:gen history -->
+- **V9** (2026-11-07) — in: Bitterbloom Bearer, Bloodthrone Vampire, Forest, Necroblossom Snarl, Spawning Pit; out: Arcane Signet, Dina's Guidance, Golgari Rot Farm, Protean Hulk, Vernal Fen
 - **V8** (2026-11-07) — in: Khalni Garden, Scute Swarm; out: Eternal Witness, Mana Confluence
 - **V7** (2026-11-07) — in: Agadeem's Awakening // Agadeem, the Undercrypt, Beseech the Mirror, Bojuka Bog, Cabal Coffers, Dark Ritual, Dismember, Heroic Intervention, Lightning Greaves …; out: Castle Garenbrig, Chord of Calling, Eldritch Evolution, Grist, Voracious Larva, Izoni, Thousand-Eyed, Junji, the Midnight Sky, Khalni Garden, Lazotep Quarry …
 - **V6** (2026-11-07) — in: Hogaak, Arisen Necropolis; out: Kokusho, the Evening Star
@@ -155,7 +156,7 @@ For V7 he asked for the most competitive bracket 3 list. He wants interaction, p
 - **V4** (2026-11-07) — in: Bitterblossom, Jadar, Ghoulcaller of Nephalia, Ophiomancer; out: Golgari Grave-Troll, Icetill Explorer, Tireless Provisioner
 - **V3** (2026-11-06) — in: Accursed Marauder, Altar of Dementia, Archon of Cruelty, Birthing Pod, Bloodstained Mire, Cankerbloom, Deathcap Glade, Demonic Tutor …; out: Abstergo Entertainment, Chrome Mox, City of Brass, Conduit Pylons, Dawnhand Eulogist, Exotic Orchard, Feed the Swarm, Forbidden Orchard …
 - **V2** (2026-11-06) — in: Birds of Paradise, Chord of Calling, Dina's Guidance, Elvish Mystic, Entomb, Fiend Artisan, Grave Titan, Junji, the Midnight Sky …; out: Blood Artist, Boggart Mischief, Deadbridge Chant, Diabolic Servitude, Dose of Dawnglow, Garruk's Uprising, Grave Venerations, Obelisk Spider …
-- **v0.1.0 · V1** (2026-09-17) — first list, 100 cards
+- … 1 earlier version(s): `manamap pilot deck-version meren-recursion list`
 <!-- /ctx:gen history -->
 
 **V7 (2026-11-07).** The pilot wanted the most competitive list in bracket 3, so the changes cover what a real table does to the deck.

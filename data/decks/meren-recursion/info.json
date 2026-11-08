@@ -299,6 +299,12 @@
             ]
           },
           {
+            "name": "Diabolic Intent",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Diabolic Servitude",
             "where": [
               "Mystery Booster 2"
@@ -542,11 +548,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 66,
-      "out": 66,
+      "add": 67,
+      "out": 67,
       "counts": {
-        "in_deck": 34,
-        "box": 47,
+        "in_deck": 33,
+        "box": 48,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -823,10 +829,15 @@
         },
         {
           "name": "Diabolic Intent",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Diabolic Servitude",
@@ -1888,7 +1899,7 @@
       "included": 0,
       "infinite": 0,
       "near": 50,
-      "near_total": 214,
+      "near_total": 212,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1934,7 +1945,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.996,
+          "value": 4.014,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1950,7 +1961,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -1990,7 +2001,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count": {
-          "value": 24,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count\" by turn six",
@@ -1998,7 +2009,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 44,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2006,7 +2017,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -2022,7 +2033,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2088,7 +2099,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 78,
+          "value": 79,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -2099,15 +2110,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.23,
-            "2": 2.274,
-            "3": 3.298,
-            "4": 4.159,
-            "5": 4.867,
-            "6": 5.547,
-            "7": 6.178,
-            "8": 6.821,
-            "9": 7.502
+            "10": 8.168,
+            "2": 2.267,
+            "3": 3.288,
+            "4": 4.132,
+            "5": 4.826,
+            "6": 5.505,
+            "7": 6.14,
+            "8": 6.779,
+            "9": 7.44
           },
           "tier": "data",
           "weight": "detail",
@@ -2118,15 +2129,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.634,
-            "2": 0.996,
-            "3": 0.909,
-            "4": 0.789,
-            "5": 0.671,
-            "6": 0.593,
-            "7": 0.566,
-            "8": 0.571,
-            "9": 0.599
+            "10": 0.636,
+            "2": 0.997,
+            "3": 0.903,
+            "4": 0.776,
+            "5": 0.663,
+            "6": 0.598,
+            "7": 0.57,
+            "8": 0.565,
+            "9": 0.581
           },
           "tier": "data",
           "weight": "detail",
@@ -2136,16 +2147,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.179,
-            "10": 12.657,
-            "2": 0.575,
-            "3": 1.093,
-            "4": 1.508,
-            "5": 2.553,
-            "6": 3.984,
-            "7": 5.691,
-            "8": 7.676,
-            "9": 9.988
+            "1": 0.178,
+            "10": 12.571,
+            "2": 0.577,
+            "3": 1.089,
+            "4": 1.515,
+            "5": 2.566,
+            "6": 4.023,
+            "7": 5.723,
+            "8": 7.701,
+            "9": 9.957
           },
           "tier": "data",
           "weight": "detail",
@@ -2155,14 +2166,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 394,
-            "1": 1660,
-            "2": 2930,
-            "3": 2882,
-            "4": 1541,
-            "5": 498,
-            "6": 92,
-            "7": 3
+            "0": 375,
+            "1": 1598,
+            "2": 3077,
+            "3": 2822,
+            "4": 1525,
+            "5": 510,
+            "6": 89,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -2171,12 +2182,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1747,
-            "5": 5,
-            "6": 154,
-            "7": 1262,
-            "8": 2447,
-            "9": 2568
+            "10": 1748,
+            "5": 7,
+            "6": 171,
+            "7": 1219,
+            "8": 2442,
+            "9": 2534
           },
           "tier": "data",
           "weight": "detail",
@@ -2192,7 +2203,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.996,
+    "commander_mean_cast_turn": 4.014,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2201,7 +2212,7 @@
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -2221,15 +2232,15 @@
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 25
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 34
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
@@ -2237,23 +2248,23 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.547,
+      "mean_kill_turn": 8.548,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 2,
-      "kill_by_turn_8_pct": 39,
+      "kill_by_turn_8_pct": 38,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 18,
+      "no_kill_by_max_turn_pct": 19,
       "kill_turn_histogram": {
-        "10": 1747,
-        "5": 5,
-        "6": 154,
-        "7": 1262,
-        "8": 2447,
-        "9": 2568
+        "10": 1748,
+        "5": 7,
+        "6": 171,
+        "7": 1219,
+        "8": 2442,
+        "9": 2534
       }
     }
   },
@@ -2307,7 +2318,7 @@
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 44 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 45 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "try a swap in seconds — `try meren-recursion --out \"A\" --in \"B\"`"
   ],
