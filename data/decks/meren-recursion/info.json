@@ -400,6 +400,12 @@
             ]
           },
           {
+            "name": "Grist, the Hunger Tide",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Izoni, Thousand-Eyed",
             "where": [
               "Hapatra"
@@ -561,11 +567,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 69,
-      "out": 69,
+      "add": 70,
+      "out": 70,
       "counts": {
-        "in_deck": 31,
-        "box": 50,
+        "in_deck": 30,
+        "box": 51,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -1148,10 +1154,15 @@
         },
         {
           "name": "Grist, the Hunger Tide",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Hidden Grotto",
@@ -1922,15 +1933,122 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": null,
-      "included": 0,
-      "infinite": 0,
+      "highest_bracket": 3,
+      "included": 7,
+      "infinite": 7,
       "near": 50,
-      "near_total": 144,
+      "near_total": 167,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
-    "top": []
+    "top": [
+      {
+        "id": "56-5256-5695",
+        "cards": [
+          "Hogaak, Arisen Necropolis",
+          "Infested Thrinax",
+          "Altar of Dementia"
+        ],
+        "produces": [
+          "Infinite creature LTB",
+          "Infinite creature ETB",
+          "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
+          "Infinite mill",
+          "Infinite self-mill",
+          "Infinite storm count",
+          "Infinite creature tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 827,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "56-3391-4050",
+        "cards": [
+          "Hogaak, Arisen Necropolis",
+          "Korozda Guildmage",
+          "Phyrexian Altar"
+        ],
+        "produces": [
+          "Infinite colored mana",
+          "Infinite creature tokens",
+          "Infinite death triggers",
+          "Infinite creature ETB",
+          "Infinite creature LTB",
+          "Infinite creature sacrifice triggers",
+          "Infinite storm count"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 446,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "56-4050-5695",
+        "cards": [
+          "Hogaak, Arisen Necropolis",
+          "Infested Thrinax",
+          "Phyrexian Altar"
+        ],
+        "produces": [
+          "Infinite creature LTB",
+          "Infinite creature ETB",
+          "Infinite colored mana",
+          "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
+          "Infinite storm count",
+          "Infinite creature tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 423,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "56-2292-5695",
+        "cards": [
+          "Hogaak, Arisen Necropolis",
+          "Infested Thrinax",
+          "Viscera Seer"
+        ],
+        "produces": [
+          "Infinite creature LTB",
+          "Infinite creature ETB",
+          "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
+          "Infinite scry 1",
+          "Infinite storm count",
+          "Infinite creature tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 335,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "56-2034-5695",
+        "cards": [
+          "Hogaak, Arisen Necropolis",
+          "Infested Thrinax",
+          "Ashnod's Altar"
+        ],
+        "produces": [
+          "Infinite creature LTB",
+          "Infinite creature ETB",
+          "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
+          "Infinite colorless mana",
+          "Infinite storm count",
+          "Infinite creature tokens"
+        ],
+        "infinite": true,
+        "bracket": 3,
+        "popularity": 192,
+        "assumes_other_commander": false
+      }
+    ]
   },
   "paper": null,
   "record": {
@@ -1972,7 +2090,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.98,
+          "value": 3.994,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1988,7 +2106,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -2012,7 +2130,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 25,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -2020,7 +2138,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 1,
+          "value": 0,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
@@ -2036,7 +2154,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 34,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2052,7 +2170,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 58,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -2060,7 +2178,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2136,16 +2254,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 8.145,
-            "2": 2.278,
-            "3": 3.293,
-            "4": 4.152,
-            "5": 4.859,
-            "6": 5.553,
-            "7": 6.178,
-            "8": 6.798,
-            "9": 7.456
+            "1": 0.999,
+            "10": 8.155,
+            "2": 2.271,
+            "3": 3.289,
+            "4": 4.137,
+            "5": 4.844,
+            "6": 5.539,
+            "7": 6.176,
+            "8": 6.805,
+            "9": 7.47
           },
           "tier": "data",
           "weight": "detail",
@@ -2155,16 +2273,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.998,
-            "10": 0.602,
+            "1": 0.999,
+            "10": 0.6,
             "2": 0.996,
-            "3": 0.904,
-            "4": 0.786,
-            "5": 0.673,
-            "6": 0.603,
-            "7": 0.559,
-            "8": 0.552,
-            "9": 0.581
+            "3": 0.906,
+            "4": 0.781,
+            "5": 0.67,
+            "6": 0.609,
+            "7": 0.57,
+            "8": 0.562,
+            "9": 0.583
           },
           "tier": "data",
           "weight": "detail",
@@ -2174,16 +2292,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.136,
-            "10": 11.952,
-            "2": 0.504,
-            "3": 1.005,
-            "4": 1.429,
-            "5": 2.459,
-            "6": 3.861,
-            "7": 5.468,
-            "8": 7.336,
-            "9": 9.483
+            "1": 0.139,
+            "10": 12.537,
+            "2": 0.52,
+            "3": 1.038,
+            "4": 1.497,
+            "5": 2.623,
+            "6": 4.077,
+            "7": 5.754,
+            "8": 7.69,
+            "9": 9.952
           },
           "tier": "data",
           "weight": "detail",
@@ -2193,14 +2311,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 376,
-            "1": 1609,
-            "2": 3042,
-            "3": 2788,
-            "4": 1605,
-            "5": 480,
-            "6": 91,
-            "7": 9
+            "0": 377,
+            "1": 1660,
+            "2": 2973,
+            "3": 2900,
+            "4": 1527,
+            "5": 479,
+            "6": 78,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -2209,13 +2327,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1593,
+            "10": 1348,
             "4": 1,
-            "5": 53,
-            "6": 359,
-            "7": 1579,
-            "8": 2507,
-            "9": 2375
+            "5": 54,
+            "6": 398,
+            "7": 1851,
+            "8": 2835,
+            "9": 2409
           },
           "tier": "data",
           "weight": "detail",
@@ -2231,7 +2349,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.98,
+    "commander_mean_cast_turn": 3.994,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2240,7 +2358,7 @@
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 13
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -2252,11 +2370,11 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 13
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 1
+        "by_turn_6_pct": 0
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
@@ -2264,7 +2382,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 35
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2272,28 +2390,28 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 52
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.366,
+      "mean_kill_turn": 8.258,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 45,
+      "kill_by_turn_8_pct": 51,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 15,
+      "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1593,
+        "10": 1348,
         "4": 1,
-        "5": 53,
-        "6": 359,
-        "7": 1579,
-        "8": 2507,
-        "9": 2375
+        "5": 54,
+        "6": 398,
+        "7": 1851,
+        "8": 2835,
+        "9": 2409
       }
     }
   },
@@ -2366,7 +2484,7 @@
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 48 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1",
