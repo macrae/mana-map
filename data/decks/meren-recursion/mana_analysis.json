@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "41fe17bfdbaa63d3e309724e9e4a8b69c9f3a51d5154691d43edab43d5fd6ad3",
+  "decklist_sha256": "b9a1a29ec6739a0245690b0304474afd806c3a2089ac19d2e82d48f6e8bd4371",
   "model_version": "77886e7c8a40",
   "lands": {
     "total": 34,
@@ -383,14 +383,14 @@
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 5,
+      "B": 6,
       "R": 0,
       "G": 4
     },
     "total": {
       "W": 0,
       "U": 0,
-      "B": 33,
+      "B": 34,
       "R": 0,
       "G": 30
     },
@@ -428,6 +428,14 @@
       {
         "name": "Dark Ritual",
         "kind": "ramp:ritual",
+        "cmc": 1.0,
+        "produces": [
+          "B"
+        ]
+      },
+      {
+        "name": "Elves of Deep Shadow",
+        "kind": "ramp:dork",
         "cmc": 1.0,
         "produces": [
           "B"
@@ -476,27 +484,27 @@
   },
   "pips": {
     "B": {
-      "total_pips": 67.0,
+      "total_pips": 64.0,
       "max_pips": 3,
-      "cards": 45,
+      "cards": 44,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 18.0,
+      "total_pips": 19.0,
       "max_pips": 1,
-      "cards": 18,
+      "cards": 19,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.788,
+      "pip_share": 0.771,
       "source_share": 0.519
     },
     "G": {
-      "pip_share": 0.212,
+      "pip_share": 0.229,
       "source_share": 0.481
     }
   },
@@ -510,7 +518,7 @@
       "G": 0.944
     },
     "with_rocks_and_dorks": {
-      "B": 0.869,
+      "B": 0.882,
       "G": 0.967
     },
     "lands_only_ungated": {
@@ -519,7 +527,7 @@
     }
   },
   "ramp": {
-    "ramp:dork": 3,
+    "ramp:dork": 4,
     "ramp:land": 2,
     "ramp:ritual": 3,
     "ramp:rock": 3
@@ -527,27 +535,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.636,
-      "2": 0.997,
-      "3": 0.903,
-      "4": 0.776,
-      "5": 0.663,
-      "6": 0.598,
-      "7": 0.57,
-      "8": 0.565,
-      "9": 0.581
+      "10": 0.631,
+      "2": 0.996,
+      "3": 0.907,
+      "4": 0.781,
+      "5": 0.667,
+      "6": 0.6,
+      "7": 0.567,
+      "8": 0.571,
+      "9": 0.594
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 8.168,
-      "2": 2.267,
-      "3": 3.288,
-      "4": 4.132,
-      "5": 4.826,
-      "6": 5.505,
-      "7": 6.14,
-      "8": 6.779,
-      "9": 7.44
+      "10": 8.389,
+      "2": 2.313,
+      "3": 3.37,
+      "4": 4.235,
+      "5": 4.95,
+      "6": 5.647,
+      "7": 6.293,
+      "8": 6.959,
+      "9": 7.645
     }
   },
   "assumptions": [
@@ -557,6 +565,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 33."
+    "B: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 34."
   ]
 }
