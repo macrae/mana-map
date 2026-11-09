@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 34,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -341,6 +343,13 @@
             ]
           },
           {
+            "name": "Fauna Shaman",
+            "where": [
+              "Green",
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Garruk's Uprising",
             "where": [
               "Green",
@@ -565,11 +574,11 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 70,
-      "out": 70,
+      "add": 71,
+      "out": 71,
       "counts": {
-        "in_deck": 30,
-        "box": 51,
+        "in_deck": 29,
+        "box": 52,
         "elsewhere": 4,
         "buy": 1,
         "free": 14
@@ -931,10 +940,19 @@
         },
         {
           "name": "Fauna Shaman",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Feed the Swarm",
@@ -2088,7 +2106,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.989,
+          "value": 3.985,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2152,7 +2170,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 34,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2253,15 +2271,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 8.094,
+            "10": 8.045,
             "2": 2.264,
-            "3": 3.292,
-            "4": 4.148,
-            "5": 4.871,
-            "6": 5.551,
-            "7": 6.169,
-            "8": 6.793,
-            "9": 7.429
+            "3": 3.294,
+            "4": 4.152,
+            "5": 4.864,
+            "6": 5.547,
+            "7": 6.16,
+            "8": 6.777,
+            "9": 7.402
           },
           "tier": "data",
           "weight": "detail",
@@ -2272,15 +2290,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.579,
-            "2": 0.996,
+            "10": 0.561,
+            "2": 0.997,
             "3": 0.909,
-            "4": 0.785,
-            "5": 0.682,
-            "6": 0.595,
-            "7": 0.555,
-            "8": 0.551,
-            "9": 0.56
+            "4": 0.786,
+            "5": 0.674,
+            "6": 0.597,
+            "7": 0.552,
+            "8": 0.545,
+            "9": 0.55
           },
           "tier": "data",
           "weight": "detail",
@@ -2290,16 +2308,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.091,
-            "10": 12.312,
-            "2": 0.417,
-            "3": 0.896,
-            "4": 1.324,
-            "5": 2.42,
-            "6": 3.861,
-            "7": 5.588,
-            "8": 7.588,
-            "9": 9.841
+            "1": 0.092,
+            "10": 12.031,
+            "2": 0.402,
+            "3": 0.88,
+            "4": 1.293,
+            "5": 2.363,
+            "6": 3.766,
+            "7": 5.438,
+            "8": 7.389,
+            "9": 9.602
           },
           "tier": "data",
           "weight": "detail",
@@ -2309,14 +2327,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 366,
-            "1": 1643,
-            "2": 2908,
-            "3": 2873,
-            "4": 1604,
-            "5": 519,
-            "6": 80,
-            "7": 7
+            "0": 361,
+            "1": 1620,
+            "2": 2914,
+            "3": 2885,
+            "4": 1614,
+            "5": 513,
+            "6": 89,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -2325,13 +2343,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1518,
+            "10": 1606,
             "4": 1,
-            "5": 27,
-            "6": 276,
-            "7": 1516,
-            "8": 2885,
-            "9": 2715
+            "5": 23,
+            "6": 215,
+            "7": 1460,
+            "8": 2833,
+            "9": 2726
           },
           "tier": "data",
           "weight": "detail",
@@ -2347,7 +2365,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.989,
+    "commander_mean_cast_turn": 3.985,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2380,7 +2398,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 24
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2396,20 +2414,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.403,
+      "mean_kill_turn": 8.448,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 3,
-      "kill_by_turn_8_pct": 47,
+      "kill_by_turn_6_pct": 2,
+      "kill_by_turn_8_pct": 45,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1518,
+        "10": 1606,
         "4": 1,
-        "5": 27,
-        "6": 276,
-        "7": 1516,
-        "8": 2885,
-        "9": 2715
+        "5": 23,
+        "6": 215,
+        "7": 1460,
+        "8": 2833,
+        "9": 2726
       }
     }
   },
@@ -2477,10 +2495,12 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V18 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 48 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 49 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1",
