@@ -1937,7 +1937,7 @@
       "included": 7,
       "infinite": 7,
       "near": 50,
-      "near_total": 167,
+      "near_total": 162,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -2090,7 +2090,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.994,
+          "value": 4.01,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2106,7 +2106,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -2178,7 +2178,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -2255,15 +2255,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.155,
-            "2": 2.271,
-            "3": 3.289,
-            "4": 4.137,
-            "5": 4.844,
-            "6": 5.539,
-            "7": 6.176,
-            "8": 6.805,
-            "9": 7.47
+            "10": 8.11,
+            "2": 2.264,
+            "3": 3.291,
+            "4": 4.144,
+            "5": 4.847,
+            "6": 5.531,
+            "7": 6.149,
+            "8": 6.772,
+            "9": 7.421
           },
           "tier": "data",
           "weight": "detail",
@@ -2275,14 +2275,14 @@
           "value": {
             "1": 0.999,
             "10": 0.6,
-            "2": 0.996,
-            "3": 0.906,
-            "4": 0.781,
-            "5": 0.67,
-            "6": 0.609,
-            "7": 0.57,
-            "8": 0.562,
-            "9": 0.583
+            "2": 0.997,
+            "3": 0.908,
+            "4": 0.778,
+            "5": 0.668,
+            "6": 0.595,
+            "7": 0.558,
+            "8": 0.548,
+            "9": 0.57
           },
           "tier": "data",
           "weight": "detail",
@@ -2292,16 +2292,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.139,
-            "10": 12.537,
-            "2": 0.52,
-            "3": 1.038,
-            "4": 1.497,
-            "5": 2.623,
-            "6": 4.077,
-            "7": 5.754,
-            "8": 7.69,
-            "9": 9.952
+            "1": 0.093,
+            "10": 12.255,
+            "2": 0.473,
+            "3": 0.974,
+            "4": 1.412,
+            "5": 2.526,
+            "6": 3.973,
+            "7": 5.635,
+            "8": 7.536,
+            "9": 9.726
           },
           "tier": "data",
           "weight": "detail",
@@ -2311,14 +2311,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 377,
-            "1": 1660,
-            "2": 2973,
-            "3": 2900,
-            "4": 1527,
-            "5": 479,
-            "6": 78,
-            "7": 6
+            "0": 357,
+            "1": 1652,
+            "2": 2999,
+            "3": 2890,
+            "4": 1522,
+            "5": 494,
+            "6": 82,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -2327,12 +2327,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1348,
-            "4": 1,
-            "5": 54,
-            "6": 398,
-            "7": 1851,
-            "8": 2835,
+            "10": 1464,
+            "4": 2,
+            "5": 53,
+            "6": 377,
+            "7": 1730,
+            "8": 2895,
             "9": 2409
           },
           "tier": "data",
@@ -2349,7 +2349,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.994,
+    "commander_mean_cast_turn": 4.01,
     "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
@@ -2358,7 +2358,7 @@
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -2394,23 +2394,23 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.258,
+      "mean_kill_turn": 8.301,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
       "kill_by_turn_8_pct": 51,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1348,
-        "4": 1,
-        "5": 54,
-        "6": 398,
-        "7": 1851,
-        "8": 2835,
+        "10": 1464,
+        "4": 2,
+        "5": 53,
+        "6": 377,
+        "7": 1730,
+        "8": 2895,
         "9": 2409
       }
     }
