@@ -45,8 +45,10 @@ CUT = next(c for c in ("Animate Dead", "Reanimate", "Eternal Witness") if c in _
 ADD = next(c for c in ("Llanowar Elves", "Fyndhorn Elves", "Arbor Elf", "Boreal Druid") if c not in _LIST)
 # A SECOND card in the 99 for the cut-then-undo step. It was Arcane Signet, which left Meren in
 # V9 (2026-11-07) and timed this test out on a Cut button that could not exist (2026-11-09).
-CUT2 = next(c for c in ("Arcane Signet", "Sol Ring", "Reanimate", "Necromancy")
-            if c in _LIST and c != CUT)
+# A default, so collecting this module never raises where the decks are absent (the isolation
+# tier): a bare `next` there was StopIteration, and it took two importing modules down with it.
+CUT2 = next((c for c in ("Arcane Signet", "Sol Ring", "Reanimate", "Necromancy")
+             if c in _LIST and c != CUT), "Sol Ring")
 BRANCH = "drain-density-v1"
 
 COMMANDS = ["health", "job", "deck/edit", "deck/edit/preview", "deck/edit/undo",
