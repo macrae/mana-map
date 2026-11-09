@@ -25,7 +25,13 @@
     "model_assumptions": [
       "Simulates resource development, not full games (no interaction, no removal).",
       "Draw every turn including turn 1 (multiplayer Commander).",
-      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+      "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+      "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+      "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+      "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+      "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+      "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+      "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
       "One land drop per turn when available.",
       "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
       "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -55,49 +61,49 @@
       "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
       "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid."
     ],
-    "model_version": "ddec1ff58e1d",
+    "model_version": "ac1f8a6f777f",
     "seed": 42
   },
   "metrics": {
     "commander": {
-      "cast_by_turn_6_rate": 0.9,
+      "cast_by_turn_6_rate": 0.89,
       "cast_turn_histogram": {
-        "10": 95,
-        "3": 1775,
-        "4": 6001,
-        "5": 738,
-        "6": 489,
-        "7": 333,
-        "8": 244,
-        "9": 156,
-        "not_by_max_turn": 169
+        "10": 106,
+        "3": 1576,
+        "4": 5949,
+        "5": 846,
+        "6": 530,
+        "7": 353,
+        "8": 267,
+        "9": 161,
+        "not_by_max_turn": 212
       },
-      "mean_cast_turn": 4.332,
+      "mean_cast_turn": 4.398,
       "median_cast_turn": 4
     },
     "interaction_castable_by_turn": {
       "1": 0.0,
       "10": 0.221,
-      "2": 0.019,
-      "3": 0.026,
-      "4": 0.017,
-      "5": 0.062,
-      "6": 0.095,
-      "7": 0.127,
+      "2": 0.02,
+      "3": 0.027,
+      "4": 0.019,
+      "5": 0.063,
+      "6": 0.097,
+      "7": 0.128,
       "8": 0.16,
       "9": 0.188
     },
     "interaction_in_hand_by_turn": {
-      "1": 0.479,
+      "1": 0.476,
       "10": 0.332,
-      "2": 0.503,
-      "3": 0.496,
-      "4": 0.508,
-      "5": 0.449,
-      "6": 0.389,
+      "2": 0.501,
+      "3": 0.494,
+      "4": 0.506,
+      "5": 0.45,
+      "6": 0.39,
       "7": 0.355,
-      "8": 0.34,
-      "9": 0.332
+      "8": 0.339,
+      "9": 0.331
     },
     "iterations": 10000,
     "land_drop_hit_rate_by_turn": {
@@ -108,33 +114,33 @@
       "4": 0.775,
       "5": 0.643,
       "6": 0.541,
-      "7": 0.463,
+      "7": 0.462,
       "8": 0.423,
       "9": 0.39
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 6.974,
+      "10": 6.972,
       "2": 1.996,
-      "3": 3.122,
-      "4": 3.934,
-      "5": 4.606,
-      "6": 5.195,
-      "7": 5.686,
-      "8": 6.142,
-      "9": 6.566
+      "3": 3.116,
+      "4": 3.933,
+      "5": 4.604,
+      "6": 5.193,
+      "7": 5.684,
+      "8": 6.14,
+      "9": 6.564
     },
     "mean_bodies_by_turn": {
-      "1": 0.606,
-      "10": 11.338,
-      "2": 1.556,
-      "3": 2.687,
-      "4": 3.455,
-      "5": 5.114,
-      "6": 6.589,
-      "7": 7.947,
-      "8": 9.161,
-      "9": 10.293
+      "1": 0.547,
+      "10": 11.293,
+      "2": 1.5,
+      "3": 2.67,
+      "4": 3.428,
+      "5": 5.069,
+      "6": 6.54,
+      "7": 7.899,
+      "8": 9.112,
+      "9": 10.247
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -154,10 +160,9 @@
         "1": 61,
         "2": 3815,
         "3": 3542,
-        "4": 1944,
-        "5": 617,
-        "6": 6,
-        "7": 1
+        "4": 1955,
+        "5": 612,
+        "6": 1
       },
       "mean_mulligans": 0.248
     },

@@ -71,8 +71,8 @@ Two colours, Selesnya, with plenty of fixing: [Branchloft Pathway](https://manam
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on V2, 2026-09-21. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **90%**
-- mean turn the commander is first cast: **turn 4.332**
+- share of seeded games where the commander was CAST by turn six: **89%**
+- mean turn the commander is first cast: **turn 4.398**
 - share of opening sevens the model would keep: **79%**
 - Colour on curve (lands + rocks): W 97%, G 98%
 <!-- /ctx:gen numbers -->

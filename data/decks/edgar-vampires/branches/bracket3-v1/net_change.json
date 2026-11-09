@@ -1024,6 +1024,12 @@
    }
   },
   "rows": {
+   "a 6+ drop out by T6": {
+    "scale": "against the games themselves",
+    "unit": "rate",
+    "what": "The share of games with a creature of mana value 6 or more on the battlefield by the end of turn 6, by any route: cast, reanimated, returned by Meren or tutored onto it.",
+    "why": "The deck's payoff is its big bodies early. The pilot named it (2026-11-07): when the fatties arrive, against the turn they could be cast."
+   },
    "board power @T6": {
     "unit": "mean",
     "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
@@ -1040,6 +1046,12 @@
     "unit": "mean",
     "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
     "why": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
+   },
+   "experience @T7": {
+    "scale": "against the mana values she returns: a 6-drop needs six",
+    "unit": "mean",
+    "what": "Meren of Clan Nel Toth's experience counters at the end of turn 7, averaged over every game: one for every other creature of ours that died while she was out.",
+    "why": "Her end step returns the biggest creature card in the graveyard to the BATTLEFIELD only if its mana value is within her experience, otherwise to hand. This is the clock on the free returns."
    },
    "extra cards by T8": {
     "scale": "against the 8 cards every deck draws for free by then",
@@ -1110,6 +1122,12 @@
     "unit": "rate",
     "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
     "why": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
+   },
+   "turns saved on big bodies": {
+    "scale": "turns, summed over the 5+ drops that entered in a game",
+    "unit": "mean",
+    "what": "For every creature of mana value 5+ that entered by turn 10, the turns between its arrival and the first turn that game's own mana could have cast it (11 if it never could), floored at zero; summed per game, averaged.",
+    "why": "The cheat dividend: what the graveyard engine buys over hard-casting. A hard-cast body saves nothing; a turn-3 Animate Dead on a turn-8 Archon saves five."
    },
    "wheels cast by T10": {
     "scale": "against the wheel-shaped cards the declaration names",
@@ -1245,7 +1263,7 @@
  "harness": {
   "cast_proofs": null,
   "iterations": 10000,
-  "model_version": "a18364c317e2",
+  "model_version": "ac1f8a6f777f",
   "seed": 20260826
  },
  "limits": [

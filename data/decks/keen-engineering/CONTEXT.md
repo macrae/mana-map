@@ -67,14 +67,14 @@ Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group b
 
 - share of seeded games where the commander was CAST by turn six: **100%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 10**
-- mean turn the commander is first cast: **turn 2.979**
+- mean turn the commander is first cast: **turn 2.982**
 - AN ARTIFACT ACCELERANT drawn — the fuel: a rock, a Myr or a cost reducer, each of them a Thopter on cast: **82%**
 - AN ARTIFACT-COUNT PAYOFF drawn — the board becomes power or cards: an anthem, a counter engine, or a draw-per-artifact: **77%**
 - A DRAW ENGINE OR REFILL drawn — the deck's own draw: affinity cantrips, Thirst, Pull, the Tome, the Logbook, the Eye, the Crawlers: **95%**
-- THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable: **43%**
+- THE KILL — a big artifact body on the board AND a way to scale or connect it: an artifact-count anthem, a counter engine, or Whirler Rogue's unblockable: **42%**
 - AN ANSWER drawn — a counter, a bounce, the Disk, All Is Dust, or a removal body: **85%**
 - share of opening sevens the model would keep: **84%**
-- Engine online by turn 5: **37%** (95% CI 36%–38%) — brittle
+- Engine online by turn 5: **36%** (95% CI 35%–37%) — brittle
 - Colour on curve (lands + rocks): U 95%
 <!-- /ctx:gen numbers -->
 

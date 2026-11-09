@@ -87,9 +87,9 @@ A five-colour base with a lot of untapped duals. Special ones: [Cavern of Souls]
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v1.3.0 (V6), 2026-09-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **33%**
+- share of seeded games where the commander was CAST by turn six: **32%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
-- mean turn the commander is first cast: **turn 6.919**
+- mean turn the commander is first cast: **turn 6.949**
 - Cost reducer drawn (the deck's real curve fixer): **42%**
 - Ramp or fixing drawn: **82%**
 - Dragon payoff drawn (per-dragon trigger engine): **63%**
@@ -97,14 +97,14 @@ Goldfish, 10,000 seeded games, measured on v1.3.0 (V6), 2026-09-20. Each group b
 - Payoff + a castable dragon by mid-game: **48%**
 - Protection or a RESPONSE held for the big turn (v1.3.0 added three: Asceticism, Mithril Coat, Stubborn Denial): **72%**
 - Dragon-restricted mana drawn (counts for nothing in mana_analysis, everything for casting a Dragon): **12%**
-- A Treasure source drawn — six in the 99, of which the model can SPEND only two: **56%**
+- A Treasure source drawn — six in the 99, of which the model can SPEND only two: **55%**
 - THE ENTRY KILL (UNVERIFIED — no passing stack): a per-dragon DAMAGE payoff AND a way to put several Dragons on the battlefield at once: **10%**
-- THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with: **18%**
+- THE COMBAT KILL (UNVERIFIED — no passing stack): a Dragon-damage MULTIPLIER AND a Dragon to attack with: **17%**
 - Sneak Attack drawn (cheats a Dragon in off any turn; stacks 005, 009): **13%**
 - share of opening sevens the model would keep: **77%**
-- Engine online by turn 5: **40%** (95% CI 39%–40%) — brittle
-- A win route assembled by turn 6: **41%** (95% CI 40%–42%)
-- A win route assembled by turn 8: **50%** (95% CI 49%–51%)
+- Engine online by turn 5: **37%** (95% CI 36%–38%) — brittle
+- A win route assembled by turn 6: **36%** (95% CI 35%–37%)
+- A win route assembled by turn 8: **44%** (95% CI 43%–45%)
 - Colour on curve (lands + rocks): W 88%, U 88%, B 73%, R 82%, G 91%
 - Forge (an optional probe, not a gate): last run 2026-09-10, 12/40 won (35% (95% CI 22%–52%)) on V4 — on an older list
 <!-- /ctx:gen numbers -->

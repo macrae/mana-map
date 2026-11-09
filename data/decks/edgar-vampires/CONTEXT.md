@@ -110,16 +110,16 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on v2.1.0 (V6), 2026-10-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **70%**
+- share of seeded games where the commander was CAST by turn six: **67%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 5.775**
+- mean turn the commander is first cast: **turn 5.947**
 - A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **44%**
 - A token multiplier or extra token-maker drawn: **25%**
-- A Vampire lord or anthem drawn (the combat plan): **36%**
-- THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **11%**
-- Ramp or fixing drawn: **60%**
-- A draw engine drawn: **64%**
-- Protection held for the swarm: **45%**
+- A Vampire lord or anthem drawn (the combat plan): **35%**
+- THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **12%**
+- Ramp or fixing drawn: **61%**
+- A draw engine drawn: **63%**
+- Protection held for the swarm: **44%**
 - An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0): **13%**
 - THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **2%**
 - A castable Vampire drawn — the eminence trigger every kill proof opens on: **70%**

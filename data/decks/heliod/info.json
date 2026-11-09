@@ -16,12 +16,10 @@
     "complete": 18,
     "of": 19,
     "stale": [],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
+    "older_model": [],
+    "invalid": [
+      "CONTEXT.md"
     ],
-    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -3783,66 +3781,66 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.4643,
+          "rate": 0.4671,
           "ci95": [
-            0.4545,
-            0.4741
+            0.4573,
+            0.4769
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.0551,
+          "rate": 0.0492,
           "ci95": [
-            0.0508,
-            0.0597
+            0.0451,
+            0.0536
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0066,
+          "rate": 0.0075,
           "ci95": [
-            0.0052,
-            0.0084
+            0.006,
+            0.0094
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0035,
+          "rate": 0.0033,
           "ci95": [
-            0.0025,
-            0.0049
+            0.0024,
+            0.0046
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0025,
+          "rate": 0.0026,
           "ci95": [
-            0.0017,
-            0.0037
+            0.0018,
+            0.0038
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0014,
+          "rate": 0.0021,
           "ci95": [
-            0.0008,
-            0.0023
+            0.0014,
+            0.0032
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0004,
+          "rate": 0.0007,
           "ci95": [
-            0.0002,
-            0.001
+            0.0003,
+            0.0014
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0003,
+          "rate": 0.0004,
           "ci95": [
-            0.0001,
-            0.0009
+            0.0002,
+            0.001
           ],
           "n": 10000
         },
@@ -3864,78 +3862,78 @@
         }
       },
       "two_in_a_row": {
-        "rate": 0.0072,
+        "rate": 0.008,
         "ci95": [
-          0.0057,
-          0.0091
+          0.0064,
+          0.0099
         ],
         "n": 10000
       },
-      "fleet": "better than any tracked deck",
+      "fleet": "below the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 700,
-        "hand_empty": 10,
-        "mana_short": 690
+        "stall_turns": 660,
+        "hand_empty": 14,
+        "mana_short": 646
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 9,
-        "hand_empty": 7,
-        "mana_short": 2,
+        "stall_turns": 13,
+        "hand_empty": 10,
+        "mana_short": 3,
         "stall_rate": {
-          "rate": 0.0002,
+          "rate": 0.0003,
           "ci95": [
-            0.0001,
-            0.0004
+            0.0002,
+            0.0006
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.0014,
-          "diff": -0.0012,
+          "floor_rate": 0.0021,
+          "diff": -0.0018,
           "ci95": [
-            -0.0021,
-            -0.0006
+            -0.0029,
+            -0.001
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 6.5015,
+            "rate": 6.2293,
             "ci95": [
-              6.4535,
-              6.5495
+              6.1871,
+              6.2715
             ],
-            "sd": 2.4495,
+            "sd": 2.1527,
             "n": 10000
           },
           "8": {
-            "rate": 7.2703,
+            "rate": 6.8491,
             "ci95": [
-              7.2121,
-              7.3285
+              6.7992,
+              6.899
             ],
-            "sd": 2.9685,
+            "sd": 2.5439,
             "n": 10000
           },
           "9": {
-            "rate": 8.1054,
+            "rate": 7.5312,
             "ci95": [
-              8.0366,
-              8.1742
+              7.4732,
+              7.5892
             ],
-            "sd": 3.5115,
+            "sd": 2.9609,
             "n": 10000
           },
           "10": {
-            "rate": 9.1565,
+            "rate": 8.3366,
             "ci95": [
-              9.0732,
-              9.2398
+              8.2684,
+              8.4048
             ],
-            "sd": 4.2517,
+            "sd": 3.4785,
             "n": 10000
           }
         },
@@ -3945,14 +3943,14 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.513,
+        "rate": 0.5377,
         "ci95": [
-          0.5032,
-          0.5228
+          0.5279,
+          0.5475
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2788,
+      "missed_land_drop_rate": 0.3101,
       "mulliganed": {
         "rate": 0.2569,
         "ci95": [
@@ -3964,18 +3962,18 @@
       "mean_mana_by_turn": {
         "1": 0.998,
         "2": 2.128,
-        "3": 3.438,
-        "4": 4.32,
-        "5": 5.09,
-        "6": 5.821,
-        "7": 6.566,
-        "8": 7.362,
-        "9": 8.195,
-        "10": 9.07
+        "3": 3.369,
+        "4": 4.221,
+        "5": 4.943,
+        "6": 5.612,
+        "7": 6.267,
+        "8": 6.955,
+        "9": 7.681,
+        "10": 8.436
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.3032
+      "mana_stdev_turn_five": 1.2214
     },
     "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad"
   },
@@ -4092,7 +4090,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 90,
+          "value": 88,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -4110,7 +4108,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.239,
+          "value": 4.289,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -4118,7 +4116,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Table draw engine online (opponents are drawing)": {
-          "value": 82,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Table draw engine online (opponents are drawing)' by turn six",
@@ -4126,7 +4124,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})": {
-          "value": 58,
+          "value": 56,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})' by turn six",
@@ -4134,7 +4132,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)": {
-          "value": 27,
+          "value": 28,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)' by turn six",
@@ -4150,7 +4148,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod down with an asymmetric card engine": {
-          "value": 60,
+          "value": 57,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod down with an asymmetric card engine' by turn six",
@@ -4158,7 +4156,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Free or cheap interaction held": {
-          "value": 72,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Free or cheap interaction held' by turn six",
@@ -4174,7 +4172,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Win condition access (Approach, or a tutor that can actually find a sorcery)": {
-          "value": 38,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Win condition access (Approach, or a tutor that can actually find a sorcery)' by turn six",
@@ -4182,7 +4180,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Heliod protected, or a flash grant that does not need him": {
-          "value": 54,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Heliod protected, or a flash grant that does not need him' by turn six",
@@ -4190,7 +4188,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)": {
-          "value": 56,
+          "value": 52,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)\" by turn six",
@@ -4198,7 +4196,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A taxer down (attackers pay, flying or not)": {
-          "value": 38,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A taxer down (attackers pay, flying or not)' by turn six",
@@ -4209,7 +4207,13 @@
           "value": [
             "Simulates resource development, not full games (no interaction, no removal).",
             "Draw every turn including turn 1 (multiplayer Commander).",
-            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 fresh redraws, keep the last.",
+            "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+            "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+            "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+            "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+            "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+            "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
             "One land drop per turn when available.",
             "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
             "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
@@ -4267,15 +4271,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 9.072,
+            "10": 8.435,
             "2": 2.133,
-            "3": 3.448,
-            "4": 4.348,
-            "5": 5.114,
-            "6": 5.85,
-            "7": 6.594,
-            "8": 7.383,
-            "9": 8.198
+            "3": 3.372,
+            "4": 4.235,
+            "5": 4.959,
+            "6": 5.628,
+            "7": 6.285,
+            "8": 6.969,
+            "9": 7.684
           },
           "tier": "data",
           "weight": "detail",
@@ -4286,15 +4290,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 0.649,
+            "10": 0.583,
             "2": 0.991,
-            "3": 0.871,
-            "4": 0.729,
-            "5": 0.612,
-            "6": 0.564,
-            "7": 0.576,
-            "8": 0.599,
-            "9": 0.613
+            "3": 0.861,
+            "4": 0.714,
+            "5": 0.587,
+            "6": 0.529,
+            "7": 0.522,
+            "8": 0.542,
+            "9": 0.554
           },
           "tier": "data",
           "weight": "detail",
@@ -4305,15 +4309,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.22,
-            "10": 3.376,
-            "2": 0.383,
-            "3": 0.593,
-            "4": 0.837,
-            "5": 1.236,
-            "6": 1.663,
-            "7": 2.085,
-            "8": 2.507,
-            "9": 2.93
+            "10": 3.241,
+            "2": 0.377,
+            "3": 0.57,
+            "4": 0.797,
+            "5": 1.181,
+            "6": 1.608,
+            "7": 2.017,
+            "8": 2.434,
+            "9": 2.84
           },
           "tier": "data",
           "weight": "detail",
@@ -4339,10 +4343,10 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 791,
-            "7": 2,
-            "8": 23,
-            "9": 242
+            "10": 1228,
+            "7": 6,
+            "8": 53,
+            "9": 417
           },
           "tier": "data",
           "weight": "detail",
@@ -4358,20 +4362,20 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.239,
-    "commander_cast_by_turn_6_pct": 90,
+    "commander_mean_cast_turn": 4.289,
+    "commander_cast_by_turn_6_pct": 88,
     "targets": [
       {
         "label": "Table draw engine online (opponents are drawing)",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 80
       },
       {
         "label": "Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W})",
-        "by_turn_6_pct": 58
+        "by_turn_6_pct": 56
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
-        "by_turn_6_pct": 27
+        "by_turn_6_pct": 28
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
@@ -4379,11 +4383,11 @@
       },
       {
         "label": "Heliod down with an asymmetric card engine",
-        "by_turn_6_pct": 60
+        "by_turn_6_pct": 57
       },
       {
         "label": "Free or cheap interaction held",
-        "by_turn_6_pct": 72
+        "by_turn_6_pct": 70
       },
       {
         "label": "An X-spell finisher drawn (the mana sink the discount pays for)",
@@ -4391,33 +4395,33 @@
       },
       {
         "label": "Win condition access (Approach, or a tutor that can actually find a sorcery)",
-        "by_turn_6_pct": 38
+        "by_turn_6_pct": 36
       },
       {
         "label": "Heliod protected, or a flash grant that does not need him",
-        "by_turn_6_pct": 54
+        "by_turn_6_pct": 52
       },
       {
         "label": "A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block)",
-        "by_turn_6_pct": 56
+        "by_turn_6_pct": 52
       },
       {
         "label": "A taxer down (attackers pay, flying or not)",
-        "by_turn_6_pct": 38
+        "by_turn_6_pct": 36
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.722,
+      "mean_kill_turn": 9.683,
       "median_kill_turn": 10,
       "kill_by_turn_6_pct": 0,
-      "kill_by_turn_8_pct": 0,
+      "kill_by_turn_8_pct": 1,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 89,
+      "no_kill_by_max_turn_pct": 83,
       "kill_turn_histogram": {
-        "10": 791,
-        "7": 2,
-        "8": 23,
-        "9": 242
+        "10": 1228,
+        "7": 6,
+        "8": 53,
+        "9": 417
       }
     }
   },
@@ -4700,7 +4704,7 @@
     ]
   },
   "next": [
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
