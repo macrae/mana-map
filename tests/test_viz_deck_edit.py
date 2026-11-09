@@ -43,6 +43,10 @@ def _decklist(slug):
 _LIST = _decklist(BENCH)
 CUT = next(c for c in ("Animate Dead", "Reanimate", "Eternal Witness") if c in _LIST)
 ADD = next(c for c in ("Llanowar Elves", "Fyndhorn Elves", "Arbor Elf", "Boreal Druid") if c not in _LIST)
+# A SECOND card in the 99 for the cut-then-undo step. It was Arcane Signet, which left Meren in
+# V9 (2026-11-07) and timed this test out on a Cut button that could not exist (2026-11-09).
+CUT2 = next(c for c in ("Arcane Signet", "Sol Ring", "Reanimate", "Necromancy")
+            if c in _LIST and c != CUT)
 BRANCH = "drain-density-v1"
 
 COMMANDS = ["health", "job", "deck/edit", "deck/edit/preview", "deck/edit/undo",
@@ -262,7 +266,7 @@ def test_a_bench_edit_previews_applies_and_undoes(browser, viz_server):
             "() => !document.querySelector('.de-measuring') && "
             "document.querySelector('#deActions .de-undo') && "
             "!document.querySelector('#deActions .de-undo').disabled", timeout=15000)
-        _card(page, "Arcane Signet")
+        _card(page, CUT2)
         page.click("#detailInner .de-card [data-de-act='cut']")
         assert len(page.evaluate("() => DeckEdit.tray")) == 1
         page.click("#deActions .de-undo")
