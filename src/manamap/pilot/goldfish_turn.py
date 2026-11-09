@@ -298,6 +298,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # (CR 616.1). Two +1s are +2; two doublers are x4.
     counter_plus = 0
     counter_times = 1
+    # THE PLAYER'S COUNTERS (2026-11-08, under `model_commander_recursion`): Winding
+    # Constrictor's "if you would get one or more counters, you get that many plus one" and
+    # Vorinclex's doubling act on every experience event, as `counter_plus`/`counter_times` do
+    # on a creature's; Toph pays one per landfall, Evolution Sage proliferates per landfall,
+    # an enters-the-battlefield proliferate fires once. Activated and cast proliferates stay
+    # unread (Yawgmoth, a removal spell the loop never casts).
+    player_plus = 0
+    player_times = 1
+    landfall_experience = 0
+    landfall_proliferate = 0
     # DAMAGE REPLACEMENTS THAT ADD (Torbran, 2026-10-11): `(amount, scope)` per
     # permanent in play, applied per damage INSTANCE through `bonus_for`.
     # `damage_sources` maps a registered payoff profile (by identity) to what
@@ -388,13 +398,37 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         to less than one mana", and a free ability stays free."""
         return max(1, n - activation_discount) if n > 0 else 0
 
+    def _gain_experience(events):
+        """`events` separate experience events, each through the player's counter
+        replacements (Constrictor's +1 per event, Vorinclex's doubling)."""
+        nonlocal experience
+        if events > 0:
+            experience += events * apply_counter_mod(1, player_plus, player_times)
+
+    def _proliferate():
+        """One proliferate: experience gets one more, through the same replacements, if
+        there is any (CR 701.34a: only a kind of counter already there)."""
+        nonlocal experience
+        if experience > 0:
+            experience += apply_counter_mod(1, player_plus, player_times)
+
     def _register_statics(card):
         """ONE DOOR FOR A STATIC REPLACEMENT ARRIVING: counter replacements
         (Lae'zel, Doubling Season) and damage replacements (Torbran). Called at
         every door a permanent enters by, the lesson `_register_wheel` records."""
         nonlocal counter_plus, counter_times, activation_discount, end_step_wheels
+        nonlocal player_plus, player_times, landfall_experience, landfall_proliferate
         counter_plus += card["counter_mod"]["plus"]
         counter_times *= card["counter_mod"]["times"]
+        if commander_recursion:
+            _xp = card["experience"]
+            player_plus += _xp.get("player_plus") or 0
+            player_times *= _xp.get("player_times") or 1
+            landfall_experience += _xp.get("landfall_experience") or 0
+            if _xp.get("proliferate") == "landfall":
+                landfall_proliferate += 1
+            elif _xp.get("proliferate") == "etb":
+                _proliferate()
         # THE ENGINES THAT WORK ON A CAST OR AN EQUIP, and the doubler that came in through a
         # door other than the body loop (2026-11-04). Mirrormade copies from this list.
         permanents_in_play.append(card)
@@ -957,6 +991,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 gated_lands.append(_rec)
             _refresh_gated_lands()
             land_hits.append(True)
+            # LANDFALL FOR THE PLAYER'S COUNTERS: a fetch is two events, itself and what it
+            # finds (its shuffle is not modelled). Ramp spells that put lands in are not
+            # counted — a floor. Toph's counter lands before Sage proliferates it.
+            if commander_recursion and (landfall_experience or landfall_proliferate):
+                for _ in range(2 if played["experience"]["fetch_landfall"] else 1):
+                    _gain_experience(landfall_experience)
+                    for _ in range(landfall_proliferate):
+                        _proliferate()
             # A LAND THAT SACRIFICES ITSELF FOR A CARD (Fiery Islet, 2026-11-04) was flagged
             # and never used: this door did not call the door every other permanent uses.
             _register_wheel(played)
@@ -1001,7 +1043,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # sacrificed, so every other death -- an edict, a self-sacrifice, a clamp, the
             # measured death rate -- left her counter where it was.
             if commander_recursion and commander_turn is not None:
-                experience += n_died
+                _gain_experience(n_died)
             fired = set()
             for eng in list(death_engines) + list(death_drains):
                 if id(eng) in fired:
@@ -4795,7 +4837,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 sacrifices += n_sac
                 own_deaths["sacs"] += n_sac
                 if commander_recursion and commander_turn is not None:
-                    experience += n_sac
+                    _gain_experience(n_sac)
             # MEREN'S HALF OF THE OUTLET (2026-11-06): one non-token fodder creature, the
             # smallest body, after combat, so the end step has something to return. Its death
             # pays every death payoff (nontoken ones included) and an experience counter.

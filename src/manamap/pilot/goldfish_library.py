@@ -77,6 +77,7 @@ from manamap.pilot.goldfish_profiles import (
     own_death_profile,
     recurring_body_profile,
     graveyard_profile,
+    experience_profile,
     sac_outlet_profile,
     subtypes_of,
     token_doubler,
@@ -223,6 +224,8 @@ def classify(card, pool=None):
         "recurring": recurring_body_profile(card),
         # Into the graveyard, or back out of it (Meren's reanimator half, 2026-11-07).
         "yard": graveyard_profile(card),
+        # Experience from lands, counter replacements on the player, proliferate (2026-11-08).
+        "experience": experience_profile(card),
         "tutor": is_tutor_card,
         # What it can reach: a tutor fills only a target group it can fetch for.
         "tutor_filter": tutor_filter(card) if is_tutor_card else None,

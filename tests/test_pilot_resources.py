@@ -77,11 +77,18 @@ def test_reminder_text_never_makes_a_hit():
 
 # ── read or blind ───────────────────────────────────────────────────────
 
-def test_toph_is_seen_by_coverage_and_blind_to_her_engine():
-    """THE HOLE THIS CLOSES. `card_state` calls Toph seen — she is a 2/4 and `bodies`
-    is always on — while the line that is the reason to play her is read by nothing."""
-    assert mc.card_state(TOPH, flags={})["state"] == "seen"
-    assert resources.engine_unread("x", TOPH, [EXPERIENCE], readers=set()) == ["experience counters"]
+def test_a_seen_body_can_be_blind_to_its_engine():
+    """THE HOLE THIS CLOSES. `card_state` called Toph seen for being a 2/4 while her
+    landfall experience was read by nothing (fixed 2026-11-08). Azula is that case today:
+    a body `bodies` reads, and a discard-for-experience line the turn loop never applies."""
+    azula = {"name": "Azula, Ruthless Firebender", "type_line": "Legendary Creature — Human Noble",
+             "oracle_text": "Whenever Azula attacks, you may discard a card. Then you get an "
+                            "experience counter for each player who discarded a card this turn."}
+    assert mc.card_state(azula, flags={"model_commander_recursion": True})["state"] == "seen"
+    per_player = {**EXPERIENCE, "makes": EXPERIENCE["makes"] + [r"\bexperience counters? for each\b"]}
+    assert resources.engine_unread("x", azula, [per_player], readers={"Meren"}) == ["experience counters"]
+    # …and Toph, now read, is not
+    assert resources.engine_unread("x", TOPH, [EXPERIENCE], readers={"Meren"}) == []
 
 
 def test_the_commander_is_read_when_her_channel_is_declared():
@@ -90,11 +97,22 @@ def test_the_commander_is_read_when_her_channel_is_declared():
     assert resources.engine_unread("x", MEREN, [EXPERIENCE], readers=set()) == ["experience counters"]
 
 
-def test_read_multipliers_matches_the_simulator():
-    """`READ_MULTIPLIERS` is a claim about the turn loop. Empty while nothing in the
-    simulator proliferates; the day a reader lands, this fails until the gate is told."""
-    has_proliferate = bool(re.search(r"proliferat", simulator_source(), re.I))
-    assert has_proliferate == bool(resources.READ_MULTIPLIERS)
+def test_a_read_experience_card_is_read_under_the_commander_channel():
+    """Constrictor's replacement and Sage's landfall proliferate are applied by the turn loop
+    (2026-11-08), so under Meren's channel they read READ; without it, BLIND."""
+    con = {"name": "Winding Constrictor", "type_line": "Creature — Snake",
+           "oracle_text": "If you would get one or more counters, you get that many plus one of "
+                          "each of those kinds of counters instead."}
+    assert resources.engine_unread("x", SAGE, [EXPERIENCE], readers={"Meren"}) == []
+    assert resources.engine_unread("x", SAGE, [EXPERIENCE], readers=set()) == ["experience counters"]
+    assert resources.match(EXPERIENCE, con["oracle_text"])[1]
+    assert resources.engine_unread("x", con, [EXPERIENCE], readers={"Meren"}) == []
+
+
+def test_an_activated_proliferate_stays_blind():
+    yawg = {"name": "Yawgmoth, Thran Physician", "type_line": "Legendary Creature — Human Cleric",
+            "oracle_text": "{B}{B}, Discard a card: Proliferate."}
+    assert resources.engine_unread("x", yawg, [EXPERIENCE], readers={"Meren"}) == ["experience counters"]
 
 
 # ── the gate ────────────────────────────────────────────────────────────

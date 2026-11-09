@@ -368,3 +368,89 @@ def test_craterhoof_pumps_the_team(monkeypatch):
         mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "team_pump_x": None})
         off = dmg(mp)
     assert on > off, (on, off)
+
+
+# ── the experience economy: the PLAYER'S counters (2026-11-08) ────────────────────────────
+
+from manamap.pilot.goldfish_profiles import experience_profile  # noqa: E402
+
+
+def test_the_experience_shapes_read_from_the_text():
+    toph = experience_profile(_card(
+        "Toph, Earthbending Master", "Landfall — Whenever a land you control enters, you get an "
+        "experience counter. Whenever you attack, earthbend X, where X is the number of "
+        "experience counters you have.", "Legendary Creature — Human Warrior Ally"))
+    assert toph["landfall_experience"] == 1
+    con = experience_profile(_card(
+        "Winding Constrictor", "If one or more counters would be put on an artifact or creature "
+        "you control, that many plus one of each of those kinds of counters are put on it "
+        "instead.\nIf you would get one or more counters, you get that many plus one of each of "
+        "those kinds of counters instead.", "Creature — Snake"))
+    assert con["player_plus"] == 1 and con["player_times"] == 1
+    sage = experience_profile(_card(
+        "Evolution Sage", "Landfall — Whenever a land you control enters, proliferate. (Choose "
+        "any number of permanents and/or players, then give each another counter of each kind "
+        "already there.)", "Creature — Elf Druid"))
+    assert sage["proliferate"] == "landfall"
+    yawg = experience_profile(_card(
+        "Yawgmoth, Thran Physician", "Protection from Humans\nPay 1 life, Sacrifice another "
+        "creature: Put a -1/-1 counter on up to one target creature and draw a card.\n{B}{B}, "
+        "Discard a card: Proliferate.", "Legendary Creature — Human Cleric"))
+    assert yawg["proliferate"] == "activated"          # read, and NOT applied
+    misty = experience_profile(_card(
+        "Misty Rainforest", "{T}, Pay 1 life, Sacrifice this land: Search your library for a "
+        "Forest or Island card, put it onto the battlefield, then shuffle.", "Land"))
+    assert misty["fetch_landfall"]
+    talent = experience_profile(_card(
+        "Innkeeper's Talent", "Level 3: If you would put one or more counters on a permanent or "
+        "player, put twice that many of each of those kinds of counters on that permanent or "
+        "player instead.", "Enchantment — Class"))
+    assert talent["player_times"] == 1                  # a level nothing buys
+
+
+def _xp_exp(monkeypatch, swaps, blank=None, n=1500):
+    from manamap.pilot import try_swap
+    if blank is not None:
+        real = goldfish_library.experience_profile
+        monkeypatch.setattr(goldfish_library, "experience_profile",
+                            lambda card: {**real(card), **blank})
+    doc = try_swap.apply_swaps(SLUG, None, swaps)[0] if swaps else None
+    m = goldfish.run(SLUG, iterations=n, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
+    return m["commander_recursion"]["mean_experience_by_turn"]["7"]
+
+
+def _have():
+    return {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+
+
+@requires_deck
+@requires_dump
+@pytest.mark.parametrize("card,blank", [
+    ("Winding Constrictor", {"player_plus": 0}),
+    ("Toph, Earthbending Master", {"landfall_experience": 0}),
+    ("Evolution Sage", {"proliferate": None}),
+])
+def test_each_experience_source_pays(monkeypatch, card, blank):
+    """PROVED BY REMOVING THE SHAPE: the same list, the same seeds, fewer counters at T7."""
+    swaps = [] if card in _have() else [("Assassin's Trophy", card)]
+    assert _xp_exp(monkeypatch, swaps) > _xp_exp(monkeypatch, swaps, blank), card
+
+
+@requires_deck
+def test_the_economy_is_inert_without_merens_declaration():
+    """Gated on `model_commander_recursion`: a deck without it plays the games it played."""
+    t = json.loads(deck_file(SLUG, "goldfish_targets.json").read_text())
+    t.pop("model_commander_recursion", None)
+    m = goldfish.run(SLUG, iterations=300, seed=7, quiet=True, _band=False, _targets_doc=t)["metrics"]
+    assert "commander_recursion" not in m
+
+
+def test_read_proliferate_names_what_the_turn_loop_applies():
+    """`model_coverage.READ_PROLIFERATE` is a claim about the loop: each timing it names is
+    branched on there, and an unapplied one (activated) is not in it."""
+    from conftest import simulator_source
+    src = simulator_source()
+    for kind in model_coverage.READ_PROLIFERATE:
+        assert f'_xp.get("proliferate") == "{kind}"' in src, kind
+    assert "activated" not in model_coverage.READ_PROLIFERATE

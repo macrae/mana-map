@@ -22,11 +22,9 @@
   "size": 100,
   "lands": 34,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -2255,15 +2253,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.11,
+            "10": 8.116,
             "2": 2.264,
             "3": 3.291,
             "4": 4.144,
             "5": 4.847,
             "6": 5.531,
-            "7": 6.149,
-            "8": 6.772,
-            "9": 7.421
+            "7": 6.151,
+            "8": 6.773,
+            "9": 7.424
           },
           "tier": "data",
           "weight": "detail",
@@ -2274,15 +2272,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.6,
+            "10": 0.602,
             "2": 0.997,
             "3": 0.908,
             "4": 0.778,
             "5": 0.668,
-            "6": 0.595,
-            "7": 0.558,
+            "6": 0.596,
+            "7": 0.559,
             "8": 0.548,
-            "9": 0.57
+            "9": 0.571
           },
           "tier": "data",
           "weight": "detail",
@@ -2293,15 +2291,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.093,
-            "10": 12.255,
+            "10": 12.312,
             "2": 0.473,
             "3": 0.974,
-            "4": 1.412,
-            "5": 2.526,
-            "6": 3.973,
-            "7": 5.635,
-            "8": 7.536,
-            "9": 9.726
+            "4": 1.413,
+            "5": 2.533,
+            "6": 3.99,
+            "7": 5.661,
+            "8": 7.572,
+            "9": 9.769
           },
           "tier": "data",
           "weight": "detail",
@@ -2327,13 +2325,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1464,
+            "10": 1450,
             "4": 2,
-            "5": 53,
-            "6": 377,
-            "7": 1730,
-            "8": 2895,
-            "9": 2409
+            "5": 54,
+            "6": 382,
+            "7": 1757,
+            "8": 2937,
+            "9": 2389
           },
           "tier": "data",
           "weight": "detail",
@@ -2398,20 +2396,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.301,
+      "mean_kill_turn": 8.29,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
       "kill_by_turn_8_pct": 51,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 11,
+      "no_kill_by_max_turn_pct": 10,
       "kill_turn_histogram": {
-        "10": 1464,
+        "10": 1450,
         "4": 2,
-        "5": 53,
-        "6": 377,
-        "7": 1730,
-        "8": 2895,
-        "9": 2409
+        "5": 54,
+        "6": 382,
+        "7": 1757,
+        "8": 2937,
+        "9": 2389
       }
     }
   },
@@ -2479,10 +2477,8 @@
     ]
   },
   "next": [
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V17 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `drain-density-v1`: 48 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",

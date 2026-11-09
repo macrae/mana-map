@@ -18,10 +18,11 @@ A deck declares its resources in `brief.json`:
 that proliferate doubles experience: the kind remembers it.
 
 READ OR BLIND is computed, never declared. A card's resource text is READ only when the
-goldfish has a reader for it: today that is the deck's commander when the deck declares a
-`model_commander_*` channel (Meren's experience), and nothing else — no multiplier in
-`MULTIPLIERS` is read by the turn loop (`READ_MULTIPLIERS` is empty, and a test holds it
-to the simulator's source). A creature the bodies channel reads is still BLIND here when
+goldfish has a reader for it: the deck's commander when the deck declares a
+`model_commander_*` channel, and — for a player counter under that channel — every card
+whose experience profile the turn loop applies (`model_coverage._experience_read`: landfall
+experience, Constrictor/Vorinclex replacements, a landfall or ETB proliferate; 2026-11-08).
+Activated and cast proliferates (Yawgmoth, Drown in Ichor) stay BLIND. A creature the bodies channel reads is still BLIND here when
 its resource line is not read: `model_coverage.card_state` calls Toph "seen" because she
 is a 2/4, which is exactly the hole this closes.
 """
@@ -145,10 +146,20 @@ def match(resource, text):
     return mk, mu
 
 
-def reading(resource, name, makes_hits, mult_hits, readers):
-    """READ when the goldfish applies this card's resource text, else BLIND."""
+def reading(resource, name, makes_hits, mult_hits, readers, card=None):
+    """READ when the goldfish applies this card's resource text, else BLIND.
+
+    `readers` is the commander set `_commander_reader` returns — non-empty exactly when the
+    deck declares the commander channel the experience economy runs under. Beyond the
+    commander herself, a player-counter card is READ when `model_coverage._experience_read`
+    says the turn loop applies its text (Toph, Constrictor, Evolution Sage), computed from
+    its profile, never declared."""
     if makes_hits and name in readers:
         return "read"
+    if readers and card is not None and resource.get("kind") == "player_counter":
+        from manamap.pilot import goldfish, model_coverage
+        if model_coverage._experience_read(goldfish.classify(card)):
+            return "read"
     if mult_hits and set(mult_hits) <= READ_MULTIPLIERS and not makes_hits:
         return "read"
     return "blind"
@@ -164,7 +175,7 @@ def engine_unread(slug, card, resources=None, readers=None):
     out = []
     for r in resources:
         mk, mu = match(r, card.get("oracle_text") or "")
-        if (mk or mu) and reading(r, card["name"], mk, mu, readers) == "blind":
+        if (mk or mu) and reading(r, card["name"], mk, mu, readers, card) == "blind":
             out.append(r["name"])
     return out
 
@@ -208,7 +219,7 @@ def scan(slug, only=None, limit=400):
                 "land": "Land" in row["type_line"].split("//")[0],
                 "group": "makes" if mk else "multiplies",
                 "in_deck": row["name"] in in_deck,
-                "reading": reading(r, row["name"], mk, mu, readers),
+                "reading": reading(r, row["name"], mk, mu, readers, card),
                 "state": model_coverage.card_state(card, flags, named)["state"],
                 "game_changer": row["game_changer"],
                 "oracle_text": row["oracle_text"],

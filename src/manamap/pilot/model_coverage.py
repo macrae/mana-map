@@ -125,6 +125,19 @@ _MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast",
                                          # 2026-10-04: Smothering Tithe, Gleaming Splendor
                                          "opponent_draw_tax", "opponent_second_draw"})
 
+#: Proliferate timings the turn loop applies (`goldfish_turn._register_statics` and the land
+#: drop); "activated", "cast" and "other" are read and not applied. A test holds it to the loop.
+READ_PROLIFERATE = frozenset({"landfall", "etb"})
+
+
+def _experience_read(profile):
+    """The experience economy the turn loop applies (2026-11-08): Toph's landfall,
+    Constrictor's and Vorinclex's replacements, a landfall or ETB proliferate."""
+    xp = profile.get("experience") or {}
+    return bool(xp.get("landfall_experience") or xp.get("player_plus")
+                or (xp.get("player_times") or 1) > 1 or xp.get("proliferate") in READ_PROLIFERATE)
+
+
 def _nonzero(profile, keys):
     return any((profile or {}).get(k) for k in keys)
 
@@ -281,7 +294,8 @@ def channels_for(profile):
             or own.get("no_mana") or own.get("cast_from_yard") or own.get("clamp")
             or own.get("sac_team_counter") or own.get("team_pump_x")
             or rec.get("upkeep") or rec.get("end_step") or rec.get("return_cost")
-            or rec.get("return_landfall")):
+            or rec.get("return_landfall")
+            or _experience_read(profile)):
         found.add("recursion")
     if profile.get("discover_n"):
         found.add("discover")

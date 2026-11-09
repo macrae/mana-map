@@ -1820,6 +1820,71 @@ _REANIMATE_TEMP_RE = re.compile(
     r"sacrifice (?:it|that creature) at the beginning of the next end step", re.IGNORECASE)
 
 
+#: THE EXPERIENCE ECONOMY (2026-11-08). Experience counters are the PLAYER'S, and Meren's X
+#: is "the number of experience counters you have", so every source and every proliferate
+#: raises her ceiling, not only a death. The model paid experience on deaths alone, which
+#: steered a whole session's search to death enablers; the pilot found Toph and the
+#: proliferate family himself. Read here, applied under `model_commander_recursion` only.
+_LANDFALL_EXP_RE = re.compile(
+    r"\bwhenever (?:a|one or more) lands? (?:you control )?enters?\b[^.]*\byou get an? "
+    r"experience counter", re.I)
+_PLAYER_PLUS_RE = re.compile(
+    r"\byou would get one or more counters\b[^.]*\bthat many plus (one|two)\b", re.I)
+_PLAYER_TIMES_RE = re.compile(
+    r"(?:\bon a permanent or player\b|\byou would get one or more counters\b)[^.]*"
+    r"\b(twice|three times) that many\b", re.I)
+#: "Forest or Island card" is a land card on a land's own text (Misty Rainforest), so the
+#: card noun is enough once the type line says Land.
+_FETCH_RE = re.compile(
+    r"\bsacrifice\b[^:]*:\s*search your library for [^.]*\bcards?\b[^.]*\bonto the battlefield\b",
+    re.I)
+
+
+def experience_profile(card):
+    """`{landfall_experience, player_plus, player_times, proliferate, fetch_landfall}`.
+
+    `proliferate` names WHEN the card proliferates — "landfall", "etb", "activated",
+    "cast" or "other" — or None; the turn loop applies landfall and etb, and the rest
+    stay unread (Yawgmoth's {B}{B}-and-discard, a removal spell the loop never casts).
+    `fetch_landfall`: a fetchland is two landfall events (it, then what it finds).
+    """
+    text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
+    type_line = card.get("type_line") or ""
+    out = {"landfall_experience": 0, "player_plus": 0, "player_times": 1,
+           "proliferate": None, "fetch_landfall": False}
+    # A CLASS OR A ROOM IS REFUSED, as `counter_mod` refuses it: Innkeeper's Talent doubles
+    # on its level 3, and nothing here buys a level.
+    if re.search(r"\b(?:Class|Room)\b", type_line):
+        return out
+    if _LANDFALL_EXP_RE.search(text):
+        out["landfall_experience"] = 1
+    m = _PLAYER_PLUS_RE.search(text)
+    if m:
+        out["player_plus"] = 1 if m.group(1).lower() == "one" else 2
+    m = _PLAYER_TIMES_RE.search(text)
+    if m:
+        out["player_times"] = 2 if m.group(1).lower() == "twice" else 3
+    for line in text.splitlines():
+        if not re.search(r"\bproliferate\b", line, re.I):
+            continue
+        low = line.lower()
+        if re.search(r"\blandfall\b|whenever a land (?:you control )?enters", low):
+            kind = "landfall"
+        elif re.search(r"\bwhen (?:this \w+|[^,]{1,40}) enters\b", low) and ":" not in low.split("proliferate")[0]:
+            kind = "etb"
+        elif ":" in low.split("proliferate")[0]:
+            kind = "activated"
+        elif re.search(r"\b(?:Instant|Sorcery)\b", type_line):
+            kind = "cast"
+        else:
+            kind = "other"
+        out["proliferate"] = kind
+        break
+    if "Land" in type_line.split("//")[0] and _FETCH_RE.search(text):
+        out["fetch_landfall"] = True
+    return out
+
+
 def graveyard_profile(card):
     """What this card puts into the graveyard, or brings back from it (see above)."""
     text = card.get("oracle_text", "") or ""
