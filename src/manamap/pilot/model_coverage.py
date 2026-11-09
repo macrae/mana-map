@@ -96,6 +96,9 @@ NOT_A_CHANNEL = {
     # A RULE OF THE GAME (CR 514.1), not a card's channel: every deck has a cleanup step
     # whether or not it declares one. Opt-in so a deck keeps its figures until it is re-read.
     "model_hand_limit": "the cleanup step, a rule rather than a casting channel",
+    # SPELLBOOK'S INFINITE LINES (2026-11-09): a game-ending EVENT read off the board, not a
+    # casting channel; the pieces are cast by the channels that already read them.
+    "model_combos": "a deck-level event (an assembled infinite), not a casting channel",
     # ONE CARD IN THE CORPUS EACH. Declared per deck rather than parsed,
     # because a commander ability only one card has is not a pattern — see
     # zur-enchantress, where modelling both of Zur's abilities took kill-by-t8
@@ -445,8 +448,11 @@ def never_cast(profile, flags):
     # A CLAMP (2026-11-07), mirroring `_engine_permanent` in the same commit.
     if flags.get("model_commander_recursion") and (profile.get("own_death") or {}).get("clamp"):
         return False
+    # …and the reanimation spells, which the loop casts under the same declaration (2026-11-09:
+    # they joined the `recursion` channel and the fleet guard caught the mirror one step behind).
     if flags.get("model_commander_recursion") and ((profile.get("yard") or {}).get("discard_tutor")
-                                                   or (profile.get("yard") or {}).get("to_yard")):
+                                                   or (profile.get("yard") or {}).get("to_yard")
+                                                   or (profile.get("yard") or {}).get("reanimate")):
         return False
     # DEATH ENGINES. Added when `model_deaths` shipped and NOT at the same time
     # as goldfish's own casting predicate — the fleet test caught the drift

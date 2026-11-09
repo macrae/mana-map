@@ -107,14 +107,14 @@ Mostly untapped duals and fetches for both colours, and this is where V7 packed 
 <!-- ctx:gen numbers -->
 Goldfish, 10,000 seeded games, measured on V17, 2026-11-08. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **94%**
+- share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 4.01**
+- mean turn the commander is first cast: **turn 4.009**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **44%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **14%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
 - STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
-- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **13%**
+- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **14%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **0%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
 - A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **35%**

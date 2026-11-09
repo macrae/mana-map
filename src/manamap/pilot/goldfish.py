@@ -1202,6 +1202,13 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             },
             "kill_by_poison_rate": _round(
                 sum(1 for r in results if r["kill_by"] == "poison") / n),
+            # A KILL BY AN ASSEMBLED INFINITE (`model_combos`), and which lines did it.
+            **({"kill_by_combo_rate": _round(
+                sum(1 for r in results if r["kill_by"] == "combo") / n),
+                "combo_wins": dict(sorted(
+                    (cid, sum(1 for r in results if r.get("combo_win") == cid))
+                    for cid in {r.get("combo_win") for r in results} if cid))}
+               if any(r.get("combo_win") for r in results) else {}),
         })(sorted(r["kill_turn"] for r in results if r["kill_turn"] is not None))}),
         "targets": target_stats,
     }
@@ -1558,6 +1565,19 @@ def run(slug, iterations=None, seed=None, max_turn=None,
     # policy, `sacrifice: "one_fodder_per_turn"`: with a free outlet and the commander out, one
     # non-token creature that is not itself a payoff or an outlet is sacrificed after combat,
     # so the end step has something to return.
+    # THE DECK'S INFINITE LINES (`model_combos`, 2026-11-09): Spellbook's infinite combos fully
+    # contained in this list, read through `deck_combos` (the one combo reader). Opt-in per deck;
+    # the turn loop ends a game when a line is assembled with a way to finish.
+    combo_lines = None
+    if targets_doc.get("model_combos"):
+        from manamap.pilot import deck_combos
+        from manamap.pilot.common import load_combo_details
+        _rows = deck_combos.included_combos({c["name"] for c in library},
+                                            {c["name"] for c in commanders},
+                                            load_combo_details(), ranked=False)
+        combo_lines = [{"id": r["id"], "cards": frozenset(r["cards"]),
+                        "produces": tuple(r.get("produces") or ())}
+                       for r in _rows if r.get("infinite")]
     commander_recursion = targets_doc.get("model_commander_recursion") or None
     if commander_recursion:
         if not commanders or not any(
@@ -1738,7 +1758,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               model_discard=model_discard, partner=partner,
                               commander_event=commander_event,
                               commander_damage=commander_damage,
-                              commander_recursion=commander_recursion))
+                              commander_recursion=commander_recursion,
+                              combo_lines=combo_lines))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,

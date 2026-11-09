@@ -116,7 +116,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None, model_hand_limit=False,
                   commander_copy=False, hold_until=None, keep_rule=None,
-                  commander_recursion=None):
+                  commander_recursion=None, combo_lines=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -814,6 +814,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     opponent_poison = 0
     poison_by_turn = []
     kill_by = None
+    combo_win = None              # the Spellbook line that ended the game (`model_combos`)
     # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
@@ -2869,12 +2870,52 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # away a good hand every turn from turn four, forever, and reports it
         # as card advantage. `_fire_engine_wheels` below is the loop.
 
+        def _combo_finishes(ln):
+            """Whether an assembled line ends the game: it mills, damages or drains by itself;
+            it makes infinite deaths with a death-drain payoff out (The Meathook Massacre); or
+            it makes infinite mana with an X team pump in hand to cast (Craterhoof)."""
+            _p = " | ".join(ln["produces"]).lower()
+            if any(f in _p for f in ("infinite mill", "infinite damage", "infinite lifeloss",
+                                     "infinite life loss")):
+                return True
+            if "infinite death triggers" in _p and death_drains:
+                return True
+            return "infinite" in _p and "mana" in _p and any(
+                (c.get("own_death") or {}).get("team_pump_x") for c in hand)
+
+        def _combo_wanted():
+            """THE PILOT'S TUTOR TARGET WHEN A LINE IS ONE CARD AWAY (2026-11-09, `model_combos`):
+            the missing piece of any line whose other pieces are in hand, on the battlefield or (a
+            creature, for Hogaak and the reanimation spells) in the graveyard; once a line is
+            whole and cannot finish, a death-drain payoff or an X team pump."""
+            if not combo_lines:
+                return set()
+            _have = {c["name"] for c in hand} | {c["name"] for c in yard_creatures}
+            _have |= {e[12].get("name") for e in battlefield if len(e) > 12 and e[12]}
+            _have |= {c["name"] for c in permanents_in_play
+                      if "Creature" not in (c.get("type_line") or "")}
+            want = set()
+            for _ln in combo_lines:
+                _miss = _ln["cards"] - _have
+                if len(_miss) == 1:
+                    want |= _miss
+                elif not _miss and not _combo_finishes(_ln):
+                    want |= {c["name"] for c in deck
+                             if is_death_engine(c["death"]) and c["death"].get("death_drain")
+                             or (c.get("own_death") or {}).get("team_pump_x")}
+            return want
+
         def _tutor_fetch(filt):
             """WHAT A TUTOR TAKES, a stated policy: a nonland card it can reach, the biggest that
             next turn's mana can pay, else the cheapest. It stays out of `seen`, as the attack
-            tutor's does: `seen` is what was drawn, and a tutor's reach is counted apart."""
+            tutor's does: `seen` is what was drawn, and a tutor's reach is counted apart.
+            A combo piece one card from an infinite comes first (`_combo_wanted`)."""
             _next = lands_in_play * (1 + land_mana_bonus) + rock_production + treasures + 1
             hits = [c for c in deck if not c["is_land"] and tutor_reaches(filt, c.get("type_line"))]
+            _cw = _combo_wanted()
+            _pieces = [c for c in hits if c["name"] in _cw]
+            if _pieces:
+                return min(_pieces, key=lambda c: c["cmc"])
             payable = [c for c in hits if c["cmc"] <= _next]
             if payable:
                 return max(payable, key=lambda c: c["cmc"])
@@ -3142,16 +3183,37 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 for _arr in own_deaths["tap_loaders"]:
                     if _arr < turn:
                         _entomb(1)
+                # THE PITCH IS A CARD YOU CANNOT CAST SOON (2026-11-09). Discarding the biggest
+                # creature card whatever it was threw away the cheap bodies the deck dies with, and
+                # the per-card scan read Survival as a card that LOST games (+2.6 pts kill by T10
+                # with a Swamp in its slot). A pilot pitches a fatty above next turn's mana, and
+                # fetches a free sacrifice outlet first when none is out or in hand, else the
+                # biggest creature left (a target for Meren and the reanimation spells).
                 for _dt in own_deaths["discard_tutors"]:
                     for _ in range(1 if _dt["taps"] else 3):
-                        _cr = [c for c in hand if "Creature" in (c.get("type_line") or "")]
+                        _cap = lands_in_play + 1
+                        _pitch = [c for c in hand if "Creature" in (c.get("type_line") or "")
+                                  and c["cmc"] > _cap]
                         _lib = [c for c in deck if "Creature" in (c.get("type_line") or "")]
-                        if not _cr or not _lib or not spend(_dt["cost"]):
+                        if not _pitch or not _lib:
                             break
-                        discard_n(1, which=max(_cr, key=lambda c: c["cmc"]))
-                        _got = max(_lib, key=lambda c: c["cmc"])
-                        deck.remove(_got)
-                        hand.append(_got)
+                        _want = None
+                        _cw = _combo_wanted()
+                        _pc = [c for c in _lib if c["name"] in _cw]
+                        if _pc:
+                            _want = min(_pc, key=lambda c: c["cmc"])
+                        if _want is None and not free_sac_outlet \
+                                and not any(c["sac_outlet"] == "free" for c in hand):
+                            _outs = [c for c in _lib if c["sac_outlet"] == "free" and c["cmc"] <= _cap]
+                            if _outs:
+                                _want = min(_outs, key=lambda c: c["cmc"])
+                        if _want is None:
+                            _want = max(_lib, key=lambda c: c["cmc"])
+                        if not spend(_dt["cost"]):
+                            break
+                        discard_n(1, which=max(_pitch, key=lambda c: c["cmc"]))
+                        deck.remove(_want)
+                        hand.append(_want)
 
             # REANIMATION SPELLS (2026-11-07, under Meren's declaration): Animate Dead, Reanimate,
             # Dread Return, Footsteps of the Goryo. A stated policy: the biggest creature card in
@@ -5193,6 +5255,23 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 + team_anthem * len(battlefield)
                 + sum(_lord_bonuses(transient=False))
                 + counter_power)
+            # AN ASSEMBLED INFINITE ENDS THE GAME (`model_combos`, 2026-11-09). Every piece of a
+            # Spellbook line on the battlefield at the end of the turn, AND a way for the loop to
+            # finish: the line itself mills, damages or drains, or it makes infinite deaths while
+            # a death-drain payoff is out (The Meathook Massacre). A loop of infinite tokens or
+            # mana with no finisher is not a kill. Creatures are read off the battlefield (a
+            # sacrificed piece is gone); other permanents off `permanents_in_play`, which nothing
+            # removes. Unopposed, like every kill here: no counterspell, no removal in response.
+            if combo_lines and kill_turn is None:
+                _on = {e[12].get("name") for e in battlefield if len(e) > 12 and e[12]}
+                _on |= {c["name"] for c in permanents_in_play
+                        if "Creature" not in (c.get("type_line") or "")}
+                for _ln in combo_lines:
+                    if not _ln["cards"] <= _on:
+                        continue
+                    if _combo_finishes(_ln):
+                        kill_turn, kill_by, combo_win = turn, "combo", _ln["id"]
+                        break
             if kill_turn is None and (opponent_life <= 0
                                       or opponent_poison >= GOLDFISH_POISON_TO_LOSE):
                 kill_turn = turn
@@ -5594,5 +5673,6 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "kill_turn": kill_turn,
         "poison_by_turn": poison_by_turn,
         "kill_by": kill_by,
+        "combo_win": combo_win,
         "drain_by_turn": drain_by_turn,
     }

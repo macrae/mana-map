@@ -312,7 +312,12 @@ def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
         mp.setattr(goldfish_library, "own_death_profile", lambda c: {**real(c), "no_mana": False})
         free = cast_mana(mp)
     assert ruled and any(m < 7 for m in ruled), "convoke and delve never paid for it"
-    assert free and all(m >= 7 for m in free), "a hard cast needs seven mana"
+    # `mana_by_turn` is REPEATABLE mana: a Dark Ritual or a Treasure on top of five lands pays
+    # seven, so a hard cast can sit under 7 here (2026-11-09: 3 of 159 once tutors fetched
+    # Hogaak as a combo piece). The rule's signature is the SHARE of casts under seven.
+    low = lambda xs: sum(m < 7 for m in xs) / len(xs)
+    assert free and low(free) < 0.05, "a hard cast needs seven mana"
+    assert low(ruled) > low(free) + 0.2, (low(ruled), low(free))
 
 
 @requires_deck
@@ -477,3 +482,32 @@ def test_earthbend_adds_damage(monkeypatch):
     monkeypatch.setattr(goldfish_library, "experience_profile",
                         lambda card: {**real(card), "earthbend": None})
     assert on > dmg()
+
+
+# ── an assembled infinite ends the game (`model_combos`, 2026-11-09) ─────────────────────
+
+@requires_deck
+def test_an_assembled_infinite_with_a_finisher_is_a_kill(monkeypatch):
+    """The lines are Spellbook's; a line whose pieces are on the battlefield and which can
+    finish ends the game. PROVED BY GIVING EVERY LINE A FINISHER: the combo kill rate rises,
+    and with the flag off it is absent."""
+    from manamap.pilot import goldfish_turn
+    t = json.loads(deck_file(SLUG, "goldfish_targets.json").read_text())
+    t["model_combos"] = True
+    base = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False,
+                        _targets_doc=t)["metrics"]["combat"].get("kill_by_combo_rate") or 0
+    real = goldfish_turn.simulate_once
+
+    def finishing(*a, **k):
+        if k.get("combo_lines"):
+            k["combo_lines"] = [{**ln, "produces": ln["produces"] + ("Infinite damage",)}
+                                for ln in k["combo_lines"]]
+        return real(*a, **k)
+    monkeypatch.setattr(goldfish, "simulate_once", finishing)
+    forced = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False,
+                          _targets_doc=t)["metrics"]["combat"]["kill_by_combo_rate"]
+    assert forced > base
+    monkeypatch.undo()
+    t["model_combos"] = False
+    off = goldfish.run(SLUG, iterations=300, seed=7, quiet=True, _band=False, _targets_doc=t)
+    assert "kill_by_combo_rate" not in off["metrics"]["combat"]

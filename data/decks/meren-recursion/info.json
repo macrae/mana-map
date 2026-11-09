@@ -2070,7 +2070,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 93,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2088,7 +2088,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.01,
+          "value": 4.009,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2128,7 +2128,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -2253,15 +2253,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.109,
+            "10": 8.059,
             "2": 2.264,
             "3": 3.291,
-            "4": 4.144,
-            "5": 4.847,
-            "6": 5.531,
-            "7": 6.15,
-            "8": 6.771,
-            "9": 7.42
+            "4": 4.143,
+            "5": 4.845,
+            "6": 5.526,
+            "7": 6.144,
+            "8": 6.758,
+            "9": 7.395
           },
           "tier": "data",
           "weight": "detail",
@@ -2272,15 +2272,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.6,
+            "10": 0.579,
             "2": 0.997,
             "3": 0.908,
             "4": 0.778,
-            "5": 0.668,
-            "6": 0.596,
-            "7": 0.559,
-            "8": 0.547,
-            "9": 0.569
+            "5": 0.667,
+            "6": 0.592,
+            "7": 0.558,
+            "8": 0.542,
+            "9": 0.557
           },
           "tier": "data",
           "weight": "detail",
@@ -2291,15 +2291,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.093,
-            "10": 12.26,
-            "2": 0.473,
-            "3": 0.974,
-            "4": 1.411,
-            "5": 2.523,
-            "6": 3.965,
-            "7": 5.623,
-            "8": 7.526,
-            "9": 9.724
+            "10": 13.042,
+            "2": 0.475,
+            "3": 1.005,
+            "4": 1.476,
+            "5": 2.681,
+            "6": 4.268,
+            "7": 6.101,
+            "8": 8.192,
+            "9": 10.514
           },
           "tier": "data",
           "weight": "detail",
@@ -2325,13 +2325,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1376,
-            "4": 2,
-            "5": 54,
-            "6": 384,
-            "7": 1784,
-            "8": 2997,
-            "9": 2422
+            "10": 1341,
+            "4": 1,
+            "5": 51,
+            "6": 348,
+            "7": 1790,
+            "8": 3086,
+            "9": 2584
           },
           "tier": "data",
           "weight": "detail",
@@ -2347,8 +2347,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.01,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 4.009,
+    "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
@@ -2368,7 +2368,7 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
@@ -2396,20 +2396,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.272,
+      "mean_kill_turn": 8.285,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 52,
+      "kill_by_turn_8_pct": 53,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 10,
+      "no_kill_by_max_turn_pct": 8,
       "kill_turn_histogram": {
-        "10": 1376,
-        "4": 2,
-        "5": 54,
-        "6": 384,
-        "7": 1784,
-        "8": 2997,
-        "9": 2422
+        "10": 1341,
+        "4": 1,
+        "5": 51,
+        "6": 348,
+        "7": 1790,
+        "8": 3086,
+        "9": 2584
       }
     }
   },

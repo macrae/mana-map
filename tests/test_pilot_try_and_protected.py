@@ -200,9 +200,12 @@ def test_each_reads_every_swap_against_the_champion(tmp_path, monkeypatch):
     name that no longer existed (NameError on the first `--each`); nothing ran it."""
     from manamap.pilot import try_swap as ts
     monkeypatch.setattr(ts, "CACHE", tmp_path)
+    # `blind_ok`: Deadly Rollick and Putrefy are removal, which the goldfish does not read, and
+    # the blind gate (2026-11-08) withholds the rows; this test is about the --each path.
+    # Persist -> Dread Return: Dread Return left the list in V12, Victimize came in.
     out = ts.run("meren-recursion",
-                 [("Deadly Rollick", "Putrefy"), ("Dread Return", "Victimize")],
-                 iterations=200, each=True)
+                 [("Deadly Rollick", "Putrefy"), ("Persist", "Dread Return")],
+                 iterations=200, each=True, blind_ok=True)
     per = out["per_swap"]
     assert [(p["out"], p["in"]) for p in per] == [("Deadly Rollick", "Putrefy"),
-                                                  ("Dread Return", "Victimize")]
+                                                  ("Persist", "Dread Return")]
