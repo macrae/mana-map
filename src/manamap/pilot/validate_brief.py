@@ -55,7 +55,7 @@ from manamap.pilot.common import commander_rejection, deck_dir, report_errors
 #: this list cannot quietly fall behind the code it describes.
 CONSUMED = frozenset({
     "slug", "commander", "partner", "bracket", "must_include", "must_exclude",
-    "pool", "pool_files", "theme", "format", "purpose",
+    "pool", "pool_files", "theme", "format", "purpose", "resources",
 })
 
 #: What a deck is FOR, when it is not the fleet. A closed list: a misspelt purpose
@@ -115,6 +115,12 @@ def validate(doc, slug, rows=None, names=None, check_themes=False):
     purpose = doc.get("purpose")
     if purpose is not None and purpose not in PURPOSES:
         errors.append(f"purpose must be one of {sorted(PURPOSES)}, got {purpose!r}")
+
+    # THE DECK'S ENGINE RESOURCE (2026-11-08), read by `resource-scan` and `try`'s
+    # blind gate, not the builder — like `purpose`.
+    if "resources" in doc:
+        from manamap.pilot import resources as _resources
+        errors.extend(_resources.validate(doc.get("resources")))
 
     bracket = doc.get("bracket")
     if bracket is not None and bracket not in range(1, BRACKET_MAX + 1):

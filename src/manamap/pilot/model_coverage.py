@@ -56,6 +56,12 @@ CHANNELS = {
     "drain": "model_drain",
     "attack_enabler": "model_commander_attack_tutor",
     "discard": "model_discard",
+    # THE GRAVEYARD AND OWN-DEATH READERS (2026-11-07/08): loaders, reanimation, discard
+    # tutors, recurring bodies, no-mana casts, Mazirek's counters and the clamp — every one
+    # acts only under Meren's commander declaration. It sat in NOT_A_CHANNEL for two days,
+    # so Persist and Reanimate read INVISIBLE while the turn loop cast them every game; the
+    # blind gate in `try` made that lie expensive, which is how it surfaced.
+    "recursion": "model_commander_recursion",
     # DISCOVER N, read on an instant or sorcery and ALWAYS ON, like `tutor`
     # beside it: it is card selection, it needs no authored rate, and a deck
     # without the keyword never reaches the branch, so nothing else moves.
@@ -96,9 +102,6 @@ NOT_A_CHANNEL = {
     # from 0.153 to 0.327 on an unchanged 99.
     "model_commander_animate": "a per-deck commander declaration, not a channel",
     "model_commander_combat_reveal": "a per-deck commander declaration, not a channel",
-    # MEREN OF CLAN NEL TOTH (2026-11-06): experience and the end-step return, with a stated
-    # sacrifice policy; checked against the commander's text.
-    "model_commander_recursion": "a per-deck commander declaration, not a channel",
     # ZADA, HEDRON GRINDER, and she is the only card in the corpus with the
     # ability. What the copies multiply is the spell's DRAW, so the cards that
     # FEED this are already covered by `draw` and a fodder spell whose draw is
@@ -272,6 +275,14 @@ def channels_for(profile):
             # guard, not against the mirror.
             "drain_etb", "gain_etb", "drain_per_type", "gain_per_type", "lifelink")):
         found.add("drain")
+    yard, own, rec = (profile.get("yard") or {}), (profile.get("own_death") or {}), \
+        (profile.get("recurring") or {})
+    if (yard.get("reanimate") or yard.get("to_yard") or yard.get("discard_tutor")
+            or own.get("no_mana") or own.get("cast_from_yard") or own.get("clamp")
+            or own.get("sac_team_counter") or own.get("team_pump_x")
+            or rec.get("upkeep") or rec.get("end_step") or rec.get("return_cost")
+            or rec.get("return_landfall")):
+        found.add("recursion")
     if profile.get("discover_n"):
         found.add("discover")
     if profile.get("cascade"):

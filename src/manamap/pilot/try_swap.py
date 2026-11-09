@@ -275,10 +275,12 @@ def _cast_proofs(slug):
 
 
 def card_rows(slug, branch, base_doc, swapped_doc, swaps):
-    from manamap.pilot import model_coverage
+    from manamap.pilot import model_coverage, resources
     from manamap.pilot.common import load_card_roles
     roles = load_card_roles()
     flags, named = model_coverage.declaration(slug, branch)
+    declared = resources.declared(slug)
+    readers = resources._commander_reader(slug) if declared else set()
     named_keys = {_key(n) for n in named}
     forge_by, forge_run = _forge_evidence(slug)
     proofs = _cast_proofs(slug)
@@ -293,12 +295,16 @@ def card_rows(slug, branch, base_doc, swapped_doc, swaps):
                 continue
             card = by_key.get(_key(name)) or corpus_card(name) or {"name": name}
             st = model_coverage.card_state(card, flags, named)
+            # THE ENGINE TEXT, NOT THE CARD (2026-11-08): Toph is "seen" because she is a
+            # 2/4, and her landfall experience — the reason to play her — is read by nothing.
+            unread = resources.engine_unread(slug, card, declared, readers) if declared else []
             f = forge_by.get(_key(name))
             out.append({
                 "side": side, "name": name,
                 "roles": roles.get(name) or roles.get(card.get("name")) or [],
                 "in_target": _key(name) in named_keys,
                 "state": st["state"], "dark": st["dark_channels"],
+                "engine_unread": unread,
                 "forge": ({k: f.get(k) for k in ("cast", "activated", "castable_uncast")}
                           if f else None),
                 "proof": proofs.get(_key(name)),
@@ -307,6 +313,17 @@ def card_rows(slug, branch, base_doc, swapped_doc, swaps):
 
 
 # ── the screen ───────────────────────────────────────────────────────────
+
+def blind_cards(cards):
+    """The swapped cards the goldfish cannot read: not `seen` by `card_state`, or
+    carrying a declared engine resource's text that nothing applies."""
+    return {c["name"] for c in cards if c["state"] != "seen" or c.get("engine_unread")}
+
+
+BLIND_ADVICE = ("the goldfish does not read {names}: judge it (the strategist), model it, "
+                "or play-test it. Rows withheld — `--blind-ok` prints them as a CEILING "
+                "(a blind add) / FLOOR (a blind cut)")
+
 
 def verdict(table, blind):
     better = [r["measure"] for r in table if r.get("verdict") == "better"]
@@ -413,23 +430,37 @@ BOARD_QUALITY_CAVEAT = ("the goldfish has no blockers and no removal, so it says
                         "about board QUALITY — Forge is the probe for that")
 
 
-def run(slug, swaps=None, branch=None, iterations=None, seed=None, each=False, ops=None):
+def run(slug, swaps=None, branch=None, iterations=None, seed=None, each=False, ops=None,
+        blind_ok=False):
     from manamap.pilot import diagnostic, mana_fit, net_change
     it = iterations or diagnostic.HARNESS["iterations"]
     sd = seed if seed is not None else diagnostic.HARNESS["seed"]
     ops = list(ops or []) + swap_ops(swaps or [])
     doc, entries, rows, warnings, p = apply_ops(slug, branch, ops)
     base_doc = load_deck_cards(slug, branch)
-    table, cached, _cand_cached = compare(slug, branch, doc, p, it, sd)
     cards, forge_run = card_rows(slug, branch, base_doc, doc, rows)
-    blind = {c["name"] for c in cards if c["state"] != "seen"}
+    blind = blind_cards(cards)
+    # A BLIND READ IS WITHHELD, NOT PRINTED (2026-11-08). Rows that cannot see a swapped
+    # card read as "that card does nothing", and a whole session of Meren swaps was
+    # argued from exactly those rows. The cheapest thing that raises trust is judgment,
+    # not another run.
+    withheld = bool(blind) and not blind_ok
+    if withheld:
+        table, cached = [], False
+    else:
+        table, cached, _cand_cached = compare(slug, branch, doc, p, it, sd)
     call, better, worse, trust = verdict(table, blind)
+    if withheld:
+        call = "blind"
+        trust = "none — " + BLIND_ADVICE.format(names=", ".join(sorted(blind)))
+    elif blind:
+        trust += " — printed by --blind-ok: a CEILING for a blind add, a FLOOR for a blind cut"
     # A FIGURE RESTING ON AN AUTHORED RATE SAYS SO. Tithe's Treasure is decided by
     # TITHE_PAY_RATE, which nothing here measures.
     for note in authored_rate_notes(base_doc, doc):
         trust += f"; {note}"
     per_swap = []
-    if each and len(rows) > 1 and swaps:
+    if each and len(rows) > 1 and swaps and not withheld:
         # The champion's reading, from the same cache `compare` filled.
         a, _ = champion_reading(slug, branch, it, sd)
         for (o, i) in swaps:
@@ -450,11 +481,15 @@ def run(slug, swaps=None, branch=None, iterations=None, seed=None, each=False, o
     raise_trust = [f"`manamap pilot forge-cast-check {slug} --card \"{c['name']}\"` (~1 min) — "
                    f"the model cannot see it, Forge can say whether it is played"
                    for c in cards if c["side"] == "in" and c["state"] != "seen" and c["proof"] != "PLAYED"]
+    if blind:
+        raise_trust.insert(0, "/jarvis → the strategist on " + ", ".join(sorted(blind))
+                           + "; `manamap pilot resource-scan " + slug + "` for the engine view")
     return {"slug": slug, "branch": branch, "swaps": rows, "cards": cards,
             "forge_run": forge_run, "warnings": warnings, "mana": mana,
             "table": table, "per_swap": per_swap,
             "verdict": {"call": call, "better": better, "worse": worse, "trust": trust,
                         "raise": raise_trust},
+            "withheld": withheld,
             "harness": {"iterations": it, "seed": sd, "champion_cached": cached}}
 
 
@@ -622,7 +657,7 @@ def preview(slug, ops, branch=None, goldfish=True, iterations=None, seed=None):
         base_doc = load_deck_cards(slug, branch)
         table, champ_cached, cand_cached = compare(slug, branch, doc, p, it, sd)
         cards, _forge_run = card_rows(slug, branch, base_doc, doc, _rows(p))
-        blind = {c["name"] for c in cards if c["state"] != "seen"}
+        blind = blind_cards(cards)
         call, better, worse, trust = verdict(table, blind)
         notes = authored_rate_notes(base_doc, doc)
         out["goldfish"] = {
@@ -649,6 +684,8 @@ def render(r):
         seen = c["state"].upper() if c["state"] != "seen" else "seen"
         if c["dark"]:
             seen += f" ({', '.join(c['dark'])} off)"
+        if c.get("engine_unread"):
+            seen += f"; BLIND to its {', '.join(c['engine_unread'])}"
         f = c["forge"]
         forge = (f"AI cast {f.get('cast')}, activated {f.get('activated')}, held castable {f.get('castable_uncast')}"
                  if f else (f"cast-check {c['proof']}" if c["proof"] else "no Forge record"))
@@ -673,13 +710,18 @@ def render(r):
     w("")
     # THE SAME ROWS AS `net-change`, the same way, so the two reports read as one
     # instrument: `net_change.profile_lines` is the one formatter.
-    w(f"  GOLDFISH   {net_change.profile_count(r['table'])}; now -> swapped, "
-      "interval on the difference, Holm across the rows")
-    L.extend(net_change.profile_lines(r["table"], indent="    "))
-    blind = [c for c in r["cards"] if c["state"] != "seen"]
-    if blind:
+    if r.get("withheld"):
+        w("  GOLDFISH   WITHHELD — BLIND")
+        w("    " + BLIND_ADVICE.format(names=", ".join(sorted(blind_cards(r["cards"])))))
+    else:
+        w(f"  GOLDFISH   {net_change.profile_count(r['table'])}; now -> swapped, "
+          "interval on the difference, Holm across the rows")
+        L.extend(net_change.profile_lines(r["table"], indent="    "))
+    blind = [c for c in r["cards"] if c["state"] != "seen" or c.get("engine_unread")]
+    if blind and not r.get("withheld"):
         w("    these rows cannot see: " + "; ".join(
-            f"{c['name']} ({c['state']}{': ' + ', '.join(c['dark']) + ' off' if c['dark'] else ''})"
+            f"{c['name']} ({c['state']}{': ' + ', '.join(c['dark']) + ' off' if c['dark'] else ''}"
+            f"{'; its ' + ', '.join(c['engine_unread']) + ' unread' if c.get('engine_unread') else ''})"
             for c in blind))
     if r["per_swap"]:
         w("")
@@ -730,7 +772,8 @@ def main(args):
     with console.task(f"Trying {n} change(s) on {args.slug}", total=1, unit="run") as bar:
         r = run(args.slug, swaps, branch=getattr(args, "branch", None),
                 iterations=getattr(args, "iterations", None), seed=getattr(args, "seed", None),
-                each=getattr(args, "each", False), ops=ops)
+                each=getattr(args, "each", False), ops=ops,
+                blind_ok=getattr(args, "blind_ok", False))
         bar.advance(1)
     if getattr(args, "json", False):
         print(json.dumps(r, indent=1, default=str))

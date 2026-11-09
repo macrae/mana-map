@@ -114,6 +114,12 @@ manamap pilot deck-notes <slug> add "…" [--result win|loss|draw] [--opponents 
 manamap pilot deck-notes <slug> list [--since D] | show <id>
 manamap pilot validate-log <slug>                   # log.jsonl on FORM: ids in order, result/opponents/tags, the survey's vocabulary and range
 manamap pilot model-coverage <slug> [--json]    # WHAT THE GOLDFISH CANNOT SEE in this deck: seen / DARK (a channel it feeds is off) / invisible
+manamap pilot resource-scan <slug> [--resource NAME] [--json]   # the deck's ENGINE RESOURCE (brief.json `resources`: name, kind, makes, spends):
+                                                # every card in its identity that MAKES or MULTIPLIES it, from card text — never from what
+                                                # the goldfish reads — non-lands then lands, each READ or BLIND, in-deck marked. `kind`
+                                                # (player_counter, permanent_counter, token, trigger, land_drop) fixes the multipliers:
+                                                # proliferate for a player counter. `try` WITHHOLDS its rows (`==> BLIND`) when a swapped
+                                                # card is not `seen` or its resource text is unread; `--blind-ok` prints them as a ceiling/floor.
 manamap pilot regen --slug S | --fleet [--only STAGE] [--jobs N] [--dry-run]   # LAZY since 2026-10-21: --slug re-reads the deck you are iterating (and its OPEN branches; a merged or rejected one is never re-measured), --fleet is the explicit fleet-wide rebuild at a release or on the pilot's word, a bare regen refuses; dependency order, parallel across targets
 manamap pilot deck-info <slug> [--json] [--write]            # THE WORKBENCH VIEW: version · record · status · figures · what to do next
 manamap pilot context <slug> [--slice SECTION…|--check|--scaffold|--refresh [--all]|--install DRAFT --note "…"]

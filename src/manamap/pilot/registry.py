@@ -237,6 +237,9 @@ PILOT_STEPS = [
      "Form-check simulation run records; re-derive the analysis from logs where they exist"),
     ("model-coverage", "manamap.pilot.model_coverage",
      "What the goldfish CANNOT see in this deck, before you run it"),
+    ("resource-scan", "manamap.pilot.resources",
+     "Every card in the deck's identity that MAKES or MULTIPLIES its declared engine resource "
+     "(brief.json `resources`), from card text — each marked in-deck, and READ or BLIND by the goldfish"),
     ("regen", "manamap.pilot.regen",
      "Regenerate the fleet's derived artifacts in dependency order, in parallel"),
     ("deck-info", "manamap.pilot.deck_info",
@@ -359,7 +362,7 @@ _DECK_COMMANDS = {
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
-    "model-coverage",
+    "model-coverage", "resource-scan",
     "bracket-check", "deck-combos", "validate-deck-combos", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame", "scaffold-targets",
     "validate-diagnosis", "validate-goldfish-targets",
@@ -741,6 +744,12 @@ def add_pilot_parser(subparsers):
                              help="run an underpowered --detect as a screen rather than a test")
         if name == "model-coverage":
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "resource-scan":
+            cmd.add_argument("--resource", default=None, metavar="NAME",
+                             help="just this declared resource (default: all of them)")
+            cmd.add_argument("--limit", type=int, default=None,
+                             help="corpus matches per resource (default 400)")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "regen":
             # DECK-SCOPED BY DEFAULT (2026-10-21): one of `--slug` or `--fleet`
             # is required, and a bare `regen` refuses with both spellings. The
@@ -799,6 +808,10 @@ def add_pilot_parser(subparsers):
                              help="also measure every swap alone, to see which one moves what")
             cmd.add_argument("--stage", default=None, metavar="NAME",
                              help="after the screen, write the swaps to this branch (opened if new)")
+            cmd.add_argument("--blind-ok", action="store_true", dest="blind_ok",
+                             help="print the goldfish rows even when a swapped card is BLIND to "
+                                  "the model, labelled as a ceiling/floor (default: the rows are "
+                                  "withheld and the card is sent to judgment)")
             cmd.add_argument("--add", action="append", metavar="CARD",
                              help="a card going in with nothing coming out (repeat) — the same "
                                   "rules `edit` applies, so a lone add to a Commander 100 is refused")
