@@ -69,7 +69,7 @@ def test_the_clamp_is_cast_and_its_mirror_agrees():
     assert model_coverage.never_cast(dict(prof), {}) is True
 
 
-def _xp(monkeypatch=None, blank=None, n=1500):
+def _xp(monkeypatch=None, blank=None, n=1500, doc=None):
     if blank is not None:
         real = goldfish_library.own_death_profile
 
@@ -78,7 +78,8 @@ def _xp(monkeypatch=None, blank=None, n=1500):
             return {**p, **blank}
         monkeypatch.setattr(goldfish_library, "own_death_profile", _without)
     t = json.loads(deck_file(SLUG, "goldfish_targets.json").read_text())
-    m = goldfish.run(SLUG, iterations=n, seed=7, quiet=True, _band=False, _targets_doc=t)["metrics"]
+    m = goldfish.run(SLUG, iterations=n, seed=7, quiet=True, _band=False, _targets_doc=t,
+                     doc=doc)["metrics"]
     return m["commander_recursion"]["mean_experience_by_turn"]["10"], m
 
 
@@ -89,9 +90,17 @@ def _xp(monkeypatch=None, blank=None, n=1500):
     ("clamp", {"clamp": None}),
 ])
 def test_each_death_source_pays_experience(monkeypatch, shape, blank):
-    """PROVED BY REMOVING EACH SHAPE: her experience at turn ten falls without it."""
-    on, _ = _xp()
-    off, _ = _xp(monkeypatch, blank)
+    """PROVED BY REMOVING EACH SHAPE: her experience at turn ten falls without it.
+    The list must carry the shape: Plaguecrafter, the only edict, left in V18 (2026-11-09),
+    so the edict case puts it back in for a removal spell the goldfish does not read."""
+    from manamap.pilot import try_swap
+    doc = None
+    have = {line.split(" ", 1)[1].strip() for line in
+            deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
+    if shape == "edict" and "Plaguecrafter" not in have:
+        doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Plaguecrafter")])[0]
+    on, _ = _xp(doc=doc)
+    off, _ = _xp(monkeypatch, blank, doc=doc)
     assert on > off, (shape, on, off)
 
 
