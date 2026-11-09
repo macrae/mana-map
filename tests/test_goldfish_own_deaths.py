@@ -98,6 +98,12 @@ def test_each_death_source_pays_experience(monkeypatch, shape, blank):
     have = {line.split(" ", 1)[1].strip() for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     if shape == "edict" and "Plaguecrafter" not in have:
+        # a card from outside the list is shaped from the Scryfall dump, which CI's push job
+        # does not have (`requires_dump`); the other two shapes are still in the list
+        from manamap import config
+        from manamap.ingest.common import dump_exists
+        if not dump_exists(config.RAW_JSON_PATH):
+            pytest.skip("the edict shape needs Plaguecrafter, and adding it needs the dump")
         doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Plaguecrafter")])[0]
     on, _ = _xp(doc=doc)
     off, _ = _xp(monkeypatch, blank, doc=doc)
