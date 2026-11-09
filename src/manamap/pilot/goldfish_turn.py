@@ -308,6 +308,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     player_times = 1
     landfall_experience = 0
     landfall_proliferate = 0
+    # EARTHBEND (Toph) and ACTIVATED PROLIFERATE (Yawgmoth's {B}{B}-and-discard, Karn's Bastion),
+    # 2026-11-08, under the same declaration: one earthbend per bender each combat with an
+    # attacker; the proliferates after combat, before Meren's end step reads the count.
+    earthbenders = []
+    prolif_activators = []
     # DAMAGE REPLACEMENTS THAT ADD (Torbran, 2026-10-11): `(amount, scope)` per
     # permanent in play, applied per damage INSTANCE through `bonus_for`.
     # `damage_sources` maps a registered payoff profile (by identity) to what
@@ -429,6 +434,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 landfall_proliferate += 1
             elif _xp.get("proliferate") == "etb":
                 _proliferate()
+            elif _xp.get("proliferate") == "activated" and _xp.get("proliferate_cost"):
+                prolif_activators.append(dict(_xp["proliferate_cost"]))
+            if _xp.get("earthbend"):
+                earthbenders.append(_xp["earthbend"])
         # THE ENGINES THAT WORK ON A CAST OR AN EQUIP, and the doubler that came in through a
         # door other than the body loop (2026-11-04). Mirrormade copies from this list.
         permanents_in_play.append(card)
@@ -994,6 +1003,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # LANDFALL FOR THE PLAYER'S COUNTERS: a fetch is two events, itself and what it
             # finds (its shuffle is not modelled). Ramp spells that put lands in are not
             # counted — a floor. Toph's counter lands before Sage proliferates it.
+            # A LAND THAT PROLIFERATES FOR A COST (Karn's Bastion) taps itself for it, so the
+            # activation also costs the mana it would have made.
+            if commander_recursion and played["experience"]["proliferate"] == "activated" \
+                    and played["experience"]["proliferate_cost"]:
+                _pc = dict(played["experience"]["proliferate_cost"])
+                _pc["generic"] += 1 if _pc["tap"] else 0
+                prolif_activators.append(_pc)
             if commander_recursion and (landfall_experience or landfall_proliferate):
                 for _ in range(2 if played["experience"]["fetch_landfall"] else 1):
                     _gain_experience(landfall_experience)
@@ -1634,6 +1650,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if any(card["draw"][k] for k in ("recurring_draw", "arrival_draw", "cast_draw")):
                 return False
             if card["reduces"] or card["token_doubler"] or is_etb_engine(c):
+                return False
+            # the experience economy is an engine too (2026-11-08): Toph, Constrictor, Sage,
+            # Yawgmoth's proliferate. NOT Cankerbloom, whose proliferate IS its sacrifice ("other"),
+            # nor an ETB proliferate, which has already fired.
+            _xpf = card["experience"]
+            if (_xpf["landfall_experience"] or _xpf["player_plus"] or _xpf["player_times"] > 1
+                    or _xpf["proliferate"] in ("landfall", "activated") or _xpf["earthbend"]):
                 return False
             if c["static_lord"] or c["team_haste"] or c["attack_ping_per_attacker"] \
                     or c["team_damage_multiplier"] > 1 or c["extra_combat_free"]:
@@ -4618,6 +4641,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             for _i in _able:
                 _e = battlefield[_i]
                 battlefield[_i] = _e[:7] + (True,) + _e[8:]
+            # EARTHBEND ON THE ATTACK (Toph, 2026-11-08): the trigger resolves after attackers
+            # are declared, so the land joins NEXT turn's swing. One land, chosen every time, so
+            # its counters accumulate; the counters pass through the creature replacements
+            # (Constrictor's +1). Not modelled: the land no longer taps for mana once it attacks.
+            if commander_recursion and earthbenders and _able:
+                for _eb in earthbenders:
+                    _n = experience if _eb == "experience" else int(_eb)
+                    _n = apply_counter_mod(_n, counter_plus, counter_times)
+                    if _n <= 0:
+                        continue
+                    _ei = next((i for i, e in enumerate(battlefield)
+                                if len(e) > 12 and e[12] and e[12].get("earthbent")), None)
+                    if _ei is None:
+                        creature_entered(_n, turn, True, 1, toughness=_n,
+                                         info={"name": "earthbent land", "scales": None,
+                                               "prowess": 0, "vigilance": False,
+                                               "earthbent": True})
+                    else:
+                        _e = battlefield[_ei]
+                        battlefield[_ei] = (_e[0] + _n,) + _e[1:6] + (_e[6] + _n,) + _e[7:]
             swing_poison = (sum(d for d, pz in attackers if pz[0])
                             + sum(pz[1] for _d, pz in attackers))
             # The per-attacker ping is dealt BY the attacker, so an infect
@@ -5025,6 +5068,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     battlefield[_i] = (_c[0] + _k,) + _c[1:]
                 commander_counters += _k * _cmd_out()
             own_deaths["sacs"] = 0
+            # ACTIVATED PROLIFERATE (2026-11-08), after combat and before Meren's end step reads
+            # the count. A tap ability once a turn; an untapped one (Yawgmoth) up to three times.
+            # A discard pays with a spare card: a land beyond the first in hand once five are in
+            # play, else the highest mana value creature card (it lands in the graveyard, where
+            # Meren and the reanimation spells want it). Life costs are not tracked.
+            if commander_recursion and prolif_activators and experience > 0:
+                for _pc in prolif_activators:
+                    for _ in range(1 if _pc["tap"] else 3):
+                        if experience <= 0:
+                            break
+                        _spare = None
+                        if _pc["discard"]:
+                            _lands_h = [c for c in hand if c["is_land"]]
+                            _crs = [c for c in hand if not c["is_land"]
+                                    and "Creature" in (c.get("type_line") or "")]
+                            if len(_lands_h) > 1 and lands_in_play >= 5:
+                                _spare = _lands_h[-1]
+                            elif _crs:
+                                _spare = max(_crs, key=lambda c: c["cmc"])
+                            else:
+                                break
+                        _pp = [frozenset({x}) for x in _pc["pips"]]
+                        if not spend(_pc["generic"] + len(_pc["pips"]), _pp or None):
+                            break
+                        if _spare is not None:
+                            hand.remove(_spare)
+                            _to_yard([_spare])
+                        _proliferate()
             # END-STEP TOKENS (Jadar): made now, there for the outlet next turn.
             if commander_recursion:
                 for _mk in own_deaths["makers"]:

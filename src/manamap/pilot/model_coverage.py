@@ -126,8 +126,9 @@ _MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast",
                                          "opponent_draw_tax", "opponent_second_draw"})
 
 #: Proliferate timings the turn loop applies (`goldfish_turn._register_statics` and the land
-#: drop); "activated", "cast" and "other" are read and not applied. A test holds it to the loop.
-READ_PROLIFERATE = frozenset({"landfall", "etb"})
+#: drop); "cast" and "other" are read and not applied, and "activated" only when its cost is
+#: one the loop pays (`proliferate_cost` not None: mana, tap, discard). A test holds it to the loop.
+READ_PROLIFERATE = frozenset({"landfall", "etb", "activated"})
 
 
 def _experience_read(profile):
@@ -135,7 +136,9 @@ def _experience_read(profile):
     Constrictor's and Vorinclex's replacements, a landfall or ETB proliferate."""
     xp = profile.get("experience") or {}
     return bool(xp.get("landfall_experience") or xp.get("player_plus")
-                or (xp.get("player_times") or 1) > 1 or xp.get("proliferate") in READ_PROLIFERATE)
+                or (xp.get("player_times") or 1) > 1 or bool(xp.get("earthbend"))
+                or (xp.get("proliferate") in READ_PROLIFERATE
+                    and (xp.get("proliferate") != "activated" or xp.get("proliferate_cost"))))
 
 
 def _nonzero(profile, keys):

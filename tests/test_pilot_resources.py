@@ -109,10 +109,15 @@ def test_a_read_experience_card_is_read_under_the_commander_channel():
     assert resources.engine_unread("x", con, [EXPERIENCE], readers={"Meren"}) == []
 
 
-def test_an_activated_proliferate_stays_blind():
+def test_an_activated_proliferate_is_read_only_when_its_cost_is_payable():
+    """Yawgmoth's {B}{B}-and-discard is paid by the loop (2026-11-08); a proliferate that costs
+    a sacrifice is not, and stays BLIND."""
     yawg = {"name": "Yawgmoth, Thran Physician", "type_line": "Legendary Creature — Human Cleric",
             "oracle_text": "{B}{B}, Discard a card: Proliferate."}
-    assert resources.engine_unread("x", yawg, [EXPERIENCE], readers={"Meren"}) == ["experience counters"]
+    assert resources.engine_unread("x", yawg, [EXPERIENCE], readers={"Meren"}) == []
+    sac = {"name": "Sac Bird", "type_line": "Creature — Bird",
+           "oracle_text": "{1}, Sacrifice a creature: Proliferate."}
+    assert resources.engine_unread("x", sac, [EXPERIENCE], readers={"Meren"}) == ["experience counters"]
 
 
 # ── the gate ────────────────────────────────────────────────────────────

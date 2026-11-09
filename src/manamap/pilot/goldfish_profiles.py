@@ -1840,6 +1840,29 @@ _FETCH_RE = re.compile(
     re.I)
 
 
+_EARTHBEND_RE = re.compile(r"\bwhenever you attack\b[^.]*\bearthbend (X|\d+)\b", re.I)
+
+
+def _activation_cost(cost):
+    """An activated ability's cost as the turn loop can pay it, or None when it asks for
+    something the loop cannot price (a sacrifice, exiling, removing counters)."""
+    low = cost.lower()
+    if re.search(r"\bsacrifice\b|\bexile\b|\bremove\b|\breturn\b", low):
+        return None
+    generic, pips = 0, []
+    for sym in re.findall(r"\{([^}]+)\}", cost):
+        if sym.isdigit():
+            generic += int(sym)
+        elif sym.upper() in "WUBRG":
+            pips.append(sym.upper())
+        elif sym.upper() == "C":
+            generic += 1
+    life = re.search(r"\bpay (\d+) life\b", low)
+    return {"generic": generic, "pips": pips, "tap": "{t}" in low,
+            "discard": bool(re.search(r"\bdiscard (?:a|one) card\b", low)),
+            "life": int(life.group(1)) if life else 0}
+
+
 def experience_profile(card):
     """`{landfall_experience, player_plus, player_times, proliferate, fetch_landfall}`.
 
@@ -1851,7 +1874,8 @@ def experience_profile(card):
     text = _REMINDER_RE.sub(" ", card.get("oracle_text", "") or "")
     type_line = card.get("type_line") or ""
     out = {"landfall_experience": 0, "player_plus": 0, "player_times": 1,
-           "proliferate": None, "fetch_landfall": False}
+           "proliferate": None, "proliferate_cost": None, "fetch_landfall": False,
+           "earthbend": None}
     # A CLASS OR A ROOM IS REFUSED, as `counter_mod` refuses it: Innkeeper's Talent doubles
     # on its level 3, and nothing here buys a level.
     if re.search(r"\b(?:Class|Room)\b", type_line):
@@ -1879,7 +1903,17 @@ def experience_profile(card):
         else:
             kind = "other"
         out["proliferate"] = kind
+        if kind == "activated":
+            out["proliferate_cost"] = _activation_cost(line.split(":")[0])
         break
+    # EARTHBEND X on attack (Toph, 2026-11-08): "Whenever you attack, earthbend X, where X is
+    # the number of experience counters you have" — a land becomes a 0/0 haste creature with
+    # X +1/+1 counters. A fixed N is read too.
+    m = _EARTHBEND_RE.search(text)
+    if m:
+        out["earthbend"] = "experience" if m.group(1).upper() == "X" and re.search(
+            r"experience counters", text[m.end():m.end() + 80], re.I) else (
+            int(m.group(1)) if m.group(1).isdigit() else None)
     if "Land" in type_line.split("//")[0] and _FETCH_RE.search(text):
         out["fetch_landfall"] = True
     return out

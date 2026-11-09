@@ -396,7 +396,10 @@ def test_the_experience_shapes_read_from_the_text():
         "Yawgmoth, Thran Physician", "Protection from Humans\nPay 1 life, Sacrifice another "
         "creature: Put a -1/-1 counter on up to one target creature and draw a card.\n{B}{B}, "
         "Discard a card: Proliferate.", "Legendary Creature — Human Cleric"))
-    assert yawg["proliferate"] == "activated"          # read, and NOT applied
+    assert yawg["proliferate"] == "activated"
+    assert yawg["proliferate_cost"] == {"generic": 0, "pips": ["B", "B"], "tap": False,
+                                        "discard": True, "life": 0}
+    assert toph["earthbend"] == "experience"
     misty = experience_profile(_card(
         "Misty Rainforest", "{T}, Pay 1 life, Sacrifice this land: Search your library for a "
         "Forest or Island card, put it onto the battlefield, then shuffle.", "Land"))
@@ -430,6 +433,7 @@ def _have():
     ("Winding Constrictor", {"player_plus": 0}),
     ("Toph, Earthbending Master", {"landfall_experience": 0}),
     ("Evolution Sage", {"proliferate": None}),
+    ("Yawgmoth, Thran Physician", {"proliferate": None, "proliferate_cost": None}),
 ])
 def test_each_experience_source_pays(monkeypatch, card, blank):
     """PROVED BY REMOVING THE SHAPE: the same list, the same seeds, fewer counters at T7."""
@@ -453,4 +457,23 @@ def test_read_proliferate_names_what_the_turn_loop_applies():
     src = simulator_source()
     for kind in model_coverage.READ_PROLIFERATE:
         assert f'_xp.get("proliferate") == "{kind}"' in src, kind
-    assert "activated" not in model_coverage.READ_PROLIFERATE
+    assert "cast" not in model_coverage.READ_PROLIFERATE and "other" not in model_coverage.READ_PROLIFERATE
+
+
+@requires_deck
+@requires_dump
+def test_earthbend_adds_damage(monkeypatch):
+    """PROVED BY REMOVING THE SHAPE: Toph's earthbent land swings for her experience."""
+    from manamap.pilot import try_swap
+    swaps = [] if "Toph, Earthbending Master" in _have() else [("Assassin's Trophy",
+                                                               "Toph, Earthbending Master")]
+    doc = try_swap.apply_swaps(SLUG, None, swaps)[0] if swaps else None
+
+    def dmg():
+        m = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
+        return m["combat"]["mean_damage_by_turn"]["10"]
+    on = dmg()
+    real = goldfish_library.experience_profile
+    monkeypatch.setattr(goldfish_library, "experience_profile",
+                        lambda card: {**real(card), "earthbend": None})
+    assert on > dmg()
