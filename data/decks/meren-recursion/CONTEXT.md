@@ -4,9 +4,9 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V17 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 34 · **bracket floor:** 3 (Upgraded)
-- **Combos:** 7 known lines (7 infinite, 0 two-card) · 162 one card short
+- **Combos:** 7 known lines (7 infinite, 0 two-card) · 172 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
 <!-- /ctx:gen summary -->
 
@@ -105,19 +105,19 @@ Mostly untapped duals and fetches for both colours, and this is where V7 packed 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on V17, 2026-11-08. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **93%**
+- share of seeded games where the commander was CAST by turn six: **94%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 4.009**
+- mean turn the commander is first cast: **turn 3.989**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **44%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **14%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
 - STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
-- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **14%**
+- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **13%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **0%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **35%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **34%**
 - RAMP drawn — an accelerant of any kind: **35%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **52%**
 - A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **14%**
