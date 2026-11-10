@@ -1,198 +1,201 @@
 {
   "emergency": [
     {
+      "condition": "removal",
+      "condition_text": "a removal spell or ability is pointed at Shabraz, and his tax is about to go up by two",
+      "indications": [
+        "A seat passes with {W}, {B} or {1}{U} open the turn after Shabraz lands.",
+        "Shabraz is on the battlefield with no Swiftfoot Boots on him and no {U} or {W} open.",
+        "Shabraz carries counters. The table reads counters as the kill.",
+        "The table has already answered a commander once. In 001 Brallin was removed twice and the tax stacked (log:001).",
+        "In 007 Shabraz was taken out and the game stalled until he came back (log:007)."
+      ],
+      "immediate": [
+        "Read the removal: does it target, is it a spell or an ability, and does it destroy, deal damage, exile, bounce or make you sacrifice.",
+        "If it targets Shabraz, answer it in this order: Deflecting Swat for free (you control a commander) onto one of their permanents; Slip Out the Back ({U}), which phases him out with a +1/+1 counter; Loran's Escape ({W}); Shelter ({1}{W}) naming the spell's colour, which also draws a card.",
+        "If it is a noncreature spell and step 2 did not stop it, counter it: Stubborn Denial ({U}, a hard counter while Shabraz has 4 or more power) or Negate ({1}{U}).",
+        "If it destroys or deals damage, cast Flawless Maneuver for free. If it exiles or tucks, channel Otawara, Soaring City on Shabraz ({3}{U}, {1} less per legendary creature you control): he returns to your hand and costs 5 from there.",
+        "If nothing stops it, put Shabraz in the command zone and say the new tax aloud: 7, then 9. Brallin's is 6, then 8."
+      ],
+      "subsequent": [
+        "Hold every draw spell and draw-seven until Shabraz is back. A card drawn with him in the command zone puts no counter anywhere.",
+        "Recast him on the first turn you can pay the tax plus one shield: 7 mana with Swiftfoot Boots already out to equip for {1}, or 7 plus {U} for Slip Out the Back.",
+        "If the tax is 9 and you cannot pay it plus a shield within two turns, cast Brallin (4, or his own tax) as the threat. Loot with Kitsa and Teferi, Master of Time's +1 to grow him and ping the table, as you did to stay alive in 007 (log:007).",
+        "Keep Flawless Maneuver and Deflecting Swat in hand. Both are free while you control either commander; with both in the command zone they cost full price."
+      ],
+      "notes": "If an opponent shuffles Shabraz into your library (Chaos Warp, a tuck) and Brallin is castable this turn or next, let Shabraz go to the library instead of the command zone: Brallin's partner trigger puts him into your hand, and from your hand he costs 5 with no tax. Swiftfoot Boots gives hexproof, not shroud, so your own Shelter, Slip Out the Back and equips still target him. Hexproof does nothing against an edict; Slip Out the Back does, because a phased-out Shabraz is not there to sacrifice. Game 001 was on v1.2.0 and 007 on v2.3.0 (log:001, log:007).",
+      "grounded_in": [
+        "log:001",
+        "log:007"
+      ]
+    },
+    {
+      "condition": "stalled",
+      "condition_text": "Shabraz is gone or was never cast, the cards keep coming, and nothing is growing",
+      "indications": [
+        "Shabraz is in the command zone at tax 7 or more and your hand holds draw spells. In 007 losing him 'killed my momentum' (log:007).",
+        "You have cast both commanders and neither carries Boots or a counter held up. The pilot's word after 007: 'spent too much time dicking around with both and wheels' (log:007).",
+        "You have cast a draw-seven with Shabraz off the battlefield.",
+        "Turn five with lands and rocks out and no commander cast. In 004 both commanders were held for a wheel that never came (log:004).",
+        "Treasure piles up and the hand is empty. 006 ended with 36 Treasure and no cards (log:006)."
+      ],
+      "immediate": [
+        "Stop casting draw spells until Shabraz is on the battlefield. Brainstorm, Shelter and the draw-sevens wait in hand.",
+        "Cast Shabraz this turn if you can pay the tax. Put the shield down with him: equip Swiftfoot Boots for {1}, or hold {U} for Slip Out the Back.",
+        "If you cannot reach the tax this turn, spend the turn on mana: a rock, Smothering Tithe, Prismari Command's Treasure mode at the end of the turn before yours.",
+        "On the turn after Shabraz survives a rotation, cast the draw-seven. Seven cards is seven counters and seven life; in 007 two wheels after his return saved the life total and put him close to 21 on Stuart (log:007)."
+      ],
+      "subsequent": [
+        "Leave Brallin in the command zone unless Torbran, Gratuitous Violence or Fiery Emancipation is on the battlefield or a Shark needs trample. The pilot's direction after 007: one commander, Brallin for red and late trample (log:007).",
+        "Put one draw engine beside Shabraz before the second creature: Valeria Richards, Archmage Emeritus, Rhystic Study or Teferi, Master of Time.",
+        "With spare mana and no play, cycle Shark Typhoon at the end of the turn before yours, crack Fiery Islet or cycle Raugrin Triome. Each draw is a counter on Shabraz.",
+        "Equip Fireshrieker or Lizard Blades on Shabraz before you add a third creature to the board."
+      ],
+      "notes": "Stalled here means the plan has stopped, not that the deck is short of cards. On this list a draw without Shabraz is the stall. Games 004 and 006 are logged as raced and combo and 007 as stalled; all three predate v3.0.0, and 004 and 006 describe the wheel-and-burn list the rebuild replaced (log:004, log:006, log:007).",
+      "grounded_in": [
+        "log:007",
+        "log:004",
+        "log:006"
+      ]
+    },
+    {
+      "condition": "wipe",
+      "condition_text": "a sweeper is coming or has landed, and Shabraz is on the board",
+      "indications": [
+        "A white or black seat passes with four or more mana open and a board smaller than yours.",
+        "Shabraz has counters and two or more of your Humans are beside him.",
+        "A seat with a sweeper in its colours has drawn a fresh seven from your draw-seven.",
+        "The pod has already wiped once this game. In 006 the deck survived several wraths and wipes (log:006)."
+      ],
+      "immediate": [
+        "Read the sweeper: destroy, damage, exile, bounce, -X/-X or sacrifice.",
+        "If it is a spell, counter it: Stubborn Denial ({U}, hard while Shabraz has 4 or more power) or Negate ({1}{U}).",
+        "Cast Slip Out the Back ({U}) on Shabraz. It answers all six kinds in step 1; his Equipment phases out with him and he returns at your untap with a +1/+1 counter.",
+        "Without Slip Out the Back: against destroy, cast Flawless Maneuver for free. Against damage from a coloured source, cast Akroma's Will ({3}{W}) with both modes: indestructible and protection from each colour. Against exile or -X/-X, channel Otawara on Shabraz and recast him from hand for 5.",
+        "Let the rest go. Say the new tax aloud for any commander that leaves."
+      ],
+      "subsequent": [
+        "Recast Shabraz alone. Hold the Humans until the sweeper seat has passed a turn.",
+        "Re-equip on Shabraz in this order: Swiftfoot Boots {1}, Brotherhood Regalia {1}, then Fireshrieker {2}.",
+        "At the end of the turn before yours, cycle Shark Typhoon with every land left open for a flying X/X Shark and a counter on Shabraz.",
+        "Before your next creature, count the sweeper seat's open mana again."
+      ],
+      "notes": "Shelter's protection from a colour stops a coloured damage sweeper and nothing that destroys or exiles 'all'. Swiftfoot Boots' hexproof stops no sweeper. Grand Abolisher stops spells only on your turn, so it never stops a sweeper cast on theirs. Game 006 survived on v2.2.0 with phase-out cards that list carried; v3.0.0's phase-out is Slip Out the Back (log:006).",
+      "grounded_in": [
+        "log:006"
+      ]
+    },
+    {
+      "condition": "raced",
+      "condition_text": "a seat will kill you before Shabraz reaches 21, and you cannot block it",
+      "indications": [
+        "A seat warps or casts large hasty creatures every turn. Alex's warp deck outpaced the list in 004 (log:004).",
+        "A seat's permanent drains the whole table as its creatures enter. Goblin Storm did that in 005 before the commanders arrived (log:005).",
+        "Turn five with no commander on the battlefield. Game 003: 'slow to get cards out' (log:003).",
+        "You are casting small creatures while Shabraz sits in the command zone (log:005).",
+        "One attack takes a third or more of your life."
+      ],
+      "immediate": [
+        "Count both clocks aloud: how many of their turns kill you, and how many of yours kill them.",
+        "If theirs is shorter, answer the engine, not the bodies: Swords to Plowshares, Get Lost or Chaos Warp on Tannuk or the drain creature; Chaos Warp, Prismari Command or Otawara on Alex's turn-ending artifact in his main phase, after he spends the warp mana; Get Lost or Chaos Warp on a drain enchantment.",
+        "Cast Shabraz this turn if he is castable, ahead of any other creature.",
+        "If Willie Lumpkin connects with the racing seat, offer that player the card: if they draw it, they cannot attack you or your permanents on their next turn.",
+        "In their beginning of combat, cycle Shark Typhoon with every land you held open: a flying X/X Shark that blocks this turn, and a counter on Shabraz."
+      ],
+      "subsequent": [
+        "Point every point of commander damage at the racing seat until it is gone.",
+        "Gain life by drawing: each card is a life with Shabraz out. A draw-seven is seven; in 007 two wheels saved the life total (log:007).",
+        "Cast Akroma's Will on your swing with both modes: flying, double strike, lifelink and indestructible on every creature you control.",
+        "Leave Bard, King of Dale untapped on their turn: reach and vigilance make him a blocker for flyers after he attacks.",
+        "Brotherhood Regalia on Shabraz makes him unblockable; go over the board, not through it."
+      ],
+      "notes": "Nothing in the 99 counters a creature spell; Negate and Stubborn Denial hit noncreature spells only. Grand Abolisher does nothing on Alex's turn, where his turn-ending artifact is activated. Hold Chaos Warp at Alex's table. Games 003, 004 and 005 predate v3.0.0 and the cards they name are gone (log:003, log:004, log:005, log:007).",
+      "grounded_in": [
+        "log:003",
+        "log:004",
+        "log:005",
+        "log:007"
+      ]
+    },
+    {
       "condition": "combo",
       "condition_text": "another seat is assembling a loop or a one-turn kill, and your answers are a handful of instants",
       "indications": [
         "A seat tutors twice in one turn, or plays a piece and holds its mana up.",
         "A seat whose deck checks at bracket 4 sits across from your bracket 3 list. Games 002 and 006 both ended on Ryan's Teval going infinite, the second around turn 8 or 9 (log:002, log:006).",
-        "A sacrifice outlet and a recursion piece sit on one board, or a seat's graveyard is the engine.",
+        "A sacrifice outlet and a recursion piece sit on one board, or a seat's graveyard is its engine.",
         "A seat's life total, token count or land count jumps on a turn it attacks nobody.",
-        "You have the engine running and the kill is one card short. In 006 every multiplier and 36 Treasure were on the board and no wheel came (log:006)."
+        "You are one card short of your own kill. In 006 every multiplier was on the board and the last piece never came (log:006)."
       ],
       "immediate": [
-        "Name the piece already on the battlefield that the loop needs. That piece is the target.",
-        "Answer it at instant speed: Swords to Plowshares ({W}) or Get Lost ({1}{W}) on a creature, Get Lost on an enchantment, Prismari Command ({1}{U}{R}) on an artifact, Chaos Warp ({2}{R}) on any permanent, Otawara's channel to bounce it, or Teferi, Master of Time's -3 to phase a creature out for a turn.",
+        "Name the piece on the battlefield the loop needs. That piece is the target.",
+        "Answer it at instant speed: Swords to Plowshares ({W}) or Get Lost ({1}{W}) on a creature, Get Lost on an enchantment, Prismari Command on an artifact, Chaos Warp ({2}{R}) on any permanent, Otawara's channel to bounce it, or Teferi, Master of Time's -3 to phase a creature out until its controller's next turn.",
         "If the last piece is a noncreature spell from hand, hold {U} for Stubborn Denial or {1}{U} for Negate through that seat's turn and counter it.",
-        "If nothing answers it, count your own kill for this turn: 21 from one commander at one seat, the Needlehead wheel (stack 011, 21 per seat), or the Sphinx wheel (stack 009). If it is there, take it now, and if it is one seat short, kill the combo seat."
+        "If the loop runs from a graveyard, cast Echo of Eons or Time Reversal: each player shuffles hand and graveyard into the library.",
+        "If nothing answers it, count your own kill this turn. If it is there, take it now; if it is short, swing at the combo seat."
       ],
       "subsequent": [
-        "From the turn a seat shows its first piece, keep {W} and {1}{U} open before you tap out for a commander, Equipment or an enchantment.",
-        "Turn banked Treasure into cards on that seat's turn, not yours: cycle Shark Typhoon, activate Faerie Mastermind ({3}{U}) or Gleaming Splendor ({2}{W}), cast Heartwarming Redemption or Tolarian Winds. You are digging for the answer or the last kill piece.",
-        "Cast Grand Abolisher before your kill turn. On your turn no opponent casts a spell or activates an artifact, creature or enchantment ability, so a combo piece cannot answer your swing.",
-        "Do not wheel a graveyard deck. A symmetrical wheel or Collective Defiance's first mode fills its graveyard and refills its hand.",
-        "While the combo seat is short a piece, do not cast Prosperity or activate Faerie Mastermind: each hands that seat a card."
+        "From the turn a seat shows its first piece, keep {W} and {1}{U} open before you tap out for Equipment or a creature.",
+        "Spend spare mana on that seat's turn digging for the answer: Shark Typhoon's cycling, Faerie Mastermind's {3}{U} (it hands every seat a card), Teferi's +1.",
+        "Cast Grand Abolisher the turn before your kill turn. On your turn no opponent casts a spell or activates an artifact, creature or enchantment ability.",
+        "Do not cast Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel's ability, Jace's Archivist's ability or Collective Defiance's first mode against a graveyard deck. Each puts a full hand in its graveyard."
       ],
-      "notes": "Your answers stop permanents, not a graveyard: nothing in the 99 exiles a graveyard. Against a loop that returns pieces from the yard, hit the outlet or the engine on the battlefield, or race it. Teval, Ryan's commander, works from his graveyard, so every card a wheel makes him discard is fuel. Both grounding games predate v2.3.0: 002 was on v1.3.0 and 006 on v2.2.0 (log:002, log:006).",
+      "notes": "Echo of Eons and Time Reversal are the two cards in the 99 that empty an opponent's graveyard, and both refill the combo seat's hand to seven. Cast one only when the graveyard is the engine. Both grounding games predate v3.0.0: 002 was on v1.3.0 and 006 on v2.2.0 (log:002, log:006).",
       "grounded_in": [
         "log:002",
         "log:006"
       ]
     },
     {
-      "condition": "raced",
-      "condition_text": "a seat's board or engine will kill you before your commander reaches 21, and you cannot block it",
-      "indications": [
-        "A seat warps or casts big hasty creatures every turn. Alex's Tannuk warp deck outpaced the list in 004 (log:004).",
-        "A seat's enchantment or creature pings the whole table as its creatures enter. Purphoros under Goblin Storm drained the table in 005 before the commanders arrived (log:005).",
-        "Turn five with no commander on the battlefield. Game 003 read 'slow to get cards out' (log:003).",
-        "You are casting small creatures and loots while both commanders sit in the command zone (log:005).",
-        "A seat's attack takes a third or more of your life in one swing."
-      ],
-      "immediate": [
-        "Count both clocks aloud: how many of their turns kill you, and how many of yours kill them.",
-        "If theirs is shorter, answer the engine, not the bodies: Tannuk or a pinger creature with Swords to Plowshares, Get Lost or Chaos Warp at the end of the turn before theirs; the artifact that ends his turn with Chaos Warp, Prismari Command or Otawara in his main phase after he spends the warp mana; an enchantment with Get Lost or Chaos Warp.",
-        "If the board is many small creatures, cast Incendiary Command ({3}{R}{R}) in your main phase: 2 damage to each creature plus 4 to the racing seat. Count your own creatures with toughness 2 or less before you cast it.",
-        "Cast a commander this turn if one is castable, ahead of any other creature. Brallin with a red source, otherwise Shabraz.",
-        "On their turn, in their beginning of combat, cycle Shark Typhoon with every land you held open: a flying X/X Shark that blocks this turn, and the cycle pays Brallin a counter and a ping and Shabraz a counter and a life."
-      ],
-      "subsequent": [
-        "Point every point of commander damage at the racing seat until it is gone.",
-        "Go over the board, not through it. Shabraz flies, Shabraz's {W/U} gives Brallin flying, Brotherhood Regalia makes the carrier unblockable, and Zirda's {1},{T} stops one blocker.",
-        "Cast Akroma's Will in combat on your swing with both modes chosen: double strike, flying and lifelink on every creature you control.",
-        "Fire the wheel on the turn it closes the gap, not before: Wheel of Fortune under Razorkin Needlehead and Torbran is 21 per seat (stack 011); under Needlehead and Brallin from a four-card hand, 10 (stack 014).",
-        "Leave Bard, King of Dale untapped on their turn: reach and vigilance make it a flyer blocker after it attacks."
-      ],
-      "notes": "Brallin's, Glint-Horn's and Needlehead's damage hits players, never creatures, and Needlehead has first strike only on your turn, so none of them blocks well. Grand Abolisher and Negate do nothing against a warped creature or the turn-ending artifact activated on Alex's turn. Hold Chaos Warp at Alex's table: it answers Tannuk or the turn-ending artifact. All three games predate v2.3.0; 004 and 005 were on v2.2.0 (log:003, log:004, log:005).",
-      "grounded_in": [
-        "log:003",
-        "log:004",
-        "log:005"
-      ]
-    },
-    {
-      "condition": "stalled",
-      "condition_text": "the engine is running and the finisher has not come: no wheel, or no commander, and the window is closing",
-      "indications": [
-        "Turn five with lands, rocks and loots out and no commander cast. In 004 both commanders were held for a wheel that never came (log:004).",
-        "Treasure is piling up and the hand is empty. 006 ended with 36 Treasure and no cards (log:006).",
-        "You have dug five or more cards past a multiplier and found no wheel. In 006 the first wheel sat deep in the library (log:006).",
-        "You are spending mana on small creatures while the commanders sit in the command zone (log:005)."
-      ],
-      "immediate": [
-        "Cast a commander this turn if none is out. The play rule since 004: the first commander goes down on curve, not after a wheel (log:004).",
-        "Turn spare mana and Treasure into cards: Mind Spring for X, Rush of Knowledge with a six-mana permanent out (Bard, Consecrated Sphinx, Fiery Emancipation, or a cast Shark Typhoon), Gleaming Splendor targeting yourself and an opponent. Cast Prosperity only with Consecrated Sphinx, Razorkin Needlehead, Smothering Tithe or Faerie Mastermind on the battlefield.",
-        "If Idyllic Tutor is in hand and Treasure is banked, fetch Shark Typhoon and cycle it for the largest X you can pay: a flying X/X Shark, and Brallin's {R} gives it trample because it is a Shark. This is the line the pilot planned in 006 (log:006).",
-        "Close without a wheel: put Blade Historian down or hold Akroma's Will, attach Brotherhood Regalia, and count 21 per commander per seat."
-      ],
-      "subsequent": [
-        "Loot every turn: Kitsa's tap, Teferi, Master of Time's +1 on another seat's turn, Faithless Looting, Cathartic Reunion. Each discard is a counter and a ping on Brallin, each draw a counter and a life on Shabraz.",
-        "Cast Heartwarming Redemption or Tolarian Winds at the end of the turn before yours when the hand holds no play. Both are instants and wheel only your hand.",
-        "Flash back Shattered Perception ({5}{R}) from the graveyard when Treasure is banked and the hand is dead.",
-        "Keep one wheel in hand from the moment you find it, and spend the others as card flow only when the hand holds no play."
-      ],
-      "notes": "The draw engine that dug in 006 has since been rebuilt; v2.3.0 added Mind Spring, Rush of Knowledge, Prosperity, Gleaming Splendor and four wheels so that Treasure has somewhere to go. Idyllic Tutor finds an enchantment and never a wheel. Games 004 and 006 are logged as raced and combo; they are cited here because the log describes the stall that led there (log:004, log:005, log:006).",
-      "grounded_in": [
-        "log:004",
-        "log:005",
-        "log:006"
-      ]
-    },
-    {
       "condition": "mana-drought",
-      "condition_text": "the mana has stopped short of a commander, or the colour it needs is not there",
+      "condition_text": "the mana has stopped short of five, or white or blue is missing for Shabraz",
       "indications": [
         "Three lands on turn four with no rock.",
-        "Four mana and no red source: Brallin, Torbran ({1}{R}{R}{R}) and Gratuitous Violence ({2}{R}{R}{R}) sit in hand.",
-        "Game 003 was 'mana starved one round' and 'slow to get cards out' (log:003).",
-        "In game 001 the only fast mana was Sol Ring in the opener and nothing followed it (log:001)."
+        "Four mana and no white or no blue source: Shabraz ({3}{W}{U}) sits in the command zone.",
+        "Torbran ({1}{R}{R}{R}), Gratuitous Violence ({2}{R}{R}{R}) or Fiery Emancipation ({3}{R}{R}{R}) in hand with fewer than three red sources.",
+        "Game 003 was 'mana starved one round' (log:003). In 007 the pilot named the cost: 'two commanders, two taxes, 9 CMC total' (log:007)."
       ],
       "immediate": [
-        "If you hold no land, dig before the land drop: Faithless Looting ({R}), Kitsa's tap, Cathartic Reunion ({1}{R}, discard two spells), cycling Shark Typhoon for X=0 ({1}{U}), Marauding Mako ({2}) or Raugrin Triome ({3}), or sacrificing Mind Stone or Fiery Islet for {1}. Discard spells, keep lands.",
-        "Play the land that casts something this turn. Training Center and Sea of Clouds enter untapped with two or more opponents. Crack a fetch for the colour you are missing: Arid Mesa, Flooded Strand, Polluted Delta and Scalding Tarn find the shock lands, Raugrin Triome and the Mountain.",
-        "Cast the cheapest rock before any other spell: Sol Ring, then Arcane Signet, Izzet Signet or Talisman of Creativity if red is missing, Azorius Signet or Talisman of Progress if white or blue is.",
-        "With no red source, plan Shabraz ({3}{W}{U}) as the first commander and pass on Brallin's turn."
+        "If you hold no land, dig before the land drop: Brainstorm ({U}), Kitsa's loot, cycling Shark Typhoon for X=0 ({1}{U}), cycling Raugrin Triome ({3}), or sacrificing Mind Stone or Fiery Islet ({1}). Keep lands, put back spells.",
+        "Play the land that casts something this turn. Training Center and Sea of Clouds enter untapped with two or more opponents. Crack a fetch for the colour you are missing.",
+        "Cast the cheapest rock before any other spell: Sol Ring first, then the rock that makes the missing colour. White or blue: Azorius Signet or Talisman of Progress. White: Boros Signet or Talisman of Conviction. Blue: Izzet Signet or Talisman of Creativity. Either: Arcane Signet.",
+        "Spend the mana on Shabraz alone. Brallin and the three-red cards wait until Shabraz is out."
       ],
       "subsequent": [
-        "Cast Smothering Tithe before a symmetrical wheel or Prosperity: every card an opponent draws and does not pay {2} for is a Treasure.",
-        "Put Xorn down before the Treasure turn; it adds one Treasure to each batch.",
-        "Cast Prismari Command at the end of the turn before yours choosing a Treasure and the loot on yourself.",
-        "Activate Gleaming Splendor on an opponent's turn after their draw step, targeting yourself and that opponent: that is their second card this turn, so it makes a Treasure.",
-        "Spend Treasure on a commander before you spend it on cards."
+        "Cast Smothering Tithe before the next draw-seven: every card an opponent draws and does not pay {2} for is a Treasure.",
+        "Cast Prismari Command at the end of the turn before yours choosing a Treasure for you and the draw-two on you.",
+        "Put Valeria Richards down before the rocks still in hand: each noncreature spell costs {1} less.",
+        "Spend Treasure on Shabraz and his shield before you spend it on cards."
       ],
-      "notes": "Red is the colour that runs short on this list; the Limitations page carries the source count. Both grounding games predate v2.3.0, whose land pass added four fetches, Exotic Orchard and Ferrous Lake (log:001, log:003).",
+      "notes": "Gemstone Caverns makes coloured mana only if it starts on the battlefield, and it starts there only if you are not the starting player; in 004 the pilot went first and it made colourless all game (log:004). Game 003 was on v2.0.0 and 007 on v2.3.0; v3.0.0 added Boros Signet, Fellwar Stone and Talisman of Conviction (log:003, log:007).",
       "grounded_in": [
-        "log:001",
-        "log:003"
-      ]
-    },
-    {
-      "condition": "removal",
-      "condition_text": "a removal spell or ability is pointed at Shabraz or Brallin, and that commander's tax is about to go up by two",
-      "indications": [
-        "A seat passes with {W}, {B} or {1}{U} open the turn after a commander lands.",
-        "A commander is on the battlefield with no Lightning Greaves or Brotherhood Regalia on it.",
-        "The table has already answered one commander. In 001 Brallin was removed twice and the tax came on (log:001).",
-        "The commander carries counters. The table reads counters as the kill."
-      ],
-      "immediate": [
-        "Read the removal: does it target, is it a spell or an ability, and does it destroy, deal damage, exile or bounce.",
-        "If it targets, cast Deflecting Swat for free (you control a commander) and move it to one of their permanents, or cast Loran's Escape ({W}): hexproof makes it lose its target.",
-        "If it is a noncreature spell and step 2 did not stop it, counter it: Stubborn Denial ({U}, a hard counter with a creature of power 4 or more) or Negate ({1}{U}).",
-        "If it destroys or deals damage, cast Flawless Maneuver for free. If it exiles, channel Otawara, Soaring City ({3}{U}, one less per legendary creature you control) on your own commander: it returns to your hand and you recast it with no tax.",
-        "If nothing answers it, put the commander in the command zone and say the new tax aloud: Brallin 4, then 6, then 8; Shabraz 5, then 7, then 9."
-      ],
-      "subsequent": [
-        "Recast with Lightning Greaves already on the battlefield and equip it for {0} the turn the commander lands: haste and shroud make the cast turn an attack turn.",
-        "If one commander has been removed twice, cast the other. Brotherhood Regalia moves to any legend for {1}.",
-        "Keep Flawless Maneuver and Deflecting Swat in hand from here on. Both are free only while you control a commander; on a turn both are in the command zone they cost full price.",
-        "Under Zirda, Otawara's channel costs two less, never below one mana."
-      ],
-      "notes": "Lightning Greaves gives shroud, and shroud stops YOUR targeting too. With Greaves on a commander you cannot equip Brotherhood Regalia to it, cast Loran's Escape on it, channel Otawara on it, or have the commanders hand each other flying or trample. Equip Regalia first and Greaves last, and move Greaves off on the turn you need a targeted save. Game 001 was played on v1.2.0 (log:001).",
-      "grounded_in": [
-        "log:001"
-      ]
-    },
-    {
-      "condition": "wipe",
-      "condition_text": "a sweeper is coming or has landed, and a commander is on the board",
-      "indications": [
-        "A white or black seat passes with four or more mana open and a board behind yours.",
-        "Both commanders are on the battlefield with counters, plus Needlehead, Glint-Horn or Psychosis Crawler beside them.",
-        "A seat with a sweeper in its colours has drawn a fresh hand from your wheel.",
-        "The pod has already wiped once this game. In 006 the deck stayed alive through several wraths and wipes (log:006)."
-      ],
-      "immediate": [
-        "Read the sweeper: destroy, damage, exile, bounce or -X/-X.",
-        "If it is a spell, counter it: Stubborn Denial ({U}, hard with a 4-power creature) or Negate ({1}{U}).",
-        "Against destroy, cast Flawless Maneuver for free (you control a commander). Against damage from a coloured source, Akroma's Will's second mode ({3}{W}) gives indestructible and protection from each colour.",
-        "Against exile or -X/-X, channel Otawara on the commander with the most counters and recast it from hand later with no tax.",
-        "Let the rest resolve. A commander that dies or is exiled goes to the command zone; say the new tax aloud."
-      ],
-      "subsequent": [
-        "Recast one commander, not both. Keep the second in the command zone as the next rebuild.",
-        "At the end of the turn before yours, cycle Shark Typhoon with every land left open for a flying X/X Shark. It is an ability, so a counterspell does not stop it.",
-        "Equipment and rocks survive a creature sweeper. Re-equip on the commander you recast: Brotherhood Regalia {1}, Lightning Greaves {0}, Greaves last.",
-        "Hold Razorkin Needlehead and Psychosis Crawler in hand until the turn a wheel or a big draw follows them.",
-        "Before your next creature, count the sweeper seat's open mana again."
-      ],
-      "notes": "Grand Abolisher stops spells only on your turn, so it never stops a sweeper cast on theirs. Teferi, Master of Time's -3 phases only a creature you do not control, so it saves nothing of yours. Game 006 survived its wipes on v2.2.0, which carried two phase-out cards v2.3.0 cut; on this list the answers to an exile or -X/-X sweeper are a counterspell and Otawara (log:006).",
-      "grounded_in": [
-        "log:006"
+        "log:003",
+        "log:007",
+        "log:004"
       ]
     },
     {
       "condition": "politics",
-      "condition_text": "the table has turned on the wheels or the Tithe, and you have become the problem",
+      "condition_text": "the table has turned on the draw-sevens or the taxes, and you have become the problem",
       "indications": [
-        "A seat complains when you cast a wheel. The table split on them in 001: 'people either loved it or hated it' (log:001).",
-        "You have wheeled twice before any commander is big. In 002 the pilot named repeated discards as the thing the table did not enjoy (log:002).",
-        "Opponents start paying {2} for every Smothering Tithe trigger and {1} for every Rhystic Study trigger.",
-        "Removal starts coming at you before your board is the largest one."
+        "A seat complains when you cast a draw-seven. In 001 'people either loved it or hated it' (log:001).",
+        "You have cast two draw-sevens before Shabraz is big. In 002 the pilot named repeated discards as the thing the table did not enjoy (log:002).",
+        "Opponents pay {2} for every Smothering Tithe trigger and {1} for every Rhystic Study trigger.",
+        "Removal comes at Shabraz before your board is the largest one."
       ],
       "immediate": [
-        "Stop casting symmetrical wheels for card flow. Loot instead: Kitsa, Teferi, Master of Time's +1, Faithless Looting, Cathartic Reunion, Shark Typhoon's cycling.",
-        "When you need a refill, cast a one-sided one: Tolarian Winds, Shattered Perception, Heartwarming Redemption, Borrowed Knowledge's second mode, Fateful Showdown, or draw with Mind Spring and Rush of Knowledge.",
-        "Save the next symmetrical wheel for the turn it ends a game or puts a commander within one swing of 21 (log:002).",
-        "Spend your next removal spell on the seat that is ahead, and say so at the table."
+        "Stop casting symmetrical draw-sevens for card flow. Draw one-sided instead: Brainstorm, Shelter, Kitsa's loot, Teferi, Master of Time's +1, Shark Typhoon's cycling, Prismari Command's draw-two on you.",
+        "Save the next draw-seven for the turn it puts Shabraz within one swing of 21 on a seat (log:002).",
+        "Spend your next removal spell on the seat that is ahead, and say so at the table.",
+        "Hold Willie Lumpkin's truce for the seat most likely to attack you: when he connects, offer that seat the card."
       ],
       "subsequent": [
-        "Name Brallin's pings before you loot. They hit every opponent; do not promise a seat a pass you break with your next discard.",
-        "Keep Razorkin Needlehead in hand. On the battlefield it tells the table your next wheel hits every seat, and draws the removal before the wheel.",
-        "Cast Consecrated Sphinx on the turn before the wheel, not earlier. It is the board of stack 009, and the table aims the next removal at it.",
-        "Offer an answer for another seat's problem in exchange for a turn without removal aimed at you. Swords to Plowshares and Get Lost are the cards to offer."
+        "When one seat holds zero or one card, do not cast Wheel of Fortune or Windfall; it refills that seat to seven.",
+        "Cast Consecrated Sphinx on the turn before the draw-seven, not earlier. It is stack 009's board, and the table aims the next removal at it.",
+        "Offer an answer to another seat's problem in exchange for a turn without removal aimed at Shabraz. Swords to Plowshares and Get Lost are the cards to offer.",
+        "Activate Faerie Mastermind's {3}{U} only when your draw is worth more to you than one card to every opponent: with Smothering Tithe or Consecrated Sphinx out."
       ],
-      "notes": "A symmetrical wheel or Prosperity refills a seat with an empty hand. When one seat holds zero or one card, cast a one-sided wheel instead of Wheel of Fortune or Windfall. Gleaming Splendor's activation hands an opponent a card too; target the seat that is behind (log:001, log:002).",
+      "notes": "Echo of Eons, Time Reversal and Winds of Change shuffle instead of discarding, which reads gentler at a table that hates losing its hand; Winds of Change at {R} is the cheapest of the three. Both grounding games were on the wheel-and-burn lists (log:001, log:002).",
       "grounded_in": [
         "log:001",
         "log:002"
@@ -202,95 +205,94 @@
   "normal": {
     "preflight": {
       "keep": [
-        "Three to five lands, or two lands and Sol Ring or a two-mana rock: Arcane Signet, Azorius Signet, Izzet Signet, Talisman of Creativity, Talisman of Progress, Mind Stone, Thought Vessel.",
-        "A play for turn two or three: a rock, Kitsa, Faerie Mastermind, Gleaming Splendor, Rhystic Study, Cathartic Reunion, Rielle, Zirda or Xorn.",
-        "A red source or a rock that makes red, so Brallin is castable on turn four; otherwise white and blue for Shabraz.",
-        "A land-and-ramp hand with no payoff is a keep: the commander and the loots dig to the payoff (Q012, log:004).",
-        "At most one wheel. A wheel is a payoff, not a play (log:002, log:005)."
+        "Three to five lands, or two lands and Sol Ring or a two-mana rock: Arcane Signet, Azorius Signet, Boros Signet, Izzet Signet, Talisman of Conviction, Talisman of Creativity, Talisman of Progress, Mind Stone, Fellwar Stone.",
+        "A white source and a blue source, or a rock that makes the missing one, so Shabraz is castable on turn four or five. Red is not needed for him.",
+        "A play for turn two or three: a rock, Swiftfoot Boots, Kitsa, Willie Lumpkin, Faerie Mastermind, Sokka, Shang-Chi, Lae'zel or Rhystic Study.",
+        "A land-and-ramp hand with no payoff is a keep: Shabraz and the cantrips dig to the payoff (Q012, log:004).",
+        "A protection piece in hand (Swiftfoot Boots, Slip Out the Back, Shelter, Loran's Escape) is worth a land in a close call (log:001)."
       ],
       "ship": [
         "Zero or one land.",
-        "Two or more wheels with nothing to cast before turn four. That was the hand the pilot doubted in 002 (log:002).",
-        "No red source and no white-blue pair: neither commander is castable.",
-        "A hand of cards that need a commander first: Blade Historian, Akroma's Will, Torbran, Gratuitous Violence, Fiery Emancipation and wheels, with no early plays."
+        "No white source and no blue source, and no rock that makes either: Shabraz is not castable.",
+        "Two or more draw-sevens with nothing to cast before turn four. That was the hand the pilot doubted in 002 (log:002).",
+        "A hand of cards that need Shabraz first (Fireshrieker, Lizard Blades, Blade Historian, Akroma's Will, Gratuitous Violence, Fiery Emancipation, draw-sevens) with no early plays."
       ],
-      "note": "In a multiplayer game the first mulligan does not cost a card. Gemstone Caverns goes onto the battlefield before turn one only if you are not the starting player; in 004 the pilot went first and it made only colourless (log:004). When it does go down, exile a wheel or a payoff, never a rock or a land."
+      "note": "In a multiplayer game the first mulligan does not cost a card. Gemstone Caverns goes onto the battlefield before turn one only if you are not the starting player; in 004 the pilot went first and it made only colourless (log:004). When it does go down, exile a draw-seven or a payoff, never a rock or a land."
     },
     "startup": {
       "steps": [
-        "Turn one: land, then Sol Ring if you have it, otherwise Marauding Mako. Hold Faithless Looting unless you are short a land drop; once Brallin is out it pays him twice.",
-        "Turn two: a two-mana rock. With no rock, Kitsa or Gleaming Splendor; hold Faerie Mastermind and flash it in at the end of an opponent's turn.",
-        "Turn three: Rhystic Study, Rielle, Zirda, Xorn, Lae'zel or a second rock. With Sol Ring on turn one, Brallin.",
-        "Cast Cathartic Reunion on turn three only with two cards in hand you will not miss.",
-        "Keep Razorkin Needlehead and Psychosis Crawler in hand. Each comes down the turn before, or the turn of, a wheel or a big draw.",
-        "Cast no wheel in the first three turns.",
-        "Spend Swords to Plowshares or Get Lost in the first three turns only on a creature that kills a commander on sight, Tannuk, or a combo piece."
+        "Turn one: land, then Sol Ring if you have it, otherwise Esper Sentinel.",
+        "Turn two: a two-mana rock. With no rock, Swiftfoot Boots, Kitsa or Willie Lumpkin; hold Faerie Mastermind and flash it in at the end of an opponent's turn.",
+        "Turn three: Rhystic Study, Shang-Chi, Sokka, Lae'zel or a second rock. With Sol Ring on turn one, Shabraz.",
+        "Put Swiftfoot Boots on the battlefield before Shabraz, so the turn he lands costs 5 plus {1}.",
+        "Cast no draw-seven before Shabraz is on the battlefield. Without him it grows nothing.",
+        "Spend Swords to Plowshares or Get Lost in the first three turns only on a combo piece, Tannuk, or a creature that kills Shabraz on sight."
       ]
     },
     "assembly": {
       "steps": [
-        "First commander on curve, never held for a wheel (log:004). Brallin on turn four with a red source. Shabraz first if Rhystic Study, Teferi's Ageless Insight or Bard is out, or if red is missing.",
-        "Protection on that commander the turn it lands: Brotherhood Regalia ({1} on a legend, ward {2}, unblockable) first, Lightning Greaves ({0}) last. Keep Flawless Maneuver and Deflecting Swat in hand.",
-        "The conversion piece for that commander. Brallin: Torbran, Gratuitous Violence, Fiery Emancipation, Glint-Horn Buccaneer. Shabraz: Teferi's Ageless Insight, Bard, King of Dale, Psychosis Crawler, Consecrated Sphinx. Either: Lae'zel.",
-        "Feed it every turn. Loot with Kitsa, Teferi, Master of Time, Faithless Looting or Cathartic Reunion; turn spare mana into cards with Mind Spring or Rush of Knowledge.",
-        "The Treasure wing once a commander is protected: Smothering Tithe, then Xorn or Zirda. Activate Gleaming Splendor ({W} under Zirda) on opponents' turns.",
-        "Second commander when the first is protected and the mana is spare.",
-        "The wheel last, on the turn you swing (log:002). With Needlehead, Sphinx, Tithe or Splendor out, cast a symmetrical wheel: Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel, Jace's Archivist, Incendiary Command. Otherwise a one-sided one. Stack 014: Wheel of Fortune with Brallin and Needlehead out and three other cards in hand is 10 per seat."
+        "Shabraz on curve: turn four with a rock, turn five without. Never hold him for a draw-seven (log:004).",
+        "Shield him the turn he lands: equip Swiftfoot Boots for {1}, or hold {U} for Slip Out the Back, {W} for Loran's Escape or {1}{W} for Shelter. Flawless Maneuver and Deflecting Swat are free from here on. With neither Boots nor a spare mana, cast him anyway (Q013).",
+        "A draw engine that fires every turn: Valeria Richards, Archmage Emeritus, Rhystic Study, Esper Sentinel or Teferi, Master of Time.",
+        "A multiplier: Teferi's Ageless Insight or Bard, King of Dale doubles every draw after your first draw-step draw; Lae'zel adds one counter to every placement. Stack 008: Windfall for seven under Lae'zel leaves Shabraz 17/17.",
+        "Double strike on Shabraz: Fireshrieker (equip {2}) or Lizard Blades (reconfigure {2}). Brotherhood Regalia ({1}) makes him unblockable.",
+        "The draw-seven on the turn Shabraz is shielded and swings. Under Consecrated Sphinx it is 42 more draws (stack 009). With Kitsa at power 3 or more, copy it for {2} (stack 010).",
+        "Brallin last: when Torbran, Gratuitous Violence or Fiery Emancipation is on the battlefield, when a Shark needs trample, or when Shabraz's tax is 9 (log:001, log:007)."
       ]
     },
     "cruise": {
       "steps": [
         "Untap. Count each opponent's open mana and colours before you cast anything.",
-        "Main phase: loot with Kitsa, cast Faithless Looting, Mind Spring or Rush of Knowledge. Each draw is a counter on Shabraz, each discard a counter on Brallin and a ping at every opponent.",
-        "Equip at sorcery speed, Brotherhood Regalia before Lightning Greaves.",
-        "Give the attacker evasion: Shabraz's {W/U} gives Brallin flying, Brallin's {R} gives Shabraz or a Shark token trample, Zirda's {1},{T} stops one blocker. Attack.",
-        "Pass with Flawless Maneuver or Deflecting Swat in hand, and {W} for Swords to Plowshares or Loran's Escape, or {U} for Stubborn Denial.",
-        "On opponents' turns spend what you held: Teferi, Master of Time's +1, Faerie Mastermind's {3}{U}, Gleaming Splendor after that seat's draw step, and Shark Typhoon's cycling at the end of the turn before yours."
+        "First main phase: cast the cheap draw. The first noncreature spell draws off Valeria; each instant or sorcery draws off Archmage Emeritus. Each card is a counter and a life.",
+        "Equip at sorcery speed: Swiftfoot Boots first, then Fireshrieker or Lizard Blades, then Brotherhood Regalia.",
+        "Pay {W/U} to give a Human flying. Attack with Sokka beside another creature to draw before damage.",
+        "Pass with a shield: Flawless Maneuver or Deflecting Swat in hand, or {U} for Slip Out the Back or Stubborn Denial, or {W} for Loran's Escape or Swords to Plowshares.",
+        "On opponents' turns spend what you held: Teferi, Master of Time's +1, Shark Typhoon's cycling at the end of the turn before yours, Fiery Islet's draw or Raugrin Triome's cycling."
       ]
     },
     "closing": {
       "steps": [
-        "Count commander damage per commander per seat: 21 from Shabraz, or 21 from Brallin, at one player. The two do not add together.",
-        "Count the size after this turn's draws. Each card drawn is +1 on Shabraz, each card discarded +1 on Brallin, and Lae'zel adds one to each placement. Bard and Teferi's Ageless Insight double every draw except the first in your draw step.",
+        "Count commander damage at one seat: 21 from Shabraz. Brallin's counts on its own; the two do not add.",
+        "Count Shabraz's power after this turn's draws. With double strike, 11 power is 22. With Kitsa untapped to loot between the strikes, 10 is enough (stack 006).",
+        "Add the damage multipliers: with Gratuitous Violence a double-striking Shabraz needs 6 power, with Fiery Emancipation 4. Torbran adds nothing to Shabraz; he is not red. No stack has yet resolved the multiplied damage as commander damage (Engineering, open question).",
         "Put Grand Abolisher on the battlefield the turn before. On the kill turn no opponent casts a spell or activates an artifact, creature or enchantment ability.",
-        "Sequence the turn: draw or wheel in your first main phase, then attack. Blade Historian goes down before combat; Akroma's Will is an instant, cast after blockers with both modes. Torbran's +2 counts on Brallin's commander damage, not on Shabraz's.",
-        "With Torbran out, cast Razorkin Needlehead ({R}{R}) in the main phase you wheel, then Wheel of Fortune, Reforge the Soul or Magus of the Wheel. Stack 011: 21 per seat. From 40 that leaves 19: cast it when every seat is at 21 or less, or when commander damage follows the same turn.",
-        "With Consecrated Sphinx and both commanders out, cast Wheel of Fortune precombat. Stack 009: 49 cards drawn, Shabraz 52/52, and the cleanup discard of 42 fires Brallin past 40 at every seat. If Thought Vessel is on the battlefield, destroy it first with Prismari Command, or remove it with Chaos Warp or Otawara's channel; with Vessel out there is no cleanup discard. Decline Sphinx triggers before your library runs out.",
+        "Sequence the turn: draw in the first main phase, equip, Blade Historian before combat, then attack. Akroma's Will is an instant: cast it after blockers with both modes.",
+        "With Consecrated Sphinx, Shabraz and Brallin out, cast Wheel of Fortune precombat. Stack 009: Shabraz ends 52/52 and the cleanup discard fires Brallin 42 times at every seat. Decline Sphinx triggers before your library runs out.",
         "Wait a turn if a blue seat has mana open and you have neither Grand Abolisher out nor a counter in hand, or if the count is short and nothing in hand adds the last point."
       ]
     }
   },
   "handling": {
     "optics": [
-      "Until a commander has counters, the table sees a loot deck with Treasure and ranks you low.",
-      "The first symmetrical wheel changes that. The table split on it in 001 (log:001).",
+      "Until Shabraz has counters, the table sees a draw deck with two 3/3s and ranks you low.",
+      "Shabraz with Swiftfoot Boots and a pile of counters reads as the threat. Expect the table's sweepers and edicts: hexproof does not stop them.",
       "Smothering Tithe and Rhystic Study tax every seat. Once a seat pays for both, it is treating you as the threat.",
-      "Torbran beside Razorkin Needlehead reads as the wheel kill: each opponent's draw step costs them 3, and the table aims the next removal at Torbran.",
-      "Consecrated Sphinx beside Brallin is the stack 009 board. Expect it to draw the next removal spell.",
+      "Consecrated Sphinx beside Shabraz is the stack 009 board. Expect it to draw the next removal spell.",
+      "The first symmetrical draw-seven changes the table's read. It split the table in 001 (log:001).",
       "At a table that steps up to bracket 4 you are the slow deck, not the threat (log:002, log:006)."
     ],
     "reveal": [
       "Hold Akroma's Will for the attack. Blade Historian goes down the turn of the swing, not earlier.",
-      "Hold Razorkin Needlehead until the wheel turn. On the battlefield early it is a 2-mana creature that tells every seat the wheel is aimed at them.",
+      "Hold Brallin in the command zone. He comes out when Torbran, Gratuitous Violence or Fiery Emancipation is down, or when a Shark needs trample.",
       "Hold Shark Typhoon as a cycle, not a cast. A six-mana enchantment is a removal target; a cycle at the end of the turn before yours is a Shark nobody saw coming.",
-      "Put Torbran, Gratuitous Violence and Fiery Emancipation down on the turn the wheel or the attack follows, or when Idyllic Tutor has a second target to find.",
-      "Cast Consecrated Sphinx when Wheel of Fortune follows on your next turn, or behind Grand Abolisher.",
+      "Put Gratuitous Violence and Fiery Emancipation down on the turn the attack follows.",
+      "Equip Fireshrieker or reconfigure Lizard Blades on the turn you swing, not the turn you cast them.",
       "Pass with zero mana open when Flawless Maneuver or Deflecting Swat is the shield. Both are free while you control a commander."
     ],
     "alliances": [
-      "Offer removal, not wheels. Swords to Plowshares or Get Lost on another seat's problem buys a rotation.",
-      "Brallin's pings hit every opponent on every discard. Do not promise a seat a pass you break with your next loot.",
-      "Aim Gleaming Splendor's second draw at the seat you want on your side.",
-      "When a seat asks you to stop wheeling, agree and loot instead, and keep the one wheel you need for the kill (log:002).",
-      "Break a deal only on the turn the commander damage or the wheel kills."
+      "Offer removal, not draw-sevens. Swords to Plowshares or Get Lost on another seat's problem buys a rotation.",
+      "Willie Lumpkin's card is a truce: the seat that takes it cannot attack you on its next turn. Offer it to the seat you most need to stop.",
+      "When a seat asks you to stop wheeling, agree and draw one-sided instead, and keep the one draw-seven you need for the kill (log:002).",
+      "Break a deal only on the turn commander damage kills."
     ],
     "targets": [
-      "Commander damage goes at one seat until it dies. A seat at 14 from Shabraz takes the next 7 from Shabraz, not from Brallin.",
-      "First, the seat with no flyer or reach to block Shabraz, or no untapped blocker for an unblockable Brallin.",
+      "Commander damage goes at one seat until it dies.",
+      "First, the seat with no flyer or reach to block Shabraz, or any seat once Brotherhood Regalia is on him.",
       "Next, the combo seat. Games 002 and 006 ended on one (log:002, log:006).",
       "The fast seat before the control seat when its board races you: Tannuk in 004, Goblin Storm in 005 (log:004, log:005).",
-      "Never the seat holding open blue mana when you have neither Grand Abolisher out nor a counter in hand."
+      "In 007 Shabraz came close to 21 on Stuart's zombie board; a token deck has ground blockers and no answer to a flyer (log:007).",
+      "Never swing into the seat holding open blue mana when you have neither Grand Abolisher out nor a counter in hand."
     ]
   },
-  "decklist_sha256_prefix": "36d865a66e2c"
+  "decklist_sha256_prefix": "55ebf09cf33f"
 }

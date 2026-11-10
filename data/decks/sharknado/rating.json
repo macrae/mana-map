@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.2667,
    "sub_score": 100.0,
    "sub_ci": [
-    93.43,
+    93.55,
     100.0
    ],
    "placement": 100.0,
@@ -26,14 +26,14 @@
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.927,
+     "value": 0.958,
      "ci95": [
-      0.9217,
-      0.9319
+      0.9539,
+      0.9618
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     }
    ],
    "citations": [
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1231,
+   "weight_effective": 0.1778,
    "sub_score": 100.0,
    "sub_ci": [
-    93.63,
+    93.57,
     100.0
    ],
    "placement": 100.0,
@@ -60,22 +60,22 @@
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
-     "value": 0.1474,
+     "value": 0.1152,
      "ci95": [
-      0.1406,
-      0.1545
+      0.1091,
+      0.1216
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.consistency",
-     "value": 0.912,
+     "value": 0.932,
      "ci95": null,
      "n": null,
      "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     }
    ],
    "citations": [
@@ -90,31 +90,31 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
-   "sub_score": 58.57,
+   "weight_effective": 0.2667,
+   "sub_score": 67.14,
    "sub_ci": [
-    52.16,
-    64.96
+    60.63,
+    73.52
    ],
-   "placement": 16.67,
-   "anchor": 90.0,
+   "placement": 50.0,
+   "anchor": 80.0,
    "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
-     "value": 15,
+     "value": 16,
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.interaction-breadth",
-     "value": 4,
+     "value": 3,
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction-breadth (classes answered of 5)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     }
    ],
    "citations": [
@@ -129,47 +129,47 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
-   "sub_score": 92.86,
+   "weight_effective": 0.2889,
+   "sub_score": 76.79,
    "sub_ci": [
-    92.86,
-    92.86
+    76.79,
+    76.79
    ],
    "placement": null,
-   "anchor": 92.86,
+   "anchor": 76.79,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
      "figure": "audit.mana-base",
-     "value": 36,
+     "value": 38,
      "ci95": null,
      "n": null,
      "source": "deck-audit#mana-base (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.ramp",
-     "value": 12,
+     "value": 13,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#ramp (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "source": "deck-audit#ramp (verdict over)",
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.card-advantage",
-     "value": 19,
+     "value": 26,
      "ci95": null,
      "n": null,
      "source": "deck-audit#card-advantage (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.interaction",
-     "value": 9,
+     "value": 7,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#interaction (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "source": "deck-audit#interaction (verdict under)",
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.sweepers",
@@ -177,23 +177,23 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#sweepers (verdict under)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.protection",
-     "value": 7,
+     "value": 9,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#protection (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "source": "deck-audit#protection (verdict over)",
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     },
     {
      "figure": "audit.threat-density",
-     "value": 5,
+     "value": 7,
      "ci95": null,
      "n": null,
      "source": "deck-audit#threat-density (verdict at)",
-     "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35"
+     "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969"
     }
    ],
    "citations": [
@@ -251,6 +251,10 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "judgment written against 36d865a66e2c"
   }
  ],
  "limits": [
@@ -275,72 +279,19 @@
   },
   "floor_vs_target": "floor 3, target 3"
  },
- "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
- "fleet_sha": "4f24d97565e4",
+ "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+ "fleet_sha": "754088caa22e",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [
-  {
-   "question": "On the current list, how early is the first discard wheel drawn once the draw engine is out, and does it close the payoff gap the pilot recorded on the earlier list?",
-   "settled_by": "goldfish"
-  },
-  {
-   "question": "Does a DeckCheck rescan of the current list move the dti component?",
-   "settled_by": "rate"
-  },
-  {
-   "question": "Why does resilience rank worse than every other instrument when the pilot reports surviving wipes?",
-   "settled_by": "diagnose"
-  }
- ],
- "iterations": 2,
- "verifier": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "85 vs code_score 86.9: a 1.9 point discount resting on cited log 006 (loss to a bracket-4 combo, nothing yet shows the current list beating a real table). Small, and the effect on the composite is under a point at weight_effective 0.31. No double count: resilience/construction penalties were dropped."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "skeleton:speed kill_by_turn_8 is used for what it is, an unopposed ceiling."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "skeleton:resilience answer_cards is a capacity count; argument treats it so."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "log 006 'Kept the deck alive through several wraths and wipes' is verbatim and in the game's own bullets. Caveat: the log's decklist_sha (8df06ee...) is an earlier list than the current one; the argument discloses this and adds no adjustment from it."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "'comes online reliably' is verbatim from the log's deck-read section; the argument says 'the pilot wrote', slightly generous attribution (it is the debrief's read), but the meaning is not bent."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "'Record 1-1.' is the night's table record (Heliod won game 1); the deck's own record is 0-1 that night. The argument says 'for the night', so it is not misstated."
-   },
-   {
-    "where": "judgment.argument",
-    "status": "supported",
-    "note": "Concordance is mixed, not divergent; the resilience outlier (rank 3, worse) is nonetheless addressed with a cited unmeasured fact and no size claimed. Open questions are answerable by their settled_by (goldfish, rate, diagnose). Re-run diff: components, withheld, code_score, bracket, limits, uncertainty identical; score_point and sensitivity differ only because my skeleton re-run carries no judgment."
-   }
-  ],
-  "iterations": 2
- },
- "code_score": 86.9,
- "score_point": 86.3,
- "score": 86.1,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 84.5,
+ "score_point": 84.5,
+ "score": 83.6,
  "score_ci": [
-  78.2,
-  91.9
+  76.0,
+  91.3
  ],
  "grade": "A",
  "grade_range": [
@@ -349,8 +300,8 @@
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.894,
-  "B": 0.105,
+  "A": 0.783,
+  "B": 0.216,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -369,31 +320,43 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 83.2,
-    "grade": "A"
+    "score": 78.9,
+    "grade": "B"
    },
    "mana": {
-    "score": 84.4,
+    "score": 81.2,
     "grade": "A"
    },
    "resilience": {
-    "score": 92.6,
+    "score": 90.9,
     "grade": "A"
    },
    "construction": {
-    "score": 84.7,
-    "grade": "A"
-   },
-   "judgment": {
-    "score": 86.9,
+    "score": 87.7,
     "grade": "A"
    }
   },
   "flips": [
    {
     "component": "resilience",
-    "share_now": 0.185,
-    "share_at_flip": 0.37,
+    "share_now": 0.267,
+    "share_at_flip": 0.458,
+    "boundary": 80,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
+    "component": "speed",
+    "share_now": 0.267,
+    "share_at_flip": 0.052,
+    "boundary": 80,
+    "grade_at_flip": "B",
+    "direction": "lower"
+   },
+   {
+    "component": "construction",
+    "share_now": 0.289,
+    "share_at_flip": 0.705,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -404,7 +367,6 @@
   "level": "mixed",
   "instruments": {
    "construction": 1.0,
-   "judgment": 1.0,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 1.0
@@ -427,59 +389,19 @@
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
- "judgment": {
-  "sub_score": 85,
-  "argument": "The skeptic is right that I over-discounted. Every measured component is read on the current list, and absence of play is not a fact about it, so I drop the unplayed-fix penalty and the sweeper and capacity points, which construction and resilience already score. What the components cannot see is the goldfish's blindness: speed reads kill_by_turn_8 with nobody to block or answer. The one unmeasured thing I can cite is the pilot's own table record, and it cuts both ways. Resilience is the outlier on the worse side, but it is a capacity count, and the pilot wrote that he \"kept the deck alive through several wraths and wipes; piloting on the defensive side was fine\". So I do not believe the outlier as a sign of fragility, and I add no penalty for it. The same log says the engine \"comes online reliably\", which agrees with the measured engine figures; the payoff gap he names was recorded on the list before this one and the record does not yet say whether the current list closes it, so I credit nothing for it either. Opposed, the deck lost a game on that earlier list to a combo at a table at bracket four, and the record is 1–1 for the night. That is the only reason to sit a hair under the measured score and not on it: the components may flatter an unopposed clock, and nothing recorded shows the current list beating a real table yet.",
-  "citations": [
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_8"
-   },
-   {
-    "kind": "skeleton",
-    "ref": "skeleton:resilience",
-    "quote": "answer_cards"
-   },
-   {
-    "kind": "log",
-    "ref": "log:006",
-    "quote": "Kept the deck alive through several wraths and wipes; piloting on the defensive side was fine."
-   },
-   {
-    "kind": "log",
-    "ref": "log:006",
-    "quote": "comes online reliably"
-   },
-   {
-    "kind": "log",
-    "ref": "log:006",
-    "quote": "Record 1–1."
-   }
-  ],
-  "against": {
-   "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
-   "spec_sha": "fd483871b754"
-  },
-  "weight": 0.2,
-  "weight_effective": 0.3077,
-  "sub_ci": [
-   76.88,
-   93.38
-  ]
- },
+ "judgment": null,
  "rank": {
   "position": 1,
   "of": 4,
   "group": [
    "sharknado",
    "gishath",
-   "goblin-storm",
-   "ur-dragon"
+   "ur-dragon",
+   "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.996,
-   "2": 0.004,
+   "1": 0.997,
+   "2": 0.003,
    "3": 0.001,
    "4": 0.0
   },
@@ -490,10 +412,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 86.1,
-   "gishath": 70.9,
-   "goblin-storm": 62.5,
-   "ur-dragon": 61.8
+   "sharknado": 83.6,
+   "gishath": 69.9,
+   "ur-dragon": 61.7,
+   "goblin-storm": 60.3
   }
  }
 }

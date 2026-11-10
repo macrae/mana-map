@@ -1,539 +1,683 @@
 {
- "slug": "sharknado",
- "thesis": "Land Shabraz, keep him alive the turn he lands, and turn every card the deck draws into a +1/+1 counter on a flyer. Draw doublers and Lae'zel multiply the counters, and double strike or a damage doubler cashes him in for 21 commander damage. Brallin is the second road, not the engine.",
- "stages": [
-  {
-   "stage": "mana",
-   "label": "PAY FIVE, THEN PAY FOR THE TURN",
-   "what_it_does": "38 lands and eleven accelerants (Sol Ring, Arcane Signet, three Signets, three Talismans, Mind Stone, Fellwar Stone and Smothering Tithe) pay for a five-mana commander, then for protection or a wheel on the same turn. deck-audit puts the eleven-card ramp group in 57.4% of opening sevens and 67.0% by turn three, with a measured by-turn-six rate of 91.2% and mean turn 2.531. deck-facts: land sources R 31 / U 30 / W 22 against source targets R 48 / U 36 / W 22. Red is the colour that runs short, because Torbran, Gratuitous Violence and Fiery Emancipation each cost three red pips, and 13 lands can enter tapped. Smothering Tithe is filed here for its Treasure. It also pays off every wheel, because each opponent draw is a Treasure they did not pay {2} for. Lands with a second job: Raugrin Triome cycles and Otawara channels, and both discards pay Brallin. Fiery Islet sacrifices for a draw, which pays Shabraz (oracle text).",
-   "cards": [
-    "Sol Ring",
-    "Arcane Signet",
-    "Azorius Signet",
-    "Boros Signet",
-    "Izzet Signet",
-    "Mind Stone",
-    "Fellwar Stone",
-    "Talisman of Conviction",
-    "Talisman of Creativity",
-    "Talisman of Progress",
-    "Smothering Tithe",
-    "Adarkar Wastes",
-    "Arid Mesa",
-    "Battlefield Forge",
-    "City of Brass",
-    "Clifftop Retreat",
-    "Command Tower",
-    "Exotic Orchard",
-    "Ferrous Lake",
-    "Fiery Islet",
-    "Flooded Strand",
-    "Frostboil Snarl",
-    "Gemstone Caverns",
-    "Hallowed Fountain",
-    "Hengegate Pathway // Mistgate Pathway",
-    "Inspiring Vantage",
-    "Island",
-    "Mana Confluence",
-    "Mountain",
-    "Needleverge Pathway // Pillarverge Pathway",
-    "Otawara, Soaring City",
-    "Polluted Delta",
-    "Raugrin Triome",
-    "Riverglide Pathway // Lavaglide Pathway",
-    "Riverpyre Verge",
-    "Rugged Prairie",
-    "Sacred Foundry",
-    "Scalding Tarn",
-    "Sea of Clouds",
-    "Shivan Reef",
-    "Spire of Industry",
-    "Spirebluff Canal",
-    "Steam Vents",
-    "Stormcarved Coast",
-    "Sulfur Falls",
-    "Sunbillow Verge",
-    "Thundering Falls",
-    "Training Center"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  "slug": "sharknado",
+  "thesis": "Land Shabraz, keep him alive the turn he lands, and turn every card the deck draws into a +1/+1 counter on a flyer. Draw doublers and Lae'zel multiply the counters, and double strike cashes him in for 21 commander damage (stack 006); a damage doubler should do the same, but no stack has resolved it (open_questions[0]). Brallin is the second road, not the engine.",
+  "stages": [
     {
-     "kind": "city",
-     "id": "city-0",
-     "agreement": "partial",
-     "note": "Ramp holds the rocks, fetches and Command Tower"
+      "stage": "mana",
+      "label": "PAY FIVE, THEN PAY FOR THE TURN",
+      "what_it_does": "38 lands and eleven accelerants (Sol Ring, Arcane Signet, three Signets, three Talismans, Mind Stone, Fellwar Stone and Smothering Tithe) pay for a five-mana commander, then for protection or a wheel on the same turn. deck-audit puts the eleven-card ramp group in 57.4% of opening sevens and 67.0% by turn three, with a measured by-turn-six rate of 91.2% and mean turn 2.531. deck-facts: land sources R 31 / U 30 / W 22 against source targets R 48 / U 36 / W 22. Red is the colour that runs short, because Torbran, Gratuitous Violence and Fiery Emancipation each cost three red pips, and 13 lands can enter tapped. Smothering Tithe is filed here for its Treasure. It also pays off every wheel, because each opponent draw is a Treasure they did not pay {2} for. Lands with a second job: Raugrin Triome cycles and Otawara channels, and both discards pay Brallin. Fiery Islet sacrifices for a draw, which pays Shabraz (oracle text).",
+      "cards": [
+        "Sol Ring",
+        "Arcane Signet",
+        "Azorius Signet",
+        "Boros Signet",
+        "Izzet Signet",
+        "Mind Stone",
+        "Fellwar Stone",
+        "Talisman of Conviction",
+        "Talisman of Creativity",
+        "Talisman of Progress",
+        "Smothering Tithe",
+        "Adarkar Wastes",
+        "Arid Mesa",
+        "Battlefield Forge",
+        "City of Brass",
+        "Clifftop Retreat",
+        "Command Tower",
+        "Exotic Orchard",
+        "Ferrous Lake",
+        "Fiery Islet",
+        "Flooded Strand",
+        "Frostboil Snarl",
+        "Gemstone Caverns",
+        "Hallowed Fountain",
+        "Hengegate Pathway // Mistgate Pathway",
+        "Inspiring Vantage",
+        "Island",
+        "Mana Confluence",
+        "Mountain",
+        "Needleverge Pathway // Pillarverge Pathway",
+        "Otawara, Soaring City",
+        "Polluted Delta",
+        "Raugrin Triome",
+        "Riverglide Pathway // Lavaglide Pathway",
+        "Riverpyre Verge",
+        "Rugged Prairie",
+        "Sacred Foundry",
+        "Scalding Tarn",
+        "Sea of Clouds",
+        "Shivan Reef",
+        "Spire of Industry",
+        "Spirebluff Canal",
+        "Steam Vents",
+        "Stormcarved Coast",
+        "Sulfur Falls",
+        "Sunbillow Verge",
+        "Thundering Falls",
+        "Training Center"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-0",
+          "agreement": "partial",
+          "note": "Ramp holds the rocks, fetches and Command Tower"
+        },
+        {
+          "kind": "city",
+          "id": "city-5",
+          "agreement": "partial",
+          "note": "Mana holds the rest of the lands; the map splits the stage in two on text, not job"
+        },
+        {
+          "kind": "role",
+          "id": "ramp:rock",
+          "note": "deck-facts: 11 ramp:rock"
+        }
+      ]
     },
     {
-     "kind": "city",
-     "id": "city-5",
-     "agreement": "partial",
-     "note": "Mana holds the rest of the lands; the map splits the stage in two on text, not job"
+      "stage": "ignition",
+      "label": "SHABRAZ RESOLVES AND SURVIVES",
+      "what_it_does": "Nothing in the deck is paid until Shabraz is on the battlefield. Every draw before that is just a card. He is a five-mana commander from the command zone, so the first window is turn four or five on the ramp above. The landing only counts if he is still there on your next turn. That is why this stage is one card and why the protection stage exists. Once he is out, every draw puts a +1/+1 counter on him and gains you 1 life (oracle text), with no further setup. Stacks 006, 008, 009 and 010 all start with him already on the battlefield, and none of them resolves the landing itself. The brief has no measured rate for when he is cast or how long he survives. The nearest priced proxy is the protection group: 8 cards, 45.6% of opening sevens, 54.7% by turn three, measured by-turn-six 86.9% (deck-audit). Brallin's partner trigger fetches Shabraz from the library only when Brallin enters; it is not standing recovery.",
+      "cards": [
+        "Shabraz, the Skyshark"
+      ],
+      "single_point_of_failure": "Shabraz, the Skyshark",
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "Shabraz on the board turns Wheel of Fortune under Sphinx into 49 draws and 49 counters"
+        },
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "Shabraz at 10/10 is the starting board of the double-strike kill"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "partial",
+          "note": "Bodies; Shabraz sits beside both partners and the draw bodies"
+        }
+      ]
     },
     {
-     "kind": "role",
-     "id": "ramp:rock",
-     "note": "deck-facts: 11 ramp:rock"
+      "stage": "fuel",
+      "label": "EVERY CARD DRAWN",
+      "what_it_does": "Every draw is a counter and a life on Shabraz, so the deck's fuel is anything that draws. There are three shapes. (1) Standing engines that draw off the table: Rhystic Study, Esper Sentinel, Faerie Mastermind, Archmage Emeritus, Valeria Richards, plus Teferi, Master of Time's +1, which loots once on every player's turn. (2) Combat draws, which are three different triggers (oracle text). Enduring Curiosity and Mask of Memory fire when a creature deals combat damage to a player, so a double-striking Shabraz can trigger them on first-strike damage. Sokka draws when he and another creature attack, so his counter lands before any damage. Willie draws only when Willie himself connects. Whether a first-strike draw trigger grows Shabraz before regular damage is unverified (open_questions[2]); stack 006 resolved an activated loot in that step, not a trigger. (3) Burst: nine wheels (Wheel of Fortune, Windfall, Reforge the Soul, Echo of Eons, Time Reversal, Winds of Change, Will of the Jeskai, Magus of the Wheel, Jace's Archivist), Collective Defiance's one-sided wheel mode, Brainstorm, Prismari Command's draw-two, and Shark Typhoon's instant-speed cycling. Kitsa loots for {T}, and at power 3 or more she copies a wheel (stack 010). deck-audit's nine-card standing-draw group is in 49.8% of opening sevens, with a measured by-turn-six rate of 85.0%. The ten-card wheel group is in 53.7%, measured by turn six at 86.2%. The wheels and loots still discard, so Brallin is paid when he is out. Shuffle-wheels (Echo, Time Reversal, Winds of Change) do not trigger him. Will of the Jeskai does, when you choose to discard (oracle text).",
+      "cards": [
+        "Rhystic Study",
+        "Esper Sentinel",
+        "Faerie Mastermind",
+        "Archmage Emeritus",
+        "Valeria Richards, Precocious",
+        "Teferi, Master of Time",
+        "Enduring Curiosity",
+        "Mask of Memory",
+        "Sokka, Lateral Strategist",
+        "Willie Lumpkin, Postman",
+        "Kitsa, Otterball Elite",
+        "Wheel of Fortune",
+        "Windfall",
+        "Reforge the Soul",
+        "Echo of Eons",
+        "Time Reversal",
+        "Winds of Change",
+        "Will of the Jeskai",
+        "Magus of the Wheel",
+        "Jace's Archivist",
+        "Collective Defiance",
+        "Brainstorm",
+        "Prismari Command",
+        "Shark Typhoon"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "010",
+          "note": "Kitsa copies Wheel of Fortune: two wheels for one cast"
+        },
+        {
+          "kind": "stack",
+          "id": "008",
+          "note": "Windfall for seven with both commanders out"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "standing draw bodies"
+        },
+        {
+          "kind": "city",
+          "id": "city-3",
+          "agreement": "cuts-across",
+          "note": "seven of the wheels"
+        },
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across",
+          "note": "Magus, Jace's Archivist, Collective Defiance, Archmage Emeritus, Prismari Command"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Esper Sentinel and Mask of Memory are filed under Finishers"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "Brainstorm is filed under Insurance"
+        }
+      ]
+    },
+    {
+      "stage": "conversion",
+      "label": "ONE DRAW, SEVERAL COUNTERS",
+      "what_it_does": "These are the multipliers between a draw and Shabraz's size. Teferi's Ageless Insight and Bard, King of Dale each turn every draw except the first draw-step draw into two (oracle text). Lae'zel turns each counter placement into one more counter. Consecrated Sphinx turns each opponent draw into two of yours, which makes a symmetrical wheel one-sided. Shang-Chi is a second draw-counter body that draws five more at its tenth counter, and those five pay Shabraz too. Stack 008: Windfall for seven with Lae'zel out leaves Shabraz 17/17. Stack 009: Wheel of Fortune under Sphinx gives 42 Sphinx draws on top of the seven, and Shabraz ends 52/52. The draw doublers and Shang-Chi are oracle-only here, because no passing stack resolves them. Lae'zel is a group of one in the declared targets, so deck-audit prices her alone: 7.1% of opening sevens, measured by turn six 22.2%. The stage as a whole has five cards and no tutor names them.",
+      "cards": [
+        "Teferi's Ageless Insight",
+        "Bard, King of Dale",
+        "Lae'zel, Vlaakith's Champion",
+        "Consecrated Sphinx",
+        "Shang-Chi and the Ten Rings"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "Sphinx under a wheel: 42 extra cards for Shabraz"
+        },
+        {
+          "kind": "stack",
+          "id": "008",
+          "note": "Lae'zel: two counters per draw on Shabraz"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "partial",
+          "note": "all five sit in Bodies, which also holds both commanders and nine fuel cards and Torbran (5 + 2 + 9 + 1 = the city's 17)"
+        }
+      ]
+    },
+    {
+      "stage": "output",
+      "label": "THE HIT, MULTIPLIED",
+      "what_it_does": "The engine's product is a big commander, and these three cards multiply what he deals. Gratuitous Violence doubles damage from any creature you control. Fiery Emancipation triples damage from any source you control. Both apply to Shabraz's combat damage and to Brallin's pings (oracle text). Torbran adds 2 only to a RED source's damage to an opponent or their permanents, so he raises Brallin's pings and Brallin's combat damage but not Shabraz's, because Shabraz is white and blue. Stack 007: one Brallin ping under all three is at least 8 per opponent, and the damaged opponent orders the replacements. deck-audit's three-card amplifier group is in 19.9% of opening sevens and 25.1% by turn three, measured by turn six 53.6%. Each costs three red pips against a red-source shortfall (see mana). No passing stack resolves Shabraz's commander damage under Gratuitous Violence or Fiery Emancipation (open_questions).",
+      "cards": [
+        "Gratuitous Violence",
+        "Fiery Emancipation",
+        "Torbran, Thane of Red Fell"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "007",
+          "note": "one Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Gratuitous Violence and Fiery Emancipation"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Torbran clusters as a body"
+        }
+      ]
+    },
+    {
+      "stage": "protection",
+      "label": "COVER THE DAY HE LANDS",
+      "what_it_does": "This stage keeps the ignition alive. Swiftfoot Boots gives standing hexproof and haste, so he can attack the turn he lands. Brotherhood Regalia equips a legendary for {1} and gives ward {2} and unblockable. The held instants are Shelter (protection from a colour, and it draws, so it pays Shabraz), Slip Out the Back (phases him out with a +1/+1 counter), Loran's Escape (hexproof and indestructible), Flawless Maneuver and Deflecting Swat (both free with a commander out), and the counters Negate and Stubborn Denial. Stubborn Denial is a hard counter once Shabraz has 4 or more power. Grand Abolisher stops opponents casting any spell, and activating artifact, creature or enchantment abilities, on your turn, which covers the combat that cashes him in. It does not stop land or planeswalker abilities (oracle text). deck-audit's declared protection group (8 cards, including Akroma's Will, filed in wincon here) is in 45.6% of opening sevens and 54.7% by turn three, measured by turn six 86.9%, mean turn 3.087. The six-card answers group is in 36.4%. No passing stack in the current 99 resolves any of these protecting a commander. Stacks 004 and 005 hold Swiftfoot Boots in hand as wheel discard fodder; it never reaches the battlefield.",
+      "cards": [
+        "Swiftfoot Boots",
+        "Brotherhood Regalia",
+        "Shelter",
+        "Slip Out the Back",
+        "Loran's Escape",
+        "Flawless Maneuver",
+        "Deflecting Swat",
+        "Negate",
+        "Stubborn Denial",
+        "Grand Abolisher"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "Insurance: Shelter, Slip, Loran's, Flawless, Negate, Stubborn Denial"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Swiftfoot Boots, Brotherhood Regalia and Grand Abolisher are filed under Finishers"
+        },
+        {
+          "kind": "city",
+          "id": "city-6",
+          "agreement": "cuts-across",
+          "note": "Deflecting Swat is filed under Interaction"
+        }
+      ]
+    },
+    {
+      "stage": "wincon",
+      "label": "TWENTY-ONE IN ONE SWING",
+      "what_it_does": "This is how the game ends: 21 commander damage, by double strike on a grown flyer. Fireshrieker (equip {2}) and Lizard Blades (reconfigure {2}) give double strike, and Blade Historian gives it to every attacker. Akroma's Will with a commander out gives both modes: double strike and flying, plus indestructible and protection from each colour for the swing. It is filed here rather than in protection because it is the only instant-speed double strike. Stack 006: Shabraz at 10/10 with Fireshrieker, plus a Kitsa loot between the strikes, deals 10 + 11 = 21. A draw trigger on first-strike damage (Enduring Curiosity, Mask of Memory) may do the same by oracle text; no stack resolves it (open_questions[2]). Brallin is the second road. He grows on discards; whether Torbran's +2 on his combat damage counts as commander damage is unresolved (open_questions[0]). Stack 009's table kill is his: the cleanup discard after a Sphinx wheel fires him 42 times into three 40-life opponents. In stack 009 the wheel discards an empty hand, so the kill is the cleanup discard alone. It needs 40 discards, so at least 20 opponent draws. Only the five draw-seven wheels guarantee that: Wheel of Fortune, Reforge the Soul, Magus of the Wheel, Echo of Eons, Time Reversal (the shuffle ones still serve, since the kill is the cleanup). Windfall on 009's board (opponent hands 4/3/2) gives 12, not a kill; Jace's Archivist and Winds of Change depend on hand sizes; Will of the Jeskai lets opponents decline; Collective Defiance hits one player. It also needs Sphinx, Brallin out, and no hand-size effect, and the 99 has none.",
+      "cards": [
+        "Fireshrieker",
+        "Lizard Blades",
+        "Blade Historian",
+        "Akroma's Will",
+        "Brallin, Skyshark Rider"
+      ],
+      "single_point_of_failure": null,
+      "evidence": [
+        {
+          "kind": "stack",
+          "id": "006",
+          "note": "10 + 11 = 21 with Fireshrieker and a loot between strikes"
+        },
+        {
+          "kind": "stack",
+          "id": "009",
+          "note": "cleanup discard fires Brallin 42 times: every opponent from 40 to 0"
+        },
+        {
+          "kind": "city",
+          "id": "city-1",
+          "agreement": "cuts-across",
+          "note": "Fireshrieker, Lizard Blades, Blade Historian"
+        },
+        {
+          "kind": "city",
+          "id": "city-4",
+          "agreement": "cuts-across",
+          "note": "Akroma's Will clusters as Insurance"
+        },
+        {
+          "kind": "city",
+          "id": "city-2",
+          "agreement": "cuts-across",
+          "note": "Brallin clusters as a body"
+        }
+      ]
     }
-   ]
-  },
-  {
-   "stage": "ignition",
-   "label": "SHABRAZ RESOLVES AND SURVIVES",
-   "what_it_does": "Nothing in the deck is paid until Shabraz is on the battlefield. Every draw before that is just a card. He is a five-mana commander from the command zone, so the first window is turn four or five on the ramp above. The landing only counts if he is still there on your next turn. That is why this stage is one card and why the protection stage exists. Once he is out, every draw puts a +1/+1 counter on him and gains you 1 life (oracle text), with no further setup. Stacks 006, 008, 009 and 010 all start with him already on the battlefield, and none of them resolves the landing itself. The brief has no measured rate for when he is cast or how long he survives. The nearest priced proxy is the protection group: 8 cards, 45.6% of opening sevens, 54.7% by turn three, measured by-turn-six 86.9% (deck-audit). Brallin's partner trigger can fetch Shabraz if he is ever shuffled into the library.",
-   "cards": [
-    "Shabraz, the Skyshark"
-   ],
-   "single_point_of_failure": "Shabraz, the Skyshark",
-   "evidence": [
+  ],
+  "lines": [
     {
-     "kind": "stack",
-     "id": "009",
-     "note": "Shabraz on the board turns Wheel of Fortune under Sphinx into 49 draws and 49 counters"
+      "from": "ignition",
+      "to": "wincon",
+      "via": [
+        "Shabraz, the Skyshark",
+        "Fireshrieker",
+        "Kitsa, Otterball Elite"
+      ],
+      "verified_by": "006",
+      "note": "Shabraz 10/10 with Fireshrieker; Kitsa's loot between the strikes makes it 10 + 11 = 21 commander damage"
     },
     {
-     "kind": "stack",
-     "id": "006",
-     "note": "Shabraz at 10/10 is the starting board of the double-strike kill"
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Wheel of Fortune",
+        "Consecrated Sphinx",
+        "Shabraz, the Skyshark"
+      ],
+      "verified_by": "009",
+      "note": "21 opponent draws become 42 Sphinx draws; Shabraz 3/3 -> 52/52"
     },
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "partial",
-     "note": "Bodies; Shabraz sits beside both partners and the draw bodies"
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Consecrated Sphinx",
+        "Brallin, Skyshark Rider",
+        "Wheel of Fortune"
+      ],
+      "verified_by": "009",
+      "note": "the cleanup discard of the Sphinx flood fires Brallin 42 times: the table kill"
+    },
+    {
+      "from": "fuel",
+      "to": "conversion",
+      "via": [
+        "Windfall",
+        "Lae'zel, Vlaakith's Champion",
+        "Shabraz, the Skyshark"
+      ],
+      "verified_by": "008",
+      "note": "Windfall for seven under Lae'zel: two counters per draw, Shabraz 17/17"
+    },
+    {
+      "from": "output",
+      "to": "wincon",
+      "via": [
+        "Torbran, Thane of Red Fell",
+        "Gratuitous Violence",
+        "Fiery Emancipation",
+        "Brallin, Skyshark Rider"
+      ],
+      "verified_by": "007",
+      "note": "one Brallin ping under all three: at least 8 per opponent; the opponent orders the replacements"
+    },
+    {
+      "from": "conversion",
+      "to": "wincon",
+      "via": [
+        "Teferi's Ageless Insight",
+        "Bard, King of Dale",
+        "Fireshrieker"
+      ],
+      "verified_by": null,
+      "note": "the deck's primary route (draw doubler -> big Shabraz -> double strike) has no passing stack with a doubler in it; oracle text only"
+    },
+    {
+      "from": "output",
+      "to": "wincon",
+      "via": [
+        "Gratuitous Violence",
+        "Fiery Emancipation",
+        "Lizard Blades"
+      ],
+      "verified_by": null,
+      "note": "unverified: whether Shabraz's doubled or tripled combat damage counts in full as commander damage (CR 903.10a likely supports it, since a replacement does not change the source); no passing stack resolves it (open_questions[0])"
+    },
+    {
+      "from": "protection",
+      "to": "ignition",
+      "via": [
+        "Swiftfoot Boots",
+        "Shabraz, the Skyshark"
+      ],
+      "verified_by": null,
+      "note": "unverified: hexproof and haste the turn he lands; no passing stack has Boots on the battlefield (stacks 004/005 hold it in hand as wheel discard fodder)"
     }
-   ]
-  },
-  {
-   "stage": "fuel",
-   "label": "EVERY CARD DRAWN",
-   "what_it_does": "Every draw is a counter and a life on Shabraz, so the deck's fuel is anything that draws. There are three shapes. (1) Standing engines that draw off the table: Rhystic Study, Esper Sentinel, Faerie Mastermind, Archmage Emeritus, Valeria Richards, plus Teferi, Master of Time's +1, which loots once on every player's turn. (2) Combat draws that fire when a creature connects: Enduring Curiosity, Mask of Memory, Sokka, and Willie Lumpkin, who is unblockable. Under double strike, each of these draws on first-strike damage. That counter lands before regular damage, which is the shape stack 006 proved with Kitsa's loot. (3) Burst: nine wheels (Wheel of Fortune, Windfall, Reforge the Soul, Echo of Eons, Time Reversal, Winds of Change, Will of the Jeskai, Magus of the Wheel, Jace's Archivist), Collective Defiance's one-sided wheel mode, Brainstorm, Prismari Command's draw-two, and Shark Typhoon's instant-speed cycling. Kitsa loots for {T}, and at power 3 or more she copies a wheel (stack 010). deck-audit's nine-card standing-draw group is in 49.8% of opening sevens, with a measured by-turn-six rate of 85.0%. The ten-card wheel group is in 53.7%, measured by turn six at 86.2%. The wheels and loots still discard, so Brallin is paid when he is out. Shuffle-wheels (Echo, Time Reversal, Winds of Change) and Will of the Jeskai's optional discard do not trigger him (oracle text).",
-   "cards": [
-    "Rhystic Study",
-    "Esper Sentinel",
-    "Faerie Mastermind",
-    "Archmage Emeritus",
-    "Valeria Richards, Precocious",
-    "Teferi, Master of Time",
-    "Enduring Curiosity",
-    "Mask of Memory",
-    "Sokka, Lateral Strategist",
-    "Willie Lumpkin, Postman",
-    "Kitsa, Otterball Elite",
-    "Wheel of Fortune",
-    "Windfall",
-    "Reforge the Soul",
-    "Echo of Eons",
-    "Time Reversal",
-    "Winds of Change",
-    "Will of the Jeskai",
-    "Magus of the Wheel",
-    "Jace's Archivist",
-    "Collective Defiance",
-    "Brainstorm",
-    "Prismari Command",
-    "Shark Typhoon"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "map_disagreements": [
     {
-     "kind": "stack",
-     "id": "010",
-     "note": "Kitsa copies Wheel of Fortune: two wheels for one cast"
+      "component": "EVERY CARD DRAWN (fuel)",
+      "cities": [
+        "Bodies",
+        "Card Flow",
+        "Interaction",
+        "Finishers",
+        "Insurance"
+      ],
+      "why": "Draw sources are clustered on WHAT ELSE their text says, so the stage is spread across five cities. Standing engines that are creatures sit in Bodies. Three wheels on creatures or modal spells (Magus, Jace's Archivist, Collective Defiance) sit in Interaction. Mask of Memory and Esper Sentinel sit in Finishers. Brainstorm sits in Insurance. In this deck every one of them does the same job, a counter on Shabraz, and that job lives on the commander, not on the card. No card text can show it."
     },
     {
-     "kind": "stack",
-     "id": "008",
-     "note": "Windfall for seven with both commanders out"
+      "component": "COVER THE DAY HE LANDS (protection)",
+      "cities": [
+        "Insurance",
+        "Finishers",
+        "Interaction"
+      ],
+      "why": "Equipment that protects (Swiftfoot Boots, Brotherhood Regalia) clusters with the equipment that kills (Fireshrieker, Lizard Blades) because the text shape is 'equipped creature has X'. Grand Abolisher clusters there too. The map files by delivery mechanism, and the engine files by what the card does for Shabraz."
     },
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "cuts-across",
-     "note": "standing draw bodies"
+      "component": "TWENTY-ONE IN ONE SWING (wincon)",
+      "cities": [
+        "Finishers",
+        "Insurance",
+        "Bodies"
+      ],
+      "why": "Akroma's Will reads as a protection spell, and its double-strike mode is the one that ends games here. Brallin reads as a body. The map agrees on the equipment."
     },
     {
-     "kind": "city",
-     "id": "city-3",
-     "agreement": "cuts-across",
-     "note": "seven of the wheels"
+      "component": "THE HIT, MULTIPLIED (output)",
+      "cities": [
+        "Finishers",
+        "Bodies"
+      ],
+      "why": "Torbran is a creature, so he clusters with bodies. The two enchantments that do the same replacement job sit in Finishers."
     },
     {
-     "kind": "city",
-     "id": "city-6",
-     "agreement": "cuts-across",
-     "note": "Magus, Jace's Archivist, Collective Defiance, Archmage Emeritus, Prismari Command"
-    },
-    {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "Esper Sentinel and Mask of Memory are filed under Finishers"
-    },
-    {
-     "kind": "city",
-     "id": "city-4",
-     "agreement": "cuts-across",
-     "note": "Brainstorm is filed under Insurance"
+      "component": "PAY FIVE (mana)",
+      "cities": [
+        "Ramp",
+        "Mana"
+      ],
+      "why": "Two cities do one job. Ramp holds the rocks with fetches, Command Tower and the five-colour lands, and Mana holds the duals. That is a text split, not an engine split."
     }
-   ]
-  },
-  {
-   "stage": "conversion",
-   "label": "ONE DRAW, SEVERAL COUNTERS",
-   "what_it_does": "These are the multipliers between a draw and Shabraz's size. Teferi's Ageless Insight and Bard, King of Dale each turn every draw except the first draw-step draw into two (oracle text). Lae'zel turns each counter placement into one more counter. Consecrated Sphinx turns each opponent draw into two of yours, which makes a symmetrical wheel one-sided. Shang-Chi is a second draw-counter body that draws five more at its tenth counter, and those five pay Shabraz too. Stack 008: Windfall for seven with Lae'zel out leaves Shabraz 17/17. Stack 009: Wheel of Fortune under Sphinx gives 42 Sphinx draws on top of the seven, and Shabraz ends 52/52. The draw doublers and Shang-Chi are oracle-only here, because no passing stack resolves them. Lae'zel is a group of one in the declared targets, so deck-audit prices her alone: 7.1% of opening sevens, measured by turn six 22.2%. The stage as a whole has five cards and no tutor names them.",
-   "cards": [
-    "Teferi's Ageless Insight",
-    "Bard, King of Dale",
-    "Lae'zel, Vlaakith's Champion",
-    "Consecrated Sphinx",
-    "Shang-Chi and the Ten Rings"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "unassigned": [
     {
-     "kind": "stack",
-     "id": "009",
-     "note": "Sphinx under a wheel: 42 extra cards for Shabraz"
+      "card": "Swords to Plowshares",
+      "why": "Table interaction: it removes an opposing creature (a flying blocker or a threat). No stage of the engine runs through it."
     },
     {
-     "kind": "stack",
-     "id": "008",
-     "note": "Lae'zel: two counters per draw on Shabraz"
+      "card": "Get Lost",
+      "why": "Table interaction: it answers a creature, enchantment or planeswalker. It keeps the path clear but is not part of the draw-to-counter machine."
     },
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "partial",
-     "note": "all five sit in Bodies, which also holds both commanders and four fuel bodies"
+      "card": "Chaos Warp",
+      "why": "Table interaction: an answer to any permanent. It has no role in the taxonomy (deck-facts no_role) and no engine job."
     }
-   ]
-  },
-  {
-   "stage": "output",
-   "label": "THE HIT, MULTIPLIED",
-   "what_it_does": "The engine's product is a big commander, and these three cards multiply what he deals. Gratuitous Violence doubles damage from any creature you control. Fiery Emancipation triples damage from any source you control. Both apply to Shabraz's combat damage and to Brallin's pings (oracle text). Torbran adds 2 only to a RED source's damage to an opponent or their permanents, so he raises Brallin's pings and Brallin's combat damage but not Shabraz's, because Shabraz is white and blue. Stack 007: one Brallin ping under all three is at least 8 per opponent, and the damaged opponent orders the replacements. deck-audit's three-card amplifier group is in 19.9% of opening sevens and 25.1% by turn three, measured by turn six 53.6%. Each costs three red pips against a red-source shortfall (see mana). No passing stack resolves Shabraz's commander damage under Gratuitous Violence or Fiery Emancipation (open_questions).",
-   "cards": [
-    "Gratuitous Violence",
-    "Fiery Emancipation",
-    "Torbran, Thane of Red Fell"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "open_questions": [
     {
-     "kind": "stack",
-     "id": "007",
-     "note": "one Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation"
+      "question": "Does Shabraz's combat damage under Gratuitous Violence (doubled) or Fiery Emancipation (tripled), and Brallin's combat damage with Torbran's +2, count in full as commander damage, and what size of double-striking Shabraz is lethal by commander damage under each?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The output stage's job toward the PRIMARY wincon rests on oracle text alone. Every passing amplifier stack (007, 011, 013) is about Brallin's or Needlehead's pings, not Shabraz in combat. The same question covers Torbran on Brallin's combat damage, which the wincon stage names as part of the second road; 005, 007 and 009 resolve only his noncombat pings."
     },
     {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "Gratuitous Violence and Fiery Emancipation"
+      "question": "With Teferi's Ageless Insight (or Bard) out, how many counters does Shabraz get from one Wheel of Fortune, and with Lae'zel as well?",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "The conversion stage's two draw doublers are the core of the Shabraz-first rebuild, and no passing stack includes either one. The primary line (conversion -> wincon) is unverified."
     },
     {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "cuts-across",
-     "note": "Torbran clusters as a body"
+      "question": "Does a draw on first-strike damage (Enduring Curiosity, Mask of Memory) add its counter to Shabraz before regular combat damage, the way Kitsa's activated loot does in stack 006? (Sokka draws on attack and Willie only on his own damage, so neither is in question.)",
+      "settled_by": "resolve-stack",
+      "why_it_matters": "If so, every combat draw is a +1 or +2 on the second hit, and the double-strike kill needs a smaller Shabraz."
+    },
+    {
+      "question": "How often is Shabraz on the battlefield and protected by turn five, and how often does he survive to attack the turn after he lands?",
+      "settled_by": "goldfish",
+      "why_it_matters": "Ignition is one card and the brief has no measured rate for it. Every priced group is a proxy, and the goldfish has no removal, so survival is not something it can read."
+    },
+    {
+      "question": "Is Brallin worth casting in the Shabraz-first list, or is he now a second commander you hold back, given that the discard engine (Glint-Horn, Psychosis Crawler, Needlehead, Rielle, loots) was cut?",
+      "settled_by": "research-strategy",
+      "why_it_matters": "The verified table kill (stack 009) still needs Brallin. The model files him as the second road, and whether that is real depends on how often he is cast."
     }
-   ]
-  },
-  {
-   "stage": "protection",
-   "label": "COVER THE DAY HE LANDS",
-   "what_it_does": "This stage keeps the ignition alive. Swiftfoot Boots gives standing hexproof and haste, so he can attack the turn he lands. Brotherhood Regalia equips a legendary for {1} and gives ward {2} and unblockable. The held instants are Shelter (protection from a colour, and it draws, so it pays Shabraz), Slip Out the Back (phases him out with a +1/+1 counter), Loran's Escape (hexproof and indestructible), Flawless Maneuver and Deflecting Swat (both free with a commander out), and the counters Negate and Stubborn Denial. Stubborn Denial is a hard counter once Shabraz has 4 or more power. Grand Abolisher shuts off the table's instants and activations on your turn, which covers the combat that cashes him in. deck-audit's declared protection group (8 cards, including Akroma's Will, filed in wincon here) is in 45.6% of opening sevens and 54.7% by turn three, measured by turn six 86.9%, mean turn 3.087. The six-card answers group is in 36.4%. No passing stack in the current 99 resolves any of these protecting a commander. Stacks 004 and 005 name Swiftfoot Boots only as a board piece.",
-   "cards": [
-    "Swiftfoot Boots",
-    "Brotherhood Regalia",
-    "Shelter",
-    "Slip Out the Back",
-    "Loran's Escape",
-    "Flawless Maneuver",
-    "Deflecting Swat",
-    "Negate",
-    "Stubborn Denial",
-    "Grand Abolisher"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
+  ],
+  "proposed_goldfish_edits": [
     {
-     "kind": "city",
-     "id": "city-4",
-     "agreement": "cuts-across",
-     "note": "Insurance: Shelter, Slip, Loran's, Flawless, Negate, Stubborn Denial"
+      "target": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+      "change": "Relabel as burst draw, not ignition, and drop `required`. Add a target 'Shabraz on the battlefield' if the goldfish can read commander casts, and mark that one required.",
+      "why": "In v3.0.0 the ignition is Shabraz resolving. A wheel before he lands pays nothing, and the label describes the traded-away discard engine."
     },
     {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "Swiftfoot Boots, Brotherhood Regalia and Grand Abolisher are filed under Finishers"
+      "target": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
+      "change": "Fix the membership or remove the group. It holds the same ten cards as the WHEEL group, including Echo of Eons, Time Reversal and Winds of Change, which shuffle and never discard, and Will of the Jeskai, whose discard is optional. The discard wheels in the 99 are Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel, Jace's Archivist and Collective Defiance's first mode.",
+      "why": "As written it is a duplicate of the wheel group, and its label contradicts its own members."
     },
     {
-     "kind": "city",
-     "id": "city-6",
-     "agreement": "cuts-across",
-     "note": "Deflecting Swat is filed under Interaction"
+      "target": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+      "change": "Rename to 'A counter or draw multiplier drawn' and widen it to Lae'zel, Teferi's Ageless Insight, Bard, King of Dale and Consecrated Sphinx (the conversion stage).",
+      "why": "Lae'zel is not a per-draw board source, and the group of one is why deck-audit flags her as a single point of failure. The real stage has five members, and the doublers are measured nowhere."
+    },
+    {
+      "target": "A discard converted to board or cards (the non-damage half of the tax)",
+      "change": "Remove it, or rename it to 'Shark Typhoon drawn' if that card is still wanted as a tracked threat.",
+      "why": "Rielle and Mary Read are gone, and a group of one card is priced as a single point of failure for a stage the deck no longer has."
+    },
+    {
+      "target": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
+      "change": "Rewrite the label to say the amplifiers multiply the commander-damage hit. Gratuitous Violence and Fiery Emancipation apply to Shabraz's combat damage, and Torbran to Brallin's only.",
+      "why": "Brallin's pings are no longer the deck's main route."
+    },
+    {
+      "target": "new: A double-strike source drawn",
+      "change": "Add Fireshrieker, Lizard Blades, Blade Historian and Akroma's Will as a group.",
+      "why": "This is the wincon stage, and nothing in goldfish_targets measures it."
+    },
+    {
+      "target": "note / _required_note",
+      "change": "Rewrite THE MACHINE note. It describes Glint-Horn Buccaneer and Psychosis Crawler arithmetic, and both cards are cut in v3.0.0.",
+      "why": "The note names cards that are not in the 99."
     }
-   ]
-  },
-  {
-   "stage": "wincon",
-   "label": "TWENTY-ONE IN ONE SWING",
-   "what_it_does": "This is how the game ends: 21 commander damage, by double strike on a grown flyer. Fireshrieker (equip {2}) and Lizard Blades (reconfigure {2}) give double strike, and Blade Historian gives it to every attacker. Akroma's Will with a commander out gives both modes: double strike and flying, plus indestructible and protection from each colour for the swing. It is filed here rather than in protection because it is the only instant-speed double strike. Stack 006: Shabraz at 10/10 with Fireshrieker, plus a Kitsa loot between the strikes, deals 10 + 11 = 21. Any draw between the strikes does the same (Enduring Curiosity, Mask of Memory and Willie on first-strike damage, by oracle text). Brallin is the second road. He grows on discards, Torbran counts toward his commander damage, and stack 009's table kill is his: the cleanup discard after a Sphinx wheel fires him 42 times into three 40-life opponents. With the discard engine traded away, that kill now rests on Sphinx plus a discard wheel plus no hand-size effect, and the list has no hand-size effect.",
-   "cards": [
-    "Fireshrieker",
-    "Lizard Blades",
-    "Blade Historian",
-    "Akroma's Will",
-    "Brallin, Skyshark Rider"
-   ],
-   "single_point_of_failure": null,
-   "evidence": [
-    {
-     "kind": "stack",
-     "id": "006",
-     "note": "10 + 11 = 21 with Fireshrieker and a loot between strikes"
-    },
-    {
-     "kind": "stack",
-     "id": "009",
-     "note": "cleanup discard fires Brallin 42 times: every opponent from 40 to 0"
-    },
-    {
-     "kind": "city",
-     "id": "city-1",
-     "agreement": "cuts-across",
-     "note": "Fireshrieker, Lizard Blades, Blade Historian"
-    },
-    {
-     "kind": "city",
-     "id": "city-4",
-     "agreement": "cuts-across",
-     "note": "Akroma's Will clusters as Insurance"
-    },
-    {
-     "kind": "city",
-     "id": "city-2",
-     "agreement": "cuts-across",
-     "note": "Brallin clusters as a body"
-    }
-   ]
+  ],
+  "critic": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "where": "thesis",
+        "claim": "double strike cashes him in for 21 commander damage (stack 006); a damage doubler should do the same, but no stack has resolved it (open_questions[0])",
+        "status": "supported",
+        "note": "Round-2 blocking finding resolved. The 21 now rests on stack 006 (double strike plus a Kitsa loot between strikes, a passing stack). The damage-doubler route is explicitly hedged and points to open_questions[0]. 'Draw doublers ... multiply the counters' has no stack behind it, but it is a direct oracle reading: Teferi's Ageless Insight and Bard replace one draw with two, and Shabraz triggers per card drawn. open_questions[1] asks only about the size of the effect. Not an over-claim."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "It needs 40 discards, so at least 20 opponent draws. Only the five draw-seven wheels guarantee that: Wheel of Fortune, Reforge the Soul, Magus of the Wheel, Echo of Eons, Time Reversal ... Windfall on 009's board (opponent hands 4/3/2) gives 12, not a kill",
+        "status": "supported",
+        "note": "Round-2 blocking finding ('any wheel' scope) resolved. Re-derived: stack 009 starts with your hand empty. After a wheel, hand = 7 + 2N, where N is the number of opponent draws. Cleanup discards 2N, and Brallin deals 1 to EACH opponent per discard (cards.json oracle), so 2N >= 40 needs N >= 20. Three opponents drawing seven gives N = 21. The cards.json oracle confirms all five named wheels make each player draw seven. On 009's board Windfall uses the greatest number discarded, which is 4, so N = 12 (correct). Winds of Change and Jace's Archivist depend on hand sizes (correct). Will of the Jeskai is optional, and it draws only five (at most 15 opponent draws), so it cannot reach 20 even if every opponent accepts. The prose's 'lets opponents decline' is true but is the weaker of the two reasons. Collective Defiance targets one player (correct). 'No hand-size effect, and the 99 has none': I searched cards.json for 'maximum hand size' and got zero hits. This is mechanically checkable: a kill-threshold claim like 'needs N discards' could be recomputed from the cited stack's opponent life totals and per-discard damage."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "whether Torbran's +2 on his combat damage counts as commander damage is unresolved (open_questions[0])",
+        "status": "supported",
+        "note": "Round-2 non-blocking finding resolved: it is now hedged and routed to open_questions[0], whose why_it_matters names the same question. stages[4] says only that Torbran raises Brallin's combat damage. That is true by oracle (Brallin is red), and it does not claim the extra damage counts as commander damage."
+      },
+      {
+        "where": "stages[1].what_it_does",
+        "claim": "Brallin's partner trigger fetches Shabraz from the library only when Brallin enters; it is not standing recovery.",
+        "status": "supported",
+        "note": "Round-2 non-blocking finding resolved. The cards.json oracle reads: 'When this creature enters, target player may put Shabraz into their hand from their library, then shuffle.' The prose no longer implies recovery."
+      },
+      {
+        "where": "stages[5].what_it_does",
+        "claim": "Grand Abolisher stops opponents casting any spell, and activating artifact, creature or enchantment abilities, on your turn ... It does not stop land or planeswalker abilities",
+        "status": "supported",
+        "note": "Round-2 non-blocking finding resolved. This matches the cards.json oracle exactly."
+      },
+      {
+        "where": "lines[0]",
+        "claim": "Shabraz 10/10 with Fireshrieker; Kitsa's loot between the strikes makes it 10 + 11 = 21",
+        "status": "supported",
+        "note": "Stack 006 passes. Unchanged since round 1, where it was supported."
+      },
+      {
+        "where": "lines[1]",
+        "claim": "21 opponent draws become 42 Sphinx draws; Shabraz 3/3 -> 52/52",
+        "status": "supported",
+        "note": "Stack 009 passes. Its board has Shabraz with no counters, Sphinx, and an empty hand with Wheel of Fortune on the stack, which is the stated flow."
+      },
+      {
+        "where": "lines[2]",
+        "claim": "the cleanup discard of the Sphinx flood fires Brallin 42 times: the table kill",
+        "status": "supported",
+        "note": "Stack 009 passes. The scenario's question (b) is exactly the cleanup discard and Brallin's damage to each opponent. Brallin is on the board."
+      },
+      {
+        "where": "lines[3]",
+        "claim": "Windfall for seven under Lae'zel: two counters per draw, Shabraz 17/17",
+        "status": "supported",
+        "note": "Stack 008 passes. Unchanged."
+      },
+      {
+        "where": "lines[4]",
+        "claim": "one Brallin ping under all three: at least 8 per opponent; the opponent orders the replacements",
+        "status": "supported",
+        "note": "Stack 007 passes. Unchanged."
+      },
+      {
+        "where": "lines[5].note",
+        "claim": "no passing stack with a doubler in it; oracle text only",
+        "status": "supported",
+        "note": "Re-enumerated stacks 001-014: neither Teferi's Ageless Insight nor Bard appears on any scenario board."
+      },
+      {
+        "where": "lines[6].note",
+        "claim": "unverified: whether Shabraz's doubled or tripled combat damage counts in full as commander damage ... (open_questions[0])",
+        "status": "supported",
+        "note": "Round-1 unverified-line finding fixed and still fixed. The note now opens with 'unverified', and the CR 903.10a reading is phrased as 'likely'."
+      },
+      {
+        "where": "lines[7].note",
+        "claim": "no passing stack has Boots on the battlefield (stacks 004/005 hold it in hand as wheel discard fodder)",
+        "status": "supported",
+        "note": "Re-enumerated: Swiftfoot Boots is on no stack's scenario.board. The round-1 mis-citation stays fixed here and in stages[5]."
+      },
+      {
+        "where": "stages[0].what_it_does",
+        "claim": "57.4% / 67.0% / 91.2% / mean turn 2.531; R31 U30 W22 vs R48 U36 W22; 13 tapped lands",
+        "status": "supported",
+        "note": "Re-derived today from deck-audit engine.targets[4] (0.574, 0.67, 0.912, 2.531) and deck-facts."
+      },
+      {
+        "where": "stages[1].what_it_does",
+        "claim": "protection proxy 8 cards, 45.6% / 54.7% / 86.9%",
+        "status": "supported",
+        "note": "deck-audit engine.targets[5]: 0.456, 0.547, 0.869, mean_turn 3.087. These also match stages[5]."
+      },
+      {
+        "where": "stages[2].what_it_does",
+        "claim": "standing-draw group 49.8% / 85.0%; ten-card wheel group 53.7% / 86.2%; combat draws are three different triggers",
+        "status": "supported",
+        "note": "deck-audit targets[7] (0.498, 0.85) and targets[0] (0.537, 0.862). The round-1 Sokka/Willie/stack-006 over-claim and the Will of the Jeskai contradiction are both fixed and match cards.json oracle. Length is 1,638 of the 1,800-character cap: still coherent, but any further addition here should replace text rather than append."
+      },
+      {
+        "where": "stages[3].what_it_does",
+        "claim": "Lae'zel 7.1% / 22.2%; no tutor names them; Shang-Chi draws five at its tenth counter",
+        "status": "supported",
+        "note": "deck-audit targets[3]: 0.071, 0.222. Searching cards.json for 'search your library' finds only the four fetchlands, so no tutor exists. Shang-Chi's oracle matches."
+      },
+      {
+        "where": "stages[3].evidence[2].note",
+        "claim": "5 + 2 + 9 + 1 = the city's 17",
+        "status": "supported",
+        "note": "Round-1 miscount fixed."
+      },
+      {
+        "where": "stages[4].what_it_does",
+        "claim": "amplifier group 19.9% / 25.1% / 53.6%; Torbran raises red sources only; Shabraz is W/U",
+        "status": "supported",
+        "note": "deck-audit targets[8] matches. cards.json lists Shabraz as [W,U] and Brallin as [R]."
+      },
+      {
+        "where": "stages[6].what_it_does",
+        "claim": "(length)",
+        "status": "supported",
+        "note": "1,608 characters, the second-longest stage after fuel. It carries two roads: the double-strike kill and Brallin's cleanup kill with its wheel enumeration. Readable as written. If a later round adds to Brallin's road, that half should move to an open question rather than grow here."
+      },
+      {
+        "where": "stages[1].single_point_of_failure",
+        "claim": "Shabraz, the Skyshark",
+        "status": "supported",
+        "note": "Genuinely one card, and Brallin's partner fetch is correctly called not recovery. No other stage names a SPOF. deck-audit's two singleton SPOFs (Shark Typhoon and Lae'zel, from the one-card target groups targets[2] and [3]) are reframed in proposed_goldfish_edits[2] and [3] as artifacts of target-group granularity, which is correct."
+      },
+      {
+        "where": "map_disagreements",
+        "claim": "five disagreements",
+        "status": "supported",
+        "note": "Unchanged since round 1, where each was checked against deck_map.json. Each names what the map files by versus what the engine files by."
+      },
+      {
+        "where": "open_questions[0].why_it_matters",
+        "claim": "Every passing amplifier stack (007, 011, 013) is about Brallin's or Needlehead's pings",
+        "status": "supported",
+        "note": "All three stacks pass. Needlehead is cut from the 99, and the note only describes what those stacks resolved, which is accurate."
+      }
+    ],
+    "iterations": 3
   }
- ],
- "lines": [
-  {
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Shabraz, the Skyshark",
-    "Fireshrieker",
-    "Kitsa, Otterball Elite"
-   ],
-   "verified_by": "006",
-   "note": "Shabraz 10/10 with Fireshrieker; Kitsa's loot between the strikes makes it 10 + 11 = 21 commander damage"
-  },
-  {
-   "from": "fuel",
-   "to": "conversion",
-   "via": [
-    "Wheel of Fortune",
-    "Consecrated Sphinx",
-    "Shabraz, the Skyshark"
-   ],
-   "verified_by": "009",
-   "note": "21 opponent draws become 42 Sphinx draws; Shabraz 3/3 -> 52/52"
-  },
-  {
-   "from": "conversion",
-   "to": "wincon",
-   "via": [
-    "Consecrated Sphinx",
-    "Brallin, Skyshark Rider",
-    "Wheel of Fortune"
-   ],
-   "verified_by": "009",
-   "note": "the cleanup discard of the Sphinx flood fires Brallin 42 times: the table kill"
-  },
-  {
-   "from": "fuel",
-   "to": "conversion",
-   "via": [
-    "Windfall",
-    "Lae'zel, Vlaakith's Champion",
-    "Shabraz, the Skyshark"
-   ],
-   "verified_by": "008",
-   "note": "Windfall for seven under Lae'zel: two counters per draw, Shabraz 17/17"
-  },
-  {
-   "from": "output",
-   "to": "wincon",
-   "via": [
-    "Torbran, Thane of Red Fell",
-    "Gratuitous Violence",
-    "Fiery Emancipation",
-    "Brallin, Skyshark Rider"
-   ],
-   "verified_by": "007",
-   "note": "one Brallin ping under all three: at least 8 per opponent; the opponent orders the replacements"
-  },
-  {
-   "from": "conversion",
-   "to": "wincon",
-   "via": [
-    "Teferi's Ageless Insight",
-    "Bard, King of Dale",
-    "Fireshrieker"
-   ],
-   "verified_by": null,
-   "note": "the deck's primary route (draw doubler -> big Shabraz -> double strike) has no passing stack with a doubler in it; oracle text only"
-  },
-  {
-   "from": "output",
-   "to": "wincon",
-   "via": [
-    "Gratuitous Violence",
-    "Fiery Emancipation",
-    "Lizard Blades"
-   ],
-   "verified_by": null,
-   "note": "doubled or tripled combat damage from Shabraz counts as commander damage; no passing stack resolves it"
-  },
-  {
-   "from": "protection",
-   "to": "ignition",
-   "via": [
-    "Swiftfoot Boots",
-    "Shabraz, the Skyshark"
-   ],
-   "verified_by": null,
-   "note": "hexproof and haste the turn he lands; stacks 004/005 name Boots on a board but resolve nothing about it"
-  }
- ],
- "map_disagreements": [
-  {
-   "component": "EVERY CARD DRAWN (fuel)",
-   "cities": [
-    "Bodies",
-    "Card Flow",
-    "Interaction",
-    "Finishers",
-    "Insurance"
-   ],
-   "why": "Draw sources are clustered on WHAT ELSE their text says, so the stage is spread across five cities. Standing engines that are creatures sit in Bodies. Three wheels on creatures or modal spells (Magus, Jace's Archivist, Collective Defiance) sit in Interaction. Mask of Memory and Esper Sentinel sit in Finishers. Brainstorm sits in Insurance. In this deck every one of them does the same job, a counter on Shabraz, and that job lives on the commander, not on the card. No card text can show it."
-  },
-  {
-   "component": "COVER THE DAY HE LANDS (protection)",
-   "cities": [
-    "Insurance",
-    "Finishers",
-    "Interaction"
-   ],
-   "why": "Equipment that protects (Swiftfoot Boots, Brotherhood Regalia) clusters with the equipment that kills (Fireshrieker, Lizard Blades) because the text shape is 'equipped creature has X'. Grand Abolisher clusters there too. The map files by delivery mechanism, and the engine files by what the card does for Shabraz."
-  },
-  {
-   "component": "TWENTY-ONE IN ONE SWING (wincon)",
-   "cities": [
-    "Finishers",
-    "Insurance",
-    "Bodies"
-   ],
-   "why": "Akroma's Will reads as a protection spell, and its double-strike mode is the one that ends games here. Brallin reads as a body. The map agrees on the equipment."
-  },
-  {
-   "component": "THE HIT, MULTIPLIED (output)",
-   "cities": [
-    "Finishers",
-    "Bodies"
-   ],
-   "why": "Torbran is a creature, so he clusters with bodies. The two enchantments that do the same replacement job sit in Finishers."
-  },
-  {
-   "component": "PAY FIVE (mana)",
-   "cities": [
-    "Ramp",
-    "Mana"
-   ],
-   "why": "Two cities do one job. Ramp holds the rocks with fetches, Command Tower and the five-colour lands, and Mana holds the duals. That is a text split, not an engine split."
-  }
- ],
- "unassigned": [
-  {
-   "card": "Swords to Plowshares",
-   "why": "Table interaction: it removes an opposing creature (a flying blocker or a threat). No stage of the engine runs through it."
-  },
-  {
-   "card": "Get Lost",
-   "why": "Table interaction: it answers a creature, enchantment or planeswalker. It keeps the path clear but is not part of the draw-to-counter machine."
-  },
-  {
-   "card": "Chaos Warp",
-   "why": "Table interaction: an answer to any permanent. It has no role in the taxonomy (deck-facts no_role) and no engine job."
-  }
- ],
- "open_questions": [
-  {
-   "question": "Does Shabraz's combat damage under Gratuitous Violence (doubled) or Fiery Emancipation (tripled) count in full as commander damage, and what size of double-striking Shabraz is lethal by commander damage under each?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "The output stage's job toward the PRIMARY wincon rests on oracle text alone. Every passing amplifier stack (007, 011, 013) is about Brallin's or Needlehead's pings, not Shabraz in combat."
-  },
-  {
-   "question": "With Teferi's Ageless Insight (or Bard) out, how many counters does Shabraz get from one Wheel of Fortune, and with Lae'zel as well?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "The conversion stage's two draw doublers are the core of the Shabraz-first rebuild, and no passing stack includes either one. The primary line (conversion -> wincon) is unverified."
-  },
-  {
-   "question": "Does a draw on first-strike damage (Enduring Curiosity, Mask of Memory, Willie Lumpkin) add its counter to Shabraz before regular combat damage, the way Kitsa's loot does in stack 006?",
-   "settled_by": "resolve-stack",
-   "why_it_matters": "If so, every combat draw is a +1 or +2 on the second hit, and the double-strike kill needs a smaller Shabraz."
-  },
-  {
-   "question": "How often is Shabraz on the battlefield and protected by turn five, and how often does he survive to attack the turn after he lands?",
-   "settled_by": "goldfish",
-   "why_it_matters": "Ignition is one card and the brief has no measured rate for it. Every priced group is a proxy, and the goldfish has no removal, so survival is not something it can read."
-  },
-  {
-   "question": "Is Brallin worth casting in the Shabraz-first list, or is he now a second commander you hold back, given that the discard engine (Glint-Horn, Psychosis Crawler, Needlehead, Rielle, loots) was cut?",
-   "settled_by": "research-strategy",
-   "why_it_matters": "The verified table kill (stack 009) still needs Brallin. The model files him as the second road, and whether that is real depends on how often he is cast."
-  }
- ],
- "proposed_goldfish_edits": [
-  {
-   "target": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-   "change": "Relabel as burst draw, not ignition, and drop `required`. Add a target 'Shabraz on the battlefield' if the goldfish can read commander casts, and mark that one required.",
-   "why": "In v3.0.0 the ignition is Shabraz resolving. A wheel before he lands pays nothing, and the label describes the traded-away discard engine."
-  },
-  {
-   "target": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-   "change": "Fix the membership or remove the group. It holds the same ten cards as the WHEEL group, including Echo of Eons, Time Reversal and Winds of Change, which shuffle and never discard, and Will of the Jeskai, whose discard is optional. The discard wheels in the 99 are Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel, Jace's Archivist and Collective Defiance's first mode.",
-   "why": "As written it is a duplicate of the wheel group, and its label contradicts its own members."
-  },
-  {
-   "target": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-   "change": "Rename to 'A counter or draw multiplier drawn' and widen it to Lae'zel, Teferi's Ageless Insight, Bard, King of Dale and Consecrated Sphinx (the conversion stage).",
-   "why": "Lae'zel is not a per-draw board source, and the group of one is why deck-audit flags her as a single point of failure. The real stage has five members, and the doublers are measured nowhere."
-  },
-  {
-   "target": "A discard converted to board or cards (the non-damage half of the tax)",
-   "change": "Remove it, or rename it to 'Shark Typhoon drawn' if that card is still wanted as a tracked threat.",
-   "why": "Rielle and Mary Read are gone, and a group of one card is priced as a single point of failure for a stage the deck no longer has."
-  },
-  {
-   "target": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
-   "change": "Rewrite the label to say the amplifiers multiply the commander-damage hit. Gratuitous Violence and Fiery Emancipation apply to Shabraz's combat damage, and Torbran to Brallin's only.",
-   "why": "Brallin's pings are no longer the deck's main route."
-  },
-  {
-   "target": "new: A double-strike source drawn",
-   "change": "Add Fireshrieker, Lizard Blades, Blade Historian and Akroma's Will as a group.",
-   "why": "This is the wincon stage, and nothing in goldfish_targets measures it."
-  },
-  {
-   "target": "note / _required_note",
-   "change": "Rewrite THE MACHINE note. It describes Glint-Horn Buccaneer and Psychosis Crawler arithmetic, and both cards are cut in v3.0.0.",
-   "why": "The note names cards that are not in the 99."
-  }
- ]
 }
