@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-11-05
+- **Version:** v3.0.0 (V14) · **status:** sleeved since 2026-11-10
 - **Colours:** WUR · **lands:** 38 · **bracket floor:** 3 (Upgraded) · **DTI:** 39/96 → B3 (deckcheck.co, 2026-10-28, 5 readings) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 44 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=sharknado) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=sharknado)
@@ -204,7 +204,7 @@ Three colours from four fetches, shocks, pathways, a Triome and the untapped dua
 
 ## Numbers
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **96%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
@@ -256,6 +256,8 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 
 ## Change history
 <!-- ctx:gen history -->
+- **v3.0.0 · V14** (2026-11-10) — in: Archmage Emeritus, Boros Signet, Brainstorm, Echo of Eons, Enduring Curiosity, Esper Sentinel, Fellwar Stone, Fireshrieker …; out: Borrowed Knowledge, Cathartic Reunion, Faithless Looting, Fateful Showdown, Gleaming Splendor, Glint-Horn Buccaneer, Heartwarming Redemption, Idyllic Tutor …. _shabraz-v1 merged: Shabraz-first — card draw grows the flying shark, protection on landing, double strike to close_
+  - merge `shabraz-v1` — sleeved 2026-11-10: 12 cards from the pilot's bulk, 9 printed proxies (Archmage Emeritus, Boros Signet, Brainstorm, Esper Sentinel, Shang-Chi, Slip Out the Back
 - **v2.3.0 · V13** (2026-11-05) — in: Arid Mesa, Borrowed Knowledge, Cathartic Reunion, Exotic Orchard, Ferrous Lake, Flooded Strand, Gleaming Splendor, Heartwarming Redemption …; out: Artist's Talent, Command Beacon, Embercleave, Frantic Search, Glittering Massif, Inti, Seneschal of the Sun, Izzet Charm, Jeskai Ascendancy …. _draw-engine-v1: 22 swaps toward a draw engine (new wheels, Psychosis Crawler, Gleaming Splendor, Treasure package)_
   - merge `draw-engine-v1` — played on printed proxies sleeved 2026-11-05; the pilot asked to merge; the unowned cards are on the order list
   - played 1: 0W 0L
@@ -275,9 +277,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 - **v1.2.0 · V7** (2026-10-06) — in: Faerie Mastermind, Jeska's Will, Mana Geyser, Razorkin Needlehead, Scrawling Crawler, Teferi's Protection; out: Enduring Curiosity, Generous Plunderer, Kefnet the Mindful, Silent Hallcreeper, Treasure Map, Waterbender Ascension. _merged and sleeved 2026-10-06_
   - merge `momentum-v1`: objective forge.win_rate read **not resolvable** — Sleeved in paper 2026-10-06 by the pilot: Mana Geyser in hand; the other five ordered (ManaPool, 2026-10-06) and played as proxies until they arrive.
   - played 1: 0W 0L
-- **v1.1.0 · V6** (2026-10-01) — in: Marauding Mako, Mask of Memory, Negate, Swords to Plowshares; out: Decree of Silence, Gossip's Talent, Marketback Walker, Stromkirk Noble. _The four swaps the pilot made in cardboard on 2026-10-01: Negate, Mask of Memory, Marauding Mako and Swords to Plowshares for Decree of Silence, Gossip's Talent, Marketback Walker and Stromkirk Noble._
-  - merge `swords-v1` — The four swaps were MADE IN CARDBOARD by the pilot on 2026-10-01 before this merge — the sourcing gate predicts whether the cards can be got, and that question 
-- … 5 earlier version(s): `manamap pilot deck-version sharknado list`
+- … 6 earlier version(s): `manamap pilot deck-version sharknado list`
 <!-- /ctx:gen history -->
 
 **v3.0.0, shabraz-v1 (merged 2026-11-10, sleeved the same day).** Sean's direction from 2026-11-06, after game 007. One axis: card draw grows the flying shark, he is protected the moment he lands, then made big and evasive. In came the cheap draw and the Humans (Valeria Richards, Archmage Emeritus, Willie Lumpkin, Sokka, Shang-Chi, Esper Sentinel, Enduring Curiosity, Mask of Memory, Brainstorm, Echo of Eons, Time Reversal, Winds of Change), the protection (Swiftfoot Boots, Shelter, Slip Out the Back), the double strike (Fireshrieker, Lizard Blades) and more rocks (Boros Signet, Fellwar Stone, Talisman of Conviction), plus a second Island.
