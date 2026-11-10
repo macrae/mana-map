@@ -140,11 +140,33 @@ _SWAPS = [("Prosperity", "Sword of Fire and Ice"), ("Xorn", "Leitmotif Composer"
           ("Razorkin Needlehead", "Esper Sentinel")]
 
 
+#: Cards the goldfish cannot read (interaction: it has no opponents), so swapping one OUT moves
+#: nothing a test here measures. The shapes go IN for these; a shape the list already runs is
+#: left as it is (2026-11-10: v3.0.0 runs Mask of Memory, Willie, Sokka, Shang-Chi, Esper
+#: Sentinel, Lizard Blades and Fireshrieker, and cut every card these swaps used to take out).
+_FILLER = ("Swords to Plowshares", "Get Lost", "Chaos Warp", "Negate", "Stubborn Denial",
+           "Deflecting Swat", "Flawless Maneuver", "Prismari Command", "Loran's Escape",
+           "Brotherhood Regalia")
+
+
+def _live(pairs):
+    """`pairs`' IN side applied to the live list: each card it does not run yet comes in for a
+    filler; the OUT side is ignored (it named cards later lists cut)."""
+    from manamap.pilot import try_swap
+    from manamap.pilot.common import load_deck_cards
+    doc = load_deck_cards("sharknado")
+    have = {c["name"] for c in doc["cards"]}
+    ins = [i for _, i in pairs if i not in have]
+    outs = [f for f in _FILLER if f in have]
+    assert len(outs) >= len(ins), "not enough filler cards for the swaps"
+    if not ins:
+        return doc
+    return try_swap.apply_swaps("sharknado", None, list(zip(outs, ins)))[0]
+
+
 @pytest.fixture(scope="module")
 def doc():
-    from manamap.pilot import try_swap
-    d, _, _, _ = try_swap.apply_swaps("sharknado", None, _SWAPS)
-    return d
+    return _live(_SWAPS)
 
 
 def _strike(doc, name, old, new):
@@ -287,7 +309,7 @@ _KIT_SWAPS = [("Prosperity", "Champion's Helm"), ("Xorn", "Embercleave")]
 @pytest.fixture(scope="module")
 def kit_doc():
     from manamap.pilot import try_swap
-    d, _, _, _ = try_swap.apply_swaps("sharknado", None, _KIT_SWAPS)
+    d = _live(_KIT_SWAPS)
     return _isolated(d, {"Champion's Helm", "Embercleave"})
 
 
@@ -325,7 +347,7 @@ def test_magecraft_draws_on_every_spell():
     """PROVED BY STRIKING THE CLAUSE, with the cantrips as the only other draw: before
     2026-11-06 `_magecraft` paid Treasure only, so the two arms read equal."""
     from manamap.pilot import try_swap
-    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Archmage Emeritus"),
+    d = _live([("Prosperity", "Archmage Emeritus"),
                                                           ("Xorn", "Brainstorm"),
                                                           ("Mirrormade", "Preordain")])
     d = _isolated(d, {"Archmage Emeritus", "Brainstorm", "Preordain"})
@@ -368,7 +390,7 @@ def test_an_equipment_creature_is_equipped_too():
     was never offered to the equip step, so its double strike reached no commander and the
     two arms read equal."""
     from manamap.pilot import try_swap
-    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Lizard Blades")])
+    d = _live([("Prosperity", "Lizard Blades")])
     d = _isolated(d, {"Lizard Blades"})
     vig = _strike(d, "Lizard Blades", "Equipped creature has double strike",
                   "Equipped creature has vigilance")
@@ -383,7 +405,7 @@ def test_the_commander_is_equipped_before_the_turns_spells():
     sharknado with Fireshrieker and Lizard Blades, double strike against vigilance by turn six
     read +3.3 points with the early equip and +1.2 without (2026-11-06)."""
     from manamap.pilot import try_swap
-    d, _, _, _ = try_swap.apply_swaps("sharknado", None, [("Prosperity", "Fireshrieker"),
+    d = _live([("Prosperity", "Fireshrieker"),
                                                           ("Xorn", "Lizard Blades")])
     vig = _strike(_strike(d, "Fireshrieker", "has double strike", "has vigilance"),
                   "Lizard Blades", "Equipped creature has double strike",
