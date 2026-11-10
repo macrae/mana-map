@@ -1,10 +1,10 @@
 {
   "slug": "sharknado",
-  "decklist_sha256": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
+  "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
   "model_version": "ac1f8a6f777f",
   "lands": {
-    "total": 36,
-    "entries": 36,
+    "total": 38,
+    "entries": 37,
     "life": {
       "recurring_per_tap_cycle": 7,
       "one_time_on_entry": 10
@@ -12,7 +12,7 @@
     "enters_tapped": 13,
     "enters_tapped_always": 3,
     "classes": {
-      "basic": 1,
+      "basic": 3,
       "fetch": 4,
       "fixing": 6,
       "mdfc": 3,
@@ -201,6 +201,16 @@
         "produces": [
           "R",
           "W"
+        ]
+      },
+      {
+        "name": "Island",
+        "copies": 2,
+        "classes": [
+          "basic"
+        ],
+        "produces": [
+          "U"
         ]
       },
       {
@@ -452,23 +462,23 @@
   "sources": {
     "lands": {
       "W": 22,
-      "U": 28,
+      "U": 30,
       "B": 0,
       "R": 31,
       "G": 0
     },
     "nonland": {
-      "W": 3,
-      "U": 5,
+      "W": 6,
+      "U": 6,
       "B": 0,
-      "R": 3,
+      "R": 6,
       "G": 0
     },
     "total": {
-      "W": 25,
-      "U": 33,
+      "W": 28,
+      "U": 36,
       "B": 0,
-      "R": 34,
+      "R": 37,
       "G": 0
     },
     "gated": {
@@ -499,6 +509,25 @@
         ]
       },
       {
+        "name": "Boros Signet",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
+        "name": "Fellwar Stone",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "U",
+          "W"
+        ]
+      },
+      {
         "name": "Izzet Signet",
         "kind": "ramp:rock",
         "cmc": 2.0,
@@ -520,6 +549,15 @@
         "produces": []
       },
       {
+        "name": "Talisman of Conviction",
+        "kind": "ramp:rock",
+        "cmc": 2.0,
+        "produces": [
+          "R",
+          "W"
+        ]
+      },
+      {
         "name": "Talisman of Creativity",
         "kind": "ramp:rock",
         "cmc": 2.0,
@@ -536,27 +574,21 @@
           "U",
           "W"
         ]
-      },
-      {
-        "name": "Thought Vessel",
-        "kind": "ramp:rock",
-        "cmc": 2.0,
-        "produces": []
       }
     ]
   },
   "pips": {
     "R": {
-      "total_pips": 38.0,
+      "total_pips": 24.0,
       "max_pips": 3,
-      "cards": 25,
+      "cards": 15,
       "earliest_turn": 1,
-      "effective_pips": 2
+      "effective_pips": 3
     },
     "U": {
-      "total_pips": 26.0,
+      "total_pips": 32.0,
       "max_pips": 2,
-      "cards": 20,
+      "cards": 24,
       "earliest_turn": 1,
       "effective_pips": 2
     },
@@ -570,68 +602,68 @@
   },
   "shares": {
     "R": {
-      "pip_share": 0.463,
-      "source_share": 0.383
+      "pip_share": 0.324,
+      "source_share": 0.373
     },
     "U": {
-      "pip_share": 0.317,
-      "source_share": 0.346
+      "pip_share": 0.432,
+      "source_share": 0.361
     },
     "W": {
-      "pip_share": 0.22,
-      "source_share": 0.272
+      "pip_share": 0.243,
+      "source_share": 0.265
     }
   },
   "source_targets": {
-    "R": 36,
+    "R": 48,
     "U": 36,
     "W": 22
   },
   "on_curve_probability": {
     "lands_only": {
       "W": 0.907,
-      "U": 0.785,
-      "R": 0.839
+      "U": 0.822,
+      "R": 0.579
     },
     "with_rocks_and_dorks": {
-      "W": 0.936,
-      "U": 0.869,
-      "R": 0.882
+      "W": 0.957,
+      "U": 0.906,
+      "R": 0.727
     },
     "lands_only_ungated": {
       "W": 0.907,
-      "U": 0.764,
-      "R": 0.822
+      "U": 0.804,
+      "R": 0.551
     }
   },
   "ramp": {
     "ramp:cost-reduction": 1,
-    "ramp:rock": 8
+    "ramp:rock": 10
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 0.999,
-      "10": 0.882,
-      "2": 0.997,
-      "3": 0.912,
-      "4": 0.823,
-      "5": 0.749,
-      "6": 0.782,
-      "7": 0.853,
-      "8": 0.876,
-      "9": 0.891
+      "10": 0.917,
+      "2": 0.998,
+      "3": 0.932,
+      "4": 0.855,
+      "5": 0.796,
+      "6": 0.843,
+      "7": 0.899,
+      "8": 0.922,
+      "9": 0.932
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 11.7,
-      "2": 2.146,
-      "3": 3.558,
-      "4": 4.611,
-      "5": 5.458,
-      "6": 6.429,
-      "7": 7.617,
-      "8": 8.874,
-      "9": 10.238
+      "10": 12.902,
+      "2": 2.153,
+      "3": 3.686,
+      "4": 4.838,
+      "5": 5.745,
+      "6": 6.808,
+      "7": 8.112,
+      "8": 9.564,
+      "9": 11.155
     }
   },
   "assumptions": [
@@ -641,8 +673,8 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "R: 31 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 34.",
-    "U: 28 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 36-land deck; rocks and dorks lift the count to 33.",
-    "13 of 36 lands enter tapped (36%) — over the one-in-three budget the deck builder allows itself."
+    "R: 31 land sources against the 48 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 38-land deck; rocks and dorks lift the count to 37.",
+    "U: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 38-land deck; rocks and dorks lift the count to 36.",
+    "13 of 38 lands enter tapped (34%) — over the one-in-three budget the deck builder allows itself."
   ]
 }
