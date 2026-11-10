@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2105,
+   "weight_effective": 0.1558,
    "sub_score": 46.3,
    "sub_ci": [
-    45.7,
-    52.01
+    45.66,
+    52.04
    ],
    "placement": 0.0,
    "anchor": 92.6,
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1404,
+   "weight_effective": 0.1039,
    "sub_score": 75.0,
    "sub_ci": [
-    69.38,
-    80.62
+    69.37,
+    80.61
    ],
    "placement": 50.0,
    "anchor": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2105,
+   "weight_effective": 0.1558,
    "sub_score": 65.0,
    "sub_ci": [
-    59.33,
-    70.56
+    59.31,
+    70.64
    ],
    "placement": 50.0,
    "anchor": 80.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2281,
+   "weight_effective": 0.1688,
    "sub_score": 82.86,
    "sub_ci": [
     82.86,
@@ -238,11 +238,11 @@
    "name": "table_record",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2105,
+   "weight_effective": 0.1558,
    "sub_score": 23.67,
    "sub_ci": [
-    24.62,
-    63.13
+    24.42,
+    63.97
    ],
    "placement": null,
    "anchor": 23.67,
@@ -281,10 +281,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -313,15 +309,68 @@
  "fleet_sha": "5c30a301e0f1",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "Does the diagnosis read Kalitas, Midnight Reaper and Grim Haruspex as answering the late-game dry spell the pilot logged? No game is logged on this list, so a played game would confirm it later; until then it is a read.",
+   "settled_by": "diagnose"
+  },
+  {
+   "question": "Do games on this list end on drain or on combat damage, and how long does accumulation take once a converter is drawn?",
+   "settled_by": "goldfish"
+  },
+  {
+   "question": "DeckCheck rescan on the current list so the dti component can rejoin the scorecard.",
+   "settled_by": "rate"
+  }
+ ],
+ "iterations": 1,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Round-2 finding 1 fixed: 'heaviest downward lever: leaving it out drops the composite by about five points, though the table record pulls the other way' matches leave_one_out (construction 52.8 vs 57.8 = -5.0; table_record 64.2 = +6.4 when left out). Wording is ambiguous (construction LIFTS the composite; 'downward' means its removal lowers it) but numerically scoped and true."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Round-2 finding 2 fixed: 'I read any on-turn drain as pairing with it, a reading until a stack runs it' is now labelled a reading; engine:wincon quotes (Bloodletter doubles loss; 61.8% drawn; 4.4% assembled) all verified verbatim in engine.json."
+   },
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "58 vs code_score 57.8: rounding-level, no gap claimed. All four divergent outliers (construction, mana, resilience, speed) are addressed by a plain statement that the record does not explain them, with the number at code_score, which is the permitted path."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "strategy:deckbuilding.power-level fetched; the Bracket 3 clause is the section's own definition, used for fit not proof."
+   },
+   {
+    "where": "open_questions[0]",
+    "status": "supported",
+    "note": "Round-2 finding 3 fixed: asks whether the diagnosis reads Kalitas, Midnight Reaper, Grim Haruspex as answering the dry spell; settled_by diagnose, labelled a read."
+   },
+   {
+    "where": "open_questions[2]",
+    "status": "supported",
+    "note": "settled_by 'rate' is outside the agents-common closed set (resolve-stack|research-strategy|goldfish|diagnose) but validate-rating passes; cosmetic."
+   },
+   {
+    "where": "components",
+    "status": "supported",
+    "note": "Re-run scorecard identical on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
+   }
+  ],
+  "iterations": 1
+ },
  "code_score": 57.8,
- "score_point": 57.8,
- "score": 61.5,
+ "score_point": 57.9,
+ "score": 60.7,
  "score_ci": [
-  51.1,
-  70.3
+  52.8,
+  67.6
  ],
  "grade": "C",
  "grade_range": [
@@ -331,9 +380,9 @@
  "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.278,
-  "C": 0.693,
-  "D": 0.03,
+  "B": 0.152,
+  "C": 0.838,
+  "D": 0.009,
   "F": 0.0
  },
  "uncertainty": {
@@ -350,55 +399,59 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 60.9,
+    "score": 60.0,
     "grade": "C"
    },
    "mana": {
-    "score": 55.0,
-    "grade": "C"
-   },
-   "resilience": {
     "score": 55.9,
     "grade": "C"
    },
+   "resilience": {
+    "score": 56.6,
+    "grade": "C"
+   },
    "construction": {
-    "score": 50.4,
+    "score": 52.8,
     "grade": "C"
    },
    "table_record": {
-    "score": 67.0,
-    "grade": "B"
+    "score": 64.2,
+    "grade": "C"
+   },
+   "judgment": {
+    "score": 57.8,
+    "grade": "C"
    }
   },
   "flips": [
    {
     "component": "table_record",
-    "share_now": 0.211,
-    "share_at_flip": 0.045,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
+    "share_now": 0.156,
+    "share_at_flip": 0.35,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
    },
    {
     "component": "construction",
-    "share_now": 0.228,
-    "share_at_flip": 0.449,
+    "share_now": 0.169,
+    "share_at_flip": 0.406,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "mana",
-    "share_now": 0.14,
-    "share_at_flip": 0.499,
+    "share_now": 0.104,
+    "share_at_flip": 0.477,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "speed",
-    "share_now": 0.211,
-    "share_at_flip": 0.747,
+    "share_now": 0.156,
+    "share_at_flip": 0.73,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
@@ -409,6 +462,7 @@
   "level": "divergent",
   "instruments": {
    "construction": 1.0,
+   "judgment": 4.0,
    "mana": 3.0,
    "resilience": 3.5,
    "speed": 5.0
@@ -446,23 +500,68 @@
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
- "judgment": null,
+ "judgment": {
+  "sub_score": 58,
+  "argument": "The components measure a list nobody has played yet. Every logged game predates this version, so the table record (0 wins in 5 games) describes older builds; pilot feel and Forge are withheld, and the Threat Index describes another list. That is the ground I fill in, and the record gives little.\n\nSpeed ranks the deck last. The deck has no two-card loop and ends by accumulation. The one verified kill, Bloodletter with Sanctum Seeker, is 4.4% assembled, but that is one declared route: Bloodletter doubles every opponent's loss on your turn, so I read any on-turn drain as pairing with it, a reading until a stack runs it. The converters are drawn in 61.8% of games. How long accumulation takes once one is drawn is unmeasured, so speed's reading stands as is.\n\nConstruction ranks first, mana third and resilience worse. Construction is the heaviest downward lever: leaving it out drops the composite by about five points, though the table record pulls the other way. The record does not explain any of the three. It holds no played game on this list, no cited fact that says construction's strength, mana's or resilience's weakness is real at a table.\n\nSo I sit at the measured score. The record gives no unmeasured fact that moves it either way, and the strategy's bracket three reading (strong synergy and one-big-turn kills off accrued resources, at least six turns) fits a late finisher without proving this one.",
+  "citations": [
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
+   },
+   {
+    "kind": "skeleton",
+    "ref": "skeleton:table_record",
+    "quote": "0 wins in 5 games"
+   },
+   {
+    "kind": "strategy",
+    "ref": "strategy:deckbuilding.power-level",
+    "quote": "strong synergy and one-big-turn kills off accrued resources, at least six"
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:wincon",
+    "quote": "Bloodletter of Aclazotz doubles every opponent's loss on your turn."
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:wincon",
+    "quote": "The declared converter target measures one drawn in 61.8% of games (81.0% assisted)"
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:wincon",
+    "quote": "4.4% assembled (26.7% assisted, mean turn 6.91)"
+   }
+  ],
+  "against": {
+   "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.2597,
+  "sub_ci": [
+   50.11,
+   66.47
+  ]
+ },
  "rank": {
-  "position": 3,
+  "position": 4,
   "of": 5,
   "group": [
    "sharknado",
    "gishath",
-   "edgar-vampires",
    "ur-dragon",
+   "edgar-vampires",
    "goblin-storm"
   ],
   "acceptability": {
    "1": 0.0,
-   "2": 0.174,
-   "3": 0.231,
-   "4": 0.321,
-   "5": 0.275
+   "2": 0.101,
+   "3": 0.219,
+   "4": 0.389,
+   "5": 0.291
   },
   "basis": {
    "edgar-vampires": "this document",
@@ -472,11 +571,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.4,
-   "gishath": 67.3,
-   "edgar-vampires": 61.5,
+   "sharknado": 83.5,
+   "gishath": 67.6,
    "ur-dragon": 60.8,
-   "goblin-storm": 60.4
+   "edgar-vampires": 60.7,
+   "goblin-storm": 60.6
   }
  }
 }

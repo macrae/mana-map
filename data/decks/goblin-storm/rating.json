@@ -1,7 +1,7 @@
 {
  "slug": "goblin-storm",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 4 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 5 decks and claims no significance.",
  "bracket": {
   "key": 3,
   "source": "target",
@@ -15,14 +15,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.2667,
-   "sub_score": 54.17,
+   "sub_score": 59.9,
    "sub_ci": [
-    53.44,
-    60.59
+    54.15,
+    65.58
    ],
-   "placement": 0.0,
+   "placement": 25.0,
    "anchor": 94.8,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -49,14 +49,14 @@
    "weight": 0.08,
    "weight_validity": 1.0,
    "weight_effective": 0.1778,
-   "sub_score": 85.72,
+   "sub_score": 87.5,
    "sub_ci": [
-    79.3,
-    92.17
+    81.88,
+    93.1
    ],
-   "placement": 66.67,
+   "placement": 75.0,
    "anchor": 100.0,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -91,14 +91,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.2667,
-   "sub_score": 40.0,
+   "sub_score": 35.0,
    "sub_ci": [
-    40.0,
-    46.4
+    35.0,
+    40.6
    ],
    "placement": 0.0,
    "anchor": 70.0,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -267,7 +267,7 @@
   "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
-  "rank over n=4 decks; no significance claim"
+  "rank over n=5 decks; no significance claim"
  ],
  "context": {
   "dti": {
@@ -280,30 +280,30 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
- "fleet_sha": "754088caa22e",
+ "fleet_sha": "5c30a301e0f1",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [],
  "iterations": 0,
  "verifier": null,
- "code_score": 59.5,
- "score_point": 59.5,
- "score": 60.2,
+ "code_score": 60.0,
+ "score_point": 60.0,
+ "score": 60.6,
  "score_ci": [
-  52.8,
-  68.8
+  51.2,
+  70.5
  ],
  "grade": "C",
  "grade_range": [
   "C",
   "B"
  ],
- "grade_display": "C",
+ "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.001,
-  "B": 0.158,
-  "C": 0.832,
-  "D": 0.01,
+  "B": 0.209,
+  "C": 0.755,
+  "D": 0.035,
   "F": 0.0
  },
  "uncertainty": {
@@ -320,43 +320,43 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 61.4,
+    "score": 60.0,
     "grade": "C"
    },
    "mana": {
-    "score": 53.8,
+    "score": 54.0,
     "grade": "C"
    },
    "resilience": {
-    "score": 66.6,
+    "score": 69.1,
     "grade": "B"
    },
    "construction": {
-    "score": 56.7,
+    "score": 57.5,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "mana",
-    "share_now": 0.178,
-    "share_at_flip": 0.351,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
     "component": "resilience",
     "share_now": 0.267,
-    "share_at_flip": 0.059,
+    "share_at_flip": 0.119,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
    },
    {
+    "component": "mana",
+    "share_now": 0.178,
+    "share_at_flip": 0.328,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
     "component": "construction",
     "share_now": 0.289,
-    "share_at_flip": 0.874,
+    "share_at_flip": 0.864,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -364,19 +364,19 @@
   ]
  },
  "concordance": {
-  "level": "mixed",
+  "level": "divergent",
   "instruments": {
-   "construction": 2.0,
+   "construction": 3.0,
    "mana": 2.0,
-   "resilience": 4.0,
+   "resilience": 5.0,
    "speed": 4.0
   },
-  "of": 4,
-  "spread": 0.667,
+  "of": 5,
+  "spread": 0.75,
   "outliers": [
    {
     "instrument": "construction",
-    "rank": 2.0,
+    "rank": 3.0,
     "side": "better"
    },
    {
@@ -386,7 +386,7 @@
    },
    {
     "instrument": "resilience",
-    "rank": 4.0,
+    "rank": 5.0,
     "side": "worse"
    },
    {
@@ -396,41 +396,45 @@
    }
   ],
   "group": {
-   "kendall_w": 0.3,
-   "p": 0.3545,
-   "p_method": "exact over 13824 relabellings",
+   "kendall_w": 0.18,
+   "p": 0.6269,
+   "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
-   "n": 4
+   "n": 5
   }
  },
- "resolution": "the 90% interval spans 1 grade boundary (65); concordance mixed",
+ "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
  "judgment": null,
  "rank": {
-  "position": 4,
-  "of": 4,
+  "position": 5,
+  "of": 5,
   "group": [
    "sharknado",
    "gishath",
    "ur-dragon",
+   "edgar-vampires",
    "goblin-storm"
   ],
   "acceptability": {
    "1": 0.0,
-   "2": 0.07,
-   "3": 0.343,
-   "4": 0.588
+   "2": 0.139,
+   "3": 0.214,
+   "4": 0.292,
+   "5": 0.355
   },
   "basis": {
+   "edgar-vampires": "rating.json judgment",
    "gishath": "rating.json judgment",
    "goblin-storm": "this document",
    "sharknado": "rating.json judgment",
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.8,
-   "gishath": 69.9,
-   "ur-dragon": 61.7,
-   "goblin-storm": 60.2
+   "sharknado": 83.5,
+   "gishath": 67.6,
+   "ur-dragon": 60.8,
+   "edgar-vampires": 60.7,
+   "goblin-storm": 60.6
   }
  }
 }

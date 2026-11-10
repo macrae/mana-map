@@ -5,7 +5,7 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
 
 ## Note 2026-11-10
 
-- **Sharknado v3.0.0 released (shabraz-v1, Shabraz-first)**; Edgar's bracket3-v1 is proxied and waits for the pilot's word to release. Meren V21 on the bench (sac-the-fatty loop). DeckCheck copies of Meren (V1) and Sharknado (V12) are behind — the pastes are the pilot's.
+- **Sharknado v3.0.0 released (shabraz-v1, Shabraz-first)**; Edgar's bracket3-v1 released as v3.0.0 (bracket 3). Meren V21 on the bench (sac-the-fatty loop). DeckCheck copies of Meren (V1) and Sharknado (V12) are behind — the pastes are the pilot's.
 
 ## Done 2026-10-30 (all pushed; CI green on 32d49dd6)
 

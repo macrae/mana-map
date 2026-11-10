@@ -530,106 +530,106 @@
     }
   ],
   "critic": {
-    "verdict": "fail",
-    "summary": "Round one on the v3.0.0 model. Two fail grounds. (1) lines[0] (ignition -> wincon via Edgar Markov) cites stack 003, but nothing in 003 is ignition: no spell is cast, eminence never triggers (the checker's own summary: 'no other triggers exist in the scenario (Eminence needs a cast...)'), and Edgar's one trigger is established in step 3 to change nothing about the drain. Edgar contributes only one attacking Vampire body; the 'four eminence tokens' are a scenario premise with no provenance. Solid green for a flow the stack shows not happening. lines[1] (Sanctum Seeker -> Bloodletter, same stack) is the honest version and stands. (2) The wincon stage says the converters' declared target 'still names the cut halves and reads 0.0 by construction (proposed edit)'; goldfish_targets.json now declares 'A life-gain-to-loss converter drawn' with exactly the four converters, and goldfish_metrics.json (sha 1df3a335..., matching decklist.txt) measures it at 61.8% assembled / 81.0% assisted / 44.5% by turn six. open_questions[4] and proposed_goldfish_edits[0] carry the same stale premise. Everything else re-derived: every component figure, every role count, every city membership, the 39/6/11 creature enumerations, the six no-mana outlets, the 97 placements; eight dashed lines are labelled READING and none outruns its oracle text; all eight what_it_does are under 1,600 characters.",
+    "verdict": "pass",
+    "summary": "Round two on the v3.0.0 model. Both round-1 fail grounds are closed: lines[0] is now dashed (verified_by null) with a note that says outright that stack 003 casts nothing and its checker records eminence not firing, plus a resolve-stack open question that would carry it; the wincon stage now quotes the converter target as measured (61.8% drawn, 81.0% assisted, 44.5% by turn six, mean turn 4.03 - exact against goldfish_metrics.json, whose meta.decklist_sha256 1df3a335... equals decklist.txt). The stale open_questions[4] premise and the stale proposed edit are gone. The four non-blocking round-1 findings are resolved: thesis splits amount-scaled from per-event and drops 'doubles every drain'; stages[7].single_point_of_failure is null and the prose scopes Bloodletter's 7.1% (deck-audit engine.single_points_of_failure[1], opening_seven 0.071) to the doubler route; stages[3] now prices Kalitas's cost, and the six opponent-death readers re-enumerate exactly from cards.json oracle text. lines[1] remains the one verified line and 003 still carries it (7 triggers x 2 = 14 a seat; final_state opp1 21->7, opp2 14->0; checker pass). Every figure re-derived and exact. Three non-blocking notes: Edgar, Ancient Bloodlord's gain is read too broadly (stages[4]), Olivia, Crimson Bride's legendary-Vampire clause is placed on the wrong half (stages[3]), and stages[3].what_it_does is at 1,770 of 1,800 characters.",
     "findings": [
       {
         "where": "lines[0]",
-        "claim": "from ignition to wincon via Edgar Markov, Sanctum Seeker, Bloodletter; verified_by 003: 'Seven attacking Vampires (Edgar and four eminence tokens among them) give seven Sanctum Seeker triggers ... The only verified kill on v3.0.0'",
-        "status": "mis-cited",
-        "note": "The ignition stage's resource is 'A VAMPIRE SPELL IS CAST, AND A BODY APPEARS FROM THE COMMAND ZONE'. Stack 003 casts nothing: scenario.hand is [], mana_available is '', the board lists 'four 1/1 black Vampire creature tokens' with no provenance, and the checker's summary states 'no other triggers exist in the scenario (Eminence needs a cast; opponents' boards are empty)'. So the stack establishes that eminence does NOT occur on this board. Edgar's only ability that resolves is his attack trigger, and resolution step 3 establishes that it 'do[es] NOT change the trigger drain at all'. Edgar's whole contribution to the 14 is being the seventh attacking Vampire (one Sanctum Seeker trigger) - a body any Vampire supplies, not an ignition event. The arrow is the stack's cards named, not its flow supported. What 003 does carry is already lines[1]. To survive: drop verified_by (dash it as a READING that eminence casts supply the attackers), or re-run a stack that casts a Vampire with Edgar in the command zone and then attacks. 'Every card on the board is still in the 99' is also loose: Edgar is the commander, not in the 99. Not cleanly mechanizable (the same wrong line survives a rephrase); a weak check would flag a verified line whose stack's checker summary names one of the line's via cards' abilities as not occurring."
-      },
-      {
-        "where": "stages[1].evidence[0]",
-        "claim": "Stack 003: 'Edgar on the battlefield as one of seven attacking Vampires beside four eminence tokens'",
-        "status": "over-claimed",
-        "note": "Same defect as lines[0], smaller. The tokens in 003 are a given board state; the stack does not make them, and its checker says eminence does not fire there. 'beside four 1/1 Vampire tokens' is what 003 supports. As evidence for the ignition stage, 003 establishes only that Edgar is a Vampire that attacks."
+        "claim": "READING. Eminence casts are what put the 1/1 Vampire attackers on the table for the doubler route. Stack 003 does NOT carry this ... Needs a stack that casts a Vampire with Edgar in the command zone, then attacks.",
+        "status": "supported",
+        "note": "Round-1 mis-cited finding is closed. verified_by is null, so the line renders dashed, and the note is labelled READING. It also says explicitly what 003 does and does not show, which matches 003 (scenario.hand [], mana_available '', four tokens given on the board). Eminence's oracle ('Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token') does support the reading. open_questions[6] asks for exactly the stack that would make the line solid."
       },
       {
         "where": "lines[1]",
-        "claim": "output -> wincon via Sanctum Seeker, Bloodletter; verified_by 003: per trigger each opponent loses 2 instead of 1; your own gain is not doubled",
+        "claim": "output -> wincon via Sanctum Seeker, Bloodletter; verified_by 003: per trigger each opponent loses 2 instead of 1; your own gain is not doubled.",
         "status": "supported",
-        "note": "Stack 003 steps 4-6 resolve exactly this: seven Sanctum Seeker triggers, each replaced 1 -> 2 per opponent under 614.1a/614.5, your gain of 1 untouched; final_state you 33, opponent 1 at 7, opponent 2 at 0. Checker verdict pass, iteration 2. Both cards are in v3.0.0, Sanctum Seeker in output, Bloodletter in wincon."
+        "note": "Re-read 003: checker verdict pass; findings on 603.2c (seven triggers from one declaration) and 614.1a/614.5 (one application per event, 1 -> 2). resolution.final_state: you 33 (26 + 7, gain not doubled), opponent 1 at 7 (21 - 14), opponent 2 at 0 (14 - 14). The stack establishes the flow this arrow draws, not just the two names. Sanctum Seeker sits in output and Bloodletter in wincon."
+      },
+      {
+        "where": "stages[1].evidence[0]",
+        "claim": "the four 1/1 Vampire tokens beside him are a given board state, not made in the stack ... For this stage 003 establishes only that Edgar is a Vampire that attacks",
+        "status": "supported",
+        "note": "Round-1 over-claim is closed. The evidence is now scoped to what 003's scenario and checker show."
       },
       {
         "where": "stages[7].what_it_does",
-        "claim": "The declared target that measured them still names the cut halves and reads 0.0 by construction (proposed edit).",
-        "status": "contradicts-artifact",
-        "note": "goldfish_targets.json now declares 'A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)' and its _bracket3_v1_note records the SURVIVING INFINITE target as retired 2026-11-10. goldfish_metrics.json (meta.decklist_sha256 1df3a33540a6..., equal to decklist.txt's sha) measures it: assembled 0.618, assisted 0.810, by turn six 0.445, mean turn 4.03. engine-facts reads the same component: four cards, 0.258 opening seven, 0.321 by turn three - so the stage's '25.8% of opening sevens (32.1% by turn three)' is right but the sentence after it is false. The stage that claims the converters are the wincon should carry the measured rate, not a 0.0 that no longer exists."
-      },
-      {
-        "where": "open_questions[4]",
-        "claim": "the declared infinite target reads 0.0 by construction so it cannot [measure accumulation]",
-        "status": "contradicts-artifact",
-        "note": "No such target is declared any more (goldfish_targets.json, eleven targets, none 'SURVIVING INFINITE'). The question itself - what share of games end on drain versus combat - is still open and worth keeping; the why_it_matters premise is stale."
-      },
-      {
-        "where": "proposed_goldfish_edits[0]",
-        "claim": "Retire THE SURVIVING INFINITE target; replace with 'A gain-to-loss converter drawn' (Vito, Sanguine Bond, Enduring Tenacity, Marauding Blight-Priest)",
-        "status": "contradicts-artifact",
-        "note": "Already applied: the target it names is gone from goldfish_targets.json and the converter target with exactly those four cards is declared and measured. A proposal against a label that no longer exists is stale. MECHANICALLY CHECKABLE: validate-engine could require every proposed_goldfish_edits[].target to match (by prefix) a label in goldfish_targets.json unless it is marked as a new target - this one would have failed it. The other five proposals' targets all exist."
-      },
-      {
-        "where": "thesis",
-        "claim": "four gain-to-loss converters bill it again for every point gained ... its one verified finisher a Bloodletter turn that doubles every drain (stack 003: fourteen a seat from seven attackers)",
-        "status": "over-claimed",
-        "note": "Two small things, neither a fail ground alone. 'For every point gained' is true of three converters; Marauding Blight-Priest reads 'Whenever you gain life, each opponent loses 1 life' - per event, as stages[7] itself says (count-scaled). And 003 establishes doubling for Sanctum Seeker's triggers only; stages[7] and open_questions[0] correctly call Bloodletter on a converter's loss 'a reading until a stack runs it', while the thesis states 'doubles every drain' beside a 003 citation. Bloodletter's oracle does cover any opponent loss on your turn, so the claim is likely true - but the citation in the parenthesis does not carry 'every'. The 14-a-seat figure is supported."
+        "claim": "The declared converter target measures one drawn in 61.8% of games (81.0% assisted), 44.5% by turn six, mean turn 4.03.",
+        "status": "supported",
+        "note": "Round-1 contradicts-artifact is closed. goldfish_metrics.json targets 'A life-gain-to-loss converter drawn (the bracket-3 win-con ...)': assembled_rate 0.618, assisted 0.81, by_turn_6_rate 0.445, mean_turn 4.027. Its any_of in goldfish_targets.json is exactly Vito, Sanguine Bond, Enduring Tenacity, Marauding Blight-Priest, the stage's four converters."
       },
       {
         "where": "stages[7].single_point_of_failure",
-        "claim": "Bloodletter of Aclazotz",
-        "status": "unjustified",
-        "note": "Enumerated from cards.json: Bloodletter is the only card that doubles life loss, so for THE DRAIN DOUBLER route it is one card (deck-audit: 7.1% of opening sevens, 26.7% assisted). But the stage is labelled 'FOUR CONVERTERS AND ONE DOUBLER' and its own prose says the game now ends by accumulation through the converters, which are a four-card component measured at 61.8% assembled. Losing Bloodletter costs the stage its only verified route, not the stage. This reads the audit's one-card class as the stage's failure point. Either scope it (the SPOF of the verified finisher, which is true) or rebut by defining the stage as that route. Contrast stages[5], where the audit's other one-card SPOF (Anguished Unmaking - confirmed the only nonland-permanent exile in the 99) is correctly NOT promoted because the stage has other jobs."
+        "claim": "null; prose: 'deck-audit prices Bloodletter as a one-card point of failure at 7.1% of opening sevens - of that route, not of this stage'",
+        "status": "supported",
+        "note": "Round-1 unjustified finding is closed by scoping rather than by deletion, which is the right fix. The scratch deck-audit has engine.single_points_of_failure[1].component cards ['Bloodletter of Aclazotz'], odds.opening_seven 0.071. The doubler target reads 4.4% / 26.7% assisted / mean turn 6.906, matching the prose."
+      },
+      {
+        "where": "thesis",
+        "claim": "four gain-to-loss converters bill it again on every gain (three by the amount, Marauding Blight-Priest by the event) ... its one verified finisher a Bloodletter attack (stack 003: seven Sanctum Seeker triggers, each doubled, fourteen a seat)",
+        "status": "supported",
+        "note": "Round-1 over-claim is closed. Blight-Priest's oracle is 'Whenever you gain life, each opponent loses 1 life' (per event); Vito, Sanguine Bond and Tenacity read 'loses that much life'. The 003 parenthesis now claims only Sanctum Seeker's doubled triggers, which is what 003 resolves. 'Finisher' is fair: 003 eliminates the 14-life seat before blockers."
+      },
+      {
+        "where": "open_questions[4]",
+        "claim": "The converter target measures only that a converter is drawn (61.8% of games, mean turn 4.03), not how long accumulation takes",
+        "status": "supported",
+        "note": "The stale 'reads 0.0' premise is gone, and the figures match goldfish_metrics.json."
+      },
+      {
+        "where": "proposed_goldfish_edits",
+        "claim": "five proposals",
+        "status": "supported",
+        "note": "Every target named matches a label now in goldfish_targets.json. The round-1 stale proposal against the retired SURVIVING INFINITE target was removed. Checks: the draw group names 7 cards with neither Haruspex nor Reaper; the castable leg names 8; the free-outlet group names 5 without Master of Dark Rites; the lord group includes Sanctum Seeker; Throne of the God-Pharaoh is absent from decklist.txt (grep count 0), so dropping '007' from the doubler label is correct. MECHANICALLY CHECKABLE, repeated from round 1: validate-engine could require each proposed_goldfish_edits[].target to prefix-match a goldfish_targets.json label unless the edit is marked as a new target."
       },
       {
         "where": "stages[3].what_it_does",
-        "claim": "Kalitas ... so the deck's removal - Olivia's Wrath, Anowon's edict, Liliana's -4, Elspeth's -3, Vish Kal's and Bloodtithe's -X/-X, Olivia Voldaren's ping - mints bodies on your side",
-        "status": "unjustified",
-        "note": "The replacement is read correctly (oracle: 'If a nontoken creature an opponent controls would die, instead exile that card and create a 2/2 black Zombie'), but it is filed as pure gain. The same replacement means those creatures never DIE, so with Kalitas out an opponent's nontoken creature is no longer a death event for Blood Artist and Vein Ripper ('a creature dies'), Cordial Vampire and Elenda ('another creature dies') or Yahenni ('a creature an opponent controls dies'). Each Zombie is one later death of your own; each exile removes up to five triggers now, Vein Ripper's worth 2. The fodder -> output flow the model draws through Kalitas has a cost in output it does not state. Not a fail ground: no sentence is false, but a stage that argues Kalitas is fodder should price both sides. Also relevant to the goldfish: meta.death_rate.opponent_per_turn 1.31 comes from a 2026-10-01 Forge run on a pre-Kalitas list."
+        "claim": "with Kalitas out they fire none of the six cards that read an opponent's death - Blood Artist, Vein Ripper, Cordial Vampire, Elenda, Morbid Opportunist and Yahenni",
+        "status": "supported",
+        "note": "Round-1 unjustified finding is closed, and the set is correct. Enumerated from cards.json oracle text: the cards whose death trigger can read an opponent's creature are Blood Artist ('another creature dies'), Vein Ripper ('a creature dies'), Cordial ('another creature dies'), Elenda ('another creature dies'), Morbid Opportunist ('one or more other creatures die') and Yahenni ('a creature an opponent controls dies'). That is six. Every other death reader says 'you control' (Celebrant, Vraan, Liliana, Erebos, Crossway, Haruspex, Reaper, Edgar Ancient Bloodlord) or is Clavileno's self-death grant. The Zombie's non-Vampire consequences (no eminence, no Seeker trigger, Anowon fodder) follow the oracle."
       },
       {
-        "where": "lines[5]",
-        "claim": "READING. Anowon's upkeep edict on an opponent's nontoken non-Vampire is exiled by Kalitas and becomes your 2/2 Zombie; at your next upkeep that Zombie is a non-Vampire you can give to Anowon - a death event for the drains. Needs a stack.",
-        "status": "supported",
-        "note": "Dashed, labelled, and the reading follows the oracle (sacrifice is a 'die' event, so Kalitas replaces it). open_questions[3] asks the right question. The Zombie's later death is a death event for Blood Artist and Cruel Celebrant; note that the opponent's creature itself, being exiled, is not (see stages[3])."
+        "where": "stages[3].what_it_does",
+        "claim": "Olivia, Crimson Bride returns a creature card tapped and attacking on each attack, while you control a legendary Vampire.",
+        "status": "over-claimed",
+        "note": "Non-blocking. Oracle: 'Whenever Olivia attacks, return target creature card from your graveyard to the battlefield tapped and attacking. It gains \"When you don't control a legendary Vampire, exile this creature.\"' The return has no condition. The legendary-Vampire clause decides whether the returned creature STAYS. Olivia is a legendary Vampire herself, so on any board where she attacks the difference is small. The sentence still puts the condition on the wrong half."
       },
       {
-        "where": "lines[2], lines[3], lines[4], lines[6], lines[7], lines[8], lines[9]",
-        "claim": "eight dashed lines, each opening 'READING.'",
-        "status": "supported",
-        "note": "Checked each against oracle text in cards.json. Celebrant 'you gain 1 life' -> Vito 'whenever you gain life' (lines[2]); Crossway 'Attacking Vampires you control have ... lifelink' with the per-source event question left open (lines[3]); Viscera Seer 'Sacrifice a creature' -> Blood Artist 'another creature dies' (lines[4]); Procession and Elspeth both 'twice that many', 1->2->4, with 'on v3.0.0 the count is a claim' (lines[6]); Welcoming 'power 2 or less ... once each turn' and Caretaker's 'one or more tokens ... once each turn' (lines[7]); Wispdrinker 'another creature you control with power 2 or less enters' (lines[8]); Incubator generic-only, Edgar {3}{R}{W}{B} -> {1}{R}{W}{B} (lines[9]). None asserts a count or kill a stack would be needed for without saying so."
+        "where": "stages[3].what_it_does",
+        "claim": "length 1,770 characters",
+        "status": "over-claimed",
+        "note": "Non-blocking, flagged under charter item 6. This stage grew about 210 characters this round to price Kalitas and now sits 30 characters under the 1,800 cap. It is dense but not muddled. Any further revision that adds to it (for example the Olivia fix above) will hit the cap, so the next edit should trade words rather than add them. stages[7] is at 1,690. The other six run 1,154 to 1,553."
       },
       {
-        "where": "stages[6].evidence[1]",
-        "claim": "stack 012 cited ONLY for Enduring Tenacity's death-return resolving with the drain ability intact",
+        "where": "stages[4].what_it_does",
+        "claim": "Edgar, Ancient Bloodlord ({2}; also gains 1 life per other death - a gain a converter turns into loss)",
+        "status": "over-claimed",
+        "note": "Non-blocking; round 1 missed it. Oracle: 'Whenever another creature or planeswalker you control dies, you gain 1 life.' It counts only your own deaths, not every other death. An opponent's creature dying gains nothing. With Kalitas out it would not die anyway, but a Wrath killing their creatures would. The converter consequence stands for the deck's own sacrifices, which is the stage's subject."
+      },
+      {
+        "where": "lines[2], lines[3], lines[4], lines[5], lines[6], lines[7], lines[8], lines[9]",
+        "claim": "eight dashed lines, each opening 'READING.' (nine with lines[0])",
         "status": "supported",
-        "note": "012 step 6 derives it with citations 700.4, 704.5f, 603.6c, 603.10a, 603.4, 400.7, every one checker-supported, plus the 2024-09-20 ruling. Caveat for precision: 012 reasons through the return as a fragility analysis ('In THIS scenario no window is exploitable'); no destroy actually resolves on that board. The clause is rules-derived and checked, not observed. The scoping away from the Conqueror loop is honest."
+        "note": "Unchanged from round 1 and re-checked against oracle text in cards.json, including Wispdrinker ('another creature you control with power 2 or less enters, each opponent loses 1 life and you gain 1 life'), Welcoming Vampire and Caretaker's Talent (both once each turn), Urza's Incubator ('cost {2} less', generic only against Edgar's {3}{R}{W}{B}), and Kalitas and Anowon ('each player sacrifices a non-Vampire creature'). None states a count or a kill as fact without a needs-a-stack caveat."
       },
       {
         "where": "stages[*] figures",
         "claim": "every component rate quoted in the stages",
         "status": "supported",
-        "note": "Re-derived from engine-facts audit_engine (goldfish_metrics sha = decklist sha): ramp 36.4/77.2/60.1/3.49; castable Vampire 45.6/86.4/71.8/3.03 (and 'healthiest figure in the brief' holds - highest assembled_rate of eleven targets); draw 41.2/75.9/63.6/3.00; multiplier 13.7/36.5/24.7, 68.2 assisted; free outlet 31.2/71.6/54.5/3.66; death drain 25.8/62.9/45.3/3.97; protection 25.8/62.5/45.3/3.97; Anguished Unmaking 7.1/21.5/59.9 assisted; doubler 4.4/26.7/6.91; converters 25.8 opening / 32.1 by turn three. All exact."
+        "note": "Re-read from goldfish_metrics.json targets (sha-matched). Assembled / by turn six / mean turn (assisted where quoted): ramp 77.2/60.1/3.49; castable Vampire 86.4/71.8/3.03, the highest assembled rate of the eleven targets, so 'healthiest' holds; draw 75.9/63.6/3.00; multiplier 36.5/24.7, 68.2 assisted; free outlet 71.6/54.5/3.66; death drain 62.9/45.3/3.97; protection 62.5/45.3/3.97; Anguished Unmaking 21.5, 59.9 assisted; doubler 4.4, 26.7 assisted, 6.91; converter 61.8, 81.0 assisted, 44.5, 4.03. The opening-seven figures did not change from the round-1-verified engine-facts readings."
       },
       {
-        "where": "stages[*] counts",
-        "claim": "land/rock/creature/role counts",
+        "where": "stages[*] counts, evidence (city), map_disagreements",
+        "claim": "counts, roles, cities, the six disagreements",
         "status": "supported",
-        "note": "deck-facts: 32 land entries / 35 copies, Swamp x4 (decklist: 2+1+1; v3.0.0 diff -Ancient Tomb +Swamp), 12 enter tapped, source targets B36/R22/W22, 0 contained combos. cards.json: 39 creatures in the 99, the six non-Vampires exactly as named, eleven Vampire creature spells at MV<=2. No-mana outlets enumerated by oracle: Ashnod's Altar, Phyrexian Tower, Viscera Seer, Vish Kal, Yahenni, Master of Dark Rites = six. Roles match engine-facts member for member: ramp:rock 8 (Ashnod's among them), draw:engine 8 (Midnight Reaper threat:body only), tutor:unrestricted 3, doubler:tokens 2, threat:tokens 10 (Kalitas in), sac-outlet 8 (Tower none), wincon:drain 13 (Anje, Tithe Drinker, Twilight Prophet outside output/wincon), protection:self 6 (Erebos, Vein Ripper, Yahenni elsewhere), Bloodletter threat:body only. Stage totals 39+3+15+7+9+15+4+5 = 97 = deck-facts entries."
+        "note": "Unchanged from the round-1 check, which re-derived them against deck-facts, cards.json and engine-facts: 97 placed, 0 unassigned. validate-engine passes: 8 stages, 97 cards, 1/10 lines verified. Each disagreement still names what the map reads (type, trigger event) instead of the job, so none is a hedge."
       },
       {
-        "where": "stages[*].evidence (city), map_disagreements",
-        "claim": "city memberships and the six disagreements",
+        "where": "stages[6].evidence[1]",
+        "claim": "stack 012 cited ONLY for Enduring Tenacity's death-return",
         "status": "supported",
-        "note": "Every city membership cited checks against engine-facts map.cities (city-3 21 with Tower the one elsewhere; city-0 20 with Ashnod's the one elsewhere; the castable leg Finishers 5 / Card Flow 2 / Bodies 1; conversion across five cities is the most of any stage; city-6 Insurance is exactly the four protection spells). Each disagreement names the artifact (the map) and what it reads instead of the job - type line, card type, trigger event - so none is a hedge."
-      },
-      {
-        "where": "stages[*].what_it_does",
-        "claim": "length",
-        "status": "supported",
-        "note": "1154 / 1553 / 1502 / 1560 / 1304 / 1418 / 1284 / 1553 characters; all well under the 1,800 cap, none muddled."
+        "note": "Unchanged and still honestly scoped. The caveat from round 1 holds: 012 reasons through the return as a rules derivation, and no destroy resolves on that board."
       }
     ],
-    "iterations": 1
+    "iterations": 2
   }
 }

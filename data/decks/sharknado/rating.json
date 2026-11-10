@@ -1,7 +1,7 @@
 {
  "slug": "sharknado",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 4 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 5 decks and claims no significance.",
  "bracket": {
   "key": 3,
   "source": "target",
@@ -17,12 +17,12 @@
    "weight_effective": 0.1846,
    "sub_score": 100.0,
    "sub_ci": [
-    93.44,
+    94.41,
     100.0
    ],
    "placement": 100.0,
    "anchor": 100.0,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of kill_by_turn_8 within bracket 3 (n=4); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
@@ -51,12 +51,12 @@
    "weight_effective": 0.1231,
    "sub_score": 100.0,
    "sub_ci": [
-    93.64,
+    94.4,
     100.0
    ],
    "placement": 100.0,
    "anchor": 100.0,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
@@ -91,14 +91,14 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.1846,
-   "sub_score": 67.14,
+   "sub_score": 65.0,
    "sub_ci": [
-    60.79,
-    73.51
+    59.4,
+    70.5
    ],
    "placement": 50.0,
    "anchor": 80.0,
-   "method": "0.429·placement + 0.571·anchor (λ at n=4): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -263,7 +263,7 @@
   "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
-  "rank over n=4 decks; no significance claim"
+  "rank over n=5 decks; no significance claim"
  ],
  "context": {
   "dti": {
@@ -276,7 +276,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
- "fleet_sha": "754088caa22e",
+ "fleet_sha": "5c30a301e0f1",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -340,11 +340,11 @@
   ],
   "iterations": 3
  },
- "code_score": 84.5,
- "score_point": 84.4,
- "score": 83.8,
+ "code_score": 84.0,
+ "score_point": 84.0,
+ "score": 83.5,
  "score_ci": [
-  77.6,
+  77.3,
   89.4
  ],
  "grade": "A",
@@ -354,8 +354,8 @@
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.85,
-  "B": 0.15,
+  "A": 0.827,
+  "B": 0.173,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -374,11 +374,11 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 80.8,
+    "score": 80.3,
     "grade": "A"
    },
    "mana": {
-    "score": 82.2,
+    "score": 81.7,
     "grade": "A"
    },
    "resilience": {
@@ -386,11 +386,11 @@
     "grade": "A"
    },
    "construction": {
-    "score": 86.3,
+    "score": 85.8,
     "grade": "A"
    },
    "judgment": {
-    "score": 84.5,
+    "score": 84.0,
     "grade": "A"
    }
   },
@@ -398,7 +398,7 @@
    {
     "component": "resilience",
     "share_now": 0.185,
-    "share_at_flip": 0.391,
+    "share_at_flip": 0.355,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -406,7 +406,7 @@
    {
     "component": "construction",
     "share_now": 0.2,
-    "share_at_flip": 0.661,
+    "share_at_flip": 0.643,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -416,27 +416,42 @@
  "concordance": {
   "level": "mixed",
   "instruments": {
-   "construction": 1.0,
+   "construction": 2.0,
    "judgment": 1.0,
    "mana": 1.0,
-   "resilience": 3.0,
+   "resilience": 3.5,
    "speed": 1.0
   },
-  "of": 4,
-  "spread": 0.667,
+  "of": 5,
+  "spread": 0.625,
   "outliers": [
    {
+    "instrument": "mana",
+    "rank": 1.0,
+    "side": "better"
+   },
+   {
+    "instrument": "speed",
+    "rank": 1.0,
+    "side": "better"
+   },
+   {
+    "instrument": "construction",
+    "rank": 2.0,
+    "side": "worse"
+   },
+   {
     "instrument": "resilience",
-    "rank": 3.0,
+    "rank": 3.5,
     "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.3,
-   "p": 0.3545,
-   "p_method": "exact over 13824 relabellings",
+   "kendall_w": 0.18,
+   "p": 0.6269,
+   "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
-   "n": 4
+   "n": 5
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
@@ -477,36 +492,40 @@
   "weight": 0.2,
   "weight_effective": 0.3077,
   "sub_ci": [
-   75.9,
-   92.55
+   75.77,
+   92.39
   ]
  },
  "rank": {
   "position": 1,
-  "of": 4,
+  "of": 5,
   "group": [
    "sharknado",
    "gishath",
    "ur-dragon",
+   "edgar-vampires",
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 1.0,
-   "2": 0.0,
+   "1": 0.999,
+   "2": 0.002,
    "3": 0.0,
-   "4": 0.0
+   "4": 0.0,
+   "5": 0.0
   },
   "basis": {
+   "edgar-vampires": "rating.json judgment",
    "gishath": "rating.json judgment",
    "goblin-storm": "skeleton",
    "sharknado": "this document",
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.8,
-   "gishath": 69.9,
-   "ur-dragon": 61.7,
-   "goblin-storm": 60.2
+   "sharknado": 83.5,
+   "gishath": 67.6,
+   "ur-dragon": 60.8,
+   "edgar-vampires": 60.7,
+   "goblin-storm": 60.6
   }
  }
 }
