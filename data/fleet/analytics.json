@@ -508,15 +508,15 @@
    },
    "meren-recursion": {
     "1": 0.0,
-    "10": 0.888,
+    "10": 0.887,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.003,
-    "6": 0.028,
-    "7": 0.171,
-    "8": 0.451,
-    "9": 0.73
+    "6": 0.022,
+    "7": 0.146,
+    "8": 0.428,
+    "9": 0.721
    },
    "sharknado": {
     "1": 0.0,
@@ -619,14 +619,14 @@
    "meren-recursion": {
     "1": 0.999,
     "10": 0.564,
-    "2": 0.997,
-    "3": 0.911,
-    "4": 0.79,
+    "2": 0.996,
+    "3": 0.905,
+    "4": 0.784,
     "5": 0.677,
-    "6": 0.594,
-    "7": 0.553,
-    "8": 0.548,
-    "9": 0.547
+    "6": 0.596,
+    "7": 0.554,
+    "8": 0.536,
+    "9": 0.54
    },
    "sharknado": {
     "1": 0.999,
@@ -728,15 +728,15 @@
    },
    "meren-recursion": {
     "1": 0.999,
-    "10": 8.048,
-    "2": 2.26,
-    "3": 3.292,
-    "4": 4.155,
-    "5": 4.868,
-    "6": 5.55,
-    "7": 6.167,
-    "8": 6.784,
-    "9": 7.406
+    "10": 7.853,
+    "2": 2.22,
+    "3": 3.212,
+    "4": 4.052,
+    "5": 4.753,
+    "6": 5.42,
+    "7": 6.026,
+    "8": 6.619,
+    "9": 7.222
    },
    "sharknado": {
     "1": 0.999,
@@ -805,9 +805,9 @@
     "total_cents": 7538
    },
    {
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "slug": "meren-recursion",
-    "total_cents": 123812
+    "total_cents": 123990
    },
    {
     "as_of": "2026-10-09",
@@ -3129,14 +3129,14 @@
    "benchmark": {
     "answer_cards": {
      "basis": "CAPACITY counted from card_roles.json, not a measured response",
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 23
+     "value": 24
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "source": "benchmark.json#metrics.response.classes_covered",
      "stale": false,
      "value": 7
@@ -3145,96 +3145,96 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8817,
-      0.894
+      0.8806,
+      0.8931
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.888
+     "value": 0.887
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0249,
-      0.0314
+      0.0193,
+      0.0251
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.028
+     "value": 0.022
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4413,
-      0.4608
+      0.4183,
+      0.4377
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.451
+     "value": 0.428
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.868
+     "value": 4.753
     },
     "mana_stdev_turn_five": {
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.0918
+     "value": 1.0684
     },
     "median_kill_turn": {
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.median_kill_turn",
      "stale": false,
-     "value": 8
+     "value": 9
     },
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.1984,
-      0.2142
+      0.2006,
+      0.2165
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.2062
+     "value": 0.2084
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.2002,
-      0.2161
+      0.2021,
+      0.2181
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
      "stale": false,
-     "value": 0.208
+     "value": 0.21
     },
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.106,
-      0.1183
+      0.1069,
+      0.1194
      ],
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.112
+     "value": 0.113
     }
    },
    "bracket": {
@@ -3245,7 +3245,7 @@
     "group_basis": "floor",
     "target": null
    },
-   "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+   "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
    "diagnostic": {
     "absent_because": "no diagnostic.json — bootstrapped on sleeved decks by `regen`",
     "source": "diagnostic.json"
@@ -3258,7 +3258,7 @@
    "lifecycle": null,
    "member": false,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.936,
+    "commander_cast_by_turn_6_rate": 0.926,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -3276,16 +3276,16 @@
    },
    "placements": {},
    "price": {
-    "as_of": "2026-11-09",
+    "as_of": "2026-11-10",
     "missing": 0,
     "source": "manapool",
     "total_cents": {
-     "as_of": "2026-11-09",
+     "as_of": "2026-11-10",
      "basis": "manapool; dated",
-     "decklist_sha256": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+     "decklist_sha256": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
      "source": "prices.json#total_cents",
      "stale": false,
-     "value": 123812
+     "value": 123990
     }
    },
    "rating": null,
@@ -5455,7 +5455,7 @@
    "heliod": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
    "ingris-infect": "8fee61eb5aa66f25c6daff09a15d10c45d81add6340af7b3b021386145611f10",
    "keen-engineering": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
-   "meren-recursion": "dcbbf8187729404ad18c1f90a398d5699e69e81f5389f5f5789d4449a4958441",
+   "meren-recursion": "9928557dfcee3710f3cb0fb7337615c711fac688d8490dd7e53ee9768e0de660",
    "radagast": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
    "sharknado": "36d865a66e2ce3d3bbefd562c30796d5aba03446d0f85b88ac7102bdab543d35",
    "sisay": "a4bcbd509313b155837b838367691f794ef8f03f6640e22cc71a7e1164e62f4d",
