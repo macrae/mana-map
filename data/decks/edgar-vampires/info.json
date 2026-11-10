@@ -14,11 +14,19 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 18,
+    "complete": 13,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "frame",
+      "map",
+      "tutors",
+      "prose"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "engine",
+      "rating.json"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -37,53 +45,58 @@
       "name": "bracket3-v1",
       "opened": "2026-11-05",
       "why": "try: trade — partial — the model cannot fully see Exquisite Blood, so its rows are silent about it; A rock or land cashes in for its card only with 7 mana left after it (an authored rate)",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "MERGED",
+      "state_why": "merged 2026-11-10 into the list after VNone",
       "base_moved": null,
-      "proposal": null,
+      "proposal": {
+        "at": "2026-11-10",
+        "as_version": "v3.0.0",
+        "why": "Edgar brought to bracket 3: the eight two-card infinites go (Bloodthirsty Conqueror, Exquisite Blood), Ancient Tomb and Enlightened Tutor leave the Game Changer count (5 -> 3); drain kept through Kalitas, Midnight Reaper and Grim Haruspex (pilot, 2026-11-10)",
+        "base_version": 6,
+        "decklist_sha256": "e879e40e58068f70cb6d9cf5c9345c32ab3fb2e29dc8285f8956ddaee6f42f2d",
+        "accepted_on": {
+          "decklist_sha256": "e879e40e58068f70cb6d9cf5c9345c32ab3fb2e29dc8285f8956ddaee6f42f2d",
+          "state": "no objective",
+          "objective": null,
+          "grade": null,
+          "reading": null,
+          "harness": {
+            "cast_proofs": null,
+            "iterations": 10000,
+            "model_version": "ac1f8a6f777f",
+            "seed": 20260826
+          }
+        },
+        "procurement": {
+          "at": "2026-11-10",
+          "note": "Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper (printed proxies 2026-11-10)"
+        }
+      },
       "pull_list": {
-        "buy": [
-          {
-            "name": "Kalitas, Traitor of Ghet"
-          }
-        ],
-        "unsleeve": [
-          {
-            "name": "Grim Haruspex",
-            "where": [
-              "meren-recursion"
-            ]
-          }
-        ],
+        "buy": [],
+        "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Midnight Reaper",
-            "where": [
-              "Black"
-            ]
-          }
-        ],
-        "blocking": 2,
-        "procurement": null
+        "box": [],
+        "blocking": 0,
+        "procurement": {
+          "at": "2026-11-10",
+          "note": "Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper (printed proxies 2026-11-10)"
+        }
       },
       "base_version": 6,
       "size": 100,
-      "add": 4,
-      "out": 4,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 94,
-        "box": 1,
-        "elsewhere": 1,
-        "buy": 1,
+        "in_deck": 97,
+        "box": 0,
+        "elsewhere": 0,
+        "buy": 0,
         "free": 0
       },
-      "unsourced": [
-        "Grim Haruspex",
-        "Kalitas, Traitor of Ghet"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "free": 0,
       "cards": [
         {
@@ -389,25 +402,10 @@
         },
         {
           "name": "Grim Haruspex",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "hapatra",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            },
-            {
-              "kind": "deck",
-              "slug": "meren-recursion",
-              "locked": false,
-              "status": null,
-              "apart": false
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Haunted Ridge",
@@ -425,10 +423,10 @@
         },
         {
           "name": "Kalitas, Traitor of Ghet",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Liliana, Dreadhorde General",
@@ -481,15 +479,10 @@
         },
         {
           "name": "Midnight Reaper",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Black"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Minas Tirith",
@@ -900,28 +893,58 @@
         ]
       },
       "pull_list": {
-        "buy": [],
-        "unsleeve": [],
+        "buy": [
+          {
+            "name": "Bloodthirsty Conqueror"
+          }
+        ],
+        "unsleeve": [
+          {
+            "name": "Enlightened Tutor",
+            "where": [
+              "gishath",
+              "heliod",
+              "ur-dragon"
+            ]
+          }
+        ],
         "proxy": [],
-        "free": [],
-        "box": [],
-        "blocking": 0,
+        "free": [
+          {
+            "name": "Exquisite Blood",
+            "where": [
+              "yawgmoth-swarm"
+            ]
+          }
+        ],
+        "box": [
+          {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          }
+        ],
+        "blocking": 2,
         "procurement": null
       },
       "base_version": 5,
       "size": 100,
-      "add": 0,
-      "out": 0,
+      "add": 4,
+      "out": 4,
       "counts": {
-        "in_deck": 98,
-        "box": 0,
-        "elsewhere": 0,
-        "buy": 0,
-        "free": 0
+        "in_deck": 94,
+        "box": 1,
+        "elsewhere": 1,
+        "buy": 1,
+        "free": 1
       },
-      "unsourced": [],
-      "mergeable": true,
-      "free": 0,
+      "unsourced": [
+        "Bloodthirsty Conqueror",
+        "Enlightened Tutor"
+      ],
+      "mergeable": false,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -932,10 +955,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -1051,10 +1079,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtithe Harvester",
@@ -1212,10 +1240,39 @@
         },
         {
           "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Erebos, Bleak-Hearted",
@@ -1233,10 +1290,18 @@
         },
         {
           "name": "Exquisite Blood",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "yawgmoth-swarm",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Flawless Maneuver",
@@ -1715,7 +1780,51 @@
           "profile": "mm-edgar-vampires",
           "profile_sha": "f7c3b6a8cec1"
         }
-      }
+      },
+      "stacks": [
+        {
+          "id": "001",
+          "title": "Exquisite Blood + Vito: is the classic drain loop a table-kill?",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Sanguine Bond + Exquisite Blood: the two-enchantment loop, verified for the swap",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
+        }
+      ]
     },
     {
       "name": "mean-v1",
@@ -1726,12 +1835,24 @@
       "base_moved": null,
       "proposal": null,
       "pull_list": {
-        "buy": [],
+        "buy": [
+          {
+            "name": "Bloodthirsty Conqueror"
+          }
+        ],
         "unsleeve": [
           {
             "name": "Boros Charm",
             "where": [
               "gishath",
+              "ur-dragon"
+            ]
+          },
+          {
+            "name": "Enlightened Tutor",
+            "where": [
+              "gishath",
+              "heliod",
               "ur-dragon"
             ]
           },
@@ -1744,8 +1865,21 @@
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Exquisite Blood",
+            "where": [
+              "yawgmoth-swarm"
+            ]
+          }
+        ],
         "box": [
+          {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
           {
             "name": "Skullclamp",
             "where": [
@@ -1753,26 +1887,28 @@
             ]
           }
         ],
-        "blocking": 2,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": 4,
       "size": 100,
-      "add": 4,
-      "out": 4,
+      "add": 7,
+      "out": 7,
       "counts": {
-        "in_deck": 94,
-        "box": 1,
-        "elsewhere": 2,
-        "buy": 0,
-        "free": 0
+        "in_deck": 90,
+        "box": 2,
+        "elsewhere": 3,
+        "buy": 1,
+        "free": 1
       },
       "unsourced": [
+        "Bloodthirsty Conqueror",
         "Boros Charm",
+        "Enlightened Tutor",
         "Polluted Delta"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -1783,10 +1919,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -1895,10 +2036,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtithe Harvester",
@@ -2078,10 +2219,39 @@
         },
         {
           "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Erebos, Bleak-Hearted",
@@ -2092,10 +2262,18 @@
         },
         {
           "name": "Exquisite Blood",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "yawgmoth-swarm",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Flawless Maneuver",
@@ -2610,7 +2788,51 @@
           "profile": "mm-edgar-vampires",
           "profile_sha": "f7c3b6a8cec1"
         }
-      }
+      },
+      "stacks": [
+        {
+          "id": "001",
+          "title": "Exquisite Blood + Vito: is the classic drain loop a table-kill?",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Sanguine Bond + Exquisite Blood: the two-enchantment loop, verified for the swap",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
+        }
+      ]
     },
     {
       "name": "mardu-combo-v1",
@@ -2651,6 +2873,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Bloodthirsty Conqueror"
+          },
+          {
             "name": "Bloodtracker"
           },
           {
@@ -2687,6 +2912,14 @@
             ]
           },
           {
+            "name": "Enlightened Tutor",
+            "where": [
+              "gishath",
+              "heliod",
+              "ur-dragon"
+            ]
+          },
+          {
             "name": "Herald's Horn",
             "where": [
               "ur-dragon"
@@ -2701,8 +2934,21 @@
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Exquisite Blood",
+            "where": [
+              "yawgmoth-swarm"
+            ]
+          }
+        ],
         "box": [
+          {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
           {
             "name": "Gifted Aetherborn",
             "where": [
@@ -2722,7 +2968,7 @@
             ]
           }
         ],
-        "blocking": 12,
+        "blocking": 14,
         "procurement": {
           "at": "2026-10-06",
           "note": "Sleeved in paper 2026-10-06. 13 adds in hand; the rest ordered via ManaPool 2026-10-06 and proxied (manamap pilot proxies) until they arrive."
@@ -2730,20 +2976,22 @@
       },
       "base_version": 3,
       "size": 100,
-      "add": 16,
-      "out": 16,
+      "add": 19,
+      "out": 19,
       "counts": {
-        "in_deck": 82,
-        "box": 3,
-        "elsewhere": 3,
-        "buy": 9,
-        "free": 0
+        "in_deck": 78,
+        "box": 4,
+        "elsewhere": 4,
+        "buy": 10,
+        "free": 1
       },
       "unsourced": [
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Cosmos Elixir",
         "Despark",
+        "Enlightened Tutor",
         "Falkenrath Aristocrat",
         "Herald's Horn",
         "Kirol, Attentive First-Year",
@@ -2754,7 +3002,7 @@
         "Winds of Abandon"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -2765,10 +3013,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -2870,10 +3123,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtithe Harvester",
@@ -3039,10 +3292,39 @@
         },
         {
           "name": "Enlightened Tutor",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "heliod",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Erebos, Bleak-Hearted",
@@ -3053,10 +3335,18 @@
         },
         {
           "name": "Exquisite Blood",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "yawgmoth-swarm",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Falkenrath Aristocrat",
@@ -3624,11 +3914,44 @@
       },
       "stacks": [
         {
+          "id": "001",
+          "title": "Exquisite Blood + Vito: is the classic drain loop a table-kill?",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
           "id": "002",
           "title": "Edgar's eminence through two doublers: how many bodies per cast?",
           "checker": "pass",
           "names": [
             "Gifted Aetherborn"
+          ]
+        },
+        {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "005",
+          "title": "Sanguine Bond + Exquisite Blood: the two-enchantment loop, verified for the swap",
+          "checker": "pass",
+          "names": [
+            "Exquisite Blood"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
           ]
         },
         {
@@ -3654,6 +3977,15 @@
           "names": [
             "Gifted Aetherborn"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror",
+            "Exquisite Blood"
+          ]
         }
       ]
     },
@@ -3668,6 +4000,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -3769,6 +4104,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Blade of the Bloodchief",
             "where": [
               "Vampire Cards"
@@ -3812,23 +4153,24 @@
             ]
           }
         ],
-        "blocking": 24,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 34,
-      "out": 34,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 64,
-        "box": 7,
+        "in_deck": 62,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 20,
+        "buy": 21,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -3879,10 +4221,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -3989,10 +4336,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -4682,6 +5029,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -4710,6 +5073,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -4724,6 +5095,9 @@
         "buy": [
           {
             "name": "Ajani Unrelenting"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -4825,6 +5199,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Blade of the Bloodchief",
             "where": [
               "Vampire Cards"
@@ -4840,12 +5220,6 @@
             "name": "Indulgent Aristocrat",
             "where": [
               "Vampire Cards"
-            ]
-          },
-          {
-            "name": "Midnight Reaper",
-            "where": [
-              "Black"
             ]
           },
           {
@@ -4868,7 +5242,7 @@
             ]
           }
         ],
-        "blocking": 25,
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 3,
@@ -4876,14 +5250,15 @@
       "add": 35,
       "out": 35,
       "counts": {
-        "in_deck": 63,
+        "in_deck": 62,
         "box": 7,
         "elsewhere": 3,
-        "buy": 22,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
         "Ajani Unrelenting",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -4928,10 +5303,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -5031,10 +5411,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -5344,15 +5724,10 @@
         },
         {
           "name": "Midnight Reaper",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Black"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Minas Tirith",
@@ -5858,6 +6233,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -5886,6 +6277,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -5900,6 +6299,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -6001,6 +6403,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Bastion of Remembrance",
             "where": [
               "Hapatra"
@@ -6051,22 +6459,23 @@
             ]
           }
         ],
-        "blocking": 24,
+        "blocking": 25,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 62,
-        "box": 8,
+        "in_deck": 60,
+        "box": 9,
         "elsewhere": 2,
-        "buy": 22,
+        "buy": 23,
         "free": 2
       },
       "unsourced": [
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -6103,10 +6512,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -6206,10 +6620,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -7050,6 +7464,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -7078,6 +7508,14 @@
             "Mondrak, Glory Dominus",
             "Plains",
             "Vampire Socialite"
+          ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
           ]
         }
       ]
@@ -7194,6 +7632,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Bastion of Remembrance",
             "where": [
               "Hapatra"
@@ -7251,8 +7695,8 @@
       "add": 35,
       "out": 35,
       "counts": {
-        "in_deck": 63,
-        "box": 8,
+        "in_deck": 62,
+        "box": 9,
         "elsewhere": 4,
         "buy": 20,
         "free": 1
@@ -7310,10 +7754,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -8291,6 +8740,9 @@
             "name": "Bloodflow Connoisseur"
           },
           {
+            "name": "Bloodthirsty Conqueror"
+          },
+          {
             "name": "Bloodtracker"
           },
           {
@@ -8402,6 +8854,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Blade of the Bloodchief",
             "where": [
               "Vampire Cards"
@@ -8439,23 +8897,24 @@
             ]
           }
         ],
-        "blocking": 27,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 62,
-        "box": 6,
+        "in_deck": 60,
+        "box": 7,
         "elsewhere": 5,
-        "buy": 22,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -8509,10 +8968,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -8612,10 +9076,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -9444,6 +9908,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -9481,6 +9961,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -9495,6 +9983,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bontu's Monument"
@@ -9592,6 +10083,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -9642,22 +10139,23 @@
             ]
           }
         ],
-        "blocking": 22,
+        "blocking": 23,
         "procurement": null
       },
       "base_version": 3,
       "size": 100,
-      "add": 34,
-      "out": 34,
+      "add": 35,
+      "out": 35,
       "counts": {
-        "in_deck": 64,
-        "box": 8,
+        "in_deck": 62,
+        "box": 9,
         "elsewhere": 2,
-        "buy": 20,
+        "buy": 21,
         "free": 2
       },
       "unsourced": [
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bontu's Monument",
         "Boros Charm",
         "Champion of Dusk",
@@ -9692,10 +10190,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -9812,10 +10315,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bontu's Monument",
@@ -10541,6 +11044,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -10567,6 +11086,14 @@
             "Mirkwood Bats",
             "Mondrak, Glory Dominus",
             "Plains"
+          ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
           ]
         }
       ]
@@ -10604,6 +11131,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -10708,6 +11238,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Blade of the Bloodchief",
             "where": [
               "Vampire Cards"
@@ -10751,23 +11287,24 @@
             ]
           }
         ],
-        "blocking": 25,
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 35,
-      "out": 35,
+      "add": 36,
+      "out": 36,
       "counts": {
-        "in_deck": 63,
-        "box": 7,
+        "in_deck": 61,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 21,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -10819,10 +11356,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -10929,10 +11471,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -11732,6 +12274,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -11760,6 +12318,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -11774,6 +12340,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -11881,6 +12450,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -11924,23 +12499,24 @@
             ]
           }
         ],
-        "blocking": 26,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 62,
-        "box": 7,
+        "in_deck": 60,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 22,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -11993,10 +12569,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -12091,10 +12672,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -12907,6 +13488,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -12935,6 +13532,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -12949,6 +13554,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -13059,6 +13667,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -13102,23 +13716,24 @@
             ]
           }
         ],
-        "blocking": 27,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 37,
-      "out": 37,
+      "add": 38,
+      "out": 38,
       "counts": {
-        "in_deck": 61,
-        "box": 7,
+        "in_deck": 59,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 23,
+        "buy": 24,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -13165,10 +13780,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -13263,10 +13883,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -14087,6 +14707,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -14115,6 +14751,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -14132,6 +14776,9 @@
           },
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -14239,6 +14886,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -14282,24 +14935,25 @@
             ]
           }
         ],
-        "blocking": 27,
+        "blocking": 28,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 37,
-      "out": 37,
+      "add": 38,
+      "out": 38,
       "counts": {
-        "in_deck": 61,
-        "box": 7,
+        "in_deck": 59,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 23,
+        "buy": 24,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Blight Mound",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -14352,10 +15006,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anointed Procession",
@@ -14450,10 +15109,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -15267,6 +15926,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -15295,6 +15970,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -15309,6 +15992,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -15412,6 +16098,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -15455,23 +16147,24 @@
             ]
           }
         ],
-        "blocking": 26,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 62,
-        "box": 7,
+        "in_deck": 60,
+        "box": 8,
         "elsewhere": 3,
-        "buy": 23,
+        "buy": 24,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Champion of Dusk",
         "Despark",
@@ -15524,10 +16217,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -15622,10 +16320,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -16415,6 +17113,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -16443,6 +17157,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     },
@@ -16457,6 +17179,9 @@
         "buy": [
           {
             "name": "Bloodflow Connoisseur"
+          },
+          {
+            "name": "Bloodthirsty Conqueror"
           },
           {
             "name": "Bloodtracker"
@@ -16564,6 +17289,12 @@
         ],
         "box": [
           {
+            "name": "Ancient Tomb",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Gifted Aetherborn",
             "where": [
               "Vampire Cards"
@@ -16607,23 +17338,24 @@
             ]
           }
         ],
-        "blocking": 26,
+        "blocking": 27,
         "procurement": null
       },
       "base_version": 2,
       "size": 100,
-      "add": 36,
-      "out": 36,
+      "add": 37,
+      "out": 37,
       "counts": {
-        "in_deck": 62,
-        "box": 7,
+        "in_deck": 60,
+        "box": 8,
         "elsewhere": 4,
-        "buy": 22,
+        "buy": 23,
         "free": 1
       },
       "unsourced": [
         "Altar of Dementia",
         "Bloodflow Connoisseur",
+        "Bloodthirsty Conqueror",
         "Bloodtracker",
         "Boros Charm",
         "Champion of Dusk",
@@ -16676,10 +17408,15 @@
         },
         {
           "name": "Ancient Tomb",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Anguished Unmaking",
@@ -16774,10 +17511,10 @@
         },
         {
           "name": "Bloodthirsty Conqueror",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Bloodtracker",
@@ -17588,6 +18325,22 @@
           ]
         },
         {
+          "id": "004",
+          "title": "Bloodthirsty Conqueror + Vito: the second infinite, verified on its own terms",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
+          "id": "006",
+          "title": "Sanguine Bond + Bloodthirsty Conqueror: the third pairing closes the set",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
+        },
+        {
           "id": "008",
           "title": "Purphoros through the doublers: damage per two-mana Vampire",
           "checker": "pass",
@@ -17616,6 +18369,14 @@
             "Plains",
             "Vampire Socialite"
           ]
+        },
+        {
+          "id": "012",
+          "title": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted",
+          "checker": "pass",
+          "names": [
+            "Bloodthirsty Conqueror"
+          ]
         }
       ]
     }
@@ -17635,46 +18396,30 @@
     "stall": {
       "by_turn": {
         "1": {
-          "rate": 0.7917,
+          "rate": 0.8316,
           "ci95": [
-            0.7836,
-            0.7995
+            0.8241,
+            0.8388
           ],
           "n": 10000
         },
         "2": {
-          "rate": 0.2758,
+          "rate": 0.2922,
           "ci95": [
-            0.2671,
-            0.2846
+            0.2834,
+            0.3012
           ],
           "n": 10000
         },
         "3": {
-          "rate": 0.0999,
+          "rate": 0.0874,
           "ci95": [
-            0.0942,
-            0.1059
+            0.082,
+            0.0931
           ],
           "n": 10000
         },
         "4": {
-          "rate": 0.0513,
-          "ci95": [
-            0.0471,
-            0.0558
-          ],
-          "n": 10000
-        },
-        "5": {
-          "rate": 0.0368,
-          "ci95": [
-            0.0333,
-            0.0407
-          ],
-          "n": 10000
-        },
-        "6": {
           "rate": 0.0386,
           "ci95": [
             0.035,
@@ -17682,112 +18427,128 @@
           ],
           "n": 10000
         },
-        "7": {
-          "rate": 0.0521,
+        "5": {
+          "rate": 0.0375,
           "ci95": [
-            0.0479,
-            0.0566
+            0.034,
+            0.0414
+          ],
+          "n": 10000
+        },
+        "6": {
+          "rate": 0.0372,
+          "ci95": [
+            0.0337,
+            0.0411
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.054,
+          "ci95": [
+            0.0497,
+            0.0586
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0638,
+          "rate": 0.0665,
           "ci95": [
-            0.0592,
-            0.0688
+            0.0618,
+            0.0716
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0805,
+          "rate": 0.0883,
           "ci95": [
-            0.0753,
-            0.086
+            0.0829,
+            0.094
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0765,
+          "rate": 0.0759,
           "ci95": [
-            0.0715,
-            0.0819
+            0.0709,
+            0.0813
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1609,
+        "rate": 0.1504,
         "ci95": [
-          0.1538,
-          0.1682
+          0.1435,
+          0.1575
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7753,
-        "hand_empty": 1859,
-        "mana_short": 5894
+        "stall_turns": 7776,
+        "hand_empty": 1923,
+        "mana_short": 5853
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 2729,
-        "hand_empty": 1737,
-        "mana_short": 992,
+        "stall_turns": 2847,
+        "hand_empty": 1806,
+        "mana_short": 1041,
         "stall_rate": {
-          "rate": 0.0682,
+          "rate": 0.0712,
           "ci95": [
-            0.0658,
-            0.0707
+            0.0687,
+            0.0737
           ],
           "n": 40000
         },
         "vs_floor": {
-          "from_turn": 5,
-          "floor_rate": 0.0368,
-          "diff": 0.0314,
+          "from_turn": 6,
+          "floor_rate": 0.0372,
+          "diff": 0.034,
           "ci95": [
-            0.0269,
-            0.0357
+            0.0294,
+            0.0383
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 3.9473,
+            "rate": 4.2101,
             "ci95": [
-              3.9051,
-              3.9895
+              4.1649,
+              4.2553
             ],
-            "sd": 2.1533,
+            "sd": 2.3065,
             "n": 10000
           },
           "8": {
-            "rate": 3.8597,
+            "rate": 4.163,
             "ci95": [
-              3.8131,
-              3.9063
+              4.1124,
+              4.2136
             ],
-            "sd": 2.3798,
+            "sd": 2.581,
             "n": 10000
           },
           "9": {
-            "rate": 3.6547,
+            "rate": 3.8184,
             "ci95": [
-              3.606,
-              3.7034
+              3.7664,
+              3.8704
             ],
-            "sd": 2.4855,
+            "sd": 2.6516,
             "n": 10000
           },
           "10": {
-            "rate": 3.8044,
+            "rate": 4.1259,
             "ci95": [
-              3.7516,
-              3.8572
+              4.0681,
+              4.1837
             ],
-            "sd": 2.6919,
+            "sd": 2.9506,
             "n": 10000
           }
         },
@@ -17797,43 +18558,43 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4727,
+        "rate": 0.4674,
         "ci95": [
-          0.4629,
-          0.4825
+          0.4576,
+          0.4772
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2931,
+      "missed_land_drop_rate": 0.2756,
       "mulliganed": {
-        "rate": 0.2297,
+        "rate": 0.227,
         "ci95": [
-          0.2216,
-          0.238
+          0.2189,
+          0.2353
         ],
         "n": 10000
       },
       "mean_mana_by_turn": {
-        "1": 0.999,
+        "1": 0.998,
         "2": 2.14,
-        "3": 3.5,
-        "4": 4.412,
-        "5": 5.141,
-        "6": 5.817,
-        "7": 6.473,
-        "8": 7.163,
-        "9": 7.861,
-        "10": 8.548
+        "3": 3.489,
+        "4": 4.408,
+        "5": 5.147,
+        "6": 5.851,
+        "7": 6.542,
+        "8": 7.274,
+        "9": 8.023,
+        "10": 8.768
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.19
+      "mana_stdev_turn_five": 1.2016
     },
-    "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+    "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
   },
   "bracket": {
-    "floor": 4,
-    "floor_name": "Optimized",
+    "floor": 3,
+    "floor_name": "Upgraded",
     "target": 4,
     "within_target": true
   },
@@ -17844,36 +18605,19 @@
     "as_of": "2026-11-05",
     "source_updated_at": "2026-11-05T20:22:52.928202+00:00",
     "url": "https://deckcheck.co/app/decklist/qb9leISdSZX6",
-    "stale_list": false,
+    "stale_list": true,
     "readings_n": 3,
     "omni": {
-      "benchmarks": {
-        "A1": "A",
-        "A2": "S",
-        "I1": "B",
-        "I2": "B",
-        "P1": "A",
-        "P2": "B",
-        "P3": "B",
-        "R1": "A",
-        "R2": "A",
-        "S1": "B",
-        "S2": "A",
-        "S3": "A"
-      },
-      "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
-      "median_bracket": 3,
-      "median_score": 44,
-      "n": 2,
-      "rule": "median_low per benchmark, score and bracket over readings of this exact list — DeckCheck's Omni-Score rule applied to OUR readings; their formula is unpublished and this is not their figure"
+      "absent_because": "no reading of the current list — scan on DeckCheck, then `manamap pilot deckcheck <slug> --write`",
+      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+      "n": 0
     },
     "floor_vs_dti": {
-      "floor": 4,
-      "floor_decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
-      "floor_name": "Optimized",
-      "note": "DeckCheck can only RAISE its own rules floor, so a bracket below ours means their copy is probably an older list — compare source_updated_at; the floor is not lowered",
+      "floor": 3,
+      "floor_decklist_sha256": "e879e40e58068f70cb6d9cf5c9345c32ab3fb2e29dc8285f8956ddaee6f42f2d",
+      "floor_name": "Upgraded",
       "reading_as_of": "2026-11-05",
-      "relation": "dti_lower",
+      "relation": "equal",
       "their_bracket": 3
     },
     "max_age_days": 30
@@ -17881,96 +18625,15 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": 3,
-      "included": 8,
-      "infinite": 8,
+      "highest_bracket": null,
+      "included": 0,
+      "infinite": 0,
       "near": 50,
-      "near_total": 135,
-      "two_card_infinite": 8
+      "near_total": 132,
+      "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
-    "top": [
-      {
-        "id": "690-3966",
-        "cards": [
-          "Sanguine Bond",
-          "Exquisite Blood"
-        ],
-        "produces": [
-          "Infinite lifegain triggers",
-          "Infinite lifeloss",
-          "Infinite lifegain"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 149139,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "314-3966",
-        "cards": [
-          "Vito, Thorn of the Dusk Rose",
-          "Exquisite Blood"
-        ],
-        "produces": [
-          "Infinite lifegain triggers",
-          "Infinite lifeloss",
-          "Infinite lifegain"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 124899,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "314-6191",
-        "cards": [
-          "Vito, Thorn of the Dusk Rose",
-          "Bloodthirsty Conqueror"
-        ],
-        "produces": [
-          "Infinite lifegain triggers",
-          "Infinite lifeloss",
-          "Infinite lifegain"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 92646,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "690-6191",
-        "cards": [
-          "Sanguine Bond",
-          "Bloodthirsty Conqueror"
-        ],
-        "produces": [
-          "Infinite lifegain triggers",
-          "Infinite lifeloss",
-          "Infinite lifegain"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 77857,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "3966-5755",
-        "cards": [
-          "Exquisite Blood",
-          "Enduring Tenacity"
-        ],
-        "produces": [
-          "Infinite lifegain triggers",
-          "Infinite lifeloss",
-          "Infinite lifegain"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 74875,
-        "assumes_other_commander": false
-      }
-    ]
+    "top": []
   },
   "paper": {
     "version": 6,
@@ -18013,7 +18676,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 67,
+          "value": 68,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -18031,7 +18694,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.947,
+          "value": 5.916,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -18039,7 +18702,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A drain that fires when a creature DIES (a reachable second line, not the kill's leg)": {
-          "value": 44,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A drain that fires when a creature DIES (a reachable second line, not the kill's leg)\" by turn six",
@@ -18055,7 +18718,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A Vampire lord or anthem drawn (the combat plan)": {
-          "value": 35,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A Vampire lord or anthem drawn (the combat plan)' by turn six",
@@ -18063,7 +18726,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)": {
-          "value": 12,
+          "value": 0,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)' by turn six",
@@ -18071,7 +18734,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Ramp or fixing drawn": {
-          "value": 61,
+          "value": 60,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
@@ -18079,7 +18742,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A draw engine drawn": {
-          "value": 63,
+          "value": 64,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A draw engine drawn' by turn six",
@@ -18087,7 +18750,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Protection held for the swarm": {
-          "value": 44,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Protection held for the swarm' by turn six",
@@ -18095,7 +18758,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)' by turn six",
@@ -18111,7 +18774,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A castable Vampire drawn — the eminence trigger every kill proof opens on": {
-          "value": 70,
+          "value": 72,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A castable Vampire drawn — the eminence trigger every kill proof opens on' by turn six",
@@ -18119,7 +18782,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A free sacrifice outlet drawn (bloodline's new engine)": {
-          "value": 53,
+          "value": 55,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A free sacrifice outlet drawn (bloodline's new engine)\" by turn six",
@@ -18183,7 +18846,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 78,
+          "value": 77,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -18194,15 +18857,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.532,
-            "2": 2.15,
-            "3": 3.494,
-            "4": 4.403,
-            "5": 5.136,
-            "6": 5.813,
-            "7": 6.466,
-            "8": 7.148,
-            "9": 7.84
+            "10": 8.774,
+            "2": 2.142,
+            "3": 3.475,
+            "4": 4.396,
+            "5": 5.15,
+            "6": 5.853,
+            "7": 6.54,
+            "8": 7.28,
+            "9": 8.031
           },
           "tier": "data",
           "weight": "detail",
@@ -18213,15 +18876,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.551,
+            "10": 0.581,
             "2": 0.994,
-            "3": 0.881,
-            "4": 0.749,
-            "5": 0.648,
-            "6": 0.576,
-            "7": 0.55,
-            "8": 0.546,
-            "9": 0.56
+            "3": 0.888,
+            "4": 0.76,
+            "5": 0.66,
+            "6": 0.603,
+            "7": 0.582,
+            "8": 0.59,
+            "9": 0.606
           },
           "tier": "data",
           "weight": "detail",
@@ -18231,16 +18894,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.22,
-            "10": 10.095,
-            "2": 0.809,
-            "3": 2.07,
-            "4": 2.791,
-            "5": 3.476,
-            "6": 4.213,
-            "7": 5.261,
-            "8": 6.445,
-            "9": 7.743
+            "1": 0.233,
+            "10": 10.978,
+            "2": 0.885,
+            "3": 2.154,
+            "4": 2.846,
+            "5": 3.531,
+            "6": 4.328,
+            "7": 5.501,
+            "8": 6.873,
+            "9": 8.431
           },
           "tier": "data",
           "weight": "detail",
@@ -18250,14 +18913,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 414,
-            "1": 1728,
-            "2": 3045,
+            "0": 411,
+            "1": 1781,
+            "2": 2960,
             "3": 2859,
-            "4": 1445,
-            "5": 443,
-            "6": 58,
-            "7": 8
+            "4": 1492,
+            "5": 425,
+            "6": 62,
+            "7": 10
           },
           "tier": "data",
           "weight": "detail",
@@ -18266,12 +18929,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1645,
-            "5": 4,
-            "6": 256,
-            "7": 1431,
-            "8": 2573,
-            "9": 2206
+            "10": 1642,
+            "5": 10,
+            "6": 268,
+            "7": 1656,
+            "8": 2694,
+            "9": 2107
           },
           "tier": "data",
           "weight": "detail",
@@ -18287,12 +18950,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.947,
-    "commander_cast_by_turn_6_pct": 67,
+    "commander_mean_cast_turn": 5.916,
+    "commander_cast_by_turn_6_pct": 68,
     "targets": [
       {
         "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 45
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
@@ -18300,27 +18963,27 @@
       },
       {
         "label": "A Vampire lord or anthem drawn (the combat plan)",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 36
       },
       {
         "label": "THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
-        "by_turn_6_pct": 12
+        "by_turn_6_pct": 0
       },
       {
         "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 61
+        "by_turn_6_pct": 60
       },
       {
         "label": "A draw engine drawn",
-        "by_turn_6_pct": 63
+        "by_turn_6_pct": 64
       },
       {
         "label": "Protection held for the swarm",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 45
       },
       {
         "label": "An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       },
       {
         "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
@@ -18328,27 +18991,27 @@
       },
       {
         "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "by_turn_6_pct": 70
+        "by_turn_6_pct": 72
       },
       {
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 55
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.436,
+      "mean_kill_turn": 8.378,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 3,
-      "kill_by_turn_8_pct": 43,
+      "kill_by_turn_8_pct": 46,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 19,
+      "no_kill_by_max_turn_pct": 16,
       "kill_turn_histogram": {
-        "10": 1645,
-        "5": 4,
-        "6": 256,
-        "7": 1431,
-        "8": 2573,
-        "9": 2206
+        "10": 1642,
+        "5": 10,
+        "6": 268,
+        "7": 1656,
+        "8": 2694,
+        "9": 2107
       }
     }
   },
@@ -18373,7 +19036,8 @@
     "under": [
       "mana-base",
       "card-advantage",
-      "interaction-breadth"
+      "interaction-breadth",
+      "tutors"
     ],
     "over": [
       "protection"
@@ -18530,7 +19194,7 @@
     "stale": true,
     "ran_on_decklist_sha256": "7be137d0bfeb6a5ccc7337486ef4da50a312380c0eaf5f34b7325f0c4d37ffc6",
     "ran_on_version": 3,
-    "current_version": 6,
+    "current_version": null,
     "runs_on_current_list": 0,
     "games": 200,
     "wins": 48,
@@ -18593,7 +19257,7 @@
     }
   },
   "decisions": {
-    "count": 18,
+    "count": 20,
     "awaiting_outcome": [
       {
         "id": "002",
@@ -18615,42 +19279,16 @@
         "pod": null,
         "runs_of_merged_list": 0,
         "closable": false
+      },
+      {
+        "id": "020",
+        "branch": "bracket3-v1",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
       }
     ],
     "latest": [
-      {
-        "id": "014",
-        "at": "2026-10-19T12:10:51-07:00",
-        "kind": "reject",
-        "branch": "newblood-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "not met",
-          "forge_delta": null,
-          "forge_ci95": null,
-          "pod": null
-        },
-        "realised": null
-      },
-      {
-        "id": "015",
-        "at": "2026-10-19T12:10:59-07:00",
-        "kind": "reject",
-        "branch": "sergeant-v1",
-        "as_version": null,
-        "predicted": {
-          "endpoint": "kill_by_8",
-          "grade": "not met",
-          "forge_delta": -0.188,
-          "forge_ci95": [
-            -0.3374,
-            0.0033
-          ],
-          "pod": "standard-v3"
-        },
-        "realised": null
-      },
       {
         "id": "016",
         "at": "2026-10-20T10:27:25-07:00",
@@ -18695,12 +19333,44 @@
           "pod": null
         },
         "realised": null
+      },
+      {
+        "id": "019",
+        "at": "2026-11-10T15:10:06-08:00",
+        "kind": "propose",
+        "branch": "bracket3-v1",
+        "as_version": "v3.0.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "020",
+        "at": "2026-11-10T15:11:54-08:00",
+        "kind": "merge",
+        "branch": "bracket3-v1",
+        "as_version": "v3.0.0",
+        "predicted": {
+          "endpoint": null,
+          "grade": null,
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
       }
     ]
   },
   "next": [
-    "branch `bracket3-v1`: 3 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch bracket3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `bracket3-v1` needs 2 card(s) sourced — `manamap pilot deck-branch edgar-vampires source bracket3-v1`",
+    "2 artifact(s) fail their own gate (engine, rating.json) — `deck-status edgar-vampires` names them; fix before anything else reads them",
+    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
+    "DTI (2026-11-05) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck edgar-vampires --write`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×6",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
