@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
-- **Version:** VNone + uncommitted edits · **status:** sleeved since 2026-10-20
+- **Version:** v3.0.0 (V7) · **status:** sleeved since 2026-11-10
 - **Colours:** WBR · **lands:** 35 · **bracket floor:** 3 (Upgraded) · **DTI:** 44/96 → B3 (deckcheck.co, 2026-11-05, 3 readings) — older list
 - **Combos:** 0 known lines (0 infinite, 0 two-card) · 132 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=edgar-vampires) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=edgar-vampires)
@@ -104,7 +104,7 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **68%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -112,7 +112,6 @@ Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each 
 - A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **45%**
 - A token multiplier or extra token-maker drawn: **25%**
 - A Vampire lord or anthem drawn (the combat plan): **36%**
-- THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest): **0%**
 - Ramp or fixing drawn: **60%**
 - A draw engine drawn: **64%**
 - Protection held for the swarm: **45%**
@@ -120,6 +119,7 @@ Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each 
 - THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **2%**
 - A castable Vampire drawn — the eminence trigger every kill proof opens on: **72%**
 - A free sacrifice outlet drawn (bloodline's new engine): **55%**
+- A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table): **44%**
 - share of opening sevens the model would keep: **77%**
 - Colour on curve (lands + rocks): W 93%, B 92%, R 91%
 - Forge (an optional probe, not a gate): last run 2026-10-02, 48/200 won (31% (95% CI 24%–39%)) on V3 — on an older list
@@ -145,6 +145,7 @@ Six games are logged, all on lists before v3.0.0 (the record block counts them).
 ## Change history
 
 <!-- ctx:gen history -->
+- **v3.0.0 · V7** (2026-11-10) — in: Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper; out: Ancient Tomb, Bloodthirsty Conqueror, Enlightened Tutor, Exquisite Blood. _bracket3-v1 merged: Edgar at bracket 3 — the two-card infinites gone, drain kept_
 - **v2.1.0 · V6** (2026-10-20) — in: Anowon, the Ruin Sage, Bloodghast, Captivating Vampire, Clavileño, First of the Blessed, Drana and Linvala, Enduring Tenacity, Exotic Orchard, Morbid Opportunist …; out: Bloodtracker, Boros Charm, Cosmos Elixir, Despark, Falkenrath Aristocrat, Florian, Voldaren Scion, Gifted Aetherborn, Herald's Horn …. _mean-v2 merged 2026-10-20: the profile package, four proactive-denial Vampires, Bloodghast, a land pass — fourteen swaps on the scan-confirmed v2.0.1_
   - merge `mean-v2`: objective extra_cards_8 read **met** — played on printed proxies from 2026-10-20; the unowned cards are on the order list
 - **v2.0.1 · V5** (2026-10-20) — in: Charismatic Conqueror, Cordial Vampire, Florian, Voldaren Scion; out: Knight of the Ebon Legion, Polluted Delta, Skullclamp. _the sleeved list as scanned 2026-10-20: three cards of drift corrected (Conqueror, Cordial, Florian in; Knight, Polluted Delta, Skullclamp out)_

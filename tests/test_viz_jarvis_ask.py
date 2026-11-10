@@ -38,10 +38,26 @@ pytestmark = pytest.mark.browser
 # A LIVE branch read from the deck's info.json, never pinned: meren-recursion's
 # drain-density-v1 was rejected 2026-11-05, then sharknado's draw-engine-v1 merged 2026-11-06,
 # and each pin broke CI the day the pilot decided the branch.
-BRANCH_DECK = "sharknado"
-_INFO = DECKS_DIR / BRANCH_DECK / "info.json"   # absent in the isolation tier, where no browser test runs
-BRANCH = next((b["name"] for b in (json.loads(_INFO.read_text())["branches"] if _INFO.exists() else [])
-               if b.get("state") in ("OPEN", "PROPOSED", "STAGED", "MEASURED")), None)
+# NOT EVEN THE DECK IS PINNED (2026-11-10): sharknado's shabraz-v1 merged and left it with no
+# live branch, so the first deck (sharknado preferred) that has one is used. Info files are absent
+# in the isolation tier, where no browser test runs.
+_LIVE = ("OPEN", "PROPOSED", "STAGED", "MEASURED")
+
+
+def _live_branch():
+    order = ["sharknado"] + sorted(p.name for p in DECKS_DIR.iterdir() if p.is_dir()) \
+        if DECKS_DIR.exists() else []
+    for slug in order:
+        info = DECKS_DIR / slug / "info.json"
+        if not info.exists():
+            continue
+        for b in json.loads(info.read_text()).get("branches") or []:
+            if b.get("state") in _LIVE:
+                return slug, b["name"]
+    return "sharknado", None
+
+
+BRANCH_DECK, BRANCH = _live_branch()
 EMB = "embeddings_cardbert.bin"
 
 
@@ -221,7 +237,7 @@ def test_a_branch_row_asks_for_a_review_and_without_serve_says_so(browser, viz_s
         page.goto(f"{viz_server}/viz/branch.html?deck={BRANCH_DECK}&branch={BRANCH}")
         page.wait_for_selector("#branchAsk .br-jarvis", timeout=BOOT_TIMEOUT_MS)
         page.click("#branchAsk .br-jarvis")
-        assert page.input_value("#mmAsk .mm-ask-text") == f"Review branch {BRANCH} on Sharknado"
+        assert page.input_value("#mmAsk .mm-ask-text") == f"Review branch {BRANCH} on {name}"
         assert page.js_errors == []
     finally:
         ctx.close()

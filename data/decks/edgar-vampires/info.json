@@ -14,20 +14,14 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 13,
+    "complete": 15,
     "of": 19,
     "stale": [
       "frame",
-      "map",
-      "tutors",
-      "prose"
+      "map"
     ],
     "older_model": [],
-    "invalid": [
-      "engine",
-      "CONTEXT.md",
-      "rating.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "brief"
@@ -18596,7 +18590,7 @@
   "bracket": {
     "floor": 3,
     "floor_name": "Upgraded",
-    "target": 4,
+    "target": 3,
     "within_target": true
   },
   "deckcheck": {
@@ -18726,14 +18720,6 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)": {
-          "value": 0,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
         "target:Ramp or fixing drawn": {
           "value": 60,
           "tier": "data",
@@ -18787,6 +18773,14 @@
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A free sacrifice outlet drawn (bloodline's new engine)\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)": {
+          "value": 44,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -18967,10 +18961,6 @@
         "by_turn_6_pct": 36
       },
       {
-        "label": "THE SURVIVING INFINITE (stacks 004, 006 and 012): a loss-to-gain half (Bloodthirsty Conqueror, Exquisite Blood) + a gain-to-loss half (Vito, Sanguine Bond, Marauding Blight-Priest)",
-        "by_turn_6_pct": 0
-      },
-      {
         "label": "Ramp or fixing drawn",
         "by_turn_6_pct": 60
       },
@@ -18997,6 +18987,10 @@
       {
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
         "by_turn_6_pct": 55
+      },
+      {
+        "label": "A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)",
+        "by_turn_6_pct": 44
       }
     ],
     "combat": {
@@ -19022,10 +19016,10 @@
     "basis": "diagnostic.json"
   },
   "engine": {
-    "thesis": "Edgar mints a 1/1 Vampire from the command zone on every Vampire cast, the sacrifice outlets - six cost no mana - turn those bodies into death events, four death drains and four gain-to-loss converters (three read 'that much', Blight-Priest reads 'each opponent loses 1') bill the table on every one of them without a point of combat damage, and the game ends when a converter meets Bloodthirsty Conqueror - three verified two-card infinites, all through one card, or an attack through Bloodletter that drains fourteen a seat before blockers.",
-    "critic": "pass",
-    "lines": 18,
-    "verified_lines": 5
+    "thesis": "Edgar turns every Vampire cast into a 1/1 from the command zone, free outlets turn those bodies into deaths, death drains bill the table on each one and four gain-to-loss converters bill it again on every gain (three by the amount, Marauding Blight-Priest by the event) - and with the two-card infinite cut for bracket 3, the game ends by accumulation, its one verified finisher a Bloodletter attack (stack 003: seven Sanctum Seeker triggers, each doubled, fourteen a seat).",
+    "critic": "fail",
+    "lines": 10,
+    "verified_lines": 1
   },
   "diagnosis": {
     "verdict": "It develops: a castable Vampire is drawn in 95.3% of goldfish games and the turn-3 land drop lands at 0.917. On standard-v3 this list read 48/155 (0.31), 40/176 (0.227) and 48/171 (0.281) across one 200-game run and the two arms of the 2026-10-03 A/A, pooled 136/502 = 0.271; the table's 0.233 null is plain-harness and is not compared. What limits it is input AND refuel, and neither is ranked above the other: ramp is 8 against 10 and black 32 against 36, the pilot reports running out of both cards and mana at T7/T8, and no Forge arm has isolated either.",
@@ -19059,33 +19053,38 @@
   "open_questions": [
     {
       "from": "engine",
-      "question": "On a v2.1.0 board - Edgar in the command zone, Anointed Procession and Elspeth, Storm Slayer on the battlefield - cast Tithe Drinker: how many 1/1 Vampire tokens does the single eminence trigger create, and does Elspeth's replacement apply to a trigger resolving from the command zone? (The 002/010 shape, re-run on cards still in the 99.)",
+      "question": "On a v3.0.0 board on YOUR turn - Bloodletter of Aclazotz, Vito, Thorn of the Dusk Rose, Marauding Blight-Priest and Cruel Celebrant on the battlefield, Viscera Seer sacrifices an eminence token: how much life does each opponent lose in total, and does Bloodletter double Vito's and Blight-Priest's triggered losses as well as Celebrant's?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Exquisite Blood + Vito, Thorn of the Dusk Rose and Exquisite Blood + Sanguine Bond on a current board, seeded by a Blood Artist trigger or Tithe Drinker's lifelink: deterministic, shortcut-legal and a table kill on the same terms as 004/006?",
+      "question": "Crossway Troublemakers with five attacking Vampires connecting, Vito and Marauding Blight-Priest on the battlefield: is the simultaneous lifelink damage one life-gain event or one per source, and so how many Vito and Blight-Priest triggers result?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Marauding Blight-Priest + Bloodthirsty Conqueror with three opponents: Blight-Priest's 'each opponent loses 1 life' makes three separate loss events per gain, so Conqueror triggers three times and you gain 3 - does that loop kill the table, is it shortcut-legal, and what happens when one opponent leaves mid-loop?",
+      "question": "On a v3.0.0 board - Edgar in the command zone, Anointed Procession and Elspeth, Storm Slayer on the battlefield - cast Tithe Drinker: how many 1/1 Vampire tokens does the single eminence trigger create? (The 002/010 shape, re-run on cards still in the 99.)",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "Wispdrinker Vampire with a doubled eminence event (two 1/1 tokens entering at once): does 'whenever another creature you control with power 2 or less enters' trigger once per token, and does Welcoming Vampire's once-per-turn clause fire on the same event?",
+      "question": "Kalitas, Traitor of Ghet and Anowon, the Ruin Sage on your board: at your upkeep, does an opponent's sacrificed nontoken non-Vampire become your Zombie, and on the following upkeep is that Zombie a legal (and the only forced) choice for your own Anowon sacrifice, firing death drains?",
       "settled_by": "resolve-stack"
     },
     {
       "from": "engine",
-      "question": "For a two-piece loop whose halves are a creature and an enchantment, under instant-speed removal at a bracket-4 table: which half to land first, and whether to hold protection or a tutor for the second - what does the strategy corpus say about sequencing and protecting a two-card combo?",
+      "question": "Without the two-card infinite, what share of goldfish games end on drain versus combat damage, and at what median turn - read on the v3.0.0 sha with the death and drain channels on?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "engine",
+      "question": "For a bracket-3 aristocrats-drain deck with no infinite, which finisher shape does the strategy corpus prefer: a turn-doubler (Bloodletter) on an attack, or gain-to-loss converters riding lifelink - and how many of each should a 99 carry?",
       "settled_by": "research-strategy"
     },
     {
       "from": "engine",
-      "question": "How much does the free-outlet conversion count (1.41 sacrifices by turn ten) move if a body returns on every land drop - Bloodghast's landfall recursion, which the model does not see?",
-      "settled_by": "goldfish"
+      "question": "On a v3.0.0 board - Edgar Markov in the command zone, Sanctum Seeker and Bloodletter of Aclazotz on the battlefield, {B}{B} available - cast Tithe Drinker, pass to combat and attack with every Vampire: how many tokens does eminence make, how many Sanctum Seeker triggers fire, and what does each opponent lose?",
+      "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
@@ -19368,12 +19367,12 @@
     ]
   },
   "next": [
-    "3 artifact(s) fail their own gate (engine, CONTEXT.md, rating.json) — `deck-status edgar-vampires` names them; fix before anything else reads them",
-    "stale: frame, map, tutors, prose — regenerate against the current list (`/publish-deck` sequences it)",
+    "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "DTI (2026-11-05) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck edgar-vampires --write`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×6",
+    "engine.json's critic verdict is 'fail' — `/analyze-engine edgar-vampires`",
+    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×7",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

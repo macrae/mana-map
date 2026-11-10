@@ -1,12 +1,12 @@
 {
  "slug": "edgar-vampires",
  "tier": "★",
- "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 2 decks and claims no significance.",
+ "label": "This rating is ★ coaching: a labelled judgment over ◆ measured inputs. It ranks within a bracket of 5 decks and claims no significance.",
  "bracket": {
-  "key": 4,
+  "key": 3,
   "source": "target",
-  "floor": 4,
-  "floor_name": "Optimized",
+  "floor": 3,
+  "floor_name": "Upgraded",
   "within_target": true
  },
  "components": [
@@ -14,37 +14,26 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1304,
-   "sub_score": 5.8,
+   "weight_effective": 0.2105,
+   "sub_score": 46.3,
    "sub_ci": [
-    5.27,
-    6.37
+    45.7,
+    52.01
    ],
-   "placement": null,
-   "anchor": 5.8,
-   "method": "anchor only (placement withheld): placement of kill_by_turn_8 within bracket 4 (n=2); anchor kill_by_turn_6 / 0.5 for a bracket-4 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
+   "placement": 0.0,
+   "anchor": 92.6,
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
     {
      "figure": "kill_by_turn_8",
-     "value": 0.447,
+     "value": 0.463,
      "ci95": [
-      0.4373,
-      0.4568
+      0.4532,
+      0.4728
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
-    },
-    {
-     "figure": "kill_by_turn_6",
-     "value": 0.029,
-     "ci95": [
-      0.0259,
-      0.0325
-     ],
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.kill_by_turn_6",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     }
    ],
    "citations": [
@@ -59,34 +48,34 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.087,
-   "sub_score": 100.0,
+   "weight_effective": 0.1404,
+   "sub_score": 75.0,
    "sub_ci": [
-    100.0,
-    100.0
+    69.38,
+    80.62
    ],
-   "placement": null,
+   "placement": 50.0,
    "anchor": 100.0,
-   "method": "anchor only (placement withheld): placement of missed_land_drop_rate (lower is better) within bracket 4; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of missed_land_drop_rate (lower is better) within bracket 3; anchor band_score(turn-3 land-drop rate, low 0.74) from the audit's consistency axis",
    "inputs": [
     {
      "figure": "missed_land_drop_rate",
-     "value": 0.2238,
+     "value": 0.219,
      "ci95": [
-      0.2157,
-      0.2321
+      0.211,
+      0.2272
      ],
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.consistency",
-     "value": 0.889,
+     "value": 0.888,
      "ci95": null,
      "n": null,
      "source": "deck-audit#consistency (goldfish land_drop_hit_rate_by_turn['3'])",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     }
    ],
    "citations": [
@@ -101,15 +90,15 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1304,
-   "sub_score": 80.0,
+   "weight_effective": 0.2105,
+   "sub_score": 65.0,
    "sub_ci": [
-    80.0,
-    80.0
+    59.33,
+    70.56
    ],
-   "placement": null,
+   "placement": 50.0,
    "anchor": 80.0,
-   "method": "anchor only (placement withheld): placement of answer_cards within bracket 4; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
@@ -117,7 +106,7 @@
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.interaction-breadth",
@@ -125,7 +114,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction-breadth (classes answered of 5)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     }
    ],
    "citations": [
@@ -140,14 +129,14 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1413,
-   "sub_score": 81.43,
+   "weight_effective": 0.2281,
+   "sub_score": 82.86,
    "sub_ci": [
-    81.43,
-    81.43
+    82.86,
+    82.86
    ],
    "placement": null,
-   "anchor": 81.43,
+   "anchor": 82.86,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
@@ -156,7 +145,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#mana-base (verdict under)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.ramp",
@@ -164,15 +153,15 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#ramp (verdict at)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.card-advantage",
-     "value": 7,
+     "value": 8,
      "ci95": null,
      "n": null,
      "source": "deck-audit#card-advantage (verdict under)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.interaction",
@@ -180,7 +169,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction (verdict at)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.sweepers",
@@ -188,7 +177,7 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#sweepers (verdict at)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.protection",
@@ -196,15 +185,15 @@
      "ci95": null,
      "n": null,
      "source": "deck-audit#protection (verdict over)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
      "figure": "audit.threat-density",
-     "value": 17,
+     "value": 15,
      "ci95": null,
      "n": null,
      "source": "deck-audit#threat-density (verdict at)",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     }
    ],
    "citations": [
@@ -246,53 +235,14 @@
    ]
   },
   {
-   "name": "dti",
-   "weight": 0.15,
-   "weight_validity": 1.0,
-   "weight_effective": 0.163,
-   "sub_score": 68.75,
-   "sub_ci": [
-    62.18,
-    75.31
-   ],
-   "placement": null,
-   "anchor": 68.75,
-   "method": "anchor only (placement withheld): placement of DeckCheck's score (of 96) within bracket 4; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
-   "inputs": [
-    {
-     "figure": "dti.score",
-     "value": 46,
-     "ci95": null,
-     "n": 2,
-     "source": "deckcheck.json#readings[-1].score",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
-    },
-    {
-     "figure": "dti.rubric_mean",
-     "value": 68.75,
-     "ci95": null,
-     "n": 1,
-     "source": "deckcheck.json#readings[-1].benchmarks",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24"
-    }
-   ],
-   "citations": [
-    {
-     "kind": "skeleton",
-     "ref": "skeleton:dti",
-     "quote": "DeckCheck Threat Index"
-    }
-   ]
-  },
-  {
    "name": "table_record",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1304,
+   "weight_effective": 0.2105,
    "sub_score": 23.67,
    "sub_ci": [
-    24.34,
-    63.57
+    24.62,
+    63.13
    ],
    "placement": null,
    "anchor": 23.67,
@@ -321,12 +271,20 @@
  ],
  "withheld": [
   {
+   "component": "dti",
+   "reason": "the DeckCheck reading describes another list — `deckcheck edgar-vampires --write` after a rescan"
+  },
+  {
    "component": "pilot_feel",
    "reason": "0 surveyed game(s); 3 needed"
   },
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
+  },
+  {
+   "component": "judgment",
+   "reason": "no deck-rater pass yet"
   }
  ],
  "limits": [
@@ -339,93 +297,44 @@
   "The weights are a Dirichlet prior (κ = 20.0) and the inputs are drawn from their posteriors: `score` is the median of 2000 seeded draws, `score_ci` its 90% interval, and every sd in `uncertainty` is declared, not estimated.",
   "A placement within a group of n is a (n−1)-point scale and earns the share λ = (n−1)/(n−1+4) of its component, the rest going to the cited anchor; at n=3 that is one third.",
   "A divergent `concordance` — the deck's instruments rank it far apart — prints the grade as a range, never a letter, and the judgment must address every outlier instrument.",
-  "rank over n=2 decks; no significance claim"
+  "rank over n=5 decks; no significance claim"
  ],
  "context": {
   "dti": {
-   "score": 46,
+   "score": 44,
    "max_score": 96,
-   "bracket": 4,
-   "as_of": "2026-10-20",
-   "stale_list": false
+   "bracket": 3,
+   "as_of": "2026-11-05",
+   "stale_list": true
   },
-  "floor_vs_target": "floor 4, target 4"
+  "floor_vs_target": "floor 3, target 3"
  },
- "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
- "fleet_sha": "a29575e16551",
+ "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+ "fleet_sha": "5c30a301e0f1",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [
-  {
-   "question": "How often does the deck assemble a drain loop by its clock, and does the Forge AI pilot it? The goldfish kill clock cannot answer either.",
-   "settled_by": "goldfish"
-  },
-  {
-   "question": "Do games on v2.1.0 move the table record off its old-list zero?",
-   "settled_by": "rate"
-  }
- ],
- "iterations": 3,
- "verifier": {
-  "verdict": "pass",
-  "findings": [
-   {
-    "where": "judgment.sub_score",
-    "status": "supported",
-    "note": "58 vs code_score 58.4 is the neutral point; the argument claims no gap and states that neither cited unmeasured fact (assembly rate, v2.1.0 games) is sized in the record. Nothing argues a gap, so none is applied. Concordance is withheld (group of 2), so no outlier duty."
-   },
-   {
-    "where": "judgment.citations[0]",
-    "status": "supported",
-    "note": "skeleton:table_record '0 wins in 5 games' matches the component. Caveat: log entry 005 holds two games and 006 two unscored games, so the true game count exceeds 5; the quote is the artifact's own figure and the argument leans on no count."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "kill_by_turn_6 = 0.029 is a real input to speed; used correctly as already counted."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "stack 012 title is verbatim; checker verdict pass; engine.json lists 012 as presentable and says the loop holds through Tenacity's death-return. Used only to say loops exist, not their rate."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "CONTEXT.md line 166 ends 'Nothing has been played with it yet.' verbatim; log.jsonl has no entry on the v2.1.0 sha."
-   },
-   {
-    "where": "open_questions",
-    "status": "supported",
-    "note": "Both are unanswerable from current artifacts (assembly rate unmeasured; no v2.1.0 games); settled_by goldfish and rate are appropriate."
-   },
-   {
-    "where": "components",
-    "status": "supported",
-    "note": "Rerun of rating --json matches rating.json on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
-   }
-  ],
-  "iterations": 3
- },
- "code_score": 58.4,
- "score_point": 58.3,
- "score": 60.4,
+ "open_questions": [],
+ "iterations": 0,
+ "verifier": null,
+ "code_score": 57.8,
+ "score_point": 57.8,
+ "score": 61.5,
  "score_ci": [
-  48.8,
-  69.8
+  51.1,
+  70.3
  ],
  "grade": "C",
  "grade_range": [
-  "D",
+  "C",
   "B"
  ],
- "grade_display": "C",
+ "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.218,
-  "C": 0.721,
-  "D": 0.06,
-  "F": 0.001
+  "B": 0.278,
+  "C": 0.693,
+  "D": 0.03,
+  "F": 0.0
  },
  "uncertainty": {
   "method": "Monte Carlo over a Dirichlet weight prior and the inputs' posteriors, joint within the group",
@@ -441,149 +350,133 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 66.2,
-    "grade": "B"
-   },
-   "mana": {
-    "score": 54.3,
+    "score": 60.9,
     "grade": "C"
    },
-   "resilience": {
+   "mana": {
     "score": 55.0,
     "grade": "C"
    },
-   "construction": {
-    "score": 54.5,
+   "resilience": {
+    "score": 55.9,
     "grade": "C"
    },
-   "dti": {
-    "score": 56.3,
+   "construction": {
+    "score": 50.4,
     "grade": "C"
    },
    "table_record": {
-    "score": 63.5,
-    "grade": "C"
-   },
-   "judgment": {
-    "score": 58.4,
-    "grade": "C"
+    "score": 67.0,
+    "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "speed",
-    "share_now": 0.13,
-    "share_at_flip": 0.019,
+    "component": "table_record",
+    "share_now": 0.211,
+    "share_at_flip": 0.045,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "lower"
    },
    {
-    "component": "mana",
-    "share_now": 0.087,
-    "share_at_flip": 0.234,
+    "component": "construction",
+    "share_now": 0.228,
+    "share_at_flip": 0.449,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
-    "component": "table_record",
-    "share_now": 0.13,
-    "share_at_flip": 0.339,
+    "component": "mana",
+    "share_now": 0.14,
+    "share_at_flip": 0.499,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
+    "component": "speed",
+    "share_now": 0.211,
+    "share_at_flip": 0.747,
     "boundary": 50,
     "grade_at_flip": "D",
-    "direction": "raise"
-   },
-   {
-    "component": "construction",
-    "share_now": 0.141,
-    "share_at_flip": 0.39,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
-    "component": "resilience",
-    "share_now": 0.13,
-    "share_at_flip": 0.399,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
-    "component": "dti",
-    "share_now": 0.163,
-    "share_at_flip": 0.7,
-    "boundary": 65,
-    "grade_at_flip": "B",
     "direction": "raise"
    }
   ]
  },
  "concordance": {
-  "level": "withheld",
-  "why": "group of 2 below 3",
-  "instruments": {},
-  "of": 2,
-  "spread": null,
-  "outliers": [],
-  "group": null
- },
- "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance withheld",
- "judgment": {
-  "sub_score": 58,
-  "argument": "The measured components cannot see two things, and the record does not size either, so I leave the number at the code score. First, speed reads the goldfish clock, but this deck means to win by drain loops. The record holds checker-passed loops, and the newest, Enduring Tenacity with Bloodthirsty Conqueror, is a third drain loop that was verified before it was counted. That a loop is legal says nothing about how often the deck assembles one, and no run has measured that rate; the clock itself shows the deck seldom kills early, with kill_by_turn_6 low, and that stays in the score at full validity. Second, table record holds 0 wins in 5 games, all on earlier lists, and the context says nothing has been played with this one. That figure describes a deck that no longer exists, but no better figure replaces it. Both gaps point upward and neither can be priced from what is recorded. The weak spots I do believe, card advantage, the mana base and interaction breadth, are already in the components, and the list's strength is already carried by the DeckCheck read, so adding either would double count. In a bracket of two decks, the rank means little. So the judgment sits at the code score: games on v2.1.0 and a measured assembly rate would be what moves it.",
-  "citations": [
+  "level": "divergent",
+  "instruments": {
+   "construction": 1.0,
+   "mana": 3.0,
+   "resilience": 3.5,
+   "speed": 5.0
+  },
+  "of": 5,
+  "spread": 1.0,
+  "outliers": [
    {
-    "kind": "skeleton",
-    "ref": "skeleton:table_record",
-    "quote": "0 wins in 5 games"
+    "instrument": "construction",
+    "rank": 1.0,
+    "side": "better"
    },
    {
-    "kind": "skeleton",
-    "ref": "skeleton:speed",
-    "quote": "kill_by_turn_6"
+    "instrument": "mana",
+    "rank": 3.0,
+    "side": "better"
    },
    {
-    "kind": "stack",
-    "ref": "stack:012",
-    "quote": "Enduring Tenacity + Bloodthirsty Conqueror: a third drain loop, or not — verified before it is counted"
+    "instrument": "resilience",
+    "rank": 3.5,
+    "side": "worse"
    },
    {
-    "kind": "context",
-    "ref": "context:history",
-    "quote": "Nothing has been played with it yet."
+    "instrument": "speed",
+    "rank": 5.0,
+    "side": "worse"
    }
   ],
-  "against": {
-   "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
-   "spec_sha": "fd483871b754"
-  },
-  "weight": 0.2,
-  "weight_effective": 0.2174,
-  "sub_ci": [
-   49.95,
-   66.0
-  ]
+  "group": {
+   "kendall_w": 0.18,
+   "p": 0.6269,
+   "p_method": "permutation, 5000 draws, seed 20261019",
+   "m": 4,
+   "n": 5
+  }
  },
+ "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
+ "judgment": null,
  "rank": {
-  "position": 2,
-  "of": 2,
+  "position": 3,
+  "of": 5,
   "group": [
-   "heliod",
-   "edgar-vampires"
+   "sharknado",
+   "gishath",
+   "edgar-vampires",
+   "ur-dragon",
+   "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.12,
-   "2": 0.88
+   "1": 0.0,
+   "2": 0.174,
+   "3": 0.231,
+   "4": 0.321,
+   "5": 0.275
   },
   "basis": {
    "edgar-vampires": "this document",
-   "heliod": "rating.json judgment"
+   "gishath": "rating.json judgment",
+   "goblin-storm": "skeleton",
+   "sharknado": "rating.json judgment",
+   "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "heliod": 65.0,
-   "edgar-vampires": 60.4
+   "sharknado": 83.4,
+   "gishath": 67.3,
+   "edgar-vampires": 61.5,
+   "ur-dragon": 60.8,
+   "goblin-storm": 60.4
   }
  }
 }
