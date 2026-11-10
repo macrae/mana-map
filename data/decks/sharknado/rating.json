@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.1846,
    "sub_score": 100.0,
    "sub_ci": [
-    93.55,
+    93.44,
     100.0
    ],
    "placement": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1778,
+   "weight_effective": 0.1231,
    "sub_score": 100.0,
    "sub_ci": [
-    93.57,
+    93.64,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.1846,
    "sub_score": 67.14,
    "sub_ci": [
-    60.63,
-    73.52
+    60.79,
+    73.51
    ],
    "placement": 50.0,
    "anchor": 80.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2889,
+   "weight_effective": 0.2,
    "sub_score": 76.79,
    "sub_ci": [
     76.79,
@@ -251,10 +251,6 @@
   {
    "component": "forge",
    "reason": "no Forge run on the current list (latest run describes an older list)"
-  },
-  {
-   "component": "judgment",
-   "reason": "judgment written against 36d865a66e2c"
   }
  ],
  "limits": [
@@ -283,15 +279,73 @@
  "fleet_sha": "754088caa22e",
  "model_version": "fd483871b754",
  "spec_version": 2,
- "open_questions": [],
- "iterations": 0,
- "verifier": null,
+ "open_questions": [
+  {
+   "question": "Does Swiftfoot Boots on the turn Shabraz lands give hexproof and haste as the protection line claims (no passing stack has it)?",
+   "settled_by": "resolve-stack"
+  },
+  {
+   "question": "Do the draw doublers (Teferi's Ageless Insight, Bard) turn each draw into two Shabraz counters, and does doubled combat damage count in full as commander damage?",
+   "settled_by": "resolve-stack"
+  },
+  {
+   "question": "How often is Shabraz protected when he lands on the new list, and how often does a cheap Human carry counters in the air?",
+   "settled_by": "goldfish"
+  }
+ ],
+ "iterations": 3,
+ "verifier": {
+  "verdict": "pass",
+  "findings": [
+   {
+    "where": "judgment.sub_score",
+    "status": "supported",
+    "note": "84 vs code_score 84.5: no gap claimed; scorecard diff identical (components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity). Round-2 double count removed."
+   },
+   {
+    "where": "judgment.argument",
+    "status": "supported",
+    "note": "Concordance is mixed, not divergent; the one outlier (resilience, worse) is addressed as capacity, with no gap claimed. Pro/con facts are each tied to a measured component; no superlatives. Standalone prose."
+   },
+   {
+    "where": "judgment.citations[0]",
+    "status": "supported",
+    "note": "engine:ignition quote verbatim and says no measured cast/survival rate."
+   },
+   {
+    "where": "judgment.citations[1]",
+    "status": "supported",
+    "note": "engine:protection 45.6%/54.7% verbatim (deck-audit)."
+   },
+   {
+    "where": "judgment.citations[2]",
+    "status": "supported",
+    "note": "engine:protection 'No passing stack ... protecting a commander' verbatim."
+   },
+   {
+    "where": "judgment.citations[3]",
+    "status": "supported",
+    "note": "stack:006 quote present; its power-10 note matches the 'starts at seven counters' claim."
+   },
+   {
+    "where": "judgment.citations[4]",
+    "status": "supported",
+    "note": "context:pilot line present at CONTEXT.md:237."
+   },
+   {
+    "where": "open_questions",
+    "status": "supported",
+    "note": "Question 4 removed; no new unjustified item found."
+   }
+  ],
+  "iterations": 3
+ },
  "code_score": 84.5,
- "score_point": 84.5,
- "score": 83.6,
+ "score_point": 84.4,
+ "score": 83.8,
  "score_ci": [
-  76.0,
-  91.3
+  77.6,
+  89.4
  ],
  "grade": "A",
  "grade_range": [
@@ -300,8 +354,8 @@
  ],
  "grade_display": "A",
  "grade_probabilities": {
-  "A": 0.783,
-  "B": 0.216,
+  "A": 0.85,
+  "B": 0.15,
   "C": 0.0,
   "D": 0.0,
   "F": 0.0
@@ -320,43 +374,39 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 78.9,
-    "grade": "B"
+    "score": 80.8,
+    "grade": "A"
    },
    "mana": {
-    "score": 81.2,
+    "score": 82.2,
     "grade": "A"
    },
    "resilience": {
-    "score": 90.9,
+    "score": 88.3,
     "grade": "A"
    },
    "construction": {
-    "score": 87.7,
+    "score": 86.3,
+    "grade": "A"
+   },
+   "judgment": {
+    "score": 84.5,
     "grade": "A"
    }
   },
   "flips": [
    {
     "component": "resilience",
-    "share_now": 0.267,
-    "share_at_flip": 0.458,
+    "share_now": 0.185,
+    "share_at_flip": 0.391,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
-    "component": "speed",
-    "share_now": 0.267,
-    "share_at_flip": 0.052,
-    "boundary": 80,
-    "grade_at_flip": "B",
-    "direction": "lower"
-   },
-   {
     "component": "construction",
-    "share_now": 0.289,
-    "share_at_flip": 0.705,
+    "share_now": 0.2,
+    "share_at_flip": 0.661,
     "boundary": 80,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -367,6 +417,7 @@
   "level": "mixed",
   "instruments": {
    "construction": 1.0,
+   "judgment": 1.0,
    "mana": 1.0,
    "resilience": 3.0,
    "speed": 1.0
@@ -389,7 +440,47 @@
   }
  },
  "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
- "judgment": null,
+ "judgment": {
+  "sub_score": 84,
+  "argument": "The measured components cover the goldfish clock, the land drops, the answer count and the audit's construction axes. What they cannot see is whether Shabraz lands and lives, and the engine says so plainly: there is no measured rate for it. The record on the current list is silent as well, since the logged games were played on lists before v3.0.0, so it neither raises nor lowers the number. Two things point up and are already counted. The protection group is in 45.6% of opening sevens and 54.7% by turn three, and construction scores the audit's protection axis as over. The finish is proved in a passing stack, but that stack starts with Shabraz already at seven counters, so it proves the rule and not a rate. Two things point down and are also counted. Resilience is the one instrument ranked worse than the rest, and it measures capacity, so I do not overrule it. No passing stack resolves a protecting card on a commander. Each unmeasured fact has a measured twin already inside a component, and I cannot size an unmeasured gap in either direction. So the number sits at the skeleton's code_score: the components already say what the record supports, and it moves when Shabraz's survival is measured.",
+  "citations": [
+   {
+    "kind": "engine",
+    "ref": "engine:ignition",
+    "quote": "The brief has no measured rate for when he is cast or how long he survives."
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:protection",
+    "quote": "is in 45.6% of opening sevens and 54.7% by turn three, measured by turn six 86.9%"
+   },
+   {
+    "kind": "engine",
+    "ref": "engine:protection",
+    "quote": "No passing stack in the current 99 resolves any of these protecting a commander."
+   },
+   {
+    "kind": "stack",
+    "ref": "stack:006",
+    "quote": "a loot between the two damage steps makes 10 + 11 = 21 commander damage"
+   },
+   {
+    "kind": "context",
+    "ref": "context:pilot",
+    "quote": "All the logged games were played on lists before v3.0.0."
+   }
+  ],
+  "against": {
+   "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+   "spec_sha": "fd483871b754"
+  },
+  "weight": 0.2,
+  "weight_effective": 0.3077,
+  "sub_ci": [
+   75.9,
+   92.55
+  ]
+ },
  "rank": {
   "position": 1,
   "of": 4,
@@ -400,9 +491,9 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.997,
-   "2": 0.003,
-   "3": 0.001,
+   "1": 1.0,
+   "2": 0.0,
+   "3": 0.0,
    "4": 0.0
   },
   "basis": {
@@ -412,10 +503,10 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.6,
+   "sharknado": 83.8,
    "gishath": 69.9,
    "ur-dragon": 61.7,
-   "goblin-storm": 60.3
+   "goblin-storm": 60.2
   }
  }
 }
