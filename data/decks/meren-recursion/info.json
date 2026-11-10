@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 34,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -196,12 +198,6 @@
           },
           {
             "name": "Pawn of Ulamog",
-            "where": [
-              "yawgmoth-swarm"
-            ]
-          },
-          {
-            "name": "Reassembling Skeleton",
             "where": [
               "yawgmoth-swarm"
             ]
@@ -398,13 +394,6 @@
             ]
           },
           {
-            "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
-            "where": [
-              "Golgari Parts",
-              "Green"
-            ]
-          },
-          {
             "name": "Grist, the Hunger Tide",
             "where": [
               "Hapatra"
@@ -572,14 +561,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 71,
-      "out": 71,
+      "add": 69,
+      "out": 69,
       "counts": {
-        "in_deck": 29,
-        "box": 52,
+        "in_deck": 31,
+        "box": 51,
         "elsewhere": 4,
         "buy": 1,
-        "free": 14
+        "free": 13
       },
       "unsourced": [
         "Cauldron of Essence",
@@ -589,7 +578,7 @@
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 14,
+      "free": 13,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -1152,19 +1141,10 @@
         },
         {
           "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Golgari Parts"
-            },
-            {
-              "kind": "box",
-              "name": "Green"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Grist, the Hunger Tide",
@@ -1396,18 +1376,10 @@
         },
         {
           "name": "Reassembling Skeleton",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Requiting Hex",
@@ -1951,7 +1923,7 @@
       "included": 7,
       "infinite": 7,
       "near": 50,
-      "near_total": 172,
+      "near_total": 207,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -2086,7 +2058,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 93,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2095,7 +2067,7 @@
           "source": "goldfish_metrics.json"
         },
         "kill_turn": {
-          "value": 8,
+          "value": 9,
           "tier": "data",
           "weight": "headline",
           "definition": "MEDIAN turn the goldfish kills on, not the mean — a mean over a skewed sample is a true number describing no game",
@@ -2104,7 +2076,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 3.996,
+          "value": 4.111,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2144,7 +2116,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 13,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -2269,15 +2241,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.048,
-            "2": 2.26,
-            "3": 3.292,
-            "4": 4.155,
-            "5": 4.868,
-            "6": 5.55,
-            "7": 6.167,
-            "8": 6.784,
-            "9": 7.406
+            "10": 7.853,
+            "2": 2.22,
+            "3": 3.212,
+            "4": 4.052,
+            "5": 4.753,
+            "6": 5.42,
+            "7": 6.026,
+            "8": 6.619,
+            "9": 7.222
           },
           "tier": "data",
           "weight": "detail",
@@ -2289,14 +2261,14 @@
           "value": {
             "1": 0.999,
             "10": 0.564,
-            "2": 0.997,
-            "3": 0.911,
-            "4": 0.79,
+            "2": 0.996,
+            "3": 0.905,
+            "4": 0.784,
             "5": 0.677,
-            "6": 0.594,
-            "7": 0.553,
-            "8": 0.548,
-            "9": 0.547
+            "6": 0.596,
+            "7": 0.554,
+            "8": 0.536,
+            "9": 0.54
           },
           "tier": "data",
           "weight": "detail",
@@ -2306,16 +2278,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.088,
-            "10": 12.112,
-            "2": 0.393,
-            "3": 0.872,
-            "4": 1.278,
-            "5": 2.355,
-            "6": 3.781,
-            "7": 5.483,
-            "8": 7.454,
-            "9": 9.654
+            "1": 0.181,
+            "10": 13.179,
+            "2": 0.568,
+            "3": 1.135,
+            "4": 1.533,
+            "5": 2.684,
+            "6": 4.247,
+            "7": 6.102,
+            "8": 8.207,
+            "9": 10.561
           },
           "tier": "data",
           "weight": "detail",
@@ -2325,14 +2297,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 330,
-            "1": 1658,
-            "2": 2869,
-            "3": 2929,
-            "4": 1613,
-            "5": 509,
-            "6": 85,
-            "7": 7
+            "0": 388,
+            "1": 1609,
+            "2": 2959,
+            "3": 2887,
+            "4": 1551,
+            "5": 506,
+            "6": 95,
+            "7": 5
           },
           "tier": "data",
           "weight": "detail",
@@ -2341,13 +2313,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1574,
-            "4": 1,
-            "5": 32,
-            "6": 246,
-            "7": 1435,
-            "8": 2791,
-            "9": 2799
+            "10": 1664,
+            "4": 2,
+            "5": 23,
+            "6": 197,
+            "7": 1237,
+            "8": 2821,
+            "9": 2929
           },
           "tier": "data",
           "weight": "detail",
@@ -2363,8 +2335,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 3.996,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 4.111,
+    "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
@@ -2384,7 +2356,7 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 25
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
@@ -2412,20 +2384,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.442,
-      "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 3,
-      "kill_by_turn_8_pct": 45,
+      "mean_kill_turn": 8.513,
+      "median_kill_turn": 9,
+      "kill_by_turn_6_pct": 2,
+      "kill_by_turn_8_pct": 43,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1574,
-        "4": 1,
-        "5": 32,
-        "6": 246,
-        "7": 1435,
-        "8": 2791,
-        "9": 2799
+        "10": 1664,
+        "4": 2,
+        "5": 23,
+        "6": 197,
+        "7": 1237,
+        "8": 2821,
+        "9": 2929
       }
     }
   },
@@ -2441,6 +2413,7 @@
     "under": [
       "mana-base",
       "colour-sources",
+      "ramp",
       "card-advantage",
       "protection"
     ],
@@ -2493,10 +2466,12 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V20 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `drain-density-v1`: 49 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1",
