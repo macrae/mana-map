@@ -241,6 +241,13 @@
      "current_list": false,
      "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
      "score": 44
+    },
+    {
+     "as_of": "2026-11-11",
+     "bracket": 3,
+     "current_list": true,
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+     "score": 44
     }
    ],
    "gishath": [
@@ -366,10 +373,10 @@
     "dti_bracket": 3,
     "dti_score": 44,
     "floor": 3,
-    "reading_as_of": "2026-11-05",
+    "reading_as_of": "2026-11-11",
     "relation": "equal",
     "slug": "edgar-vampires",
-    "stale_list": true,
+    "stale_list": false,
     "target": 3
    },
    {
@@ -884,14 +891,14 @@
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 16
+     "value": 15
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "source": "benchmark.json#metrics.response.classes_covered",
      "stale": false,
-     "value": 9
+     "value": 8
     },
     "harness_version": 1,
     "kill_by_turn_10": {
@@ -1035,7 +1042,7 @@
     }
    },
    "dti": {
-    "as_of": "2026-11-05",
+    "as_of": "2026-11-11",
     "benchmarks": {
      "A1": "A",
      "A2": "S",
@@ -1055,28 +1062,41 @@
      "floor": 3,
      "floor_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "floor_name": "Upgraded",
-     "reading_as_of": "2026-11-05",
+     "reading_as_of": "2026-11-11",
      "relation": "equal",
      "their_bracket": 3
     },
     "max_score": 96,
     "omni": {
-     "benchmarks": null,
-     "median_bracket": null,
-     "median_score": null,
-     "n": 0
+     "benchmarks": {
+      "A1": "A",
+      "A2": "S",
+      "I1": "B",
+      "I2": "B",
+      "P1": "A",
+      "P2": "B",
+      "P3": "B",
+      "R1": "A",
+      "R2": "A",
+      "S1": "B",
+      "S2": "A",
+      "S3": "S"
+     },
+     "median_bracket": 3,
+     "median_score": 44,
+     "n": 1
     },
-    "readings_n": 3,
+    "readings_n": 4,
     "score": {
-     "as_of": "2026-11-05",
+     "as_of": "2026-11-11",
      "basis": "of 96; an LLM's read, dated",
-     "decklist_sha256": "a872115fe62fabde29092d5fed4e2a7b6cd71e6cd6226cea01a62bd278cf1a24",
-     "n": 3,
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+     "n": 4,
      "source": "deckcheck.json#readings[-1].score",
-     "stale": true,
+     "stale": false,
      "value": 44
     },
-    "stale_list": true
+    "stale_list": false
    },
    "format": null,
    "lifecycle": null,
@@ -1798,7 +1818,7 @@
      "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 15
+     "value": 13
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
@@ -4382,7 +4402,7 @@
      "decklist_sha256": "99419d5b9145729b8c8fc3fd58c8e7bc5de71e6ba5af37ba4436c0ab84525170",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 22
+     "value": 21
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
@@ -5156,9 +5176,9 @@
  ],
  "fleet_bands": {
   "answer_cards": {
-   "max": 22,
+   "max": 21,
    "median": 16,
-   "min": 15,
+   "min": 13,
    "n": 7
   },
   "dti_score": {
@@ -5268,9 +5288,9 @@
   "B3": {
    "bands": {
     "answer_cards": {
-     "max": 22,
+     "max": 21,
      "median": 16,
-     "min": 15,
+     "min": 13,
      "n": 5
     },
     "dti_score": {

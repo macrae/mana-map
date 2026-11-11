@@ -370,6 +370,17 @@ def test_a_procedure_page_names_only_cards_the_deck_runs():
             notes = re.sub(r"\s+", " ", " ".join(
                 str(e.get("text") or "") for e in entries)).lower()
             have |= {k for k in corpus if len(k) > 10 and k in notes}
+        # AN OPPONENT SEAT'S NOTES THAT CITE THIS DECK'S GAMES ground the cards they
+        # name, by the same rule. The pilot writes "Krenko" and "Purphoros"; the seat's
+        # hand-written NOTES.md (where Jarvis keeps what a game taught about THAT deck)
+        # gives the full name and cites "sharknado 008". A kill-on-sight entry naming
+        # Krenko, Mob Boss is that game, not an invented card (2026-11-11).
+        cite = re.compile(r"\b" + re.escape(base.name) + r" \d{3}\b")
+        for seat_notes in sorted((DECKS_DIR.parent / "opponents").glob("*/NOTES.md")):
+            seat = re.sub(r"\s+", " ", seat_notes.read_text(encoding="utf-8"))
+            if cite.search(seat):
+                low = seat.lower()
+                have |= {k for k in corpus if len(k) > 10 and k in low}
         text = _json.dumps(doc)
         # LONGEST MATCH WINS, and only on a word boundary.
         #

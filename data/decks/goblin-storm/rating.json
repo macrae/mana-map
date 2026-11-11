@@ -91,18 +91,18 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.2105,
-   "sub_score": 35.0,
+   "sub_score": 25.0,
    "sub_ci": [
-    35.0,
-    40.52
+    25.0,
+    30.52
    ],
    "placement": 0.0,
-   "anchor": 70.0,
+   "anchor": 50.0,
    "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
-     "value": 15,
+     "value": 13,
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
@@ -165,7 +165,7 @@
     },
     {
      "figure": "audit.interaction",
-     "value": 11,
+     "value": 8,
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction (verdict at)",
@@ -310,30 +310,30 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
- "fleet_sha": "94bab3be64be",
+ "fleet_sha": "f358c0784945",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [],
  "iterations": 0,
  "verifier": null,
- "code_score": 58.5,
- "score_point": 58.5,
- "score": 59.7,
+ "code_score": 56.4,
+ "score_point": 56.4,
+ "score": 57.8,
  "score_ci": [
-  51.3,
-  68.3
+  47.7,
+  67.5
  ],
  "grade": "C",
  "grade_range": [
-  "C",
+  "D",
   "B"
  ],
- "grade_display": "C–B",
+ "grade_display": "D–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.161,
-  "C": 0.814,
-  "D": 0.026,
+  "B": 0.11,
+  "C": 0.791,
+  "D": 0.1,
   "F": 0.0
  },
  "uncertainty": {
@@ -350,11 +350,11 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 58.1,
+    "score": 55.5,
     "grade": "C"
    },
    "mana": {
-    "score": 53.8,
+    "score": 51.3,
     "grade": "C"
    },
    "resilience": {
@@ -362,35 +362,35 @@
     "grade": "C"
    },
    "construction": {
-    "score": 56.2,
+    "score": 53.5,
     "grade": "C"
    },
    "table_record": {
-    "score": 60.0,
+    "score": 57.3,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "mana",
-    "share_now": 0.14,
-    "share_at_flip": 0.333,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "raise"
-   },
-   {
     "component": "resilience",
     "share_now": 0.211,
-    "share_at_flip": 0.496,
+    "share_at_flip": 0.371,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
    },
    {
+    "component": "mana",
+    "share_now": 0.14,
+    "share_at_flip": 0.378,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "raise"
+   },
+   {
     "component": "construction",
     "share_now": 0.228,
-    "share_at_flip": 0.88,
+    "share_at_flip": 0.906,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -431,14 +431,14 @@
    }
   ],
   "group": {
-   "kendall_w": 0.18,
-   "p": 0.6269,
+   "kendall_w": 0.212,
+   "p": 0.5609,
    "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
    "n": 5
   }
  },
- "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
+ "resolution": "the 90% interval spans 2 grade boundaries (65, 50); concordance divergent",
  "judgment": null,
  "rank": {
   "position": 5,
@@ -451,11 +451,11 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.028,
-   "2": 0.087,
-   "3": 0.186,
-   "4": 0.307,
-   "5": 0.392
+   "1": 0.02,
+   "2": 0.069,
+   "3": 0.162,
+   "4": 0.314,
+   "5": 0.435
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -465,11 +465,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 70.7,
-   "gishath": 67.4,
-   "ur-dragon": 62.5,
-   "edgar-vampires": 60.1,
-   "goblin-storm": 59.7
+   "sharknado": 71.4,
+   "gishath": 68.4,
+   "ur-dragon": 63.1,
+   "edgar-vampires": 57.9,
+   "goblin-storm": 57.8
   }
  }
 }

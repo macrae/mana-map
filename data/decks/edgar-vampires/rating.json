@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1558,
+   "weight_effective": 0.1304,
    "sub_score": 46.3,
    "sub_ci": [
-    45.65,
-    51.9
+    45.67,
+    51.95
    ],
    "placement": 0.0,
    "anchor": 92.6,
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1039,
+   "weight_effective": 0.087,
    "sub_score": 75.0,
    "sub_ci": [
-    69.38,
-    80.67
+    69.36,
+    80.6
    ],
    "placement": 50.0,
    "anchor": 100.0,
@@ -90,19 +90,19 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1558,
-   "sub_score": 65.0,
+   "weight_effective": 0.1304,
+   "sub_score": 52.5,
    "sub_ci": [
-    59.21,
-    70.47
+    46.82,
+    58.2
    ],
-   "placement": 50.0,
+   "placement": 25.0,
    "anchor": 80.0,
    "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
     {
      "figure": "answer_cards",
-     "value": 16,
+     "value": 15,
      "ci95": null,
      "n": null,
      "source": "benchmark.json#metrics.response.answer_cards",
@@ -129,14 +129,14 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.1688,
-   "sub_score": 82.86,
+   "weight_effective": 0.1413,
+   "sub_score": 81.07,
    "sub_ci": [
-    82.86,
-    82.86
+    81.07,
+    81.07
    ],
    "placement": null,
-   "anchor": 82.86,
+   "anchor": 81.07,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
@@ -165,10 +165,10 @@
     },
     {
      "figure": "audit.interaction",
-     "value": 8,
+     "value": 7,
      "ci95": null,
      "n": null,
-     "source": "deck-audit#interaction (verdict at)",
+     "source": "deck-audit#interaction (verdict under)",
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
     },
     {
@@ -235,14 +235,53 @@
    ]
   },
   {
+   "name": "dti",
+   "weight": 0.15,
+   "weight_validity": 1.0,
+   "weight_effective": 0.163,
+   "sub_score": 84.38,
+   "sub_ci": [
+    78.0,
+    87.08
+   ],
+   "placement": 100.0,
+   "anchor": 68.75,
+   "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of DeckCheck's score (of 96) within bracket 3; anchor = the mean of its twelve rubric grades (S 100, A 75, B 50, C 25, F 0); draw Normal(anchor, DTI_PRIOR_READ_SD = 4.0, a declared prior (one reading on this list)); an LLM's dated read of card quality, never ours",
+   "inputs": [
+    {
+     "figure": "dti.score",
+     "value": 44,
+     "ci95": null,
+     "n": 4,
+     "source": "deckcheck.json#readings[-1].score",
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
+    },
+    {
+     "figure": "dti.rubric_mean",
+     "value": 68.75,
+     "ci95": null,
+     "n": 1,
+     "source": "deckcheck.json#readings[-1].benchmarks",
+     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
+    }
+   ],
+   "citations": [
+    {
+     "kind": "skeleton",
+     "ref": "skeleton:dti",
+     "quote": "DeckCheck Threat Index"
+    }
+   ]
+  },
+  {
    "name": "table_record",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1558,
+   "weight_effective": 0.1304,
    "sub_score": 27.81,
    "sub_ci": [
-    24.92,
-    52.14
+    24.59,
+    51.44
    ],
    "placement": 33.33,
    "anchor": 23.67,
@@ -271,10 +310,6 @@
  ],
  "withheld": [
   {
-   "component": "dti",
-   "reason": "the DeckCheck reading describes another list — `deckcheck edgar-vampires --write` after a rescan"
-  },
-  {
    "component": "pilot_feel",
    "reason": "0 surveyed game(s); 3 needed"
   },
@@ -300,13 +335,13 @@
    "score": 44,
    "max_score": 96,
    "bracket": 3,
-   "as_of": "2026-11-05",
-   "stale_list": true
+   "as_of": "2026-11-11",
+   "stale_list": false
   },
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
- "fleet_sha": "94bab3be64be",
+ "fleet_sha": "55b8247bc65b",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -365,12 +400,12 @@
   ],
   "iterations": 1
  },
- "code_score": 58.7,
- "score_point": 58.5,
- "score": 60.1,
+ "code_score": 61.7,
+ "score_point": 60.9,
+ "score": 61.7,
  "score_ci": [
-  52.6,
-  66.9
+  54.6,
+  68.5
  ],
  "grade": "C",
  "grade_range": [
@@ -380,9 +415,9 @@
  "grade_display": "C–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.121,
-  "C": 0.861,
-  "D": 0.018,
+  "B": 0.212,
+  "C": 0.783,
+  "D": 0.004,
   "F": 0.0
  },
  "uncertainty": {
@@ -399,59 +434,71 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 60.8,
+    "score": 63.0,
     "grade": "C"
    },
    "mana": {
-    "score": 56.6,
+    "score": 59.5,
     "grade": "C"
    },
    "resilience": {
-    "score": 57.3,
+    "score": 62.1,
     "grade": "C"
    },
    "construction": {
-    "score": 53.6,
+    "score": 57.5,
+    "grade": "C"
+   },
+   "dti": {
+    "score": 56.3,
     "grade": "C"
    },
    "table_record": {
-    "score": 64.2,
-    "grade": "C"
+    "score": 65.8,
+    "grade": "B"
    },
    "judgment": {
-    "score": 58.7,
+    "score": 61.7,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "construction",
-    "share_now": 0.169,
-    "share_at_flip": 0.39,
+    "component": "table_record",
+    "share_now": 0.13,
+    "share_at_flip": 0.021,
+    "boundary": 65,
+    "grade_at_flip": "B",
+    "direction": "lower"
+   },
+   {
+    "component": "dti",
+    "share_now": 0.163,
+    "share_at_flip": 0.31,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
-    "component": "table_record",
-    "share_now": 0.156,
-    "share_at_flip": 0.39,
-    "boundary": 50,
-    "grade_at_flip": "D",
+    "component": "construction",
+    "share_now": 0.141,
+    "share_at_flip": 0.317,
+    "boundary": 65,
+    "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "mana",
-    "share_now": 0.104,
-    "share_at_flip": 0.456,
+    "share_now": 0.087,
+    "share_at_flip": 0.354,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
     "component": "speed",
-    "share_now": 0.156,
-    "share_at_flip": 0.745,
+    "share_now": 0.13,
+    "share_at_flip": 0.779,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
@@ -462,9 +509,10 @@
   "level": "divergent",
   "instruments": {
    "construction": 1.0,
+   "dti": 1.0,
    "judgment": 4.0,
    "mana": 3.0,
-   "resilience": 3.5,
+   "resilience": 4.0,
    "speed": 5.0,
    "table_record": 3.0
   },
@@ -475,11 +523,26 @@
     "instrument": "construction",
     "rank": 1.0,
     "side": "better"
+   },
+   {
+    "instrument": "dti",
+    "rank": 1.0,
+    "side": "better"
+   },
+   {
+    "instrument": "resilience",
+    "rank": 4.0,
+    "side": "worse"
+   },
+   {
+    "instrument": "speed",
+    "rank": 5.0,
+    "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.18,
-   "p": 0.6269,
+   "kendall_w": 0.212,
+   "p": 0.5609,
    "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
    "n": 5
@@ -526,10 +589,10 @@
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.2597,
+  "weight_effective": 0.2174,
   "sub_ci": [
-   49.87,
-   66.41
+   50.03,
+   65.78
   ]
  },
  "rank": {
@@ -543,11 +606,11 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.005,
-   "2": 0.083,
-   "3": 0.191,
-   "4": 0.385,
-   "5": 0.338
+   "1": 0.027,
+   "2": 0.131,
+   "3": 0.233,
+   "4": 0.446,
+   "5": 0.164
   },
   "basis": {
    "edgar-vampires": "this document",
@@ -557,11 +620,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 70.7,
-   "gishath": 67.4,
-   "ur-dragon": 62.5,
-   "edgar-vampires": 60.1,
-   "goblin-storm": 59.7
+   "sharknado": 71.3,
+   "gishath": 68.6,
+   "ur-dragon": 63.2,
+   "edgar-vampires": 61.7,
+   "goblin-storm": 57.7
   }
  }
 }

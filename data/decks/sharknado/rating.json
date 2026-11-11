@@ -91,12 +91,12 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.1558,
-   "sub_score": 65.0,
+   "sub_score": 71.25,
    "sub_ci": [
-    59.32,
-    70.62
+    65.57,
+    76.87
    ],
-   "placement": 50.0,
+   "placement": 62.5,
    "anchor": 80.0,
    "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of answer_cards within bracket 3; anchor = mean of band_score(answer_cards, 15, 20) and classes_answered/5·100 — CAPACITY, not performance",
    "inputs": [
@@ -130,13 +130,13 @@
    "weight": 0.13,
    "weight_validity": 1.0,
    "weight_effective": 0.1688,
-   "sub_score": 76.79,
+   "sub_score": 75.0,
    "sub_ci": [
-    76.79,
-    76.79
+    75.0,
+    75.0
    ],
    "placement": null,
-   "anchor": 76.79,
+   "anchor": 75.0,
    "method": "anchor only: mean band_score over the audit axes with a cited band (mana-base, ramp, card-advantage, interaction, sweepers, protection, threat-density). Counts, no interval; an authored target is not a sample, so no placement",
    "inputs": [
     {
@@ -165,7 +165,7 @@
     },
     {
      "figure": "audit.interaction",
-     "value": 7,
+     "value": 6,
      "ci95": null,
      "n": null,
      "source": "deck-audit#interaction (verdict under)",
@@ -306,7 +306,7 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
- "fleet_sha": "94bab3be64be",
+ "fleet_sha": "f358c0784945",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
@@ -351,24 +351,24 @@
   ],
   "iterations": 3
  },
- "code_score": 69.0,
- "score_point": 69.0,
- "score": 70.7,
+ "code_score": 69.9,
+ "score_point": 69.7,
+ "score": 71.4,
  "score_ci": [
-  59.0,
-  79.5
+  59.5,
+  80.2
  ],
  "grade": "B",
  "grade_range": [
   "C",
-  "B"
+  "A"
  ],
- "grade_display": "C–B",
+ "grade_display": "C–A",
  "grade_probabilities": {
-  "A": 0.041,
-  "B": 0.764,
-  "C": 0.19,
-  "D": 0.005,
+  "A": 0.055,
+  "B": 0.774,
+  "C": 0.167,
+  "D": 0.004,
   "F": 0.0
  },
  "uncertainty": {
@@ -385,27 +385,27 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 63.3,
+    "score": 64.1,
     "grade": "C"
    },
    "mana": {
-    "score": 65.4,
+    "score": 66.2,
     "grade": "B"
    },
    "resilience": {
-    "score": 69.7,
+    "score": 69.4,
     "grade": "B"
    },
    "construction": {
-    "score": 67.4,
+    "score": 68.6,
     "grade": "B"
    },
    "table_record": {
-    "score": 79.4,
-    "grade": "B"
+    "score": 80.2,
+    "grade": "A"
    },
    "judgment": {
-    "score": 69.0,
+    "score": 69.9,
     "grade": "B"
    }
   },
@@ -413,7 +413,7 @@
    {
     "component": "table_record",
     "share_now": 0.156,
-    "share_at_flip": 0.216,
+    "share_at_flip": 0.225,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "raise"
@@ -421,7 +421,7 @@
    {
     "component": "speed",
     "share_now": 0.156,
-    "share_at_flip": 0.047,
+    "share_at_flip": 0.026,
     "boundary": 65,
     "grade_at_flip": "C",
     "direction": "lower"
@@ -429,7 +429,7 @@
    {
     "component": "mana",
     "share_now": 0.104,
-    "share_at_flip": 0.422,
+    "share_at_flip": 0.409,
     "boundary": 80,
     "grade_at_flip": "A",
     "direction": "raise"
@@ -442,7 +442,7 @@
    "construction": 2.0,
    "judgment": 2.0,
    "mana": 1.0,
-   "resilience": 3.5,
+   "resilience": 3.0,
    "speed": 1.0,
    "table_record": 4.0
   },
@@ -461,7 +461,7 @@
    },
    {
     "instrument": "resilience",
-    "rank": 3.5,
+    "rank": 3.0,
     "side": "worse"
    },
    {
@@ -471,14 +471,14 @@
    }
   ],
   "group": {
-   "kendall_w": 0.18,
-   "p": 0.6269,
+   "kendall_w": 0.212,
+   "p": 0.5609,
    "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
    "n": 5
   }
  },
- "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
+ "resolution": "the 90% interval spans 2 grade boundaries (80, 65); concordance divergent",
  "judgment": {
   "sub_score": 69,
   "argument": "The measured components miss two things. First, speed and mana are the better-side outliers, but kill_by_turn_8 of 0.958 is an unopposed goldfish with no blockers and no removal. The pilot's note on the latest pod says its opponents aim to win around turn four. That is one night's table, so I rank no table across the fleet, but against a turn-four pod an eight-turn kill is a ceiling I cannot spend, so speed oversells. Mana is different: its inputs do not depend on the opponents' clock. The pilot's notes say \"got mana starved one round\" on an earlier list and \"clunky and slow as hell\" on the next, but the first is one round on a superseded list and the second is about two commanders' tax and a laborious loot, not land drops. I do not claim mana oversells. Second, table_record reads 0 wins in 5 games, mostly earlier lists. The one v3.0.0 game was lost to what the pilot calls 100% piloting error, so I do not lift on it. Resilience counts 16 answer cards but 3 of 5 classes and 0 sweepers, and I do not overrule it. The record does not size either gap, and the sensitivity figures show they are not symmetric, so I claim no cancel and sit at the code score of 69. Why not higher: no game shows Shabraz landing, living and winning. Why not lower: the one real v3.0.0 loss had the answers in hand.",
@@ -541,11 +541,11 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.633,
-   "2": 0.174,
-   "3": 0.131,
-   "4": 0.051,
-   "5": 0.011
+   "1": 0.629,
+   "2": 0.186,
+   "3": 0.146,
+   "4": 0.034,
+   "5": 0.005
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -555,11 +555,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 70.7,
-   "gishath": 67.4,
-   "ur-dragon": 62.5,
-   "edgar-vampires": 60.1,
-   "goblin-storm": 59.7
+   "sharknado": 71.4,
+   "gishath": 68.4,
+   "ur-dragon": 63.1,
+   "edgar-vampires": 57.9,
+   "goblin-storm": 57.8
   }
  }
 }

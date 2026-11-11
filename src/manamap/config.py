@@ -569,15 +569,30 @@ ROLE_PATTERNS = {
     # "nonland permanent" is the modern templating for unconditional exile
     # (Anguished Unmaking, Rite of Oblivion) and the bare alternation missed it,
     # because the type word no longer follows "target" directly.
+    # A colour qualifier sits between "target" and the type word the same way
+    # "nonland" does: Vanishing Verse ("exile target monocolored permanent") carried
+    # NO role, so the bench counted it as no answer (2026-11-11, sweep +3, -0:
+    # Vanishing Verse, Infernal Reckoning, Radiant Purge).
     "removal:spot": (
         r"destroy target"
-        r"|exile target (?:nonland )?(?:creature|permanent|artifact|enchantment|planeswalker|battle)"
+        r"|exile target (?:nonland |monocolored |multicolored |colorless )?"
+        r"(?:creature|permanent|artifact|enchantment|planeswalker|battle)"
     ),
     # Bounce is interaction, not recursion: battlefield -> hand, and the tell is
     # "owner's hand" where recursion says "your hand". Cyclonic Rift heads a
     # population of ~110 cards that carried no role at all.
     "removal:bounce": r"return (?:target|all|each)[\w\s,'-]{0,50}? to (?:its|their) owner'?s? hand",
-    "removal:damage": r"deals? (?:\d+|x) damage to (?:target|any target|each)",
+    # Damage to PLAYERS is not removal. "each" alone read Ingris Stingerquill
+    # ("deals 1 damage to each opponent"), Thermo-Alchemist and Slimefoot as
+    # interaction and inflated every deck's answer count. "Each opponent/player"
+    # counts only when the same sentence also hits creatures or planeswalkers
+    # (Goblin Chainwhirler). 2026-11-11 corpus sweep: -219 (all player-only burn
+    # or drain, read card by card in a sample and by a creature-damage grep), +0.
+    "removal:damage": (
+        r"deals? (?:\d+|x) damage to (?:target|any target"
+        r"|each (?!opponent|player|other player|of your opponents)"
+        r"|each (?:opponent|player|other player)[^.]{0,60}?(?:creature|planeswalker))"
+    ),
     # Opponent-facing only. The bare "sacrifices a creature" pattern fired on
     # your own activated sacrifice *costs* — Viscera Seer, Ashnod's Altar,
     # Carrion Feeder — which made two thirds of the removal:edict population
