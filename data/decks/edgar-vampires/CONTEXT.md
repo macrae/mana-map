@@ -1,6 +1,6 @@
 # Edgar Markov — Deck Context
 
-<!-- ctx:written-for version=VNone sha=1df3a33540a6 at=2026-11-10 -->
+<!-- ctx:written-for version=v3.0.0 sha=1df3a33540a6 at=2026-11-11 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
@@ -16,7 +16,17 @@ Edgar Markov is the pilot's bracket-3 Mardu vampire deck: white, black and a lea
 
 The deck no longer has a two-card infinite. The old kill, a "they lose life, I gain it" half next to a "I gain life, they lose it" half, is gone. What stays is the gain-to-lose side, [Vito, Thorn of the Dusk Rose](https://manamap.seanmacrae.com/viz/index.html?cards=Vito%2C+Thorn+of+the+Dusk+Rose), [Sanguine Bond](https://manamap.seanmacrae.com/viz/index.html?cards=Sanguine+Bond), [Enduring Tenacity](https://manamap.seanmacrae.com/viz/index.html?cards=Enduring+Tenacity) and [Marauding Blight-Priest](https://manamap.seanmacrae.com/viz/index.html?cards=Marauding+Blight-Priest), which now just drain on every life gain. Those cards win slowly by themselves, so the kill is a pile of drain triggers rather than a loop.
 
-In the pilot's own four words: blood drain, life gain, action at a distance, ferocious. He wants damage that is not combat damage, and a table that cannot wipe his way out of a win. He also wants more cards in hand when the game reaches turns seven and eight, because that is where every game so far has run dry. v3.0.0 leans on that: [Kalitas, Traitor of Ghet](https://manamap.seanmacrae.com/viz/index.html?cards=Kalitas%2C+Traitor+of+Ghet), [Midnight Reaper](https://manamap.seanmacrae.com/viz/index.html?cards=Midnight+Reaper) and [Grim Haruspex](https://manamap.seanmacrae.com/viz/index.html?cards=Grim+Haruspex) turn deaths into cards, life and Vampires.
+**Identity (the pilot's statement, log 007, 2026-11-11): Vampires are the FUEL, not the engine.** The deck is Vampire-dense, not all-Vampire. It enforces non-combat damage, and it wants combos so the pings snowball into real damage instead of one or two here and there. Infinites are fine; two-card infinites are not. Future swaps are judged against this.
+
+What follows from it, in plain words:
+
+- Cheap creatures should be Vampires. [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)'s eminence makes a token for every Vampire cast, so a cheap Vampire is a body plus a token, and a cheap non-Vampire is only a body.
+- The cards that count Vampires need the density: [Olivia's Wrath](https://manamap.seanmacrae.com/viz/index.html?cards=Olivia%27s+Wrath) and Edgar's own attack pump get better with more Vampires out.
+- Engines and answers do not have to be Vampires. The drain engine, the sacrifice and draw pieces and the removal are chosen for what they do.
+
+A refactor that implements this is staged as the branch threat-v1. It is not sleeved and not part of the list described here. Change history will say what became of it.
+
+Beside that, the pilot's own four words: blood drain, life gain, action at a distance, ferocious. He wants damage that is not combat damage, and a table that cannot wipe his way out of a win. He also wants more cards in hand when the game reaches turns seven and eight, because that is where every game so far has run dry. v3.0.0 leans on that: [Kalitas, Traitor of Ghet](https://manamap.seanmacrae.com/viz/index.html?cards=Kalitas%2C+Traitor+of+Ghet), [Midnight Reaper](https://manamap.seanmacrae.com/viz/index.html?cards=Midnight+Reaper) and [Grim Haruspex](https://manamap.seanmacrae.com/viz/index.html?cards=Grim+Haruspex) turn deaths into cards, life and Vampires.
 
 Sleeved on 2026-11-10 with three printed proxies ([Grim Haruspex](https://manamap.seanmacrae.com/viz/index.html?cards=Grim+Haruspex), [Kalitas, Traitor of Ghet](https://manamap.seanmacrae.com/viz/index.html?cards=Kalitas%2C+Traitor+of+Ghet), [Midnight Reaper](https://manamap.seanmacrae.com/viz/index.html?cards=Midnight+Reaper)). Change history has the whole story, including the reversal of the old bracket-4 plan.
 
@@ -128,9 +138,12 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **6 game(s):** 0 won, 5 lost · 2026-08-22 to 2026-09-29
+- **7 game(s):** 0 won, 5 lost · 2026-08-22 to 2026-11-11
 - **How games ended:** wipe 3, combo 1, raced 1, stalled 1
+- **Not yet read:** 007
 <!-- /ctx:gen record -->
+
+- **Identity, log 007 (2026-11-11, not a game):** Vampires are the fuel, not the engine; dense, not all-Vampire; non-combat damage that snowballs through combos; infinites fine, no two-card ones. The Summary has what follows. Staged as branch threat-v1, not sleeved. Vampire-count cards such as [Malakir Bloodwitch](https://manamap.seanmacrae.com/viz/index.html?cards=Malakir+Bloodwitch) are the kind of thing that refactor looks at; it is not in the 99.
 
 Six games are logged, all on lists before v3.0.0 (the record block counts them). The same things keep happening.
 
@@ -146,6 +159,7 @@ Six games are logged, all on lists before v3.0.0 (the record block counts them).
 
 <!-- ctx:gen history -->
 - **v3.0.0 · V7** (2026-11-10) — in: Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper; out: Ancient Tomb, Bloodthirsty Conqueror, Enlightened Tutor, Exquisite Blood. _bracket3-v1 merged: Edgar at bracket 3 — the two-card infinites gone, drain kept_
+  - played 1: 0W 0L
 - **v2.1.0 · V6** (2026-10-20) — in: Anowon, the Ruin Sage, Bloodghast, Captivating Vampire, Clavileño, First of the Blessed, Drana and Linvala, Enduring Tenacity, Exotic Orchard, Morbid Opportunist …; out: Bloodtracker, Boros Charm, Cosmos Elixir, Despark, Falkenrath Aristocrat, Florian, Voldaren Scion, Gifted Aetherborn, Herald's Horn …. _mean-v2 merged 2026-10-20: the profile package, four proactive-denial Vampires, Bloodghast, a land pass — fourteen swaps on the scan-confirmed v2.0.1_
   - merge `mean-v2`: objective extra_cards_8 read **met** — played on printed proxies from 2026-10-20; the unowned cards are on the order list
 - **v2.0.1 · V5** (2026-10-20) — in: Charismatic Conqueror, Cordial Vampire, Florian, Voldaren Scion; out: Knight of the Ebon Legion, Polluted Delta, Skullclamp. _the sleeved list as scanned 2026-10-20: three cards of drift corrected (Conqueror, Cordial, Florian in; Knight, Polluted Delta, Skullclamp out)_
@@ -189,3 +203,4 @@ On 2026-11-10 the pilot reversed direction. The 2026-10-05 call was that bracket
 - 2026-10-20 · Keeper · deck change: the sleeved list checked in from a scan (v2.0.1) — Conqueror, Cordial, Florian in; Knight, Polluted Delta, Skullclamp out
 - 2026-10-20 · Keeper · deck change: mean-v2 merged as v2.1.0 (fourteen swaps): re-placed, cut-card prose pruned
 - 2026-11-10 · Keeper · deck change: v3.0.0 (bracket3-v1 merged): Edgar down to bracket 3 — all eight two-card infinites and Ancient Tomb, Enlightened Tutor gone; Kalitas, Midnight Reaper, Grim Haruspex in; reverses the 2026-10-05 build-for-the-combo plan
+- 2026-11-11 · Keeper · pilot log 007: identity — Vampires are the FUEL, not the engine; threat-v1 staged
