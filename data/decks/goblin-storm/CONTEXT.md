@@ -1,6 +1,6 @@
 # Zada, Hedron Grinder — Deck Context
 
-<!-- ctx:written-for version=VNone sha=67b7bdf82855 at=2026-10-28 -->
+<!-- ctx:written-for version=v1.2.1 sha=f9e829330210 at=2026-11-11 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Zada, Hedron Grinder](https://manamap.seanmacrae.com/viz/index.html?cards=Zada%2C+Hedron+Grinder)
@@ -19,6 +19,8 @@ The bodies come first and the spells second. Goblin presence is the whole deck: 
 The list moved on 2026-10-27 to v1.2.0 (branch storm-tune-v1), printed proxies in the sleeves. The aim is a push on DeckCheck's Threat Index, read through Zada's text, with interaction and protection as the two key axes. The deck now has red answers again ([Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade), [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), [Harsh Mentor](https://manamap.seanmacrae.com/viz/index.html?cards=Harsh+Mentor)), real protection for Zada that never gives her shroud ([Hexing Squelcher](https://manamap.seanmacrae.com/viz/index.html?cards=Hexing+Squelcher), [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), [Plaza of Heroes](https://manamap.seanmacrae.com/viz/index.html?cards=Plaza+of+Heroes), next to [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots)), and more spells that become a team-wide effect when Zada copies them. The Summary block above still shows the DeckCheck reading from the older list, so the push is not measured yet.
 
 Kept on purpose: [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual) (the pilot's favourite), [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act), [Past in Flames](https://manamap.seanmacrae.com/viz/index.html?cards=Past+in+Flames) and [Swiftfoot Boots](https://manamap.seanmacrae.com/viz/index.html?cards=Swiftfoot+Boots). The pilot rejects mass land denial in bracket 3, so there is no Blood Moon.
+
+**Where it sits (2026-11-10).** At a table of casual bracket 3 decks it is great: it assembles on turns four and five and is set to win on six or seven. At Oliver's table, where the bracket 3 decks are tuned to win around turn four, it runs one to two turns slow, and two games there were both losses (logs 004 and 005). The pilot reads that as a tier mismatch, not a broken deck. A feature branch is parked on it; nothing is being changed now.
 
 ## How it plays
 
@@ -42,7 +44,9 @@ Kept on purpose: [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.h
 
 **Mana.** The ramp is the swarm. [Brightstone Ritual](https://manamap.seanmacrae.com/viz/index.html?cards=Brightstone+Ritual) and [Battle Hymn](https://manamap.seanmacrae.com/viz/index.html?cards=Battle+Hymn) count creatures, and Skirk Prospector turns a spare token into red. On the big turn count goblins, not lands. The new lands ([Three Tree City](https://manamap.seanmacrae.com/viz/index.html?cards=Three+Tree+City), [Sokenzan, Crucible of Defiance](https://manamap.seanmacrae.com/viz/index.html?cards=Sokenzan%2C+Crucible+of+Defiance), [Plaza of Heroes](https://manamap.seanmacrae.com/viz/index.html?cards=Plaza+of+Heroes)) all come in untapped, replacing tapped cyclers.
 
-**Mulligan.** Keep goblin bodies plus lands plus a cheap cantrip. Ship hands that are all payoff. The pilot's rule from both losses: goblin presence gates the mulligan, not cantrip density.
+**Mulligan.** Keep goblin bodies plus lands plus a cheap cantrip. Ship hands that are all payoff. The pilot's rule from the first losses: goblin presence gates the mulligan, not cantrip density. After the Oliver's house games he proposed a sharper form. Keep a hand that either makes many goblin tokens before Zada, or lands Zada fast and has a payoff to accelerate off her. Ship hands with neither, even good-land, cantrip-heavy ones. It is a proposal, not yet a rule, and the Numbers section's keep share counts a different test.
+
+**Against a fast table.** Deny the opener. A turn-one Sol Ring on the other side is worth an early [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade) or [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), and the pilot says to do it and expect salt. Nothing in this deck removes [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge) once it lands on the other side, since it is indestructible, so the answer is upstream. [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act) clears the table's tokens but not the god. What the games taught about Tom's deck is in `data/opponents/purphoros-pingers/NOTES.md`. [Krenko, Mob Boss](https://manamap.seanmacrae.com/viz/index.html?cards=Krenko%2C+Mob+Boss) has shown up rarely in our own games; the sample is small.
 
 ## Cards by role
 
@@ -84,6 +88,7 @@ Copies a single-target spell for every other creature.
 [Goblin Sharpshooter](https://manamap.seanmacrae.com/viz/index.html?cards=Goblin+Sharpshooter) is a one-toughness goblin that taps for a ping and untaps whenever any creature dies. In a deck full of sacrifice and sweepers it keeps pinging, and it is a small body for Zada to copy onto. The goldfish cannot see the ping.
 
 ### answer threats
+Abrade earned its slot at Oliver's by breaking a turn-one Sol Ring (log 005). Against Purphoros itself none of these help once it is out; they work on the artifact that powers it out early.
 [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade), [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction), [Harsh Mentor](https://manamap.seanmacrae.com/viz/index.html?cards=Harsh+Mentor), [Blasphemous Act](https://manamap.seanmacrae.com/viz/index.html?cards=Blasphemous+Act)
 
 ### keep Zada alive
@@ -112,9 +117,8 @@ Goldfish, 10,000 seeded games, measured on v1.2.1 (V5), 2026-11-03. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **3 game(s):** 1 won, 2 lost · 2026-08-28 to 2026-10-27
-- **How games ended:** raced 1, stalled 1, won 1
-- **Not yet read:** 003
+- **5 game(s):** 1 won, 4 lost · 2026-08-28 to 2026-11-10
+- **How games ended:** raced 3, stalled 1, won 1
 <!-- /ctx:gen record -->
 
 The first two games were lost on v1.0.0, with the same cause underneath: I kept a hand with no small goblins. Game 003 is the first on v1.2.0 and a win.
@@ -125,6 +129,13 @@ The first two games were lost on v1.0.0, with the same cause underneath: I kept 
 - **Game 003 (Ryan's house, three players, v1.2.0, a win):** Ryan was on T'Vol with Gravecrawler and Phyrexian Altar, a Zombie Druid engine that was about to swing lethal at both of us. Alex fought Zada and I cast [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat), moving the fight onto a 1/1 goblin, so I lost a token and not the commander. Then I destroyed the Altar with [Untimely Malfunction](https://manamap.seanmacrae.com/viz/index.html?cards=Untimely+Malfunction) to break Ryan's engine. Ryan called it kingmaking. My answer was that leaving the Altar meant the game was over anyway. Alex then killed Ryan and hit me from 40 to 23. The turn before the last, [Empty the Warrens](https://manamap.seanmacrae.com/viz/index.html?cards=Empty+the+Warrens) with [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors) already out gave about ten goblins and pinged the table, but it did not close the game. On the final turn I had 15 goblins, tapped for 15 mana with [Three Tree City](https://manamap.seanmacrae.com/viz/index.html?cards=Three+Tree+City), and brought in more goblins. Then [Reckless Ransacking](https://manamap.seanmacrae.com/viz/index.html?cards=Reckless+Ransacking) gave everything +3/+2 and trample, and [Accelerate](https://manamap.seanmacrae.com/viz/index.html?cards=Accelerate), [Crimson Wisps](https://manamap.seanmacrae.com/viz/index.html?cards=Crimson+Wisps) and [Expedite](https://manamap.seanmacrae.com/viz/index.html?cards=Expedite) gave them haste and drew about 20 cards between them. The pilot called the card draw immaculate. I swung at Alex with over twenty trampling goblins and nobody had a response. It felt like threading a needle: lots of options, one right sequence, a big payoff when it lands. Deflecting Swat is a "great card, glad it's in the deck". Three Tree City is a good fit for a mono-red goblin deck.
   - The pilot's lesson: sequencing and the right answer at the right time won it. No follow-up; the bracket 3 tune is working. One game is a first reading, not a trend.
 
+- **Games 004 and 005 (Oliver's house, four players, v1.2.1, both losses):** the table was Tom on Purphoros, Oliver on Balin with Krenko, Ryan on Tiny Bones, all tuned bracket 3 decks aiming to win around turn four. Games ran about half an hour.
+  - Game 004: Tom went turn-one Sol Ring, four mana on turn two, and Purphoros on turn two, pinging on every creature entering. It was over by turn four and I never cast Zada. I should have mulliganed the opening hand.
+  - Game 005: the run-back. I killed the Sol Ring with [Abrade](https://manamap.seanmacrae.com/viz/index.html?cards=Abrade), the single most useful play of the night, and Purphoros came down later. The engine assembled this time: Zada, [Storm-Kiln Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Storm-Kiln+Artist), a pile of treasure, and one of the new card-draw spells digging. It did not matter. About ten then twelve ping damage a cycle kept killing the small goblins Zada needs to copy onto, and I lost on the clock. The new card-draw adds helped.
+  - Pattern: engine assembly worked, survival did not. Both losses came from the same Purphoros line.
+  - The pilot's piloting rules from the night: when the whole table names the threat and only you can answer it, answer it. Deny the Sol Ring opener. Purphoros is kill on sight, and Krenko too.
+  - Tier read, from the pilot: against the casual bracket 3 group it is a turn six or seven clock and fun; against the Oliver and Tom table it is one to two turns slow.
+
 The rule I keep from games 001 and 002: goblin presence gates the mulligan, not cantrip density.
 
 ## Change history
@@ -132,6 +143,7 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 <!-- ctx:gen history -->
 - **v1.2.1 · V5** (2026-11-03) — in: Goblin Sharpshooter; out: Faithless Looting. _storm-tune-v2: Goblin Sharpshooter for Faithless Looting_
   - merge `storm-tune-v2`: objective kill_by_8 read **met** — The pilot, 2026-10-27, from DeckCheck's second PowerTune read through Zada's text: Mirrorwing Dragon (Zada's copy ability on a second body — Independence), Immo
+  - played 2: 0W 2L
 - **v1.2.0 · V4** (2026-10-27) — in: Abrade, Accelerate, Ancestral Anger, Battle Hymn, Deflecting Swat, Harsh Mentor, Heat Shimmer, Hexing Squelcher …; out: Beetleback Chief, Forgotten Cave, Frontline Heroism, Goblin Dark-Dwellers, Goblin Trashmaster, Hidden Volcano, Redcap Gutter-Dweller, Ruby Medallion …. _storm-tune-v1: copy spells, interaction, protection, untapped lands_
   - merge `storm-tune-v1`: objective kill_by_8 read **not met** — printed proxies in the sleeves 2026-10-27 (the pilot is pulling the real cards from bulk); the pilot's call, 2026-10-27, on the whole profile: interaction (+0.0
   - played 1: 1W 0L
@@ -157,7 +169,7 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 ## Open questions
 
 <!-- ctx:gen queue -->
-- Nothing queued for this deck yet. After a game, `/incubate` turns what you noticed into testable claims.
+- **Q051** promoted — PARKED. Sean's two levers stand as his framing: (a) wide before Zada, or (b) Zada faster with a payoff. Against an ETB pinger such as Purphoros, a third axis decides whether either lever matters: survival, meaning an answer to an indestructible enchantment, since nothing in the 99 exiles or bounces Purphoros. The branch must weigh all three, and the speed gap itself is a hypothesis about the Oliver/Tom tier (B-team table: turn 4-5 engine, win 6-7, as baseline), not a deck defect.
 <!-- /ctx:gen queue -->
 
 - Is Three Tree City the reason the big turn reached its mana? The claim: swapping it for a Mountain lowers how often the storm turn comes by turn eight. A paired try on the same seeds would show it, and the Numbers section already holds the median kill turn to compare against.
@@ -169,6 +181,11 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - Does the goldfish see the new cards? It has no blockers and no removal, so Abrade, Untimely Malfunction, Harsh Mentor and the protection pieces will look like dead slots. Check model coverage before reading any null.
 - Stacks 002 and 003 predate the new list and should be rechecked. A Heat Shimmer or Molten Duplication turn, and a Purphoros turn with Impact Tremors, are not proved yet.
 - With the Haze loop gone, is there another loop worth proving, such as Past in Flames into a copy engine like Fable of the Mirror-Breaker? It would move the bracket, so it needs Sean's say.
+
+- Parked feature branch, not to iterate now: which direction closes the one to two turn gap? Wide before Zada means more cheap goblin and token makers so turns one to three build the board. Zada faster means rocks, dorks or treasure to land her on turn two or three and accelerate off her. The claim to test for each: it lowers the median kill turn in the Numbers section without lowering how often a goblin-bearing seven is kept. A paired try on the same seeds can price either, but the goldfish has no removal, so it cannot show the Purphoros pings that actually lost these games.
+- Is the deck also a draw or consistency problem? The pilot flagged it for measurement, not assumption. The claim: the share of games with Zada cast by turn six, already in Numbers, is high on the goldfish, so a gap there points at the real table, not the shuffle. More games would tell.
+- Does the proposed mulligan rule (many tokens before Zada, or a fast Zada with a payoff) keep better sevens than goblin presence alone? The claim: it ships more cantrip-heavy hands and wins more of the games it keeps. The goldfish keep share needs asking with this rule as the gate.
+- Does Krenko, Mob Boss earn its slot? The pilot sees it rarely in a small sample. More games before any judgment; it is a keep question, not a cut.
 
 ## Context changelog
 
@@ -182,3 +199,4 @@ The rule I keep from games 001 and 002: goblin presence gates the mulligan, not 
 - 2026-10-27 · Keeper · pilot log 004: correction to 003 — Untimely Malfunction, Three Tree City, the kill was the Ransacking turn
 - 2026-10-27 · Keeper · pilot log 005: Accelerate, Crimson Wisps, Expedite on the final turn of 003
 - 2026-10-28 · Keeper · deck change: storm-tune-v2 merged as v1.2.1 (Faithless Looting -> Goblin Sharpshooter)
+- 2026-11-11 · Keeper · pilot logs 004-005: two losses to Tom's turn-two Purphoros at an optimized B3 table; Abrade earned its slot; tier read; parked two-lever branch (Q051)

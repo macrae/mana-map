@@ -31,30 +31,34 @@
     },
     {
       "condition": "raced",
-      "condition_text": "an opponent kills the table before you have a board, and you cannot answer it on board.",
+      "condition_text": "an optimized seat is on a turn-four clock — fast mana into Purphoros, God of the Forge or Krenko, Mob Boss — and you cannot answer it on board.",
       "indications": [
-        "An opponent with a token maker and a damage payoff both on the battlefield by turn three.",
-        "Two or more mono-red decks at the table.",
+        "An opponent casts Sol Ring on their turn one.",
+        "Tom on Purphoros, God of the Forge or Oliver on Krenko, Mob Boss at the table.",
+        "An opponent's Purphoros on the battlefield: every other creature entering under their control is 2 damage to you.",
+        "An opponent's Krenko, Mob Boss entering on a turn he cannot tap.",
         "Your life below 30 before your fourth land drop.",
-        "Every creature in your hand costing four or more.",
-        "An opponent's Krenko, Mob Boss or another creature tapping for value every turn."
+        "Your small Goblins dying in combat faster than you make them, with Zada on the battlefield."
       ],
       "immediate": [
-        "Cast Harsh Mentor before the racer's next turn; each non-mana activation of their artifacts, creatures and lands deals 2 damage to them.",
-        "Cast Abrade for 3 damage at the racer's engine creature, not their largest body.",
-        "Cast every creature you can afford each turn and keep them home as blockers.",
-        "Cast Blasphemous Act once six or more creatures are on the battlefield; it costs {1} less for each of them.",
-        "Cast Empty the Warrens at whatever storm count you have — two tokens per copy is blockers."
+        "If an opponent's Sol Ring is on the battlefield, cast Abrade or Untimely Malfunction in destroy-artifact mode on it before that player's second turn. Expect salt; cast it anyway.",
+        "If an opponent's Krenko, Mob Boss entered this turn, kill him before Oliver untaps: Abrade for 3, or three Goblins sacrificed to Goblin Bombardment.",
+        "If an opponent's Purphoros, God of the Forge has resolved, make Tom the target: every attack, Goblin Bombardment sacrifice, Grapeshot copy and Siege-Gang Commander activation goes at Tom until he is dead.",
+        "Cast your own Purphoros, God of the Forge ahead of the next token maker; each other creature entering under your control deals 2 to each opponent, Tom included.",
+        "Do not block with the Goblins Zada copies to. Purphoros's trigger hits you, not them; they die in combat and to targeted pings. Sacrifice a Goblin that is about to die to Goblin Bombardment at Tom first."
       ],
       "subsequent": [
-        "Attack the racer and only the racer until they are dead.",
-        "Spend Grapeshot, Goblin Bombardment and Siege-Gang Commander's activation on their creatures rather than on their life total.",
-        "Cast Untimely Malfunction on their artifact, or choose two of their creatures that can't block on the turn you swing back.",
-        "Cast Past in Flames once the graveyard holds Dragon Fodder or Krenko's Command, a ritual and Grapeshot."
+        "Cast Hexing Squelcher before Zada: a ping that targets any other creature you control is countered unless its caster pays 2 life.",
+        "Cast Rundvelt Hordemaster or Goblin Chieftain before the copy turn; +1/+1 puts your 1/1 Goblins out of reach of 1-damage pings.",
+        "Cast Harsh Mentor against Krenko, Mob Boss: each activation of his tap ability deals 2 damage to Oliver.",
+        "Take the copy turn the turn the board reaches three bodies. In game 005 the engine assembled and lost on the clock at roughly 10, then 12, ping damage per cycle; a turn you wait costs a quarter of 40 life and the Goblins it was counting.",
+        "Cast Blasphemous Act when the racer's board is six or more creatures. It does not touch an opponent's Purphoros."
       ],
-      "notes": "Blasphemous Act deals 13 to each creature and kills your board with theirs. With Pashalik Mons on the battlefield first, every one of your own Goblin deaths is a point aimed at any target, and the card stops being a reset. Pashalik Mons dies to it too, and still triggers for each Goblin that dies at the same time.",
+      "notes": "Nothing in the 99 removes a resolved Purphoros, God of the Forge. Abrade, Untimely Malfunction and Blasphemous Act destroy or deal damage, and an indestructible permanent is neither destroyed nor killed by lethal damage (CR 702.12b); below five devotion to red it is not a creature, so Abrade's damage mode cannot target it. Its trigger targets nothing, so Deflecting Swat and Untimely Malfunction have nothing to redirect. The answer is the Sol Ring, before Purphoros is cast. If you sit after Tom, you have one land when his second turn comes; only your own turn-one Sol Ring pays for Abrade in time.",
       "grounded_in": [
-        "log:002"
+        "log:002",
+        "log:004",
+        "log:005"
       ]
     },
     {
@@ -187,25 +191,24 @@
     "preflight": {
       "keep": [
         "Two to five lands, at least two of them adding red.",
-        "A creature costing two or less, or a token maker: Skirk Prospector, Goblin Lackey, Goblin Bushwhacker, Impulsive Pilferer, Goblin Instigator, Hexing Squelcher, Mogg War Marshal, Searslicer Goblin, Rundvelt Hordemaster, Grenzo, Havoc Raiser, Conspicuous Snoop, Dragon Fodder, Krenko's Command.",
-        "A second body reachable by turn three from the cards in hand.",
         "A red source you can tap on turn one.",
+        "One of two plans. PROPOSED by the pilot after games 004 and 005, not yet measured: (a) wide before Zada — a creature costing two or less or a token maker (Skirk Prospector, Goblin Lackey, Goblin Bushwhacker, Impulsive Pilferer, Goblin Instigator, Hexing Squelcher, Mogg War Marshal, Searslicer Goblin, Rundvelt Hordemaster, Grenzo, Havoc Raiser, Conspicuous Snoop, Dragon Fodder, Krenko's Command) and a second body by turn three; or (b) Zada fast with a payoff — Sol Ring, or Skirk Prospector with a second Goblin to sacrifice, to cast Zada by turn three, and a cantrip to copy off her: Crimson Wisps, Expedite, Accelerate, Impolite Entrance or Might of the Meek.",
         "Kher Keep counts as a body source: {1}{R} and a tap makes a 0/1 Kobold, every turn."
       ],
       "ship": [
-        "Cantrips and a copy engine with no creature under three mana. That is the hand that lost game 001: clean lands, one-mana instants and sorceries, Storm-Kiln Artist, zero Goblins.",
+        "Cantrips and a copy engine with no creature under three mana. Good lands and cantrips with neither plan above is a ship. That is the hand that lost game 001: clean lands, one-mana instants and sorceries, Storm-Kiln Artist, zero Goblins.",
         "A hand whose cheapest creature costs four or more. Three basics, Dwarven Mine and Krenko, Mob Boss is the hand that lost game 002.",
         "Rituals or copy spells with no board: Battle Hymn adds {R} for each creature you control, Brightstone Ritual for each Goblin on the battlefield, Heat Shimmer and Molten Duplication copy what is already there.",
         "Six or seven lands.",
         "One land with no Sol Ring."
       ],
-      "note": "Dwarven Mine is a body as well as a land, and it arrives late: it enters tapped unless you already control three other Mountains, and only an untapped Dwarven Mine makes the 1/1 Dwarf. That Dwarf counts for Zada's copy count and for Battle Hymn, and it is not a Goblin, so Brightstone Ritual does not count it. Game 002's opener was three basics, Dwarven Mine and Krenko, Mob Boss — the Dwarf was a turn-four body at the earliest, and the hand was shipped too late."
+      "note": "Dwarven Mine is a body as well as a land, and it arrives late: it enters tapped unless you already control three other Mountains, and only an untapped Dwarven Mine makes the 1/1 Dwarf. That Dwarf counts for Zada's copy count and for Battle Hymn, and it is not a Goblin, so Brightstone Ritual does not count it. Game 002's opener was three basics, Dwarven Mine and Krenko, Mob Boss — the Dwarf was a turn-four body at the earliest, and the hand was shipped too late. Game 004's opener is not recorded; the pilot says it should have been shipped, at a table aiming to win on turn four. How often the 99 deals a hand meeting plan (a) or (b) has no figure yet."
     },
     "startup": {
       "steps": [
         "Play an untapped red source on turn one. Play Den of the Bugbear by turn two; hold Spinerock Knoll for a turn you cast nothing.",
         "Cast a one-mana Goblin on turn one: Skirk Prospector, Goblin Lackey, Impulsive Pilferer, or Goblin Bushwhacker unkicked.",
-        "Cast Dragon Fodder, Krenko's Command or Goblin Instigator on turn two, ahead of Sol Ring and ahead of any cantrip.",
+        "On turn two, if an opponent's Sol Ring is on the battlefield, cast Abrade or Untimely Malfunction on it first. Then cast Dragon Fodder, Krenko's Command or Goblin Instigator, ahead of your own Sol Ring and ahead of any cantrip.",
         "Cast a third body on turn three: Mogg War Marshal, Searslicer Goblin, Hexing Squelcher, Legion Warboss, or Goblin Matron fetching one of them.",
         "Count the creatures at the end of turn three. Cast Zada on turn four only if that count is three or more."
       ],
@@ -248,7 +251,8 @@
       "Deploy bodies first and the damage payoff last. Four 1/1s draw no removal; four 1/1s beside Impact Tremors draw all of it.",
       "Keep Krenko, Mob Boss in hand until the turn you can tap him — a Krenko that survives to untap is the table's first target.",
       "Say what the board does when asked. A count of 1/1s is public information and the number the table is bad at is the copy count, not the board.",
-      "Cast the rituals in the same turn as the payoff. A Battle Hymn on an empty turn tells the table there is a storm turn coming."
+      "Cast the rituals in the same turn as the payoff. A Battle Hymn on an empty turn tells the table there is a storm turn coming.",
+      "Destroy a turn-one Sol Ring and say why: it is a turn-two Purphoros. The salt is the price of the play; pay it."
     ],
     "reveal": [
       "Hold Empty the Warrens, Heat Shimmer, Molten Duplication and Fists of Flame until the turn they kill a seat.",
@@ -264,6 +268,9 @@
       "Break the deal on the turn the board is lethal, and say so before you declare attackers."
     ],
     "targets": [
+      "KILL ON SIGHT: Purphoros, God of the Forge (Tom). Nothing in the 99 removes it once it resolves, so destroy the Sol Ring that casts it on turn two; once it is down, Tom is the target of every point of optional damage.",
+      "KILL ON SIGHT: Krenko, Mob Boss (Oliver). Abrade him for 3 the turn he lands, before Oliver untaps; every untap after that doubles the Goblins left to answer.",
+      "When the whole table names the threat and only you can answer it, answer it — that turn, before your own development.",
       "Point every optional damage — Goblin Bombardment, Pashalik Mons, Siege-Gang Commander, Broadside Bombardiers, Grapeshot — at one seat until it is dead. Spread across three seats it kills nobody.",
       "Attack the seat with the fewest untapped blockers; 1/1s connect where nothing blocks and nowhere else.",
       "Cast Abrade on the permanent that beats you, not the permanent that is biggest.",
@@ -271,5 +278,5 @@
       "Kill the seat holding a sweeper before the seat holding a bigger board."
     ]
   },
-  "decklist_sha256_prefix": "67b7bdf82855"
+  "decklist_sha256_prefix": "f9e829330210"
 }

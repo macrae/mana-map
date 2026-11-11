@@ -192,7 +192,7 @@
       ]
     },
     "004": {
-      "summary": "A loss at Ryan's house on the current list (v2.2.0, decklist_sha256 8df06ee1…), cause raced. The draw/discard engine 'ran well and the sequencing felt right', but Sean kept a land-heavy opener with one wheel and few payoffs, held both commanders back to dodge a wipe while waiting for a wheel that never came, and Alex's warp deck, 'a faster class of deck', outpaced him. Since settled by the queue: Q012 found the land-and-ramp keep was good, Q013 led to the rule to cast the first commander on curve, and Q014 named Alex's turn-ending artifact and the answers to it (see data/opponents/tannuk-warp/NOTES.md).",
+      "summary": "A loss at Ryan's house on the list of the day (v2.2.0, decklist_sha256 8df06ee1…; the deck is now v3.0.0, and the note's 'Ledger card' and 'Bonnie/Annie' are no longer in the 99), cause raced. The draw/discard engine 'ran well and the sequencing felt right', but Sean kept a land-heavy opener with one wheel and few payoffs, held both commanders back to dodge a wipe while waiting for a wheel that never came, and Alex's warp deck, 'a faster class of deck', outpaced him. Since settled by the queue: Q012 found the land-and-ramp keep was good, Q013 led to the rule to cast the first commander on curve, and Q014 named Alex's turn-ending artifact and the answers to it (see data/opponents/tannuk-warp/NOTES.md).",
       "opponents": [
         {
           "seat": "Alex",
@@ -208,16 +208,6 @@
         }
       ],
       "cards": [
-        {
-          "card": "Ledger Shredder",
-          "read": "as-expected",
-          "why": "'the Ledger card (connive: draw, discard)' was one of the draw/discard pieces that 'moved Sean through the deck all game'"
-        },
-        {
-          "card": "Mary Read and Anne Bonny",
-          "read": "as-expected",
-          "why": "'Bonnie/Annie (haste, draw a card, discard a card)', the other piece of the loops that worked"
-        },
         {
           "card": "Smothering Tithe",
           "read": "under",
@@ -249,7 +239,7 @@
         }
       ],
       "takeaways": [
-        "The draw/discard loops (Ledger Shredder, Mary Read and Anne Bonny) carried the game: Sean 'cast a lot of spells' and the table saw 'things were happening'.",
+        "The draw/discard loops carried the game: 'the Ledger card (connive: draw, discard) and Bonnie/Annie (haste, draw a card, discard a card)' moved Sean through the deck, he 'cast a lot of spells', and Alex said 'things were happening'. Neither piece is in the current 99 (v3.0.0), so the note names them as it wrote them.",
         "Holding the commanders for a wheel cost tempo when no wheel came. The play rule adopted since (Q012, Q013): keep the land-and-ramp hand and cast the first commander on curve.",
         "Alex's warp turns outpace Sharknado: 'without Alex's warp turns, Sharknado does much more'. The answers and their timing were worked out since (Q014).",
         "Discard-a-card effects slow the deck, and the pilot wants the wheel count looked at."
@@ -265,6 +255,223 @@
           "question": "Is the wheel count on v2.2.0 right, and how much do the deck's discard-a-card costs ('Discard-a-card effects also slow the deck') drag on hand size and tempo?",
           "settled_by": "diagnose",
           "why_it_matters": "the note's lesson asks to 'Look at wheel count and the discard-a-card drag'; Q012 to Q014 did not cover it, and game 002 called the wheels too many on an earlier list"
+        }
+      ]
+    },
+    "005": {
+      "summary": "A late three-player loss at Sean's house on v2.2.0 (decklist_sha256 8df06ee1…, the same list as 004; the deck is now v3.0.0 and Marauding Mako and Lightning Greaves are not in the current 99). Alex, on Sean's Goblin Storm deck (the note's 'Zeta deck'), won: 'Purphoros was on the board pinging everybody for damage'. Sean again kept 'quite a bit of ramp' with small creatures and a wheel, grew Marauding Mako by +6/+6 off a wheel, but the commanders never came out and the sequencing 'felt a little off'. The pilot reads it as mostly piloting: 'I get distracted with like the little smaller creatures' instead of putting resources into the commander line.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": "Goblin Storm (Sean's own deck)",
+          "commander": null,
+          "evidence": "Purphoros was on the board pinging everybody for damage"
+        },
+        {
+          "seat": "David",
+          "archetype": "golems",
+          "commander": null,
+          "evidence": "David was playing his new golem deck"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Marauding Mako",
+          "read": "as-expected",
+          "why": "'I did a wheel with Marauding Mako out there and I was able to discard like seven or six cards and give him plus six plus six'"
+        },
+        {
+          "card": "Lightning Greaves",
+          "read": "under",
+          "why": "'I did have things like Lightning Greaves and Ember Cleave, and like I just couldn't ever get the commander out with those things'"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "a ramp-heavy opener with small creatures and a wheel: keep or mulligan ('I don't feel like I, I kept the right hand'), the same shape as 004's keep",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "with two or three cards in hand, whether to pay a discard-for-a-counter cost that draws nothing back, or hold the cards",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "spend the turn on the small discard creatures or on getting the first commander out and wheeling into it",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "Put resources into the commander line first: 'get a one of those commanders out and start wheeling into it and make it big', rather than the small discard creatures.",
+        "Wheels are payoffs, not cards to hold: the wheel with Marauding Mako out discarded six or seven cards for +6/+6.",
+        "Discard costs without a draw attached strand a small hand: 'I'm sitting with like two or three cards in my hand ... I also don't want to discard any of these cards.'",
+        "The commanders are expensive and 'just aren't coming out fast enough'; the pilot likens it to the Ur-Dragon, which needed ramp to cast its commander sooner.",
+        "Sharknado 'still feels it has a good rating'; the pilot puts the loss on 'some piloting stuff and, and maybe some tuning'."
+      ],
+      "engine_stages": [
+        "mana",
+        "ignition",
+        "fuel"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "On v3.0.0, by what turn is the first commander on the battlefield, and does a ramp-heavy keep with no payoff still reach it sooner, as Q012 found on v2.2.0?",
+          "settled_by": "goldfish",
+          "why_it_matters": "two logged games (004, 005) on the same list end with the pilot questioning a ramp-heavy keep and saying the commanders came out too slowly; Q012's answer was read on a list that has since changed"
+        },
+        {
+          "question": "Which cards in the current 99 ask for a discard without drawing a card back, and how much do they cost a small hand against the deck's draw sources?",
+          "settled_by": "diagnose",
+          "why_it_matters": "004's lesson and 005 both name the discard-a-card drag ('I need that card draw'); 004's open question on it has not been answered"
+        }
+      ]
+    },
+    "006": {
+      "summary": "Game 2 of a five-player night at Oliver's (Heliod won game 1; that game is not this deck's). Sharknado lost to Ryan's T'Vol going infinite around turn 8-9 with its lethal 'fully assembled except for the one card type that triggers it': Shabraz, Brallin, Fiery Emancipation, Smothering Tithe with 36 Treasure, Mystic Remora and Teferi's Ageless Insight on board and a tutor in hand aimed at Shark Typhoon, but no wheel was ever drawn. Played on v2.2.0 (decklist_sha256 8df06ee1...), not the current v3.0.0: Mystic Remora (gone by v2.3.0) and Embercleave (gone by v3.0.0) have since left the 99, so read those as notes about the list that was played.",
+      "opponents": [
+        {
+          "seat": "Ryan",
+          "archetype": "infinite combo",
+          "commander": "T'Vol",
+          "evidence": "Ryan went infinite with T'Vol around turn 8–9 before it came around again"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Smothering Tithe",
+          "read": "over",
+          "why": "'On board; 36 Treasure banked' — the mana for the planned Shark Typhoon cycle"
+        },
+        {
+          "card": "Mystic Remora",
+          "read": "as-expected",
+          "why": "'On board, drawing 2 per trigger'; with Teferi's Ageless Insight it dug 9-10 cards. Since left the 99"
+        },
+        {
+          "card": "Teferi's Ageless Insight",
+          "read": "as-expected",
+          "why": "on board and part of the dig: 'Dug 9–10 cards off Remora and Teferi looking for any wheel'"
+        },
+        {
+          "card": "Windfall",
+          "read": "missed",
+          "why": "'Wheel (Windfall or similar) — Never drawn'; after the game 'the first wheel ... was deep'"
+        },
+        {
+          "card": "Embercleave",
+          "read": "under",
+          "why": "'keeps appearing early and getting discarded to the loot engine'. Since left the 99"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "multipliers and 36 Treasure on board, a tutor in hand, no wheel: tutor Shark Typhoon now for the cycled flyer, or keep digging for a wheel (the pilot dug 9-10 cards, ideally for an instant-speed wheel on another player's turn)",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "Payoffs lag the engine: Tithe, Remora and the Treasure came online reliably, the wheel did not. The note calls this the second straight log with the same finding.",
+        "The forced-discard half of the draw engine is sometimes a cost, not a benefit; the pilot would prefer modal draw where discarding is optional.",
+        "Defensive piloting held up: the deck survived several wraths and wipes.",
+        "The pilot holds every hypothesis from this game until two or three more games are logged; no swap off one game, and buying the proxied third of the list waits on the research."
+      ],
+      "engine_stages": [
+        "fuel",
+        "output"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Shark Typhoon",
+            "Smothering Tithe",
+            "Brallin, Skyshark Rider",
+            "Fiery Emancipation"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Was the planned line (tutored Shark Typhoon cycled off 36 Treasure for a ~34-power flyer, trample from Brallin, damage tripled by Fiery Emancipation) lethal on its own, or did it need the wheel the note says was missing?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "the note says the board was lethal 'except for the one card type that triggers it' while also describing a Typhoon line that a tutor could reach; stack 012 proves the cycling payment, not the whole kill"
+        },
+        {
+          "question": "On the current list, how many wheels are there and on what turn does the first one typically arrive, against when Shabraz and the draw engines land?",
+          "settled_by": "goldfish",
+          "why_it_matters": "the pilot's own first research request; 'payoffs lag the engine' is in two logs running"
+        },
+        {
+          "question": "Which tutors in the list can find a wheel, and what should each tutor fetch when the board has multipliers but no wheel?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the pilot asked for a 'what to tutor for when' map; this game turned on that choice"
+        },
+        {
+          "question": "Are there more multipliers and equipment than wheels to feed them, and does draw with optional discard fit the hand better than forced loots?",
+          "settled_by": "diagnose",
+          "why_it_matters": "two of the pilot's research requests; the list has changed twice since (v2.3.0, v3.0.0), so check against v3.0.0"
+        }
+      ]
+    },
+    "007": {
+      "summary": "First game on the newly sleeved v2.3.0 (decklist_sha256 36d865a6...; no result or opponents logged). The pilot found the wheels, got the commanders big and 'actually could have won', but the deck felt 'clunky and slow as hell', brittle because the two commanders cost 9 mana with two taxes, and the draw-and-discard felt 'laborious' and 'a bit convoluted'. The list has since become the Shabraz-first v3.0.0.",
+      "opponents": [],
+      "cards": [],
+      "decisions": [],
+      "takeaways": [
+        "The deck worked mechanically (wheels found, commanders big, a win was available) and still was not fun: 'clunky and slow', 'convoluted'.",
+        "Two commanders mean two taxes and 9 mana to deploy both; the pilot reads that as brittleness.",
+        "The card draw and discard is 'laborious'; the stack triggers themselves are 'fine'. Same shape as 006's note that forced discard is sometimes a cost."
+      ],
+      "engine_stages": [
+        "ignition",
+        "fuel"
+      ],
+      "open_questions": [
+        {
+          "question": "Does the Shabraz-first v3.0.0 address what made v2.3.0 feel slow and laborious, the 9-mana commander pair and the forced-discard loot steps?",
+          "settled_by": "diagnose",
+          "why_it_matters": "'slow' recurs across 003, 006 and 007; 008 on v3.0.0 was lost to a misplay, so it does not yet answer this"
+        }
+      ]
+    },
+    "008": {
+      "summary": "Game 3 of an 0-3 night at Oliver's against an optimized bracket 3 table that aims to win around turn four. Oliver landed Krenko; with the table asking for the kill, Sean held Swords to Plowshares and a second two-mana removal spell, cast Shabraz instead, then passed another turn with open mana, and Oliver went off for 30-plus damage in one turn. Played on the current v3.0.0. The pilot calls it '100% piloting error' and wants no deck changes.",
+      "opponents": [
+        {
+          "seat": "Oliver",
+          "archetype": "tokens",
+          "commander": "Krenko",
+          "evidence": "Oliver went off; Sean took 30-plus damage in one turn"
+        }
+      ],
+      "cards": [],
+      "decisions": [
+        {
+          "spot": "Oliver's Krenko just landed, the table names it, Sean holds Swords to Plowshares and a second two-mana removal spell: remove Krenko, or cast Shabraz for momentum (and the turn after, with Shabraz out and mana open, remove it then)",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "When the whole table names the threat and only you can answer it, answer it. Threat removal beats tempo.",
+        "Kill on sight at this pod: Purphoros (Tom), Krenko (Oliver).",
+        "Deny the Sol Ring opener: early artifact removal is a legitimate tempo play against this pod.",
+        "Oliver's and Tom's bracket 3 decks are optimized with a turn-four clock; the B-team's bracket 3 runs a turn 6-7 clock.",
+        "No deck changes: track Shabraz across more games before any tuning review."
+      ],
+      "engine_stages": [
+        "ignition"
+      ],
+      "open_questions": [
+        {
+          "question": "How many answers can v3.0.0 aim at a commander like Krenko on the turn it lands, and is enchantment removal adequately covered?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the pilot asks for a standing enchantment-removal slot audit across decks; the deck must be able to answer when the table names the threat"
+        },
+        {
+          "question": "How often is Shabraz on the battlefield by turn four, against a table whose clock is about turn four?",
+          "settled_by": "goldfish",
+          "why_it_matters": "this table's clock is about turn four, and the engine model puts Shabraz's first window at turn four or five"
         }
       ]
     }

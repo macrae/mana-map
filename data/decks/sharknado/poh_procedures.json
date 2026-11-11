@@ -91,13 +91,14 @@
       "indications": [
         "A seat warps or casts large hasty creatures every turn. Alex's warp deck outpaced the list in 004 (log:004).",
         "A seat's permanent drains the whole table as its creatures enter. Goblin Storm did that in 005 before the commanders arrived (log:005).",
+        "Tom resolves Purphoros, God of the Forge: every creature entering under his control is 2 damage to you. In 005 'Purphoros really won the second game' (log:005).",
         "Turn five with no commander on the battlefield. Game 003: 'slow to get cards out' (log:003).",
         "You are casting small creatures while Shabraz sits in the command zone (log:005).",
         "One attack takes a third or more of your life."
       ],
       "immediate": [
         "Count both clocks aloud: how many of their turns kill you, and how many of yours kill them.",
-        "If theirs is shorter, answer the engine, not the bodies: Swords to Plowshares, Get Lost or Chaos Warp on Tannuk or the drain creature; Chaos Warp, Prismari Command or Otawara on Alex's turn-ending artifact in his main phase, after he spends the warp mana; Get Lost or Chaos Warp on a drain enchantment.",
+        "If theirs is shorter, answer the engine, not the bodies. Tom's Purphoros: Chaos Warp or Otawara's channel, nothing that destroys. Tannuk or a drain creature: Swords to Plowshares, Get Lost or Chaos Warp. Alex's turn-ending artifact: Chaos Warp, Prismari Command or Otawara in his main phase, after he spends the warp mana. A drain enchantment: Get Lost or Chaos Warp.",
         "Cast Shabraz this turn if he is castable, ahead of any other creature.",
         "If Willie Lumpkin connects with the racing seat, offer that player the card: if they draw it, they cannot attack you or your permanents on their next turn.",
         "In their beginning of combat, cycle Shark Typhoon with every land you held open: a flying X/X Shark that blocks this turn, and a counter on Shabraz."
@@ -109,7 +110,7 @@
         "Leave Bard, King of Dale untapped on their turn: reach and vigilance make him a blocker for flyers after he attacks.",
         "Brotherhood Regalia on Shabraz makes him unblockable; go over the board, not through it."
       ],
-      "notes": "Nothing in the 99 counters a creature spell; Negate and Stubborn Denial hit noncreature spells only. Grand Abolisher does nothing on Alex's turn, where his turn-ending artifact is activated. Hold Chaos Warp at Alex's table. Games 003, 004 and 005 predate v3.0.0 and the cards they name are gone (log:003, log:004, log:005, log:007).",
+      "notes": "Nothing in the 99 counters a creature spell; Negate and Stubborn Denial hit noncreature spells only. Grand Abolisher does nothing on Alex's turn, where his turn-ending artifact is activated. Hold Chaos Warp at Alex's table. Games 003, 004 and 005 predate v3.0.0 and the cards they name are gone (log:003, log:004, log:005, log:007). Purphoros is indestructible, so Get Lost, Prismari Command's destroy and every damage mode do nothing to him (CR 702.12b). Swords to Plowshares reaches him only while Tom's devotion to red is five or more and he is a creature. Chaos Warp and Otawara send him to the command zone if Tom chooses (CR 903.9b); he comes back at 6, so the answer buys turns.",
       "grounded_in": [
         "log:003",
         "log:004",
@@ -119,31 +120,35 @@
     },
     {
       "condition": "combo",
-      "condition_text": "another seat is assembling a loop or a one-turn kill, and your answers are a handful of instants",
+      "condition_text": "another seat is assembling a loop or a one-turn kill, Ryan's Teval or Oliver's Krenko, and your answers are a handful of instants",
       "indications": [
         "A seat tutors twice in one turn, or plays a piece and holds its mana up.",
+        "Oliver casts Krenko, Mob Boss. From his next untap each tap makes Goblins equal to the Goblins he controls; in 008 he was left alone for a turn and Oliver dealt you 30-plus in one turn (log:008).",
+        "The table asks you to kill a permanent, and nobody else has the colour or the mana open to answer it.",
         "A seat whose deck checks at bracket 4 sits across from your bracket 3 list. Games 002 and 006 both ended on Ryan's Teval going infinite, the second around turn 8 or 9 (log:002, log:006).",
         "A sacrifice outlet and a recursion piece sit on one board, or a seat's graveyard is its engine.",
         "A seat's life total, token count or land count jumps on a turn it attacks nobody.",
         "You are one card short of your own kill. In 006 every multiplier was on the board and the last piece never came (log:006)."
       ],
       "immediate": [
-        "Name the piece on the battlefield the loop needs. That piece is the target.",
-        "Answer it at instant speed: Swords to Plowshares ({W}) or Get Lost ({1}{W}) on a creature, Get Lost on an enchantment, Prismari Command on an artifact, Chaos Warp ({2}{R}) on any permanent, Otawara's channel to bounce it, or Teferi, Master of Time's -3 to phase a creature out until its controller's next turn.",
-        "If the last piece is a noncreature spell from hand, hold {U} for Stubborn Denial or {1}{U} for Negate through that seat's turn and counter it.",
-        "If the loop runs from a graveyard, cast Echo of Eons or Time Reversal: each player shuffles hand and graveyard into the library.",
+        "Name the piece on the battlefield the loop needs. That piece is the target. Oliver's Krenko is the target the turn he lands.",
+        "If the table names the piece and you hold its answer, cast the answer now, before Shabraz or any spell of your own. In 008 you held Swords to Plowshares and a second two-mana removal spell, cast Shabraz, passed another turn with mana open, and took 30-plus (log:008).",
+        "Answer it before its controller untaps. Krenko: Swords to Plowshares ({W}), Get Lost ({1}{W}) or Chaos Warp ({2}{R}) on Oliver's turn once he resolves, or Collective Defiance's 4 damage ({1}{R}{R}) on your own turn. Other pieces: Get Lost on an enchantment, Prismari Command on an artifact, Chaos Warp on any permanent, Otawara's channel to bounce it.",
+        "If the last piece is a noncreature spell from hand, hold {U} for Stubborn Denial or {1}{U} for Negate through that seat's turn and counter it. If the loop runs from a graveyard, cast Echo of Eons or Time Reversal.",
         "If nothing answers it, count your own kill this turn. If it is there, take it now; if it is short, swing at the combo seat."
       ],
       "subsequent": [
         "From the turn a seat shows its first piece, keep {W} and {1}{U} open before you tap out for Equipment or a creature.",
+        "Once Krenko has been answered, keep {W} open through Oliver's turns. He comes back from the command zone at 6 mana, and the window is again the turn he lands.",
         "Spend spare mana on that seat's turn digging for the answer: Shark Typhoon's cycling, Faerie Mastermind's {3}{U} (it hands every seat a card), Teferi's +1.",
         "Cast Grand Abolisher the turn before your kill turn. On your turn no opponent casts a spell or activates an artifact, creature or enchantment ability.",
         "Do not cast Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel's ability, Jace's Archivist's ability or Collective Defiance's first mode against a graveyard deck. Each puts a full hand in its graveyard."
       ],
-      "notes": "Echo of Eons and Time Reversal are the two cards in the 99 that empty an opponent's graveyard, and both refill the combo seat's hand to seven. Cast one only when the graveyard is the engine. Both grounding games predate v3.0.0: 002 was on v1.3.0 and 006 on v2.2.0 (log:002, log:006).",
+      "notes": "Echo of Eons and Time Reversal are the two cards in the 99 that empty an opponent's graveyard, and both refill the combo seat's hand to seven. Cast one only when the graveyard is the engine. Both grounding games predate v3.0.0: 002 was on v1.3.0 and 006 on v2.2.0 (log:002, log:006). Teferi, Master of Time's -3 does not answer Krenko: he phases in at Oliver's untap and taps that turn (CR 702.26c). Otawara's channel buys one turn: Oliver puts him in the command zone (CR 903.9b) or recasts him from hand. Game 008 was on v3.0.0 (log:008).",
       "grounded_in": [
         "log:002",
-        "log:006"
+        "log:006",
+        "log:008"
       ]
     },
     {
@@ -209,7 +214,8 @@
         "A white source and a blue source, or a rock that makes the missing one, so Shabraz is castable on turn four or five. Red is not needed for him.",
         "A play for turn two or three: a rock, Swiftfoot Boots, Kitsa, Willie Lumpkin, Faerie Mastermind, Sokka, Shang-Chi, Lae'zel or Rhystic Study.",
         "A land-and-ramp hand with no payoff is a keep: Shabraz and the cantrips dig to the payoff (Q012, log:004).",
-        "A protection piece in hand (Swiftfoot Boots, Slip Out the Back, Shelter, Loran's Escape) is worth a land in a close call (log:001)."
+        "A protection piece in hand (Swiftfoot Boots, Slip Out the Back, Shelter, Loran's Escape) is worth a land in a close call (log:001).",
+        "At Oliver's table, where the clock is about turn four, a hand with Swords to Plowshares, Get Lost or Chaos Warp and the colour to cast it is worth a land in a close call (log:008)."
       ],
       "ship": [
         "Zero or one land.",
@@ -226,12 +232,13 @@
         "Turn three: Rhystic Study, Shang-Chi, Sokka, Lae'zel or a second rock. With Sol Ring on turn one, Shabraz.",
         "Put Swiftfoot Boots on the battlefield before Shabraz, so the turn he lands costs 5 plus {1}.",
         "Cast no draw-seven before Shabraz is on the battlefield. Without him it grows nothing.",
-        "Spend Swords to Plowshares or Get Lost in the first three turns only on a combo piece, Tannuk, or a creature that kills Shabraz on sight."
+        "If an opponent opened on Sol Ring, cast Prismari Command on it the first turn you have {1}{U}{R}: destroy the artifact and make yourself a Treasure. Chaos Warp also removes it; spend Chaos Warp on Sol Ring only when Tom is not at the table.",
+        "Spend Swords to Plowshares or Get Lost in the first three turns only on a combo piece, Krenko, Tannuk, or a creature that kills Shabraz on sight. Hold Chaos Warp at Tom's table for Purphoros."
       ]
     },
     "assembly": {
       "steps": [
-        "Shabraz on curve: turn four with a rock, turn five without. Never hold him for a draw-seven (log:004).",
+        "Shabraz on curve: turn four with a rock, turn five without. Never hold him for a draw-seven (log:004). Hold him one turn when Krenko or Purphoros is unanswered and you hold the answer: cast the answer first (log:008).",
         "Shield him the turn he lands: equip Swiftfoot Boots for {1}, or hold {U} for Slip Out the Back, {W} for Loran's Escape or {1}{W} for Shelter. Flawless Maneuver and Deflecting Swat are free from here on. With neither Boots nor a spare mana, cast him anyway (Q013).",
         "A draw engine that fires every turn: Valeria Richards, Archmage Emeritus, Rhystic Study, Esper Sentinel or Teferi, Master of Time.",
         "A multiplier: Teferi's Ageless Insight or Bard, King of Dale doubles every draw after your first draw-step draw; Lae'zel adds one counter to every placement. Stack 008: Windfall for seven under Lae'zel leaves Shabraz 17/17.",
@@ -243,6 +250,7 @@
     "cruise": {
       "steps": [
         "Untap. Count each opponent's open mana and colours before you cast anything.",
+        "Check the kill-on-sight list: Oliver's Krenko, Tom's Purphoros. If one is on the battlefield and you hold its answer, cast the answer before anything else this turn.",
         "First main phase: cast the cheap draw. The first noncreature spell draws off Valeria; each instant or sorcery draws off Archmage Emeritus. Each card is a counter and a life.",
         "Equip at sorcery speed: Swiftfoot Boots first, then Fireshrieker or Lizard Blades, then Brotherhood Regalia.",
         "Pay {W/U} to give a Human flying. Attack with Sokka beside another creature to draw before damage.",
@@ -269,7 +277,8 @@
       "Smothering Tithe and Rhystic Study tax every seat. Once a seat pays for both, it is treating you as the threat.",
       "Consecrated Sphinx beside Shabraz is the stack 009 board. Expect it to draw the next removal spell.",
       "The first symmetrical draw-seven changes the table's read. It split the table in 001 (log:001).",
-      "At a table that steps up to bracket 4 you are the slow deck, not the threat (log:002, log:006)."
+      "At a table that steps up to bracket 4 you are the slow deck, not the threat (log:002, log:006).",
+      "At Oliver's table the opposing bracket-3 decks aim to win around turn four. You are not the fastest seat there (log:008)."
     ],
     "reveal": [
       "Hold Akroma's Will for the attack. Blade Historian goes down the turn of the swing, not earlier.",
@@ -281,11 +290,14 @@
     ],
     "alliances": [
       "Offer removal, not draw-sevens. Swords to Plowshares or Get Lost on another seat's problem buys a rotation.",
+      "When the whole table names a threat and only you can answer it, answer it this turn. Do not hold the removal for a deal or for your own threat (log:008).",
+      "Destroy a turn-one Sol Ring at Tom's or Oliver's table when you can. Expect complaints; do it anyway.",
       "Willie Lumpkin's card is a truce: the seat that takes it cannot attack you on its next turn. Offer it to the seat you most need to stop.",
       "When a seat asks you to stop wheeling, agree and draw one-sided instead, and keep the one draw-seven you need for the kill (log:002).",
       "Break a deal only on the turn commander damage kills."
     ],
     "targets": [
+      "Kill on sight: Oliver's Krenko, Mob Boss and Tom's Purphoros, God of the Forge. Your removal goes at them before commander damage goes anywhere (log:005, log:008).",
       "Commander damage goes at one seat until it dies.",
       "First, the seat with no flyer or reach to block Shabraz, or any seat once Brotherhood Regalia is on him.",
       "Next, the combo seat. Games 002 and 006 ended on one (log:002, log:006).",

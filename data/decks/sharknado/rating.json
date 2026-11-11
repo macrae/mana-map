@@ -14,10 +14,10 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.1558,
    "sub_score": 100.0,
    "sub_ci": [
-    94.41,
+    94.32,
     100.0
    ],
    "placement": 100.0,
@@ -48,10 +48,10 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1231,
+   "weight_effective": 0.1039,
    "sub_score": 100.0,
    "sub_ci": [
-    94.4,
+    94.42,
     100.0
    ],
    "placement": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.1846,
+   "weight_effective": 0.1558,
    "sub_score": 65.0,
    "sub_ci": [
-    59.4,
-    70.5
+    59.32,
+    70.62
    ],
    "placement": 50.0,
    "anchor": 80.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2,
+   "weight_effective": 0.1688,
    "sub_score": 76.79,
    "sub_ci": [
     76.79,
@@ -233,16 +233,46 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "table_record",
+   "weight": 0.12,
+   "weight_validity": 1.0,
+   "weight_effective": 0.1558,
+   "sub_score": 12.95,
+   "sub_ci": [
+    13.84,
+    37.36
+   ],
+   "placement": 0.0,
+   "anchor": 22.67,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): win rate over par (par = mean 1/(opponents+1) = 0.2733) on every logged game, any version; Beta posterior at n=5",
+   "inputs": [
+    {
+     "figure": "log.win_rate",
+     "value": 0.0,
+     "ci95": [
+      0.0,
+      0.4345
+     ],
+     "n": 5,
+     "source": "log.jsonl#result",
+     "decklist_sha256": null
+    }
+   ],
+   "citations": [
+    {
+     "kind": "log",
+     "ref": "log.jsonl",
+     "quote": "0 wins in 5 games"
+    }
+   ]
   }
  ],
  "withheld": [
   {
    "component": "dti",
    "reason": "the DeckCheck reading describes another list — `deckcheck sharknado --write` after a rescan"
-  },
-  {
-   "component": "table_record",
-   "reason": "4 game(s) logged; 5 needed"
   },
   {
    "component": "pilot_feel",
@@ -276,21 +306,17 @@
   "floor_vs_target": "floor 3, target 3"
  },
  "decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
- "fleet_sha": "5c30a301e0f1",
+ "fleet_sha": "94bab3be64be",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [
   {
-   "question": "Does Swiftfoot Boots on the turn Shabraz lands give hexproof and haste as the protection line claims (no passing stack has it)?",
-   "settled_by": "resolve-stack"
+   "question": "Does Shabraz land and survive often enough on v3.0.0? Track it across more games before any tuning review, as the pilot asked.",
+   "settled_by": "rate"
   },
   {
-   "question": "Do the draw doublers (Teferi's Ageless Insight, Bard) turn each draw into two Shabraz counters, and does doubled combat damage count in full as commander damage?",
-   "settled_by": "resolve-stack"
-  },
-  {
-   "question": "How often is Shabraz protected when he lands on the new list, and how often does a cheap Human carry counters in the air?",
-   "settled_by": "goldfish"
+   "question": "Resilience counts 3 of 5 answer classes with no sweepers; does a turn-four table punish that gap beyond what the pilot's lines explain?",
+   "settled_by": "diagnose"
   }
  ],
  "iterations": 3,
@@ -298,66 +324,51 @@
   "verdict": "pass",
   "findings": [
    {
+    "where": "scorecard",
+    "status": "supported",
+    "note": "validate-rating OK; re-run scorecard identical to rating.json on components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity."
+   },
+   {
     "where": "judgment.sub_score",
     "status": "supported",
-    "note": "84 vs code_score 84.5: no gap claimed; scorecard diff identical (components, withheld, code_score, score_point, bracket, limits, uncertainty, sensitivity). Round-2 double count removed."
+    "note": "69 equals code_score 69.0: no gap is claimed, so nothing needs a figure. The argument says outright that neither the speed oversell nor the table_record undersell is sized by the record, and claims no cancel."
    },
    {
     "where": "judgment.argument",
     "status": "supported",
-    "note": "Concordance is mixed, not divergent; the one outlier (resilience, worse) is addressed as capacity, with no gap claimed. Pro/con facts are each tied to a measured component; no superlatives. Standalone prose."
+    "note": "All four outliers addressed: mana (explicitly not claimed to oversell; logs 003 and 007 read correctly as a superseded list and a commander-tax complaint), speed (turn-four clock from log 008, a cited unmeasured fact, flagged as one night's table; B-team 6-7 clock in the same note is not hidden but the claim is not used to move the number), resilience (16 cards / 3 of 5 classes / 0 sweepers match the inputs, not overruled), table_record (0/5, only game 008 is on v3.0.0, sha matches, not lifted)."
    },
    {
-    "where": "judgment.citations[0]",
+    "where": "judgment.citations",
     "status": "supported",
-    "note": "engine:ignition quote verbatim and says no measured cast/survival rate."
-   },
-   {
-    "where": "judgment.citations[1]",
-    "status": "supported",
-    "note": "engine:protection 45.6%/54.7% verbatim (deck-audit)."
-   },
-   {
-    "where": "judgment.citations[2]",
-    "status": "supported",
-    "note": "engine:protection 'No passing stack ... protecting a commander' verbatim."
-   },
-   {
-    "where": "judgment.citations[3]",
-    "status": "supported",
-    "note": "stack:006 quote present; its power-10 note matches the 'starts at seven counters' claim."
-   },
-   {
-    "where": "judgment.citations[4]",
-    "status": "supported",
-    "note": "context:pilot line present at CONTEXT.md:237."
+    "note": "Log 008 '100% piloting error' and the turn-four sentence are verbatim and in context (game 3, removal held, Krenko). Log 003 'got mana starved one round' and log 007 'clunky and slow as hell' are verbatim and correctly characterized. Skeleton quotes match the components."
    },
    {
     "where": "open_questions",
     "status": "supported",
-    "note": "Question 4 removed; no new unjustified item found."
+    "note": "Neither is answered by the skeleton or artifacts: Shabraz survival on v3.0.0 needs more games (rate), and whether a turn-four table punishes the sweeper gap is a diagnose question."
    }
   ],
   "iterations": 3
  },
- "code_score": 84.0,
- "score_point": 84.0,
- "score": 83.5,
+ "code_score": 69.0,
+ "score_point": 69.0,
+ "score": 70.7,
  "score_ci": [
-  77.3,
-  89.4
+  59.0,
+  79.5
  ],
- "grade": "A",
+ "grade": "B",
  "grade_range": [
-  "B",
-  "A"
+  "C",
+  "B"
  ],
- "grade_display": "A",
+ "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.827,
-  "B": 0.173,
-  "C": 0.0,
-  "D": 0.0,
+  "A": 0.041,
+  "B": 0.764,
+  "C": 0.19,
+  "D": 0.005,
   "F": 0.0
  },
  "uncertainty": {
@@ -374,56 +385,69 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 80.3,
-    "grade": "A"
+    "score": 63.3,
+    "grade": "C"
    },
    "mana": {
-    "score": 81.7,
-    "grade": "A"
+    "score": 65.4,
+    "grade": "B"
    },
    "resilience": {
-    "score": 88.3,
-    "grade": "A"
+    "score": 69.7,
+    "grade": "B"
    },
    "construction": {
-    "score": 85.8,
-    "grade": "A"
+    "score": 67.4,
+    "grade": "B"
+   },
+   "table_record": {
+    "score": 79.4,
+    "grade": "B"
    },
    "judgment": {
-    "score": 84.0,
-    "grade": "A"
+    "score": 69.0,
+    "grade": "B"
    }
   },
   "flips": [
    {
-    "component": "resilience",
-    "share_now": 0.185,
-    "share_at_flip": 0.355,
-    "boundary": 80,
-    "grade_at_flip": "B",
+    "component": "table_record",
+    "share_now": 0.156,
+    "share_at_flip": 0.216,
+    "boundary": 65,
+    "grade_at_flip": "C",
     "direction": "raise"
    },
    {
-    "component": "construction",
-    "share_now": 0.2,
-    "share_at_flip": 0.643,
+    "component": "speed",
+    "share_now": 0.156,
+    "share_at_flip": 0.047,
+    "boundary": 65,
+    "grade_at_flip": "C",
+    "direction": "lower"
+   },
+   {
+    "component": "mana",
+    "share_now": 0.104,
+    "share_at_flip": 0.422,
     "boundary": 80,
-    "grade_at_flip": "B",
+    "grade_at_flip": "A",
     "direction": "raise"
    }
   ]
  },
  "concordance": {
-  "level": "mixed",
+  "level": "divergent",
   "instruments": {
    "construction": 2.0,
-   "judgment": 1.0,
+   "judgment": 2.0,
    "mana": 1.0,
    "resilience": 3.5,
-   "speed": 1.0
+   "speed": 1.0,
+   "table_record": 4.0
   },
   "of": 5,
-  "spread": 0.625,
+  "spread": 0.75,
   "outliers": [
    {
     "instrument": "mana",
@@ -436,13 +460,13 @@
     "side": "better"
    },
    {
-    "instrument": "construction",
-    "rank": 2.0,
+    "instrument": "resilience",
+    "rank": 3.5,
     "side": "worse"
    },
    {
-    "instrument": "resilience",
-    "rank": 3.5,
+    "instrument": "table_record",
+    "rank": 4.0,
     "side": "worse"
    }
   ],
@@ -454,35 +478,45 @@
    "n": 5
   }
  },
- "resolution": "the 90% interval spans 1 grade boundary (80); concordance mixed",
+ "resolution": "the 90% interval spans 1 grade boundary (65); concordance divergent",
  "judgment": {
-  "sub_score": 84,
-  "argument": "The measured components cover the goldfish clock, the land drops, the answer count and the audit's construction axes. What they cannot see is whether Shabraz lands and lives, and the engine says so plainly: there is no measured rate for it. The record on the current list is silent as well, since the logged games were played on lists before v3.0.0, so it neither raises nor lowers the number. Two things point up and are already counted. The protection group is in 45.6% of opening sevens and 54.7% by turn three, and construction scores the audit's protection axis as over. The finish is proved in a passing stack, but that stack starts with Shabraz already at seven counters, so it proves the rule and not a rate. Two things point down and are also counted. Resilience is the one instrument ranked worse than the rest, and it measures capacity, so I do not overrule it. No passing stack resolves a protecting card on a commander. Each unmeasured fact has a measured twin already inside a component, and I cannot size an unmeasured gap in either direction. So the number sits at the skeleton's code_score: the components already say what the record supports, and it moves when Shabraz's survival is measured.",
+  "sub_score": 69,
+  "argument": "The measured components miss two things. First, speed and mana are the better-side outliers, but kill_by_turn_8 of 0.958 is an unopposed goldfish with no blockers and no removal. The pilot's note on the latest pod says its opponents aim to win around turn four. That is one night's table, so I rank no table across the fleet, but against a turn-four pod an eight-turn kill is a ceiling I cannot spend, so speed oversells. Mana is different: its inputs do not depend on the opponents' clock. The pilot's notes say \"got mana starved one round\" on an earlier list and \"clunky and slow as hell\" on the next, but the first is one round on a superseded list and the second is about two commanders' tax and a laborious loot, not land drops. I do not claim mana oversells. Second, table_record reads 0 wins in 5 games, mostly earlier lists. The one v3.0.0 game was lost to what the pilot calls 100% piloting error, so I do not lift on it. Resilience counts 16 answer cards but 3 of 5 classes and 0 sweepers, and I do not overrule it. The record does not size either gap, and the sensitivity figures show they are not symmetric, so I claim no cancel and sit at the code score of 69. Why not higher: no game shows Shabraz landing, living and winning. Why not lower: the one real v3.0.0 loss had the answers in hand.",
   "citations": [
    {
-    "kind": "engine",
-    "ref": "engine:ignition",
-    "quote": "The brief has no measured rate for when he is cast or how long he survives."
+    "kind": "skeleton",
+    "ref": "skeleton:speed",
+    "quote": "kill_by_turn_8"
    },
    {
-    "kind": "engine",
-    "ref": "engine:protection",
-    "quote": "is in 45.6% of opening sevens and 54.7% by turn three, measured by turn six 86.9%"
+    "kind": "skeleton",
+    "ref": "skeleton:table_record",
+    "quote": "0 wins in 5 games"
    },
    {
-    "kind": "engine",
-    "ref": "engine:protection",
-    "quote": "No passing stack in the current 99 resolves any of these protecting a commander."
+    "kind": "skeleton",
+    "ref": "skeleton:resilience",
+    "quote": "interactive suite"
    },
    {
-    "kind": "stack",
-    "ref": "stack:006",
-    "quote": "a loot between the two damage steps makes 10 + 11 = 21 commander damage"
+    "kind": "log",
+    "ref": "log:008",
+    "quote": "100% piloting error"
    },
    {
-    "kind": "context",
-    "ref": "context:pilot",
-    "quote": "All the logged games were played on lists before v3.0.0."
+    "kind": "log",
+    "ref": "log:008",
+    "quote": "Opponents' bracket 3 decks are highly optimized and aim to win around turn four."
+   },
+   {
+    "kind": "log",
+    "ref": "log:003",
+    "quote": "got mana starved one round"
+   },
+   {
+    "kind": "log",
+    "ref": "log:007",
+    "quote": "clunky and slow as hell"
    }
   ],
   "against": {
@@ -490,10 +524,10 @@
    "spec_sha": "fd483871b754"
   },
   "weight": 0.2,
-  "weight_effective": 0.3077,
+  "weight_effective": 0.2597,
   "sub_ci": [
-   75.77,
-   92.39
+   61.11,
+   77.37
   ]
  },
  "rank": {
@@ -507,11 +541,11 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.999,
-   "2": 0.002,
-   "3": 0.0,
-   "4": 0.0,
-   "5": 0.0
+   "1": 0.633,
+   "2": 0.174,
+   "3": 0.131,
+   "4": 0.051,
+   "5": 0.011
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -521,11 +555,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.5,
-   "gishath": 67.6,
-   "ur-dragon": 60.8,
-   "edgar-vampires": 60.7,
-   "goblin-storm": 60.6
+   "sharknado": 70.7,
+   "gishath": 67.4,
+   "ur-dragon": 62.5,
+   "edgar-vampires": 60.1,
+   "goblin-storm": 59.7
   }
  }
 }

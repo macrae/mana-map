@@ -2,24 +2,44 @@
   "slug": "goblin-storm",
   "commander": "Zada, Hedron Grinder",
   "read_meta": {
-    "as_of_version": 1,
-    "as_of_sha": "c8651652722cd85ec65b9ea5df4122cd182aa88bdb34c0eb568b0d099c5f5354",
+    "as_of_version": 5,
+    "as_of_sha": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
     "games_considered": [
       {
         "id": "001",
         "at": "2026-08-28",
         "version": 1,
-        "current": true
+        "current": false
       },
       {
         "id": "002",
         "at": "2026-09-01",
         "version": 1,
+        "current": false
+      },
+      {
+        "id": "003",
+        "at": "2026-10-27",
+        "version": 4,
+        "current": false
+      },
+      {
+        "id": "004",
+        "at": "2026-11-10",
+        "version": 5,
+        "current": true
+      },
+      {
+        "id": "005",
+        "at": "2026-11-10",
+        "version": 5,
         "current": true
       }
     ],
     "versions_spanned": [
-      1
+      1,
+      4,
+      5
     ],
     "unmatched": []
   },
@@ -81,18 +101,87 @@
           "summary": "Game one of three at Oliver's, five-player with Oliver, Tom, Alex and Ryan. I kept three basics, a utility land and Krenko, Mob Boss — land and a payoff, but no small goblins, and the instants and sorceries in hand were all expensive, so the cantrip half never turned over. Three of the five decks were mono-red; Oliver killed the table on turn five off Krenko tokens and pings. Loss, and the same lesson as the first night: goblin presence gates the mulligan."
         }
       }
+    },
+    "2026-10-27": {
+      "night": "2026-10-27",
+      "stardate": "80300.9",
+      "version": "v1.2.0",
+      "decklist_sha256": "aa02ea1989f3869aab74e81d4a0de945306da117a547935f7f9a864d849e7a3f",
+      "source_ids": [
+        "003"
+      ],
+      "position_in_evening": {
+        "n": 2,
+        "of": 2,
+        "after": "sharknado"
+      },
+      "games": [
+        {
+          "id": "003",
+          "at": "2026-10-27T23:09:44-07:00",
+          "result": "win",
+          "cause": "won",
+          "opponents": 2,
+          "supplemental_index": 0
+        }
+      ],
+      "logs": {
+        "pilot": {
+          "summary": "At Ryan's, three-player against Alex's R/G fight deck and Ryan's T'Vol, and a win. Deflecting Swat moved Alex's fight off Zada onto a 1/1 goblin. I used Untimely Malfunction on Ryan's Phyrexian Altar to break his Gravecrawler loop, knowing it let Alex kill Ryan and hit me down to 23. Empty the Warrens with Impact Tremors came the turn before. The kill was 15 goblins, about 15 mana, Reckless Ransacking, and Accelerate, Crimson Wisps and Expedite for haste and a pile of draws, swinging 20-plus trample goblins at Alex."
+        }
+      }
+    },
+    "2026-11-10": {
+      "night": "2026-11-10",
+      "stardate": "80314.7",
+      "version": null,
+      "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
+      "source_ids": [
+        "004",
+        "005"
+      ],
+      "position_in_evening": {
+        "n": 1,
+        "of": 3,
+        "after": null
+      },
+      "games": [
+        {
+          "id": "004",
+          "at": "2026-11-10T19:00",
+          "result": "loss",
+          "cause": "raced",
+          "opponents": 3,
+          "supplemental_index": 0
+        },
+        {
+          "id": "005",
+          "at": "2026-11-10T19:45",
+          "result": "loss",
+          "cause": "raced",
+          "opponents": 3,
+          "supplemental_index": 1
+        }
+      ],
+      "logs": {
+        "pilot": {
+          "summary": "At Oliver's, four-player with Oliver (Balin), Tom (Purphoros) and Ryan (Tiny Bones), and two Goblin Storm losses at a table running optimized bracket 3. Game one: Tom went turn-one Sol Ring into turn-two Purphoros, it was over by turn four, and I never cast Zada. I should have mulliganed. Game two: I Abraded the Sol Ring, which only delayed Purphoros. I got Zada, Storm-Kiln Artist and treasure online, but the pings killed my small goblins and I lost on the clock. My read is that the deck is one to two turns too slow for this table and fine against the B team, and I don't want to iterate on it yet."
+        }
+      }
     }
   },
   "read": {
-    "what_it_does": "Across both logged games the deck never got to do its thing, and the reason was the same twice: no cheap goblin bodies to multiply through (001, 002). Game 001 had the whole copy-and-storm half in hand — cantrips, Crimson Wisps, Storm-Kiln Artist — and nothing to target. Game 002 had land and Krenko, Mob Boss and again no small goblins, with the instants and sorceries all expensive enough that the cantrip half never turned over.",
-    "how_it_plays": "The record does not yet show the deck switched on. Both logged games are losses where it sat holding half an engine (001, 002). In the five-player game it was not the fastest red deck at the table — three mono-red decks, and Oliver killed the pod on turn five off Krenko tokens and pings while this deck was still looking for a goblin (002). In the three-player game it stalled out instead (001). Two games is not enough to say how it behaves when it does assemble; nothing in the log has seen that yet.",
+    "what_it_does": "Get goblins down, get Zada down, then chain cheap spells and let her copy them across the board. When that happened it won: the turn before the kill was Empty the Warrens with Impact Tremors out, and the kill turn was 15 goblins, about 15 mana from Three Tree City and the board, Reckless Ransacking, and Accelerate, Crimson Wisps and Expedite for haste and draw, swinging 20-plus trample goblins (003, on v1.2.0, one card off the current list). On the current list the engine came together once and still lost: Zada, Storm-Kiln Artist, a pile of treasure and a new draw spell, but the small goblins that the copies need kept dying to pings (005).",
+    "how_it_plays": "It is a turn-four-to-five assembler, and it plays like threading a needle: lots of options, one correct sequence, a big turn when it lands (003). Against the B team (Steven, Stuart, David) it puts itself in position to win on turn six or seven and I have nothing to fix at that tier (004, 005). Against Oliver and Tom it is one to two turns too slow. Their bracket-3 decks aim to win around turn four, and both games on the current list were losses: never cast Zada in one (004), and in the other I assembled and lost on the clock (005). It also loses races at a red-heavy table. Oliver killed a five-player pod on turn five with Krenko tokens and pings while I was still looking for a goblin (002, on the v1.0.0 precon). The interaction it has now kept me alive in the one win. Deflecting Swat redirected Alex's fight from Zada onto a 1/1 goblin, and Untimely Malfunction broke Ryan's Phyrexian Altar engine (003).",
     "mindful_of": [
-      "Goblin presence gates the mulligan, not cantrip density. Both keeps read as strong hands and neither had a goblin in it (001, 002).",
-      "Cantrips plus a copy engine with no body to target is a dead hand. Crimson Wisps and Storm-Kiln Artist did nothing all game (001).",
-      "Land plus a payoff is not a keep either. Krenko, Mob Boss with no small goblins, and only expensive spells behind it, left the cheap half of the deck offline (002).",
-      "In a red-heavy pod this deck is not the one that closes first. One game says so — Oliver's Krenko ended the table on turn five (002) — so treat it as a single observation, not a rule.",
-      "Sean called both losses a keep problem rather than a deck problem (001, 002). Worth holding that read lightly until a game is logged where the hand had goblins in it."
+      "Goblin presence gates the mulligan, not cantrip density. I kept good-land, cantrip-heavy hands with no goblins and they did nothing (001, 002, both on v1.0.0, but Crimson Wisps, Storm-Kiln Artist and Krenko, Mob Boss are all still in the 99). Then I kept a hand at Oliver's that I should have mulliganed (004).",
+      "My proposed keep rule after Oliver's: keep a hand that either (a) makes a lot of goblin tokens before Zada, or (b) lands Zada fast with a payoff to accelerate off her. Ship anything with neither (004, 005).",
+      "Pings kill the fuel. Purphoros's ETB pings killed the small goblins Zada needs to copy onto, and the deck had no way to stop the damage once Purphoros resolved. Assembling the engine is not the same as surviving (005).",
+      "Answer the threat the whole table names, and answer it early. Kill on sight: Tom's Purphoros and Oliver's Krenko. Deny the Sol Ring opener too. Abrade on Tom's turn-one Sol Ring was the most impactful play of the night, even though it only delayed Purphoros and Tom was salty about it (004, 005).",
+      "Taking out the engine that is about to win is right even when it hands the game to someone else for a turn. I killed Ryan's Altar knowing it let Alex take him out, and I only won because I had the kill the next turn (003).",
+      "Krenko, Mob Boss is in the list and almost never shows up. I said the sample is small and it needs more games before I conclude anything (004, 005). The one time I drew it, it came with no small goblins and did nothing (002).",
+      "I have flagged a possible draw/consistency problem but not shown it. It needs measuring, not assuming (004, 005)."
     ],
-    "what_changed": "Nothing has changed. The deck is on one version, precon as printed, sleeved at v1.0.0, and both games were played on it (001, 002). Sean explicitly made no changes after either loss (001, 002). That is not evidence the list is right — only that no logged game has argued against it yet."
+    "what_changed": "The two v1.0.0 games (001, 002) were played on the precon as printed, and both were mulligan losses. Their lesson still applies, because the cards involved are still in the deck. By the 2026-10-27 game (003, v1.2.0), Glimpse the Impossible's two-card infinite had come out to hold bracket 3, and Deflecting Swat, Untimely Malfunction, Accelerate and Three Tree City had come in. All four mattered in the win. Abrade also came in with that change and paid off at Oliver's (005). The new card-draw spells also helped dig into the engine (005). The current list, v1.2.1, differs from v1.2.0 by one card, Faithless Looting out and Goblin Sharpshooter in, and no game note mentions either one. Both current-list games were losses at an optimized table (004, 005). I read them as a tier mismatch, not a defect, and parked a future branch with two directions to pick from: go wide before Zada with more token makers and cheap goblins, or land Zada faster with more rocks, dorks or treasure. My note says not to iterate on it now (004, 005)."
   }
 }

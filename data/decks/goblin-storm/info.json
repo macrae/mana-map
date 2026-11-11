@@ -5094,22 +5094,22 @@
     "release": "v1.2.1"
   },
   "record": {
-    "games": 3,
+    "games": 5,
     "win": 1,
-    "loss": 2,
+    "loss": 4,
     "draw": 0,
-    "last_played": "2026-10-27",
+    "last_played": "2026-11-10",
     "first_played": "2026-08-28",
-    "undebriefed": [
-      "003"
-    ],
+    "undebriefed": [],
     "causes": {
       "001": "stalled",
       "002": "raced",
-      "003": "won"
+      "003": "won",
+      "004": "raced",
+      "005": "raced"
     },
     "cause_counts": {
-      "raced": 1,
+      "raced": 3,
       "stalled": 1,
       "won": 1
     },
@@ -5468,6 +5468,36 @@
       "from": "log:002",
       "question": "Does the 99 carry enough cheap goblin bodies, and cheap enough instants and sorceries, to support the keep criterion the pilot has now stated twice — or is the gate unmeetable as the list is built?",
       "settled_by": "diagnose"
+    },
+    {
+      "from": "log:003",
+      "question": "On the kill turn, which card gave the goblins trample? Reckless Ransacking's oracle is +3/+2 and a Treasure, and the note gives the final pump as both +3/+2 and +4/+2.",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:004",
+      "question": "Which lever buys back the one to two turns: wide before Zada (more token makers and cheap goblins) or Zada faster (more rocks, dorks or treasure for a turn-two or turn-three Zada)?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:004",
+      "question": "How often does the current 99 present an opener that meets the proposed keep rule: many goblin tokens before Zada, or Zada on turn two or three with a payoff?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:004",
+      "question": "The note says \"Enchantment removal should be a standing slot audit across decks.\" What does this 99 run that answers a resolved enchantment?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "Once Purphoros resolves on the other side, does this 99 have any card that removes it or stops its damage, or does the deck have to race?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:005",
+      "question": "With about 2 damage per small goblin per cycle killing the copy bodies, how many turns does the engine get between assembly and death at the 10-12 per cycle the note records?",
+      "settled_by": "resolve-stack"
     }
   ],
   "simulation": {
@@ -5634,9 +5664,8 @@
   },
   "next": [
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
-    "1 logged game(s) not yet debriefed (003) — `/debrief goblin-storm`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
-    "open questions routed: diagnose ×1, goldfish ×5, research-strategy ×1, resolve-stack ×4",
+    "open questions routed: diagnose ×4, goldfish ×6, research-strategy ×1, resolve-stack ×6",
     "try a swap in seconds — `try goblin-storm --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

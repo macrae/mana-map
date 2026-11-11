@@ -211,7 +211,8 @@ STALE_XFAIL = {
     # list has since cut — a /debrief re-run, never a hand patch.
     # `sharknado/tutor_guide.json` came off 2026-11-10: pilot-notes re-ran it for v3.0.0 (no
     # library-search tutors, an honest empty guide) and it validates — XPASS, as designed.
-    "sharknado/log_annotations.json": "game 004's debrief names a card v2.3.0 cut; /debrief",
+    # `sharknado/log_annotations.json` came off 2026-11-11: /debrief re-ran game 004 (it
+    # now names only what the note names) and 005; 8 of 8 validate.
     # STALE BY A MERGE, NOT BY A DEFECT (2026-10-06). The pilot sleeved edgar
     # v2.0.0 (mardu-combo-v1, 27 swaps) and sharknado v1.2.0 (momentum-v1); the
     # agent artifacts below were written against the previous lists and name

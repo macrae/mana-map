@@ -14,11 +14,11 @@
    "name": "speed",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.2105,
    "sub_score": 59.9,
    "sub_ci": [
-    54.15,
-    65.58
+    54.28,
+    65.42
    ],
    "placement": 25.0,
    "anchor": 94.8,
@@ -48,11 +48,11 @@
    "name": "mana",
    "weight": 0.08,
    "weight_validity": 1.0,
-   "weight_effective": 0.1778,
+   "weight_effective": 0.1404,
    "sub_score": 87.5,
    "sub_ci": [
-    81.88,
-    93.1
+    81.93,
+    93.11
    ],
    "placement": 75.0,
    "anchor": 100.0,
@@ -90,11 +90,11 @@
    "name": "resilience",
    "weight": 0.12,
    "weight_validity": 1.0,
-   "weight_effective": 0.2667,
+   "weight_effective": 0.2105,
    "sub_score": 35.0,
    "sub_ci": [
     35.0,
-    40.6
+    40.52
    ],
    "placement": 0.0,
    "anchor": 70.0,
@@ -129,7 +129,7 @@
    "name": "construction",
    "weight": 0.13,
    "weight_validity": 1.0,
-   "weight_effective": 0.2889,
+   "weight_effective": 0.2281,
    "sub_score": 66.19,
    "sub_ci": [
     66.19,
@@ -233,16 +233,46 @@
      "quote": "Countable floor, Zupke's structure: 3-5 finishers, \"at least 3 finishers in your deck\""
     }
    ]
+  },
+  {
+   "name": "table_record",
+   "weight": 0.12,
+   "weight_validity": 1.0,
+   "weight_effective": 0.2105,
+   "sub_score": 52.96,
+   "sub_ci": [
+    43.14,
+    75.73
+   ],
+   "placement": 66.67,
+   "anchor": 42.67,
+   "method": "0.429·placement + 0.571·anchor (λ at n=4): win rate over par (par = mean 1/(opponents+1) = 0.2733) on every logged game, any version; Beta posterior at n=5",
+   "inputs": [
+    {
+     "figure": "log.win_rate",
+     "value": 0.2,
+     "ci95": [
+      0.0362,
+      0.6245
+     ],
+     "n": 5,
+     "source": "log.jsonl#result",
+     "decklist_sha256": null
+    }
+   ],
+   "citations": [
+    {
+     "kind": "log",
+     "ref": "log.jsonl",
+     "quote": "1 wins in 5 games"
+    }
+   ]
   }
  ],
  "withheld": [
   {
    "component": "dti",
    "reason": "the DeckCheck reading describes another list — `deckcheck goblin-storm --write` after a rescan"
-  },
-  {
-   "component": "table_record",
-   "reason": "3 game(s) logged; 5 needed"
   },
   {
    "component": "pilot_feel",
@@ -280,18 +310,18 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
- "fleet_sha": "5c30a301e0f1",
+ "fleet_sha": "94bab3be64be",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [],
  "iterations": 0,
  "verifier": null,
- "code_score": 60.0,
- "score_point": 60.0,
- "score": 60.6,
+ "code_score": 58.5,
+ "score_point": 58.5,
+ "score": 59.7,
  "score_ci": [
-  51.2,
-  70.5
+  51.3,
+  68.3
  ],
  "grade": "C",
  "grade_range": [
@@ -300,10 +330,10 @@
  ],
  "grade_display": "C–B",
  "grade_probabilities": {
-  "A": 0.001,
-  "B": 0.209,
-  "C": 0.755,
-  "D": 0.035,
+  "A": 0.0,
+  "B": 0.161,
+  "C": 0.814,
+  "D": 0.026,
   "F": 0.0
  },
  "uncertainty": {
@@ -320,43 +350,47 @@
  "sensitivity": {
   "leave_one_out": {
    "speed": {
-    "score": 60.0,
+    "score": 58.1,
     "grade": "C"
    },
    "mana": {
-    "score": 54.0,
+    "score": 53.8,
     "grade": "C"
    },
    "resilience": {
-    "score": 69.1,
-    "grade": "B"
+    "score": 64.8,
+    "grade": "C"
    },
    "construction": {
-    "score": 57.5,
+    "score": 56.2,
+    "grade": "C"
+   },
+   "table_record": {
+    "score": 60.0,
     "grade": "C"
    }
   },
   "flips": [
    {
-    "component": "resilience",
-    "share_now": 0.267,
-    "share_at_flip": 0.119,
-    "boundary": 65,
-    "grade_at_flip": "B",
-    "direction": "lower"
-   },
-   {
     "component": "mana",
-    "share_now": 0.178,
-    "share_at_flip": 0.328,
+    "share_now": 0.14,
+    "share_at_flip": 0.333,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
    },
    {
+    "component": "resilience",
+    "share_now": 0.211,
+    "share_at_flip": 0.496,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "raise"
+   },
+   {
     "component": "construction",
-    "share_now": 0.289,
-    "share_at_flip": 0.864,
+    "share_now": 0.228,
+    "share_at_flip": 0.88,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -369,18 +403,19 @@
    "construction": 3.0,
    "mana": 2.0,
    "resilience": 5.0,
-   "speed": 4.0
+   "speed": 4.0,
+   "table_record": 2.0
   },
   "of": 5,
   "spread": 0.75,
   "outliers": [
    {
-    "instrument": "construction",
-    "rank": 3.0,
+    "instrument": "mana",
+    "rank": 2.0,
     "side": "better"
    },
    {
-    "instrument": "mana",
+    "instrument": "table_record",
     "rank": 2.0,
     "side": "better"
    },
@@ -416,11 +451,11 @@
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.0,
-   "2": 0.139,
-   "3": 0.214,
-   "4": 0.292,
-   "5": 0.355
+   "1": 0.028,
+   "2": 0.087,
+   "3": 0.186,
+   "4": 0.307,
+   "5": 0.392
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -430,11 +465,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 83.5,
-   "gishath": 67.6,
-   "ur-dragon": 60.8,
-   "edgar-vampires": 60.7,
-   "goblin-storm": 60.6
+   "sharknado": 70.7,
+   "gishath": 67.4,
+   "ur-dragon": 62.5,
+   "edgar-vampires": 60.1,
+   "goblin-storm": 59.7
   }
  }
 }

@@ -87,27 +87,107 @@
   "routines": {
     "captains-log": {
       "agent": "captains-log",
-      "agent_prompt_sha256": "b313281ed7dbaf230eda7d5c5c60ba0229fae22a1605cc14068ac46aada4efba",
+      "agent_prompt_sha256": "d11bfc7f41f77a0cfb0f0cdcd3776da2f9e4cc89200711d6e0809bf90a492c9b",
       "artifact": "data/decks/goblin-storm/captains_log.json",
-      "artifact_sha256": "87273e5b37c5bb887295ce19af105dafd99d68cc0b7238dbbb86e18c73f4a7ca",
+      "artifact_sha256": "efaea1549e15e6af7ad0d77862bdeb3d30927994b16ca49d6462ba7096d9be53",
       "extra": {},
-      "fingerprint": "57003a306ab8b25f05cf52e3c736f6579bc2368b79d4a7780dc2b52c238b6587",
+      "fingerprint": "e95461b5746e53fbf8f3b393755ccc2a1a3b9406002cf2fb53082343e47e14b5",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/log.jsonl",
-          "sha256": "51ea4e891e859ae6f90789fe064917941e282b5b7937488365c342685d766743"
+          "sha256": "8120faff474facb123e320e0138be0976d08b4f49a3c1a47ca093876a1e86278"
         },
         {
           "path": "data/decks/goblin-storm/log_annotations.json",
-          "sha256": null
+          "sha256": "0e01efc7964b3fa8382b4e1099702a3666fb671651eed62876d6b3e2e2934435"
         },
         {
           "path": "data/decks/goblin-storm/log_causes.json",
-          "sha256": "30a731e0c6953e1e3e66ebaffd4feb7c214933188502dce7e55dddc927e9a28d"
+          "sha256": "fe4df89e4cba3df545b28d38215649c593a74fd3f8d7b7b729e213d3b9e857cd"
         },
         {
           "path": "src/manamap/pilot/captains_log.py",
-          "sha256": "bb4af9b7b11d1c4d6ba2f41b3c836ceabbc8b22cb5e43d531f0883cac7a02092"
+          "sha256": "217f99b18160422c8bab0adb3a9078fee5d36ff001ec3775ea26ee4901ff539f"
+        }
+      ]
+    },
+    "debrief": {
+      "agent": "debrief",
+      "agent_prompt_sha256": "90f4fe6b256a7212cb30e76cab69f38474c0ed9c23a63ce1bc92d91ceb7f1a88",
+      "artifact": "data/decks/goblin-storm/log_annotations.json",
+      "artifact_sha256": "b07ac2b236142cace46ceb98fd3810e58011c8ae6a0eec2a7fe2399558f3e29f",
+      "card_refs": [
+        "Abrade",
+        "Accelerate",
+        "Crimson Wisps",
+        "Deflecting Swat",
+        "Dragon Fodder",
+        "Empty the Warrens",
+        "Expedite",
+        "Goblin Sharpshooter",
+        "Impact Tremors",
+        "Krenko, Mob Boss",
+        "Purphoros, God of the Forge",
+        "Reckless Ransacking",
+        "Sol Ring",
+        "Storm-Kiln Artist",
+        "Three Tree City",
+        "Untimely Malfunction",
+        "Zada, Hedron Grinder"
+      ],
+      "card_refs_version": 2,
+      "extra": {
+        "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106"
+      },
+      "fingerprint": "d9ac9bb7d08b007fddc655a2b618694b64c694dbb26f25e39f5808f28efcbd4a",
+      "inputs": [
+        {
+          "path": "data/decks/goblin-storm/engine.json",
+          "sha256": "d553afa525d1f08b263e24238ae7a003f12b565b1cca4c47265d84df156ffee0"
+        },
+        {
+          "path": "data/decks/goblin-storm/log.jsonl",
+          "sha256": "8120faff474facb123e320e0138be0976d08b4f49a3c1a47ca093876a1e86278"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
+          "sha256": "34bdf01bbbbf486ff17301032cfe39c4b1336b69be8672a5635db952906a5d44"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/002-empty-the-warrens-storm-turn.json",
+          "sha256": "c67c4a0031d50cdcbc296f0abfcc6747eb3879a287af8c1e7af9b27fea160092"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/003-zada-fists-of-flame-lethal.json",
+          "sha256": "ea7f832a5a8912917c91acf9b9a64a68afb656f3c6ba1227cbc6f8371b97941f"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/004-krenko-prospector-burst.json",
+          "sha256": "d6f1f5efdab71c9f25e31d4c2ff51c6df9450ec93bd868c1019c0214018e92c6"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/005-haze-of-rage-storm-kiln-loop.json",
+          "sha256": "ca015accd2ec70f7c8e34d45cc18866bed26444c431b640c1af74ea1a28328aa"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/012-sim-g61-t27-precombat-main.json",
+          "sha256": "af32d7d6f762b8d682883b085cc308ae489c8d51f337fc4ca62dd6943f3e6937"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/013-zada-frontline-heroism-trigger-order.json",
+          "sha256": "bab71de1fa3d2d8ba56bdc4145cc8803de2fb7abe7066553f779d9b20952ef2b"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/014-zada-witchs-mark-copies.json",
+          "sha256": "d6b8fb8d58bbd8f282bd116ea7585748bb1aaab4d925a5f1cafc42790764dc2a"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/016-spreading-insurrection-storm-bombardment.json",
+          "sha256": "a8d5e4b63016e29051bcd0e668209df4f171d4d8dfb21f2c740448fb9a9d3c72"
+        },
+        {
+          "path": "data/decks/goblin-storm/stacks/017-zada-heat-shimmer-copies-the-board.json",
+          "sha256": "3d10b37fe3aca5662c34fd73b7d64653ac5d20e17808608011eeb88f5ebd7490"
         }
       ]
     },
@@ -658,7 +738,7 @@
         "mulligan",
         "threat_assessment"
       ],
-      "artifact_sha256": "00682f8318d198a31d49c223de0acde529c653ebace1b35eb1abe9b713f8c3ac",
+      "artifact_sha256": "02291ee527d74cc9719dc23b435a29d769355d1bb1441a55bd784430f0623827",
       "card_refs": [
         "Abrade",
         "Accelerate",
@@ -694,7 +774,6 @@
         "Mogg War Marshal",
         "Molten Duplication",
         "Mountain",
-        "Pashalik Mons",
         "Past in Flames",
         "Plaza of Heroes",
         "Purphoros, God of the Forge",
@@ -750,11 +829,9 @@
           "Empty the Warrens",
           "Fists of Flame",
           "Heat Shimmer",
-          "Hexing Squelcher",
           "Impact Tremors",
           "Mountain",
           "Plaza of Heroes",
-          "Swiftfoot Boots",
           "Three Tree City",
           "Untimely Malfunction",
           "Zada, Hedron Grinder"
@@ -771,17 +848,20 @@
           "Hexing Squelcher",
           "Krenko, Mob Boss",
           "Mogg War Marshal",
-          "Pashalik Mons",
           "Past in Flames",
           "Plaza of Heroes",
+          "Purphoros, God of the Forge",
           "Siege-Gang Commander",
           "Skullclamp",
           "Sokenzan, Crucible of Defiance",
+          "Sol Ring",
+          "Storm-Kiln Artist",
           "Swiftfoot Boots",
           "Untimely Malfunction",
           "Wild Ride"
         ],
         "mulligan": [
+          "Abrade",
           "Accelerate",
           "Ancestral Anger",
           "Blasphemous Act",
@@ -805,21 +885,26 @@
           "Renegade Tactics",
           "Searslicer Goblin",
           "Sol Ring",
-          "Swiftfoot Boots"
+          "Swiftfoot Boots",
+          "Untimely Malfunction"
         ],
         "threat_assessment": [
+          "Abrade",
+          "Blasphemous Act",
           "Deflecting Swat",
+          "Fists of Flame",
           "General Kreat, the Boltbringer",
+          "Goblin Bombardment",
+          "Grapeshot",
           "Great Train Heist",
-          "Harsh Mentor",
           "Heat Shimmer",
           "Hexing Squelcher",
           "Impact Tremors",
           "Krenko, Mob Boss",
           "Plaza of Heroes",
           "Purphoros, God of the Forge",
-          "Storm-Kiln Artist",
-          "Swiftfoot Boots",
+          "Siege-Gang Commander",
+          "Sol Ring",
           "Untimely Malfunction"
         ]
       },
@@ -828,7 +913,7 @@
         "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106",
         "strategy_doc_sha256": "c4740d48200cf638f96b6b1516b4cf1b340ed24035bbbbebbfe7004d544699d0"
       },
-      "fingerprint": "c27f7106e44bc51ee05bbcde641c78103eec40ed7853b5751467e2502de7c429",
+      "fingerprint": "298b98b8824c1a1004724ad8c27710c204f1ee6d2062227346919d567e09312d",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/engine.json",
@@ -836,7 +921,7 @@
         },
         {
           "path": "data/decks/goblin-storm/goldfish_metrics.json!meta.decklist_sha256,meta.model_version,meta.model_assumptions",
-          "sha256": "ce5de97e990f5950700a3f288f112034939fef3497b2ae14004cef8cca6568dc"
+          "sha256": "471deb7edafeac3d1b2672a7533157c7420aba4b29a9afdc76fa3ada41fd8a74"
         },
         {
           "path": "data/decks/goblin-storm/stacks/001-zada-crimson-wisps-engine.json",
@@ -885,17 +970,17 @@
       ],
       "key_fingerprints": {
         "combo_lines": "bf9966d66bc77dc9d31df5a00df9d1be9868c2beca195cea0598becca05e0ecf",
-        "how_it_wins": "f65d1fad5ad05959686395063a5cf58513b8724caa56606759d61a9d05aa45ee",
-        "matchups": "0ee687047fec48ba194868d4d12491db5d0eb486366c4f12ac8db9c6d5eaed3a",
-        "mulligan": "018b5bcd07895994e5f5c22962fa74f8ddcd669d72f30b07dd18df952706295d",
-        "threat_assessment": "90df7c595aafa65a9e74ddbb30869d6229cbc38cb68a82c99bb8bfd44c4e5a5c"
+        "how_it_wins": "b88637ef5aa6c623a25a992d4a3078e9292fbcb04ffcc4cdfce69d598c9fbfcd",
+        "matchups": "e7542364cb7b0e492c71a16d5112ab312618ef4999a36f9c72808f17ce7d5fe5",
+        "mulligan": "1ac7022d004b9ead7d697f44394828df76d449d709052626935bdf8983a0cba4",
+        "threat_assessment": "46ec0102531890d0164dd7806da2028e06a36b81c84bc0663a1db1b0e31cae36"
       }
     },
     "poh-procedures": {
       "agent": "poh-procedures",
       "agent_prompt_sha256": "07c32cd4ae937fbd1eb4e91de52cf855b0363c436b1ace83b16eca4c05a761f5",
       "artifact": "data/decks/goblin-storm/poh_procedures.json",
-      "artifact_sha256": "c64ce729d065c931c98cb96f23bc40830b81f1f89f6b1a32bf991dab046db2b7",
+      "artifact_sha256": "507561d6685f40f7980f575fff1d0c70729c522ba865c5438060b5edce73b153",
       "card_refs": [
         "Abrade",
         "Accelerate",
@@ -934,11 +1019,13 @@
         "Hexing Squelcher",
         "Idol of Oblivion",
         "Impact Tremors",
+        "Impolite Entrance",
         "Impulsive Pilferer",
         "Kher Keep",
         "Krenko's Command",
         "Krenko, Mob Boss",
         "Legion Warboss",
+        "Might of the Meek",
         "Mogg War Marshal",
         "Molten Duplication",
         "Mountain",
@@ -969,7 +1056,7 @@
       "extra": {
         "cards_semantic": "8c4d3cb41632c51497402a78c50a539d8a2a280984465e9f2a773c5dd94d6106"
       },
-      "fingerprint": "bda1ed59487beedcd5385d95551b02eaeb1d3b1398f1e41ba3eff15e5aa86797",
+      "fingerprint": "ee93f115a8ef0485764895aaeb65b6707aa85edf6faa077c3a657c6e30b9387e",
       "inputs": [
         {
           "path": "data/decks/goblin-storm/audit.json",
@@ -985,11 +1072,11 @@
         },
         {
           "path": "data/decks/goblin-storm/log.jsonl",
-          "sha256": "5a93e59c9531ed89869fbdbddde791216cf75062aad64e80341808a516e9451c"
+          "sha256": "8120faff474facb123e320e0138be0976d08b4f49a3c1a47ca093876a1e86278"
         },
         {
           "path": "data/decks/goblin-storm/log_causes.json",
-          "sha256": "b996d0593be166dd1034b32f1912aa300e3ae2d788fb33de428088ecb2c49838"
+          "sha256": "fe4df89e4cba3df545b28d38215649c593a74fd3f8d7b7b729e213d3b9e857cd"
         },
         {
           "path": "src/manamap/pilot/poh_spec.py",

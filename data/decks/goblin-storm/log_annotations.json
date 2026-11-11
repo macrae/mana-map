@@ -113,6 +113,254 @@
           "why_it_matters": "Both logged games are losses with the same shape: a hand the pilot liked, no small goblins, engine never assembled. Two games is thin, but it is the same failure twice and the pilot has twice declined to change the deck over it, so the doctor should say whether the keep rule or the list is the thing that has to move."
         }
       ]
+    },
+    "003": {
+      "summary": "A win at Ryan's (the note's game 2) against Alex's R/G fight deck and Ryan's T'Vol. Sean used Deflecting Swat to save Zada from Alex's fight and Untimely Malfunction to break Ryan's Phyrexian Altar engine. Alex then killed Ryan. Per the pilot's own correction, Empty the Warrens with Impact Tremors came the turn before; the kill turn was 15 goblins and about 15 mana, Reckless Ransacking plus the three haste-and-draw spells (Accelerate, Crimson Wisps, Expedite) and a swing with 20-plus trample goblins at Alex. The game was played on an earlier list (V4, v1.2.0). V5 changed one card (Faithless Looting out, Goblin Sharpshooter in), and that card is not named in the note. The body says +3/+2 and the correction says +4/+2. Both are left as written.",
+      "opponents": [
+        {
+          "seat": "Alex",
+          "archetype": "R/G fight",
+          "commander": null,
+          "evidence": "Alex on his R/G fight deck (bracket 3)"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": "graveyard recursion engine",
+          "commander": "T'Vol",
+          "evidence": "Ryan built an engine with T'Vol, Gravecrawler and Phyrexian Altar"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Deflecting Swat",
+          "read": "over",
+          "why": "redirected Alex's fight to a 1/1 goblin, \"losing one goblin instead of the commander\"; the pilot marks it \"great card, glad it's in the deck\"."
+        },
+        {
+          "card": "Untimely Malfunction",
+          "read": "over",
+          "why": "destroyed Ryan's Phyrexian Altar; the pilot says \"without removing the Altar the game was over\"."
+        },
+        {
+          "card": "Three Tree City",
+          "read": "as-expected",
+          "why": "helped reach 15 mana; \"a perfect fit for mono-red\"."
+        },
+        {
+          "card": "Reckless Ransacking",
+          "read": "over",
+          "why": "the correction credits it with giving the board +3/+2 on the kill turn."
+        },
+        {
+          "card": "Accelerate",
+          "read": "over",
+          "why": "one of the three haste-and-draw spells the pilot thinks he cast that game; \"card draw was emacualte!\""
+        },
+        {
+          "card": "Crimson Wisps",
+          "read": "over",
+          "why": "same: one of the three haste-and-draw spells on the kill turn."
+        },
+        {
+          "card": "Expedite",
+          "read": "over",
+          "why": "same: one of the three haste-and-draw spells on the kill turn."
+        },
+        {
+          "card": "Empty the Warrens",
+          "read": "as-expected",
+          "why": "about 10 goblins with Impact Tremors out, but per the correction it \"didn't close it\". It set up the next turn."
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Alex wants Ryan's Phyrexian Altar gone and Ryan calls it kingmaking: spend Untimely Malfunction on the Altar or keep it",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "the kill turn: 15 goblins, about 15 mana, the three haste-and-draw spells and Reckless Ransacking in some order, with \"one correct sequence\"",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "Sequencing and having the right answer at the right time won it: Deflecting Swat kept the commander and Untimely Malfunction broke the table's engine.",
+        "Removing the engine piece the whole game turns on is right even when it is called kingmaking. Sean's reasoning was that without it the game was over.",
+        "The pilot's follow-up is none: \"The bracket 3 tune is working.\""
+      ],
+      "engine_stages": [
+        "protection",
+        "fuel",
+        "conversion",
+        "wincon"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Empty the Warrens",
+            "Impact Tremors"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/002-empty-the-warrens-storm-turn.json"
+        },
+        {
+          "cards": [
+            "Zada, Hedron Grinder",
+            "Crimson Wisps"
+          ],
+          "status": "verified",
+          "stack_artifact": "stacks/001-zada-crimson-wisps-engine.json"
+        },
+        {
+          "cards": [
+            "Zada, Hedron Grinder",
+            "Reckless Ransacking"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "On the kill turn, which card gave the goblins trample? Reckless Ransacking's oracle is +3/+2 and a Treasure, and the note gives the final pump as both +3/+2 and +4/+2.",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "This was the deck's best turn on record. Lifting it as a stack would make it a cited win line rather than a recollection."
+        }
+      ]
+    },
+    "004": {
+      "summary": "Game 1 at Oliver's against an optimized bracket-3 table. Tom went turn-one Sol Ring into a turn-two Purphoros, the game was effectively over by turn four, and Sean never cast Zada. The pilot says he should have mulliganed. He reads the loss as a tier mismatch, not a deck defect: the clock is one to two turns too slow for this table. He names two levers for a future branch (wide before Zada, or Zada faster) and says \"do not iterate now\". The list is the current one.",
+      "opponents": [
+        {
+          "seat": "Tom",
+          "archetype": "mono-red ETB pings",
+          "commander": "Purphoros",
+          "evidence": "Tom: Purphoros (mono-red ETB pings)"
+        },
+        {
+          "seat": "Oliver",
+          "archetype": "token maker",
+          "commander": "Balin",
+          "evidence": "Oliver: Balin (token maker; Krenko in game 3)"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": "shared graveyard / steal",
+          "commander": "Tiny Bones",
+          "evidence": "Ryan: Tiny Bones (shared graveyard / steal)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Krenko, Mob Boss",
+          "read": "missed",
+          "why": "\"Krenko is in the list and almost never shows up. Sample size is small — more at-bats before drawing conclusions.\""
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "the game-one opening hand against a table aiming to win around turn four: keep or ship (the hand itself is not recorded)",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "This deck cannot beat a turn-two Purphoros without early interaction. The counterplay comes earlier: deny the Sol Ring.",
+        "Mulligan heuristic (proposed): keep a hand that either makes many goblin tokens before Zada, or lands Zada fast with a payoff to accelerate off her. Ship hands with neither, including good-land, cantrip-heavy hands. This is the third logged game, after 001 and 002, where the keep is the lesson.",
+        "Against the Oliver/Tom table the clock is one to two turns too slow. Against the B team the deck is \"great, fun\". This is a tier mismatch, not a deck defect, and the deck is not to be iterated now.",
+        "Kill-on-sight list: Purphoros (Tom), Krenko (Oliver)."
+      ],
+      "engine_stages": [
+        "ignition",
+        "mana"
+      ],
+      "lines": [],
+      "open_questions": [
+        {
+          "question": "Which lever buys back the one to two turns: wide before Zada (more token makers and cheap goblins) or Zada faster (more rocks, dorks or treasure for a turn-two or turn-three Zada)?",
+          "settled_by": "diagnose",
+          "why_it_matters": "The pilot says to \"pick one direction\" for the future feature branch, and the two levers want different slots."
+        },
+        {
+          "question": "How often does the current 99 present an opener that meets the proposed keep rule: many goblin tokens before Zada, or Zada on turn two or three with a payoff?",
+          "settled_by": "goldfish",
+          "why_it_matters": "Without a figure, the pilot cannot tell whether the rule is one he can hold or one that ships too many hands. The note also flags \"possibly also a draw/consistency problem — flag for measurement rather than assume\"."
+        },
+        {
+          "question": "The note says \"Enchantment removal should be a standing slot audit across decks.\" What does this 99 run that answers a resolved enchantment?",
+          "settled_by": "diagnose",
+          "why_it_matters": "Purphoros is an enchantment, and both losses that night ran through it."
+        }
+      ]
+    },
+    "005": {
+      "summary": "Game 2 at Oliver's, a rematch with the same decks. Sean removed Tom's Sol Ring with Abrade, which delayed Purphoros but did not stop it. He assembled the engine (Zada, Storm-Kiln Artist, a pile of treasure and one of the new card-draw spells), but took roughly 10 then 12 ping damage per cycle plus constant attacks. The small goblins he needed to copy spells kept dying, and he lost on the clock. The pilot's read: \"Engine assembly worked. Survival did not.\" The list is the current one.",
+      "opponents": [
+        {
+          "seat": "Tom",
+          "archetype": "mono-red ETB pings",
+          "commander": "Purphoros",
+          "evidence": "Tom opened Sol Ring again. Sean removed it with Abrade"
+        },
+        {
+          "seat": "Oliver",
+          "archetype": "token maker",
+          "commander": "Balin",
+          "evidence": "Oliver ran his Balin token line"
+        },
+        {
+          "seat": "Ryan",
+          "archetype": "shared graveyard / steal",
+          "commander": "Tiny Bones",
+          "evidence": "Sean and Ryan middled with thin boards"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Abrade",
+          "read": "over",
+          "why": "removed Tom's turn-one Sol Ring: \"the single most impactful play of the night\"; \"Abrade came in exactly when needed\"."
+        },
+        {
+          "card": "Storm-Kiln Artist",
+          "read": "as-expected",
+          "why": "part of the engine that assembled; \"Engine assembly worked. Survival did not.\""
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "turn one against Tom's Sol Ring: Abrade it now, accepting the salt, or develop",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "Deny the Sol Ring opener. Early artifact removal is a legitimate tempo play against this pod: expect salt, do it anyway.",
+        "Assembling the engine is not winning. Once Purphoros resolved, the deck had no way to stop the ping damage, and the small goblins the copy plan needs were the first to die.",
+        "Threat removal beats tempo: when the whole table names the threat and only you can answer it, answer it.",
+        "The new card-draw additions helped, and artifact removal in red is worth the slot."
+      ],
+      "engine_stages": [
+        "conversion",
+        "fodder"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Zada, Hedron Grinder",
+            "Storm-Kiln Artist"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Once Purphoros resolves on the other side, does this 99 have any card that removes it or stops its damage, or does the deck have to race?",
+          "settled_by": "diagnose",
+          "why_it_matters": "\"The deck had no way to stop the ping damage once Purphoros resolved.\" Purphoros is on the pilot's kill-on-sight list and decided both games that night."
+        },
+        {
+          "question": "With about 2 damage per small goblin per cycle killing the copy bodies, how many turns does the engine get between assembly and death at the 10-12 per cycle the note records?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "This tells apart \"too slow by a turn\" from \"cannot win through a resolved Purphoros at all\", and the two point at different branches."
+        }
+      ]
     }
   }
 }

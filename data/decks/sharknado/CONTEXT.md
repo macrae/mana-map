@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=VNone sha=55ebf09cf33f at=2026-11-10 -->
+<!-- ctx:written-for version=v3.0.0 sha=55ebf09cf33f at=2026-11-11 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
@@ -229,17 +229,22 @@ The goldfish does not model the modal plan, the equipment, protection or interac
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **7 game(s):** 0 won, 4 lost · 2026-10-06 to 2026-11-05
-- **How games ended:** raced 3, combo 2, stalled 1, won 1
-- **Not yet read:** 005, 006, 007
+- **8 game(s):** 0 won, 5 lost · 2026-10-06 to 2026-11-10
+- **How games ended:** combo 3, raced 3, stalled 1, won 1
 <!-- /ctx:gen record -->
 
-All the logged games were played on lists before v3.0.0. The cards they name, such as Embercleave, Ledger Shredder, Marauding Mako and Rielle, have since left. The full retelling is in the log.
+Games 001 to 007 were played on lists before v3.0.0. The cards they name, such as Embercleave, Ledger Shredder, Marauding Mako and Rielle, have since left. Game 008 is the first on v3.0.0. The full retelling is in the log.
 
 **007 (2026-11-05, the last game before this change, v2.3.0).** Sean's words: "it still feels clunky and slow as hell! and it's brittle--two commanders, two taxes, 9 CMC total to get them out.. I found the wheels, got them big and actually could have won... but something about it didn't feel fun... the card draw and discard is laborious.. and all the stack triggers is fine.. but it just feels convoluted a bit lol"
 
 - **The engine worked and it was not fun.** The finisher was not the problem. The stepping through draw and discard was.
 - **Brittle at the front door.** Two commanders, two taxes. The same complaint as 001, 002 and 005. The change moves the weight onto Shabraz and casts Brallin late.
+
+**008 (2026-11-10, Oliver's house, v3.0.0, a loss to Oliver's Krenko, Mob Boss).** Four-player bracket 3 table, fast and optimized. Oliver landed Krenko and the whole table asked Sean to kill him. Sean held [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) and a second two-mana removal spell, cast Shabraz instead, then passed another turn with mana open. Oliver went off for 30-plus damage in one turn.
+- **Sean's verdict: 100% piloting error, no deck changes.** Right hand, right lines. It needs reps, and the games get tracked before any tuning review.
+- **The rule: when the whole table names the threat and only you can answer it, answer it.** Kill Krenko on sight, the turn he lands, before Oliver untaps. Tempo plays like landing Shabraz wait.
+- **What in this deck answers him:** [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) and [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) remove him outright. [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) does too. [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) only sets him back a turn. [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial) cannot touch a creature spell.
+- **What the game taught about Oliver's deck** lives in `data/opponents/krenko-tokens/NOTES.md`, not here.
 
 **What the games say together.**
 - **Commanders first, wheels second.** From 001 and 002. Wheels are finishers.
@@ -248,6 +253,7 @@ All the logged games were played on lists before v3.0.0. The cards they name, su
 - **Discard is a cost.** 005, 006 and 007 all say it. This is why v3.0.0 keeps discard only where a draw comes with it.
 - **The hand he keeps is the doubt** in 002, 004 and 005. Q011 stays open.
 - **Opponents that outrun it.** 004: Alex's warp deck. 005: Alex piloting the Goblin Storm deck. 006: Ryan's Teval, near a bracket-4 table. Without the other deck's best turns, Sean thinks Sharknado does much more.
+- **Holding removal while the table begs for it.** 008: right hand, wrong turn order. Pilot error, not the list.
 - **Playing the deck.** He says some of it is piloting, sequencing, and small creatures eating resources that belonged to the win line.
 
 One line each: 001 (2026-10-06, no result): Sol Ring fast start, no removal, "fun, needs some finesse". 002 (2026-10-20, a loss): "too many wheels in the wheel deck". 003 (2026-10-25, no result): "slooooowwwww". 004 (2026-10-27, a loss, raced): the engine ran, no wheel came, commanders held back. 005 (2026-10-29, a loss): Alex's Goblin Storm won. 006 (2026-11-03, a loss): Teval went infinite with the board assembled and no wheel in the digging. 007: above.
@@ -258,6 +264,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 <!-- ctx:gen history -->
 - **v3.0.0 · V14** (2026-11-10) — in: Archmage Emeritus, Boros Signet, Brainstorm, Echo of Eons, Enduring Curiosity, Esper Sentinel, Fellwar Stone, Fireshrieker …; out: Borrowed Knowledge, Cathartic Reunion, Faithless Looting, Fateful Showdown, Gleaming Splendor, Glint-Horn Buccaneer, Heartwarming Redemption, Idyllic Tutor …. _shabraz-v1 merged: Shabraz-first — card draw grows the flying shark, protection on landing, double strike to close_
   - merge `shabraz-v1` — sleeved 2026-11-10: 12 cards from the pilot's bulk, 9 printed proxies (Archmage Emeritus, Boros Signet, Brainstorm, Esper Sentinel, Shang-Chi, Slip Out the Back
+  - played 1: 0W 1L
 - **v2.3.0 · V13** (2026-11-05) — in: Arid Mesa, Borrowed Knowledge, Cathartic Reunion, Exotic Orchard, Ferrous Lake, Flooded Strand, Gleaming Splendor, Heartwarming Redemption …; out: Artist's Talent, Command Beacon, Embercleave, Frantic Search, Glittering Massif, Inti, Seneschal of the Sun, Izzet Charm, Jeskai Ascendancy …. _draw-engine-v1: 22 swaps toward a draw engine (new wheels, Psychosis Crawler, Gleaming Splendor, Treasure package)_
   - merge `draw-engine-v1` — played on printed proxies sleeved 2026-11-05; the pilot asked to merge; the unowned cards are on the order list
   - played 1: 0W 0L
@@ -335,6 +342,10 @@ Most of the numbered questions above were asked about the wheel-and-burn list. R
 - Missing: a goldfish reading for v3.0.0, and a stack for Shabraz with Teferi's Ageless Insight or Bard under a draw-seven.
 - Nine proxies are still to be ordered: the Numbers and the games stay on proxies until then.
 
+**From game 008.**
+- Kill on sight: in the next games against Oliver's Krenko, does Sean spend removal on Krenko the turn he lands, before casting his own threat? Expected: Krenko never gets a second activation, and the 30-plus-damage turn does not come.
+- Track before tuning: over the next few v3.0.0 games, how many losses carry the pilot-error label and how many are the deck? Expected: Sean's no-change call holds until the deck-side losses outnumber the piloting ones. Q018 gives the labels.
+
 **Still open from earlier games.**
 - Interaction: does the commander survive to swing more often on a real table?
 - Wheel under the Sphinx: does Wheel of Fortune with Consecrated Sphinx out end a real game the way stack 009 does?
@@ -359,3 +370,4 @@ Most of the numbered questions above were asked about the wheel-and-burn list. R
 - 2026-11-05 · Keeper · deck change: draw-engine-v1 merged as v2.3.0
 - 2026-11-05 · Keeper · pilot log 007: first v2.3.0 game — clunky, slow, brittle, convoluted; wheels landed, not fun
 - 2026-11-10 · Keeper · deck change: shabraz-v1 merged as v3.0.0: Shabraz-first, card draw grows the flying shark, protected on landing, made big and evasive; wheel-and-burn engine traded away; sleeved 2026-11-10
+- 2026-11-11 · Keeper · pilot log 008: loss to Oliver's Krenko, piloting error, no deck changes; kill Krenko on sight
