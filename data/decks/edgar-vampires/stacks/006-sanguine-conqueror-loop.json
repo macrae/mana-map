@@ -337,5 +337,7 @@
     ],
     "summary": "Mechanical gate passed. All 20 citation instances across 9 steps verified supported against full rule texts; no misquotes or out-of-context uses. Card facts verified against cards.json: Sanguine Bond is an Enchantment (sideboard, is_sideboard true) with oracle text exactly 'Whenever you gain life, target opponent loses that much life.'; Bloodthirsty Conqueror is a maindeck 5/5 Creature - Vampire Knight with the quoted trigger and reminder text. Arithmetic audit reconciles: opponent 2 (11) dies iteration 4 at -1; opponent 1 (26) dies on Bond resolution 13 at -1 (9 more resolutions); opponent 2's killing loss still triggers Conqueror (loss predates SBA removal); the 13th Conqueror gain is correctly excluded (game ends immediately per 104.2a before it resolves); final life 58 = 22 + 12x3. Missing-step audit found nothing: SBAs checked at each priority juncture (117.5), trigger ordering across a player's death handled, no replacement effects apply (Bond's loss is not damage; no lifelink/replacement in scenario), retargeting per-instance is correct, and the removal-window claim (exactly one creature half, Conqueror) matches the type lines. No findings against.",
     "iterations": 1
-  }
+  },
+  "presentable": false,
+  "presentable_note": "Withheld 2026-11-10: Bloodthirsty Conqueror is on this board and left the 99 in v3.0.0 (bracket3-v1: Edgar down to bracket 3, every two-card infinite cut). The resolution stands as checked; the line is not one the current deck can run."
 }

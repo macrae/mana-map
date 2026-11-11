@@ -61,7 +61,13 @@ def test_midnight_reaper_draws_nothing_off_a_sacrificed_token(monkeypatch):
     from manamap.pilot import diagnostic, net_change
     from manamap.pilot.common import load_deck_cards
     base = load_deck_cards("edgar-vampires")
-    swapped, _, _, _ = try_swap.apply_swaps("edgar-vampires", None, [("Swamp", "Midnight Reaper")])
+    # Midnight Reaper joined the 99 in v3.0.0 (2026-11-10): then the arms are the list with a
+    # Swamp in its slot against the list as it is — the same paired question, either way round.
+    if any(c["name"] == "Midnight Reaper" for c in base["cards"]):
+        swapped = base
+        base = try_swap.apply_swaps("edgar-vampires", None, [("Midnight Reaper", "Swamp")])[0]
+    else:
+        swapped = try_swap.apply_swaps("edgar-vampires", None, [("Swamp", "Midnight Reaper")])[0]
     a = diagnostic.run_on(base, "edgar-vampires", iterations=3000, seed=11, quiet=True, keep_games=True)
     b = diagnostic.run_on(swapped, "edgar-vampires", iterations=3000, seed=11, quiet=True, keep_games=True)
     row = next(t for t in net_change.compare_readings(a, b) if t["measure"] == "extra cards by T8")

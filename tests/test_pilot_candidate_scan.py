@@ -47,38 +47,47 @@ def test_converters_are_admitted_flagged_and_sorted_last_not_ranked_or_dropped(d
     sits near the top of every drain list and is the one card bracket 3 forbids here."""
     drain = doc["dimensions"]["drain"]["candidates"]
     by = {r["name"]: r for r in drain}
-    # Exquisite Blood was this test's subject until edgar v2.0.0 (2026-10-06) put it
-    # in the 99, where a candidate scan must never surface it.
-    assert "Exquisite Blood" not in by
+    # Edgar v3.0.0 (2026-11-10) cut BOTH loss-to-gain halves (Exquisite Blood, Bloodthirsty
+    # Conqueror) and kept the four gain-to-loss converters, so the subjects swap places: the
+    # cut halves are candidates again, each flagged as a loop with all four, and sorted last.
+    # (Before: Exquisite Blood in the 99 and Cliffhaven Vampire the flagged candidate.)
+    halves = ["Enduring Tenacity", "Marauding Blight-Priest", "Sanguine Bond",
+              "Vito, Thorn of the Dusk Rose"]
+    for name in ("Exquisite Blood", "Bloodthirsty Conqueror"):
+        assert by[name]["flags"]["converter"] == "converter_loss_to_gain", name
+        assert by[name]["combos"]["infinite_with"] == halves, name
+    # a gain-to-loss candidate with no loss-to-gain half in the 99 is a converter and no loop
     cliff = by["Cliffhaven Vampire"]
     assert cliff["flags"]["converter"] == "converter_gain_to_loss"
-    # v2 runs BOTH loss-to-gain halves, and the scan sees each as a loop partner.
-    assert cliff["combos"]["infinite_with"] == ["Bloodthirsty Conqueror", "Exquisite Blood"]
+    assert cliff["combos"]["infinite_with"] == []
     first_flagged = next(i for i, r in enumerate(drain) if r["combos"]["infinite_with"])
     assert all(not r["combos"]["infinite_with"] for r in drain[:first_flagged])
     assert all(r["combos"]["infinite_with"] for r in drain[first_flagged:])
-    assert doc["dimensions"]["drain"]["flagged_infinite"] == len(drain) - first_flagged >= 3
+    assert doc["dimensions"]["drain"]["flagged_infinite"] == len(drain) - first_flagged >= 2
     # a plain death drain is unflagged and says why it is here
     z = by["Zulaport Cutthroat"]
     assert z["flags"] == {"death_drain": True, "converter": None} and "wincon:drain" in z["matched"]["roles"]
 
 
 def test_death_draw_splits_on_the_word_nontoken(doc):
-    """No source makes the distinction; the row does. Midnight Reaper and Grim Haruspex
-    miss every eminence token; Species Specialist and Liliana's Standard Bearer do not."""
+    """No source makes the distinction; the row does. Harvester of Souls and High-Society
+    Hunter miss every eminence token; Species Specialist and Liliana's Standard Bearer do not.
+    (Midnight Reaper and Grim Haruspex were these rows until edgar v3.0.0 ran them, 2026-11-10.)"""
     draw = _rows(doc, "draw")
-    assert draw["Midnight Reaper"]["flags"] == {"trigger": "death", "nontoken": True, "costs_life": False}
-    assert draw["Grim Haruspex"]["flags"]["nontoken"] is True
+    assert draw["Harvester of Souls"]["flags"] == {"trigger": "death", "nontoken": True, "costs_life": False}
+    assert draw["High-Society Hunter"]["flags"]["nontoken"] is True
     assert draw["Species Specialist"]["flags"] == {"trigger": "death", "nontoken": False, "costs_life": False}
     assert draw["Liliana's Standard Bearer"]["flags"]["trigger"] == "death"
     assert draw["Dawn of Hope"]["flags"]["trigger"] == "gain" and draw["Well of Lost Dreams"]["flags"]["trigger"] == "gain"
     # (Phyrexian Arena and Twilight Prophet were these rows until edgar v2.0.0 ran them.)
     assert draw["Read the Bones"]["flags"] == {"trigger": "plain", "nontoken": False, "costs_life": True}
     assert "draw.put_into_hand" in draw["Dark Confidant"]["matched"]["oracle"]
-    # admission by TAG alone (Midnight Reaper has no draw role) and by ORACLE alone. Standard
+    # admission by TAG alone (Taborax has no draw role; Midnight Reaper was this row until
+    # v3.0.0 ran it) and by ORACLE alone. Standard
     # Bearer ("you draw X cards") was the oracle-only example until the 2026-10-29 tag sweep
     # taught `draw` that form; any row admitted by oracle alone proves the path still exists.
-    assert draw["Midnight Reaper"]["matched"]["roles"] == [] and draw["Midnight Reaper"]["matched"]["tags"] == ["draw"]
+    assert draw["Taborax, Hope's Demise"]["matched"]["roles"] == [] and \
+        draw["Taborax, Hope's Demise"]["matched"]["tags"] == ["draw"]
     assert draw["Liliana's Standard Bearer"]["matched"]["tags"] == ["draw"]
     oracle_only = [n for n, r in draw.items()
                    if r["matched"]["oracle"] and not r["matched"]["roles"] and not r["matched"]["tags"]]
@@ -144,7 +153,8 @@ def test_the_shortlist_joins_every_source_and_predicts_a_direction_not_a_number(
     rows = {r["name"]: r for r in doc["rows"]}
     cv = rows["Cliffhaven Vampire"]
     assert cv["dimensions"]["drain"]["converter"] == "converter_gain_to_loss"
-    assert cv["infinite_with"] == ["Bloodthirsty Conqueror", "Exquisite Blood"]
+    # v3.0.0 cut both loss-to-gain halves, so Cliffhaven loops with nothing in the 99 now.
+    assert cv["infinite_with"] == []
     assert cv["predicted"]["forge.drain_dealt"] == "up" and cv["predicted"]["forge.life_gained"] == "up"
     assert cv["prescription"] and cv["prescription"]["as"] == "add"
     assert any(f["dimension"] == "drain" for f in cv["recon"])

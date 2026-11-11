@@ -273,6 +273,17 @@ def test_every_branch_artifact_a_validator_can_reach_is_gated():
     if not any((DECKS_DIR / d.name / "branches").glob("*/branch.json")
                for d in DECKS_DIR.iterdir() if d.is_dir()):
         pytest.skip("no branches on this checkout")
+    # A DECIDED BRANCH IS SKIPPED BY `_cases` ON PURPOSE (its files are the record of the
+    # decision), so the guard asks whether any LIVE branch carries a gatable file. On
+    # 2026-11-10 sharknado's shabraz-v1 and edgar's bracket3-v1 merged; the open branches
+    # left (zur, ingris-infect) carry none, and that is a state, not the regression.
+    live_gatable = [
+        b for d in DECKS_DIR.iterdir() if d.is_dir() and not is_retired(d)
+        for b in (d / "branches").glob("*") if b.is_dir()
+        and not deck_branch.is_decided(d.name, b.name)
+        and any((b / art).exists() for art in set(GATED) & BRANCH_AWARE)]
+    if not live_gatable:
+        pytest.skip("no live branch carries a gatable artifact on this checkout")
     assert branch_cases, (
         "a branch exists and no branch artifact is gated — the recursion in "
         "`_cases` has regressed to the top-level glob it replaced")
