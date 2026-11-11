@@ -886,15 +886,16 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 2,
-        "fell": 5,
-        "no_call": 3
+        "rose": 4,
+        "fell": 7,
+        "no_call": 1
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Deflecting Swat",
+        "Flawless Maneuver",
+        "Midgar, City of Mako // Reactor Raid",
         "Olivia, Crimson Bride",
         "Skullclamp",
         "Swords to Plowshares",
@@ -906,7 +907,9 @@
       "impact": {
         "state": "no objective",
         "rose": [
-          "stall, 2 in a row",
+          "hoard @T10",
+          "hoard @T6",
+          "extra cards by T8",
           "hand can act by T3"
         ],
         "fell": [
@@ -914,54 +917,56 @@
           "board power @T6",
           "killed by T6",
           "killed by T10",
-          "extra cards by T8"
+          "missed drop by T5",
+          "mulliganed",
+          "interaction affordable @T6"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -3.8071,
+            "delta": -3.8528,
             "ci95_diff": [
-              -3.9583,
-              -3.6559
+              -4.0829,
+              -3.6227
             ],
-            "mde": 0.2161,
+            "mde": 0.3289,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0332,
+            "delta": -0.0192,
             "ci95_diff": [
-              -0.0394,
-              -0.027
+              -0.0258,
+              -0.0126
             ],
-            "mde": 0.0088,
+            "mde": 0.0094,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.4493,
+            "delta": -0.5387,
             "ci95_diff": [
-              -0.5014,
-              -0.3972
+              -0.6018,
+              -0.4756
             ],
-            "mde": 0.0744,
+            "mde": 0.0901,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.468,
+            "delta": 0.4232,
             "ci95_diff": [
-              -0.4992,
-              -0.4368
+              0.3584,
+              0.488
             ],
-            "mde": 0.0446,
-            "verdict": "worse",
+            "mde": 0.0926,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -19773,6 +19778,8 @@
             "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
             "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
             "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
+            "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+            "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
             "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
             "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
             "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
@@ -19874,12 +19881,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1642,
-            "5": 10,
-            "6": 268,
-            "7": 1656,
-            "8": 2694,
-            "9": 2107
+            "10": 1568,
+            "5": 23,
+            "6": 370,
+            "7": 1810,
+            "8": 2690,
+            "9": 2057
           },
           "tier": "data",
           "weight": "detail",
@@ -19944,19 +19951,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.378,
+      "mean_kill_turn": 8.302,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 3,
-      "kill_by_turn_8_pct": 46,
+      "kill_by_turn_6_pct": 4,
+      "kill_by_turn_8_pct": 49,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 16,
+      "no_kill_by_max_turn_pct": 15,
       "kill_turn_histogram": {
-        "10": 1642,
-        "5": 10,
-        "6": 268,
-        "7": 1656,
-        "8": 2694,
-        "9": 2107
+        "10": 1568,
+        "5": 23,
+        "6": 370,
+        "7": 1810,
+        "8": 2690,
+        "9": 2057
       }
     }
   },

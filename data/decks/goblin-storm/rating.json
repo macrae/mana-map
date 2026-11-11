@@ -15,12 +15,12 @@
    "weight": 0.12,
    "weight_validity": 1.0,
    "weight_effective": 0.2105,
-   "sub_score": 59.9,
+   "sub_score": 47.4,
    "sub_ci": [
-    54.28,
-    65.42
+    46.71,
+    53.02
    ],
-   "placement": 25.0,
+   "placement": 0.0,
    "anchor": 94.8,
    "method": "0.500·placement + 0.500·anchor (λ at n=5): placement of kill_by_turn_8 within bracket 3 (n=5); anchor kill_by_turn_8 / 0.5 for a bracket-3 clock (config.BRACKETS expected turns); Beta posterior from the benchmark's n",
    "inputs": [
@@ -51,8 +51,8 @@
    "weight_effective": 0.1404,
    "sub_score": 87.5,
    "sub_ci": [
-    81.93,
-    93.11
+    81.81,
+    93.05
    ],
    "placement": 75.0,
    "anchor": 100.0,
@@ -94,7 +94,7 @@
    "sub_score": 25.0,
    "sub_ci": [
     25.0,
-    30.52
+    30.61
    ],
    "placement": 0.0,
    "anchor": 50.0,
@@ -241,8 +241,8 @@
    "weight_effective": 0.2105,
    "sub_score": 52.96,
    "sub_ci": [
-    43.14,
-    75.73
+    42.78,
+    76.72
    ],
    "placement": 66.67,
    "anchor": 42.67,
@@ -310,18 +310,18 @@
   "floor_vs_target": "floor 1, target 3"
  },
  "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
- "fleet_sha": "f358c0784945",
+ "fleet_sha": "0660478af90e",
  "model_version": "fd483871b754",
  "spec_version": 2,
  "open_questions": [],
  "iterations": 0,
  "verifier": null,
- "code_score": 56.4,
- "score_point": 56.4,
- "score": 57.8,
+ "code_score": 53.8,
+ "score_point": 53.8,
+ "score": 55.2,
  "score_ci": [
-  47.7,
-  67.5
+  45.0,
+  65.0
  ],
  "grade": "C",
  "grade_range": [
@@ -331,9 +331,9 @@
  "grade_display": "D–B",
  "grade_probabilities": {
   "A": 0.0,
-  "B": 0.11,
-  "C": 0.791,
-  "D": 0.1,
+  "B": 0.051,
+  "C": 0.762,
+  "D": 0.187,
   "F": 0.0
  },
  "uncertainty": {
@@ -354,43 +354,51 @@
     "grade": "C"
    },
    "mana": {
-    "score": 51.3,
-    "grade": "C"
+    "score": 48.3,
+    "grade": "D"
    },
    "resilience": {
-    "score": 64.8,
+    "score": 61.4,
     "grade": "C"
    },
    "construction": {
-    "score": 53.5,
+    "score": 50.1,
     "grade": "C"
    },
    "table_record": {
-    "score": 57.3,
+    "score": 54.0,
     "grade": "C"
    }
   },
   "flips": [
    {
+    "component": "mana",
+    "share_now": 0.14,
+    "share_at_flip": 0.044,
+    "boundary": 50,
+    "grade_at_flip": "D",
+    "direction": "lower"
+   },
+   {
     "component": "resilience",
     "share_now": 0.211,
-    "share_at_flip": 0.371,
+    "share_at_flip": 0.314,
     "boundary": 50,
     "grade_at_flip": "D",
     "direction": "raise"
    },
    {
-    "component": "mana",
-    "share_now": 0.14,
-    "share_at_flip": 0.378,
-    "boundary": 65,
-    "grade_at_flip": "B",
+    "component": "speed",
+    "share_now": 0.211,
+    "share_at_flip": 0.678,
+    "boundary": 50,
+    "grade_at_flip": "D",
     "direction": "raise"
    },
    {
     "component": "construction",
     "share_now": 0.228,
-    "share_at_flip": 0.906,
+    "share_at_flip": 0.926,
     "boundary": 65,
     "grade_at_flip": "B",
     "direction": "raise"
@@ -403,7 +411,7 @@
    "construction": 3.0,
    "mana": 2.0,
    "resilience": 5.0,
-   "speed": 4.0,
+   "speed": 5.0,
    "table_record": 2.0
   },
   "of": 5,
@@ -426,13 +434,13 @@
    },
    {
     "instrument": "speed",
-    "rank": 4.0,
+    "rank": 5.0,
     "side": "worse"
    }
   ],
   "group": {
-   "kendall_w": 0.212,
-   "p": 0.5609,
+   "kendall_w": 0.237,
+   "p": 0.4853,
    "p_method": "permutation, 5000 draws, seed 20261019",
    "m": 4,
    "n": 5
@@ -446,16 +454,16 @@
   "group": [
    "sharknado",
    "gishath",
-   "ur-dragon",
    "edgar-vampires",
+   "ur-dragon",
    "goblin-storm"
   ],
   "acceptability": {
-   "1": 0.02,
-   "2": 0.069,
-   "3": 0.162,
-   "4": 0.314,
-   "5": 0.435
+   "1": 0.009,
+   "2": 0.02,
+   "3": 0.058,
+   "4": 0.157,
+   "5": 0.756
   },
   "basis": {
    "edgar-vampires": "rating.json judgment",
@@ -465,11 +473,11 @@
    "ur-dragon": "rating.json judgment"
   },
   "scores": {
-   "sharknado": 71.4,
-   "gishath": 68.4,
-   "ur-dragon": 63.1,
-   "edgar-vampires": 57.9,
-   "goblin-storm": 57.8
+   "sharknado": 71.3,
+   "gishath": 68.6,
+   "edgar-vampires": 63.5,
+   "ur-dragon": 63.2,
+   "goblin-storm": 55.2
   }
  }
 }

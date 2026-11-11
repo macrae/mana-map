@@ -443,15 +443,15 @@
   "kill_curves": {
    "edgar-vampires": {
     "1": 0.0,
-    "10": 0.838,
+    "10": 0.852,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
-    "5": 0.001,
-    "6": 0.028,
-    "7": 0.193,
-    "8": 0.463,
-    "9": 0.673
+    "5": 0.002,
+    "6": 0.039,
+    "7": 0.22,
+    "8": 0.489,
+    "9": 0.695
    },
    "emiel-blink": {
     "1": 0.0,
@@ -904,38 +904,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8306,
-      0.8451
+      0.8449,
+      0.8588
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.838
+     "value": 0.852
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0249,
-      0.0314
+      0.0354,
+      0.043
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.028
+     "value": 0.039
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4532,
-      0.4728
+      0.4792,
+      0.4988
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.463
+     "value": 0.489
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -986,14 +986,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1549,
-      0.1694
+      0.1412,
+      0.1551
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.162
+     "value": 0.148
     }
    },
    "bracket": {
@@ -1106,6 +1106,7 @@
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
+     "model_combos": true,
      "model_deaths": {
       "opponent_per_turn": 1.3118,
       "own_per_turn": 0.858,
@@ -1113,9 +1114,10 @@
      },
      "model_drain": true,
      "model_draw": true,
-     "model_sacrifice": true
+     "model_sacrifice": true,
+     "model_treasures": true
     },
-    "model_version": "ac1f8a6f777f",
+    "model_version": "75ea059969f2",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -1189,6 +1191,16 @@
       "release": "v1.1.1",
       "version": 3,
       "win": 0
+     },
+     {
+      "date": "2026-11-10",
+      "draw": 0,
+      "feel": {},
+      "games": 1,
+      "loss": 0,
+      "release": "v3.0.0",
+      "version": 7,
+      "win": 0
      }
     ],
     "cause_counts": {
@@ -1198,8 +1210,8 @@
      "wipe": 3
     },
     "draw": 0,
-    "games": 6,
-    "last_played": "2026-09-29",
+    "games": 7,
+    "last_played": "2026-11-11",
     "loss": 5,
     "unmatched_games": [],
     "win": 0
@@ -5195,7 +5207,7 @@
   },
   "kill_by_turn_8": {
    "max": 0.958,
-   "median": 0.474,
+   "median": 0.489,
    "min": 0.008,
    "n": 7
   },
@@ -5225,7 +5237,7 @@
   },
   "never_kills_rate": {
    "max": 0.81,
-   "median": 0.162,
+   "median": 0.148,
    "min": 0.004,
    "n": 7
   },
@@ -5302,13 +5314,13 @@
     "kill_by_turn_6": {
      "max": 0.253,
      "median": 0.182,
-     "min": 0.028,
+     "min": 0.039,
      "n": 5
     },
     "kill_by_turn_8": {
      "max": 0.958,
      "median": 0.77,
-     "min": 0.463,
+     "min": 0.474,
      "n": 5
     },
     "mana_at_turn_five": {
@@ -5505,7 +5517,7 @@
   },
   "min_group": 3,
   "model_version": {
-   "edgar-vampires": "ac1f8a6f777f",
+   "edgar-vampires": "75ea059969f2",
    "elves": null,
    "emiel-blink": "ac1f8a6f777f",
    "gishath": "ac1f8a6f777f",

@@ -268,14 +268,17 @@ def channels_for(profile):
             or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")):
         found.add("discard")
     if profile["sac_outlet"] or any((profile.get("own_death") or {}).get(k) for k in (
-            # the deaths a card causes among our own creatures (2026-11-07). NOT the clamp:
-            # it acts only under Meren's commander declaration, which is not a channel, and
-            # crediting it here said goblin-storm's Skullclamp was read when nothing kills with it.
-            "self_sac", "self_edict")) or _nonzero(profile.get("death"), (
+            # the deaths a card causes among our own creatures (2026-11-07). The clamp joined
+            # 2026-11-11, when the loop started clamping under `model_sacrifice` and not under
+            # Meren's declaration alone; before that, crediting it here said goblin-storm's
+            # Skullclamp was read when nothing killed with it.
+            "self_sac", "self_edict", "clamp")) or _nonzero(profile.get("death"), (
             # `death_damage` listed WITH the field, not after somebody hits the
             # gap the expensive way. Pashalik Mons and Boggart Shenanigans read
             # as invisible while the deck's whole conversion was bodies dying.
-            "death_drain", "death_draw", "death_treasure", "death_damage")):
+            "death_drain", "death_draw", "death_treasure", "death_damage")) \
+            or profile.get("death_trigger_doubler"):
+        # Teysa Karlov / Drivnod multiply the death payoffs (2026-11-11).
         found.add("sacrifice")
     # Named keys, not the truthiness of the dict — `drain` carries an
     # "unmodelled" sentinel like `draw` does, and reading the dict as a whole
@@ -297,7 +300,7 @@ def channels_for(profile):
     yard, own, rec = (profile.get("yard") or {}), (profile.get("own_death") or {}), \
         (profile.get("recurring") or {})
     if (yard.get("reanimate") or yard.get("to_yard") or yard.get("discard_tutor")
-            or own.get("no_mana") or own.get("cast_from_yard") or own.get("clamp")
+            or own.get("no_mana") or own.get("cast_from_yard")
             or own.get("sac_team_counter") or own.get("team_pump_x")
             or rec.get("upkeep") or rec.get("end_step") or rec.get("return_cost")
             or rec.get("return_landfall")
@@ -446,7 +449,8 @@ def never_cast(profile, flags):
     if flags.get("model_sacrifice") and profile.get("sac_outlet"):
         return False
     # A CLAMP (2026-11-07), mirroring `_engine_permanent` in the same commit.
-    if flags.get("model_commander_recursion") and (profile.get("own_death") or {}).get("clamp"):
+    if (flags.get("model_commander_recursion") or flags.get("model_sacrifice")) \
+            and (profile.get("own_death") or {}).get("clamp"):
         return False
     # …and the reanimation spells, which the loop casts under the same declaration (2026-11-09:
     # they joined the `recursion` channel and the fleet guard caught the mirror one step behind).
@@ -541,7 +545,8 @@ def unread_replacement(card, profile):
             or profile["damage_bonus"]["amount"] or profile["token_doubler"]
             or profile["draw"]["draw_multiplier"] > 1
             or profile["combat"]["team_damage_multiplier"] > 1
-            or profile["treasure_bonus"] or profile["treasure_doubler"])
+            or profile["treasure_bonus"] or profile["treasure_doubler"]
+            or profile.get("life_loss_doubler"))
     return None if read else m.group(0).strip()
 
 

@@ -291,6 +291,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # for the Treasure side. Three doublers is x8, which is what this deck's
     # engine brief means by "the doublers turn one mint into four".
     token_multiplier = 1
+    # DEATH-TRIGGER DOUBLERS (2026-11-11): Teysa Karlov / Drivnod. Each one on the board
+    # makes every death trigger of ours fire one more time, so two make three. A
+    # "triggers only once each turn" payoff (Vraan) is NOT multiplied: a floor, named.
+    death_trigger_mult = 1
+    # LIFE-LOSS DOUBLERS ON OUR TURN (2026-11-11): Bloodletter of Aclazotz. Damage causes
+    # life loss, so every opponent life change this simulation makes on our turn doubles,
+    # per copy. The measured death rate's drain is counted as ours too: a ceiling, named.
+    life_loss_mult = 1
     # COUNTER REPLACEMENTS (2026-10-11): Hardened Scales and Lae'zel ADD to
     # every counter event on a creature you control, Doubling Season DOUBLES
     # it. Kept as (plus, times) and applied per EVENT through
@@ -1074,7 +1082,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     death_once_used.add(id(eng))
                     reps = 1
                 else:
-                    reps = n_died
+                    reps = n_died * death_trigger_mult
                 deaths_drained += eng["death_drain"] * reps
                 deaths_damaged += eng["death_damage"] * reps
                 if eng["death_draw"] * reps:
@@ -1714,7 +1722,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if enters and od.get("self_edict") and (model_sacrifice or model_deaths
                                                     or commander_recursion):
                 own_deaths["pending_edicts"] += 1
-            if commander_recursion and od.get("clamp"):
+            # THE CLAMP UNDER model_sacrifice TOO (2026-11-11): Edgar's threat-v1 runs Skullclamp
+            # on 1/1 eminence tokens; it was read under Meren's declaration alone.
+            if (commander_recursion or model_sacrifice) and od.get("clamp"):
                 own_deaths["clamps"].append(od["clamp"])
             if enters and commander_recursion:
                 _record_arrival(card, own_deaths["route"])
@@ -1747,7 +1757,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             cast body, minus what a cast is: no cast-triggered tokens, no
             cast-draw, no spend. Devotion-gated gods are held like any other."""
             nonlocal bodies_cum, extra_combat_free
-            nonlocal lifelink_power, token_multiplier, treasures
+            nonlocal lifelink_power, token_multiplier, treasures, death_trigger_mult, life_loss_mult
             combat = card["combat"]
             seen.add(card["name"])
             _register_own_death(card, enters=True)
@@ -1813,6 +1823,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _register_statics(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
+            if card["death_trigger_doubler"]:
+                death_trigger_mult += 1
+            if card["life_loss_doubler"]:
+                life_loss_mult *= 2
             if model_treasures:
                 if card["treasure_trigger"] in ("upkeep", "landfall", "opponent_draw_tax",
                                                 "opponent_second_draw"):
@@ -2204,7 +2218,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal attack_enabler_out, bodies_cum, creatures_entered_this_turn
             nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
             nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
-            nonlocal token_multiplier, treasure_bonus, first_right_card_turn
+            nonlocal token_multiplier, treasure_bonus, first_right_card_turn, death_trigger_mult
+            nonlocal life_loss_mult
             nonlocal treasure_multiplier, treasures
             # AN INSTANT OR SORCERY THAT MAKES TOKENS reaches this loop because
             # its tokens count as bodies — and until 2026-10-11 its own spell
@@ -2395,6 +2410,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _register_statics(card)
             if card["token_doubler"]:
                 token_multiplier *= 2
+            if card["death_trigger_doubler"]:
+                death_trigger_mult += 1
+            if card["life_loss_doubler"]:
+                life_loss_mult *= 2
             if model_sacrifice:
                 if is_death_engine(card["death"]):
                     death_engines.append(card["death"])
@@ -2433,8 +2452,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if d_["drain_etb"] or d_["gain_etb"]:
                     x_ = 1
                     if d_["scales_with"]:
+                        # TOKENS COUNT (2026-11-11): Malakir Bloodwitch counts every Vampire,
+                        # Edgar's eminence tokens included, and `battlefield_types` holds the
+                        # cast permanents only; `creature_types` holds every creature. The
+                        # larger of the two, so neither list is counted twice.
                         x_ = max(1, sum(1 for tl_ in battlefield_types
-                                        if d_["scales_with"] in tl_))
+                                        if d_["scales_with"] in tl_),
+                                 sum(1 for tl_ in creature_types
+                                     if d_["scales_with"] in (tl_ or "")))
                     etb_drained += d_["drain_etb"] * x_
                     etb_gained += d_["gain_etb"] * x_
                 # And every permanent of a named type that lands afterwards
@@ -2944,6 +2969,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             Its enters-the-battlefield triggers fire too by the rules; those are not read here,
             a floor, and named in the channel table."""
             nonlocal rock_production, token_multiplier, treasure_multiplier, treasure_bonus
+            nonlocal death_trigger_mult, life_loss_mult
             nonlocal first_right_card_turn
             if c["produces"] > 0:
                 rock_production += c["produces"]
@@ -2958,6 +2984,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 treasure_multiplier *= 2
             if c["token_doubler"]:
                 token_multiplier *= 2
+            if c["death_trigger_doubler"]:
+                death_trigger_mult += 1
+            if c["life_loss_doubler"]:
+                life_loss_mult *= 2
             if model_combat:
                 _register_damage_scale(c["combat"])
             _register_wheel(c)
@@ -3547,7 +3577,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # A CLAMP IS A PERMANENT TOO (2026-11-07), in the same commit as the deaths it
                 # causes: Skullclamp has no body, no mana and no channel of its own. Mirrored
                 # in `model_coverage.never_cast`.
-                if commander_recursion and (c.get("own_death") or {}).get("clamp"):
+                if (commander_recursion or model_sacrifice) and (c.get("own_death") or {}).get("clamp"):
                     return True
                 # A DISCARD TUTOR IS A PERMANENT TOO (Survival of the Fittest, 2026-11-07), in the
                 # same commit as its activation; mirrored in `model_coverage.never_cast`.
@@ -3757,8 +3787,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         if d_["drain_etb"] or d_["gain_etb"]:
                             x_ = 1
                             if d_["scales_with"]:
+                                # Tokens count here too (2026-11-11), as at the cast door.
                                 x_ = max(1, sum(1 for tl_ in battlefield_types
-                                                if d_["scales_with"] in tl_))
+                                                if d_["scales_with"] in tl_),
+                                         sum(1 for tl_ in creature_types
+                                             if d_["scales_with"] in (tl_ or "")))
                             etb_drained += d_["drain_etb"] * x_
                             etb_gained += d_["gain_etb"] * x_
                         # And every permanent of a named type that lands afterwards
@@ -4471,7 +4504,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 event_gain_events += 1
                 event_gain_total += _e["tenth_counter_gain"]
         tenth_counter_fires.clear()
-        _evt_dmg = sum(_n * _noncombat_mult(_kind) for _kind, _n in _evt_by.items())
+        _evt_dmg = sum(_n * _noncombat_mult(_kind) for _kind, _n in _evt_by.items()) * life_loss_mult
         if _evt_dmg:
             opponent_life -= _evt_dmg
             if kill_turn is None and opponent_life <= 0:
@@ -4924,10 +4957,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             death_once_used.add(id(eng))
                         # Life loss comes off the same number for the same reason the arrival
                         # channel says so, one opponent at 40 life, and no doubler reaches it.
-                        etb_by["life"] += eng["death_drain"]
-                        draw_n(eng["death_draw"])
+                        _m = 1 if eng.get("death_once") else death_trigger_mult
+                        etb_by["life"] += eng["death_drain"] * _m
+                        draw_n(eng["death_draw"] * _m)
                         if model_treasures:
-                            treasures += eng["death_treasure"]
+                            treasures += eng["death_treasure"] * _m
                 if len(battlefield) > board_before:
                     # A death payoff put something onto the battlefield while we
                     # were sacrificing. That is the loop the guard is named for.
@@ -5110,17 +5144,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                   and _is_fodder(e[12]["card"])), reverse=True):
                     if spend(battlefield[_i][12]["card"]["own_death"]["self_sac_cost"]):
                         _kill(_i)
-                # A CLAMP kills an X/1 for its equip cost and draws on the death, as long as
-                # there is mana and a spare body small enough.
-                for _clamp in own_deaths["clamps"]:
-                    while True:
-                        _small = [i for i in range(len(battlefield)) if _expendable(i)
-                                  and battlefield[i][6] <= _clamp["toughness_minus"]]
-                        if not _small or not spend(_clamp["equip"]):
-                            break
-                        _kill(min(_small, key=lambda i: battlefield[i][0]), sacrificed=False)
-                        if model_draw:
-                            draw_n(_clamp["draw"])
+            # A CLAMP kills an X/1 for its equip cost and draws on the death, as long as there is
+            # mana and a spare body small enough. Out of Meren's block since 2026-11-11: any deck
+            # with the sacrifice channel on clamps its tokens (Edgar). The draw is a death
+            # trigger, so a Teysa doubles it.
+            for _clamp in own_deaths["clamps"]:
+                while True:
+                    _small = [i for i in range(len(battlefield)) if _expendable(i)
+                              and battlefield[i][6] <= _clamp["toughness_minus"]]
+                    if not _small or not spend(_clamp["equip"]):
+                        break
+                    _kill(min(_small, key=lambda i: battlefield[i][0]), sacrificed=False)
+                    if model_draw:
+                        draw_n(_clamp["draw"] * death_trigger_mult)
             # MAZIREK: a +1/+1 counter on each creature we control for every sacrifice this turn,
             # through the counter replacements; applied after combat, so it grows next turn's swing.
             if own_deaths["sac_counters"] and own_deaths["sacs"]:
@@ -5180,8 +5216,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     recursion_to_hand += 1
                     hand.append(_pick)
                     seen.add(_pick["name"])
-            dealt = dealt * _combat_mult() + sum(_n * _noncombat_mult(_kind)
-                                                 for _kind, _n in etb_by.items())
+            dealt = (dealt * _combat_mult() + sum(_n * _noncombat_mult(_kind)
+                                                  for _kind, _n in etb_by.items())) * life_loss_mult
             opponent_life -= dealt
             damage_by_turn.append(dealt)
             # A damage doubler doubles the damage a source deals, and infect
@@ -5435,7 +5471,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _deaths_after_combat(1, bool(_died[4]))
             for _ in range(n_opp):
                 for prof in opponent_death_gains:
-                    deaths_gained += prof["gain_on_opponent_death"]
+                    deaths_gained += prof["gain_on_opponent_death"] * death_trigger_mult
 
         # ── the drain pillar ────────────────────────────────────────────────
         #
@@ -5505,12 +5541,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # garbage. The type line now rides WITH the creature.
             granted = 0
             if lifelink_granted_types:
-                for tl_, (pw_, *_) in zip(creature_types, battlefield):
-                    if any(ty_ in tl_ for ty_ in lifelink_granted_types):
+                for tl_, (pw_, _a, _h, _m, _tok, *_) in zip(creature_types, battlefield):
+                    if any(ty_ in tl_ for ty_ in lifelink_granted_types) or (
+                            _tok and "<tokens>" in lifelink_granted_types):
                         granted += pw_
             effective_lifelink = max(lifelink_power, granted)
             if effective_lifelink and damage_by_turn:
-                linked = min(effective_lifelink, damage_by_turn[-1])
+                # Lifelink gains the DAMAGE dealt, not the life lost: Bloodletter's doubling
+                # (`life_loss_mult`) is taken back out (2026-11-11).
+                linked = min(effective_lifelink, damage_by_turn[-1] / life_loss_mult)
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
@@ -5537,6 +5576,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if d["payoff_equal"]:
                     drained += gain_total
                 drained += d["payoff_fixed"] * gain_events
+            drained *= life_loss_mult
             drain_by_turn.append(drained)
             if drained:
                 opponent_life -= drained

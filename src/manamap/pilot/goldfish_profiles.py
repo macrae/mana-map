@@ -1399,6 +1399,34 @@ def permanent_damage_scale(text, type_line=""):
     return 1, None
 
 
+#: A DEATH-TRIGGER DOUBLER (2026-11-11): "If a creature dying causes a triggered ability
+#: of a permanent you control to trigger, that ability triggers an additional time."
+#: Corpus sweep at the time: exactly two cards, Teysa Karlov and Drivnod, Carnage
+#: Dominus. The Masamune is narrower ("of this creature or an emblem") and is left out.
+_DEATH_TRIGGER_DOUBLER_RE = re.compile(
+    r"if a creature dying causes a triggered ability of a permanent you control to "
+    r"trigger, that ability triggers an additional time", re.IGNORECASE)
+
+
+def death_trigger_doubler(card):
+    """Does this permanent make every death trigger of ours fire an additional time?"""
+    return bool(_DEATH_TRIGGER_DOUBLER_RE.search(card.get("oracle_text", "") or ""))
+
+
+#: A LIFE-LOSS DOUBLER ON OUR TURN (2026-11-11): Bloodletter of Aclazotz, "If an opponent
+#: would lose life during your turn, they lose twice that much life instead." Damage causes
+#: life loss (CR 120.3a), so combat, ping and drain alike. Corpus sweep: one card; Selenia's
+#: doubling is a Curse token made on her death and is not read.
+_LIFE_LOSS_DOUBLER_RE = re.compile(
+    r"if an opponent would lose life during your turn, they lose twice that much life "
+    r"instead", re.IGNORECASE)
+
+
+def life_loss_doubler(card):
+    """Does this permanent double every opponent's life loss during our turn?"""
+    return bool(_LIFE_LOSS_DOUBLER_RE.search(card.get("oracle_text", "") or ""))
+
+
 def token_doubler(card):
     """Does this permanent double every token you create, for good?"""
     text = card.get("oracle_text", "") or ""
@@ -3642,7 +3670,17 @@ _SYMMETRIC_DRAIN_GAIN_PER_TYPE_RE = re.compile(
 _LIFELINK_GRANT_TYPE_RE = re.compile(
     r"(\w+) creatures you control have (?:[^.]*?\b)?lifelink", re.I)
 
-_LIFELINK_NOT_SELF_RE = re.compile(r"gains? lifelink|token[^.]*?with lifelink", re.I)
+#: "Creature tokens you control have vigilance and lifelink" (Teysa Karlov; corpus sweep
+#: 2026-11-11: one card). The subject is a token, not a type, so it gets its own sentinel.
+_LIFELINK_GRANT_TOKENS_RE = re.compile(
+    r"creature tokens you control have (?:[^.]*?\b)?lifelink", re.I)
+LIFELINK_TO_TOKENS = "<tokens>"
+
+#: A grant to tokens is not the card's own lifelink either (Teysa Karlov read as a 2/4
+#: lifelinker off "Creature tokens you control have vigilance and lifelink", 2026-11-11).
+_LIFELINK_NOT_SELF_RE = re.compile(
+    r"gains? lifelink|token[^.]*?with lifelink|creature tokens you control have [^.]*?lifelink",
+    re.I)
 _LIFELINK_RE = re.compile(r"\blifelink\b", re.I)
 
 #: Per-creature-arrival gain (Daxos).
@@ -3697,6 +3735,17 @@ _ATTACK_ENABLER_RE = re.compile(
     r"|enchanted creature[^.]*?protection from creatures"
     r"|equipped creature[^.]*?can't be blocked"
     r"|remove target attacking creature you control from combat", re.I)
+
+
+#: AN ENTRY DRAIN SCALED BY A COUNT, both halves (2026-11-11): Malakir Bloodwitch,
+#: "When this creature enters, each opponent loses life equal to the number of Vampires
+#: you control. You gain life equal to the life lost this way." Corpus sweep at the time:
+#: one card (Throne of the God-Pharaoh shares the noun phrase on an end-step trigger and
+#: no gain, and is not matched). The subject is a plural creature type, singularised to
+#: the word a type line carries; the existing `scales_with` count does the rest.
+_ETB_DRAIN_EQUAL_COUNT_RE = re.compile(
+    r"when [^.]*?enters[^.]*?, each opponent loses life equal to the number of "
+    r"([A-Za-z]+?)s you control\. you gain life equal to the life lost this way", re.I)
 
 
 def drain_profile(card):
@@ -3773,6 +3822,10 @@ def drain_profile(card):
     m = _LIFELINK_GRANT_TYPE_RE.search(text)
     if m:
         out["grants_lifelink_to"] = m.group(1).capitalize()
+    elif _LIFELINK_GRANT_TOKENS_RE.search(text):
+        # Teysa Karlov (2026-11-11): every creature TOKEN, whatever its type. A sentinel the
+        # turn loop reads off each body's token flag, not off its type line.
+        out["grants_lifelink_to"] = LIFELINK_TO_TOKENS
 
     # X IS A COUNT, AND SCORING IT AS 1 MAKES A SCALING CARD UNABLE TO SCALE.
     # Sanctum of Stone Fangs drains "X, where X is the number of Shrines you
@@ -3781,6 +3834,11 @@ def drain_profile(card):
     m = _X_SCALES_RE.search(text)
     if m:
         out["scales_with"] = _X_SUBJECTS.get(m.group(1).strip().lower())
+
+    m = _ETB_DRAIN_EQUAL_COUNT_RE.search(text)
+    if m:
+        out["drain_etb"] = out["gain_etb"] = 1
+        out["scales_with"] = m.group(1).strip().capitalize()
 
     if not any((out["payoff_equal"], out["payoff_fixed"], out["gain_recurring"],
                 out["gain_per_enchantment"], out["gain_per_creature"],

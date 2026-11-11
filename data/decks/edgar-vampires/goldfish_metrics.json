@@ -42,7 +42,6 @@
       "Elspeth, Storm Slayer",
       "Erebos, Bleak-Hearted",
       "Flawless Maneuver",
-      "Ingris Stingerquill",
       "Liliana, Dreadhorde General",
       "Olivia's Wrath",
       "Path to Exile",
@@ -91,6 +90,8 @@
       "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
       "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
       "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid.",
+      "Treasures are a one-shot STOCKPILE, not a mana rock: spent only when lands and rocks fall short, and gone once broken. Reported separately from mean_available_mana_by_turn, which still means repeatable mana per turn.",
+      "Only Treasure triggers a goldfish can see are modeled — upkeep and landfall are RECURRING, Saga chapters likewise; a `cast` or enters-the-battlefield trigger pays out ONCE, when its own source resolves. Combat- and opponent-gated sources produce NOTHING here, because this model has no combat and no opponents; they are named in meta.treasure_sources_not_modelled so a low hoard figure is legible.",
       "COMBAT: one opponent at 40 life who does nothing — no blockers, no removal, no interaction. This is a goldfish in the literal sense, so `kill_turn` is the turn an UNOPPOSED board would finish ONE seat, not a win rate.",
       "Attacks with every creature that is not summoning-sick; haste is read from the ORACLE TEXT (this line said 'type line' and was simply wrong). There is nothing to block, so nothing is ever held back — in a real four-player game you would keep blockers, which makes this an optimistic clock and a pessimistic board.",
       "A COMMANDER'S COMBAT-DAMAGE REVEAL IS DECLARED PER DECK (`model_commander_combat_reveal`, 2026-09-11, Gishath): when the commander is on the battlefield and the deck attacks, with the declared connect rate it reveals its damage's worth of cards, every creature of the named type among them enters through the one door (ETB payoffs, engines, reductions all register; nothing that needs a CAST fires), the rest go to the bottom. The rate is Forge's, named in the record; this model has no blockers.",
@@ -103,7 +104,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN FIRES ONLY ON THE DEATHS THIS MODEL PRODUCES. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance, Vraan and Vein Ripper key on a creature DYING, and a death happens here in three places and nowhere else: a free sacrifice outlet converting tokens (`model_sacrifice`), a one-turn copy leaving at the end step, and the per-turn rate read off a Forge run (`model_deaths`). No blockers and no removal, so a deck with neither channel on has no deaths and the contribution is ABSENT, not zero; a deck whose kill runs through them is understated by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "ac1f8a6f777f",
+    "model_version": "75ea059969f2",
     "pilot_policy": {
       "rules": [
         "sac-pref"
@@ -111,30 +112,31 @@
       "sha": "5a8d962f81ed"
     },
     "seed": 42,
-    "targets_sha256": "75f76ed9741562bf66752cc46457eba11ce89225c7b18c6eb80500ea846f3422"
+    "targets_sha256": "6cbbc4c5995e462c1e784691b82b6b86f747f0abc04c8a0d72f647239f18c914",
+    "treasure_sources_not_modelled": []
   },
   "metrics": {
     "combat": {
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
         "1": 0.0,
-        "10": 0.838,
+        "10": 0.852,
         "2": 0.0,
         "3": 0.0,
         "4": 0.0,
-        "5": 0.001,
-        "6": 0.028,
-        "7": 0.193,
-        "8": 0.463,
-        "9": 0.673
+        "5": 0.002,
+        "6": 0.039,
+        "7": 0.22,
+        "8": 0.489,
+        "9": 0.695
       },
       "kill_turn_histogram": {
-        "10": 1642,
-        "5": 10,
-        "6": 268,
-        "7": 1656,
-        "8": 2694,
-        "9": 2107
+        "10": 1568,
+        "5": 23,
+        "6": 370,
+        "7": 1810,
+        "8": 2690,
+        "9": 2057
       },
       "mean_board_power_by_turn": {
         "1": 0.233,
@@ -150,17 +152,17 @@
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 18.999,
+        "10": 22.457,
         "2": 0.246,
         "3": 1.232,
-        "4": 2.913,
-        "5": 4.566,
-        "6": 6.603,
-        "7": 8.509,
-        "8": 11.196,
-        "9": 14.185
+        "4": 2.943,
+        "5": 4.685,
+        "6": 6.948,
+        "7": 9.226,
+        "8": 12.527,
+        "9": 16.322
       },
-      "mean_kill_turn": 8.378,
+      "mean_kill_turn": 8.302,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -174,7 +176,7 @@
         "9": 0.0
       },
       "median_kill_turn": 8,
-      "no_kill_by_max_turn_rate": 0.162
+      "no_kill_by_max_turn_rate": 0.148
     },
     "commander": {
       "cast_by_turn_6_rate": 0.677,
@@ -195,52 +197,52 @@
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 7.272,
+        "10": 7.959,
         "2": 0.0,
         "3": 0.271,
-        "4": 0.643,
-        "5": 1.119,
-        "6": 1.728,
-        "7": 2.576,
-        "8": 3.799,
-        "9": 4.785
+        "4": 0.646,
+        "5": 1.131,
+        "6": 1.764,
+        "7": 2.666,
+        "8": 4.003,
+        "9": 5.104
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 2.487,
+        "10": 2.856,
         "2": 0.0,
         "3": 0.271,
-        "4": 0.372,
-        "5": 0.476,
-        "6": 0.609,
-        "7": 0.848,
-        "8": 1.223,
-        "9": 0.986
+        "4": 0.376,
+        "5": 0.485,
+        "6": 0.633,
+        "7": 0.902,
+        "8": 1.337,
+        "9": 1.101
       },
       "share_of_games_draining_by_turn_10": 0.734
     },
     "interaction_castable_by_turn": {
       "1": 0.054,
-      "10": 0.61,
+      "10": 0.609,
       "2": 0.027,
-      "3": 0.077,
-      "4": 0.119,
+      "3": 0.075,
+      "4": 0.118,
       "5": 0.188,
       "6": 0.273,
       "7": 0.38,
       "8": 0.463,
-      "9": 0.538
+      "9": 0.537
     },
     "interaction_in_hand_by_turn": {
-      "1": 0.736,
+      "1": 0.709,
       "10": 0.88,
-      "2": 0.786,
-      "3": 0.828,
-      "4": 0.859,
-      "5": 0.882,
-      "6": 0.894,
-      "7": 0.894,
-      "8": 0.891,
+      "2": 0.761,
+      "3": 0.808,
+      "4": 0.844,
+      "5": 0.872,
+      "6": 0.889,
+      "7": 0.892,
+      "8": 0.89,
       "9": 0.888
     },
     "iterations": 10000,
@@ -428,6 +430,32 @@
         "mean_turn": 4.027,
         "mean_turn_assisted": 3.776
       }
-    ]
+    ],
+    "treasure": {
+      "engine_online_rate_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      },
+      "mean_treasures_in_hoard_by_turn": {
+        "1": 0.0,
+        "10": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0
+      }
+    }
   }
 }

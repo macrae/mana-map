@@ -81,6 +81,8 @@ from manamap.pilot.goldfish_profiles import (
     sac_outlet_profile,
     subtypes_of,
     token_doubler,
+    death_trigger_doubler,
+    life_loss_doubler,
     counter_mod,
     damage_bonus,
     damage_source,
@@ -209,6 +211,10 @@ def classify(card, pool=None):
         "event": event_payoffs(card),
         "death": death_profile(card),
         "token_doubler": token_doubler(card),
+        # Teysa Karlov / Drivnod: every death trigger of ours fires once more (2026-11-11).
+        "death_trigger_doubler": death_trigger_doubler(card),
+        # Bloodletter of Aclazotz: an opponent's life loss on our turn, doubled (2026-11-11).
+        "life_loss_doubler": life_loss_doubler(card),
         # Hardened Scales / Lae'zel (+N) and Doubling Season (xN) on every
         # counter event on a creature you control (2026-10-11).
         "counter_mod": counter_mod(card),

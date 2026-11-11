@@ -510,8 +510,11 @@ def test_an_unread_replacement_on_a_counted_resource_is_partial():
                 "power": "2", "toughness": "2", "mana_cost": "{2}{B}", "cmc": 3}
         return mc.card_state(card, {"model_combat": True, "model_draw": True})
 
-    assert state("Bloodletter of Aclazotz")["state"] == "partial"
+    # A life-gain doubler no reader consumes (Bloodletter was the example until its
+    # life-loss doubler was read on 2026-11-11; it is SEEN now, below).
+    assert state("Boon Reflection")["state"] == "partial"
     # Read now, so no longer partial.
+    assert state("Bloodletter of Aclazotz")["state"] == "seen"
     assert state("Torbran, Thane of Red Fell")["state"] == "seen"
     assert state("Lae'zel, Vlaakith's Champion")["state"] == "seen"
     # A redirect of a non-counted thing is not a gap in this model.
