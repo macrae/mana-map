@@ -1117,6 +1117,11 @@ def add_pilot_parser(subparsers):
                                   "before four hours are spent finding out")
             cmd.add_argument("--anyway", action="store_true",
                              help="run an underpowered --detect as a screen rather than a test")
+            cmd.add_argument("--primary", default=None, metavar="FIGURE",
+                             help="PRE-REGISTER the one figure permitted a verdict (default "
+                                  "win_rate; or a per-game row such as life_removed_total). "
+                                  "Written into the record's design before any game is "
+                                  "played; every other row is descriptive")
             cmd.add_argument("--looks", type=int, default=1, metavar="K",
                              help="a group-sequential design with K equally spaced looks "
                                   "(1-4, O'Brien-Fleming): each look is whole rotated jobs "

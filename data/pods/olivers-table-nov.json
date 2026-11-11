@@ -1,0 +1,30 @@
+{
+  "name": "olivers-table-nov",
+  "note": "OLIVER'S TABLE AS IT SAT ON 2026-11-10 (captain's log goblin-storm 004-005, sharknado 008): four players -- Sean, Oliver, Tom, Ryan -- an optimized bracket-3 table aiming to win around turn four, by the pilot's notes. Built 2026-11-11 for edgar-vampires' threat-v1 A/B, whose pre-registered primary is forge.life_removed_total; the comparison is PAIRED (same seeds, same table), so the table's own null is not what the verdict reads. Every seat is an EDHREC average list standing in for a real deck: Oliver brought Balin and Krenko (Krenko seated, game 3's killer); Tom's deck is now confirmed as Purphoros (purphoros-pingers, which owned olivers-table in its first run, 25 of 40 against sharknado v2.0.0); Ryan brought Tiny Bones, which has no seat, so teval-graveyard -- his bracket-4 deck at this table on 2026-10-20 -- stands in. NEVER PLAYED in simulation until the edgar A/A; `pods olivers-table-nov --calibration` after.",
+  "seats": [
+    {
+      "slug": "krenko-tokens",
+      "archetype": "mono-red goblin tokens and pings",
+      "bracket": 4,
+      "note": "Oliver, 2026-11-10 game 3: Krenko landed, went unanswered, and dealt Sean 30-plus in one turn (sharknado 008). The EDHREC average stands in for his list; its bracket is the average list's floor.",
+      "engine": ["Goblin Bombardment", "Goblin Chieftain", "Goblin Warchief", "Impact Tremors", "Muxus, Goblin Grandee", "Siege-Gang Commander", "Skirk Prospector"],
+      "engine_why": "data/opponents/krenko-tokens/NOTES.md: Krenko doubles goblins each activation, then pings and an alpha strike; Bombardment and Skirk Prospector are the outlets, Impact Tremors the ping, the lords the swing. Read off the list before any audit named them."
+    },
+    {
+      "slug": "purphoros-pingers",
+      "archetype": "mono-red ping / non-combat damage",
+      "bracket": 3,
+      "note": "Tom, confirmed on Purphoros 2026-11-10 (goblin-storm 004-005: turn-one Sol Ring, turn-two Purphoros). The EDHREC average stands in for his list.",
+      "engine": ["Goblin Bombardment", "Hordeling Outburst", "Impact Tremors", "Krenko, Mob Boss", "Mogg War Marshal", "Siege-Gang Commander"],
+      "engine_why": "data/opponents/purphoros-pingers/NOTES.md: every creature entering is 2 to each opponent; tokens are burn. Same engine list as olivers-table's seat. Read off the list before any audit named them."
+    },
+    {
+      "slug": "teval-graveyard",
+      "archetype": "sultai self-mill / graveyard value",
+      "bracket": 4,
+      "note": "Ryan's stand-in: he brought Tiny Bones on 2026-11-10, which has no seat (`fetch-opponent` on the pilot's word); Teval is his bracket-4 deck at this table on 2026-10-20.",
+      "engine": ["Eternal Witness", "Gravecrawler", "Hedron Crab", "Life from the Loam", "Reanimate", "Stitcher's Supplier"],
+      "engine_why": "data/opponents/teval-graveyard/NOTES.md, as in olivers-table. Read off the list before any audit named them."
+    }
+  ]
+}

@@ -39,6 +39,10 @@ from manamap import config
 #: The tracked source of truth. Anchored on `config.DATA_DIR`, which is `__file__`-anchored,
 #: so the answer does not depend on the process CWD — the second of the three lies above.
 OVERRIDE_DIR = config.DATA_DIR / "forge_overrides" / "cards"
+#: WHOLE SCRIPTS FOR CARDS THE ENGINE DOES NOT SHIP (2026-11-11; README beside them): the
+#: installed Forge predates Reality Fracture, and two Edgar cards had no script. Added to
+#: the zip as new entries; fingerprinted with the overrides; refused if the engine ships one.
+NEW_CARDS_DIR = config.DATA_DIR / "forge_overrides" / "new_cards"
 
 #: The engine's card scripts, and the pristine copy every install rebuilds from.
 CARDSFOLDER = config.FORGE_HOME / "res" / "cardsfolder" / "cardsfolder.zip"
@@ -88,10 +92,16 @@ def _digest(pairs):
 
 def _override_files():
     """The tracked override scripts as `(letter/name.txt, bytes)`."""
-    if not OVERRIDE_DIR.is_dir():
-        return []
-    return [(p.relative_to(OVERRIDE_DIR).as_posix(), p.read_bytes())
-            for p in sorted(OVERRIDE_DIR.rglob("*.txt"))]
+    return [(p.relative_to(d).as_posix(), p.read_bytes())
+            for d in (OVERRIDE_DIR, NEW_CARDS_DIR) if d.is_dir()
+            for p in sorted(d.rglob("*.txt"))]
+
+
+def _new_card_names():
+    """The relative paths under `NEW_CARDS_DIR` — scripts with no shipped original."""
+    if not NEW_CARDS_DIR.is_dir():
+        return set()
+    return {p.relative_to(NEW_CARDS_DIR).as_posix() for p in NEW_CARDS_DIR.rglob("*.txt")}
 
 
 def declared():
@@ -285,10 +295,19 @@ def install():
         for entry in src.namelist():
             if entry.endswith(".txt"):
                 by_base.setdefault(entry.rsplit("/", 1)[-1], entry)
-        replace = {}
+        replace, added = {}, {}
+        new_names = _new_card_names()
         for name, blob in files:
             base = pathlib.PurePosixPath(name).name
             entry = by_base.get(base)
+            if name in new_names:
+                if entry is not None:
+                    raise EngineMismatch(
+                        f"{name} is a NEW card script, but the engine ships {entry}. A card "
+                        f"the engine ships is overridden under {OVERRIDE_DIR.name}/, derived "
+                        f"from its shipped script, never replaced wholesale.")
+                added[name] = blob
+                continue
             if entry is None:
                 raise EngineMismatch(
                     f"{name} overrides a card the engine does not ship ({base}). An "
@@ -300,9 +319,11 @@ def install():
             for info in src.infolist():
                 blob = replace.get(info.filename)
                 out.writestr(info, blob if blob is not None else src.read(info.filename))
+            for name, blob in sorted(added.items()):
+                out.writestr(name, blob)
     shutil.move(str(tmp), str(CARDSFOLDER))
     _ENGINE_MEMO.clear()                # the signature moves too; say it outright
-    return len(replace)
+    return len(replace) + len(added)
 
 
 def uninstall():

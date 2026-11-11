@@ -1,0 +1,119 @@
+{
+  "pod": "olivers-table-nov",
+  "at": "2026-11-11",
+  "since": "2026-10-21",
+  "harness": {
+    "overrides": "b7279fc6ab97",
+    "telemetry": ""
+  },
+  "run": null,
+  "definition": {
+    "static": [
+      "no nonland card in the seat's list is `AI:RemoveDeck:All` after the repo's overrides",
+      "every card in the list has a Forge script"
+    ],
+    "dynamic": [
+      "the commander resolved in at least 80% of the games the seat played",
+      "no card the pod names as the seat's `engine` (our seat: the deck's own engine set) was never cast or held while castable",
+      "our seat: wheels fired with a commander out at least 90% of the time, and at least one wheel a game (a wheel deck only)"
+    ],
+    "floors": "a card named in the seat's hints as a floor is reported and never fails the seat"
+  },
+  "seats": [
+    {
+      "slug": "edgar-vampires",
+      "ours": true,
+      "static": {
+        "cards": 97,
+        "nonland": 65,
+        "flagged": [],
+        "unfound": [],
+        "gated": {
+          "Olivia's Wrath": [
+            "NeedsToPlay:Creature.Vampire+YouCtrl"
+          ]
+        },
+        "floors": [],
+        "ungated_wheels": [],
+        "source": "cards.json",
+        "clean": true
+      },
+      "dynamic": null,
+      "verdict": "PILOTABLE",
+      "why": []
+    },
+    {
+      "slug": "krenko-tokens",
+      "ours": false,
+      "static": {
+        "cards": 72,
+        "nonland": 66,
+        "flagged": [],
+        "unfound": [],
+        "gated": {
+          "Goblin Recruiter": [
+            "NeedsToPlayVar:Z GE4"
+          ]
+        },
+        "floors": [],
+        "ungated_wheels": [],
+        "source": "corpus",
+        "clean": true
+      },
+      "dynamic": null,
+      "verdict": "PILOTABLE",
+      "why": []
+    },
+    {
+      "slug": "purphoros-pingers",
+      "ours": false,
+      "static": {
+        "cards": 73,
+        "nonland": 65,
+        "flagged": [],
+        "unfound": [],
+        "gated": {
+          "Goblin Recruiter": [
+            "NeedsToPlayVar:Z GE4"
+          ]
+        },
+        "floors": [
+          "Grinning Ignus",
+          "Firecat Blitz"
+        ],
+        "ungated_wheels": [],
+        "source": "corpus",
+        "clean": true
+      },
+      "dynamic": null,
+      "verdict": "PILOTABLE",
+      "why": []
+    },
+    {
+      "slug": "teval-graveyard",
+      "ours": false,
+      "static": {
+        "cards": 91,
+        "nonland": 64,
+        "flagged": [],
+        "unfound": [],
+        "gated": {},
+        "floors": [
+          "Tortured Existence"
+        ],
+        "ungated_wheels": [],
+        "source": "corpus",
+        "clean": true
+      },
+      "dynamic": null,
+      "verdict": "PILOTABLE",
+      "why": []
+    }
+  ],
+  "verdict": "PILOTABLE",
+  "limits": [
+    "STATIC reads the installed scripts: a card that is castable but that the AI holds for its own reasons shows only in the DYNAMIC half, which needs a run.",
+    "DYNAMIC held counts are lands left untapped and a commander gate open (colours and rocks ignored); `raw_only` names what the lands-only count alone would call held.",
+    "An opponent seat is an EDHREC average list unless its decklist was pasted over."
+  ]
+}

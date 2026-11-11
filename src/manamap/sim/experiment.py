@@ -268,6 +268,13 @@ SKEWED = ("commander_damage_max_on_one_defender", "commander_damage_dealt_total"
 # zero by chance, and a reader who treats them all as tests will find a result
 # every time. This is a pre-registration, not a limitation.
 PRIMARY_ENDPOINT = "win_rate"
+#: A PRE-REGISTERED PRIMARY other than the win rate (2026-11-11, `--primary`). The pilot
+#: chose forge.life_removed_total for Edgar's threat-v1 A/B before the run: continuous, so
+#: it resolves a smaller difference at the same N than a win rate. It is chosen on the
+#: command line and written into `design.primary`, so it is fixed before any game is played
+#: and `--analyze` re-reads it from the record. Sequential looks test a proportion and stay
+#: win-rate only.
+PRIMARY_CHOICES = ("win_rate",) + PER_GAME_ROWS
 
 
 def _per_game_values(games, slug, name):
@@ -285,7 +292,7 @@ def _per_game_values(games, slug, name):
     return vals if vals else None
 
 
-def delta(analysis_a, analysis_b, slug, games_a=None, games_b=None):
+def delta(analysis_a, analysis_b, slug, games_a=None, games_b=None, primary=PRIMARY_ENDPOINT):
     """Per-figure a/b/diff with an interval ON THE DIFFERENCE, plus power.
 
     WHAT THIS REPLACED, AND WHY. The previous version compared eleven figures and
@@ -395,11 +402,12 @@ def delta(analysis_a, analysis_b, slug, games_a=None, games_b=None):
                        "Newcombe score interval on the difference excluding zero"),
         }
 
-    out["reading"] = _reading(out)
+    out["primary"] = primary
+    out["reading"] = _reading(out, primary)
     return out
 
 
-def _reading(out):
+def _reading(out, primary=PRIMARY_ENDPOINT):
     """One sentence, and it must not commit the fallacy it replaced.
 
     Two clauses on purpose. The first says what the interval on the difference
@@ -407,6 +415,19 @@ def _reading(out):
     found nothing" and "we could not have found anything" are different
     statements and only one of them is about the deck.
     """
+    if primary != PRIMARY_ENDPOINT:
+        r = out.get(primary) or {}
+        ci = r.get("ci95_diff")
+        if not ci:
+            return f"no interval available for the pre-registered primary, {primary}"
+        med = r.get("median_ci95_diff")
+        tail = (f"; on the MEDIAN the interval is [{med[0]:+.3f}, {med[1]:+.3f}]"
+                if med else "")
+        return (f"PRIMARY {primary} (pre-registered): the 95% interval on the difference is "
+                f"[{ci[0]:+.3f}, {ci[1]:+.3f}] and "
+                + ("EXCLUDES zero — a real difference at this N" if r.get("excludes_zero")
+                   else "CONTAINS zero — no difference this N can resolve")
+                + f"{tail}. Every other row, the win rate included, is descriptive.")
     w = out.get(PRIMARY_ENDPOINT) or {}
     ci = w.get("ci95_diff")
     power = out.get("power") or {}
@@ -584,7 +605,12 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         clock=SIM_GAME_CLOCK_SECONDS, seed=None, profile=None, dry_run=False,
         vs_profile=None, detect=None, anyway=False, looks=1, until_mde=None,
         aa=False, resume=False, boundary="obf", profile_b=None, pod_name=None,
-        seat_audit=None):
+        seat_audit=None, primary=PRIMARY_ENDPOINT):
+    if primary not in PRIMARY_CHOICES:
+        raise SystemExit(f"--primary {primary!r}: one of {', '.join(PRIMARY_CHOICES)}")
+    if primary != PRIMARY_ENDPOINT and looks > 1:
+        raise SystemExit("--looks tests a proportion at each boundary; a sequential design "
+                         "keeps the win rate as its primary. Use --looks 1 with --primary.")
     if not opponents:
         raise SystemExit("experiment needs at least one opponent: --vs <slug> (repeatable)")
     import os
@@ -800,7 +826,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         doc = _document(slug, eid, a, b, opponents, opp_shas, games, seed, seeds_all,
                         profiles, profiles_b, clock, wall, ov, bad, analysis_a, analysis_b,
                         games_a, games_b, looks, boundary, bounds, schedule, until_mde,
-                        jobs, aa, looks_out, status, pod_name)
+                        jobs, aa, looks_out, status, pod_name, primary)
         doc["telemetry"] = tl        # the formatter both arms flew under, beside card_overrides
         doc["seat_audit"] = seat_audit   # the table's pilotability verdict it ran under
         out_dir.mkdir(exist_ok=True)
@@ -813,8 +839,8 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
 def _document(slug, eid, a, b, opponents, opp_shas, games, seed, seeds_all, profiles,
               profiles_b, clock, wall, ov, bad, analysis_a, analysis_b, games_a, games_b,
               looks, boundary, bounds, schedule, until_mde, jobs, aa, looks_out, status,
-              pod_name):
-    d = delta(analysis_a, analysis_b, slug, games_a, games_b)
+              pod_name, primary=PRIMARY_ENDPOINT):
+    d = delta(analysis_a, analysis_b, slug, games_a, games_b, primary=primary)
     last = looks_out[-1]
     if status in ("stopped_efficacy", "stopped_futility"):
         ci = last["ci95_diff_at_boundary"]
@@ -841,7 +867,7 @@ def _document(slug, eid, a, b, opponents, opp_shas, games, seed, seeds_all, prof
         "status": status,
         "design": {"looks": looks, "boundary": boundary, "alpha": 0.05,
                    "critical": bounds, "schedule": schedule, "until_mde": until_mde,
-                   "jobs_per_wave": jobs, "primary": PRIMARY_ENDPOINT, "aa": aa,
+                   "jobs_per_wave": jobs, "primary": primary, "aa": aa,
                    "rule": ("each look tests the primary at its own boundary z on the "
                             "cumulative decided games of both arms; a look is whole "
                             "rotated jobs from both arms, never a partial job")},
@@ -960,7 +986,8 @@ def analyze(slug, experiment_id_or_path):
         doc["arms"][letter]["games_detail"] = games
     doc["delta"] = delta(doc["arms"]["a"]["analysis"], doc["arms"]["b"]["analysis"], slug,
                          doc["arms"]["a"].get("games_detail"),
-                         doc["arms"]["b"].get("games_detail"))
+                         doc["arms"]["b"].get("games_detail"),
+                         primary=(doc.get("design") or {}).get("primary") or PRIMARY_ENDPOINT)
     path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n")
     return path, doc
 
@@ -995,6 +1022,8 @@ def _print_result(slug, doc, path):
         r = d[k]
         if k == PRIMARY_ENDPOINT or r["a"] is not None or r["b"] is not None:
             label = "win rate" if k == PRIMARY_ENDPOINT else k
+            if k == d.get("primary", PRIMARY_ENDPOINT):
+                label = f"{label} [PRIMARY]"
             print(f"  {label:<40} A {_num(r['a'])}   B {_num(r['b'])}   "
                   f"Δ {_num(r['diff'])}   95% {_band(r)}")
     print(f"  → {d['reading']}")
@@ -1073,7 +1102,8 @@ def main(args):
                     resume=getattr(args, "resume", False),
                     boundary=getattr(args, "boundary", None) or "obf",
                     profile_b=getattr(args, "profile_b", None),
-                    pod_name=getattr(args, "pod", None), seat_audit=_sa)
+                    pod_name=getattr(args, "pod", None), seat_audit=_sa,
+                    primary=getattr(args, "primary", None) or PRIMARY_ENDPOINT)
     if getattr(args, "dry_run", False):
         dz = doc.get("design") or {}
         print(f"would run {doc['games_per_arm']} games/arm, seed {doc['seed']} → {path.name}")
