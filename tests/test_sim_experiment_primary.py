@@ -33,6 +33,14 @@ def test_a_sequential_design_refuses_a_continuous_primary():
                        looks=2, aa=True, dry_run=True, primary="life_removed_total")
 
 
+def test_a_win_rate_boundary_never_stops_a_continuous_primary():
+    """The 2026-11-12 A/A read STOPPED (efficacy) off the win rate it had not
+    pre-registered. Proved by re-introducing the bug: drop _decide's primary guard."""
+    look = {"excludes_zero": True, "futility_excluded": False}
+    assert experiment._decide(look, 0, 1, "life_removed_total") == ("complete", "complete")
+    assert experiment._decide(look, 0, 1) == ("stop: efficacy", "stopped_efficacy")
+
+
 def test_an_unknown_primary_is_refused():
     with pytest.raises(SystemExit, match="--primary"):
         experiment.run("edgar-vampires", "working", "working", ["krenko-tokens"],

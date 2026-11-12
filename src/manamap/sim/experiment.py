@@ -813,14 +813,7 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
                    "seeds": {"a": got["a"]["seeds"], "b": got["b"]["seeds"]},
                    "seat_orders": {"a": got["a"]["orders"], "b": got["b"]["orders"]},
                    "planned_n": schedule[k]})
-        if lk["excludes_zero"]:
-            lk["decision"] = "stop: efficacy"; status = "stopped_efficacy"
-        elif lk["futility_excluded"]:
-            lk["decision"] = "stop: futility"; status = "stopped_futility"
-        elif k + 1 == looks:
-            lk["decision"] = "complete"; status = "complete"
-        else:
-            lk["decision"] = "continue"
+        lk["decision"], status = _decide(lk, k, looks, primary)
         looks_out.append(lk)
         wall = round(wall_before + time.time() - t0, 1)
         doc = _document(slug, eid, a, b, opponents, opp_shas, games, seed, seeds_all,
@@ -834,6 +827,25 @@ def run(slug, ref_a, ref_b, opponents, games=SIM_DEFAULT_GAMES, jobs=None,
         if status != "running":
             break
     return path, doc
+
+
+def _decide(lk, k, looks, primary=PRIMARY_ENDPOINT):
+    """One look's decision and the run's status after it.
+
+    The sequential boundary tests the WIN RATE. A continuous primary is fixed-N (run()
+    refuses looks > 1), so there the win-rate boundary is a descriptive row and must
+    neither stop the run nor write its reading: the 2026-11-12 Edgar A/A, pre-registered
+    on life_removed_total, read "STOPPED (efficacy)" off a win-rate interval.
+    """
+    if primary != PRIMARY_ENDPOINT:
+        return "complete", "complete"
+    if lk["excludes_zero"]:
+        return "stop: efficacy", "stopped_efficacy"
+    if lk["futility_excluded"]:
+        return "stop: futility", "stopped_futility"
+    if k + 1 == looks:
+        return "complete", "complete"
+    return "continue", "running"
 
 
 def _document(slug, eid, a, b, opponents, opp_shas, games, seed, seeds_all, profiles,
