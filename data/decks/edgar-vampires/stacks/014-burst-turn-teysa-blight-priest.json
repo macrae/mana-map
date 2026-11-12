@@ -1,0 +1,448 @@
+{
+  "id": "014",
+  "slug": "burst-turn-teysa-blight-priest",
+  "deck": "edgar-vampires",
+  "branch": "threat-v1",
+  "title": "The burst turn: one sacrificed Vampire token with Teysa, Zulaport, Cruel Celebrant and Marauding Blight-Priest out — how much does each opponent lose?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Teysa Karlov",
+        "Zulaport Cutthroat",
+        "Cruel Celebrant",
+        "Marauding Blight-Priest",
+        "Ashnod's Altar",
+        "Vampire token (1/1) — already sacrificed to pay the cost of Ashnod's Altar's mana ability",
+        "Vampire token (1/1) x4"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "mana_available": "{C}{C} in your mana pool from Ashnod's Altar",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Zulaport Cutthroat triggered ability",
+        "controller": "you",
+        "note": "a Vampire token you control died"
+      },
+      {
+        "pos": 1,
+        "object": "Zulaport Cutthroat triggered ability (Teysa Karlov's additional trigger)",
+        "controller": "you",
+        "note": "same death"
+      },
+      {
+        "pos": 2,
+        "object": "Cruel Celebrant triggered ability",
+        "controller": "you",
+        "note": "same death"
+      },
+      {
+        "pos": 3,
+        "object": "Cruel Celebrant triggered ability (Teysa Karlov's additional trigger)",
+        "controller": "you",
+        "note": "same death"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "All four cards are on branch threat-v1 of edgar-vampires (data/decks/edgar-vampires/branches/threat-v1/cards.json). It is your main phase; no opponent responds. Ashnod's Altar's ability is a mana ability. Marauding Blight-Priest reads 'Whenever you gain life, each opponent loses 1 life.' Teysa Karlov reads 'If a creature dying causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time.'",
+      "assumptions": "The pod is three opponents at 40 life each. The question is the per-death total; repeating the sacrifice four more times is arithmetic, not part of the rules question."
+    },
+    "question": "Resolve everything this ONE death puts on the stack, including any Marauding Blight-Priest triggers the life gain causes. Does Teysa Karlov double Blight-Priest's trigger (it triggers on life gain, not on a death)? State exactly how much life each opponent loses and how much you gain from this one death, and therefore how many such deaths take a 40-life opponent to 0."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Before the stack shown: you activated Ashnod's Altar, sacrificing one Vampire token as its cost ({C}{C} now in your pool). The token died.",
+        "effect": "Ashnod's Altar's ability ('Sacrifice a creature: Add {C}{C}.') is a mana ability: no target, adds mana, not a loyalty ability. An activated mana ability does not go on the stack; it resolves immediately after it is activated, so no one could respond to it. Sacrificing moved the token from the battlefield to the graveyard, which is 'dying'. Body count entering the resolution (scenario-facts): Teysa Karlov, Zulaport Cutthroat, Cruel Celebrant, Marauding Blight-Priest and four Vampire tokens; the sacrificed token is not on the battlefield. Of the permanents you control, only Zulaport Cutthroat and Cruel Celebrant have an ability that triggers on a creature dying. Teysa Karlov's first ability is a static ability that makes a triggered ability trigger additional times (CR 603.2d, applied in step 2); it is not a replacement effect and is not itself a trigger. Blight-Priest triggers on life gain, the Altar's is an activated ability, and the tokens have no abilities except the vigilance and lifelink Teysa grants.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "The death triggers Zulaport Cutthroat and Cruel Celebrant. Teysa Karlov makes each one trigger an additional time.",
+        "effect": "Zulaport Cutthroat's trigger condition is 'Whenever this creature or another creature you control dies' and Cruel Celebrant's is 'Whenever this creature or another creature or planeswalker you control dies'. A Vampire token you control dying matches both. A creature dying caused each to trigger, so Teysa Karlov's 'If a creature dying causes a triggered ability of a permanent you control to trigger, that ability triggers an additional time' applies: you determine how many times each ability triggers (twice), and it triggers that many times. That makes four triggered abilities. Teysa does not copy anything; under 603.2d the ability itself triggers twice. The official Teysa ruling (2019-01-25) agrees ('doesn't copy the triggered ability; it just causes the ability to trigger twice'). The triggers happen before the token ceases to exist.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.2d",
+            "quote": "An ability may state that a triggered ability triggers additional times. In this case, rather than simply determining that such an ability has triggered, determine how many times it should trigger, then that ability triggers that many times."
+          },
+          {
+            "rule": "111.7",
+            "quote": "if a token changes zones, applicable triggered abilities will trigger before the token ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "The four triggers go on the stack the next time a player would receive priority, in the order you choose: Zulaport x2 at the bottom (pos 0-1), Cruel Celebrant x2 on top (pos 2-3).",
+        "effect": "You control all four triggers, so you choose their order. Before anyone receives priority the game first checks state-based actions: the token, now in the graveyard, ceases to exist, and no player is at 0 or less. Then the waiting triggers go on the stack in the chosen order (matching the scenario's stack), and you receive priority.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "each player, in APNAP order, puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          },
+          {
+            "rule": "704.5d",
+            "quote": "If a token is in a zone other than the battlefield, it ceases to exist."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "All players pass in succession. The top object resolves: Cruel Celebrant's trigger (Teysa's additional instance, pos 3).",
+        "effect": "Cruel Celebrant's instructions in written order ('each opponent loses 1 life and you gain 1 life'): each opponent loses 1 life (40 -> 39, 39, 39), then you gain 1 life (+1).",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Your life gain triggers Marauding Blight-Priest ONCE. Teysa does NOT make it trigger an additional time.",
+        "effect": "Marauding Blight-Priest's trigger condition is 'Whenever you gain life', which the CR treats as 'Whenever a source causes [a player] to gain life'. An ability triggers when a game event matches its trigger event (603.2). The event that matches Blight-Priest's trigger event is the life gain caused by Cruel Celebrant's resolving ability, not a creature dying. The creature's death matched Celebrant's trigger event and caused Celebrant's ability to trigger; the life gain is a separate, later event that occurs when that ability resolves. Teysa Karlov's condition is 'If a creature dying causes a triggered ability ... to trigger', and the event that caused Blight-Priest's ability to trigger was a life gain, so the condition is not met and Blight-Priest triggers exactly once. One life-gain event means one trigger; the official Blight-Priest ruling (2024-11-08) agrees ('triggers just once for each life-gaining event'). After the state-based-action check (no player at 0 or less), the trigger goes on top of the stack, above the three remaining death triggers.",
+        "citations": [
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "119.9",
+            "quote": "Some triggered abilities are written, “Whenever [a player] gains life, . . . .” Such abilities are treated as though they are written, “Whenever a source causes [a player] to gain life, . . . .”"
+          },
+          {
+            "rule": "405.2",
+            "quote": "Each time an object is put on the stack, it’s put on top of all objects already there."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "All pass. Blight-Priest trigger #1 resolves.",
+        "effect": "Each opponent loses 1 life (39 -> 38, 38, 38). No life is gained, so nothing new triggers. State-based-action check: no player is at 0 or less. Priority returns to you.",
+        "citations": [
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "All pass. Cruel Celebrant's original trigger (pos 2) resolves, then the Blight-Priest trigger it causes (#2) goes on top and resolves after another round of passes.",
+        "effect": "Celebrant: each opponent 38 -> 37, and you gain 1 (+2 total). That life gain is a source causing you to gain life, so Blight-Priest triggers once, for the same reason as in step 5 (the triggering event is life gain, not a death, so Teysa does not apply). It goes on top and resolves first: each opponent 37 -> 36. A state-based-action check runs before each priority and finds no player at 0 or less.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.9",
+            "quote": "Such abilities are treated as though they are written, “Whenever a source causes [a player] to gain life, . . . .”"
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "All pass. Zulaport Cutthroat's trigger (Teysa's additional instance, pos 1) resolves, then Blight-Priest trigger #3 goes on top and resolves after another round of passes.",
+        "effect": "Zulaport: each opponent 36 -> 35, and you gain 1 (+3 total). Blight-Priest triggers once (as in step 5), goes on top, and resolves: each opponent 35 -> 34. State-based-action checks find nothing.",
+        "citations": [
+          {
+            "rule": "608.2c",
+            "quote": "The controller of the spell or ability follows its instructions in the order written."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "All pass. Zulaport Cutthroat's original trigger (pos 0) resolves, then Blight-Priest trigger #4 goes on top and resolves after another round of passes. The stack is empty.",
+        "effect": "Zulaport: each opponent 34 -> 33, and you gain 1 (+4 total). Blight-Priest: each opponent 33 -> 32. State-based-action check: each opponent is at 32, so no one loses. You hold priority in your main phase with an empty stack. The {C}{C} from the Altar is still in your pool, because a mana pool empties only at the end of a step or phase and this all happened within one main phase.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Arithmetic: how many deaths kill a 40-life opponent.",
+        "effect": "One death with this board means 4 drain triggers (Zulaport x2 and Celebrant x2) plus 4 Blight-Priest triggers (one per life-gain event) = 8 life lost PER OPPONENT. That is 24 across the pod (3 x 8), and you gain 4. 40 / 8 = 5 deaths take each opponent from 40 to exactly 0. The 5th death leaves each opponent at 0; the next state-based-action check makes all three lose the game simultaneously, and you, the only player still in the game with all opponents gone, win the game immediately. Four Vampire tokens remain, so four more Altar activations make exactly those five deaths with no non-token creature sacrificed. This assumes nothing changes between deaths, which the scenario says is outside the rules question.",
+        "citations": [
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "104.2a",
+            "quote": "A player still in the game wins the game if that player’s opponents have all left the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "One Vampire token death with Teysa Karlov, Zulaport Cutthroat, Cruel Celebrant and Marauding Blight-Priest out: Teysa's static ability makes both death triggers trigger an additional time (4 triggers, CR 603.2d). Each of the four resolutions gains you 1 life, and each gain triggers Blight-Priest exactly once. Teysa does NOT double these: the game event matching Blight-Priest's trigger event is a life gain (CR 603.2, 119.9), not a creature dying, so her condition is not met. Each opponent loses 8 (4 from drains + 4 from Blight-Priest), 40 -> 32. That is 24 across the pod, and you gain 4. Five such deaths take each 40-life opponent to exactly 0; all three lose at the next state-based-action check (704.5a) and you win (104.2a).",
+      "you": {
+        "life_change": "+4 (starting life not stated)",
+        "battlefield": [
+          "Teysa Karlov",
+          "Zulaport Cutthroat",
+          "Cruel Celebrant",
+          "Marauding Blight-Priest",
+          "Ashnod's Altar",
+          "Vampire token (1/1) x4"
+        ],
+        "mana_pool": "{C}{C}",
+        "stack": "empty"
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 32,
+          "life_lost": 8
+        },
+        {
+          "seat": "opponent_2",
+          "life": 32,
+          "life_lost": 8
+        },
+        {
+          "seat": "opponent_3",
+          "life": 32,
+          "life_lost": 8
+        }
+      ],
+      "per_death": {
+        "per_opponent_loss": 8,
+        "pod_total_loss": 24,
+        "you_gain": 4,
+        "deaths_to_kill_from_40": 5
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "iterations": 2,
+    "summary": "Round 2. Mechanical gate: validate-stack OK. All 26 quotes were checked against lookup-rule (June 19, 2026) and are verbatim; each supports its step when read against the full rule text. All four round-1 findings are resolved: step 1 cites 605.3b; step 1 calls Teysa a static ability (603.2d) and not a replacement effect; step 5 rests on 603.2 and 119.9, with the backwards Teysa ruling removed; step 7 quotes the on-topic sentence of 119.9. All three round-1 minors are resolved: the oracle-text trigger quotes match threat-v1 cards.json exactly, 106.4 is cited for the mana pool, and 104.2a is cited for the win. The arithmetic holds: 8 per opponent per death, 24 across the pod (stated separately), +4 for you, 5 deaths from 40 (the sacrificed token plus 4 remaining tokens). No sibling figure is quoted. scenario-facts reports no like-for-like sibling, and none is needed. Card membership: all five cards are in threat-v1. Rulings (rulings.cards present): nothing contradicts a WotC ruling. The quoted Teysa 2019-01-25 'doesn't copy' and Blight-Priest 2024-11-08 'once for each life-gaining event' fragments are accurate. The missing-step audit (trigger placement, SBAs before each priority, priority passes, replacement effects: none apply, APNAP: you control every trigger) found nothing. Two small regressions in citation coverage are recorded under steps 6 and 8 and not counted toward the verdict. The revision dropped round 1's 117.3b (step 5) and 603.3 (step 8), which leaves step 6's 'priority returns to you' uncited. Both claims are true and do not bear on the result.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Verbatim (trailing parenthetical omitted). Classifies Ashnod's Altar's 'Sacrifice a creature: Add {C}{C}.' (oracle matches threat-v1 cards.json) as a mana ability."
+      },
+      {
+        "step": 1,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "ROUND-1 FINDING RESOLVED. Verbatim (trailing '(See rule 405.6c.)' omitted). Now carries the claim that the Altar's ability does not use the stack and resolves immediately after activation, so no one can respond."
+      },
+      {
+        "step": 1,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Verbatim first sentence. Sacrifice moves the token from the battlefield to the graveyard."
+      },
+      {
+        "step": 1,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Verbatim. The sacrificed token 'dies'. ROUND-1 FINDING RESOLVED (603.2d label): step 1 now calls Teysa's first ability 'a static ability that makes a triggered ability trigger additional times (CR 603.2d ...); it is not a replacement effect'. That is correct. Teysa's text uses no 'instead' or 'skip' (614.1) and replaces no event. The body count (4 creatures + 4 tokens; the sacrificed token is not on the battlefield) matches scenario-facts your_board."
+      },
+      {
+        "step": 2,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Verbatim first sentence. ROUND-1 MINOR RESOLVED: the trigger conditions are now quoted as oracle text ('Whenever this creature or another creature you control dies' / 'Whenever this creature or another creature or planeswalker you control dies'), which matches cards.json exactly. Not counted toward the verdict: the claim that a token in the graveyard still matches 'creature you control dies' rests on the leaves-the-battlefield look-back (603.10a), which is not cited. 700.4 and 603.2 make the substance sufficient. Round 1 accepted the same text."
+      },
+      {
+        "step": 2,
+        "rule": "603.2d",
+        "status": "supported",
+        "note": "Verbatim first two sentences. Each death trigger triggers twice, as two instances and not a copy. This agrees with Teysa ruling 2019-01-25 ('Teysa's effect doesn't copy the triggered ability; it just causes the ability to trigger twice'), which the step quotes accurately."
+      },
+      {
+        "step": 2,
+        "rule": "111.7",
+        "status": "supported",
+        "note": "Verbatim fragment of the parenthetical. The triggers happen before the token ceases to exist."
+      },
+      {
+        "step": 3,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Verbatim first sentence."
+      },
+      {
+        "step": 3,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Verbatim fragment. You control all four triggers and order them: Zulaport x2 at pos 0-1, Celebrant x2 at pos 2-3, which matches the scenario stack."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim first sentence. The round-1 phrasing nit is fixed: the step now runs the SBA check first (token ceases to exist), then puts the waiting triggers on the stack, then gives priority. This is the order 704.3 sets."
+      },
+      {
+        "step": 3,
+        "rule": "704.5d",
+        "status": "supported",
+        "note": "Verbatim."
+      },
+      {
+        "step": 4,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Verbatim first sentence. Celebrant's additional instance (pos 3) resolves first."
+      },
+      {
+        "step": 4,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Verbatim first sentence. Each opponent loses 1 (40 -> 39), then you gain 1."
+      },
+      {
+        "step": 4,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim."
+      },
+      {
+        "step": 5,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "ROUND-1 FINDING RESOLVED. Verbatim first sentence. 603.2 now carries the decisive claim. The game event that matches Blight-Priest's trigger event is the life gain that happens when Celebrant's ability resolves, not the creature dying. So Teysa's condition ('a creature dying causes a triggered ability ... to trigger') is not met, and Blight-Priest triggers once. The mis-described Teysa ruling ('an ability that triggers on an event that causes a creature to die') has been removed from the step. No step now cites or paraphrases that ruling. Checked against rulings.cards: no step contradicts any of Teysa's nine 2019-01-25 rulings."
+      },
+      {
+        "step": 5,
+        "rule": "119.9",
+        "status": "supported",
+        "note": "Verbatim first two sentences. They establish that the trigger event is 'a source causes [you] to gain life'. The step quotes the Blight-Priest ruling 2024-11-08 accurately and in context: 'triggers just once for each life-gaining event'. Four separate 1-life resolutions make four separate events, which is consistent with the ruling."
+      },
+      {
+        "step": 5,
+        "rule": "405.2",
+        "status": "supported",
+        "note": "Verbatim second sentence. The Blight-Priest trigger goes on top of the three remaining death triggers."
+      },
+      {
+        "step": 6,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Verbatim fragment. Blight-Priest #1 resolves: 39 -> 38. Not counted toward the verdict, but this is a REGRESSION in coverage: round 1's step 5 cited 117.3b, and the revision dropped it. The step-6 clause 'Priority returns to you' now has no citation anywhere in the artifact. 117.3b ('The active player receives priority after a spell or ability (other than a mana ability) resolves') is the rule. The claim is true and does not affect the result."
+      },
+      {
+        "step": 6,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Verbatim. The SBA check at 38 finds no loss."
+      },
+      {
+        "step": 7,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Verbatim first sentence. Celebrant's original (pos 2) resolves (38 -> 37, +2 total). Blight-Priest #2 goes on top and resolves (37 -> 36)."
+      },
+      {
+        "step": 7,
+        "rule": "119.9",
+        "status": "supported",
+        "note": "ROUND-1 FINDING RESOLVED. The quote is now the second sentence of 119.9, verbatim ('Such abilities are treated as though they are written, \"Whenever a source causes [a player] to gain life, . . . .\"'). It is on topic: it is the trigger event that step 7's 'triggers once, for the same reason as in step 5' relies on. The off-topic 0-life sentence is gone."
+      },
+      {
+        "step": 8,
+        "rule": "608.2c",
+        "status": "supported",
+        "note": "Verbatim first sentence. Zulaport's additional instance: 36 -> 35, +3 total. Blight-Priest #3: 35 -> 34. Not counted toward the verdict, but round 1's step 8 also cited 603.3, and the revision dropped it. 'Goes on top' now rests on step 5's 405.2 by cross-reference ('as in step 5'), which is the same footing round 1 accepted for step 7."
+      },
+      {
+        "step": 9,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim sentence. The stack is empty and you have priority. Both sources are at 32 (34 -> 33 Zulaport, 33 -> 32 Blight-Priest), and you have gained +4."
+      },
+      {
+        "step": 9,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "ROUND-1 MINOR RESOLVED. Verbatim third sentence ('Each player's mana pool empties at the end of each step and phase, and the player is said to lose this mana.'). It supports the claim that {C}{C} is still in your pool, because everything happens within one main phase."
+      },
+      {
+        "step": 10,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Arithmetic re-verified against scenario-facts drain_arithmetic (3 opponents, 40 each, 120 opposing). Per death: 4 drain resolutions + 4 Blight-Priest resolutions = 8 lost PER OPPONENT (40 -> 32). The pod total is stated separately as 24 (3 x 8) and is never conflated with the per-seat figure. You gain 4. 40 / 8 = 5 deaths exactly. The token supply is the already-sacrificed token plus the 4 that remain, which is exactly 5 deaths with no non-token sacrificed. On the 5th death all three seats reach 0 together (each Blight-Priest/drain resolution hits 'each opponent'), and one SBA check removes all three simultaneously (704.3). The step states its assumption (nothing changes between deaths), as the scenario does."
+      },
+      {
+        "step": 10,
+        "rule": "104.2a",
+        "status": "supported",
+        "note": "ROUND-1 MINOR RESOLVED. Verbatim first sentence. With all three opponents gone, you win."
+      }
+    ]
+  }
+}
