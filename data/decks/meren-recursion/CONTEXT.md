@@ -183,7 +183,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Change history
 
 <!-- ctx:gen history -->
-- **V21** (2026-11-10) — in: Grist, Voracious Larva // Grist, the Plague Swarm, Mazirek, Kraul Death Priest, Reassembling Skeleton, Savra, Queen of the Golgari; out: Cankerbloom, Elves of Deep Shadow, Nature's Lore, Persist
+- **V21** (2026-11-12) — in: Grist, Voracious Larva // Grist, the Plague Swarm, Mazirek, Kraul Death Priest, Reassembling Skeleton, Savra, Queen of the Golgari; out: Cankerbloom, Elves of Deep Shadow, Nature's Lore, Persist
 - **V20** (2026-11-09) — in: Karn's Bastion; out: 
 - **V19** (2026-11-09) — in: Formidable Speaker; out: Fauna Shaman
 - **V18** (2026-11-09) — in: Cavalier of Night, Gray Merchant of Asphodel, Jarad, Golgari Lich Lord, Shriekmaw; out: Accursed Marauder, Bitterbloom Bearer, Plaguecrafter, Ravenous Chupacabra
