@@ -99,6 +99,21 @@ def read_log(slug):
     return entries
 
 
+#: Tags that make a result-less entry a NOTE about the deck, not a game (2026-11-12):
+#: edgar 007 is the pilot's statement of what the deck is ("Vampires are the FUEL, not
+#: the engine"); counted as a game it was a night with no cause and a captain's log
+#: "6 of 7 reachable". A result-less entry WITHOUT one of these is still a game — the
+#: pilot logs played games without a result (sharknado 003, 007).
+NOT_A_GAME_TAGS = ("identity",)
+
+
+def is_game(entry):
+    """Is this log entry a played game? ONE PREDICATE, ONE HOME: the cause backfill,
+    the captain's log and the decisions ledger all read it."""
+    return not (entry.get("result") is None
+                and any(t in NOT_A_GAME_TAGS for t in (entry.get("tags") or ())))
+
+
 def decklist_sha256(slug):
     """The decklist as it stands on disk, hashed the way fetch-deck hashes it.
 

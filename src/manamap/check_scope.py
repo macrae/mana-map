@@ -381,8 +381,46 @@ def run_concurrently(cmds, cwd=REPO):
     return next((rc for rc in rcs if rc not in (0, 5)), 0)
 
 
+#: Tiers that read the composed status files (`restamp`'s targets) and every deck
+#: directory on disk; the preflight below runs only when one of them will.
+_READS_DECKS = ("regression", "decks")
+
+
+def untracked_decks():
+    """Deck directories with NO tracked file. The manifest, the fleet file and every
+    fleet test read the disk, not git, so an uncommitted brew passes locally and
+    breaks CI — or, moved aside mid-gate, breaks it locally (black-waltz, 2026-11-12)."""
+    rc, out = _git("ls-files", "-z", "--", "data/decks")
+    if rc:
+        return []
+    tracked = {p.split("/")[2] for p in _nul_split(out) if p.count("/") >= 3}
+    return sorted(d.name for d in DECKS.iterdir() if d.is_dir() and d.name not in tracked)
+
+
+def preflight(plan):
+    """Fail in about a minute on what used to fail fifteen minutes in. Returns an exit
+    code: 0 to go on."""
+    if not any(t in _READS_DECKS for t in plan_tiers(plan)):
+        return 0
+    loose = untracked_decks()
+    if loose:
+        print("CHECK SCOPE — PREFLIGHT: untracked deck directories "
+              f"{', '.join(loose)} — every fleet test reads them from disk. Commit "
+              "them (`git add data/decks/<slug>`) or move them out of data/decks/.")
+        return 3
+    print("  $ manamap pilot restamp --check   (preflight: the composed status files)")
+    rc = subprocess.run([sys.executable, "-m", "manamap.cli", "pilot", "restamp", "--check"],
+                        cwd=REPO).returncode
+    if rc:
+        print("CHECK SCOPE — PREFLIGHT FAILED: run `manamap pilot restamp`, commit, retry")
+    return rc
+
+
 def _run(plan):
     print(f"CHECK SCOPE — {plan['scope'].upper()}: {plan['why']}")
+    rc = preflight(plan)
+    if rc:
+        return rc
     tiers = plan_tiers(plan)
     if plan["scope"] != "full":
         print(f"  tiers: {', '.join(tiers) or '(none)'} "

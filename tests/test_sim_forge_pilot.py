@@ -46,9 +46,6 @@ def engine(tmp_path, monkeypatch):
     monkeypatch.setattr(fp, "CARDSFOLDER", cardsfolder)
     monkeypatch.setattr(fp, "PRISTINE", cardsfolder.with_suffix(".zip.orig"))
     monkeypatch.setattr(fp, "OVERRIDE_DIR", overrides)
-    # the second override root (2026-11-11, new-card scripts): pointed away with the
-    # first, or the synthetic engine sees the repo's two FRA scripts as declared
-    monkeypatch.setattr(fp, "NEW_CARDS_DIR", tmp_path / "overrides" / "new_cards")
 
     class Engine:
         zip_path = cardsfolder

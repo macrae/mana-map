@@ -520,6 +520,10 @@ VALIDATED = {
     # of its adds, stamped with the harness it was taken under; `simulate` on a branch
     # seat refuses an add this file does not prove.
     "cast_proofs.json": "manamap.pilot.validate_cast_proofs",
+    # THE FORGE HINTS (2026-11-12): tracked since 2026-10-21 with a validator and no
+    # place here, so a merge that cut eight hinted cards from sharknado left the file
+    # naming them, and nothing said so until `forge-install --generate` refused to run.
+    "forge_hints.json": "manamap.pilot.validate_forge_hints",
     # THE LAST TRACKED PILOT ARTIFACT THAT HAD NO GATE. It holds the objective a
     # branch is graded against and the pilot's acceptance of it, and nothing
     # checked either until `propose` shipped.

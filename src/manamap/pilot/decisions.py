@@ -185,7 +185,7 @@ def outcome(slug, write=True):
     at the predicted pod and harness and record what they read. Returns the
     lines appended (or that would be)."""
     from manamap.sim import stats
-    from manamap.pilot.deck_notes import read_log
+    from manamap.pilot.deck_notes import is_game, read_log
     entries = read(slug)
     have = {e.get("of") for e in entries if e.get("kind") == "outcome"}
     added = []
@@ -219,7 +219,7 @@ def outcome(slug, write=True):
         else:
             inside = None
         # THE REAL TABLE, joined by sha and shown beside — never pooled in.
-        paper = [e for e in read_log(slug) if e.get("decklist_sha256") == sha]
+        paper = [e for e in read_log(slug) if e.get("decklist_sha256") == sha and is_game(e)]
         if paper:
             realised["paper"] = {"games": len(paper),
                                  "win": sum(1 for e in paper if e.get("result") == "win"),

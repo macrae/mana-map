@@ -17,6 +17,14 @@ from manamap import check_scope as cs
 PY = cs.sys.executable
 
 
+@pytest.fixture(autouse=True)
+def _no_preflight(request, monkeypatch):
+    """The runner tests stub `subprocess.run` for the tiers; the preflight (its git
+    read, its restamp) is its own tests' subject, so it is off everywhere else."""
+    if not any(w in request.node.name for w in ("preflight", "untracked")):
+        monkeypatch.setattr(cs, "preflight", lambda plan: 0)
+
+
 def _tiers(*paths):
     return cs.classify(list(paths))["tiers"]
 
@@ -339,3 +347,41 @@ def test_the_pair_runs_under_the_prepush_row_two_children_at_once(monkeypatch):
     assert cs.run(cs.classify(["src/manamap/pilot/x.py", "viz/x.js"])) == 0
     assert parents == [f"prepush-{os.getpid()}"] * 2
     assert cs.pytest_runs(cs.classify(["viz/x.js"])) == 3       # unit 1 + browser 2
+
+
+# ── the preflight (2026-11-12) ───────────────────────────────────────────
+# Three gate runs failed fifteen minutes in on things a minute could have shown: nine
+# stale info.json after a goldfish change, and an untracked brew the manifest named.
+
+def test_an_untracked_deck_directory_is_named(tmp_path, monkeypatch):
+    decks = tmp_path / "decks"
+    (decks / "kept").mkdir(parents=True)
+    (decks / "brew").mkdir()
+    monkeypatch.setattr(cs, "DECKS", decks)
+    monkeypatch.setattr(cs, "_git", lambda *a: (0, "data/decks/kept/decklist.txt\0"))
+    assert cs.untracked_decks() == ["brew"]
+
+
+def test_the_preflight_refuses_an_untracked_deck_before_any_tier(tmp_path, monkeypatch):
+    """Proved by re-introducing the bug: return 0 from `preflight` and this fails."""
+    monkeypatch.setattr(cs, "untracked_decks", lambda: ["brew"])
+    ran = []
+    monkeypatch.setattr(cs.subprocess, "run", lambda *a, **k: ran.append(a))
+    assert cs.preflight({"scope": "decks", "tiers": ["decks"]}) == 3
+    assert ran == [], "no restamp, no tier: the refusal comes first"
+
+
+def test_the_preflight_runs_restamp_check_and_stops_on_it(monkeypatch):
+    monkeypatch.setattr(cs, "untracked_decks", lambda: [])
+    seen = []
+
+    class Done:
+        returncode = 1
+    monkeypatch.setattr(cs.subprocess, "run", lambda cmd, **k: (seen.append(cmd), Done)[1])
+    assert cs.preflight({"scope": "full", "tiers": ["unit", "regression"]}) == 1
+    assert seen and seen[0][-2:] == ["restamp", "--check"]
+
+
+def test_a_push_that_reads_no_deck_skips_the_preflight(monkeypatch):
+    monkeypatch.setattr(cs, "untracked_decks", lambda: ["brew"])
+    assert cs.preflight({"scope": "docs", "tiers": ["docs"]}) == 0

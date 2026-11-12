@@ -1276,14 +1276,25 @@ def main(args):
     # --write implies --verify: the tracked info.json is read by the deck page
     # and must carry real verdicts rather than "not checked".
     from datetime import date
-    info = compose(args.slug, verify=(getattr(args, "verify", False)
-                                      or getattr(args, "write", False)),
-                   # THE CLOCK ONLY ON THE READ PATHS: the tracked file is the
-                   # same whatever day `--write` runs.
-                   today=None if getattr(args, "write", False) else date.today())
+
+    def _compose():
+        return compose(args.slug, verify=(getattr(args, "verify", False)
+                                          or getattr(args, "write", False)),
+                       # THE CLOCK ONLY ON THE READ PATHS: the tracked file is the
+                       # same whatever day `--write` runs.
+                       today=None if getattr(args, "write", False) else date.today())
+
+    info = _compose()
     if getattr(args, "write", False):
         path = deck_dir(args.slug) / "info.json"
+        existed = path.is_file()
         path.write_text(json.dumps(fetchable(info), indent=2, ensure_ascii=False) + "\n")
+        if not existed:
+            # THE FILE IS ONE OF ITS OWN STAGES (`dossier`), so a first write records
+            # itself as missing and the freshness test reads the second write as a
+            # different file (valgavoth, 2026-11-12). Compose once more now it exists.
+            info = _compose()
+            path.write_text(json.dumps(fetchable(info), indent=2, ensure_ascii=False) + "\n")
         print(f"Wrote {path}")
         return
     if getattr(args, "as_json", False):

@@ -44,6 +44,14 @@ tiers those areas can break:
 | **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + regression, without the fleet regen (the isolation proof is the harness's and CI's, since 2026-10-29) | 9 min |
 | **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
 
+**A preflight runs first** (2026-11-12) whenever a tier reads the decks (regression,
+decks): an untracked `data/decks/<slug>/` is refused by name (every fleet test reads the
+disk, not git), then `manamap pilot restamp --check` compares every composed status file
+— each live deck's `info.json`, the fleet file, the manifest — against a fresh run, in
+about half a minute. Both used to surface fifteen minutes into the regression tier; a
+goldfish change stales every deck's `older_model` at once, and `manamap pilot restamp`
+rewrites them all.
+
 **The fleet regen is not the push's** (2026-10-09, corrected 2026-10-21). Every scope runs
 `make regression-prepush` — the regression tier's parallel half — and leaves
 `test_the_fleet_regenerates_byte_identically` (marker `regen`, 7-15 min serial) to

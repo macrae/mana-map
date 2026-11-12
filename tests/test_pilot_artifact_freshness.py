@@ -26,9 +26,7 @@ from manamap.pilot import (
     bracket, deck_combos, deck_info, diagnostic, goldfish, mana_analysis,
     net_change)
 
-from manamap.pilot import deck_branch
-
-from conftest import is_retired, module_closure, requires_deck, requires_data
+from conftest import module_closure, requires_deck, requires_data
 
 # ── The code half of the key: DERIVED, never hand-traced ────────────────────
 #
@@ -83,30 +81,12 @@ def _slugs(artifact):
 
     Returns `(slug, branch)` pairs; `branch` is None for the deck itself.
     """
-    if not DECKS_DIR.is_dir():
-        return []
-    out = []
-    for d in sorted(DECKS_DIR.iterdir()):
-        if not d.is_dir():
-            continue
-        if is_retired(d):
-            # A RETIRED DECK'S ARTIFACTS ARE HISTORY, NOT CLAIMS. Nothing plays
-            # the list, so a model correction leaves them "stale" forever and
-            # the only way to green the gate is regenerating a document about a
-            # deck nobody will shuffle. The pilot's rule, 2026-08-27.
-            continue
-        if (d / artifact).exists():
-            out.append((d.name, None))
-        for b in sorted((d / "branches").glob("*")):
-            if not (b.is_dir() and (b / artifact).exists()):
-                continue
-            # A DECIDED BRANCH'S FILES ARE THE RECORD OF THE DECISION (2026-10-21):
-            # merged or rejected, nothing regenerates them and nothing recomputes
-            # them here — the same predicate `regen.targets` reads.
-            if deck_branch.is_decided(d.name, b.name):
-                continue
-            out.append((d.name, b.name))
-    return out
+    # ONE ENUMERATION, ONE HOME (2026-11-12): `manamap pilot restamp` rewrites exactly
+    # these, and the gate's preflight checks exactly these; a second copy here is how
+    # the two would come to disagree. Retired decks and decided branches are skipped
+    # there, by `regen.is_retired` and `deck_branch.is_decided`, as they were here.
+    from manamap.pilot.restamp import targets
+    return targets(artifact)
 
 
 def _id(target):

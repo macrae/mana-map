@@ -42,7 +42,15 @@ OVERRIDE_DIR = config.DATA_DIR / "forge_overrides" / "cards"
 #: WHOLE SCRIPTS FOR CARDS THE ENGINE DOES NOT SHIP (2026-11-11; README beside them): the
 #: installed Forge predates Reality Fracture, and two Edgar cards had no script. Added to
 #: the zip as new entries; fingerprinted with the overrides; refused if the engine ships one.
-NEW_CARDS_DIR = config.DATA_DIR / "forge_overrides" / "new_cards"
+#: None means "the sibling of OVERRIDE_DIR" (`new_cards_dir()`): ONE ROOT TO REDIRECT. As a
+#: second absolute path, every fixture that pointed OVERRIDE_DIR at a temp tree still saw
+#: the repo's two scripts, and four Forge tests failed on them (2026-11-12).
+NEW_CARDS_DIR = None
+
+
+def new_cards_dir():
+    """Where whole new-card scripts live: `NEW_CARDS_DIR` if set, else beside the overrides."""
+    return pathlib.Path(NEW_CARDS_DIR) if NEW_CARDS_DIR else OVERRIDE_DIR.parent / "new_cards"
 
 #: The engine's card scripts, and the pristine copy every install rebuilds from.
 CARDSFOLDER = config.FORGE_HOME / "res" / "cardsfolder" / "cardsfolder.zip"
@@ -93,15 +101,16 @@ def _digest(pairs):
 def _override_files():
     """The tracked override scripts as `(letter/name.txt, bytes)`."""
     return [(p.relative_to(d).as_posix(), p.read_bytes())
-            for d in (OVERRIDE_DIR, NEW_CARDS_DIR) if d.is_dir()
+            for d in (OVERRIDE_DIR, new_cards_dir()) if d.is_dir()
             for p in sorted(d.rglob("*.txt"))]
 
 
 def _new_card_names():
-    """The relative paths under `NEW_CARDS_DIR` — scripts with no shipped original."""
-    if not NEW_CARDS_DIR.is_dir():
+    """The relative paths under `new_cards_dir()` — scripts with no shipped original."""
+    d = new_cards_dir()
+    if not d.is_dir():
         return set()
-    return {p.relative_to(NEW_CARDS_DIR).as_posix() for p in NEW_CARDS_DIR.rglob("*.txt")}
+    return {p.relative_to(d).as_posix() for p in d.rglob("*.txt")}
 
 
 def declared():

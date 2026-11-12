@@ -327,6 +327,8 @@ PILOT_STEPS = [
     ("validate-tutor-guide", "manamap.pilot.validate_tutor_guide", "Form-check the tutor guide (one wish per tutor)"),
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("build-index", "manamap.pilot.deck_manifest", "Write data/decks/index.json — the deck list + manifest the frontend fetches"),
+    ("restamp", "manamap.pilot.restamp",
+     "Rewrite every COMPOSED status file — each live deck's info.json, the fleet file, the manifest — in one pass; --check reports what is behind and writes nothing"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
@@ -608,6 +610,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--no-chain", action="store_true", dest="no_chain",
                              help="write the list only; skip the refresh")
             cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "restamp":
+            cmd.add_argument("--check", action="store_true",
+                             help="report the composed files that are behind; write nothing, exit 1")
         if name == "order":
             cmd.add_argument("slugs", nargs="+", metavar="SLUG",
                              help="one or more decks, merged into one paste")

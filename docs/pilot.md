@@ -577,6 +577,9 @@ manamap pilot scenario-facts <slug> [--stack NNN]  # the deterministic brief for
 manamap pilot validate-tutor-guide <slug>   # every fetch target is in this deck
 manamap pilot diagnosis-report <slug>   # render diagnosis.json as readable markdown
 manamap pilot build-index               # → data/decks/index.json (the deck manifest the viz reads)
+manamap pilot restamp [--check]         # every COMPOSED status file at once — each live deck's info.json,
+                                        # the fleet file, the manifest; --check writes nothing, exits 1 if
+                                        # any is behind (the prepush preflight runs it first, 2026-11-12)
 manamap pilot cache-status <slug>       # have an agent routine's inputs changed?
 manamap pilot cache-record <slug> --routine R   # record what produced an artifact
 manamap pilot cache-clear <slug>        # drop cache records

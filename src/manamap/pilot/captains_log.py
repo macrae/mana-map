@@ -31,7 +31,7 @@ from datetime import datetime, timedelta
 
 from manamap import config
 from manamap.pilot.common import load_json
-from manamap.pilot.deck_notes import causes, read_log
+from manamap.pilot.deck_notes import causes, is_game, read_log
 
 ARTIFACT = "captains_log.json"
 
@@ -176,7 +176,7 @@ def evening(at_date):
         if not deck.is_dir() or not (deck / "log.jsonl").exists():
             continue
         for e in read_log(deck.name):
-            if night_key(e["at"]) == at_date:
+            if is_game(e) and night_key(e["at"]) == at_date:
                 out.append({"slug": deck.name, "at": e["at"], "id": e["id"],
                             "result": e.get("result")})
     return sorted(out, key=lambda g: _dt(g["at"]))
@@ -189,7 +189,7 @@ def nights(slug):
     takes this wholesale and lets the agent fill only `logs[kind]`, so the agent
     cannot smuggle a stardate — or a grouping — past the merge.
     """
-    entries = read_log(slug)
+    entries = [e for e in read_log(slug) if is_game(e)]
     if not entries:
         return {}
     filed = causes(slug)
@@ -262,6 +262,8 @@ def read_meta(slug):
             by_sha[sha] = version.get("version")
     games, spanned = [], []
     for entry in deck_notes.read_log(slug):
+        if not deck_notes.is_game(entry):
+            continue
         version = by_sha.get(entry.get("decklist_sha256"))
         games.append({"id": entry["id"], "at": entry.get("at", "")[:10],
                       "version": version, "current": version == current})

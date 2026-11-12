@@ -687,3 +687,22 @@ def browser():
 EXPLORE = "?mode=explore"
 
 
+
+
+def decklist_names(slug, branch=None, default=()):
+    """The card NAMES in a tracked deck's main list (commander included), read by the
+    production parser — printings, foil marks and sections handled once, there.
+
+    ONE READER FOR EVERY TEST (2026-11-12): five test files split `decklist.txt` lines by
+    hand, and when Meren's art was pinned (`1 Animate Dead (SOC) 207`) every one of them
+    stopped matching names: twenty-odd tests picked cards the deck already ran. A guard
+    (`tests/test_decklist_reads_go_through_one_helper.py`) holds the hand split out.
+    `default` is what an absent list reads as (the isolation tier has no decks)."""
+    from manamap.config import DECKS_DIR
+    from manamap.pilot.fetch_deck import parse_decklist
+    base = DECKS_DIR / slug
+    path = (base / "branches" / branch if branch else base) / "decklist.txt"
+    if not path.is_file():
+        return set(default)
+    return {e["name"] for e in parse_decklist(path.read_text(encoding="utf-8"))
+            if e.get("board", "main") == "main"}

@@ -12,7 +12,7 @@ import pytest
 
 from manamap.config import DECKS_DIR
 from manamap.pilot import deck_notes
-from manamap.pilot.deck_notes import CAUSES, CAUSES_FILE, causes, read_log
+from manamap.pilot.deck_notes import CAUSES, CAUSES_FILE, causes, is_game, read_log
 from manamap.pilot.validate_log_causes import validate
 
 
@@ -145,10 +145,20 @@ def test_every_logged_game_on_a_played_deck_has_a_stated_cause():
             continue
         filed = causes(slug)
         for e in entries:
-            if e.get("result") is None and "identity" in (e.get("tags") or []):
-                continue    # the pilot's statement of what the deck IS (edgar 007), not a game
+            if not is_game(e):
+                continue    # a note about the deck (edgar 007's identity), not a game
             checked += 1
             assert e["id"] in filed, (
                 f"{slug} entry {e['id']} has no stated cause — "
                 f"`manamap pilot deck-notes {slug} cause {e['id']} --cause <code>`")
     assert checked >= 10
+
+
+def test_an_identity_note_is_not_a_game_and_an_unscored_game_still_is():
+    """`deck_notes.is_game`, the one predicate (2026-11-12). Proved by re-introducing
+    the bug: make it return True always and the first assert fails."""
+    note = {"id": "007", "result": None, "tags": ["identity"]}
+    unscored = {"id": "003", "result": None, "tags": []}
+    assert not is_game(note)
+    assert is_game(unscored), "a game logged without a result is still a game"
+    assert is_game({"id": "001", "result": "loss", "tags": ["identity"]})
