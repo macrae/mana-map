@@ -1,0 +1,437 @@
+{
+  "id": "007",
+  "slug": "approach-under-teferi-time-raveler",
+  "deck": "heliod",
+  "branch": "b3-v1",
+  "title": "Second Approach of the Second Sun, cast at instant speed with Teferi, Time Raveler out: can anyone counter it with a spell?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Heliod, the Warped Eclipse",
+        "Teferi, Time Raveler (4 loyalty)",
+        "Island x5",
+        "Plains x3"
+      ],
+      "opponents": [
+        {
+          "life": 30,
+          "board": [
+            "Island x3 (untapped)",
+            "Plains x1 (untapped)"
+          ],
+          "note": "the active player; holding Counterspell and Force of Will"
+        },
+        {
+          "life": 28,
+          "board": [
+            "Island x2 (untapped)"
+          ],
+          "note": "holding Fierce Guardianship and controls no commander on the battlefield"
+        }
+      ]
+    },
+    "hand": [],
+    "mana_available": "{0} (all eight lands tapped to cast Approach)",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Approach of the Second Sun",
+        "controller": "you",
+        "note": "cast from your hand during the first opponent's end step, as though it had flash (Heliod, the Warped Eclipse); this is the second Approach you have cast this game"
+      }
+    ],
+    "extras": {
+      "game_history": "Earlier this game you cast Approach of the Second Sun from your hand; it resolved, went seventh from the top of your library, and you gained 7 life. You then found it again and it is now on the stack.",
+      "note_for_the_resolver": "Teferi, Time Raveler is yours; its static ability reads 'Each opponent can cast spells only any time they could cast a sorcery.' Heliod, the Warped Eclipse reads 'You may cast spells as though they had flash.' Both are on branch b3-v1 of heliod (data/decks/heliod/branches/b3-v1/cards.json). It is the first opponent's end step, so it is that opponent's turn but not their main phase."
+    },
+    "question": "With Approach of the Second Sun on the stack during an opponent's end step and your Teferi, Time Raveler on the battlefield, can either opponent cast Counterspell, Force of Will (by its alternative cost) or Fierce Guardianship in response? Cite the rule that defines when a player 'could cast a sorcery' and the rule on alternative costs. If no spell can be cast in response, state what happens when all players pass."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Opponent 1's end step begins. Before anyone receives priority the game checks state-based actions; then opponent 1, the active player, receives priority first.",
+        "effect": "The end step has no turn-based actions and no 'at the beginning of the end step' trigger exists on this board. The state-based-action check finds nothing to perform (no player at 0 or less life, no creature with lethal damage or 0 toughness, Teferi at 4 loyalty, no legend-rule duplicate) and no triggered ability is waiting, so opponent 1 gets priority. The stack is empty.",
+        "citations": [
+          {
+            "rule": "513.1",
+            "quote": "The end step has no turn-based actions. Once it begins, the active player gets priority."
+          },
+          {
+            "rule": "704.3",
+            "quote": "Once no more state-based actions have been performed as the result of a check and no triggered abilities are waiting to be put on the stack, the appropriate player gets priority."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "Opponent 1 passes with the stack empty. Priority moves to the next player in turn order, and on, until it reaches you. The scenario gives no seating: if opponent 2 sits between opponent 1 and you, opponent 2 also receives priority (after another state-based-action check that again finds nothing) and passes; otherwise you are next.",
+        "effect": "Each pass hands priority to the next player in turn order. The step does not end, because not all players have passed in succession: you have not yet passed. You now hold priority with an empty stack, still in opponent 1's end step. (Before you receive priority, the state-based-action check again performs nothing.)",
+        "citations": [
+          {
+            "rule": "117.3d",
+            "quote": "If a player has priority and chooses not to take any actions, that player passes. If any mana is in that player’s mana pool, they announce what mana is there. Then the next player in turn order receives priority."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves or, if the stack is empty, the phase or step ends."
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "With priority, you cast Approach of the Second Sun (a sorcery, mana cost {6}{W}) from your hand, using Heliod, the Warped Eclipse's 'You may cast spells as though they had flash.' Total cost: Heliod's second ability, 'Spells you cast cost {1} less to cast for each card your opponents have drawn this turn', reduces it by N, where N >= 1: opponent 1, the active player, drew a card as the draw step's turn-based action this turn (504.1), and in a multiplayer Commander game no player skips that draw even on their first turn (103.8c); the scenario gives no further draws. The reduction is generic only (Heliod ruling 2023-04-14) and a cost can't be reduced below {0} (601.2f), so the total cost is {max(6-N,0)}{W}: at most {5}{W} (N = 1), and exactly {W} once N >= 6. You tap all eight lands (Island x5, Plains x3) as the scenario states, producing eight mana including the {W} from a Plains, and pay the locked-in total cost.",
+        "effect": "The cast is legal: Heliod's static is an effect allowing you to cast the spell at instant timing, and nothing prohibits you (Teferi's restriction binds only opponents). Of the eight mana produced, max(6-N,0)+1 is spent, so min(1+N,7) remain in your mana pool, unspent: at least two (N = 1) and at most seven (N >= 6, when only the {W} is paid). That mana stays there until the end step ends or until you spend it; you have no other card in hand to spend it on. This corrects the scenario's '{0}': with all eight lands tapped, your pool is not empty. (Equivalently you could have tapped only max(6-N,0)+1 lands and left the rest untapped; the outcome is identical. The resolution follows the scenario's tapping.)",
+        "citations": [
+          {
+            "rule": "504.1",
+            "quote": "First, the active player draws a card. This turn-based action doesn’t use the stack."
+          },
+          {
+            "rule": "103.8c",
+            "quote": "In all other multiplayer games, no player skips the draw step of their first turn."
+          },
+          {
+            "rule": "702.8a",
+            "quote": "“Flash” means “You may play this card any time you could cast an instant.”"
+          },
+          {
+            "rule": "601.3",
+            "quote": "A player can begin to cast a spell only if a rule or effect allows that player to cast it and no rule or effect prohibits that player from casting it."
+          },
+          {
+            "rule": "601.2f",
+            "quote": "The total cost is the mana cost or alternative cost (as determined in rule 601.2b), plus all additional costs and cost increases, and minus all cost reductions."
+          },
+          {
+            "rule": "601.2f",
+            "quote": "If the mana component of the total cost is reduced to nothing by cost reduction effects, it is considered to be {0}. It can’t be reduced to less than {0}."
+          },
+          {
+            "rule": "106.4",
+            "quote": "From there, it can be used to pay costs immediately, or it can stay in the player’s mana pool as unspent mana. Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Approach is on the stack (pos 0). Having cast it while holding priority, you receive priority again after another state-based-action check.",
+        "effect": "The state-based-action check performs nothing and no trigger is waiting (casting Approach triggers nothing on this board), so you receive priority with Approach on the stack and at least two unspent mana in your pool.",
+        "citations": [
+          {
+            "rule": "117.3c",
+            "quote": "If a player has priority when they cast a spell, activate an ability, or take a special action, that player receives priority afterward."
+          },
+          {
+            "rule": "704.3",
+            "quote": "the game checks for any of the listed conditions for state-based actions, then performs all applicable state-based actions simultaneously as a single event."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Read Teferi, Time Raveler's static ability: 'Each opponent can cast spells only any time they could cast a sorcery.' Apply the CR definition of that phrase to each opponent.",
+        "effect": "'Any time they could cast a sorcery' requires all three of: priority, the main phase of THAT player's turn, and an empty stack. It is the first opponent's end step, which is not a main phase, and Approach is on the stack, so the stack is not empty. Opponent 1 (active player) fails two conditions; opponent 2 (non-active) fails all of 'their turn', 'main phase' and 'empty stack'. Neither opponent may cast any spell, of any type, at this moment.",
+        "citations": [
+          {
+            "rule": "307.5",
+            "quote": "If a spell, ability, or effect states that a player can do something only “any time they could cast a sorcery” or “only as a sorcery,” it means only that the player must have priority, it must be during the main phase of their turn, and the stack must be empty."
+          },
+          {
+            "rule": "505.1",
+            "quote": "The precombat and postcombat main phases are individually and collectively known as the main phase."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Opponent 1 receives priority during the round that follows your pass (step 9) and wants to cast Counterspell ({U}{U}) with untapped Islands.",
+        "effect": "Prohibited. Counterspell is an instant, which would normally be castable any time the player has priority, but Teferi's effect prohibits the cast now, and a prohibition beats a permission. The opponent cannot begin to cast it (601.3, step 3); untapped mana is irrelevant. (Teferi's official ruling agrees that his restriction takes precedence over permissions to cast at instant speed.)",
+        "citations": [
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast an instant spell any time they have priority."
+          },
+          {
+            "rule": "101.2",
+            "quote": "When a rule or effect allows or directs something to happen, and another effect states that it can’t happen, the “can’t” effect takes precedence."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "Opponent 1 tries to cast Force of Will by its alternative cost ('You may pay 1 life and exile a blue card from your hand rather than pay this spell's mana cost').",
+        "effect": "Prohibited. An alternative cost changes only WHAT is paid, never WHEN a spell may be cast; the choice to pay it is made inside the casting process (601.2b), which the player may not begin at all while Teferi's prohibition applies (601.2 / 601.3). 601.3a's exception does not help: it covers prohibitions on spells 'with certain qualities' that a proposal choice could change, but Teferi's restriction is on timing, and no choice of cost alters the phase, the turn, or the stack.",
+        "citations": [
+          {
+            "rule": "118.9",
+            "quote": "An alternative cost is a cost listed in a spell’s text, or applied to it from another effect, that its controller may pay rather than paying the spell’s mana cost."
+          },
+          {
+            "rule": "118.9c",
+            "quote": "An alternative cost doesn’t change a spell’s mana cost, only what its controller has to pay to cast it."
+          },
+          {
+            "rule": "601.2",
+            "quote": "A player must be legally allowed to cast the spell to begin this process (see rule 601.3)."
+          },
+          {
+            "rule": "601.3a",
+            "quote": "If an effect prohibits a player from casting a spell with certain qualities, that player may consider any choices to be made during that spell’s proposal that may cause those qualities to change."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Opponent 2, when it receives priority in the same round, tries to cast Fierce Guardianship ('If you control a commander, you may cast this spell without paying its mana cost').",
+        "effect": "Prohibited by Teferi exactly as in step 7: 'without paying its mana cost' is an alternative cost and does not lift the timing restriction. Independently, the free alternative cost is unavailable because opponent 2 controls no commander (the card's own condition), and two untapped Islands cannot pay its {2}{U} mana cost. Either way, no cast.",
+        "citations": [
+          {
+            "rule": "118.9",
+            "quote": "Alternative costs are usually phrased, “You may [action] rather than pay [this object’s] mana cost,” or “You may cast [this object] without paying its mana cost.”"
+          },
+          {
+            "rule": "307.5",
+            "quote": "it must be during the main phase of their turn, and the stack must be empty"
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "The priority round with Approach on the stack. You pass (announcing the unspent mana in your pool). Priority moves through the other players in turn order from you, whatever the seating, so each opponent receives it exactly once in this round; a state-based-action check, which performs nothing, precedes each grant. Each opponent, having no legal spell to cast (steps 5-8), passes.",
+        "effect": "All players have now passed in succession with Approach on top of the stack, so it resolves. No spell from either opponent was ever able to reach the stack. The end step does not end here: the stack is not empty, so the object on top resolves instead.",
+        "citations": [
+          {
+            "rule": "117.3d",
+            "quote": "If a player has priority and chooses not to take any actions, that player passes."
+          },
+          {
+            "rule": "117.4",
+            "quote": "If all players pass in succession (that is, if all players pass without taking any actions in between passing), the spell or ability on top of the stack resolves"
+          }
+        ]
+      },
+      {
+        "n": 10,
+        "action": "Approach of the Second Sun resolves. Oracle: 'If this spell was cast from your hand and you've cast another spell named Approach of the Second Sun this game, you win the game.'",
+        "effect": "Both conditions hold: this Approach was cast from your hand, and you cast another Approach earlier this game (it resolved, went seventh from the top, gained you 7 life; per the card's official ruling a card that changed zones is a new object, so it counts as 'another spell'). You win the game. The win-condition mechanics are proven in heliod stack 002 and are not re-derived here. The game ends immediately, so the end step never ends normally and your unspent mana is never emptied from the pool (it is simply unused).",
+        "citations": [
+          {
+            "rule": "104.2b",
+            "quote": "An effect may state that a player wins the game."
+          },
+          {
+            "rule": "104.1",
+            "quote": "A game ends immediately when a player wins, when the game is a draw, or when the game is restarted."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "Neither opponent can cast Counterspell, Force of Will (alternative cost or not) or Fierce Guardianship in response. Teferi, Time Raveler restricts opponents to sorcery timing, which CR 307.5 defines as priority + their own main phase + empty stack; it is an end step and the stack holds Approach, so every opponent spell is prohibited (601.3, 101.2). An alternative cost changes only what is paid, not when a spell may be cast (118.9c). All players pass, Approach resolves, and as the second Approach cast this game (this one from hand) you win the game. Priority: opponent 1 (active) receives priority first in the end step (513.1) and passes; priority moves in turn order to you (117.3d), and you cast Approach for {max(6-N,0)}{W}, N >= 1 cards drawn by opponents this turn (opponent 1's draw-step draw, 504.1, never skipped in multiplayer, 103.8c; Heliod; a cost can't go below {0}, 601.2f). All eight lands were tapped, so min(1+N,7) mana, at least two, stays unspent in your pool (106.4); the game ends on resolution (104.1) before the pool would empty. State-based actions are checked before every priority grant (704.3) and perform nothing on this board.",
+      "you": {
+        "result": "win the game",
+        "battlefield": [
+          "Heliod, the Warped Eclipse",
+          "Teferi, Time Raveler (4 loyalty)",
+          "Island x5 (tapped)",
+          "Plains x3 (tapped)"
+        ],
+        "hand": [],
+        "mana_available": "min(1+N,7) unspent mana floating in your pool (N >= 1 is the number of cards opponents have drawn this turn; at least two, at most seven since the cost floors at {W}); never spent, and never emptied because the game ends before the end step does. The scenario's '{0}' is inconsistent with tapping all eight lands for a cost of at most {5}{W}."
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": 30,
+          "result": "lost (game over)",
+          "hand_note": "Counterspell and Force of Will still in hand; neither could be cast"
+        },
+        {
+          "seat": "opponent_2",
+          "life": 28,
+          "result": "lost (game over)",
+          "hand_note": "Fierce Guardianship still in hand; could not be cast"
+        }
+      ]
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "summary": "Round 3 (final). validate-stack: OK, contract holds. All 27 citation quotes (22 from earlier rounds plus 504.1, 103.8c and the second 601.2f quote) were checked programmatically against lookup-rule --json, and every one is a verbatim substring. The round-2 failing defect is resolved everywhere. Step 3's action reads {max(6-N,0)}{W}, citing 601.2f's floor. Step 3's effect reads max(6-N,0)+1 spent and min(1+N,7) left. final_state.summary and final_state.you.mana_available both say min(1+N,7), at least two and at most seven. Step 4's 'at least two' is consistent. The arithmetic is correct across all N >= 1. The uncited N >= 1 is now established by 504.1 and 103.8c. Regression check: steps 1-2 and 4-10 and the rest of final_state are unchanged in substance from round 2, and every round-2 'supported' judgment still holds. The answer stands: Teferi's sorcery-timing restriction (307.5) prohibits every opponent cast (601.2/601.3, 101.2), alternative costs do not change timing (118.9c), Approach resolves, and you win (104.2b, 104.1). The rulings for Teferi, Heliod, Approach, Force of Will and Fierce Guardianship remain consistent. Sibling 002 is cited only for board-independent win mechanics, with no figure quoted.",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "513.1",
+        "status": "supported",
+        "note": "Verbatim minus the parenthetical. No turn-based actions in the end step, and the active player (opponent 1) gets priority first. Resolves round-1's priority finding at its origin."
+      },
+      {
+        "step": 1,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim substring. The SBA/trigger check precedes the grant. The step enumerates the relevant SBAs and finds none (Heliod 4/6 undamaged, Teferi 4 loyalty, no legend duplicates, life totals 30/28). No 'beginning of the end step' trigger exists on the board."
+      },
+      {
+        "step": 2,
+        "rule": "117.3d",
+        "status": "supported",
+        "note": "Verbatim, full rule. The passes move in turn order to you. The step correctly handles the unknown seating: opponent 2 receives priority and passes only if seated between opponent 1 and you."
+      },
+      {
+        "step": 2,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Verbatim, full rule. Correctly applied in the negative: the step does not end because you have not yet passed."
+      },
+      {
+        "step": 3,
+        "rule": "504.1",
+        "status": "supported",
+        "note": "Verbatim, full rule. Opponent 1 is the active player and drew a card as the draw step's turn-based action, so N >= 1 for Heliod's 'each card your opponents have drawn this turn'. The scenario names no replacement or skip effect."
+      },
+      {
+        "step": 3,
+        "rule": "103.8c",
+        "status": "supported",
+        "note": "Verbatim, full rule. A Commander pod of three or more is neither 103.8a (two-player) nor 103.8b (Two-Headed Giant), so even opponent 1's first turn would not skip the draw. This closes round-2's secondary note that N >= 1 was uncited."
+      },
+      {
+        "step": 3,
+        "rule": "702.8a",
+        "status": "supported",
+        "note": "Verbatim substring. Heliod's 'as though they had flash' gives instant timing. Heliod ruling 2023-04-14 ('applies only to casting spells') agrees."
+      },
+      {
+        "step": 3,
+        "rule": "601.3",
+        "status": "supported",
+        "note": "Verbatim. Heliod allows the cast. Teferi's static names 'Each opponent' (b3-v1 cards.json), so it does not prohibit you."
+      },
+      {
+        "step": 3,
+        "rule": "601.2f",
+        "status": "supported",
+        "note": "Both quotes verbatim (lookup-rule 601.2f). Round-2 defect resolved: the total cost is now {max(6-N,0)}{W} and the float is min(1+N,7). The rule's own floor is cited ('It can't be reduced to less than {0}'). Arithmetic: 8 - (max(6-N,0)+1) = min(1+N,7). That gives 2 at N=1 ({5}{W}) and 7 for N>=6 ({W}). This agrees with Heliod ruling 2023-04-14, which says the reduction applies only to the generic component, so the {W} always remains. The fix is carried into the step 3 effect, final_state.summary and final_state.you.mana_available. A grep finds no remaining bare '{6-N}' or '1+N' outside the old checker block."
+      },
+      {
+        "step": 3,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Verbatim substring. Unspent mana stays in the pool and empties at the end of the step. This correctly resolves round-1's mana finding (500.5 is the turn-based action that does the emptying and is consistent)."
+      },
+      {
+        "step": 4,
+        "rule": "117.3c",
+        "status": "supported",
+        "note": "Verbatim. Having cast with priority, you receive priority again."
+      },
+      {
+        "step": 4,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim substring. The SBA check before you receive priority again. Casting Approach triggers nothing (Heliod and Teferi have only static/activated abilities; b3-v1 oracle)."
+      },
+      {
+        "step": 5,
+        "rule": "307.5",
+        "status": "supported",
+        "note": "Verbatim first sentence. The rest of the rule (sorcery-preclusion effects) does not change the reading. Correctly applied to each opponent: opponent 1 fails main phase and empty stack, opponent 2 fails own turn, main phase and empty stack."
+      },
+      {
+        "step": 5,
+        "rule": "505.1",
+        "status": "supported",
+        "note": "Verbatim last sentence. The end step is not a main phase."
+      },
+      {
+        "step": 6,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": "Verbatim first sentence. Framed as the permission that is overridden."
+      },
+      {
+        "step": 6,
+        "rule": "101.2",
+        "status": "supported",
+        "note": "Verbatim. A 'can cast only at sorcery timing' restriction beats the instant permission. Teferi ruling 2024-01-12 is offered as agreement, not proof."
+      },
+      {
+        "step": 7,
+        "rule": "118.9",
+        "status": "supported",
+        "note": "Verbatim substring. Force of Will's 'rather than pay this spell's mana cost' is an alternative cost."
+      },
+      {
+        "step": 7,
+        "rule": "118.9c",
+        "status": "supported",
+        "note": "Verbatim first sentence. Changes what is paid, not timing."
+      },
+      {
+        "step": 7,
+        "rule": "601.2",
+        "status": "supported",
+        "note": "Verbatim sentence. The player must be legally allowed to cast in order to begin, so the 601.2b choice is never reached."
+      },
+      {
+        "step": 7,
+        "rule": "601.3a",
+        "status": "supported",
+        "note": "Verbatim first sentence. Correctly declined: it covers qualities that proposal choices can change (the Void Winnower example), and no choice changes phase, turn or stack."
+      },
+      {
+        "step": 8,
+        "rule": "118.9",
+        "status": "supported",
+        "note": "Verbatim substring ('without paying its mana cost' form). Fierce Guardianship ruling 2020-04-17 is consistent: opponent 2 controls no commander at all. Two Islands cannot pay {2}{U}."
+      },
+      {
+        "step": 8,
+        "rule": "307.5",
+        "status": "supported",
+        "note": "Exact substring. Same application as step 5."
+      },
+      {
+        "step": 9,
+        "rule": "117.3d",
+        "status": "supported",
+        "note": "Verbatim first sentence. The action also performs the rule's mana-announcement clause for the floating mana. Each opponent receives priority exactly once, in turn order from you, whatever the seating. Correct."
+      },
+      {
+        "step": 9,
+        "rule": "117.4",
+        "status": "supported",
+        "note": "Verbatim substring. All players pass in succession and Approach resolves."
+      },
+      {
+        "step": 10,
+        "rule": "104.2b",
+        "status": "supported",
+        "note": "Verbatim. Approach's oracle (b3-v1) states the win. Both conditions hold per game_history. Approach ruling 2017-04-18 (a new object counts as 'another spell'; the second must be cast from hand) agrees."
+      },
+      {
+        "step": 10,
+        "rule": "104.1",
+        "status": "supported",
+        "note": "Verbatim. The game ends on resolution, before the end step's 500.5 pool emptying. Correctly explains why the float is never lost."
+      }
+    ],
+    "round_2_findings": {
+      "601.2f floor (step 3, final_state.summary, final_state.you.mana_available)": "resolved",
+      "N >= 1 uncited (note)": "resolved by 504.1 + 103.8c"
+    },
+    "rulings_checked": {
+      "Teferi, Time Raveler": "2024-01-12: consistent with steps 5-8",
+      "Heliod, the Warped Eclipse": "2023-04-14 x6: generic-only reduction is consistent with step 3; flash-for-casting-only is consistent",
+      "Approach of the Second Sun": "2017-04-18 x5, 2017-07-14: consistent with step 10",
+      "Force of Will": "consistent with step 7",
+      "Fierce Guardianship": "2020-04-17: consistent with step 8",
+      "Counterspell": "no official rulings"
+    },
+    "sibling_check": "scenario-facts: 002 is NOT like-for-like (only_on_this_board: Heliod). Step 10 cites 002 (checker pass, read) only for the board-independent win mechanics. No figure is quoted. No finding.",
+    "scenario_field_note": "The scenario's mana_available '{0}' is inconsistent with tapping eight lands. The resolution says so explicitly. Per the task, the resolution is judged, not that field.",
+    "iterations": 3
+  }
+}
