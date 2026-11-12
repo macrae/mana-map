@@ -47,13 +47,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Cut a Deal"
+          },
+          {
+            "name": "Lore Broker"
+          },
+          {
             "name": "Personal Tutor"
+          },
+          {
+            "name": "Prismatic Lens"
           },
           {
             "name": "Sensei's Divining Top"
           },
           {
             "name": "Solve the Equation"
+          },
+          {
+            "name": "Spellskite"
           },
           {
             "name": "Venser, Shaper Savant"
@@ -64,12 +76,25 @@
         ],
         "unsleeve": [
           {
+            "name": "Fellwar Stone",
+            "where": [
+              "sharknado",
+              "valgavoth"
+            ]
+          },
+          {
             "name": "Flawless Maneuver",
             "where": [
               "edgar-vampires",
               "gishath",
               "sharknado",
               "ur-dragon"
+            ]
+          },
+          {
+            "name": "Mind's Eye",
+            "where": [
+              "keen-engineering"
             ]
           }
         ],
@@ -89,25 +114,31 @@
           }
         ],
         "box": [],
-        "blocking": 6,
+        "blocking": 12,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 77,
+        "in_deck": 71,
         "box": 0,
-        "elsewhere": 1,
-        "buy": 5,
+        "elsewhere": 3,
+        "buy": 9,
         "free": 2
       },
       "unsourced": [
+        "Cut a Deal",
+        "Fellwar Stone",
         "Flawless Maneuver",
+        "Lore Broker",
+        "Mind's Eye",
         "Personal Tutor",
+        "Prismatic Lens",
         "Sensei's Divining Top",
         "Solve the Equation",
+        "Spellskite",
         "Venser, Shaper Savant",
         "Winds of Abandon"
       ],
@@ -150,13 +181,6 @@
           "is_new": false
         },
         {
-          "name": "Archangel of Tithes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Archmage's Charm",
           "state": "in_deck",
           "where": [],
@@ -190,6 +214,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Cut a Deal",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Decanter of Endless Water",
@@ -246,6 +277,42 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Fellwar Stone",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ingris-infect",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Flawless Maneuver",
@@ -368,13 +435,6 @@
           "is_new": false
         },
         {
-          "name": "Horn of Greed",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Howling Mine",
           "state": "in_deck",
           "where": [],
@@ -417,13 +477,6 @@
           "is_new": false
         },
         {
-          "name": "Kefnet the Mindful",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Kwain, Itinerant Meddler",
           "state": "in_deck",
           "where": [],
@@ -452,6 +505,13 @@
           "is_new": false
         },
         {
+          "name": "Lore Broker",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Mana Confluence",
           "state": "in_deck",
           "where": [],
@@ -478,6 +538,21 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Mind's Eye",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mystic Remora",
@@ -536,6 +611,13 @@
           "is_new": false
         },
         {
+          "name": "Prismatic Lens",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Propaganda",
           "state": "in_deck",
           "where": [],
@@ -544,13 +626,6 @@
         },
         {
           "name": "Prosperity",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Psychosis Crawler",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -592,13 +667,6 @@
           "is_new": false
         },
         {
-          "name": "Secure the Wastes",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Sensei's Divining Top",
           "state": "buy",
           "where": [],
@@ -628,13 +696,6 @@
           "is_new": false
         },
         {
-          "name": "Skyscribing",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Smothering Tithe",
           "state": "in_deck",
           "where": [],
@@ -650,6 +711,13 @@
         },
         {
           "name": "Solve the Equation",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Spellskite",
           "state": "buy",
           "where": [],
           "free": false,
@@ -764,8 +832,8 @@
       ],
       "has_cards": true,
       "summary": {
-        "title": "Heliod down to bracket three, Approach line intact",
-        "blurb": "Cuts five Game Changers and keeps Rhystic Study, Smothering Tithe and Mystical Tutor so Approach of the Second Sun stays tutorable; adds flash-speed answers that fit the discount-on-their-turn plan.",
+        "title": "Heliod down to bracket three: Approach locked, discount engine fed",
+        "blurb": "Keeps Rhystic Study, Smothering Tithe and Mystical Tutor; finds Approach four ways and protects its second cast with Teferi or Silence; adds cheap rocks, table-draw payoffs and a redirect for Heliod.",
         "by": "jarvis",
         "at": "2026-11-12"
       },
@@ -5452,8 +5520,8 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 8 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `b3-v1` needs 6 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
+    "branch `b3-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `b3-v1` needs 12 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"
