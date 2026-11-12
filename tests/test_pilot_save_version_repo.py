@@ -20,6 +20,7 @@ import subprocess
 import pytest
 
 from manamap import config
+from manamap.pilot.common import split_printing  # names, never printings (2026-11-12 art pins)
 from manamap.pilot import deck_edit
 
 SLUG = "meren-recursion"
@@ -27,7 +28,7 @@ OUT = "Sol Ring"
 # CHOSEN FROM THE LIST, never pinned: V5 (2026-11-07) took Necromancy in and the edit this test
 # makes was refused as a duplicate. IN is the first of these the deck does not run.
 _LIST = config.DECKS_DIR / SLUG / "decklist.txt"
-_HAVE = ({line.split(" ", 1)[1].strip() for line in _LIST.read_text().splitlines()
+_HAVE = ({split_printing(line.split(" ", 1)[1])["name"] for line in _LIST.read_text().splitlines()
           if line[:1].isdigit()} if _LIST.exists() else set())
 IN = next(c for c in ("Necromancy", "Exhume", "Victimize", "Reanimate") if c not in _HAVE)
 REAL_ROOT = config.DECKS_DIR.parent.parent

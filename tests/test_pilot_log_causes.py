@@ -145,6 +145,8 @@ def test_every_logged_game_on_a_played_deck_has_a_stated_cause():
             continue
         filed = causes(slug)
         for e in entries:
+            if e.get("result") is None and "identity" in (e.get("tags") or []):
+                continue    # the pilot's statement of what the deck IS (edgar 007), not a game
             checked += 1
             assert e["id"] in filed, (
                 f"{slug} entry {e['id']} has no stated cause — "

@@ -13,6 +13,7 @@ import pytest
 from conftest import requires_data, requires_deck
 
 from manamap import config
+from manamap.pilot.common import split_printing  # names, never printings (2026-11-12 art pins)
 from manamap.pilot import deck_branch, protected, try_swap, validate_protected
 
 EDGAR = "edgar-vampires"
@@ -205,7 +206,7 @@ def test_each_reads_every_swap_against_the_champion(tmp_path, monkeypatch):
     # Persist -> Dread Return: Dread Return left the list in V12, Victimize came in.
     # The second OUT is read from the live list: Dread Return left in V12, Persist in V21.
     from manamap.pilot.common import deck_file
-    have = {ln.split(" ", 1)[1].strip() for ln in
+    have = {split_printing(ln.split(" ", 1)[1])["name"] for ln in
             deck_file("meren-recursion", "decklist.txt").read_text().splitlines() if ln[:1].isdigit()}
     out2 = next(c for c in ("Persist", "Necromancy", "Animate Dead", "Reanimate") if c in have)
     out = ts.run("meren-recursion",

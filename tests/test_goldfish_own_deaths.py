@@ -15,6 +15,7 @@ import json
 import pytest
 
 from manamap.pilot import goldfish, goldfish_library, model_coverage
+from manamap.pilot.common import split_printing  # names, never printings (2026-11-12 art pins)
 from manamap.pilot.common import deck_file
 from manamap.pilot.goldfish_profiles import own_death_profile
 
@@ -95,7 +96,7 @@ def test_each_death_source_pays_experience(monkeypatch, shape, blank):
     so the edict case puts it back in for a removal spell the goldfish does not read."""
     from manamap.pilot import try_swap
     doc = None
-    have = {line.split(" ", 1)[1].strip() for line in
+    have = {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     if shape == "edict" and "Plaguecrafter" not in have:
         # a card from outside the list is shaped from the Scryfall dump, which CI's push job
@@ -169,7 +170,7 @@ def _xp_with(monkeypatch, swaps, blank=None, n=1500):
 def test_a_body_that_comes_back_pays_experience(monkeypatch, card, blank):
     """PROVED BY REMOVING THE SHAPE: the same list, the same seeds, fewer counters."""
     # the card may already be in the list (Ophiomancer and Jadar went in on 2026-11-07)
-    have = {line.split(" ", 1)[1].strip() for line in
+    have = {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     swaps = [] if card in have else [("Assassin's Trophy", card)]
     assert _xp_with(monkeypatch, swaps) > _xp_with(monkeypatch, swaps, blank), card
@@ -302,7 +303,7 @@ def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
     7-drop (the rule removed) it never does. PROVED BY REMOVING THE RULE."""
     from manamap.pilot import try_swap
     # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
-    have = {line.split(" ", 1)[1].strip() for line in
+    have = {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     doc = None if "Hogaak, Arisen Necropolis" in have else try_swap.apply_swaps(
         SLUG, None, [("Assassin's Trophy", "Hogaak, Arisen Necropolis")])[0]
@@ -341,7 +342,7 @@ def test_mazirek_grows_the_board_on_every_sacrifice(monkeypatch):
     """PROVED BY REMOVING THE TRIGGER: the same games, a smaller board by turn ten."""
     from manamap.pilot import try_swap
     # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
-    have = {line.split(" ", 1)[1].strip() for line in
+    have = {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     doc = None if "Mazirek, Kraul Death Priest" in have else try_swap.apply_swaps(
         SLUG, None, [("Assassin's Trophy", "Mazirek, Kraul Death Priest")])[0]
@@ -373,7 +374,7 @@ def test_the_x_team_pumps_read_from_the_text():
 @requires_deck
 def test_craterhoof_pumps_the_team(monkeypatch):
     """PROVED BY REMOVING THE PUMP: the same games, less damage by turn ten."""
-    have = {line.split(" ", 1)[1].strip() for line in
+    have = {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
     from manamap.pilot import try_swap
     doc = None if "Craterhoof Behemoth" in have else try_swap.apply_swaps(
@@ -443,7 +444,7 @@ def _xp_exp(monkeypatch, swaps, blank=None, n=1500):
 
 
 def _have():
-    return {line.split(" ", 1)[1].strip() for line in
+    return {split_printing(line.split(" ", 1)[1])["name"] for line in
             deck_file(SLUG, "decklist.txt").read_text().splitlines() if line[:1].isdigit()}
 
 

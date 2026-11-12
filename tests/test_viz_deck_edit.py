@@ -23,6 +23,7 @@ import pytest
 
 from conftest_viz import BOOT_TIMEOUT_MS, _record, serve_card_images_locally
 from manamap.config import DECKS_DIR
+from manamap.pilot.common import split_printing
 
 pytestmark = pytest.mark.browser
 
@@ -35,7 +36,10 @@ def _decklist(slug):
     path = DECKS_DIR / slug / "decklist.txt"
     if not path.exists():
         return {"Animate Dead"}
-    return {line.split(" ", 1)[1].strip() for line in path.read_text().splitlines() if line[:1].isdigit()}
+    # Through THE ONE NORMALISER: Meren's pinned art (2026-11-12) made every line
+    # `1 Animate Dead (SOC) 207`, and a raw split matched no name, so CUT raised.
+    return {split_printing(line.split(" ", 1)[1])["name"]
+            for line in path.read_text().splitlines() if line[:1].isdigit()}
 
 
 # DERIVED FROM THE LIST, never pinned: Meren's V3 (2026-11-06) took Llanowar Elves in and
