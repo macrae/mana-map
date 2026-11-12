@@ -13,16 +13,6 @@
       ]
     },
     {
-      "card": "Tolarian Winds",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "the same hold; a two-mana early wheel is the exact play the pilot called wrong",
-      "cites": [
-        "log 002"
-      ]
-    },
-    {
       "card": "Jace's Archivist",
       "svars": {
         "NeedsToPlay": "Creature.IsCommander+YouCtrl"
@@ -60,59 +50,11 @@
       ]
     },
     {
-      "card": "Incendiary Command",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "its wheel mode fired twice with no commander out at olivers-table-3p (run caeeec41), two of the three misses behind the 86% seat-audit fail. NeedsToPlay gates the whole card, so its burn and sweep modes wait for a commander too: the pilot accepted that cost 2026-10-25",
-      "cites": [
-        "log 002",
-        "run caeeec41 seat audit",
-        "Sean 2026-10-25"
-      ]
-    },
-    {
-      "card": "Borrowed Knowledge",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "draw-engine-v1 adds it: both modes discard the hand, so it is a wheel and reads the pilot's rule; the seat audit named it an ungated wheel (2026-11-04)",
-      "cites": [
-        "log 002",
-        "pilot_policy.json wheel-is-a-finisher",
-        "Sean 2026-11-05"
-      ]
-    },
-    {
       "card": "Collective Defiance",
       "svars": {
         "NeedsToPlay": "Creature.IsCommander+YouCtrl"
       },
       "why": "the seat audit named it an ungated wheel (2026-11-04). NeedsToPlay gates the whole card, so its burn modes wait for a commander too, the cost the pilot accepted on Incendiary Command",
-      "cites": [
-        "log 002",
-        "pilot_policy.json wheel-is-a-finisher",
-        "Sean 2026-11-05"
-      ]
-    },
-    {
-      "card": "Heartwarming Redemption",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "draw-engine-v1 adds it: discard the hand, draw that many plus one, so it is a wheel and reads the pilot's rule; the seat audit named it an ungated wheel (2026-11-04)",
-      "cites": [
-        "log 002",
-        "pilot_policy.json wheel-is-a-finisher",
-        "Sean 2026-11-05"
-      ]
-    },
-    {
-      "card": "Shattered Perception",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "draw-engine-v1 adds it: discard the hand, draw that many, so it is a wheel and reads the pilot's rule; cast 9 times in its shell with no commander out (2026-11-04)",
       "cites": [
         "log 002",
         "pilot_policy.json wheel-is-a-finisher",
@@ -150,16 +92,6 @@
       ]
     },
     {
-      "card": "Fateful Showdown",
-      "svars": {
-        "NeedsToPlay": "Creature.IsCommander+YouCtrl"
-      },
-      "why": "the twenty-game run at olivers-table (2026-10-21): every wheel that fired with no commander out was unhinted — Fateful Showdown 3 of 7; it is a self-wheel whose discards pay Brallin, so it waits for a commander like the rest",
-      "cites": [
-        "olivers-table n20 e9cc7abe ov86dd61c1"
-      ]
-    },
-    {
       "card": "Izzet Signet",
       "svars": {
         "PlayMain1": "TRUE"
@@ -181,16 +113,6 @@
     },
     {
       "card": "Mind Stone",
-      "svars": {
-        "PlayMain1": "TRUE"
-      },
-      "why": "draw-engine-v1 adds it (2026-11-04). All 13 rock casts in the branch's shells landed in Main 2 (Boros Signet 3 of 3, Mind Stone 6 of 6, Thought Vessel 4 of 4), and an A/B must pilot both arms under the same rules: the deck's own Sol Ring, Arcane Signet and Izzet Signet carry PlayMain1. Generated per card stem, so every seat that runs it reads it too.",
-      "cites": [
-        "branch draw-engine-v1 cast check logs 20261104-223801"
-      ]
-    },
-    {
-      "card": "Thought Vessel",
       "svars": {
         "PlayMain1": "TRUE"
       },
@@ -229,17 +151,6 @@
         "HasAttackEffect": "TRUE"
       },
       "why": "the deck kills with 21 commander damage from one commander; EquipMe makes Forge's attach AI choose this creature before any other scoring (46 shipped scripts carry it), HasAttackEffect makes the attack AI count it as an effective attacker",
-      "cites": [
-        "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
-        "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
-      ]
-    },
-    {
-      "card": "Lightning Greaves",
-      "svars": {
-        "AttachAi": "AITgts$ Card.IsCommander+YouCtrl"
-      },
-      "why": "AI-only: narrows the equip AI's choice to a commander; legality untouched, and with no commander out the filter is empty and Forge falls back to any creature (tenza_godos_maul.txt ships the same SVar)",
       "cites": [
         "voltron-v1 A/B look 1 (2026-10-22): 39 of 84 equips onto non-commanders; Shabraz attacked 62 times in 75 games",
         "forge 2.0.14 AttachAi.attachAIPumpPreference (EquipMe) / ComputerUtil.filterAITgts (AITgts) / AiAttackController (HasAttackEffect)"
