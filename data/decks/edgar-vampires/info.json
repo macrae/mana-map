@@ -69,22 +69,22 @@
             "name": "Falkenrath Noble"
           },
           {
-            "name": "Malakir Bloodwitch"
-          },
-          {
             "name": "Oathsworn Vampire"
           },
           {
             "name": "Teysa Karlov"
           },
           {
-            "name": "Utter End"
-          },
-          {
             "name": "Vanishing Verse"
           }
         ],
         "unsleeve": [
+          {
+            "name": "Reassembling Skeleton",
+            "where": [
+              "meren-recursion"
+            ]
+          },
           {
             "name": "Swords to Plowshares",
             "where": [
@@ -105,6 +105,12 @@
         "free": [],
         "box": [
           {
+            "name": "Bastion of Remembrance",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Pitiless Plunderer",
             "where": [
               "Hapatra"
@@ -115,31 +121,36 @@
             "where": [
               "Hapatra"
             ]
+          },
+          {
+            "name": "Zulaport Cutthroat",
+            "where": [
+              "Hapatra"
+            ]
           }
         ],
-        "blocking": 9,
+        "blocking": 8,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 12,
+      "out": 12,
       "counts": {
-        "in_deck": 86,
-        "box": 2,
-        "elsewhere": 2,
-        "buy": 7,
+        "in_deck": 85,
+        "box": 4,
+        "elsewhere": 3,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
         "Elas il-Kor, Sadistic Pilgrim",
         "Falkenrath Noble",
-        "Malakir Bloodwitch",
         "Oathsworn Vampire",
+        "Reassembling Skeleton",
         "Swords to Plowshares",
         "Teysa Karlov",
         "The Meathook Massacre",
-        "Utter End",
         "Vanishing Verse"
       ],
       "mergeable": false,
@@ -193,6 +204,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Bastion of Remembrance",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Battlefield Forge",
@@ -468,13 +491,6 @@
           "is_new": false
         },
         {
-          "name": "Malakir Bloodwitch",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Mana Confluence",
           "state": "in_deck",
           "where": [],
@@ -590,6 +606,28 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Reassembling Skeleton",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "yawgmoth-swarm",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Reflecting Pool",
@@ -802,13 +840,6 @@
           "is_new": false
         },
         {
-          "name": "Utter End",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Vampiric Tutor",
           "state": "in_deck",
           "where": [],
@@ -872,13 +903,6 @@
           "is_new": false
         },
         {
-          "name": "Wispdrinker Vampire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Wooded Foothills",
           "state": "in_deck",
           "where": [],
@@ -891,14 +915,26 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Zulaport Cutthroat",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true,
       "summary": {
-        "title": "Vampires as fuel, drain as the engine: answers plus a four-card loop",
-        "blurb": "Trades combat lords and slow cards for cheap answers to the fast table (Swords, Vanishing Verse, Utter End), death-trigger engines (Teysa, Skullclamp, Falkenrath Noble, Elas, Bloodwitch, Meathook) and the Oathsworn plus Plunderer drain loop.",
+        "title": "Vampires as fuel, drain as the engine: answers plus two loop families",
+        "blurb": "Trades combat lords and slow cards for cheap answers to the fast table, each-opponent death drains, Skullclamp and Teysa, and two loop families built on Pitiless Plunderer and Ashnod's Altar (Oathsworn Vampire, Reassembling Skeleton), with no two-card infinite.",
         "by": "jarvis",
-        "at": "2026-11-11"
+        "at": "2026-11-12"
       },
       "verdict": {
         "state": "no objective",
@@ -906,7 +942,8 @@
         "fell": 7,
         "no_call": 1
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Deflecting Swat",
@@ -20369,7 +20406,8 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1` needs 9 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
+    "branch `threat-v1`: 12 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×7",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
