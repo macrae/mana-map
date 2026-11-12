@@ -1467,19 +1467,42 @@ def _sven_prewarm():
         console.err(f"  sven: prewarm failed ({type(exc).__name__}: {exc})")
 
 
-def _code_stamp():
-    """The source tree's newest `.py` mtime and file count: cheap (one stat per
-    file), and it moves the moment any module is edited, added or removed."""
-    root = Path(__file__).resolve().parent
-    stamps = [p.stat().st_mtime_ns for p in root.rglob("*.py")]
-    return (max(stamps, default=0), len(stamps))
+def _loaded_sources():
+    """`{path: sha256}` of every `manamap` module this process has imported."""
+    import hashlib
+    import sys as _sys
+    root = str(Path(__file__).resolve().parent)
+    out = {}
+    for mod in list(_sys.modules.values()):
+        f = getattr(mod, "__file__", None) or ""
+        if f.endswith(".py") and f.startswith(root):
+            try:
+                out[f] = hashlib.sha256(Path(f).read_bytes()).hexdigest()
+            except OSError:
+                pass
+    return out
 
 
-#: THE CODE THIS WORKER IMPORTED (2026-11-12). A warm worker holds modules it read at
-#: boot; after an edit it served the OLD `scenario_facts` to a stack resolver, which
-#: was then told two branch cards were outside the deck. `_cli` refuses once the tree
-#: moves, and the terminal client fails open to a local run on the current code.
-_BOOT_CODE = _code_stamp()
+#: THE CODE THIS WORKER IS RUNNING (2026-11-12). A warm worker keeps the modules it
+#: imported; after an edit it served the OLD `scenario_facts` to a stack resolver. Each
+#: module's source is hashed when first seen loaded, and `_cli` refuses once any of
+#: them changes CONTENT — the terminal client then fails open to a local run on the
+#: current code. Content, not mtime, and loaded modules only: a first cut stamped every
+#: `.py` file's mtime and the test suite tripped it mid-run (prepush, 2026-11-12).
+_LOADED = {}
+
+
+def _stale_modules():
+    """Loaded modules whose source changed since they were first seen; records any
+    newly loaded ones as current."""
+    now = _loaded_sources()
+    stale = sorted(f for f, h in now.items() if f in _LOADED and _LOADED[f] != h)
+    for f, h in now.items():
+        _LOADED.setdefault(f, h)
+    return stale
+
+
+_stale_modules()
 
 
 def _cli(argv=None):
@@ -1495,9 +1518,11 @@ def _cli(argv=None):
 
     from manamap.pilot.registry import add_pilot_parser, run_pilot_step
 
-    if _code_stamp() != _BOOT_CODE:
-        raise ValueError("cli: this server's code is older than the source on disk; "
-                         "the command runs locally instead — restart `manamap serve`")
+    stale = _stale_modules()
+    if stale:
+        raise ValueError("cli: this server's code is older than the source on disk ("
+                         + ", ".join(Path(f).name for f in stale[:3])
+                         + "); the command runs locally instead — restart `manamap serve`")
     argv = [str(a) for a in (argv or [])]
     if not argv:
         raise ValueError("cli: no argv")
