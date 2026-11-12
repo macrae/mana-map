@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
+- **Version:** V21 · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 34 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 7 known lines (7 infinite, 0 two-card) · 207 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -132,7 +132,7 @@ Mostly untapped duals and fetches for both colours, plus spells that double as l
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on V21, 2026-11-12. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**

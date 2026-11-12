@@ -971,6 +971,23 @@
             "better_is": "higher"
           }
         ]
+      },
+      "cast_proofs": {
+        "played": 11,
+        "held": 0,
+        "unplayed": 0,
+        "as_of": "2026-11-11",
+        "harness": {
+          "overrides": "05232d6155ee",
+          "patches": "9473cf359146",
+          "forge": {
+            "version": "2.0.14",
+            "build": "2026-08-08 22:49:26"
+          },
+          "jar": "forge-gui-desktop-2.0.14-mm-telemetry.jar",
+          "profile": "mm-edgar-vampires",
+          "profile_sha": "f7c3b6a8cec1"
+        }
       }
     },
     {
@@ -7308,6 +7325,12 @@
             ]
           },
           {
+            "name": "Orcish Bowmasters",
+            "where": [
+              "valgavoth"
+            ]
+          },
+          {
             "name": "Plains",
             "where": [
               "emiel-blink",
@@ -7320,12 +7343,6 @@
         ],
         "proxy": [],
         "free": [
-          {
-            "name": "Orcish Bowmasters",
-            "where": [
-              "hapatra"
-            ]
-          },
           {
             "name": "Spectator Seating",
             "where": [
@@ -7391,7 +7408,7 @@
             ]
           }
         ],
-        "blocking": 25,
+        "blocking": 26,
         "procurement": null
       },
       "base_version": 3,
@@ -7401,9 +7418,9 @@
       "counts": {
         "in_deck": 60,
         "box": 9,
-        "elsewhere": 2,
+        "elsewhere": 3,
         "buy": 23,
-        "free": 2
+        "free": 1
       },
       "unsourced": [
         "Bloodflow Connoisseur",
@@ -7422,6 +7439,7 @@
         "Mondrak, Glory Dominus",
         "Nighthawk Scavenger",
         "Nomad Outpost",
+        "Orcish Bowmasters",
         "Plains",
         "Shared Animosity",
         "Species Specialist",
@@ -7433,7 +7451,7 @@
         "Winds of Abandon"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 1,
       "cards": [
         {
           "name": "Akroma's Will",
@@ -7900,9 +7918,16 @@
               "locked": false,
               "status": "broken-down",
               "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
+              "status": null,
+              "apart": false
             }
           ],
-          "free": true,
+          "free": false,
           "is_new": true
         },
         {
@@ -20197,7 +20222,7 @@
     "tokens_observed": 2.96
   },
   "experiments": {
-    "count": 2,
+    "count": 4,
     "latest": {
       "question": "working copy  vs  working copy, same table (A/A: one list, two seeds)",
       "at": "2026-10-03",

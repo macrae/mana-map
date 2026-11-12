@@ -1,0 +1,362 @@
+{
+  "slug": "valgavoth",
+  "commander": [
+    "Valgavoth, Harrower of Souls"
+  ],
+  "lifecycle": null,
+  "stage": "dev",
+  "gates": {
+    "to": "bench",
+    "met": 4,
+    "of": 6,
+    "blocking": [
+      "combo audit",
+      "engine declared"
+    ]
+  },
+  "colour_identity": [
+    "B",
+    "R"
+  ],
+  "size": 100,
+  "lands": 36,
+  "status": {
+    "complete": 6,
+    "of": 19,
+    "stale": [],
+    "older_model": [],
+    "invalid": [],
+    "verified": true,
+    "missing": [
+      "bracket",
+      "combos",
+      "targets",
+      "frame",
+      "map",
+      "engine",
+      "stacks",
+      "tutors",
+      "prose",
+      "log",
+      "issue",
+      "sim",
+      "dossier"
+    ],
+    "todo": [
+      {
+        "stage": "bracket",
+        "what": "computed power floor — `bracket-check`",
+        "how": "manamap pilot bracket-check valgavoth"
+      },
+      {
+        "stage": "combos",
+        "what": "known lines and near misses — `deck-combos --write`",
+        "how": "manamap pilot deck-combos valgavoth --write"
+      },
+      {
+        "stage": "targets",
+        "what": "the engine DECLARATION: any_of groups, size = redundancy",
+        "how": "manamap pilot scaffold-targets valgavoth   # a DRAFT to edit — the groups are yours to name; `validate-goldfish-targets valgavoth` checks it"
+      },
+      {
+        "stage": "frame",
+        "what": "the strategist's read — `research-strategy` consult",
+        "how": "/research-strategy — MODE consult, on valgavoth"
+      },
+      {
+        "stage": "map",
+        "what": "the constellation — `deck-map`",
+        "how": "manamap pilot deck-map valgavoth"
+      },
+      {
+        "stage": "engine",
+        "what": "how it RUNS — `analyze-engine` loop",
+        "how": "/analyze-engine valgavoth"
+      },
+      {
+        "stage": "stacks",
+        "what": "checker-passed lines: the only fact tier",
+        "how": "/resolve-stack — one board, one rules domain, cited"
+      },
+      {
+        "stage": "tutors",
+        "what": "the tutor guide — `tutor-guide`",
+        "how": "/write-manual — the tutor guide is one of pilot-notes' artifacts"
+      },
+      {
+        "stage": "prose",
+        "what": "the pilot's notes — `write-manual`",
+        "how": "/write-manual valgavoth"
+      },
+      {
+        "stage": "log",
+        "what": "the captain's log — `deck-notes add`; debriefed by the `debrief` agent",
+        "how": "manamap pilot deck-notes valgavoth add \"<what happened>\" --result win|loss --opponents 3"
+      },
+      {
+        "stage": "issue",
+        "what": "authored identity: name and commander (volume/price are legacy fields)",
+        "how": "AUTHORED: data/decks/valgavoth/issue.json — two keys matter now: {\"deck_name\": \"…\", \"commander\": \"…\"}. A deck that stops being sleeved is marked with `manamap pilot deck-state valgavoth archive|retire|supersede`, never with a status key here. The cover/volume fields were the magazine renderer's (deleted 2026-09-13) and no live surface reads them."
+      },
+      {
+        "stage": "sim",
+        "what": "OPTIONAL Forge probe (2026-10-04): the decision loop is `try`; Forge answers narrow questions — does the AI play this card",
+        "how": "manamap pilot forge-cast-check valgavoth --card \"<name>\""
+      },
+      {
+        "stage": "dossier",
+        "what": "the composed view the deck page fetches — `deck-info --write`",
+        "how": "manamap pilot deck-info valgavoth --write"
+      },
+      {
+        "stage": "sim",
+        "what": "optional: a Forge probe on a card the goldfish cannot see",
+        "how": "manamap pilot forge-cast-check valgavoth --card \"<name>\""
+      }
+    ]
+  },
+  "brief": {
+    "playstyle": null,
+    "commander_rationale": null,
+    "mana": null,
+    "design_rules": [],
+    "win_conditions": null,
+    "targets": {},
+    "notes": "bracket 3 Rakdos hand-size burn: punish opponents on THEIR turn for drawing, holding and discarding cards so Valgavoth draws and grows every round; wheels only with a punisher out; no two-card infinites, no go-wide tokens",
+    "must_include": [
+      "Underworld Dreams",
+      "Fate Unraveler",
+      "Sheoldred, the Apocalypse",
+      "Kederekt Parasite",
+      "Spiteful Visions",
+      "Black Vise",
+      "Viseling",
+      "Lavaborn Muse",
+      "Megrim",
+      "Liliana's Caress",
+      "Wheel of Fortune",
+      "Reforge the Soul",
+      "Dark Deal"
+    ],
+    "must_exclude": []
+  },
+  "branches": [],
+  "diagnostic": null,
+  "bracket": null,
+  "deckcheck": null,
+  "combos": {
+    "absent_because": "no combos.json — run `manamap pilot deck-combos <slug> --write`",
+    "weight": "body"
+  },
+  "paper": null,
+  "record": {
+    "games": 0,
+    "win": 0,
+    "loss": 0,
+    "draw": 0,
+    "last_played": null,
+    "first_played": null,
+    "undebriefed": [],
+    "causes": {},
+    "cause_counts": {},
+    "feel": {},
+    "feel_n": 0,
+    "marks": {},
+    "marks_n": 0,
+    "marked": {}
+  },
+  "model": {
+    "goldfish": {
+      "title": "Goldfish",
+      "facts": {
+        "commander_by_t6": {
+          "value": 94,
+          "tier": "data",
+          "weight": "headline",
+          "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
+          "unit": "%",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
+        },
+        "kill_turn": {
+          "absent_because": "combat is opt-in and this deck has not been re-baselined for it (`model_combat` in goldfish.py)",
+          "weight": "body"
+        },
+        "commander_mean_turn": {
+          "value": 3.868,
+          "tier": "data",
+          "weight": "body",
+          "definition": "mean turn the commander is first cast",
+          "unit": "turn",
+          "source": "goldfish_metrics.json"
+        },
+        "assumptions": {
+          "value": [
+            "Simulates resource development, not full games (no interaction, no removal).",
+            "Draw every turn including turn 1 (multiplayer Commander).",
+            "Under model_hand_limit a hand over seven discards down at end of turn (CR 514.1) unless a permanent or a rest-of-the-game sorcery says no maximum hand size; a commander's own text and a raised limit ('your maximum hand size is ten') are not read.",
+            "Mulligan: keep 7-card hands with 2-5 lands; up to 2 redraws, keep the last. The first is free (CR 103.5c); the second bottoms a card, a land past the fourth or the dearest card.",
+            "The turn deploys before it wheels: the commander, then rocks, payoffs and bodies, then a wheel on what is left, then whatever the wheel found. A wheel or a loot goes first only to dig: no land in hand and a commander still in the zone. A loot waits for a payoff like a wheel.",
+            "Repeatable activations run until the mana, a library floor of LIFE_CHAIN_LIBRARY_FLOOR (10, authored) or a hand of seven stops them, the hand only when no payoff is paid per draw. Treasure pays a repeat only under Smothering Tithe, whose return is the authored TITHE_PAY_RATE (0.5). An activation's draws are not castable that turn: a floor.",
+            "A rock or a land sacrifices itself for a card only with ROCK_SAC_MIN_MANA (7, authored) left after it and nothing in hand that mana wants. Cumulative upkeep is paid to age CUMULATIVE_UPKEEP_MAX_AGE (3, authored). Mystic Remora reads OPPONENT_CASTS_PER_TURN (measured) thinned by OPPONENT_NONCREATURE_SHARE (0.5, authored) at TITHE_PAY_RATE.",
+            "A doubler reaches what its text says: double strike and doubled power, combat only; 'a creature', combat and a creature's noncombat damage; 'a source', all damage; 'noncombat', that. Life loss is not damage and is never multiplied or bonused.",
+            "A symmetric X draw (Prosperity, Fascination) is cast only with a payoff on the table's draws out, and the table draws X. A one-a-turn discard payoff (Monument to Endurance) takes its modes in the printed order. Narset's end step is taken when the turn cast at least as many spells as the hand holds; those discards and draws pay payoffs next main phase, a turn late for pings and on time for counters.",
+            "One land drop per turn when available.",
+            "LANDS ENTER UNTAPPED, ALWAYS, and the one in hand longest is the one played. A tapland costs nothing here and no land is ever chosen over another, so this model CANNOT rank two lands that make the same colours — `mana-analysis` and `mana-fit` are what answer a land question, and they are deterministic for exactly this reason.",
+            "Mana rocks ('{T}: Add') contribute from the turn after they are cast.",
+            "Commander cast on first affordable turn (highest spending priority).",
+            "Bodies count = creatures cast + tokens parsed from 'create ... token' text.",
+            "Target assembly counts cards DRAWN by a turn (cast cards still count).",
+            "X-SPELL DRAW IS PAID FOR OUT OF WHAT IS LEFT. An {X} instant or sorcery that draws X is cast AFTER every other loop has spent what it wanted, with the whole remaining pool, and only when X would be at least 2 — a pilot does not cast Stroke of Genius for one card, and every cheapest-first loop in this module would have, because Scryfall counts {X} as zero and the card's `cmc` is only its fixed part. That floor is the one authored number in this channel. Casting last makes the figure a FLOOR in the other direction too: the spell only ever gets mana nothing else asked for. Corpus sweep: 33 X-cost instants and sorceries that draw X, 28 credited and 5 skipped — a split card whose cmc is both halves, an alternative cost under which X is 0, and three whose X is bounded by a discard or by a graveyard this model does not have.",
+            "CARD DRAW IS ONE A TURN UNLESS `model_draw` IS SET. With the flag on, four channels are modelled — a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, and an ARRIVAL trigger that draws when other creatures or tokens enter (Welcoming Vampire, Caretaker's Talent, Tocasia's Welcome with its mana-value gate), which rides the same single door the ETB damage payoffs use. DEATH-TRIGGERED DRAW (Liliana, Dreadhorde General, Morbid Opportunist, Midnight Reaper) fires on every death this model produces — the sacrifice sweep under `model_sacrifice`, the one-turn copies leaving, and the measured rate under `model_deaths` — honouring 'nontoken' and 'once each turn' (2026-10-19); a deck with no death channel on has no deaths, and the payoff is absent. Activated draw (needs a spending policy this model has no opinion on), X-based draw (board-dependent) and attack-triggered draw outside `model_combat` are NOT modelled and the cards are named in `meta.card_advantage.draw_not_modelled`. A conditional trigger — 'if you control an artifact', 'you may draw', 'you may pay 2 life' — is treated as unmodelled rather than assumed to be on: 39 of the 348 ETB-draw cards in the corpus carry one, and 15 death triggers.",
+            "AN ARRIVAL-DRAW ENGINE NEVER SEES ITS OWN ARRIVAL. Welcoming Vampire is a 2/3 that draws 'whenever one or more OTHER creatures you control with power 2 or less enter'; registered before its own entry it passed its own gate and drew a card it does not draw, overstating edgar-vampires by 22% at turn eight. The deferral applies to every card and not only the ones worded 'other', which understates Tocasia's Welcome and two relatives by one draw on the turn they land.",
+            "ARRIVAL DRAW IS SMALLER WITHOUT `model_combat`, and legitimately so. The channel rides the one door onto the battlefield, which `model_combat` also uses to spawn token copies and ETB-payoff tokens — those are real additional arrivals that do not exist in the resource-only model. Measured on edgar-vampires: 1.264 extra cards by turn ten with both flags against 1.106 with draw alone. Before 2026-08-28 the gap was 1.264 against 0.323, because every call to that door sat inside `if model_combat:` and a draw-only deck silently lost three quarters of its arrival draws.",
+            "HELD-UP INTERACTION is reported as two series and both are FLOORS. This model casts everything it can afford every turn, so `interaction_castable` is what a pilot developing at full speed has left over, not what a pilot choosing to hold up two mana would have. A low figure is therefore a real finding and a high one is unambiguous good news.",
+            "Tutors are modeled as wildcards: a CAST tutor that fetches to hand or the top — including a TYPED one (Worldly Tutor, Sarkhan's Triumph), which the old literal 'a card' match missed entirely — fills ONE missing any_of group. Consumed once, mana paid, and a tutor that puts the card on top of the library costs a turn. An ACTIVATED, ETB or death-triggered tutor does not count, because this model only knows 'drawn and affordable'; nor does a land fetch, which is ramp and has no channel here yet. Reported as the *_assisted figures; the unassisted figures beside them exclude tutors entirely.",
+            "DISCOVER, always on. An instant or sorcery with 'Discover N' is cast like any spell (storm, magecraft and per-cast damage see it), and each resolution — plus one per Zada copy — walks to the first nonland card with mana value N or less and CASTS IT FREE when it has a free door: a ritual, a draw spell, a discover spell, a storm spell, a pump or token copy (with a board, under model_combat), or a body. Any other hit goes to HAND and is cast later at full cost — a floor. The rest go to the bottom in a random order. A permanent's discover (the Hidden lands, an ETB, a death) and discover X are not read.",
+            "CASCADE, always on, the card's OWN keyword only (grants are not read). Every cast — paid, free or a cascade hit's own — walks to the first nonland card with mana value STRICTLY LESS and casts it free through the same doors as Discover; a hit with no free door goes to the bottom with the rest, in a random order (a floor). Copies never cascade. A cascade card no other loop casts is cast late in the main phase for the cascade alone, so it adds nothing to that turn's storm count.",
+            "A FREE-CAST CHAIN IS CAPPED at FREE_CAST_DEPTH_LIMIT nested free casts (8); a hit past it takes the not-cast path. The depth reached and the refusals are reported in metrics.free_cast.",
+            "MAGECRAFT FIRES ON EVERY COPY ('cast or copy'): one event per Zada copy of a spell, at every copy site (draw, pump, untap, storm, discover), counted once per spell however many arms the spell has.",
+            "ENTERS-THE-BATTLEFIELD PAYOFFS are modelled: damage equal to the entering creature's power (Terror of the Peaks), X damage where X counts your board (Scourge of Valkas, Dragon Tempest), a token (Lathliss) and a token COPY of what entered (Miirym). Every arrival fires them — cast, token or copy — and a copy is itself an arrival, so they compound, which is the deck working rather than a bug. A payoff worded 'another NONTOKEN' does not re-trigger on its own tokens, which is the brake the rules already had. A chain is capped at 12 deep. X counts the whole board rather than one subtype: exact where the creatures are Dragons, generous otherwise.",
+            "The COMMANDER joins the battlefield when cast, attacks, and fires its own triggers. It used to be a mana sink and a flag — cast, then dropped — so a 10/10 flier contributed no power and never swung. Commander tax, death and recasting are still not modelled: it is cast once and it stays.",
+            "STATIC cost reduction IS modeled: a commander's eminence from the command zone (live from turn one, unremovable) and typed reducers once they are on the battlefield. It pays GENERIC only and is floored at the coloured pip count, because a discount can never pay a pip. A reduction that SCALES with a board state (Animar, Rakdos, Hamza) is refused rather than counted flat, and cost reduction on artifacts, noncreature spells or a colour is not modeled at all.",
+            "RITUALS ARE CAST WHEN THEY ARE THE DIFFERENCE (2026-10-05): a spell that adds mana (Dark Ritual, Seething Song, Battle Hymn, Brightstone Ritual, Inner Fire) is cast only if its net mana makes a card in hand, or the commander, castable this turn; its mana lasts the turn. Mana Geyser and Jeska's Will / Rousing Refrain read the OPPONENTS' state this model does not have, on two AUTHORED rates in config.py: GEYSER_TAPPED_SHARE (0.5 of their lands still tapped on our turn) and OPPONENT_HAND (4 cards, 7 on a turn a wheel refilled them). Rituals with an additional cost or restricted mana are not read.",
+            "Extra card draw is modelled ONLY behind `model_draw` — the assumption above names its channels. With the flag OFF it is one card per turn, always, which understates every deck by an amount proportional to how much draw it runs: conservative WITHIN a deck and not neutral BETWEEN them. `meta.card_advantage` reports how much of each list that hides, and `meta.card_advantage.draw_not_modelled` names the cards whose draw still has no channel, and is ABSENT rather than empty on a deck where every drawer is read.",
+            "CREATURES TAP WHEN THEY ATTACK (CR 508.1f) and untap at the start of your turn, so an ADDITIONAL COMBAT PHASE is only worth something if something untaps the team. Before this the swing was computed once and multiplied by the phase count, which made an extra combat free damage from a board that had already attacked: ur-dragon's damage at turn ten fell 68.798 -> 59.499 when it was corrected. LANDS still enter untapped, always — that assumption is unchanged and is about lands, not creatures.",
+            "A COMMANDER THAT COPIES A SINGLE-TARGET SPELL across the board is modelled behind `model_commander_copy`, declared per deck and checked against the commander's own text. Zada, Hedron Grinder is the only card in the corpus with the ability. It needs no authored rate: the copy count IS the number of other creatures you control, which this model already measures.",
+            "WHAT A COPIED SPELL DOES is read per effect, and each is one turn unless said otherwise: its draw, a pump (power only — toughness is tracked but no creature blocks here), a PERMANENT +1/+1 counter, a Treasure it creates, double strike, doubled power, damage every creature deals to each opponent, an additional combat phase, and an untap. A spell whose effect is none of these still counts toward the spell count and is otherwise inert.",
+            "THE SPELL COUNT IS TRACKED, so STORM is modelled, as are MAGECRAFT (which fires on a cast OR a copy) and per-cast damage (which fires on a cast only — that difference is a rules fact, not a simplification). Before this there was no spells-cast-this-turn variable at all and storm was unreadable.",
+            "REPLACEMENTS (2026-10-11): a counter replacement (Lae'zel +1, Doubling Season x2) applies per counter EVENT, and a damage replacement that adds (Torbran +2) per damage INSTANCE, each added before any multiplier: each ping, each storm copy, each attacker per strike. An attacker's colours ride on its battlefield entry (cast creatures, commanders, and draw/discard-made tokens such as The Locust God's blue-red Insects); a token from any other maker is colourless here, an understatement.",
+            "OPPONENTS' CASTS (2026-10-11): each opponent casts 1.264 spells a turn, MEASURED from 137,717 Forge turns (sim/pod_behaviour); Rhystic Study's tax is paid at the authored TITHE_PAY_RATE. Mind's Eye pays from mana left untapped at the end of our turn, a floor.",
+            "SPELLS AT A PLAYER (2026-10-11): damage a spell deals to a player counts against the one opponent (\"any target\" included). A spell whose only read effect is that damage is cast at the end of the main phase with what is left; a choose-ONE card whose other mode is read keeps that mode. Only an \"each player\" wheel refills the opponent; \"discard your hand\" and \"target player\" (us) do not. A discard additional cost is paid."
+          ],
+          "tier": "data",
+          "weight": "detail",
+          "definition": "what the seeded model does NOT do; an assumption stated is a model, one hidden is a guess",
+          "source": "goldfish_metrics.json"
+        },
+        "keepable_sevens": {
+          "value": 79,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
+          "unit": "%",
+          "n": 10000,
+          "source": "goldfish_metrics.json"
+        },
+        "mana_by_turn": {
+          "value": {
+            "1": 0.999,
+            "10": 7.594,
+            "2": 2.149,
+            "3": 3.408,
+            "4": 4.265,
+            "5": 5.017,
+            "6": 5.671,
+            "7": 6.207,
+            "8": 6.7,
+            "9": 7.15
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "mana by turn, turns one to ten",
+          "unit": "mana",
+          "source": "goldfish_metrics.json"
+        },
+        "land_drops_by_turn": {
+          "value": {
+            "1": 0.999,
+            "10": 0.37,
+            "2": 0.997,
+            "3": 0.904,
+            "4": 0.776,
+            "5": 0.644,
+            "6": 0.543,
+            "7": 0.464,
+            "8": 0.42,
+            "9": 0.381
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "land drops by turn, turns one to ten",
+          "unit": "rate",
+          "source": "goldfish_metrics.json"
+        },
+        "bodies_by_turn": {
+          "value": {
+            "1": 0.094,
+            "10": 6.397,
+            "2": 0.521,
+            "3": 1.18,
+            "4": 1.897,
+            "5": 2.988,
+            "6": 3.873,
+            "7": 4.613,
+            "8": 5.266,
+            "9": 5.848
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "bodies by turn, turns one to ten",
+          "unit": "creatures",
+          "source": "goldfish_metrics.json"
+        },
+        "opening_land_distribution": {
+          "value": {
+            "0": 361,
+            "1": 1680,
+            "2": 2987,
+            "3": 2807,
+            "4": 1606,
+            "5": 480,
+            "6": 72,
+            "7": 7
+          },
+          "tier": "data",
+          "weight": "detail",
+          "definition": "lands in the opening seven, over every seeded hand",
+          "source": "goldfish_metrics.json"
+        }
+      },
+      "tier": "data",
+      "source": "goldfish_metrics.json",
+      "definition": "10000 seeded games, seed 42; no blockers and no opponent — a floor on speed, never a verdict on board quality"
+    }
+  },
+  "goldfish": {
+    "seed": 42,
+    "iterations": 10000,
+    "commander_mean_cast_turn": 3.868,
+    "commander_cast_by_turn_6_pct": 94,
+    "targets": []
+  },
+  "engine_health": null,
+  "engine": null,
+  "diagnosis": null,
+  "audit": {
+    "archetype": null,
+    "under": [
+      "colour-sources",
+      "interaction-breadth"
+    ],
+    "over": [
+      "protection"
+    ],
+    "stale": []
+  },
+  "prescriptions": {
+    "count": 0,
+    "answered": 0,
+    "latest": null
+  },
+  "open_questions": [],
+  "simulation": null,
+  "experiments": null,
+  "decisions": null,
+  "next": [
+    "not marked as built in paper — if it is sleeved, `deck-version valgavoth paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
+    "nothing in the captain's log — play it, then `deck-notes valgavoth add \"…\" --result win|loss --opponents N`",
+    "try a swap in seconds — `try valgavoth --out \"A\" --in \"B\"`"
+  ],
+  "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
+}

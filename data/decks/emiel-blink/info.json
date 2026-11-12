@@ -23,7 +23,11 @@
     "complete": 11,
     "of": 19,
     "stale": [],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -423,6 +427,7 @@
   "experiments": null,
   "decisions": null,
   "next": [
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug emiel-blink` re-reads them when you want, never on its own",
     "not marked as built in paper — if it is sleeved, `deck-version emiel-blink paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
     "nothing in the captain's log — play it, then `deck-notes emiel-blink add \"…\" --result win|loss --opponents N`",
     "try a swap in seconds — `try emiel-blink --out \"A\" --in \"B\"`"

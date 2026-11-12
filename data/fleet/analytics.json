@@ -441,18 +441,6 @@
    }
   ],
   "kill_curves": {
-   "black-waltz": {
-    "1": 0.0,
-    "10": 0.869,
-    "2": 0.0,
-    "3": 0.0,
-    "4": 0.0,
-    "5": 0.0,
-    "6": 0.004,
-    "7": 0.075,
-    "8": 0.319,
-    "9": 0.67
-   },
    "edgar-vampires": {
     "1": 0.0,
     "10": 0.852,
@@ -575,18 +563,6 @@
    }
   },
   "land_curves": {
-   "black-waltz": {
-    "1": 0.999,
-    "10": 0.565,
-    "2": 0.997,
-    "3": 0.902,
-    "4": 0.776,
-    "5": 0.655,
-    "6": 0.595,
-    "7": 0.564,
-    "8": 0.558,
-    "9": 0.552
-   },
    "edgar-vampires": {
     "1": 0.999,
     "10": 0.581,
@@ -709,18 +685,6 @@
    }
   },
   "mana_curves": {
-   "black-waltz": {
-    "1": 0.999,
-    "10": 7.882,
-    "2": 2.142,
-    "3": 3.191,
-    "4": 4.037,
-    "5": 4.729,
-    "6": 5.388,
-    "7": 6.01,
-    "8": 6.626,
-    "9": 7.242
-   },
    "edgar-vampires": {
     "1": 0.999,
     "10": 8.774,
@@ -960,173 +924,6 @@
   }
  },
  "decks": [
-  {
-   "apart": false,
-   "benchmark": {
-    "answer_cards": {
-     "basis": "CAPACITY counted from card_roles.json, not a measured response",
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "source": "benchmark.json#metrics.response.answer_cards",
-     "stale": false,
-     "value": 28
-    },
-    "classes_covered": {
-     "basis": "of 15 answer classes; CAPACITY",
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "source": "benchmark.json#metrics.response.classes_covered",
-     "stale": false,
-     "value": 2
-    },
-    "harness_version": 1,
-    "kill_by_turn_10": {
-     "basis": "Wilson 95% from k = rate·n at n = 10000",
-     "ci95": [
-      0.8622,
-      0.8755
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.kill_by_turn_10",
-     "stale": false,
-     "value": 0.869
-    },
-    "kill_by_turn_6": {
-     "basis": "Wilson 95% from k = rate·n at n = 10000",
-     "ci95": [
-      0.0029,
-      0.0054
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.kill_by_turn_6",
-     "stale": false,
-     "value": 0.004
-    },
-    "kill_by_turn_8": {
-     "basis": "Wilson 95% from k = rate·n at n = 10000",
-     "ci95": [
-      0.3099,
-      0.3282
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.kill_by_turn_8",
-     "stale": false,
-     "value": 0.319
-    },
-    "mana_at_turn_five": {
-     "basis": "a mean; no interval is stored",
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
-     "stale": false,
-     "value": 4.729
-    },
-    "mana_stdev_turn_five": {
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
-     "stale": false,
-     "value": 1.0731
-    },
-    "median_kill_turn": {
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.median_kill_turn",
-     "stale": false,
-     "value": 9
-    },
-    "missed_land_drop_rate": {
-     "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
-     "ci95": [
-      0.2071,
-      0.2232
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
-     "stale": false,
-     "value": 0.215
-    },
-    "mulligan_rate": {
-     "basis": "Wilson 95% from k = rate·n at n = 10000",
-     "ci95": [
-      0.2011,
-      0.2171
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
-     "stale": false,
-     "value": 0.209
-    },
-    "never_kills_rate": {
-     "basis": "Wilson 95% from k = rate·n at n = 10000",
-     "ci95": [
-      0.1245,
-      0.1378
-     ],
-     "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-     "n": 10000,
-     "source": "benchmark.json#metrics.speed.never_kills_rate",
-     "stale": false,
-     "value": 0.131
-    }
-   },
-   "bracket": {
-    "dti_bracket": null,
-    "floor": null,
-    "floor_name": null,
-    "group": "unbracketed",
-    "group_basis": null,
-    "target": null
-   },
-   "decklist_sha256": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
-   "diagnostic": {
-    "absent_because": "no diagnostic.json — bootstrapped on sleeved decks by `regen`",
-    "source": "diagnostic.json"
-   },
-   "dti": {
-    "absent_because": "no deckcheck.json — scan on DeckCheck, then `deckcheck <slug> --write`",
-    "source": "deckcheck.json"
-   },
-   "format": null,
-   "lifecycle": null,
-   "member": false,
-   "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.913,
-    "comparable": false,
-    "declared_flags": {},
-    "model_version": "75ea059969f2",
-    "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
-   },
-   "placements": {},
-   "price": {
-    "absent_because": "no prices.json — `manamap pilot prices <slug> --write`",
-    "source": "prices.json"
-   },
-   "rating": null,
-   "record": {
-    "by_version": [],
-    "cause_counts": {},
-    "draw": 0,
-    "games": 0,
-    "last_played": null,
-    "loss": 0,
-    "unmatched_games": [],
-    "win": 0
-   },
-   "slug": "black-waltz",
-   "stage": null,
-   "survey": {
-    "absent_because": "no --feel scores logged (`deck-notes add … --feel power=4`)",
-    "source": "log.jsonl#feel"
-   },
-   "table": {
-    "absent_because": "no Forge run on file",
-    "source": "info.json#simulation"
-   }
-  },
   {
    "apart": false,
    "benchmark": {
@@ -5172,7 +4969,7 @@
     "win": 0
    },
    "slug": "valgavoth",
-   "stage": null,
+   "stage": "dev",
    "survey": {
     "absent_because": "no --feel scores logged (`deck-notes add … --feel power=4`)",
     "source": "log.jsonl#feel"
@@ -5904,7 +5701,6 @@
    }
   ],
   "built_from": {
-   "black-waltz": "c34561cbde33eca90b18aa2fe80cdebd72f7832b8db6d16659d0558116c5d167",
    "edgar-vampires": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
    "elves": "47cac356359692e6caf5ea1572d478bf36527bcc4ab4d1fc16c0ae34a82315c4",
    "emiel-blink": "fc108f78135a73a561fc4672bd8e4ddfd8ae4e3171bd0bb75735455bdc9986a4",
@@ -5939,7 +5735,6 @@
   },
   "min_group": 3,
   "model_version": {
-   "black-waltz": "75ea059969f2",
    "edgar-vampires": "75ea059969f2",
    "elves": null,
    "emiel-blink": "ac1f8a6f777f",

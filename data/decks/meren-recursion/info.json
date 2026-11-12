@@ -891,14 +891,12 @@
           {
             "name": "Forbidden Orchard",
             "where": [
-              "black-waltz",
               "emiel-blink"
             ]
           },
           {
             "name": "Opal Palace",
             "where": [
-              "black-waltz",
               "emiel-blink",
               "valgavoth"
             ]
@@ -906,7 +904,6 @@
           {
             "name": "Spire of Industry",
             "where": [
-              "black-waltz",
               "emiel-blink",
               "sharknado",
               "ur-dragon",
@@ -916,7 +913,6 @@
           {
             "name": "Talon Gates of Madara",
             "where": [
-              "black-waltz",
               "emiel-blink",
               "valgavoth"
             ]
@@ -1748,13 +1744,6 @@
           "where": [
             {
               "kind": "deck",
-              "slug": "black-waltz",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
               "slug": "emiel-blink",
               "locked": false,
               "status": null,
@@ -2053,13 +2042,6 @@
           "where": [
             {
               "kind": "deck",
-              "slug": "black-waltz",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
               "slug": "emiel-blink",
               "locked": false,
               "status": null,
@@ -2258,13 +2240,6 @@
           "where": [
             {
               "kind": "deck",
-              "slug": "black-waltz",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
-            {
-              "kind": "deck",
               "slug": "emiel-blink",
               "locked": false,
               "status": null,
@@ -2366,13 +2341,6 @@
           "name": "Talon Gates of Madara",
           "state": "elsewhere",
           "where": [
-            {
-              "kind": "deck",
-              "slug": "black-waltz",
-              "locked": false,
-              "status": null,
-              "apart": false
-            },
             {
               "kind": "deck",
               "slug": "emiel-blink",
@@ -3287,9 +3255,8 @@
     ]
   },
   "next": [
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V21 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 1 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `budget-v1` needs 1 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",

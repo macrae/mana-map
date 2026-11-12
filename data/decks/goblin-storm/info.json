@@ -15,7 +15,11 @@
     "complete": 18,
     "of": 19,
     "stale": [],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [
@@ -3082,7 +3086,8 @@
           {
             "name": "Mithril Coat",
             "where": [
-              "ur-dragon"
+              "ur-dragon",
+              "valgavoth"
             ]
           }
         ],
@@ -3491,6 +3496,13 @@
               "kind": "deck",
               "slug": "ur-dragon",
               "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
               "status": null,
               "apart": false
             }
@@ -3959,7 +3971,8 @@
           {
             "name": "Mithril Coat",
             "where": [
-              "ur-dragon"
+              "ur-dragon",
+              "valgavoth"
             ]
           }
         ],
@@ -4389,6 +4402,13 @@
               "kind": "deck",
               "slug": "ur-dragon",
               "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
               "status": null,
               "apart": false
             }
@@ -5663,6 +5683,7 @@
     ]
   },
   "next": [
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug goblin-storm` re-reads them when you want, never on its own",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck goblin-storm --write`",
     "diagnosis.json describes an older list — `/diagnose-deck goblin-storm`",
     "open questions routed: diagnose ×4, goldfish ×6, research-strategy ×1, resolve-stack ×6",
