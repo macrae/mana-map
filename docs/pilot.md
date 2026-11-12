@@ -2116,6 +2116,9 @@ sacrificed to pay a cost stays LISTED with the `— already sacrificed to pay th
 cost of the ability now on the stack` annotation and is NOT on the battlefield;
 `mana_available` leads with symbols (`"{0}"` for none, never `""`); and every card
 named must resolve against `cards.json` apart from tokens and opponents' permanents.
+A scenario about a BRANCH sets a top-level `"branch": "<name>"` (2026-11-12, edgar 013):
+`scenario-facts` and the gate then read that branch's `cards.json`, so its cards count as
+bodies and are not warned about as outside the 99.
 `extras` is non-normative scaffolding. Run `manamap pilot scenario-facts <slug>`
 before authoring — it derives the board split, the per-opponent vs pod-total
 arithmetic, deck membership, and which siblings are comparable.

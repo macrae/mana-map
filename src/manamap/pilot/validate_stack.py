@@ -195,12 +195,13 @@ def unknown_cards(doc, slug):
     not in your deck by definition) and never tokens (never in a decklist).
     """
     from manamap.pilot.common import load_deck_cards
-    from manamap.pilot.scenario_facts import (board_bodies, membership,
+    from manamap.pilot.scenario_facts import (board_bodies, membership, stack_branch,
                                               unconditional_creatures)
 
     scenario = doc.get("scenario") or {}
+    branch = stack_branch(slug, doc)     # a scenario about a branch reads its list
     try:
-        cards = load_deck_cards(slug)["cards"]
+        cards = load_deck_cards(slug, branch)["cards"]
     except Exception:
         return [], []                   # no cards.json yet — not this check's job
     # Index each DFC face as well as the full name on BOTH sides. `cards.json`
@@ -216,7 +217,7 @@ def unknown_cards(doc, slug):
         named = game_state.our_named_cards(scenario)
     else:
         you = board_bodies((scenario.get("board") or {}).get("you"),
-                           unconditional_creatures(slug))
+                           unconditional_creatures(slug, branch))
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
         named += [h for h in (scenario.get("hand") or []) if isinstance(h, str)]
 

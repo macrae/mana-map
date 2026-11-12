@@ -1,0 +1,520 @@
+{
+  "id": "013",
+  "slug": "plunderer-altar-skeleton-loop",
+  "deck": "edgar-vampires",
+  "branch": "threat-v1",
+  "title": "Pitiless Plunderer + Ashnod's Altar + Reassembling Skeleton: is the loop mana-positive?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Pitiless Plunderer",
+        "Ashnod's Altar",
+        "Zulaport Cutthroat",
+        "Reassembling Skeleton — already sacrificed to pay the cost of Ashnod's Altar's mana ability, now in your graveyard",
+        "Swamp x4 (tapped)",
+        "Plains x2 (tapped)"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Reassembling Skeleton"
+    ],
+    "mana_available": "{C}{C} in your mana pool from Ashnod's Altar; every land tapped",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Pitiless Plunderer triggered ability",
+        "controller": "you",
+        "note": "Reassembling Skeleton died; create a Treasure token"
+      },
+      {
+        "pos": 1,
+        "object": "Zulaport Cutthroat triggered ability",
+        "controller": "you",
+        "note": "Reassembling Skeleton died; each opponent loses 1 life and you gain 1 life"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Branch threat-v1 of edgar-vampires (data/decks/edgar-vampires/branches/threat-v1/cards.json) runs Pitiless Plunderer, Reassembling Skeleton and Zulaport Cutthroat; the sleeved list does not yet. It is your main phase and no opponent responds. Ashnod's Altar's ability is a mana ability and does not use the stack.",
+      "assumptions": "No opponent interacts; the question is whether the loop sustains itself and what each cycle nets."
+    },
+    "question": "Resolve both triggers, then: using the {C}{C} in your pool and the Treasure, can you pay {1}{B} for Reassembling Skeleton's ability, return it to the battlefield tapped, and sacrifice it to Ashnod's Altar again — and does every such cycle leave you with more mana than it started with, so it repeats indefinitely within this main phase? State the net mana and the life each opponent loses per cycle, and whether the Skeleton returning tapped matters."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Starting position. Reassembling Skeleton has already been sacrificed to Ashnod's Altar ('Sacrifice a creature: Add {C}{C}.'). The Altar's ability is a mana ability: no target, adds mana, not loyalty. It resolved immediately, off the stack, putting {C}{C} into your pool. Skeleton died, and the trigger events of Pitiless Plunderer ('Whenever another creature you control dies, create a Treasure token') and Zulaport Cutthroat ('Whenever this creature or another creature you control dies, each opponent loses 1 life and you gain 1 life') both matched.",
+        "effect": "Pool {C}{C}. Skeleton in the graveyard. Two triggers on the stack: Plunderer at pos 0 (bottom) and Zulaport at pos 1 (top). Lands all tapped. Hand empty.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          },
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All players pass. Zulaport Cutthroat's trigger (top) resolves.",
+        "effect": "Each opponent loses 1 life: 40 -> 39 at each of the three seats, 3 across the pod. You gain 1 life. The scenario does not give your starting life, so only the +1 is stated. Pool still {C}{C}: mana stays in the pool until the end of the step or phase, and this is still your main phase.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "106.4",
+            "quote": "it can stay in the player’s mana pool as unspent mana. Each player’s mana pool empties at the end of each step and phase"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "State-based actions are checked and you get priority (no player is at 0 or less). All players pass. Pitiless Plunderer's trigger resolves.",
+        "effect": "You create one Treasure token. It is a noncreature artifact, it enters untapped, and summoning sickness does not stop its {T} ability because that rule applies only to creatures. The stack is empty. You hold {C}{C} in the pool and an untapped Treasure.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          },
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Cycle begins. You activate Reassembling Skeleton's ability ('{1}{B}: Return this card from your graveyard to the battlefield tapped.') from the graveyard, which is the only zone it works in. While paying, you activate the Treasure's mana ability: tap and sacrifice it for {B}. Then you pay {1} with one {C} from the pool and {B} with the Treasure's black.",
+        "effect": "Cost {1}{B} paid in full. Pool after payment: {C}. Treasure gone. The Treasure is not a creature, so sacrificing it does not trigger Plunderer or Zulaport. The ability is on the stack. The Treasure is the ONLY source of {B} on this board (the Altar makes only {C} and every land is tapped), so each cycle depends on the previous cycle's Plunderer trigger resolving before the next activation.",
+        "citations": [
+          {
+            "rule": "113.6m",
+            "quote": "A player may activate this ability only if Reassembling Skeleton is in their graveyard."
+          },
+          {
+            "rule": "602.2b",
+            "quote": "The remainder of the process for activating an ability is identical to the process for casting a spell listed in rules 601.2b–i."
+          },
+          {
+            "rule": "601.2g",
+            "quote": "If the total cost includes a mana payment, the player then has a chance to activate mana abilities (see rule 605, “Mana Abilities”)."
+          },
+          {
+            "rule": "605.3a",
+            "quote": "whenever they are casting a spell or activating an ability that requires a mana payment"
+          },
+          {
+            "rule": "107.4b",
+            "quote": "Generic mana in costs can be paid with any type of mana."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "All players pass. Skeleton's ability resolves.",
+        "effect": "Reassembling Skeleton returns to the battlefield TAPPED. You receive priority. Pool {C}.",
+        "citations": [
+          {
+            "rule": "608.1",
+            "quote": "Each time all players pass in succession, the spell or ability on top of the stack resolves."
+          },
+          {
+            "rule": "117.3b",
+            "quote": "The active player receives priority after a spell or ability (other than a mana ability) resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "Holding priority, you activate Ashnod's Altar and sacrifice the tapped Skeleton.",
+        "effect": "It being tapped does not matter. The Altar's cost is only 'Sacrifice a creature' with no {T} symbol, so neither the tapped-permanent restriction on costs nor summoning sickness applies. The mana ability resolves at once: pool {C} + {C}{C} = {C}{C}{C}. Skeleton dies again, and Plunderer and Zulaport both trigger once.",
+        "citations": [
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "405.6c",
+            "quote": "Mana abilities resolve immediately."
+          },
+          {
+            "rule": "118.3",
+            "quote": "a permanent that’s already tapped can’t be tapped to pay a cost."
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "The next time you would receive priority, the game checks state-based actions and you put both triggers on the stack in any order. All players pass twice and both resolve, Zulaport and then Plunderer, or the other way round. The order does not change the result.",
+        "effect": "Each opponent loses 1 life (39 -> 38), so the pod loses 3, and you gain 1. One new untapped Treasure. End of cycle: pool {C}{C}{C} plus one Treasure. The cycle started with {C}{C} plus one Treasure, so you are back at the same board with exactly one extra {C}.",
+        "citations": [
+          {
+            "rule": "603.3",
+            "quote": "Once an ability has triggered, its controller puts it on the stack as an object that’s not a card the next time a player would receive priority."
+          },
+          {
+            "rule": "704.3",
+            "quote": "otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "in any order they choose."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "Repeat. Every action in the loop is optional, because activating the Skeleton and sacrificing it are your choices. So it is not a mandatory loop that draws the game. You may name a shortcut: a number of iterations that ends at a point where you have priority.",
+        "effect": "After N cycles the pool holds {C} x (2+N). Opponents are each at 39-N and you have gained 1+N in total. At N = 39 (40 deaths counting the one already paid), every opponent is at 0. State-based actions then make all three lose the game together at the next check. The pool empties at the end of the main phase, so excess {C} must be spent in this phase or is lost. The loop itself is unbounded within the phase.",
+        "citations": [
+          {
+            "rule": "104.4b",
+            "quote": "Loops that contain an optional action don’t result in a draw."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "This sequence may be a non-repetitive series of choices, a loop that repeats a specified number of times"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          },
+          {
+            "rule": "106.4",
+            "quote": "Each player’s mana pool empties at the end of each step and phase, and the player is said to lose this mana."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "YES, the loop is mana-positive. Each cycle spends {1}{B}: one {C} from the pool plus the Treasure as {B}. It returns {C}{C} from Ashnod's Altar and a fresh Treasure from Pitiless Plunderer, for a net +{C} per cycle with the Treasure replaced. It also drains 1 from EACH opponent per cycle (3 across the pod) and gains you 1. The Skeleton returning tapped does not matter, because the Altar's cost has no {T}. The binding constraint is colour: the Treasure is the only {B} source, so every cycle must wait for Plunderer's trigger to resolve. Only {C} accumulates, and it empties at the end of the main phase. From 40/40/40, the pending Zulaport trigger plus 39 cycles take all three opponents to 0, and they lose to state-based actions.",
+      "you": {
+        "mana_pool": "{C} x (2+N) after N cycles, plus one untapped Treasure; lost at end of phase",
+        "life": "+1 per Skeleton death (starting life not given in scenario)",
+        "battlefield": [
+          "Pitiless Plunderer",
+          "Ashnod's Altar",
+          "Zulaport Cutthroat",
+          "Treasure token",
+          "Swamp x4 (tapped)",
+          "Plains x2 (tapped)"
+        ],
+        "graveyard": [
+          "Reassembling Skeleton (between cycles)"
+        ]
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": "39 - N; 0 at N = 39"
+        },
+        {
+          "seat": "opponent_2",
+          "life": "39 - N; 0 at N = 39"
+        },
+        {
+          "seat": "opponent_3",
+          "life": "39 - N; 0 at N = 39"
+        }
+      ],
+      "per_cycle": {
+        "net_mana": "+{C} (colorless only; the {B} is consumed and replaced by the new Treasure)",
+        "life_per_opponent": -1,
+        "life_pod_total": -3,
+        "your_life": 1,
+        "skeleton_tapped_matters": false
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Verbatim. Ashnod's Altar (oracle 'Sacrifice a creature: Add {C}{C}.') has no target, adds mana, not loyalty: a mana ability."
+      },
+      {
+        "step": 1,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": "Verbatim. Establishes the Altar's ability resolved off the stack."
+      },
+      {
+        "step": 1,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Verbatim first sentence; sacrifice moves battlefield -> graveyard."
+      },
+      {
+        "step": 1,
+        "rule": "700.4",
+        "status": "supported",
+        "note": "Verbatim; the sacrifice is a death, matching both trigger events (oracle checked in branches/threat-v1/cards.json)."
+      },
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Verbatim first sentence. Plunderer ('another creature you control dies') and Zulaport ('this creature or another creature you control dies') both match Skeleton's death."
+      },
+      {
+        "step": 1,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Accurate fragment of the first-part clause; in context (multiple abilities triggered since last priority, controller orders them) it supports Plunderer bottom / Zulaport top as the scenario's chosen order."
+      },
+      {
+        "step": 2,
+        "rule": "405.5",
+        "status": "supported",
+        "note": "Verbatim; top object (Zulaport trigger) resolves."
+      },
+      {
+        "step": 2,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim. Per-seat 40->39 and pod 3 are stated separately, consistent with scenario-facts drain_arithmetic (3 opponents, 40 each)."
+      },
+      {
+        "step": 2,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Accurate fragments; mana persists within the main phase."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Verbatim fragment; SBA check before priority, correctly applied."
+      },
+      {
+        "step": 3,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Verbatim."
+      },
+      {
+        "step": 3,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "Verbatim; Treasure is a colorless noncreature artifact token."
+      },
+      {
+        "step": 3,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "Verbatim; Treasure enters untapped."
+      },
+      {
+        "step": 3,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Verbatim; the rule is scoped to creatures, so a noncreature Treasure's {T} ability is usable immediately."
+      },
+      {
+        "step": 4,
+        "rule": "113.6m",
+        "status": "supported",
+        "note": "Verbatim (the rule's own Reassembling Skeleton example); ability works only from the graveyard."
+      },
+      {
+        "step": 4,
+        "rule": "602.2b",
+        "status": "supported",
+        "note": "Verbatim first sentence."
+      },
+      {
+        "step": 4,
+        "rule": "601.2g",
+        "status": "supported",
+        "note": "Verbatim first sentence; mana abilities (Treasure) activated during payment. The rule's second sentence (mana abilities before costs are paid) matches the order narrated."
+      },
+      {
+        "step": 4,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "Accurate fragment."
+      },
+      {
+        "step": 4,
+        "rule": "107.4b",
+        "status": "supported",
+        "note": "Accurate fragment; {1} paid with {C}."
+      },
+      {
+        "step": 4,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "Accurate fragment. Payment {C} + Treasure {B} is complete. The claim 'Treasure is the ONLY {B} source' was checked against the board: 6 lands tapped, Altar makes {C}, Plunderer/Zulaport have no mana abilities. It holds."
+      },
+      {
+        "step": 5,
+        "rule": "608.1",
+        "status": "supported",
+        "note": "Verbatim first sentence."
+      },
+      {
+        "step": 5,
+        "rule": "117.3b",
+        "status": "supported",
+        "note": "Verbatim."
+      },
+      {
+        "step": 6,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": "Accurate fragment. Wording nit: 'Holding priority' is loose. The stack is empty and you simply have priority after the Skeleton ability resolved (117.3b). 'Hold priority' normally describes 117.3c. The action is legal either way."
+      },
+      {
+        "step": 6,
+        "rule": "405.6c",
+        "status": "supported",
+        "note": "Accurate fragment."
+      },
+      {
+        "step": 6,
+        "rule": "118.3",
+        "status": "supported",
+        "note": "Accurate fragment; the tapped restriction applies only to tapping as a cost, and the Altar's cost is sacrifice only."
+      },
+      {
+        "step": 6,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "Verbatim; Altar is an artifact (not a creature's ability) and has no {T}; the sacrificed creature's sickness is irrelevant."
+      },
+      {
+        "step": 6,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Verbatim fragment; both triggers fire again."
+      },
+      {
+        "step": 7,
+        "rule": "603.3",
+        "status": "supported",
+        "note": "Verbatim first sentence."
+      },
+      {
+        "step": 7,
+        "rule": "704.3",
+        "status": "supported",
+        "note": "Accurate fragment; waiting triggers are put on the stack during the SBA/priority process."
+      },
+      {
+        "step": 7,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Accurate fragment ('in any order they choose'); order-independence holds since neither trigger affects the other."
+      },
+      {
+        "step": 7,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Verbatim. Arithmetic checked: cycle start {C}{C}+Treasure; pay {C}+Treasure -> {C}; Altar +{C}{C} -> {C}{C}{C}; new Treasure. Net +{C}. Per-seat -1, pod -3, stated separately."
+      },
+      {
+        "step": 8,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": "Accurate fragment; optional actions mean no draw."
+      },
+      {
+        "step": 8,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": "Accurate fragment; ending point is where the active player has priority. 732.2b (others may accept/shorten) is not cited but is moot under the scenario's no-interaction assumption."
+      },
+      {
+        "step": 8,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Verbatim. Arithmetic checked: opponents at 39 after step 2, 39-N after N cycles, 0 at N=39 (40 total Skeleton deaths). Pool {C}x(2+N); life +1+N."
+      },
+      {
+        "step": 8,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "Accurate fragment; excess {C} lost at end of the main phase."
+      }
+    ],
+    "summary_notes": [
+      "All 35 quotes were checked against lookup-rule; every one is verbatim or an accurate fragment.",
+      "Rulings were read for Pitiless Plunderer (2018-01-19) and Zulaport Cutthroat (2021-03-19), which are simultaneous-death clarifications that do not apply here. Ashnod's Altar and Reassembling Skeleton have no official rulings. No step contradicts a ruling.",
+      "Tool disagreement: scenario-facts lists Pitiless Plunderer and Zulaport Cutthroat under other_permanents with creature_bodies [], because it reads the sleeved cards.json. branches/threat-v1/cards.json types both as Creature. The resolution does not depend on the body count beyond Skeleton being 'another creature'.",
+      "The resolution quotes no sibling stack figures, so the comparability check does not apply. validate-stack OK with three not-in-the-99 warnings: the line runs on branch threat-v1, not the sleeved list.",
+      "Missing-step audit is clean: SBA (704.3) at steps 3 and 7, priority after resolution (117.3b) and after mana abilities (405.6c), trigger ordering (603.3b), mana pool emptying (106.4), loop shortcut (732.2a), and mandatory-loop exclusion (104.4b) are all present."
+    ],
+    "iterations": 1
+  }
+}

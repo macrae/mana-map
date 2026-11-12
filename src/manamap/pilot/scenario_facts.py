@@ -75,7 +75,7 @@ def _strip_annotation(entry):
 _CONDITIONAL_CREATURE = re.compile(r"isn't a creature|is not a creature", re.I)
 
 
-def unconditional_creatures(slug):
+def unconditional_creatures(slug, branch=None):
     """Names in this deck that are creatures and cannot stop being one.
 
     A v1 board entry is PROSE — `"Mondrak, Glory Dominus"` carries no `4/4` — so the
@@ -90,7 +90,7 @@ def unconditional_creatures(slug):
 
     def build():
         try:
-            cards = load_deck_cards(slug)["cards"]
+            cards = load_deck_cards(slug, branch)["cards"]
         except Exception:
             return frozenset()
         out = set()
@@ -102,7 +102,8 @@ def unconditional_creatures(slug):
             out.update(expand_faces(c["name"]))
         return frozenset(out)
 
-    return mtime_memo(DECKS_DIR / slug / "cards.json", f"bodies:{slug}", build)
+    path = DECKS_DIR / slug / ("branches/" + branch if branch else "") / "cards.json"
+    return mtime_memo(path, f"bodies:{slug}@{branch or ''}", build)
 
 
 def board_bodies(entries, creatures=None):
@@ -398,6 +399,17 @@ def scenario_named_cards(scenario, creatures=None):
     return out
 
 
+def stack_branch(slug, stack):
+    """The branch a stack scenario is about (its top-level `branch`), or None.
+
+    Only an existing branch with a `cards.json` counts: a name that resolves to
+    nothing reads the sleeved list, as every stack did before the key existed."""
+    br = (stack or {}).get("branch")
+    if not br:
+        return None
+    return br if (deck_dir(slug) / "branches" / br / "cards.json").is_file() else None
+
+
 def analyze(slug, stack_id=None, with_rulings=None):
     """The facts. `with_rulings` defaults to "one stack was asked for" — that is
     how both stack agents call this, and the whole-deck view stays the size it
@@ -409,11 +421,12 @@ def analyze(slug, stack_id=None, with_rulings=None):
     doc = load_deck_cards(slug)
     deck_names = {c["name"] for c in doc["cards"]}
 
-    scenarios = {}
+    scenarios, branches = {}, {}
     for path in sorted((base / "stacks").glob("*.json")):
         stack = json.loads(path.read_text())
         sid = str(stack.get("id") or path.name[:3])
         scenarios[sid] = stack.get("scenario") or {}
+        branches[sid] = stack_branch(slug, stack)
 
     # The deck's own answer to "is this name a creature", so a bare board entry
     # is not read as a non-creature just because the prose omitted a P/T.
@@ -423,14 +436,22 @@ def analyze(slug, stack_id=None, with_rulings=None):
     for sid, sc in scenarios.items():
         if stack_id and sid != stack_id:
             continue
-        you = board_bodies(your_board(sc), creatures)
+        # A SCENARIO ABOUT A BRANCH reads the branch's list (2026-11-12): edgar 013
+        # names three threat-v1 cards, and the sleeved list filed two of them as
+        # non-creatures and the body count as zero.
+        br = branches.get(sid)
+        sc_creatures = unconditional_creatures(slug, br) if br else creatures
+        sc_names = ({c["name"] for c in load_deck_cards(slug, br)["cards"]} if br
+                    else deck_names)
+        you = board_bodies(your_board(sc), sc_creatures)
         opps = opponents_of(sc)
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]
         out["stacks"][sid] = {
+            "branch": br,
             "your_board": you,
             "opponents": opps,
             "drain_arithmetic": drain_arithmetic(opps),
-            "card_membership": membership(named, deck_names),
+            "card_membership": membership(named, sc_names),
             "mana_available": (sc.get("mana_available") if not sc.get("version") == 2
                                else ((game_state_our(sc) or {}).get("mana") or {}).get("available")),
             "hand": (sc.get("hand") if not sc.get("version") == 2
@@ -438,7 +459,7 @@ def analyze(slug, stack_id=None, with_rulings=None):
             "comparable_siblings": comparable_siblings(sid, scenarios, creatures),
             # The named cards' official rulings — INPUT to the resolver and the
             # checker, never a citation. See docs/pilot.md → Rulings.
-            "rulings": (rulings.section(scenario_named_cards(sc, creatures)) if with_rulings
+            "rulings": (rulings.section(scenario_named_cards(sc, sc_creatures)) if with_rulings
                         else {"omitted": "per-scenario; run with --stack NNN"}),
         }
     out["notes"] = _notes(out)

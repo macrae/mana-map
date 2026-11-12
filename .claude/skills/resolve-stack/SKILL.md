@@ -56,6 +56,11 @@ Runs the resolver→checker loop for one scenario and saves the artifact at
    deliberately not yours. The preflight errors on anything else, because a
    scenario naming a card the deck does not have describes a line nobody can play.
 
+   **A line on a BRANCH sets a top-level `"branch": "<name>"`** (beside `deck`).
+   The preflight and `scenario-facts` then read that branch's `cards.json`: its
+   cards count as bodies and are not "outside the 99" (edgar 013, 2026-11-12, where
+   the sleeved list filed two branch creatures as non-creatures).
+
    **`extras` is non-normative.** `note_for_the_resolver`, `assumptions` and
    `life_totals` are scaffolding for the agent, not part of the question. Say
    anything there that helps; it does not change the rules problem.
