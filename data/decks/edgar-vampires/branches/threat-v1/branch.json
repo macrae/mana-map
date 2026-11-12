@@ -1,123 +1,123 @@
 {
- "slug": "edgar-vampires",
- "branch": "threat-v1",
- "v": 2,
- "opened": "2026-11-11",
- "why": "try: blind \u2014 none \u2014 the goldfish does not read Swords to Plowshares, Utter End, Vanishing Verse, Vindicate: judge it (the strategist), model it, or play-test it. Rows withheld \u2014 `--blind-ok` prints them as a CEILING (a blind add) / FLOOR (a blind cut); A rock or land cashes in for its card only with 7 mana left after it (an authored rate)",
- "objective": null,
- "commits": [
-  {
-   "at": "2026-11-12",
-   "decklist_sha256": "795087dbad88624d3d331d8638c410d43b616611ad29bcced72fd5ff6ba273bf",
-   "message": "threat-v1 iteration 2: Utter End -> Reassembling Skeleton (second loop family), Wispdrinker Vampire -> Zulaport Cutthroat (each-opponent drain, second Oathsworn-loop payoff), Malakir Bloodwitch -> Bastion of Remembrance (wipe-proof each-opponent drain); 5 infinite lines, 0 two-card"
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "v": 2,
+  "opened": "2026-11-11",
+  "why": "VAMPIRES ARE THE FUEL, NOT THE ENGINE (the pilot, 2026-11-11): blood drain, life gain, action at a distance, ferocious; pings that snowball, never a two-card infinite. Cheap answers for Oliver's turn-four table (Swords, Vanishing Verse); death and drain engines that hit each opponent or draw (Teysa, Skullclamp, Zulaport, Bastion, Elas, Falkenrath Noble, Meathook); and two loop families on Pitiless Plunderer + Ashnod's Altar — Oathsworn Vampire with Blood Artist or Zulaport, and Reassembling Skeleton (stack 013, checker-passed). Iteration 2 (2026-11-12): Utter End, Wispdrinker Vampire and Malakir Bloodwitch out for Reassembling Skeleton, Zulaport Cutthroat and Bastion of Remembrance. Forge A/B (iteration 1, 200/arm, olivers-table-nov): no resolvable difference on life removed, removal cast doubled; the AI rarely assembles the loop.",
+  "objective": null,
+  "commits": [
+    {
+      "at": "2026-11-12",
+      "decklist_sha256": "795087dbad88624d3d331d8638c410d43b616611ad29bcced72fd5ff6ba273bf",
+      "message": "threat-v1 iteration 2: Utter End -> Reassembling Skeleton (second loop family), Wispdrinker Vampire -> Zulaport Cutthroat (each-opponent drain, second Oathsworn-loop payoff), Malakir Bloodwitch -> Bastion of Remembrance (wipe-proof each-opponent drain); 5 infinite lines, 0 two-card"
+    }
+  ],
+  "base_version": 7,
+  "base_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "staged": [
+    {
+      "at": "2026-11-11",
+      "out": "Anowon, the Ruin Sage",
+      "in": "The Meathook Massacre",
+      "strength": null,
+      "why": "both analysts: a sweeper that drains; Anowon is a symmetric five-mana edict"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Olivia, Crimson Bride",
+      "in": "Vanishing Verse",
+      "strength": null,
+      "why": "instant exile of a monocolored permanent: Purphoros, Krenko"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Deflecting Swat",
+      "in": "Swords to Plowshares",
+      "strength": null,
+      "why": "one-mana instant answer to Krenko the turn he lands"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Ingris Stingerquill",
+      "in": "Utter End",
+      "strength": null,
+      "why": "exiles any nonland permanent incl. an indestructible Purphoros or a Sol Ring"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Phyrexian Arena",
+      "in": "Skullclamp",
+      "strength": null,
+      "why": "two cards per token death; draw axis up, wipe-proof"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Vein Ripper",
+      "in": "Falkenrath Noble",
+      "strength": null,
+      "why": "four-mana flyer that drains on any creature death; recon 103/484"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Sanctum Seeker",
+      "in": "Elas il-Kor, Sadistic Pilgrim",
+      "strength": null,
+      "why": "every Edgar token gains 1 (Vito/Bond drain), every death drains"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Talisman of Hierarchy",
+      "in": "Malakir Bloodwitch",
+      "strength": null,
+      "why": "the archetype's most-run drain finisher (recon 261/484); 8 rocks leave room"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Captivating Vampire",
+      "in": "Teysa Karlov",
+      "strength": null,
+      "why": "doubles every death trigger; Captivating is a flat lord (pilot's rule); Drana and Linvala kept (switches off Krenko)"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Flawless Maneuver",
+      "in": "Pitiless Plunderer",
+      "strength": null,
+      "why": "combo piece: Oathsworn + Plunderer + Ashnod's Altar + any drain-gain (Blood Artist, Celebrant, Noble, Elas) is a four-card infinite; with Teysa a free outlet replaces the Altar. Protection stays in Teferi's Protection and Akroma's Will"
+    },
+    {
+      "at": "2026-11-11",
+      "out": "Midgar, City of Mako",
+      "in": "Oathsworn Vampire",
+      "strength": null,
+      "why": "the loop's recursive Vampire (each recast is an eminence trigger); Midgar always enters tapped and makes only B, which has a source to spare"
+    },
+    {
+      "at": "2026-11-12",
+      "out": "Utter End",
+      "in": "Reassembling Skeleton",
+      "strength": null,
+      "why": ""
+    },
+    {
+      "at": "2026-11-12",
+      "out": "Wispdrinker Vampire",
+      "in": "Zulaport Cutthroat",
+      "strength": null,
+      "why": ""
+    },
+    {
+      "at": "2026-11-12",
+      "out": "Malakir Bloodwitch",
+      "in": "Bastion of Remembrance",
+      "strength": null,
+      "why": ""
+    }
+  ],
+  "summary": {
+    "title": "Vampires as fuel, drain as the engine: answers plus two loop families",
+    "blurb": "Trades combat lords and slow cards for cheap answers to the fast table, each-opponent death drains, Skullclamp and Teysa, and two loop families built on Pitiless Plunderer and Ashnod's Altar (Oathsworn Vampire, Reassembling Skeleton), with no two-card infinite.",
+    "by": "jarvis",
+    "at": "2026-11-12"
   }
- ],
- "base_version": 7,
- "base_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
- "staged": [
-  {
-   "at": "2026-11-11",
-   "out": "Anowon, the Ruin Sage",
-   "in": "The Meathook Massacre",
-   "strength": null,
-   "why": "both analysts: a sweeper that drains; Anowon is a symmetric five-mana edict"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Olivia, Crimson Bride",
-   "in": "Vanishing Verse",
-   "strength": null,
-   "why": "instant exile of a monocolored permanent: Purphoros, Krenko"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Deflecting Swat",
-   "in": "Swords to Plowshares",
-   "strength": null,
-   "why": "one-mana instant answer to Krenko the turn he lands"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Ingris Stingerquill",
-   "in": "Utter End",
-   "strength": null,
-   "why": "exiles any nonland permanent incl. an indestructible Purphoros or a Sol Ring"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Phyrexian Arena",
-   "in": "Skullclamp",
-   "strength": null,
-   "why": "two cards per token death; draw axis up, wipe-proof"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Vein Ripper",
-   "in": "Falkenrath Noble",
-   "strength": null,
-   "why": "four-mana flyer that drains on any creature death; recon 103/484"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Sanctum Seeker",
-   "in": "Elas il-Kor, Sadistic Pilgrim",
-   "strength": null,
-   "why": "every Edgar token gains 1 (Vito/Bond drain), every death drains"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Talisman of Hierarchy",
-   "in": "Malakir Bloodwitch",
-   "strength": null,
-   "why": "the archetype's most-run drain finisher (recon 261/484); 8 rocks leave room"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Captivating Vampire",
-   "in": "Teysa Karlov",
-   "strength": null,
-   "why": "doubles every death trigger; Captivating is a flat lord (pilot's rule); Drana and Linvala kept (switches off Krenko)"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Flawless Maneuver",
-   "in": "Pitiless Plunderer",
-   "strength": null,
-   "why": "combo piece: Oathsworn + Plunderer + Ashnod's Altar + any drain-gain (Blood Artist, Celebrant, Noble, Elas) is a four-card infinite; with Teysa a free outlet replaces the Altar. Protection stays in Teferi's Protection and Akroma's Will"
-  },
-  {
-   "at": "2026-11-11",
-   "out": "Midgar, City of Mako",
-   "in": "Oathsworn Vampire",
-   "strength": null,
-   "why": "the loop's recursive Vampire (each recast is an eminence trigger); Midgar always enters tapped and makes only B, which has a source to spare"
-  },
-  {
-   "at": "2026-11-12",
-   "out": "Utter End",
-   "in": "Reassembling Skeleton",
-   "strength": null,
-   "why": ""
-  },
-  {
-   "at": "2026-11-12",
-   "out": "Wispdrinker Vampire",
-   "in": "Zulaport Cutthroat",
-   "strength": null,
-   "why": ""
-  },
-  {
-   "at": "2026-11-12",
-   "out": "Malakir Bloodwitch",
-   "in": "Bastion of Remembrance",
-   "strength": null,
-   "why": ""
-  }
- ],
- "summary": {
-  "title": "Vampires as fuel, drain as the engine: answers plus two loop families",
-  "blurb": "Trades combat lords and slow cards for cheap answers to the fast table, each-opponent death drains, Skullclamp and Teysa, and two loop families built on Pitiless Plunderer and Ashnod's Altar (Oathsworn Vampire, Reassembling Skeleton), with no two-card infinite.",
-  "by": "jarvis",
-  "at": "2026-11-12"
- }
 }
