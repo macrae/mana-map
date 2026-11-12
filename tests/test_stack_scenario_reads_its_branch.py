@@ -39,3 +39,15 @@ def test_the_brief_counts_branch_creatures_as_bodies():
 def test_the_gate_does_not_call_branch_cards_outside_the_list():
     unknown, elsewhere = validate_stack.unknown_cards(_stack(), SLUG)
     assert unknown == [] and elsewhere == []
+
+
+@pytest.mark.regression
+@requires_deck
+def test_a_back_face_names_the_card_the_deck_runs():
+    """Heliod 007 names "Heliod, the Warped Eclipse"; the brief matched full names
+    only and called the commander's back face outside the deck. Proved by
+    re-introducing the bug: index `deck_names` by full name and this fails."""
+    if not list((deck_dir("heliod") / "stacks").glob("007-*.json")):
+        pytest.skip("heliod stack 007 is not on disk")
+    facts = scenario_facts.analyze("heliod", "007", with_rulings=False)["stacks"]["007"]
+    assert "Heliod, the Warped Eclipse" not in facts["card_membership"]["NOT_IN_THE_DECK"]

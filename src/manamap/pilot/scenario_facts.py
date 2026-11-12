@@ -419,7 +419,9 @@ def analyze(slug, stack_id=None, with_rulings=None):
         with_rulings = stack_id is not None
     base = deck_dir(slug)
     doc = load_deck_cards(slug)
-    deck_names = {c["name"] for c in doc["cards"]}
+    # Faces as well as full names, as `validate_stack.unknown_cards` reads them: a
+    # scenario naming "Heliod, the Warped Eclipse" names the card the deck runs.
+    deck_names = {f for c in doc["cards"] for f in expand_faces(c["name"])}
 
     scenarios, branches = {}, {}
     for path in sorted((base / "stacks").glob("*.json")):
@@ -441,8 +443,8 @@ def analyze(slug, stack_id=None, with_rulings=None):
         # non-creatures and the body count as zero.
         br = branches.get(sid)
         sc_creatures = unconditional_creatures(slug, br) if br else creatures
-        sc_names = ({c["name"] for c in load_deck_cards(slug, br)["cards"]} if br
-                    else deck_names)
+        sc_names = ({f for c in load_deck_cards(slug, br)["cards"] for f in expand_faces(c["name"])}
+                    if br else deck_names)
         you = board_bodies(your_board(sc), sc_creatures)
         opps = opponents_of(sc)
         named = you["creature_bodies"] + you["other_permanents"] + you["spent_paying_a_cost"]

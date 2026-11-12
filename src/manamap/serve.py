@@ -83,6 +83,7 @@ import os
 import threading
 import traceback
 from functools import partial
+from pathlib import Path
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 from manamap import console
@@ -1466,6 +1467,21 @@ def _sven_prewarm():
         console.err(f"  sven: prewarm failed ({type(exc).__name__}: {exc})")
 
 
+def _code_stamp():
+    """The source tree's newest `.py` mtime and file count: cheap (one stat per
+    file), and it moves the moment any module is edited, added or removed."""
+    root = Path(__file__).resolve().parent
+    stamps = [p.stat().st_mtime_ns for p in root.rglob("*.py")]
+    return (max(stamps, default=0), len(stamps))
+
+
+#: THE CODE THIS WORKER IMPORTED (2026-11-12). A warm worker holds modules it read at
+#: boot; after an edit it served the OLD `scenario_facts` to a stack resolver, which
+#: was then told two branch cards were outside the deck. `_cli` refuses once the tree
+#: moves, and the terminal client fails open to a local run on the current code.
+_BOOT_CODE = _code_stamp()
+
+
 def _cli(argv=None):
     """Run one read-only pilot command in this warm process; return its stdout.
 
@@ -1479,6 +1495,9 @@ def _cli(argv=None):
 
     from manamap.pilot.registry import add_pilot_parser, run_pilot_step
 
+    if _code_stamp() != _BOOT_CODE:
+        raise ValueError("cli: this server's code is older than the source on disk; "
+                         "the command runs locally instead — restart `manamap serve`")
     argv = [str(a) for a in (argv or [])]
     if not argv:
         raise ValueError("cli: no argv")
