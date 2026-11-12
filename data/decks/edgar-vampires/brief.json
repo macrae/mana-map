@@ -1,0 +1,52 @@
+{
+  "slug": "edgar-vampires",
+  "commander": "Edgar Markov",
+  "bracket": 3,
+  "must_include": [
+    "Crossway Troublemakers",
+    "Elspeth, Sun's Champion",
+    "Master of Dark Rites",
+    "Tithe Drinker",
+    "Vish Kal, Blood Arbiter"
+  ],
+  "must_exclude": [
+    "Beacon of Immortality",
+    "Blood Tribute",
+    "Bloodthirsty Conqueror",
+    "Exquisite Blood",
+    "Nim Deathmantle",
+    "Phyrexian Altar",
+    "Tombstone Stairwell"
+  ],
+  "theme": "vampires",
+  "playstyle": "VAMPIRES ARE THE FUEL, NOT THE ENGINE (the pilot, 2026-11-11). Blood drain, life gain, action at a distance, ferocious. Edgar mints a 1/1 Vampire from the command zone off every Vampire cast; the bodies are fodder, and the engine is what their deaths and the deck's life gain do to every opponent at once. The pings must snowball into real damage, not one or two here and there: multipliers, outlets that pay back, and three- or four-card loops (Oathsworn Vampire + Ashnod's Altar + Pitiless Plunderer + Blood Artist). NO TWO-CARD INFINITES: Bloodthirsty Conqueror and Exquisite Blood each close one with the life-gain drains (Vito, Sanguine Bond, Enduring Tenacity, Marauding Blight-Priest), so they stay excluded; longer lines are wanted. Bracket 3 at an optimized table (Oliver's, a turn-four clock), so cheap interaction matters. Card draw is a required axis on every change, death-triggered draw preferred: the deck runs out of steam after turn seven or eight. No flat anthems. The must_include list is the pilot's keep list.",
+  "resources": [
+    {
+      "name": "death drain",
+      "kind": "trigger",
+      "makes": [
+        "\\bwhenever (?:a|another|one or more) (?:nontoken )?(?:creatures?|Vampires?) (?:you control )?(?:dies|die)\\b[^.]*\\b(?:each opponent loses|deals? \\d+ damage to each opponent|draws? a card|target (?:opponent|player) loses)",
+        "\\bwhenever (?:this creature|~) or another creature (?:you control )?dies\\b[^.]*\\beach opponent loses",
+        "\\bsacrifice (?:a|another) (?:creature|Vampire)\\b[^.:]*:"
+      ],
+      "spends": "every Vampire and Edgar token that dies is a drain to each opponent and, with the right payoffs, a card; outlets turn the board into a burst on demand"
+    },
+    {
+      "name": "life gain to life loss",
+      "kind": "trigger",
+      "makes": [
+        "\\bwhenever you gain life\\b[^.]*\\b(?:each opponent|target opponent|target player) loses",
+        "\\bwhenever you gain life\\b[^.]*\\bdeals? \\d+ damage to each opponent"
+      ],
+      "spends": "the deck's life gain (lifelink, drains, extort) becomes table damage at a distance"
+    },
+    {
+      "name": "Vampire bodies",
+      "kind": "token",
+      "makes": [
+        "\\bcreate[^.]*\\bVampire\\b[^.]*\\btokens?\\b"
+      ],
+      "spends": "Edgar's eminence and the Vampire token makers are the fuel the outlets and death payoffs burn"
+    }
+  ]
+}
