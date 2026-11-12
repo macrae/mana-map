@@ -54,6 +54,9 @@
           },
           {
             "name": "Venser, Shaper Savant"
+          },
+          {
+            "name": "Winds of Abandon"
           }
         ],
         "unsleeve": [
@@ -77,25 +80,26 @@
           }
         ],
         "box": [],
-        "blocking": 4,
+        "blocking": 5,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 5,
-      "out": 5,
+      "add": 6,
+      "out": 6,
       "counts": {
-        "in_deck": 80,
+        "in_deck": 79,
         "box": 0,
         "elsewhere": 1,
-        "buy": 3,
+        "buy": 4,
         "free": 1
       },
       "unsourced": [
         "Flawless Maneuver",
         "Mana Drain",
         "Solve the Equation",
-        "Venser, Shaper Savant"
+        "Venser, Shaper Savant",
+        "Winds of Abandon"
       ],
       "mergeable": false,
       "free": 1,
@@ -179,13 +183,6 @@
         },
         {
           "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Day of Judgment",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -738,6 +735,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Winds of Abandon",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         }
       ],
       "has_cards": true,
@@ -5420,8 +5424,8 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 5 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `b3-v1` needs 4 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
+    "branch `b3-v1`: 6 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `b3-v1` needs 5 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"
