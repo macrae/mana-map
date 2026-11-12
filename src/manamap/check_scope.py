@@ -413,7 +413,23 @@ def preflight(plan):
                         cwd=REPO).returncode
     if rc:
         print("CHECK SCOPE — PREFLIGHT FAILED: run `manamap pilot restamp`, commit, retry")
-    return rc
+        return rc
+    # AN OPEN BRANCH STAGED AFTER ITS MEASUREMENT (2026-11-12): threat-v1 took three
+    # swaps after `net-change --write`, so its report described a list no longer on disk,
+    # and the tracked-artifact gate said so fifteen minutes into the regression tier.
+    from manamap.pilot.restamp import targets
+    for slug, branch in targets("net_change.json"):
+        if not branch:
+            continue
+        rc = subprocess.run([sys.executable, "-m", "manamap.cli", "pilot",
+                             "validate-net-change", slug, "--branch", branch],
+                            cwd=REPO, capture_output=True, text=True)
+        if rc.returncode:
+            print(rc.stdout + rc.stderr)
+            print(f"CHECK SCOPE — PREFLIGHT FAILED: {slug}@{branch} was staged after its "
+                  f"measurement — `manamap pilot net-change {slug} --branch {branch} --write`")
+            return rc.returncode
+    return 0
 
 
 def _run(plan):

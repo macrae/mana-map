@@ -938,22 +938,21 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 4,
+        "rose": 5,
         "fell": 7,
-        "no_call": 1
+        "no_call": 0
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Deflecting Swat",
         "Flawless Maneuver",
         "Midgar, City of Mako // Reactor Raid",
         "Olivia, Crimson Bride",
+        "Reassembling Skeleton",
         "Skullclamp",
         "Swords to Plowshares",
         "The Meathook Massacre",
-        "Utter End",
         "Vanishing Verse",
         "Vein Ripper"
       ],
@@ -962,6 +961,7 @@
         "rose": [
           "hoard @T10",
           "hoard @T6",
+          "stall, 2 in a row",
           "extra cards by T8",
           "hand can act by T3"
         ],
@@ -977,48 +977,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -3.8528,
+            "delta": -4.6056,
             "ci95_diff": [
-              -4.0829,
-              -3.6227
+              -4.866,
+              -4.3452
             ],
-            "mde": 0.3289,
+            "mde": 0.3722,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0192,
+            "delta": -0.0233,
             "ci95_diff": [
-              -0.0258,
-              -0.0126
+              -0.03,
+              -0.0166
             ],
-            "mde": 0.0094,
+            "mde": 0.0095,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.5387,
+            "delta": -0.816,
             "ci95_diff": [
-              -0.6018,
-              -0.4756
+              -0.8801,
+              -0.7519
             ],
-            "mde": 0.0901,
+            "mde": 0.0917,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.4232,
+            "delta": 0.3223,
             "ci95_diff": [
-              0.3584,
-              0.488
+              0.2568,
+              0.3878
             ],
-            "mde": 0.0926,
+            "mde": 0.0937,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"

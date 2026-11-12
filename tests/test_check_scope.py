@@ -385,3 +385,23 @@ def test_the_preflight_runs_restamp_check_and_stops_on_it(monkeypatch):
 def test_a_push_that_reads_no_deck_skips_the_preflight(monkeypatch):
     monkeypatch.setattr(cs, "untracked_decks", lambda: ["brew"])
     assert cs.preflight({"scope": "docs", "tiers": ["docs"]}) == 0
+
+
+def test_the_preflight_refuses_a_branch_staged_after_its_measurement(monkeypatch):
+    """threat-v1, 2026-11-12. Proved by re-introducing the bug: drop the branch loop
+    from `preflight` and this returns 0."""
+    monkeypatch.setattr(cs, "untracked_decks", lambda: [])
+
+    class Done:
+        def __init__(self, rc):
+            self.returncode, self.stdout, self.stderr = rc, "", ""
+    calls = []
+
+    def fake_run(cmd, **k):
+        calls.append(cmd)
+        return Done(1 if "validate-net-change" in cmd else 0)
+    monkeypatch.setattr(cs.subprocess, "run", fake_run)
+    from manamap.pilot import restamp
+    monkeypatch.setattr(restamp, "targets", lambda artifact: [("deck", None), ("deck", "b1")])
+    assert cs.preflight({"scope": "decks", "tiers": ["decks"]}) == 1
+    assert any("validate-net-change" in c and "b1" in c for c in calls)
