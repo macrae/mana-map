@@ -14,7 +14,7 @@ import pytest
 from manamap import config
 from manamap.config import DECKS_DIR
 from manamap.pilot import captains_log as cl
-from manamap.pilot.deck_notes import read_log
+from manamap.pilot.deck_notes import is_game, read_log
 
 from conftest import requires_deck
 
@@ -117,7 +117,9 @@ def test_every_logged_game_reaches_exactly_one_night():
     checked = 0
     for deck in sorted(DECKS_DIR.glob("*/log.jsonl")):
         slug = deck.parent.name
-        entries = read_log(slug)
+        # GAMES, by the one predicate: a note about the deck (edgar 007, its
+        # identity) is not a game and belongs to no night.
+        entries = [e for e in read_log(slug) if is_game(e)]
         if not entries:
             continue
         seen = []
