@@ -1,6 +1,7 @@
 """Pilot: rewrite — or check — every COMPOSED status file in one pass (2026-11-12).
 
-`info.json` (each live deck and open branch), `data/fleet/analytics.json` and
+`versions.json` (each live deck's rap sheet, which counts logged games), `info.json`
+(each live deck and open branch), `data/fleet/analytics.json` and
 `data/decks/index.json` are composed from everything else, so they go stale when ANY
 input moves — a goldfish change (every deck's `older_model` flips), a new deck, an art
 pin — and nothing rewrites them unless asked. On 2026-11-12 that cost three 15-minute
@@ -64,8 +65,20 @@ def _rewrite(path, write):
 
 def run(check=False, quiet=False):
     """Restamp everything; returns the paths that were (or, checking, would be) rewritten."""
-    from manamap.pilot import deck_info, deck_manifest, fleet_analytics
+    from manamap.pilot import deck_info, deck_manifest, deck_versions, fleet_analytics
     jobs = []
+    # THE RAP SHEET (2026-11-12): `versions.json` counts each version's logged games,
+    # so logging a game stales it, and the freshness gate caught two decks fifteen
+    # minutes in after the pod night. About a second a deck; first, since nothing
+    # below reads it but it reads nothing composed either.
+    for slug, branch in targets("versions.json"):
+        if branch:
+            continue
+        vargs = type("Args", (), {"slug": slug, "action": "list", "ref": None, "write": True,
+                                  "as_json": False, "full": False, "at": None, "note": None,
+                                  "clear": False, "force": False})()
+        jobs.append((config.DECKS_DIR / slug / "versions.json",
+                     lambda a=vargs: deck_versions.main(a)))
     for slug, branch in targets("info.json"):
         args = type("Args", (), {"slug": slug, "branch": branch, "write": True})()
         jobs.append((_info_path(slug, branch), lambda a=args: deck_info.main(a)))
