@@ -47,7 +47,7 @@ tiers those areas can break:
 **A preflight runs first** (2026-11-12) whenever a tier reads the decks (regression,
 decks): an untracked `data/decks/<slug>/` is refused by name (every fleet test reads the
 disk, not git), then `manamap pilot restamp --check` compares every composed status file
-— each live deck's `info.json`, the fleet file, the manifest — against a fresh run, in
+— each live deck's `versions.json` and `info.json`, the fleet file, the manifest — against a fresh run, in
 about half a minute. Both used to surface fifteen minutes into the regression tier; a
 goldfish change stales every deck's `older_model` at once, and `manamap pilot restamp`
 rewrites them all.

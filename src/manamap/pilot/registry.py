@@ -328,7 +328,7 @@ PILOT_STEPS = [
     ("validate-strategic-frame", "manamap.pilot.validate_strategic_frame", "Form-check a strategic frame"),
     ("build-index", "manamap.pilot.deck_manifest", "Write data/decks/index.json — the deck list + manifest the frontend fetches"),
     ("restamp", "manamap.pilot.restamp",
-     "Rewrite every COMPOSED status file — each live deck's info.json, the fleet file, the manifest — in one pass; --check reports what is behind and writes nothing"),
+     "Rewrite every COMPOSED status file — each live deck's versions.json and info.json, the fleet file, the manifest — in one pass; --check reports what is behind and writes nothing"),
     ("scenario-facts", "manamap.pilot.scenario_facts", "Deterministic brief for a stack scenario (board, bodies, drain arithmetic)"),
     ("merge-prose", "manamap.pilot.merge_prose", "Merge an agent's .agent-out prose into manual_prose.json, keys it owns only"),
     ("cache-status", "manamap.pilot.agent_cache", "Have an agent routine's inputs changed?"),
