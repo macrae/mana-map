@@ -1,6 +1,6 @@
 # Shabraz, the Skyshark + Brallin, Skyshark Rider — Deck Context
 
-<!-- ctx:written-for version=v3.0.0 sha=55ebf09cf33f at=2026-11-11 -->
+<!-- ctx:written-for version=v3.0.0 sha=55ebf09cf33f at=2026-11-13 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Shabraz, the Skyshark](https://manamap.seanmacrae.com/viz/index.html?cards=Shabraz%2C+the+Skyshark) + [Brallin, Skyshark Rider](https://manamap.seanmacrae.com/viz/index.html?cards=Brallin%2C+Skyshark+Rider)
@@ -18,7 +18,7 @@ The plan has three steps. Draw to grow him. Protect him the moment he lands, wit
 
 This came from Sean's note after game 007, when the old list felt clunky, slow, brittle and convoluted. The wheel-and-burn engine, where every discard pinged the table, was traded away. The wheels that stay are the draw-sevens, and each one is a pile of counters on Shabraz. They are never cut.
 
-Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his bulk, nine printed proxies, two Islands. No game has been played on it yet. The bracket line above is the gate's word on where the list sits.
+Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his bulk, nine printed proxies, two Islands. Two games have been played on it, both losses, and Sean is happy with how it works: in game 009 he said it "did its thing, was a real threat" and that Shabraz "worked the table". The bracket line above is the gate's word on where the list sits.
 
 ## How it plays
 
@@ -36,7 +36,9 @@ Merged as v3.0.0 on 2026-11-10 and sleeved the same day: twelve cards from his b
 
 **Make him big and evasive.** [Fireshrieker](https://manamap.seanmacrae.com/viz/index.html?cards=Fireshrieker) and [Lizard Blades](https://manamap.seanmacrae.com/viz/index.html?cards=Lizard+Blades) give double strike, and [Blade Historian](https://manamap.seanmacrae.com/viz/index.html?cards=Blade+Historian) gives it to every attacker. [Akroma's Will](https://manamap.seanmacrae.com/viz/index.html?cards=Akroma%27s+Will) gives the team flying and double strike, and protects them with a commander out. [Brotherhood Regalia](https://manamap.seanmacrae.com/viz/index.html?cards=Brotherhood+Regalia) makes him unblockable with ward. [Gratuitous Violence](https://manamap.seanmacrae.com/viz/index.html?cards=Gratuitous+Violence) and [Fiery Emancipation](https://manamap.seanmacrae.com/viz/index.html?cards=Fiery+Emancipation) double and triple the damage. Shabraz is not red, so [Torbran, Thane of Red Fell](https://manamap.seanmacrae.com/viz/index.html?cards=Torbran%2C+Thane+of+Red+Fell) does not add to his commander damage. The two enchantments do.
 
-**Brallin, late.** He is cast once Shabraz is safe. His red ability gives trample to a rider. Torbran and the two damage enchantments are real commander-damage cards for him. His discard ping is no longer the plan. He is a pivot.
+**Brallin, late.** He is cast once Shabraz is safe. His red ability gives trample to a rider. Torbran and the two damage enchantments are real commander-damage cards for him. His discard ping is no longer the plan. He is a pivot, and game 009 showed the other use: when Shabraz is not castable, Brallin comes down a mana cheaper as a blocker, and the discard engine still works with him. Shabraz gives the Humans flying and Brallin gives the shark trample, so spare Treasure can buy either evasion on the attack or a flying blocker on defence.
+
+**Spend the Treasure on the Humans.** Game 009's lesson. A Human in hand is a flying blocker the moment Shabraz is out and there is mana to spare, so cast it rather than hold the Treasure. Humans with flying and the shark with trample, all paid for with Treasure, was the standout play of the night.
 
 **The table pays for its draws.** [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) makes a Treasure when the table draws and does not pay. [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) and [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) work the same way. [Shark Typhoon](https://manamap.seanmacrae.com/viz/index.html?cards=Shark+Typhoon) cycles at instant speed, which is a card for Shabraz, and leaves a flying Shark.
 
@@ -229,11 +231,11 @@ The goldfish does not model the modal plan, the equipment, protection or interac
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **8 game(s):** 0 won, 5 lost · 2026-10-06 to 2026-11-10
-- **How games ended:** combo 3, raced 3, stalled 1, won 1
+- **9 game(s):** 0 won, 6 lost · 2026-10-06 to 2026-11-12
+- **How games ended:** raced 4, combo 3, stalled 1, won 1
 <!-- /ctx:gen record -->
 
-Games 001 to 007 were played on lists before v3.0.0. The cards they name, such as Embercleave, Ledger Shredder, Marauding Mako and Rielle, have since left. Game 008 is the first on v3.0.0. The full retelling is in the log.
+Games 001 to 007 were played on lists before v3.0.0. The cards they name, such as Embercleave, Ledger Shredder, Marauding Mako and Rielle, have since left. Games 008 and 009 are on v3.0.0. The full retelling is in the log.
 
 **007 (2026-11-05, the last game before this change, v2.3.0).** Sean's words: "it still feels clunky and slow as hell! and it's brittle--two commanders, two taxes, 9 CMC total to get them out.. I found the wheels, got them big and actually could have won... but something about it didn't feel fun... the card draw and discard is laborious.. and all the stack triggers is fine.. but it just feels convoluted a bit lol"
 
@@ -246,6 +248,13 @@ Games 001 to 007 were played on lists before v3.0.0. The cards they name, such a
 - **What in this deck answers him:** [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares) and [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) remove him outright. [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) does too. [Otawara, Soaring City](https://manamap.seanmacrae.com/viz/index.html?cards=Otawara%2C+Soaring+City) only sets him back a turn. [Negate](https://manamap.seanmacrae.com/viz/index.html?cards=Negate) and [Stubborn Denial](https://manamap.seanmacrae.com/viz/index.html?cards=Stubborn+Denial) cannot touch a creature spell.
 - **What the game taught about Oliver's deck** lives in `data/opponents/krenko-tokens/NOTES.md`, not here.
 
+**009 (2026-11-12, Steven's house, v3.0.0, a loss in a four-player pod).** The table was Steven's mono-red Magda deck (cheap Dwarves make Treasure, it fetches a big dragon and pops off fast), David's slow Golem deck still being built, and Stuart's Rotcleaver zombies with [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) and sacrifice drain. Sean mulliganed once and kept a land-heavy seven with no small creatures and no blockers. He missed a land drop, had no board for the opening turns, and the whole table attacked him. Short of mana for Shabraz, he cast Brallin as the fallback.
+- **The key turn.** [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) was out with Brallin as the blocker. Sean activated the wheel on legs, [Jace's Archivist](https://manamap.seanmacrae.com/viz/index.html?cards=Jace%27s+Archivist), which pinged the table through Brallin and gave everyone a fresh hand. Tithe paid out a huge pile of Treasure in that one activation, [Faerie Mastermind](https://manamap.seanmacrae.com/viz/index.html?cards=Faerie+Mastermind) kept the table drawing, and Shabraz landed and grew fast on the wheels.
+- **Shabraz did the work.** He swung into Steven's two big dragons, six commander damage got through, and the blocks took out the evasive bodies Steven's deck leans on. Sean's read: Shabraz "did great work and worked the table".
+- **The mistake he named: holding Treasure.** He kept it instead of casting the Humans in hand. Steven swung back, he sacrificed [Esper Sentinel](https://manamap.seanmacrae.com/viz/index.html?cards=Esper+Sentinel) and another Human, blocked with Brallin, and sat at one life. The Humans would have been flying blockers.
+- **[Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) stayed on Stuart's side.** Every death drained the table and fed Stuart. Remove it early. On Stuart's end step he sacrificed a zombie and the drain finished Sean at one life, one turn before a [Wheel of Fortune](https://manamap.seanmacrae.com/viz/index.html?cards=Wheel+of+Fortune) that was meant to turn the game around. Steven died after him and Stuart took the win.
+- **The thin start was the hand.** Land-heavy, no early creatures, no blockers: no board and early damage from everyone. That is the keep question again (Q011), though the deck was not at fault.
+
 **What the games say together.**
 - **Commanders first, wheels second.** From 001 and 002. Wheels are finishers.
 - **Slow and expensive to start.** 001, 002, 003, 005 and 007. 004 added that a land-heavy keep with no wheel and no payoff found nothing.
@@ -254,6 +263,8 @@ Games 001 to 007 were played on lists before v3.0.0. The cards they name, such a
 - **The hand he keeps is the doubt** in 002, 004 and 005. Q011 stays open.
 - **Opponents that outrun it.** 004: Alex's warp deck. 005: Alex piloting the Goblin Storm deck. 006: Ryan's Teval, near a bracket-4 table. Without the other deck's best turns, Sean thinks Sharknado does much more.
 - **Holding removal while the table begs for it.** 008: right hand, wrong turn order. Pilot error, not the list.
+- **Spend the Treasure.** 009: held Treasure left Sean at one life with Humans still in hand.
+- **Shabraz works the table.** 009, and Sean was happy with the deck. The loss came from the thin start and the held Treasure.
 - **Playing the deck.** He says some of it is piloting, sequencing, and small creatures eating resources that belonged to the win line.
 
 One line each: 001 (2026-10-06, no result): Sol Ring fast start, no removal, "fun, needs some finesse". 002 (2026-10-20, a loss): "too many wheels in the wheel deck". 003 (2026-10-25, no result): "slooooowwwww". 004 (2026-10-27, a loss, raced): the engine ran, no wheel came, commanders held back. 005 (2026-10-29, a loss): Alex's Goblin Storm won. 006 (2026-11-03, a loss): Teval went infinite with the board assembled and no wheel in the digging. 007: above.
@@ -264,7 +275,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 <!-- ctx:gen history -->
 - **v3.0.0 · V14** (2026-11-10) — in: Archmage Emeritus, Boros Signet, Brainstorm, Echo of Eons, Enduring Curiosity, Esper Sentinel, Fellwar Stone, Fireshrieker …; out: Borrowed Knowledge, Cathartic Reunion, Faithless Looting, Fateful Showdown, Gleaming Splendor, Glint-Horn Buccaneer, Heartwarming Redemption, Idyllic Tutor …. _shabraz-v1 merged: Shabraz-first — card draw grows the flying shark, protection on landing, double strike to close_
   - merge `shabraz-v1` — sleeved 2026-11-10: 12 cards from the pilot's bulk, 9 printed proxies (Archmage Emeritus, Boros Signet, Brainstorm, Esper Sentinel, Shang-Chi, Slip Out the Back
-  - played 1: 0W 1L
+  - played 2: 0W 2L
 - **v2.3.0 · V13** (2026-11-05) — in: Arid Mesa, Borrowed Knowledge, Cathartic Reunion, Exotic Orchard, Ferrous Lake, Flooded Strand, Gleaming Splendor, Heartwarming Redemption …; out: Artist's Talent, Command Beacon, Embercleave, Frantic Search, Glittering Massif, Inti, Seneschal of the Sun, Izzet Charm, Jeskai Ascendancy …. _draw-engine-v1: 22 swaps toward a draw engine (new wheels, Psychosis Crawler, Gleaming Splendor, Treasure package)_
   - merge `draw-engine-v1` — played on printed proxies sleeved 2026-11-05; the pilot asked to merge; the unowned cards are on the order list
   - played 1: 0W 0L
@@ -335,6 +346,12 @@ Most of the numbered questions above were asked about the wheel-and-burn list. R
 - Kill on sight: in the next games against Oliver's Krenko, does Sean spend removal on Krenko the turn he lands, before casting his own threat? Expected: Krenko never gets a second activation, and the 30-plus-damage turn does not come.
 - Track before tuning: over the next few v3.0.0 games, how many losses carry the pilot-error label and how many are the deck? Expected: Sean's no-change call holds until the deck-side losses outnumber the piloting ones. Q018 gives the labels.
 
+**From game 009.**
+- Brallin swing: was swinging Brallin at Steven a mistake? He blocked with two creatures, Sean killed one of his dragons, and Sean does not know. Testable: on a table with blockers that outclass Brallin, swinging him loses more than the one kill gains. Needs the board at the time, which the log does not hold.
+- Spend the Treasure: when Shabraz is out and Humans sit in hand with Treasure available, does casting them first (as flying blockers) keep Sean's life total higher than holding the Treasure for later? Expected: fewer games where he is brought to one life by the swing-back.
+- Early blockers: does a land-heavy seven with no creature under three mana get mulliganed more often, or does the deck want one more cheap body? Sean calls the deck fine, so this is an observation first, tracked beside the keep question in Q011.
+- Missing: the answer to Blood Artist. [Swords to Plowshares](https://manamap.seanmacrae.com/viz/index.html?cards=Swords+to+Plowshares), [Get Lost](https://manamap.seanmacrae.com/viz/index.html?cards=Get+Lost) and [Chaos Warp](https://manamap.seanmacrae.com/viz/index.html?cards=Chaos+Warp) take it out if held for it. The question is whether Sean can afford to.
+
 **Still open from earlier games.**
 - Interaction: does the commander survive to swing more often on a real table?
 - Wheel under the Sphinx: does Wheel of Fortune with Consecrated Sphinx out end a real game the way stack 009 does?
@@ -360,3 +377,4 @@ Most of the numbered questions above were asked about the wheel-and-burn list. R
 - 2026-11-05 · Keeper · pilot log 007: first v2.3.0 game — clunky, slow, brittle, convoluted; wheels landed, not fun
 - 2026-11-10 · Keeper · deck change: shabraz-v1 merged as v3.0.0: Shabraz-first, card draw grows the flying shark, protected on landing, made big and evasive; wheel-and-burn engine traded away; sleeved 2026-11-10
 - 2026-11-11 · Keeper · pilot log 008: loss to Oliver's Krenko, piloting error, no deck changes; kill Krenko on sight
+- 2026-11-13 · Keeper · pilot log 009: loss at Steven's on v3.0.0; Shabraz worked the table; spend treasure on Humans as flying blockers

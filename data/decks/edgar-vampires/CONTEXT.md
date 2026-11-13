@@ -1,6 +1,6 @@
 # Edgar Markov — Deck Context
 
-<!-- ctx:written-for version=v3.0.0 sha=1df3a33540a6 at=2026-11-11 -->
+<!-- ctx:written-for version=v3.0.0 sha=1df3a33540a6 at=2026-11-13 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Edgar Markov](https://manamap.seanmacrae.com/viz/index.html?cards=Edgar+Markov)
@@ -33,6 +33,8 @@ Sleeved on 2026-11-10 with three printed proxies ([Grim Haruspex](https://manama
 ## How it plays
 
 **The soft start.** Cheap Vampires come down early and each one makes a token through Edgar's eminence. It works even if Edgar is never cast. [Cordial Vampire](https://manamap.seanmacrae.com/viz/index.html?cards=Cordial+Vampire) grows every Vampire whenever any creature dies, so the swarm gets bigger when it is wiped at or traded off. [Charismatic Conqueror](https://manamap.seanmacrae.com/viz/index.html?cards=Charismatic+Conqueror) makes a lifelink Vampire token whenever the table lets a creature or artifact arrive untapped. The tokens chump, carry [Crossway Troublemakers](https://manamap.seanmacrae.com/viz/index.html?cards=Crossway+Troublemakers)'s deathtouch and lifelink, and feed the sacrifice outlets. [Bloodghast](https://manamap.seanmacrae.com/viz/index.html?cards=Bloodghast) is sacrifice fuel that keeps coming back. [Anointed Procession](https://manamap.seanmacrae.com/viz/index.html?cards=Anointed+Procession) and [Elspeth, Storm Slayer](https://manamap.seanmacrae.com/viz/index.html?cards=Elspeth%2C+Storm+Slayer) double that token flow.
+
+**Fuel and converters.** The pilot's read after the first win on this list: cheap Vampires are fodder, and the converters turn the fodder into value. The fodder is the cheap Vampire spells and the tokens they and [Charismatic Conqueror](https://manamap.seanmacrae.com/viz/index.html?cards=Charismatic+Conqueror) make. The converters are [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) (a drain for every body that goes), [Crossway Troublemakers](https://manamap.seanmacrae.com/viz/index.html?cards=Crossway+Troublemakers) (attackers that kill whatever blocks) and [Ashnod's Altar](https://manamap.seanmacrae.com/viz/index.html?cards=Ashnod%27s+Altar) (tokens into a burst of mana, which casts the next piece or Edgar himself). Before v3.0.0 the deck went wide with middling Vampires and tried to win in combat. Now the tokens turn into different kinds of value, which is the pilot's line that Vampires are the fuel, not the engine. Game 008 is the proof of the shape.
 
 **Value from every death.** This is what the bracket-3 build adds. [Kalitas, Traitor of Ghet](https://manamap.seanmacrae.com/viz/index.html?cards=Kalitas%2C+Traitor+of+Ghet) drains and gains for each creature of theirs that dies, and turns it into a Vampire token for the pilot. [Midnight Reaper](https://manamap.seanmacrae.com/viz/index.html?cards=Midnight+Reaper) draws a card when one of the pilot's nontoken creatures dies, and [Grim Haruspex](https://manamap.seanmacrae.com/viz/index.html?cards=Grim+Haruspex) does the same for the nontoken creatures that were not born here. [Morbid Opportunist](https://manamap.seanmacrae.com/viz/index.html?cards=Morbid+Opportunist) and [Clavileño, First of the Blessed](https://manamap.seanmacrae.com/viz/index.html?cards=Clavile%C3%B1o%2C+First+of+the+Blessed) draw too, so a wipe or a sacrifice turn refills the hand instead of emptying it.
 
@@ -78,6 +80,10 @@ Multipliers, which is what the pilot wants from an effect.
 ### Turn the board into one monster, or a big swing
 Vish Kal is the pilot's favourite card and is not for cutting.
 [Vish Kal, Blood Arbiter](https://manamap.seanmacrae.com/viz/index.html?cards=Vish+Kal%2C+Blood+Arbiter), [Elenda, the Dusk Rose](https://manamap.seanmacrae.com/viz/index.html?cards=Elenda%2C+the+Dusk+Rose), [Olivia Voldaren](https://manamap.seanmacrae.com/viz/index.html?cards=Olivia+Voldaren), [Olivia, Crimson Bride](https://manamap.seanmacrae.com/viz/index.html?cards=Olivia%2C+Crimson+Bride), [Cordial Vampire](https://manamap.seanmacrae.com/viz/index.html?cards=Cordial+Vampire), [Vein Ripper](https://manamap.seanmacrae.com/viz/index.html?cards=Vein+Ripper), [Captivating Vampire](https://manamap.seanmacrae.com/viz/index.html?cards=Captivating+Vampire)
+
+### Turn fodder into value
+The pilot's three converters from game 008, plus the draw that runs off tokens arriving. Drain, attackers that kill blockers, mana.
+[Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist), [Crossway Troublemakers](https://manamap.seanmacrae.com/viz/index.html?cards=Crossway+Troublemakers), [Ashnod's Altar](https://manamap.seanmacrae.com/viz/index.html?cards=Ashnod%27s+Altar), [Caretaker's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Caretaker%27s+Talent), [Charismatic Conqueror](https://manamap.seanmacrae.com/viz/index.html?cards=Charismatic+Conqueror)
 
 ### Sacrifice outlets and fuel
 Ways to turn a creature into a death trigger or mana on demand, and bodies that come back to be sacrificed again.
@@ -138,14 +144,14 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group b
 ## Pilot notes
 
 <!-- ctx:gen record -->
-- **7 game(s):** 0 won, 5 lost · 2026-08-22 to 2026-11-11
-- **How games ended:** wipe 3, combo 1, raced 1, stalled 1
+- **8 game(s):** 1 won, 5 lost · 2026-08-22 to 2026-11-12
+- **How games ended:** wipe 3, combo 1, raced 1, stalled 1, won 1
 - **Not yet read:** 007
 <!-- /ctx:gen record -->
 
 - **Identity, log 007 (2026-11-11, not a game):** Vampires are the fuel, not the engine; dense, not all-Vampire; non-combat damage that snowballs through combos; infinites fine, no two-card ones. The Summary has what follows. Staged as branch threat-v1, not sleeved. Vampire-count cards such as [Malakir Bloodwitch](https://manamap.seanmacrae.com/viz/index.html?cards=Malakir+Bloodwitch) are the kind of thing that refactor looks at; it is not in the 99.
 
-Six games are logged, all on lists before v3.0.0 (the record block counts them). The same things keep happening.
+The first six games were all on lists before v3.0.0 (the record block counts every game). The same things kept happening there.
 
 - **The table wipes the board and the deck rebuilds small.** Multiple wipes in 001, 002, 003 and 006. It gets back up fast but into blockers, not threats.
 - **It runs out of steam.** Hands empty by turn eight to ten (001, 002, 003, 006): "the consistent theme with Edgar is it runs out of steam." The v1.1.0 games (004, 005) ended ahead on board but lost to a clock it could not block.
@@ -153,13 +159,19 @@ Six games are logged, all on lists before v3.0.0 (the record block counts them).
 - **A mulligan keep of two lands was the mistake** in 002.
 - **Sequencing in 006**: [Vish Kal, Blood Arbiter](https://manamap.seanmacrae.com/viz/index.html?cards=Vish+Kal%2C+Blood+Arbiter) came down too early and [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) too late; a big flying lifelinker was available but went at the player with indestructible creatures.
 - **The pilot's read after 006**: it plays like a creature deck and he wants a life gain / life drain deck.
-- **v3.0.0 has no games yet.** Nothing above is a result of the new list. The pilot's profile for it: play Edgar at bracket-3 tables, keep the drain plan, add value from deaths.
+- **Log 008 (2026-11-12, Steven's, a four-player pod): the first win on v3.0.0, and the first Vampires win since the refactor.** The pilot: "it validates our recent refactoring." Only the first game of the night is logged; the second is not in the note.
+  - **How it went.** Steven's Magda deck (cheap dwarves, treasure, a tutor into a dragon) got off to a commanding start and had a stack of big flyers while he led on life. One opponent stalled on lands all night and another was too slow to matter. Edgar cast cheap Vampires and built a board of tokens. Life gain and drain kept the pilot in it, and the draw engine ran off tokens entering.
+  - **Pieces that worked.** [Blood Artist](https://manamap.seanmacrae.com/viz/index.html?cards=Blood+Artist) drained on every Vampire sacrificed. [Charismatic Conqueror](https://manamap.seanmacrae.com/viz/index.html?cards=Charismatic+Conqueror) kept paying because the table wanted blockers, so the lifelink tokens kept arriving and became fodder. [Caretaker's Talent](https://manamap.seanmacrae.com/viz/index.html?cards=Caretaker%27s+Talent) drew off tokens. [Vito, Thorn of the Dusk Rose](https://manamap.seanmacrae.com/viz/index.html?cards=Vito%2C+Thorn+of+the+Dusk+Rose) was out. [Crossway Troublemakers](https://manamap.seanmacrae.com/viz/index.html?cards=Crossway+Troublemakers) gave the attackers deathtouch and lifelink.
+  - **The close.** [Ashnod's Altar](https://manamap.seanmacrae.com/viz/index.html?cards=Ashnod%27s+Altar) turned a batch of tokens into mana, the mana cast Crossway Troublemakers, and the wide board swung at the dragon player, who lost his big blockers to tokens with deathtouch. More Altar mana brought out Edgar, who swung and buffed the board. The kill came mostly from Blood Artist and targeted damage; the pilot does not remember the last sequence.
+  - **The pilot's read.** Fuel: cheap Vampire spells that build an army of fodder. Converters: drain, attackers that kill blockers, a mana burst. The win came from tokens converting, not from combat damage.
+  - **Table lesson.** If an opponent plays Blood Artist, remove it early. Magda sets the pace of this pod.
+  - **Loose end.** The pilot's note had a Vampire that makes everybody take damage the first time a small creature or token arrives. The closest card in the 99 is [Wispdrinker Vampire](https://manamap.seanmacrae.com/viz/index.html?cards=Wispdrinker+Vampire), but its text does not match what was dictated, so the card is unresolved.
 
 ## Change history
 
 <!-- ctx:gen history -->
 - **v3.0.0 · V7** (2026-11-10) — in: Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper; out: Ancient Tomb, Bloodthirsty Conqueror, Enlightened Tutor, Exquisite Blood. _bracket3-v1 merged: Edgar at bracket 3 — the two-card infinites gone, drain kept_
-  - played 1: 0W 0L
+  - played 2: 1W 0L
 - **v2.1.0 · V6** (2026-10-20) — in: Anowon, the Ruin Sage, Bloodghast, Captivating Vampire, Clavileño, First of the Blessed, Drana and Linvala, Enduring Tenacity, Exotic Orchard, Morbid Opportunist …; out: Bloodtracker, Boros Charm, Cosmos Elixir, Despark, Falkenrath Aristocrat, Florian, Voldaren Scion, Gifted Aetherborn, Herald's Horn …. _mean-v2 merged 2026-10-20: the profile package, four proactive-denial Vampires, Bloodghast, a land pass — fourteen swaps on the scan-confirmed v2.0.1_
   - merge `mean-v2`: objective extra_cards_8 read **met** — played on printed proxies from 2026-10-20; the unowned cards are on the order list
 - **v2.0.1 · V5** (2026-10-20) — in: Charismatic Conqueror, Cordial Vampire, Florian, Voldaren Scion; out: Knight of the Ebon Legion, Polluted Delta, Skullclamp. _the sleeved list as scanned 2026-10-20: three cards of drift corrected (Conqueror, Cordial, Florian in; Knight, Polluted Delta, Skullclamp out)_
@@ -174,9 +186,9 @@ Six games are logged, all on lists before v3.0.0 (the record block counts them).
   - played 3: 0W 3L
 <!-- /ctx:gen history -->
 
-The generated list above is the record. The story in one breath: v1.0.0 was a wide Vampire deck and lost three games with a dry hand. v1.1.0 swapped a dozen cards toward sacrifice and death payoffs and lost two close ones. v1.1.1 added Blade of the Bloodchief and Elenda and lost to wipes. Then the pilot said the deck should be about life gain and drain, and v2.0.0 rebuilt it around the Conqueror and Vito loop at bracket 4, with more tutors and draw. On 2026-10-20 the sleeved list was checked in from a scan (v2.0.1, three cards of drift fixed), then mean-v2 merged as v2.1.0: fourteen swaps for cheaper casts, death-triggered draw, death drains, four proactive-denial Vampires and a land pass. Nothing has been played with it.
+The generated list above is the record. The story in one breath: v1.0.0 was a wide Vampire deck and lost three games with a dry hand. v1.1.0 swapped a dozen cards toward sacrifice and death payoffs and lost two close ones. v1.1.1 added Blade of the Bloodchief and Elenda and lost to wipes. Then the pilot said the deck should be about life gain and drain, and v2.0.0 rebuilt it around the Conqueror and Vito loop at bracket 4, with more tutors and draw. On 2026-10-20 the sleeved list was checked in from a scan (v2.0.1, three cards of drift fixed), then mean-v2 merged as v2.1.0: fourteen swaps for cheaper casts, death-triggered draw, death drains, four proactive-denial Vampires and a land pass. Nothing was played with it before v3.0.0.
 
-On 2026-11-10 the pilot reversed direction. The 2026-10-05 call was that bracket 4 builds for the Bloodthirsty Conqueror and Vito drain infinite. Now he wants to play Edgar at bracket-3 tables, so the bracket3-v1 branch merged as v3.0.0. All eight two-card infinites went, since every one ran through Bloodthirsty Conqueror or Exquisite Blood paired with Vito, Sanguine Bond, Enduring Tenacity or Marauding Blight-Priest. Cutting those two (Q037) was the cheapest way to clear them all. Ancient Tomb and Enlightened Tutor left to bring the Game Changer count from five to three (Q038): Demonic Tutor, Teferi's Protection and Vampiric Tutor stay. In came Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper and a Swamp for Ancient Tomb (Q039). The drain plan is kept; the new Vampires and Reaper add value from deaths. Sleeved 2026-11-10 with three printed proxies. The earlier notes about building for the combo are history, not the plan.
+On 2026-11-10 the pilot reversed direction. The 2026-10-05 call was that bracket 4 builds for the Bloodthirsty Conqueror and Vito drain infinite. Now he wants to play Edgar at bracket-3 tables, so the bracket3-v1 branch merged as v3.0.0. All eight two-card infinites went, since every one ran through Bloodthirsty Conqueror or Exquisite Blood paired with Vito, Sanguine Bond, Enduring Tenacity or Marauding Blight-Priest. Cutting those two (Q037) was the cheapest way to clear them all. Ancient Tomb and Enlightened Tutor left to bring the Game Changer count from five to three (Q038): Demonic Tutor, Teferi's Protection and Vampiric Tutor stay. In came Grim Haruspex, Kalitas, Traitor of Ghet, Midnight Reaper and a Swamp for Ancient Tomb (Q039). The drain plan is kept; the new Vampires and Reaper add value from deaths. Sleeved 2026-11-10 with three printed proxies. Its first game, 008 on 2026-11-12, was a win. The earlier notes about building for the combo are history, not the plan.
 
 ## Open questions
 
@@ -189,10 +201,12 @@ On 2026-11-10 the pilot reversed direction. The 2026-10-05 call was that bracket
 <!-- /ctx:gen queue -->
 
 - **Do the three death-value cards stop the empty hand?** Test: play v3.0.0 a few games and log cards in hand at turns eight to ten. Expect more than in 001, 002, 003 and 006, since [Kalitas, Traitor of Ghet](https://manamap.seanmacrae.com/viz/index.html?cards=Kalitas%2C+Traitor+of+Ghet), [Midnight Reaper](https://manamap.seanmacrae.com/viz/index.html?cards=Midnight+Reaper) and [Grim Haruspex](https://manamap.seanmacrae.com/viz/index.html?cards=Grim+Haruspex) draw or drain off deaths.
-- **Is the drain enough to close without a loop?** The Numbers block shows what is drawn; how often the gain-to-lose cards plus the multipliers actually finish a game is not measured. Test: log how each game ends and by which turn, and compare to the old loop games.
+- **Is the drain enough to close without a loop?** Game 008 closed with fodder converting, through Blood Artist, an Altar mana burst and Edgar swinging, so one game says yes. Test: log how each further game ends and by which turn. Expect most wins to come from converters rather than a lone combat swing.
 - **Does the deck still beat a wipe?** Test: log what survived each sweep, and whether the three new death-value cards refilled the hand. Expect a faster rebuild than 001, 002, 003 and 006.
 - **Which two tutors earn their slots** now that there is no loop to fetch for. Needs the pilot's view, per slot.
 - **Does bracket 3 hold at the table?** The Game Changer count is down to three. Test: ask the pod after the first game whether it felt like bracket 3.
+- **Which Vampire is the one that makes everybody take damage?** Log 008 describes a Vampire that drains the table the first time a small creature or token arrives. Wispdrinker Vampire is the nearest card in the 99 but its text differs. Needs the pilot to name it from the card.
+- **Is removing an opposing Blood Artist early worth a removal spell?** Test: at pods with a Blood Artist deck, spend the first answer on it and log whether the drain pace slows. Expect fewer surprise deaths at pods like Stuart's.
 - **Forge understates this deck** because the AI cannot pilot tutors and sacrifice outlets well; a way to measure without it is still missing.
 
 ## Context changelog
@@ -203,3 +217,4 @@ On 2026-11-10 the pilot reversed direction. The 2026-10-05 call was that bracket
 - 2026-10-20 · Keeper · deck change: mean-v2 merged as v2.1.0 (fourteen swaps): re-placed, cut-card prose pruned
 - 2026-11-10 · Keeper · deck change: v3.0.0 (bracket3-v1 merged): Edgar down to bracket 3 — all eight two-card infinites and Ancient Tomb, Enlightened Tutor gone; Kalitas, Midnight Reaper, Grim Haruspex in; reverses the 2026-10-05 build-for-the-combo plan
 - 2026-11-11 · Keeper · pilot log 007: identity — Vampires are the FUEL, not the engine; threat-v1 staged
+- 2026-11-13 · Keeper · pilot log 008: first win on v3.0.0 at Steven's; cheap vampires are fodder, converters (Blood Artist, Crossway Troublemakers, Ashnod's Altar) turn them into value

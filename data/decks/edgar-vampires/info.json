@@ -21,7 +21,9 @@
       "map"
     ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [],
     "todo": []
@@ -19788,11 +19790,11 @@
     "release": "v3.0.0"
   },
   "record": {
-    "games": 7,
-    "win": 0,
+    "games": 8,
+    "win": 1,
     "loss": 5,
     "draw": 0,
-    "last_played": "2026-11-11",
+    "last_played": "2026-11-12",
     "first_played": "2026-08-22",
     "undebriefed": [
       "007"
@@ -19803,13 +19805,15 @@
       "003": "stalled",
       "004": "combo",
       "005": "raced",
-      "006": "wipe"
+      "006": "wipe",
+      "008": "won"
     },
     "cause_counts": {
       "combo": 1,
       "raced": 1,
       "stalled": 1,
-      "wipe": 3
+      "wipe": 3,
+      "won": 1
     },
     "feel": {},
     "feel_n": 0,
@@ -20339,6 +20343,26 @@
       "from": "log:006",
       "question": "When the table's consensus target ('The table was all focused on the right person') is the one seat whose board the deck cannot attack into ('Alex had indestructible'), does the strategy literature say to follow the table, redirect the attack, or hold the threat back — and how does a lifelink/drain deck weigh that against a mill and a graveyard deck at the same table?",
       "settled_by": "research-strategy"
+    },
+    {
+      "from": "log:008",
+      "question": "From a wide token board with Ashnod's Altar and Blood Artist out, does Altar into Crossway Troublemakers and a swing kill a 38-life seat holding 6/6 flying blockers, and how many tokens does it take?",
+      "settled_by": "resolve-stack"
+    },
+    {
+      "from": "log:008",
+      "question": "If Blood Artist is removed early, as the pilot expects this table to do, which other cards in the 99 convert a token's death into drain?",
+      "settled_by": "diagnose"
+    },
+    {
+      "from": "log:008",
+      "question": "How often are Ashnod's Altar, a converter and a fodder board all on the table together, and by which turn?",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "log:008",
+      "question": "How should the deck play against a fast mono-red Magda treasure start that always fetches Utvara Hellkite?",
+      "settled_by": "research-strategy"
     }
   ],
   "simulation": {
@@ -20521,13 +20545,14 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
     "branch `threat-v1`: 12 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `threat-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×10, goldfish ×3, research-strategy ×7, resolve-stack ×7",
+    "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

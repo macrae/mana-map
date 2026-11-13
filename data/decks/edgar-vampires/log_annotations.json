@@ -530,6 +530,112 @@
           "why_it_matters": "the pilot's rule ('maybe don't go after the player with the indestructible board') and the table's read pointed in opposite directions on the turn that decided his game; one game is an anecdote and the rule wants grounding before it goes in the handbook."
         }
       ]
+    },
+    "008": {
+      "summary": "Steven's house on 2026-11-12. Game 1 of two in a four-player pod was a win, the 'First Vampires win, in the first game since the v3.0 refactor'. The entry's decklist_sha256 (1df3a335…) matches the deck as it stands and the sleeved v3.0.0 paper lock (V7), so every card the note names is still in the 99. Steven on Magda took 'a commanding start: treasures, tutor, Utvara Hellkite, then a stack of 6/6 flyers' and led 38 to 20. Stuart 'stalled on three lands all night', and David's deck 'was too slow to matter'. Edgar built a token board while 'Life gain and drain kept Sean in it'. The game turned when 'Ashnod's Altar came down', the sacrificed tokens paid for Crossway Troublemakers, and the wide swing at Steven made his big dragons trade into tokens. More Altar mana brought out Edgar, and Steven 'died, mostly to Blood Artist and targeted damage'. The pilot 'does not recall the exact final sequence'. The pilot dictated the note, so some names in it are misheard. The 'token maker' that pays a 1/1 lifelink Vampire when opponents' creatures enter tapped is Charismatic Conqueror, and the 'caretakers keep' draw engine is Caretaker's Talent. The 'Drain vampire' ('first time a small creature or token comes in, everybody takes 2') is UNRESOLVED: the closest card in the list is Wispdrinker Vampire, but its text has each opponent lose 1 per entering creature with power 2 or less. That does not match, so this reading names neither card. The note also says v3.0 cut Sanguine Bond. The deck's record disagrees: v3.0's cuts were Ancient Tomb, Enlightened Tutor, Bloodthirsty Conqueror and Exquisite Blood, the two Game Changers cut were Ancient Tomb and Enlightened Tutor, and Sanguine Bond is still in the 99. This reading does not treat the note's cut as fact.",
+      "opponents": [
+        {
+          "seat": "Steven",
+          "archetype": "mono-red dwarves and treasure, tutoring an artifact or dragon onto the battlefield",
+          "commander": "Magda",
+          "evidence": "cheap dwarves make treasure, then he tutors an artifact or dragon onto the battlefield"
+        },
+        {
+          "seat": "David",
+          "archetype": "golem tokens with artifact protection (slow, still being built)",
+          "commander": null,
+          "evidence": "Golem partner-commander deck"
+        },
+        {
+          "seat": "Stuart (bench seat wilhelt-zombies)",
+          "archetype": "zombie typal with sacrifice drain",
+          "commander": "Wilhelt, the Rotcleaver",
+          "evidence": "Rotcleaver zombie typal"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Ashnod's Altar",
+          "read": "over",
+          "why": "the closing line's first step and the deck's 'mana burst': it cast Crossway Troublemakers and then Edgar off sacrificed tokens"
+        },
+        {
+          "card": "Crossway Troublemakers",
+          "read": "over",
+          "why": "'attacking vampires get deathtouch and lifelink'. Cast off Altar mana, it turned the wide swing into 'attackers that kill blockers', and Steven's big dragons were lost to tokens"
+        },
+        {
+          "card": "Blood Artist",
+          "read": "as-expected",
+          "why": "the drain converter. Steven 'died, mostly to Blood Artist and targeted damage', and the pilot's table note is 'remove Blood Artist early when it comes out'"
+        },
+        {
+          "card": "Charismatic Conqueror",
+          "read": "over",
+          "why": "named in the note as the 'token maker'. 'opponents wanted blockers, so it kept paying; the tokens became fodder'"
+        },
+        {
+          "card": "Caretaker's Talent",
+          "read": "as-expected",
+          "why": "named in the note as 'caretakers keep'. 'The card draw engine was running off tokens entering'"
+        },
+        {
+          "card": "Edgar Markov",
+          "read": "as-expected",
+          "why": "cast cheap vampires and built the token board, then came back on Altar mana late and 'started swinging and buffing the board'"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "Ashnod's Altar resolves with a wide token board while Steven leads 38 to 20 behind 6/6 flyers: sacrifice tokens to cast Crossway Troublemakers and swing at Steven, or keep the bodies",
+          "worth_a_spread": true
+        }
+      ],
+      "takeaways": [
+        "The pilot's frame after v3.0: cheap vampires and tokens are FUEL/fodder, and the converters turn them into value. Blood Artist turns them into drain, Crossway Troublemakers into attackers that kill blockers, and Ashnod's Altar into a mana burst. Before v3.0 the deck 'went wide with middling vampires and tried to win through combat damage'.",
+        "Ashnod's Altar was the game's hinge. Its mana cast Crossway Troublemakers and then Edgar in the same closing sequence.",
+        "Charismatic Conqueror paid off at a table that wanted blockers, and its tokens became the fodder.",
+        "Life gain and drain kept the deck alive through a 38-to-20 deficit until the converters came online.",
+        "In this pod, 'Magda sets the pace', and the table is expected to 'remove Blood Artist early when it comes out'."
+      ],
+      "engine_stages": [
+        "fodder",
+        "conversion",
+        "output"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Ashnod's Altar",
+            "Crossway Troublemakers",
+            "Blood Artist",
+            "Edgar Markov"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "From a wide token board with Ashnod's Altar and Blood Artist out, does Altar into Crossway Troublemakers and a swing kill a 38-life seat holding 6/6 flying blockers, and how many tokens does it take?",
+          "settled_by": "resolve-stack",
+          "why_it_matters": "this is the game's closing line, and the pilot does not recall the exact final sequence"
+        },
+        {
+          "question": "If Blood Artist is removed early, as the pilot expects this table to do, which other cards in the 99 convert a token's death into drain?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the note names Blood Artist as the converter that killed Steven and as the table's first removal target"
+        },
+        {
+          "question": "How often are Ashnod's Altar, a converter and a fodder board all on the table together, and by which turn?",
+          "settled_by": "goldfish",
+          "why_it_matters": "the pilot's new read is fuel plus converters, and this win came the turn the Altar landed"
+        },
+        {
+          "question": "How should the deck play against a fast mono-red Magda treasure start that always fetches Utvara Hellkite?",
+          "settled_by": "research-strategy",
+          "why_it_matters": "'Magda sets the pace of this pod'. Steven was at 38 to Sean's 20 before the converters arrived"
+        }
+      ]
     }
   }
 }

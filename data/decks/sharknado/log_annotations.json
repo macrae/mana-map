@@ -474,6 +474,118 @@
           "why_it_matters": "this table's clock is about turn four, and the engine model puts Shabraz's first window at turn four or five"
         }
       ]
+    },
+    "009": {
+      "summary": "Game 2 of a two-game Thursday at Steven's, a loss on the current list (decklist_sha256 matches v3.0.0). After a mulligan to a land-heavy keep with no early creatures and a missed land drop, Sean had no board until about turn four and took everyone's attacks. Short of mana for Shabraz, he cast Brallin first. The key turn was Jace's Archivist (the dictated 'Essence Valdarin') under Smothering Tithe with Brallin out: 14 Treasure, Faerie Mastermind kept the table drawing, and Shabraz landed and grew. Shabraz hit Steven for 18 into two 6/6 dragons and got 6 commander damage through. Sean then held the Treasure instead of casting the humans in hand. Steven's swing back left him at 1 life, and Stuart's end-step zombie sacrifice drain killed him one turn before a Wheel of Fortune comeback. The pilot is happy with how the deck worked and how it piloted.",
+      "opponents": [
+        {
+          "seat": "Steven",
+          "archetype": "treasure",
+          "commander": "Magda",
+          "evidence": "cheap dwarves make treasure, tutors an artifact or dragon onto the battlefield, always fetches Utvara Hellkite, pops off fast"
+        },
+        {
+          "seat": "David",
+          "archetype": null,
+          "commander": null,
+          "evidence": "Golem partner-commander deck (slow, still being built)"
+        },
+        {
+          "seat": "Stuart",
+          "archetype": "aristocrats",
+          "commander": "Wilhelt, the Rotcleaver",
+          "evidence": "Rotcleaver zombie typal (zombies come back, decayed tokens, Blood Artist and Zulaport Cutthroat sacrifice drain)"
+        }
+      ],
+      "cards": [
+        {
+          "card": "Jace's Archivist",
+          "read": "as-expected",
+          "why": "dictated as 'Essence Valdarin'. The wheel on legs fired the key turn: Brallin triggered counters and damage across the table, and everyone drew about five"
+        },
+        {
+          "card": "Smothering Tithe",
+          "read": "as-expected",
+          "why": "made 14 Treasure off the Archivist wheel (15 but for Steven paying two for one draw), and that mana brought Shabraz out"
+        },
+        {
+          "card": "Faerie Mastermind",
+          "read": "as-expected",
+          "why": "'kept everybody drawing' through the key turn"
+        },
+        {
+          "card": "Brallin, Skyshark Rider",
+          "read": "as-expected",
+          "why": "cast when short of Shabraz mana: 'a body on defense', the discard cards in hand still worked with him, and 'nice to have Brallin as the fallback'. He gave the shark trample"
+        },
+        {
+          "card": "Shabraz, the Skyshark",
+          "read": "as-expected",
+          "why": "'Shabraz did its thing, was a real threat, and did a ton of damage to Steven'. It gave the humans flying for attacks or blocks"
+        }
+      ],
+      "decisions": [
+        {
+          "spot": "after one mulligan: keep a land-heavy seven with no small creatures and no blockers, or mulligan again (no board until about turn four; took everyone's attacks)",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "with Brallin as the blocker and Steven's dragons out: swing Brallin at Steven (blocked by two, killed one dragon) or hold him back",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "with spare Treasure after the Shabraz swing: cast the humans in hand as blockers (and give them flying) or hold the Treasure. Held it, Steven swung back, and Sean went to 1",
+          "worth_a_spread": true
+        },
+        {
+          "spot": "Stuart's Blood Artist on the table: remove it early or leave it (left it; every creature death drained the table)",
+          "worth_a_spread": false
+        },
+        {
+          "spot": "short of Shabraz mana: cast Brallin (four) as a defensive body or wait for five",
+          "worth_a_spread": false
+        }
+      ],
+      "takeaways": [
+        "With spare Treasure and a wide board across the table, spend it: cast the humans as blockers, since Shabraz can give them flying (the pilot's own read).",
+        "If Blood Artist comes out, remove it early: every creature death drains the table and gains Stuart life.",
+        "A land-heavy keep with no early creatures meant no board until about turn four and drew everyone's attacks.",
+        "Brallin is the fallback when Shabraz's five is not there: a defensive body, and the discard engine still works through him.",
+        "Jace's Archivist under Smothering Tithe, with Faerie Mastermind out, made 14 Treasure and paid for Shabraz on the same turn.",
+        "Shabraz pointed all its damage at Steven and took out the big evasive dragons central to Steven's engine; the pilot liked that outcome."
+      ],
+      "engine_stages": [
+        "mana",
+        "fuel",
+        "ignition"
+      ],
+      "lines": [
+        {
+          "cards": [
+            "Jace's Archivist",
+            "Brallin, Skyshark Rider",
+            "Smothering Tithe"
+          ],
+          "status": "needs a stack scenario"
+        }
+      ],
+      "open_questions": [
+        {
+          "question": "Was swinging Brallin at Steven a mistake? Steven blocked with two creatures and lost a dragon, but Brallin was the blocker Sean later needed when Steven swung back and left him at 1.",
+          "settled_by": "research-strategy",
+          "why_it_matters": "the pilot asked it directly. Sean died at 1 life, so a body kept back, or a few points of life, may have been the margin to the Wheel of Fortune turn"
+        },
+        {
+          "question": "How many answers can v3.0.0 aim at a creature like Blood Artist early, and does the list hold enough cheap blockers or interaction to survive a drain table after it goes all-in on one opponent?",
+          "settled_by": "diagnose",
+          "why_it_matters": "the drain finished Sean at 1 life, and the pilot is 'unsure whether he got outraced'"
+        },
+        {
+          "question": "How often does v3.0.0 have a creature on the battlefield by turn three after a land-heavy keep?",
+          "settled_by": "goldfish",
+          "why_it_matters": "no creature until about turn four meant everybody attacked Sean, and the pilot flagged the keep as an observation"
+        }
+      ]
     }
   }
 }
