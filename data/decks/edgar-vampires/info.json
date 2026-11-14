@@ -63,6 +63,9 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Crackling Doom"
+          },
+          {
             "name": "Elas il-Kor, Sadistic Pilgrim"
           },
           {
@@ -133,28 +136,35 @@
             ]
           },
           {
+            "name": "Toxic Deluge",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Zulaport Cutthroat",
             "where": [
               "Hapatra"
             ]
           }
         ],
-        "blocking": 10,
+        "blocking": 11,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 14,
-      "out": 14,
+      "add": 16,
+      "out": 16,
       "counts": {
-        "in_deck": 83,
-        "box": 4,
+        "in_deck": 81,
+        "box": 5,
         "elsewhere": 4,
-        "buy": 6,
+        "buy": 7,
         "free": 0
       },
       "unsourced": [
         "Boros Charm",
+        "Crackling Doom",
         "Elas il-Kor, Sadistic Pilgrim",
         "Falkenrath Noble",
         "Oathsworn Vampire",
@@ -385,6 +395,13 @@
           "is_new": false
         },
         {
+          "name": "Crackling Doom",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Crossway Troublemakers",
           "state": "in_deck",
           "where": [],
@@ -581,21 +598,7 @@
           "is_new": false
         },
         {
-          "name": "Olivia's Wrath",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Orzhov Signet",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Path to Exile",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -851,6 +854,18 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Toxic Deluge",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Twilight Prophet",
@@ -20581,8 +20596,8 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `threat-v1` needs 10 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
+    "branch `threat-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1` needs 11 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
