@@ -885,6 +885,93 @@
         "blurb": "Adds Jaws and two more Sharks, two Humans, and a Blood-token line: each Blood token discards for Brallin and draws for Shabraz, and Jaws pings on every sacrifice; pays with a damage tripler, a counter booster, three rocks and a re-cut mana base.",
         "by": "jarvis",
         "at": "2026-11-14"
+      },
+      "verdict": {
+        "state": "no objective",
+        "rose": 0,
+        "fell": 12,
+        "no_call": 4
+      },
+      "measured": true,
+      "blind_spots": [
+        "Brotherhood Regalia",
+        "Cascade Bluffs",
+        "Ceremonial Knife",
+        "Gemstone Caverns",
+        "Hengegate Pathway // Mistgate Pathway",
+        "Jaws, Relentless Predator",
+        "Kozilek's Return",
+        "Sunbillow Verge",
+        "Temple of Epiphany",
+        "Voracious Greatshark"
+      ],
+      "impact": {
+        "state": "no objective",
+        "rose": [],
+        "fell": [
+          "hoard @T10",
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "killed by T10",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8",
+          "interaction affordable @T6",
+          "finisher wheel by T8",
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
+        ],
+        "headline": [
+          {
+            "measure": "damage @T10",
+            "delta": -136.5261,
+            "ci95_diff": [
+              -142.5108,
+              -130.5414
+            ],
+            "mde": 8.5545,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "killed by T10",
+            "delta": -0.0033,
+            "ci95_diff": [
+              -0.0051,
+              -0.0015
+            ],
+            "mde": 0.0025,
+            "verdict": "worse",
+            "unit": "rate",
+            "better_is": "higher"
+          },
+          {
+            "measure": "board power @T6",
+            "delta": -0.7719,
+            "ci95_diff": [
+              -0.9418,
+              -0.602
+            ],
+            "mde": 0.2428,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          },
+          {
+            "measure": "extra cards by T8",
+            "delta": -1.4974,
+            "ci95_diff": [
+              -1.7843,
+              -1.2105
+            ],
+            "mde": 0.4101,
+            "verdict": "worse",
+            "unit": "mean",
+            "better_is": "higher"
+          }
+        ]
       }
     },
     {

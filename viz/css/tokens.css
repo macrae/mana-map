@@ -889,6 +889,46 @@ li.swap { padding: .6rem 0; border-top: 1px solid var(--rule); }
 .nc-def { break-inside: avoid; }
 .branch-report .difflist li { align-items: baseline; }
 .branch-report ul.difflist .paired { flex: 0 1 auto; padding-left: 0; font-size: 13px; color: var(--ink-soft); }
+
+/* THE EXECUTIVE SUMMARY (2026-11-14): the first panel, so it carries the accent
+   and the larger type. The deck, why, the goal, the evidence as a profile, and the
+   paired swaps — everything below is the detail behind it. */
+.branch-report .exec-summary { --accent: var(--burst-yellow); margin-bottom: 22px; }
+.branch-report .exec-summary h3 { margin: 18px 0 8px; font-size: 15px; letter-spacing: .04em; }
+.branch-report .exec-summary h3 .ev { font-weight: 400; margin-left: 8px; }
+.branch-report .exec-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; margin: 0; }
+.branch-report .exec-facts dt { font-family: var(--display); text-transform: uppercase; font-size: 12px; letter-spacing: .08em; color: var(--ink-soft); padding-top: 2px; }
+.branch-report .exec-facts dd { margin: 0; font-size: 15px; line-height: 1.5; max-width: 90ch; }
+.branch-report .exec-evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.branch-report .exec-evidence > div { background: var(--panel-hi); border: 1px solid var(--rule); border-left: 4px solid var(--rule); padding: 10px 12px; }
+.branch-report .exec-evidence .rose { border-left-color: var(--slime-green); }
+.branch-report .exec-evidence .fell { border-left-color: var(--power-red); }
+.branch-report .exec-evidence h4 { margin: 0 0 6px; font-size: 13px; letter-spacing: .06em; }
+.branch-report .exec-evidence .rose h4 { color: var(--slime-green); }
+.branch-report .exec-evidence .fell h4 { color: var(--power-red); }
+.branch-report .exec-evidence ul { margin: 0; padding-left: 0; list-style: none; }
+.branch-report .exec-evidence li { margin: 4px 0; }
+.branch-report .exec-evidence li .ev { display: block; }
+.branch-report .exec-why-fold summary { cursor: pointer; }
+.branch-report .exec-why-fold summary .ev { display: inline; }
+.branch-report .exec-why-fold ul { margin: 8px 0 0; padding-left: 18px; }
+.branch-report .exec-why-fold li { margin: 3px 0; font-size: 14px; line-height: 1.45; }
+.branch-report .exec-blind { border-left: 3px solid var(--burst-yellow); padding-left: 10px; }
+.branch-report table.exec-swaps { width: 100%; border-collapse: collapse; font-size: 14px; }
+.branch-report table.exec-swaps th { text-align: left; font-size: 12px; letter-spacing: .06em; color: var(--ink-soft); border-bottom: 1px solid var(--rule); padding: 6px 8px; }
+.branch-report table.exec-swaps th.del { color: var(--power-red); }
+.branch-report table.exec-swaps th.add { color: var(--slime-green); }
+.branch-report table.exec-swaps td { padding: 6px 8px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.branch-report table.exec-swaps td.del { white-space: nowrap; }
+.branch-report table.exec-swaps td.add { white-space: nowrap; font-weight: 600; }
+.branch-report table.exec-swaps td.del a.cardname { color: var(--power-red); text-decoration: line-through; text-decoration-thickness: 1px; }
+.branch-report table.exec-swaps td.add a.cardname { color: var(--slime-green); }
+.branch-report table.exec-swaps td.arrow { color: var(--ink-soft); width: 1%; }
+.branch-report table.exec-swaps tr.land td.del, .branch-report table.exec-swaps tr.land td.add { font-style: italic; }
+@media (max-width: 720px) {
+  .branch-report .exec-facts { grid-template-columns: minmax(0, 1fr); }
+  .branch-report table.exec-swaps td.del, .branch-report table.exec-swaps td.add { white-space: normal; }
+}
 .branch-report ul.difflist .cname { flex: 0 1 auto; }
 .branch-report ul.difflist .mv { font-size: 13px; }
 .branch-report ul.difflist .chip { font-size: 12px; }

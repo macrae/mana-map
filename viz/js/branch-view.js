@@ -895,6 +895,144 @@
     return out + '</div>';
   }
 
+  /* THE EXECUTIVE SUMMARY (2026-11-14). The pilot: "the exact cards are kind of
+   * hidden.. what I really want is an executive summary.. what the deck was, why
+   * we made these changes, what we hope to accomplish, some measurement
+   * supporting our decision, and the simple list of cards cutting and coming in
+   * with a highlight that pops up the card image." Every fact below was already
+   * on this page, spread across fifteen panels with the swaps sixth; this is the
+   * one place that answers "what is proposed and why" before any of them.
+   *
+   * IT COMPUTES NOTHING, like the rest of the page: the deck and version come
+   * from `branch.json`, the reasons from its staged rows, the evidence from
+   * `net_change.recommendation` (`rose` / `fell` / `no_call` and their
+   * `reward` / `risk` sentences) and the blind spots from its `unmeasured` risks.
+   * The verdict word is deliberately NOT the headline — the profile is read as a
+   * whole, which is the pilot's standing rule — so rose and fell sit side by
+   * side. Card names are `card()`, so every one pops its image on hover. */
+  /* A DECLARATION IS A PARAGRAPH OF REASONS, AND A SUMMARY READS ONE LINE.
+   * The first sentence is the headline; the rest fold underneath, one point per
+   * line. Every word is kept — this only breaks the text where it already breaks
+   * (a full stop or semicolon before a capital), it never rewrites it. */
+  function whyHtml(why) {
+    if (!why) return '<span class="ev">No reason was written down for this branch.</span>';
+    var parts = String(why).replace(/([.;])\s+(?=[A-Z(])/g, '$1\n').split('\n')
+      .map(function (s) { return s.trim(); }).filter(Boolean);
+    if (parts.length < 2) return esc(why);
+    return '<details class="exec-why-fold"><summary>' + esc(parts[0]) +
+      ' <span class="ev">(' + (parts.length - 1) + ' more point' + (parts.length === 2 ? '' : 's') + ')</span></summary>' +
+      '<ul>' + parts.slice(1).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></details>';
+  }
+
+  function summaryPanel(meta, nc, slug, name) {
+    var sum = (meta && meta.summary) || {};
+    var deckName = window.DeckFacts && DeckFacts.displayName
+      ? DeckFacts.displayName({ slug: slug }).text : slug;
+    var ver = meta && meta.base_version != null
+      ? (/^\d+$/.test(String(meta.base_version)) ? 'V' + meta.base_version : String(meta.base_version))
+      : '';
+    var why = meta && meta.why && !isAutoWhy(meta.why) ? meta.why : (sum.blurb || '');
+    var out = '<section class="panel exec-summary" id="summary">' +
+      '<h2>The proposal at a glance</h2>' +
+      '<dl class="exec-facts">' +
+      '<dt>The deck</dt><dd><b>' + esc(deckName) + '</b>' +
+      (ver ? ' as it stands at <b>' + esc(ver) + '</b>' : '') +
+      ' — nothing here is merged; the branch is a proposal.</dd>' +
+      '<dt>Why</dt><dd class="exec-why">' + whyHtml(why) + '</dd>';
+
+    // THE GOAL: a guard row if one was named, otherwise the summary in words.
+    var obj = (nc && nc.objective) || (meta && meta.objective);
+    var goal = '';
+    if (obj && obj.axis) {
+      goal = 'Hold <code>' + esc(obj.axis) + ' ' + esc(obj.op) + ' ' + esc(obj.value) + '</code>' +
+        (nc && nc.objective_grade ? ' — graded <b>' + esc(String(nc.objective_grade.grade || nc.objective_grade).toUpperCase()) + '</b>' : '') + '.';
+    } else if (sum.blurb && sum.blurb !== why) {
+      goal = esc(sum.blurb);
+    } else if (sum.title) {
+      goal = esc(sum.title) + '.';
+    }
+    if (goal) out += '<dt>The goal</dt><dd>' + goal + '</dd>';
+    out += '</dl>';
+
+    // THE EVIDENCE, as a profile: what rose, what fell, what it cannot see.
+    var r = nc && nc.recommendation;
+    if (r) {
+      var rewardOf = {}, riskOf = {};
+      (r.reward || []).forEach(function (x) { rewardOf[x.measure] = x.reads_as; });
+      (r.risk || []).forEach(function (x) { if (x.kind === 'paid') riskOf[x.what] = x.detail; });
+      var item = function (m, txt, cls) {
+        return '<li class="' + cls + '"><b>' + esc(m) + '</b>' +
+          (txt ? '<span class="ev">' + esc(txt) + '</span>' : '') + '</li>';
+      };
+      out += '<h3>What the measurement says</h3><div class="exec-evidence">' +
+        '<div class="rose"><h4>▲ Rose</h4>' + ((r.rose || []).length
+          ? '<ul>' + r.rose.map(function (m) { return item(m, rewardOf[m], 'rose'); }).join('') + '</ul>'
+          : '<p class="ev">nothing rose</p>') + '</div>' +
+        '<div class="fell"><h4>▼ Fell</h4>' + ((r.fell || []).length
+          ? '<ul>' + r.fell.map(function (m) { return item(m, riskOf[m], 'fell'); }).join('') + '</ul>'
+          : '<p class="ev">nothing fell</p>') + '</div></div>';
+      if ((r.no_call || []).length) {
+        out += '<p class="ev">No call either way: ' + r.no_call.map(esc).join(', ') + '.</p>';
+      }
+      var blind = (r.risk || []).filter(function (x) { return x.kind === 'unmeasured'; });
+      if (blind.length) {
+        out += '<p class="ev exec-blind"><b>What the goldfish cannot see</b> — these are judgment, not measurement: ' +
+          blind.map(function (x) { return esc(x.what); }).join('; ') + '.</p>';
+      }
+      out += '<p class="ev">The paired goldfish: no blockers, no removal, one opponent. Read the rows together, ' +
+        'never one alone. The full table is in <a href="#measured">Profile</a>.</p>';
+    } else {
+      out += '<h3>What the measurement says</h3><p class="ev">Not measured yet: ' +
+        '<code>manamap pilot net-change ' + esc(slug) + ' --branch ' + esc(name) + ' --write</code></p>';
+    }
+
+    // THE SWAPS, paired, with the reason for each. Hover a name to see the card.
+    var d = nc && nc.changes && nc.changes.diff;
+    var rows = [];
+    if (d) {
+      var paired = {};
+      (d['in'] || []).forEach(function (x) {
+        if (x.pair) paired[x.pair] = true;
+        rows.push({ out: x.pair || '', inn: x.name, why: isAutoWhy(x.why) ? '' : (x.why || ''), kind: x.kind });
+      });
+      (d.out || []).forEach(function (x) {
+        if (!paired[x.name]) rows.push({ out: x.name, inn: '', why: isAutoWhy(x.why) ? '' : (x.why || ''), kind: x.kind });
+      });
+      (d.changed || []).forEach(function (x) {
+        rows.push({ out: x.delta < 0 ? x.name + ' ×' + (-x.delta) : '',
+                    inn: x.delta > 0 ? x.name + ' ×' + x.delta : '',
+                    why: x.from + ' → ' + x.to + ' copies', kind: x.kind, count: true });
+      });
+    } else {
+      ((meta && meta.staged) || []).forEach(function (x) {
+        rows.push({ out: x.out, inn: x['in'], why: isAutoWhy(x.why) ? '' : (x.why || ''), kind: 'spell' });
+      });
+    }
+    rows.sort(function (a, b) {
+      var k = (a.kind === 'land') - (b.kind === 'land');
+      return k || String(a.inn || a.out).localeCompare(String(b.inn || b.out));
+    });
+    if (rows.length) {
+      var co = d ? (d.counts.out_copies == null ? d.counts.out : d.counts.out_copies) : rows.length;
+      var ci = d ? (d.counts.in_copies == null ? d.counts['in'] : d.counts.in_copies) : rows.length;
+      var nameCell = function (n, count) {
+        if (!n) return '<span class="ev">—</span>';
+        return count ? esc(n) : card(n);
+      };
+      out += (d ? '' : '<p class="ev warn">Not measured yet, so this is the STAGING LOG in the order it was written — a card staged in and later swapped out appears on both sides. Measure the branch for the net change.</p>') +
+        '<h3>The swaps <span class="ev">' + (d ? '−' + co + ' out · +' + ci + ' in · ' : rows.length + ' staged · ') + 'hover a card to see it</span></h3>' +
+        '<table class="exec-swaps"><thead><tr><th class="del">Out</th><th></th><th class="add">In</th><th>Why</th></tr></thead><tbody>' +
+        rows.map(function (x) {
+          return '<tr class="' + (x.kind === 'land' ? 'land' : 'spell') + '">' +
+            '<td class="del">' + nameCell(x.out, x.count) + '</td><td class="arrow">→</td>' +
+            '<td class="add">' + nameCell(x.inn, x.count) + '</td>' +
+            '<td class="ev">' + esc(x.why) + '</td></tr>';
+        }).join('') + '</tbody></table>' +
+        '<p class="ev">Card art for the whole change is in <a href="#net-change">Cards</a> (switch it to gallery).</p>';
+    }
+    return out + '</section>';
+  }
+
   /* THE STAGING AREA. Every row carries what the card COSTS as well as what it
    * gains, badged apart — the pre-repair index rendered both the same red, so a
    * card that charged you something looked identical to one that gave you
@@ -1338,7 +1476,7 @@
         var unread = failed ? absent('The report could not be read',
           'A net_change.json exists but did not load (' + failed + '). This is not an unmeasured branch; re-running only replaces the file.',
           'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write') : '';
-        document.getElementById('panels').innerHTML = (nc
+        document.getElementById('panels').innerHTML = summaryPanel(meta, nc, slug, name) + (nc
           ? (tablePanel(nc, meta) + blindSpotsPanel(nc) + manaPanel(nc) + billPanel(nc, meta) +
              forgePanel(nc) + netChangePanel(meta, nc) +
              '<div id="slotEvidence"></div>' + trailPanel(meta) +
@@ -1414,7 +1552,7 @@
 
   /* THE JUMP NAV, the dossier's own. Built from what actually rendered, and repainted
    * as the late panels land, so a link never points at a section that is not there. */
-  var NAV = [['measured', 'Profile'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
+  var NAV = [['summary', 'Summary'], ['measured', 'Profile'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
              ['bill', 'Cost'], ['forge', 'Forge'], ['net-change', 'Cards'],
              ['table-marks', 'At the table'], ['castProofs', 'Cast proofs'],
              ['branchStacks', 'Proven'], ['profileFigures', 'Goldfish'],

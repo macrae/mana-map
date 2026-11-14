@@ -7808,6 +7808,36 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
 
 @requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
 @pytest.mark.browser
+def test_the_branch_page_leads_with_the_executive_summary(browser, viz_server):
+    """THE PILOT, 2026-11-14: "the exact cards are kind of hidden ... what I really
+    want is an executive summary." The summary is the first panel, names the deck
+    and why, and pairs every swap with a card name that pops its image.
+
+    And the pairs must be TRUE: Heliod b3-v1's diff paired Top with Mana Drain, a
+    card the sleeved list never had, so the table showed a cut that never happened.
+    Every OUT name in the summary must be one the Cards panel also lists as cut."""
+    page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
+    try:
+        assert not page.js_errors, page.js_errors
+        first = page.locator("#panels > section.panel").first
+        assert first.get_attribute("id") == "summary", "the summary does not lead the page"
+        text = first.inner_text().lower()
+        assert "the deck" in text and "why" in text
+        rows = page.locator("#summary table.exec-swaps tbody tr")
+        if rows.count() == 0:
+            return            # an unmeasured branch with nothing staged: nothing to pair
+        assert page.locator("#summary table.exec-swaps td.add a.cardname").count() >= 1, (
+            "an incoming card is not a hover-pop link")
+        if page.locator("#net-change").count():
+            cut = set(page.locator("#net-change li.del a.cardname").all_inner_texts())
+            shown = set(page.locator("#summary table.exec-swaps td.del a.cardname").all_inner_texts())
+            assert shown <= cut, f"the summary pairs a cut the diff never made: {sorted(shown - cut)}"
+    finally:
+        page.close()
+
+
+@requires_branch  # a branch is a pilot artifact, not a fixture: skip, never fail
+@pytest.mark.browser
 def test_the_branch_page_names_what_left(
         browser, viz_server):
     """THE DELETIONS WERE MISSING FROM THE PAGE ENTIRELY.

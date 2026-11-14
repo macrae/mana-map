@@ -678,15 +678,16 @@ def card_diff(slug, branch, bill=None):
     # and still cannot tell which removal paid for which addition. Each row
     # carries the name of its opposite number instead, and the reason is printed
     # once against the card that was ARGUED FOR.
-    why_out, why_in, pair = {}, {}, {}
+    why_out, why_in = {}, {}
+    back, fwd = {}, {}          # in -> the out it replaced; out -> the in that replaced it
     for row in meta.get("staged") or []:
         if row.get("out"):
             why_out[row["out"]] = row.get("why")
         if row.get("in"):
             why_in[row["in"]] = row.get("why")
         if row.get("out") and row.get("in"):
-            pair[row["out"]] = row["in"]
-            pair[row["in"]] = row["out"]
+            back[row["in"]] = row["out"]
+            fwd[row["out"]] = row["in"]
     state = {r["name"]: r.get("state")
              for r in ((bill or {}).get("cards") or [])}
 
@@ -701,6 +702,47 @@ def card_diff(slug, branch, bill=None):
         slug, branch,
         deck_branch._entries(deck_branch._list_text(slug)),
         deck_branch._entries(deck_branch._list_text(slug, branch)))
+
+    # A PAIR IS FOLLOWED TO THE END OF ITS CHAIN (2026-11-14). Heliod's b3-v1 staged
+    # Fierce Guardianship -> Mana Drain, then Mana Drain -> Sensei's Divining Top, and
+    # the diff paired Top with MANA DRAIN — a card on neither side of the net change,
+    # so the branch page's swap table read "Mana Drain -> Top" while Fierce
+    # Guardianship sat unpaired. Five of b3-v1's twenty-five pairs named a card the
+    # sleeved list never had. Walking back from an add stops at a card the BASE list
+    # holds; walking forward from a cut stops at a card the CANDIDATE list holds.
+    def _walk(start, step, stop_in):
+        seen, card = set(), start
+        while card not in stop_in and card in step and card not in seen:
+            seen.add(card)
+            card = step[card]
+        return card if card in stop_in else None
+
+    # The stops are the two SIDES of the diff, not the two lists: Edgar's threat-v1
+    # cut Wispdrinker for Zulaport and later brought Wispdrinker back for
+    # Clavileño, so Wispdrinker sits in both lists and the walk passes through it —
+    # net, Clavileño went out and Zulaport came in.
+    gone = {n for n in base if n not in cand}
+    new = {n for n in cand if n not in base}
+    # A STAGED ROW MAY NAME A DFC BY ITS FRONT FACE ("Midgar, City of Mako") while
+    # the lists carry "Midgar, City of Mako // Reactor Raid"; left alone, the cut
+    # went unpaired and lost its reason. Re-key the staging maps to the list names.
+    alias = {n.split(" // ")[0]: n for n in list(base) + list(cand) if " // " in n}
+    if alias:
+        back = {alias.get(k, k): alias.get(v, v) for k, v in back.items()}
+        fwd = {alias.get(k, k): alias.get(v, v) for k, v in fwd.items()}
+        why_out = {alias.get(k, k): v for k, v in why_out.items()}
+        why_in = {alias.get(k, k): v for k, v in why_in.items()}
+    pair = {}
+    for name in new:
+        if name in back:
+            o = _walk(back[name], back, gone)
+            if o:
+                pair[name] = o
+    for name in gone:
+        if name in fwd:
+            i = _walk(fwd[name], fwd, new)
+            if i:
+                pair[name] = i
 
     def row(name, why_map, with_state):
         info = pool.get(name) or {}

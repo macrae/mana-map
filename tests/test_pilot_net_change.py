@@ -2064,3 +2064,36 @@ def test_the_death_limit_names_no_card(monkeypatch):
     said = " ".join(net_change._death_limit("s", None))
     assert "nothing dies in this simulation" in said
     assert not [w for w in _ONE_DECKS_WORDS if w in said.lower()], said
+
+
+def test_a_pair_follows_its_chain_to_the_cards_on_each_side(monkeypatch):
+    """Heliod b3-v1, 2026-11-14: Fierce Guardianship -> Mana Drain, then Mana Drain
+    -> Sensei's Divining Top paired Top with MANA DRAIN, a card on neither side of
+    the net change, and left Fierce Guardianship unpaired — the branch page's swap
+    table showed a cut the sleeved list never had. And Edgar threat-v1 cut
+    Wispdrinker for Zulaport, then brought Wispdrinker back for Clavileño: net,
+    Clavileño out and Zulaport in. SYNTHETIC: both shapes stated, not hoped for.
+    Proved by re-introducing the bug: pair each staged row to its own partner and
+    this fails on both asserts."""
+    from manamap.pilot import deck_branch
+    base = {"Fierce Guardianship": 1, "Wispdrinker": 1, "Clavileno": 1, "Island": 1}
+    cand = {"Top": 1, "Wispdrinker": 1, "Zulaport": 1, "Island": 1}
+    staged = [
+        {"out": "Fierce Guardianship", "in": "Mana Drain", "why": "first"},
+        {"out": "Mana Drain", "in": "Top", "why": "then Top"},
+        {"out": "Wispdrinker", "in": "Zulaport", "why": "drain on death"},
+        {"out": "Clavileno", "in": "Wispdrinker", "why": "Wispdrinker back"},
+    ]
+    monkeypatch.setattr(net_change, "_pool", lambda s, b: {})
+    monkeypatch.setattr(deck_branch, "meta", lambda s, b: {"staged": staged})
+    monkeypatch.setattr(deck_branch, "diff", lambda s, b: {
+        "out": ["Clavileno", "Fierce Guardianship"], "add": ["Top", "Zulaport"],
+        "size": 4, "base_size": 4, "names": 4, "base_names": 4})
+    monkeypatch.setattr(deck_branch, "_list_text", lambda s, b=None: "")
+    monkeypatch.setattr(deck_branch, "_entries", lambda t: t)
+    monkeypatch.setattr(deck_branch, "_named", lambda s, b, x, y: (base, cand))
+    d = net_change.card_diff("x", "y")
+    ins = {r["name"]: r["pair"] for r in d["in"]}
+    outs = {r["name"]: r["pair"] for r in d["out"]}
+    assert ins == {"Top": "Fierce Guardianship", "Zulaport": "Clavileno"}
+    assert outs == {"Fierce Guardianship": "Top", "Clavileno": "Zulaport"}
