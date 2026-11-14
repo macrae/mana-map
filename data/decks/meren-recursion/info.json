@@ -22,16 +22,11 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
-    "invalid": [
-      "CONTEXT.md",
-      "prices.json"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -116,9 +111,9 @@
       "name": "budget-v2",
       "opened": "2026-11-14",
       "why": "Budget swaps, reopened on V24 (pilot, 2026-11-10: Bayou and Survival of the Fittest too expensive): Fabled Passage for Bayou, Exotic Orchard for Darkbore Pathway, Fauna Shaman for Survival of the Fittest",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
-      "base_moved": "base moved since c84a80ef5729 — the deck's list changed after this branch was cut, so its comparison is against an older deck",
+      "state": "MERGED",
+      "state_why": "merged 2026-11-14 into the list after VNone",
+      "base_moved": null,
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -4080,8 +4075,16 @@
   "simulation": null,
   "experiments": null,
   "decisions": {
-    "count": 2,
-    "awaiting_outcome": [],
+    "count": 3,
+    "awaiting_outcome": [
+      {
+        "id": "003",
+        "branch": "budget-v2",
+        "pod": null,
+        "runs_of_merged_list": 0,
+        "closable": false
+      }
+    ],
     "latest": [
       {
         "id": "001",
@@ -4106,17 +4109,22 @@
         "as_version": null,
         "predicted": null,
         "realised": null
+      },
+      {
+        "id": "003",
+        "at": "2026-11-14T12:57:45-08:00",
+        "kind": "merge",
+        "branch": "budget-v2",
+        "as_version": null,
+        "predicted": null,
+        "realised": null
       }
     ]
   },
   "next": [
-    "2 artifact(s) fail their own gate (CONTEXT.md, prices.json) — `deck-status meren-recursion` names them; fix before anything else reads them",
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V25 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch meren-recursion merge budget-v2 --write`",
     "branch `budget-v1`: 15 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `budget-v1` needs 6 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
