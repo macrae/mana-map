@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -128,12 +130,29 @@
           },
           {
             "name": "Korozda Guildmage"
+          },
+          {
+            "name": "Spore Frog"
           }
         ],
-        "unsleeve": [],
+        "unsleeve": [
+          {
+            "name": "Grim Haruspex",
+            "where": [
+              "edgar-vampires"
+            ]
+          }
+        ],
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Beast Within",
+            "where": [
+              "Golgari Parts",
+              "Green"
+            ]
+          },
           {
             "name": "Craterhoof Behemoth",
             "where": [
@@ -143,6 +162,12 @@
           },
           {
             "name": "Dark Ritual",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
+            "name": "Dismember",
             "where": [
               "Hapatra"
             ]
@@ -162,31 +187,53 @@
             ]
           },
           {
+            "name": "Glissa Sunslayer",
+            "where": [
+              "Auntie Ool"
+            ]
+          },
+          {
+            "name": "Lightning Greaves",
+            "where": [
+              "Mystery Booster 2",
+              "Zur Parts"
+            ]
+          },
+          {
             "name": "Mazirek, Kraul Death Priest",
             "where": [
               "Golgari Parts"
             ]
+          },
+          {
+            "name": "Veil of Summer",
+            "where": [
+              "Green",
+              "Hapatra"
+            ]
           }
         ],
-        "blocking": 4,
+        "blocking": 6,
         "procurement": null
       },
       "base_version": null,
       "size": 100,
-      "add": 9,
-      "out": 9,
+      "add": 16,
+      "out": 16,
       "counts": {
-        "in_deck": 90,
-        "box": 5,
-        "elsewhere": 0,
-        "buy": 4,
+        "in_deck": 83,
+        "box": 10,
+        "elsewhere": 1,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
         "Fabled Passage",
+        "Grim Haruspex",
         "Hogaak, Arisen Necropolis",
         "Infested Thrinax",
-        "Korozda Guildmage"
+        "Korozda Guildmage",
+        "Spore Frog"
       ],
       "mergeable": false,
       "free": 0,
@@ -235,10 +282,19 @@
         },
         {
           "name": "Beast Within",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Birds of Paradise",
@@ -361,10 +417,15 @@
         },
         {
           "name": "Dismember",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Entomb",
@@ -442,10 +503,15 @@
         },
         {
           "name": "Glissa Sunslayer",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grave Pact",
@@ -470,10 +536,25 @@
         },
         {
           "name": "Grim Haruspex",
-          "state": "in_deck",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "edgar-vampires",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Grist, Voracious Larva // Grist, the Plague Swarm",
@@ -540,10 +621,19 @@
         },
         {
           "name": "Lightning Greaves",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Mystery Booster 2"
+            },
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Llanowar Elves",
@@ -748,10 +838,10 @@
         },
         {
           "name": "Spore Frog",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Swamp",
@@ -846,10 +936,19 @@
         },
         {
           "name": "Veil of Summer",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Verdant Catacombs",
@@ -1015,12 +1114,6 @@
             ]
           },
           {
-            "name": "Pawn of Ulamog",
-            "where": [
-              "yawgmoth-swarm"
-            ]
-          },
-          {
             "name": "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
             "where": [
               "hapatra"
@@ -1065,6 +1158,13 @@
             "name": "Bastion of Remembrance",
             "where": [
               "Hapatra"
+            ]
+          },
+          {
+            "name": "Beast Within",
+            "where": [
+              "Golgari Parts",
+              "Green"
             ]
           },
           {
@@ -1179,6 +1279,12 @@
             "where": [
               "Green",
               "Mystery Booster 2"
+            ]
+          },
+          {
+            "name": "Glissa Sunslayer",
+            "where": [
+              "Auntie Ool"
             ]
           },
           {
@@ -1366,12 +1472,6 @@
               "Golgari Parts",
               "Green"
             ]
-          },
-          {
-            "name": "Zulaport Cutthroat",
-            "where": [
-              "Hapatra"
-            ]
           }
         ],
         "blocking": 5,
@@ -1383,10 +1483,10 @@
       "out": 69,
       "counts": {
         "in_deck": 31,
-        "box": 51,
+        "box": 52,
         "elsewhere": 4,
         "buy": 1,
-        "free": 13
+        "free": 12
       },
       "unsourced": [
         "Cauldron of Essence",
@@ -1396,7 +1496,7 @@
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 13,
+      "free": 12,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -1479,10 +1579,19 @@
         },
         {
           "name": "Beast Within",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            },
+            {
+              "kind": "box",
+              "name": "Green"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Blood Artist",
@@ -1870,10 +1979,15 @@
         },
         {
           "name": "Glissa Sunslayer",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Golgari Grave-Troll",
@@ -2124,18 +2238,10 @@
         },
         {
           "name": "Pawn of Ulamog",
-          "state": "elsewhere",
-          "where": [
-            {
-              "kind": "deck",
-              "slug": "yawgmoth-swarm",
-              "locked": false,
-              "status": "broken-down",
-              "apart": true
-            }
-          ],
-          "free": true,
-          "is_new": true
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Phyrexian Altar",
@@ -2644,15 +2750,10 @@
         },
         {
           "name": "Zulaport Cutthroat",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         }
       ],
       "has_cards": true,
@@ -2759,14 +2860,54 @@
     "summary": {
       "excluded_commander_assumption": 0,
       "highest_bracket": 1,
-      "included": 1,
-      "infinite": 1,
+      "included": 4,
+      "infinite": 4,
       "near": 50,
-      "near_total": 182,
+      "near_total": 246,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
     "top": [
+      {
+        "id": "1385-4279-4314--216",
+        "cards": [
+          "Yawgmoth, Thran Physician",
+          "Zulaport Cutthroat",
+          "Pawn of Ulamog"
+        ],
+        "produces": [
+          "Infinite card draw",
+          "Infinite draw triggers",
+          "Near-infinite creature ETB",
+          "Near-infinite creature LTB",
+          "Near-infinite creature sacrifice triggers",
+          "Near-infinite death triggers",
+          "Near-infinite lifegain triggers",
+          "Near-infinite lifeloss"
+        ],
+        "infinite": true,
+        "bracket": 1,
+        "popularity": 23306,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "1580-4050-4314",
+        "cards": [
+          "Reassembling Skeleton",
+          "Phyrexian Altar",
+          "Pawn of Ulamog"
+        ],
+        "produces": [
+          "Infinite death triggers",
+          "Infinite creature ETB",
+          "Infinite creature LTB",
+          "Infinite creature sacrifice triggers"
+        ],
+        "infinite": true,
+        "bracket": 1,
+        "popularity": 23261,
+        "assumes_other_commander": false
+      },
       {
         "id": "2034-4050-6115",
         "cards": [
@@ -2784,6 +2925,25 @@
         "infinite": true,
         "bracket": 1,
         "popularity": 2127,
+        "assumes_other_commander": false
+      },
+      {
+        "id": "4050-4314-6115",
+        "cards": [
+          "Ozox, the Clattering King",
+          "Phyrexian Altar",
+          "Pawn of Ulamog"
+        ],
+        "produces": [
+          "Infinite creature LTB",
+          "Infinite creature ETB",
+          "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
+          "Infinite storm count"
+        ],
+        "infinite": true,
+        "bracket": 1,
+        "popularity": 962,
         "assumes_other_commander": false
       }
     ]
@@ -2810,7 +2970,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 94,
+          "value": 93,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2828,7 +2988,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.119,
+          "value": 4.158,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2836,7 +2996,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 45,
+          "value": 43,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -2844,7 +3004,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 14,
+          "value": 26,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -2868,7 +3028,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 25,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -2876,7 +3036,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 1,
+          "value": 2,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
@@ -2884,7 +3044,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count\" by turn six",
@@ -2892,7 +3052,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 24,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2900,7 +3060,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 36,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -2908,7 +3068,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 52,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -2993,15 +3153,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 8.106,
-            "2": 2.228,
-            "3": 3.238,
-            "4": 4.1,
-            "5": 4.824,
-            "6": 5.526,
-            "7": 6.158,
-            "8": 6.793,
-            "9": 7.439
+            "10": 7.908,
+            "2": 2.226,
+            "3": 3.226,
+            "4": 4.082,
+            "5": 4.796,
+            "6": 5.481,
+            "7": 6.088,
+            "8": 6.676,
+            "9": 7.271
           },
           "tier": "data",
           "weight": "detail",
@@ -3012,15 +3172,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.599,
+            "10": 0.567,
             "2": 0.997,
-            "3": 0.916,
-            "4": 0.806,
-            "5": 0.7,
-            "6": 0.631,
-            "7": 0.58,
-            "8": 0.577,
-            "9": 0.581
+            "3": 0.912,
+            "4": 0.797,
+            "5": 0.691,
+            "6": 0.612,
+            "7": 0.559,
+            "8": 0.533,
+            "9": 0.537
           },
           "tier": "data",
           "weight": "detail",
@@ -3030,16 +3190,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.156,
-            "10": 13.62,
-            "2": 0.539,
-            "3": 1.13,
-            "4": 1.513,
-            "5": 2.707,
-            "6": 4.323,
-            "7": 6.219,
-            "8": 8.4,
-            "9": 10.865
+            "1": 0.181,
+            "10": 13.64,
+            "2": 0.624,
+            "3": 1.162,
+            "4": 1.538,
+            "5": 2.697,
+            "6": 4.287,
+            "7": 6.183,
+            "8": 8.398,
+            "9": 10.878
           },
           "tier": "data",
           "weight": "detail",
@@ -3049,14 +3209,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 321,
-            "1": 1445,
-            "2": 2867,
-            "3": 2977,
-            "4": 1696,
-            "5": 580,
-            "6": 106,
-            "7": 8
+            "0": 336,
+            "1": 1479,
+            "2": 2827,
+            "3": 2920,
+            "4": 1718,
+            "5": 623,
+            "6": 93,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -3065,11 +3225,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1908,
-            "6": 90,
-            "7": 1024,
-            "8": 2588,
-            "9": 3085
+            "10": 2184,
+            "5": 1,
+            "6": 74,
+            "7": 895,
+            "8": 2202,
+            "9": 3026
           },
           "tier": "data",
           "weight": "detail",
@@ -3085,16 +3246,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.119,
-    "commander_cast_by_turn_6_pct": 94,
+    "commander_mean_cast_turn": 4.158,
+    "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 45
+        "by_turn_6_pct": 43
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 26
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -3106,27 +3267,27 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 25
-      },
-      {
-        "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 1
-      },
-      {
-        "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "by_turn_6_pct": 14
-      },
-      {
-        "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 24
-      },
-      {
-        "label": "RAMP drawn — an accelerant of any kind",
         "by_turn_6_pct": 36
       },
       {
+        "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
+        "by_turn_6_pct": 2
+      },
+      {
+        "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
+        "by_turn_6_pct": 13
+      },
+      {
+        "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
+        "by_turn_6_pct": 25
+      },
+      {
+        "label": "RAMP drawn — an accelerant of any kind",
+        "by_turn_6_pct": 35
+      },
+      {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 52
+        "by_turn_6_pct": 35
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
@@ -3134,18 +3295,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.655,
+      "mean_kill_turn": 8.757,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 37,
+      "kill_by_turn_8_pct": 32,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 13,
+      "no_kill_by_max_turn_pct": 16,
       "kill_turn_histogram": {
-        "10": 1908,
-        "6": 90,
-        "7": 1024,
-        "8": 2588,
-        "9": 3085
+        "10": 2184,
+        "5": 1,
+        "6": 74,
+        "7": 895,
+        "8": 2202,
+        "9": 3026
       }
     }
   },
@@ -3214,11 +3376,13 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V22 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 7 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `budget-v1` needs 4 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
+    "branch `budget-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1` needs 6 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",

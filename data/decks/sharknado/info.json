@@ -1917,96 +1917,88 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 10,
-        "fell": 2,
-        "no_call": 4
+        "rose": 3,
+        "fell": 11,
+        "no_call": 2
       },
       "measured": true,
       "blind_spots": [
-        "Arid Mesa",
-        "Artist's Talent",
-        "Command Beacon",
-        "Exotic Orchard",
-        "Ferrous Lake",
-        "Flooded Strand",
-        "Glittering Massif",
-        "Izzet Charm",
-        "Jeskai Ascendancy",
-        "Ledger Shredder",
-        "Magmakin Artillerist",
-        "March of Swirling Mist",
-        "Mystic Remora",
-        "Polluted Delta",
+        "Incendiary Command",
+        "Island",
+        "Lightning Greaves",
         "Psychosis Crawler",
-        "Robe of Stars",
-        "Scalding Tarn",
-        "Spectator Seating",
-        "Sundown Pass"
+        "Shelter",
+        "Slip Out the Back",
+        "Swiftfoot Boots",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "no objective",
         "rose": [
           "hoard @T10",
-          "hoard @T6",
-          "damage @T10",
-          "board power @T6",
-          "killed by T6",
-          "killed by T10",
-          "stall, 2 in a row",
-          "extra cards by T8",
           "finisher wheel by T8",
           "wheels cast by T10"
         ],
         "fell": [
+          "damage @T10",
+          "board power @T6",
+          "killed by T6",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8",
+          "interaction affordable @T6",
           "hand can act by T3",
-          "kept hand passes the pilot's keep rule"
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 101.5521,
+            "delta": -73.7067,
             "ci95_diff": [
-              93.6073,
-              109.4969
+              -83.1137,
+              -64.2997
             ],
-            "mde": 11.3561,
-            "verdict": "better",
+            "mde": 13.4463,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0064,
+            "delta": -0.0032,
             "ci95_diff": [
-              0.0037,
-              0.0091
+              -0.0055,
+              -0.0009
             ],
-            "mde": 0.0039,
-            "verdict": "better",
+            "mde": 0.0032,
+            "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 1.8674,
+            "delta": -0.9423,
             "ci95_diff": [
-              1.65,
-              2.0848
+              -1.217,
+              -0.6676
             ],
-            "mde": 0.3108,
-            "verdict": "better",
+            "mde": 0.3927,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 3.2796,
+            "delta": -3.8254,
             "ci95_diff": [
-              2.9799,
-              3.5793
+              -4.2999,
+              -3.3509
             ],
-            "mde": 0.4283,
-            "verdict": "better",
+            "mde": 0.6782,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -3017,82 +3009,105 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 5,
-        "fell": 1,
-        "no_call": 10
+        "rose": 0,
+        "fell": 14,
+        "no_call": 2
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.3336,
-        "shortfall": 0.0664
+        "reading": 0.1347,
+        "shortfall": 0.2653
       },
       "measured": true,
       "blind_spots": [
-        "Boros Charm",
-        "Cascade Bluffs",
-        "Ghostly Pilferer",
+        "Arid Mesa",
+        "Command Beacon",
+        "Exotic Orchard",
+        "Ferrous Lake",
+        "Flooded Strand",
+        "Glittering Massif",
+        "Incendiary Command",
+        "Island",
+        "Izzet Charm",
+        "Ledger Shredder",
+        "Lightning Greaves",
+        "March of Swirling Mist",
+        "Polluted Delta",
+        "Robe of Stars",
+        "Scalding Tarn",
+        "Shelter",
+        "Slip Out the Back",
+        "Spectator Seating",
         "Sundown Pass",
-        "Talon Gates of Madara",
-        "Thundering Falls"
+        "Swiftfoot Boots",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "do not merge",
-        "rose": [
+        "rose": [],
+        "fell": [
+          "hoard @T10",
+          "hoard @T6",
           "damage @T10",
           "board power @T6",
           "killed by T6",
+          "killed by T10",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8",
+          "interaction affordable @T6",
           "kept hand passes the pilot's keep rule",
-          "dead wheels in hand @T5"
-        ],
-        "fell": [
-          "hand can act by T3"
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": 2.1811,
+            "delta": -159.8688,
             "ci95_diff": [
-              1.3163,
-              3.0459
+              -167.2405,
+              -152.4971
             ],
-            "mde": 1.2361,
-            "verdict": "better",
+            "mde": 10.537,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0009,
+            "delta": -0.0179,
             "ci95_diff": [
-              -0.0007,
-              0.0025
+              -0.0212,
+              -0.0146
             ],
-            "mde": 0.0023,
-            "verdict": "noise",
+            "mde": 0.0047,
+            "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.0408,
+            "delta": -4.1372,
             "ci95_diff": [
-              0.0157,
-              0.0659
+              -4.388,
+              -3.8864
             ],
-            "mde": 0.0358,
-            "verdict": "better",
+            "mde": 0.3584,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.1173,
+            "delta": -9.7438,
             "ci95_diff": [
-              0.012,
-              0.2226
+              -10.1657,
+              -9.3219
             ],
-            "mde": 0.1505,
-            "verdict": "noise",
+            "mde": 0.603,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -4133,14 +4148,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 3,
-        "fell": 10,
-        "no_call": 3
+        "rose": 0,
+        "fell": 15,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.1301,
-        "shortfall": 0.2099
+        "reading": 0.1291,
+        "shortfall": 0.2109
       },
       "measured": true,
       "blind_spots": [
@@ -4153,25 +4168,27 @@
         "Flooded Strand",
         "Ghostly Pilferer",
         "Glittering Massif",
+        "Incendiary Command",
+        "Island",
         "Izzet Charm",
         "Ledger Shredder",
-        "Magmakin Artillerist",
+        "Lightning Greaves",
         "March of Swirling Mist",
         "Polluted Delta",
-        "Psychosis Crawler",
         "Robe of Stars",
         "Scalding Tarn",
+        "Shelter",
+        "Slip Out the Back",
         "Spectator Seating",
+        "Swiftfoot Boots",
         "Talon Gates of Madara",
-        "Thundering Falls"
+        "Thundering Falls",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "do not merge",
-        "rose": [
-          "missed drop by T5",
-          "hand can act by T3",
-          "kept hand passes the pilot's keep rule"
-        ],
+        "rose": [],
         "fell": [
           "hoard @T10",
           "hoard @T6",
@@ -4180,55 +4197,60 @@
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
+          "interaction affordable @T6",
+          "kept hand passes the pilot's keep rule",
           "finisher wheel by T8",
-          "wheels cast by T10"
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -29.2701,
+            "delta": -114.7278,
             "ci95_diff": [
-              -37.5223,
-              -21.0179
+              -123.064,
+              -106.3916
             ],
-            "mde": 11.7956,
+            "mde": 11.9157,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0115,
+            "delta": -0.0169,
             "ci95_diff": [
-              -0.0148,
-              -0.0082
+              -0.0201,
+              -0.0137
             ],
-            "mde": 0.0048,
+            "mde": 0.0046,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -3.2107,
+            "delta": -4.3257,
             "ci95_diff": [
-              -3.4438,
-              -2.9776
+              -4.5796,
+              -4.0718
             ],
-            "mde": 0.3332,
+            "mde": 0.3629,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -5.9352,
+            "delta": -9.8622,
             "ci95_diff": [
-              -6.321,
-              -5.5494
+              -10.2845,
+              -9.4399
             ],
-            "mde": 0.5515,
+            "mde": 0.6036,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -5341,9 +5363,9 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 3,
-        "fell": 10,
-        "no_call": 3
+        "rose": 1,
+        "fell": 15,
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not measured",
@@ -5362,27 +5384,31 @@
         "Flooded Strand",
         "Ghostly Pilferer",
         "Glittering Massif",
+        "Incendiary Command",
+        "Island",
         "Izzet Charm",
         "Ledger Shredder",
-        "Magmakin Artillerist",
+        "Lightning Greaves",
         "March of Swirling Mist",
         "Mystic Monastery",
         "Opal Palace",
         "Polluted Delta",
-        "Psychosis Crawler",
         "Robe of Stars",
         "Scalding Tarn",
         "Sea of Clouds",
+        "Shelter",
+        "Slip Out the Back",
         "Spectator Seating",
+        "Swiftfoot Boots",
         "Talon Gates of Madara",
-        "Thundering Falls"
+        "Thundering Falls",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "inconclusive",
         "rose": [
-          "missed drop by T5",
-          "hand can act by T3",
-          "kept hand passes the pilot's keep rule"
+          "hand can act by T3"
         ],
         "fell": [
           "hoard @T10",
@@ -5392,55 +5418,60 @@
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
+          "interaction affordable @T6",
+          "kept hand passes the pilot's keep rule",
           "finisher wheel by T8",
-          "wheels cast by T10"
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -29.2543,
+            "delta": -108.4787,
             "ci95_diff": [
-              -37.5328,
-              -20.9758
+              -117.4712,
+              -99.4862
             ],
-            "mde": 11.8331,
+            "mde": 12.8537,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0138,
+            "delta": -0.018,
             "ci95_diff": [
-              -0.0173,
-              -0.0103
+              -0.0212,
+              -0.0148
             ],
-            "mde": 0.0049,
+            "mde": 0.0046,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -3.1667,
+            "delta": -4.3482,
             "ci95_diff": [
-              -3.4072,
-              -2.9262
+              -4.5948,
+              -4.1016
             ],
-            "mde": 0.3437,
+            "mde": 0.3524,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -5.8469,
+            "delta": -10.0107,
             "ci95_diff": [
-              -6.2373,
-              -5.4565
+              -10.4297,
+              -9.5917
             ],
-            "mde": 0.558,
+            "mde": 0.599,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -6644,8 +6675,8 @@
       "verdict": {
         "state": "inconclusive",
         "rose": 0,
-        "fell": 11,
-        "no_call": 5
+        "fell": 15,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "not resolvable",
@@ -6667,19 +6698,26 @@
         "Get Lost",
         "Glittering Massif",
         "Hallowed Fountain",
+        "Incendiary Command",
         "Iroh's Demonstration",
+        "Island",
         "Key to the City",
+        "Lightning Greaves",
         "March of Swirling Mist",
         "Mystic Monastery",
         "Opal Palace",
         "Otawara, Soaring City",
         "Polluted Delta",
-        "Psychosis Crawler",
         "Scalding Tarn",
         "Sea of Clouds",
+        "Shelter",
+        "Slip Out the Back",
         "Spectator Seating",
         "Stubborn Denial",
-        "Talon Gates of Madara"
+        "Swiftfoot Boots",
+        "Talon Gates of Madara",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "inconclusive",
@@ -6692,56 +6730,60 @@
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
+          "kept hand passes the pilot's keep rule",
           "finisher wheel by T8",
-          "wheels cast by T10"
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -61.1287,
+            "delta": -144.4661,
             "ci95_diff": [
-              -68.2013,
-              -54.0561
+              -151.9134,
+              -137.0188
             ],
-            "mde": 10.1095,
+            "mde": 10.645,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0101,
+            "delta": -0.0135,
             "ci95_diff": [
-              -0.0133,
-              -0.0069
+              -0.0165,
+              -0.0105
             ],
-            "mde": 0.0046,
+            "mde": 0.0043,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -3.9313,
+            "delta": -4.9655,
             "ci95_diff": [
-              -4.1586,
-              -3.704
+              -5.2063,
+              -4.7247
             ],
-            "mde": 0.325,
+            "mde": 0.3442,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -6.5986,
+            "delta": -10.5979,
             "ci95_diff": [
-              -6.9851,
-              -6.2121
+              -11.0162,
+              -10.1796
             ],
-            "mde": 0.5525,
+            "mde": 0.5979,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -8032,13 +8074,13 @@
       },
       "verdict": {
         "state": "a trade",
-        "rose": 3,
-        "fell": 10,
-        "no_call": 3
+        "rose": 2,
+        "fell": 13,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "met",
-        "reading": 0.03,
+        "reading": 0.031,
         "shortfall": null
       },
       "measured": true,
@@ -8061,14 +8103,14 @@
         "Get Lost",
         "Glacial Fortress",
         "Glittering Massif",
+        "Incendiary Command",
         "Inspiring Vantage",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
-        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
         "Ledger Shredder",
-        "Magmakin Artillerist",
+        "Lightning Greaves",
         "March of Swirling Mist",
         "Mystic Monastery",
         "Needleverge Pathway // Pillarverge Pathway",
@@ -8077,20 +8119,23 @@
         "Opal Palace",
         "Otawara, Soaring City",
         "Polluted Delta",
+        "Psychosis Crawler",
         "Scalding Tarn",
+        "Shelter",
+        "Slip Out the Back",
         "Snapback",
         "Spectator Seating",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Talon Gates of Madara",
         "Teferi, Master of Time",
-        "Temple of Epiphany"
+        "Temple of Epiphany",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "a trade",
         "rose": [
-          "hand can act by T3",
           "kept hand passes the pilot's keep rule",
           "dead wheels in hand @T5"
         ],
@@ -8100,7 +8145,10 @@
           "damage @T10",
           "board power @T6",
           "killed by T6",
+          "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
           "finisher wheel by T8",
@@ -8109,48 +8157,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -131.517,
+            "delta": -210.2824,
             "ci95_diff": [
-              -137.5941,
-              -125.4399
+              -216.9897,
+              -203.5751
             ],
-            "mde": 8.6866,
+            "mde": 9.5874,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0003,
+            "delta": -0.0044,
             "ci95_diff": [
-              -0.0029,
-              0.0023
+              -0.0068,
+              -0.002
             ],
-            "mde": 0.0037,
-            "verdict": "noise",
+            "mde": 0.0034,
+            "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.9161,
+            "delta": -2.0983,
             "ci95_diff": [
-              -1.1375,
-              -0.6947
+              -2.3534,
+              -1.8432
             ],
-            "mde": 0.3165,
+            "mde": 0.3647,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -5.2955,
+            "delta": -9.0421,
             "ci95_diff": [
-              -5.676,
-              -4.915
+              -9.4885,
+              -8.5957
             ],
-            "mde": 0.5439,
+            "mde": 0.6381,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -9527,14 +9575,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 1,
-        "fell": 12,
-        "no_call": 3
+        "rose": 0,
+        "fell": 16,
+        "no_call": 0
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.1367,
-        "shortfall": 0.1133
+        "reading": 0.1335,
+        "shortfall": 0.1165
       },
       "measured": true,
       "blind_spots": [
@@ -9557,14 +9605,14 @@
         "Get Lost",
         "Glacial Fortress",
         "Glittering Massif",
+        "Incendiary Command",
         "Inspiring Vantage",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
-        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
+        "Lightning Greaves",
         "Loran's Escape",
-        "Magmakin Artillerist",
         "March of Swirling Mist",
         "Mystic Monastery",
         "Needleverge Pathway // Pillarverge Pathway",
@@ -9574,22 +9622,24 @@
         "Otawara, Soaring City",
         "Polluted Delta",
         "Prismari Command",
+        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Scalding Tarn",
+        "Shelter",
+        "Slip Out the Back",
         "Snapback",
         "Spectator Seating",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Talon Gates of Madara",
         "Teferi, Master of Time",
-        "Temple of Epiphany"
+        "Temple of Epiphany",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "do not merge",
-        "rose": [
-          "missed drop by T5"
-        ],
+        "rose": [],
         "fell": [
           "hoard @T10",
           "hoard @T6",
@@ -9597,58 +9647,62 @@
           "board power @T6",
           "killed by T6",
           "killed by T10",
+          "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
           "hand can act by T3",
           "kept hand passes the pilot's keep rule",
           "finisher wheel by T8",
-          "wheels cast by T10"
+          "wheels cast by T10",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -121.1083,
+            "delta": -199.8228,
             "ci95_diff": [
-              -127.2351,
-              -114.9815
+              -206.5821,
+              -193.0635
             ],
-            "mde": 8.7576,
+            "mde": 9.6616,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0111,
+            "delta": -0.0148,
             "ci95_diff": [
-              -0.0144,
-              -0.0078
+              -0.0179,
+              -0.0117
             ],
-            "mde": 0.0047,
+            "mde": 0.0044,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.2092,
+            "delta": -2.1999,
             "ci95_diff": [
-              -1.4518,
-              -0.9666
+              -2.486,
+              -1.9138
             ],
-            "mde": 0.3468,
+            "mde": 0.4089,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.7489,
+            "delta": -4.7326,
             "ci95_diff": [
-              -1.1575,
-              -0.3403
+              -5.212,
+              -4.2532
             ],
-            "mde": 0.584,
+            "mde": 0.6852,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -11068,8 +11122,8 @@
       },
       "verdict": {
         "state": "inconclusive",
-        "rose": 3,
-        "fell": 10,
+        "rose": 1,
+        "fell": 12,
         "no_call": 3
       },
       "objective_grade": {
@@ -11097,15 +11151,13 @@
         "Get Lost",
         "Glacial Fortress",
         "Glittering Massif",
-        "Incendiary Command",
         "Inspiring Vantage",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
-        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
+        "Lightning Greaves",
         "Loran's Escape",
-        "Magmakin Artillerist",
         "Mindless Automaton",
         "Mountain",
         "Mystic Gate",
@@ -11118,88 +11170,90 @@
         "Otawara, Soaring City",
         "Polluted Delta",
         "Prismari Command",
+        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Riverglide Pathway // Lavaglide Pathway",
         "Scalding Tarn",
         "Seachrome Coast",
-        "Shelter",
         "Skycloud Expanse",
+        "Slip Out the Back",
         "Sticky Fingers",
         "Stormcarved Coast",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Talon Gates of Madara",
         "Teferi's Protection",
         "Teferi, Master of Time",
-        "Training Center"
+        "Training Center",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "inconclusive",
         "rose": [
-          "hoard @T6",
-          "missed drop by T5",
-          "kept hand passes the pilot's keep rule"
+          "hoard @T6"
         ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
+          "extra cards by T8",
           "interaction affordable @T6",
           "hand can act by T3",
-          "finisher wheel by T8",
-          "wheels cast by T10"
+          "kept hand passes the pilot's keep rule",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -135.2616,
+            "delta": -214.1533,
             "ci95_diff": [
-              -141.3458,
-              -129.1774
+              -220.8329,
+              -207.4737
             ],
-            "mde": 8.6966,
+            "mde": 9.5478,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0044,
+            "delta": -0.0105,
             "ci95_diff": [
-              -0.0072,
-              -0.0016
+              -0.0133,
+              -0.0077
             ],
-            "mde": 0.0041,
+            "mde": 0.004,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.6836,
+            "delta": -1.8409,
             "ci95_diff": [
-              -0.916,
-              -0.4512
+              -2.1093,
+              -1.5725
             ],
-            "mde": 0.3322,
+            "mde": 0.3836,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.3522,
+            "delta": -4.2331,
             "ci95_diff": [
-              -0.7474,
-              0.043
+              -4.7024,
+              -3.7638
             ],
-            "mde": 0.565,
-            "verdict": "noise",
+            "mde": 0.6708,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -13802,14 +13856,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 3,
+        "rose": 2,
         "fell": 11,
-        "no_call": 2
+        "no_call": 3
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 0.3267,
-        "shortfall": 0.4733
+        "reading": 0.3258,
+        "shortfall": 0.4742
       },
       "measured": true,
       "blind_spots": [
@@ -13832,16 +13886,14 @@
         "Get Lost",
         "Glacial Fortress",
         "Glittering Massif",
-        "Incendiary Command",
         "Inspiring Vantage",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
-        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Lightning Greaves",
         "Loran's Escape",
-        "Magmakin Artillerist",
         "Marketback Walker",
         "Mindless Automaton",
         "Mountain",
@@ -13856,89 +13908,90 @@
         "Otawara, Soaring City",
         "Polluted Delta",
         "Prismari Command",
+        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Riverglide Pathway // Lavaglide Pathway",
         "Scalding Tarn",
         "Seachrome Coast",
-        "Shelter",
         "Skycloud Expanse",
+        "Slip Out the Back",
         "Sticky Fingers",
         "Stormcarved Coast",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Swords to Plowshares",
         "Talon Gates of Madara",
         "Teferi, Master of Time",
         "Training Center",
-        "Treasure Map // Treasure Cove"
+        "Treasure Map // Treasure Cove",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "do not merge",
         "rose": [
           "hoard @T6",
-          "missed drop by T5",
-          "kept hand passes the pilot's keep rule"
+          "finisher wheel by T8"
         ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
           "hand can act by T3",
-          "finisher wheel by T8",
+          "kept hand passes the pilot's keep rule",
           "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -142.2146,
+            "delta": -220.9338,
             "ci95_diff": [
-              -148.325,
-              -136.1042
+              -227.595,
+              -214.2726
             ],
-            "mde": 8.7341,
+            "mde": 9.5214,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0061,
+            "delta": -0.0116,
             "ci95_diff": [
-              -0.0091,
-              -0.0031
+              -0.0145,
+              -0.0087
             ],
-            "mde": 0.0043,
+            "mde": 0.0041,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.9981,
+            "delta": -1.9261,
             "ci95_diff": [
-              -1.231,
-              -0.7652
+              -2.192,
+              -1.6602
             ],
-            "mde": 0.333,
+            "mde": 0.3801,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.9332,
+            "delta": -4.413,
             "ci95_diff": [
-              -1.3319,
-              -0.5345
+              -4.8809,
+              -3.9451
             ],
-            "mde": 0.5699,
+            "mde": 0.6688,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -15250,14 +15303,14 @@
       },
       "verdict": {
         "state": "do not merge",
-        "rose": 3,
+        "rose": 2,
         "fell": 11,
-        "no_call": 2
+        "no_call": 3
       },
       "objective_grade": {
         "state": "not met",
-        "reading": 33.1121,
-        "shortfall": 3.3879
+        "reading": 33.6754,
+        "shortfall": 2.8246
       },
       "measured": true,
       "blind_spots": [
@@ -15281,15 +15334,15 @@
         "Glacial Fortress",
         "Gleaming Bastion",
         "Glittering Massif",
-        "Incendiary Command",
         "Inspiring Vantage",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
+        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Lightning Greaves",
         "Loran's Escape",
-        "Magmakin Artillerist",
         "Marketback Walker",
         "Mindless Automaton",
         "Mountain",
@@ -15304,89 +15357,90 @@
         "Otawara, Soaring City",
         "Polluted Delta",
         "Prismari Command",
+        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Riverglide Pathway // Lavaglide Pathway",
         "Scalding Tarn",
         "Seachrome Coast",
-        "Shelter",
         "Skycloud Expanse",
+        "Slip Out the Back",
         "Sticky Fingers",
         "Stormcarved Coast",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Swords to Plowshares",
         "Talon Gates of Madara",
         "Teferi, Master of Time",
         "Training Center",
-        "Treasure Map // Treasure Cove"
+        "Treasure Map // Treasure Cove",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "do not merge",
         "rose": [
           "hoard @T6",
-          "missed drop by T5",
-          "kept hand passes the pilot's keep rule"
+          "finisher wheel by T8"
         ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
           "hand can act by T3",
-          "finisher wheel by T8",
+          "kept hand passes the pilot's keep rule",
           "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -142.3705,
+            "delta": -220.7831,
             "ci95_diff": [
-              -148.4733,
-              -136.2677
+              -227.4441,
+              -214.1221
             ],
-            "mde": 8.7233,
+            "mde": 9.5211,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0082,
+            "delta": -0.0113,
             "ci95_diff": [
-              -0.0113,
-              -0.0051
+              -0.0142,
+              -0.0084
             ],
-            "mde": 0.0045,
+            "mde": 0.0041,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.0774,
+            "delta": -1.9177,
             "ci95_diff": [
-              -1.3089,
-              -0.8459
+              -2.1835,
+              -1.6519
             ],
-            "mde": 0.3309,
+            "mde": 0.38,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -1.0081,
+            "delta": -4.5285,
             "ci95_diff": [
-              -1.4007,
-              -0.6155
+              -4.9967,
+              -4.0603
             ],
-            "mde": 0.5611,
+            "mde": 0.6693,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -16680,12 +16734,12 @@
       "verdict": {
         "state": "a trade",
         "rose": 3,
-        "fell": 11,
-        "no_call": 2
+        "fell": 12,
+        "no_call": 1
       },
       "objective_grade": {
         "state": "met",
-        "reading": 33.311,
+        "reading": 33.6976,
         "shortfall": null
       },
       "measured": true,
@@ -16711,14 +16765,14 @@
         "Glacial Fortress",
         "Gleaming Bastion",
         "Glittering Massif",
-        "Incendiary Command",
         "Irencrag Pyromancer",
         "Irrigated Farmland",
+        "Island",
         "Ivora, Insatiable Heir",
         "Jaxis, the Troublemaker",
         "Kefnet the Mindful",
+        "Lightning Greaves",
         "Loran's Escape",
-        "Magmakin Artillerist",
         "Marketback Walker",
         "Mindless Automaton",
         "Mountain",
@@ -16733,89 +16787,94 @@
         "Otawara, Soaring City",
         "Polluted Delta",
         "Prismari Command",
+        "Psychosis Crawler",
         "Queen Kayla bin-Kroog",
         "Reliquary Tower",
         "Riverglide Pathway // Lavaglide Pathway",
         "Riverpyre Verge",
         "Scalding Tarn",
         "Seachrome Coast",
+        "Shelter",
         "Skycloud Expanse",
+        "Slip Out the Back",
         "Sticky Fingers",
         "Stormcarved Coast",
         "Stubborn Denial",
         "Sunbillow Verge",
-        "Swiftfoot Boots",
         "Swords to Plowshares",
         "Talon Gates of Madara",
         "Teferi, Master of Time",
         "Training Center",
-        "Treasure Map // Treasure Cove"
+        "Treasure Map // Treasure Cove",
+        "Valeria Richards, Precocious",
+        "Willie Lumpkin, Postman"
       ],
       "impact": {
         "state": "a trade",
         "rose": [
           "hoard @T6",
-          "missed drop by T5",
-          "kept hand passes the pilot's keep rule"
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
           "board power @T6",
           "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
+          "missed drop by T5",
+          "mulliganed",
           "extra cards by T8",
           "interaction affordable @T6",
           "hand can act by T3",
-          "finisher wheel by T8",
+          "kept hand passes the pilot's keep rule",
           "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -142.6202,
+            "delta": -221.5185,
             "ci95_diff": [
-              -148.722,
-              -136.5184
+              -228.186,
+              -214.851
             ],
-            "mde": 8.7219,
+            "mde": 9.5305,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0084,
+            "delta": -0.0129,
             "ci95_diff": [
-              -0.0115,
-              -0.0053
+              -0.0159,
+              -0.0099
             ],
-            "mde": 0.0044,
+            "mde": 0.0042,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.9275,
+            "delta": -1.9825,
             "ci95_diff": [
-              -1.155,
-              -0.7
+              -2.2472,
+              -1.7178
             ],
-            "mde": 0.3252,
+            "mde": 0.3784,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -1.0283,
+            "delta": -4.5285,
             "ci95_diff": [
-              -1.419,
-              -0.6376
+              -4.9985,
+              -4.0585
             ],
-            "mde": 0.5584,
+            "mde": 0.6718,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"

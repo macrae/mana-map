@@ -129,7 +129,7 @@
    {
     "free": false,
     "name": "Echo of Eons",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
@@ -147,7 +147,7 @@
    {
     "free": false,
     "name": "Faithless Looting",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -188,7 +188,7 @@
    {
     "free": false,
     "name": "Glint-Horn Buccaneer",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -235,13 +235,8 @@
    {
     "free": false,
     "name": "Island",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Hobbit"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -291,8 +286,17 @@
    {
     "free": false,
     "name": "Lightning Greaves",
-    "state": "in_deck",
-    "where": []
+    "state": "box",
+    "where": [
+     {
+      "kind": "box",
+      "name": "Mystery Booster 2"
+     },
+     {
+      "kind": "box",
+      "name": "Zur Parts"
+     }
+    ]
    },
    {
     "free": false,
@@ -321,19 +325,14 @@
    {
     "free": false,
     "name": "Marauding Mako",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
     "free": false,
     "name": "Mask of Memory",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Zur Parts"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -436,14 +435,43 @@
       "locked": false,
       "slug": "hapatra",
       "status": "broken-down"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "valgavoth",
+      "status": null
      }
     ]
    },
    {
     "free": false,
     "name": "Psychosis Crawler",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "heliod",
+      "status": null
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": true,
+      "slug": "keen-engineering",
+      "status": null
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "valgavoth",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -460,8 +488,16 @@
    {
     "free": false,
     "name": "Razorkin Needlehead",
-    "state": "in_deck",
-    "where": []
+    "state": "elsewhere",
+    "where": [
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "valgavoth",
+      "status": null
+     }
+    ]
    },
    {
     "free": false,
@@ -499,7 +535,7 @@
    {
     "free": false,
     "name": "Rielle, the Everwise",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -537,6 +573,13 @@
       "kind": "deck",
       "locked": true,
       "slug": "keen-engineering",
+      "status": null
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "valgavoth",
       "status": null
      }
     ]
@@ -576,13 +619,8 @@
    {
     "free": false,
     "name": "Shelter",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Mystery Booster 2"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -655,17 +693,8 @@
    {
     "free": false,
     "name": "Swiftfoot Boots",
-    "state": "box",
-    "where": [
-     {
-      "kind": "box",
-      "name": "Shabraz Parts"
-     },
-     {
-      "kind": "box",
-      "name": "Zur Parts"
-     }
-    ]
+    "state": "in_deck",
+    "where": []
    },
    {
     "free": false,
@@ -691,6 +720,13 @@
       "locked": false,
       "slug": "hapatra",
       "status": "broken-down"
+     },
+     {
+      "apart": false,
+      "kind": "deck",
+      "locked": false,
+      "slug": "valgavoth",
+      "status": null
      },
      {
       "apart": true,
@@ -756,13 +792,13 @@
    {
     "free": false,
     "name": "Time Reversal",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    },
    {
     "free": false,
     "name": "Tolarian Winds",
-    "state": "in_deck",
+    "state": "buy",
     "where": []
    },
    {
@@ -786,16 +822,16 @@
    {
     "free": false,
     "name": "Winds of Change",
-    "state": "buy",
+    "state": "in_deck",
     "where": []
    }
   ],
   "counts": {
-   "box": 10,
-   "buy": 37,
-   "elsewhere": 9,
+   "box": 7,
+   "buy": 39,
+   "elsewhere": 11,
    "free": 0,
-   "in_deck": 44
+   "in_deck": 43
   },
   "counts_are": "distinct names",
   "diff": {
@@ -812,22 +848,23 @@
     "Curator of Mysteries",
     "Currency Converter",
     "Drake Haven",
-    "Echo of Eons",
+    "Faithless Looting",
     "Floodfarm Verge",
     "Glacial Fortress",
+    "Glint-Horn Buccaneer",
     "Glittering Massif",
     "Improbable Alliance",
     "Irencrag Pyromancer",
     "Irrigated Farmland",
-    "Island",
     "Ivora, Insatiable Heir",
     "Jaxis, the Troublemaker",
     "Jeska's Will",
     "Khorvath's Fury",
     "Library of Leng",
+    "Lightning Greaves",
     "Magmakin Artillerist",
     "Mana Geyser",
-    "Mask of Memory",
+    "Marauding Mako",
     "Mind's Eye",
     "Mindless Automaton",
     "Molten Psyche",
@@ -839,93 +876,99 @@
     "Niv-Mizzet, Parun",
     "Ominous Seas",
     "Opal Palace",
+    "Psychosis Crawler",
     "Queen Kayla bin-Kroog",
+    "Razorkin Needlehead",
     "Reliquary Tower",
+    "Rielle, the Everwise",
     "Scrawling Crawler",
     "Seachrome Coast",
-    "Shelter",
     "Skycloud Expanse",
     "Sorcerer Class",
     "Sticky Fingers",
-    "Swiftfoot Boots",
     "Talon Gates of Madara",
     "Teferi's Protection",
     "Teferi's Puzzle Box",
     "The Locust God",
-    "Time Reversal",
+    "Tolarian Winds",
     "Vanguard Suppressor",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
-   "add_copies": 56,
-   "base_names": 100,
+   "add_copies": 57,
+   "base_names": 99,
    "base_size": 100,
    "names": 100,
    "out": [
     "Akroma's Will",
+    "Archmage Emeritus",
     "Arid Mesa",
     "Azorius Signet",
     "Bard, King of Dale",
     "Battlefield Forge",
     "Blade Historian",
-    "Borrowed Knowledge",
+    "Boros Signet",
+    "Brainstorm",
     "Brotherhood Regalia",
-    "Cathartic Reunion",
     "Chaos Warp",
     "Clifftop Retreat",
     "Collective Defiance",
     "Consecrated Sphinx",
     "Deflecting Swat",
-    "Fateful Showdown",
+    "Enduring Curiosity",
+    "Esper Sentinel",
+    "Fellwar Stone",
     "Fiery Emancipation",
+    "Fireshrieker",
     "Flawless Maneuver",
     "Flooded Strand",
     "Frostboil Snarl",
     "Get Lost",
-    "Gleaming Splendor",
     "Grand Abolisher",
     "Gratuitous Violence",
-    "Heartwarming Redemption",
-    "Idyllic Tutor",
-    "Incendiary Command",
     "Inspiring Vantage",
     "Izzet Signet",
     "Kitsa, Otterball Elite",
     "Lae'zel, Vlaakith's Champion",
+    "Lizard Blades",
     "Loran's Escape",
-    "Mind Spring",
     "Mind Stone",
-    "Mirrormade",
     "Mountain",
     "Needleverge Pathway // Pillarverge Pathway",
     "Otawara, Soaring City",
     "Polluted Delta",
     "Prismari Command",
-    "Prosperity",
     "Riverglide Pathway // Lavaglide Pathway",
-    "Rush of Knowledge",
     "Scalding Tarn",
-    "Shattered Perception",
+    "Shang-Chi and the Ten Rings",
+    "Slip Out the Back",
+    "Sokka, Lateral Strategist",
     "Stormcarved Coast",
     "Stubborn Denial",
     "Sunbillow Verge",
+    "Talisman of Conviction",
     "Talisman of Creativity",
     "Talisman of Progress",
     "Teferi, Master of Time",
-    "Thought Vessel",
     "Torbran, Thane of Red Fell",
     "Training Center",
+    "Valeria Richards, Precocious",
     "Wheel of Fortune",
-    "Xorn",
-    "Zirda, the Dawnwaker"
+    "Will of the Jeskai",
+    "Willie Lumpkin, Postman"
    ],
-   "out_copies": 56,
-   "quantity": [],
+   "out_copies": 57,
+   "quantity": [
+    {
+     "from": 2,
+     "name": "Island",
+     "to": 1
+    }
+   ],
    "size": 100
   },
   "free": 0,
   "mergeable": false,
-  "owned_but_elsewhere": 9,
+  "owned_but_elsewhere": 11,
   "proxy": false,
   "slug": "sharknado",
   "unsourced": [
@@ -939,8 +982,9 @@
    "Curator of Mysteries",
    "Currency Converter",
    "Drake Haven",
-   "Echo of Eons",
+   "Faithless Looting",
    "Floodfarm Verge",
+   "Glint-Horn Buccaneer",
    "Glittering Massif",
    "Improbable Alliance",
    "Irencrag Pyromancer",
@@ -950,6 +994,7 @@
    "Library of Leng",
    "Magmakin Artillerist",
    "Mana Geyser",
+   "Marauding Mako",
    "Mind's Eye",
    "Mindless Automaton",
    "Molten Psyche",
@@ -960,8 +1005,11 @@
    "Niv-Mizzet, Parun",
    "Ominous Seas",
    "Opal Palace",
+   "Psychosis Crawler",
    "Queen Kayla bin-Kroog",
+   "Razorkin Needlehead",
    "Reliquary Tower",
+   "Rielle, the Everwise",
    "Scrawling Crawler",
    "Seachrome Coast",
    "Skycloud Expanse",
@@ -971,10 +1019,9 @@
    "Teferi's Protection",
    "Teferi's Puzzle Box",
    "The Locust God",
-   "Time Reversal",
+   "Tolarian Winds",
    "Vanguard Suppressor",
-   "Whirlpool Warrior",
-   "Winds of Change"
+   "Whirlpool Warrior"
   ]
  },
  "blind_spots": [
@@ -995,10 +1042,12 @@
     "Jaxis, the Troublemaker",
     "Mindless Automaton",
     "Niv-Mizzet, Parun",
-    "Sticky Fingers"
+    "Psychosis Crawler",
+    "Sticky Fingers",
+    "Valeria Richards, Precocious"
    ],
    "class": "draw",
-   "headline": "7 card(s) carrying a draw effect",
+   "headline": "9 card(s) carrying a draw effect",
    "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
@@ -1007,9 +1056,9 @@
     "Brotherhood Regalia",
     "Deflecting Swat",
     "Flawless Maneuver",
+    "Lightning Greaves",
     "Loran's Escape",
-    "Shelter",
-    "Swiftfoot Boots",
+    "Slip Out the Back",
     "Teferi's Protection",
     "Teferi, Master of Time"
    ],
@@ -1029,15 +1078,21 @@
    "cards": [
     "Collective Defiance",
     "Get Lost",
-    "Incendiary Command",
     "Irencrag Pyromancer",
-    "Magmakin Artillerist",
     "Niv-Mizzet, Parun",
     "Prismari Command"
    ],
    "class": "removal",
-   "headline": "7 card(s) carrying a removal effect",
+   "headline": "5 card(s) carrying a removal effect",
    "why": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card"
+  },
+  {
+   "cards": [
+    "Willie Lumpkin, Postman"
+   ],
+   "class": "stax",
+   "headline": "1 card(s) carrying a stax effect",
+   "why": "there is no opponent to tax"
   },
   {
    "cards": [
@@ -1053,7 +1108,6 @@
     "Glittering Massif",
     "Inspiring Vantage",
     "Irrigated Farmland",
-    "Island",
     "Mountain",
     "Mystic Gate",
     "Mystic Monastery",
@@ -1073,7 +1127,7 @@
     "Training Center"
    ],
    "class": "land",
-   "headline": "30 land swap(s)",
+   "headline": "29 land swap(s)",
    "why": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap"
   }
  ],
@@ -1081,22 +1135,31 @@
  "changes": {
   "count": 112,
   "counts": {
-   "in": 56,
+   "in": 57,
    "out": 56,
    "rows": 112
   },
   "diff": {
-   "base_names": 100,
+   "base_names": 99,
    "base_size": 100,
-   "changed": [],
+   "changed": [
+    {
+     "cmc": 0,
+     "delta": -1,
+     "from": 2,
+     "kind": "land",
+     "name": "Island",
+     "to": 1
+    }
+   ],
    "counts": {
-    "in": 56,
-    "in_copies": 56,
-    "lands_in": 15,
+    "in": 57,
+    "in_copies": 57,
+    "lands_in": 14,
     "lands_out": 15,
     "out": 56,
-    "out_copies": 56,
-    "spells_in": 41,
+    "out_copies": 57,
+    "spells_in": 43,
     "spells_out": 41
    },
    "in": [
@@ -1124,6 +1187,16 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
+     "name": "Faithless Looting",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
      "name": "Library of Leng",
      "pair": null,
      "state": "buy",
@@ -1134,20 +1207,20 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Sticky Fingers",
+     "name": "Marauding Mako",
      "pair": null,
      "state": "buy",
-     "type_line": "Enchantment \u2014 Aura",
+     "type_line": "Creature \u2014 Shark Pirate",
      "why": null
     },
     {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Winds of Change",
+     "name": "Sticky Fingers",
      "pair": null,
      "state": "buy",
-     "type_line": "Sorcery",
+     "type_line": "Enchantment \u2014 Aura",
      "why": null
     },
     {
@@ -1194,7 +1267,7 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Mask of Memory",
+     "name": "Lightning Greaves",
      "pair": null,
      "state": "box",
      "type_line": "Artifact \u2014 Equipment",
@@ -1214,11 +1287,11 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Shelter",
-     "pair": null,
-     "state": "box",
-     "type_line": "Instant",
-     "why": null
+     "name": "Razorkin Needlehead",
+     "pair": "Waterbender Ascension",
+     "state": "elsewhere",
+     "type_line": "Creature \u2014 Human Assassin",
+     "why": "draws only on the fourth combat hit (tax-v1: card value +0.000) -> 1 damage to an opponent for every card they draw"
     },
     {
      "cmc": 2,
@@ -1234,10 +1307,10 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Swiftfoot Boots",
+     "name": "Tolarian Winds",
      "pair": null,
-     "state": "box",
-     "type_line": "Artifact \u2014 Equipment",
+     "state": "buy",
+     "type_line": "Instant",
      "why": null
     },
     {
@@ -1268,6 +1341,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Enchantment",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Glint-Horn Buccaneer",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Creature \u2014 Minotaur Pirate",
      "why": null
     },
     {
@@ -1328,6 +1411,16 @@
      "pair": null,
      "state": "buy",
      "type_line": "Legendary Creature \u2014 Human Noble",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Rielle, the Everwise",
+     "pair": null,
+     "state": "buy",
+     "type_line": "Legendary Creature \u2014 Human Wizard",
      "why": null
     },
     {
@@ -1444,10 +1537,10 @@
      "cmc": 5,
      "copies": 1,
      "kind": "spell",
-     "name": "Time Reversal",
+     "name": "Psychosis Crawler",
      "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
+     "state": "elsewhere",
+     "type_line": "Artifact Creature \u2014 Phyrexian Horror",
      "why": null
     },
     {
@@ -1458,16 +1551,6 @@
      "pair": null,
      "state": "buy",
      "type_line": "Legendary Creature \u2014 Sphinx Wizard",
-     "why": null
-    },
-    {
-     "cmc": 6,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Echo of Eons",
-     "pair": null,
-     "state": "buy",
-     "type_line": "Sorcery",
      "why": null
     },
     {
@@ -1574,16 +1657,6 @@
      "cmc": 0,
      "copies": 1,
      "kind": "land",
-     "name": "Island",
-     "pair": null,
-     "state": "box",
-     "type_line": "Basic Land \u2014 Island",
-     "why": null
-    },
-    {
-     "cmc": 0,
-     "copies": 1,
-     "kind": "land",
      "name": "Mystic Gate",
      "pair": null,
      "state": "buy",
@@ -1667,6 +1740,24 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
+     "name": "Brainstorm",
+     "pair": null,
+     "type_line": "Instant",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Esper Sentinel",
+     "pair": null,
+     "type_line": "Artifact Creature \u2014 Human Soldier",
+     "why": null
+    },
+    {
+     "cmc": 1,
+     "copies": 1,
+     "kind": "spell",
      "name": "Loran's Escape",
      "pair": null,
      "type_line": "Instant",
@@ -1676,9 +1767,9 @@
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Prosperity",
+     "name": "Slip Out the Back",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Instant",
      "why": null
     },
     {
@@ -1703,6 +1794,15 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
+     "name": "Boros Signet",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
      "name": "Brotherhood Regalia",
      "pair": null,
      "type_line": "Artifact \u2014 Equipment",
@@ -1712,9 +1812,9 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Cathartic Reunion",
+     "name": "Fellwar Stone",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Artifact",
      "why": null
     },
     {
@@ -1724,15 +1824,6 @@
      "name": "Get Lost",
      "pair": null,
      "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 2,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Gleaming Splendor",
-     "pair": null,
-     "type_line": "Enchantment",
      "why": null
     },
     {
@@ -1766,9 +1857,9 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Mind Spring",
+     "name": "Lizard Blades",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Artifact Creature \u2014 Equipment Lizard",
      "why": null
     },
     {
@@ -1776,6 +1867,15 @@
      "copies": 1,
      "kind": "spell",
      "name": "Mind Stone",
+     "pair": null,
+     "type_line": "Artifact",
+     "why": null
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Talisman of Conviction",
      "pair": null,
      "type_line": "Artifact",
      "why": null
@@ -1802,9 +1902,9 @@
      "cmc": 2,
      "copies": 1,
      "kind": "spell",
-     "name": "Thought Vessel",
+     "name": "Willie Lumpkin, Postman",
      "pair": null,
-     "type_line": "Artifact",
+     "type_line": "Legendary Creature \u2014 Human Citizen",
      "why": null
     },
     {
@@ -1838,18 +1938,18 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Flawless Maneuver",
+     "name": "Fireshrieker",
      "pair": null,
-     "type_line": "Instant",
+     "type_line": "Artifact \u2014 Equipment",
      "why": null
     },
     {
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Idyllic Tutor",
+     "name": "Flawless Maneuver",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Instant",
      "why": null
     },
     {
@@ -1865,15 +1965,6 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Mirrormade",
-     "pair": null,
-     "type_line": "Enchantment",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
      "name": "Prismari Command",
      "pair": null,
      "type_line": "Instant",
@@ -1883,9 +1974,18 @@
      "cmc": 3,
      "copies": 1,
      "kind": "spell",
-     "name": "Shattered Perception",
+     "name": "Shang-Chi and the Ten Rings",
      "pair": null,
-     "type_line": "Sorcery",
+     "type_line": "Legendary Creature \u2014 Human Warrior Hero",
+     "why": null
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Sokka, Lateral Strategist",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Human Warrior Ally",
      "why": null
     },
     {
@@ -1895,24 +1995,6 @@
      "name": "Wheel of Fortune",
      "pair": null,
      "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Xorn",
-     "pair": null,
-     "type_line": "Creature \u2014 Elemental",
-     "why": null
-    },
-    {
-     "cmc": 3,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Zirda, the Dawnwaker",
-     "pair": null,
-     "type_line": "Legendary Creature \u2014 Elemental Fox",
      "why": null
     },
     {
@@ -1928,6 +2010,15 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
+     "name": "Archmage Emeritus",
+     "pair": null,
+     "type_line": "Creature \u2014 Human Wizard",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
      "name": "Blade Historian",
      "pair": null,
      "type_line": "Creature \u2014 Human Cleric",
@@ -1937,28 +2028,10 @@
      "cmc": 4,
      "copies": 1,
      "kind": "spell",
-     "name": "Borrowed Knowledge",
-     "pair": null,
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Fateful Showdown",
-     "pair": null,
-     "type_line": "Instant",
-     "why": null
-    },
-    {
-     "cmc": 4,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Heartwarming Redemption",
-     "pair": null,
-     "type_line": "Instant",
-     "why": null
+     "name": "Enduring Curiosity",
+     "pair": "Teferi's Protection",
+     "type_line": "Enchantment Creature \u2014 Cat Glimmer",
+     "why": "combat-gated draw, cast 4 times in 120 Forge games -> the commanders survive the wrath aimed at them"
     },
     {
      "cmc": 4,
@@ -1979,30 +2052,30 @@
      "why": null
     },
     {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Valeria Richards, Precocious",
+     "pair": null,
+     "type_line": "Legendary Creature \u2014 Human Scientist Hero",
+     "why": null
+    },
+    {
+     "cmc": 4,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Will of the Jeskai",
+     "pair": null,
+     "type_line": "Sorcery",
+     "why": null
+    },
+    {
      "cmc": 5,
      "copies": 1,
      "kind": "spell",
      "name": "Gratuitous Violence",
      "pair": null,
      "type_line": "Enchantment",
-     "why": null
-    },
-    {
-     "cmc": 5,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Incendiary Command",
-     "pair": null,
-     "type_line": "Sorcery",
-     "why": null
-    },
-    {
-     "cmc": 5,
-     "copies": 1,
-     "kind": "spell",
-     "name": "Rush of Knowledge",
-     "pair": null,
-     "type_line": "Sorcery",
      "why": null
     },
     {
@@ -2171,7 +2244,7 @@
    "size": 100,
    "unexplained": {
     "in": 52,
-    "out": 56
+    "out": 55
    }
   },
   "lands": [
@@ -2208,12 +2281,6 @@
    {
     "at": null,
     "in": "Irrigated Farmland",
-    "out": null,
-    "why": null
-   },
-   {
-    "at": null,
-    "in": "Island",
     "out": null,
     "why": null
    },
@@ -2420,7 +2487,13 @@
    },
    {
     "at": null,
-    "in": "Echo of Eons",
+    "in": "Faithless Looting",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
+    "in": "Glint-Horn Buccaneer",
     "out": null,
     "why": null
    },
@@ -2468,6 +2541,12 @@
    },
    {
     "at": null,
+    "in": "Lightning Greaves",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Magmakin Artillerist",
     "out": null,
     "why": null
@@ -2480,7 +2559,7 @@
    },
    {
     "at": null,
-    "in": "Mask of Memory",
+    "in": "Marauding Mako",
     "out": null,
     "why": null
    },
@@ -2528,7 +2607,25 @@
    },
    {
     "at": null,
+    "in": "Psychosis Crawler",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": null,
     "in": "Queen Kayla bin-Kroog",
+    "out": null,
+    "why": null
+   },
+   {
+    "at": "2026-10-02",
+    "in": "Razorkin Needlehead",
+    "out": null,
+    "why": "draws only on the fourth combat hit (tax-v1: card value +0.000) -> 1 damage to an opponent for every card they draw"
+   },
+   {
+    "at": null,
+    "in": "Rielle, the Everwise",
     "out": null,
     "why": null
    },
@@ -2537,12 +2634,6 @@
     "in": "Scrawling Crawler",
     "out": null,
     "why": "one card per {3}{U}, no discard, a body that acts only at seven cards (Forge: 9 activations in 120 games) -> everyone draws each upkeep and each opponent loses 1 per draw"
-   },
-   {
-    "at": null,
-    "in": "Shelter",
-    "out": null,
-    "why": null
    },
    {
     "at": null,
@@ -2557,15 +2648,9 @@
     "why": null
    },
    {
-    "at": null,
-    "in": "Swiftfoot Boots",
-    "out": null,
-    "why": null
-   },
-   {
     "at": "2026-10-02",
     "in": "Teferi's Protection",
-    "out": null,
+    "out": "Enduring Curiosity",
     "why": "combat-gated draw, cast 4 times in 120 Forge games -> the commanders survive the wrath aimed at them"
    },
    {
@@ -2582,7 +2667,7 @@
    },
    {
     "at": null,
-    "in": "Time Reversal",
+    "in": "Tolarian Winds",
     "out": null,
     "why": null
    },
@@ -2600,14 +2685,14 @@
    },
    {
     "at": null,
-    "in": "Winds of Change",
-    "out": null,
+    "in": null,
+    "out": "Akroma's Will",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Akroma's Will",
+    "out": "Archmage Emeritus",
     "why": null
    },
    {
@@ -2631,19 +2716,19 @@
    {
     "at": null,
     "in": null,
-    "out": "Borrowed Knowledge",
+    "out": "Boros Signet",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Brainstorm",
     "why": null
    },
    {
     "at": null,
     "in": null,
     "out": "Brotherhood Regalia",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Cathartic Reunion",
     "why": null
    },
    {
@@ -2673,13 +2758,25 @@
    {
     "at": null,
     "in": null,
-    "out": "Fateful Showdown",
+    "out": "Esper Sentinel",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fellwar Stone",
     "why": null
    },
    {
     "at": null,
     "in": null,
     "out": "Fiery Emancipation",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Fireshrieker",
     "why": null
    },
    {
@@ -2697,12 +2794,6 @@
    {
     "at": null,
     "in": null,
-    "out": "Gleaming Splendor",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
     "out": "Grand Abolisher",
     "why": null
    },
@@ -2710,24 +2801,6 @@
     "at": null,
     "in": null,
     "out": "Gratuitous Violence",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Heartwarming Redemption",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Idyllic Tutor",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
-    "out": "Incendiary Command",
     "why": null
    },
    {
@@ -2751,13 +2824,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Loran's Escape",
+    "out": "Lizard Blades",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Mind Spring",
+    "out": "Loran's Escape",
     "why": null
    },
    {
@@ -2769,37 +2842,37 @@
    {
     "at": null,
     "in": null,
-    "out": "Mirrormade",
-    "why": null
-   },
-   {
-    "at": null,
-    "in": null,
     "out": "Prismari Command",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Prosperity",
+    "out": "Shang-Chi and the Ten Rings",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Rush of Knowledge",
+    "out": "Slip Out the Back",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Shattered Perception",
+    "out": "Sokka, Lateral Strategist",
     "why": null
    },
    {
     "at": null,
     "in": null,
     "out": "Stubborn Denial",
+    "why": null
+   },
+   {
+    "at": null,
+    "in": null,
+    "out": "Talisman of Conviction",
     "why": null
    },
    {
@@ -2823,13 +2896,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Thought Vessel",
+    "out": "Torbran, Thane of Red Fell",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Torbran, Thane of Red Fell",
+    "out": "Valeria Richards, Precocious",
     "why": null
    },
    {
@@ -2841,13 +2914,13 @@
    {
     "at": null,
     "in": null,
-    "out": "Xorn",
+    "out": "Will of the Jeskai",
     "why": null
    },
    {
     "at": null,
     "in": null,
-    "out": "Zirda, the Dawnwaker",
+    "out": "Willie Lumpkin, Postman",
     "why": null
    }
   ],
@@ -3079,6 +3152,12 @@
    }
   },
   "rows": {
+   "a 6+ drop out by T6": {
+    "scale": "against the games themselves",
+    "unit": "rate",
+    "what": "The share of games with a creature of mana value 6 or more on the battlefield by the end of turn 6, by any route: cast, reanimated, returned by Meren or tutored onto it.",
+    "why": "The deck's payoff is its big bodies early. The pilot named it (2026-11-07): when the fatties arrive, against the turn they could be cast."
+   },
    "board power @T6": {
     "unit": "mean",
     "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
@@ -3095,6 +3174,12 @@
     "unit": "mean",
     "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
     "why": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
+   },
+   "experience @T7": {
+    "scale": "against the mana values she returns: a 6-drop needs six",
+    "unit": "mean",
+    "what": "Meren of Clan Nel Toth's experience counters at the end of turn 7, averaged over every game: one for every other creature of ours that died while she was out.",
+    "why": "Her end step returns the biggest creature card in the graveyard to the BATTLEFIELD only if its mana value is within her experience, otherwise to hand. This is the clock on the free returns."
    },
    "extra cards by T8": {
     "scale": "against the 8 cards every deck draws for free by then",
@@ -3166,6 +3251,12 @@
     "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
     "why": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
+   "turns saved on big bodies": {
+    "scale": "turns, summed over the 5+ drops that entered in a game",
+    "unit": "mean",
+    "what": "For every creature of mana value 5+ that entered by turn 10, the turns between its arrival and the first turn that game's own mana could have cast it (11 if it never could), floored at zero; summed per game, averaged.",
+    "why": "The cheat dividend: what the graveyard engine buys over hard-casting. A hard-cast body saves nothing; a turn-3 Animate Dead on a turn-8 Archon saves five."
+   },
    "wheels cast by T10": {
     "scale": "against the wheel-shaped cards the declaration names",
     "unit": "mean",
@@ -3209,22 +3300,23 @@
     "Curator of Mysteries",
     "Currency Converter",
     "Drake Haven",
-    "Echo of Eons",
+    "Faithless Looting",
     "Floodfarm Verge",
     "Glacial Fortress",
+    "Glint-Horn Buccaneer",
     "Glittering Massif",
     "Improbable Alliance",
     "Irencrag Pyromancer",
     "Irrigated Farmland",
-    "Island",
     "Ivora, Insatiable Heir",
     "Jaxis, the Troublemaker",
     "Jeska's Will",
     "Khorvath's Fury",
     "Library of Leng",
+    "Lightning Greaves",
     "Magmakin Artillerist",
     "Mana Geyser",
-    "Mask of Memory",
+    "Marauding Mako",
     "Mind's Eye",
     "Mindless Automaton",
     "Molten Psyche",
@@ -3236,23 +3328,23 @@
     "Niv-Mizzet, Parun",
     "Ominous Seas",
     "Opal Palace",
+    "Psychosis Crawler",
     "Queen Kayla bin-Kroog",
+    "Razorkin Needlehead",
     "Reliquary Tower",
+    "Rielle, the Everwise",
     "Scrawling Crawler",
     "Seachrome Coast",
-    "Shelter",
     "Skycloud Expanse",
     "Sorcerer Class",
     "Sticky Fingers",
-    "Swiftfoot Boots",
     "Talon Gates of Madara",
     "Teferi's Protection",
     "Teferi's Puzzle Box",
     "The Locust God",
-    "Time Reversal",
+    "Tolarian Winds",
     "Vanguard Suppressor",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
    "anyway": false,
    "floor": true,
@@ -3265,7 +3357,6 @@
     "Commit // Memory",
     "Floodfarm Verge",
     "Glacial Fortress",
-    "Island",
     "Mystic Gate",
     "Mystic Monastery",
     "Nimbus Maze",
@@ -3273,8 +3364,7 @@
     "Reliquary Tower",
     "Seachrome Coast",
     "Skycloud Expanse",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
    "late": [
     "Burning Inquiry",
@@ -3282,10 +3372,9 @@
     "Irencrag Pyromancer",
     "Molten Psyche",
     "Nimble Obstructionist",
-    "Shelter",
     "Teferi's Protection"
    ],
-   "reads_as": "every branch figure on this page is a FLOOR: Calciform Pools, Cascade Bluffs, Commit // Memory, Floodfarm Verge, Glacial Fortress, Island, Mystic Gate, Mystic Monastery, Nimbus Maze, Opal Palace, Reliquary Tower, Seachrome Coast, Skycloud Expanse, Whirlpool Warrior, Winds of Change never played; Burning Inquiry, Drake Haven, Irencrag Pyromancer, Molten Psyche, Nimble Obstructionist, Shelter, Teferi's Protection cast late"
+   "reads_as": "every branch figure on this page is a FLOOR: Calciform Pools, Cascade Bluffs, Commit // Memory, Floodfarm Verge, Glacial Fortress, Mystic Gate, Mystic Monastery, Nimbus Maze, Opal Palace, Reliquary Tower, Seachrome Coast, Skycloud Expanse, Whirlpool Warrior never played; Burning Inquiry, Drake Haven, Irencrag Pyromancer, Molten Psyche, Nimble Obstructionist, Teferi's Protection cast late"
   },
   "caveat": "Forge's AI is a weak pilot; the comparison is fair only because both seats were played at a comparable rate \u2014 see `sim/pilot_quality`.",
   "champion": {
@@ -3956,7 +4045,7 @@
   },
   "engine_casts": {
    "branch": {
-    "covered": true,
+    "covered": false,
     "never_cast": [
      "Winds of Change",
      "Whirlpool Warrior"
@@ -3970,8 +4059,8 @@
   "list_mismatch": {
    "champion": {
     "games": 488,
-    "on_disk": "36d865a66e2c",
-    "on_disk_version": "V13",
+    "on_disk": "55ebf09cf33f",
+    "on_disk_version": "V14",
     "played": [
      "6a639725e937",
      "6e11bf86ad4e",
@@ -4109,22 +4198,23 @@
     "Curator of Mysteries",
     "Currency Converter",
     "Drake Haven",
-    "Echo of Eons",
+    "Faithless Looting",
     "Floodfarm Verge",
     "Glacial Fortress",
+    "Glint-Horn Buccaneer",
     "Glittering Massif",
     "Improbable Alliance",
     "Irencrag Pyromancer",
     "Irrigated Farmland",
-    "Island",
     "Ivora, Insatiable Heir",
     "Jaxis, the Troublemaker",
     "Jeska's Will",
     "Khorvath's Fury",
     "Library of Leng",
+    "Lightning Greaves",
     "Magmakin Artillerist",
     "Mana Geyser",
-    "Mask of Memory",
+    "Marauding Mako",
     "Mind's Eye",
     "Mindless Automaton",
     "Molten Psyche",
@@ -4136,23 +4226,23 @@
     "Niv-Mizzet, Parun",
     "Ominous Seas",
     "Opal Palace",
+    "Psychosis Crawler",
     "Queen Kayla bin-Kroog",
+    "Razorkin Needlehead",
     "Reliquary Tower",
+    "Rielle, the Everwise",
     "Scrawling Crawler",
     "Seachrome Coast",
-    "Shelter",
     "Skycloud Expanse",
     "Sorcerer Class",
     "Sticky Fingers",
-    "Swiftfoot Boots",
     "Talon Gates of Madara",
     "Teferi's Protection",
     "Teferi's Puzzle Box",
     "The Locust God",
-    "Time Reversal",
+    "Tolarian Winds",
     "Vanguard Suppressor",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
    "anyway": false,
    "floor": true,
@@ -4165,7 +4255,6 @@
     "Commit // Memory",
     "Floodfarm Verge",
     "Glacial Fortress",
-    "Island",
     "Mystic Gate",
     "Mystic Monastery",
     "Nimbus Maze",
@@ -4173,8 +4262,7 @@
     "Reliquary Tower",
     "Seachrome Coast",
     "Skycloud Expanse",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
    "late": [
     "Burning Inquiry",
@@ -4182,13 +4270,12 @@
     "Irencrag Pyromancer",
     "Molten Psyche",
     "Nimble Obstructionist",
-    "Shelter",
     "Teferi's Protection"
    ],
-   "reads_as": "every branch figure on this page is a FLOOR: Calciform Pools, Cascade Bluffs, Commit // Memory, Floodfarm Verge, Glacial Fortress, Island, Mystic Gate, Mystic Monastery, Nimbus Maze, Opal Palace, Reliquary Tower, Seachrome Coast, Skycloud Expanse, Whirlpool Warrior, Winds of Change never played; Burning Inquiry, Drake Haven, Irencrag Pyromancer, Molten Psyche, Nimble Obstructionist, Shelter, Teferi's Protection cast late"
+   "reads_as": "every branch figure on this page is a FLOOR: Calciform Pools, Cascade Bluffs, Commit // Memory, Floodfarm Verge, Glacial Fortress, Mystic Gate, Mystic Monastery, Nimbus Maze, Opal Palace, Reliquary Tower, Seachrome Coast, Skycloud Expanse, Whirlpool Warrior never played; Burning Inquiry, Drake Haven, Irencrag Pyromancer, Molten Psyche, Nimble Obstructionist, Teferi's Protection cast late"
   },
   "iterations": 10000,
-  "model_version": "a18364c317e2",
+  "model_version": "75ea059969f2",
   "seed": 20260826
  },
  "limits": [
@@ -4202,13 +4289,13 @@
   "colours": [
    {
     "colour": "W",
-    "delta": 1,
+    "delta": -2,
     "gap": [
-     3,
+     6,
      4
     ],
     "have": [
-     25,
+     28,
      26
     ],
     "target": [
@@ -4218,13 +4305,13 @@
    },
    {
     "colour": "U",
-    "delta": 1,
+    "delta": -2,
     "gap": [
-     -3,
+     0,
      -2
     ],
     "have": [
-     33,
+     36,
      34
     ],
     "target": [
@@ -4250,17 +4337,17 @@
    },
    {
     "colour": "R",
-    "delta": -8,
+    "delta": 1,
     "gap": [
-     -2,
+     -11,
      -10
     ],
     "have": [
-     34,
+     37,
      26
     ],
     "target": [
-     36,
+     48,
      36
     ]
    },
@@ -4286,7 +4373,7 @@
    5
   ],
   "lands": [
-   36,
+   38,
    36
   ],
   "life": [
@@ -4310,15 +4397,15 @@
     null
    ],
    "R": [
-    0.882,
+    0.727,
     0.742
    ],
    "U": [
-    0.869,
+    0.906,
     0.882
    ],
    "W": [
-    0.936,
+    0.957,
     0.944
    ]
   }
@@ -4364,14 +4451,14 @@
  "recommendation": {
   "because": "The miss is smaller than this run can see. missed by 0.0448, which is under the 0.1150 this run could detect \u2014 evidence of nothing, not evidence of failure A larger N is the only thing that settles it.",
   "bill": {
-   "box": 10,
-   "buy": 37,
-   "elsewhere": 9,
+   "box": 7,
+   "buy": 39,
+   "elsewhere": 11,
    "free": 0,
-   "in_deck": 44
+   "in_deck": 43
   },
   "cost": {
-   "buy": 37,
+   "buy": 39,
    "buy_cards": [
     "Anje's Ravager",
     "Arjun, the Shifting Flame",
@@ -4382,8 +4469,9 @@
     "Containment Construct",
     "Currency Converter",
     "Drake Haven",
-    "Echo of Eons",
+    "Faithless Looting",
     "Floodfarm Verge",
+    "Glint-Horn Buccaneer",
     "Glittering Massif",
     "Improbable Alliance",
     "Irencrag Pyromancer",
@@ -4393,6 +4481,7 @@
     "Library of Leng",
     "Magmakin Artillerist",
     "Mana Geyser",
+    "Marauding Mako",
     "Mindless Automaton",
     "Molten Psyche",
     "Mystic Gate",
@@ -4402,21 +4491,21 @@
     "Niv-Mizzet, Parun",
     "Ominous Seas",
     "Queen Kayla bin-Kroog",
+    "Rielle, the Everwise",
     "Sorcerer Class",
     "Sticky Fingers",
     "Teferi's Puzzle Box",
     "The Locust God",
-    "Time Reversal",
+    "Tolarian Winds",
     "Vanguard Suppressor",
-    "Whirlpool Warrior",
-    "Winds of Change"
+    "Whirlpool Warrior"
    ],
    "counts": {
-    "box": 10,
-    "buy": 37,
-    "elsewhere": 9,
+    "box": 7,
+    "buy": 39,
+    "elsewhere": 11,
     "free": 0,
-    "in_deck": 44
+    "in_deck": 43
    },
    "free_to_raid": [],
    "mergeable": false,
@@ -4435,9 +4524,24 @@
     },
     {
      "decks": [
-      "emiel-blink"
+      "emiel-blink",
+      "valgavoth"
      ],
      "name": "Opal Palace"
+    },
+    {
+     "decks": [
+      "heliod",
+      "keen-engineering",
+      "valgavoth"
+     ],
+     "name": "Psychosis Crawler"
+    },
+    {
+     "decks": [
+      "valgavoth"
+     ],
+     "name": "Razorkin Needlehead"
     },
     {
      "decks": [
@@ -4449,7 +4553,8 @@
     {
      "decks": [
       "heliod",
-      "keen-engineering"
+      "keen-engineering",
+      "valgavoth"
      ],
      "name": "Scrawling Crawler"
     },
@@ -4467,7 +4572,8 @@
     },
     {
      "decks": [
-      "emiel-blink"
+      "emiel-blink",
+      "valgavoth"
      ],
      "name": "Talon Gates of Madara"
     },
@@ -4480,26 +4586,28 @@
      "name": "Teferi's Protection"
     }
    ],
-   "owned": 63,
-   "reads_as": "37 to buy; 9 to pull out of a deck that is still together; 63 of 100 already owned",
+   "owned": 61,
+   "reads_as": "39 to buy; 11 to pull out of a deck that is still together; 61 of 100 already owned",
    "total": 100
   },
   "fell": [
-   "hoard @T10",
    "damage @T10",
    "board power @T6",
    "killed by T6",
    "killed by T10",
    "stall, 2 in a row",
-   "interaction affordable @T6",
-   "hand can act by T3",
-   "finisher wheel by T8",
-   "wheels cast by T10"
-  ],
-  "no_call": [
+   "missed drop by T5",
    "mulliganed",
    "extra cards by T8",
+   "interaction affordable @T6",
+   "hand can act by T3",
+   "kept hand passes the pilot's keep rule",
    "dead wheels in hand @T5"
+  ],
+  "no_call": [
+   "hoard @T10",
+   "finisher wheel by T8",
+   "wheels cast by T10"
   ],
   "notes": [
    "Forge, against a real pod: +0.058 win rate, CI [-0.016, +0.130] \u2014 this run cannot separate the two lists."
@@ -4507,83 +4615,85 @@
   "reward": [
    {
     "measure": "hoard @T6",
-    "reads_as": "0.26 -> 0.41, a change of +0.15 (+57%)",
+    "reads_as": "0.26 -> 0.44, a change of +0.18 (+66%)",
     "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered."
-   },
-   {
-    "measure": "missed drop by T5",
-    "reads_as": "37 games in 100 -> 33 in 100, a swing of 4 games per 100",
-    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change."
-   },
-   {
-    "measure": "kept hand passes the pilot's keep rule",
-    "reads_as": "73 games in 100 -> 77 in 100, a swing of 4 games per 100",
-    "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship."
    }
   ],
   "risk": [
    {
-    "detail": "3.59 -> 2.26, a change of -1.34 (-37%)",
-    "kind": "paid",
-    "what": "hoard @T10",
-    "why_it_matters": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it."
-   },
-   {
-    "detail": "212.75 -> 77.48, a change of -135.26 (-64%)",
+    "detail": "291.78 -> 77.62, a change of -214.15 (-73%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
    },
    {
-    "detail": "15.72 -> 15.04, a change of -0.68 (-4%)",
+    "detail": "16.71 -> 14.86, a change of -1.84 (-11%)",
     "kind": "paid",
     "what": "board power @T6",
     "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
-    "detail": "20 games in 100 -> 13 in 100, a swing of 7 games per 100",
+    "detail": "25 games in 100 -> 12 in 100, a swing of 13 games per 100",
     "kind": "paid",
     "what": "killed by T6",
     "why_it_matters": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for."
    },
    {
-    "detail": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
+    "detail": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",
     "kind": "paid",
     "what": "killed by T10",
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "12 games in 100 -> 16 in 100, a swing of 4 games per 100",
+    "detail": "9 games in 100 -> 17 in 100, a swing of 8 games per 100",
     "kind": "paid",
     "what": "stall, 2 in a row",
     "why_it_matters": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here."
    },
    {
-    "detail": "53 games in 100 -> 20 in 100, a swing of 33 games per 100",
+    "detail": "31 games in 100 -> 34 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "missed drop by T5",
+    "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
+   },
+   {
+    "detail": "18 games in 100 -> 21 in 100, a swing of 3 games per 100",
+    "kind": "paid",
+    "what": "mulliganed",
+    "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
+   },
+   {
+    "detail": "25.42 -> 21.19, a change of -4.23 (-17%)",
+    "kind": "paid",
+    "what": "extra cards by T8",
+    "why_it_matters": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
+   },
+   {
+    "detail": "60 games in 100 -> 22 in 100, a swing of 38 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    {
-    "detail": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
+    "detail": "97 games in 100 -> 95 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "hand can act by T3",
     "why_it_matters": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going."
    },
    {
-    "detail": "85 games in 100 -> 81 in 100, a swing of 4 games per 100",
+    "detail": "82 games in 100 -> 75 in 100, a swing of 6 games per 100",
     "kind": "paid",
-    "what": "finisher wheel by T8",
-    "why_it_matters": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
+    "what": "kept hand passes the pilot's keep rule",
+    "why_it_matters": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship."
    },
    {
-    "detail": "3.11 -> 3.01, a change of -0.10 (-3%)",
+    "detail": "0.08 -> 0.10, a change of +0.02 (+28%)",
     "kind": "paid",
-    "what": "wheels cast by T10",
-    "why_it_matters": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
+    "what": "dead wheels in hand @T5",
+    "why_it_matters": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
    },
    {
-    "detail": "the largest is mulliganed at +0.008 against an MDE of 0.012. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hoard @T10 at -0.227 against an MDE of 0.300. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
     "what": "3 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
@@ -4606,11 +4716,13 @@
      "Jaxis, the Troublemaker",
      "Mindless Automaton",
      "Niv-Mizzet, Parun",
-     "Sticky Fingers"
+     "Psychosis Crawler",
+     "Sticky Fingers",
+     "Valeria Richards, Precocious"
     ],
     "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
     "kind": "unmeasured",
-    "what": "7 card(s) carrying a draw effect",
+    "what": "9 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -4619,9 +4731,9 @@
      "Brotherhood Regalia",
      "Deflecting Swat",
      "Flawless Maneuver",
+     "Lightning Greaves",
      "Loran's Escape",
-     "Shelter",
-     "Swiftfoot Boots",
+     "Slip Out the Back",
      "Teferi's Protection",
      "Teferi, Master of Time"
     ],
@@ -4643,15 +4755,22 @@
     "cards": [
      "Collective Defiance",
      "Get Lost",
-     "Incendiary Command",
      "Irencrag Pyromancer",
-     "Magmakin Artillerist",
      "Niv-Mizzet, Parun",
      "Prismari Command"
     ],
     "detail": "the goldfish has no opponents, so a removal spell has nothing to remove and reads as a dead card",
     "kind": "unmeasured",
-    "what": "7 card(s) carrying a removal effect",
+    "what": "5 card(s) carrying a removal effect",
+    "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
+   },
+   {
+    "cards": [
+     "Willie Lumpkin, Postman"
+    ],
+    "detail": "there is no opponent to tax",
+    "kind": "unmeasured",
+    "what": "1 card(s) carrying a stax effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -4668,7 +4787,6 @@
      "Glittering Massif",
      "Inspiring Vantage",
      "Irrigated Farmland",
-     "Island",
      "Mountain",
      "Mystic Gate",
      "Mystic Monastery",
@@ -4689,11 +4807,11 @@
     ],
     "detail": "this model plays the first land in hand and credits its colours the same turn \u2014 there is no tapped state, so it cannot rank two lands that make the same colours. The deterministic mana block is the whole of the evidence for a land swap",
     "kind": "unmeasured",
-    "what": "30 land swap(s)",
+    "what": "29 land swap(s)",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
-    "detail": "R gap -2 -> -10",
+    "detail": "W gap +6 -> +4, U gap +0 -> -2",
     "kind": "paid",
     "what": "colour sources went backwards",
     "why_it_matters": "a source count is a hypergeometric claim about opening hands; a widening gap is a real cost even though no sampled row can see it"
@@ -4706,9 +4824,7 @@
    }
   ],
   "rose": [
-   "hoard @T6",
-   "missed drop by T5",
-   "kept hand passes the pilot's keep rule"
+   "hoard @T6"
   ],
   "state": "inconclusive"
  },
@@ -4717,13 +4833,41 @@
  "table": [
   {
    "better_is": "higher",
-   "branch": 2.256,
-   "champion": 3.5935,
+   "branch": 2.3926,
+   "champion": 2.6199,
    "ci95_diff": [
-    -1.7379,
-    -0.9371
+    -0.4374,
+    -0.0172
    ],
-   "delta": -1.3375,
+   "delta": -0.2273,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 14,
+    "significant": false,
+    "threshold": 2.394
+   },
+   "mde": 0.3003,
+   "measure": "hoard @T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.227 is smaller than the 0.300 this run can resolve",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
+   "z": -2.12
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.4398,
+   "champion": 0.2646,
+   "ci95_diff": [
+    0.1404,
+    0.21
+   ],
+   "delta": 0.1752,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -4731,55 +4875,27 @@
     "significant": true,
     "threshold": 2.773
    },
-   "mde": 0.5724,
-   "measure": "hoard @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "3.59 -> 2.26, a change of -1.34 (-37%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
-   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
-   "z": -6.547
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.4131,
-   "champion": 0.2632,
-   "ci95_diff": [
-    0.1162,
-    0.1836
-   ],
-   "delta": 0.1499,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 4,
-    "significant": true,
-    "threshold": 2.891
-   },
-   "mde": 0.0482,
+   "mde": 0.0498,
    "measure": "hoard @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.26 -> 0.41, a change of +0.15 (+57%)",
+   "reads_as": "0.26 -> 0.44, a change of +0.18 (+66%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "better",
    "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
    "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
-   "z": 8.706
+   "z": 9.864
   },
   {
    "better_is": "higher",
-   "branch": 77.4834,
-   "champion": 212.745,
+   "branch": 77.6243,
+   "champion": 291.7776,
    "ci95_diff": [
-    -141.3458,
-    -129.1774
+    -220.8329,
+    -207.4737
    ],
-   "delta": -135.2616,
+   "delta": -214.1533,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -4787,55 +4903,55 @@
     "significant": true,
     "threshold": 2.955
    },
-   "mde": 8.6966,
+   "mde": 9.5478,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "212.75 -> 77.48, a change of -135.26 (-64%)",
+   "reads_as": "291.78 -> 77.62, a change of -214.15 (-73%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. THE SWING AND WHAT FIRES AROUND IT: combat damage, attack triggers, arrival and burn. IT EXCLUDES the payoffs on a discard or a draw and the drain; `output.total_damage_by_turn` in the diagnostic is the figure with them (not a row: it tracks this one game for game, one measurement twice). The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -43.574
+   "z": -62.839
   },
   {
    "better_is": "higher",
-   "branch": 15.0389,
-   "champion": 15.7225,
+   "branch": 14.8643,
+   "champion": 16.7052,
    "ci95_diff": [
-    -0.916,
-    -0.4512
+    -2.1093,
+    -1.5725
    ],
-   "delta": -0.6836,
+   "delta": -1.8409,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 10,
+    "rank": 6,
     "significant": true,
-    "threshold": 2.69
+    "threshold": 2.838
    },
-   "mde": 0.3322,
+   "mde": 0.3836,
    "measure": "board power @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "15.72 -> 15.04, a change of -0.68 (-4%)",
+   "reads_as": "16.71 -> 14.86, a change of -1.84 (-11%)",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "worse",
    "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -5.765
+   "z": -13.445
   },
   {
    "better_is": "higher",
-   "branch": 0.1308,
-   "champion": 0.2023,
+   "branch": 0.1221,
+   "champion": 0.2492,
    "ci95_diff": [
-    -0.0805,
-    -0.0625
+    -0.1378,
+    -0.1164
    ],
-   "delta": -0.0715,
+   "delta": -0.1271,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -4843,55 +4959,55 @@
     "significant": true,
     "threshold": 2.914
    },
-   "mde": 0.0129,
+   "mde": 0.0153,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "20 games in 100 -> 13 in 100, a swing of 7 games per 100",
+   "reads_as": "25 games in 100 -> 12 in 100, a swing of 13 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -15.573
+   "z": -23.284
   },
   {
    "better_is": "higher",
-   "branch": 0.9866,
-   "champion": 0.991,
+   "branch": 0.9842,
+   "champion": 0.9947,
    "ci95_diff": [
-    -0.0072,
-    -0.0016
+    -0.0133,
+    -0.0077
    ],
-   "delta": -0.0044,
+   "delta": -0.0105,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 13,
+    "rank": 9,
     "significant": true,
-    "threshold": 2.498
+    "threshold": 2.734
    },
-   "mde": 0.0041,
+   "mde": 0.004,
    "measure": "killed by T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "99 games in 100 -> 99 in 100, a swing of 0 games per 100",
+   "reads_as": "99 games in 100 -> 98 in 100, a swing of 1 games per 100",
    "role": "exploratory",
    "scale": "a CLOCK against one unblocking opponent, never a win rate",
    "unit": "rate",
    "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -3.038
+   "z": -7.353
   },
   {
    "better_is": "lower",
-   "branch": 0.1626,
-   "champion": 0.1214,
+   "branch": 0.1675,
+   "champion": 0.0906,
    "ci95_diff": [
-    0.0319,
-    0.0505
+    0.0676,
+    0.0862
    ],
-   "delta": 0.0412,
+   "delta": 0.0769,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -4902,220 +5018,24 @@
    "mde": 0.0133,
    "measure": "stall, 2 in a row",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "12 games in 100 -> 16 in 100, a swing of 4 games per 100",
+   "reads_as": "9 games in 100 -> 17 in 100, a swing of 8 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 8.679
+   "z": 16.248
   },
   {
    "better_is": "lower",
-   "branch": 0.3328,
-   "champion": 0.3682,
+   "branch": 0.3405,
+   "champion": 0.3115,
    "ci95_diff": [
-    -0.047,
-    -0.0238
+    0.0165,
+    0.0415
    ],
-   "delta": -0.0354,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 9,
-    "significant": true,
-    "threshold": 2.734
-   },
-   "mde": 0.0165,
-   "measure": "missed drop by T5",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "37 games in 100 -> 33 in 100, a swing of 4 games per 100",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
-   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": -5.999
-  },
-  {
-   "better_is": "lower",
-   "branch": 0.2109,
-   "champion": 0.203,
-   "ci95_diff": [
-    -0.0008,
-    0.0166
-   ],
-   "delta": 0.0079,
-   "excludes_zero": false,
-   "holm": {
-    "family": 16,
-    "rank": 14,
-    "significant": false,
-    "threshold": 2.394
-   },
-   "mde": 0.0124,
-   "measure": "mulliganed",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.012 this run can resolve",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
-   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
-   "z": 1.778
-  },
-  {
-   "better_is": "higher",
-   "branch": 21.1965,
-   "champion": 21.5487,
-   "ci95_diff": [
-    -0.7474,
-    0.043
-   ],
-   "delta": -0.3522,
-   "excludes_zero": false,
-   "holm": {
-    "family": 16,
-    "rank": 16,
-    "significant": false,
-    "threshold": 1.96
-   },
-   "mde": 0.565,
-   "measure": "extra cards by T8",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.352 is smaller than the 0.565 this run can resolve",
-   "role": "exploratory",
-   "scale": "against the 8 cards every deck draws for free by then",
-   "unit": "mean",
-   "verdict": "noise",
-   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
-   "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -1.747
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.1964,
-   "champion": 0.5307,
-   "ci95_diff": [
-    -0.3499,
-    -0.3183
-   ],
-   "delta": -0.3343,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 2,
-    "significant": true,
-    "threshold": 2.935
-   },
-   "mde": 0.0235,
-   "measure": "interaction affordable @T6",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "53 games in 100 -> 20 in 100, a swing of 33 games per 100",
-   "role": "exploratory",
-   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
-   "unit": "rate",
-   "verdict": "worse",
-   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it, or where it is free for controlling a commander and one is out. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-   "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -41.466
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9518,
-   "champion": 0.9636,
-   "ci95_diff": [
-    -0.0172,
-    -0.0064
-   ],
-   "delta": -0.0118,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 11,
-    "significant": true,
-    "threshold": 2.638
-   },
-   "mde": 0.0077,
-   "measure": "hand can act by T3",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "96 games in 100 -> 95 in 100, a swing of 1 games per 100",
-   "role": "exploratory",
-   "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
-   "unit": "rate",
-   "verdict": "worse",
-   "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
-   "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": -4.318
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.7683,
-   "champion": 0.7298,
-   "ci95_diff": [
-    0.0273,
-    0.0497
-   ],
-   "delta": 0.0385,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 7,
-    "significant": true,
-    "threshold": 2.807
-   },
-   "mde": 0.0161,
-   "measure": "kept hand passes the pilot's keep rule",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "73 games in 100 -> 77 in 100, a swing of 4 games per 100",
-   "role": "exploratory",
-   "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
-   "unit": "rate",
-   "verdict": "better",
-   "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
-   "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship.",
-   "z": 6.712
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.8119,
-   "champion": 0.8469,
-   "ci95_diff": [
-    -0.045,
-    -0.025
-   ],
-   "delta": -0.035,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 6,
-    "significant": true,
-    "threshold": 2.838
-   },
-   "mde": 0.0143,
-   "measure": "finisher wheel by T8",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "85 games in 100 -> 81 in 100, a swing of 4 games per 100",
-   "role": "exploratory",
-   "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
-   "unit": "rate",
-   "verdict": "worse",
-   "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also needed four nonlands left in hand, which the model's deploy-first turn now spends before it wheels.) Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
-   "why_we_care": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else.",
-   "z": -6.869
-  },
-  {
-   "better_is": "higher",
-   "branch": 3.0071,
-   "champion": 3.1114,
-   "ci95_diff": [
-    -0.1548,
-    -0.0538
-   ],
-   "delta": -0.1043,
+   "delta": 0.029,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -5123,27 +5043,167 @@
     "significant": true,
     "threshold": 2.576
    },
-   "mde": 0.0721,
-   "measure": "wheels cast by T10",
+   "mde": 0.0178,
+   "measure": "missed drop by T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "3.11 -> 3.01, a change of -0.10 (-3%)",
+   "reads_as": "31 games in 100 -> 34 in 100, a swing of 3 games per 100",
    "role": "exploratory",
-   "scale": "against the wheel-shaped cards the declaration names",
-   "unit": "mean",
+   "scale": null,
+   "unit": "rate",
    "verdict": "worse",
-   "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
-   "why_we_care": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone.",
-   "z": -4.05
+   "what": "The share of games that miss at least one land drop across turns 1 to 5.",
+   "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
+   "z": 4.556
   },
   {
    "better_is": "lower",
-   "branch": 0.0946,
-   "champion": 0.1058,
+   "branch": 0.2088,
+   "champion": 0.1827,
    "ci95_diff": [
-    -0.0236,
-    0.0012
+    0.0157,
+    0.0365
    ],
-   "delta": -0.0112,
+   "delta": 0.0261,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 11,
+    "significant": true,
+    "threshold": 2.638
+   },
+   "mde": 0.0148,
+   "measure": "mulliganed",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "18 games in 100 -> 21 in 100, a swing of 3 games per 100",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
+   "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
+   "z": 4.93
+  },
+  {
+   "better_is": "higher",
+   "branch": 21.1896,
+   "champion": 25.4227,
+   "ci95_diff": [
+    -4.7024,
+    -3.7638
+   ],
+   "delta": -4.2331,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.891
+   },
+   "mde": 0.6708,
+   "measure": "extra cards by T8",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "25.42 -> 21.19, a change of -4.23 (-17%)",
+   "role": "exploratory",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
+   "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
+   "z": -17.68
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.2209,
+   "champion": 0.6017,
+   "ci95_diff": [
+    -0.3967,
+    -0.3644
+   ],
+   "delta": -0.3808,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 2,
+    "significant": true,
+    "threshold": 2.935
+   },
+   "mde": 0.0236,
+   "measure": "interaction affordable @T6",
+   "method": "Newcombe score interval on the difference of proportions",
+   "reads_as": "60 games in 100 -> 22 in 100, a swing of 38 games per 100",
+   "role": "exploratory",
+   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it, or where it is free for controlling a commander and one is out. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+   "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
+   "z": -46.162
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.949,
+   "champion": 0.9687,
+   "ci95_diff": [
+    -0.0252,
+    -0.0142
+   ],
+   "delta": -0.0197,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 10,
+    "significant": true,
+    "threshold": 2.69
+   },
+   "mde": 0.0078,
+   "measure": "hand can act by T3",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "97 games in 100 -> 95 in 100, a swing of 2 games per 100",
+   "role": "exploratory",
+   "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
+   "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
+   "z": -7.066
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.7523,
+   "champion": 0.8154,
+   "ci95_diff": [
+    -0.074,
+    -0.0522
+   ],
+   "delta": -0.0631,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 7,
+    "significant": true,
+    "threshold": 2.807
+   },
+   "mde": 0.0156,
+   "measure": "kept hand passes the pilot's keep rule",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "82 games in 100 -> 75 in 100, a swing of 6 games per 100",
+   "role": "exploratory",
+   "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
+   "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship.",
+   "z": -11.33
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.8061,
+   "champion": 0.8012,
+   "ci95_diff": [
+    -0.0058,
+    0.0156
+   ],
+   "delta": 0.0049,
    "excludes_zero": false,
    "holm": {
     "family": 16,
@@ -5151,17 +5211,73 @@
     "significant": false,
     "threshold": 2.241
    },
-   "mde": 0.0178,
+   "mde": 0.0152,
+   "measure": "finisher wheel by T8",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.005 is smaller than the 0.015 this run can resolve",
+   "role": "exploratory",
+   "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also needed four nonlands left in hand, which the model's deploy-first turn now spends before it wheels.) Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
+   "why_we_care": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else.",
+   "z": 0.901
+  },
+  {
+   "better_is": "higher",
+   "branch": 3.0026,
+   "champion": 2.9946,
+   "ci95_diff": [
+    -0.0472,
+    0.0632
+   ],
+   "delta": 0.008,
+   "excludes_zero": false,
+   "holm": {
+    "family": 16,
+    "rank": 16,
+    "significant": false,
+    "threshold": 1.96
+   },
+   "mde": 0.0789,
+   "measure": "wheels cast by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.008 is smaller than the 0.079 this run can resolve",
+   "role": "exploratory",
+   "scale": "against the wheel-shaped cards the declaration names",
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
+   "why_we_care": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone.",
+   "z": 0.284
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0962,
+   "champion": 0.0753,
+   "ci95_diff": [
+    0.0094,
+    0.0324
+   ],
+   "delta": 0.0209,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 13,
+    "significant": true,
+    "threshold": 2.498
+   },
+   "mde": 0.0165,
    "measure": "dead wheels in hand @T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.018 this run can resolve",
+   "reads_as": "0.08 -> 0.10, a change of +0.02 (+28%)",
    "role": "exploratory",
    "scale": "against the cards in hand at the end of turn 5",
    "unit": "mean",
-   "verdict": "noise",
+   "verdict": "worse",
    "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
    "why_we_care": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage.",
-   "z": -1.768
+   "z": 3.559
   }
  ]
 }

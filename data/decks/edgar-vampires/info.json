@@ -6299,9 +6299,6 @@
             "name": "Champion of Dusk"
           },
           {
-            "name": "Dark Prophecy"
-          },
-          {
             "name": "Despark"
           },
           {
@@ -6362,6 +6359,12 @@
             "where": [
               "gishath",
               "ur-dragon"
+            ]
+          },
+          {
+            "name": "Dark Prophecy",
+            "where": [
+              "meren-recursion"
             ]
           },
           {
@@ -6445,8 +6448,8 @@
       "counts": {
         "in_deck": 62,
         "box": 7,
-        "elsewhere": 3,
-        "buy": 23,
+        "elsewhere": 4,
+        "buy": 22,
         "free": 1
       },
       "unsourced": [
@@ -6731,8 +6734,16 @@
         },
         {
           "name": "Dark Prophecy",
-          "state": "buy",
-          "where": [],
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "meren-recursion",
+              "locked": false,
+              "status": null,
+              "apart": false
+            }
+          ],
           "free": false,
           "is_new": true
         },
@@ -7290,17 +7301,18 @@
       "verdict": {
         "state": "inconclusive",
         "rose": 7,
-        "fell": 1,
-        "no_call": 2
+        "fell": 2,
+        "no_call": 3
       },
       "objective_grade": {
-        "state": "not resolvable",
-        "reading": 0.6683,
-        "shortfall": 0.3083
+        "state": "not measured",
+        "reading": null,
+        "shortfall": null
       },
       "measured": true,
       "blind_spots": [
         "Ajani Unrelenting",
+        "Ancient Tomb",
         "Anje, Maid of Dishonor",
         "Anowon, the Ruin Sage",
         "Arid Mesa",
@@ -7313,7 +7325,6 @@
         "Drana and Linvala",
         "Erebos, Bleak-Hearted",
         "Exotic Orchard",
-        "Ingris Stingerquill",
         "Legion's Landing // Adanto, the First Fort",
         "Mondrak, Glory Dominus",
         "Nomad Outpost",
@@ -7335,7 +7346,7 @@
       "impact": {
         "state": "inconclusive",
         "rose": [
-          "board power @T6",
+          "killed by T6",
           "stall, 2 in a row",
           "missed drop by T5",
           "mulliganed",
@@ -7344,53 +7355,54 @@
           "hand can act by T3"
         ],
         "fell": [
-          "damage @T10"
+          "damage @T10",
+          "killed by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -1.5676,
+            "delta": -2.4855,
             "ci95_diff": [
-              -1.8157,
-              -1.3195
+              -2.8369,
+              -2.1341
             ],
-            "mde": 0.3546,
+            "mde": 0.5023,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0144,
+            "delta": -0.0427,
             "ci95_diff": [
-              -0.0246,
-              -0.0042
+              -0.0522,
+              -0.0332
             ],
-            "mde": 0.0146,
-            "verdict": "noise",
+            "mde": 0.0136,
+            "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": 0.4251,
+            "delta": -0.1018,
             "ci95_diff": [
-              0.3085,
-              0.5417
+              -0.2129,
+              0.0093
             ],
-            "mde": 0.1666,
-            "verdict": "better",
+            "mde": 0.1588,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.593,
+            "delta": 1.22,
             "ci95_diff": [
-              0.5256,
-              0.6604
+              1.1173,
+              1.3227
             ],
-            "mde": 0.0963,
+            "mde": 0.1468,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
