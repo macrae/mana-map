@@ -1,6 +1,6 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "c84a80ef572995069828b813d75bdef4f511516e2bef0db1cbf8fcf958b34d14",
+  "decklist_sha256": "0a7a970915ae0abb8e6fb129736693e1ad6cd040301016e93069b8486bfdf9e1",
   "model_version": "75ea059969f2",
   "lands": {
     "total": 35,
@@ -13,25 +13,13 @@
     "enters_tapped_always": 4,
     "classes": {
       "basic": 4,
-      "fetch": 6,
-      "fixing": 3,
-      "mdfc": 1,
+      "fetch": 7,
+      "fixing": 4,
       "tapped": 9,
-      "untapped-dual": 10,
-      "utility": 15
+      "untapped-dual": 9,
+      "utility": 16
     },
     "list": [
-      {
-        "name": "Bayou",
-        "copies": 1,
-        "classes": [
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
       {
         "name": "Bloodstained Mire",
         "copies": 1,
@@ -98,18 +86,6 @@
         ]
       },
       {
-        "name": "Darkbore Pathway // Slitherbore Pathway",
-        "copies": 1,
-        "classes": [
-          "mdfc",
-          "untapped-dual"
-        ],
-        "produces": [
-          "B",
-          "G"
-        ]
-      },
-      {
         "name": "Deathcap Glade",
         "copies": 1,
         "classes": [
@@ -118,6 +94,29 @@
         "produces": [
           "B",
           "G"
+        ]
+      },
+      {
+        "name": "Exotic Orchard",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "B",
+          "G"
+        ]
+      },
+      {
+        "name": "Fabled Passage",
+        "copies": 1,
+        "classes": [
+          "fetch",
+          "utility"
+        ],
+        "produces": [
+          "B"
         ]
       },
       {
@@ -379,7 +378,7 @@
       "U": 0,
       "B": 31,
       "R": 0,
-      "G": 24
+      "G": 23
     },
     "nonland": {
       "W": 0,
@@ -393,7 +392,7 @@
       "U": 0,
       "B": 35,
       "R": 0,
-      "G": 27
+      "G": 26
     },
     "gated": {
       "count": 1,
@@ -484,11 +483,11 @@
   "shares": {
     "B": {
       "pip_share": 0.758,
-      "source_share": 0.564
+      "source_share": 0.574
     },
     "G": {
       "pip_share": 0.242,
-      "source_share": 0.436
+      "source_share": 0.426
     }
   },
   "source_targets": {
@@ -498,15 +497,15 @@
   "on_curve_probability": {
     "lands_only": {
       "B": 0.839,
-      "G": 0.927
+      "G": 0.918
     },
     "with_rocks_and_dorks": {
       "B": 0.895,
-      "G": 0.951
+      "G": 0.944
     },
     "lands_only_ungated": {
       "B": 0.822,
-      "G": 0.927
+      "G": 0.918
     }
   },
   "ramp": {
@@ -518,27 +517,27 @@
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
       "1": 1.0,
-      "10": 0.549,
+      "10": 0.551,
       "2": 0.997,
-      "3": 0.915,
-      "4": 0.799,
-      "5": 0.695,
-      "6": 0.604,
-      "7": 0.558,
-      "8": 0.526,
-      "9": 0.53
+      "3": 0.913,
+      "4": 0.801,
+      "5": 0.696,
+      "6": 0.609,
+      "7": 0.56,
+      "8": 0.531,
+      "9": 0.537
     },
     "mean_available_mana_by_turn": {
       "1": 1.0,
-      "10": 7.892,
-      "2": 2.235,
-      "3": 3.234,
-      "4": 4.093,
-      "5": 4.814,
-      "6": 5.495,
-      "7": 6.104,
-      "8": 6.683,
-      "9": 7.269
+      "10": 7.891,
+      "2": 2.22,
+      "3": 3.218,
+      "4": 4.08,
+      "5": 4.797,
+      "6": 5.477,
+      "7": 6.085,
+      "8": 6.668,
+      "9": 7.265
     }
   },
   "assumptions": [

@@ -22,11 +22,16 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md",
+      "prices.json"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -113,51 +118,30 @@
       "why": "Budget swaps, reopened on V24 (pilot, 2026-11-10: Bayou and Survival of the Fittest too expensive): Fabled Passage for Bayou, Exotic Orchard for Darkbore Pathway, Fauna Shaman for Survival of the Fittest",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
-      "base_moved": null,
+      "base_moved": "base moved since c84a80ef5729 — the deck's list changed after this branch was cut, so its comparison is against an older deck",
       "proposal": null,
       "pull_list": {
-        "buy": [
-          {
-            "name": "Fabled Passage"
-          }
-        ],
+        "buy": [],
         "unsleeve": [],
         "proxy": [],
         "free": [],
-        "box": [
-          {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Fauna Shaman",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          }
-        ],
-        "blocking": 1,
+        "box": [],
+        "blocking": 0,
         "procurement": null
       },
       "base_version": 24,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 0,
+      "out": 0,
       "counts": {
-        "in_deck": 94,
-        "box": 2,
+        "in_deck": 97,
+        "box": 0,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 0,
         "free": 0
       },
-      "unsourced": [
-        "Fabled Passage"
-      ],
-      "mergeable": false,
+      "unsourced": [],
+      "mergeable": true,
       "free": 0,
       "cards": [
         {
@@ -323,42 +307,24 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fabled Passage",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fauna Shaman",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Festering Thicket",
@@ -877,9 +843,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Fabled Passage"
-          },
-          {
             "name": "Final Parting"
           },
           {
@@ -933,20 +896,6 @@
             ]
           },
           {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Fauna Shaman",
-            "where": [
-              "Green",
-              "Hapatra"
-            ]
-          },
-          {
             "name": "Forest",
             "where": [
               "Auntie Ool",
@@ -986,22 +935,21 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 6,
         "procurement": null
       },
       "base_version": null,
       "size": 100,
-      "add": 19,
-      "out": 19,
+      "add": 16,
+      "out": 16,
       "counts": {
-        "in_deck": 80,
-        "box": 12,
+        "in_deck": 83,
+        "box": 10,
         "elsewhere": 1,
-        "buy": 6,
+        "buy": 5,
         "free": 0
       },
       "unsourced": [
-        "Fabled Passage",
         "Final Parting",
         "Grim Haruspex",
         "Hogaak, Arisen Necropolis",
@@ -1210,42 +1158,24 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fabled Passage",
-          "state": "buy",
+          "state": "in_deck",
           "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fauna Shaman",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Festering Thicket",
@@ -1864,6 +1794,12 @@
             ]
           },
           {
+            "name": "Bayou",
+            "where": [
+              "hapatra"
+            ]
+          },
+          {
             "name": "Chrome Mox",
             "where": [
               "hapatra"
@@ -1911,6 +1847,12 @@
             "name": "Starscape Cleric",
             "where": [
               "yawgmoth-swarm"
+            ]
+          },
+          {
+            "name": "Survival of the Fittest",
+            "where": [
+              "hapatra"
             ]
           },
           {
@@ -1987,6 +1929,12 @@
             ]
           },
           {
+            "name": "Darkbore Pathway // Slitherbore Pathway",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Dawnhand Eulogist",
             "where": [
               "Black"
@@ -2033,20 +1981,6 @@
             "where": [
               "Golgari Parts",
               "Green"
-            ]
-          },
-          {
-            "name": "Exotic Orchard",
-            "where": [
-              "Auntie Ool",
-              "Shabraz Parts"
-            ]
-          },
-          {
-            "name": "Fauna Shaman",
-            "where": [
-              "Green",
-              "Hapatra"
             ]
           },
           {
@@ -2267,14 +2201,14 @@
       },
       "base_version": 1,
       "size": 100,
-      "add": 69,
-      "out": 69,
+      "add": 70,
+      "out": 70,
       "counts": {
-        "in_deck": 31,
-        "box": 52,
+        "in_deck": 30,
+        "box": 51,
         "elsewhere": 4,
         "buy": 1,
-        "free": 12
+        "free": 14
       },
       "unsourced": [
         "Cauldron of Essence",
@@ -2284,7 +2218,7 @@
         "Talon Gates of Madara"
       ],
       "mergeable": false,
-      "free": 12,
+      "free": 14,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -2360,10 +2294,18 @@
         },
         {
           "name": "Bayou",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Beast Within",
@@ -2512,10 +2454,15 @@
         },
         {
           "name": "Darkbore Pathway // Slitherbore Pathway",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Dawnhand Eulogist",
@@ -2626,35 +2573,17 @@
         },
         {
           "name": "Exotic Orchard",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Auntie Ool"
-            },
-            {
-              "kind": "box",
-              "name": "Shabraz Parts"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Fauna Shaman",
-          "state": "box",
-          "where": [
-            {
-              "kind": "box",
-              "name": "Green"
-            },
-            {
-              "kind": "box",
-              "name": "Hapatra"
-            }
-          ],
+          "state": "in_deck",
+          "where": [],
           "free": false,
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Feed the Swarm",
@@ -3257,10 +3186,18 @@
         },
         {
           "name": "Survival of the Fittest",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "hapatra",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Survivors' Encampment",
@@ -3776,7 +3713,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.141,
+          "value": 4.173,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -3840,7 +3777,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 26,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -3848,7 +3785,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -3856,7 +3793,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 34,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -3941,15 +3878,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 7.892,
-            "2": 2.235,
-            "3": 3.234,
-            "4": 4.093,
-            "5": 4.814,
-            "6": 5.495,
-            "7": 6.104,
-            "8": 6.683,
-            "9": 7.269
+            "10": 7.891,
+            "2": 2.22,
+            "3": 3.218,
+            "4": 4.08,
+            "5": 4.797,
+            "6": 5.477,
+            "7": 6.085,
+            "8": 6.668,
+            "9": 7.265
           },
           "tier": "data",
           "weight": "detail",
@@ -3960,15 +3897,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.549,
+            "10": 0.551,
             "2": 0.997,
-            "3": 0.915,
-            "4": 0.799,
-            "5": 0.695,
-            "6": 0.604,
-            "7": 0.558,
-            "8": 0.526,
-            "9": 0.53
+            "3": 0.913,
+            "4": 0.801,
+            "5": 0.696,
+            "6": 0.609,
+            "7": 0.56,
+            "8": 0.531,
+            "9": 0.537
           },
           "tier": "data",
           "weight": "detail",
@@ -3978,16 +3915,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.174,
-            "10": 13.605,
-            "2": 0.61,
-            "3": 1.137,
-            "4": 1.519,
-            "5": 2.706,
-            "6": 4.318,
-            "7": 6.231,
-            "8": 8.426,
-            "9": 10.885
+            "1": 0.176,
+            "10": 13.975,
+            "2": 0.667,
+            "3": 1.245,
+            "4": 1.647,
+            "5": 2.905,
+            "6": 4.564,
+            "7": 6.504,
+            "8": 8.745,
+            "9": 11.236
           },
           "tier": "data",
           "weight": "detail",
@@ -3997,14 +3934,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 325,
-            "1": 1532,
-            "2": 2776,
-            "3": 2981,
-            "4": 1732,
-            "5": 545,
-            "6": 102,
-            "7": 7
+            "0": 322,
+            "1": 1524,
+            "2": 2844,
+            "3": 2911,
+            "4": 1729,
+            "5": 569,
+            "6": 95,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -4013,12 +3950,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2136,
-            "5": 2,
-            "6": 100,
-            "7": 897,
-            "8": 2254,
-            "9": 2921
+            "10": 1960,
+            "5": 1,
+            "6": 94,
+            "7": 1067,
+            "8": 2384,
+            "9": 3109
           },
           "tier": "data",
           "weight": "detail",
@@ -4034,7 +3971,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.141,
+    "commander_mean_cast_turn": 4.173,
     "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
@@ -4067,15 +4004,15 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 25
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 34
+        "by_turn_6_pct": 35
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
@@ -4083,19 +4020,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.733,
+      "mean_kill_turn": 8.67,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 32,
+      "kill_by_turn_8_pct": 36,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 17,
+      "no_kill_by_max_turn_pct": 14,
       "kill_turn_histogram": {
-        "10": 2136,
-        "5": 2,
-        "6": 100,
-        "7": 897,
-        "8": 2254,
-        "9": 2921
+        "10": 1960,
+        "5": 1,
+        "6": 94,
+        "7": 1067,
+        "8": 2384,
+        "9": 3109
       }
     }
   },
@@ -4173,12 +4110,15 @@
     ]
   },
   "next": [
+    "2 artifact(s) fail their own gate (CONTEXT.md, prices.json) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V24 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v2` needs 1 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v2`",
-    "branch `budget-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `budget-v1` needs 7 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
+    "branch `budget-v2` is fully sourced (+0 -0) — `manamap pilot deck-branch meren-recursion merge budget-v2 --write`",
+    "branch `budget-v1`: 15 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1` needs 6 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",

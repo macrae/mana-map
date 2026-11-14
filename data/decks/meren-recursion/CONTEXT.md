@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V24 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 4 known lines (4 infinite, 0 two-card) · 246 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -164,11 +164,11 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-Goldfish, 10,000 seeded games, measured on V24, 2026-11-13. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.141**
+- mean turn the commander is first cast: **turn 4.173**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **43%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **25%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
@@ -176,12 +176,12 @@ Goldfish, 10,000 seeded games, measured on V24, 2026-11-13. Each group below is 
 - RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **35%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **2%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **26%**
-- RAMP drawn — an accelerant of any kind: **35%**
-- REMOVAL drawn — a spell or ability that answers a permanent: **34%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **25%**
+- RAMP drawn — an accelerant of any kind: **34%**
+- REMOVAL drawn — a spell or ability that answers a permanent: **35%**
 - A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
 - share of opening sevens the model would keep: **80%**
-- Colour on curve (lands + rocks): B 90%, G 95%
+- Colour on curve (lands + rocks): B 90%, G 94%
 <!-- /ctx:gen numbers -->
 
 The block above is re-rendered for the current list. The goldfish has no opponents, no blockers and no removal, so it cannot see the sweepers, the protection, the cheap removal or the graveyard hate. Read the commander-cast and kill lines as an upper bound. The drain rows were written for an older plan, so read their names with care. The Numbers still say nothing about how many counters Meren has by a given turn, and nothing about how often the end-step loop gets going. The pilot's line is that the goldfish is not the arbiter.
