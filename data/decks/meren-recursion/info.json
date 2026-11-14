@@ -20,11 +20,13 @@
     "G"
   ],
   "size": 100,
-  "lands": 34,
+  "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -113,18 +115,40 @@
       "why": "try: trade — high — every swapped card is visible to the model; A rock or land cashes in for its card only with 7 mana left after it (an authored rate)",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
-      "base_moved": null,
+      "base_moved": "base moved since 9b3a295c3aec — the deck's list changed after this branch was cut, so its comparison is against an older deck",
       "proposal": null,
       "pull_list": {
         "buy": [
           {
             "name": "Fabled Passage"
+          },
+          {
+            "name": "Hogaak, Arisen Necropolis"
+          },
+          {
+            "name": "Infested Thrinax"
+          },
+          {
+            "name": "Korozda Guildmage"
           }
         ],
         "unsleeve": [],
         "proxy": [],
         "free": [],
         "box": [
+          {
+            "name": "Craterhoof Behemoth",
+            "where": [
+              "Green",
+              "Radagast Parts"
+            ]
+          },
+          {
+            "name": "Dark Ritual",
+            "where": [
+              "Hapatra"
+            ]
+          },
           {
             "name": "Exotic Orchard",
             "where": [
@@ -138,24 +162,33 @@
               "Green",
               "Hapatra"
             ]
+          },
+          {
+            "name": "Mazirek, Kraul Death Priest",
+            "where": [
+              "Golgari Parts"
+            ]
           }
         ],
-        "blocking": 1,
+        "blocking": 4,
         "procurement": null
       },
       "base_version": null,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 9,
+      "out": 9,
       "counts": {
-        "in_deck": 96,
-        "box": 2,
+        "in_deck": 90,
+        "box": 5,
         "elsewhere": 0,
-        "buy": 1,
+        "buy": 4,
         "free": 0
       },
       "unsourced": [
-        "Fabled Passage"
+        "Fabled Passage",
+        "Hogaak, Arisen Necropolis",
+        "Infested Thrinax",
+        "Korozda Guildmage"
       ],
       "mergeable": false,
       "free": 0,
@@ -281,17 +314,31 @@
         },
         {
           "name": "Craterhoof Behemoth",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Green"
+            },
+            {
+              "kind": "box",
+              "name": "Radagast Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Dark Ritual",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Deadly Rollick",
@@ -453,17 +500,17 @@
         },
         {
           "name": "Hogaak, Arisen Necropolis",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Infested Thrinax",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Jadar, Ghoulcaller of Nephalia",
@@ -488,10 +535,10 @@
         },
         {
           "name": "Korozda Guildmage",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Lightning Greaves",
@@ -537,10 +584,15 @@
         },
         {
           "name": "Mazirek, Kraul Death Priest",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Golgari Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Meren of Clan Nel Toth",
@@ -2708,119 +2760,32 @@
   "combos": {
     "summary": {
       "excluded_commander_assumption": 0,
-      "highest_bracket": 3,
-      "included": 7,
-      "infinite": 7,
+      "highest_bracket": 1,
+      "included": 1,
+      "infinite": 1,
       "near": 50,
-      "near_total": 207,
+      "near_total": 182,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
     "top": [
       {
-        "id": "56-5256-5695",
+        "id": "2034-4050-6115",
         "cards": [
-          "Hogaak, Arisen Necropolis",
-          "Infested Thrinax",
-          "Altar of Dementia"
-        ],
-        "produces": [
-          "Infinite creature LTB",
-          "Infinite creature ETB",
-          "Infinite creature sacrifice triggers",
-          "Infinite death triggers",
-          "Infinite mill",
-          "Infinite self-mill",
-          "Infinite storm count",
-          "Infinite creature tokens"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 827,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "56-3391-4050",
-        "cards": [
-          "Hogaak, Arisen Necropolis",
-          "Korozda Guildmage",
+          "Ozox, the Clattering King",
+          "Ashnod's Altar",
           "Phyrexian Altar"
         ],
         "produces": [
-          "Infinite colored mana",
-          "Infinite creature tokens",
-          "Infinite death triggers",
-          "Infinite creature ETB",
           "Infinite creature LTB",
+          "Infinite creature ETB",
           "Infinite creature sacrifice triggers",
+          "Infinite death triggers",
           "Infinite storm count"
         ],
         "infinite": true,
-        "bracket": 3,
-        "popularity": 446,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "56-4050-5695",
-        "cards": [
-          "Hogaak, Arisen Necropolis",
-          "Infested Thrinax",
-          "Phyrexian Altar"
-        ],
-        "produces": [
-          "Infinite creature LTB",
-          "Infinite creature ETB",
-          "Infinite colored mana",
-          "Infinite creature sacrifice triggers",
-          "Infinite death triggers",
-          "Infinite storm count",
-          "Infinite creature tokens"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 423,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "56-2292-5695",
-        "cards": [
-          "Hogaak, Arisen Necropolis",
-          "Infested Thrinax",
-          "Viscera Seer"
-        ],
-        "produces": [
-          "Infinite creature LTB",
-          "Infinite creature ETB",
-          "Infinite creature sacrifice triggers",
-          "Infinite death triggers",
-          "Infinite scry 1",
-          "Infinite storm count",
-          "Infinite creature tokens"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 335,
-        "assumes_other_commander": false
-      },
-      {
-        "id": "56-2034-5695",
-        "cards": [
-          "Hogaak, Arisen Necropolis",
-          "Infested Thrinax",
-          "Ashnod's Altar"
-        ],
-        "produces": [
-          "Infinite creature LTB",
-          "Infinite creature ETB",
-          "Infinite creature sacrifice triggers",
-          "Infinite death triggers",
-          "Infinite colorless mana",
-          "Infinite storm count",
-          "Infinite creature tokens"
-        ],
-        "infinite": true,
-        "bracket": 3,
-        "popularity": 192,
+        "bracket": 1,
+        "popularity": 2127,
         "assumes_other_commander": false
       }
     ]
@@ -2847,7 +2812,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 93,
+          "value": 94,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -2865,7 +2830,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.1,
+          "value": 4.119,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -2873,7 +2838,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 44,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -2913,7 +2878,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 0,
+          "value": 1,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
@@ -2921,7 +2886,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count\" by turn six",
@@ -2929,7 +2894,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 25,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -2937,7 +2902,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 35,
+          "value": 36,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
@@ -3019,7 +2984,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 79,
+          "value": 81,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -3029,16 +2994,16 @@
         },
         "mana_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 7.88,
-            "2": 2.22,
-            "3": 3.212,
-            "4": 4.055,
-            "5": 4.762,
-            "6": 5.436,
-            "7": 6.044,
-            "8": 6.64,
-            "9": 7.246
+            "1": 1.0,
+            "10": 8.106,
+            "2": 2.228,
+            "3": 3.238,
+            "4": 4.1,
+            "5": 4.824,
+            "6": 5.526,
+            "7": 6.158,
+            "8": 6.793,
+            "9": 7.439
           },
           "tier": "data",
           "weight": "detail",
@@ -3048,16 +3013,16 @@
         },
         "land_drops_by_turn": {
           "value": {
-            "1": 0.999,
-            "10": 0.567,
-            "2": 0.996,
-            "3": 0.906,
-            "4": 0.786,
-            "5": 0.682,
-            "6": 0.6,
-            "7": 0.557,
-            "8": 0.54,
-            "9": 0.542
+            "1": 1.0,
+            "10": 0.599,
+            "2": 0.997,
+            "3": 0.916,
+            "4": 0.806,
+            "5": 0.7,
+            "6": 0.631,
+            "7": 0.58,
+            "8": 0.577,
+            "9": 0.581
           },
           "tier": "data",
           "weight": "detail",
@@ -3067,16 +3032,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.181,
-            "10": 13.248,
-            "2": 0.568,
-            "3": 1.135,
-            "4": 1.531,
-            "5": 2.693,
-            "6": 4.264,
-            "7": 6.13,
-            "8": 8.248,
-            "9": 10.619
+            "1": 0.156,
+            "10": 13.62,
+            "2": 0.539,
+            "3": 1.13,
+            "4": 1.513,
+            "5": 2.707,
+            "6": 4.323,
+            "7": 6.219,
+            "8": 8.4,
+            "9": 10.865
           },
           "tier": "data",
           "weight": "detail",
@@ -3086,14 +3051,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 388,
-            "1": 1609,
-            "2": 2959,
-            "3": 2887,
-            "4": 1551,
-            "5": 506,
-            "6": 95,
-            "7": 5
+            "0": 321,
+            "1": 1445,
+            "2": 2867,
+            "3": 2977,
+            "4": 1696,
+            "5": 580,
+            "6": 106,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -3102,13 +3067,11 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1674,
-            "4": 2,
-            "5": 23,
-            "6": 199,
-            "7": 1236,
-            "8": 2812,
-            "9": 2932
+            "10": 1908,
+            "6": 90,
+            "7": 1024,
+            "8": 2588,
+            "9": 3085
           },
           "tier": "data",
           "weight": "detail",
@@ -3124,12 +3087,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.1,
-    "commander_cast_by_turn_6_pct": 93,
+    "commander_mean_cast_turn": 4.119,
+    "commander_cast_by_turn_6_pct": 94,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 45
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
@@ -3149,19 +3112,19 @@
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 0
+        "by_turn_6_pct": 1
       },
       {
         "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 24
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 36
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
@@ -3173,20 +3136,18 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.515,
+      "mean_kill_turn": 8.655,
       "median_kill_turn": 9,
-      "kill_by_turn_6_pct": 2,
-      "kill_by_turn_8_pct": 43,
+      "kill_by_turn_6_pct": 1,
+      "kill_by_turn_8_pct": 37,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 11,
+      "no_kill_by_max_turn_pct": 13,
       "kill_turn_histogram": {
-        "10": 1674,
-        "4": 2,
-        "5": 23,
-        "6": 199,
-        "7": 1236,
-        "8": 2812,
-        "9": 2932
+        "10": 1908,
+        "6": 90,
+        "7": 1024,
+        "8": 2588,
+        "9": 3085
       }
     }
   },
@@ -3255,11 +3216,13 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V21 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 1 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `budget-v1` needs 1 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
+    "branch `budget-v1`: 7 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1` needs 4 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",

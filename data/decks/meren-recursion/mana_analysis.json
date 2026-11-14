@@ -1,9 +1,9 @@
 {
   "slug": "meren-recursion",
-  "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+  "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
   "model_version": "75ea059969f2",
   "lands": {
-    "total": 34,
+    "total": 35,
     "entries": 33,
     "life": {
       "recurring_per_tap_cycle": 3,
@@ -12,7 +12,7 @@
     "enters_tapped": 9,
     "enters_tapped_always": 4,
     "classes": {
-      "basic": 3,
+      "basic": 4,
       "fetch": 6,
       "fixing": 3,
       "mdfc": 1,
@@ -265,7 +265,7 @@
       },
       {
         "name": "Swamp",
-        "copies": 2,
+        "copies": 3,
         "classes": [
           "basic"
         ],
@@ -387,14 +387,14 @@
     "lands": {
       "W": 0,
       "U": 0,
-      "B": 29,
+      "B": 30,
       "R": 0,
       "G": 25
     },
     "nonland": {
       "W": 0,
       "U": 0,
-      "B": 5,
+      "B": 4,
       "R": 0,
       "G": 3
     },
@@ -437,14 +437,6 @@
         ]
       },
       {
-        "name": "Dark Ritual",
-        "kind": "ramp:ritual",
-        "cmc": 1.0,
-        "produces": [
-          "B"
-        ]
-      },
-      {
         "name": "Llanowar Elves",
         "kind": "ramp:dork",
         "cmc": 1.0,
@@ -479,28 +471,28 @@
   },
   "pips": {
     "B": {
-      "total_pips": 63.0,
+      "total_pips": 67.0,
       "max_pips": 3,
       "cards": 45,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "G": {
-      "total_pips": 28.0,
-      "max_pips": 3,
-      "cards": 25,
+      "total_pips": 23.0,
+      "max_pips": 2,
+      "cards": 22,
       "earliest_turn": 1,
       "effective_pips": 1
     }
   },
   "shares": {
     "B": {
-      "pip_share": 0.692,
-      "source_share": 0.537
+      "pip_share": 0.744,
+      "source_share": 0.545
     },
     "G": {
-      "pip_share": 0.308,
-      "source_share": 0.463
+      "pip_share": 0.256,
+      "source_share": 0.455
     }
   },
   "source_targets": {
@@ -509,7 +501,7 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "B": 0.804,
+      "B": 0.822,
       "G": 0.936
     },
     "with_rocks_and_dorks": {
@@ -517,40 +509,40 @@
       "G": 0.957
     },
     "lands_only_ungated": {
-      "B": 0.785,
+      "B": 0.804,
       "G": 0.936
     }
   },
   "ramp": {
     "ramp:dork": 2,
     "ramp:land": 1,
-    "ramp:ritual": 3,
+    "ramp:ritual": 2,
     "ramp:rock": 3
   },
   "goldfish": {
     "land_drop_hit_rate_by_turn": {
-      "1": 0.999,
-      "10": 0.567,
-      "2": 0.996,
-      "3": 0.906,
-      "4": 0.786,
-      "5": 0.682,
-      "6": 0.6,
-      "7": 0.557,
-      "8": 0.54,
-      "9": 0.542
+      "1": 1.0,
+      "10": 0.599,
+      "2": 0.997,
+      "3": 0.916,
+      "4": 0.806,
+      "5": 0.7,
+      "6": 0.631,
+      "7": 0.58,
+      "8": 0.577,
+      "9": 0.581
     },
     "mean_available_mana_by_turn": {
-      "1": 0.999,
-      "10": 7.88,
-      "2": 2.22,
-      "3": 3.212,
-      "4": 4.055,
-      "5": 4.762,
-      "6": 5.436,
-      "7": 6.044,
-      "8": 6.64,
-      "9": 7.246
+      "1": 1.0,
+      "10": 8.106,
+      "2": 2.228,
+      "3": 3.238,
+      "4": 4.1,
+      "5": 4.824,
+      "6": 5.526,
+      "7": 6.158,
+      "8": 6.793,
+      "9": 7.439
     }
   },
   "assumptions": [
@@ -560,6 +552,6 @@
     "Rocks and dorks are counted as sources from the turn they can tap, with no survival discount on creatures."
   ],
   "notes": [
-    "B: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 34-land deck; rocks and dorks lift the count to 34."
+    "B: 30 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 34."
   ]
 }
