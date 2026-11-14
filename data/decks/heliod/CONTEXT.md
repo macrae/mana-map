@@ -1,6 +1,6 @@
 # Heliod, the Radiant Dawn // Heliod, the Warped Eclipse — Deck Context
 
-<!-- ctx:written-for version=v1.4.0 sha=f7e21dc6a8bb at=2026-11-04 -->
+<!-- ctx:written-for version=v1.4.0 sha=f7e21dc6a8bb at=2026-11-13 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Heliod, the Radiant Dawn // Heliod, the Warped Eclipse](https://manamap.seanmacrae.com/viz/index.html?cards=Heliod%2C+the+Radiant+Dawn+%2F%2F+Heliod%2C+the+Warped+Eclipse)
@@ -115,6 +115,21 @@ Three rules for the pilot's manual, from the pilot, after this one game:
 
 Recurring pattern: tempo and optics, and now what to do after the commander is removed. The pilot calls these gaps in the piloting, not the list. He has also avoided playing Heliod much, and 003 is the clearest case. The list on disk was the list played in 003, so v1.4.0 has now been to the table once.
 
+**The pilot's direction, 2026-11-12 and 13 (no new games).** Sean calls this "a group hug deck / slight pillow fort with 2 clear wincons that overlap and synergize so we can always draw into one". The two wins are [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) and a forced draw big enough to kill the table. Drawing into one draws into the other.
+- **Approach is the critical line.** [Dig Through Time](https://manamap.seanmacrae.com/viz/index.html?cards=Dig+Through+Time) is a key piece of it, because it sees the top seven, which is where the first Approach lands.
+- **The core metric is Heliod's generic mana discount.** In his words, making them draw half their library through card-draw combination spells could give a huge generic discount, and going HAM on a forced draw that kills the table should 100% be a win con. Draws for every player beat targeted ones.
+- **Not a win line: milling.** "Milling a person out is not the winline." No Laboratory Maniac, no mill payoff.
+- **[Walking Ballista](https://manamap.seanmacrae.com/viz/index.html?cards=Walking+Ballista) stays.** After a big forced draw it is close to a free finisher.
+- **Bracket 3.** Two-card infinites stay out. Three-card infinites are fine. Lands stay at thirty-five, never fewer.
+
+**Branch b3-v1 (open, not merged).** It is the pilot's answer to the sleeved list reading bracket 4 on eight Game Changers, and it keeps [Rhystic Study](https://manamap.seanmacrae.com/viz/index.html?cards=Rhystic+Study), [Smothering Tithe](https://manamap.seanmacrae.com/viz/index.html?cards=Smothering+Tithe) and [Mystical Tutor](https://manamap.seanmacrae.com/viz/index.html?cards=Mystical+Tutor). It is twenty-eight out and twenty-eight in against v1.4.0. What it adds, in the pilot's terms:
+- **Draws that feed the discount:** [Vision Skeins](https://manamap.seanmacrae.com/viz/index.html?cards=Vision+Skeins), [Fascination](https://manamap.seanmacrae.com/viz/index.html?cards=Fascination), [Folio of Fancies](https://manamap.seanmacrae.com/viz/index.html?cards=Folio+of+Fancies), and [Forced Fruition](https://manamap.seanmacrae.com/viz/index.html?cards=Forced+Fruition) (the pilot said to add it if it makes sense and makes the deck better; it turns every opponent spell into a seven-card draw). [Mathemagics](https://manamap.seanmacrae.com/viz/index.html?cards=Mathemagics) and [Prosperity](https://manamap.seanmacrae.com/viz/index.html?cards=Prosperity) are already in the list and are the exponential part.
+- **Finding Approach:** [Personal Tutor](https://manamap.seanmacrae.com/viz/index.html?cards=Personal+Tutor), [Solve the Equation](https://manamap.seanmacrae.com/viz/index.html?cards=Solve+the+Equation), [Scroll Rack](https://manamap.seanmacrae.com/viz/index.html?cards=Scroll+Rack) and [Mystic Sanctuary](https://manamap.seanmacrae.com/viz/index.html?cards=Mystic+Sanctuary) (rebuys a countered copy), with [Pact of Negation](https://manamap.seanmacrae.com/viz/index.html?cards=Pact+of+Negation), Teferi and Silence protecting the win.
+- **Two three-card infinites on Smothering Tithe:** [Bard, King of Dale](https://manamap.seanmacrae.com/viz/index.html?cards=Bard%2C+King+of+Dale) with Gleaming Splendor, and Faerie Mastermind with [Mirrormade](https://manamap.seanmacrae.com/viz/index.html?cards=Mirrormade).
+- **The fort:** [Sphere of Safety](https://manamap.seanmacrae.com/viz/index.html?cards=Sphere+of+Safety) joins Ghostly Prison and Propaganda. [The Second Doctor](https://manamap.seanmacrae.com/viz/index.html?cards=The+Second+Doctor) is in the 99 already.
+- **Answers and mana:** [Austere Command](https://manamap.seanmacrae.com/viz/index.html?cards=Austere+Command), [Winds of Abandon](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Abandon), [Soul-Guide Lantern](https://manamap.seanmacrae.com/viz/index.html?cards=Soul-Guide+Lantern), and the land pass to thirty-five blue-weighted lands ([Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds), [Floodfarm Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Floodfarm+Verge)).
+The branch is a plan, not a result: nothing in it has been played.
+
 ## Change history
 
 <!-- ctx:gen history -->
@@ -149,6 +164,9 @@ The big turns: v1.0.0 was the pilot's own sleeved list. v1.1.0 and v1.2.0 added 
 - Win condition access in the Numbers section is the thinnest line. Is one more way to find [Approach of the Second Sun](https://manamap.seanmacrae.com/viz/index.html?cards=Approach+of+the+Second+Sun) worth a slot, or is the tutor package enough?
 - The latest merge (Gleaming Splendor, Greater Auramancy) did not meet its goal in the measured read, though the pilot made the swap anyway. What does it do at the table?
 - Which seat kills us most in play? Forge saw one table take most of the eliminations, but that is an older list.
+- Does the discount turn come together in real games? The line is [Vision Skeins](https://manamap.seanmacrae.com/viz/index.html?cards=Vision+Skeins) into [Prosperity](https://manamap.seanmacrae.com/viz/index.html?cards=Prosperity) into [Mathemagics](https://manamap.seanmacrae.com/viz/index.html?cards=Mathemagics) on b3-v1. Expected effect: Heliod's generic discount lets the table's own draws pay for the next spell the same turn. Judged by playing it; the goldfish does not read opponents' draws well.
+- Does the deck deck itself in a long game? A big forced draw hurts us too. Expected effect: we win, or stop drawing, before our own library runs short. Watch the library count in every long game.
+- Does the pillow fort keep the table off Heliod while he hands them cards? The fort is Ghostly Prison, Propaganda, and on b3-v1 [Sphere of Safety](https://manamap.seanmacrae.com/viz/index.html?cards=Sphere+of+Safety), plus [The Second Doctor](https://manamap.seanmacrae.com/viz/index.html?cards=The+Second+Doctor). Expected effect: fewer attacks reach us, and the commander survives to flip. Game 003 shows the table answers the commander, not just attackers.
 - Missing: a Forge run on v1.4.0.
 
 ## Context changelog
@@ -156,3 +174,4 @@ The big turns: v1.0.0 was the pilot's own sleeved list. v1.1.0 and v1.2.0 added 
 - 2026-10-07 · scaffolded by `manamap pilot context`
 - 2026-10-07 · Keeper · seed: first context, from the log, the verified stacks and the older agent prose
 - 2026-11-04 · Keeper · pilot log 003: win on Approach after Heliod was removed; three manual rules from the pilot
+- 2026-11-13 · Keeper · pilot direction 2026-11-12/13: two overlapping kills, the discount as the core metric, no mill line; b3-v1 open
