@@ -72,6 +72,9 @@
             "name": "Oathsworn Vampire"
           },
           {
+            "name": "Selfless Spirit"
+          },
+          {
             "name": "Teysa Karlov"
           },
           {
@@ -79,6 +82,13 @@
           }
         ],
         "unsleeve": [
+          {
+            "name": "Boros Charm",
+            "where": [
+              "gishath",
+              "ur-dragon"
+            ]
+          },
           {
             "name": "Reassembling Skeleton",
             "where": [
@@ -129,25 +139,27 @@
             ]
           }
         ],
-        "blocking": 8,
+        "blocking": 10,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 12,
-      "out": 12,
+      "add": 14,
+      "out": 14,
       "counts": {
-        "in_deck": 85,
+        "in_deck": 83,
         "box": 4,
-        "elsewhere": 3,
-        "buy": 5,
+        "elsewhere": 4,
+        "buy": 6,
         "free": 0
       },
       "unsourced": [
+        "Boros Charm",
         "Elas il-Kor, Sadistic Pilgrim",
         "Falkenrath Noble",
         "Oathsworn Vampire",
         "Reassembling Skeleton",
+        "Selfless Spirit",
         "Swords to Plowshares",
         "Teysa Karlov",
         "The Meathook Massacre",
@@ -288,6 +300,35 @@
           "is_new": false
         },
         {
+          "name": "Boros Charm",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "gishath",
+              "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "sisay",
+              "locked": false,
+              "status": "retired",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "ur-dragon",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Caretaker's Talent",
           "state": "in_deck",
           "where": [],
@@ -317,13 +358,6 @@
         },
         {
           "name": "City of Brass",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Clavileño, First of the Blessed",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -450,13 +484,6 @@
         },
         {
           "name": "Godless Shrine",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Grim Haruspex",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -651,6 +678,13 @@
           "is_new": false
         },
         {
+          "name": "Selfless Spirit",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Shattered Sanctum",
           "state": "in_deck",
           "where": [],
@@ -756,13 +790,6 @@
         },
         {
           "name": "Takenuma, Abandoned Mire",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Talisman of Conviction",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -903,6 +930,13 @@
           "is_new": false
         },
         {
+          "name": "Wispdrinker Vampire",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
+        },
+        {
           "name": "Wooded Foothills",
           "state": "in_deck",
           "where": [],
@@ -942,7 +976,8 @@
         "fell": 7,
         "no_call": 0
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Deflecting Swat",
@@ -20546,8 +20581,8 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1`: 12 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `threat-v1` needs 8 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
+    "branch `threat-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1` needs 10 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
