@@ -22,9 +22,11 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -121,6 +123,9 @@
             "name": "Fabled Passage"
           },
           {
+            "name": "Final Parting"
+          },
+          {
             "name": "Hogaak, Arisen Necropolis"
           },
           {
@@ -185,6 +190,13 @@
             ]
           },
           {
+            "name": "Forest",
+            "where": [
+              "Auntie Ool",
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Glissa Sunslayer",
             "where": [
               "Auntie Ool"
@@ -204,6 +216,12 @@
             ]
           },
           {
+            "name": "Toxic Deluge",
+            "where": [
+              "Hapatra"
+            ]
+          },
+          {
             "name": "Veil of Summer",
             "where": [
               "Green",
@@ -211,22 +229,23 @@
             ]
           }
         ],
-        "blocking": 6,
+        "blocking": 7,
         "procurement": null
       },
       "base_version": null,
       "size": 100,
-      "add": 16,
-      "out": 16,
+      "add": 19,
+      "out": 19,
       "counts": {
-        "in_deck": 83,
-        "box": 10,
+        "in_deck": 80,
+        "box": 12,
         "elsewhere": 1,
-        "buy": 5,
+        "buy": 6,
         "free": 0
       },
       "unsourced": [
         "Fabled Passage",
+        "Final Parting",
         "Grim Haruspex",
         "Hogaak, Arisen Necropolis",
         "Infested Thrinax",
@@ -480,17 +499,26 @@
         },
         {
           "name": "Final Parting",
-          "state": "in_deck",
+          "state": "buy",
           "where": [],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Forest",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Auntie Ool"
+            },
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Formidable Speaker",
@@ -892,10 +920,15 @@
         },
         {
           "name": "Toxic Deluge",
-          "state": "in_deck",
-          "where": [],
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Hapatra"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Twilight Mire",
@@ -2986,7 +3019,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.158,
+          "value": 4.141,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -3002,7 +3035,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 26,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -3026,7 +3059,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 36,
+          "value": 35,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -3050,7 +3083,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 25,
+          "value": 26,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -3066,7 +3099,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -3140,7 +3173,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 81,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -3151,15 +3184,15 @@
         "mana_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 7.908,
-            "2": 2.226,
-            "3": 3.226,
-            "4": 4.082,
-            "5": 4.796,
-            "6": 5.481,
-            "7": 6.088,
-            "8": 6.676,
-            "9": 7.271
+            "10": 7.892,
+            "2": 2.235,
+            "3": 3.234,
+            "4": 4.093,
+            "5": 4.814,
+            "6": 5.495,
+            "7": 6.104,
+            "8": 6.683,
+            "9": 7.269
           },
           "tier": "data",
           "weight": "detail",
@@ -3170,15 +3203,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 1.0,
-            "10": 0.567,
+            "10": 0.549,
             "2": 0.997,
-            "3": 0.912,
-            "4": 0.797,
-            "5": 0.691,
-            "6": 0.612,
-            "7": 0.559,
-            "8": 0.533,
-            "9": 0.537
+            "3": 0.915,
+            "4": 0.799,
+            "5": 0.695,
+            "6": 0.604,
+            "7": 0.558,
+            "8": 0.526,
+            "9": 0.53
           },
           "tier": "data",
           "weight": "detail",
@@ -3188,16 +3221,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.181,
-            "10": 13.64,
-            "2": 0.624,
-            "3": 1.162,
-            "4": 1.538,
-            "5": 2.697,
-            "6": 4.287,
-            "7": 6.183,
-            "8": 8.398,
-            "9": 10.878
+            "1": 0.174,
+            "10": 13.605,
+            "2": 0.61,
+            "3": 1.137,
+            "4": 1.519,
+            "5": 2.706,
+            "6": 4.318,
+            "7": 6.231,
+            "8": 8.426,
+            "9": 10.885
           },
           "tier": "data",
           "weight": "detail",
@@ -3207,14 +3240,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 336,
-            "1": 1479,
-            "2": 2827,
-            "3": 2920,
-            "4": 1718,
-            "5": 623,
-            "6": 93,
-            "7": 4
+            "0": 325,
+            "1": 1532,
+            "2": 2776,
+            "3": 2981,
+            "4": 1732,
+            "5": 545,
+            "6": 102,
+            "7": 7
           },
           "tier": "data",
           "weight": "detail",
@@ -3223,12 +3256,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2184,
-            "5": 1,
-            "6": 74,
-            "7": 895,
-            "8": 2202,
-            "9": 3026
+            "10": 2136,
+            "5": 2,
+            "6": 100,
+            "7": 897,
+            "8": 2254,
+            "9": 2921
           },
           "tier": "data",
           "weight": "detail",
@@ -3244,7 +3277,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.158,
+    "commander_mean_cast_turn": 4.141,
     "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
@@ -3253,7 +3286,7 @@
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 25
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -3265,7 +3298,7 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 36
+        "by_turn_6_pct": 35
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
@@ -3277,7 +3310,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 26
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -3285,7 +3318,7 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
@@ -3293,19 +3326,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.757,
+      "mean_kill_turn": 8.733,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
       "kill_by_turn_8_pct": 32,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 16,
+      "no_kill_by_max_turn_pct": 17,
       "kill_turn_histogram": {
-        "10": 2184,
-        "5": 1,
-        "6": 74,
-        "7": 895,
-        "8": 2202,
-        "9": 3026
+        "10": 2136,
+        "5": 2,
+        "6": 100,
+        "7": 897,
+        "8": 2254,
+        "9": 2921
       }
     }
   },
@@ -3374,11 +3407,13 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play/measure suggestions below need cardboard first",
-    "DeckCheck copy is V1, the list is V23 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 14 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `budget-v1` needs 6 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
+    "branch `budget-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1` needs 7 card(s) sourced — `manamap pilot deck-branch meren-recursion source budget-v1`",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1` needs 5 card(s) sourced — `manamap pilot deck-branch meren-recursion source drain-density-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
