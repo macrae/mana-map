@@ -515,15 +515,15 @@
    },
    "meren-recursion": {
     "1": 0.0,
-    "10": 0.888,
+    "10": 0.87,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
-    "5": 0.003,
-    "6": 0.022,
-    "7": 0.146,
-    "8": 0.427,
-    "9": 0.72
+    "5": 0.0,
+    "6": 0.009,
+    "7": 0.111,
+    "8": 0.37,
+    "9": 0.679
    },
    "sharknado": {
     "1": 0.0,
@@ -636,16 +636,16 @@
     "9": 0.651
    },
    "meren-recursion": {
-    "1": 0.999,
-    "10": 0.567,
-    "2": 0.996,
-    "3": 0.906,
-    "4": 0.786,
-    "5": 0.682,
-    "6": 0.6,
-    "7": 0.557,
-    "8": 0.54,
-    "9": 0.542
+    "1": 1.0,
+    "10": 0.599,
+    "2": 0.997,
+    "3": 0.916,
+    "4": 0.806,
+    "5": 0.7,
+    "6": 0.631,
+    "7": 0.58,
+    "8": 0.577,
+    "9": 0.581
    },
    "sharknado": {
     "1": 0.999,
@@ -758,16 +758,16 @@
     "9": 9.292
    },
    "meren-recursion": {
-    "1": 0.999,
-    "10": 7.88,
-    "2": 2.22,
-    "3": 3.212,
-    "4": 4.055,
-    "5": 4.762,
-    "6": 5.436,
-    "7": 6.044,
-    "8": 6.64,
-    "9": 7.246
+    "1": 1.0,
+    "10": 8.106,
+    "2": 2.228,
+    "3": 3.238,
+    "4": 4.1,
+    "5": 4.824,
+    "6": 5.526,
+    "7": 6.158,
+    "8": 6.793,
+    "9": 7.439
    },
    "sharknado": {
     "1": 0.999,
@@ -848,9 +848,9 @@
     "total_cents": 7538
    },
    {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "slug": "meren-recursion",
-    "total_cents": 155807
+    "total_cents": 156360
    },
    {
     "as_of": "2026-10-09",
@@ -3199,14 +3199,14 @@
    "benchmark": {
     "answer_cards": {
      "basis": "CAPACITY counted from card_roles.json, not a measured response",
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "source": "benchmark.json#metrics.response.answer_cards",
      "stale": false,
-     "value": 24
+     "value": 26
     },
     "classes_covered": {
      "basis": "of 15 answer classes; CAPACITY",
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "source": "benchmark.json#metrics.response.classes_covered",
      "stale": false,
      "value": 7
@@ -3215,56 +3215,56 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8817,
-      0.894
+      0.8633,
+      0.8764
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.888
+     "value": 0.87
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0193,
-      0.0251
+      0.0073,
+      0.011
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.022
+     "value": 0.009
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4173,
-      0.4367
+      0.3606,
+      0.3795
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.427
+     "value": 0.37
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.762
+     "value": 4.824
     },
     "mana_stdev_turn_five": {
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.0619
+     "value": 1.0374
     },
     "median_kill_turn": {
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.median_kill_turn",
      "stale": false,
@@ -3273,38 +3273,38 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.1982,
-      0.214
+      0.1824,
+      0.1978
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.206
+     "value": 0.19
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.2021,
-      0.2181
+      0.1805,
+      0.1958
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mulligan_rate",
      "stale": false,
-     "value": 0.21
+     "value": 0.188
     },
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.106,
-      0.1183
+      0.1245,
+      0.1378
      ],
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.112
+     "value": 0.131
     }
    },
    "bracket": {
@@ -3315,7 +3315,7 @@
     "group_basis": "floor",
     "target": null
    },
-   "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+   "decklist_sha256": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
    "diagnostic": {
     "absent_because": "no diagnostic.json — bootstrapped on sleeved decks by `regen`",
     "source": "diagnostic.json"
@@ -3328,7 +3328,7 @@
    "lifecycle": null,
    "member": false,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.93,
+    "commander_cast_by_turn_6_rate": 0.938,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -3346,16 +3346,16 @@
    },
    "placements": {},
    "price": {
-    "as_of": "2026-11-12",
+    "as_of": "2026-11-13",
     "missing": 0,
     "source": "manapool",
     "total_cents": {
-     "as_of": "2026-11-12",
+     "as_of": "2026-11-13",
      "basis": "manapool; dated",
-     "decklist_sha256": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+     "decklist_sha256": "7e5f4afce7cf15628fcb9219bf01639436f24d01f754847d22d9f448e726a6b8",
      "source": "prices.json#total_cents",
-     "stale": false,
-     "value": 155807
+     "stale": true,
+     "value": 156360
     }
    },
    "rating": null,
@@ -5711,7 +5711,7 @@
    "heliod": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
    "ingris-infect": "8fee61eb5aa66f25c6daff09a15d10c45d81add6340af7b3b021386145611f10",
    "keen-engineering": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
-   "meren-recursion": "9b3a295c3aecdad098b3cbf9ff9fc54f6309dbf77b76be06eb1c38c8cac90ece",
+   "meren-recursion": "7563c66dbbcb1b9ea3a5a619c4fbe88d4cfb7f717a5162a72ab7beb78830273b",
    "radagast": "231d89abca22a6a3b6d9f98414f36a325342344ffecef6dfa1df1e3b49c612d2",
    "sharknado": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
    "sisay": "a4bcbd509313b155837b838367691f794ef8f03f6640e22cc71a7e1164e62f4d",
