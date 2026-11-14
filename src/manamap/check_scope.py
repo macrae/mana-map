@@ -397,6 +397,19 @@ def untracked_decks():
     return sorted(d.name for d in DECKS.iterdir() if d.is_dir() and d.name not in tracked)
 
 
+def unflagged_cards():
+    """`[(slug, card, stem)]`: live-deck cards carrying Forge's `AI:RemoveDeck:All` that
+    `unflag.txt` does not name — the regression tier's fleet gate
+    (`test_no_live_deck_carries_a_removedeck_all_card_the_list_does_not_unflag`), asked
+    in seconds. Meren V23 (2026-11-13) added Blasting Station and Ghoulcaller Gisa and
+    the gate said so thirteen minutes in. Empty when the Forge scripts are not
+    installed, exactly as that test skips."""
+    from manamap.sim import forge_cards, forge_pilot
+    if not forge_cards.installed():
+        return []
+    return forge_pilot.unflag_candidates()
+
+
 def preflight(plan):
     """Fail in about a minute on what used to fail fifteen minutes in. Returns an exit
     code: 0 to go on."""
@@ -408,6 +421,15 @@ def preflight(plan):
               f"{', '.join(loose)} — every fleet test reads them from disk. Commit "
               "them (`git add data/decks/<slug>`) or move them out of data/decks/.")
         return 3
+    flagged = unflagged_cards()
+    if flagged:
+        for slug, name, stem in flagged:
+            print(f"    {slug}: {name}  ({stem})")
+        print("CHECK SCOPE — PREFLIGHT: live-deck card(s) Forge's AI will never cast "
+              "(AI:RemoveDeck:All) that data/forge_overrides/unflag.txt does not name — add "
+              "each stem to unflag.txt, run `manamap pilot forge-install --generate`, commit "
+              "the list and the new override scripts")
+        return 4
     print("  $ manamap pilot restamp --check   (preflight: the composed status files)")
     rc = subprocess.run([sys.executable, "-m", "manamap.cli", "pilot", "restamp", "--check"],
                         cwd=REPO).returncode

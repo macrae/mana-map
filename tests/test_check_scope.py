@@ -371,8 +371,32 @@ def test_the_preflight_refuses_an_untracked_deck_before_any_tier(tmp_path, monke
     assert ran == [], "no restamp, no tier: the refusal comes first"
 
 
+def test_the_preflight_refuses_a_card_forge_will_never_cast(monkeypatch):
+    """Meren V23, 2026-11-13: Blasting Station and Ghoulcaller Gisa carry
+    AI:RemoveDeck:All, and the fleet gate said so thirteen minutes into the regression
+    tier. Proved by re-introducing the bug: drop the `unflagged_cards` check from
+    `preflight` and this reaches restamp instead."""
+    monkeypatch.setattr(cs, "untracked_decks", lambda: [])
+    monkeypatch.setattr(cs, "unflagged_cards",
+                        lambda: [("meren-recursion", "Blasting Station", "blasting_station")])
+    ran = []
+    monkeypatch.setattr(cs.subprocess, "run", lambda *a, **k: ran.append(a))
+    assert cs.preflight({"scope": "decks", "tiers": ["decks"]}) == 4
+    assert ran == [], "no restamp, no tier: the refusal comes first"
+
+
+def test_unflagged_cards_is_empty_without_the_forge_scripts(monkeypatch):
+    """CI has no Forge: the preflight must skip there, exactly as the fleet test does."""
+    from manamap.sim import forge_cards, forge_pilot
+    monkeypatch.setattr(forge_cards, "installed", lambda: False)
+    monkeypatch.setattr(forge_pilot, "unflag_candidates",
+                        lambda: (_ for _ in ()).throw(AssertionError("must not be asked")))
+    assert cs.unflagged_cards() == []
+
+
 def test_the_preflight_runs_restamp_check_and_stops_on_it(monkeypatch):
     monkeypatch.setattr(cs, "untracked_decks", lambda: [])
+    monkeypatch.setattr(cs, "unflagged_cards", lambda: [])
     seen = []
 
     class Done:
@@ -391,6 +415,7 @@ def test_the_preflight_refuses_a_branch_staged_after_its_measurement(monkeypatch
     """threat-v1, 2026-11-12. Proved by re-introducing the bug: drop the branch loop
     from `preflight` and this returns 0."""
     monkeypatch.setattr(cs, "untracked_decks", lambda: [])
+    monkeypatch.setattr(cs, "unflagged_cards", lambda: [])
 
     class Done:
         def __init__(self, rc):
