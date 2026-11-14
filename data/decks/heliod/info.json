@@ -47,16 +47,19 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Austere Command"
+          },
+          {
             "name": "Blue Sun's Zenith"
           },
           {
-            "name": "Cut a Deal"
+            "name": "Fascination"
           },
           {
             "name": "Floodfarm Verge"
           },
           {
-            "name": "Lore Broker"
+            "name": "Forced Fruition"
           },
           {
             "name": "Mystic Sanctuary"
@@ -66,9 +69,6 @@
           },
           {
             "name": "Personal Tutor"
-          },
-          {
-            "name": "Prismatic Lens"
           },
           {
             "name": "Scroll Rack"
@@ -94,6 +94,12 @@
         ],
         "unsleeve": [
           {
+            "name": "Bard, King of Dale",
+            "where": [
+              "sharknado"
+            ]
+          },
+          {
             "name": "Fellwar Stone",
             "where": [
               "sharknado",
@@ -114,6 +120,12 @@
             "where": [
               "sharknado"
             ]
+          },
+          {
+            "name": "Soul-Guide Lantern",
+            "where": [
+              "keen-engineering"
+            ]
           }
         ],
         "proxy": [],
@@ -125,49 +137,70 @@
             ]
           },
           {
+            "name": "Sphere of Safety",
+            "where": [
+              "zur-enchantress"
+            ]
+          },
+          {
             "name": "Teferi, Time Raveler",
             "where": [
               "sisay"
             ]
           }
         ],
-        "box": [],
-        "blocking": 18,
+        "box": [
+          {
+            "name": "Folio of Fancies",
+            "where": [
+              "Heliod Parts"
+            ]
+          },
+          {
+            "name": "Mirrormade",
+            "where": [
+              "Zur Parts"
+            ]
+          }
+        ],
+        "blocking": 20,
         "procurement": null
       },
       "base_version": 12,
       "size": 100,
-      "add": 23,
-      "out": 23,
+      "add": 28,
+      "out": 28,
       "counts": {
-        "in_deck": 65,
-        "box": 0,
-        "elsewhere": 3,
+        "in_deck": 60,
+        "box": 2,
+        "elsewhere": 5,
         "buy": 15,
-        "free": 2
+        "free": 3
       },
       "unsourced": [
+        "Austere Command",
+        "Bard, King of Dale",
         "Blue Sun's Zenith",
-        "Cut a Deal",
+        "Fascination",
         "Fellwar Stone",
         "Flawless Maneuver",
         "Floodfarm Verge",
-        "Lore Broker",
+        "Forced Fruition",
         "Mystic Sanctuary",
         "Pact of Negation",
         "Personal Tutor",
-        "Prismatic Lens",
         "Scroll Rack",
         "Sea of Clouds",
         "Sensei's Divining Top",
         "Solve the Equation",
+        "Soul-Guide Lantern",
         "Spellskite",
         "Venser, Shaper Savant",
         "Vision Skeins",
         "Winds of Abandon"
       ],
       "mergeable": false,
-      "free": 2,
+      "free": 3,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -212,11 +245,33 @@
           "is_new": false
         },
         {
+          "name": "Austere Command",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Azorius Signet",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Bard, King of Dale",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "sharknado",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Blue Sun's Zenith",
@@ -234,20 +289,6 @@
         },
         {
           "name": "Counterspell",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cut a Deal",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Decanter of Endless Water",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -301,6 +342,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Fascination",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Fellwar Stone",
@@ -396,6 +444,18 @@
           "is_new": true
         },
         {
+          "name": "Folio of Fancies",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Heliod Parts"
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Font of Mythos",
           "state": "in_deck",
           "where": [],
@@ -408,6 +468,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Forced Fruition",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Ghostly Prison",
@@ -487,13 +554,6 @@
           "is_new": false
         },
         {
-          "name": "Kami of the Crescent Moon",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Karametra's Blessing",
           "state": "in_deck",
           "where": [],
@@ -522,13 +582,6 @@
           "is_new": false
         },
         {
-          "name": "Lore Broker",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Mana Confluence",
           "state": "in_deck",
           "where": [],
@@ -550,11 +603,16 @@
           "is_new": false
         },
         {
-          "name": "Mystic Remora",
-          "state": "in_deck",
-          "where": [],
+          "name": "Mirrormade",
+          "state": "box",
+          "where": [
+            {
+              "kind": "box",
+              "name": "Zur Parts"
+            }
+          ],
           "free": false,
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Mystic Sanctuary",
@@ -592,13 +650,6 @@
           "is_new": false
         },
         {
-          "name": "Pearl Medallion",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Personal Tutor",
           "state": "buy",
           "where": [],
@@ -618,13 +669,6 @@
           "where": [],
           "free": false,
           "is_new": false
-        },
-        {
-          "name": "Prismatic Lens",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
         },
         {
           "name": "Propaganda",
@@ -755,10 +799,40 @@
           "is_new": true
         },
         {
+          "name": "Soul-Guide Lantern",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "keen-engineering",
+              "locked": true,
+              "status": null,
+              "apart": false
+            }
+          ],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Spellskite",
           "state": "buy",
           "where": [],
           "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Sphere of Safety",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
           "is_new": true
         },
         {
@@ -770,13 +844,6 @@
         },
         {
           "name": "Supreme Verdict",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Swan Song",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -819,14 +886,14 @@
           "is_new": true
         },
         {
-          "name": "Temple Bell",
+          "name": "Temple of Enlightenment",
           "state": "in_deck",
           "where": [],
           "free": false,
           "is_new": false
         },
         {
-          "name": "Temple of Enlightenment",
+          "name": "The Second Doctor",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -864,7 +931,7 @@
       "has_cards": true,
       "summary": {
         "title": "Heliod to bracket three: Approach locked, the table's draws become the kill",
-        "blurb": "Keeps Rhystic Study, Smothering Tithe and Mystical Tutor; finds and protects Approach, forces the table to draw so Heliod's discount pays for big X spells, Approach and a decking or life-loss kill, on a blue-weighted thirty-five-land base.",
+        "blurb": "Keeps Rhystic Study, Smothering Tithe and Mystical Tutor; finds and protects Approach, forces the table to draw so Heliod's discount pays for big X spells, adds two three-card infinites on Smothering Tithe, a firmer pillow fort and a blue-weighted mana base.",
         "by": "jarvis",
         "at": "2026-11-13"
       },
@@ -5551,8 +5618,8 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 17 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `b3-v1` needs 18 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
+    "branch `b3-v1`: 22 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `b3-v1` needs 20 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
     "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"
