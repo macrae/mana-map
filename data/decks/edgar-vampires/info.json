@@ -55,7 +55,7 @@
     {
       "name": "threat-v1",
       "opened": "2026-11-11",
-      "why": "VAMPIRES ARE THE FUEL, NOT THE ENGINE (the pilot, 2026-11-11): blood drain, life gain, action at a distance, ferocious; pings that snowball, never a two-card infinite. Cheap answers for Oliver's turn-four table (Swords, Vanishing Verse); death and drain engines that hit each opponent or draw (Teysa, Skullclamp, Zulaport, Bastion, Elas, Falkenrath Noble, Meathook); and two loop families on Pitiless Plunderer + Ashnod's Altar — Oathsworn Vampire with Blood Artist or Zulaport, and Reassembling Skeleton (stack 013, checker-passed). Iteration 2 (2026-11-12): Utter End, Wispdrinker Vampire and Malakir Bloodwitch out for Reassembling Skeleton, Zulaport Cutthroat and Bastion of Remembrance. Forge A/B (iteration 1, 200/arm, olivers-table-nov): no resolvable difference on life removed, removal cast doubled; the AI rarely assembles the loop.",
+      "why": "VAMPIRES ARE THE FUEL, NOT THE ENGINE (the pilot, 2026-11-11): blood drain, life gain, action at a distance, ferocious; pings that snowball, never a two-card infinite; bracket 3. As of 2026-11-13 the branch is nineteen out, nineteen in against the sleeved v3.0.0, in five jobs. DRAIN ON EVERY DEATH: Zulaport Cutthroat, Elas il-Kor, Falkenrath Noble, Bastion of Remembrance and The Meathook Massacre drain each opponent, Teysa Karlov doubles them, Skullclamp draws off them. THE LOOP: Pitiless Plunderer + Ashnod's Altar with Oathsworn Vampire or Reassembling Skeleton and a drainer (stack 013); the burst turn with Teysa (stack 014); both checker-passed. REMOVAL WITH FANGS (log 008 and the pilot, 2026-11-13): Swords to Plowshares, Vanishing Verse, Crackling Doom (an edict through hexproof), Toxic Deluge (Olivia's Wrath killed the branch's own non-Vampire engines). PROTECTION THAT NEEDS NO COMMANDER: Boros Charm, Selfless Spirit, Giver of Runes replace Deflecting Swat and Flawless Maneuver, which sat in hand until Edgar (six mana) was out; the pilot: protection is always needed against the A team. MANA: thirty-five lands (Sacred Foundry, a Plains) for the Talismans and Rakdos Signet. Wispdrinker Vampire stays (cut in iteration two, restored: an entering-token drain the pilot credited in log 008). Rejected 2026-11-13: Anowon (taxes the branch's own non-Vampires), Impact Tremors / Corpse Knight / Ayara (the pilot did not like the cuts), Dauntless Bodyguard (Selfless Spirit does it for the board). Forge A/B (iteration one, 200/arm, olivers-table-nov): no resolvable difference on life removed, removal cast doubled; the AI rarely assembles the loop.",
       "state": "OPEN",
       "state_why": "no proposal — this is an experiment, not a decision",
       "base_moved": null,
@@ -1075,29 +1075,40 @@
       ],
       "has_cards": true,
       "summary": {
-        "title": "Vampires as fuel: drain on every death, protection that needs no commander",
-        "blurb": "Turns Edgar's tokens into a drain engine: each-opponent death triggers, Teysa doubling them, a Plunderer and Ashnod's Altar loop, Skullclamp draw and cheap removal, with Boros Charm and Selfless Spirit replacing commander-gated protection.",
+        "title": "Vampires as fuel: drain every death, removal with fangs, protection on bodies",
+        "blurb": "Turns Edgar's tokens into a drain engine (each-opponent death triggers, Teysa doubling them, a Plunderer and Ashnod's Altar loop, Skullclamp draw), adds edicts and a chosen-size wipe, protection that needs no commander, and a fuller mana base.",
         "by": "jarvis",
         "at": "2026-11-13"
       },
       "verdict": {
         "state": "no objective",
-        "rose": 5,
-        "fell": 7,
-        "no_call": 0
+        "rose": 3,
+        "fell": 6,
+        "no_call": 3
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Anowon, the Ruin Sage",
+        "Boros Charm",
+        "Crackling Doom",
         "Deflecting Swat",
         "Flawless Maneuver",
+        "Giver of Runes",
         "Midgar, City of Mako // Reactor Raid",
+        "Olivia's Wrath",
         "Olivia, Crimson Bride",
+        "Path to Exile",
+        "Plains",
+        "Rakdos Signet",
         "Reassembling Skeleton",
+        "Sacred Foundry",
+        "Selfless Spirit",
         "Skullclamp",
+        "Survivors' Encampment",
         "Swords to Plowshares",
+        "Talisman of Indulgence",
         "The Meathook Massacre",
+        "Toxic Deluge",
         "Vanishing Verse",
         "Vein Ripper"
       ],
@@ -1106,65 +1117,62 @@
         "rose": [
           "hoard @T10",
           "hoard @T6",
-          "stall, 2 in a row",
-          "extra cards by T8",
           "hand can act by T3"
         ],
         "fell": [
           "damage @T10",
           "board power @T6",
-          "killed by T6",
           "killed by T10",
-          "missed drop by T5",
-          "mulliganed",
+          "stall, 2 in a row",
+          "extra cards by T8",
           "interaction affordable @T6"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -4.6056,
+            "delta": -5.8957,
             "ci95_diff": [
-              -4.866,
-              -4.3452
+              -6.1575,
+              -5.6339
             ],
-            "mde": 0.3722,
+            "mde": 0.3742,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0233,
+            "delta": -0.0382,
             "ci95_diff": [
-              -0.03,
-              -0.0166
+              -0.0463,
+              -0.0301
             ],
-            "mde": 0.0095,
+            "mde": 0.0116,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.816,
+            "delta": -1.0238,
             "ci95_diff": [
-              -0.8801,
-              -0.7519
+              -1.1038,
+              -0.9438
             ],
-            "mde": 0.0917,
+            "mde": 0.1144,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.3223,
+            "delta": -0.4764,
             "ci95_diff": [
-              0.2568,
-              0.3878
+              -0.5468,
+              -0.406
             ],
-            "mde": 0.0937,
-            "verdict": "better",
+            "mde": 0.1007,
+            "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -20700,7 +20708,7 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1`: 19 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1`: 17 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `threat-v1` needs 14 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
