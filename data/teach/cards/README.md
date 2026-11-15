@@ -25,6 +25,10 @@ on each card is what the decks actually teach, from their Deck Contexts.
 | `15-paying-mana.jpg` | Paying Mana |
 | `16-the-stack.jpg` | The Stack (blue's lesson) |
 | `17-best-matchups.jpg` | Best Matchups (the colour wheel: allies, rivals, five lesson pairings) |
+| `18-keywords.jpg` | Keywords (ten evergreen abilities, each with a definition) |
+| `19-the-zones.jpg` | The Zones (library, hand, battlefield, graveyard, exile, the stack) |
+| `20-gone-or-stopped.jpg` | Gone or Stopped (destroy, exile, sacrifice, can't attack or block, doesn't untap) |
+| `21-reading-your-cards.jpg` | Reading Your Cards (when, whenever, at the beginning of, until end of turn, tokens, +1/+1 counters) |
 
 JPEG at quality 92, 1061 x 1483 — the 63:88 shape of a real card, so they print true
 to size. Superseded art lives in `v1/` and is not tracked.
