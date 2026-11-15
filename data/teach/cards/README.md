@@ -19,6 +19,7 @@ on each card is what the decks actually teach, from their Deck Contexts.
 | `14-card-types.jpg` | Card Types |
 | `15-paying-mana.jpg` | Paying Mana |
 | `16-the-stack.jpg` | The Stack (blue's lesson) |
+| `17-best-matchups.jpg` | Best Matchups (the colour wheel: allies, rivals, five lesson pairings) |
 
 JPEG at quality 92, 1061 x 1483 — the 63:88 shape of a real card, so they print true
 to size. Superseded art lives in `v1/` and is not tracked.
