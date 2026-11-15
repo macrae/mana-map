@@ -159,3 +159,22 @@ def test_a_one_off_takes_the_pinned_printing_from_a_named_deck(monkeypatch):
     by = {p["card"]: p for p in got}
     assert by["Serra Angel"]["image"] == "pinned" and "teach-white" in by["Serra Angel"]["source"]
     assert by["Doom Blade"]["image"] == "corpus"
+
+
+def test_a_local_image_prints_at_true_size_without_a_fetch(tmp_path):
+    """2026-11-14: the teach series' own cards (data/teach/cards/) print beside the
+    rest. A local image is read from disk; nothing is fetched for it."""
+    import types
+    from PIL import Image
+    from manamap.pilot import proxies
+    img = tmp_path / "card.png"
+    Image.new("RGB", (1061, 1483), "red").save(img)
+    dest = tmp_path / "out.pdf"
+
+    def no_fetch(url):
+        raise AssertionError("a local image must not be fetched")
+    args = types.SimpleNamespace(targets=[], card=[], image=[str(img), str(img)],
+                                 paper="letter", dest=str(dest), no_open=True,
+                                 dry_run=False, have=[], have_file=None, deck=[])
+    proxies.main(args, get=no_fetch, opener=None)
+    assert dest.is_file() and dest.stat().st_size > 0

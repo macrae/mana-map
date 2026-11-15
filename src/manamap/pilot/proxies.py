@@ -252,11 +252,21 @@ def _read_have(args):
 def main(args, get=_requests_get, opener=("open",)):
     targets = list(getattr(args, "targets", None) or [])
     names = list(getattr(args, "card", None) or [])
-    if not targets and not names:
-        raise SystemExit("name at least one `<slug>@<branch>` or `--card NAME`")
+    local = [Path(p).expanduser() for p in (getattr(args, "image", None) or [])]
+    if not targets and not names and not local:
+        raise SystemExit("name at least one `<slug>@<branch>`, `--card NAME` or `--image PATH`")
+    missing = [str(p) for p in local if not p.is_file()]
+    if missing:
+        raise SystemExit("no such image: " + ", ".join(missing))
     paper = getattr(args, "paper", None) or "letter"
-    proxies, report = resolve(targets, _read_have(args), names,
-                              decks=list(getattr(args, "deck", None) or []))
+    proxies, report = (resolve(targets, _read_have(args), names,
+                               decks=list(getattr(args, "deck", None) or []))
+                       if (targets or names) else ([], {"kept_back": [], "unmatched_have": []}))
+    # A LOCAL IMAGE IS A CARD THE PILOT MADE (2026-11-14: the teach series'
+    # reference and deck-picker cards). It prints at true size beside the rest;
+    # nothing is fetched for it.
+    proxies = proxies + [{"name": p.stem, "image": None, "face": "front", "card": p.stem,
+                          "source": "--image", "path": p} for p in local]
 
     print(f"PROXIES — {len(proxies)} to print "
           f"({math.ceil(len(proxies) / PER_PAGE) if proxies else 0} page(s), {paper})")
@@ -273,7 +283,8 @@ def main(args, get=_requests_get, opener=("open",)):
             print("  --dry-run: nothing downloaded or written")
         return
 
-    images = [fetch(print_url(p["image"]), get=get) for p in proxies]
+    images = [p["path"].read_bytes() if p.get("path") else fetch(print_url(p["image"]), get=get)
+              for p in proxies]
     dest = write_pdf(render(images, paper), getattr(args, "dest", None)
                      or default_dest(targets, names), paper)
     print(f"  wrote {dest}")

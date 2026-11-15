@@ -1613,6 +1613,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--card", action="append", default=[], metavar="NAME",
                              help="a one-off card to print, from the corpus (repeatable; "
                                   "name it twice for two copies)")
+            cmd.add_argument("--image", action="append", default=[], metavar="PATH",
+                             help="a local card image to print at true size, e.g. the teach "
+                                  "series' cards in data/teach/cards/ (repeatable)")
             cmd.add_argument("--deck", action="append", default=[], metavar="SLUG",
                              help="take a --card's PINNED printing from this deck's cards.json "
                                   "when it holds the card (repeatable; first match wins)")
