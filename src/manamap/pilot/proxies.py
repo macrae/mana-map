@@ -69,7 +69,7 @@ def _split_target(target):
     return slug, branch
 
 
-def resolve(targets=(), have=(), names=()):
+def resolve(targets=(), have=(), names=(), decks=()):
     """`(proxies, report)`: the cards to print, in order, and what was dropped.
 
     `targets` are `slug@branch`; their ADDS are taken from `deck_branch.diff`
@@ -98,13 +98,27 @@ def resolve(targets=(), have=(), names=()):
                 wanted.append((f"{slug}@{branch}", entry))
     if names:
         from manamap.pilot.try_swap import corpus_card
+        # THE PILOT'S ART, NOT THE CORPUS DEFAULT (2026-11-14): a one-off for a deck
+        # he built should print the printing he pinned there. `--deck` decks are
+        # searched in order; a card none of them holds falls back to the corpus.
+        pinned = {}
+        for dslug in decks:
+            for c in load_deck_cards(dslug).get("cards", []):
+                pinned.setdefault(_key(c["name"]), (dslug, c))
         for name in names:
-            entry = corpus_card(name)
+            hit = pinned.get(_key(name))
+            entry = hit[1] if hit else corpus_card(name)
             if entry is None:
                 raise SystemExit(f"{name!r} is not in the local card corpus")
-            if _key(name) not in seen:
-                seen.add(_key(name))
-                wanted.append(("--card", entry))
+            # A ONE-OFF NAMED TWICE IS TWO COPIES (2026-11-14: a late package of two
+            # Raging Goblins and three Serra Angels printed one of each). Branch
+            # adds stay one apiece; a `--card` already covered by a branch add is
+            # still skipped, so a name is never printed twice by accident.
+            if _key(name) in seen and not any(
+                    src.startswith("--card") and _key(e["name"]) == _key(name) for src, e in wanted):
+                continue
+            seen.add(_key(name))
+            wanted.append((f"--card ({hit[0]})" if hit else "--card", entry))
 
     have_keys = {_key(h): h for h in have if str(h).strip()}
     matched = {k for k in have_keys if any(_key(e["name"]) == k for _w, e in wanted)}
@@ -241,7 +255,8 @@ def main(args, get=_requests_get, opener=("open",)):
     if not targets and not names:
         raise SystemExit("name at least one `<slug>@<branch>` or `--card NAME`")
     paper = getattr(args, "paper", None) or "letter"
-    proxies, report = resolve(targets, _read_have(args), names)
+    proxies, report = resolve(targets, _read_have(args), names,
+                              decks=list(getattr(args, "deck", None) or []))
 
     print(f"PROXIES — {len(proxies)} to print "
           f"({math.ceil(len(proxies) / PER_PAGE) if proxies else 0} page(s), {paper})")

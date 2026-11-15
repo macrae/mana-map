@@ -134,3 +134,28 @@ def test_a_have_file_takes_plain_or_counted_lines(tmp_path):
     f.write_text("1 Mana Geyser\n2x Arid Mesa\n# comment\nDemonic Tutor\n\n")
     have = proxies._read_have(types.SimpleNamespace(have=["Kirol"], have_file=str(f)))
     assert have == ["Kirol", "Mana Geyser", "Arid Mesa", "Demonic Tutor"]
+
+
+def test_a_one_off_card_named_twice_prints_twice(monkeypatch):
+    """2026-11-14: a late package — two Raging Goblins, three Serra Angels — printed
+    one of each, because one-off names were deduplicated like branch adds. Proved
+    by re-introducing the bug: restore the `seen` check on `--card` and this sees 2."""
+    from manamap.pilot import proxies, try_swap
+    monkeypatch.setattr(try_swap, "corpus_card",
+                        lambda n: {"name": n, "image": "x"})
+    got, _ = proxies.resolve(names=["Serra Angel", "Serra Angel", "Serra Angel", "Doom Blade"])
+    assert [p["card"] for p in got].count("Serra Angel") == 3
+    assert len(got) == 4
+
+
+def test_a_one_off_takes_the_pinned_printing_from_a_named_deck(monkeypatch):
+    """2026-11-14: the pilot wanted the teach decks' pinned art, not the corpus
+    default. A `--deck` that holds the card wins; one that does not falls back."""
+    from manamap.pilot import proxies, try_swap, common
+    monkeypatch.setattr(try_swap, "corpus_card", lambda n: {"name": n, "image": "corpus"})
+    monkeypatch.setattr(common, "load_deck_cards",
+                        lambda slug, branch=None: {"cards": [{"name": "Serra Angel", "image": "pinned"}]})
+    got, _ = proxies.resolve(names=["Serra Angel", "Doom Blade"], decks=["teach-white"])
+    by = {p["card"]: p for p in got}
+    assert by["Serra Angel"]["image"] == "pinned" and "teach-white" in by["Serra Angel"]["source"]
+    assert by["Doom Blade"]["image"] == "corpus"

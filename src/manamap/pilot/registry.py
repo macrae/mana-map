@@ -1611,7 +1611,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--have-file", dest="have_file", default=None, metavar="PATH",
                              help="cards you hold, one per line ('1 Name' is fine)")
             cmd.add_argument("--card", action="append", default=[], metavar="NAME",
-                             help="a one-off card to print, from the corpus (repeatable)")
+                             help="a one-off card to print, from the corpus (repeatable; "
+                                  "name it twice for two copies)")
+            cmd.add_argument("--deck", action="append", default=[], metavar="SLUG",
+                             help="take a --card's PINNED printing from this deck's cards.json "
+                                  "when it holds the card (repeatable; first match wins)")
             cmd.add_argument("--paper", choices=("letter", "a4"), default="letter")
             cmd.add_argument("--dest", default=None, metavar="PATH",
                              help="where the PDF goes (default ~/Desktop/<slugs>-proxies.pdf)")
