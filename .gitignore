@@ -48,6 +48,11 @@ __pycache__/
 !data/fleet/
 # The pod: opponent seats for `simulate --vs` (docs/simulation.md S3) — tracked, like decks.
 !data/opponents/
+# THE TEACH SERIES' OWN CARDS (2026-11-14): the pilot's deck-picker and rules-reference
+# cards for the five teach-* decks, printed with `proxies --image`. Tracked like the decks
+# they teach; superseded art versions stay local.
+!data/teach/
+data/teach/cards/v*/
 # THE NAMED TABLES. Tracked for the same reason `data/opponents/` is: a
 # pod is a claim about which table a result was measured against, so a
 # fresh clone that cannot resolve `--pod standard` cannot reproduce a
