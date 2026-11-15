@@ -1,17 +1,22 @@
 # The teach series' cards
 
 The pilot's own cards for the five mono-colour teaching decks (`data/decks/teach-*`):
-the deck pickers a newcomer chooses from, and the rules references that sit beside the
+the deck pickers a newcomer chooses from (each with a How to Play back that names the deck's own cards — update it if the list changes), and the rules references that sit beside the
 table. Art and layout are the pilot's (made from prompts written 2026-11-13/14); the text
 on each card is what the decks actually teach, from their Deck Contexts.
 
 | File | Card |
 |---|---|
 | `01-teach-red-the-rush.jpg` | TEACH RED: The Rush — difficulty ●○○ |
+| `01b-teach-red-how-to-play.jpg` | TEACH RED: How to Play (the back — the plan and the deck's key cards) |
 | `02-teach-white-the-shield-wall.jpg` | TEACH WHITE: The Shield Wall — ●○○ |
+| `02b-teach-white-how-to-play.jpg` | TEACH WHITE: How to Play (the back — the plan and the deck's key cards) |
 | `03-teach-green-the-wild-growth.jpg` | TEACH GREEN: The Wild Growth — ●●○ |
+| `03b-teach-green-how-to-play.jpg` | TEACH GREEN: How to Play (the back — the plan and the deck's key cards) |
 | `04-teach-black-the-grave-bargain.jpg` | TEACH BLACK: The Grave Bargain — ●●○ |
+| `04b-teach-black-how-to-play.jpg` | TEACH BLACK: How to Play (the back — the plan and the deck's key cards) |
 | `05-teach-blue-the-clever-trick.jpg` | TEACH BLUE: The Clever Trick — ●●● |
+| `05b-teach-blue-how-to-play.jpg` | TEACH BLUE: How to Play (the back — the plan and the deck's key cards) |
 | `10-a-turn-step-by-step.jpg` | A Turn, Step by Step |
 | `11-combat-in-four-beats.jpg` | Combat in Four Beats |
 | `12-how-to-win.jpg` | How to Win |
