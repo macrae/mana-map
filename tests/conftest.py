@@ -706,3 +706,22 @@ def decklist_names(slug, branch=None, default=()):
         return set(default)
     return {e["name"] for e in parse_decklist(path.read_text(encoding="utf-8"))
             if e.get("board", "main") == "main"}
+
+
+def with_card(slug, card, out):
+    """The deck's list with `card` in it: None when the list already runs it (the tracked
+    list itself), else the swapped doc from `try_swap.apply_swaps` (`out` -> `card`).
+
+    ONE HOME FOR "PUT IT BACK IF THE PILOT CUT IT" (2026-11-16). A card from outside the
+    list is shaped from the Scryfall dump, which CI's push job does not have, so the swap
+    SKIPS there rather than erroring. Twice a test was written while the card was in the
+    list and went red on CI the day the pilot cut it — Plaguecrafter (V18, 2026-11-09),
+    then Craterhoof (V22, 2026-11-13: the push job red for three days). A guard
+    (`tests/test_off_list_swaps_go_through_one_helper.py`) holds the hand-rolled
+    conditional out."""
+    if card in decklist_names(slug):
+        return None
+    if not _dump_exists(config.RAW_JSON_PATH):
+        pytest.skip(f"{slug} no longer runs {card}; adding it back needs the Scryfall dump")
+    from manamap.pilot import try_swap
+    return try_swap.apply_swaps(slug, None, [(out, card)])[0]

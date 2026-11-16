@@ -18,7 +18,7 @@ from manamap.pilot import goldfish, goldfish_library, model_coverage
 from manamap.pilot.common import deck_file
 from manamap.pilot.goldfish_profiles import own_death_profile
 
-from conftest import decklist_names, requires_deck, requires_dump
+from conftest import decklist_names, requires_deck, requires_dump, with_card
 
 SLUG = "meren-recursion"
 
@@ -93,17 +93,7 @@ def test_each_death_source_pays_experience(monkeypatch, shape, blank):
     """PROVED BY REMOVING EACH SHAPE: her experience at turn ten falls without it.
     The list must carry the shape: Plaguecrafter, the only edict, left in V18 (2026-11-09),
     so the edict case puts it back in for a removal spell the goldfish does not read."""
-    from manamap.pilot import try_swap
-    doc = None
-    have = decklist_names(SLUG)
-    if shape == "edict" and "Plaguecrafter" not in have:
-        # a card from outside the list is shaped from the Scryfall dump, which CI's push job
-        # does not have (`requires_dump`); the other two shapes are still in the list
-        from manamap import config
-        from manamap.ingest.common import dump_exists
-        if not dump_exists(config.RAW_JSON_PATH):
-            pytest.skip("the edict shape needs Plaguecrafter, and adding it needs the dump")
-        doc = try_swap.apply_swaps(SLUG, None, [("Assassin's Trophy", "Plaguecrafter")])[0]
+    doc = with_card(SLUG, "Plaguecrafter", "Assassin's Trophy") if shape == "edict" else None
     on, _ = _xp(doc=doc)
     off, _ = _xp(monkeypatch, blank, doc=doc)
     assert on > off, (shape, on, off)
@@ -294,15 +284,10 @@ def test_hogaak_and_mazirek_read_from_the_text():
 
 
 @requires_deck
-@requires_dump
 def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
     """Under the rule Hogaak lands on turns the mana could not pay seven; read as an ordinary
     7-drop (the rule removed) it never does. PROVED BY REMOVING THE RULE."""
-    from manamap.pilot import try_swap
-    # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
-    have = decklist_names(SLUG)
-    doc = None if "Hogaak, Arisen Necropolis" in have else try_swap.apply_swaps(
-        SLUG, None, [("Assassin's Trophy", "Hogaak, Arisen Necropolis")])[0]
+    doc = with_card(SLUG, "Hogaak, Arisen Necropolis", "Assassin's Trophy")
 
     def cast_mana(mp):
         out = []
@@ -333,14 +318,9 @@ def test_hogaak_is_cast_by_convoke_and_delve_not_mana(monkeypatch):
 
 
 @requires_deck
-@requires_dump
 def test_mazirek_grows_the_board_on_every_sacrifice(monkeypatch):
     """PROVED BY REMOVING THE TRIGGER: the same games, a smaller board by turn ten."""
-    from manamap.pilot import try_swap
-    # the card may be in the list already (Hogaak went in with V6, 2026-11-07)
-    have = decklist_names(SLUG)
-    doc = None if "Mazirek, Kraul Death Priest" in have else try_swap.apply_swaps(
-        SLUG, None, [("Assassin's Trophy", "Mazirek, Kraul Death Priest")])[0]
+    doc = with_card(SLUG, "Mazirek, Kraul Death Priest", "Assassin's Trophy")
 
     def power(mp):
         m = goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False, doc=doc)["metrics"]
@@ -369,10 +349,7 @@ def test_the_x_team_pumps_read_from_the_text():
 @requires_deck
 def test_craterhoof_pumps_the_team(monkeypatch):
     """PROVED BY REMOVING THE PUMP: the same games, less damage by turn ten."""
-    have = decklist_names(SLUG)
-    from manamap.pilot import try_swap
-    doc = None if "Craterhoof Behemoth" in have else try_swap.apply_swaps(
-        SLUG, None, [("Assassin's Trophy", "Craterhoof Behemoth")])[0]
+    doc = with_card(SLUG, "Craterhoof Behemoth", "Assassin's Trophy")
 
     def dmg(mp):
         return goldfish.run(SLUG, iterations=1500, seed=7, quiet=True, _band=False,
