@@ -1,452 +1,333 @@
 {
   "slug": "edgar-vampires",
   "commander": "Edgar Markov",
-  "as_of": "2026-09-30",
-  "consensus": "There is no published primer for the deck the pilot is describing: every fetchable drain-engine Edgar list (Itzlsp's 'Life Drain', Gregory's Midrange Markov, Furtado's Draftsim guide) runs the Exquisite Blood + Sanguine Bond / Vito loop as its backup win, and the cEDH decklist database holds no Edgar at all. What the drain-tagged data agrees on, once the loop is subtracted, is a three-layer shape. Layer one is per-death drain, and this deck already runs its two most-run per-death pieces (Blood Artist 429/484 and Cruel Celebrant 334/484 in the 484-deck Lifedrain theme). Layer two is big evasive Vampires whose body carries the drain: Malakir Bloodwitch (261/484, 53.9%) and Twilight Prophet (245/484, 50.6%) are the two drain-carrying Vampires this deck lacks that clear half of Lifedrain lists (Edgar, Charmed Groom 264 and Clavileño 258 also clear half but carry no drain; Exquisite Blood 328 is excluded by the pilot); Vein Ripper (109/484, 22.5%) and Falkenrath Noble (103/484, 21.3%) are the next tier. Layer three is the one-sided sweeper, and Olivia's Wrath (273/484, 56.4%) is the most-run sweeper in all three drain-adjacent themes, and in the Aristocrats theme more lists run it (808/1500) than run Sanguine Bond (650/1500). On card draw the sources split by trigger: upkeep engines that trade life for cards (Phyrexian Arena 147/484, Black Market Connections 145/484), Vampire-count draw the deck already runs (Champion of Dusk), and death-triggered draw, where the oracle text matters more than the inclusion rate because Edgar's board is mostly tokens and the two cards the death-draw search surfaces first (Midnight Reaper, Grim Haruspex) read 'nontoken'. The August recon's recommendations have landed since: the 99 now runs Command Tower, Anguished Unmaking, Charismatic Conqueror, Elspeth Storm Slayer and Caretaker's Talent.",
+  "as_of": "2026-11-20",
+  "consensus": "Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten is lords and cheap Vampire bodies: Captivating Vampire 87.1%, Cordial Vampire 85.9%, Blood Artist 85.6%, Welcoming Vampire 79.1%, Stromkirk Captain 76.6%, Indulgent Aristocrat 75.9%, Bloodline Keeper 74.7%, Legion Lieutenant 71.7%, Sanctum Seeker 71.1%, Swords to Plowshares 71.0%. Its non-combat reach is Sanctum Seeker (71.1%), Vito (67.0%), Malakir Bloodwitch (55.0%), Bloodletter of Aclazotz (45.4%) and Sanguine Bond (41.6%); Bloodthirsty Conqueror (52.8%) and Exquisite Blood (48.6%) are still run by half of bracket-3 lists even though Nerd Leagues (Oct 2026) names the Blood/Bond pair as what 'gets Vampire decks asked to leave bracket 3 pods'. Its refills are Vampire-count burst draw (Champion of Dusk 47.3%, Pact of the Serpent 29.4%) plus Skullclamp (68.4%) and Village Rites (34.7%); its wipes are one-sided (Olivia's Wrath 59.3%, Damn 29.4%); its protection is a thin two or three (Teferi's Protection 30.9%, Boros Charm 29.3%, Akroma's Will 23.1%); its ramp is five or six rocks with Dark Ritual (33.2%). Against that, the threat-v1 branch (35 lands, 29 Vampire creatures, three rocks) is heavier on per-death drain, protection and sacrifice recursion than any published list and lighter on lords, Vampire-count draw, one-sided wipes and rocks. No fetchable primer describes a bracket-3 Edgar built as the pilot describes; the closest filter is EDHREC's Upgraded + Aristocrats (524 decks) and Upgraded + Lifedrain (87 decks), and both still run the loop pieces.",
   "findings": [
     {
-      "dimension": "threat",
-      "claim": "Malakir Bloodwitch is the most-run drain-carrying Vampire this deck does not have (Lifedrain theme, cards not in the 99: Bloodwitch 261, Twilight Prophet 245, Vampire Nighthawk 154, Vein Ripper 109, Falkenrath Noble 103), and it is the archetype's non-combat finisher. It sits at 261/484 (53.9%) in the Lifedrain theme, 730/1500 (48.7%) in Aristocrats, 1921/3225 (59.6%) in Lifegain and 52% on the commander page overall. A 4/4 flier with protection from white whose ETB drains each opponent for your Vampire count; under eminence that count is high by turn four. Nitpicking Nerds call it 'one of the best Vampires in the deck', say it 'will regularly drain opponents for five or more life' and that it 'can be a finisher in certain games'; Furtado says it 'becomes an instant win card if your board state is big enough to knock everyone out at once'; Wischkaemper calls it 'surprisingly effective as a beater'. With Bloodletter of Aclazotz already in the 99 the ETB drain is doubled on your turn. No two-card line with the 99 in the combo index.",
+      "claim": "The bracket-3 consensus core is lords. Of the eight Vampire lords/pseudo-lords above 50% in the 5,876-deck Upgraded filter, the branch runs three (Cordial Vampire, Bloodline Keeper, Master of Dark Rites) and lacks five: Captivating Vampire 87.1% (5,117), Stromkirk Captain 76.6% (4,500), Indulgent Aristocrat 75.9% (4,462), Legion Lieutenant 71.7% (4,211), Markov Baron 52.4% (3,077, a 'High Lift' card). Walser (Draftsim, May 2026) ranks the lords #2 of 28: 'lords are a must-include to make the wide board threatening', Captivating Vampire best; Indulgent Aristocrat 'is weaker than a proper lord but still useful'. Nerd Leagues runs five lords and calls them the deck's anthem sources. This is combat-plan evidence and it collides with the pilot's standing rule that a flat +1/+1 is too slow; recorded as what the strong lists do, not as a recommendation.",
       "cards": [
-        "Malakir Bloodwitch"
+        "Captivating Vampire",
+        "Stromkirk Captain",
+        "Indulgent Aristocrat",
+        "Legion Lieutenant",
+        "Markov Baron"
       ],
       "confidence": "widely agreed",
       "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://edhrec.com/commanders/edgar-markov",
-        "https://edhrec.com/articles/how-to-play-the-vampiric-bloodline-precon-in-edh",
-        "https://draftsim.com/edgar-markov-edh-deck/",
-        "https://www.coolstuffinc.com/a/markwischkaemper-11072016-convertible-commander-drana-liberator-of-malakir/"
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck"
       ]
     },
     {
-      "dimension": "draw",
-      "claim": "Twilight Prophet is the card the sources name for both halves of the pilot's complaint at once: a repeatable draw that drains. 245/484 (50.6%) Lifedrain, 731/1500 (48.7%) Aristocrats, 1753/3225 (54.4%) Lifegain, 46% overall. A 2/4 flying Vampire for four that, once you control ten permanents, puts the top card into your hand every upkeep and drains each opponent for its mana value while gaining you the same. Gregory lists it under 'card draw and lifegain' as a multi-purpose card; Almeida names it among the cards that 'naturally rewards you for what you're doing' in an Edgar list that prioritises 'CA generated through vampires'. It is a Dark Confidant that gains instead of loses and is a Vampire for eminence. Ascend is the cost: a 36-land deck with eminence tokens reaches ten permanents routinely, but the card does nothing the turn it lands. No two-card line with the 99 in the combo index.",
+      "claim": "The most-run non-combat finisher in bracket 3 is one the branch does not have: Sanctum Seeker, 71.1% of Upgraded decks (4,180/5,876), 69.1% of Upgraded Aristocrats (362/524), 66.7% of Upgraded Lifedrain (58/87). Nerd Leagues lists it among its win conditions ('drains each opponent for 1 per attacking Vampire'); Walser ranks it #13, 'like a lord on a different axis, since creatures don't need to connect for damage to go through'. With Bloodletter of Aclazotz (45.4%) already in the branch each attack trigger is doubled. Malakir Bloodwitch is the second: 55.0% Upgraded (3,233), 58.6% Upgraded Lifedrain, Walser #3 (its ETB 'applies the heat' and breaks board stalls), Furtado (Oct 2026) 'an instant win card if your board state is big enough'. Vengeful Bloodwitch is the cheap per-death drain the bracket-3 aristocrats lists added since the last recon: 46.4% of Upgraded Aristocrats (243/524), in the average 99, Roberts (Mar 2026) 'a slam dunk into Edgar Markov decks' because it is a Vampire that triggers eminence where Zulaport does not. Kalastria Highborn is Nerd Leagues' fourth drain body (pay B on a Vampire death: drain 2, doubled by Bloodletter) and is below EDHREC's visible cut.",
       "cards": [
-        "Twilight Prophet"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://edhrec.com/commanders/edgar-markov",
-        "https://www.hipstersofthecoast.com/2020/06/__trashed/",
-        "https://mtg.cardsrealm.com/en-us/articles/commander-deck-tech-edgar-markov"
-      ]
-    },
-    {
-      "dimension": "threat",
-      "claim": "Vein Ripper is the 'big, scary, evasive Vampire with an ability that hurts people' with the strongest card-specific write-ups fetched, and it is not an infinite piece with anything in the 99. A 6/6 flier for six with ward—sacrifice a creature, draining 2 and gaining 2 whenever ANY creature dies (opponents' included, so a symmetric wipe or a chump block drains too). Vrooman ranks it #14 of all death triggers: 'Getting Vein Ripper into play is a death sentence for your opponents'; Price calls it 'like a Blood Artist on steroids for decks that want to sacrifice a lot of creatures or control the board with removal'. Inclusion is second-tier (109/484, 22.5% Lifedrain; 393/1500, 26.2% Aristocrats; 887/3225, 27.5% Lifegain; 19% overall), which the six-mana cost explains. EDHREC's combo page lists exactly one two-card combo (with Tombstone Stairwell, not in the deck); the repo's combo index finds no two-card line with the 99.",
-      "cards": [
-        "Vein Ripper"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://draftsim.com/mtg-when-creature-dies/",
-        "https://edhrec.com/articles/back-to-basics-the-10-most-played-mono-black-cards-in-commander",
-        "https://edhrec.com/combos/vein-ripper",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://edhrec.com/commanders/edgar-markov"
-      ]
-    },
-    {
-      "dimension": "drain",
-      "claim": "The cheap per-death drain tier below Blood Artist and Cruel Celebrant is where redundancy lives, and the deck runs none of it. Falkenrath Noble (103/484, 21.3% Lifedrain; 284/1500, 18.9% Aristocrats) is a flying Vampire that drains on ANY creature dying; Vrooman files it with Blood Artist, Zulaport Cutthroat and Bastion of Remembrance as 'The Mono-Black Aristocrats', his #5 death trigger as a group, and notes Bastion survives 'your sweepers'. Zulaport Cutthroat (Price's #10 most-played mono-black card, '2-drop also drains opponents when creatures die') and Bastion of Remembrance (28/484, 5.8%) hit each opponent rather than one; neither is a Vampire. Vengeful Bloodwitch IS a two-mana Vampire, which Roberts calls 'essentially a functional reprint' of Zulaport on a Vampire body — it triggers eminence where Cutthroat does not. Vindictive Vampire (four-mana Vampire, 1 damage to each opponent and 1 life per death of your creatures) is in Wood's aristocrats list. Nitpicking Nerds' caution applies in reverse here: in the precon Blood Artist and Falkenrath Noble 'won't be reliable finishers' because it lacks sacrifice outlets — this deck has eight. None of these forms a two-card line with the 99.",
-      "cards": [
-        "Falkenrath Noble",
+        "Sanctum Seeker",
+        "Malakir Bloodwitch",
         "Vengeful Bloodwitch",
-        "Zulaport Cutthroat",
-        "Bastion of Remembrance",
-        "Vindictive Vampire"
+        "Kalastria Highborn"
       ],
       "confidence": "widely agreed",
       "sources": [
-        "https://draftsim.com/mtg-when-creature-dies/",
-        "https://edhrec.com/articles/back-to-basics-the-10-most-played-mono-black-cards-in-commander",
-        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
-        "https://edhrec.com/articles/nearly-identical-edgar-or-edgar",
-        "https://edhrec.com/articles/how-to-play-the-vampiric-bloodline-precon-in-edh",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json"
-      ]
-    },
-    {
-      "dimension": "drain",
-      "claim": "The gain-to-loss redundancy pieces are SAFE ONLY AFTER Bloodthirsty Conqueror leaves. The combo index finds a bracket-3 two-card infinite between Bloodthirsty Conqueror and each of Marauding Blight-Priest, Epicure of Blood, Cliffhaven Vampire, Defiant Bloodlord and Enduring Tenacity; the deck's own bracket-check reads floor 4 today on exactly this class of line (Conqueror + Vito, Conqueror + Sanguine Bond). With Conqueror out, the 99 holds no loss-to-gain piece, so a gain-to-loss card loops with nothing. Marauding Blight-Priest is the one the sources run: 186/484 (38.4%) Lifedrain, 460/1500 (30.7%) Aristocrats, 985/3225 (30.5%) Lifegain; KrakenTheMeta lists it as the budget card that 'copy[ies] the Sanguine Bond drain effect'; it is a three-mana Vampire. Enduring Tenacity is Dunn's #7 lifegain payoff ('a creature that already has the very relevant I gain life, you lose ability') and returns as an enchantment when it dies; not a Vampire. Defiant Bloodlord (Dunn #34, 'the first instance of slapping a Sanguine Bond on a body') is a seven-mana flying Vampire, redundancy Gregory ran. Cliffhaven Vampire is a four-mana flying Vampire in Orzhov; not listed in any Edgar theme. Each of these, with Vito and Sanguine Bond already in, converts every lifelink hit and every Blood Artist trigger into a second loss — the engine the pilot described, without a loop.",
-      "cards": [
-        "Marauding Blight-Priest",
-        "Enduring Tenacity",
-        "Cliffhaven Vampire",
-        "Defiant Bloodlord",
-        "Epicure of Blood"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://krakenthemeta.com/blog/best-lifegain-cards-mtg/",
-        "https://draftsim.com/mtg-lifegain-payoffs/",
-        "https://www.hipstersofthecoast.com/2020/06/__trashed/"
-      ]
-    },
-    {
-      "dimension": "gain",
-      "claim": "The gain half of the engine, in the sources, is lifelink on evasive Vampire bodies plus one planeswalker, not lifegain spells. Sorin, Imperious Bloodlord is the archetype's planeswalker by a factor of three (226 Lifedrain lists against Sorin, Lord of Innistrad's 78): 226/484 (46.7%) Lifedrain, 712/1500 (47.5%) Aristocrats, 1723/3225 (53.4%) Lifegain — +1 gives a creature deathtouch and lifelink and a counter if it is a Vampire; +1 sacrifices a Vampire for 3 damage and 3 life; -3 cheats a Vampire from hand. Vampire Nighthawk (154/484, 31.8%; 1090/3225, 33.8%) is the flying-deathtouch-lifelink three-drop; Wischkaemper: it 'flying, lifelinks, and deathtouches its way through its life'. Elenda's Hierophant (126/484, 26.0%; 836/3225, 25.9%) is a flying Vampire that grows on every gain and leaves lifelink Vampire tokens equal to its power — Dunn calls it 'probably the best creature with a +1/+1 counter lifegain trigger'. Elenda, Saint of Dusk (Furtado's list) is a lifelink Vampire with hexproof from instants that gets +1/+1 and menace above 40 life and +5/+5 more at 50. Markov Baron is a three-mana lifelink Vampire lord with convoke (Itzlsp's list). Indulging Patrician is a flying lifelink Vampire that drains 3 at end step if you gained 3 (not listed in any Edgar theme). Rhox Faithmender (Dunn #19, 'a Boon Reflection stapled to a 1/5 Rhino') doubles every gain but is not a Vampire and does not attack. None forms a two-card line with the 99.",
-      "cards": [
-        "Sorin, Imperious Bloodlord",
-        "Vampire Nighthawk",
-        "Elenda's Hierophant",
-        "Elenda, Saint of Dusk",
-        "Markov Baron",
-        "Indulging Patrician",
-        "Rhox Faithmender"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://www.coolstuffinc.com/a/markwischkaemper-11072016-convertible-commander-drana-liberator-of-malakir/",
-        "https://draftsim.com/mtg-lifegain-payoffs/",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/lifedrain.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
         "https://draftsim.com/edgar-markov-edh-deck/",
-        "https://archidekt.com/decks/10593972/edgar_markov_life_drain"
-      ]
-    },
-    {
-      "dimension": "draw",
-      "claim": "Death-triggered draw splits on one word, and the inclusion rate does not tell you which side a card is on: Edgar's board is mostly tokens, and the two cards the death-draw search surfaces first read 'nontoken'. Midnight Reaper ('whenever a NONTOKEN creature you control dies') and Grim Haruspex ('whenever another NONTOKEN creature you control dies') are Vrooman's joint #8 death trigger (Gottfried's named card-advantage piece is Morbid Opportunist, not either of them), and Vrooman warns 'the life loss on Midnight Reaper can be an issue'; Harvester of Souls (#7) is nontoken too. The deck already owns that class in High-Society Hunter. The cards that refill from a wipe of eminence tokens are the ones that do NOT say nontoken: Species Specialist (Vrooman #7; name Vampire, draw per Vampire death, tokens included), Dark Prophecy (#8, 'hard to cast' at BBB; every death of yours draws), Liliana's Standard Bearer (flash; draw X for creatures that died under your control this turn — the post-wipe card), Morbid Opportunist (#7, 'don't let the once-per-turn restriction put you off'; Gottfried names it as the card-advantage piece), Vampiric Rites (one-mana enchantment, {1}{B} sac: gain 1 and draw — Gregory's pick, and it feeds Vito), and the instant-speed sacrifice draws cast in response to the wipe: Village Rites (164/484, 33.9% Lifedrain; 581/1500, 38.7% Aristocrats), Corrupted Conviction (same text, 11.9% Aristocrats), Deadly Dispute (67/484; 340/1500, 22.7%) and Plumb the Forbidden (11.7% Aristocrats; copies itself per creature sacrificed, so a wipe becomes draw-N). The deck's token-counting death draw today is two permanents, Liliana, Dreadhorde General and Skullclamp (316/484, 65.3% Lifedrain; Vrooman's #1 death trigger); High-Society Hunter reads nontoken and Bloodtracker draws only for its own counters. It also already holds a sorcery-speed Village Rites on Midgar, City of Mako's adventure, Reactor Raid. Erebos, Bleak-Hearted (pay 2 life per death to draw) is the indestructible version. Vampire Gourmand (Roberts: sacrifice on attack to draw, 'can't be blocked for the turn') and Baron Bertram Graywater ({1}{B}, sac: draw; a lifelink Vampire on every token entry) are the Vampire-bodied options. None forms a two-card line with the 99.",
-      "cards": [
-        "Species Specialist",
-        "Dark Prophecy",
-        "Liliana's Standard Bearer",
-        "Morbid Opportunist",
-        "Vampiric Rites",
-        "Village Rites",
-        "Corrupted Conviction",
-        "Deadly Dispute",
-        "Plumb the Forbidden",
-        "Erebos, Bleak-Hearted",
-        "Vampire Gourmand",
-        "Baron Bertram Graywater",
-        "Midnight Reaper",
-        "Grim Haruspex",
-        "Harvester of Souls"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://draftsim.com/mtg-when-creature-dies/",
-        "https://edhrec.com/guides/edhrec-guide-to-aristocrats-in-commander",
-        "https://www.hipstersofthecoast.com/2020/06/__trashed/",
-        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json"
-      ]
-    },
-    {
-      "dimension": "draw",
-      "claim": "Lifegain-triggered draw exists in exactly two widely-known cards and the sources disagree on whether they are worth a slot. Well of Lost Dreams is Dunn's #9 lifegain payoff ('a one-to-one ratio of mana-to-card-draw is about as good as you can get') and sits in Wood's Edgar aristocrats list; Dawn of Hope is Dunn's #44 ('cheap to play for just 2 mana, and ... it's got its own source of lifelink triggers'). Gregory, writing for Card Kingdom in 2024, shies away from both 'due to the heavy mana sink required to draw cards, and the inflexibility of when that mana is required'. Neither appears in any Edgar theme list. The cheaper Vampire-shaped version is Markov Purifier (three-mana lifelink Vampire; end step, if you gained life, pay {2} to draw) and the Orzhov enchantment Lunar Convocation (Dunn #43; drains 1 at end step if you gained, and {1}{B} pay 2 life: draw). For a deck whose complaint is an empty hand on turn eight with mana open, the mana-sink objection is weaker than it is in Gregory's general case.",
-      "cards": [
-        "Well of Lost Dreams",
-        "Dawn of Hope",
-        "Markov Purifier",
-        "Lunar Convocation"
-      ],
-      "confidence": "contested",
-      "sources": [
-        "https://draftsim.com/mtg-lifegain-payoffs/",
-        "https://blog.cardkingdom.com/the-best-white-card-draw-spells-in-commander/",
-        "https://edhrec.com/articles/nearly-identical-edgar-or-edgar"
-      ]
-    },
-    {
-      "dimension": "draw",
-      "claim": "The upkeep draw engines drain lists actually run are the life-for-cards ones, which a gain engine pays for. Phyrexian Arena is 147/484 (30.4%) Lifedrain, 380/1500 (25.3%) Aristocrats, 27.8% Lifegain — Price's #6 most-played mono-black card, 'card advantage in exchange for life'. Black Market Connections is 145/484 (30.0%), 455/1500 (30.3%), 26.6% — a card, a Treasure or a 3/2 changeling (a Vampire, so it counts for Bloodwitch and Champion) each turn for life. Necropotence (61/484; 271/1500, 18.1%; Ozymandias' high-power list calls it the primary engine) is a GAME CHANGER, and the deck already holds three (Ancient Tomb, Teferi's Protection, Vampiric Tutor), which is the bracket-3 cap — adding it forces bracket 4. Bolas's Citadel is likewise a Game Changer. Vanquisher's Banner (122/484, 25.2%; 308/1500, 20.5%) draws on every Vampire cast and anthems them; Gregory names it beside Twilight Prophet as draw-plus-another-effect. Almeida's Edgar deck tech ranks the generic sorceries (Painful Truths, Read the Bones, Night's Whisper — the last already in) below 'CA generated through vampires'.",
-      "cards": [
-        "Phyrexian Arena",
-        "Black Market Connections",
-        "Vanquisher's Banner",
-        "Necropotence",
-        "Bolas's Citadel"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://edhrec.com/articles/back-to-basics-the-10-most-played-mono-black-cards-in-commander",
-        "https://archidekt.com/decks/7319967/new_markovcracy",
-        "https://www.hipstersofthecoast.com/2020/06/__trashed/",
-        "https://mtg.cardsrealm.com/en-us/articles/commander-deck-tech-edgar-markov"
-      ]
-    },
-    {
-      "dimension": "sweeper",
-      "claim": "The drain archetype's sweeper is one-sided, and it is the most-run sweeper in all three drain-adjacent themes: Olivia's Wrath at 273/484 (56.4%) Lifedrain, 808/1500 (53.9%) Aristocrats, 56.5% Lifegain — ahead of Damn, Ruinous Ultimatum, The Meathook Massacre, Kindred Dominance, Toxic Deluge and Blasphemous Act in each, and in the Aristocrats theme run by more lists than Sanguine Bond (650/1500). Nitpicking Nerds call it an 'overperformer' and 'a one-sided board wipe' that can 'clear the way for all the deck's Vampires'. The deck's mass removal today is Winds of Abandon overloaded and Liliana's -4; nothing else in the 99 touches more than one creature. Behind it: Kindred Dominance (81/484; 248/1500, 16.5%) is the seven-mana version; Damn (129/484, 26.7%; 430/1500, 28.7%) is the flexible one — Almeida: 'Damn can be a targeted removal when needed'; The Meathook Massacre (95/484; 387/1500, 25.8%; Vrooman's #3 death trigger, 'good enough triggers to be cast for X=0') is a sweeper that is ALSO a drain piece, so with it out every Vampire token a wipe kills drains 1; Ruinous Ultimatum (137/484, 28.3%; 316/1500, 21.1%) is the one-sided seven-mana exile; Austere Command and Merciless Eviction are Almeida's 'choose what you want to take away, often saving your field' picks; Toxic Deluge (217/1500, 14.5%) and Blasphemous Act (68/484; 207/1500) are the symmetric cheap ones. With Vein Ripper or Falkenrath Noble out, a symmetric wipe drains for every creature on the table, not just yours.",
-      "cards": [
-        "Olivia's Wrath",
-        "Kindred Dominance",
-        "Damn",
-        "The Meathook Massacre",
-        "Ruinous Ultimatum",
-        "Austere Command",
-        "Merciless Eviction",
-        "Toxic Deluge",
-        "Blasphemous Act"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://edhrec.com/articles/how-to-play-the-vampiric-bloodline-precon-in-edh",
-        "https://mtg.cardsrealm.com/en-us/articles/commander-deck-tech-edgar-markov",
-        "https://draftsim.com/mtg-when-creature-dies/"
-      ]
-    },
-    {
-      "dimension": "threat",
-      "claim": "The big Vampires drain lists run as threats, beyond Bloodwitch, Prophet and Ripper. Patron of the Vein (163/484, 33.7% Lifedrain; 414/1500, 27.6%; 1198/3225, 37.1%) is a six-mana 4/4 flier that kills a creature on entry and grows every Vampire on every opposing death — Nitpicking Nerds' 'go-to finisher'. Butcher of Malakir (115/484, 23.8%; 308/1500, 20.5%) is a seven-mana 5/4 flier that makes each opponent sacrifice whenever your creature dies — Vrooman (#13, with Grave Pact and Dictate of Erebos): 'basically board wipes in a sac deck', 'We've all run our token armies up against the wall of the vampire player with a Butcher of Malakir out'; Wischkaemper: 'both large and destructive'. Drana and Linvala (115/484, 23.8%) is a four-mana 3/5 flying vigilance that shuts off opposing activated abilities and steals them. Vampire Nocturnus (Furtado's and Wood's lists; Wischkaemper: 'one of the most powerful things we can do') gives the whole team +2/+1 and FLYING when the top card is black — but only 38 of this deck's 100 copies carry black (cards.json `colors`; lands are colourless), so the grant is live a little over a third of the time unless the top is controlled. Astarion, the Decadent (Wood's list) is a six-mana deathtouch lifelink Vampire whose Feed mode doubles each opponent's life lost that turn. Sorin Markov (46/484) sets an opponent to 10. Archfiend of Despair (Itzlsp's list) is the eight-mana doubler of all life lost. Olivia, Crimson Bride (260/1500, 17.3%; 756/3225, 23.4%) reanimates on attack and is a graveyard card; recorded, not endorsed.",
-      "cards": [
-        "Patron of the Vein",
-        "Butcher of Malakir",
-        "Drana and Linvala",
-        "Vampire Nocturnus",
-        "Astarion, the Decadent",
-        "Sorin Markov",
-        "Archfiend of Despair",
-        "Olivia, Crimson Bride"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://edhrec.com/articles/how-to-play-the-vampiric-bloodline-precon-in-edh",
-        "https://draftsim.com/mtg-when-creature-dies/",
-        "https://www.coolstuffinc.com/a/markwischkaemper-11072016-convertible-commander-drana-liberator-of-malakir/",
-        "https://draftsim.com/edgar-markov-edh-deck/",
-        "https://www.hipstersofthecoast.com/2020/06/__trashed/",
-        "https://edhrec.com/articles/nearly-identical-edgar-or-edgar",
-        "https://archidekt.com/decks/10593972/edgar_markov_life_drain"
-      ]
-    },
-    {
-      "dimension": "drain",
-      "claim": "Two drain finishers the sources run are flagged because they are kill lines with the 99 rather than infinites. Blood Tribute (111/484, 22.9% Lifedrain; 841/3225, 26.1% Lifegain) halves a target opponent's life and, kicked by tapping a Vampire, gains you that much; the combo index records Blood Tribute + Vito and Blood Tribute + Bloodletter of Aclazotz as bracket-4 'target opponent loses the game' lines (halve, then Vito drains the same again, or Bloodletter doubles the loss). Not a loop, and not a two-card infinite, but it is a six-mana one-player kill with two cards already in the 99. Exsanguinate (92/484, 19.0%; 193/1500, 12.9%; 17.9% Lifegain) is the X-drain that Itzlsp files as the deck's 'Finisher'; with Vito it drains X per opponent and then 3X more to one target, with Bloodletter it is 2X on your turn — large, not infinite. Neither forms a two-card infinite in the combo index.",
-      "cards": [
-        "Blood Tribute",
-        "Exsanguinate"
-      ],
-      "confidence": "widely agreed",
-      "sources": [
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-        "https://archidekt.com/decks/10593972/edgar_markov_life_drain"
-      ]
-    },
-    {
-      "dimension": "outlet",
-      "claim": "Outlets are not the gap, and the sources' preference is for free ones with a visible payoff. The deck already runs eight (Viscera Seer, Yahenni, Indulgent Aristocrat, Master of Dark Rites, Bloodflow Connoisseur, Vish Kal, Ashnod's Altar, Altar of Dementia). Gottfried: 'I'll be focusing on the free ones', naming Warren Soultrader as 'essentially free in our 40-life format' and Priest of Forgotten Gods (also in Ozymandias' list) — both draw or make mana on the sacrifice rather than only enabling it. Roberts' Ruthless Lawbringer ('spot removal with fangs') is the Vampire-bodied outlet that destroys a nonland permanent on entry. Carrying the pilot's direction toward big Vampires, these are recorded for completeness; an outlet that also draws (Vampiric Rites, Baron Bertram Graywater, Vampire Gourmand — see the draw finding) does more for the stated complaint than a ninth bare outlet.",
-      "cards": [
-        "Warren Soultrader",
-        "Priest of Forgotten Gods",
-        "Ruthless Lawbringer"
-      ],
-      "confidence": "one source",
-      "sources": [
-        "https://edhrec.com/guides/edhrec-guide-to-aristocrats-in-commander",
-        "https://archidekt.com/decks/7319967/new_markovcracy",
         "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite"
       ]
     },
     {
-      "dimension": "other",
-      "claim": "Edgar Markov has no cEDH presence: the cEDH Decklist Database contains no deck with 'Edgar' anywhere on the page (confirmed 2026-09-30); the only Mardu entries are Celes, Rune Knight and the Dargo + Tymna pairing. EDHREC's commander page counts 51,322 Edgar decks, tagged Vampires 5.9K, Lifegain 3.2K, Tokens 2.1K, Aggro 1.5K; the Lifedrain tag is a 484-deck subset. Collins (Commander's Herald) records the social reading: Edgar 'routinely elicits groans when a player reveals him in the command zone', eminence 'would be the go-to example of why the mechanic was bad', and he is banned in Duel Commander. For the bracket frame: the deck's own bracket-check reads floor 4 today on two two-card infinites both through Bloodthirsty Conqueror, and three Game Changers (Ancient Tomb, Teferi's Protection, Vampiric Tutor), which is the bracket-3 cap. Cutting Conqueror alone brings the floor to 3; adding any Game Changer (Necropotence, Bolas's Citadel) or any loss-to-gain card (Exquisite Blood) sends it back to 4.",
-      "cards": [],
+      "claim": "Running out of cards is answered in the strong lists by Vampire-count burst draw, which the branch has none of. Champion of Dusk: 47.3% Upgraded (2,777), 50.0% Upgraded Aristocrats; Walser #12, it 'converts a massive board into a ton of card draw' and is Pact of the Serpent 'on a stick'; Nerd Leagues: 'count before casting' because the eminence tokens inflate the life cost. Pact of the Serpent: 29.4% Upgraded (1,726), 33.0% Upgraded Aristocrats, Walser #4 'one of the greatest typal payoffs in black'. Village Rites (34.7%, 2,037) is the instant-speed response to a wipe and is in the average bracket-3 aristocrats 99. Phyrexian Arena (29.5%) and Herald's Horn (32.3%, in the average 99) are the steady engines. The token-draw pieces the pilot is weighing are minority picks with no Edgar-specific write-up anywhere fetched: Idol of Oblivion 17.6% Upgraded (1,036), 18.3% Upgraded Aristocrats; Deadly Dispute 17.8% (1,046), 24.0% Upgraded Aristocrats; Bennie Bracks, Zoologist is below EDHREC's visible cut in every filter and no fetched source mentions it with Edgar.",
+      "cards": [
+        "Champion of Dusk",
+        "Pact of the Serpent",
+        "Village Rites",
+        "Phyrexian Arena",
+        "Herald's Horn",
+        "Idol of Oblivion",
+        "Deadly Dispute",
+        "Bennie Bracks, Zoologist"
+      ],
       "confidence": "widely agreed",
       "sources": [
-        "https://cedh-decklist-database.com/",
-        "https://edhrec.com/commanders/edgar-markov",
-        "https://commandersherald.com/retrospective-reviews-commander-2017/",
-        "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json"
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck"
+      ]
+    },
+    {
+      "claim": "The strong lists wipe one-sidedly; the branch's two sweepers (Toxic Deluge 10.2% Upgraded, The Meathook Massacre 20.8% Upgraded Aristocrats) are symmetric. Olivia's Wrath is the archetype's sweeper at 59.3% Upgraded (3,484), 60.3% Upgraded Aristocrats, 62.1% Upgraded Lifedrain; Walser #6; Nerd Leagues: 'a one-sided wrath that gets bigger the longer the game goes'. Damn 29.4% (1,725): Nerd Leagues' line is Boros Charm indestructible first, then overload 'as a wrath that only hits opponents'. Ruinous Ultimatum is in the average bracket-3 aristocrats 99 and Nerd Leagues' list; Kindred Dominance 17.0% (1,000), Walser #11 'throws a typal board wipe at the wall'. Everything Comes to Dust is 5.1% Upgraded (302) with no write-up; Winds of Abandon is below the visible cut in every filter — neither is a card the strong lists reach for.",
+      "cards": [
+        "Olivia's Wrath",
+        "Damn",
+        "Ruinous Ultimatum",
+        "Kindred Dominance",
+        "Everything Comes to Dust",
+        "Winds of Abandon"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/lifedrain.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/"
+      ]
+    },
+    {
+      "claim": "On protection the branch is already above consensus, not below it. Bracket-3 lists run two or three: Teferi's Protection 30.9% (1,815), Boros Charm 29.3% (1,721), Akroma's Will 23.1% (1,355), and the average bracket-3 aristocrats 99 carries exactly Teferi's and Boros Charm. The branch runs all three plus Selfless Spirit and Giver of Runes (neither listed in any filter). Of the cards the pilot is weighing: Clever Concealment is 11.0% Upgraded (645), 13.9% Upgraded Aristocrats, but Walser's 'go-to' protection 'since phasing counters sweepers and bounce' and it convokes off tokens; Guardian of Faith and Lethal Scheme are below the visible cut in every filter with no Edgar write-up; Reconnaissance is 5.2% (303), named by Walser only in passing beside Sanctum Seeker and by Perry (CoolStuffInc, 2025) as a threat to watch. Recovery rather than prevention is the other school: Walser #16 Patriarch's Bidding and Bloodline Bidding are 'the next best thing to rebuild after' a wipe; Roberts: Bloodline Bidding convokes cheaply and will 'bring back our creatures, should we get wiped'; Nerd Leagues calls Teferi's 'the best answer this deck has to a wrath' and Purphoros 'the one piece of the engine no wrath touches'.",
+      "cards": [
+        "Clever Concealment",
+        "Guardian of Faith",
+        "Lethal Scheme",
+        "Reconnaissance",
+        "Patriarch's Bidding",
+        "Bloodline Bidding",
+        "Purphoros, God of the Forge"
+      ],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://www.coolstuffinc.com/a/commander-kryptonite-how-to-beat-edgar-markov-in-commander"
+      ]
+    },
+    {
+      "claim": "Land count 34–36 and five or six rocks is the consensus; the branch's 35 lands is inside it and its three rocks (Sol Ring, Arcane Signet, Orzhov Signet) is under it. EDHREC averages: 36 lands overall (15 basic/21 nonbasic), 35 Upgraded (13/22), 35 Upgraded Aristocrats (11/24), 36 Upgraded Lifedrain. Nerd Leagues 34 lands and 'five mana rocks'; Furtado 34 lands and six rocks; argas' Upgraded list 35; Decklab's bracket-2 list 37 with ten rocks. The average bracket-3 aristocrats 99 runs Sol Ring, Arcane Signet, Orzhov Signet, Talisman of Hierarchy (35.7% Upgraded), Talisman of Indulgence, Herald's Horn and Dark Ritual (33.2%). The typal lands the strong lists run and the branch lacks: Three Tree City 32.3% (1,899), Furtado 'awesome in a typal deck that wants to go wide', 'typically turn 2 mana into 5 or 6', Roberts 'a great card for Vampire decks'; Vault of the Archangel 37.2% (2,185) and Path of Ancestry, Unclaimed Territory, Secluded Courtyard, Cavern of Souls, Voldaren Estate are in the average 99. The branch runs Phyrexian Tower (29.1%) and Castle Locthwain (11.3%).",
+      "cards": [
+        "Talisman of Hierarchy",
+        "Talisman of Indulgence",
+        "Dark Ritual",
+        "Three Tree City",
+        "Vault of the Archangel",
+        "Path of Ancestry",
+        "Voldaren Estate"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/lifedrain.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://draftsim.com/edgar-markov-edh-deck/",
+        "https://archidekt.com/decks/2099407/edgar_markov_2024",
+        "https://decklab.es/en/commander/edgar-markov/",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite"
+      ]
+    },
+    {
+      "claim": "Spot removal: the count matches, the cards do not. The average bracket-3 aristocrats 99 runs Swords 71.8%, Path to Exile 53.8%, Anguished Unmaking 50.6%, Damn, Olivia's Wrath, Ruinous Ultimatum and Ruthless Lawbringer 37.4% (29.8% Upgraded; Roberts 'spot removal with fangs!', a Vampire that eats a token to destroy a nonland permanent). The branch's Crackling Doom (12.0% Upgraded, 6.9% Upgraded Aristocrats) and Vanishing Verse (below the visible cut) are off-consensus picks; Path to Exile at 51.2% is the consensus second white exile the branch lacks. Perry's reading of why Edgar loses is the counter-evidence for stack interaction: Mardu 'is notoriously bad at interacting with spells on the stack', so the strong lists spend on creature and permanent removal, not on more.",
+      "cards": [
+        "Path to Exile",
+        "Ruthless Lawbringer"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://www.coolstuffinc.com/a/commander-kryptonite-how-to-beat-edgar-markov-in-commander"
+      ]
+    },
+    {
+      "claim": "Bracket traps the strong lists still run and this deck must not. Bloodthirsty Conqueror is 52.8% of bracket-3 lists (3,104) and Roberts calls it 'Perhaps one of the best Vampires to come out in the last two years', but it is Exquisite Blood on a body: with Vito or Sanguine Bond (both in the branch) it is the two-card infinite the pilot's rule makes bracket 4, and Nerd Leagues only keeps it by 'agreeing with the pod in advance not to tutor for the second piece'. Exquisite Blood 48.6% is the same pair. Phyrexian Altar is in the average bracket-3 aristocrats 99 (26.7%, 140/524) and Commander Spellbook's most popular Edgar line (popularity 5,085) is Edgar Markov + Oathsworn Vampire + Phyrexian Altar with Edgar in the command zone — the branch runs Oathsworn Vampire, so Altar would be a commander-inclusive two-card line. Warren Soultrader forms Edgar + Oathsworn + Soultrader + Blood Artist (popularity 1,194), three cards in the 99. None of these is a recommendation; the branch's own five contained lines (none two-card, per deck-facts) are a separate matter for resolve-stack.",
+      "cards": [
+        "Bloodthirsty Conqueror",
+        "Exquisite Blood",
+        "Phyrexian Altar",
+        "Warren Soultrader"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://backend.commanderspellbook.com/variants/?q=card%3A%22Edgar%20Markov%22&limit=50&ordering=-popularity",
+        "https://backend.commanderspellbook.com/variants/?q=card%3A%22Oathsworn%20Vampire%22&limit=30&ordering=-popularity"
+      ]
+    },
+    {
+      "claim": "The pilot's remaining weighed cards, with what the strong lists say — which is mostly a number and no prose. Shared Animosity 38.7% Upgraded (2,275), 36.8% Upgraded Aristocrats, in the average 99 and Nerd Leagues' combat win conditions ('a seven-creature attack gives +6 to each'); a combat finisher that scales with attackers, which fits the pilot's multiply-or-scale rule and not the non-combat thesis. Roaming Throne 14.6% (856), 20.7% Upgraded Lifedrain, not listed in Upgraded Aristocrats: its oracle text doubles 'a triggered ability of another creature you control of the chosen type', so it does NOT double eminence (Edgar in the command zone is not a creature you control) and does nothing to Bloodletter's replacement effect; it doubles Edgar's attack trigger on the battlefield and Vampire triggers like Blood Artist, Sanctum Seeker and Bloodwitch's ETB. Bartolomé del Presidio 25.4% Upgraded, 40.5% Upgraded Aristocrats, in the average 99, no write-up fetched. Falkenrath Pit Fighter 23.4%, a 'High Lift' card; Walser #10 groups the one-mana Vampires as 'critical curve savers'. Edgar, Charmed Groom 55.3% (3,249), in the average 99 and Nerd Leagues' list, no judgment fetched. Legion's Landing 19.4%; Nerd Leagues runs it. Patron of the Vein 35.3% but Nerd Leagues cut it: a six-drop 'still in your hand when the game is decided'; Furtado keeps it for removal on ETB. Vampire Nocturnus 19.7%, a 'High Lift' card; Furtado 'grants evasion if the top card of your library is black' — 47 of the branch's 99 copies carry black on the front face (cards.csv colors; lands are colourless). Black Market Connections 29.0%, in the average 99 and the branch already.",
+      "cards": [
+        "Shared Animosity",
+        "Roaming Throne",
+        "Bartolomé del Presidio",
+        "Falkenrath Pit Fighter",
+        "Edgar, Charmed Groom",
+        "Legion's Landing",
+        "Patron of the Vein",
+        "Vampire Nocturnus"
+      ],
+      "confidence": "widely agreed",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/lifedrain.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
+        "https://draftsim.com/edgar-markov-edh-deck/"
+      ]
+    },
+    {
+      "claim": "Slow kindred artifacts are minority picks in bracket 3 and the branch runs one. Herald's Horn is the one the lists keep (32.3% Upgraded, in the average 99; Roberts' answer to Horn versus Gathering Stone is 'Why not both?'). Vanquisher's Banner 26.2% — Nerd Leagues cut it for Intangible Virtue; Urza's Incubator 13.5% (794), 10.5% Upgraded Aristocrats — the branch runs it and no fetched source endorses it for Edgar (Furtado lists it only as 'upwards of $10'); Door of Destinies 14.9%, Coat of Arms 10.7%. Nerd Leagues' Intangible Virtue and Walser's On Wings of Gold / All-Out Assault are the flat-anthem school; against it, Walser's Warleader's Call ranks #19 because it 'adds damage and carries an anthem' and Impact Tremors (26.9% Upgraded Aristocrats, in the average 99) is the non-combat ETB payoff that reads every eminence token.",
+      "cards": [
+        "Herald's Horn",
+        "Warleader's Call",
+        "Impact Tremors"
+      ],
+      "confidence": "contested",
+      "sources": [
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+        "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+        "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+        "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+        "https://draftsim.com/mtg-edgar-markov-best-cards/",
+        "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
+        "https://draftsim.com/edgar-markov-edh-deck/"
       ]
     }
   ],
   "known_failure_modes": [
-    "Emptying the hand into a sweeper. Almeida (Cardsrealm Edgar deck tech): 'it is very common for aggressive decks to play all cards in their hand and be unable to recover after a sweeper.' This is the pilot's turn-7-8 complaint stated from the other side: eminence pays you to cast every Vampire, and the draw that exists (Champion of Dusk, Welcoming Vampire, Skullclamp) is front-loaded on casting and entering, not on dying.",
-    "Drain without death. Nitpicking Nerds on the precon: Blood Artist and Falkenrath Noble 'won't be reliable finishers like they normally are' because the deck lacks sacrifice outlets and so only drains when someone wipes. This deck has the outlets, but the Forge seat does not use them (the record on Viscera Seer and Ashnod's Altar is in docs/gotchas-bench.md), so a Forge rate on this deck's drain is a floor; a trigger (Bloodwitch ETB, Prophet upkeep, Ripper on any death) is measurable where an activation is not.",
-    "Solitaire turns. Gottfried (EDHREC aristocrats guide): 'Aristocrats decks have a reputation for taking long, solitaire-esque turns with very little having changed at the end of them', and the cure he names is payoffs that make each sacrifice matter — the reason the drain tier is the thing to deepen rather than the outlet tier.",
-    "Self-inflicted life loss on the draw engines. Vrooman on Midnight Reaper: 'the life loss on Midnight Reaper can be an issue'; Phyrexian Arena, Dark Prophecy, Black Market Connections and Champion of Dusk all cost life. In a gain engine that is a feature until the gain pieces are removed, after which the deck is paying life into an empty board.",
-    "Being the archenemy from turn two. Collins: Edgar 'routinely elicits groans when a player reveals him in the command zone'. Every primer fetched in August treated an unanswered Edgar board as lethal within a turn cycle, so the table finds the wipe; the August recon's 'lords eat removal' read (Gregory) still holds."
+    "Running out of gas. Perry (CoolStuffInc, Mar 2025): like most aggro decks Edgar 'struggles with running out of gas', since these colours lack strong card draw; the strong lists answer it with Vampire-count burst draw (Champion of Dusk, Pact of the Serpent) and Skullclamp, which Nerd Leagues calls 'the single best play in the deck' and Walser 'can't imagine building the deck without'.",
+    "Combat dependence. Perry: 'The deck also relies entirely on combat', so board-control and non-combat opponents trouble it; his answers are Crawlspace, Inkshield and Pestilence (which 'kills the 1/1 Vampires as they appear'). The bracket-3 lists' non-combat reach is Sanctum Seeker, Vito/Bond, Bloodwitch's ETB, Impact Tremors/Purphoros — none of which needs a creature to connect.",
+    "The wipe. Decklab (Oct 2026): 'Board wipes are the second risk, although eminence lets you rebuild with tokens'; Nerd Leagues: Teferi's Protection is 'the best answer this deck has to a wrath' and Purphoros 'the one piece of the engine no wrath touches'; Walser: the Biddings are 'the next best thing to rebuild after' one. Furtado dissents: 'you can get back online pretty quickly after one' because the deck holds back generators and anthems.",
+    "Stack blindness. Perry: Mardu 'is notoriously bad at interacting with spells on the stack', so a non-combat win such as Exsanguinate beats it; no bracket-3 list fetched runs a counter-equivalent beyond Teferi's Protection and phasing.",
+    "The bracket trap. Nerd Leagues: the Exquisite Blood + Sanguine Bond pair 'gets Vampire decks asked to leave bracket 3 pods', and Bloodthirsty Conqueror 'carries Exquisite Blood's text'; half of self-tagged bracket-3 lists still run Conqueror (52.8%) and Exquisite Blood (48.6%), so the tag is not a guarantee of what a bracket-3 Edgar pod expects.",
+    "Being the target. Perry's advice to opponents is to avoid being 'the player who slams an early Sol Ring and becomes Edgar's first target' and to look for a board wipe, since once 'the board is cleared and hands are low, your individual card quality should pull you ahead' — the hand-empty-after-the-wipe state is the one the strong lists build against."
   ],
   "contested": [
-    "Whether lifegain-triggered draw is worth a slot. Dunn (2026) ranks Well of Lost Dreams #9 of all lifegain payoffs; Gregory (2024) 'shy[s] away from Well of Lost Dreams and Dawn of Hope these days due to the heavy mana sink required'. Neither appears in any Edgar theme list. The objection is about mana flexibility, and this deck's complaint is specifically mana with nothing to spend it on.",
-    "Nontoken death draw in a token deck. Midnight Reaper and Grim Haruspex are the cards every aristocrats source names; both read 'nontoken' and so miss every eminence token. Species Specialist, Dark Prophecy, Liliana's Standard Bearer and Vampiric Rites do not. No source makes this distinction for Edgar; it is read from oracle text.",
-    "More gain-to-loss copies versus more gain sources. Marauding Blight-Priest, Enduring Tenacity, Defiant Bloodlord and Cliffhaven Vampire all stack with Vito and Sanguine Bond (each gain event drains once per copy), but every one of them is a two-card infinite with Bloodthirsty Conqueror while it remains in the 99. The sources run Blight-Priest (30-38%) and not the others; whether a third or fourth Sanguine Bond is better than a Vampire Nighthawk is not settled anywhere fetched.",
-    "Olivia, Crimson Bride and the graveyard. 17-23% of drain lists run her; she is a reanimation card and the pilot's August direction excluded the graveyard. The 2026-09-29 direction is silent on it. Recorded in the threat finding, not endorsed.",
-    "Whether Skullclamp is 'draw on death'. It is — the equipped 1/1 token dies and draws two — and it is Vrooman's #1 death trigger and 65.3% of Lifedrain lists; the deck already runs it. The August recon filed it as contested because it is a sacrifice engine in disguise; under the new direction that objection no longer applies."
+    "Lords versus scaling payoffs. Every fetched list and Walser's ranking treat five to eight lords as mandatory ('a must-include'); the pilot's standing rule is that a flat +1/+1 is too slow and only multiplying or scaling effects earn a slot. Recon records the consensus; diagnose decides against this deck's measured axes.",
+    "Prevention versus recovery after a wipe. Teferi's/Boros Charm/Akroma's Will (Nerd Leagues, the average 99) against Patriarch's Bidding/Bloodline Bidding (Walser, Roberts) against 'eminence rebuilds' (Decklab, Furtado). The branch is already heavier on prevention than any list fetched.",
+    "Whether Bloodthirsty Conqueror belongs in bracket 3. 52.8% of self-tagged bracket-3 lists run it; Nerd Leagues keeps it on a table agreement; the pilot's rule (two-card infinite = bracket 4) excludes it while Vito or Sanguine Bond is in the 99.",
+    "Patron of the Vein: 35.3% inclusion and Furtado's 'removal on ETB' against Nerd Leagues cutting it as a six-drop 'still in your hand when the game is decided'.",
+    "Kindred artifacts: Herald's Horn kept by the average 99, Vanquisher's Banner cut by Nerd Leagues, Urza's Incubator at 13.5% with no endorsement fetched.",
+    "Symmetric versus one-sided sweepers: the branch's Toxic Deluge and Meathook Massacre are run by 10–21% of bracket-3 lists; Olivia's Wrath by 59%. With Blood Artist, Zulaport, Bastion, Falkenrath Noble and Meathook in the branch, a symmetric wipe is also a drain event — no fetched source weighs that trade for Edgar."
   ],
   "sources": [
     {
-      "title": "Edgar Markov (Commander) — EDHREC commander page",
-      "author": "EDHREC (aggregated deck data)",
-      "url": "https://edhrec.com/commanders/edgar-markov",
-      "contributed": "51,322 decks; theme counts (Vampires 5.9K, Lifegain 3.2K, Tokens 2.1K, Aggro 1.5K); overall percentages for Bloodwitch 52%, Prophet 46%, Vein Ripper 19%, Noble 18%, Bastion 5.3%, Exquisite Blood 51%, Sanguine Bond 45%, Skullclamp 61%, Champion of Dusk 43%, Elenda 59%."
+      "title": "Edgar Markov (Commander) — EDHREC commander page data",
+      "author": "EDHREC (aggregated deck data), fetched 2026-11-20",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov.json",
+      "contributed": "52,819 decks; bracket tags 1: 98, 2: 3,370, 3: 5,876, 4: 4,310, 5: 235 (13,889 tagged); theme counts; overall inclusion for every weighed card; average 36 lands (15 basic/21 nonbasic); curve 1: 11, 2: 16, 3: 17, 4: 10, 5: 6, 6: 2, 7: 1."
     },
     {
-      "title": "Edgar Markov — Lifedrain theme data (JSON)",
-      "author": "EDHREC (aggregated deck data, n=484)",
-      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/lifedrain.json",
-      "contributed": "The closest tag to the pilot's direction. Every Lifedrain inclusion count cited (num_decks over 484), including the sweeper, draw-engine and threat figures."
+      "title": "Edgar Markov — Upgraded (bracket 3) filter data",
+      "author": "EDHREC (n=5,876), fetched 2026-11-20",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded.json",
+      "contributed": "Every bracket-3 inclusion count cited; Top Cards and High Lift lists; average 35 lands (13/22), 34 creatures, 9 artifacts, 8 instants, 6 enchantments, 6 sorceries, 1 planeswalker; curve 1: 11, 2: 17, 3: 18, 4: 10, 5: 6, 6: 2, 7: 1."
     },
     {
-      "title": "Edgar Markov — Aristocrats theme data (JSON)",
-      "author": "EDHREC (aggregated deck data, potential_decks=1,500)",
-      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/aristocrats.json",
-      "contributed": "Every Aristocrats inclusion count cited (num_decks over 1,500). The per-card potential_decks is 1,500 (1,481 for Bloodthirsty Conqueror, a newer printing)."
+      "title": "Edgar Markov — Upgraded + Aristocrats filter data",
+      "author": "EDHREC (n=524), fetched 2026-11-20",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/aristocrats.json",
+      "contributed": "The closest bracket-3 filter to the pilot's deck: Vengeful Bloodwitch 46.4%, Bartolomé 40.5%, Village Rites 42.0%, Phyrexian Altar 26.7%, Impact Tremors 26.9%, Meathook 20.8%, Olivia's Wrath 60.3%; 35 lands (11/24)."
     },
     {
-      "title": "Edgar Markov — Lifegain theme data (JSON)",
-      "author": "EDHREC (aggregated deck data, n=3,225)",
-      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/lifegain.json",
-      "contributed": "Every Lifegain inclusion count cited (num_decks over 3,225); the largest drain-adjacent tag."
+      "title": "Edgar Markov — Upgraded + Lifedrain filter data",
+      "author": "EDHREC (n=87), fetched 2026-11-20",
+      "url": "https://json.edhrec.com/pages/commanders/edgar-markov/upgraded/lifedrain.json",
+      "contributed": "A small sample: Roaming Throne 20.7%, Phyrexian Arena 41.4%, Olivia's Wrath 62.1%, Sanctum Seeker 66.7%, Bloodwitch 58.6%; 36 lands. Cited only where a larger filter agrees."
+    },
+    {
+      "title": "Average deck: Edgar Markov — Upgraded + Aristocrats",
+      "author": "EDHREC (built from 524 decks), fetched 2026-11-20",
+      "url": "https://json.edhrec.com/pages/average-decks/edgar-markov/upgraded/aristocrats.json",
+      "contributed": "The concrete consensus 99 diffed against the branch: 35 creatures, 8 instants, 6 sorceries, 8 artifacts, 6 enchantments, 1 planeswalker, 35 lands."
+    },
+    {
+      "title": "Edgar Markov Commander Deck: A Bracket 3 Build Where Every Vampire Is Two Bodies",
+      "author": "DonSpider, Nerd Leagues, 28 October 2026",
+      "url": "https://www.nerdleagues.com/blog/edgar-markov-commander-deck",
+      "contributed": "The only fetchable bracket-3 Edgar primer: 34 lands, five rocks, three Game Changers (Demonic Tutor, Vampiric Tutor, Teferi's Protection); the Blood/Bond pod warning; the Conqueror table agreement; cuts of Patron of the Vein and Vanquisher's Banner; Skullclamp 'the single best play in the deck'; Purphoros and Teferi's as the wipe answers."
+    },
+    {
+      "title": "Edgar Markov as a commander: a Vampire guide for Commander",
+      "author": "Decklab (unsigned), updated 2 October 2026",
+      "url": "https://decklab.es/en/commander/edgar-markov/",
+      "contributed": "Bracket 2/3/4 lists; 37 lands and ten rocks at bracket 2; 'Board wipes are the second risk, although eminence lets you rebuild with tokens'. Weak source: no card judgments."
     },
     {
       "title": "Edgar Markov Commander Deck Guide",
-      "author": "Pedro Furtado (djorso), Draftsim, updated 27 February 2025",
+      "author": "Pedro Furtado (djorso), Draftsim, updated 10 October 2026",
       "url": "https://draftsim.com/edgar-markov-edh-deck/",
-      "contributed": "Malakir Bloodwitch 'becomes an instant win card if your board state is big enough'; Bloodthirsty Conqueror as 'the Baneslayer Angel of vampires'; the Exquisite Blood + Vito loop as the guide's backup win; a creature list including Twilight Prophet, Patron of the Vein, Vampire Nocturnus and Elenda, Saint of Dusk."
+      "contributed": "34 lands, six rocks; Three Tree City 'awesome in a typal deck that wants to go wide'; Bloodwitch 'an instant win card'; Patron 'offers removal on ETB'; Nocturnus 'grants evasion if the top card of your library is black'; wipe recovery 'pretty quickly'; still runs the Exquisite Blood + Vito loop."
     },
     {
-      "title": "How to Play the Vampiric Bloodline Precon in EDH",
-      "author": "Nitpicking Nerds (EDHREC), 19 January 2020",
-      "url": "https://edhrec.com/articles/how-to-play-the-vampiric-bloodline-precon-in-edh",
-      "contributed": "Bloodwitch 'one of the best Vampires in the deck', 'will regularly drain opponents for five or more life'; Olivia's Wrath 'overperformer', 'a one-sided board wipe'; Patron of the Vein 'go-to finisher'; Blood Artist and Falkenrath Noble underperform without outlets; Champion of Dusk 'will prevent the deck from running out of steam'."
+      "title": "The 28 Best MTG Cards for Edgar Markov in Commander",
+      "author": "A.L. Walser, Draftsim, 18 May 2026",
+      "url": "https://draftsim.com/mtg-edgar-markov-best-cards/",
+      "contributed": "Ranked judgments: Skullclamp #1, lords #2, Bloodwitch #3, Pact of the Serpent #4, Clever Concealment #5, Olivia's Wrath #6, Master of Dark Rites #7, Indulgent Aristocrat #8, one-mana Vampires #10, Kindred Dominance #11, Champion of Dusk #12, Sanctum Seeker #13, Attrition #14, the Biddings #16, Warleader's Call #19."
     },
     {
-      "title": "The 50 Best Death Triggers in Magic Ranked",
-      "author": "Steve Vrooman, Draftsim, 5 May 2026",
-      "url": "https://draftsim.com/mtg-when-creature-dies/",
-      "contributed": "Rankings and quotes for Vein Ripper (#14), the Mono-Black Aristocrats group (#5), Cruel Celebrant (#6), Midnight Reaper and Grim Haruspex (#8), Morbid Opportunist and Species Specialist (#7), Dark Prophecy (#8), Butcher of Malakir / Grave Pact / Dictate (#13), The Meathook Massacre (#3), Skullclamp (#1)."
-    },
-    {
-      "title": "The 54 Best Payoffs for Gaining Life in Magic Ranked",
-      "author": "Jeff Dunn, Draftsim, 5 August 2026",
-      "url": "https://draftsim.com/mtg-lifegain-payoffs/",
-      "contributed": "Well of Lost Dreams #9, Vito #8, Enduring Tenacity #7, Sanguine Bond #4, Rhox Faithmender #19, Defiant Bloodlord #34, Elenda's Hierophant #42, Lunar Convocation #43, Dawn of Hope #44, with quotes."
-    },
-    {
-      "title": "The Best White Card Draw Spells in Commander",
-      "author": "Kristen Gregory, Card Kingdom Blog, 25 March 2024",
-      "url": "https://blog.cardkingdom.com/the-best-white-card-draw-spells-in-commander/",
-      "contributed": "The dissent on Well of Lost Dreams and Dawn of Hope ('heavy mana sink required to draw cards, and the inflexibility of when that mana is required')."
-    },
-    {
-      "title": "Back to Basics — The 10 Most Played Mono-Black Cards in Commander",
-      "author": "Nick Price (EDHREC), 12 March 2024",
-      "url": "https://edhrec.com/articles/back-to-basics-the-10-most-played-mono-black-cards-in-commander",
-      "contributed": "Vein Ripper 'like a Blood Artist on steroids for decks that want to sacrifice a lot of creatures or control the board with removal'; Zulaport Cutthroat #10; Phyrexian Arena #6 'card advantage in exchange for life'."
-    },
-    {
-      "title": "Combos Using Vein Ripper",
-      "author": "EDHREC / Commander Spellbook",
-      "url": "https://edhrec.com/combos/vein-ripper",
-      "contributed": "The only two-card combo listed is Vein Ripper + Tombstone Stairwell; none with any card in this 99."
+      "title": "Commander Kryptonite: How to Beat Edgar Markov in Commander",
+      "author": "Levi Perry, CoolStuffInc, 17 March 2025",
+      "url": "https://www.coolstuffinc.com/a/commander-kryptonite-how-to-beat-edgar-markov-in-commander",
+      "contributed": "The failure modes from the other side: 'struggles with running out of gas', 'relies entirely on combat', Mardu 'notoriously bad at interacting with spells on the stack'; Crawlspace, Inkshield, Pestilence; threats to watch Reconnaissance, Cordial Vampire, Captivating Vampire, Skullclamp."
     },
     {
       "title": "Giving Edgar Markov Commander Decks Some New Bite",
-      "author": "Owain Roberts (EDHREC), 6 March 2026",
+      "author": "Owain Roberts, EDHREC, 6 March 2026",
       "url": "https://edhrec.com/articles/giving-edgar-markov-commander-decks-some-new-bite",
-      "contributed": "Vengeful Bloodwitch as 'essentially a functional reprint' of Zulaport Cutthroat on a Vampire; Vampire Gourmand's attack-sacrifice draw; Ruthless Lawbringer 'spot removal with fangs'; Baron Bertram Graywater; Bloodthirsty Conqueror as 'Exquisite Blood on a body'."
+      "contributed": "Vengeful Bloodwitch 'a slam dunk'; Ruthless Lawbringer 'spot removal with fangs!'; Three Tree City 'a great card for Vampire decks'; Bloodline Bidding as wipe recovery; Conqueror 'one of the best Vampires to come out in the last two years'; Caretaker's Talent and Elspeth, Storm Slayer endorsed (both in the branch)."
     },
     {
-      "title": "Nearly Identical — Edgar or Edgar?",
-      "author": "Joshua Wood (EDHREC), 13 October 2022",
-      "url": "https://edhrec.com/articles/nearly-identical-edgar-or-edgar",
-      "contributed": "The aristocrats half's drain payoffs (Blood Artist, Cruel Celebrant, Vindictive Vampire, Falkenrath Noble, Malakir Bloodwitch, Vito, Marauding Blight-Priest), Well of Lost Dreams as its draw, and the 30-creature list including Astarion, Twilight Prophet, Veinwitch Coven and Vampire Nocturnus."
+      "title": "Edgar Markov Overtakes Atraxa as the #2 Commander",
+      "author": "Josh Nelson, EDHREC, 23 September 2025",
+      "url": "https://edhrec.com/articles/edgar-markov-overtakes-atraxa-as-the-2-commander",
+      "contributed": "Meta context only: Edgar is EDHREC's #2 commander as of 22 September 2025 on the back of the Innistrad Remastered printings. Names no cards."
     },
     {
-      "title": "Midrange Markov: Edgar Markov Vampires",
-      "author": "Kristen Gregory (Hipsters of the Coast), 5 June 2020",
-      "url": "https://www.hipstersofthecoast.com/2020/06/__trashed/",
-      "contributed": "Twilight Prophet as 'card draw and lifegain'; Champion of Dusk 'one of our premier ways to refill our hand'; Vampiric Rites and Vanquisher's Banner as draw; Defiant Bloodlord as Bond redundancy; Kindred Dominance, Ruinous Ultimatum, Austere Command as wipes."
+      "title": "Real Aggro Vampire — Edgar Markov, Upgraded (3)",
+      "author": "argas (Archidekt), updated ~13 days before 2026-11-20",
+      "url": "https://archidekt.com/decks/2099407/edgar_markov_2024",
+      "contributed": "A $1,807 self-tagged bracket-3 list: 35 lands, 40 Vampires, Shared Animosity, Reconnaissance, Idol of Oblivion, Pact of the Serpent, Plumb the Forbidden, Skullclamp as its draw; Bloodletter, Conqueror, Vito, Sanctum Seeker, Bloodwitch, Vengeful Bloodwitch, Vraan. No prose."
     },
     {
-      "title": "Commander Deck Tech: Edgar Markov",
-      "author": "Gabriel Almeida (Cardsrealm), 19 November 2022",
-      "url": "https://mtg.cardsrealm.com/en-us/articles/commander-deck-tech-edgar-markov",
-      "contributed": "The sweeper failure mode ('play all cards in their hand and be unable to recover after a sweeper'); Twilight Prophet 'naturally rewards you for what you're doing'; Damn, Austere Command, Merciless Eviction as the flexible wipes; 'CA generated through vampires' over generic draw."
+      "title": "Edgar Markov [PAPER] — Core (2)",
+      "author": "mcshieldbash (Archidekt), ~8 months before 2026-11-20",
+      "url": "https://archidekt.com/decks/10929805/edgar_markov",
+      "contributed": "A bracket-2 upgraded precon: 19 removal, 4 protection, 7 draw (Idol of Oblivion, Caretaker's Talent, BMC, Arena, Skullclamp, Banner). Weak source, no prose; shows Idol and Bartolomé at the casual end."
     },
     {
-      "title": "Aristocrats in Commander",
-      "author": "Cooper Gottfried (EDHREC guide), undated (references 2025 cards)",
-      "url": "https://edhrec.com/guides/edhrec-guide-to-aristocrats-in-commander",
-      "contributed": "Morbid Opportunist as the card-advantage piece; the free-outlet preference (Warren Soultrader 'essentially free in our 40-life format', Priest of Forgotten Gods); the 'solitaire-esque turns' failure mode. Does not mention Edgar."
+      "title": "Commander Spellbook — variants containing Edgar Markov",
+      "author": "Commander Spellbook API, fetched 2026-11-20",
+      "url": "https://backend.commanderspellbook.com/variants/?q=card%3A%22Edgar%20Markov%22&limit=50&ordering=-popularity",
+      "contributed": "Most popular Edgar lines: Edgar + Oathsworn Vampire + Phyrexian Altar (5,085); Edgar + Oathsworn + Warren Soultrader + Blood Artist (1,194) / Cruel Celebrant (968) / Vengeful Bloodwitch (874); Edgar + Cloudstone Curio + Phyrexian Altar (881). Results truncated; count null."
     },
     {
-      "title": "Best Lifegain Cards in MTG + How to Build a Lifegain Commander Deck (2026)",
-      "author": "KrakenTheMeta, 8 July 2026 (updated 24 August 2026)",
-      "url": "https://krakenthemeta.com/blog/best-lifegain-cards-mtg/",
-      "contributed": "Marauding Blight-Priest as the budget card that copies the Sanguine Bond drain; Vito 'the definitive lifegain payoff commander'; the Bond/Blood loop stated plainly."
-    },
-    {
-      "title": "Convertible Commander: Drana, Liberator of Malakir",
-      "author": "Mark Wischkaemper (CoolStuffInc), 7 November 2016",
-      "url": "https://www.coolstuffinc.com/a/markwischkaemper-11072016-convertible-commander-drana-liberator-of-malakir/",
-      "contributed": "Bloodwitch 'surprisingly effective as a beater'; Vampire Nighthawk; Butcher of Malakir 'both large and destructive'; Vampire Nocturnus 'one of the most powerful things we can do'; the observation that a Vampire deck has 'fewer ways to draw cards than normal'."
-    },
-    {
-      "title": "Commanding Drana, Old Style",
-      "author": "Ryan Sainio (Hipsters of the Coast), 10 December 2020",
-      "url": "https://www.hipstersofthecoast.com/2020/12/commanding-drana-old-style/",
-      "contributed": "Weak source: names Bloodwitch and Butcher of Malakir as the Zendikar tribal payoffs and nothing more. Used only where a stronger source agrees."
-    },
-    {
-      "title": "Retrospective Reviews: Commander 2017",
-      "author": "Ciel Collins (Commander's Herald), 19 May 2023",
-      "url": "https://commandersherald.com/retrospective-reviews-commander-2017/",
-      "contributed": "The archenemy reading ('routinely elicits groans'), the eminence verdict, the Duel Commander ban."
-    },
-    {
-      "title": "High Power Aristocrats Edgar Markov; Guide at the bottom",
-      "author": "Ozymandias- (Archidekt), updated within three days of 2026-09-30",
-      "url": "https://archidekt.com/decks/7319967/new_markovcracy",
-      "contributed": "A $3,269 list only — the 'guide at the bottom' did not render. Confirms Necropotence as its engine and Priest of Forgotten Gods, Dictate of Erebos, Grave Pact, Olivia's Wrath, Meathook as its sacrifice/wipe package, alongside Bloodwitch, Prophet, Conqueror, Vito."
-    },
-    {
-      "title": "Edgar Markov Life Drain",
-      "author": "Itzlsp (Archidekt), updated ~21 months before 2026-09-30",
-      "url": "https://archidekt.com/decks/10593972/edgar_markov_life_drain",
-      "contributed": "A categorised drain list with no prose: Drain (Blood Artist, Bloodwitch, Sanguine Bond, Vito, Bloodchief Ascension, Tainted Remedy), Finisher (Exsanguinate), Burn (Archfiend of Despair), Draw (Black Market Connections, Twilight Prophet, Idol of Oblivion, Night's Whisper), Lifegain (Blood Tribute, Vampire Nighthawk, Creeping Bloodsucker), and Exquisite Blood."
-    },
-    {
-      "title": "cEDH Decklist Database",
-      "author": "cEDH Decklist Database maintainers",
-      "url": "https://cedh-decklist-database.com/",
-      "contributed": "Negative result: 'Edgar' does not appear on the page; Mardu entries are Celes, Rune Knight and Dargo + Tymna."
-    },
-    {
-      "title": "The 43 Best Aristocrats Cards in Magic Ranked",
-      "author": "A.L. Walser, Draftsim, 16 March 2026",
-      "url": "https://draftsim.com/mtg-aristocrats/",
-      "contributed": "Negative result: the article ranks commanders (Yawgmoth #1, Korvold #2), not the 99-slot cards asked about; none of the drain or draw candidates appear."
+      "title": "Commander Spellbook — variants containing Oathsworn Vampire",
+      "author": "Commander Spellbook API, fetched 2026-11-20",
+      "url": "https://backend.commanderspellbook.com/variants/?q=card%3A%22Oathsworn%20Vampire%22&limit=30&ordering=-popularity",
+      "contributed": "Oathsworn + Ashnod's Altar + Pitiless Plunderer + Blood Artist (2,678) and + Zulaport Cutthroat (2,130) — all four cards of each are in the threat-v1 branch; deck-facts already lists them among the branch's five contained lines, none two-card, none verified."
     }
   ],
   "gaps": [
-    "Reddit: blocked, confirmed 2026-09-30.",
-    "Moxfield: blocked, confirmed 2026-09-30 — the search surfaced a 'High Powered Vampires (No game changers Needed)' primer at moxfield.com/decks/fJLkugdUHE2lyvZPjcwpaA/primer that would be the closest thing to a bracket-3 drain Edgar primer; it could not be fetched and nothing from it is recorded.",
-    "TappedOut returned HTTP 403 on two different deck URLs on 2026-09-30 (it was fetchable for the August recon), so the 'Edgar Markov's Vampire Horde [Primer]', 'Edgar Markov Aristocrats EDH' and the 'Is Twilight Prophet worthwhile?' forum thread are not cited.",
-    "tcgplaymatpros.com returned HTTP 402; TCGplayer's Edgar guide returned an empty body (as in August); ajaxalternates.com redirected to its shop homepage. None is cited.",
-    "No fetchable primer exists for a drain-engine Edgar WITHOUT the Exquisite Blood loop. Every drain list fetched (Itzlsp, Gregory, Furtado, Ozymandias) runs Exquisite Blood or Bloodthirsty Conqueror beside Sanguine Bond or Vito. The pilot's bracket-3 constraint is more purist than any published drain list, so the gain-to-loss findings here are 'what the loop-running lists run, minus the loop'.",
-    "EDHREC theme card lists truncate at roughly fifty cards per type, so 'not listed' for Zulaport Cutthroat, Midnight Reaper, Grim Haruspex, Species Specialist, Liliana's Standard Bearer, Dawn of Hope, Well of Lost Dreams, Cliffhaven Vampire and Epicure of Blood means below the cut, not zero. No per-commander inclusion rate for any of them is recorded.",
-    "No source measures the pilot's specific complaint — 0-2 cards in hand after turn 7-8. Almeida and Nitpicking Nerds assert the run-out-of-steam failure qualitatively; the goldfish's draw channel on this list is the instrument that would quantify it, and a model_draw figure before and after a death-draw swap is what would settle which trigger class (token-counting versus nontoken) actually refills.",
-    "The Draftsim aristocrats and lifegain rankings are format-wide, not Edgar-specific; Zulaport Cutthroat, Bastion of Remembrance, Liliana's Standard Bearer and Species Specialist have no card-specific Edgar write-up anywhere fetched, only a rank in a general list.",
-    "The 'guide at the bottom' of Ozymandias' Archidekt list did not render through the fetch; only its card list is recorded."
+    "Moxfield: HTTP 403 on both the deck page and api2.moxfield.com (2026-11-20), so 'most-liked' Edgar lists and the 'High Powered Vampires (No game changers Needed)' primer at moxfield.com/decks/fJLkugdUHE2lyvZPjcwpaA/primer are not recorded; the search snippet says it is a no-Game-Changer bracket-3 build with a Cloudstone Curio + Phyrexian Altar line, and nothing more is known.",
+    "TappedOut: HTTP 403 on the 'Edgar Markov V4 — Quick Piloting Manual' (the one fetched write-up of a Shared Animosity alpha strike); not cited.",
+    "Reddit: not attempted; blocked on both prior recons (2026-08, 2026-09-30).",
+    "EDHREC bracket tags are self-reported and cover 13,889 of 52,819 decks; the 'Upgraded' filter is 5,876 decks that call themselves bracket 3, half of which still run Bloodthirsty Conqueror or Exquisite Blood. 'Not listed' in any EDHREC figure means below the page's visible cut (the JSON truncates at ~50 cards per type and the fetch at 100,000 characters), not zero — this applies to Bennie Bracks, Guardian of Faith, Lethal Scheme, Winds of Abandon, Zulaport Cutthroat, Kalastria Highborn, Vanishing Verse, Selfless Spirit, Giver of Runes and the branch's other off-list cards.",
+    "No fetched source gives a card-specific Edgar judgment for Roaming Throne, Idol of Oblivion, Bennie Bracks, Deadly Dispute, Bartolomé del Presidio, Guardian of Faith, Lethal Scheme, Everything Comes to Dust, Winds of Abandon, Edgar Charmed Groom or Black Market Connections; for these the record is an inclusion rate and the oracle text only.",
+    "No fetchable primer describes a bracket-3 Edgar without any gain-to-loss loop piece; every list fetched runs Vito and/or Sanguine Bond, and most run Conqueror or Exquisite Blood. The pilot's thesis ('Vampires are the fuel, not the engine') has no published analogue; the Upgraded + Lifedrain filter is the closest and holds 87 decks.",
+    "Emeritus of Woe appears in EDHREC's average bracket-3 aristocrats 99 but is not in data/cards.csv (corpus refresh deferred 2026-11), so its identity and legality are unverified and it is not named in any finding.",
+    "Commander Spellbook results are truncated (count null, first page only); lines beyond the first eight per query are not recorded. Whether any of the branch's five contained lines works is a resolve-stack question, not a recon one.",
+    "No source measures what the pilot's thesis needs measured: the drain-per-death rate, the hand size after a wipe, or the clock without lords. Those are goldfish and Forge questions; recon can only say the strong lists do not build that way."
   ]
 }

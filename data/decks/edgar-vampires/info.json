@@ -63,16 +63,25 @@
       "pull_list": {
         "buy": [
           {
+            "name": "Champion of Dusk"
+          },
+          {
+            "name": "Clever Concealment"
+          },
+          {
             "name": "Crackling Doom"
           },
           {
             "name": "Elas il-Kor, Sadistic Pilgrim"
           },
           {
-            "name": "Falkenrath Noble"
+            "name": "Giver of Runes"
           },
           {
-            "name": "Giver of Runes"
+            "name": "Lethal Scheme"
+          },
+          {
+            "name": "Malakir Bloodwitch"
           },
           {
             "name": "Oathsworn Vampire"
@@ -135,7 +144,16 @@
           }
         ],
         "proxy": [],
-        "free": [],
+        "free": [
+          {
+            "name": "Black Market Connections",
+            "where": [
+              "ingris-infect",
+              "yawgmoth-swarm",
+              "zur-enchantress"
+            ]
+          }
+        ],
         "box": [
           {
             "name": "Bastion of Remembrance",
@@ -168,26 +186,29 @@
             ]
           }
         ],
-        "blocking": 14,
+        "blocking": 17,
         "procurement": null
       },
       "base_version": 7,
       "size": 100,
-      "add": 19,
-      "out": 19,
+      "add": 23,
+      "out": 23,
       "counts": {
-        "in_deck": 78,
+        "in_deck": 74,
         "box": 5,
         "elsewhere": 6,
-        "buy": 8,
-        "free": 0
+        "buy": 11,
+        "free": 1
       },
       "unsourced": [
         "Boros Charm",
+        "Champion of Dusk",
+        "Clever Concealment",
         "Crackling Doom",
         "Elas il-Kor, Sadistic Pilgrim",
-        "Falkenrath Noble",
         "Giver of Runes",
+        "Lethal Scheme",
+        "Malakir Bloodwitch",
         "Oathsworn Vampire",
         "Plains",
         "Reassembling Skeleton",
@@ -199,15 +220,8 @@
         "Vanishing Verse"
       ],
       "mergeable": false,
-      "free": 0,
+      "free": 1,
       "cards": [
-        {
-          "name": "Akroma's Will",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
         {
           "name": "Anguished Unmaking",
           "state": "in_deck",
@@ -268,6 +282,35 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Black Market Connections",
+          "state": "elsewhere",
+          "where": [
+            {
+              "kind": "deck",
+              "slug": "ingris-infect",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "yawgmoth-swarm",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            },
+            {
+              "kind": "deck",
+              "slug": "zur-enchantress",
+              "locked": false,
+              "status": "broken-down",
+              "apart": true
+            }
+          ],
+          "free": true,
+          "is_new": true
         },
         {
           "name": "Blazemire Verge",
@@ -383,6 +426,13 @@
           "is_new": false
         },
         {
+          "name": "Champion of Dusk",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Charismatic Conqueror",
           "state": "in_deck",
           "where": [],
@@ -397,6 +447,13 @@
           "is_new": false
         },
         {
+          "name": "Clever Concealment",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Command Tower",
           "state": "in_deck",
           "where": [],
@@ -405,13 +462,6 @@
         },
         {
           "name": "Concealed Courtyard",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
-          "name": "Cordial Vampire",
           "state": "in_deck",
           "where": [],
           "free": false,
@@ -516,13 +566,6 @@
           "is_new": false
         },
         {
-          "name": "Falkenrath Noble",
-          "state": "buy",
-          "where": [],
-          "free": false,
-          "is_new": true
-        },
-        {
           "name": "Giver of Runes",
           "state": "buy",
           "where": [],
@@ -551,6 +594,13 @@
           "is_new": false
         },
         {
+          "name": "Lethal Scheme",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Liliana, Dreadhorde General",
           "state": "in_deck",
           "where": [],
@@ -563,6 +613,13 @@
           "where": [],
           "free": false,
           "is_new": false
+        },
+        {
+          "name": "Malakir Bloodwitch",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
         },
         {
           "name": "Mana Confluence",
@@ -593,13 +650,6 @@
           "is_new": false
         },
         {
-          "name": "Midnight Reaper",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Minas Tirith",
           "state": "in_deck",
           "where": [],
@@ -619,13 +669,6 @@
           "where": [],
           "free": false,
           "is_new": true
-        },
-        {
-          "name": "Olivia Voldaren",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
         },
         {
           "name": "Orzhov Signet",
@@ -711,13 +754,6 @@
           "is_new": true
         },
         {
-          "name": "Preacher of the Schism",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Reassembling Skeleton",
           "state": "elsewhere",
           "where": [
@@ -774,6 +810,13 @@
           ],
           "free": false,
           "is_new": true
+        },
+        {
+          "name": "Sanctum Seeker",
+          "state": "in_deck",
+          "where": [],
+          "free": false,
+          "is_new": false
         },
         {
           "name": "Sanguine Bond",
@@ -1075,10 +1118,10 @@
       ],
       "has_cards": true,
       "summary": {
-        "title": "Vampires as fuel: drain every death, removal with fangs, protection on bodies",
-        "blurb": "Turns Edgar's tokens into a drain engine (each-opponent death triggers, Teysa doubling them, a Plunderer and Ashnod's Altar loop, Skullclamp draw), adds edicts and a chosen-size wipe, protection that needs no commander, and a fuller mana base.",
+        "title": "Vampires as fuel: drain every death, removal with fangs, draw, a finisher",
+        "blurb": "Turns Edgar's tokens into a drain engine (each-opponent death triggers, Teysa doubling them, a Plunderer and Altar loop, Skullclamp draw); adds edicts and a chosen-size wipe, protection that needs no commander, Black Market Connections for steady draw, Malakir Bloodwitch as the Vampire-count finisher, and more lands.",
         "by": "jarvis",
-        "at": "2026-11-13"
+        "at": "2026-11-20"
       },
       "verdict": {
         "state": "no objective",
@@ -1086,7 +1129,8 @@
         "fell": 6,
         "no_call": 3
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Anowon, the Ruin Sage",
         "Boros Charm",
@@ -20720,8 +20764,8 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1`: 17 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `threat-v1` needs 14 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
+    "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1` needs 17 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
     "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
