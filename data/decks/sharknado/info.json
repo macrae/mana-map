@@ -25,7 +25,9 @@
       "mana",
       "benchmark"
     ],
-    "invalid": [],
+    "invalid": [
+      "deck_recon.json"
+    ],
     "verified": true,
     "missing": [],
     "todo": []
@@ -122,9 +124,6 @@
       "pull_list": {
         "buy": [
           {
-            "name": "Ceremonial Knife"
-          },
-          {
             "name": "Inti, Seneschal of the Sun"
           },
           {
@@ -134,10 +133,16 @@
             "name": "Kozilek's Return"
           },
           {
+            "name": "Library of Leng"
+          },
+          {
             "name": "Prince Imrahil the Fair"
           },
           {
             "name": "Temple of Epiphany"
+          },
+          {
+            "name": "Unsettled Mariner"
           },
           {
             "name": "Voracious Greatshark"
@@ -154,27 +159,28 @@
             ]
           }
         ],
-        "blocking": 7,
+        "blocking": 8,
         "procurement": null
       },
       "base_version": 14,
       "size": 100,
-      "add": 8,
-      "out": 8,
+      "add": 9,
+      "out": 9,
       "counts": {
-        "in_deck": 91,
+        "in_deck": 90,
         "box": 1,
         "elsewhere": 0,
-        "buy": 7,
+        "buy": 8,
         "free": 0
       },
       "unsourced": [
-        "Ceremonial Knife",
         "Inti, Seneschal of the Sun",
         "Jaws, Relentless Predator",
         "Kozilek's Return",
+        "Library of Leng",
         "Prince Imrahil the Fair",
         "Temple of Epiphany",
+        "Unsettled Mariner",
         "Voracious Greatshark"
       ],
       "mergeable": false,
@@ -266,13 +272,6 @@
               "name": "Shabraz Parts"
             }
           ],
-          "free": false,
-          "is_new": true
-        },
-        {
-          "name": "Ceremonial Knife",
-          "state": "buy",
-          "where": [],
           "free": false,
           "is_new": true
         },
@@ -382,13 +381,6 @@
           "is_new": false
         },
         {
-          "name": "Fireshrieker",
-          "state": "in_deck",
-          "where": [],
-          "free": false,
-          "is_new": false
-        },
-        {
           "name": "Flawless Maneuver",
           "state": "in_deck",
           "where": [],
@@ -488,6 +480,13 @@
         },
         {
           "name": "Kozilek's Return",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
+          "name": "Library of Leng",
           "state": "buy",
           "where": [],
           "free": false,
@@ -830,6 +829,13 @@
           "is_new": false
         },
         {
+          "name": "Unsettled Mariner",
+          "state": "buy",
+          "where": [],
+          "free": false,
+          "is_new": true
+        },
+        {
           "name": "Valeria Richards, Precocious",
           "state": "in_deck",
           "where": [],
@@ -892,7 +898,8 @@
         "fell": 12,
         "no_call": 4
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Brotherhood Regalia",
         "Cascade Bluffs",
@@ -972,7 +979,33 @@
             "better_is": "higher"
           }
         ]
-      }
+      },
+      "stacks": [
+        {
+          "id": "001",
+          "title": "Windfall with both commanders out: seven discards, seven triggers, and when they stack",
+          "checker": "pass",
+          "names": [
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "002",
+          "title": "Windfall under Library of Leng: a discard redirected to the top of the library is still a discard",
+          "checker": "pass",
+          "names": [
+            "Library of Leng"
+          ]
+        },
+        {
+          "id": "003",
+          "title": "Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng",
+          "checker": "pass",
+          "names": [
+            "Library of Leng"
+          ]
+        }
+      ]
     },
     {
       "name": "shabraz-v1",
@@ -18961,11 +18994,12 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (deck_recon.json) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "branch `jaws-v1` needs 7 card(s) sourced — `manamap pilot deck-branch sharknado source jaws-v1`",
+    "branch `jaws-v1` needs 8 card(s) sourced — `manamap pilot deck-branch sharknado source jaws-v1`",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
     "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
