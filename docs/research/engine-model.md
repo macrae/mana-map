@@ -370,6 +370,34 @@ deck map then lays the deck out by `alike`, with `feeds` edges drawn as arrows a
 being the graph's components — a map that *is* the engine rather than one the engineer has to
 contradict on every deck. CardBERT keeps the atlas, where theme is the question.
 
+### 4.1 Measured, 2026-11-22: the interaction space does not beat the incumbent
+
+`analysis/eval_interaction.py`, recorded in `data/eval/interaction_eval.json`. Recall@10 within
+the deck, over 598 queries from the card pairs a checker-passed stack names together:
+
+| method | recall@10 |
+|---|---|
+| ability space (the incumbent) | 0.212 |
+| CardBERT (the pages) | 0.214 |
+| feeds (either direction) | 0.151 |
+| interaction (alike) | 0.140 |
+| random | 0.117 |
+| synergy graph | 0.109 |
+
+On the golden set the interaction space has recall@10 0.121 against the incumbent's 0.264, but
+a better median rank (36 against 66.5) and nine times the hard-negative separation (0.112
+against 0.012): it ranks fewer group-mates in the top ten and pushes near-identical wording apart.
+
+**So `spaces.DEFAULT` stays `function`**, and the map stays on CardBERT; the plan's flip was
+conditional on this number and the number says no. Three readings of why, each testable: the
+positives are noisy (a stack names furniture as well as the line, so a "pair" may be two cards
+that never interact); `feeds` is coarse (it scores kinds, so every death payoff ties with every
+other, and ties fall back to name order); and a fifth of the corpus (5,269 names) has no
+signature at all. The space and `similar-cards --space interaction --feeds` stay available by
+name as a discovery aid. The next measurement worth making is feeds scored on the FINE tokens
+(`C:DIES:you`, filters included) against positives restricted to the cards on a stack's
+`stack[]` rather than its board.
+
 ## 5. Two worked examples (from the scripts; the code will reproduce these)
 
 **Sharknado.** Wheel of Fortune is `A:SP$ Discard | Mode$ Hand | Defined$ Player | SubAbility$

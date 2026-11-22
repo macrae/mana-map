@@ -1,0 +1,152 @@
+{
+ "k": 10,
+ "verified_pairs": {
+  "recall_at_10": {
+   "feeds": 0.151,
+   "interaction": 0.14,
+   "function": 0.212,
+   "cardbert": 0.214,
+   "synergy": 0.109,
+   "random": 0.117,
+   "queries": 598
+  },
+  "per_deck": {
+   "edgar-vampires": {
+    "pairs": 6,
+    "queries": 12,
+    "feeds": 0.25,
+    "interaction": 0.25,
+    "function": 0.25,
+    "cardbert": 0.167,
+    "synergy": 0.167,
+    "random": 0.083
+   },
+   "gishath": {
+    "pairs": 9,
+    "queries": 18,
+    "feeds": 0.222,
+    "interaction": 0.278,
+    "function": 0.278,
+    "cardbert": 0.222,
+    "synergy": 0.167,
+    "random": 0.167
+   },
+   "goblin-storm": {
+    "pairs": 19,
+    "queries": 38,
+    "feeds": 0.079,
+    "interaction": 0.184,
+    "function": 0.237,
+    "cardbert": 0.474,
+    "synergy": 0.211,
+    "random": 0.132
+   },
+   "hapatra": {
+    "pairs": 6,
+    "queries": 12,
+    "feeds": 0.417,
+    "interaction": 0.083,
+    "function": 0.0,
+    "cardbert": 0.167,
+    "synergy": 0.417,
+    "random": 0.083
+   },
+   "heliod": {
+    "pairs": 3,
+    "queries": 6,
+    "feeds": 0.333,
+    "interaction": 0.167,
+    "function": 0.0,
+    "cardbert": 0.0,
+    "synergy": 0.333,
+    "random": 0.333
+   },
+   "keen-engineering": {
+    "pairs": 16,
+    "queries": 32,
+    "feeds": 0.156,
+    "interaction": 0.25,
+    "function": 0.406,
+    "cardbert": 0.25,
+    "synergy": 0.062,
+    "random": 0.156
+   },
+   "radagast": {
+    "pairs": 44,
+    "queries": 88,
+    "feeds": 0.216,
+    "interaction": 0.159,
+    "function": 0.148,
+    "cardbert": 0.205,
+    "synergy": 0.284,
+    "random": 0.17
+   },
+   "sharknado": {
+    "pairs": 123,
+    "queries": 246,
+    "feeds": 0.089,
+    "interaction": 0.073,
+    "function": 0.175,
+    "cardbert": 0.159,
+    "synergy": 0.024,
+    "random": 0.118
+   },
+   "sisay": {
+    "pairs": 21,
+    "queries": 42,
+    "feeds": 0.19,
+    "interaction": 0.214,
+    "function": 0.524,
+    "cardbert": 0.524,
+    "synergy": 0.0,
+    "random": 0.119
+   },
+   "ur-dragon": {
+    "pairs": 16,
+    "queries": 32,
+    "feeds": 0.219,
+    "interaction": 0.25,
+    "function": 0.219,
+    "cardbert": 0.125,
+    "synergy": 0.125,
+    "random": 0.0
+   },
+   "yawgmoth-swarm": {
+    "pairs": 36,
+    "queries": 72,
+    "feeds": 0.167,
+    "interaction": 0.139,
+    "function": 0.167,
+    "cardbert": 0.153,
+    "synergy": 0.111,
+    "random": 0.056
+   }
+  },
+  "note": "positives are cards a checker-passed stack names together; favours feeds by construction — said, not hidden"
+ },
+ "golden": {
+  "interaction": {
+   "recall@10": 0.121,
+   "median_rank": 36.0,
+   "queries": 526,
+   "hard_negative_separation": 0.112,
+   "hard_negative_pairs": 15
+  },
+  "function": {
+   "recall@10": 0.264,
+   "median_rank": 66.5,
+   "queries": 526,
+   "hard_negative_separation": 0.012,
+   "hard_negative_pairs": 15
+  },
+  "cardbert": {
+   "recall@10": 0.127,
+   "median_rank": 212.0,
+   "queries": 526,
+   "hard_negative_separation": 0.028,
+   "hard_negative_pairs": 15
+  }
+ },
+ "golden_missing": [],
+ "note": "golden recall and hard-negative separation favour a space trained for 'does the same job', the incumbent's signal"
+}
