@@ -1,0 +1,401 @@
+{
+  "id": "001",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change",
+  "opened": "2026-11-21",
+  "decided_at": "2026-11-21",
+  "cards": [
+    "Flawless Maneuver",
+    "Dawn's Truce"
+  ],
+  "swap": {
+    "out": "Flawless Maneuver",
+    "in": "Dawn's Truce"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-21",
+      "slice": "question + CONTEXT summary/plays + the branch list; asked for an argument, no goldfish",
+      "text": "# b3-v1 card 1 — strategist, 2026-11-21 (saved by Jarvis; the agent cannot write files). Argument, no goldfish.\n\nTeferi's Protection in, Sapphire Medallion out.\n- Weakest slot: Medallion discounts blue only; no draw/protect/kill; six rocks + 35 lands; Heliod's discount is the cost-cutter. A rock, so the land rule is untouched.\n- Heliod's protection now: he is an Enchantment Creature → Greater Auramancy gives shroud, Karametra's Blessing hexproof + indestructible; Spellskite, Guardian of Faith (flash phase-out), Flawless Maneuver. Targeted removal well covered (strategy:multiplayer.commander-insurance).\n- The gap is NON-targeted loss: wrath, edict, the Armageddon of 003. Teferi's Protection phases out everything incl. lands + protection from everything — the one card answering all at once. It was one of the branch's cuts (staged 2026-11-12 for Flawless Maneuver, \"try: blind\") — check it was deliberate.\n- Forced-draw kill closes on paper: Psychosis Crawler pings every opponent per YOUR draw → ~40 draws, not 40×3; Ageless Insight doubles; Mathemagics X=5 → 32, X=6 → 64 draws; needs the Crawler (5) alive + ~12-14 mana. Scrawling Crawler taxes each opponent per THEIR draw; Prosperity/Fascination X≈20 hits all three; Forced Fruition 7 per opponent spell. Protecting the Crawler matters as much as Heliod; Protection covers both.\n- Fort already five pieces (Prison, Propaganda, Sphere, Second Doctor, Auramancy); add nothing.\n- Next: Swiftfoot Boots for Flawless Maneuver; Fierce Guardianship for Isochron Scepter (Jarvis: Fierce Guardianship is a Game Changer — the branch holds three, so this is OUT at B3).\n- Dissent: Maneuver is free, Protection costs 3 on a counter-mana turn; Protection phases out your own Crawler and fort for a turn; \"protection is for the A team\" rule → protection dense already → NO CHANGE defensible; Medallion discounts Mathemagics/Fruition/Zenith, which a rock count hides.\nNeeds: stack scenario Mathemagics + Insight + Crawler; forge-cast-check on Teferi's Protection.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:multiplayer.commander-insurance"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T19:16:19-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card1-strategist.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "Heliod back face text; Approach of the Second Sun; Forced Fruition + Smothering Tithe",
+      "text": "# Heliod discount + Approach casts — rules-question, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nHeliod, the Warped Eclipse (verbatim): \"You may cast spells as though they had flash. Spells you cast cost {1} less to cast for each card your opponents have drawn this turn.\"\n\n(a) Discount: \"this turn\" = the current turn, so casting on an opponent's turn counts their draws that turn; the count locks in at 601.2f. Reduces only generic, after X is chosen (ruling 2023-04-14: {X}{R} with two opp draws → X=5 for {3}{R}). Approach {6}{W} → {W} with six opponent draws. Commander tax IS reducible: 903.8 + 601.2f (additional costs applied before reductions; ruling 2023-04-14).\n(b) Approach: the second cast must be from hand; the first may be cast from anywhere (ruling 2017-04-18); a card changing zones is a new object (400.7) so the same card recast later is \"another spell\". A COUNTERED first Approach still counts (ruling 2017-04-18: checks whether the first was cast, not resolved) — so Mystic Sanctuary → top → draw → cast wins. Flash via Heliod changes timing only; still from hand. A COPY is not cast (707.10; ruling 2017-04-18) and counts as neither. If the second is countered, no win (ruling 2017-07-14).\n(c) Forced Fruition + Smothering Tithe: seven separate Tithe triggers per opponent spell (121.2 one at a time; 603.2c); the opponent draws all seven before paying (Tithe ruling 2023-09-01); not optional (Fruition ruling). Those seven count for Heliod's discount if drawn before your cost locks in.\nNot settled: interleaving order when Fruition draws and your cast happen the same turn.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "121.2",
+          "400.7",
+          "601.2f",
+          "603.2c",
+          "707.10",
+          "903.8"
+        ]
+      },
+      "added_at": "2026-11-21T19:16:20-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card1-rules-heliod-approach.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "the branch's cards.json, bracket_report, stacks, opponents' seats",
+      "text": "# b3-v1 branch facts — data-analyst, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nBranch: 99 + Heliod; 35 lands (13 Island, 4 Plains, 18 nonbasic), 64 non-lands. GCs: Mystical Tutor, Rhystic Study, Smothering Tithe. Two-card infinites 0. Floor 3. U sure 26 / max 28; W sure 17 / max 18 (fetch excluded). Colourless-only land: Mikokoro.\n\n(a) Forced draw — every-player X: Prosperity, Fascination (mode), Folio of Fancies ({X}{X},T). Every-player fixed: Vision Skeins (2 each), Faerie Mastermind ({3}{U}), Mikokoro, Scrawling Crawler (upkeep), Second Doctor (may, end step). Static: Dictate of Kruphix, Howling Mine, Font of Mythos (+2). Targeted X: Mathemagics (2^X), Stroke of Genius, Blue Sun's Zenith. Targeted fixed: Archmage's Charm mode, Gleaming Splendor ({2}{W} two players), Loran. Opponents only: Forced Fruition (7 per spell); Arcane Denial's rider.\n(b) Payoffs: Scrawling Crawler (opp draw: lose 1), Smothering Tithe, Gleaming Splendor + Faerie Mastermind (opp second draw), Psychosis Crawler (your draw: each opp loses 1), Rhystic Study; Heliod back face discount.\n(c) Doublers: Teferi's Ageless Insight and Bard — identical \"except the first one you draw in each of your draw steps, draw two instead\"; compounding unchecked.\n(d) Approach finders: Mystical, Personal Tutor, Solve the Equation, Long-Term Plans, Drift of Phantasms (transmute), Dig Through Time, Top, Scroll Rack, Mystic Sanctuary.\n(e) Win protection: Teferi TR, Silence, Pact of Negation.\n(f) Heliod protection: Karametra's Blessing (hexproof+indestructible; he is an enchantment creature), Greater Auramancy (shroud), Flawless Maneuver, Guardian of Faith (phase out others), Spellskite. No equipment, no flicker.\n(g) Counters (all hard): Counterspell, Arcane Denial, Dovin's Veto (noncreature), Force of Negation (noncreature), An Offer (noncreature), Archmage's Charm mode, Pact of Negation. Venser is bounce.\n(h) Removal: Swords, Path, Winds of Abandon (overload exiles theirs), Ballista, Loran (art/ench), Teferi -3, Venser; Eiganjo, Otawara channels; mass: Supreme Verdict, Austere Command, Winds overload.\n(i) Fort: Ghostly Prison, Propaganda, Sphere of Safety, Second Doctor. Enchantments in the 99: 12 (13 with Heliod).\n(j) Rocks 5: Sol Ring, Arcane Signet, Azorius Signet, Fellwar, Talisman of Progress; Sapphire Medallion a reducer. (k) No max hand size: Folio, Second Doctor.\nCurve MV 0:2 1:11 2:20 3:17 4:7 5:2 6:3 7+:2. MV≥5: Psychosis Crawler, Sphere, Austere Command, Bard, Forced Fruition, Approach, Dig. X spells: Prosperity, Fascination, Folio, Mathemagics, Stroke, Zenith, Ballista.\n\nStacks (pass): 002 Approach second cast off Mystical Tutor; 007 Approach under Teferi TR. Named but not in branch: Swan Song, Ancient Tomb (002), Fierce Guardianship (007, in an opponent's hand). 72 of 84 branch entries in no stack.\n\nCrawler arithmetic: 40 Psychosis triggers kill every opponent at once; 40 draws bare; ~20 non-first draw events with Insight; 10 if Insight + Bard compound (unverified). Scrawling Crawler taxes opponents' draws; its upkeep draw is symmetric.\n\nOpponents: no seat runs mass land destruction (name match). Creature exile: zur 2 (Swords, Path); the rest 0. Chaos Warp: tannuk, purphoros, krenko, magda 1 each. Assassin's Trophy: teval.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T19:16:20-08:00",
+      "commands": [
+        "manamap pilot bracket-check heliod --branch b3-v1",
+        "manamap pilot deck-facts heliod --branch b3-v1"
+      ],
+      "from": "data/decks/heliod/.agent-out/b3-v1-card1-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-21",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json; .agent-out/deck-doctor-prescribe-b3-v1-card1.json",
+      "text": "Asked: the one card in and one card out that most improves b3-v1 on the thesis, or no change. The audit on the branch reads protection 4 (target 5-7, under) and the log names Heliod lost to removal in two of three games (001: a redirected Swords to Plowshares; 003: removed before any protection was equipped), while card-advantage reads 15 (target 10, at) — so the question's own candidates on the draw side (Words of Wisdom, a wheel, Archive) touch an axis that is not binding, and the protection side is. The strategist's pick, Teferi's Protection, is a Game Changer (cards.csv game_changer=True; WotC list); the branch holds three (Mystical Tutor, Rhystic Study, Smothering Tithe, bracket-check floor 3) and the thesis keeps all three, so adding it reads floor 4 — it was staged out on the 12th in the same commit as Sphinx, Fierce Guardianship and Cyclonic Rift, and that is the argued reason the 'try: blind' why omits. The swap is Dawn's Truce in for Flawless Maneuver out: Maneuver gives creatures indestructible, which does nothing against the exile that killed Heliod in 001 and nothing for Rhystic Study, Smothering Tithe, Teferi's Ageless Insight or the fort; Truce gives you and every permanent hexproof (the targeted case, the logged case) and, if an opponent is gifted a draw, indestructible too (the destroy-wipe case Maneuver covered) — and that gifted draw is a Heliod discount, a Tithe trigger and a Scrawling Crawler ping, which is the thesis.\n\nAdds: [{\"card\": \"Dawn's Truce\", \"closes\": \"protection\", \"source\": \"recon\", \"why\": \"{1}{W} instant: you and your permanents gain hexproof; gift an opponent a draw and they also gain indestructible. One card answers the logged case (targeted removal on Heliod, 001 and 003) AND the destroy-wrath case Flawless Maneuver covered, for every permanent including Rhystic Study, Smothering Tithe, the Crawlers and the fort. The gift is one opponent draw: a Heliod discount, a Tithe trigger, a Scrawling Crawler ping. Not a Game Changer; floor stays 3. Does not cover exile-wipes, edicts or mass land destruction. Recon: 20.5% on the Wheels page.\", \"evidence\": {\"recon_support\": \"Consensus protection the branch does NOT run: Lightning Greaves 31.9%, Swiftfoot Boots 19.0%, Dawn's Truce 20.5% on the Wheels page.\"}, \"natural_cut\": \"Flawless Maneuver\", \"bracket_delta\": {\"before\": 3, \"after\": 3}, \"citations\": [{\"rule\": \"strategy:multiplayer.commander-insurance\", \"quote\": \"constant protection (boots-style equipment and enchantments — always on, cheap\"}]}, {\"card\": \"Words of Wisdom\", \"closes\": \"card-advantage\", \"source\": \"recon\", \"why\": \"{1}{U} instant: you draw two, each other player draws one. An every-player draw in the slot of a targeted one; at instant speed on an opponent's turn it is three discount, three Scrawling pings, three Tithe triggers and two (four under a doubler) Psychosis triggers. Half a Vision Skeins at the same cost. Recon: 54.4% at bracket 3, the one card above 50% not in the 99.\", \"e\n\nCuts: [{\"card\": \"Flawless Maneuver\", \"why\": \"Creatures-only, destroy-only. Enumerated against the removal the log recorded: 001 was Swords to Plowshares (exile) — Maneuver blank; 002 was the pilot's own Supreme Verdict — Maneuver live; 003's removal shape is not recorded. It protects none of the noncreature engine (Rhystic Study, Smothering Tithe, Teferi's Ageless Insight, Folio of Fancies, the four fort pieces). Staged in on the 12th with a 'try: blind' why and no argued reason.\", \"cost_of_cutting\": \"The deck's one free (with a commander out) instant that saves Heliod, Psychosis Crawler, Scrawling Crawler and Bard from a destroy-wrath without spending mana on the counter-mana turn. Dawn's Truce covers the same wrath for {1}{W} plus a gift; the free cast is what is lost.\", \"orphans_stack\": [], \"difficulty\": \"contested\", \"citations\": [{\"rule\": \"strategy:multiplayer.commander-insurance\", \"quote\": \"constant protection (boots-style equipment and enchantments — always on, cheap\"}]}, {\"card\": \"Stroke of Genius\", \"why\": \"Targeted X draw, and the thesis says every-player draws beat targeted. The branch's targeted X draws are three — Mathemagics (exponential), Blue Sun's Zenith (instant, shuffles",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:multiplayer.commander-insurance"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T19:16:21-08:00"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "data-analyst",
+      "log"
+    ],
+    "pilot_words": "ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)",
+    "reading": "Heliod was lost to removal before any protection landed in two of the three logged games (S-1a9fa010-01). Flawless Maneuver protects creatures only and against destroy only, so it was blank to the exile that took Heliod and to Rhystic Study, Smothering Tithe, Teferi's Ageless Insight and the fort; Dawn's Truce gives every permanent hexproof, indestructible too when the gift is promised, and the gifted draw is a Heliod discount, a Tithe trigger and a Scrawling Crawler ping (S-1a9fa010-08). The doctor and the analyst agreed on the pair; the strategist's pick, Teferi's Protection, is a Game Changer and the branch already holds three, so it was refused. The goldfish reads neither card (S-1a9fa010-11, S-1a9fa010-16); its rows (S-1a9fa010-17) describe the branch's other swaps, not this one, and decided nothing here.",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-one-on-b3-v1-the-one-card-in-and-one-card-o",
+  "facts": [
+    {
+      "id": "S-1a9fa010-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-1a9fa010-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-1a9fa010-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-1a9fa010-04",
+      "kind": "oracle",
+      "text": "Instant · {2}{W} — If you control a commander, you may cast this spell without paying its mana cost. Creatures you control gain indestructible until end of turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Flawless Maneuver"
+    },
+    {
+      "id": "S-1a9fa010-05",
+      "kind": "recon",
+      "text": "recon (2026-11-21): Group-hug payoffs and fort: the branch matches the consensus on the punishers and the fort and is alone on the doublers. Psychosis Crawler 62.0%, Scrawling Crawler 58.5%, Faerie Mastermind 43.7%, Smothering Tithe 46.8%, Dictate of Kruphix 3",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Flawless Maneuver",
+      "as_of": "2026-11-21",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-1a9fa010-06",
+      "kind": "recon",
+      "text": "recon (2026-11-21): Interaction counts. The EDHREC group-hug average deck (239 decks) carries six counterspells (An Offer You Can't Refuse, Arcane Denial, Counterspell, Dovin's Veto, Rewind, Unwind), three spot removal (Oblation, Path, Swords), one sweeper-cla",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Flawless Maneuver",
+      "as_of": "2026-11-21",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-1a9fa010-07",
+      "kind": "staged",
+      "text": "staged 2026-11-12: Teferi's Protection → Flawless Maneuver — try: blind — none — the goldfish does not read Consecrated Sphinx, Cyclonic Rift, Fierce Guardianship, Flawless Maneuver, Mana Drain, Teferi's Protection, Teferi, Time Raveler: judge it (the strategist), model it, or pla",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Flawless Maneuver",
+      "as_of": "2026-11-12"
+    },
+    {
+      "id": "S-1a9fa010-08",
+      "kind": "staged",
+      "text": "staged 2026-11-21: Flawless Maneuver → Dawn's Truce — Card 1 (2026-11-21, pilot approved; doctor + analyst; strategist wanted Teferi's Protection, refused as a 4th Game Changer): Heliod was removed before protection landed in 001 and 003 and the branch's protection was all ",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Flawless Maneuver",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-1a9fa010-09",
+      "kind": "price",
+      "text": "$6.93 NM ((FRC) 25) as of 2026-11-13",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Flawless Maneuver",
+      "as_of": "2026-11-13",
+      "figure": 6.93
+    },
+    {
+      "id": "S-1a9fa010-10",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Greater Auramancy (0.95), Teferi's Protection (0.93), Karametra's Blessing (0.92)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Flawless Maneuver",
+      "neighbours": [
+        {
+          "name": "Greater Auramancy",
+          "score": 0.9516
+        },
+        {
+          "name": "Teferi's Protection",
+          "score": 0.9252
+        },
+        {
+          "name": "Karametra's Blessing",
+          "score": 0.9231
+        }
+      ]
+    },
+    {
+      "id": "S-1a9fa010-11",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Flawless Maneuver",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-1a9fa010-12",
+      "kind": "oracle",
+      "text": "Instant · {1}{W} — Gift a card (You may promise an opponent a gift as you cast this spell. If you do, they draw a card before its other effects.) | You and permanents you control gain hexproof until end of turn. If the gift was promised, permanents you control also gain indestructible until end of turn.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Dawn's Truce"
+    },
+    {
+      "id": "S-1a9fa010-13",
+      "kind": "recon",
+      "text": "recon (2026-11-21): The branch's Approach package is deeper than any measured bracket-3 list, and its protection shape matches the consensus where the consensus has one. Approach itself is 48.1% at bracket 3. Of the branch's finders and protectors the bracket-",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Dawn's Truce",
+      "as_of": "2026-11-21",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-1a9fa010-14",
+      "kind": "staged",
+      "text": "staged 2026-11-21: Flawless Maneuver → Dawn's Truce — Card 1 (2026-11-21, pilot approved; doctor + analyst; strategist wanted Teferi's Protection, refused as a 4th Game Changer): Heliod was removed before protection landed in 001 and 003 and the branch's protection was all ",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Dawn's Truce",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-1a9fa010-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Karametra's Blessing (0.94), Greater Auramancy (0.94), Guardian of Faith (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Dawn's Truce",
+      "neighbours": [
+        {
+          "name": "Karametra's Blessing",
+          "score": 0.9433
+        },
+        {
+          "name": "Greater Auramancy",
+          "score": 0.936
+        },
+        {
+          "name": "Guardian of Faith",
+          "score": 0.9147
+        }
+      ]
+    },
+    {
+      "id": "S-1a9fa010-16",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Dawn's Truce",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-1a9fa010-17",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 0 of 2 named card(s) read: 2 rows better, 4 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.0,
+      "n": 10000
+    },
+    {
+      "id": "S-1a9fa010-18",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 7.10 -> 4.31, a change of -2.79 (-39%) [-2.8876, -2.6836] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.7856,
+      "ci95": [
+        -2.8876,
+        -2.6836
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1a9fa010-19",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 16 games in 100 -> 5 in 100, a swing of 11 games per 100 [-0.1152, -0.1002] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.1077,
+      "ci95": [
+        -0.1152,
+        -0.1002
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1a9fa010-20",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 3.29 -> 1.94, a change of -1.35 (-41%) [-1.4108, -1.2956] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3532,
+      "ci95": [
+        -1.4108,
+        -1.2956
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1a9fa010-21",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 3.00 -> 2.53, a change of -0.48 (-16%) [-0.5434, -0.4116] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4775,
+      "ci95": [
+        -0.5434,
+        -0.4116
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-1a9fa010-22",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 54 games in 100 -> 48 in 100, a swing of 6 games per 100 [-0.069, -0.0468] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0579,
+      "ci95": [
+        -0.069,
+        -0.0468
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-1a9fa010-23",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Flawless Maneuver",
+      "Dawn's Truce"
+    ],
+    "unknown": [],
+    "share": 0.0
+  },
+  "absent": [],
+  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T19:19:15-08:00",
+    "facts": 23
+  }
+}

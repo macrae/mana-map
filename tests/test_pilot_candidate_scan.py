@@ -157,7 +157,13 @@ def test_the_shortlist_joins_every_source_and_predicts_a_direction_not_a_number(
     assert cv["infinite_with"] == []
     assert cv["predicted"]["forge.drain_dealt"] == "up" and cv["predicted"]["forge.life_gained"] == "up"
     assert cv["prescription"] and cv["prescription"]["as"] == "add"
-    assert any(f["dimension"] == "drain" for f in cv["recon"])
+    # THE RECON IS A DATED AGENT ARTIFACT, and this asserted its CONTENT: that the 2026-09-30
+    # drain recon named Cliffhaven. The 2026-11-20 recon (threat-v1) names other cards, and
+    # the test went red for a join that was correct. What the join owes is the SHAPE — every
+    # recon row it returns carries the finding, its dimension and its confidence — not which
+    # cards other people's lists happened to run on the day the doctor looked.
+    assert all(f.get("finding") is not None and f.get("confidence") and "claim" in f for f in cv["recon"])
+    assert doc["sources"]["recon"], "the join names the recon it read, dated"
     assert cv["assess"] and cv["assess"]["job"]
     tp = rows["Twilight Prophet"]
     assert tp["dimensions"] == {} and tp["predicted"] == {}

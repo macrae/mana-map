@@ -232,6 +232,19 @@ manamap pilot sim-findings <slug> [--run R] [--boards] [--write] [--json]
                                         #   sim-debrief agent's and may cite only finding ids
 manamap pilot validate-sim-findings <slug>   # every citation a finding of that run, every number the record's
 manamap pilot merge-sim-findings <slug>      # recompute the skeleton, take the prose, refuse what does not hold
+manamap pilot study <slug> [list|new "<question>"|show NNN [--facts]|facts NNN [--write]|add NNN --agent A --from F|call NNN --decision D --decided-by S --pilot-words "…"|install NNN]
+                                        #   THE STUDY (2026-11-21): one question about one deck — the facts from
+                                        #   every source (log, debrief, stacks, engine, context, recon, queue,
+                                        #   ledger, DeckCheck, prices, in-deck neighbours, coverage, the
+                                        #   goldfish LAST and labelled), each agent's answer kept with its model
+                                        #   and timing, the call, who decided, the pilot's words. The artifact a
+                                        #   decision rests on; `install` validates, stamps and freezes it
+manamap pilot card-dossier <slug> "<card>" [--branch B] [--json]
+                                        #   everything the bench knows about one card in one deck, one fact a
+                                        #   line with its tier (✓ ◆ ★) and source; what `try` and `net-change`
+                                        #   print before any instrument's row
+manamap pilot validate-study <slug> [NNN]    # decided_by required; the goldfish never the sole decider, never a
+                                        #   decider on a card it cannot read; every citation resolves
 manamap pilot sim-boards <slug> <run> --criterion C [--n N] [--top K] [--lift|--stack] [--json]
                                         #   WHICH MOMENTS ARE WORTH LIFTING, and how often they RECUR:
                                         #   widest / modal / death / held / pre-wipe / lethal-missed /

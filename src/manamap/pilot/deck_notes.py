@@ -412,6 +412,70 @@ def marks_summary(entries, sidecar):
     return out
 
 
+#: The debrief's closed vocabulary for how a card read in one game.
+READS = ("over", "under", "as-expected", "missed")
+
+
+def tally(slug):
+    """THE CROSS-GAME AGGREGATION THAT DID NOT EXIST (2026-11-21): the debrief's
+    per-card reads counted across every annotated game, the causes crossed with
+    results, and the record by list. Counts, never rates — three games are three
+    games — and every count carries the game ids it came from.
+
+    `log_annotations.json` is read per game by the doctor, the Keeper and the
+    pod; nothing had ever asked "how often has this card read under". That is the
+    question a swap study starts from, so it is a function with one home, read by
+    `card_dossier`, `study` and the `deck-notes tally` verb."""
+    entries = [e for e in read_log(slug) if is_game(e)]
+    ann = annotations(slug)
+    cause_of = {k: v.get("cause") for k, v in causes(slug).items()}
+    cards = {}
+    for gid, note in sorted(ann.items()):
+        for c in (note or {}).get("cards") or []:
+            name, read = c.get("card"), c.get("read")
+            if not name or read not in READS:
+                continue
+            row = cards.setdefault(name, {r: 0 for r in READS} | {"games": []})
+            row[read] += 1
+            if gid not in row["games"]:
+                row["games"].append(gid)
+    by_result = {}
+    for e in entries:
+        res = e.get("result") or "no result"
+        cell = by_result.setdefault(res, {"games": 0, "causes": {}})
+        cell["games"] += 1
+        c = cause_of.get(e["id"])
+        if c:
+            cell["causes"][c] = cell["causes"].get(c, 0) + 1
+    by_list = {}
+    for e in entries:
+        sha = str(e.get("decklist_sha256") or "")[:12] or "?"
+        cell = by_list.setdefault(sha, {"games": 0, "win": 0, "loss": 0, "draw": 0, "ids": []})
+        cell["games"] += 1
+        if e.get("result") in RESULTS:
+            cell[e["result"]] += 1
+        cell["ids"].append(e["id"])
+    return {"slug": slug, "games": len(entries), "annotated": sum(1 for e in entries if e["id"] in ann),
+            "cards": dict(sorted(cards.items(), key=lambda kv: (-(kv[1]["under"] + kv[1]["over"]), kv[0]))),
+            "by_result": by_result, "by_list": by_list}
+
+
+def _print_tally(doc):
+    print(f"TALLY — {doc['slug']}: {doc['games']} game(s), {doc['annotated']} debriefed")
+    if not doc["cards"]:
+        print("  no card reads yet — the debrief writes them (`/debrief`)")
+    else:
+        print(f"  {'card':34} {'over':>5} {'under':>5} {'as-exp':>6} {'missed':>6}  games")
+        for name, r in doc["cards"].items():
+            print(f"  {name[:34]:34} {r['over']:>5} {r['under']:>5} {r['as-expected']:>6} {r['missed']:>6}  "
+                  f"{', '.join(r['games'])}")
+    for res, cell in doc["by_result"].items():
+        causes_txt = ", ".join(f"{k} {v}" for k, v in sorted(cell["causes"].items(), key=lambda kv: -kv[1]))
+        print(f"  {res:10} {cell['games']} game(s)" + (f" — {causes_txt}" if causes_txt else ""))
+    for sha, cell in doc["by_list"].items():
+        print(f"  list {sha}: {cell['win']}W {cell['loss']}L {cell['draw']}D over {cell['games']} ({', '.join(cell['ids'])})")
+
+
 def _fmt(entry, annotated, width=72):
     head = (f"{entry['id']}  {entry['at'][:16]}  "
             f"{(entry.get('result') or '—'):<4}  "
@@ -483,6 +547,14 @@ def main(args):
             raise SystemExit(2)
         row = set_cause(slug, args.text, args.cause, note=getattr(args, "note", None))
         print(f"{slug}: entry {args.text} — {row['cause']} ({CAUSES[row['cause']]})")
+        return
+
+    if action == "tally":
+        doc = tally(slug)
+        if getattr(args, "as_json", False):
+            print(json.dumps(doc, indent=2, ensure_ascii=False))
+        else:
+            _print_tally(doc)
         return
 
     entries = read_log(slug)

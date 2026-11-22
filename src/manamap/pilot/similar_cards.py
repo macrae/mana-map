@@ -114,8 +114,13 @@ def resolve_seeds(seeds, names):
 
 
 def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
-            allow_game_changers=True, spec=None):
-    """Rank the corpus by ability-space proximity to the seeds. Returns (rows, meta)."""
+            allow_game_changers=True, spec=None, within=None):
+    """Rank the corpus by ability-space proximity to the seeds. Returns (rows, meta).
+
+    `within` (2026-11-21) inverts the candidate rule: rank ONLY these names — the
+    deck's own list — so a dossier can say which cards already in the 99 do the
+    seed's job (redundancy evidence). Identity and exclusion do not apply inside
+    it; legality still does."""
     from manamap.analysis.common import top_k_similar
     from manamap.analysis.commander_search import centroid
 
@@ -144,17 +149,23 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
     mask = np.zeros(len(names), dtype=bool)
     seen, skipped_illegal = set(), 0
     seed_names = {names[r] for r in seed_rows}
+    inside = {w.lower() for w in within} if within is not None else None
     for i, n in enumerate(names):
         if n in seen:
             continue
         seen.add(n)
         rec = pool.get(n)
-        if rec is None or n in exclude or n in seed_names:
+        if rec is None or n in seed_names:
+            continue
+        if inside is not None:
+            if n.lower() not in inside and not any(f.lower() in inside for f in n.split(" // ")):
+                continue
+        elif n in exclude:
             continue
         if not (legal_in.get(n) == "legal" if other else rec["legal"]):
             skipped_illegal += 1
             continue
-        if identity is not None and not rec["color_identity"] <= ident:
+        if inside is None and identity is not None and not rec["color_identity"] <= ident:
             continue
         if not allow_game_changers and rec["game_changer"]:
             continue
@@ -210,6 +221,7 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
             "space": "ability (embeddings_ability.npy)",
             "seeds": [names[r] for r in seed_rows],
             "seed_roles": sorted(seed_roles),
+            "within": (len(inside) if inside is not None else None),
             "ranked_against": "the seed" if len(seed_rows) == 1 else "the seeds' centroid"}
     if other:
         # Same count, named for the format it was checked against.

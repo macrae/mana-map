@@ -219,6 +219,18 @@ PILOT_STEPS = [
      "unresolved, a NOTE once checker-passed; the bridge version where the logs are absent"),
     ("sim-scenario", "manamap.sim.bridge",
      "Lift one game at one moment out of a Forge run into a game_state v2 scenario for resolve-stack"),
+    ("study", "manamap.pilot.study",
+     "THE STUDY (studies/NNN-*.json, tracked): one question about one deck, the facts from every "
+     "source with their tier and stamp, each agent's answer kept, the call and who decided — the "
+     "artifact a decision rests on; the goldfish is one labelled fact in it"),
+    ("card-dossier", "manamap.pilot.card_dossier",
+     "Everything the bench knows about ONE card in ONE deck: the pilot's words and the debrief's "
+     "reads from the log, the stacks naming it, its engine stage, the context, the recon, the "
+     "queue, the ledger, its price, its in-deck neighbours by function, and whether the goldfish "
+     "can see it at all"),
+    ("validate-study", "manamap.pilot.validate_study",
+     "Form-check studies/: a decided study names what decided it, the goldfish is never the sole "
+     "decider nor a decider on a card it cannot read, and every citation resolves"),
     ("decisions", "manamap.pilot.decisions",
      "THE DECISION LEDGER (decisions.jsonl, append-only): every propose / withdraw / reject / "
      "merge with the prediction frozen at that moment; `outcome` joins a merged list's own "
@@ -360,6 +372,7 @@ _DECK_COMMANDS = {
     "deck-export", "deck-link", "validate-links", "deckcheck", "validate-deckcheck",
     "forge-cast-check", "validate-cast-proofs",
     "decisions", "validate-decisions",
+    "study", "card-dossier", "validate-study",
     "check-in", "art", "targeting", "fetch-deck", "validate-deck", "validate-stack", "goldfish",
     "cache-status", "cache-record", "cache-clear", "cache-rebless",
     "cache-snapshot", "cache-rerecord",
@@ -658,9 +671,10 @@ def add_pilot_parser(subparsers):
                              help="the deck's format (default: what brief.json / "
                                   "cards.json already say, else commander)")
         if name == "deck-notes":
-            cmd.add_argument("action", choices=["add", "list", "show", "cause", "mark"],
+            cmd.add_argument("action", choices=["add", "list", "show", "cause", "mark", "tally"],
                              help="add a note / list the log / show one entry / "
-                                  "record how a game ended / record the pilot's counts")
+                                  "record how a game ended / record the pilot's counts / "
+                                  "tally: the debrief's card reads counted across games")
             cmd.add_argument("text", nargs="?", default=None,
                              help="the note (add), or the entry id (show, cause, mark)")
             cmd.add_argument("--file", default=None,
@@ -1286,6 +1300,63 @@ def add_pilot_parser(subparsers):
                                   "against the pristine jar and write the patched copy "
                                   "beside it (needs javac 21+). A new class sha is "
                                   "registered in the manifest — commit it")
+        if name == "study":
+            cmd.add_argument("action", nargs="?", default="list",
+                             choices=["list", "new", "show", "facts", "add", "call", "install"],
+                             help="list the deck's studies / new: open one from a question / show one "
+                                  "(--facts: just the skeleton, to hand an agent) / facts: recompute the "
+                                  "skeleton (--write) / add: keep one agent's answer / call: the decision, "
+                                  "who decided and the pilot's words / install: validate, stamp, freeze")
+            cmd.add_argument("ref", nargs="?", default=None,
+                             help="new: the question in quotes; otherwise the study id (NNN)")
+            cmd.add_argument("--branch", default=None, help="new: the branch the question is about")
+            cmd.add_argument("--out", dest="swap_out", default=None, metavar="CARD", help="new: the card leaving")
+            cmd.add_argument("--in", dest="swap_in", default=None, metavar="CARD", help="new: the card coming in")
+            cmd.add_argument("--card", action="append", default=None, metavar="CARD",
+                             help="new: a further card the study is about (repeatable)")
+            cmd.add_argument("--backfilled", action="store_true",
+                             help="new: a study written after the fact from saved agent answers")
+            cmd.add_argument("--opened", default=None, help="new: the date the question was asked (backfill)")
+            cmd.add_argument("--agent", default=None, choices=["strategist", "rules-question", "data-analyst",
+                                                                 "card-scout", "deck-doctor"],
+                             help="add: which agent's answer this is")
+            cmd.add_argument("--from", dest="source_file", default=None, metavar="FILE",
+                             help="add: the agent's answer, as saved")
+            cmd.add_argument("--text", default=None, help="add: the agent's answer inline")
+            # `dest`s that cannot shadow the top-level namespace: argparse writes every
+            # subparser default into ONE namespace, and a `--command` option with its
+            # default dest set `args.command` to None, so `manamap pilot study …` fell
+            # through to the pipeline dispatcher ("Unknown step: None").
+            cmd.add_argument("--model", dest="agent_model", default=None,
+                             help="add: the model that wrote it (default: the charter's)")
+            cmd.add_argument("--spawned-at", dest="spawned_at", default=None, help="add: ISO time of the spawn")
+            cmd.add_argument("--elapsed", type=float, default=None, help="add: seconds the agent took")
+            cmd.add_argument("--slice", default=None, help="add: the slice of the record the agent was given")
+            cmd.add_argument("--command", dest="commands_run", action="append", default=None, metavar="CMD",
+                             help="add: a command the analyst ran (repeatable)")
+            cmd.add_argument("--prescription", default=None, metavar="NNN",
+                             help="add: the deck-doctor prescription id this answer is")
+            cmd.add_argument("--decision", default=None, choices=["approve", "decline", "no-change", "open"],
+                             help="call: the pilot's decision")
+            cmd.add_argument("--decided-by", dest="decided_by", action="append", default=None, metavar="SRC[,SRC]",
+                             help="call: what decided it — pilot, log, strategist, rules-question, data-analyst, "
+                                  "card-scout, deck-doctor, recon, stacks, engine, context, goldfish, forge, "
+                                  "mana, deckcheck (repeatable or comma-separated)")
+            cmd.add_argument("--pilot-words", dest="pilot_words", default=None,
+                             help="call: what the pilot said, verbatim")
+            cmd.add_argument("--reading", default=None,
+                             help="call: Jarvis's one-paragraph synthesis; every figure cites a fact id")
+            cmd.add_argument("--facts", action="store_true", dest="facts_only",
+                             help="show: only the skeleton, for an agent's slice")
+            cmd.add_argument("--write", action="store_true", help="facts: write the recomputed skeleton")
+            cmd.add_argument("--force", action="store_true", help="facts: recompute a DECIDED study's facts")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "card-dossier":
+            cmd.add_argument("card", help="the card, in quotes")
+            cmd.add_argument("--branch", default=None, help="read the branch's list and its goldfish report")
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+        if name == "validate-study":
+            cmd.add_argument("ref", nargs="?", default=None, help="one study id (default: every study)")
         if name == "decisions":
             cmd.add_argument("action", nargs="?", default="list",
                              choices=["list", "show", "outcome", "backfill", "adopt-policy"],

@@ -447,17 +447,36 @@ def review(slug, branch, doc=None, src=None):
         in_deck = set()
     adds = set(s["diff"]["add"]) - in_deck
     if adds:
-        hits = []
-        for path in sorted((deck_dir(slug) / "stacks").glob("*.json")):
-            sd = load_json(path) or {}
-            hay = json.dumps(sd.get("scenario") or {}, ensure_ascii=False)
-            named = sorted(a for a in adds if a in hay)
-            if named:
-                hits.append({"id": sd.get("id") or path.name[:3], "title": sd.get("title"),
-                             "checker": ((sd.get("checker") or {}).get("verdict")), "names": named})
+        hits = stacks_naming(slug, adds)
         if hits:
             out["stacks"] = hits
     return out
+
+
+def stacks_naming(slug, names):
+    """The deck's stack scenarios whose SCENARIO names any of `names`, with the
+    checker's verdict: `[{id, title, checker, names}]`, in file order.
+
+    ONE SCAN, TWO READERS. `review` asks it about a branch's adds; `card_dossier`
+    asks it about one card. A second hand-rolled glob would have been the second
+    copy of the "does a stack name this card" rule, and the first was already
+    subtle (the scenario only — never the resolution prose, which names cards
+    the board does not hold)."""
+    names = [n for n in names if n]
+    if not names:
+        return []
+    hits = []
+    stacks = deck_dir(slug) / "stacks"
+    if not stacks.is_dir():
+        return hits
+    for path in sorted(stacks.glob("*.json")):
+        sd = load_json(path) or {}
+        hay = json.dumps(sd.get("scenario") or {}, ensure_ascii=False).lower()
+        named = sorted(n for n in names if n.lower() in hay)
+        if named:
+            hits.append({"id": sd.get("id") or path.name[:3], "title": sd.get("title"),
+                         "checker": ((sd.get("checker") or {}).get("verdict")), "names": named})
+    return hits
 
 
 def one(slug, branch):
