@@ -250,10 +250,28 @@ def _binding_axes(slug):
                       if isinstance(v, dict) and v.get("state") not in (None, "current")]}
 
 
+def _engine_summary(engine, lines):
+    """`engine.json` in one block. v2 (2026-11-22) keeps the authored words under
+    `reading` and computes the rest; a v1 file carries them at the top level."""
+    reading = engine.get("reading") if (engine.get("_meta") or {}).get("v") == 2 else engine
+    reading = reading or {}
+    return {"v": (engine.get("_meta") or {}).get("v", 1),
+            "thesis": reading.get("thesis"),
+            "critic": (reading.get("critic") or {}).get("verdict"),
+            "reading_stale": bool(reading.get("stale")) if engine.get("_meta") else None,
+            "lines": len(lines),
+            "verified_lines": sum(1 for l in lines if l.get("verified_by")),
+            "components": len(engine.get("components") or []) if engine.get("_meta") else None,
+            "spof": [s["card"] for s in engine.get("spof") or []][:6] if engine.get("_meta") else None,
+            "readers": (engine.get("_meta") or {}).get("readers")}
+
+
 def _open_questions(base):
     out = []
     for name, key in (("engine.json", "engine"), ("diagnosis.json", "diagnosis")):
         doc = load_json(base / name) or {}
+        if key == "engine" and (doc.get("_meta") or {}).get("v") == 2:
+            doc = doc.get("reading") or {}
         for q in doc.get("open_questions") or []:
             out.append({"from": key, "question": q.get("question"),
                         "settled_by": q.get("settled_by")})
@@ -775,10 +793,7 @@ def compose(slug, verify=False, ladder=True, today=None):
         # A VERDICT, travelling with its measure and its bands — see
         # `engine_health`. Absent, never WEAK, when nothing was measured.
         "engine_health": engine_health(vitals),
-        "engine": {"thesis": engine.get("thesis"),
-                   "critic": (engine.get("critic") or {}).get("verdict"),
-                   "lines": len(lines),
-                   "verified_lines": sum(1 for l in lines if l.get("verified_by"))} if engine else None,
+        "engine": _engine_summary(engine, lines) if engine else None,
         "diagnosis": {"verdict": diag.get("verdict"),
                       "skeptic": (diag.get("skeptic") or {}).get("verdict"),
                       "stale": diag.get("as_of_decklist_sha256") not in
@@ -1144,6 +1159,9 @@ def _next(info, today=None):
         nxt.append(f"diagnosis.json describes an older list — `/diagnose-deck {slug}`")
     if info["engine"] and info["engine"]["critic"] != "pass":
         nxt.append(f"engine.json's critic verdict is {info['engine']['critic']!r} — `/analyze-engine {slug}`")
+    if info["engine"] and info["engine"].get("reading_stale"):
+        nxt.append(f"engine.json's reading was written for another list — `/analyze-engine {slug}` rewrites it "
+                   f"over the computed graph"),
     routed = [q for q in info["open_questions"] if q.get("settled_by")]
     if routed:
         by = {}
@@ -1344,7 +1362,10 @@ def _print(info):
             print(f"             {t['by_turn_6_pct']}% by t6  {str(t['label'])[:70]}")
     if info["engine"]:
         e = info["engine"]
-        print(f"  engine     {e['verified_lines']}/{e['lines']} lines verified · critic {e['critic']}")
+        extra = (f" · {e['components']} components · SPOF {', '.join(e['spof']) or '—'}"
+                 if e.get("components") is not None else "")
+        print(f"  engine     {e['verified_lines']}/{e['lines']} lines verified · critic {e['critic']}"
+              f"{' · reading STALE' if e.get('reading_stale') else ''}{extra}")
         print(f"             {str(e['thesis'])[:100]}")
     if info["audit"]:
         a = info["audit"]

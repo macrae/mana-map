@@ -778,10 +778,24 @@
     "basis": "diagnostic.json"
   },
   "engine": {
+    "v": 2,
     "thesis": "Sai in the command zone turns each of the deck's 43 artifact spells into a cast plus a 1/1 flying Thopter, so the board goes wide on its own; the game ends when an artifact-count scaler (Master of Etherium, Chief of the Foundry, Steel Overseer, Nettlecyst, Adaptive Omnitool — with Forsaken Monument's flat +2/+2 on the colourless ones) or a self-scaling body (Darksteel Juggernaut, Broodstar, Myr Battlesphere, Graaz, Kappa Cannoneer) turns that width into damage, while Sai's sacrifice-two-draw and the artifact draw suite keep the casts coming.",
     "critic": "pass",
-    "lines": 12,
-    "verified_lines": 2
+    "reading_stale": true,
+    "lines": 40,
+    "verified_lines": 2,
+    "components": 9,
+    "spof": [
+      "Adaptive Omnitool",
+      "Research Thief",
+      "Thopter Spy Network",
+      "Sai, Master Thopterist",
+      "Myr Retriever",
+      "Kappa Cannoneer"
+    ],
+    "readers": {
+      "forge": 67
+    }
   },
   "diagnosis": null,
   "audit": {
@@ -844,6 +858,7 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug keen-engineering` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (001) — `/debrief keen-engineering`",
+    "engine.json's reading was written for another list — `/analyze-engine keen-engineering` rewrites it over the computed graph",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×5"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

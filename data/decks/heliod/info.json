@@ -3605,10 +3605,20 @@
     "basis": "diagnostic.json"
   },
   "engine": {
+    "v": 2,
     "thesis": "Heliod manufactures a resource nobody at the table prices -- cards in opponents' hands -- and six permanents read it (Consecrated Sphinx and Faerie Mastermind for cards, Gleaming Splendor and Smothering Tithe for Treasure, Scrawling Crawler for life loss, Heliod's back face as a cost discount); but the only win the deck is BUILT around is one seven-mana sorcery cast twice -- the output stage kills rarely -- and the goldfish that finds no kill by turn ten in 89.4% of games runs with five of those six readers DARK and the sixth given no cost channel.",
     "critic": "pass",
-    "lines": 10,
-    "verified_lines": 1
+    "reading_stale": false,
+    "lines": 5,
+    "verified_lines": 0,
+    "components": 4,
+    "spof": [
+      "Psychosis Crawler",
+      "Horn of Greed"
+    ],
+    "readers": {
+      "forge": 85
+    }
   },
   "diagnosis": {
     "verdict": "The deck wins by casting Approach of the Second Sun twice and by almost nothing else: over the 99 decided games of run b0f44e4a, 12 of 12 games that reached a second cast won against 8 of 87 that did not (1 of 10 on a single cast, 7 of 77 on none) — a ratio close to DEFINITIONAL, since Approach wins on resolution and across 39 casts the logs show no counterspell ever aimed at one. WHAT THE FORGE RECORD DOES NOT ESTABLISH IS WHY THE DECK GETS THERE, and both of this document's earlier attempts to say are withdrawn. The commander does not predict winning (resolving 13/68 = 0.191 against 7/52 = 0.135, Newcombe ci95 [-0.1849, +0.0838]; flipping 6/35 against 14/85, ci95 [-0.1748, +0.1230]), and neither does mana once the confound is controlled properly: the land gap between Approach-cast and no-Approach games disappears on the seat's OWN turns (0.8178 against 0.7849, ci95 [-0.0960, +0.0301]) and among the 46 games heliod was not eliminated in (lands ci95 [-2.5120, +0.6152]), because elimination differs 0.33 against 0.70 between those arms. Lands do not separate the 12 two-cast games from the 15 one-cast games at all. SO THE PRESCRIPTION RESTS ON THE DETERMINISTIC SHORTFALL AND NOT ON A CROSS-TAB: 33 lands against the control band of 37-39, 25 white and 26 blue sources against Karsten's 36, benchmark.json's missed-land-drop rate of 0.2568 worst at turn six, and a finisher costing seven mana twice. Mana-base binds on the audit's own figures; win-condition access is second and its final step is unexplained; protection is adequate and is bought below against a measured exit table.",

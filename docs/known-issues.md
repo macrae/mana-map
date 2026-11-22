@@ -1882,3 +1882,14 @@ Crossway Troublemakers; Vein Ripper before 2026-10-19) therefore shows as "seen"
 read. `meta.card_advantage.draw_not_modelled` excludes death-read cards since 2026-10-19;
 the per-card state does not yet consult `draw.unmodelled` or `death.unreadable`. The fix
 is a fifth state or a wider "partial", with the fleet `silent_losses` test extended.
+
+## 30. `/analyze-engine` still writes a v1 `engine.json`, which `validate-engine` v2 refuses (2026-11-22)
+
+`engine.json` is v2 since 2026-11-22: the computed graph (`engine-graph --write`) plus an
+authored `reading`. The `deck-engineer` charter and the `/analyze-engine` skill still produce
+the v1 shape — agent-placed stages and `lines[]` with `from`/`to`/`via` — and
+`validate-engine` refuses a file without `_meta.v = 2`, naming the migration command. Until
+the loop moves onto the graph (the `/engine-reading` skill: step 0 `engine-graph --write`,
+the engineer writes only `reading`, the critic attacks the reading against the graph), do
+not run `/analyze-engine`; the eleven migrated files carry each deck's last v1 thesis, line
+notes and critic verdict as their first reading, marked `stale` where the list has moved.

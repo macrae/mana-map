@@ -172,11 +172,41 @@ def dossier(slug, card, branch=None):
 
     # ── the engine model ──────────────────────────────────────────────────────
     eng = load_json(base / "engine.json") or {}
+    computed = (eng.get("_meta") or {}).get("v") == 2
     for st in eng.get("stages") or []:
         if any((n or "").lower() in _names_of(canonical) for n in (st.get("cards") or [])):
             facts.append(_fact("engine_stage", f"engine stage {st.get('stage')}: {st.get('label') or ''}".strip(),
-                               COACH, "engine.json", canonical, stage=st.get("stage"),
+                               DATA if computed else COACH, "engine.json", canonical, stage=st.get("stage"),
                                as_of=(eng.get("decklist_sha256") or "")[:12] or None))
+    if computed:
+        # ◆ the graph's own reading of the card (2026-11-22): its typed events, and
+        # its neighbours by edge — what feeds it and what it feeds, with the event.
+        node = next((n for n in (eng.get("graph") or {}).get("nodes") or []
+                     if (n.get("id") or "").lower() in _names_of(canonical)), None)
+        if node:
+            cons = sorted({a["consumes"]["event"] for a in node.get("abilities") or [] if a.get("consumes")})
+            prod = sorted({p["event"] for a in node.get("abilities") or [] if a.get("kind") != "implicit"
+                           for p in a.get("produces") or []})
+            cov = node.get("coverage") or {}
+            facts.append(_fact("engine_events", f"consumes {', '.join(cons) or 'nothing'}; produces "
+                               f"{', '.join(prod) or 'nothing the registry names'} (read by {cov.get('reader')}"
+                               f"{', partial' if cov.get('partial') else ''})", DATA, "engine.json", canonical,
+                               consumes=cons, produces=prod, reader=cov.get("reader"),
+                               as_of=(eng.get("decklist_sha256") or "")[:12] or None))
+            fed_by, feeds = {}, {}
+            for e in (eng.get("graph") or {}).get("edges") or []:
+                if e.get("kind") != "feeds":
+                    continue
+                if e["to"] == node["id"] and e["from"] not in ("OPPONENT", "TURN"):
+                    fed_by.setdefault(e["event"], []).append(e["from"] + ("" if e.get("proven") else " (unproven)"))
+                if e["from"] == node["id"]:
+                    feeds.setdefault(e["event"], []).append(e["to"] + ("" if e.get("proven") else " (unproven)"))
+            for label, table in (("fed by", fed_by), ("feeds", feeds)):
+                for ev, names in sorted(table.items()):
+                    facts.append(_fact(f"engine_{label.replace(' ', '_')}",
+                                       f"{label} on {ev}: {', '.join(sorted(names)[:8])}"
+                                       + (f" … ({len(names)})" if len(names) > 8 else ""),
+                                       DATA, "engine.json", canonical, event=ev, cards=sorted(names)))
     if not eng:
         absent.append({"source": "engine.json", "why": "no engine model"})
 

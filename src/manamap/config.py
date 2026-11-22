@@ -2079,8 +2079,14 @@ ENGINE_EVENTS = {
                  "channel": "discover"},
     "CASCADE": {"triggers": [], "effects": [], "keywords": ["Cascade"], "replacements": [], "channel": "cascade"},
     "SELECTION": {"triggers": ["Scry"], "effects": ["Scry"], "replacements": [], "channel": "tutor"},
-    "REMOVAL": {"triggers": [], "effects": [("ChangeZone", {"Destination": "Exile"}), "Destroy", "DestroyAll"],
+    "REMOVAL": {"triggers": [], "effects": [("ChangeZone", {"Destination": "Exile"}), "Destroy", "DestroyAll",
+                                            ("ChangeZone", {"Origin": "Battlefield", "Destination": "Hand"}),
+                                            ("ChangeZoneAll", {"Origin": "Battlefield"})],
                 "replacements": [], "channel": None},
+    "DENIAL": {"triggers": [], "effects": [],
+               "statics": ["CantAttackUnless", "CantAttack", "CantBlock", "CantBeCast", "CantBeActivated",
+                           "CantTarget", "CantBeTargetedBy", "CantAttack,CantBlock", "MustAttack"],
+               "replacements": [], "channel": None},
     "COUNTERSPELL": {"triggers": ["Countered", "BecomesTarget"], "effects": ["Counter"],
                      "replacements": ["Counter"], "channel": None},
     "PUMP": {"triggers": [], "effects": ["Pump", "PumpAll", "Animate", "AnimateAll"],
@@ -2097,7 +2103,7 @@ ENGINE_TERMINALS = tuple(k for k, v in ENGINE_EVENTS.items() if v.get("terminal"
 #: The stage rules in the order they are tried; the first that matches is the card's
 #: stage and the rest are its `also[]` (memo rule 11). `engine_graph._stage_of` is
 #: the one home of each rule's test; `poh_spec.STAGE_ORDER` keeps the page's order.
-ENGINE_STAGE_RULES = ("mana", "protection", "ignition", "wincon", "conversion", "fuel", "fodder", "output")
+ENGINE_STAGE_RULES = ("mana", "protection", "wincon", "ignition", "conversion", "fuel", "fodder", "output")
 #: A line is a simple path ignition -> terminal of at most this many hops, and the
 #: record keeps at most ENGINE_MAX_LINES of them, verified first.
 ENGINE_LINE_MAX_DEPTH = 5

@@ -220,7 +220,7 @@ def schematic(engine):
         if a not in idx or b not in idx:
             continue
         ya, yb = y_of(a), y_of(b)
-        proved = bool(line.get("verified_by"))
+        proved = bool(_stack_ids(line))
         dash = "" if proved else ' stroke-dasharray="5 4"'
         parts.append(
             f'<path d="M262 {ya} C 330 {ya}, 330 {yb}, 262 {yb}" fill="none" '
@@ -230,10 +230,10 @@ def schematic(engine):
             parts.append(
                 f'<text x="336" y="{(ya + yb) / 2 + 4}" font-size="9" '
                 f'font-family="monospace" fill="#6a665e">'
-                f'✓ {esc(line["verified_by"])}</text>')
+                f'✓ {esc(",".join(_stack_ids(line)))}</text>')
     parts.append("</svg>")
 
-    n_proved = sum(1 for l in (engine.get("lines") or []) if l.get("verified_by"))
+    n_proved = sum(1 for l in (engine.get("lines") or []) if _stack_ids(l))
     n_lines = len(engine.get("lines") or [])
     legend = (f'<p class="poh-legend">Solid: proved by a checker-passed stack '
               f'({n_proved} of {n_lines}). Dashed: the analyst\'s reading, not '
@@ -243,12 +243,22 @@ def schematic(engine):
     return f'<figure class="poh-schematic">{"".join(parts)}{legend}</figure>'
 
 
+def _reading(e):
+    """The authored words of an engine record: `reading` on v2, the file itself on v1."""
+    return (e.get("reading") or {}) if (e.get("_meta") or {}).get("v") == 2 else e
+
+
+def _stack_ids(line):
+    v = line.get("verified_by")
+    return [str(x) for x in v] if isinstance(v, list) else ([str(v)] if v else [])
+
+
 def render_general(d):
     e = d["engine"]
     if not e:
         return absent("General", "no engine.json — the schematic and the purpose "
                       "are read from the engine model.", f"/analyze-engine {d['slug']}")
-    body = f'<p>{esc(e.get("thesis") or "")}</p>' + schematic(e)
+    body = f'<p>{esc(_reading(e).get("thesis") or "")}</p>' + schematic(e)
     absent_stages = e.get("absent_stages") or []
     if absent_stages:
         body += sub("1.1", "Stages this deck does not have", "".join(
@@ -517,11 +527,11 @@ def render_systems(d):
         out += sub(num, STAGE_LABEL.get(st["stage"], st["stage"]),
                    f'{fig}<p>{esc(st.get("what_it_does") or "")}</p>{fail}{table}')
 
-    critic = e.get("critic") or {}
+    critic = _reading(e).get("critic") or {}
     if critic.get("verdict"):
         # BOXED, AND DATED BY THE VERSION IT WAS READ AGAINST — never by render
         # time, which would break the byte-identical rebuild.
-        stamp = e.get("decklist_sha256_prefix")
+        stamp = e.get("decklist_sha256_prefix") or (str(_reading(e).get("written_for") or e.get("decklist_sha256") or "")[:12] or None)
         out += sub("6.0", "Assessment",
                    f'<div class="poh-call note"><span class="lbl">ASSESSMENT · '
                    f'ENGINE-CRITIC</span>Verdict: <b>{esc(critic["verdict"])}</b>. '

@@ -314,10 +314,20 @@
   },
   "engine_health": null,
   "engine": {
+    "v": 2,
     "thesis": "Hapatra does not make -1/-1 counters outside combat — she PRICES them: every placement another of your cards makes onto a creature mints one 1/1 deathtouch Snake (one per creature per placement, not one per counter), twelve cards eat those Snakes for mana, cards and damage, and five drain pieces bill for each death — though only three charge the whole table (Blood Artist and Sephiroth name one seat) and Obelisk Spider charges on counter PLACEMENT rather than on a death at all; the counter sources are eight cards deep, every unbounded line a CHECKER HAS UPHELD routes through Mikaeus — 11 of bracket_report's 19 two-card infinites do not name him and stack 001 explicitly declines to close nine of those — and exactly one board in this deck has ever been checked, a board on which nothing came back.",
     "critic": "pass",
-    "lines": 18,
-    "verified_lines": 3
+    "reading_stale": true,
+    "lines": 40,
+    "verified_lines": 2,
+    "components": 6,
+    "spof": [
+      "Mikaeus, the Unhallowed",
+      "Skullclamp"
+    ],
+    "readers": {
+      "forge": 88
+    }
   },
   "diagnosis": {
     "verdict": "This deck functions and it converts. It casts a 2-mana commander on turn 2 in 9,970 of 10,000 goldfish games, hits the turn-3 land drop 90.2% of the time with zero unconditional taplands, and assembles commander-plus-a-payoff 67.2% of the time. What limits it is that every answer it owns points at a creature: across all 88 entries in cards.json, exactly two cards destroy anything (Crumbling Ashes, Mikaeus) and both destroy creatures, and nothing in the 99 destroys or exiles an artifact, an enchantment, or a land on the battlefield. One axis that reads as a problem is not: card-advantage's 8 misses The One Ring, Yawgmoth and Grim Backwoods. Ramp's 16 against 10-12 is a real overage of four copies. The one prescribed swap takes a single slot from it, Arcane Signet; a second ranked cut candidate, Dark Ritual, sits on the same axis and is not prescribed.",
@@ -455,6 +465,7 @@
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
     "1 artifact(s) fail their own gate (diagnosis.json) — `deck-status hapatra` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish — the figures were right when taken; `manamap pilot regen --slug hapatra` re-reads them when you want, never on its own",
+    "engine.json's reading was written for another list — `/analyze-engine hapatra` rewrites it over the computed graph",
     "open questions routed: goldfish ×2, research-strategy ×2, resolve-stack ×9"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."

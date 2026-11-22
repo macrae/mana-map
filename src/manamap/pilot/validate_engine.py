@@ -1,361 +1,151 @@
-"""Pilot: form-check a deck's engine model — re-derive, never trust.
+"""Pilot: hold a deck's engine record to a fresh computation — re-derive, never trust.
 
-`engine.json` is read by the notes writer, the debrief, the doctor and the deck
-page's schematic, and it is drawn. A stage that is wrong about the job therefore
-propagates into several places at once, and a `verified_by` that does not hold
-turns a coaching line into a false claim about the rules. So this checks the
-things that are mechanically checkable and re-derives every figure rather than
-believing the file.
+    manamap pilot validate-engine <slug>
 
-WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting:
+`engine.json` v2 (2026-11-22; `engine_graph`, `docs/research/engine-model.md`) has two
+halves. Everything but `reading` is COMPUTED from the list and the cards' Forge
+scripts, so the gate is the same one `combos.json` has: rebuild it and compare, key by
+key — a committed record that differs from a fresh run is stale or hand-edited, and
+either is refused. `reading` is AUTHORED — the engineer's and the pilot's words — and
+is checked for form only: it must say which list it was written for, say `stale` when
+that is not the current one, name only lines and cards the record has, and carry a
+critic verdict that is `pass` or `fail` when it carries one. A v1 file (no `_meta.v`)
+is refused with the command that migrates it.
 
-  **That the cards in a stage share a role axis.** That check was prototyped
-  fleet-wide against `goldfish_targets.json` and REJECTED — see
-  `validate_goldfish_targets`'s docstring. It fired hardest on the most correct
-  groups: 1-of-6 on goblin-storm's cantrip group where every member is right, and
-  it flagged Howling Mine and Font of Mythos as outliers in heliod's draw engine.
-  The reason generalises exactly to stages: `ROLE_PATTERNS` answers "what job does
-  this card do in a 99", and a stage is a DECK-SPECIFIC functional set with no
-  taxonomy axis. `fodder` is not a role. A validator that fires on correct data
-  trains its reader to ignore it, and this repo has now learned that four times.
-
-  **Whether a stage's reading is right.** Not mechanically checkable, which is
-  what `engine-critic` is for.
-
-  **Whether the cited stack SUPPORTS the claim, as opposed to merely naming its
-  cards.** This is the sharpest limit of the gate and it is worth stating exactly,
-  because the difference is invisible in the artifact. Two real examples from
-  radagast, both of which passed everything below and were caught only by a reader:
-
-    * a `mana -> wincon` line claiming "Castle Garenbrig pays for Craterhoof",
-      citing a stack that leaves Garenbrig UNTAPPED. Both cards are named in the
-      scenario, so every check here passes, and the arrow renders solid green —
-      proof, for a flow the stack shows not happening.
-    * a line citing a stack whose resolution verifies three NEGATIVES. The stack
-      passed, the cards are named, and it refutes the connection being drawn.
-
-  A checker-passed stack is evidence that a BOARD resolved a certain way. Reading
-  it as evidence that card A feeds card B is an inference, and inference is the
-  critic's job. Do not try to close this hole with string matching on resolution
-  prose: the same wrong line would survive a rephrase, and a check that catches
-  one wording is worse than an honest gap somebody knows about.
-
-  **The ACTING-STAGE check: prototyped fleet-wide 2026-08-24 and REJECTED, with
-  numbers, so the next person to have the idea meets the measurement instead of
-  re-deriving it.** A third real example had just been caught by the critic —
-  edgar `lines[4]` routed an arrow through Cordial Vampire and cited stack 002,
-  whose scenario says twice, in the negative, that Cordial Vampire never triggers
-  because nothing dies. Same failure as radagast's two, third deck, still invisible
-  to everything below.
-
-  Two formulations were implemented and RUN over all nine tracked `engine.json`
-  and their passing stacks — 120 lines, 57 of them verified — rather than reasoned
-  about. Measured three times independently (critic, engineer, orchestrator), same
-  numbers each time:
-
-    * *as first proposed* — "a `via` card from the `from` stage must appear in the
-      cited scenario's `stack[]`" — fires **46 times across 57 verified lines**,
-      including 9 of radagast's 9. Dead on arrival. Most of that is structural: a
-      replacement effect never uses the stack at all, and 003's and 007's `stack[]`
-      objects are prose about a trigger ("Sanctum Seeker's attack trigger") from
-      which `line_cards` extracts no card name, so the check sees an empty set and
-      condemns correct lines.
-    * *the acting-stage variant* — extract `stack[]` cards with `line_cards`; if
-      they all belong to ONE stage, that stage is the scenario's acting stage, and
-      a line whose `from` is that stage must have `via` intersect it. A scenario
-      yielding no card name has no acting stage and tests nothing, which removes
-      the false positives above instead of hiding them. It fires **once fleet-wide:
-      ur-dragon `lines[3]`, a FALSE POSITIVE on a critic-passed model** — its
-      `conversion` stage holds Lathliss on the stack and Miirym on the board, and
-      `via` correctly names the board card. Counting edgar's defect, 1-in-2
-      precision.
-
-  The reason it cannot be fixed is the useful part: **edgar's defect and
-  ur-dragon's correct line are structurally identical.** Both are a line whose
-  `from` stage holds one card on the stack (the cast) and one on the battlefield
-  (the converter), with `via` naming the battlefield one. What separates them is a
-  rules fact — Cordial Vampire never triggers because nothing dies — and no shape
-  test can see it. Scoping the check by `carries` was rejected for a second,
-  independent reason: `carries` is free prose the engineer writes, so renaming a
-  line evades the check silently, which is the rephrase failure this docstring
-  already warns about one paragraph up.
-
-  **What a stack NAMES includes your own board (2026-09-15).** `line_cards`
-  answers a rendering question — what the LINE is made of, where a board is
-  furniture once the stack and hand name cards — and the first cut of this
-  check reused it as the answer to a different question: is this stack ABOUT
-  these cards. sharknado's stack 001 resolves Windfall with Brallin on the
-  battlefield; the line it proves is `via: [Windfall, Brallin]`, and the check
-  refused it because Brallin is a permanent, named on the board and nowhere
-  else, and the hand named seven cards so the board was skipped. A permanent
-  whose triggered ability IS the line is what the scenario is about. So the
-  set here is `line_cards` UNION the cards of the 99 on YOUR board (tokens and
-  opponents' boards excluded). Measured across the fleet before the change:
-  every verified line on nine decks still verifies, none newly does — the
-  widening is permissive only, which is the direction a false-green check must
-  never move in and the direction this one safely can.
+WHAT IS DELIBERATELY NOT CHECKED, and why it will keep looking tempting: whether a
+stack that NAMES a line's cards SUPPORTS the line. Two real radagast lines once passed
+every mechanical check while citing a stack that showed the opposite — one claimed
+Castle Garenbrig paid for Craterhoof, citing a stack that leaves Garenbrig untapped.
+A checker-passed stack is evidence that a BOARD resolved a certain way; reading it as
+"A feeds B" is an inference, and inference is the critic's job. The computed `feeds`
+edge is a different claim — the filter accepts the subject — and is checked by
+recomputation, not by the stack. Do not close the gap with string matching on
+resolution prose: the same wrong line survives a rephrase. (The v1 gate's two rejected
+prototypes — a stage/role-axis check that fired on correct groups, and an acting-stage
+check that fired 46 times across 57 verified lines — are recorded in
+`docs/gotchas-bench.md`; the computed stages have no authored placement to check.)
 """
-
-import json
-
-from manamap.pilot.deck_manifest import line_cards
-from manamap.pilot.common import (
-    deck_dir,
-    load_deck_cards,
-    load_json,
-    presentable,
-    report_errors,
-)
-from manamap.pilot.validate_diagnosis import REQUIRED_QUESTION_KEYS, SETTLED_BY
+from manamap.config import ENGINE_STAGE_RULES
+from manamap.pilot.common import deck_dir, load_json, report_errors
 
 ARTIFACT = "engine.json"
-
-# The closed stage set. Ordered as the engine runs, because the renderer draws it
-# left to right in this order and a second ordering somewhere else would be a
-# second answer to "what comes first".
-STAGES = ["mana", "ignition", "fuel", "fodder", "conversion",
-          "output", "protection", "wincon"]
-
-# A `what_it_does` longer than this is rejected, and the number is measured rather
-# than chosen. Radagast's `output` stage reached 2,554 characters (~13 sentences)
-# by accreting self-correction across revisions, and it then FAILED FOUR
-# CONSECUTIVE REVISIONS — each one fixed the defect it was sent to fix and
-# introduced a new one somewhere else in the same paragraph. The other six stages
-# ran 836–1,645 characters and were never revised at all.
-#
-# That is the signal: a field is only as revisable as it is short. Past roughly a
-# page, an agent asked to change one clause cannot hold the rest of the argument
-# in view, and the failure mode is not sloppiness — it is a genuinely hard editing
-# task disguised as a small one. 1,800 sits above every stage that has proved
-# revisable here and below the one that has not, which is the most this evidence
-# supports; it is not fitted to make current data pass, since the current data
-# fails it.
-MAX_WHAT_IT_DOES = 1800
-
-AGREEMENTS = {"full", "partial", "cuts-across"}
-EVIDENCE_KINDS = {"stack", "combo", "role", "city"}
+#: The stage vocabulary in the PAGE's order (`poh_spec.STAGE_ORDER` mirrors it);
+#: `config.ENGINE_STAGE_RULES` is the same eight in rule-priority order.
+STAGES = ("mana", "ignition", "fuel", "fodder", "conversion", "output", "protection", "wincon")
+assert set(STAGES) == set(ENGINE_STAGE_RULES)
+AUTHORED = "reading"
+CRITIC_VERDICTS = {"pass", "fail"}
+#: The critic's finding statuses, unchanged from the v1 charter.
 CRITIC_STATUSES = {"supported", "unjustified", "miscounted", "mis-cited",
                    "over-claimed", "unverified-line", "contradicts-artifact"}
+REQUIRED_READING_KEYS = ("written_for", "stale", "names_departed", "thesis", "lines",
+                         "stage_overrides", "open_questions", "critic")
 
 
-def _passing_stacks(slug, deck_names):
-    """id -> the cards its scenario actually names. The fact tier, indexed."""
-    out = {}
-    directory = deck_dir(slug) / "stacks"
-    if not directory.is_dir():
-        return out
-    for path in sorted(directory.glob("*.json")):
-        doc = json.loads(path.read_text())
-        if not presentable(doc):
-            continue
-        sid = doc.get("id") or path.stem[:3]
-        scenario = doc.get("scenario") or {}
-        out[sid] = set(line_cards(scenario, deck_names)) | _your_board_cards(scenario, deck_names)
-    return out
-
-
-def _your_board_cards(scenario, deck_names):
-    """The cards of the 99 on YOUR board in a scenario — the permanents whose
-    abilities a line may run through. See the module docstring's last paragraph."""
-    from manamap.pilot import game_state, scenario_facts
-    out = set()
-    for entry in scenario_facts.your_board(scenario) or []:
-        if game_state.entry_is_token(entry):
-            continue
-        name = scenario_facts._card_name(entry)
-        if name in deck_names:
-            out.add(name)
+def _differences(fresh, stored, prefix=""):
+    """Every key where the committed computed part differs from a fresh build —
+    named, so the error says WHAT moved rather than that something did."""
+    out = []
+    keys = sorted(set(fresh) | set(stored))
+    for k in keys:
+        a, b = fresh.get(k), stored.get(k)
+        where = f"{prefix}{k}"
+        if isinstance(a, dict) and isinstance(b, dict):
+            out.extend(_differences(a, b, where + "."))
+        elif a != b:
+            if isinstance(a, list) and isinstance(b, list) and len(a) != len(b):
+                out.append(f"{where}: {len(b)} entr{'y' if len(b) == 1 else 'ies'} on disk, {len(a)} fresh")
+            else:
+                out.append(f"{where} differs")
     return out
 
 
 def validate(slug, doc=None):
+    """Returns `(errors, doc, placed)` — the same triple the v1 gate returned, so
+    `deck_status.VALIDATED` and the callers that unpack it keep working."""
+    from manamap.pilot import engine_graph
     base = deck_dir(slug)
     if doc is None:
         doc = load_json(base / ARTIFACT)
     if not doc:
-        raise SystemExit(
-            f"{base / ARTIFACT} not found — spawn deck-engineer for {slug} first.")
-
-    deck = load_deck_cards(slug)
-    deck_names = {c["name"] for c in deck["cards"]}
-    stacks = _passing_stacks(slug, deck_names)
+        raise SystemExit(f"{base / ARTIFACT} not found — `manamap pilot engine-graph {slug} --write` builds it.")
     errors = []
+    meta = doc.get("_meta") or {}
+    if meta.get("v") != 2:
+        errors.append(f"engine.json is a v1 model (agent-placed stages) — "
+                      f"`manamap pilot engine-graph {slug} --write` recomputes it and keeps the "
+                      f"thesis, the line notes and the critic as the first reading")
+        return errors, doc, {}
 
-    if not (doc.get("thesis") or "").strip():
-        errors.append("thesis is empty — the model has to say what the engine IS "
-                      "in one sentence before it lists parts")
+    fresh = engine_graph.build(slug)
+    stored = engine_graph.computed_part(doc)
+    fresh_c = engine_graph.computed_part(fresh)
+    if stored.get("_meta", {}).get("forge_digest") != fresh_c["_meta"]["forge_digest"] \
+            and fresh_c["_meta"]["forge_digest"] is None:
+        # No Forge here: the stored record was read from scripts this machine does
+        # not have. Not stale — unverifiable, and said so.
+        errors.append("cannot recompute: Forge is not installed here, and the record was read from "
+                      "its scripts (`_meta.forge_digest`); nothing else is checked")
+        return errors, doc, doc.get("placed") or {}
+    diffs = _differences(fresh_c, stored)
+    if diffs:
+        head = "; ".join(diffs[:6]) + (" …" if len(diffs) > 6 else "")
+        why = ("the list moved" if stored.get("decklist_sha256") != fresh_c["decklist_sha256"]
+               else "the parser or the scripts moved" if stored.get("_meta", {}).get("ability_graph_version")
+               != fresh_c["_meta"]["ability_graph_version"] or stored.get("_meta", {}).get("forge_digest")
+               != fresh_c["_meta"]["forge_digest"]
+               else "a hand edit, or a code change without a rebuild")
+        errors.append(f"computed record differs from a fresh build ({why}): {head} — "
+                      f"`manamap pilot engine-graph {slug} --write`")
 
-    stages = doc.get("stages") or []
-    if not stages:
-        errors.append("no stages — an engine model with no stages is a card list")
-
-    seen_stage, seen_label, placed = set(), set(), {}
-    for i, stage in enumerate(stages):
-        where = f"stages[{i}]"
-        name = stage.get("stage")
-        if name not in STAGES:
-            errors.append(f"{where}: stage {name!r} is not one of {STAGES}")
-        elif name in seen_stage:
-            errors.append(f"{where}: stage {name!r} declared twice — one block per "
-                          f"stage, or the renderer draws the same box twice")
-        seen_stage.add(name)
-
-        label = (stage.get("label") or "").strip()
-        if not label:
-            errors.append(f"{where}: no label")
-        elif label.upper() in seen_label:
-            errors.append(f"{where}: label {label!r} is already used")
-        seen_label.add(label.upper())
-
-        what = (stage.get("what_it_does") or "").strip()
-        if not what:
-            errors.append(f"{where}: what_it_does is empty")
-        elif len(what) > MAX_WHAT_IT_DOES:
-            errors.append(
-                f"{where}: what_it_does is {len(what)} characters (limit "
-                f"{MAX_WHAT_IT_DOES}) — split the argument or cut it. A field this "
-                f"long stops being revisable: the one that reached 2,554 here "
-                f"failed four consecutive revisions, each fixing its named defect "
-                f"and introducing a different one.")
-
-        cards = stage.get("cards") or []
-        if not cards:
-            errors.append(f"{where}: names no cards")
-        for card in cards:
-            if card not in deck_names:
-                errors.append(f"{where}: names {card!r}, which is not in the 99")
-            elif card in placed:
-                errors.append(f"{where}: {card!r} is already in stage "
-                              f"{placed[card]!r} — a card does one job here")
-            else:
-                placed[card] = name
-
-        spof = stage.get("single_point_of_failure")
-        if spof and spof not in deck_names:
-            errors.append(f"{where}: single_point_of_failure {spof!r} not in the 99")
-
-        for j, ev in enumerate(stage.get("evidence") or []):
-            spot = f"{where}.evidence[{j}]"
-            kind = ev.get("kind")
-            if kind not in EVIDENCE_KINDS:
-                errors.append(f"{spot}: kind {kind!r} not in {sorted(EVIDENCE_KINDS)}")
-            if kind == "stack":
-                sid = str(ev.get("id", ""))
-                if sid not in stacks:
-                    errors.append(f"{spot}: cites stack {sid!r}, which is not a "
-                                  f"checker-passed stack of this deck")
-            if kind == "city" and ev.get("agreement") not in AGREEMENTS:
-                errors.append(f"{spot}: agreement {ev.get('agreement')!r} not in "
-                              f"{sorted(AGREEMENTS)}")
-
-    # Completeness. The failure that matters, because it is invisible: a model
-    # that forgot eleven cards reads exactly as complete as one that placed them.
-    unassigned = doc.get("unassigned") or []
-    for i, entry in enumerate(unassigned):
-        card = entry.get("card")
-        if card not in deck_names:
-            errors.append(f"unassigned[{i}]: {card!r} is not in the 99")
-        elif card in placed:
-            errors.append(f"unassigned[{i}]: {card!r} is also in stage {placed[card]!r}")
-        if not (entry.get("why") or "").strip():
-            errors.append(f"unassigned[{i}]: no reason given for leaving "
-                          f"{card!r} out of the engine")
-    accounted = set(placed) | {e.get("card") for e in unassigned}
-    missing = sorted(deck_names - accounted)
-    if missing:
-        errors.append(
-            f"{len(missing)} card(s) in the 99 appear in no stage and in no "
-            f"unassigned entry: {', '.join(missing[:8])}"
-            + (" …" if len(missing) > 8 else ""))
-
-    # Lines. `verified_by` is the claim this validator exists to police.
-    for i, line in enumerate(doc.get("lines") or []):
-        where = f"lines[{i}]"
-        for end in ("from", "to"):
-            if line.get(end) not in STAGES:
-                errors.append(f"{where}: {end}={line.get(end)!r} is not a stage")
-        via = line.get("via") or []
-        if not via:
-            errors.append(f"{where}: names no cards in `via`")
-        for card in via:
-            if card not in deck_names:
-                errors.append(f"{where}: via names {card!r}, not in the 99")
-        sid = line.get("verified_by")
-        if sid is None:
-            continue
-        sid = str(sid)
-        if sid not in stacks:
-            errors.append(f"{where}: verified_by {sid!r} is not a checker-passed "
-                          f"stack — a line is a CLAIM until one passes, and null "
-                          f"is the honest value")
-            continue
-        # The check nothing else performs: the stack must actually be about
-        # these cards. A passing stack id attached to an unrelated line is a
-        # citation that reads as proof and is not.
-        absent = [c for c in via if c not in stacks[sid]]
-        if absent:
-            errors.append(
-                f"{where}: stack {sid} does not name {', '.join(absent)} in its "
-                f"scenario, so it cannot verify this line")
-
-    # A line's cards must live in the stages it connects, and this check exists
-    # because `engine-critic` found three lines without it. The stack check above
-    # proves the CARDS were on a verified board together; it says nothing about
-    # whether they are the cards of the stages the arrow is drawn between. A
-    # `fuel -> conversion` arrow whose via cards are both in `conversion` is a
-    # picture of a connection that the model does not actually claim, and it
-    # renders as solid green — proof, for a relation nobody asserted.
-    for i, line in enumerate(doc.get("lines") or []):
-        via = set(line.get("via") or [])
-        if not via:
-            continue
-        for end in ("from", "to"):
-            stage_name = line.get(end)
-            if stage_name not in STAGES:
-                continue
-            members = {c for c, st in placed.items() if st == stage_name}
-            if members and not (via & members):
-                errors.append(
-                    f"lines[{i}]: {end}={stage_name!r} contains none of "
-                    f"{', '.join(sorted(via))} — an arrow between two stages has "
-                    f"to be about a card in each of them")
-
-    for i, q in enumerate(doc.get("open_questions") or []):
-        missing_keys = REQUIRED_QUESTION_KEYS - set(q)
-        if missing_keys:
-            errors.append(f"open_questions[{i}]: missing {sorted(missing_keys)}")
-        if q.get("settled_by") not in SETTLED_BY:
-            errors.append(f"open_questions[{i}]: settled_by "
-                          f"{q.get('settled_by')!r} not in {sorted(SETTLED_BY)}")
-
-    for i, edit in enumerate(doc.get("proposed_goldfish_edits") or []):
-        for key in ("target", "change", "why"):
-            if not (edit.get(key) or "").strip():
-                errors.append(f"proposed_goldfish_edits[{i}]: {key} is empty")
-
-    critic = doc.get("critic")
+    r = doc.get(AUTHORED)
+    if r is None:
+        errors.append("no `reading` block — `engine-graph --write` writes an empty one; the engineer fills it")
+        return errors, doc, doc.get("placed") or {}
+    if not isinstance(r, dict):
+        errors.append("`reading` must be an object")
+        return errors, doc, doc.get("placed") or {}
+    for k in REQUIRED_READING_KEYS:
+        if k not in r:
+            errors.append(f"reading.{k} is missing")
+    now = doc.get("decklist_sha256")
+    if r.get("written_for") and now and r["written_for"] != now and r.get("stale") is not True:
+        errors.append(f"reading.written_for {str(r['written_for'])[:12]} is not the current list "
+                      f"{str(now)[:12]} but reading.stale is not true — a reading of another list must say so")
+    if r.get("written_for") == now and r.get("stale") is True:
+        errors.append("reading.stale is true for the current list")
+    line_ids = {l.get("id") for l in doc.get("lines") or []}
+    comp_ids = {c.get("id") for c in doc.get("components") or []}
+    for i, l in enumerate(r.get("lines") or []):
+        ref = l.get("line")
+        if ref not in line_ids and ref not in comp_ids:
+            errors.append(f"reading.lines[{i}] names {ref!r}, which is neither a computed line nor a component")
+    names = {n["id"] for n in (doc.get("graph") or {}).get("nodes") or [] if n.get("zone") in ("command", "library")}
+    for i, o in enumerate(r.get("stage_overrides") or []):
+        if o.get("card") not in names:
+            errors.append(f"reading.stage_overrides[{i}] names {o.get('card')!r}, not in the 99")
+        if not (o.get("why") or "").strip():
+            errors.append(f"reading.stage_overrides[{i}]: no why")
+        if o.get("stage") not in ENGINE_STAGE_RULES:
+            errors.append(f"reading.stage_overrides[{i}]: stage {o.get('stage')!r} is not a stage")
+    critic = r.get("critic")
     if critic:
-        if critic.get("verdict") not in {"pass", "fail"}:
-            errors.append(f"critic.verdict {critic.get('verdict')!r} must be "
-                          f"pass or fail")
+        if critic.get("verdict") not in CRITIC_VERDICTS:
+            errors.append(f"reading.critic.verdict {critic.get('verdict')!r} must be pass or fail")
         for i, f in enumerate(critic.get("findings") or []):
             if f.get("status") not in CRITIC_STATUSES:
-                errors.append(f"critic.findings[{i}]: status {f.get('status')!r} "
-                              f"not in {sorted(CRITIC_STATUSES)}")
-    return errors, doc, placed
+                errors.append(f"reading.critic.findings[{i}]: status {f.get('status')!r} not in {sorted(CRITIC_STATUSES)}")
+    return errors, doc, doc.get("placed") or {}
 
 
 def main(args):
-    errors, doc, placed = validate(args.slug)
-    stages = doc.get("stages") or []
-    verified = sum(1 for l in doc.get("lines") or [] if l.get("verified_by"))
-    total = len(doc.get("lines") or [])
-    report_errors(
-        f"engine model for {args.slug}", errors,
-        f"OK   engine model for {args.slug} — {len(stages)} stage(s), "
-        f"{len(placed)} card(s) placed, {len(doc.get('unassigned') or [])} "
-        f"unassigned, {verified}/{total} line(s) verified by a passing stack")
-
-
-if __name__ == "__main__":
-    raise SystemExit("Run via `manamap pilot validate-engine <slug>`.")
+    errors, doc, _ = validate(args.slug)
+    report_errors(f"engine.json for {args.slug}", errors)
+    r = doc.get(AUTHORED) or {}
+    n_lines = len(doc.get("lines") or [])
+    n_ver = sum(1 for l in doc.get("lines") or [] if l.get("verified_by"))
+    print(f"OK engine.json for {args.slug}: v2, {len(doc.get('components') or [])} components, "
+          f"{n_ver}/{n_lines} lines stack-stamped, {len(doc.get('spof') or [])} single points of failure; "
+          f"reading {'STALE' if r.get('stale') else 'current' if r.get('thesis') else 'empty'}"
+          + (f", critic {r['critic'].get('verdict')}" if r.get("critic") else ""))
+    return 0

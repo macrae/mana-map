@@ -119,12 +119,18 @@ def _check_citation(c, where, slug, errors, strategy_sections, skeleton_names):
     elif kind == "engine":
         eng = load_json(base / "engine.json") or {}
         stage = ref.split(":", 1)[-1]
+        # v2 (2026-11-22): the computed stages carry the cards and a computed
+        # `what_it_does`; the engineer's words — the thesis and the v1 stage prose
+        # a rater quoted — live under `reading`. A quote may come from either.
+        reading = (eng.get("reading") or {}) if (eng.get("_meta") or {}).get("v") == 2 else eng
         rows = {s.get("stage"): s for s in eng.get("stages") or []}
+        v1_rows = {s.get("stage"): s for s in reading.get("v1_stages") or []}
         hay = ""
         if stage == "thesis":
-            hay = eng.get("thesis") or ""
-        elif stage in rows:
-            hay = json.dumps(rows[stage], ensure_ascii=False)
+            hay = reading.get("thesis") or ""
+        elif stage in rows or stage in v1_rows:
+            hay = json.dumps(rows.get(stage) or {}, ensure_ascii=False) + " " + \
+                json.dumps(v1_rows.get(stage) or {}, ensure_ascii=False)
         else:
             errors.append(f"{where}: cites engine stage {stage!r}, which engine.json lacks")
             return

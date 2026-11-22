@@ -2551,7 +2551,9 @@ never edges: a doubler is a property of an event, not a card that feeds one); `c
 one per consumed event, with producers, consumers, the ones the deck itself feeds, the
 unproven producers, the modifiers, and `activation` through `deck_audit._component` (the same
 hypergeometric odds `deck-audit` prints); `stages` by `config.ENGINE_STAGE_RULES` (first match
-is the stage, `placed[card].also` keeps the rest, every card placed or `unplaced` with a why);
+is the stage, `placed[card].also` keeps the rest; a LIST, one block per populated stage with a
+computed `what_it_does`, so every reader of the v1 shape keeps reading; every card placed or
+`unassigned` with a why);
 `lines` as SHAPES — distinct event sequences from an ignition to the terminal with the cards at
 every hop (Edgar's `CAST › BODIES › DIES › LIFE_LOSS` is one line with ten starts, nine
 outlets and five drains, not a hundred and eighty pairs), an implicit cast allowed only as the

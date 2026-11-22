@@ -1554,7 +1554,10 @@
      * because a pair pointing two ways is a pair whose direction is not a
      * fact. */
     const lines = engine.lines.filter(function (l) {
-      return l && l.from && l.to && String(l.verified_by || '') === String(stackId);
+      if (!l || !l.from || !l.to) return false;
+      // v2 (2026-11-22) stamps a line with EVERY passing stack that names its cards.
+      const ids = Array.isArray(l.verified_by) ? l.verified_by : (l.verified_by ? [l.verified_by] : []);
+      return ids.map(String).indexOf(String(stackId)) >= 0;
     });
     if (!lines.length) return null;
     const line = lines[0];

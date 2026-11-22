@@ -400,7 +400,8 @@ def status(slug, validate=True):
         # A model that describes a different list is stale whatever its critic
         # thought of it — the critic signed off on the OLD deck.
         if key == "engine":
-            verdict = ((doc or {}).get("critic") or {}).get("verdict")
+            src = ((doc or {}).get("reading") or {}) if ((doc or {}).get("_meta") or {}).get("v") == 2 else (doc or {})
+            verdict = (src.get("critic") or {}).get("verdict")
             critic = f"critic: {verdict or 'not run'}"
             detail = f"{detail} · {critic}" if detail else critic
             # STALE outranks it, same rule the validity check below follows: an
@@ -607,6 +608,8 @@ VALIDATED = {
 # `tests/conftest.py`'s markers make.
 _NEEDS_STRATEGY = {"tutor_guide.json", "diagnosis.json"}
 _NEEDS_CORPUS = {"build_plan.json", "deck_recon.json", "candidate_scan.json", "edhrec_cards.json", "watchlist.json"}
+#: Recomputed from Forge's card scripts; without them the gate is unverifiable, not red (CI has no Forge).
+_NEEDS_FORGE = {"engine.json"}
 
 
 def _validity(slug, artifact):
@@ -623,6 +626,10 @@ def _validity(slug, artifact):
         return None, "gate needs the strategy DB"
     if artifact in _NEEDS_CORPUS and not OUTPUT_CSV_PATH.exists():
         return None, "gate needs the card corpus"
+    if artifact in _NEEDS_FORGE:
+        from manamap.sim import forge_cards
+        if not forge_cards.installed():
+            return None, "gate needs Forge's card scripts"
 
     module = importlib.import_module(dotted)
     buf = io.StringIO()

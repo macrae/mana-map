@@ -129,8 +129,14 @@ def main(args):
     for card in load_deck_cards(slug).get("cards", []):
         deck_names |= expand_faces(card.get("name"))
     engine = load_json(base / "engine.json")
-    stage_names = ({s.get("stage") for s in engine.get("stages", [])}
-                   if engine else None)
+    # The stages the model declares: the computed ones, and on a v2 file (2026-11-22)
+    # also the v1 placement kept under `reading.v1_stages` — a debrief written against
+    # the engineer's `fodder` is not wrong because the computed graph found none.
+    stage_names = None
+    if engine:
+        stage_names = {s.get("stage") for s in engine.get("stages", [])}
+        stage_names |= {s.get("stage") for s in (engine.get("reading") or {}).get("v1_stages") or []}
+        stage_names.discard(None)
     errors = validate(slug, doc, log_entries, deck_names, stage_names, base)
     report_errors(f"{slug} debrief",
                   errors,

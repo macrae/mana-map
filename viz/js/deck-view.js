@@ -1760,20 +1760,60 @@
     var e = d.engine;
     if (!e) return absent('engine', 'The engine', 'How the deck actually runs.',
       'var(--tier-coach)', 'engine', d, 'the stages it converts through, and what carries between them');
+    var v2 = !!(e._meta && e._meta.v === 2);
+    var reading = v2 ? (e.reading || {}) : e;
+    var stackIds = function (l) { var v = l.verified_by; return Array.isArray(v) ? v : (v ? [v] : []); };
     var lines = (e.lines || []).map(function (l) {
-      var proved = !!l.verified_by;
-      return '<span class="chip">' + (proved ? '✓' : '·') + '</span> ' +
-        esc(l.from) + ' → ' + esc(l.to) +
-        (l.carries ? ' <i>(' + esc(l.carries) + ')</i>' : '') +
-        (proved ? ' <span class="ev">' + esc(l.verified_by) + '</span>'
-                : ' <span class="ev">a reading, not a proof</span>');
+      var ids = stackIds(l), proved = ids.length > 0;
+      var head = v2
+        ? esc((l.events || []).join(' › ')) +
+          (l.instances > 1 ? ' <span class="ev">' + l.instances + ' ways</span>' : '')
+        : esc(l.from) + ' → ' + esc(l.to) + (l.carries ? ' <i>(' + esc(l.carries) + ')</i>' : '');
+      var via = v2 && l.via && l.via.length ? ' <span class="ev">' + esc(l.via.join(', ')) + '</span>' : '';
+      return '<span class="chip">' + (proved ? '✓' : '·') + '</span> ' + head + via +
+        (proved ? ' <span class="ev">stack ' + esc(ids.join(', ')) + '</span>'
+                : ' <span class="ev">' + (v2 ? 'computed, no stack' : 'a reading, not a proof') + '</span>');
     });
-    var body = '<p class="ev">' + esc(e.thesis || '') + '</p>' + list(lines);
-    var v = (e.critic || {}).verdict;
-    if (v) body += '<p class="ev">Critic verdict: <b>' + esc(v) + '</b></p>';
+    var body = '';
+    if (reading.thesis) {
+      body += '<p class="ev">' + esc(reading.thesis) +
+        (reading.stale ? ' <span class="chip cut">written for another list</span>' : '') + '</p>';
+    } else if (v2) {
+      body += '<p class="ev">No reading yet: the graph below is computed from the cards\' own scripts; ' +
+        'the engineer\'s words go under <code>reading</code>.</p>';
+    }
+    if (v2 && e.components && e.components.length) {
+      /* One row per consumed EVENT: who makes it, who reads it, the odds a maker
+       * is in the opening seven / by turn three (deck-audit's own hypergeometric). */
+      body += '<p class="ev">Components, one per event the deck consumes:</p>' + list(e.components.map(function (c) {
+        var od = ((c.activation || {}).producers || {}).odds || {};
+        var src = (c.from_opponent ? ' +opponents' : '') + (c.from_turn ? ' +turn' : '');
+        return '<b>' + esc(c.event) + '</b> ' + c.redundancy.producers + ' make' + esc(src) +
+          ' → ' + c.redundancy.consumers + ' read' +
+          (od.by_turn_three != null ? ' <span class="ev">' + Math.round(od.by_turn_three * 100) + '% by T3</span>' : '') +
+          (c.thin ? ' <span class="chip cut">thin</span>' : '') +
+          (c.modifiers && c.modifiers.length ? ' <span class="ev">× ' + esc(c.modifiers.join(', ')) + '</span>' : '');
+      }));
+    }
+    body += '<p class="ev">Lines' + (v2 ? ', ignition to the terminal' : '') + ':</p>' + list(lines.slice(0, 12));
+    if (v2 && e.spof && e.spof.length) {
+      body += '<p class="ev">Single points of failure:</p>' + list(e.spof.map(function (s) {
+        return '<b>' + esc(s.card) + '</b> <span class="ev">' + esc(s.kind.replace(/_/g, ' ')) +
+          (s.event ? ' on ' + esc(s.event) : '') + '</span>';
+      }));
+    }
+    if (v2 && e.coverage) {
+      var cv = e.coverage, r = cv.readers || {};
+      body += '<p class="ev">Read from Forge\'s scripts: ' + (r.forge || 0) + '; by the goldfish\'s readers: ' +
+        (r.goldfish || 0) + '; by nothing: ' + (r.none || 0) + '; partly read: ' + (cv.partial || []).length + '.</p>';
+    }
+    var cv2 = (reading.critic || {}).verdict;
+    if (cv2) body += '<p class="ev">Critic verdict: <b>' + esc(cv2) + '</b></p>';
     return panel('engine', 'The engine',
-      'Eight stages, and what moves between them.', ['verified', 'data', 'coach'],
-      'var(--tier-verified)', body);
+      v2 ? 'Computed from the cards\' own scripts: what each one consumes and produces, and who feeds whom.'
+         : 'Eight stages, and what moves between them.',
+      v2 ? ['data', 'verified', 'coach'] : ['verified', 'data', 'coach'],
+      v2 ? 'var(--tier-data)' : 'var(--tier-verified)', body);
   }
 
   function tablePanel(d) {

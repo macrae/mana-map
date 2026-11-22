@@ -32,6 +32,8 @@ from manamap.pilot import ability_graph as ag
 from manamap.pilot.common import (decklist_sha256, deck_dir, deck_file, load_deck_cards,
                                   load_json)
 
+STAGE_LABEL = {"mana": "Mana", "ignition": "Ignition", "fuel": "Fuel", "fodder": "Fodder",
+               "conversion": "Conversion", "output": "Output", "protection": "Protection", "wincon": "Win condition"}
 TERMINAL = "TERMINAL"
 OPPONENT = "OPPONENT"
 TURN = "TURN"
@@ -313,7 +315,8 @@ def _edges(nodes, productions, consumptions):
         if stock and p["from"] not in (OPPONENT, TURN) and not p.get("cost") and not p.get("implicit"):
             if p.get("actor") in ("you", None, "self", "player"):
                 add("fills", p["from"], stock, p["event"])
-        if p["event"] in ENGINE_TERMINALS and p.get("actor") in ("opponent", "player", "target", None) \
+        if (p["event"] == "ALT_WIN" or (p["event"] in ENGINE_TERMINALS
+                                        and p.get("actor") in ("opponent", "player", "target", None))) \
                 and p["from"] not in (OPPONENT, TURN):
             add("ends", p["from"], TERMINAL, p["event"], implicit=p.get("implicit", False))
     # A stock drawn on by an event's consumers: HAND -> every CAST consumer's ignition
@@ -332,7 +335,12 @@ def _modifiers(nodes):
             sc = a.get("scales")
             if sc:
                 kws = sc.get("keywords") or []
-                if sc["event"] == "PUMP" and any(any(k.startswith(p) for p in PROTECTIVE) for k in kws):
+                if sc["event"] == "DENIAL":
+                    # A tax or a ban on attacking, blocking, casting or targeting: it
+                    # protects the table side it names and feeds nothing.
+                    protects.append({"card": n["id"], "filters": sc.get("filters") or [],
+                                     "keywords": [a.get("text", "")[:60] or "denial"], "kind": "denial"})
+                elif sc["event"] == "PUMP" and any(any(k.startswith(p) for p in PROTECTIVE) for k in kws):
                     protects.append({"card": n["id"], "filters": sc.get("filters") or [], "keywords": kws,
                                      "kind": "static"})
                 elif sc["event"] == "PUMP":
@@ -471,7 +479,8 @@ def _terminal_amounts(node):
         if a["kind"] == "implicit":
             continue
         for p in a.get("produces") or []:
-            if p["event"] in ENGINE_TERMINALS and p.get("actor") in ("opponent", "player", "target", None):
+            if p["event"] == "ALT_WIN" or (p["event"] in ENGINE_TERMINALS
+                                           and p.get("actor") in ("opponent", "player", "target", None)):
                 out.append(p.get("amount"))
     return out
 
@@ -486,7 +495,7 @@ def _stage_of(node, deg, nodes, edges, components, protects_by_card, scales_by_c
     # An implicit CAST feeding a "whenever you cast" card is a CLASS, not a start:
     # it is reported in the CAST component's producers, never as ignition. Filling
     # a stock some outlet draws on (bodies under a sacrifice outlet) IS an out.
-    drawn_stocks = {e["from"] for e in edges if e["kind"] == "supplies" and e["from"] in STOCKS}
+    drawn_stocks = {e["from"] for e in edges if e["kind"] == "supplies" and e["from"] in ("BODIES", "HAND", "GRAVEYARD")}
     outs_to_deck = set(d["out_explicit"]) | (d["fills"] & drawn_stocks)
     self_pain = {"DAMAGE", "LIFE_LOSS"}
     has_outlet = any(c["event"] == "BODIES" for c in components) or any(
@@ -546,7 +555,10 @@ def _stage_of(node, deg, nodes, edges, components, protects_by_card, scales_by_c
         mark("output", "a body that attacks")
     ordered = [s for s in ENGINE_STAGE_RULES if s in hits]
     if not ordered:
-        return "unplaced", [], {"unplaced": "no rule matched: produces " + (", ".join(sorted(prod)) or "nothing the registry names")}
+        unread = (node.get("coverage") or {}).get("unmapped") or []
+        return "unplaced", [], {"unplaced": "no rule matched: produces "
+                                + (", ".join(sorted(prod)) or "nothing the registry names")
+                                + (f" (unmapped: {', '.join(unread[:3])})" if unread else "")}
     return ordered[0], ordered[1:], why
 
 
@@ -559,20 +571,34 @@ def _stages(nodes, edges, components):
     sb = {}
     for s in scales:
         sb.setdefault(s["card"], []).append(s["event"])
-    stages = {s: [] for s in ENGINE_STAGE_RULES}
-    stages["unplaced"] = []
+    members = {s: [] for s in ENGINE_STAGE_RULES}
+    unassigned = []
     placed = {}
     for n in _deck(nodes):
         stage, also, why = _stage_of(n, deg, nodes, edges, components, pb, sb)
         placed[n["id"]] = {"stage": stage, "also": also, "why": why.get(stage) or why.get("unplaced")}
         if stage == "unplaced":
-            stages["unplaced"].append({"card": n["id"], "why": placed[n["id"]]["why"]})
+            unassigned.append({"card": n["id"], "why": placed[n["id"]]["why"]})
         else:
-            stages[stage].append(n["id"])
-    return stages, placed
+            members[stage].append(n["id"])
+    # The LIST shape every reader of engine.json already knows (the handbook's
+    # Systems, the dossier, engine_casts, the build page's arrows): one block per
+    # stage that has members, `what_it_does` COMPUTED from the rules that placed
+    # them — the reading may say it better, never here.
+    stages = []
+    for s in ENGINE_STAGE_RULES:
+        if not members[s]:
+            continue
+        whys = Counter(placed[c]["why"] for c in members[s])
+        what = "; ".join(f"{w} ({k})" if k > 1 else w for w, k in whys.most_common(3))
+        stages.append({"stage": s, "label": STAGE_LABEL.get(s, s.title()), "cards": members[s],
+                       "what_it_does": f"{len(members[s])} card(s), by rule: {what}",
+                       "also": {c: placed[c]["also"] for c in members[s] if placed[c]["also"]},
+                       "single_point_of_failure": None})
+    return stages, unassigned, placed
 
 
-def _lines(nodes, edges, stages, components, by_stack, library_size):
+def _lines(nodes, edges, placed, components, by_stack, library_size):
     """Lines are SHAPES: distinct event sequences from an ignition to the terminal,
     each with the cards that stand at every hop. A deck with fifteen token makers
     and twelve drains has one `ETB › LIFE_LOSS` line with fifteen starts and twelve
@@ -587,7 +613,7 @@ def _lines(nodes, edges, stages, components, by_stack, library_size):
         if e["kind"] in ("feeds", "supplies", "fills", "ends", "makes") and e["from"] not in (OPPONENT, TURN) \
                 and e["to"] not in ("LIFE", "MANA") and e["from"] not in ("LIFE", "MANA"):
             adj.setdefault(e["from"], []).append(e)
-    ignition = list(stages.get("ignition") or [])
+    ignition = [c for c, p in placed.items() if p["stage"] == "ignition"]
     shapes = {}
 
     def walk(path, events, depth):
@@ -650,7 +676,17 @@ def _lines(nodes, edges, stages, components, by_stack, library_size):
                          for cards in inst_cards if len(cards) >= 2 and set(cards) <= set(st["cards"])})
         real = [h for h in hops if not h["stocks"]]
         bottleneck = min(real, key=lambda h: h["n"]) if real else None
-        out.append({"events": [e for e in evs if e != "+"], "terminal": [e for e in evs if e != "+"][-1],
+        events = [e for e in evs if e != "+"]
+
+        def stage_of_hop(h):
+            votes = Counter(placed.get(c, {}).get("stage") for c in h["cards"] if c in placed)
+            return votes.most_common(1)[0][0] if votes else None
+        via = sorted({c for h in real for c in h["cards"]} if sum(h["n"] for h in real) <= 6
+                     else {c for h in real if h["n"] <= ENGINE_THIN_GROUP for c in h["cards"]})
+        out.append({"events": events, "terminal": events[-1],
+                    "from": stage_of_hop(real[0]) if real else None,
+                    "to": stage_of_hop(real[-1]) if real else None,
+                    "via": via, "carries": " › ".join(events),
                     "hops": hops, "instances": len(sh["instances"]),
                     "cards": sorted({c for h in hops for c in h["cards"]}),
                     "bottleneck": {"position": hops.index(bottleneck), "n": bottleneck["n"],
@@ -664,12 +700,11 @@ def _lines(nodes, edges, stages, components, by_stack, library_size):
     return out
 
 
-def _spof(nodes, edges, stages, components, lines):
+def _spof(nodes, edges, placed, components, lines):
     """Articulation points of the engine subgraph (deck nodes outside mana and
     protection, undirected over feeds/supplies), single-producer consumed events,
     and an unprotected commander."""
-    engine = {n for s, members in stages.items() if s not in ("mana", "protection", "unplaced")
-              for n in members}
+    engine = {c for c, p in placed.items() if p["stage"] not in ("mana", "protection", "unplaced")}
     und = {n: set() for n in engine}
     for st in ("BODIES", "HAND", "GRAVEYARD"):
         und[st] = set()                                   # a stock joins the sides it connects
@@ -746,10 +781,13 @@ def build(slug, branch=None):
     consumptions = _consumptions(nodes)
     edges = _edges(nodes, productions, consumptions)
     components = _components(nodes, edges, deck_names, {}, library_size)
-    stages, placed = _stages(nodes, edges, components)
+    stages, unassigned, placed = _stages(nodes, edges, components)
     pairings = engine_facts.verified_pairings(slug, deck_names) if branch is None else {"by_stack": {}}
-    lines = _lines(nodes, edges, stages, components, pairings.get("by_stack") or {}, library_size)
-    spof = _spof(nodes, edges, stages, components, lines)
+    lines = _lines(nodes, edges, placed, components, pairings.get("by_stack") or {}, library_size)
+    spof = _spof(nodes, edges, placed, components, lines)
+    for st in stages:                                   # the first cut vertex among a stage's cards
+        st["single_point_of_failure"] = next((x["card"] for x in spof if x["kind"] == "cut_vertex"
+                                              and x["card"] in st["cards"]), None)
     scales, protects = _modifiers(nodes)
     readers = Counter(n["coverage"]["reader"] for n in _deck(nodes))
     unmapped = sorted({u for n in _deck(nodes) for u in n["coverage"]["unmapped"]})
@@ -769,6 +807,7 @@ def build(slug, branch=None):
         },
         "components": components,
         "stages": stages,
+        "unassigned": unassigned,
         "placed": placed,
         "lines": lines,
         "spof": spof,
@@ -817,8 +856,15 @@ def migrate_reading(old, fresh):
         r["lines"] = lines
         if unmatched:
             r["unmatched_v1_lines"] = unmatched
-        if old.get("stages"):
-            r["v1_stages"] = old["stages"]
+        v1_stages = old.get("stages") or []
+        if isinstance(v1_stages, dict):                  # an early hand-written shape
+            v1_stages = [{"stage": k, "cards": v} for k, v in v1_stages.items()]
+        if v1_stages:
+            r["v1_stages"] = [{"stage": st.get("stage"), "label": st.get("label"),
+                               "what_it_does": st.get("what_it_does"), "cards": st.get("cards")}
+                              for st in v1_stages]
+        if old.get("map_disagreements"):
+            r["v1_map_disagreements"] = old["map_disagreements"]
     now = fresh["_meta"]["decklist_sha256"]
     r["stale"] = bool(r.get("written_for")) and r["written_for"] != now or not r.get("written_for")
     deck_names = {n["id"] for n in fresh["graph"]["nodes"] if n["zone"] in ("command", "library")}
@@ -862,14 +908,12 @@ def _print(doc, abilities_for=None):
         print(f"  unmapped Forge names: {', '.join(cov['unmapped_forge_names'][:12])}"
               + (" …" if len(cov["unmapped_forge_names"]) > 12 else ""))
     print("\nSTAGES (computed; the reading may override a card with a why)")
-    for s in list(ENGINE_STAGE_RULES) + ["unplaced"]:
-        members = doc["stages"].get(s) or []
-        if not members:
-            continue
-        if s == "unplaced":
-            print(f"  {s:11} {len(members):3}  " + "; ".join(f"{u['card']} ({u['why']})" for u in members[:6]))
-        else:
-            print(f"  {s:11} {len(members):3}  " + ", ".join(members[:10]) + (" …" if len(members) > 10 else ""))
+    for st in doc["stages"]:
+        members = st["cards"]
+        print(f"  {st['stage']:11} {len(members):3}  " + ", ".join(members[:10]) + (" …" if len(members) > 10 else ""))
+    if doc["unassigned"]:
+        print(f"  {'unplaced':11} {len(doc['unassigned']):3}  "
+              + "; ".join(f"{u['card']} ({u['why']})" for u in doc["unassigned"][:6]))
     print("\nCOMPONENTS (one per consumed event; odds = a producer in the opening seven / by turn three)")
     for c in doc["components"]:
         od = c["activation"]["producers"]["odds"]
@@ -888,8 +932,10 @@ def _print(doc, abilities_for=None):
                 hop_words.append(h["stocks"][0])
             elif h["n"] == 1:
                 hop_words.append(h["cards"][0])
-            else:
+            elif h["cards"]:
                 hop_words.append(f"{h['n']} cards ({h['cards'][0]} …)")
+            else:
+                hop_words.append(", ".join(h["tokens"]) or "?")
         print(f"  {l['id']} {l['stamp']} {' › '.join(l['events'])}: " + " → ".join(hop_words)
               + f"  [{l['instances']} instance{'s' if l['instances'] != 1 else ''}, P3 {l['availability_by_turn_three']:.2f}]"
               + (f"  stacks {','.join(l['verified_by'])}" if l["verified_by"] else "")

@@ -138,6 +138,10 @@ def synthetic_deck(tmp_path, monkeypatch):
     return base
 
 
+def _stage(doc, name):
+    return next((st["cards"] for st in doc["stages"] if st["stage"] == name), [])
+
+
 def _edges(doc, **match):
     return [e for e in doc["graph"]["edges"] if all(e.get(k) == v for k, v in match.items())]
 
@@ -180,7 +184,7 @@ def test_the_commander_is_ignition_from_the_command_zone(synthetic_deck):
     doc = eg.build(SLUG)
     edgar = next(n for n in doc["graph"]["nodes"] if n["id"] == "Edgar Markov")
     assert edgar["zone"] == "command"
-    assert "Edgar Markov" in doc["stages"]["ignition"]
+    assert "Edgar Markov" in _stage(doc, "ignition")
     # A Vampire whose only out-edge is its own implicit cast is NOT ignition: it is
     # a body for the outlet (fodder), and the CAST component counts it as the class.
     assert doc["placed"]["Vampire Nighthawk"]["stage"] == "fodder"
@@ -208,8 +212,11 @@ def test_stage_rules_apply_in_registry_order(synthetic_deck):
     # Every card in the 99 is placed or explicitly unplaced with a why.
     names = {n["id"] for n in doc["graph"]["nodes"] if n["zone"] != "token"}
     assert set(p) == names
-    for u in doc["stages"]["unplaced"]:
+    for u in doc["unassigned"]:
         assert u["why"]
+    # The list shape every renderer reads: one block per populated stage, in rule order.
+    assert [st["stage"] for st in doc["stages"]] == [s for s in config.ENGINE_STAGE_RULES if _stage(doc, s)]
+    assert all(st["label"] and st["what_it_does"].startswith(f"{len(st['cards'])} card") for st in doc["stages"])
 
 
 def test_a_line_runs_from_ignition_to_a_terminal_ranked_verified_first(synthetic_deck):
@@ -224,6 +231,12 @@ def test_a_line_runs_from_ignition_to_a_terminal_ranked_verified_first(synthetic
     assert hops[2]["stocks"] == ["BODIES"]
     assert hops[3]["cards"] == ["Viscera Seer"] and hops[4]["cards"] == ["Blood Artist"]
     assert loop["terminal"] == "LIFE_LOSS"
+    # The arrow the build page draws: from the first hop's stage to the last's, the
+    # events as the noun it carries, the thin hops as `via`.
+    assert loop["from"] in {doc["placed"][c]["stage"] for c in hops[0]["cards"]}
+    assert loop["to"] in ("output", "wincon")
+    assert loop["carries"] == "CAST › BODIES › DIES › LIFE_LOSS"
+    assert {"Edgar Markov", "Viscera Seer", "Blood Artist"} <= set(loop["via"])
     # Verified lines come first; a line has at least two hops; ids are dense.
     assert doc["lines"][0]["verified_by"], "a stack-stamped line is ranked first"
     assert all(len(l["events"]) >= 2 for l in doc["lines"])
@@ -283,7 +296,7 @@ def test_the_record_is_byte_identical_across_runs(synthetic_deck):
 def test_the_reading_is_migrated_from_v1_and_marked_stale_for_another_list(synthetic_deck):
     fresh = eg.build(SLUG)
     v1 = {"slug": SLUG, "decklist_sha256": "b" * 64, "thesis": "Edgar makes bodies, outlets kill them, Artist bills it.",
-          "stages": {"ignition": ["Edgar Markov"]},
+          "stages": [{"stage": "ignition", "label": "Ignition", "what_it_does": "w", "cards": ["Edgar Markov"]}],
           "lines": [{"from": "ignition", "to": "wincon", "via": ["Edgar Markov", "Viscera Seer", "Blood Artist"],
                      "note": "the loop", "verified_by": ["001"]},
                     {"from": "fuel", "to": "mana", "via": ["Nothing Here"], "note": "orphan"}],
@@ -301,6 +314,7 @@ def test_the_reading_is_migrated_from_v1_and_marked_stale_for_another_list(synth
     v2 = {"_meta": {"v": 2}, "reading": {"written_for": "a" * 64, "thesis": "mine", "lines": [], "stage_overrides": []}}
     again = eg.migrate_reading(v2, fresh)
     assert again["thesis"] == "mine" and again["stale"] is False
+    assert r["v1_stages"][0]["cards"] == ["Edgar Markov"], "the v1 placement is kept on the reading"
 
 
 def test_write_puts_the_reading_beside_a_fresh_record(synthetic_deck):

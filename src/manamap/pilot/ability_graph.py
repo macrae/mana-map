@@ -194,7 +194,7 @@ def _apply_property(pred, prop):
         pred["other"] = True
     elif prop in ("YouCtrl", "YouOwn"):
         pred["controller"] = "you"
-    elif prop in ("OppCtrl", "OppOwn"):
+    elif prop in ("OppCtrl", "OppOwn", "YouDontCtrl", "YouDontOwn"):
         pred["controller"] = "opponent"
     elif prop == "token":
         pred["token"] = True
@@ -513,7 +513,8 @@ def _activated(doc, body, svars):
     api = params.get("AB") or params.get("SP")
     kind = "activated" if params.get("AB") else "spell"
     produces = list(_produced(api, params, svars, doc["unmapped"])) if api else []
-    for nxt in (params.get("SubAbility"),):
+    for nxt in (params.get("SubAbility"), params.get("TrueSubAbility"), params.get("FalseSubAbility"),
+                params.get("RepeatSubAbility"), params.get("Execute")):
         for a2, p2 in _effect_chain(nxt, svars):
             produces.extend(_produced(a2, p2, svars, doc["unmapped"]))
     if api == "Charm":
