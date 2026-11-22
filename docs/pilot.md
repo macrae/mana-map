@@ -91,6 +91,8 @@ manamap pilot validate-deckcheck <slug>                  # deckcheck.json: the t
                                         #   readings in order and deduped, omni re-adds; WARN when it describes an older list
 manamap pilot card-search [--deck <slug>] [--identity GU] [--oracle REGEX]…  # mine the corpus for candidates
 manamap pilot similar-cards <card…> [--deck <slug>] [--identity URW] [--limit N]  # cards that DO what this does (ability space)
+                                        # --space interaction (2026-11-22): rank by the typed events cards consume and
+                                        #   produce; --feeds: what the ONE seed feeds and what feeds it (directed)
 manamap pilot scenario-ab --spec FILE [--check] [--json]  # a Forge scenario-slice A/B (docs/simulation.md); --check = the board, unplayed
 manamap pilot page-state [--json] [--clear-ask]  # what Sean has open in the browser, focused tab first (Jarvis resolves "this card"); a pending page ASK first; --clear-ask marks it taken
 manamap pilot commander-search <cards…> | --from FILE | --deck <slug>  # cards in, commanders out

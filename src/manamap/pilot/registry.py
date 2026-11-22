@@ -1580,6 +1580,12 @@ def add_pilot_parser(subparsers):
                              help="--deck: do NOT exclude cards already in the deck")
             cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
                              help="drop Game Changers (they force bracket 4)")
+            from manamap import spaces as _spaces
+            cmd.add_argument("--space", default=None, choices=_spaces.choices(),
+                             help=f"the embedding space to rank in (default {_spaces.DEFAULT}); "
+                                  f"'{_spaces.INTERACTION}' ranks by the typed events cards consume and produce")
+            cmd.add_argument("--feeds", action="store_true",
+                             help="also list what the ONE seed feeds and what feeds it (directed, typed events)")
             cmd.add_argument("--limit", type=int, default=None,
                              help="max results (default 15, at most 100)")
             cmd.add_argument("--json", action="store_true", dest="as_json")

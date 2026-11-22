@@ -113,8 +113,48 @@ def resolve_seeds(seeds, names):
     return rows
 
 
+def space_matrix(space=None):
+    """The matrix for `space` (a `spaces` slug); None means the ability space, the
+    bench's default, through its own memo."""
+    from manamap import spaces
+    if space is None or space == spaces.DEFAULT:
+        return ability_embeddings(), "ability (embeddings_ability.npy)"
+    sp = spaces.get(space)
+    if not sp.exists():
+        raise SystemExit(f"{sp.npy.name} is absent — the {space} space is built by "
+                         + ("`manamap interaction`" if space == spaces.INTERACTION else "the pipeline"))
+    return spaces.load(space), f"{sp.label} ({sp.npy.name})"
+
+
+def feeds_rows(seed, mask_names, limit=DEFAULT_LIMIT, rank=None):
+    """(feeds, fed_by): the eligible cards the seed FEEDS — produces what they consume
+    — and the ones that feed IT, by `interaction.feeds`, from `card_events.json`.
+    Directed, so the two lists differ; a card with no signature appears in neither."""
+    from manamap.analysis import interaction as ix
+    events = ix.load_card_events()
+    if events is None:
+        raise SystemExit("card_events.json is absent — `manamap interaction` builds it.")
+    cards = events["cards"]
+    sig = (cards.get(seed) or {}).get("sig") or []
+    if not sig:
+        return [], []
+    out, back = [], []
+    for n in mask_names:
+        other = (cards.get(n) or {}).get("sig") or []
+        if not other:
+            continue
+        f, b = ix.feeds(sig, other), ix.feeds(other, sig)
+        if f:
+            out.append((n, f))
+        if b:
+            back.append((n, b))
+    rank = rank or {}
+    key = lambda t: (-t[1], rank.get(t[0]) if rank.get(t[0]) is not None else 10 ** 9, t[0])   # ties by EDHREC rank
+    return sorted(out, key=key)[:limit], sorted(back, key=key)[:limit]
+
+
 def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
-            allow_game_changers=True, spec=None, within=None):
+            allow_game_changers=True, spec=None, within=None, space=None, with_feeds=False):
     """Rank the corpus by ability-space proximity to the seeds. Returns (rows, meta).
 
     `within` (2026-11-21) inverts the candidate rule: rank ONLY these names — the
@@ -129,11 +169,11 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
     if frame is None or pool is None:
         raise SystemExit("cards.csv is absent — similar-cards reads the corpus. "
                          "Run `manamap extract` first.")
-    emb = ability_embeddings()
+    emb, space_label = space_matrix(space)
     names = frame["name"].tolist()
     if len(emb) != len(names):
         raise SystemExit(
-            f"index alignment broken: embeddings_ability.npy has {len(emb)} rows and "
+            f"index alignment broken: {space_label} has {len(emb)} rows and "
             f"cards.csv {len(names)} — re-run the pipeline from the step that changed.")
 
     seed_rows = resolve_seeds(seeds, names)
@@ -218,7 +258,7 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
         })
     meta = {"eligible": int(mask.sum()), "returned": len(rows),
             "commander_illegal_skipped": skipped_illegal,
-            "space": "ability (embeddings_ability.npy)",
+            "space": space_label,
             "seeds": [names[r] for r in seed_rows],
             "seed_roles": sorted(seed_roles),
             "within": (len(inside) if inside is not None else None),
@@ -227,6 +267,14 @@ def similar(seeds, identity=None, exclude=(), limit=DEFAULT_LIMIT,
         # Same count, named for the format it was checked against.
         meta["illegal_skipped"] = meta.pop("commander_illegal_skipped")
         meta["format"] = spec.legality_key
+    if with_feeds:
+        if len(seed_rows) != 1:
+            raise SystemExit("--feeds reads ONE seed: feeding is directed, and a centroid has no direction")
+        eligible = [names[i] for i in np.flatnonzero(mask)]
+        f, b = feeds_rows(names[seed_rows[0]], eligible, limit,
+                          rank={n: pool[n]["edhrec_rank"] for n in eligible})
+        meta["feeds"] = [{"name": n, "feeds": s} for n, s in f]
+        meta["fed_by"] = [{"name": n, "feeds": s} for n, s in b]
     return rows, meta
 
 
@@ -250,7 +298,8 @@ def analyze(args):
         args.cards, identity=identity, exclude=exclude,
         limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
         allow_game_changers=not getattr(args, "no_game_changers", False),
-        spec=formats.for_deck(args.deck) if getattr(args, "deck", None) else None)
+        spec=formats.for_deck(args.deck) if getattr(args, "deck", None) else None,
+        space=getattr(args, "space", None), with_feeds=getattr(args, "feeds", False))
     return {
         "identity": sorted(identity) if identity is not None else None,
         "identity_derived_from": derived_from,
@@ -265,7 +314,7 @@ def format_report(doc):
     ident = "".join(doc["identity"]) if doc["identity"] is not None else "any"
     src = f" (derived from {doc['identity_derived_from']})" if doc["identity_derived_from"] else ""
     out.append(f"SIMILAR CARDS — like {' + '.join(m['seeds'])} · identity {ident}{src}")
-    out.append(f"  ability space, ranked against {m['ranked_against']}; "
+    out.append(f"  {m['space']}, ranked against {m['ranked_against']}; "
                f"{m['eligible']} eligible, showing {m['returned']}")
     if doc["excluded_deck_cards"]:
         out.append(f"  excluding {doc['excluded_deck_cards']} name(s) already in the deck")
@@ -283,6 +332,12 @@ def format_report(doc):
         out.append(f"       {text[:240]}")
         out.append(f"       {r['atlas']}")
         out.append("")
+    if "feeds" in m:
+        for key, head in (("feeds", f"{m['seeds'][0]} FEEDS (produces what they consume)"),
+                          ("fed_by", f"FED BY (they produce what {m['seeds'][0]} consumes)")):
+            out.append(f"  {head}:")
+            out.append("    " + (", ".join(f"{r['name']} {r['feeds']:.2f}" for r in m[key]) or "none in scope"))
+        out.append("  feeds is directed, over typed events from Forge's scripts; a signal, never a verdict")
     return "\n".join(out)
 
 
