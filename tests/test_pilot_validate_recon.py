@@ -136,40 +136,21 @@ def test_a_card_since_added_to_the_99_is_a_WARN_and_never_an_error():
         "...and it must still be REPORTED, or the staleness is invisible")
 
 
-def test_ownership_is_falsified_against_the_boxes(tmp_path, monkeypatch):
-    """`ownership` is a claim about the pilot's cards, so it is checkable — and this
-    is the check that caught the tracked collection being two boxes short."""
-    from manamap.pilot import collection as coll
-    from manamap.pilot.common import clear_memo
-    cdir = tmp_path / "collection"
-    cdir.mkdir()
-    (cdir / "Green.txt").write_text("1 Craterhoof Behemoth\n")
-    monkeypatch.setattr(coll, "COLLECTION_DIR", cdir)
-    clear_memo()
-
-    ok = _doc(ownership={"Craterhoof Behemoth": True})
-    assert not [e for e in validate_recon._validate_ownership(ok) if "says" in e]
-
-    lying = _doc(ownership={"Craterhoof Behemoth": False})
-    assert any("says False but no box in COLLECTION_DIR holds it"
-               in e for e in validate_recon._validate_ownership(lying))
-
-
-def test_a_named_card_missing_from_ownership_is_reported(tmp_path, monkeypatch):
-    """A card the recon recommends without stating its cost leaves the pilot to
-    find out at the till."""
-    from manamap.pilot import collection as coll
-    from manamap.pilot.common import clear_memo
-    monkeypatch.setattr(coll, "COLLECTION_DIR", tmp_path / "none")
-    clear_memo()
-    doc = _doc(ownership={"Something Else": False})
-    assert any("absent from `ownership`" in e
-               for e in validate_recon._validate_ownership(doc))
+def test_a_legacy_ownership_key_is_read_past_not_checked():
+    """Until 2026-11-22 `ownership` was falsified against the pilot's boxes. The
+    bench no longer knows what anyone holds, so there is nothing to check it
+    against — and a recon that still carries one from an earlier run must not
+    fail for it, whatever it claims, and must not be asked to cover every card."""
+    for claim in ({"Craterhoof Behemoth": True}, {"Craterhoof Behemoth": False},
+                  {"Something Else": False}):
+        assert validate_recon.validate(_doc(ownership=claim), "radagast", pool=POOL) == []
+    assert not hasattr(validate_recon, "_validate_ownership")
 
 
 def test_optional_keys_stay_optional():
-    """`ownership`, `_checked_against` and `commander_text_verified` each appear on
-    exactly ONE tracked deck — things a particular run had reason to record, not a
-    schema. Requiring any of them would fail the other four."""
+    """`_checked_against` and `commander_text_verified` each appear on exactly ONE
+    tracked deck — things a particular run had reason to record, not a schema.
+    Requiring any of them would fail the other four; `ownership` is a legacy key
+    the validator ignores outright."""
     assert validate_recon.validate(_doc(), "radagast", pool=POOL) == []
     assert "ownership" not in validate_recon.REQUIRED_KEYS

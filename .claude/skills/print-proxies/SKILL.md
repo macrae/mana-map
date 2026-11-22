@@ -1,18 +1,20 @@
 ---
 name: print-proxies
-description: Print a proxy sheet for the cards a pilot is waiting on — a branch's adds (several branches into one PDF) minus the cards already in hand, laid out 3x3 at true card size (63x88 mm) with crop marks, written to the Desktop and opened. Use when the pilot has ordered cards for a staged branch and wants to play the new list before the mail arrives, or asks to print proxies for any cards.
+description: Print a proxy sheet — a branch's adds (several branches into one PDF), minus any cards the pilot says to leave out, laid out 3x3 at true card size (63x88 mm) with crop marks, written to the Desktop and opened. Use when the pilot wants to play a staged branch's list before the cards arrive, or asks to print proxies for any cards.
 ---
 
-# Print proxies for the cards in the mail
+# Print proxies
 
 One command does the work: `manamap pilot proxies`. It takes a branch's ADDS
-(`deck_branch.diff`, never basics), drops what the pilot holds, prints both
-faces of a double-faced card, fetches Scryfall's 745x1040 PNG render of each
-card (cached in `data/cache/proxies/`), and writes a Letter (or `--paper a4`)
-PDF at 300 dpi.
+(`deck_branch.diff`, never basics), drops whatever the pilot names with `--have`,
+prints both faces of a double-faced card, fetches Scryfall's 745x1040 PNG render
+of each card (cached in `data/cache/proxies/`), and writes a Letter (or `--paper
+a4`) PDF at 300 dpi. The bench keeps no inventory (2026-11-22): `--have` is the
+pilot's own word and nothing else, and `/jarvis` may run this command when he
+asks for the proxies of a branch — dry run, the list read back, then the print.
 
-1. **Ask, don't assume.** Which branches is the pilot collecting for, and which
-   of their adds are already in hand? Take the in-hand list in their words —
+1. **Ask, don't assume.** Which branches is the pilot printing for, and which
+   of their adds should be left off the sheet? Take that list in their words —
    pasted names, or a file (`1 Card Name` lines are fine).
 2. **Dry run and confirm the list with the pilot** before anything downloads:
 
@@ -32,5 +34,5 @@ PDF at 300 dpi.
    outside the grid — the cards abut, so one cut separates two; sleeve each in
    front of a basic land.
 
-Never report which other deck holds a card or build a pull list — the pilot
-names what they have; the sheet is what they don't.
+Never report which other deck holds a card, and never build a pull list or an
+order list — the pilot names what to leave off; the sheet is the rest.

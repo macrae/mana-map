@@ -1,15 +1,16 @@
-"""Tests for pool-facts: analysing a box of cards rather than a finished deck.
+"""Tests for the pool-file readers: the names a brief constrains a build to.
 
-The pure functions are tested against hand-built card tables so they hold
-without any generated artifact. The end-to-end test needs cards.csv and the
-graphs and is gated behind `requires_data`.
+`pool_facts` was a command — "what deck can I build from a box of cards" — until
+2026-11-22, when the bench stopped having any notion of what a person holds. What
+is left is the readers `build_deck` and `validate_build` share, and a pool is a
+constraint on a build, never an inventory. The pure functions are tested against a
+hand-built card table so they hold without any generated artifact; the memo tests
+need cards.csv and are gated behind `requires_data`.
 """
-
-import json
 
 import pytest
 
-from conftest import requires_data, requires_roles
+from conftest import requires_data
 from manamap.pilot import pool_facts
 from manamap.pilot.common import commander_rejection
 
@@ -173,278 +174,23 @@ def test_collect_paths_rejects_a_missing_target(tmp_path):
         pool_facts.collect_paths([tmp_path / "nope"], [])
 
 
-# ── Castability: the number depth hides ─────────────────────────────────
+# ── The printing a pool file pins ───────────────────────────────────────
 
 
-def test_sources_count_copies_not_entries():
-    pool = {"Overgrown Tomb": 1, "Island": 9}
-    assert pool_facts.sources_for(pool, CARDS, {"U"}) == {"U": 9}
-
-
-def test_any_colour_land_is_a_source_for_every_colour_in_identity():
-    """Command Tower is why a naive '{B} appears in the text' count understates."""
-    pool = {"Command Tower": 1}
-    assert pool_facts.sources_for(pool, CARDS, {"B", "G"}) == {"B": 1, "G": 1}
-
-
-def test_out_of_identity_lands_are_not_sources():
-    """An Island in the box does nothing for a Golgari commander."""
-    pool = {"Island": 5, "Overgrown Tomb": 1}
-    assert pool_facts.sources_for(pool, CARDS, {"B", "G"}) == {"B": 1, "G": 1}
-
-
-def test_nonland_mana_is_not_counted_as_a_source():
-    """Sol Ring ramps; it is not a coloured source and never fixes."""
-    assert pool_facts.sources_for({"Sol Ring": 1}, CARDS, {"B"}) == {"B": 0}
-
-
-def test_in_identity_admits_colourless_and_rejects_off_colour():
-    pool = {"Sol Ring": 1, "Island": 1, "Hapatra, Vizier of Poisons": 1}
-    assert sorted(pool_facts.in_identity(pool, CARDS, {"B", "G"})) == [
-        "Hapatra, Vizier of Poisons", "Sol Ring",
-    ]
-
-
-def test_identity_key_is_wubrg_ordered():
-    assert pool_facts.identity_key({"G", "B"}) == "BG"
-    assert pool_facts.identity_key({"G", "W", "U", "B", "R"}) == "WUBRG"
-    assert pool_facts.identity_key(set()) == "C"
-
-
-# ── Combo containment and dedup ─────────────────────────────────────────
-
-
-def _details(records):
-    by_card = {}
-    for i, combo in enumerate(records):
-        for card in combo["cards"]:
-            by_card.setdefault(card, []).append(i)
-    return {"combos": records, "by_card": by_card}
-
-
-def test_only_fully_contained_lines_are_reported():
-    details = _details([
-        {"cards": ["Sol Ring", "Command Tower"], "produces": ["Infinite mana"],
-         "bracket": 1, "popularity": 10},
-        {"cards": ["Sol Ring", "Black Lotus"], "produces": ["Win the game"],
-         "bracket": 4, "popularity": 99},
-    ])
-    lines = pool_facts.contained_combos({"Sol Ring": 1, "Command Tower": 1}, CARDS, details)
-    assert [c["cards"] for c in lines] == [["Command Tower", "Sol Ring"]]
-
-
-def test_duplicate_records_for_one_card_set_collapse():
-    """The raw artifact holds several variants of one interaction.
-
-    Springheart Nantuko + Tireless Provisioner appears twice in the real file;
-    reporting it twice would overstate how many distinct lines a box contains.
-    """
-    details = _details([
-        {"cards": ["Sol Ring", "Command Tower"], "produces": ["a"], "bracket": 1, "popularity": 10},
-        {"cards": ["Command Tower", "Sol Ring"], "produces": ["b"], "bracket": 1, "popularity": 40},
-    ])
-    lines = pool_facts.contained_combos({"Sol Ring": 1, "Command Tower": 1}, CARDS, details)
-    assert len(lines) == 1
-    assert lines[0]["popularity"] == 40  # the most popular record wins
-
-
-def test_every_line_is_marked_unverified():
-    details = _details([
-        {"cards": ["Sol Ring", "Command Tower"], "produces": ["Infinite mana"],
-         "bracket": 1, "popularity": 10},
-    ])
-    lines = pool_facts.contained_combos({"Sol Ring": 1, "Command Tower": 1}, CARDS, details)
-    assert lines[0]["verified"] is False
-    assert lines[0]["infinite"] is True
-
-
-def test_line_identity_is_the_union_of_its_pieces():
-    details = _details([
-        {"cards": ["Hapatra, Vizier of Poisons", "Island"], "produces": ["x"],
-         "bracket": 2, "popularity": 1},
-    ])
-    lines = pool_facts.contained_combos(
-        {"Hapatra, Vizier of Poisons": 1, "Island": 1}, CARDS, details
-    )
-    assert lines[0]["identity"] == "UBG"
-
-
-# ── In-box upgrades ─────────────────────────────────────────────────────
-
-
-def test_obsolescence_only_reports_replacements_you_own():
-    index = {
-        "Sol Ring": {"compare_with": [
-            {"name": "Command Tower", "gains": ["Lower CMC"], "similarity": 0.9},
-            {"name": "Mana Crypt", "gains": ["Free"], "similarity": 0.95},
-        ]},
-    }
-    out = pool_facts.obsolete_in_pool({"Sol Ring": 1, "Command Tower": 1}, index)
-    # THE SHAPE CARRIES BOTH SIDES AND THE MEASURE NOW. A one-sided
-    # `advantages` list is how a card that CHARGED you something read as pure
-    # upside.
-    assert len(out) == 1 and out[0]["card"] == "Sol Ring"
-    row = out[0]["compare_with"][0]
-    assert row["name"] == "Command Tower"
-    assert set(row) >= {"name", "strength", "gains", "costs", "narrows",
-                        "played_more"}
-
-
-def test_obsolescence_is_empty_when_nothing_is_owned():
-    index = {"Sol Ring": {"compare_with": [{"name": "Mana Crypt", "gains": [], "similarity": 1}]}}
-    assert pool_facts.obsolete_in_pool({"Sol Ring": 1}, index) == []
-
-
-# ── Notes: the traps said out loud ──────────────────────────────────────
-
-
-def test_a_deep_but_uncastable_identity_is_called_out():
-    """Depth without castability is the trap the module exists to close."""
-    facts = {
-        "resolution": {"unresolved": []},
-        "identities": [{"key": "WUBG", "depth": 663, "sources": {"W": 10, "U": 0, "B": 44, "G": 35}}],
-        "combos": {"total": 0, "reported": 0},
-        "bracket": {},
-    }
-    notes = pool_facts.build_notes(facts)
-    assert any("not castable" in n and "U=0" in n for n in notes)
-
-
-def test_a_castable_identity_gets_no_warning():
-    facts = {
-        "resolution": {"unresolved": []},
-        "identities": [{"key": "BG", "depth": 524, "sources": {"B": 42, "G": 34}}],
-        "combos": {"total": 0, "reported": 0},
-        "bracket": {},
-    }
-    assert not any("not castable" in n for n in pool_facts.build_notes(facts))
-
-
-def test_role_holes_carry_the_taxonomy_caveat():
-    """A hole is only as good as the taxonomy's coverage, and it must say so.
-
-    Necropotence classifies as `stax` and Sylvan Library not at all, so a deck
-    with six real draw engines reports `draw -8`. Reporting that as a deck
-    weakness is a confidently wrong answer.
-    """
-    facts = {
-        "resolution": {"unresolved": []},
-        "identities": [{"key": "BG", "depth": 86, "sources": {"B": 42, "G": 34},
-                        "role_holes": {"draw": 8}, "role_unclassified": 21}],
-        "combos": {"total": 0, "reported": 0},
-        "bracket": {},
-    }
-    notes = pool_facts.build_notes(facts)
-    assert any("no card_roles.json entry" in n and "21" in n for n in notes)
-
-
-def test_no_taxonomy_caveat_when_coverage_is_complete():
-    facts = {
-        "resolution": {"unresolved": []},
-        "identities": [{"key": "BG", "depth": 86, "sources": {"B": 42, "G": 34},
-                        "role_holes": {"draw": 8}, "role_unclassified": 0}],
-        "combos": {"total": 0, "reported": 0},
-        "bracket": {},
-    }
-    assert not any("card_roles.json entry" in n for n in pool_facts.build_notes(facts))
-
-
-def test_role_coverage_counts_the_unclassified():
-    """Cards with no roles land in flex; the count is the hole's denominator."""
-    roles = {"Hapatra, Vizier of Poisons": ["threat:body"]}
-    names = ["Hapatra, Vizier of Poisons", "Sol Ring", "Overgrown Tomb"]
-    histogram, _, unclassified = pool_facts.role_coverage(names, CARDS, roles)
-    assert unclassified == 1                      # Sol Ring; the land is skipped
-    assert sum(histogram.values()) == 2           # lands are excluded entirely
-    # Both land in flex, but for different reasons — Sol Ring has no entry,
-    # Hapatra has one whose role belongs to no budget group. Only the first is
-    # a taxonomy gap, which is why `unclassified` is counted separately.
-    assert histogram.get("flex") == 2
-
-
-def test_in_box_upgrades_are_flagged_as_candidates():
-    """The index compares structure; it gets read as function, and it is wrong.
-
-    Boggart Mischief drains only when a *Goblin* dies and was offered as a
-    replacement for Bastion of Remembrance, which drains on any creature.
-    """
-    facts = {
-        "resolution": {"unresolved": []}, "identities": [],
-        "combos": {"total": 0, "reported": 0}, "bracket": {},
-        "obsolescence": [{"card": "Bastion of Remembrance", "compare_with": []}],
-    }
-    notes = pool_facts.build_notes(facts)
-    # The caveat says what the data now supports: a STRENGTH, not a verdict,
-    # and the classes it reads. It must still refuse to be read as fact.
-    assert any("CANDIDATE" in n.upper() and "STRENGTH" in n.upper()
-               for n in notes), notes
-    assert any("cannot read a card" in n for n in notes), notes
-
-
-def test_no_upgrade_caveat_when_there_are_no_upgrades():
-    facts = {
-        "resolution": {"unresolved": []}, "identities": [],
-        "combos": {"total": 0, "reported": 0}, "bracket": {}, "obsolescence": [],
-    }
-    assert not any("CANDIDATES" in n for n in pool_facts.build_notes(facts))
-
-
-def test_truncation_is_announced():
-    facts = {
-        "resolution": {"unresolved": []},
-        "identities": [],
-        "combos": {"total": 31, "reported": 25},
-        "bracket": {},
-    }
-    notes = pool_facts.build_notes(facts)
-    assert any("31 contained lines" in n and "25 most popular" in n for n in notes)
-
-
-def test_unresolved_names_are_surfaced_as_a_note():
-    facts = {
-        "resolution": {"unresolved": [{"name": "Nope", "files": ["a.txt"]}]},
-        "identities": [], "combos": {"total": 0, "reported": 0}, "bracket": {},
-    }
-    assert any("did not resolve" in n for n in pool_facts.build_notes(facts))
-
-
-# ── End to end, against the real artifacts ──────────────────────────────
-
-
-@requires_data
-@requires_roles
-def test_analyze_runs_end_to_end_on_a_small_pool(tmp_path):
-    """A three-card list through the real cards.csv and graphs."""
-    lst = tmp_path / "box.txt"
-    lst.write_text("1 Sol Ring\n1 Command Tower\n1 Hapatra, Vizier of Poisons\n")
-    facts = pool_facts.analyze([lst])
-
-    assert facts["meta"]["distinct"] == 3
-    assert facts["resolution"]["unresolved"] == []
-    assert [c["name"] for c in facts["commanders"]] == ["Hapatra, Vizier of Poisons"]
-    assert facts["commanders"][0]["color_identity"] == "BG"
-    # Sol Ring and Command Tower are colourless, so all three are playable.
-    assert facts["identities"][0]["depth"] == 3
-    json.dumps(facts)  # the artifact must be serialisable
-
-
-@requires_data
-@requires_roles
-def test_analyze_excludes_a_named_file(tmp_path):
-    (tmp_path / "a.txt").write_text("1 Sol Ring\n")
-    (tmp_path / "b.txt").write_text("1 Command Tower\n")
-    facts = pool_facts.analyze([tmp_path], exclude=[tmp_path / "b.txt"])
-    assert facts["meta"]["distinct"] == 1
-    assert [s["file"] for s in facts["sources"]] == ["a.txt"]
-
-
-@requires_data
-@requires_roles
-def test_a_pool_of_only_unresolvable_names_fails_loudly(tmp_path):
-    lst = tmp_path / "box.txt"
-    lst.write_text("1 Definitely Not A Magic Card\n")
-    with pytest.raises(SystemExit):
-        pool_facts.analyze([lst])
+def test_pool_printings_keeps_the_pinned_printing_and_the_first_one_wins(tmp_path):
+    """`read_sources` drops the `(SET) CN *F*` suffix because counting copies does
+    not care; a build that pins printings does. A bare line pins nothing, a
+    front-face line resolves to the joined name, and a card listed twice keeps
+    the printing it was first seen with — which line it came from is not a
+    decision the reader should invent."""
+    (tmp_path / "a.txt").write_text(
+        "1 Sol Ring (ECC) 58 *F*\n1 Grist, Voracious Larva (MH3) 251\n1 Command Tower\n")
+    (tmp_path / "b.txt").write_text("1 Sol Ring (C21) 263\n")
+    got = pool_facts.pool_printings([tmp_path / "a.txt", tmp_path / "b.txt"], CARDS)
+    assert got["Sol Ring"] == {"set": "ecc", "collector_number": "58", "foil": True}
+    assert got["Grist, Voracious Larva // Grist, the Plague Swarm"] == {
+        "set": "mh3", "collector_number": "251", "foil": False}
+    assert "Command Tower" not in got, "a bare line pins no printing"
 
 
 # ── One parse per process ────────────────────────────────────────────────
@@ -452,7 +198,7 @@ def test_a_pool_of_only_unresolvable_names_fails_loudly(tmp_path):
 
 @requires_data
 def test_load_cards_is_memoized(monkeypatch):
-    """A single `pool-facts` run scanned the 24 MB CSV twice — once here and once
+    """A build that named a pool scanned the 24 MB CSV twice — once here and once
     inside `bracket.load_reference`. Same key discipline as `bracket._card_flags`."""
     import pandas as pd
     from manamap.pilot import pool_facts as pf
@@ -484,31 +230,3 @@ def test_load_cards_reparses_when_the_file_changes():
     sig, _ = _MTIME_MEMO["pool_facts:cards"]
     _MTIME_MEMO["pool_facts:cards"] = ((sig[0] - 1, sig[1]), {"stale": True})
     assert "stale" not in pf.load_cards()
-
-
-def test_the_commander_rank_says_what_it_is_and_is_not():
-    """`cards.csv`'s `edhrec_rank` is a CARD's popularity across the whole format in
-    every role — not a rating of the card as a commander.
-
-    In `pool_facts` it is simultaneously a displayed column and the shortlist's
-    tiebreak sort key, which invited exactly one reading and it was the wrong one: on
-    a real 931-card collection it put Selvala, Heart of the Wilds (card rank 430,
-    commander rank #448) above Atraxa, Praetors' Voice (commander rank #4). The key is
-    named `edhrec_card_rank` and the caveat rides in `notes` so it travels with the
-    JSON, not just the human report.
-    """
-    facts = {"commanders": [{"name": "X", "edhrec_card_rank": 430, "depth": 1}],
-             "resolution": {"unresolved": []}, "identities": [],
-             "combos": {"total": 0, "reported": 0}, "bracket": {}}
-    notes = pool_facts.build_notes(facts)
-    note = next((n for n in notes if "edhrec_card_rank" in n), None)
-    assert note, "the rank caveat must be a note, not only a column heading"
-    assert "NOT a rating of the card as a commander" in note
-    assert "tiebreak" in note, "the note must say why the ordering is what it is"
-
-
-def test_no_rank_caveat_when_there_are_no_commanders():
-    """A note about a section the report does not contain is noise."""
-    facts = {"commanders": [], "resolution": {"unresolved": []}, "identities": [],
-             "combos": {"total": 0, "reported": 0}, "bracket": {}}
-    assert not [n for n in pool_facts.build_notes(facts) if "edhrec_card_rank" in n]

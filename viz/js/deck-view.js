@@ -436,54 +436,15 @@
    *
    * No tier badge, same reason as the brief: a branch is intent, not evidence.
    */
-  /* Three states where there were two. `mergeable` / `N to source` could not
-   * tell a decision from an experiment — both rendered as a shopping list. The
-   * state comes from `deck_branch.branch_state`, which derives it and stores
-   * nothing, so a proposal un-blocks itself when a card lands in a box. */
-  /* THE PULL LIST. `source()` has computed this since branches shipped and
-   * nothing presented it as a list you take to a shop or a box. The buckets are
-   * separate because they cost different things: BUY is money, UNSLEEVE takes a
-   * deck apart, PROXY is a decision already recorded, FREE is cardboard already
-   * in a pile. One number read as one problem. */
-  var PULL = [
-    ['buy', 'To buy', 'nobody owns a copy'],
-    ['unsleeve', 'To unsleeve', 'out of a deck that is still together'],
-    ['proxy', 'Proxied', 'you decided to move these across your own decks'],
-    ['free', 'Free', 'only in a broken-down or retired deck'],
-    ['box', 'From a box', 'already yours']
-  ];
-
-  function pullList(pl) {
-    var out = '<h4>The pull list <span class="ev">' +
-      (pl.blocking ? pl.blocking + ' still blocking' : 'nothing left to find') +
-      '</span></h4>';
-    if (pl.procurement && pl.procurement.note) {
-      out += '<p class="ev">' + esc(pl.procurement.note) + '</p>';
-    }
-    PULL.forEach(function (g) {
-      var rows = pl[g[0]] || [];
-      if (!rows.length) return;
-      out += '<h5 class="pull-head">' + esc(g[1]) + ' <span class="ev">(' +
-        rows.length + ') ' + esc(g[2]) + '</span></h5>' +
-        '<ul class="pull-list pull-' + g[0] + '">' + rows.map(function (r) {
-          return '<li>' + esc(r.name) + ((r.where || []).length
-            ? ' <span class="ev">' + esc(r.where.join(', ')) + '</span>' : '') +
-            '</li>';
-        }).join('') + '</ul>';
-    });
-    return out;
-  }
-
+  /* NO OWNERSHIP ON THE ROW (2026-11-22). The pull list, the four sourcing
+   * counts and the "N to source" badge are gone with the ownership layer: a
+   * branch row says what the list would change and what was decided, never
+   * where a card is. A proposal still shows the version it was accepted as. */
   function branchBadge(b) {
-    if (b.proposal && b.state) {
-      var cls = b.state === 'PROPOSED · READY' ? 'branch-ok'
-        : (b.state === 'PROPOSED · BLOCKED' ? 'branch-wait' : 'branch-block');
-      return '<span class="' + cls + '">' + esc(b.state) + ' \u2192 ' +
-             esc(b.proposal.as_version) + '</span>';
+    if (b.proposal && b.proposal.as_version) {
+      return '<span class="branch-ok">\u2192 ' + esc(b.proposal.as_version) + '</span>';
     }
-    return b.mergeable ? '<span class="branch-ok">mergeable</span>'
-      : '<span class="branch-block">' + (b.unsourced || []).length +
-        ' to source</span>';
+    return '';
   }
 
   // EVERY STATE GETS A BADGE (2026-10-19). An OPEN branch used to show only
@@ -524,11 +485,10 @@
         return '<div class="branch"><h3>' + esc(b.name) +
                '</h3><p class="ev">This branch\u2019s list will not parse.</p></div>';
       }
-      var c = b.counts || {};
       // THE DOSSIER SUMMARISES; branch.html decides. This panel is about a deck
-      // that EXISTS and a branch is a proposal with a bill attached, so the
-      // decision surface is its own page and this links to it rather than
-      // growing into the busiest panel here.
+      // that EXISTS and a branch is a proposal, so the decision surface is its
+      // own page and this links to it rather than growing into the busiest
+      // panel here.
       var href = 'branch.html?deck=' + encodeURIComponent(d.slug) +
                  '&branch=' + encodeURIComponent(b.name);
       var out = '<div class="branch' + (branchDecided(b) ? ' branch-decided' : '') + '"><h3><a href="' + href + '">' + esc(b.name) +
@@ -539,22 +499,9 @@
         ['opened', b.opened || '\u2014'],
         ['vs the current list', '+' + b.add + ' \u2212' + b.out],
         ['size', String(b.size)],
-        ['already in the deck', String(c.in_deck || 0)],
-        ['in a box', String(c.box || 0)],
-        // CONTESTED only — `free` is cardboard in a pile and costs
-        // nothing to take (#25).
-        ['sleeved in a deck that is still together', String(c.elsewhere || 0)],
-        ['loose — its deck is broken down', String(c.free || 0)],
-        ['to buy', String(c.buy || 0)],
       ]));
-      if (b.proposal && b.pull_list) {
-        out += pullList(b.pull_list);
-      } else if ((b.unsourced || []).length) {
-        out += '<h4>Not yet sourced <span class="ev">' + b.unsourced.length +
-               '</span></h4>' + list(b.unsourced.map(esc), 'branch-buy');
-      }
       out += '<p class="ev branch-note">A branch is a candidate list, not the deck. ' +
-             'It merges only when every added card is sourced \u2014 ' +
+             'It merges on the pilot\u2019s word \u2014 ' +
              '<code>deck-branch ' + esc(d.slug) + ' merge ' + esc(b.name) + '</code>.<br>' +
              '<a href="' + href + '">The net change, and whether it met its ' +
              'objective \u2192</a></p>';
@@ -639,22 +586,10 @@
       ? Shell.cardImageUrl(name, 'normal', deckCards[name]) : null;
     var pop = url ? '<img class="card-pop" data-src="' + esc(url) + '" alt="' +
       esc(name) + '">' : '';
+    // A branch roster marks what the branch brings and nothing about where a
+    // card is (2026-11-22: no ownership).
     var mark = '', tail = '';
-    if (prov) {
-      if (prov.is_new) mark = '<span class="rost-new" title="new in this branch">+</span>';
-      if (prov.state === 'buy') tail = '<span class="rost-buy">to buy</span>';
-      else if (prov.state === 'box') tail = '<span class="rost-have">in a box</span>';
-      else if (prov.state === 'elsewhere') {
-        /* `free` means every deck holding it is broken down or retired — the
-         * card is loose, so it costs nothing and blocks nothing. Rendered the
-         * same as a contested one it read as a deck to take apart. */
-        var who = (prov.where || []).map(function (h) {
-          return h.slug + (h.locked ? ' ◆' : '') + (h.apart ? ' (in a pile)' : '');
-        }).join(', ');
-        tail = '<span class="rost-' + (prov.free ? 'have' : 'elsewhere') + '">' +
-               esc(who) + '</span>';
-      }
-    }
+    if (prov && prov.is_new) mark = '<span class="rost-new" title="new in this branch">+</span>';
     var href = (window.Shell && Shell.cardHref)
       ? ' href="' + esc(Shell.cardHref(name)) + '" target="_blank" rel="noopener"'
       : '';

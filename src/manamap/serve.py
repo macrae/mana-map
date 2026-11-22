@@ -58,7 +58,7 @@ The old argument is answered rather than ignored:
   command, exactly as a terminal would. Nothing here is a model client.
 - **Most of Build needs no agent at all, which is what makes the agents
   affordable when they are needed.** The old note's own second bullet is the
-  design: 161 pilot subcommands answer in JSON, instantly, for free.
+  design: 159 pilot subcommands answer in JSON, instantly, for free.
   `archetypes`, `card-search`, `commander-search` and `build-deck` are all
   deterministic. Spending an agent on a question `card-search` answers is the
   waste that would make the agent path feel expensive; keeping them separate is
@@ -738,7 +738,7 @@ def _branch_objective(slug=None, direction=None):
     return got
 
 
-def _branch_upgrades(slug=None, branch=None, min_strength=None, owned=None):
+def _branch_upgrades(slug=None, branch=None, min_strength=None):
     """What in this list has a cheaper card doing its job. Deterministic."""
     from manamap.pilot import upgrades
     from manamap.pilot.candidates import read_pool
@@ -751,8 +751,7 @@ def _branch_upgrades(slug=None, branch=None, min_strength=None, owned=None):
         pass                       # no pile handed over; the inward half stands
     return upgrades.propose(slug, branch=branch, pool=pool,
                             min_strength=min_strength or upgrades.DEFAULT_MIN_STRENGTH,
-                            limit=upgrades.DEFAULT_LIMIT,
-                            owned_only=bool(owned))
+                            limit=upgrades.DEFAULT_LIMIT)
 
 
 def _branch_stage(slug=None, branch=None, out=None, card=None, strength=None,
@@ -827,23 +826,6 @@ def _local_job(label, fn):
     started = dict(JOBS[job_id])
     threading.Thread(target=run, daemon=True).start()
     return started
-
-
-def _branch_buy_list(slug=None, branch=None, exact=None):
-    """The bill's BUY rows as the text Mana Pool's mass entry takes.
-
-    The same dict `manamap pilot buy-list --json` prints, from the same
-    function — the page copies `text` to the clipboard and opens Mana Pool,
-    because the shop has no URL prefill. Deterministic and read-only: it reads
-    `deck_branch.source` and the branch's cards.json, never the boxes.
-    """
-    from manamap.pilot import buy_list
-    from manamap.pilot.common import deck_dir
-    if not (slug and branch):
-        raise ValueError("branch/buy-list needs a slug and a branch")
-    if not (deck_dir(slug, branch) / "decklist.txt").exists():
-        raise ValueError(f"no branch {branch!r} on {slug}")
-    return buy_list.payload(slug, branch, exact=bool(exact))
 
 
 def _branch_net_change(slug=None, branch=None):
@@ -1333,7 +1315,7 @@ CLI_READONLY = frozenset({
     "pods",
     # Composition and lookup.
     "deck-info", "deck-facts", "deck-audit", "engine-facts", "scenario-facts",
-    "deck-status", "mana-fit", "card-search", "similar-cards", "page-state", "pool-facts", "deck-history",
+    "deck-status", "mana-fit", "card-search", "similar-cards", "page-state", "deck-history",
     "deck-version", "impact", "cache-status", "bracket-check", "validate-context",
     # The combo report, read-only without `--write` (which `_CLI_WRITE_ATTRS` refuses).
     "deck-combos",
@@ -1355,10 +1337,9 @@ CLI_READONLY = frozenset({
     # THE SWAP LOOP (2026-10-04). `try` writes only its gitignored champion cache
     # under data/cache/try/; `--stage` writes a branch and is refused below.
     "try",
-    # THE BILL AS A PASTE (2026-10-09): a branch's BUY rows in Mana Pool's
-    # mass-entry form. Reads `source()` and the branch's cards.json; `--out` is
-    # a slug-scoped view like `deck-facts`'s.
-    "buy-list",
+    # (`buy-list` sat here 2026-10-09 to 2026-11-22; the bench no longer has a
+    # bill. `order` is the paste of a list's pinned printings and is not
+    # read-only in the warm worker's sense — it reaches the network.)
     # A LIST AS IMPORT TEXT (2026-10-09): Moxfield / Arena / plain. Reads one
     # decklist (or a version's out of git) and prints it; `--out` is slug-scoped.
     "deck-export",
@@ -1834,7 +1815,7 @@ def _order(slugs=None, check=False, plain=False):
 #: `_CLI_WRITE_ATTRS` on the parsed namespace. Nothing else is trusted twice.
 GETTABLE = frozenset({
     "health", "cli", "formats", "decks", "commanders", "archetypes",
-    "commander-search", "card-search", "branch/upgrades", "branch/buy-list",
+    "commander-search", "card-search", "branch/upgrades",
     "agents", "job", "deck/measures", "printings", "deck/edit/history",
     "branch/axes",
 })
@@ -1874,13 +1855,11 @@ ENDPOINTS = {
                                  "why": _str, "cards": _strlist}),
     "branch/objective": (_branch_objective, {"slug": _str, "direction": _str}),
     "branch/upgrades": (_branch_upgrades, {"slug": _str, "branch": _str,
-                                           "min_strength": _float, "owned": _bool}),
+                                           "min_strength": _float}),
     "branch/stage": (_branch_stage, {"slug": _str, "branch": _str, "out": _str,
                                      "card": _str, "strength": _float,
                                      "undo": _bool}),
     "branch/net-change": (_branch_net_change, {"slug": _str, "branch": _str}),
-    # The bill's BUY rows as a paste for Mana Pool. Read-only; see `_branch_buy_list`.
-    "branch/buy-list": (_branch_buy_list, {"slug": _str, "branch": _str, "exact": _bool}),
     "build/run": (_build_run, {"slug": _str}),
     "build/finish": (_build_finish, {"slug": _str, "commit": _bool, "message": _str}),
     # The agent half. Started, then polled — an agent takes minutes.

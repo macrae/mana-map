@@ -52,12 +52,9 @@ PILOT_STEPS = [
      "Form-check combos.json: sha current, every line inside the list, every near miss real/legal/in identity, summary recomputed"),
     ("deck-facts", "manamap.pilot.deck_facts", "Deterministic deck facts agents would else re-derive"),
     ("validate-recon", "manamap.pilot.validate_recon",
-     "Form-check deck_recon.json: cards real, legal, in identity; ownership falsified"),
+     "Form-check deck_recon.json: cards real, legal, in identity"),
     ("proxies", "manamap.pilot.proxies",
      "Print-ready proxy sheet (63x88 mm, 3x3, crop marks) for cards waiting on cardboard: a branch's adds minus what you have"),
-    ("buy-list", "manamap.pilot.buy_list",
-     "A branch's purchases (the bill's BUY rows) as one list Mana Pool's mass entry takes — "
-     "paste at manapool.com/add-deck; --exact pins printings `N Name (SET) CN`"),
     ("deck-export", "manamap.pilot.deck_export",
      "A deck's list as import text: --format moxfield (Commander:/Deck:/Sideboard:, `(SET) CN`, "
      "`*F*` — paste into Moxfield's import box), arena (no headers, blank line, sideboard) or plain"),
@@ -294,8 +291,7 @@ PILOT_STEPS = [
      "Rank a pool of cards by what each MEASURABLY does: substitute it in, re-run the "
      "diagnostic, report the difference with an interval"),
     ("deck-branch", "manamap.pilot.deck_branch",
-     "A candidate 99 you cannot yet sleeve: diff it, price it against your collection, "
-     "measure it, and merge it only when the cards exist"),
+     "A candidate 99: diff it, measure it, decide it with a study, merge it"),
     ("deck-version", "manamap.pilot.deck_versions",
      "Every list this deck has been: numbered from git, tagged by you, joined to the games played on it"),
     ("validate-log-causes", "manamap.pilot.validate_log_causes",
@@ -326,7 +322,6 @@ PILOT_STEPS = [
     ("card-value", "manamap.pilot.card_value",
      "What is each card WORTH: swap it for a blank and measure what the deck loses"),
     ("mana-analysis", "manamap.pilot.mana_analysis", "Deterministic mana/land analysis: pips vs sources, castability, tapped lands"),
-    ("pool-facts", "manamap.pilot.pool_facts", "What deck can I build from a box of cards?"),
     ("build-deck", "manamap.pilot.build_deck", "brief.json -> build_plan.json, deterministic"),
     ("validate-brief", "manamap.pilot.validate_brief",
      "Form-check brief.json: the commander real and legal, every named card in the corpus and in identity, the pools on disk"),
@@ -392,7 +387,7 @@ _DECK_COMMANDS = {
     "deck-version", "deck-state", "deck-delete", "validate-deck-versions",
     "validate-log-causes",
     "build", "validate-brief", "promote", "demote",
-    "deck-branch", "buy-list", "diagnose", "assess", "candidates", "close",
+    "deck-branch", "diagnose", "assess", "candidates", "close",
     "upgrades", "mana-fit",
     "validate-diagnostic", "try", "edit", "save-version", "net-change", "validate-net-change", "validate-branch", "deck-info", "simulate", "validate-sim", "sim-progress", "sim-scenario", "experiment",
     "sim-boards", "validate-lift", "sim-findings", "validate-sim-findings", "merge-sim-findings",
@@ -890,9 +885,6 @@ def add_pilot_parser(subparsers):
                              help="which declared component to close "
                                   "(default: the diagnostic's own bottleneck)")
             cmd.add_argument("--limit", type=int, default=None)
-            cmd.add_argument("--owned", action="store_true",
-                             help="only cards in a box (collection.py; never "
-                                  "deck membership)")
             cmd.add_argument("--write", action="store_true",
                              help="write data/decks/<slug>/pool.txt for "
                                   "`assess`/`candidates --pool library`")
@@ -902,8 +894,6 @@ def add_pilot_parser(subparsers):
                              help="a file of card names, a decklist, , or ")
             cmd.add_argument("--json", action="store_true")
         if name == "mana-fit":
-            cmd.add_argument("--owned", action="store_true",
-                             help="only propose cards in a box (collection.py)")
             cmd.add_argument("--limit", type=int, default=None)
             cmd.add_argument("--json", action="store_true")
         if name == "upgrades":
@@ -918,9 +908,6 @@ def add_pilot_parser(subparsers):
                              help="floor on the index's 0-1 strength "
                                   "(default 0.4; nothing under it is a claim)")
             cmd.add_argument("--limit", type=int, default=None)
-            cmd.add_argument("--owned", action="store_true",
-                             help="only replacements in a box (collection.py; "
-                                  "never deck membership)")
             cmd.add_argument("--out", default=None, metavar="PATH")
             cmd.add_argument("--json", action="store_true")
         if name == "candidates":
@@ -951,8 +938,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--write", action="store_true",
                              help="write diagnostic.json beside the list it measured")
         if name == "deck-branch":
+            # No `source` action (2026-11-22): the bench no longer knows where a
+            # card would come from, so a branch has a diff and a study, not a bill.
             cmd.add_argument("action", nargs="?", default="list",
-                             choices=["list", "new", "show", "diff", "source",
+                             choices=["list", "new", "show", "diff",
                                       "stage", "unstage", "commit", "log",
                                       "propose", "withdraw", "reject", "merge", "delete",
                                       # the branch in plain words, written by Jarvis (2026-10-20)
@@ -961,10 +950,8 @@ def add_pilot_parser(subparsers):
                                       "objective"],
                              help="list branches / new: open one from a list / show it / "
                                   "diff it against the deck / stage: one card out, one in / "
-                                  "source: where every added card comes from / "
-                                  "propose: accept it as the deck's next version "
-                                  "and wait for the cardboard / withdraw it / "
-                                  "merge it into decklist.txt")
+                                  "propose: accept it as the deck's next version / "
+                                  "withdraw it / merge it into decklist.txt")
             cmd.add_argument("name", nargs="?", default=None, help="the branch name")
             cmd.add_argument("--from", dest="source", default=None,
                              help="new: the candidate list (a file, or `-` for stdin); default: the deck's own decklist.txt")
@@ -996,9 +983,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--write", action="store_true",
                              help="merge: actually write decklist.txt (dry run without it)")
             cmd.add_argument("--force", action="store_true",
-                             help="merge: apply despite unsourced cards (needs --reason)")
+                             help="delete: remove an unmerged branch")
             cmd.add_argument("--reason", default=None,
-                             help="merge: why the sourcing gate is being skipped")
+                             help="withdraw / reject: why, in the pilot's words, "
+                                  "for the ledger")
             cmd.add_argument("--study", default=None, metavar="NNN",
                              help="propose: the approved, installed study of this branch the "
                                   "proposal rests on (`manamap pilot study <slug> list`)")
@@ -1008,16 +996,6 @@ def add_pilot_parser(subparsers):
                                   "become, e.g. v1.0.2. Required — a proposal that "
                                   "does not say what it intends to become cannot "
                                   "be found to have been outrun by another merge.")
-            cmd.add_argument("--ordered", default=None, metavar="NOTE",
-                             help="propose: a free-text note about procurement "
-                                  '("6 ordered 2026-08-28 via TCGplayer"). A NOTE '
-                                  "only: ownership means a box, so nothing here "
-                                  "moves the blocker")
-            cmd.add_argument("--proxy", action="store_true",
-                             help="count cards sleeved in your OTHER decks as "
-                                  "sourced — you own them, and proxying across "
-                                  "your own decks is logistics. Never applies to "
-                                  "cards nobody owns")
             cmd.add_argument("--json", action="store_true")
         if name == "deck-state":
             # The pilot's word first, the vocabulary second. `archive` sets
@@ -1513,7 +1491,9 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--identity", default=None,
                              help="colour identity to stay within (e.g. GU); mutually "
                                   "exclusive with --deck, whose identity is derived")
-            cmd.add_argument("--include-owned", action="store_true", dest="include_owned",
+            # `--include-in-deck`, renamed from `--include-owned` on 2026-11-22:
+            # it always meant the deck's own 99, and "owned" now names nothing.
+            cmd.add_argument("--include-in-deck", action="store_true", dest="include_in_deck",
                              help="--deck: do NOT exclude cards already in the deck")
             cmd.add_argument("--oracle", action="append", default=[], metavar="REGEX",
                              help="oracle-text regex, repeatable (ANY match unless --all)")
@@ -1554,11 +1534,6 @@ def add_pilot_parser(subparsers):
                              help="first printed ON OR BEFORE this date (YYYY[-MM[-DD]])")
             cmd.add_argument("--no-game-changers", action="store_true", dest="no_game_changers",
                              help="drop Game Changers (they force bracket 4)")
-            group = cmd.add_mutually_exclusive_group()
-            group.add_argument("--owned", action="store_true",
-                               help="only cards the pilot has (a box OR sleeved in a deck)")
-            group.add_argument("--unowned", action="store_true",
-                               help="only cards the pilot does NOT have — the buy list")
             cmd.add_argument("--limit", type=int, default=None,
                              help=f"max results (default {50})")
             cmd.add_argument("--json", action="store_true", dest="as_json")
@@ -1661,23 +1636,6 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--write", action="store_true",
                              help="write prices.json beside the list (the deck's, or the branch's)")
             cmd.add_argument("--json", action="store_true", dest="as_json")
-        if name == "pool-facts":
-            # Takes paths, not a slug: a collection is not a deck, and forcing it
-            # into data/decks/<slug>/ would put it in reach of validate-deck.
-            # nargs="*": with no target it analyses COLLECTION_DIR, which is the
-            # question asked nearly every time. Typing the path on every invocation
-            # is how the same nine files got parsed by hand ten times in one session.
-            cmd.add_argument("targets", nargs="*", default=None,
-                             help="Decklist files or directories of them; "
-                                  "omit for the pilot's collection (COLLECTION_DIR)")
-            cmd.add_argument("--exclude", action="append", default=[],
-                             help="A file to leave out (repeatable) — e.g. a deck "
-                                  "you are keeping assembled")
-            cmd.add_argument("--json", action="store_true", dest="as_json")
-            # NOT slug-guarded: pool-facts takes paths, not a slug — there is no
-            # slug to scope the filename to. A collection is not a deck.
-            cmd.add_argument("--out", default=None,
-                             help="Write JSON here as well (a view, never tracked)")
         if name == "proxies":
             # NOT slug-guarded and not `--out`: a print sheet is no deck artifact
             # (it lands on the Desktop), and `--out` means a swap-out elsewhere.
@@ -1726,18 +1684,6 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--note", default=None, help="a line kept beside the link")
             cmd.add_argument("--remove", action="store_true",
                              help="drop this service's link (the file goes with the last)")
-        if name == "buy-list":
-            # `--branch` IS REQUIRED: a deck's own list has no "adds", so there
-            # is nothing to buy for it — the bill is a property of a branch.
-            cmd.add_argument("--branch", required=True, metavar="NAME",
-                             help="the branch whose BUY rows to list")
-            cmd.add_argument("--exact", action="store_true",
-                             help="pin printings: `N Name (SET) CN` (Moxfield / Mana Pool "
-                                  "exact-printings form) instead of `N Name`")
-            cmd.add_argument("--json", action="store_true", dest="as_json",
-                             help="{text, count, buy_cents|null, as_of|null}")
-            cmd.add_argument("--out", default=None,
-                             help="Write the list here (slug-scoped; a view, never tracked)")
         if name == "diagnosis-report":
             cmd.add_argument("--out", default=None,
                              help="Write markdown here instead of stdout (a view, never tracked)")

@@ -206,47 +206,6 @@ def test_reads_fall_back_to_the_deck_but_writes_do_not():
 
 
 @needs_branch
-def test_the_sourcing_report_separates_a_box_from_another_deck():
-    """`elsewhere` is the category nothing computed before, and it is the one
-    that changes a decision: a card sleeved in a finished deck is not a card you
-    can use, and it is not a purchase either."""
-    s = deck_branch.source(SLUG, BRANCH)
-    # `free` joined the buckets 2026-09-12 (#25): a card whose only holders
-    # are broken down is loose cardboard, not a contested sleeve.
-    assert set(s["counts"]) == {"in_deck", "box", "elsewhere", "free", "buy"}
-    # Counts are DISTINCT NAMES, not copies: 36 basics are one thing to source.
-    assert sum(s["counts"].values()) == s["diff"]["names"]
-    assert s["diff"]["names"] <= s["diff"]["size"]
-    for row in s["cards"]:
-        if row["state"] == "elsewhere":
-            assert row["where"], f"{row['name']} claims another deck and names none"
-            for holder in row["where"]:
-                assert holder["slug"] != SLUG, "a card cannot be 'elsewhere' in its own deck"
-                assert "locked" in holder
-    # Ownership still means A BOX. Anything in the box names the file it is in.
-    for row in s["cards"]:
-        if row["state"] == "box":
-            assert row["where"], f"{row['name']} claims ownership and names no source file"
-
-
-@needs_branch
-def test_merge_refuses_what_it_cannot_honestly_apply():
-    """Merging writes decklist.txt, which mints a version the captain's log
-    stamps games against — so a version the pilot cannot physically play is a
-    version that lies."""
-    got = deck_branch.merge(SLUG, BRANCH, write=False)
-    s = got["source"]
-    if s["unsourced"]:
-        assert got["blocking"], "unsourced cards did not block the merge"
-        assert not got["written"]
-        joined = " ".join(got["blocking"])
-        assert str(len(s["unsourced"])) in joined, "the refusal does not say how many"
-    # --force without a reason is refused whatever the sourcing says.
-    forced = deck_branch.merge(SLUG, BRANCH, write=False, force=True, reason=None)
-    assert any("--reason" in b for b in forced["blocking"]), forced["blocking"]
-
-
-@needs_branch
 def test_a_branch_is_a_legal_deck_or_it_is_not_a_branch():
     """`new` reuses check_in's refusals, so a branch that could never become a
     deck is refused at the moment it is opened rather than at merge time."""
@@ -270,18 +229,19 @@ def test_the_branch_reaches_info_json_and_the_next_line():
     """A branch nobody can see is a branch nobody acts on.
 
     `info.json` is the dossier's data model, so the composition is what puts the
-    sourcing split on the page — and `next` is what tells the pilot which state
-    the branch is in. That used to be two states and is now six: an experiment
-    and a decision the pilot has ACCEPTED said the same sentence, which is the
-    whole reason `propose` exists.
+    branch on the page — and `next` is what tells the pilot which state the
+    branch is in: an experiment and a decision the pilot has ACCEPTED must not
+    say the same sentence, which is the whole reason `propose` exists.
     """
     from manamap.pilot import deck_branch, deck_info
     info = deck_info.compose(SLUG)
     rows = info.get("branches") or []
     assert any(b["name"] == BRANCH for b in rows), "the branch is absent from info.json"
     b = next(x for x in rows if x["name"] == BRANCH)
-    assert set(b["counts"]) == {"in_deck", "box", "elsewhere", "free", "buy"}
     assert b["state"] in deck_branch.BRANCH_STATES
+    # No ownership on the row (2026-11-22): what moves, never where a card is.
+    assert not ({"counts", "pull_list", "unsourced", "mergeable", "free"} & set(b))
+    assert all(set(c) == {"name", "is_new"} for c in b["cards"])
     joined = " ".join(info["next"])
     # A BRANCH REACHES `next` ONLY WHILE IT IS LIVE, and this assertion used to
     # be unconditional. An experiment the pilot has SLEEVED PAST is a record:
@@ -311,12 +271,11 @@ def test_the_branch_reaches_info_json_and_the_next_line():
     # a branch that reached `next` with nothing to say about it would render as
     # a bare name.
     expect = {
-        deck_branch.PROPOSED_BLOCKED: "waiting on cardboard",
-        deck_branch.PROPOSED_READY: "every card is sourced",
+        deck_branch.PROPOSED: "merge",
         deck_branch.PROPOSED_STALE: "the list has changed",
         deck_branch.PROPOSED_OUTRUN: "moved on",
         deck_branch.MERGED: BRANCH,
-    }.get(b["state"], "merge" if b["mergeable"] else "source")
+    }.get(b["state"], BRANCH)
     assert expect in joined, f"{b['state']} says nothing useful: {info['next']}"
     if b.get("proposal"):
         assert b["proposal"]["as_version"] in joined
@@ -338,40 +297,6 @@ def test_a_deck_with_no_branches_says_nothing_about_them():
         info = deck_info.compose(slug)
         assert info["branches"] == []
         assert not any("branch" in n for n in info["next"]), info["next"]
-
-
-@needs_branch
-def test_a_card_in_another_deck_is_owned_not_bought():
-    """`elsewhere` IS A LOGISTICS PROBLEM, NOT AN OWNERSHIP ONE.
-
-    The first cut counted a card sleeved in another deck as unsourced, which
-    reads as "buy a second copy" — advice to spend money on something already in
-    the house. It stays its own state, because the trade-off is real, but
-    `--proxy` says the pilot will proxy across their own decks and that makes it
-    sourced.
-
-    `buy` is never proxiable here: that would be a claim about a card nobody
-    owns, which is a different decision.
-    """
-    plain = deck_branch.source(SLUG, BRANCH)
-    proxied = deck_branch.source(SLUG, BRANCH, proxy=True)
-    # `counts["elsewhere"]` IS the contested count since 2026-09-12 — `free` is
-    # its own bucket (#25) — so this no longer subtracts. A `free` card was
-    # never unsourced anyway: every deck holding it is broken down or retired,
-    # so there is nothing to proxy and nothing to unsleeve.
-    contested = plain["counts"]["elsewhere"]
-    if not contested:
-        pytest.skip("nothing contested on this branch")
-    assert len(proxied["unsourced"]) == len(plain["unsourced"]) - contested, (
-        "--proxy did not clear exactly the cards sleeved in decks that are "
-        "still together")
-    # A card nobody owns stays unsourced whatever the proxy policy is.
-    buys = {r["name"] for r in plain["cards"] if r["state"] == "buy"}
-    assert buys <= set(proxied["unsourced"]), (
-        "--proxy cleared a card that nobody owns")
-    #  is a decision about SOURCING, not about where a card lives, so
-    # the contested count is unchanged by it.
-    assert proxied["owned_but_elsewhere"] == contested
 
 
 # --------------------------------------------------------------------------
@@ -473,64 +398,6 @@ def test_superseded_is_deliberately_not_apart():
     from manamap.pilot.common import UNPLAYABLE_STATUSES
     assert "superseded" not in UNPLAYABLE_STATUSES
     assert UNPLAYABLE_STATUSES == frozenset({"broken-down", "retired"})
-
-
-def test_the_cost_block_reads_the_branch_answer_rather_than_deriving_a_second():
-    """FOUR PLACES ANSWERED THIS AND COULD DISAGREE. `net_change.FREE_TO_RAID`
-    held its own copy of a set `common.UNPLAYABLE_STATUSES` already had. It is
-    gone: `deck_branch.source` derives `free` and `apart` once, and `cost` reads
-    them. Driven through the production function, so re-introducing a local list
-    that disagreed with the row would fail here.
-    """
-    from manamap.pilot import net_change
-    assert not hasattr(net_change, "FREE_TO_RAID")
-    doc = {"bill": {"counts": {}, "cards": [
-        {"name": "Loose", "state": "elsewhere", "free": True,
-         "where": [{"kind": "deck", "slug": "sisay", "status": "retired",
-                    "apart": True}]},
-        {"name": "Spoken For", "state": "elsewhere", "free": False,
-         "where": [{"kind": "deck", "slug": "kinnan", "status": None,
-                    "apart": False}]}]}}
-    got = net_change.cost(doc)
-    assert [r["name"] for r in got["free_to_raid"]] == ["Loose"]
-    assert [r["name"] for r in got["must_unsleeve"]] == ["Spoken For"]
-    # And a card in BOTH kinds of home names only the deck still together.
-    doc["bill"]["cards"] = [{"name": "Both", "state": "elsewhere", "free": False,
-                             "where": [{"kind": "deck", "slug": "hapatra",
-                                        "status": "broken-down", "apart": True},
-                                       {"kind": "deck", "slug": "blar",
-                                        "status": None, "apart": False}]}]
-    assert net_change.cost(doc)["must_unsleeve"][0]["decks"] == ["blar"]
-
-
-@requires_deck
-@requires_branch
-def test_every_where_row_is_one_shape():
-    """`where` was a STRING for a box row and a LIST OF DICTS for an elsewhere
-    row, so every consumer had to know which state it was in before it could
-    read the field. Five of them did.
-
-    `@requires_branch` for the same reason as
-    `test_no_tracked_branch_is_still_graded_on_an_authored_axis`: it walks a
-    branch's source rows and ends `assert checked >= 20`, which is a floor under
-    the LOOP and not a claim that the bench has branches. The fourth test to
-    escape the marker `conftest._a_branch` exists to supply.
-    """
-    from manamap.pilot import deck_branch
-    checked = 0
-    for slug in ("ur-dragon",):
-        for name in deck_branch.names(slug):
-            for r in deck_branch.source(slug, name)["cards"]:
-                assert isinstance(r["where"], list), r
-                assert isinstance(r["free"], bool)
-                for w in r["where"]:
-                    assert w["kind"] in ("box", "deck"), w
-                    if w["kind"] == "deck":
-                        assert set(w) >= {"slug", "locked", "status", "apart"}
-                    else:
-                        assert "name" in w
-                checked += 1
-    assert checked >= 20
 
 
 def test_merge_runs_the_whole_build_not_three_commands():
@@ -741,19 +608,6 @@ def test_a_branch_says_when_the_deck_moved_under_it(modern_deck, capsys):
     meta_file.write_text(json.dumps(doc))
     assert deck_branch.base_moved("md", "b") is None
     assert "base_moved" not in deck_branch.one("md", "b")
-
-
-def test_the_source_subcommand_runs_after_the_new_subcommand_defined_a_local(modern_deck, capsys):
-    """`deck-branch <slug> source <name>` died in UnboundLocalError (goblin-storm,
-    2026-10-18): the `new` action bound a local named `source` further up the
-    same dispatcher, which made every `source(...)` call in that function read
-    the unassigned local instead of the module function. Re-introduce the bug
-    (name the `new` action's list variable `source` again) and this raises."""
-    deck_branch.new("md", "b", SIXTY_MAIN + SIXTY_SIDE)
-    deck_branch.main(argparse.Namespace(slug="md", action="source", name="b",
-                                        json=False, proxy=False))
-    out = capsys.readouterr().out
-    assert out.strip(), "the sourcing report printed nothing"
 
 
 # ── What a reader chooses a branch by (2026-10-19) ──────────────────────────

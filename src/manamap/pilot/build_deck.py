@@ -157,38 +157,40 @@ def load_brief(slug):
 
 
 def deck_printings(brief, names):
-    """The owned printing for each name in the deck, when the brief names a pool.
+    """The pool's printing for each name in the deck, when the brief names a pool.
 
-    A build from a physical collection has to name the physical card. Without this
-    the decklist carries bare names, `fetch-deck` takes whatever Scryfall considers
-    default, and the manual illustrates and credits cards the pilot does not own.
+    A build from a pool file that pins printings has to name that printing.
+    Without this the decklist carries bare names, `fetch-deck` takes whatever
+    Scryfall considers default, and the manual illustrates and credits cards the
+    pool never listed.
     """
     files = brief.get("pool_files") or []
     if not files:
         return {}
     from manamap.pilot.pool_facts import collect_paths, load_cards, pool_printings
 
-    owned = pool_printings(collect_paths(files, []), load_cards())
-    return {n: owned[n] for n in names if n in owned}
+    pinned = pool_printings(collect_paths(files, []), load_cards())
+    return {n: pinned[n] for n in names if n in pinned}
 
 
 def resolve_pool(brief):
     """The names a build may draw from, or None for the whole format.
 
     Two ways to say it, because they answer different questions. `pool` is an
-    explicit name list. `pool_files` points at decklists — your collection as
-    exported from paper — and is parsed by the same reader `pool-facts` uses, so
-    a box analysed and a box built from can never disagree about what is in it.
+    explicit name list. `pool_files` points at decklists — the names a brief
+    constrains the build to — and is parsed by `pool_facts`'s readers, the same
+    ones `validate-build` re-derives the pool with, so the plan and its validator
+    can never disagree about what the pool holds. A pool is a constraint on the
+    build, never an inventory of anything.
 
-    Basics are deliberately NOT constrained (see `build`): you always own more
-    Swamps, and a paper pool that happens to list four of them should not cap
-    the mana base at four.
+    Basics are deliberately NOT constrained (see `build`): a pool file that
+    happens to list four Swamps should not cap the mana base at four.
     """
     names = set(brief.get("pool") or [])
     files = brief.get("pool_files") or []
     if files:
-        # Imported lazily: pool_facts imports this module for `role_group`, so a
-        # module-level import here would be a cycle.
+        # Imported lazily so a brief with no pool files never pays for the pool
+        # readers (and their cards.csv slice) at all.
         from manamap.pilot.pool_facts import collect_paths, load_cards, read_sources
 
         per_file, unresolved = read_sources(collect_paths(files, []), load_cards())
@@ -264,9 +266,9 @@ def candidate_pool(df, identity, target_bracket, brief):
     # castable cards. Any consumer filtering on legality alone hits this.
     mask &= ~df["type_line"].fillna("").str.contains("Stickers", regex=False).to_numpy()
 
-    # Build from a physical collection rather than the format. A hard filter on
-    # the pool, alongside the others, so the scorer never wants what you cannot
-    # sleeve — the same reason the bracket limits are applied here.
+    # Build from a pool file rather than the format. A hard filter on the pool,
+    # alongside the others, so the scorer never wants what the brief ruled out
+    # — the same reason the bracket limits are applied here.
     if brief.get("_pool") is not None:
         mask &= df["name"].isin(brief["_pool"]).to_numpy()
 
@@ -910,8 +912,8 @@ def build(slug):
         # dropped in silence — the pilot chose them on purpose.
         "must_include_illegal": illegal,
         # Recorded so `validate-build` can re-derive the pool and prove every
-        # non-basic name was actually owned. A build that silently reached
-        # outside the collection is the one failure a paper pilot cannot use.
+        # non-basic name came from it. A build that silently reached outside
+        # its pool is a build that ignored its brief.
         # Only for the cards in this deck — the whole 764-entry map would bloat the
         # plan and say nothing about the build.
         "printings": deck_printings(brief, sorted(commanders)
@@ -961,11 +963,12 @@ def decklist_text(plan, layouts=None):
     """Render the plan as a decklist.txt that fetch-deck can parse."""
     layouts = layouts or {}
 
-    # The PRINTING, not just the card. A deck built from a physical collection is a
-    # list of specific objects: this art, this set, this foil. Writing bare names let
-    # Scryfall pick a default for every one of them — a Sol Ring came back as Marvel
-    # Super Heroes Commander — and Featured Artist credits artists per printing, so
-    # the manual ended up crediting artists who painted none of the cards you own.
+    # The PRINTING, not just the card. A deck built from a pool file that pins its
+    # printings is a list of specific objects: this art, this set, this foil. Writing
+    # bare names let Scryfall pick a default for every one of them — a Sol Ring came
+    # back as Marvel Super Heroes Commander — and Featured Artist credits artists per
+    # printing, so the manual ended up crediting artists who painted none of the
+    # cards the pool listed.
     printings = plan.get("printings") or {}
 
     def render(name):

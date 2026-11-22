@@ -114,24 +114,26 @@ ranked adds that close a named axis, cuts priced, accumulated under `prescriptio
 (`protected.json`), the colour sources, the paired goldfish rows and one line. Read its
 OUT list before anything else. `try … --stage <name>` (or `deck-branch <slug> new …
 --objective "<measure> <op> <n>"` and `stage --out X --in Y`) puts it on a branch, then
-`commit -m "…"`, then `net-change --branch <name>`, which is the report a purchase rests
-on. Forge is a PROBE: for an add the goldfish cannot see, `forge-cast-check <slug>
+`commit -m "…"`, then `net-change --branch <name>`, the goldfish's read of the change —
+one input to the study the decision rests on. Forge is a PROBE: for an add the goldfish cannot see, `forge-cast-check <slug>
 --branch <name> --adds --write` says in about a minute a card whether the AI plays it; a
 pod run (`simulate <slug>@<name>`) is optional and its result is a warning beside the
-verdict, never a gate. When you accept it:
+verdict, never a gate. When you accept it — on a study (`study <slug> new … --branch
+<name>`, the agents' answers, `call`, `install`):
 
 ```bash
-manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --why "…" [--proxy] [--ordered "…"]
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --study NNN --why "…"
 ```
 
 **That is the merge request, and it is the phase this runbook was missing.** The
-decision is frozen (which list, which report, which grade); the blocker is LIVE and
-is recomputed from your boxes on every read, so a proposal un-blocks itself when a
-card lands in one. `deck-branch <slug> show <name>` prints the pull list — buy,
-unsleeve, proxy, free — and `deck-info` names the state. Merging is still your act:
+decision is frozen (which list, which study, which report); the branch is PROPOSED —
+accepted as the deck's next version, not yet merged — and `deck-info` names the state
+(PROPOSED · STALE or · OUTRUN if the deck or the branch has since moved). The bench
+keeps no count of who owns what (2026-11-22): nothing is blocked, there is no pull
+list, and the merge waits on one thing, your word that the list is in the sleeves:
 
 ```bash
-manamap pilot deck-branch <slug> merge <name> --write   # refuses until the cards exist
+manamap pilot deck-branch <slug> merge <name> --write   # on your word: the list is in the sleeves
 git add … && git commit                                 # this is what mints the version
 manamap pilot deck-version <slug> tag v1.0.2 && … paper # the tag, then the sleeves
 ```

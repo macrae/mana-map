@@ -195,8 +195,8 @@ def valence(tags):
 
 
 #: HOW WEIGHTS WERE SET. Each factor is a failure class the audit MEASURED, and
-#: its weight is calibrated against the four cases `pool_facts` documents plus the
-#: ones sampling found — Boggart Mischief, Prognostic Sphinx, Bartolome del
+#: its weight is calibrated against the four cases the 2026-08 pool report
+#: documented (`eval_obsolescence` keeps the audit) plus the ones sampling found — Boggart Mischief, Prognostic Sphinx, Bartolome del
 #: Presidio, Leaden Myr must all score low; a genuine cheaper-strict-superset must
 #: score high. `tests/test_power_creep.py` asserts those anchors, so a weight
 #: cannot be tuned until the fixtures stop meaning anything.

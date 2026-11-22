@@ -325,7 +325,8 @@ price every cut, every add `closes` a named axis or component. What changes:
   validator checks they exist. A recurring takeaway is the strongest evidence a
   question can have; an absent log is a `gap`, not a licence to guess.
 - **`add_candidates` is RANKED and capped at ten.** This is the retired Short List's rule,
-  relocated: ten cards worth knowing about, ownership is not a criterion, the
+  relocated: ten cards worth knowing about, ownership is not a criterion (the bench
+  keeps no inventory at all since 2026-11-22), the
   forward-looking half-step posture by default. Ten is the section, not a budget —
   do not pad, and do not leave a justified pick off because it was eleventh; rank
   harder. `source` may be `pool`, `recon`, `prompt` (the pilot named it) or `log`.

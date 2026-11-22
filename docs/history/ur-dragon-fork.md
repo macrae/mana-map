@@ -1,5 +1,7 @@
 # The Ur-Dragon: costing the commander fork
 
+> **2026-11-22:** the ownership layer this page refers to — the collection boxes, `--owned`, the pull list, the sourcing gate, `pool-facts` — was removed from the bench; the bench has no notion of card ownership. Kept as history.
+
 **Status:** a costed comparison for the pilot to decide from. Nothing here is applied.
 **Measured:** 2026-08-26, against V2 (the 36-land list, `decklist_sha256 f77e320ebea0…`).
 **Prompted by:** the pod debrief of 25 August (§8, "OPEN DECISION — commander"), and

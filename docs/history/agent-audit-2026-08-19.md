@@ -1,5 +1,7 @@
 # Agent audit — 2026-08-19
 
+> **2026-11-22:** the ownership layer this page refers to — the collection boxes, `--owned`, the pull list, the sourcing gate, `pool-facts` — was removed from the bench; the bench has no notion of card ownership. Kept as history.
+
 *Input to the workbench pivot. Reads all 18 charters in `.claude/agents/` against the
 new brief: a lab bench for one pilot's paper decks — versions, a captain's log, stats,
 goldfish, and later a one-opponent T5 simulation. The magazine becomes a compact

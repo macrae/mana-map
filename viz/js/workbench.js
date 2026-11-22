@@ -112,9 +112,10 @@
   function proposalChip(info) {
     var b = proposalOf(info);
     if (!b) return '';
-    var left = (b.pull_list || {}).blocking || 0;
-    return chip(b.proposal.as_version + ' proposed' + (left ? ' · ' + left + ' out' : ' · ready'),
-                left ? 'warn' : 'ok');
+    // ACCEPTED, NOT MERGED (2026-11-22). The chip used to count cards "out" — a
+    // pull list the bench no longer keeps; whether the list is in the sleeves is
+    // the pilot's word at merge.
+    return chip(b.proposal.as_version + ' proposed', 'ok');
   }
 
   /* The fallback subtitle: what the title has not already said.
@@ -513,13 +514,11 @@
       }
     },
     cardboard: {
-      label: 'Waiting on cardboard',
+      label: 'Accepted, not merged',
       key: function (e, i) {
+        // Proposals first; the newest acceptance first inside that.
         var b = proposalOf(i);
-        // Proposals first, the closest to ready first inside that — a deck one
-        // card away is a different errand from one eight cards away.
-        return [e.status ? 1 : 0, b ? 0 : 1,
-                b ? ((b.pull_list || {}).blocking || 0) : 1e9];
+        return [e.status ? 1 : 0, b ? 0 : 1, b ? -String((b.proposal || {}).at || '') : ''];
       }
     },
     branches: {
@@ -844,10 +843,9 @@
     if (state.view === 'table') {
       html = toggle + fleetTable(decks.filter(notTeaching), infos, state.sort, ratings);
     } else {
-      // WAITING ON CARDBOARD SITS ABOVE SLEEVED, because it is the only rack
-      // that names something the pilot is blocked on rather than something they
-      // could do. A deck appears here AND in its own rack — the chip marks it
-      // wherever it is, the rack collects everything you are waiting for.
+      // ACCEPTED, NOT MERGED sits above Sleeved: a decision taken and not yet in
+      // the deck. A deck appears here AND in its own rack — the chip marks it
+      // wherever it is, the rack collects every open acceptance.
       var waiting = living.filter(function (e) {
         return proposalOf(infos[e.slug]);
       });
@@ -857,9 +855,9 @@
       html = toggle
         + branchRack(decks, infos)
         + draftRack(drafts)
-        + rack('Waiting on cardboard',
-               'Decided, measured and accepted — these are lists you cannot '
-               + 'sleeve yet. The pull list is on each deck\u2019s dossier.',
+        + rack('Accepted, not merged',
+               'Decided and accepted as the deck\u2019s next version; the merge is '
+               + 'your word, once the list is in the sleeves.',
                waiting, infos, false, ratings)
         + rack('Sleeved', 'Built in paper — you can play these tonight.',
                locked, infos, false, ratings)

@@ -73,10 +73,13 @@ def test_past_the_call_every_panel_folds_behind_a_title_with_a_count(browser, vi
         if page.locator("#measured").count():
             assert page.evaluate("document.querySelector('#measured').open") is False
             assert page.locator("#ch-instruments #measured").count() == 1
-        # A fold's line is a count, not a figure: the bill says what is to buy.
-        if page.locator("#bill").count():
-            note = page.text_content("#bill .fold-note")
-            assert "to buy" in note, note
+        # A fold's line is a count, not a figure: the cards fold says what moves.
+        if page.locator("#net-change").count():
+            note = page.text_content("#net-change .fold-note")
+            assert "out" in note and "in" in note, note
+        # No bill and no ownership on the page (2026-11-22).
+        assert page.locator("#bill").count() == 0
+        assert "to buy" not in page.text_content("#ch-call").lower()
         assert errors == []
     finally:
         page.close()

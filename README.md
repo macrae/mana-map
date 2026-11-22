@@ -51,10 +51,10 @@ marginal intervals: that is the overlap fallacy, and the key that reported it wa
 ## Six pages over one data layer
 
 **The workbench** (`viz/workbench.html`) — **the landing page**: every deck you own, in
-racks by whether it is sleeved, **waiting on cardboard**, on the bench or history; or as
+racks by whether it is sleeved, **accepted and not yet merged**, on the bench or history; or as
 one fleet table across record, stages, evidence, table and open work — sortable by
 *recently played*, *needs game logs*, *needs analysis*, *optimisations identified* and
-*waiting on cardboard*. Each deck carries a derived **next**, and three named links: its
+*accepted, not merged*. Each deck carries a derived **next**, and three named links: its
 Pilot's Operating Handbook, its dossier, and where it sits on the map.
 
 **The card atlas** — every Magic oracle card (~35,000) embedded by two small neural nets.
@@ -75,8 +75,8 @@ command that owns each figure.
 **The branch workbench** (`viz/branch.html?deck=<slug>&branch=<name>`) — one candidate 99
 and the decision about it: what it would become and what it was accepted on, the verdict,
 every measured row with its definition and a plain-language reading, reward / risk / cost,
-and the bill. A branch is a deck that does not exist, so it gets its own page rather than
-growing into the dossier.
+and the study it rests on. A branch is a deck that does not exist, so it gets its own page
+rather than growing into the dossier.
 
 **Curate** (`viz/library.html`) — the library across piles, at a size you can read. The
 atlas's drawer keeps one card; this cuts forty. A pile rail, a grid with multi-select and
@@ -107,12 +107,12 @@ returns arbitrary same-colour cards. Linked from the shared nav on every page.
   scoring step and is still callable on its own.)
 - `deck-audit` — 16 axes, each carrying the verbatim `strategy.md` quote that sets its target.
 - `card-search` — deterministic mining over the corpus: identity, oracle/name regex, role,
-  cmc, and `--owned` against your physical boxes.
+  cmc, set and first-printing date, and the goldfish channels each hit feeds.
 - `deck-info <slug>` — the whole join, and a derived **next**.
-- `deck-branch` — a candidate 99 you cannot yet sleeve: stage swaps, measure it against the
-  deck with `net-change`, then **`propose`** it as the next version and wait for the
-  cardboard. The decision is frozen; the blocker is recomputed from your boxes on every
-  read, so a proposal un-blocks itself when a card lands in one.
+- `deck-branch` — a candidate 99: stage swaps, measure it against the deck with
+  `net-change`, decide it with a study, then **`propose`** it as the next version and
+  merge on the pilot's word. The decision is frozen in the ledger; nothing here asks what
+  anyone holds (since 2026-11-22 the bench has no notion of a box, a buy or a bill).
 - `deck-version` — every list the deck has been, from git, joined to the games played on it;
   `deck-version <slug> paper <ref>` is how you say *this one is sleeved*.
 - `check-in` — a paper list you typed up becomes `decklist.txt`: it diffs, and **refuses a
@@ -337,7 +337,7 @@ Then the loop the bench exists for — all CLI except the two agents:
 | | | |
 |---|---|---|
 | `manamap pilot deck-branch <slug> new/stage/…` → `net-change --branch` | a candidate 99, measured against the deck | **yes** |
-| `manamap pilot deck-branch <slug> propose <name> --as v1.0.2` | accept it, and wait for the cardboard | **yes** |
+| `manamap pilot deck-branch <slug> propose <name> --as v1.0.2` | accept it as the deck's next version; merge on the pilot's word | **yes** |
 | `manamap pilot deck-version <slug> [tag …]` | commit the list; every version numbered from git | **yes** |
 | `manamap pilot fetch-opponent "<commander>"` / `simulate <slug> --vs <pod> --games N` | your table, in Forge, seeded | **yes** |
 | `manamap pilot check-in <slug> --from <file>` | a paper list becomes `decklist.txt`; refuses a silently-wrong one | **yes** |
@@ -368,8 +368,7 @@ Experiment  decklist → fetch-deck → goldfish ─┐
             pod       → fetch-opponent ───────┼→ simulate / experiment → parse → analysis
                                               └→ sim-scenario → /resolve-stack → ✓
 
-Change      decklist → deck-branch new → stage → net-change → propose → merge → a version
-                                                        └ blocked on cardboard, derived
+Change      decklist → deck-branch new → stage → net-change → study → propose → merge → a version
 
 Fleet       a model change → regen (dependency order, parallel across decks)
             goldfish → mana-analysis → net-change → diagnose → benchmark → deck-info
@@ -379,7 +378,7 @@ Surface     artifacts → deck-info --write → info.json ─┐
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (**161 pilot subcommands** against 28 top-level ones).
+`manamap pilot <cmd>` drives the rest (**159 pilot subcommands** against 28 top-level ones).
 All constants live in `src/manamap/config.py`; both CLIs are registry-driven with lazy
 imports.
 
@@ -751,12 +750,11 @@ Two standing rules around this harness:
 | Builder tuning | `DECK_ROLE_BUDGET` / `DECK_BUILD_WEIGHTS` in `config.py` |
 | An agent cache routine | `AGENT_ROUTINES` in `config.py` |
 
-**One thing that is someone's, not the project's.** `data/collection/*.txt` lists a
-physical card collection — `deck-history` reads it to tell a swap you already own from
-one you would have to buy, and it is the only ownership question left in the repo. The
-tracked files are the maintainer's, kept as a worked example. Point
-`MANAMAP_COLLECTION_DIR` at your own boxes, or at nothing: an absent directory means no
-ownership claim rather than an error.
+**Nothing here is anyone's inventory.** The bench has no notion of which cards a
+person holds (since 2026-11-22: no boxes, no buy list, no bill). What survives of
+the physical card is the paper lock on a sleeved deck, a pinned printing on a
+checked-in list, `manamap pilot prices` as dated price evidence, and the `order` and
+`proxies` pastes.
 
 ## Three contracts worth understanding
 

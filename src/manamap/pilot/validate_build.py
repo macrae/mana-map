@@ -149,13 +149,13 @@ def validate(plan, cards=None, rules=None, strategy_sections=None, bracket_repor
 
 
 def _validate_pool(plan, cards):
-    """If the build declared a collection, prove it stayed inside it.
+    """If the build declared a pool, prove it stayed inside it.
 
     Re-derives the pool from the decklist files the plan names rather than
     trusting a count written by the thing being validated. Basics are exempt:
-    `build_deck` deliberately draws them from the format, because you always own
-    another Swamp and a pool that happens to list four should not cap the mana
-    base at four.
+    `build_deck` deliberately draws them from the format, because a pool is a
+    constraint and never an inventory, and one that happens to list four Swamps
+    should not cap the mana base at four.
     """
     pool_spec = plan.get("pool")
     if not pool_spec or not pool_spec.get("files"):
@@ -167,23 +167,22 @@ def _validate_pool(plan, cards):
     except SystemExit as exc:
         return [f"pool files named by the plan could not be read: {exc}"]
 
-    owned = set()
+    allowed = set()
     for counts in per_file.values():
-        owned.update(counts)
+        allowed.update(counts)
 
     # The brief's explicit `pool` list is part of the declared pool too —
-    # `resolve_pool` merges it with the files (it exists for cards whose
-    # acquisition is the build's premise, like a just-released commander).
-    # Read it from the BRIEF, the authored input, never from the plan being
-    # validated.
+    # `resolve_pool` merges it with the files (it exists for a card the brief
+    # names outright, like a just-released commander). Read it from the BRIEF,
+    # the authored input, never from the plan being validated.
     brief_path = config.DECKS_DIR / plan.get("slug", "") / "brief.json"
     if brief_path.exists():
         with open(brief_path) as f:
-            owned.update(json.load(f).get("pool") or [])
+            allowed.update(json.load(f).get("pool") or [])
 
     outside = []
     for name in sorted(set(deck_card_names(plan))):
-        if name in owned:
+        if name in allowed:
             continue
         if "Basic" in (cards or {}).get(name, {}).get("type_line", ""):
             continue

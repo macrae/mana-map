@@ -1,5 +1,7 @@
 # The paydown plan — six phases, in order
 
+> **2026-11-22:** the ownership layer this page refers to — the collection boxes, `--owned`, the pull list, the sourcing gate, `pool-facts` — was removed from the bench; the bench has no notion of card ownership. Kept as history.
+
 **What this is.** The implementation plan for the debt named in
 `docs/audit-2026-09-12.md`, in the order the audit recommended: housekeeping and
 doc corrections, then the daily-loop test cost, then the branch-lifecycle

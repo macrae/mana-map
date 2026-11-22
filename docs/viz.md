@@ -7,8 +7,8 @@ directory and, between the families, nothing else:
   via `js/render/canvas.js` and the graph modes via `js/force.js`. Plotly is gone. Dark theme
   (#1a1a2e background, #c4a747 gold accents), styles in `css/mana-map.css`.
 - **`workbench.html` — the landing page.** Every deck, racked by whether it is sleeved,
-  waiting on cardboard, on the bench or history; or one fleet table with five sorts. Reads
-  every deck's `info.json`.
+  accepted and not yet merged, on the bench or history; or one fleet table with five sorts.
+  Reads every deck's `info.json`.
 - **`fleet.html` — the fleet compared** (2026-10-18). One committed artifact,
   `data/fleet/analytics.json`, drawn seven ways: the table with intervals, the bracket
   racks with bands and placements, the ★ rating leaderboard (from each deck's
@@ -17,21 +17,11 @@ directory and, between the families, nothing else:
 - **`deck.html` — the deck dossier.** One deck, one screen. The Deck Context leads it (`context-md.js`).
 - **`branch.html` — the branch workbench.** One candidate 99, read in the order a decision is made:
   the profile (grouped rows, with the guard and the rule's word under them), what it cannot
-  see, the mana, the bill, Forge, the cards, and one definitions panel at the foot that each
-  row name links to, with a sticky jump nav over all of it. Under
-  the bill's BUY rows a buy list for Mana Pool's mass entry (`manapool.com/add-deck`,
-  paste only): with a local server, "Copy for Mana Pool" calls `branch/buy-list` (the
-  same function as `manamap pilot buy-list --json`), copies the text and opens the shop;
-  on the static site the list is rendered in a `<pre>` from the bill's rows plus the
-  branch's `cards.json` with a plain Copy. An "exact printings" checkbox switches
-  `N Name` to `N Name (SET) CN`, the form `check_in.decklist_line` writes. Above the
-  BUY rows, the bill in dollars: `≈ $N to buy (as of <date>, <source>; k unpriced: …)`,
-  the same arithmetic as `net_change._priced_bill` (`nm_cents × quantity` over the
-  BUY rows, an unpriced card named, never counted as zero) read from the branch's own
-  `prices.json` — `net_change.json`'s `recommendation.cost` copy paints first, the file
-  repaints it, because the file is usually younger than the report. No file: "No
-  prices for this branch yet —" and the `manamap pilot prices <slug> --branch <branch>
-  --write` line in a copy button. Nothing to buy: no line.
+  see, the mana, Forge, the cards, and one definitions panel at the foot that each
+  row name links to, with a sticky jump nav over all of it. The branch's `prices.json`
+  is dated evidence for the LIST (`manamap pilot prices <slug> --branch <branch> --write`);
+  the page carries no bill, no sourcing counts and no buy list (2026-11-22: the bench has
+  no notion of card ownership).
 - **`library.html` — Curate.** The library across every pile at a size you can read, with
   sort, colour/type/role filters, multi-select and bulk move/remove. See its own section
   below.
@@ -1561,14 +1551,14 @@ Two views over the same payload, toggled and carried in the URL
 (`?view=table&sort=played`, written with `history.replaceState` so a sorted view is
 linkable and the back button is not filled with noise):
 
-- **Racks**, in render order: a **drafts** rail, then *Waiting on cardboard* (decided,
-  measured and accepted, but not sleeveable yet — a deck appears here AND in its own
-  rack), *Sleeved* (built in paper, playable tonight), *On the bench* (lists, build plans
+- **Racks**, in render order: a **drafts** rail, then *Accepted, not merged* (a branch
+  proposed as the deck's next version and not yet merged — a deck appears here AND in its
+  own rack), *Sleeved* (built in paper, playable tonight), *On the bench* (lists, build plans
   and decks under research), *Brewing* (fresh builds optimised for throughput, not
   rigour) and *Archive* (broken down, superseded, retired, or put down — kept readable).
 - **The fleet table** is one row per deck across record, stages, evidence, table and
   open work, sorted **five** ways (`workbench.SORTS`): *recently played*, *needs game
-  logs*, *needs analysis*, *waiting on cardboard*, *optimisations identified*. Every sort
+  logs*, *needs analysis*, *accepted, not merged*, *optimisations identified*. Every sort
   maps to a predicate `deck_info._next` already computes — the page adds no judgement of
   its own.
 
@@ -1617,7 +1607,7 @@ beside it (`data-note`, else `FOLD_COUNT`). After: ~4,300 px.
 
 | # | chapter | holds |
 |---|---|---|
-| 1 | **The call** | the study (first, whatever order the fetches landed), the proposal (deck, why, goal, the bill in one line, the swaps table), the bill folded |
+| 1 | **The call** | the study (first, whatever order the fetches landed), the proposal (deck, why, goal, the swaps table) |
 | 2 | **The cards** | the net change list/gallery, proven lines on this branch, what Forge's AI did with each add, the marks at the table |
 | 3 | **Instruments** | the goldfish (its own `<details>`, now CLOSED, the read in words first inside it), what it cannot see, the mana, the real table, the deck's own goldfish |
 | 4 | **The trail** | the trail, the bench verbs, candidate swaps, the deck's other branches, what the figures mean |
@@ -1625,7 +1615,7 @@ beside it (`data-note`, else `FOLD_COUNT`). After: ~4,300 px.
 The nav is the chapters. Every id is unchanged, so the workbench's `#measured`,
 `#net-change` and `#swaps` links land and open their fold (`openHash`). A browser test
 that reads a folded panel unfolds first (`_branch_page` in the behaviour suite does, as
-do the buy-list and bench-verb tests); the chapter tests do not.
+do the bench-verb tests); the chapter tests do not.
 
 ## The deck dossier (`deck.html`)
 

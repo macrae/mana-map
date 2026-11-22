@@ -3,7 +3,7 @@
 MAP OF THIS FILE (in order):
   _goldfish_block / _goldfish  the goldfish as a model block, intervals attached.
   _binding_axes / _open_questions / _branches  the audit's binding axes, open
-                    questions, and each open branch's state, bill and pull list.
+                    questions, and each open branch's state and study.
   ── The engine, said in one word ──  ENGINE_HEALTH_BANDS, `engine_health`: the
                     cover sheet's word, or None with a reason.
   _handbook         which list each authored prose block (mulligan, procedures,
@@ -274,19 +274,17 @@ def _deck_branch_studies(slug):
 
 
 def _branches(slug):
-    """Open branches: their state, what each would cost, and the pull list.
+    """Open branches: their state, their study, what each would change.
 
-    Composes; computes nothing of its own. `deck_branch.source` is the one place
-    that answers where a card comes from, and it is the only reader of the
-    collection through `pilot/collection.py`; `deck_branch.branch_state` is the
-    one place that decides whether a branch is an experiment, a decision waiting
-    on cardboard, or ready to merge.
+    Composes; computes nothing of its own. `deck_branch.branch_state` is the one
+    place that decides whether a branch is an experiment, an accepted proposal,
+    or merged. No ownership (2026-11-22): a row says what the list would change,
+    never where a card is or what it costs.
 
     This is what puts a PROPOSAL on a static page. The deck dossier and the
     workbench both read `info.json` and neither can run a command, so the state
-    and the pull list have to travel in the artifact — and both are derived on
-    write, so the blocker a page shows is the blocker at the moment it was
-    written rather than a stored claim that can go quietly wrong.
+    has to travel in the artifact — derived on write, so what a page shows is the
+    state at the moment it was written rather than a stored claim.
     """
     try:
         from manamap.pilot import deck_branch
@@ -1031,7 +1029,7 @@ def _next(info, today=None):
         nxt.append(f"not marked as built in paper — if it is sleeved, "
                    f"`deck-version {slug} paper --note \"…\"` locks the list you hold "
                    f"(then drift is computed on every swap); if it is not, it is a build "
-                   f"plan and the play/measure suggestions below need cardboard first")
+                   f"plan and the play suggestions below do not apply yet")
     # A COPY ON ANOTHER SITE (Moxfield, DeckCheck) BEHIND THE SLEEVED LIST —
     # files only, so info.json stays network-free: links.json's stamp against
     # the paper lock, or the working version when unlocked (2026-10-17).
@@ -1050,24 +1048,13 @@ def _next(info, today=None):
         nxt.append(f"{len(ids)} logged game(s) not yet debriefed ({', '.join(ids)}) — `/debrief {slug}`")
     from manamap.pilot import deck_branch
 
-    # A branch that is fully sourced is a decision waiting to be taken; one that
-    # is not is a shopping list. Both are worth saying, and neither is a judgement
-    # about the deck.
-    #
-    # A PROPOSED BRANCH IS A DIFFERENT SENTENCE FROM AN OPEN ONE, and until
-    # `propose` existed this loop could not tell them apart: "needs 12 card(s)
-    # sourced" is what it said about a branch nobody had an opinion on and about
-    # one the pilot had accepted as the next version. The state does the talking
-    # now; `deck_branch.branch_state` is the only thing that decides it.
+    # A PROPOSED BRANCH IS A DIFFERENT SENTENCE FROM AN OPEN ONE. The state does
+    # the talking; `deck_branch.branch_state` is the only thing that decides it,
+    # and since 2026-11-22 none of it is about where the cards are.
     for b in (info.get("branches") or []):
         prop = b.get("proposal") or {}
         as_v = prop.get("as_version")
-        # A MERGED BRANCH HAS NOTHING LEFT TO DO, and saying so was a real
-        # defect: merged means its swaps are already in the list, so it has zero
-        # unsourced cards, so `mergeable` is True, so this loop told the pilot to
-        # MERGE A BRANCH THAT WAS ALREADY MERGED. ur-dragon@final-v2 shipped that
-        # line — "is fully sourced (+0 -0) — deck-branch merge final-v2" — where
-        # the +0 -0 is precisely BECAUSE it is merged.
+        # A MERGED BRANCH HAS NOTHING LEFT TO DO.
         if b.get("merged") or str(b.get("state") or "").upper().startswith("MERGED"):
             continue
         # AN EXPERIMENT YOU SLEEVED PAST IS A RECORD, NOT A NEXT ACTION.
@@ -1128,20 +1115,9 @@ def _next(info, today=None):
         if b.get("unreadable"):
             nxt.append(f"branch `{b['name']}` will not parse — fix "
                        f"data/decks/{slug}/branches/{b['name']}/decklist.txt")
-        elif b.get("state") == deck_branch.PROPOSED_BLOCKED:
-            pl = b.get("pull_list") or {}
-            bits = [f"{len(pl.get(k) or [])} to {v}"
-                    for k, v in (("buy", "buy"), ("unsleeve", "unsleeve"))
-                    if pl.get(k)]
-            nxt.append(f"`{b['name']}` is PROPOSED as {as_v} and waiting on "
-                       f"cardboard — {pl.get('blocking', 0)} card(s)"
-                       + (f" ({', '.join(bits)})" if bits else "")
-                       + f" — `manamap pilot deck-branch {slug} show {b['name']}` "
-                         f"has the pull list")
-        elif b.get("state") == deck_branch.PROPOSED_READY:
-            nxt.append(f"`{b['name']}` is PROPOSED as {as_v} and every card is "
-                       f"sourced — `manamap pilot deck-branch {slug} merge "
-                       f"{b['name']} --write`")
+        elif b.get("state") == deck_branch.PROPOSED:
+            nxt.append(f"`{b['name']}` is PROPOSED as {as_v} — when the list is in the "
+                       f"sleeves, `manamap pilot deck-branch {slug} merge {b['name']} --write`")
         elif b.get("state") == deck_branch.PROPOSED_STALE:
             nxt.append(f"`{b['name']}` was proposed as {as_v} and the list has "
                        f"changed since — recompute its study's facts (`study {slug} facts <NNN> "
@@ -1151,12 +1127,6 @@ def _next(info, today=None):
             nxt.append(f"`{b['name']}` was proposed as {as_v} against "
                        f"V{prop.get('base_version')} and the deck has moved on — "
                        f"{as_v} may be taken; re-measure and propose again")
-        elif b.get("mergeable"):
-            nxt.append(f"branch `{b['name']}` is fully sourced (+{b['add']} -{b['out']}) — "
-                       f"`manamap pilot deck-branch {slug} merge {b['name']} --write`")
-        elif b.get("unsourced"):
-            nxt.append(f"branch `{b['name']}` needs {len(b['unsourced'])} card(s) sourced — "
-                       f"`manamap pilot deck-branch {slug} source {b['name']}`")
         # A BRANCH WITH NO STUDY HAS NOT BEEN DECIDED ABOUT (2026-11-21): the goldfish
         # may have read it, but nobody has asked the question in the pilot's words.
         if (not b.get("study") and not (b.get("proposal") or {}).get("as_version")

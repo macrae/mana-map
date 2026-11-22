@@ -235,24 +235,6 @@ def propose_commanders(library, limit=3):
     return cs.search(library, limit=max(limit, 10))
 
 
-def _unowned(plan):
-    """Names in the plan that no box in the collection holds. A-2's count.
-
-    OWNERSHIP MEANS A BOX. `collection` is deliberately the only reader of
-    `COLLECTION_DIR` and deliberately does not count deck membership, because a
-    card sleeved in another deck is not one you can put in this deck without
-    taking that one apart. An empty collection returns nothing rather than
-    reporting all ninety-nine as unowned.
-    """
-    from manamap.pilot import collection
-
-    owned = collection.owned_names()
-    if not owned:
-        return set()
-    names = [s["name"] for s in plan.get("slots", [])]
-    return {n for n in names if n not in owned}
-
-
 def flagged(plan, brief, theme_decks=None):
     """What the build could not do, as sentences. A-1's last acceptance clause.
 
@@ -286,12 +268,8 @@ def flagged(plan, brief, theme_decks=None):
                      f"{plan['bracket']['target']}: "
                      + ", ".join(c["name"] for c in cut))
 
-    unowned = _unowned(plan)
-    if unowned:
-        shown = sorted(unowned)
-        flags.append(f"{len(shown)} of the nonland cards are in no box — "
-                     + ", ".join(shown[:6])
-                     + (f" (+{len(shown) - 6})" if len(shown) > 6 else ""))
+    # No "in no box" flag any more (2026-11-22): a build is judged on the list,
+    # and what the pilot holds is not something the bench knows or asks.
 
     if not brief.get("theme"):
         flags.append("no style resolved, so the role budget is the flat "

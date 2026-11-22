@@ -26,14 +26,14 @@ which trains a reader to ignore the gate:
     `commander_text_verified` each appear on exactly ONE deck. They are things a
     particular run had reason to record, not a schema.
 
-`ownership`, when present, IS checked — a claim about what the pilot has is
-falsifiable, and `pilot.collection` is the one reader that can falsify it.
+A legacy `ownership` key is read past, not checked (2026-11-22): the bench no
+longer knows what the pilot holds, so there is nothing to falsify it against,
+and a recon that carries one from an earlier run is not wrong for carrying it.
 """
 
 import json
 from datetime import date
 
-from manamap.pilot import collection
 from manamap.pilot.card_pool import load_pool
 from manamap.pilot.card_search import commander_identity, deck_names
 from manamap.pilot.common import deck_dir, expand_faces, load_json, report_errors
@@ -150,36 +150,6 @@ def _validate_cards(doc, slug, pool):
     return errors
 
 
-def _validate_ownership(doc):
-    """`ownership` is a falsifiable claim about the pilot's cards, so falsify it.
-
-    "Owned" means in a BOX — `data/decks/` holds build plans as well as assembled
-    decks and nothing tells them apart, so deck membership is deliberately not
-    counted (see `pilot.collection`). A recon that says a card is owned when no box
-    holds it has sent the pilot to the shelf for something that is not there.
-
-    This check's first real catch was not an agent error: it reported the tracked
-    collection as two boxes short of the physical one.
-    """
-    errors = []
-    own = doc.get("ownership")
-    if not isinstance(own, dict):
-        return errors
-    have = collection.owned_names()
-    for name, claimed in sorted(own.items()):
-        actual = bool(expand_faces(name) & have)
-        if bool(claimed) != actual:
-            errors.append(
-                f"ownership[{name!r}] says {bool(claimed)} but no box in "
-                f"COLLECTION_DIR holds it (deck membership does not count)")
-    named = set(_named_cards(doc))
-    missing = sorted(named - set(own))
-    if missing:
-        errors.append(f"{len(missing)} card(s) named in findings are absent from "
-                      f"`ownership`, so their cost is unstated: {', '.join(missing[:5])}")
-    return errors
-
-
 def in_the_99(doc, slug):
     """Cards the recon names that the deck already runs — a WARN, never an error.
 
@@ -201,7 +171,6 @@ def validate(doc, slug, pool=None):
     errors = _validate_shape(doc, slug)
     errors += _validate_sources(doc)
     errors += _validate_cards(doc, slug, load_pool() if pool is None else pool)
-    errors += _validate_ownership(doc)
     return errors
 
 

@@ -133,7 +133,6 @@ def _ledger(grade_state, verdicts, objective=True):
                       if objective else None),
         "objective_grade": ({"state": grade_state, "why": "because"}
                             if objective else None),
-        "bill": {"counts": {"buy": 21, "box": 7}},
     }
 
 
@@ -157,7 +156,7 @@ def test_objective_met_with_something_lost_is_a_trade_that_names_both_sides():
     assert got["state"] == "guard met, rows fell"
     assert "buy" in got["because"] and "pay" in got["because"]
     assert "m0" in got["because"] and "m1" in got["because"]
-    assert got["bill"] == {"buy": 21, "box": 7}
+    assert "bill" not in got and "cost" not in got, "ownership is gone from the report (2026-11-22)"
 
 
 def test_objective_not_met_is_a_refusal_even_when_other_things_improved():
@@ -389,8 +388,7 @@ def test_a_champion_reading_of_zero_does_not_divide_by_it():
 # --------------------------------------------------------------------------
 
 def _skeleton(**over):
-    doc = {"table": [], "bill": {"counts": {}, "cards": []},
-           "objective": None, "objective_grade": {},
+    doc = {"table": [], "objective": None, "objective_grade": {},
            "mana": {}, "forge": {"available": False, "why": "no run"},
            "blind_spots": []}
     doc.update(over)
@@ -446,56 +444,6 @@ def test_the_reward_block_only_carries_rows_that_beat_their_own_mde():
         {"measure": "hoard @T6", "verdict": "worse", "reads_as": "e",
          "why_we_care": "f"}])
     assert [r["measure"] for r in net_change.reward(doc)] == ["damage @T10"]
-
-
-def test_a_card_in_a_retired_deck_is_not_a_deck_you_have_to_take_apart():
-    """`elsewhere` is two costs wearing one integer. A card in a broken-down or
-    retired deck is loose cardboard; one in a deck that is still together costs
-    that deck the card, and a pilot deciding whether to pull sleeves needs the
-    two apart.
-
-    `free` and `apart` are `deck_branch.source`'s answer, not a second one here:
-    this block used to carry its own `FREE_TO_RAID`, which was a fourth copy of
-    a set `common.UNPLAYABLE_STATUSES` already held.
-    """
-    doc = _skeleton(bill={"counts": {"elsewhere": 2, "buy": 1}, "cards": [
-        {"name": "Faeburrow Elder", "state": "elsewhere", "free": True,
-         "where": [{"kind": "deck", "slug": "sisay", "status": "retired",
-                    "apart": True}]},
-        {"name": "Bloom Tender", "state": "elsewhere", "free": False,
-         "where": [{"kind": "deck", "slug": "kinnan", "status": None,
-                    "apart": False}]},
-        {"name": "Twinflame Tyrant", "state": "buy", "free": False, "where": []}]})
-    got = net_change.cost(doc)
-    assert [r["name"] for r in got["free_to_raid"]] == ["Faeburrow Elder"]
-    assert [r["name"] for r in got["must_unsleeve"]] == ["Bloom Tender"]
-    assert got["buy_cards"] == ["Twinflame Tyrant"]
-    assert "cost nothing" in got["reads_as"]
-
-
-def test_a_card_in_several_decks_reports_only_the_ones_still_together():
-    """Forbidden Orchard sits in six decks, two of them apart. Naming all six
-    overstates what merging disturbs."""
-    doc = _skeleton(bill={"counts": {}, "cards": [
-        {"name": "Forbidden Orchard", "state": "elsewhere", "free": False,
-         "where": [
-             {"kind": "deck", "slug": "blar", "status": None, "apart": False},
-             {"kind": "deck", "slug": "hapatra", "status": "broken-down",
-              "apart": True},
-             {"kind": "deck", "slug": "sisay", "status": "retired",
-              "apart": True}]}]})
-    entry = net_change.cost(doc)["must_unsleeve"][0]
-    assert entry["decks"] == ["blar"]
-
-
-def test_the_cost_block_no_longer_decides_what_apart_means():
-    """ONE PREDICATE, ONE HOME. Four modules answered "is this deck in a pile"
-    and could disagree; `common.deck_is_apart` decides, `deck_branch.source`
-    derives it per row, and this reads the row."""
-    assert not hasattr(net_change, "FREE_TO_RAID")
-    from manamap.pilot.common import UNPLAYABLE_STATUSES, deck_is_apart
-    assert UNPLAYABLE_STATUSES == frozenset({"broken-down", "retired"})
-    assert callable(deck_is_apart)
 
 
 # --------------------------------------------------------------------------
@@ -669,25 +617,8 @@ def test_every_row_carries_what_the_renderer_needs():
         assert "why" in r and "pair" in r, "absent keys, not missing ones"
         checked += 1
     assert checked >= 10
-    # Only the INCOMING cards have a physical location to report; asking where
-    # a card you are removing "is" is a question about the deck you already own.
-    assert all("state" not in r for r in d["out"])
-    assert all("state" in r for r in d["in"])
-
-
-@requires_data
-@requires_branch
-@requires_deck
-def test_the_diff_and_the_bill_cannot_disagree_about_what_must_be_bought():
-    """Two lists of the same cards on one page is two chances to be wrong."""
-    bill = deck_branch.source(SLUG, BRANCH)
-    d = net_change.card_diff(SLUG, BRANCH, bill)
-    by_name = {r["name"]: r.get("state") for r in bill["cards"]}
-    checked = 0
-    for r in d["in"]:
-        assert r["state"] == by_name.get(r["name"]), r["name"]
-        checked += 1
-    assert checked >= 10
+    # No sourcing state on any row (2026-11-22): the bench keeps no inventory.
+    assert all("state" not in r for r in d["out"] + d["in"])
 
 
 @requires_data
@@ -831,7 +762,7 @@ def test_card_diff_survives_a_cut_DFC(monkeypatch):
     monkeypatch.setattr(net_change.deck_branch, "_named",
                         lambda s, b, now, cand: ({JOINED: 1}, {"Swamp": 1}))
 
-    d = net_change.card_diff("any-slug", "any-branch", {"cards": []})
+    d = net_change.card_diff("any-slug", "any-branch")
 
     assert [r["name"] for r in d["out"]] == [JOINED], "the cut DFC must survive the diff"
     assert d["counts"]["out_copies"] == 1, "and it must be counted as a real copy"
@@ -1688,8 +1619,7 @@ def test_a_row_over_the_mde_but_not_holm_significant_is_noise(monkeypatch):
     monkeypatch.setattr(net_change, "_refuse_a_stale_measurement", lambda s, b: None)
     monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": None, "staged": []})
     monkeypatch.setattr(net_change, "changes", lambda s, b: {})
-    monkeypatch.setattr(net_change, "card_diff", lambda s, b, bill: {})
-    monkeypatch.setattr(net_change.deck_branch, "source", lambda s, b: {"cards": [], "unsourced": []})
+    monkeypatch.setattr(net_change, "card_diff", lambda s, b: {})
     monkeypatch.setattr(net_change, "blind_spots", lambda s, b, c: [])
     monkeypatch.setattr(net_change, "mana", lambda s, b: {"available": False, "why": "test"})
     monkeypatch.setattr(net_change, "forge", lambda s, b, pod=None: {"available": False, "why": "test"})
@@ -1745,7 +1675,7 @@ def _forge_doc(delta, lo, hi, state="met"):
                        "delta": 4.0, "mde": 1.0, "verdict": "better"}],
             "objective": {"axis": "damage_10", "op": ">=", "value": 12.0},
             "objective_grade": {"state": state, "reading": 14.0},
-            "bill": {"counts": {}}, "mana": {"available": False, "why": "test"},
+            "mana": {"available": False, "why": "test"},
             "forge": {"available": True, "pod": "standard-v3", "champion": {"wins": 20, "games": 100, "rate": 0.2, "won_by": {}},
                       "branch": {"wins": 20, "games": 100, "rate": 0.2 + delta, "won_by": {}},
                       "delta": delta, "ci95": [lo, hi], "excludes_zero": not (lo <= 0 <= hi), "mde": 0.15,
@@ -1760,7 +1690,7 @@ def test_a_real_table_loss_that_excludes_zero_is_a_loud_warning_not_a_gate(monke
     excludes zero no longer overrides the goldfish's verdict — but it was right
     once (copy-burst-v1 read MERGE while 73 Forge games read -0.061), so it is
     printed LOUDLY beside the verdict, with the pod, the interval and the null."""
-    for fn in ("reward", "risk", "cost"):
+    for fn in ("reward", "risk"):
         monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
     got = net_change.recommend(_forge_doc(-0.12, -0.20, -0.04))
     assert got["state"] == "guard met, nothing fell", got
@@ -1772,7 +1702,7 @@ def test_a_real_table_loss_that_excludes_zero_is_a_loud_warning_not_a_gate(monke
 def test_a_real_table_that_spans_zero_leaves_a_goldfish_verdict_alone(monkeypatch):
     """"Cannot tell" is not "no"; the goldfish verdict stands on its own terms
     and the Forge reading stays a note."""
-    for fn in ("reward", "risk", "cost"):
+    for fn in ("reward", "risk"):
         monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
     got = net_change.recommend(_forge_doc(-0.06, -0.13, +0.01))
     assert got["state"] == "guard met, nothing fell", got
@@ -1852,15 +1782,13 @@ def test_a_forge_objective_is_graded_at_its_own_pod_with_the_interval_on_the_dif
     objective = {"axis": "forge.win_rate", "op": ">=", "value": 0.2, "pod": "standard-v3"}
     monkeypatch.setattr(net_change.deck_branch, "meta", lambda s, b: {"objective": objective, "staged": []})
     monkeypatch.setattr(net_change, "changes", lambda s, b: {})
-    monkeypatch.setattr(net_change, "card_diff", lambda s, b, bill: {})
-    monkeypatch.setattr(net_change.deck_branch, "source", lambda s, b: {"cards": [], "unsourced": []})
+    monkeypatch.setattr(net_change, "card_diff", lambda s, b: {})
     monkeypatch.setattr(net_change, "blind_spots", lambda s, b, c: [])
     monkeypatch.setattr(net_change, "mana", lambda s, b: {"available": False, "why": "test"})
     monkeypatch.setattr(net_change, "_death_limit", lambda s, b: [])
     monkeypatch.setattr(goldfish, "model_version", lambda: "test")
     monkeypatch.setattr(net_change, "reward", lambda doc: [])
     monkeypatch.setattr(net_change, "risk", lambda doc: {})
-    monkeypatch.setattr(net_change, "cost", lambda doc: {})
 
     doc = net_change.build("x", "b")
     assert doc["forge"]["pod"] == "standard-v3", "vito-era held more branch games and must not decide"
@@ -1919,8 +1847,7 @@ def _printable():
                             "verdict": "noise"}],
             "recommendation": {"state": "do not merge", "because": "Missed. WARNING - lost.",
                                "forge_warning": "WARNING - lost.", "notes": [], "reward": [],
-                               "risk": [], "cost": {"reads_as": "1 to buy", "mergeable": False,
-                                                    "must_unsleeve": [{"name": "Brushland", "decks": ["sleeved-deck"]}]}},
+                               "risk": []},
             "objective": {"axis": "stall", "op": "<=", "value": 0.11},
             "objective_grade": {"state": "not met", "reading": 0.145},
             "blind_spots": [{"cards": ["Swords"], "why": "nothing to remove"}],
@@ -1929,7 +1856,7 @@ def _printable():
                      "on_curve": {"G": [0.82, None]},
                      "colours": [{"colour": "U", "target": [0, 0], "have": [0, 0], "gap": [0, 0]},
                                  {"colour": "G", "target": [36, 36], "have": [30, 34], "gap": [-6, -2]}]},
-            "bill": {"counts": {"buy": 1}}, "forge": {"available": False, "why": "no run"},
+            "forge": {"available": False, "why": "no run"},
             "changes": {"count": 1, "counts": {"in": 1, "out": 1, "rows": 1},
                         "diff": {"base_size": 100, "size": 100, "counts": {"out_copies": 1, "in_copies": 1},
                                  "changed": [],
@@ -1952,7 +1879,8 @@ def test_the_profile_prints_first_and_the_rules_word_follows_the_rows():
     out = _printed(_printable())
     assert out.index("THE PROFILE") < out.index("killed by T6") < out.index("guard not met")
     assert out.index("guard not met") < out.index("WHAT THIS CANNOT SEE") < out.index("THE MANA")
-    assert out.index("THE COST") < out.index("THE CHANGE") < out.index("WHAT THE ROWS MEASURE")
+    assert out.index("THE MANA") < out.index("THE CHANGE") < out.index("WHAT THE ROWS MEASURE")
+    assert "THE COST" not in out and "to buy" not in out, "ownership is gone from the report (2026-11-22)"
     assert "1 better, 0 worse, 1 no call" in out
     assert "==>" not in out, "a single word on top of the profile again"
 
@@ -1975,7 +1903,7 @@ def test_every_rendered_row_has_a_group_or_is_knowingly_other():
 
 def test_a_colour_the_deck_does_not_play_is_not_a_row_and_absent_is_not_zero():
     out = _printed(_printable())
-    mana = out[out.index("THE MANA"):out.index("THE COST")]
+    mana = out[out.index("THE MANA"):out.index("THE CHANGE")]
     assert "\n    G " in mana and "\n    U " not in mana
     assert "82% -> —" in mana, "an unmeasured on-curve figure read as zero"
 
@@ -1992,12 +1920,6 @@ def test_the_cards_are_alphabetical_and_the_automatic_note_collapses():
     assert "the pilot's call" in out, "a person's reason is dropped"
     assert "try: trade" not in out, "the automatic note is back on the default view"
     assert "try: trade" in _printed(_printable(), full=True), "--full lost it"
-
-
-def test_where_a_card_sits_is_only_on_the_full_report():
-    assert "sleeved-deck" not in _printed(_printable())
-    assert "sleeved-deck" in _printed(_printable(), full=True)
-    assert "Not mergeable yet" in _printed(_printable()), "the blocker must stay visible"
 
 
 def test_the_forge_warning_prints_beside_the_table_once():

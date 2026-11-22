@@ -45,8 +45,7 @@ from manamap.pilot.common import (
 # The combo predicates and the included-line rows live in `deck_combos` now —
 # the bracket is a floor over the lines a deck CONTAINS, and the module that
 # also knows about near misses owns the containment. The names stay importable
-# from here for every caller that learned them here (`deck_facts`,
-# `pool_facts`, the tests).
+# from here for every caller that learned them here (`deck_facts`, the tests).
 from manamap.pilot.deck_combos import (  # noqa: F401 - re-exported
     COMMANDER_TELL,
     INFINITE_PREFIX,

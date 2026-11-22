@@ -23,7 +23,8 @@ Everything here is READ-ONLY and shared — `load_frame()` hands back one
 DataFrame that callers must not mutate.
 
 Naming: "pool" here means the *format-wide* corpus. In `pool_facts` it means the
-cards you physically own. Different question, deliberately different module.
+names a brief constrains a build to. Different question, deliberately different
+module.
 """
 
 import csv

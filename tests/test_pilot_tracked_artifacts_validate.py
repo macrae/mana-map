@@ -21,7 +21,7 @@ import importlib
 
 import pytest
 
-from manamap.config import (CARD_ROLES_PATH, COLLECTION_DIR, COMBO_DETAILS_PATH, DECKS_DIR,
+from manamap.config import (CARD_ROLES_PATH, COMBO_DETAILS_PATH, DECKS_DIR,
                             OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH,
                             STRATEGY_DOC_PATH, STRATEGY_INDEX_PATH,
                             SYNERGY_GRAPH_PATH)
@@ -69,11 +69,7 @@ _VALIDATORS = tuple(sorted({importlib.import_module(dotted) for dotted in VALIDA
 
 INPUTS = (*module_closure(*_VALIDATORS), CARD_ROLES_PATH, COMBO_DETAILS_PATH,
           OBSOLESCENCE_INDEX_PATH, OUTPUT_CSV_PATH, STRATEGY_DOC_PATH,
-          SYNERGY_GRAPH_PATH,
-          # `validate_recon` falsifies a recon's `ownership` claims against the
-          # pilot's boxes, so a box edit changes a verdict. Without this the cache
-          # keys on bytes that did not move and serves a stale pass.
-          COLLECTION_DIR)
+          SYNERGY_GRAPH_PATH)
 
 # artifact filename -> module exposing main(args) taking a slug.
 #

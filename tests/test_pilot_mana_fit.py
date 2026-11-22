@@ -99,14 +99,15 @@ def test_more_colours_covered_outranks_fewer_and_untapped_outranks_tapped():
 
 @requires_data
 @requires_deck
-def test_owned_only_asks_the_boxes():
-    from manamap.pilot import collection
-    owned = collection.owned_names()
-    doc = mana_fit.propose(SLUG, owned_only=True, limit=20)
+def test_a_proposal_carries_no_ownership_column():
+    """Since 2026-11-22 the bench has no notion of a box, so a proposal row says
+    what the card covers and costs in tempo — never whether the pilot has it."""
+    doc = mana_fit.propose(SLUG, limit=20)
     checked = 0
     for rows in doc["add"].values():
         for r in rows:
-            assert r["name"] in owned and r["owned"] is True
+            assert "owned" not in r
+            assert set(r) >= {"name", "covers", "colours", "cmc", "tapped", "score"}
             checked += 1
     assert checked >= 3
 

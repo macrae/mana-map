@@ -41,7 +41,7 @@ MAP OF THIS FILE (in order, by `# ──` banner):
   Power Creep / Obsolescence  OBSOLESCENCE_*, RESTRICTION_PATTERNS, TAG_VALENCE.
   Region Clustering  REGION_L0/L1/L2_* sizes, naming dominance + display names.
   Pilot: Comprehensive Rules / Scryfall rulings  CR_RULES_URL, RULES_*, RULINGS_*.
-  Pilot: Decks & Manuals  DECKS_DIR, COLLECTION_DIR, SCRYFALL_* fetch, RESOLVE_*.
+  Pilot: Decks & Manuals  DECKS_DIR, SCRYFALL_* fetch, RESOLVE_*.
   Pilot: Commander Brackets / Deck Construction  BRACKETS, DECK_ROLE_BUDGET.
   Pilot: Deck Audit  DECK_AXIS_TARGETS, archetype budgets, ENGINE_*, DECK_BUILD_*.
   Pilot: Goldfish Simulation  GOLDFISH_* (seed, iterations, mulligans,
@@ -951,18 +951,11 @@ BULK_RULINGS_TYPE = "rulings"
 DECKS_DIR = DATA_DIR / "decks"
 MANUALS_DIR = _REPO_ROOT / "manuals"
 
-# A PHYSICAL card collection: `*.txt` decklists of what someone actually owns.
-# `deck_history.pending()` reads it to decide whether a proposed swap reads as
-# "buy" or "own", and that is the only ownership question left in the repo.
-#
-# Overridable, and that matters more than it looks. These files lived in a
-# top-level `share/` with no config entry, absent from the layout diagram and
-# documented in one buried sentence — so every clone of this repo silently
-# answered "do you own this card?" from ONE person's boxes. Point
-# `MANAMAP_COLLECTION_DIR` at your own, or leave it and get the worked example.
-# An absent directory is not an error: no collection means no ownership claim.
-COLLECTION_DIR = Path(os.environ.get("MANAMAP_COLLECTION_DIR",
-                                     DATA_DIR / "collection"))
+# No card-ownership constant lives here any more (2026-11-22): the bench has no
+# notion of a box, a buy or a bill. What survives of the physical card is the
+# paper lock (`deck_versions.paper`), a pinned printing on a checked-in list,
+# `prices` as dated evidence, and `order` / `proxies` as pastes. The URL below is
+# Scryfall's bulk-lookup endpoint, unrelated to the deleted layer.
 SCRYFALL_COLLECTION_URL = "https://api.scryfall.com/cards/collection"
 SCRYFALL_BATCH_SIZE = 75
 SCRYFALL_REQUEST_DELAY_S = 0.1

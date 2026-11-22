@@ -477,7 +477,8 @@ def test_a_tag_has_a_sign():
 
 
 def test_the_strength_ranks_the_documented_failures_below_a_clean_pair():
-    """CALIBRATION, against the four cases `pool_facts` documents.
+    """CALIBRATION, against the four cases the 2026-08 pool report documented
+    (`eval_obsolescence` keeps the audit).
 
     The weights are not free parameters: each is anchored here, so one cannot be
     tuned until these stop meaning anything.

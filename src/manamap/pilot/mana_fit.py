@@ -1,6 +1,6 @@
 """Pilot: right-size the mana to the spells that are actually in the list.
 
-    manamap pilot mana-fit <slug> [--branch N] [--owned]
+    manamap pilot mana-fit <slug> [--branch N]
 
 THE STEP THAT WAS MISSING FROM EVERY REBUILD. `mana-analysis` measures the gap
 between the colour sources a list HAS and the ones Karsten's tables say it NEEDS,
@@ -85,9 +85,9 @@ def shortfall(slug, branch=None, deck_doc=None):
             "on_curve": doc["on_curve_probability"]}
 
 
-def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
+def propose(slug, branch=None, limit=DEFAULT_LIMIT):
     """Lands, rocks and dorks that close the gap — ranked by colours covered."""
-    from manamap.pilot import card_pool, collection, formats, mana_analysis, manabase
+    from manamap.pilot import card_pool, formats, mana_analysis, manabase
     from manamap.pilot.card_search import deck_identity
     from manamap.pilot.common import deck_dir, load_deck_cards
     from manamap.pilot.fetch_deck import parse_mainboard
@@ -107,7 +107,6 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
     deck_doc = load_deck_cards(slug, branch)
     spec = formats.for_doc(deck_doc)
     identity = set(deck_identity(deck_doc))
-    owned = collection.owned_names()
     # THE DECK'S OWN LANDS, so a CANDIDATE fetchland is scored on what it could
     # actually go and get in this list. Without it every fetch covers nothing
     # and is never offered — the one land class a five-colour deck most wants.
@@ -120,8 +119,6 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
         if name in held or not info.get("legal"):
             continue
         if not (info.get("color_identity") or set()) <= identity:
-            continue
-        if owned_only and name not in owned:
             continue
         card = dict(info, name=name, oracle_text=oracle.get(name, ""))
         colours = set(manabase.land_colors(card, pool=deck_lands))
@@ -156,7 +153,7 @@ def propose(slug, branch=None, owned_only=False, limit=DEFAULT_LIMIT):
         adds[kind].append({
             "name": name, "covers": covers, "colours": sorted(colours),
             "cmc": int(float(info.get("cmc") or 0)),
-            "tapped": tapped, "owned": name in owned,
+            "tapped": tapped,
             "edhrec_rank": info.get("edhrec_rank"), "score": round(score, 2),
         })
 
@@ -253,8 +250,7 @@ def format_report(doc):
         out.append(f"\n  {title} that cover what is short")
         for r in rows:
             tag = "tapped" if r["tapped"] else ""
-            own = "OWN" if r["owned"] else "   "
-            out.append(f"    {own} mv{r['cmc']} {r['name'][:30]:32} "
+            out.append(f"    mv{r['cmc']} {r['name'][:30]:32} "
                        f"+{''.join(r['covers']):5} {tag:6} "
                        f"#{r['edhrec_rank'] or '-'}")
         if doc["not_shown"][kind]:
@@ -273,7 +269,6 @@ def format_report(doc):
 
 def main(args):
     doc = propose(args.slug, branch=getattr(args, "branch", None),
-                  owned_only=bool(getattr(args, "owned", False)),
                   limit=getattr(args, "limit", None) or DEFAULT_LIMIT)
     if getattr(args, "json", False) or getattr(args, "as_json", False):
         print(json.dumps(doc, indent=1))

@@ -16,14 +16,16 @@
   "size": 100,
   "lands": 36,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 19,
     "stale": [],
     "older_model": [
       "goldfish"
     ],
     "invalid": [
+      "brief",
       "combos",
+      "build_plan.json",
       "diagnosis.json"
     ],
     "verified": true,
@@ -707,7 +709,7 @@
   "decisions": null,
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
-    "2 artifact(s) fail their own gate (combos, diagnosis.json) — `deck-status yawgmoth-swarm` names them; fix before anything else reads them",
+    "4 artifact(s) fail their own gate (brief, combos, build_plan.json, diagnosis.json) — `deck-status yawgmoth-swarm` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish — the figures were right when taken; `manamap pilot regen --slug yawgmoth-swarm` re-reads them when you want, never on its own",
     "open questions routed: goldfish ×4, research-strategy ×1, resolve-stack ×5"
   ],

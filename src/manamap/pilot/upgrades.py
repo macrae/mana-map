@@ -62,8 +62,9 @@ import json
 from manamap.pilot import assess as _assess
 from manamap.pilot.common import deck_dir, deck_file, load_json
 
-#: Below this, `pool_facts` already tells a pilot the claim is weak. Same line,
-#: said once, so the two surfaces cannot drift.
+#: Below this the index's own strength is a weak claim — `eval_obsolescence`
+#: measured the failure classes the figure is built from, and anything under
+#: ~0.4 is where they stop separating a real upgrade from a near-miss.
 DEFAULT_MIN_STRENGTH = 0.4
 
 #: Reported, never silent. A truncated list reads as "these are all of them".
@@ -112,8 +113,8 @@ def role_heads(roles_for_card):
 
 
 def propose(slug, branch=None, pool=None, min_strength=DEFAULT_MIN_STRENGTH,
-            limit=DEFAULT_LIMIT, owned_only=False):
-    from manamap.pilot import card_pool, candidates as _cand, collection, deck_branch
+            limit=DEFAULT_LIMIT):
+    from manamap.pilot import card_pool, candidates as _cand
     from manamap.pilot.common import load_card_roles
 
     index = _index()
@@ -154,17 +155,8 @@ def propose(slug, branch=None, pool=None, min_strength=DEFAULT_MIN_STRENGTH,
     axes = {t["label"]: {c for g in (t.get("need") or []) for c in (g.get("any_of") or [])}
             for t in targets}
 
-    owned = collection.owned_names()
-    # WHERE WOULD EACH CARD COME FROM — the four states, and `buy` is the one
-    # that costs money. `deck_branch.source` is the only answer to this in the
-    # repo and it walks the whole list, so a name it does not know is simply
-    # absent rather than guessed at.
-    try:
-        src = {r["name"]: r.get("state")
-               for r in deck_branch.source(slug, branch)["cards"]}
-    except Exception:
-        src = {}
-
+    # A row says what the card DOES for less, and nothing about where it would
+    # come from: the bench stopped tracking what anyone holds on 2026-11-22.
     pool_set = set(pool or [])
     rows = []
     for out_name in by_name:
@@ -179,9 +171,6 @@ def propose(slug, branch=None, pool=None, min_strength=DEFAULT_MIN_STRENGTH,
             if info is None:
                 continue                       # not in this corpus; say nothing
             if not (info.get("color_identity") or set()) <= identity:
-                continue
-            is_owned = in_name in owned
-            if owned_only and not is_owned:
                 continue
 
             out_text, in_text = oracle.get(out_name, ""), oracle.get(in_name, "")
@@ -203,8 +192,6 @@ def propose(slug, branch=None, pool=None, min_strength=DEFAULT_MIN_STRENGTH,
                 "played_more": entry.get("played_more"),
                 "mv_out": int(float((corpus.get(out_name) or {}).get("cmc") or 0)),
                 "mv_in": int(float(info.get("cmc") or 0)),
-                "source": src.get(in_name) or ("box" if is_owned else None),
-                "owned": is_owned,
                 "in_pool": in_name in pool_set,
                 "roles_out": sorted(heads_out),
                 "roles_in": sorted(heads_in),
@@ -331,10 +318,9 @@ def format_report(doc):
     for r in doc["swaps"]:
         band = ("strong" if r["strength"] >= 0.65
                 else "mild" if r["strength"] >= 0.4 else "weak")
-        own = f"  [{r['source']}]" if r.get("source") else "  [buy]"
         out.append(f"  {r['strength']:.2f} {band:6} "
                    f"mv{r['mv_out']} {r['out'][:26]:26} -> "
-                   f"mv{r['mv_in']} {r['in'][:26]:26}{own}")
+                   f"mv{r['mv_in']} {r['in'][:26]:26}")
         if r["gains"]:
             out.append(f"        + {', '.join(r['gains'])}")
         if r["costs"]:
@@ -377,8 +363,7 @@ def main(args):
         branch=getattr(args, "branch", None),
         pool=pool,
         min_strength=getattr(args, "min_strength", None) or DEFAULT_MIN_STRENGTH,
-        limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
-        owned_only=bool(getattr(args, "owned", False)))
+        limit=getattr(args, "limit", None) or DEFAULT_LIMIT)
     if getattr(args, "as_json", False) or getattr(args, "json", False):
         print(json.dumps(doc, indent=1))
     else:

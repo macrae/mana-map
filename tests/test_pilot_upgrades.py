@@ -147,17 +147,18 @@ def test_a_replacement_is_inside_the_commanders_identity():
 
 @requires_data
 @requires_deck
-def test_owned_only_asks_the_boxes_and_not_the_decks():
-    """Ownership is a BOX. Deck membership is a build plan, and counting it once
-    made 99 unowned cards read as owned."""
-    doc = upgrades.propose(SLUG, limit=200, owned_only=True)
-    from manamap.pilot import collection
-    owned = collection.owned_names()
+def test_a_row_says_what_the_card_does_and_nothing_about_where_it_comes_from():
+    """Since 2026-11-22 the bench has no notion of a box or a bill: a row carries
+    the comparison (both sides, the measure, the guards) and no `owned` or
+    `source` key, and `propose` no longer takes an ownership filter."""
+    doc = upgrades.propose(SLUG, limit=200)
+    assert doc["swaps"]
     for r in doc["swaps"]:
-        assert r["in"] in owned
-        assert r["owned"] is True
-    wide = upgrades.propose(SLUG, limit=200)
-    assert len(doc["swaps"]) <= len(wide["swaps"])
+        assert "owned" not in r and "source" not in r
+        assert set(r) >= {"out", "in", "strength", "gains", "costs", "narrows",
+                          "roles_disjoint", "newly_combat_gated", "model_sees"}
+    with pytest.raises(TypeError):
+        upgrades.propose(SLUG, limit=5, owned_only=True)
 
 
 @requires_data

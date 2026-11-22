@@ -2,9 +2,10 @@
 
 WHY THIS EXISTS. Nothing measured this index. It shipped 22,753 claimed
 replacements, `viz/js/mana-map.js` published them to users as **"Obsoleted By"**,
-and `pool_facts.py` carried a hand-written caveat recording that four of the first
-eight results on a real box were wrong — with no way to tell whether a change to
-the gates made that better or worse.
+and the pool report of the day (`pool-facts`, a command deleted 2026-11-22) carried
+a hand-written caveat recording that four of the first eight results on a real pool
+were wrong — with no way to tell whether a change to the gates made that better or
+worse.
 
 The audit it was written from, on the index as it stood in 2026-08:
 

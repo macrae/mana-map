@@ -251,7 +251,7 @@ def test_the_workbench_card_links_to_moxfield(browser, viz_server):
               ".wb-card a.wb-title[href='deck.html?deck=sharknado']").closest('.wb-card');
             const a = card.querySelector('a.wb-moxfield');
             return { text: a && a.textContent, href: a && a.getAttribute('href'),
-                     // A proposed deck sits in BOTH "Waiting on cardboard" and
+                     // A proposed deck sits in BOTH "Accepted, not merged" and
                      // "Sleeved", so count the links on any OTHER deck's card.
                      others: [...document.querySelectorAll('a.wb-moxfield')].filter(a =>
                        !a.closest('.wb-card').querySelector(

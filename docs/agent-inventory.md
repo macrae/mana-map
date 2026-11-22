@@ -82,7 +82,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 | `build-deck` | deck-analyst → deck-architect → deck-critic | the agent build loop, gated on `validate-build` / `bracket-check` |
 | `diagnose-deck` | deck-doctor ⇄ deck-skeptic | |
 | `rate-deck` | deck-rater ⇄ rating-skeptic | the rating loop (2026-10-18): the scorecard first, the judgment merged and validated, the skeptic, `cache-record` last; `rate-fleet` runs it over every live Commander deck and settles the ranks |
-| `release-branch` | context-keeper, deck-rater ⇄ rating-skeptic | the release of a SLEEVED deck's branch, end to end (2026-10-19): net-change → propose `--as` → merge (proxies or cardboard; `--force --reason` for unowned cards) → `validate-goldfish-targets` and the repair → regen → the Keeper → prices → check-deck → the merge commit → `deck-version tag` + `paper` → DeckCheck Bulk Edit, rescan, `deckcheck --write` → `/rate-deck` and the bracket settled. Written after goblin-storm's release skipped the tag, the lock and the rating |
+| `release-branch` | context-keeper, deck-rater ⇄ rating-skeptic | the release of a SLEEVED deck's branch, end to end (2026-10-19): net-change → propose `--as` on a study → merge on the pilot's word that the list is in the sleeves (no sourcing gate, 2026-11-22) → `validate-goldfish-targets` and the repair → regen → the Keeper → prices → check-deck → the merge commit → `deck-version tag` + `paper` → DeckCheck Bulk Edit, rescan, `deckcheck --write` → `/rate-deck` and the bracket settled. Written after goblin-storm's release skipped the tag, the lock and the rating |
 | `prescribe` | deck-doctor (MODE prescribe) ⇄ deck-skeptic | |
 | `analyze-engine` | deck-engineer ⇄ engine-critic | |
 | `resolve-stack` | stack-resolver ⇄ rules-checker | max 3 iterations |
@@ -93,7 +93,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 
 Infrastructure, not deck-facing and not part of the consolidation:
 `run-pipeline`, `run-tests`, `retrain`, `refresh-corpus`, `regen-analysis`,
-`serve-viz`, `print-proxies` (added 2026-10-06: a proxy sheet for a branch's adds minus what the pilot holds, via `manamap pilot proxies`), and `test-report` (added 2026-10-05), which spawns `test-preflight` →
+`serve-viz`, `print-proxies` (added 2026-10-06: a proxy sheet for a branch's adds minus the cards the pilot says to leave out (`--have`, his word, not an inventory), via `manamap pilot proxies`), and `test-report` (added 2026-10-05), which spawns `test-preflight` →
 `make test-report` → `test-debrief` over the findings `manamap.suite_report` computes.
 
 ## PRD v2 (2026-10-07): Jarvis and the roster

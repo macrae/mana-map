@@ -48,20 +48,20 @@ def test_history_is_oldest_first():
 
 
 @requires_deck
-def test_pending_derives_ownership_when_the_artifact_omits_it():
-    """An absent `acquisition` is not evidence a card is unowned.
-
-    One regeneration dropped the field from a deck that previously had it, and
-    every pending swap then read as "buy" — including three sitting on that
-    deck's own bench.
-    """
+def test_pending_is_a_swap_and_carries_no_ownership_claim():
+    """Until 2026-11-22 a pending swap derived an `acquisition` (owned or
+    purchase) from the pilot's boxes. The bench has no notion of a box any more,
+    so a pending entry is a card in, a card out, what it closes and where the
+    entry came from — and an `acquisition` block an older `considering.json`
+    still carries never reaches the report."""
     prop = dh.pending("yawgmoth-swarm")
     if not prop:
         pytest.skip("no considering.json for this deck")
-    derived_owned = [p for p in prop if p["acquisition"] == "owned" and p["derived"]]
-    assert derived_owned, "nothing was derived as owned — check the bench/share lookup"
-    for p in derived_owned:
-        assert p["source_file"], f"{p['in']} is owned but names no source"
+    for p in prop:
+        assert set(p) == {"in", "out", "closes", "source", "id", "state"}, p
+        assert p["source"] in ("considering.json", "pending.json")
+    text = dh.format_report(dh.analyze("yawgmoth-swarm"))
+    assert "[owned" not in text and "[buy" not in text
 
 
 @requires_deck

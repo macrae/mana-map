@@ -186,9 +186,8 @@ def _plan(**over):
     return plan
 
 
-def test_a_role_the_builder_could_not_fill_is_flagged(monkeypatch):
+def test_a_role_the_builder_could_not_fill_is_flagged():
     """A-1: an unfilled category is flagged explicitly, never silently padded."""
-    monkeypatch.setattr(autobuild, "_unowned", lambda plan: set())
     plan = _plan(role_budget_deviation={
         "removal": {"target": 8, "actual": 6},
         "draw": {"target": 9, "actual": 9},
@@ -200,8 +199,7 @@ def test_a_role_the_builder_could_not_fill_is_flagged(monkeypatch):
     assert not any("ramp" in f for f in flags)
 
 
-def test_bracket_cuts_and_illegal_includes_are_named(monkeypatch):
-    monkeypatch.setattr(autobuild, "_unowned", lambda plan: set())
+def test_bracket_cuts_and_illegal_includes_are_named():
     plan = _plan(cut_for_bracket=[{"name": "Planar Bridge"}],
                  must_include_illegal=[{"name": "Sterling Grove"}],
                  manabase={"shortfalls": {"W": 3}})
@@ -211,7 +209,7 @@ def test_bracket_cuts_and_illegal_includes_are_named(monkeypatch):
     assert any("W by 3" in f for f in flags)
 
 
-def test_a_thin_style_is_flagged_rather_than_refused(monkeypatch):
+def test_a_thin_style_is_flagged_rather_than_refused():
     """A 29-deck histogram describes 29 decks.
 
     `archetypes.MIN_DECKS_FOR_TEMPLATE` is read by that module's REPORT and by
@@ -221,7 +219,6 @@ def test_a_thin_style_is_flagged_rather_than_refused(monkeypatch):
     """
     from manamap.pilot.archetypes import MIN_DECKS_FOR_TEMPLATE
 
-    monkeypatch.setattr(autobuild, "_unowned", lambda plan: set())
     thin = flagged(_plan(), {"theme": "tempo"}, theme_decks=29)
     assert any("only 29 decks" in f for f in thin)
 
@@ -233,15 +230,14 @@ def test_a_thin_style_is_flagged_rather_than_refused(monkeypatch):
     assert any("no style resolved" in f for f in none)
 
 
-def test_an_empty_collection_does_not_report_the_whole_99_as_unowned(monkeypatch):
-    """Ownership means a BOX, and no boxes is not the same as owning nothing."""
-    monkeypatch.setattr("manamap.pilot.collection.owned_names", lambda **k: set())
-    assert autobuild._unowned(_plan(slots=[{"name": "Sol Ring"}])) == set()
-
-    monkeypatch.setattr("manamap.pilot.collection.owned_names",
-                        lambda **k: {"Sol Ring"})
+def test_the_flags_never_speak_of_a_box():
+    """Since 2026-11-22 a build is judged on its list alone: the "N of the nonland
+    cards are in no box" sentence is gone, and no plan — however many slots it
+    fills — can bring it back."""
     plan = _plan(slots=[{"name": "Sol Ring"}, {"name": "Mana Crypt"}])
-    assert autobuild._unowned(plan) == {"Mana Crypt"}
+    flags = flagged(plan, {"theme": "enchantress"}, theme_decks=1201)
+    assert flags == [], flags
+    assert not hasattr(autobuild, "_unowned")
 
 
 # ── the brief is authored, and a build may not overwrite one ────────────────

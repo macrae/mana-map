@@ -10,7 +10,7 @@ fact inside it.
 ## Why
 
 The bench's decision verbs — `try`, `net-change`, `propose`, the ledger — read two goldfish
-runs, the bill, Forge and mana, and nothing a person wrote. The strategist, the rules agent,
+runs, Forge and mana, and nothing a person wrote. The strategist, the rules agent,
 the analyst and the scout wrote nothing that survived a session. The pilot said "the goldfish
 is not the decider" at least fourteen times in forty-six days; the words that kept it one
 lived in `CLAUDE.md`, the vision, the doctor's charter and the release skill. The study puts

@@ -49,7 +49,7 @@ corpus, and a byte-identical re-render of every deck page. A fresh clone runs gr
 and *faster* than a developed checkout, by construction.
 
 **Needs `manamap run`** (~40–60 min, downloads ~56 MB, internet): anything
-reading `data/cards.csv` — `bracket-check`, `build-deck`, `pool-facts`,
+reading `data/cards.csv` — `bracket-check`, `build-deck`,
 `fetch-deck`'s card-pool checks — plus retraining and `eval-embeddings`. Those
 cases skip without it, every one labelled with the command that would enable it.
 

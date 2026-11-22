@@ -94,8 +94,8 @@ def render_line(e, cmdr_marker=False):
     """One entry as one `decklist.txt` line: `N Name [(SET) CN] [*F*] [*CMDR*]`.
 
     THE ONE WRITER of the line form, shared by `render_decklist`, `set_printing`
-    and `buy_list` (the Moxfield / Mana Pool "exact printings" paste is this same
-    line), so a printing written by any of them parses back through
+    and the Mana Pool "exact printings" paste (`order`; it was `buy_list`'s until
+    2026-11-22), so a printing written by any of them parses back through
     `parse_decklist` to the same entry — `_PRINTING_RE` is `$`-anchored and the
     markers come off first, which is why the order here is printing, foil,
     commander and nothing may come after. A second copy is how a set code ends
@@ -111,7 +111,8 @@ def render_line(e, cmdr_marker=False):
     return s
 
 
-# `buy_list`'s name for the same writer.
+# The paste writers' name for the same function (`buy_list` learned it first;
+# that module is gone since 2026-11-22, the alias stays for the pastes).
 decklist_line = render_line
 
 

@@ -161,7 +161,8 @@ deck digests hash each deck's own `cards.json`, which a refresh never touches.
    SHOULD have moved — cached pre-retrain neighbours are the failure), drill
    works, obsolescence badges render. Badges and neighbours are where refresh
    regressions hide (memory-recorded lesson).
-2. Rerun any live `pool-facts` analyses — new-set names should now resolve.
+2. Re-read any brief whose pool file names new-set cards — the names should now
+   resolve (`build` / `check-in` print the ones that do not).
 3. Commit: code/docs and the ~13 tracked `data/` artifacts (projections, .bin
    files, viz_index, regions, synergy/obsolescence, combo files). NO Git LFS —
    Pages serves pointers.

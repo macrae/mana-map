@@ -63,7 +63,6 @@ _DEPS = {
     # is re-indexed, rather than quoting a chunk id that no longer exists.
     "query-docs": ("docs",), "lookup-doc": ("docs",), "query-code": ("code",),
     "card-search": ("cards", "roles"),
-    "pool-facts": ("cards", "roles"),
     "bracket-check": ("cards", "combos"),
     "deck-audit": ("cards", "roles", "combos"),
     "mana-fit": ("cards",),

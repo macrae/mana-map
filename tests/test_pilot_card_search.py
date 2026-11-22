@@ -152,14 +152,17 @@ def test_deck_scoping_derives_identity_and_excludes_what_you_already_have():
 
 @requires_data
 @requires_deck
-def test_include_owned_turns_the_exclusion_off():
+def test_include_in_deck_turns_the_exclusion_off():
     """Searched by NAME, not oracle: `--oracle "Hardened Scales"` matches cards whose
-    RULES TEXT says that, which is nothing — the trap `--name` exists to avoid."""
+    RULES TEXT says that, which is nothing — the trap `--name` exists to avoid.
+
+    The flag was `--include-owned` until 2026-11-22; it always meant the deck's
+    own 99, and the rename says so now that "owned" names nothing on the bench."""
     q = dict(deck="zur-enchantress", name=[r"^(Rhystic Study|Mystic Remora)$"],
              limit=50)
     assert card_search.analyze(Args(**q))["results"] == [], "both are in the deck"
-    owned = card_search.analyze(Args(include_owned=True, **q))
-    assert {r["name"] for r in owned["results"]} == {"Rhystic Study", "Mystic Remora"}
+    in_deck = card_search.analyze(Args(include_in_deck=True, **q))
+    assert {r["name"] for r in in_deck["results"]} == {"Rhystic Study", "Mystic Remora"}
 
 
 @requires_data
@@ -224,21 +227,19 @@ def test_the_regression_the_identity_bug_actually_caused():
 
 
 @requires_data
-def test_owned_and_unowned_partition_the_same_search():
-    """`pool-facts` knew the box but could not filter by oracle text; `card-search`
-    filtered by oracle text but could not see the box. Every 'what could I add that I
-    already have' question needed both. The two filters must be exact complements —
-    if they are not, one of them is quietly dropping cards."""
+def test_a_row_carries_no_ownership_claim():
+    """The bench stopped knowing what anyone holds on 2026-11-22. A search row
+    says what a card does and where it came from in the corpus — never whether
+    the pilot has it — and `search()` no longer takes an ownership filter at all,
+    so a caller that still passes one fails loudly rather than being ignored."""
     q = dict(identity={"G", "U"}, oracle=[r"\bproliferate\b"], limit=500)
-    everything = {r["name"] for r in card_search.search(**q)[0]}
-    owned = {r["name"] for r in card_search.search(owned=True, **q)[0]}
-    unowned = {r["name"] for r in card_search.search(owned=False, **q)[0]}
-    assert owned | unowned == everything
-    assert not (owned & unowned)
-    for r in card_search.search(owned=True, **q)[0]:
-        assert r["owned"] is True
-    # Absent the filter the field is None, not False — "not asked" is not "no".
-    assert all(r["owned"] is None for r in card_search.search(**q)[0])
+    rows, meta = card_search.search(**q)
+    assert rows, "the corpus has proliferate cards in Simic"
+    for r in rows:
+        assert "owned" not in r
+    assert "ownership_filter" not in meta and "collection" not in meta
+    with pytest.raises(TypeError):
+        card_search.search(owned=True, **q)
 
 
 # ── the goldfish channels a card feeds ──

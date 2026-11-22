@@ -173,10 +173,6 @@ def assess(slug, pool, branch=None):
         if j not in cheapest or mv < cheapest[j][1]:
             cheapest[j] = (c["name"], mv)
 
-    try:
-        src = {r["name"]: r for r in deck_branch.source(slug, branch)["cards"]}
-    except Exception:
-        src = {}
 
     # THE THREE FILTERS THIS DECK'S OWN MEASUREMENTS ASKED FOR.
     #
@@ -231,7 +227,6 @@ def assess(slug, pool, branch=None):
             "legal": ci <= identity,
             "on_axis": [lbl for lbl, cards in axes.items() if name in cards],
             "declared": name in declared,
-            "source": (src.get(name) or {}).get("state"),
         }
         # Does it need a creature type the deck does not run? (Magda wants
         # Dwarves.) MATCHED AGAINST REAL CREATURE TYPES, not a capital-letter
@@ -383,9 +378,7 @@ def main(args):
         if "mv" not in r:
             print(f"  {r['card'][:30]:30}   {r['verdict']}"); continue
         tag = "·".join(x for x in (r["job"], r["gate"]) if x)
-        own = ("" if r["in_list"] else
-               f"  [{r['source']}]" if r.get("source") else "")
-        print(f"  mv{r['mv']:<2} {r['card'][:30]:30} {tag:22}{own}")
+        print(f"  mv{r['mv']:<2} {r['card'][:30]:30} {tag:22}")
         print(f"       {r['verdict']}")
         if r["on_axis"]:
             print(f"       feeds: {', '.join(x[:44] for x in r['on_axis'])}")

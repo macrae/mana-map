@@ -734,11 +734,10 @@ def _print_list(doc):
 def _refresh_dossiers_the_lock_changed(slug):
     """A PAPER LOCK IS A CROSS-DECK INPUT, and until 2026-09-12 nothing acted on it.
 
-    `deck_branch.source()` records, for every card a branch wants, which other
-    decks hold it and whether each of those decks is LOCKED (`deck_branch.py:219`)
-    — and `deck_info` embeds that per-card verdict in the branch block of the
-    DECK'S OWN `info.json`. So locking one deck rewrites a field inside every
-    other deck's tracked dossier.
+    Until 2026-11-22 the branch block of every other deck's `info.json` carried
+    where each card was sleeved, so a lock here rewrote a field in every dossier.
+    That provenance is gone with the ownership layer; the refresh stays because
+    `info.json` still reads the fleet's locks for its own paper block.
 
     Measured: ur-dragon was locked on 2026-09-11 (adfad9e5) and Bloom Tender's
     entry in gishath's `cart-v1` block still read `locked: false` a day later.

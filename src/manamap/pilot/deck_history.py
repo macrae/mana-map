@@ -26,8 +26,7 @@ import json
 import subprocess
 
 from manamap import config
-from manamap.config import COLLECTION_DIR
-from manamap.pilot.common import deck_dir, expand_faces, resolve_out_path
+from manamap.pilot.common import deck_dir, resolve_out_path
 
 # The git root is a sibling of `data/`, not of `data/decks/`. Named once because
 # `config.DECKS_DIR.parent.parent` read as an accident at both call sites, and a wrong
@@ -147,24 +146,6 @@ def history(slug):
     return changes
 
 
-def _owned_index():
-    """Every card in `COLLECTION_DIR/*.txt` -> the files holding it, faces included.
-
-    A physical box, read the same way `pool-facts` reads a collection. The
-    directory is configurable (`MANAMAP_COLLECTION_DIR`) and an absent one is not
-    an error — it was a hardcoded top-level `share/`, which meant every clone of
-    this repo answered "do you own this?" from one person's boxes.
-
-    Now a thin alias over `pilot.collection`, which is the single reader and is
-    memoized; this function had re-globbed and re-parsed the whole directory on
-    every `pending()` call. It keeps the BOX-only sense on purpose — `pending`
-    reports which box to pull a card from, and a card sleeved in another deck has
-    no box to name.
-    """
-    from manamap.pilot import collection as collection_mod
-    return collection_mod.owned_index()
-
-
 def pending(slug):
     """The swaps the deck is CONSIDERING but has not made.
 
@@ -172,20 +153,16 @@ def pending(slug):
     it. Reporting it beside the applied history is what makes the pair a plan
     rather than two unrelated files.
 
-    Ownership is DERIVED when the artifact does not carry it. `acquisition` is
-    optional and one regeneration dropped it from a deck that previously had it,
-    which made every pending swap read as "buy". An absent field is not evidence
-    that a card is unowned, so `COLLECTION_DIR` is checked before anything is
-    called a purchase.
-
-    Note this is the ONLY ownership question left in the repo, and it is about a
-    physical collection, not about a deck. The retired Short List itself
-    is ownership-free by design: it names ten cards worth knowing about, and
-    whether one is already in a box is not what the list is for.
+    A pending swap is a card in and a card out, and nothing about where the card
+    would come from. Until 2026-11-22 this derived an `acquisition` (owned or
+    purchase) from the pilot's boxes; the bench no longer has a notion of what
+    anyone holds, so an `acquisition` block an older `considering.json` still
+    carries is read past. The Short List was ownership-free by design all along:
+    it names ten cards worth knowing about, and whether one is already in a box
+    was never what the list was for.
     """
     from manamap.pilot.common import load_json
     doc = load_json(deck_dir(slug) / "considering.json", default=None)
-    box = _owned_index()
 
     out = []
     # Two sources, tagged. `considering.json` is the retired Short List (frozen on
@@ -201,19 +178,10 @@ def pending(slug):
             outs = e.get("out") or []
             ins = [ins] if isinstance(ins, str) else ins
             outs = [outs] if isinstance(outs, str) else outs
-            # Ownership derived exactly as it is for the ten, and the SOURCE is
-            # carried with it. Claiming "owned" while naming no box is what the
-            # ownership test exists to catch — an unsourced claim reads as
-            # confident and is unverifiable.
-            files = sorted({f for n in ins for f in (box.get(n) or set())})
-            owned = bool(ins) and all(box.get(n) for n in ins)
             out.append({
                 "in": ", ".join(ins) or None,
                 "out": ", ".join(outs) or None,
                 "closes": e.get("closes"),
-                "acquisition": "owned" if owned else "purchase",
-                "derived": True,
-                "source_file": ", ".join(files) if owned and files else None,
                 "source": "pending.json",
                 "id": e.get("id"),
                 "state": e.get("state"),
@@ -224,23 +192,10 @@ def pending(slug):
     if not doc:
         return out
     for e in doc.get("ten", []):
-        name = e.get("card")
-        acq = e.get("acquisition") or {}
-        status, source = acq.get("status"), acq.get("file")
-        if not status:
-            files = box.get(name) or set()
-            if files:
-                status, source = "owned", ", ".join(sorted(files))
-            else:
-                status = "purchase"
-            source = source or None
         out.append({
-            "in": name,
+            "in": e.get("card"),
             "out": e.get("natural_cut"),
             "closes": e.get("closes"),
-            "acquisition": status,
-            "derived": not (e.get("acquisition") or {}).get("status"),
-            "source_file": source,
             "source": "considering.json",
             "id": None,
             "state": None,
@@ -288,10 +243,8 @@ def format_report(doc):
     if doc["pending"]:
         lines.append(f"  PENDING — {len(doc['pending'])} considered, not applied:")
         for p in doc["pending"]:
-            mark = "owned" if p["acquisition"] == "owned" else "buy"
-            src = f"  <- {p['source_file']}" if p.get("source_file") else ""
-            lines.append(f"      [{mark:<5}] + {str(p['in']):<34}"
-                         + (f"- {p['out']}" if p["out"] else "(no cut named)") + src)
+            lines.append(f"      + {str(p['in']):<34}"
+                         + (f"- {p['out']}" if p["out"] else "(no cut named)"))
     for note in doc["notes"]:
         lines.append(f"  note: {note}")
     return "\n".join(lines)

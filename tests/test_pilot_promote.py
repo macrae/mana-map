@@ -151,33 +151,18 @@ def test_blockers_are_the_rows_that_are_not_present():
         ["missing", "STALE", "INVALID", "unknown"]
 
 
-# ── ownership stays three buckets ───────────────────────────────────────────
+# ── the gate asks for files, never for cardboard ────────────────────────────
 
-@requires_deck
-def test_ownership_keeps_deck_membership_beside_the_boxes_never_inside():
-    """C-3 asks for three groups, and the repo forbids folding two of them.
-
-    `collection` is deliberately the only reader of the boxes and deliberately
-    does not count deck membership: a card sleeved in another deck is not one
-    you can put in this deck without taking that one apart. So "in another deck"
-    is REPORTED beside ownership, with the deck named — which is also C-3's
-    conflict warning.
-    """
-    state, detail, missing = promote._ownership("zur-enchantress")
-    assert state in ("present", "missing", "unknown")
-    if state == "missing":
-        assert "in a box" in detail and "sleeved elsewhere" in detail \
-            and "to buy" in detail
-        assert any("(in " in m for m in missing), \
-            "a card held by another deck must name that deck"
-
-
-@requires_deck
-def test_basics_are_not_a_shopping_list():
-    """Every deck would otherwise fail its ownership gate on Swamps."""
-    _, _, missing = promote._ownership("zur-enchantress")
-    for basic in ("Swamp", "Island", "Plains", "Mountain", "Forest"):
-        assert not any(m.startswith(basic) for m in missing), basic
+def test_every_gate_row_names_a_file_and_none_asks_about_a_box():
+    """Until 2026-11-22 SLEEVED carried one computed row — `@ownership`, every
+    card in a box, in another deck or named as a buy. The bench no longer knows
+    what anyone holds, so every row on every rung is an artifact `deck-status`
+    can show, and sleeving stays the pilot's own act."""
+    for rung, rows in GATES.items():
+        for _label, artifact, why in rows:
+            assert not artifact.startswith("@"), (rung, artifact)
+            assert "box" not in why and "buy" not in why, (rung, artifact, why)
+    assert not hasattr(promote, "_ownership")
 
 
 # ── a dead deck is not on the ladder ────────────────────────────────────────
@@ -328,21 +313,25 @@ def test_deck_holders_reads_the_deck_root_at_call_time(tmp_path, monkeypatch):
     moves — reached neither. `common.decks_root()` is the one reader now, and
     this asserts that NEITHER module has taken a copy back.
 
-    The symptom is silent and total: `_deck_holders` iterates an empty
-    directory, so every card reports zero holders and `source`, `pull_list` and
-    `merge`'s refusal all under-report while looking exactly right. Found when a
-    real ownership assertion passed alone and failed after `test_pilot_deck_info`.
+    The symptom is silent and total: a fleet walk iterates an empty directory,
+    so every per-deck reader under-reports while looking exactly right. Found
+    when an assertion over the whole fleet passed alone and failed after
+    `test_pilot_deck_info`. (The probe used to be `deck_branch._deck_holders`,
+    which went with the ownership layer on 2026-11-22; `regen.targets` is the
+    fleet walk that remains.)
     """
     from manamap import config
-    from manamap.pilot import common, deck_branch
+    from manamap.pilot import common, deck_branch, regen
 
     real = config.DECKS_DIR
     empty = tmp_path / "decks"
     empty.mkdir()
 
     monkeypatch.setattr("manamap.config.DECKS_DIR", empty)
-    assert deck_branch._deck_holders("Sol Ring", skip=None) == [], \
+    assert common.decks_root() == empty, \
         "the patched root must be the one that is read"
+    assert [t for t in regen.targets("info.json")] == [], \
+        "a fleet walk under the patch must see the empty tree, not the real one"
     monkeypatch.undo()
 
     assert config.DECKS_DIR == real

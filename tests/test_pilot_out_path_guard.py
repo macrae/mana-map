@@ -83,9 +83,8 @@ def test_every_per_deck_out_command_is_guarded(command, tmp_path):
 
     `impact` declared `--out` and silently ignored it — the flag was accepted,
     nothing was written, and no error said so. It was found by running the
-    command and looking for the file. `cache-snapshot` and `pool-facts` are
-    absent on purpose: the first is fleet-merged by design, the second takes
-    paths rather than a slug.
+    command and looking for the file. `cache-snapshot` is absent on purpose: it
+    is fleet-merged by design, so it has no slug to scope to.
     """
     import importlib
     module = importlib.import_module(

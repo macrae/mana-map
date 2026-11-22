@@ -9,13 +9,15 @@ anything; it is a build plan that did not become a deck, and three of them
 (`kianne`, `kinnan`, `blar`) were deterministic baselines built from the whole
 format to test the builder.
 
-AND THEY WERE NOT INERT. `deck_branch._deck_holders` walks every `cards.json` on
-disk and treats a build plan as a holder of the cards it names, so Edgar's
-`bloodline-v4` branch was `mergeable: false` on *"unsleeve The Ozolith from
-kianne"* — a deck that has never existed in paper. `collection.py` documents the
-same hazard from the other side: counting kinnan's whole-format baseline made 99
-unowned cards read as owned. A phantom deck is not neutral; it is a confident,
-wrong instruction about cardboard.
+AND THEY WERE NOT INERT. `deck_branch._deck_holders` (gone with the ownership
+layer, 2026-11-22) walked every `cards.json` on disk and treated a build plan as a
+holder of the cards it names, so Edgar's `bloodline-v4` branch was
+`mergeable: false` on *"unsleeve The Ozolith from kianne"* — a deck that has
+never existed in paper. The ownership layer, while it
+existed (deleted 2026-11-22), met the same hazard from the other side: counting
+kinnan's whole-format baseline as a holder made 99 cards nobody held read as
+held. A phantom deck is not neutral; it is a confident, wrong instruction about
+cardboard.
 
 WHY THE REFUSAL LIST IS NOT KEYED ON THE MANIFEST'S "PUBLISHED". That field
 meant *the frozen magazine renderer ran on this deck*, and its meaning was

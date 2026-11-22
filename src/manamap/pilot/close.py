@@ -204,7 +204,7 @@ def _by_signature(component, held, identity, pool, roles, limit):
             "note": got.get("note")}, None
 
 
-def close(slug, branch=None, component=None, limit=DEFAULT_LIMIT, owned_only=False):
+def close(slug, branch=None, component=None, limit=DEFAULT_LIMIT):
     comp = _component_of(slug, branch, component)
     doc = load_deck_cards(slug, branch)
     held = {c["name"] for c in doc["cards"]}
@@ -222,14 +222,6 @@ def close(slug, branch=None, component=None, limit=DEFAULT_LIMIT, owned_only=Fal
 
     fn, fn_why = _by_function(comp["members"], identity, held, pool, limit)
     sig, sig_why = _by_signature(comp, held, identity, pool, roles, limit)
-
-    if owned_only:
-        from manamap.pilot import collection
-        own = collection.owned_names()
-        if fn:
-            fn = [r for r in fn if r["name"] in own]
-        if sig:
-            sig["cards"] = [r for r in sig["cards"] if r["name"] in own]
 
     fn_names = {r["name"] for r in (fn or [])}
     sig_names = {r["name"] for r in ((sig or {}).get("cards") or [])}
@@ -255,8 +247,7 @@ def main(args):
     branch = getattr(args, "branch", None)
     doc = close(args.slug, branch,
                 component=getattr(args, "component", None),
-                limit=getattr(args, "limit", None) or DEFAULT_LIMIT,
-                owned_only=bool(getattr(args, "owned", False)))
+                limit=getattr(args, "limit", None) or DEFAULT_LIMIT)
     if getattr(args, "as_json", False) or getattr(args, "json", False):
         print(json.dumps(doc, indent=1)); return
 

@@ -17,6 +17,18 @@ a weekend, and to know whether a change actually worked.
 > planning against this document.** The four blocking decisions are resolved
 > there, and §1's account of the fleet is stale in six places.
 
+> **2026-11-22: the bench has no notion of card ownership.** Every ownership requirement
+> below — A-2's owned-card preference and its "slots unowned" report, the sleeved
+> promotion gate's ownership reconciliation and order list, "Branch triggers ownership
+> check", the Build agent's ownership check, C-3 in full (the acquisition checklist, the
+> order list, "blocked until every card is marked acquired or waived", the conflict
+> warning), the "Ownership reconciliation" artifact row and the promotion-gate mock-up's
+> ownership block — is withdrawn. A pool file handed to the builder is a CONSTRAINT on
+> the build, never an inventory. What stays physical is the paper lock (`deck-version
+> <slug> paper`: the one claim about cardboard nothing can derive), pinned printings
+> (`art`, `order`), dated prices for a list (`prices`) and the proxy sheet (`proxies`).
+> The struck text is kept below so citations still resolve.
+
 ## 1. Where the six decks stand
 
 | Deck | Role | Pipeline state | Next |
@@ -72,7 +84,7 @@ order, agent invocation, and UI lanes all derive from it.
 
 ### DEV — Workbench
 
-Brewing. Physical card ownership not assumed. Fast, cheap, disposable iterations.
+Brewing. Fast, cheap, disposable iterations.
 Most decks here will be thrown away — the environment is optimized for throughput,
 not rigor.
 
@@ -93,15 +105,16 @@ rules questions on flagged interactions.
 Physically sleeved and playable tonight. Version pinned. Changes require a feature
 branch and a measured reason.
 
-*Promotion gate:* card ownership reconciled against bulk pools; order list
-generated for anything missing; pilot's manual and dossier complete; benchmark
-score recorded.
+*Promotion gate:* pilot's manual and dossier complete; benchmark score recorded;
+the pilot's word that the list is in the sleeves (`deck-version <slug> paper`).
+~~Card ownership reconciled against bulk pools; order list generated for anything
+missing~~ — withdrawn 2026-11-22.
 
 ### Three pillars mapped to environments
 
 | Pillar | Dev | Staging | Sleeved |
 |---|---|---|---|
-| Version control & build | Branch freely, auto-build, cheap merges | Branch requires a stated hypothesis | Branch triggers ownership check |
+| Version control & build | Branch freely, auto-build, cheap merges | Branch requires a stated hypothesis | Branch merges on the pilot's word that the list is sleeved (~~triggers ownership check~~, withdrawn 2026-11-22) |
 | Simulation & insights | Short batch, headline metrics | Full batch, significance testing, A/B vs. control | Benchmark score for deck selection |
 | Discovery | Primary surface — Atlas exploration into basket | Targeted — fill a named gap | Read-only — card lookup from manual |
 
@@ -135,7 +148,7 @@ when he clearly lacks the information.
 | **Auto-Build** | Brief → 100-card list. Color identity, curve, category depth, bracket fit | Decklist, composition report, flagged gaps |
 | **Forge** | Pod assembly, opponent AI profiles, game execution, log parsing, metric computation, significance tests | Metric table, effect sizes, confidence, sample adequacy |
 | **Stack** | Rules adjudication via vector DB plus adversarial verification loop | Verdict, cited rules, confidence |
-| **Build** | CI on merge: schema validation, legality, ownership check, artifact generation, failure triage | Pass/fail, failure cause, suggested fix |
+| **Build** | CI on merge: schema validation, legality, artifact generation, failure triage (~~ownership check~~ withdrawn 2026-11-22) | Pass/fail, failure cause, suggested fix |
 | **Scout** | External research — EDHREC lists, archetype patterns, combo databases, meta shifts | Findings with sources |
 
 The five specialists replace the current editorial agent set. Voice, style, and
@@ -152,7 +165,7 @@ the workbench.
 
 - **Description.** Free text: what the deck should do, how it should win, what it must avoid.
 - **Commander.** Named legend. Fixes color identity.
-- **Card set.** A list of cards to include, typically from bulk or a scan.
+- **Card set.** A list of card names to build around (a pool file) — a constraint on the build, never an inventory.
 - **Bracket.** Target power level.
 - **Format.** Commander for MVP; architecture stays format-agnostic.
 
@@ -164,7 +177,7 @@ card set and proposes three candidate commanders before proceeding.
 
 1. **Resolve intent** — parse brief into archetype, win condition, color identity, bracket, hard includes.
 2. **Anchor** — select or confirm commander; pull comparable EDHREC lists via Scout for the archetype centroid.
-3. **Populate** — fill categories to depth using card embeddings, honoring hard includes and owned-card preference.
+3. **Populate** — fill categories to depth using card embeddings, honoring hard includes and the pool file when one was given.
 4. **Balance** — mana base, curve, color pip-to-source per Karsten, interaction density, category depth rule.
 5. **Verify** — legality, singleton, color identity, bracket rules (game changers, tutors, fast mana).
 6. **Test** — short simulation batch; report headline metrics.
@@ -178,10 +191,10 @@ card set and proposes three candidate commanders before proceeding.
 - Composition report shows category depth, curve, land count, and pip-to-source coverage per color.
 - Any category the builder could not fill to depth is flagged explicitly rather than silently padded.
 
-### A-2 — As Sean, I hand the builder a pile of cards I already own and it builds around them.
+### A-2 — As Sean, I hand the builder a pile of card names and it builds around them.
 
 - Given a card set, every named card appears in the output list or is reported as excluded with a reason (color identity, legality, bracket).
-- Remaining slots prefer cards in known bulk pools over cards requiring purchase, and the report states how many slots are unowned.
+- ~~Remaining slots prefer cards in known bulk pools over cards requiring purchase, and the report states how many slots are unowned.~~ Withdrawn 2026-11-22: the pile is a constraint, not an inventory; remaining slots come from the corpus.
 - Given a card set and no commander, the builder derives color identity from the set and proposes commanders within it.
 
 ### A-3 — As Sean, a bracket target is respected so the deck is legal for the table I'm building it for.
@@ -223,10 +236,9 @@ SPEN  Built. v0.0.1 committed to workbench.
       board by t4      61%   ← brief target t4-5
 
       flagged  removal at depth 6, rule wants 8
-      flagged  4 slots unowned (~$31)
 
-      Want me to fill removal from the Black/Green
-      bulk pool, or open the Atlas around Zur?
+      Want me to fill removal from the corpus,
+      or open the Atlas around Zur?
 ```
 
 ## 6. Epic B — Simulation overhaul
@@ -298,7 +310,7 @@ than beneath them.
 | Full sim batch | optional | required | required |
 | Combo audit | optional | required | required |
 | Mulligan / tutor guidance | optional | required | required |
-| Ownership reconciliation | optional | optional | required |
+| ~~Ownership reconciliation~~ (withdrawn 2026-11-22) | — | — | — |
 | Pilot's manual, dossier | optional | optional | required |
 | Benchmark score | optional | optional | required |
 
@@ -318,13 +330,13 @@ than beneath them.
 - Spen resolves what he can and surfaces the rest with a specific ask, never a raw stack trace.
 - A failed build leaves the previous version intact and playable.
 
-**C-3 — As Sean, promoting to sleeved tells me exactly which cards I need to acquire.**
-
-- Promotion produces a checklist of every card in the list, grouped: owned in another deck, in a named bulk pool, unowned.
-- Unowned cards render as an order list with quantity and current price.
-- Cards can be checked off manually; the system does not attempt full inventory tracking.
-- Promotion is blocked until every card is marked acquired or explicitly waived.
-- Pulling a card that lives in another sleeved deck raises a conflict warning naming that deck.
+**C-3 — withdrawn 2026-11-22.** ~~As Sean, promoting to sleeved tells me exactly which
+cards I need to acquire.~~ The bench has no notion of card ownership: no acquisition
+checklist, no order list of unowned cards, no "blocked until every card is marked
+acquired or waived", no conflict warning naming another deck. Promotion to sleeved is
+the pilot's word that the list is in the sleeves (`deck-version <slug> paper`); what a
+list costs is dated evidence for the list (`prices <slug> [--branch B] --write`), never a
+bill.
 
 ## 8. Epic D — Sub-agent audit and migration
 
@@ -438,17 +450,12 @@ SPEN  Checking gates for sleeved.
   combo audit         ✓  2 verified, 0 unresolved
   piloting guidance   ✓
   pilot's manual      ✓
-  ownership           ✗  3 cards not accounted for
-
-      Welcoming Vampire        Black bulk pool
-      Cordial Vampire          unowned          $4.10
-      Bloodletter of Aclazotz  in Blech  ← conflict
-
-      Blech is sleeved. Pulling this card
-      takes that deck to 99.
-
-  [c] check off owned   [o] order list   [w] waive
+  sleeved             ?  your word: `deck-version edgar paper`
 ```
+
+*(The ownership block this mock-up carried — "3 cards not accounted for", a bulk-pool
+line, an unowned line with its price, a conflict with another sleeved deck, and
+`[c] check off owned [o] order list [w] waive` — was withdrawn 2026-11-22.)*
 
 ### Comparison against control
 
@@ -636,7 +643,7 @@ EDHREC centroid and role template), `pilot assess` (A-2's card-pile triage),
 quota), `manabase.build` (Karsten pip-to-source), `pilot benchmark` (four measures
 under a frozen harness), `sim/experiment.py` (B-4's control comparison, with
 Newcombe/Welch/permutation/bootstrap and exact power), `deck_branch` (C-1's six
-derived branch states), `deck_branch._deck_holders` (C-3's conflict warning), and
+derived branch states; C-3's conflict warning went with ownership, 2026-11-22), and
 `net_change.METRICS` (B-3's definition registry, already tested both ways).
 
 `.claude/skills/publish-deck/SKILL.md` is already the router §4 describes — a

@@ -12,8 +12,9 @@ what it writes; nothing here is optional unless it says so.
 
 **Before anything: the pilot's word.** A sleeved deck's list changes only through a branch,
 and the branch merges only when he says the cards are going into the sleeves — cardboard or
-printed proxies (`/print-proxies`). Ask which, and whether the unowned cards are ordered:
-that becomes the proposal's note and the merge's reason.
+printed proxies (`/print-proxies`). Ask which; his words become the proposal's note and
+the paper lock's note. The bench has no notion of who owns what (2026-11-22): there is
+no sourcing gate, no order list, nothing to reconcile before the merge.
 
 ## Steps
 
@@ -32,14 +33,13 @@ that becomes the proposal's note and the merge's reason.
    --branch <branch> --adds --write` only if the harness moved since `cast_proofs.json`.
 
 2. **Propose as a version.** `deck-branch <slug> propose <branch> --as vX.Y.Z --study NNN
-   --why "…" [--proxy] [--ordered "…"]` — `--study` names the approved, installed study;
-   `propose` refuses without it and never reads the goldfish's word. The semver rule (`docs/pilot.md`): PATCH = mana only, MINOR =
-   a new capability, MAJOR = a different deck — capability, not card count. `--proxy` counts
-   cards sleeved in his OTHER decks as sourced; it does not cover unowned cards.
+   --why "…"` — `--study` names the approved, installed study; `propose` refuses without it
+   and never reads the goldfish's word. The semver rule (`docs/pilot.md`): PATCH = mana only,
+   MINOR = a new capability, MAJOR = a different deck — capability, not card count. The
+   branch is now PROPOSED: accepted as the deck's next version, not yet merged.
 
-3. **Merge.** `deck-branch <slug> merge <branch> --write [--proxy] [--force --reason "played
-   on printed proxies from <date>; the unowned cards are on the order list"]`. The sourcing
-   gate blocks unowned cards; `--force` needs the reason and the ledger keeps it. The merge
+3. **Merge.** `deck-branch <slug> merge <branch> --write`, on the pilot's word that the list
+   is in the sleeves — that word is the whole gate. The merge
    runs the chain itself (fetch-deck → goldfish → mana-analysis → regen → deck-map →
    build-poh → build-index) and prints STALE, INVALID, CONTEXT STALE and the commit line.
    Then **`validate-goldfish-targets <slug>`**: the declaration is hand-written and a swap
@@ -74,9 +74,9 @@ that becomes the proposal's note and the merge's reason.
 
 7. **Tag and lock.** `deck-version <slug> list --write` (regenerates `versions.json` against
    the new commit; it walks git and can take minutes — run it in the background);
-   `deck-version <slug> tag vX.Y.Z --note "…"`; `deck-version <slug> paper --note "proxies in
-   sleeves <date>; cards to order"` if the pilot said the list is in the sleeves (proxies
-   count: the captain's log stamps tonight's games against it). `deck-version <slug> list`
+   `deck-version <slug> tag vX.Y.Z --note "…"`; `deck-version <slug> paper --note "in the
+   sleeves <date>, on proxies"` (or his words) if the pilot said the list is in the sleeves
+   (proxies count: the captain's log stamps tonight's games against it). `deck-version <slug> list`
    must read SLEEVED V<n> [vX.Y.Z]. Commit `deck_versions.json` + `versions.json`.
 
 8. **DeckCheck.** `deck-export <slug> --format moxfield --out <scratch>/<slug>-vX.Y.Z.txt`;
@@ -102,8 +102,8 @@ that becomes the proposal's note and the merge's reason.
 
 10. **Report and push.** The study's call and who decided, the goldfish's read as a whole
     profile by axis with what it cannot see, the version, the DTI reading
-    (old → new), the rating (old → new, with its concordance and what moved), what is still
-    stale and who fixes it, and the order list if cards are unowned. `PLAN.md`'s fleet
+    (old → new), the rating (old → new, with its concordance and what moved), and what is
+    still stale and who fixes it. `PLAN.md`'s fleet
     section and `NEXT_SESSION.md` get one line each. Push.
 
 ## Notes

@@ -374,7 +374,7 @@ def test_role_budget_sums_to_the_deck_size():
     assert sum(DECK_ROLE_BUDGET.values()) == formats.DEFAULT.library_size
 
 
-# ── Building from a physical collection, not the format ─────────────────
+# ── Building from a pool file, not the format ───────────────────────────
 
 
 def _pool_brief(**kw):
@@ -411,8 +411,9 @@ def test_must_include_outside_the_pool_is_rejected():
 # gitignored `cards.csv` — so this needs the corpus, not just a deck. It was
 # ungated and failed on a fresh clone.
 @requires_data
-def test_pool_files_are_parsed_by_the_same_reader_pool_facts_uses(tmp_path):
-    """A box analysed and a box built from must never disagree about its contents."""
+def test_pool_files_are_parsed_by_the_shared_pool_reader(tmp_path):
+    """A pool built from and a pool validated against (`validate_build` reads the
+    same `pool_facts` readers) must never disagree about its contents."""
     lst = tmp_path / "box.txt"
     lst.write_text("1 Hapatra, Vizier of Poisons (ECC) 123\n1 Blood Artist *F*\n")
     pool = build_deck.resolve_pool(_pool_brief(pool_files=[str(lst)]))
@@ -427,7 +428,7 @@ def test_an_unresolvable_pool_card_is_rejected_not_ignored(tmp_path):
         build_deck.resolve_pool(_pool_brief(pool_files=[str(lst)]))
 
 
-def test_candidate_pool_is_restricted_to_the_declared_collection():
+def test_candidate_pool_is_restricted_to_the_declared_pool():
     df = pd.DataFrame([
         {"name": "Blood Artist", "type_line": "Creature — Vampire", "color_identity": "B",
          "legal_commander": "legal", "game_changer": False, "supertype": "Creature"},
@@ -529,15 +530,15 @@ def test_overflow_and_shortfall_together_still_hit_the_total():
     assert len(slots) == 6                    # 1 + 3 + 2 non-land slots
 
 
-# ── A deck built from a collection names the PHYSICAL card ───────────────
+# ── A deck built from a pool that pins printings names the PRINTING ──────
 
 
-def test_decklist_renders_the_owned_printing():
+def test_decklist_renders_the_pools_printing():
     """Bare names let Scryfall pick a default for every card.
 
-    A Sol Ring built from a pool that holds ECC #58 came back as Marvel Super
+    A Sol Ring built from a pool that pins ECC #58 came back as Marvel Super
     Heroes Commander #211 — and Featured Artist credits artists per printing, so
-    the manual credited someone who painted none of the pilot's cards.
+    the manual credited someone who painted none of the cards the pool listed.
     """
     plan = {
         "commander": "Yawgmoth, Thran Physician",

@@ -69,16 +69,14 @@ manamap pilot validate-deck-combos <slug> [--branch N]  # its gate: sha current,
 manamap pilot deck-facts <slug> [--out F]  # the deterministic brief agents read first
 manamap pilot proxies <slug>@<branch>… [--have NAME]… [--have-file F] [--card NAME]… [--paper letter|a4] [--dest PDF] [--no-open] [--dry-run]
                                         # a PRINT-READY PROXY SHEET (63x88 mm, 3x3, crop marks) of a branch's adds minus
-                                        #   what you hold; both faces of a DFC; PNG renders cached in data/cache/proxies/;
+                                        #   the ones you say you have (--have is your word, not an inventory); both faces
+                                        #   of a DFC; PNG renders cached in data/cache/proxies/;
                                         #   lands on ~/Desktop and opens. Print at 100%. Skill: /print-proxies
 manamap pilot art <slug> [--set "NAME=SET CN [*F*]"]… [--split "NAME=SET CN:N,SET CN:N"]… [--pin-shown] [--unpin NAME]… [--branch B] [--dry-run] [--note "…"] [--no-chain] [--json] | undo | redo
                                         #   which physical card each line is, on any live deck, sleeved included: not a
                                         #   version, not a swap, journalled, a paper lock holds. No flags: the table
 manamap pilot order <slug> [<slug>…] [--check] [--plain] [--out F] [--json]  # one or more decks' pinned lists as ONE paste
                                         #   for Mana Pool's mass entry; --check reads the public feed: price, stock, what cannot be filled
-manamap pilot buy-list <slug> --branch N [--exact] [--out F] [--json]  # the bill's BUY rows as the paste Mana Pool's
-                                        #   mass entry takes (manapool.com/add-deck): `N Name`, or --exact `N Name (SET) CN`;
-                                        #   footer `N cards to buy` + a figure only when prices.json sits beside the branch
 manamap pilot deck-export <slug> [--version V] [--branch B] [--format moxfield|arena|plain] [--out F]  # the list as import
                                         #   text: moxfield = decklist.txt's form (paste into Moxfield), arena, or plain `N Name`
 manamap pilot deck-link <slug> moxfield|deckcheck <url> [--note "…"] | <service> --remove | list  # record by hand where
@@ -268,9 +266,7 @@ manamap pilot demote  <slug> [--to dev|bench]
                                         #   sleeved. SLEEVED **is** the paper lock and is never
                                         #   stored; BENCH is the default and stores nothing; only
                                         #   `dev` is written, by `build`. The gate reports PER
-                                        #   REQUIREMENT with the command that clears each one,
-                                        #   and ownership comes back in C-3's three buckets —
-                                        #   in a box / sleeved elsewhere (named) / to buy
+                                        #   REQUIREMENT with the command that clears each one
 manamap pilot deck-state <slug>                     # is this still a deck, or a pile of cards
 manamap pilot deck-state <slug> archive|retire|supersede|revive --reason "…"
 manamap pilot deck-delete <slug>                    # never sleeved, never played, never published
@@ -288,14 +284,14 @@ manamap pilot deck-notes <slug> mark <id> --mark KEY=N …   # THE PILOT'S COUNT
                                         #   goldfish is blind; an agent may quote a mark, never write one
 manamap pilot validate-log-causes <slug>            # the cause vocabulary, its ids, and result clashes
 manamap pilot deck-branch <slug> [list] | new <name> --from <file> [--why …]
-manamap pilot deck-branch <slug> show <name> | diff <name> | source <name>
-manamap pilot deck-branch <slug> merge <name> [--write] [--proxy] [--force --reason …]
-                                        #   a candidate 99 you cannot yet sleeve: diff it,
-                                        #   price it against your boxes, MEASURE it
+manamap pilot deck-branch <slug> show <name> | diff <name>
+manamap pilot deck-branch <slug> merge <name> [--write]
+                                        #   a candidate 99 not yet in the sleeves: diff it,
+                                        #   MEASURE it
                                         #   (`--branch` on fetch-deck / bracket-check / deck-combos /
                                         #   mana-analysis / goldfish / deck-facts /
-                                        #   deck-audit / deck-map), and merge only when
-                                        #   every added card is sourced
+                                        #   deck-audit / deck-map), and merge on your word
+                                        #   that the list is in the sleeves
 manamap pilot diagnose <slug> [--branch N] [--vs main] [--iterations N] [--json] [--write]
                                         #   the vitals: engine online against what the deck
                                         #   DECLARES, stall risk, mana — every rate with its
@@ -360,7 +356,7 @@ manamap pilot decisions <slug> [list|show ID|outcome|backfill|adopt-policy] [--d
                                         #   the merge it closes (predicted beside realised, inside or not)
 manamap pilot validate-decisions <slug> #   sequential ids, the closed kind vocabulary, a reason on every
                                         #   withdraw and reject, an outcome that names a merge
-manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit|log|propose|withdraw|reject|merge|delete|summary|objective]
+manamap pilot deck-branch <slug> [list|new|show|diff|stage|unstage|commit|log|propose|withdraw|reject|merge|delete|summary|objective]
                                         #   `summary <name> --title "…" --blurb "…"` (2026-10-20): the branch
                                         #   in plain words, written by Jarvis, no digits — the pages' headline
                                         #   `objective <name> --objective "<axis> <op> <n>[ @pod]" --why "…"`
@@ -387,17 +383,16 @@ manamap pilot deck-branch <slug> [list|new|show|diff|source|stage|unstage|commit
                                         #   is `no objective` and the sixteen rows are the
                                         #   whole read. Serve's `branch/new` and Build's
                                         #   branch form follow the same rule. `commit` freezes a
-                                        #   list with a message and is allowed while cards
-                                        #   are unsourced; `merge` is not — the gap between
-                                        #   them is cardboard. Merge backs up, runs the
-                                        #   chain, records that it landed, and NAMES what
-                                        #   is now stale. `stage --out X --in Y` is
+                                        #   list with a message; `merge` is the pilot's word
+                                        #   that the list is in the sleeves. Merge backs up,
+                                        #   runs the chain, records that it landed, and NAMES
+                                        #   what is now stale. `stage --out X --in Y` is
                                         #   THE STAGING AREA: one card out, one in, ONE
                                         #   FOR ONE so the list is never briefly a 98,
                                         #   written through check-in's own refusals and
                                         #   recorded with its provenance so a report can
                                         #   name WHICH swaps bought the delta
-manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--owned] [--write]
+manamap pilot close <slug> [--branch N] [--component SUBSTRING] [--write]
                                         #   the bottleneck becomes a POOL. Seeds from the
                                         #   component the diagnostic named and mines the
                                         #   corpus two ways — the centroid of its members in
@@ -416,17 +411,17 @@ manamap pilot assess <slug> [--branch N] --pool <file|library|->
 # only), `branch/upgrades` ranks the swaps, `branch/stage` accepts one, and
 # `branch/net-change` measures the whole branch. MERGE AND DELETE STAY HERE —
 # a merge rewrites decklist.txt and runs the regeneration chain.
-manamap pilot deck-branch <slug> propose <name> --as v1.0.2 [--why "…"]
-                              [--proxy] [--ordered "…"] [--anyway --reason "…"]
+manamap pilot deck-branch <slug> propose <name> --as v1.0.2 --study NNN [--why "…"]
+                              [--anyway --reason "…"]
                                         #   THE MERGE REQUEST: accept this branch as the
-                                        #   deck's next version and wait for the cardboard.
-                                        #   Freezes the DECISION (which list, which report,
-                                        #   which grade) and leaves the BLOCKER live — it
-                                        #   is recomputed from your boxes on every read, so
-                                        #   a card landing in one clears it with nobody
-                                        #   touching the branch. Refuses an unmeasured
-                                        #   branch, a report that measured a different
-                                        #   list, and a taken version tag.
+                                        #   deck's next version (PROPOSED: accepted, not
+                                        #   merged) on a study. Freezes the DECISION (which
+                                        #   list, which report, which grade, which study).
+                                        #   Refuses an unmeasured branch, a report that
+                                        #   measured a different list, and a taken version
+                                        #   tag. The branch's states are OPEN, PROPOSED,
+                                        #   PROPOSED · STALE, PROPOSED · OUTRUN, MERGED and
+                                        #   REJECTED — all derived, none stored.
                                         #   SAME `--as` AMENDS (2026-09-12, #46): it keeps
                                         #   the version, appends the new `--why` to the old
                                         #   and pushes the acceptance it replaces onto
@@ -443,18 +438,10 @@ manamap pilot deck-branch <slug> propose <name> --as v1.0.2 [--why "…"]
                                         #   costs. `--reason` without `--anyway` is
                                         #   REFUSED: it parsed, proposed, and wrote an
                                         #   empty `why` (#48).
-                                        #   `--proxy` records WHICH cards you will move
-                                        #   across your own decks (it was a bare flag and
-                                        #   was never persisted, so every surface showed
-                                        #   the non-proxy verdict however you had decided).
-                                        #   `--ordered` is a NOTE and nothing else:
-                                        #   ownership means a box, so it never moves the
-                                        #   blocker — it is there so you do not buy the
-                                        #   same six cards twice.
 manamap pilot deck-branch <slug> withdraw <name>
                                         #   take the proposal back; the branch stays open,
                                         #   measured and measurable
-manamap pilot mana-fit <slug> [--branch N] [--owned]
+manamap pilot mana-fit <slug> [--branch N]
                                         #   RIGHT-SIZE THE MANA TO THE SPELLS THAT ARE
                                         #   ACTUALLY IN THE LIST. `mana-analysis` measures
                                         #   the gap and stops; this prices it per colour and
@@ -472,11 +459,11 @@ manamap pilot mana-fit <slug> [--branch N] [--owned]
                                         #   twelve-land `candidates` sweep returned two
                                         #   distinct readings, with an always-tapped land
                                         #   tying one that never enters tapped
-manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->] [--owned]
+manamap pilot upgrades <slug> [--branch N] [--pool <file|library|->]
                                         #   WHAT IN THIS LIST HAS A CHEAPER CARD DOING ITS
                                         #   JOB. The obsolescence index read deck-aware:
                                         #   ranked by its own 0-1 strength, filtered to the
-                                        #   identity, what you own and what you already run.
+                                        #   identity and what you already run.
                                         #   Every row carries what the card COSTS you as
                                         #   well as what it gains, and two measured flags —
                                         #   the two cards share no job (the SEARCH failed,
@@ -538,7 +525,6 @@ manamap pilot merge-deck-map <slug>     # cartographer's names in — `label`/`g
 manamap pilot validate-deck-map <slug>  # names distinct, membership untouched
 manamap pilot engine-facts <slug> [--json] [--out D/]  # the deterministic engine brief
 manamap pilot validate-engine <slug>    # stages, completeness, verified_by re-checked
-manamap pilot pool-facts <paths…> [--exclude F] [--json] [--out F]  # a BOX OF CARDS → which deck to build
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
 manamap pilot validate-strategic-frame <slug>  # frame form + candidate-line flags
@@ -646,21 +632,24 @@ data/decks/<slug>/             all tracked:
                                pool.txt              CANDIDATES to consider, not a promise: written
                                                      by the Atlas's "consider these" on a library
                                                      pile, read by `candidates --pool library`
-                               branches/<name>/      A CANDIDATE 99 you cannot yet sleeve —
+                               branches/<name>/      A CANDIDATE 99 not yet in the sleeves —
                                  decklist.txt          the candidate list
                                  branch.json           v3: the OBJECTIVE the branch must meet,
                                                        the commit trail, the PROPOSAL (the
                                                        version it means to become, the report
-                                                       it was accepted on, the cards you will
-                                                       proxy), `merged` once it lands, and
+                                                       and the study it was accepted on; an
+                                                       older file may still carry `proxy` /
+                                                       `procurement` keys, which validators
+                                                       ignore), `merged` once it lands, and
                                                        `base_sha256` — the deck's list when it
                                                        was cut, read by `base_moved`.
                                                        Gated by `validate-branch` — it was the
                                                        last tracked pilot artifact with none
-                                 net_change.json       THE REPORT A PURCHASE RESTS ON — the branch
+                                 net_change.json       THE REPORT A STUDY READS — the branch
                                                        against the deck, every row with its MDE and
                                                        its DEFINITION, the objective GRADED, the
-                                                       mana half, Forge, and reward/risk/cost.
+                                                       mana half and Forge (an older file may
+                                                       still carry a `bill` key; ignored).
                                                        `net-change --write`, gated by
                                                        `validate-net-change`; rendered by
                                                        `viz/branch.html`
@@ -926,22 +915,6 @@ THE DECK: `manamap pilot edit <slug> --swap "A=B" --add C --cut D --set "Forest=
   in the branch row of `info.json`, and as one line on the branch page. A branch cut
   before 2026-10-10 has no recorded base and says nothing.
 
-## Buy list (`buy-list`, 2026-10-09)
-
-`manamap pilot buy-list <slug> --branch <name>` prints the branch's purchases — every card
-whose `deck_branch.source` state is `buy`, nothing else — as the text Mana Pool's mass
-entry (https://manapool.com/add-deck, paste only, no URL prefill) accepts: one `N Name`
-per line, or with `--exact` the Moxfield / Mana Pool exact-printings form `N Name (SET)
-CN` (`*F*` rides along), through `check_in.decklist_line`, the one formatter `check-in`
-writes `decklist.txt` with. Printings come from the branch's `cards.json`; a branch
-without one is refused, naming `fetch-deck`. The footer says `N cards to buy` and adds
-`≈ $X.XX (source, as_of)` only when a `prices.json` (`{cards: {name: {nm_cents, …}},
-as_of, source}`, written by another area) sits beside the branch and prices every row — a
-partial sum is not a figure. `--json` is `{text, count, buy_cents|null, as_of|null}`,
-which `serve`'s `branch/buy-list` returns from the same function for the branch page's
-"Copy for Mana Pool"; `--out` is slug-scoped. It never opens the collection boxes and
-never says which deck holds a card.
-
 ## Moxfield (`deck-export`, `deck-link`, `validate-links`, 2026-10-09)
 
 Moxfield has no public API and no write API, and its Cloudflare front 403s every
@@ -1203,12 +1176,12 @@ and a validator can then check membership.
 ```bash
 manamap pilot card-search --deck zur-enchantress --oracle "additional combat phase"
 manamap pilot card-search --identity GU --role ramp:rock --cmc-max 2 --no-game-changers
-manamap pilot card-search --deck heliod --name "^Sword of " --include-owned
+manamap pilot card-search --deck heliod --name "^Sword of " --include-in-deck
 ```
 
 Filters: `--identity` / `--deck`, `--oracle` (regex, repeatable, ANY unless `--all`),
-`--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--owned` /
-`--unowned`, `--set CODE`, `--released-after` / `--released-before DATE`, `--limit`.
+`--name`, `--type`, `--role`, `--cmc-min/max`, `--no-game-changers`, `--set CODE`,
+`--released-after` / `--released-before DATE`, `--limit`.
 `--set` matches the CORPUS printing, so `--set fra` includes Reality Fracture's reprints.
 The date bounds are inclusive, on the card's FIRST printing (`first_released_at`, never
 the corpus printing's date — Sol Ring's is 2026), and a partial date pads toward the
@@ -1217,15 +1190,11 @@ edge it faces: `--released-before 2024` keeps all of 2024. Three rules it enforc
 - **Identity is DERIVED, never authored.** `--deck` takes it from that deck's commander,
   the same rule `build_deck.load_brief` follows, and passing `--identity` alongside is a
   hard error rather than an override.
-- **A candidate is a card you do not already have.** `--deck` excludes the deck's own 99
-  (`--include-owned` turns that off) — a search that hands your own list back is the
+- **A candidate is a card the deck does not already run.** `--deck` excludes the deck's
+  own 99 (`--include-in-deck`, renamed from `--include-owned` on 2026-11-22, keeps it) —
+  a search that hands your own list back is the
   commonest way a tool like this wastes a reader's time.
 - **Truncation is stated.** A silently cut list reads as "that is all of them".
-
-`--owned` / `--unowned` read `pilot/collection.py`, so "owned" means **in a box OR
-sleeved in a tracked deck** — unsleeving is a decision, not a purchase. They are exact
-complements and a test asserts it; without the flag the `owned` field is `None`, because
-"not asked" is not "no". `--unowned` is the buy list.
 
 **`--identity` takes letters, and the compact form was broken.** `parse_identity_arg`
 accepts `GU`, `gu`, `G,U` or `G, U`; a non-colour letter is an error, never a silent
@@ -1395,12 +1364,12 @@ that says "about $4" is remembering, and a live lookup in the middle of an answe
 number with no date on it. So prices live in ONE artifact beside the list —
 `data/decks/<slug>/prices.json`, or `branches/<name>/prices.json` with `--branch` —
 written only by `prices --write`, stamped `as_of` and `source`, and every reader
-quotes that file with its date or says there is none: `net-change`'s printed bill
-line (`≈ $N to buy (as of …)`, said at print time by `priced_bill_line` and never
-written into `net_change.json` — a measurement does not carry the day's prices, and
-embedding them made five tracked reports stale on the first refresh), the branch
-page's bill, the deck page's cover, the Build card panel's price row, the card-scout
-and Jarvis. Absent means absent, never zero.
+quotes that file with its date or says there is none: the deck page's cover, the Build
+card panel's price row, the card-scout and Jarvis. A price is never written into a
+measurement — `net_change.json` carries none, because a measurement does not carry the
+day's prices, and embedding them made five tracked reports stale on the first refresh.
+It prices a LIST (the deck's, or a branch's with `--branch`), never a purchase. Absent
+means absent, never zero.
 
 ```bash
 manamap pilot prices sharknado                       # read it: top 10 by NM price, totals, what has no listing
@@ -1484,9 +1453,10 @@ alone: that means *the frozen renderer ran*, and the Pilot's Operating Handbook
 (`poh.py`) retired that renderer on 2026-09-02, so a gate keyed only on it would
 silently invert. What it is for is the
 never-built baseline: `kianne`, `kinnan` and `blar` were deterministic whole-format
-builds that were counted as HOLDERS of cards they never physically had, so Edgar's
-`bloodline-v4` was blocked on *"unsleeve The Ozolith from kianne"* — a deck that has
-never existed in paper. It stages with `git rm` and does not commit.
+builds that never existed in paper (when the bench still tracked ownership, 2026-09,
+they were counted as holders of cards they never physically had, and Edgar's
+`bloodline-v4` was blocked on *"unsleeve The Ozolith from kianne"* — the gate is gone,
+the lesson stands). It stages with `git rm` and does not commit.
 
 The state that had to be added is the third one:
 
@@ -2400,52 +2370,18 @@ The swaps are surfaced in `build_plan.json` under `combo_completions`, like
 `cut_for_bracket`, because a swap made for a reason the score does not show must be
 readable.
 
-## Pool facts — building from parts
+## Pool files — a constraint, not an inventory
 
-`manamap pilot pool-facts <paths…>` answers the question a physical collection asks:
-*what deck should I build from these cards?* It takes files or directories rather than a
-slug, on purpose — a collection is not a deck, and putting one in `data/decks/<slug>/`
-would place it in reach of validators that assume a legal 100. `deck-facts` on a 764-card
-box reports hypergeometrics against a 99-card library and `validate-deck` emits roughly a
-thousand errors; both answer a question nobody asked. Output is **computed on demand,
-never committed**, the same rule `deck-facts` and `artist-credits` follow.
-
-It reports per-source contribution (what a box supplies that nothing else does), name
-resolution including the front-face → `" // "` translation, every legal commander in the
-box, per-identity depth **and** castable sources, role coverage against `DECK_ROLE_BUDGET`,
-fully-contained combo lines, the bracket floor, in-box upgrades from
-`obsolescence_index.json`, and mechanical-tag concentrations.
-
-**The commander list is ranked by DEPTH, and `edhrec_card_rank` is not a quality
-signal.** `cards.csv`'s `edhrec_rank` is a card's popularity across the whole format in
-every role, so a legend played mostly in other people's 99s outranks a genuine commander —
-Selvala, Heart of the Wilds is card rank 430 and commander rank **#448**, while Atraxa is
-commander rank **#4**. It is the shortlist's *tiebreak* only (every commander in one
-identity sees the same pool, so they tie on depth), the key is named `edhrec_card_rank` so
-the label cannot lie, and `build_notes` emits the caveat into `notes` so it travels with
-the JSON rather than only the printed report. Depth is what the box holds, not what the
-deck would be worth.
-
-Three things it exists to get right, each learned the expensive way on the first real box:
-
-- **Depth is not castability.** Depth — owned cards inside a commander's colour identity —
-  ranked Atraxa first at 663, the deepest in the box. Her W and U have 10 sources each
-  against B's 44. Ranking a shortlist on depth alone recommends a deck that cannot cast
-  its own spells, and does it confidently. Both numbers are reported per commander, and
-  `notes[]` names any identity where they disagree.
-- **Count sources with `manabase.land_colors`.** A hand-rolled count — `{U}` appears in the
-  oracle text, or the type line says Island — put that same box at **1 blue source**. The
-  real figure is **10**: a bulk collection's fixing is overwhelmingly generic (Command
-  Tower, City of Brass, Exotic Orchard, Path of Ancestry, Ash Barrens, tri-lands), and
-  none of those name a colour. A factor-of-ten error pointing the wrong way, killing an
-  archetype that was live. `land_colors` is also restriction-aware, so a Dragon-only land
-  is not counted as five sources.
-- **Dedupe combo containment.** `combo_details.json` carries several records per
-  interaction, so a straight containment read double-counts — 33 lines where the box holds
-  31. Dedupe on `frozenset(cards)` and keep the most popular record.
-
-Every line it reports carries `verified: false`. Containment is not verification:
-Commander Spellbook is format-agnostic, its bracket tags are not gospel, and a line only
+A brief may still name a **pool file** — a plain list of card names — and `build` then
+draws its 99 from that pool alone (`validate-brief` checks the pools are on disk). It is a
+constraint on a build, the same as a colour identity or a bracket, and it says nothing
+about what anybody holds; the bench has no notion of ownership (2026-11-22), and
+`pool_facts.py` keeps only its file readers. Two of its rules outlive the command that
+learned them: count coloured sources with `manabase.land_colors` (a hand-rolled count put
+one 764-card pool at **1** blue source where the real figure was **10**, because bulk
+fixing is overwhelmingly generic and names no colour), and dedupe combo containment on
+`frozenset(cards)`, since `combo_details.json` carries several records per interaction
+(33 lines counted where the pool held 31). Containment is not verification: a line only
 becomes evidence after a resolve-stack run.
 
 ## Deck audit — is this deck any good? (`deck-audit`, tier ◆)

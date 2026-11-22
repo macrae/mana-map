@@ -153,13 +153,11 @@ def clear_memo():
         versions._SAME_MEMO.clear()
     _STRATEGY_SHA_MEMO.clear()
     _RULES_DB_MEMO.clear()
-    # Imported here rather than at module scope: `collection` imports `expand_faces`
-    # from this module, so a top-level import would be a cycle. The rest are
-    # local for the same reason plus a second one — `goldfish` is 5,800 lines and
-    # nothing should import it to clear a dict.
-    from manamap.pilot.collection import _COLLECTION_MEMO
-    _COLLECTION_MEMO.clear()
-
+    # Imported here rather than at module scope: each of these modules imports
+    # from this one, so a top-level import would be a cycle — and `goldfish` is
+    # 5,800 lines, which nothing should import just to clear a dict. (The
+    # collection memo that used to lead this list went with the ownership layer,
+    # 2026-11-22.)
     from manamap.pilot.agent_cache import _SHA_MEMO
     _SHA_MEMO.clear()
 
@@ -426,10 +424,10 @@ def commander_rejection(row):
     """Why this card can't start in the command zone, or None if it can.
 
     One predicate, two callers with different needs: `build_deck` raises with
-    the reason, `pool_facts` just filters a box of cards down to its legal
-    commanders. Written twice, these drift — and the failure is silent in the
-    direction that matters, since a filter that is quietly wrong about
-    "can be your commander" simply omits the card from a shortlist.
+    the reason, `validate_brief` reports it as a form error. Written twice,
+    these drift — and the failure is silent in the direction that matters,
+    since a check that is quietly wrong about "can be your commander" simply
+    lets the card through or refuses it without saying why.
 
     `row` is anything with .get: a cards.csv row, a cards.json record.
     """
@@ -601,14 +599,10 @@ def deck_is_apart(slug):
     """Is this deck's cardboard LOOSE — no longer assembled into a deck?
 
     THE ONE PLACE THAT ANSWERS IT, and it arrived after four had grown their own
-    answer: `UNPLAYABLE_STATUSES` here, `deck_info.STATE_RETIRED`,
-    `net_change.FREE_TO_RAID`, and `deck_branch._deck_holders`, which carried the
-    holder's status and did nothing with it. None of them disagreed yet. Four
-    places that CAN disagree about one fact is the divergence this repo keeps
-    paying for, and it was already costing something: `deck-branch merge` refused
-    Ur-Dragon on twelve cards, four of which sit in `sisay` and `hapatra` — decks
-    that do not physically exist. The pilot was being told to unsleeve a deck that
-    is already in a pile.
+    answer (`UNPLAYABLE_STATUSES` here, `deck_info.STATE_RETIRED`, and two in the
+    ownership layer deleted 2026-11-22). Four places that CAN disagree about one
+    fact is the divergence this repo keeps paying for. `regen` reads it to skip a
+    deck that is in a pile.
 
     `superseded` is deliberately NOT in the set, and that is the whole reason this
     reuses `UNPLAYABLE_STATUSES` rather than naming its own: a superseded list can

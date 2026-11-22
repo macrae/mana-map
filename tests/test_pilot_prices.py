@@ -13,7 +13,7 @@ import pytest
 import requests
 
 from manamap import config, net
-from manamap.pilot import net_change, prices, validate_prices
+from manamap.pilot import prices, validate_prices
 from manamap.pilot.agent_cache import CARD_SEMANTIC_FIELDS, cards_semantic_digest
 from manamap.pilot.fetch_deck import shape_card
 
@@ -365,95 +365,3 @@ def test_scryfall_id_is_shaped_in_and_is_not_agent_semantic(tmp_path):
     after.write_text(json.dumps({"cards": [shaped]}))
     assert cards_semantic_digest(before) == cards_semantic_digest(after), (
         "the new key invalidates every agent routine on the next fetch")
-
-
-# ── net-change's bill ────────────────────────────────────────────────────
-
-def test_the_bill_in_dollars_is_said_at_print_time_never_written_into_the_report(fake_deck):
-    bill = {"counts": {"buy": 2, "in_deck": 1},
-            "cards": [{"name": "Sol Ring", "state": "buy", "where": [], "free": False},
-                      {"name": "Island", "state": "buy", "where": [], "free": False},
-                      {"name": "Windfall", "state": "in_deck", "where": [], "free": False}]}
-    doc = {"slug": "fixture", "branch": "b1", "bill": bill}
-    # No prices file: no line. Absent means absent.
-    assert net_change.priced_bill_line(doc) is None
-    priced = _good()
-    priced["branch"] = "b1"
-    (fake_deck / "fixture" / "branches" / "b1" / "prices.json").write_text(json.dumps(priced))
-    assert net_change.priced_bill_line(doc) == "≈ $4.74 to buy (as of 2026-10-09, scryfall)"
-    # THE REPORT NEVER CARRIES IT: `cost()` is a measurement of the list, and a
-    # price refresh must not make a tracked net_change.json stale (the regen gate
-    # caught exactly that on 2026-10-09).
-    got = net_change.cost(doc)
-    for key in ("buy_cents", "buy_unpriced", "prices_as_of", "prices_source"):
-        assert key not in got, key
-    assert "$" not in got["reads_as"]
-    # A buy card the file does not price is NAMED, never counted as zero.
-    bill["cards"].append({"name": "Windfall", "state": "buy", "where": [], "free": False})
-    line = net_change.priced_bill_line(doc)
-    assert line.startswith("≈ $4.74 to buy") and "1 unpriced: Windfall" in line
-    # The deck's own prices file is not the branch's.
-    (fake_deck / "fixture" / "branches" / "b1" / "prices.json").unlink()
-    (fake_deck / "fixture" / "prices.json").write_text(json.dumps(_good()))
-    assert net_change.priced_bill_line(doc) is None
-
-
-def test_a_test_skeleton_with_no_slug_still_costs_out():
-    doc = {"bill": {"counts": {}, "cards": []}}
-    assert "buy_cents" not in net_change.cost(doc)
-    assert net_change.priced_bill_line(doc) is None
-
-
-# ── prune: an edit leaves the dated file valid, offline ──────────────────
-
-def test_prune_drops_the_cards_that_left_and_re_adds_as_build_does(fake_deck, monkeypatch):
-    path = fake_deck / "fixture" / "prices.json"
-    assert prices.prune("fixture") is None, "no file, nothing to prune"
-    assert not path.exists()
-    built = prices.build("fixture", session=FakeSession())
-    built["as_of"] = "2026-10-01"           # a dated file, priced days ago
-    path.write_text(json.dumps(built))
-
-    # The edit: Sol Ring and Obscure Promo out, two Islands cut, Brainstorm in.
-    edited = dict(CARDS, cards=[
-        dict(CARDS["cards"][1], quantity=9), CARDS["cards"][2],
-        {"name": "Brainstorm", "quantity": 1, "set": "c20", "collector_number": "1"}])
-    (fake_deck / "fixture" / "cards.json").write_text(json.dumps(edited))
-    monkeypatch.setenv(net.OFFLINE_ENV, "1")    # pruning never reaches the network
-
-    got = prices.prune("fixture")
-    doc = json.loads(path.read_text())
-    assert got["changed"] and got["dropped"] == ["Obscure Promo", "Sol Ring"]
-    assert got["unpriced"] == ["Brainstorm"], "an add is named, never priced as zero"
-    assert set(doc["cards"]) == {"Island", "Windfall"} and doc["missing"] == []
-    assert doc["cards"]["Island"]["quantity"] == 9
-    # Dated evidence keeps its date, source and the list it was taken against.
-    for k in ("as_of", "source", "decklist_sha256"):
-        assert doc[k] == built[k], k
-    # The totals are the ones a fresh build of the edited list says.
-    monkeypatch.setenv(net.OFFLINE_ENV, "0")
-    fresh = prices.build("fixture", session=FakeSession())
-    assert (doc["total_cents"], doc["total_nm_cents"]) == (
-        fresh["total_cents"], fresh["total_nm_cents"])
-    names = {c["name"] for c in edited["cards"]}
-    assert validate_prices.validate("fixture", None, doc, names) == []
-
-    before = path.read_bytes()
-    again = prices.prune("fixture")
-    assert again["changed"] is False and path.read_bytes() == before
-
-
-# ── the one real call ────────────────────────────────────────────────────
-
-@pytest.mark.network
-def test_mana_pool_prices_one_card_for_real(monkeypatch, tmp_path):
-    """Integration: the reconstructed feed path against the live API. A 400/404 here
-    is the signal to edit `config.MANAPOOL_PRICES_PATH` — the test then reads the
-    Scryfall fallback and says so in its failure."""
-    monkeypatch.setattr(config, "DATA_DIR", tmp_path / "data")
-    monkeypatch.delenv(net.OFFLINE_ENV, raising=False)
-    feed = prices.manapool_feed()
-    assert feed is not None, "the feed path answered 400/404 — edit config.MANAPOOL_PRICES_PATH"
-    assert feed, "the feed answered with no rows"
-    row = next(iter(feed.values()))
-    assert row.get("name") and prices._row_nm(row) is not None

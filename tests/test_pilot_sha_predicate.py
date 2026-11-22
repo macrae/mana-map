@@ -236,7 +236,7 @@ def test_no_module_holds_a_module_level_copy_of_the_deck_root():
 
 def test_patching_the_configured_root_reaches_every_reader(tmp_path, monkeypatch):
     """ONE PATCH POINT — the property the check above protects."""
-    from manamap.pilot import common, deck_branch, regen
+    from manamap.pilot import common, regen
     from manamap.sim import opponents
 
     (tmp_path / "decks" / "probe").mkdir(parents=True)
@@ -246,8 +246,9 @@ def test_patching_the_configured_root_reaches_every_reader(tmp_path, monkeypatch
     assert common.deck_dir("probe") == tmp_path / "decks" / "probe"
     # Derived roots follow too — the pod directory hangs off the deck root.
     assert opponents.opponents_dir() == tmp_path / "opponents"
-    # And a fleet walk sees the patched tree, not the real one.
-    assert deck_branch._deck_holders("Sol Ring", skip=None) == []
+    # And a fleet walk sees the patched tree, not the real one. (`regen.targets`
+    # is the walk that remains; `deck_branch._deck_holders` left with the
+    # ownership layer on 2026-11-22.)
     assert [t for t in regen.targets("info.json")] == []
 
 
@@ -256,9 +257,8 @@ def test_patching_the_configured_root_reaches_every_reader(tmp_path, monkeypatch
 #: Gate entries that are NOT a per-deck file, and so cannot be a `deck-status`
 #: stage. Each is exempt for a stated reason rather than by being forgotten.
 _NOT_A_DECK_FILE = {
-    # A computed predicate over the collection and the other decks, not a file.
-    "@ownership",
-    # Rendered OUTSIDE the deck directory, into `manuals/p/`.
+    # Rendered OUTSIDE the deck directory, into `manuals/p/`. (`@ownership`, the
+    # one computed gate, left with the ownership layer on 2026-11-22.)
     "manuals/p/<slug>.html",
 }
 

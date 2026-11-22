@@ -59,7 +59,6 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
                       #   and opponents (docs/simulation.md)
   pilot/              # the bench, one evidence contract across all of it
                       # shared:   card_pool.py (THE ONLY reader of cards.csv),
-                      #           collection.py (THE ONLY reader of the boxes),
                       #           common.py (paths, hashing, lifecycle — has a file map),
                       #           registry.py (every subcommand), model_coverage.py
                       #           (what the goldfish CANNOT see), card_search.py
@@ -84,7 +83,6 @@ data/                 # artifacts; mostly gitignored, viz-served files tracked
   decks/<slug>/       #   one deck: decklist, cards.json, measurements, branches/, log
   pods/ opponents/    #   the named Forge tables and their seats (standard-v3 default)
   fleet/              #   analytics.json: the fleet compared — profiles and bands, never a score
-  collection/         #   the PHYSICAL boxes (MANAMAP_COLLECTION_DIR overrides)
 tools/claude-plugins/ # the job-band Claude Code plugin (live progress above the prompt), installed
                       #   from this folder at project scope; reads .progress/ (manamap.progress)
 viz/                  # static frontend: the seven pages above, d3 from CDN, window.MM;
@@ -106,7 +104,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 161 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 159 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -135,8 +133,8 @@ manamap pilot edit <slug> --swap "A=B" [--add N] [--cut N] [--set N=Q] [--side] 
 manamap pilot save-version <slug> --note "…"   # the edits so far -> ONE git version, only
                               # the deck's own paths (`git commit --only`), after merge's pass
 manamap pilot deck-branch <slug> new|stage|propose|withdraw|reject|merge …
-                              # a candidate 99; `propose <name> --as v1.2.0` accepts it and
-                              # waits for cardboard. Decisions go in the append-only ledger.
+                              # a candidate 99; `propose <name> --as v1.2.0` accepts it;
+                              # merge on the pilot's word. Decisions go in the append-only ledger.
 manamap pilot net-change <slug> --branch <name> --write
                               # sixteen Holm-corrected rows + one OPTIONAL guard (the
                               # objective, shown among them), paired per game, judged as
@@ -264,6 +262,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 
 ### Branches, paths and artifacts
 
+- **The bench has no notion of card ownership (2026-11-22).** A branch is a candidate list and a study; `propose --study` accepts it, `merge --write` runs on the pilot's word that the list is in the sleeves — no sourcing gate, no bill, no pull list, no boxes, no `--proxy`/`--ordered`. What stays physical: the paper lock (`deck-version paper`), pinned printings (`art`, `order`), `prices` as dated evidence for a LIST, and `proxies` (`--have` is his word, not an inventory); a brief's pool file is a constraint, never an inventory. → `docs/pilot.md`
 - **A branched write needs a branched READ**, and every branch measurement records the branch's own `decklist_sha256`. → `docs/gotchas-bench.md`
 - **A branch may not declare a model channel its deck does not** — that is two simulators, not an A/B. → `docs/gotchas-bench.md`
 - **`--out` on a per-deck command is slug-scoped**; a shell redirect cannot be policed. → `docs/gotchas-bench.md`

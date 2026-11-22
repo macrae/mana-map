@@ -88,8 +88,9 @@ GATES = {
          "the Pilot's Operating Handbook — procedures for when it goes wrong"),
         ("dossier", "info.json",
          "the composed view the deck page fetches"),
-        ("ownership reconciled", "@ownership",
-         "every card in a box, in another deck, or named as a buy"),
+        # No ownership row (2026-11-22): the bench has no notion of a box, so the
+        # one gate that was a computation rather than a file went with it.
+        # Sleeving stays the pilot's own act, below.
     ),
 }
 
@@ -172,52 +173,6 @@ def set_stage(slug, name):
     return stage(slug)
 
 
-def _ownership(slug):
-    """Every card in a box, in another deck, or named as a buy. SLEEVED's gate.
-
-    The one gate row that is a computation rather than a file, because there is
-    no ownership artifact — `collection` answers "is this in a box" and
-    `deck_branch._deck_holders` answers "which deck is it sleeved in", and
-    nothing has ever joined them for a whole 99.
-    """
-    from manamap.pilot import collection, deck_branch
-    from manamap.pilot.common import expand_copies, is_land, load_deck_cards
-
-    try:
-        cards = load_deck_cards(slug)["cards"]
-    except Exception:
-        return "missing", "no cards.json — run `fetch-deck` first", []
-    owned = collection.owned_names()
-    if not owned:
-        return "unknown", ("no boxes under data/collection/, so ownership "
-                           "cannot be reconciled at all"), []
-
-    # C-3 asks for THREE buckets, and they must stay three. `collection` is
-    # deliberately the only reader of the boxes and deliberately does NOT count
-    # deck membership — a card sleeved in another deck is not one you can put in
-    # this one without taking that deck apart. So "in another deck" is reported
-    # BESIDE ownership and never folded into it.
-    #
-    # Basics are excluded: a build's Swamps are not a shopping list, and every
-    # deck would otherwise fail on lands nobody counts.
-    names = sorted({c["name"] for c in expand_copies(cards)
-                    if not (is_land(c) and "Basic" in (c.get("type_line") or ""))})
-    in_box = [n for n in names if n in owned]
-    rest = [n for n in names if n not in owned]
-    elsewhere, buy = [], []
-    for name in rest:
-        holders = [h for h in deck_branch._deck_holders(name, skip=slug)
-                   if not h["apart"]]
-        (elsewhere if holders else buy).append(
-            f"{name} (in {holders[0]['slug']})" if holders else name)
-
-    detail = (f"{len(in_box)} in a box, {len(elsewhere)} sleeved elsewhere, "
-              f"{len(buy)} to buy")
-    if not rest:
-        return "present", f"all {len(names)} in a box", []
-    return "missing", detail, elsewhere + buy
-
-
 def gate(slug, to):
     """Every requirement for one rung, with its state. Never a bare pass/fail."""
     from manamap.pilot import deck_status
@@ -228,25 +183,6 @@ def gate(slug, to):
     by_artifact = {row["artifact"]: row for row in deck_status.status(slug)}
     rows = []
     for label, artifact, why in GATES[to]:
-        if artifact == "@ownership":
-            state, detail, missing = _ownership(slug)
-            rows.append({"label": label, "artifact": "the boxes", "why": why,
-                         "state": state, "detail": detail, "how":
-                         # NOT `deck-branch <slug> source`, which this said for
-                         # as long as the gate has existed and which REFUSES as
-                         # printed — that verb needs `--branch NAME`, and the
-                         # question here is about the deck, not a branch.
-                         #
-                         # Found because Sven relayed it to the pilot twice,
-                         # faithfully. A wrong instruction inside an artifact
-                         # becomes confident wrong advice the moment anything
-                         # reads that artifact aloud, and the `missing` list
-                         # below was carrying the real answer all along.
-                         f"the {len(missing)} card(s) in `missing` are not "
-                         f"accounted for — buy them, or free them from the deck "
-                         f"holding them (`manamap pilot deck-info <holder>`)",
-                         "missing": missing})
-            continue
         if artifact.startswith("manuals/"):
             from manamap.config import MANUALS_DIR
 

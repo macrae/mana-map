@@ -16,8 +16,8 @@ MAP OF THIS FILE (in order):
   _paired / compare_readings  the exploratory family: per-row interval (paired
                     game by game when both readings kept games), MDE, Holm.
   build / main      `net-change <slug> --branch B [--write]`: two seeded
-                    diagnostic runs, then objective, table, bill, forge.
-  STATES / recommend / reward / risk / cost  the stated rule and five words; a
+                    diagnostic runs, then objective, table, forge.
+  STATES / recommend / reward / risk  the stated rule and five words; a
                     Forge loss is a `forge_warning` beside it, never a gate.
   _print*           the terminal report, sections split out so tests can drive them.
 
@@ -33,8 +33,9 @@ fourteenth time that a solitaire simulator with no opponents is not the arbiter.
 IT COMPOSES AND IT MEASURES NOTHING OF ITS OWN. Every figure here comes from a
 command that already owns it — `compare_readings` here, over `diagnostic` readings
 taken with `keep_games=True`, for the delta table with its PAIRED intervals and
-per-row MDE (`_paired`, game by game on the same seeds), `mana_analysis` for the colour half, `deck_branch.source`
-for the bill, the tracked `sim/*.json` for the real table.
+per-row MDE (`_paired`, game by game on the same seeds), `mana_analysis` for the colour half,
+the tracked `sim/*.json` for the real table. No bill (2026-11-22): the bench has no
+notion of card ownership, so a report never says what is owned or what to buy.
 
 THE ENGINE LIFT WAS HERE AND WAS DELETED 2026-08-28, and the reason is the only
 thing worth keeping from it. It split the games by whether the components marked
@@ -52,7 +53,7 @@ excluding zero that assembling the engine makes the deck win LESS. A figure whos
 sign a JSON edit can flip is not evidence, however tight its interval, and it was
 sitting in the block a spending decision reads first. What is left is arithmetic:
 sampled rates with Newcombe intervals on the difference, deterministic
-hypergeometric source counts, and a bill.
+hypergeometric source counts.
 
 WHAT IT WILL AND WILL NOT DO. It grades the guard the branch was opened with (if
 one was named), names both sides of the trade, prices it, and ends on one of five
@@ -403,11 +404,6 @@ DERIVED = (
      "A row marked `noise` is NOT a row where nothing happened. It is a row "
      "where whatever happened is smaller than this run can see, which rules "
      "out a large effect and says nothing about a small one."),
-    ("THE BILL",
-     "Every card in the branch, sorted by where it physically is: already in "
-     "the deck, in a box, in another deck, or not owned.",
-     "The only cost figure in the report. `buy` is money; `elsewhere` is a "
-     "card that has to come out of a deck that is currently sleeved."),
 )
 
 
@@ -655,7 +651,7 @@ def _pool(slug, branch):
     return pool
 
 
-def card_diff(slug, branch, bill=None):
+def card_diff(slug, branch):
     """THE MERGE-REQUEST DIFF: every card out, every card in, against the deck.
 
     WHY THIS IS NOT `changes()`. That function reads `branch.json`'s `staged`
@@ -693,9 +689,6 @@ def card_diff(slug, branch, bill=None):
         if row.get("out") and row.get("in"):
             back[row["in"]] = row["out"]
             fwd[row["out"]] = row["in"]
-    state = {r["name"]: r.get("state")
-             for r in ((bill or {}).get("cards") or [])}
-
     # THROUGH `_named`, NOT RAW `_entries`. `d` above comes from `deck_branch.diff`,
     # which canonicalises both lists through the resolver's vocabulary; `_entries`
     # returns the literal decklist text. Those agree on 99 cards in 100 and disagree
@@ -763,10 +756,6 @@ def card_diff(slug, branch, bill=None):
         # one apiece — which is true of 96 of these 99 and wrong about the ones
         # that matter.
         out["copies"] = (cand if with_state else base).get(name, 1)
-        if with_state:
-            # Where the card physically is, straight off the bill — so the diff
-            # and the bill can never disagree about what has to be bought.
-            out["state"] = state.get(name)
         return out
 
     outs = [row(n, why_out, False) for n in d["out"]]
@@ -1749,8 +1738,7 @@ def build(slug, branch, iterations=None, seed=None):
     doc_meta = deck_branch.meta(slug, branch) or {}
     objective = doc_meta.get("objective")
     change_doc = changes(slug, branch)
-    bill_doc = deck_branch.source(slug, branch)
-    change_doc["diff"] = card_diff(slug, branch, bill_doc)
+    change_doc["diff"] = card_diff(slug, branch)
     staged = len(doc_meta.get("staged") or [])
     grade = None
     forge_block = forge(slug, branch, pod=(objective or {}).get("pod"))
@@ -1832,7 +1820,6 @@ def build(slug, branch, iterations=None, seed=None):
         "table": table,
         "mana": mana(slug, branch),
         "forge": forge_block,
-        "bill": bill_doc,
         "limits": [
             "The goldfish has no opponents and nothing blocks: its kill turn is a "
             "CLOCK, not a win rate, and it cannot see interaction, removal or any "
@@ -1932,7 +1919,7 @@ def recommend(doc):
     LEDGER plus a rule stated plainly enough to argue with:
 
         guard met, nothing fell          -> "guard met, nothing fell"
-        guard met, something fell        -> "guard met, rows fell"; name both sides and the bill
+        guard met, something fell        -> "guard met, rows fell"; name both sides
         guard not met                    -> "guard not met"
         guard stated but unreadable      -> "guard unresolved", and say WHY it is
         no guard at all                  -> "profile only"; the ledger still stands
@@ -2017,8 +2004,7 @@ def recommend(doc):
     got = {"state": out[0], "because": out[1] + forge_warning,
            **({"forge_warning": forge_warning.strip()} if forge_warning else {}),
            "rose": rose, "fell": fell, "no_call": no_call,
-           "bill": (doc.get("bill") or {}).get("counts") or {},
-           "reward": reward(doc), "risk": risk(doc), "cost": cost(doc)}
+           "reward": reward(doc), "risk": risk(doc)}
 
     notes = []
     # THE MEASUREMENT IS DECK-LEVEL: swap a handful of cards, measure the lift.
@@ -2150,107 +2136,6 @@ def risk(doc):
                           "who does nothing (three seats only for what we gain "
                           "off their draws)"})
     return out
-
-
-def cost(doc):
-    """The bill, said in money and in sleeves rather than in four integers.
-
-    THE `elsewhere` COUNT IS TWO DIFFERENT COSTS WEARING ONE NUMBER, and the
-    difference is the whole of what a pilot needs to know before pulling
-    sleeves. A card sitting in a RETIRED or BROKEN-DOWN deck is loose cardboard
-    — taking it costs nothing and breaks nothing. A card sitting in a deck that
-    is currently sleeved and played costs that deck the card. Reported as one
-    integer, the six here read as six decks to disturb; three of them are in
-    hapatra and sisay, which are already apart.
-    """
-    bill = doc.get("bill") or {}
-    c = bill.get("counts") or {}
-    total = sum(c.values()) or 0
-
-    buy, loose, contested = [], [], []
-    for row in bill.get("cards") or []:
-        if row.get("state") == "buy":
-            buy.append(row["name"])
-        elif row.get("state") == "elsewhere":
-            # `free` AND `apart` ARE THE BRANCH'S ANSWER, NOT A SECOND ONE HERE.
-            # This block used to carry `FREE_TO_RAID = ("retired", "broken-down")`
-            # — a fourth copy of a set `common.UNPLAYABLE_STATUSES` already held.
-            # `deck_branch.source` now derives both and this reads them.
-            homes = row.get("where") or []
-            live = sorted({h["slug"] for h in homes if not h.get("apart")})
-            (loose if row.get("free") else contested).append(
-                {"name": row["name"],
-                 "decks": live or sorted({h["slug"] for h in homes})})
-
-    parts = [f"{len(buy)} to buy"]
-    # NO DOLLARS HERE. The bill in money lives in the branch's `prices.json`
-    # (dated evidence) and is said by `priced_bill_line` at print time and by
-    # the branch page from the file. It was embedded here for one afternoon
-    # (2026-10-09): every price refresh then made five tracked net_change.json
-    # files stale and the regen gate asked for a measurement re-run over a
-    # price. A measurement does not carry the day's prices.
-    if contested:
-        parts.append(f"{len(contested)} to pull out of a deck that is still "
-                     f"together")
-    if loose:
-        parts.append(f"{len(loose)} sitting in a retired or broken-down deck, "
-                     f"which cost nothing")
-    parts.append(f"{total - c.get('buy', 0)} of {total} already owned")
-
-    return {
-        "counts": c,
-        "buy": len(buy), "buy_cards": sorted(buy),
-        "must_unsleeve": contested,
-        "free_to_raid": loose,
-        "owned": total - c.get("buy", 0),
-        "total": total,
-        # THE PHYSICAL GATE, and it is not the same question as whether the
-        # branch is a good idea. A branch can be worth merging and impossible
-        # to merge today.
-        "mergeable": bill.get("mergeable"),
-        "reads_as": "; ".join(parts),
-    }
-
-
-def priced_bill_line(doc):
-    """The bill in dollars for the terminal — "≈ $N to buy (as of DATE, SOURCE;
-    k unpriced: …)" from the branch's own `prices.json`, or None when there is no
-    file or nothing to buy. Display only: never written into the report."""
-    priced = _priced_bill(doc, (cost(doc) or {}).get("buy_cards") or [])
-    if not priced:
-        return None
-    unpriced = ""
-    if priced["buy_unpriced"]:
-        unpriced = (f"; {len(priced['buy_unpriced'])} unpriced: "
-                    + ", ".join(priced["buy_unpriced"]))
-    return (f"≈ ${priced['buy_cents'] / 100:,.2f} to buy (as of "
-            f"{priced['prices_as_of']}, {priced['prices_source']}{unpriced})")
-
-
-def _priced_bill(doc, buy):
-    """`{buy_cents, buy_unpriced, prices_as_of, prices_source}` from the
-    `prices.json` beside the branch, or None when there is none (or the report
-    carries no slug — a test skeleton). A card the file does not price is named
-    in `buy_unpriced`, not counted as zero."""
-    slug, branch = doc.get("slug"), doc.get("branch")
-    if not slug or not buy:
-        return None
-    try:
-        prices = load_json(deck_dir(slug, branch) / "prices.json")
-    except FileNotFoundError:
-        return None
-    if not prices or not isinstance(prices.get("cards"), dict):
-        return None
-    cents, unpriced = 0, []
-    for name in sorted(buy):
-        row = prices["cards"].get(name) or {}
-        nm = row.get("nm_cents")
-        if isinstance(nm, int):
-            cents += nm * int(row.get("quantity") or 1)
-        else:
-            unpriced.append(name)
-    return {"buy_cents": cents, "buy_unpriced": unpriced,
-            "prices_as_of": prices.get("as_of"), "prices_source": prices.get("source")}
 
 
 def _and(names):
@@ -2853,40 +2738,6 @@ def _print_mana(doc, full):
                     indent="    "))
 
 
-def _print_cost(doc, full):
-    c = doc["bill"]["counts"]
-    rec = doc.get("recommendation") or {}
-    cst = rec.get("cost") or {}
-    words = (("buy", "to buy"), ("box", "in a box"), ("elsewhere", "in other decks"),
-             ("free", "free"), ("in_deck", "already in the deck"))
-    known = [f"{c[k]} {w}" for k, w in words if k in c]
-    known += [f"{v} {k}" for k, v in c.items() if k not in dict(words)]
-    print("\n  THE COST   " + ", ".join(known))
-    print(_wrap(cst.get("reads_as", ""), indent="    "))
-    priced = priced_bill_line(doc)
-    if priced:
-        print(_wrap(priced, indent="    "))
-    if cst.get("buy_cards"):
-        print(_wrap(f"To buy ({len(cst['buy_cards'])}): " + ", ".join(cst["buy_cards"]),
-                    indent="    "))
-    if cst.get("mergeable") is False:
-        print(_wrap("Not mergeable yet: `deck-branch merge` refuses while any card is "
-                    "unsourced. That is a question about cardboard, not about whether "
-                    "the branch is right.", indent="    "))
-    if not full:
-        return
-    if cst.get("must_unsleeve"):
-        print(f"\n    UNSLEEVE ({len(cst['must_unsleeve'])}) — these come out "
-              f"of a deck that is still together")
-        for r in cst["must_unsleeve"]:
-            print(f"      {r['name'][:34]:36} {', '.join(r['decks'])}")
-    if cst.get("free_to_raid"):
-        print(f"\n    FREE ({len(cst['free_to_raid'])}) — only in a retired or "
-              f"broken-down deck, so nothing has to be disturbed")
-        for r in cst["free_to_raid"]:
-            print(f"      {r['name'][:34]:36} {', '.join(r['decks'])}")
-
-
 def _print_definitions(doc, full):
     if not full:
         print("\n  WHAT THE ROWS MEASURE   --full adds why each one matters")
@@ -2947,7 +2798,6 @@ def _print(doc, full=False):
     _print_profile(doc)
     _print_blind(doc, full)
     _print_mana(doc, full)
-    _print_cost(doc, full)
     _print_real_table(doc)
     _print_changes(doc, full)
     _print_definitions(doc, full)

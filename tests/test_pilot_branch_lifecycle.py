@@ -127,15 +127,6 @@ def test_a_commit_records_one_exact_list_and_refuses_a_repeat(probe):
 
 
 @requires_deck
-def test_commit_is_allowed_unsourced_and_merge_is_not(probe):
-    """THE TWO-STEP IS THE PILOT'S OWN DISTINCTION. A commit says "this is the
-    deck I am committed to running"; a merge says "this is the deck". The gap
-    between them is CARDBOARD."""
-    got = deck_branch.commit(SLUG, probe, "decided")
-    assert "unsourced" in got and "mergeable" in got
-
-
-@requires_deck
 def test_merge_records_that_it_landed(probe):
     """Without this the branch survives untouched, `diff` reads +0 -0 forever,
     and nothing links the resulting version back to the work that produced it."""
@@ -348,7 +339,9 @@ import hashlib
 
 def _branch(tmp_path, monkeypatch, cards, *, proposal=None, merged=None,
             base_version=2, current_version=2, apart=(), boxed=(), held=None):
-    """A branch on disk, with the deck's version and collection stubbed.
+    """A branch on disk, with the deck's version stubbed. (`apart`, `boxed` and
+    `held` are accepted and ignored since 2026-11-22: the bench has no notion of
+    where a card is.)
 
     Everything `branch_state` reads is faked at its source rather than at the
     function, so the test drives the production path and not a mock of it.
@@ -378,26 +371,6 @@ def _branch(tmp_path, monkeypatch, cards, *, proposal=None, merged=None,
     monkeypatch.setattr(deck_versions, "report",
                         lambda s: {"current_version": current_version})
 
-    def fake_source(slug, branch, proxy=False):
-        rows, unsourced = [], []
-        for c in cards:
-            if c in boxed:
-                rows.append({"name": c, "state": db.BOX, "free": False,
-                             "where": [{"kind": "box", "name": "A"}]})
-            elif c in apart:
-                rows.append({"name": c, "state": db.ELSEWHERE, "free": True,
-                             "where": [{"kind": "deck", "slug": "old",
-                                        "locked": False, "status": "retired",
-                                        "apart": True}]})
-            else:
-                rows.append({"name": c, "state": db.BUY, "free": False, "where": []})
-                unsourced.append(c)
-        if held is not None:
-            unsourced = list(held)
-        return {"cards": rows, "unsourced": unsourced,
-                "mergeable": not unsourced, "counts": {}, "free": len(apart)}
-
-    monkeypatch.setattr(db, "source", fake_source)
     return doc
 
 
@@ -410,41 +383,18 @@ def test_a_branch_with_no_proposal_is_an_experiment_not_a_decision(
     assert "experiment" in why
 
 
-def test_a_proposal_with_cards_outstanding_is_blocked(tmp_path, monkeypatch):
+def test_a_proposal_is_accepted_and_waits_on_the_pilots_word(
+        tmp_path, monkeypatch):
+    """One PROPOSED state (2026-11-22). It used to split into BLOCKED and READY on
+    whether every card had been found in a box or another deck; the bench no
+    longer asks, so an accepted branch is accepted and the merge is the pilot's."""
     from manamap.pilot import deck_branch as db
     _branch(tmp_path, monkeypatch, ["Sol Ring", "Mana Crypt"], proposal={})
     state, why = db.branch_state("d", "b")
-    assert state == db.PROPOSED_BLOCKED
-    assert "2 card(s)" in why
-
-
-def test_a_proposal_with_everything_sourced_is_ready_to_merge(
-        tmp_path, monkeypatch):
-    from manamap.pilot import deck_branch as db
-    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={}, boxed=["Sol Ring"])
-    state, why = db.branch_state("d", "b")
-    assert state == db.PROPOSED_READY
-    assert "merge" in why
-
-
-def test_a_card_only_in_a_broken_down_deck_does_not_block(tmp_path, monkeypatch):
-    """3a, AND ITS CONTROL IS THE TEST BELOW.
-
-    `deck-branch merge` refused Ur-Dragon on twelve cards, four of which sit in
-    `sisay` and `hapatra` — decks that do not physically exist. The pilot was
-    being told to unsleeve a deck that is already in a pile.
-    """
-    from manamap.pilot import deck_branch as db
-    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={}, apart=["Sol Ring"])
-    assert db.branch_state("d", "b")[0] == db.PROPOSED_READY
-
-
-def test_a_card_in_a_deck_that_is_still_together_does_block(tmp_path, monkeypatch):
-    """THE CONTROL. Without it the fix above could be "nothing ever blocks"."""
-    from manamap.pilot import deck_branch as db
-    _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
-            held=["Sol Ring"])
-    assert db.branch_state("d", "b")[0] == db.PROPOSED_BLOCKED
+    assert state == db.PROPOSED
+    assert "merge" in why and "pilot" in why
+    for gone in ("PROPOSED_BLOCKED", "PROPOSED_READY", "source", "pull_list", "recorded_proxy"):
+        assert not hasattr(db, gone), gone
 
 
 def test_a_list_that_moves_after_it_was_accepted_goes_stale(
@@ -454,7 +404,7 @@ def test_a_list_that_moves_after_it_was_accepted_goes_stale(
     from manamap.pilot import deck_branch as db
     doc = _branch(tmp_path, monkeypatch, ["Sol Ring"], proposal={},
                   boxed=["Sol Ring"])
-    assert db.branch_state("d", "b")[0] == db.PROPOSED_READY
+    assert db.branch_state("d", "b")[0] == db.PROPOSED
     doc["proposal"]["decklist_sha256"] = "something else entirely"
     state, why = db.branch_state("d", "b")
     assert state == db.PROPOSED_STALE
@@ -485,59 +435,12 @@ def test_merged_outranks_everything(tmp_path, monkeypatch):
 def test_every_state_the_function_can_return_is_declared():
     """A state a caller cannot enumerate is one the frontend will not style."""
     from manamap.pilot import deck_branch as db
-    for name in ("OPEN", "PROPOSED_BLOCKED", "PROPOSED_READY", "PROPOSED_STALE",
-                 "PROPOSED_OUTRUN", "MERGED"):
+    for name in ("OPEN", "PROPOSED", "PROPOSED_STALE", "PROPOSED_OUTRUN", "MERGED", "REJECTED"):
         assert getattr(db, name) in db.BRANCH_STATES
     assert len(set(db.BRANCH_STATES)) == len(db.BRANCH_STATES)
 
 
 # ── the pull list ────────────────────────────────────────────────────────
-
-def test_the_pull_list_separates_costs_that_are_not_the_same_cost(
-        tmp_path, monkeypatch):
-    """BUY is money, UNSLEEVE takes a deck apart, PROXY is a decision already
-    recorded, FREE is cardboard in a pile. Reported as one integer they read as
-    one problem — which is how `elsewhere` came to mean both "unsleeve kianne"
-    and "it is in the hapatra pile"."""
-    from manamap.pilot import deck_branch as db
-    _branch(tmp_path, monkeypatch, ["Buy Me", "In A Box", "Loose"],
-            proposal={}, boxed=["In A Box"], apart=["Loose"])
-    pl = db.pull_list("d", "b")
-    assert [r["name"] for r in pl["buy"]] == ["Buy Me"]
-    assert [r["name"] for r in pl["box"]] == ["In A Box"]
-    assert [r["name"] for r in pl["free"]] == ["Loose"]
-    assert pl["unsleeve"] == [] and pl["proxy"] == []
-
-
-def test_a_proxied_card_is_filed_under_proxy_not_unsleeve(tmp_path, monkeypatch):
-    """`--proxy` was a per-invocation flag and was never persisted, so `list`,
-    `deck-info` and the web roster showed the non-proxy verdict however the
-    pilot had decided. A proposal records the CARDS, not a boolean."""
-    from manamap.pilot import deck_branch as db
-
-    def source(slug, branch, proxy=False):
-        return {"cards": [{"name": "Bloom Tender", "state": db.ELSEWHERE,
-                           "free": False,
-                           "where": [{"kind": "deck", "slug": "kinnan",
-                                      "locked": False, "status": None,
-                                      "apart": False}]}],
-                "unsourced": [], "mergeable": True, "counts": {}, "free": 0}
-
-    _branch(tmp_path, monkeypatch, ["Bloom Tender"],
-            proposal={"proxy": ["Bloom Tender"]})
-    monkeypatch.setattr(db, "source", source)
-    pl = db.pull_list("d", "b")
-    assert [r["name"] for r in pl["proxy"]] == ["Bloom Tender"]
-    assert pl["unsleeve"] == []
-
-
-def test_the_recorded_proxy_is_names_and_never_a_boolean():
-    from manamap.pilot import deck_branch as db
-    assert db.recorded_proxy({"proposal": {"proxy": ["A", "B"]}}) == ["A", "B"]
-    assert db.recorded_proxy({"proposal": {}}) is False
-    assert db.recorded_proxy({}) is False
-    assert db.recorded_proxy(None) is False
-
 
 # ── propose and withdraw: the refusals ───────────────────────────────────
 
@@ -578,12 +481,8 @@ def _proposable(tmp_path, monkeypatch, *, nc=None, tags=None, current=2, study=N
     monkeypatch.setattr(db, "deck_dir", lambda s, b=None: root)
     monkeypatch.setattr(db, "_write_meta", lambda s, b, d: doc.update(d))
     monkeypatch.setattr(db, "load_json", lambda p, *a, **k: report)
-    monkeypatch.setattr(db, "pull_list",
-                        lambda s, b, doc=None, src=None: {"blocking": 0})
     monkeypatch.setattr(db, "branch_state",
-                        lambda s, b, doc=None, src=None: (db.PROPOSED_READY, "ok"))
-    monkeypatch.setattr(db, "source", lambda s, b, proxy=False: {
-        "cards": [], "unsourced": [], "mergeable": True, "counts": {}, "free": 0})
+                        lambda s, b, doc=None: (db.PROPOSED, "ok"))
     monkeypatch.setattr(deck_versions, "report",
                         lambda s: {"current_version": current})
     monkeypatch.setattr(deck_versions, "tags", lambda s: tags or {})
@@ -877,48 +776,6 @@ def test_staging_on_a_proposed_branch_says_what_it_will_do(tmp_path, monkeypatch
 
 
 # ── #25: what the bill counts, and what `log` shows ─────────────────────────
-
-@pytest.mark.regression
-def test_a_card_held_only_by_a_broken_down_deck_is_free_not_contested():
-    """`elsewhere` MEANT "in some other deck" AND WAS RENDERED AS A COST.
-
-    `source()` classifies a card whose only holders are broken down or retired
-    as `free` — loose cardboard, nothing to unsleeve, nothing to buy — and the
-    `unsourced` set already excluded it. `counts["elsewhere"]` still counted it,
-    so the dossier rendered "sleeved in another deck: 6" when five were
-    contested and the sixth was in `sisay`, which is retired and in a pile.
-
-    The pull list had already chosen BUY / UNSLEEVE / PROXY / FREE, because each
-    costs a different thing; the counts now agree with it.
-    """
-    from manamap.config import DECKS_DIR
-    from manamap.pilot import deck_branch
-
-    checked = 0
-    for path in sorted(DECKS_DIR.glob("*/branches/*/branch.json")):
-        slug = path.relative_to(DECKS_DIR).parts[0]
-        branch = path.parent.name
-        bill = deck_branch.source(slug, branch)
-        counts, rows = bill["counts"], bill["cards"]
-        checked += 1
-
-        contested = [r for r in rows if r["state"] == deck_branch.ELSEWHERE
-                     and not r["free"]]
-        free = [r for r in rows if r["free"]]
-        assert counts[deck_branch.ELSEWHERE] == len(contested), (
-            f"{slug}/{branch}: elsewhere counts free cardboard as contested")
-        assert counts[deck_branch.FREE] == len(free)
-        assert bill["owned_but_elsewhere"] == counts[deck_branch.ELSEWHERE]
-        # The buckets stay disjoint and exhaustive, or the bill stops adding up.
-        assert sum(counts.values()) == len(rows), (
-            f"{slug}/{branch}: the bill's buckets do not cover every card once")
-        # And every free card is excluded from the blocker, which is the
-        # disagreement this fixes.
-        for row in free:
-            assert row["name"] not in bill["unsourced"], (
-                f"{slug}/{branch}: {row['name']} is free and still blocking")
-    assert checked >= 10, f"only {checked} branches checked"
-
 
 @pytest.mark.regression
 def test_log_shows_the_staged_swaps_unstage_points_at():

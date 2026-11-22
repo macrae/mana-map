@@ -31,7 +31,7 @@ import json
 import re
 from pathlib import Path
 
-from manamap.pilot import card_pool, collection, formats
+from manamap.pilot import card_pool, formats
 from manamap.pilot.card_pool import corpus_oracle, load_pool
 from manamap.pilot.common import (
     deck_dir,
@@ -195,7 +195,7 @@ def date_bound(text, end):
 
 def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_max=None,
            cmc_min=None, exclude=(), limit=MAX_RESULTS, allow_game_changers=True,
-           require_all=False, owned=None, channels=None, unmodelled=None,
+           require_all=False, channels=None, unmodelled=None,
            sets=None, released_after=None, released_before=None, spec=None):
     """Filter the corpus. Returns (rows, meta) — rows already ranked and capped.
 
@@ -231,11 +231,8 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
     want_roles = set(roles or [])
     exclude = set(exclude or [])
     want_sets = {c.lower() for c in (sets or [])}
-    # `pool-facts` knew the box but could not filter by oracle text; this could
-    # filter by oracle text but could not see the box. Every "what could I add that I
-    # already have" question needed both, so it was answered by hand every time.
-    # Boxes only — deck membership is not ownership; see `pilot.collection`.
-    have = collection.owned_names() if owned is not None else set()
+    # No ownership filter (2026-11-22): the bench no longer knows what anyone
+    # holds, so a search answers "which cards do this" and nothing about hands.
 
     # A deck's FORMAT decides legality (`--deck elves` is Modern). The pool's
     # `legal` flag is Commander's, so another format reads its own column.
@@ -280,9 +277,6 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
         card_roles = roles_map.get(name) or []
         if want_roles and not (want_roles & set(card_roles)):
             continue
-        is_owned = bool(expand_faces(name) & have) if owned is not None else None
-        if owned is not None and is_owned is not owned:
-            continue
         # WHAT THE MODEL CAN PRICE. Annotated on every row, never only filtered:
         # an empty list is the answer to "why did this measure as nothing".
         card_for_profile = {"name": name, "type_line": rec["type_line"],
@@ -305,7 +299,6 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
             "set_code": rec.get("set_code"),
             "first_released_at": rec.get("first_released_at"),
             "roles": sorted(card_roles),
-            "owned": is_owned,
             "matched": hits,
             "channels": chans,
             "oracle_text": text,
@@ -319,9 +312,6 @@ def search(identity=None, oracle=None, names=None, types=None, roles=None, cmc_m
         # Same count, named for the format it was checked against.
         meta["illegal_skipped"] = meta.pop("commander_illegal_skipped")
         meta["format"] = spec.legality_key
-    if owned is not None:
-        meta["ownership_filter"] = "owned" if owned else "unowned"
-        meta["collection"] = collection.summary()["distinct_in_boxes"]
     if len(rows) > limit:
         # Say what was dropped. A silently truncated list reads as "that is all
         # of them", which is the claim this tool must never make by accident.
@@ -337,7 +327,9 @@ def analyze(args):
         deck_dir(args.deck)                       # fail early with the good message
         identity = commander_identity(args.deck)
         derived_from = args.deck
-        if not getattr(args, "include_owned", False):
+        # `--include-in-deck` (was `--include-owned` until 2026-11-22; the flag
+        # always meant the deck's own 99, never a box).
+        if not getattr(args, "include_in_deck", False):
             exclude = deck_names(args.deck)
     if getattr(args, "identity", None) is not None:
         if derived_from:
@@ -363,8 +355,6 @@ def analyze(args):
         limit=getattr(args, "limit", None) or MAX_RESULTS,
         allow_game_changers=not getattr(args, "no_game_changers", False),
         require_all=getattr(args, "require_all", False),
-        owned=(True if getattr(args, "owned", False)
-               else False if getattr(args, "unowned", False) else None),
         sets=getattr(args, "set", None) or [],
         released_after=after,
         released_before=before,
@@ -403,8 +393,7 @@ def format_report(doc):
     for r in doc["results"]:
         rank = r["edhrec_rank"]
         gc = " ★GC" if r["game_changer"] else ""
-        own = "" if r.get("owned") is None else ("  ✓owned" if r["owned"] else "  ·buy")
-        out.append(f"  {str(r['mana_cost']) or '—':<12} {r['name']}{gc}{own}")
+        out.append(f"  {str(r['mana_cost']) or '—':<12} {r['name']}{gc}")
         first = r.get("first_released_at")
         out.append(f"    {r['type_line']}  ·  edhrec "
                    f"{rank if rank is not None else 'unranked'}"

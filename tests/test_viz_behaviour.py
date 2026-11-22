@@ -7796,8 +7796,10 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         assert "the goldfish" in body
         assert "what this cannot see" in body
         assert "the mana" in body
-        assert "the bill" in body
-        assert "already own" in body
+        # No bill, no ownership (2026-11-22): the proposal says what moves, never
+        # what is owned or what to buy.
+        assert "the proposal" in body
+        assert "already own" not in body and "to buy" not in body
         # THE ENGINE LIFT WAS DELETED 2026-08-28: it split games by the
         # `required` flags in an AUTHORED declaration, so three defensible
         # wordings of one Ur-Dragon list gave lifts of +0.007, -0.036 and
@@ -9684,9 +9686,7 @@ _NC_REPORT = {
     ],
     "recommendation": {"state": "do not merge", "because": "Guard missed. WARNING — a Forge run lost.",
                        "forge_warning": "WARNING — a Forge run lost.", "notes": [],
-                       "reward": [], "risk": [], "rose": [], "fell": [], "no_call": [],
-                       "cost": {"reads_as": "1 to buy", "mergeable": False,
-                                "free_to_raid": [{"name": "Spire Garden", "decks": ["sisay"]}]}},
+                       "reward": [], "risk": [], "rose": [], "fell": [], "no_call": []},
     "objective": {"axis": "stall", "op": "<=", "value": 0.11, "why": "because"},
     "objective_grade": {"state": "not met", "reading": 0.145, "why": "it did not"},
     "blind_spots": [{"class": "removal", "cards": ["Swords to Plowshares"], "headline": "1 card",
@@ -9698,7 +9698,6 @@ _NC_REPORT = {
              "on_curve": {"G": [0.82, 0.88], "U": [None, None]},
              "colours": [{"colour": "U", "target": [0, 0], "have": [0, 0], "gap": [0, 0], "delta": 0},
                          {"colour": "G", "target": [36, 36], "have": [30, 34], "gap": [-6, -2], "delta": 4}]},
-    "bill": {"counts": {"buy": 1}, "cards": []},
     "forge": {"available": False, "why": "no Forge run"},
     "changes": {},
     "definitions": {"derived": [{"name": "PRIMARY", "what": "The sixteen rows are a family.", "why": "y"}],

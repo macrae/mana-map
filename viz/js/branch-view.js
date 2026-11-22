@@ -85,25 +85,25 @@
    * past the call behind its own title with a count. The ids do not change;
    * every deep link and every test still addresses the section. */
   var CHAPTERS = [
-    ['call', 'The call', 'The study and who decided, the swaps and the why, the bill.'],
+    ['call', 'The call', 'The study and who decided, the swaps and the why.'],
     ['cards', 'The cards', 'What moves, the lines proven on this branch, what Forge’s AI did with each add, the marks at the table.'],
     ['instruments', 'Instruments', 'The goldfish, what it cannot see, the mana, the real table — they report, they never rule.'],
     ['trail', 'The trail', 'How the branch got here, the bench verbs, the deck’s other branches, what the figures mean.']
   ];
   var PLACE = {
-    study: 'call', summary: 'call', bill: 'call',
+    study: 'call', summary: 'call',
     'net-change': 'cards', slotEvidence: 'cards', branchStacks: 'cards', castProofs: 'cards', 'table-marks': 'cards',
     measured: 'instruments', blindSpots: 'instruments', mana: 'instruments', forge: 'instruments', profileFigures: 'instruments',
     trail: 'trail', benchActions: 'trail', slotActions: 'trail', swaps: 'trail', branchSiblings: 'trail', definitions: 'trail'
   };
-  var ORDER = { study: 0, summary: 1, bill: 2,
+  var ORDER = { study: 0, summary: 1,
                 'net-change': 0, slotEvidence: 1, branchStacks: 2, castProofs: 3, 'table-marks': 4,
                 measured: 0, blindSpots: 1, mana: 2, forge: 3, profileFigures: 4,
                 trail: 0, benchActions: 1, swaps: 2, slotActions: 3, branchSiblings: 4, definitions: 5 };
   /* What folds, and how it opens. The study and the proposal stay plain; the
    * goldfish is its own <details> (closed now; the summary says what it saw). */
   var FOLDS = {
-    bill: 'closed', 'net-change': 'closed', branchStacks: 'closed', castProofs: 'closed', 'table-marks': 'closed',
+    'net-change': 'closed', branchStacks: 'closed', castProofs: 'closed', 'table-marks': 'closed',
     blindSpots: 'closed', mana: 'closed', forge: 'closed', profileFigures: 'closed',
     trail: 'closed', benchActions: 'closed', swaps: 'closed', branchSiblings: 'closed', definitions: 'closed'
   };
@@ -146,6 +146,19 @@
     });
   }
 
+  /* A FOLD THE READER OPENED STAYS OPEN ACROSS A RE-RENDER. The bench verbs
+   * rebuild their section after `unstage` and `measure`; without this the fresh
+   * section folded shut under the reader's hand. The state is remembered per
+   * id from the <details> toggle event, which fires for a click and for a
+   * script alike. */
+  var FOLD_STATE = {};
+  document.addEventListener('toggle', function (ev) {
+    var det = ev.target, sec = det && det.parentElement;
+    if (!det || det.tagName !== 'DETAILS' || !sec || !sec.classList || !sec.classList.contains('fold')) return;
+    var host = sec.parentElement && sec.parentElement.tagName === 'DIV' && sec.parentElement.id ? sec.parentElement : sec;
+    FOLD_STATE[host.id || sec.id] = det.open;
+  }, true);
+
   function foldPanels() {
     Object.keys(FOLDS).forEach(function (id) {
       var sec = document.getElementById(id);
@@ -154,7 +167,7 @@
       var h = sec.querySelector(':scope > h2');
       if (!h) return;
       var det = document.createElement('details');
-      if (FOLDS[id] === 'open') det.open = true;
+      if (FOLD_STATE[id] === true || (FOLD_STATE[id] === undefined && FOLDS[id] === 'open')) det.open = true;
       var sum = document.createElement('summary');
       det.appendChild(sum);
       while (sec.firstChild) det.appendChild(sec.firstChild);
@@ -565,270 +578,20 @@
       '<p class="ev">' + esc(f.caveat || '') + '</p></section>';
   }
 
-  /* THE BILL, and the five states are not five kinds of purchase. `elsewhere`
-   * is a card sleeved in another deck — a trade-off, not money — and folding it
-   * into `buy` reads as "spend on something already in the house".
-   *
-   * `free` was carved out of `elsewhere` on 2026-09-12 (#25). A card whose only
-   * holders are broken down or retired costs NOTHING: there is no deck to
-   * unsleeve and nothing to buy, and `source()`'s blocker already excluded it
-   * while this tile still counted it. Measured on ur-dragon/eminence-v3:
-   * elsewhere 6, of which 1 was in `sisay`, retired and in a pile — so the page
-   * said "sleeved in another deck: 6" when five were contested. */
-  var STATE_COPY = {
-    in_deck: 'already in the deck',
-    box: 'in a box — you own these',
-    elsewhere: 'sleeved in a deck that is still together',
-    free: 'loose — its deck is broken down',
-    buy: 'to buy'
-  };
+  /* NO BILL (2026-11-22). The page used to draw five sourcing tiles, a buy list
+   * for Mana Pool and a priced bill here. The bench has no notion of card
+   * ownership: a branch is a list and a decision, and whether its cards are in
+   * the sleeves is the pilot's word at merge. */
 
-  function billPanel(nc, meta) {
-    var bill = nc && nc.bill;
-    if (!bill) return '';
-    var c = bill.counts || {};
-    var owned = (c.in_deck || 0) + (c.box || 0) + (c.elsewhere || 0) +
-                (c.free || 0);
-    var total = Object.keys(c).reduce(function (a, k) { return a + c[k]; }, 0);
-    var tiles = Object.keys(STATE_COPY).map(function (k) {
-      return '<div class="tile s-' + k + '"><div class="k">' + (c[k] || 0) +
-             '</div><div class="t">' + esc(STATE_COPY[k]) + '</div></div>';
-    }).join('');
-    var buy = (bill.cards || []).filter(function (r) { return r.state === 'buy'; });
-    var elsewhere = (bill.cards || []).filter(function (r) {
-      return r.state === 'elsewhere' && !r.free;
-    });
-    var cost = nc.recommendation && nc.recommendation.cost;
-    var rc = cost || {};
-    var raid = rc.free_to_raid || [];
-    var where = elsewhere.length || raid.length
-      ? '<details class="nc-where"><summary>Where the owned cards are</summary>' +
-        cardList('To unsleeve from other decks', elsewhere) +
-        (raid.length ? '<p class="ev">Free to take, because the deck it sits in is ' +
-          'already apart: ' + esc(raid.map(function (x) {
-            return x.name + ' (' + x.decks.join(', ') + ')';
-          }).join('; ')) + '.</p>' : '') + '</details>'
-      : '';
-    return '<section class="panel" id="bill" data-note="' + esc((buy.length ? buy.length + ' to buy' : 'nothing to buy') +
-        ' · own ' + owned + ' of ' + total) + '"><h2>The bill</h2>' +
-      '<div class="tiles">' + tiles + '</div>' +
-      (rc.reads_as ? '<p class="ev">' + esc(rc.reads_as) + '</p>' : '') +
-      (rc.mergeable === false ? '<p class="ev warn">NOT MERGEABLE YET — <code>deck-branch ' +
-        'merge</code> refuses while any card is unsourced. That is a question about ' +
-        'cardboard, not about whether the branch is right.</p>' : '') +
-      '<p class="lede">You already own <b>' + owned + ' of ' + total + '</b>.</p>' +
-      (buy.length
-        ? '<p class="ev bill-price" id="billPrice">' +
-          (cost && typeof cost.buy_cents === 'number' ? pricedLine(cost) : 'pricing…') +
-          '</p>'
-        : '') +
-      '<div class="nc-duo"><div>' + cardList('To buy', buy) + '</div><div>' + buyListBlock(buy) + '</div></div>' + where +
-      '</section>';
-  }
-
-  /* THE BILL IN DOLLARS (2026-10-09). This paragraph used to say "Prices are
-   * stripped from the card corpus by design, so this page cannot give you a
-   * figure" — true of cards.csv, and it stayed true of the page after
-   * `manamap pilot prices` started writing a dated `prices.json` beside each
-   * list. The figure is that file's and nothing else's: dated evidence quoted
-   * with its date and source, never a live lookup, never a graded row.
-   *
-   * Two readers of one file, same arithmetic as `net_change._priced_bill`:
-   * `nm_cents × quantity` over the BUY rows, and a card the file does not
-   * price is NAMED, never counted as zero. `net_change.json` carries the
-   * figure in `recommendation.cost` when `net-change --write` ran after the
-   * prices were written, and that paints first so the line is there without
-   * a fetch; then `wireBillPrice` reads the branch's own `prices.json` and
-   * repaints from it, because the file can be younger than the report (the
-   * usual case the day prices land) or gone since. No file: the command that
-   * writes one. Nothing to buy: no line at all — "≈ $0" is not a figure. */
-  function dollars(cents) {
-    var s = (cents / 100).toFixed(2);
-    return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  function pricedLine(p) {
-    var unpriced = p.buy_unpriced || [];
-    return '<b>≈ $' + dollars(p.buy_cents) + ' to buy</b> (as of ' +
-      esc(p.prices_as_of) + ', ' + esc(p.prices_source) +
-      (unpriced.length
-        ? '; ' + unpriced.length + ' unpriced: ' + esc(unpriced.join(', '))
-        : '') + ')';
-  }
-
-  function noPricesLine(slug, branch) {
-    return 'No prices for this branch yet — ' +
-      '<button class="todo-cmd" data-act="copy-cmd" title="Copy"><code>' +
-      esc('manamap pilot prices ' + slug + ' --branch ' + branch + ' --write') +
-      '</code><span class="todo-copy">copy</span></button> ' +
-      '(Scryfall’s daily USD, or Mana Pool with a token).';
-  }
-
-  /* Mirrors `net_change._priced_bill` — keep the two in step. */
-  function priceBill(prices, buy) {
-    var cents = 0, unpriced = [];
-    buy.map(function (r) { return r.name; }).sort().forEach(function (name) {
-      var row = prices.cards[name] || {};
-      var nm = row.nm_cents;
-      if (typeof nm === 'number' && isFinite(nm)) {
-        cents += nm * (parseInt(row.quantity, 10) || 1);
-      } else {
-        unpriced.push(name);
-      }
-    });
-    return { buy_cents: cents, buy_unpriced: unpriced,
-             prices_as_of: prices.as_of, prices_source: prices.source };
-  }
-
-  function wireBillPrice(slug, branch, buy) {
-    var host = document.getElementById('billPrice');
-    if (!host || !buy.length) return;
-    var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
-               encodeURIComponent(branch) + '/';
-    getJSON(base + 'prices.json').then(function (doc) {
-      var priced = doc && doc.cards && typeof doc.cards === 'object';
-      host.innerHTML = priced ? pricedLine(priceBill(doc, buy))
-                              : noPricesLine(slug, branch);
-    });
-  }
-
-  /* THE BILL AS A PASTE (Area B4, 2026-10-09). Mana Pool's mass entry
-   * (manapool.com/add-deck) takes a pasted decklist and nothing else — no URL
-   * prefill — so the most this page can do is put the text on the clipboard and
-   * open the page. With a local server the text is the server's
-   * (`branch/buy-list`, the same function `manamap pilot buy-list --json`
-   * prints); on the static site it is computed here from the bill's BUY rows
-   * plus the branch's cards.json for the printings, and shown in a <pre> with a
-   * plain Copy. Both forms go through the same line shape as
-   * `check_in.decklist_line`: `N Name`, or `N Name (SET) CN`, `*F*` riding along. */
-  var MANAPOOL_URL = 'https://manapool.com/add-deck';
-
-  function buyListBlock(buy) {
-    if (!buy.length) return '';
-    return '<div class="buylist" id="buyList">' +
-      '<h3>Buy list <span class="ev">(for Mana Pool)</span></h3>' +
-      '<p class="ev"><label><input type="checkbox" id="buyExact"> exact printings ' +
-      '<code>N Name (SET) CN</code></label></p>' +
-      '<p class="ev buylist-hint">paste there, choose exact printings</p>' +
-      '<div class="buylist-body"><p class="ev">preparing…</p></div>' +
-      '</div>';
-  }
-
-  function buyLine(r, exact) {
-    var s = (r.quantity || 1) + ' ' + r.name;
-    if (exact && r.set && r.collector_number) {
-      s += ' (' + String(r.set).toUpperCase() + ') ' + r.collector_number;
-    }
-    if (r.foil) s += ' *F*';
-    return s;
-  }
-
-  /* The deck page's copy idiom (`Deck.copy`): `navigator.clipboard` needs a
-   * secure context, and the failure is reported rather than looking like a
-   * button that does nothing. Resolves to whether it copied. */
+  /* The clipboard, for a command handed to the reader (`[data-act="copy-cmd"]`).
+   * `navigator.clipboard` needs a secure context; a failure is reported, never
+   * a button that does nothing. */
   function copyText(text) {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text).then(function () { return true; },
                                                       function () { return false; });
     }
     return Promise.resolve(false);
-  }
-
-  function wireBuyList(slug, branch, buy) {
-    var host = document.getElementById('buyList');
-    if (!host) return;
-    var body = host.querySelector('.buylist-body');
-    var exactBox = document.getElementById('buyExact');
-    function exact() { return !!(exactBox && exactBox.checked); }
-    function say(btn, ok) {
-      var s = host.querySelector('.buylist-say');
-      if (!s) return;
-      s.textContent = ok ? 'copied' : 'could not copy — select and copy';
-      setTimeout(function () { s.textContent = ''; }, 2400);
-    }
-
-    if (window.Api && Api.ready && Api.has('branch/buy-list')) {
-      body.innerHTML =
-        '<button class="todo-cmd" data-act="buy-copy">' +
-        '<code>Copy for Mana Pool</code><span class="todo-copy buylist-say"></span></button>';
-      host.addEventListener('click', function (ev) {
-        var btn = ev.target.closest && ev.target.closest('[data-act="buy-copy"]');
-        if (!btn) return;
-        btn.disabled = true;
-        Api.call('branch/buy-list', { slug: slug, branch: branch, exact: exact() })
-          .then(function (doc) {
-            return copyText(doc.text || '').then(function (ok) {
-              say(btn, ok);
-              // `noopener`: the shop's tab must not get a handle on this page.
-              window.open(MANAPOOL_URL, '_blank', 'noopener');
-            });
-          })
-          .catch(function (e) {
-            btn.insertAdjacentHTML('afterend',
-              '<p class="ev todo-blocked">' + esc(e.message) + '</p>');
-          })
-          .then(function () { btn.disabled = false; });
-      });
-      return;
-    }
-
-    // THE STATIC SITE: no server, so the printings come from the branch's own
-    // cards.json and the list is shown rather than only copied.
-    var base = DATA + 'decks/' + encodeURIComponent(slug) + '/branches/' +
-               encodeURIComponent(branch) + '/';
-    getJSON(base + 'cards.json').then(function (doc) {
-      var byName = {};
-      ((doc && doc.cards) || []).forEach(function (c) {
-        if (!c || !c.name) return;
-        byName[c.name] = c;
-        String(c.name).split(' // ').forEach(function (f) {
-          if (!byName[f]) byName[f] = c;
-        });
-      });
-      var rows = buy.map(function (r) {
-        var c = byName[r.name] || {};
-        return { name: r.name, quantity: c.quantity || 1, set: c.set,
-                 collector_number: c.collector_number, foil: !!c.foil };
-      });
-      function text() {
-        return rows.map(function (r) { return buyLine(r, exact()); }).join('\n');
-      }
-      function paint() {
-        body.innerHTML =
-          '<button class="todo-cmd" data-act="buy-copy"><code>Copy</code>' +
-          '<span class="todo-copy buylist-say"></span></button>' +
-          '<pre class="cmd buylist-text">' + esc(text()) + '</pre>' +
-          (doc ? '' : '<p class="ev">No cards.json on this branch, so no printings: ' +
-                      'the plain form only.</p>');
-      }
-      paint();
-      if (exactBox) exactBox.addEventListener('change', paint);
-      host.addEventListener('click', function (ev) {
-        var btn = ev.target.closest && ev.target.closest('[data-act="buy-copy"]');
-        if (!btn) return;
-        copyText(text()).then(function (ok) { say(btn, ok); });
-      });
-    });
-  }
-
-  /* Names through `card()`, which is `Shell.cardLink`. This list used to build
-   * its own `cardref` + `card-pop` markup — a second hover mechanism living in
-   * one function on one panel, while every other card name on the page was
-   * inert text. One idiom, one home. */
-  function cardList(title, rows) {
-    if (!rows.length) return '';
-    return '<h3>' + esc(title) + ' <span class="ev">(' + rows.length + ')</span></h3>' +
-      '<ul class="cardlist">' + rows.map(function (r) {
-        return '<li>' + card(r.name) +
-          (r.where && r.where.length
-            ? ' <span class="ev">in ' + esc(r.where.map(function (w) {
-                /* One shape, two kinds: a box names itself, a deck names its
-                 * slug and whether it is sleeved or already in a pile. */
-                return w.kind === 'box' ? w.name
-                  : w.slug + (w.locked ? ' (locked)' : '') +
-                    (w.apart ? ' (in a pile)' : '');
-              }).join(', ')) + '</span>' : '') + '</li>';
-      }).join('') + '</ul>';
   }
 
   function trailPanel(meta) {
@@ -839,8 +602,7 @@
            esc(meta.base_version) + '.</p>';
     if (!commits.length) {
       out += '<p class="ev">No commits yet. A commit freezes one exact list with ' +
-             'a message — and is allowed while cards are still unsourced, ' +
-             'because the gap between deciding and merging is cardboard.</p>';
+             'a message; the merge is the pilot\u2019s word.</p>';
     }
     commits.forEach(function (c, i) {
       out += '<div class="commit"><div class="ev">#' + (i + 1) + ' &nbsp; ' +
@@ -1056,8 +818,7 @@
     if (!p) return '';
     /* The live STATE is derived server-side by `deck_branch.branch_state` and
      * travels on `info.json`; this page has only `branch.json`, so it renders
-     * what the proposal FROZE and leaves blocked-ness to the deck page. Whether
-     * a card is in a box is a fact about a collection this page cannot read. */
+     * what the proposal FROZE and leaves the state word to the deck page. */
     var a = p.accepted_on || {};
     var out = '<section class="panel proposal ' +
       (STATE_CLASS[meta.state] || 'unresolved') + '">' +
@@ -1219,14 +980,6 @@
       goal = esc(sum.title) + '.';
     }
     if (goal) out += '<dt>The goal</dt><dd>' + goal + '</dd>';
-    // THE BILL IN ONE LINE; the panel with the tiles and the buy list folds below.
-    var bc = (nc && nc.bill && nc.bill.cards) || [];
-    var toBuy = bc.filter(function (x) { return x.state === 'buy'; }).length;
-    if (bc.length) {
-      out += '<dt>The bill</dt><dd>' + (toBuy ? '<b>' + toBuy + '</b> card' + (toBuy === 1 ? '' : 's') + ' to buy'
-        : 'nothing to buy') + ' of ' + bc.length + ' that move · <a href="#bill">the bill</a>' +
-        (nc && !nc.recommendation ? '' : '') + '</dd>';
-    }
     if (!nc) {
       out += '<dt>The goldfish</dt><dd class="ev">has not read this branch — one instrument absent; the study above is the decision. ' +
         '<code>manamap pilot net-change ' + esc(slug) + ' --branch ' + esc(name) + ' --write</code></dd>';
@@ -1306,7 +1059,7 @@
         'The shipped data tops out at 0.95.">' + esc(r.strength.toFixed(2)) +
         '</span> <span class="out">' + card(r.out) + '</span>' +
         ' <span class="arrow">&rarr;</span> <span class="in">' + card(r['in']) +
-        '</span> <span class="src">' + esc(r.source || 'buy') + '</span></div>';
+        '</span></div>';
       (r.gains || []).forEach(function (g) {
         out += '<span class="badge gain">+ ' + esc(g) + '</span>';
       });
@@ -1361,8 +1114,6 @@
    * Lands and spells stay apart for the reason the evidence does: a spell swap
    * moves the sampled rows, a land swap moves only the deterministic mana
    * block, and rendered together a land pass borrows a spell pass's credit. */
-  var STATE_WORD = { buy: 'buy', box: 'in a box', elsewhere: 'in another deck',
-                     in_deck: 'already here' };
 
   /* THE REASON PRINTS ONCE, against the card that was argued FOR. A staged swap
    * is one decision about two cards; printing its `why` on both sides shows the
@@ -1372,9 +1123,7 @@
   function diffRows(rows, sign) {
     var adding = sign === '+';
     return '<ul class="difflist">' + rows.map(function (r) {
-      var tag = r.state
-        ? '<span class="chip ' + esc(r.state) + '">' +
-          esc(STATE_WORD[r.state] || r.state) + '</span>' : '';
+      var tag = '';   // no sourcing word on a row (2026-11-22): the bench keeps no inventory
       var link = r.pair
         ? '<span class="paired">' + (adding ? '\u2190 ' : '\u2192 ') +
           card(r.pair) + '</span>' : '';
@@ -1443,9 +1192,7 @@
         ? '<img data-src="' + esc(Shell.cardImageUrl(r.name, undefined, branchRows[r.name])) + '" alt="' +
           esc(r.name) + '">'
         : '';
-      var tag = r.state
-        ? '<span class="chip ' + esc(r.state) + '">' +
-          esc(STATE_WORD[r.state] || r.state) + '</span>' : '';
+      var tag = '';   // no sourcing word on a row (2026-11-22): the bench keeps no inventory
       return '<div class="lib-tile difftile ' + (adding ? 'add' : 'del') + '">' +
              '<a class="lib-open"' + href + ' title="' + esc(r.name) + '">' + img +
              '<span class="lib-name">' + esc(r.name) + '</span></a>' +
@@ -1725,7 +1472,7 @@
           'A net_change.json exists but did not load (' + failed + '). This is not an unmeasured branch; re-running only replaces the file.',
           'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write') : '';
         document.getElementById('panels').innerHTML = summaryPanel(meta, nc, slug, name) + (nc
-          ? (tablePanel(nc, meta) + blindSpotsPanel(nc) + manaPanel(nc) + billPanel(nc, meta) +
+          ? (tablePanel(nc, meta) + blindSpotsPanel(nc) + manaPanel(nc) +
              forgePanel(nc) + netChangePanel(meta, nc) +
              '<div id="slotEvidence"></div>' + trailPanel(meta) +
              benchPanel(meta, slug, name) + '<div id="slotActions"></div>' + definitionsPanel(nc))
@@ -1748,13 +1495,6 @@
         if (window.MutationObserver && slot && !slot._navWatch) {
           slot._navWatch = new MutationObserver(function () { arrange(); foldPanels(); paintNav(); });
           slot._navWatch.observe(slot, { childList: true, subtree: true });
-        }
-        if (nc && nc.bill) {
-          var buy = (nc.bill.cards || []).filter(function (r) {
-            return r.state === 'buy';
-          });
-          wireBuyList(slug, name, buy);
-          wireBillPrice(slug, name, buy);
         }
         // THE DEEP LINK LANDS (2026-10-20): the workbench links `#measured`,
         // `#net-change` and `#swaps`; the browser's own jump fired before
@@ -1928,9 +1668,7 @@
     __proposalPanel: proposalPanel,
     __objectivePanel: objectivePanel,
     __verdictPanel: verdictPanel,
-    __swapsPanel: swapsPanel,
-    __buyLine: buyLine,
-    __priceBill: priceBill
+    __swapsPanel: swapsPanel
   };
 
   /* WHAT THIS TAB HAS OPEN, for Jarvis (PRD v2 Step 7; `page-state.js`): the
