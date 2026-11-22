@@ -24,6 +24,10 @@ STEPS = [
     ("power-creep", "manamap.analysis.power_creep", "Step 11: Build obsolescence index"),
     ("cluster-regions", "manamap.analysis.cluster_regions", "Step 12: Cluster + name map regions"),
     ("card-roles", "manamap.analysis.card_roles", "Step 13: Classify deckbuilding roles"),
+    # The interaction space (2026-11-22): every card's events from its Forge script,
+    # then a 128-d matrix in corpus order. Needs only cards.csv and Forge; without
+    # Forge it rebuilds the matrix from the committed card_events.json.
+    ("interaction", "manamap.analysis.interaction", "Step 13b: Interaction space from card events"),
     # Depends on embeddings, synergy, obsolescence AND card-roles, so it has to come
     # after all of them — it is the last producer in the chain.
     ("viz-index", "manamap.export.viz_index", "Step 14: Discovery index + neighbour tables"),

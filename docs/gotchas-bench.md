@@ -3709,7 +3709,7 @@ wrong first attempt, the number — is in the page named beside it.
 ```bash
 manamap run                   # full 15-step pipeline (steps 1 & 7 need internet)
 manamap run --from STEP       # resume from a step
-manamap <step>                # single step; `manamap --help` lists all 28 top-level subcommands
+manamap <step>                # single step; `manamap --help` lists all 29 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # fast analysis-only refresh (no retrain)
 manamap pilot <cmd>           # the bench (160 pilot subcommands); `manamap pilot --help`

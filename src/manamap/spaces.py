@@ -126,6 +126,13 @@ SPACES = {
         note="colour and type only, 3.89 of 128 dimensions in use. Feeds the "
              "default map; NEVER a similarity source — it knows only colour and "
              "type, so its neighbours are arbitrary same-colour cards."),
+    "interaction": Space(
+        slug="interaction", label="interaction (typed events)",
+        npy=config.DATA_DIR / "embeddings_interaction.npy",
+        bin=None, projection=None, regions=None, neighbours=None,
+        note="cards alike by the events their Forge scripts consume and produce — "
+             "TF-IDF over signature tokens, truncated SVD to 128. Built for function; "
+             "a vanilla or keyword-only card is a zero row and has no neighbours."),
     "text": Space(
         slug="text", label="text baseline (frozen MiniLM)",
         npy=config.TEXT_EMBEDDINGS_PATH,
@@ -134,6 +141,11 @@ SPACES = {
              "for commander search; nothing is exported from it, and its 384 "
              "dims would misparse against the frontend's hardcoded 128."),
 }
+
+#: THE INTERACTION SPACE (2026-11-22; analysis/interaction.py). Not a default and not
+#: browsable yet: `deck_map` and `similar-cards --space interaction` read it by name, and
+#: `DEFAULT` moves only when `eval_interaction` says it beats the incumbent.
+INTERACTION = "interaction"
 
 #: Spaces a browser is pointed at — since 2026-10-10 exactly one, `UI`. The
 #: function space's browser files stay tracked (nothing deletes them) but no page

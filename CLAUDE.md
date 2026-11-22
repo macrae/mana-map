@@ -109,7 +109,7 @@ The annotated block this file used to carry, measurements included, is kept verb
 end of `docs/gotchas-bench.md`.
 
 ```bash
-manamap run [--from STEP]     # the 15-step card pipeline; `manamap --help` lists all 28 top-level subcommands
+manamap run [--from STEP]     # the 15-step card pipeline; `manamap --help` lists all 29 top-level subcommands
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # analysis-only refresh, no retrain
 
