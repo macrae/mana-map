@@ -360,7 +360,8 @@ def _effect_chain(svar_name, svars, seen=None):
     api = params.get("DB") or params.get("SP") or params.get("AB")
     if api:
         out.append((api, params))
-    for nxt in (params.get("SubAbility"), params.get("Execute")):
+    for nxt in (params.get("SubAbility"), params.get("Execute"), params.get("RepeatSubAbility"),
+                params.get("TrueSubAbility"), params.get("FalseSubAbility")):
         if nxt:
             out.extend(_effect_chain(nxt, svars, seen))
     if params.get("Choices"):
@@ -474,15 +475,22 @@ def _trigger(doc, body, svars):
     if not events:
         doc["unmapped"].append(f"trigger:{mode}")
         return
+    from_source = not (params.get("ValidCard") or params.get("ValidCards") or params.get("ValidPlayer"))
     filt = params.get("ValidCard") or params.get("ValidCards") or params.get("ValidPlayer") \
-        or params.get("ValidSource") or ""
+        or params.get("ValidSource") or params.get("ValidAttackers") or params.get("ValidBlocker") or ""
     actor = None
-    for key in ("ValidActivatingPlayer", "ValidPlayer"):
-        if params.get(key):
-            actor = "opponent" if "Opponent" in params[key] else ("you" if "You" in params[key] else "player")
+    for key in ("ValidActivatingPlayer", "ValidPlayer", "ValidTarget"):
+        if params.get(key) and actor is None:
+            v = params[key]
+            actor = "opponent" if "Opponent" in v else ("you" if v.split(".")[0] in ("You", "Player.You") or "YouCtrl" in v else None)
+            if actor is None and key == "ValidTarget":
+                actor = "player" if "Player" in v else None
     filters = parse_filter(filt)
-    if actor is None:
-        # `Card.OppOwn` / `Card.YouCtrl` on a Drawn or Discarded trigger name whose event it is.
+    if actor is None and not from_source:
+        # `Card.OppOwn` / `Card.YouCtrl` on a Drawn or Discarded trigger name whose
+        # event it is. A ValidSource filter does NOT: "a creature you control deals
+        # damage" is an event that happens to the TARGET (an opponent), so the actor
+        # is read from ValidTarget above or left open.
         for alt in filters:
             if alt.get("controller"):
                 actor = alt["controller"]
@@ -552,7 +560,8 @@ def _replacement(doc, body, svars):
     ev_name = params.get("Event", "")
     events = _events_for(_REPLACEMENTS, ev_name, params)
     if not events:
-        doc["unmapped"].append(f"replacement:{ev_name}")
+        if ev_name not in ("Moved",):                   # enters-tapped: not an event, not a gap
+            doc["unmapped"].append(f"replacement:{ev_name}")
         return
     actor = None
     for key in ("ValidPlayer", "ValidSource", "ActivePlayer"):

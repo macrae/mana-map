@@ -314,6 +314,10 @@ PILOT_STEPS = [
      "Form-check an engine model (stages, completeness, verified_by re-checked)"),
     ("deck-status", "manamap.pilot.deck_status",
      "Lifecycle completeness + staleness: is this deck finished, and is any of it stale?"),
+    ("engine-graph", "manamap.pilot.engine_graph",
+     "THE ENGINE, COMPUTED: typed events between cards from their Forge scripts — stages, "
+     "components with hypergeometric odds, lines, single points of failure; --write builds "
+     "engine.json v2 and carries the authored reading forward"),
     ("engine-facts", "manamap.pilot.engine_facts",
      "Deterministic engine brief: declaration + verified pairings + map scatter"),
     ("deck-map", "manamap.pilot.deck_map",
@@ -373,7 +377,7 @@ _DECK_COMMANDS = {
     "cache-snapshot", "cache-rerecord",
     "artist-credits",
     "model-coverage", "resource-scan",
-    "bracket-check", "deck-combos", "validate-deck-combos", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
+    "bracket-check", "deck-combos", "validate-deck-combos", "build-deck", "validate-build", "deck-facts", "deck-audit", "deck-map", "deck-status", "engine-facts", "engine-graph", "validate-engine", "merge-deck-map", "validate-deck-map", "deck-history",
     "mana-analysis", "validate-strategic-frame", "scaffold-targets",
     "validate-diagnosis", "validate-goldfish-targets",
     "validate-recon",
@@ -564,6 +568,12 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
             cmd.add_argument("--out", default=None,
                              help="Also write JSON here (a view, never tracked)")
+        if name == "engine-graph":
+            cmd.add_argument("--json", action="store_true", dest="as_json")
+            cmd.add_argument("--write", action="store_true",
+                             help="write data/decks/<slug>/engine.json (v2), the reading copied forward")
+            cmd.add_argument("--abilities", nargs="*", default=None, metavar="CARD",
+                             help="print every card's parsed abilities (or just the cards named)")
         if name == "engine-facts":
             # Both flags exist in `engine_facts.main` and neither was registered,
             # so the agent this brief was built for could not reach the arrays it

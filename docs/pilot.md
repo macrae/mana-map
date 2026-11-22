@@ -524,6 +524,10 @@ manamap pilot deck-map <slug>           # the constellation: local layout + citi
 manamap pilot merge-deck-map <slug>     # cartographer's names in — `label`/`gloss` ONLY
 manamap pilot validate-deck-map <slug>  # names distinct, membership untouched
 manamap pilot engine-facts <slug> [--json] [--out D/]  # the deterministic engine brief
+manamap pilot engine-graph <slug> [--branch B] [--json] [--write] [--abilities [CARD …]]
+                                        # THE ENGINE, COMPUTED (2026-11-22): typed events between cards from
+                                        #   their Forge scripts — stages, components with odds, lines as shapes,
+                                        #   single points of failure; --write builds engine.json v2, the reading kept
 manamap pilot validate-engine <slug>    # stages, completeness, verified_by re-checked
 manamap pilot cache-rebless <slug>             # re-record every STALE_OK routine, zero spawns
 manamap pilot impact <slug> [--json]           # card/figure/target/zone staleness report (free)
@@ -2520,6 +2524,60 @@ Garenbrig untapped. Both rendered as solid green, the mark for proof. A passing 
 evidence a BOARD resolved a certain way; reading it as causation is inference, and inference
 is the critic's job. Do not close it with string matching — the same wrong line survives a
 rephrase.
+
+### The engine, computed (`engine-graph`, `engine.json` v2) — 2026-11-22
+
+`docs/research/engine-model.md` is the argument; `manamap pilot engine-graph <slug> [--branch B]
+[--json] [--write] [--abilities [CARD …]]` is the code. **An engine is a graph of typed events
+between cards, computed from what the cards say they do.** Every card's abilities are read from
+its Forge script by `ability_graph` into the closed vocabulary `config.ENGINE_EVENTS` (36 kinds;
+each names the Forge trigger Modes that consume it, the effect APIs that produce it, the
+replacement events that scale it and the goldfish channel that reads it — the goldfish's
+channels and the graph's events are ONE vocabulary, a test holds them together). A card Forge
+has no script for falls back to the goldfish's readers and is labelled `reader: goldfish`; a
+Mode or API outside the registry is listed under `coverage.unmapped_forge_names` and makes no
+event; a filter property outside `ENGINE_FILTER_PROPERTIES` leaves the edge it would make
+`proven: false` rather than silently kept or dropped. The whole fleet parses in about four
+seconds, every card read; a deck builds in about a second.
+
+**The record.** `graph.nodes` (the 99, the commanders in zone `command`, the tokens they make
+from `res/tokenscripts` in zone `token`, each with its parsed abilities and a `coverage`
+block); `graph.edges` — `feeds` (a producer's event accepted by a consumer's filter, with
+`via` naming the token or body it travels on), `supplies` (a body → the BODIES stock → an
+outlet whose cost accepts it), `fills` (an event adding to HAND / BODIES / MANA / LIFE /
+GRAVEYARD), `makes` (a maker → its token), `ends` (a terminal event aimed at an opponent);
+`graph.scales` and `graph.protects` (replacements, statics and protective pumps — modifiers,
+never edges: a doubler is a property of an event, not a card that feeds one); `components`,
+one per consumed event, with producers, consumers, the ones the deck itself feeds, the
+unproven producers, the modifiers, and `activation` through `deck_audit._component` (the same
+hypergeometric odds `deck-audit` prints); `stages` by `config.ENGINE_STAGE_RULES` (first match
+is the stage, `placed[card].also` keeps the rest, every card placed or `unplaced` with a why);
+`lines` as SHAPES — distinct event sequences from an ignition to the terminal with the cards at
+every hop (Edgar's `CAST › BODIES › DIES › LIFE_LOSS` is one line with ten starts, nine
+outlets and five drains, not a hundred and eighty pairs), an implicit cast allowed only as the
+first hop, a bare body's combat never the end, ranked ✓ first then by hop availability;
+`spof` (cut vertices of the engine subgraph with stocks passing through, single producers and
+single deck-fed consumers, an unprotected commander); `coverage`; `stamps`; `_meta` with the
+list's sha, the archive's content digest (`forge_cards.cardsfolder_digest`), the parser
+version and the goldfish's `model_version`. The decklist sha is also at the top level, where
+`deck-status` reads it.
+
+**The three tiers, never blended.** ◆ everything above, byte-identical on every run.
+✓ a line whose cards a checker-passed stack names (`engine_facts.verified_pairings`; the
+documented gap stands — a stack that NAMES a line's cards does not thereby SUPPORT it, and
+that reading stays the critic's). ★ `reading`: thesis, named lines, stage overrides with a
+why, open questions, the critic's verdict, `written_for` the list it was written for and
+`stale` when that is not the current one. `--write` copies the reading forward untouched; a
+v1 file's `thesis`, `lines[].note` (keyed to the nearest computed line by card overlap, else
+kept under `unmatched_v1_lines`), `open_questions` and `critic` become the first reading
+(`engine_graph.migrate_reading`). The stage rules are literal and the reading overrides them
+one card at a time: a land is mana first whatever else it does; a card whose only out-edge is
+its own cast is a member of the CAST component's class, never ignition; the commander in the
+command zone is ignition when the deck consumes what it makes or fills a stock an outlet
+draws on; a multiplier of a terminal is output; a card fed by the engine that fills HAND is
+conversion. The sharknado and edgar readings the memo worked by hand come out of the code:
+wheels into Shabraz and Brallin stamped by stacks 006, 007 and 009, Edgar the single
+consumer of CAST and the loop above.
 
 ## The constellation (`deck_map.json`, tier ◆ + ★ names)
 

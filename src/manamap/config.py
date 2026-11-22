@@ -2023,7 +2023,7 @@ ENGINE_EVENTS = {
             "effects": [("ChangeZone", {"Destination": "Battlefield"}),
                         ("ChangeZoneAll", {"Destination": "Battlefield"}),
                         "Token", "CopyPermanent", "Clone", "Amass", "Investigate"],
-            "replacements": ["Moved"], "channel": "bodies"},
+            "replacements": [], "channel": "bodies"},    # `Moved` is enters-tapped, not a doubler
     "DIES": {"triggers": [("ChangesZone", {"Origin": "Battlefield", "Destination": "Graveyard"}),
                           ("ChangesZoneAll", {"Origin": "Battlefield", "Destination": "Graveyard"}),
                           "Sacrificed", "Exploited", "Destroyed"],
@@ -2094,6 +2094,14 @@ ENGINE_EVENTS = {
 #: Events that end the game when aimed at an opponent; a node that produces one is
 #: an OUTPUT, and a line ends there.
 ENGINE_TERMINALS = tuple(k for k, v in ENGINE_EVENTS.items() if v.get("terminal"))
+#: The stage rules in the order they are tried; the first that matches is the card's
+#: stage and the rest are its `also[]` (memo rule 11). `engine_graph._stage_of` is
+#: the one home of each rule's test; `poh_spec.STAGE_ORDER` keeps the page's order.
+ENGINE_STAGE_RULES = ("mana", "protection", "ignition", "wincon", "conversion", "fuel", "fodder", "output")
+#: A line is a simple path ignition -> terminal of at most this many hops, and the
+#: record keeps at most ENGINE_MAX_LINES of them, verified first.
+ENGINE_LINE_MAX_DEPTH = 5
+ENGINE_MAX_LINES = 40
 #: The filter properties the parser turns into predicates. A property outside this
 #: list leaves the filter UNPARSED and the edge it would make unproven.
 ENGINE_FILTER_PROPERTIES = (
