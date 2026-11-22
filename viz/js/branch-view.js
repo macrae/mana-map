@@ -200,7 +200,9 @@
         + ((cov.dark || []).length ? ' · ' + cov.dark.length + ' DARK' : '')
         + ((cov.invisible || []).length ? ' · ' + cov.invisible.length + ' invisible' : '')
       : 'coverage of the changed cards not recorded on this report';
-    return '<details class="panel nc-profile instrument wide" id="measured">' +
+    // OPEN by default: the fold is for the reader who has seen enough; hidden figures
+    // would also be figures a text search cannot find.
+    return '<details class="panel nc-profile instrument wide" id="measured" open>' +
       '<summary><h2>The goldfish — one instrument, ' + esc(covLine) + ' <span class="asterisk" title="no opponents, no blockers, no removal: the rows are one input, never the call">*</span></h2>' +
       '<p class="ev">No opponents, no blockers, no removal. Read as a whole profile, never one row; the study is the decision.</p></summary>' +
       '<p class="nc-count"><span class="c-better"><b>' + n.better + '</b> better</span>' +

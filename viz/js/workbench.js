@@ -605,7 +605,7 @@
         + (lb.study ? '<span class="t-sub">study ' + esc(lb.study.id) + ' ' + esc(lb.study.decision || 'open')
             + (lb.study.decided_by && lb.study.decided_by.length ? ' (' + esc(lb.study.decided_by.join(', ')) + ')' : '') + '</span>'
           : '<span class="t-sub">no study</span>')
-        + (lb.verdict && lb.verdict.state ? '<span class="t-sub">goldfish: ' + esc(lb.verdict.word || lb.verdict.state) + '</span>' : '')
+        + (lb.verdict && lb.verdict.state ? '<span class="t-sub">goldfish: ' + esc(window.guardWord ? window.guardWord(lb.verdict) : (lb.verdict.word || lb.verdict.state)) + '</span>' : '')
         + (live.length > 1 ? '<span class="t-sub"><a href="deck.html?deck=' + slug + '#panel-branches">+' + (live.length - 1) + ' more</a></span>' : '');
     }
 

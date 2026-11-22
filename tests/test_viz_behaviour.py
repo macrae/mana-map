@@ -5105,7 +5105,10 @@ def test_the_fleet_table_has_a_branch_column(browser, viz_server):
         heads = [th.text_content() for th in page.locator("table.wb-table thead th").all()]
         assert heads[5] == "Branch" and len(heads) == 9, heads
         cell = page.locator("tr.t-head").first.locator("td.t-branch")
-        assert "⑂ x" in cell.text_content() and "do not merge" in cell.text_content() and "+1 more" in cell.text_content()
+        # the cell names the branch, the goldfish's DESCRIPTIVE read (never the legacy
+        # imperative), and the rest of the live branches
+        assert "⑂ x" in cell.text_content() and "guard not met" in cell.text_content() and "+1 more" in cell.text_content()
+        assert "do not merge" not in cell.text_content()
         assert cell.locator("a").first.get_attribute("href") == "branch.html?deck=alpha&branch=x"
         assert page.locator("tr.t-nextrow td.t-next").first.get_attribute("colspan") == "9"
         assert page.locator("tr.t-head").nth(1).locator("td.t-branch").text_content().strip() == "—"
@@ -9722,7 +9725,7 @@ def test_the_report_draws_what_it_used_to_drop(browser, viz_server):
         mana = page.inner_text("#mana")
         assert "green" in mana.lower() and "88%" in mana and "blue" not in mana.lower()
         assert "Guard not met" in page.inner_text("#guard") and "0.145" in page.inner_text("#guard")
-        assert "do not merge" in page.inner_text("#verdict")
+        assert "guard not met" in page.inner_text("#verdict") and "do not merge" not in page.inner_text("#verdict")
         assert "The 2 rows are a family" in page.inner_text("#definitions")
     finally:
         page.close()

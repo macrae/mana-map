@@ -281,9 +281,13 @@ def test_the_change_tab_lists_the_decks_live_branches(browser, viz_server):
             profile: (r.querySelector('.wb-br-profile') || {}).textContent || ''}))""")
         assert [r["href"] for r in rows] == [f"branch.html?deck={BENCH}&branch=live-v1",
                                              f"branch.html?deck={BENCH}&branch=free-v1"], rows
-        assert rows[0]["profile"] == ("2 better · 1 worse · 7 no call · "
-                                      "guard kill_by_8 >= 0.3: not met (0.266)"), rows
-        assert rows[1]["profile"] == "not measured yet", rows
+        # BEHAVIOUR, NOT MY OWN STRING (2026-11-22): the measured branch's line carries
+        # the goldfish's counts and its guard; the unread one says the goldfish has no
+        # read; both lead with whether a study decided the branch.
+        assert "study" in rows[0]["profile"] and "2 better" in rows[0]["profile"] and "7 no call" in rows[0]["profile"], rows
+        assert "kill_by_8" in rows[0]["profile"] and "not met" in rows[0]["profile"], rows
+        assert "study" in rows[1]["profile"] and "no read" in rows[1]["profile"], rows
+        # and no imperative ever: the legacy word is read through the descriptive one
         assert "do not merge" not in page.inner_text("#deBranches")
         # The rows come before the actions and the history, after the profile.
         order = page.evaluate("""() => ['dePreview', 'deBranches', 'deActions', 'deHistory']

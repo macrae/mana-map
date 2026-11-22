@@ -186,6 +186,16 @@ window.BranchRows = (function () {
     });
   }
 
+  // The guard's word, descriptive in either vocabulary (`net_change.LEGACY_STATES`,
+  // mirrored): a page never prints an imperative like "do not merge".
+  var GUARD_WORD = {
+    'merge': 'guard met, nothing fell', 'a trade': 'guard met, rows fell',
+    'do not merge': 'guard not met', 'inconclusive': 'guard unresolved', 'no objective': 'profile only'
+  };
+  function guardWord(v) { return v.word || GUARD_WORD[v.state] || v.state || ''; }
+  // One reader of the guard's word for every page (workbench.js uses it too).
+  window.guardWord = guardWord;
+
   function profileLine(b) {
     var v = b.verdict;
     var bits = [];
@@ -196,7 +206,7 @@ window.BranchRows = (function () {
       ? 'study ' + s.id + ' ' + (s.decision || 'open') + (s.decided_by && s.decided_by.length ? ' (' + s.decided_by.join(', ') + ')' : '')
       : 'no study yet');
     if (v && (v.rose != null || v.fell != null)) {
-      bits.push('goldfish: ' + (v.word || v.state || '') + ' — ' + (v.rose || 0) + ' better · ' + (v.fell || 0) + ' worse · ' + (v.no_call || 0) + ' no call');
+      bits.push('goldfish: ' + guardWord(v) + ' — ' + (v.rose || 0) + ' better · ' + (v.fell || 0) + ' worse · ' + (v.no_call || 0) + ' no call');
     } else {
       bits.push('goldfish: no read');
     }
