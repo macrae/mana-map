@@ -505,6 +505,9 @@ def write_manifest(entries):
                                   "stack_cards", "published", "status",
                                   "sim_runs", "experiments", "prescriptions",
                                   "decision_files", "has", "branches", "branches_open",
+                                  # THE STUDIES (2026-11-21): count, open, latest — the decision
+                                  # the landing page leads with, before an instrument's word.
+                                  "studies",
                                   # Every name and face in the list (the Atlas pill).
                                   "cards",
                                   # The workbench landing: art for the rack, and the

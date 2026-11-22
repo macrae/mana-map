@@ -721,7 +721,9 @@ def fleet(live=False):
 
 def _fleet_main(args):
     live = bool(getattr(args, "live", False))
-    rows = fleet(live=live)
+    # `fleet()` with no argument when not live: a test patches `fleet` with a
+    # zero-argument stand-in, and the default path must still reach it.
+    rows = fleet(live=True) if live else fleet()
     if getattr(args, "as_json", False):
         print(json.dumps({"decks": rows}, indent=2))
         return
