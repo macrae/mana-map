@@ -139,7 +139,7 @@
  *   13       `purpose`: a teaching deck has its own rack (2026-11-03). A cached
  *            manifest without it files the five in Brewing.
  */
-window.MANIFEST_VERSION = 13;
+window.MANIFEST_VERSION = 14;
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── A branch's state badge — ONE home (2026-10-20) ──────────────────────────
@@ -189,10 +189,16 @@ window.BranchRows = (function () {
   function profileLine(b) {
     var v = b.verdict;
     var bits = [];
+    // THE STUDY FIRST (2026-11-21): the call and who decided; the goldfish's read follows,
+    // labelled as one instrument.
+    var s = b.study;
+    bits.push(s
+      ? 'study ' + s.id + ' ' + (s.decision || 'open') + (s.decided_by && s.decided_by.length ? ' (' + s.decided_by.join(', ') + ')' : '')
+      : 'no study yet');
     if (v && (v.rose != null || v.fell != null)) {
-      bits.push((v.rose || 0) + ' better · ' + (v.fell || 0) + ' worse · ' + (v.no_call || 0) + ' no call');
+      bits.push('goldfish: ' + (v.word || v.state || '') + ' — ' + (v.rose || 0) + ' better · ' + (v.fell || 0) + ' worse · ' + (v.no_call || 0) + ' no call');
     } else {
-      bits.push('not measured yet');
+      bits.push('goldfish: no read');
     }
     var o = b.objective;
     if (o && o.axis) {

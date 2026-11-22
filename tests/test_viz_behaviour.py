@@ -7775,15 +7775,15 @@ def test_the_branch_page_renders_the_decision(browser, viz_server):
         # own table — that branch was measured, found worse and deleted, which
         # is exactly why a test may not pin an experimental deck (PLAN.md, the
         # 2026-08-27 issue). Both states are asserted; neither is assumed.
-        if "has not been measured" in body:
+        if "no goldfish report yet" in body:
             assert "net-change" in body, "an absent report must name the command"
             assert "guard" in body, "a branch's guard shows before it is measured"
             return
-        # The measured table, the ledger, the bill — the three things that
-        # decide it. Lower-cased because `.panel h2` uppercases in CSS, and
-        # asserting the source casing would be testing my own string rather
-        # than the page.
-        assert "the profile" in body
+        # The study, the instrument's table (folded under "The goldfish"), the ledger,
+        # the bill. Lower-cased because `.panel h2` uppercases in CSS, and asserting
+        # the source casing would be testing my own string rather than the page.
+        assert "the study" in body
+        assert "the goldfish" in body
         assert "what this cannot see" in body
         assert "the mana" in body
         assert "the bill" in body
@@ -7819,8 +7819,11 @@ def test_the_branch_page_leads_with_the_executive_summary(browser, viz_server):
     page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     try:
         assert not page.js_errors, page.js_errors
-        first = page.locator("#panels > section.panel").first
-        assert first.get_attribute("id") == "summary", "the summary does not lead the page"
+        # THE STUDY LEADS (2026-11-21), the summary follows it: the decision in the
+        # pilot's words before the proposal's own account of itself.
+        assert page.locator("#panels > section.panel").first.get_attribute("id") == "study", "the study does not lead the page"
+        first = page.locator("#panels > section.panel").nth(1)
+        assert first.get_attribute("id") == "summary", "the summary does not follow the study"
         text = first.inner_text().lower()
         assert "the deck" in text and "why" in text
         rows = page.locator("#summary table.exec-swaps tbody tr")
@@ -7995,19 +7998,28 @@ def test_the_profile_leads_the_branch_page_and_the_word_follows_it(browser, viz_
     page = _branch_page(browser, viz_server, "ur-dragon", A_BRANCH)
     assert page.js_errors == []
     body = page.inner_text("body").lower()
-    if "has not been measured" in body:
-        # Unmeasured: no verdict, but the guard still shows, because a branch
+    if "no goldfish report yet" in body:
+        # Unread: no verdict, but the guard still shows, because a branch
         # may declare one before anything is run against it.
         assert page.locator("#verdict").count() == 0
         assert "guard" in body
         page.close()
         return
+    # THE GOLDFISH IS FOLDED (2026-11-21): one instrument under a header that says what it
+    # could see; open it to measure the order inside, which is still rows then word.
+    page.evaluate("() => { document.querySelector('#measured').open = true; }")
     assert page.locator("#measured .nc-count").count() == 1, "a verdict with no ledger"
     assert page.locator("#verdict").count() == 1
     assert page.evaluate("""() => {
       const pos = sel => document.querySelector(sel).getBoundingClientRect().top;
       return pos('#measured .nc-table') < pos('#verdict');
-    }"""), "the rule's word sits above the rows it summarises"
+    }"""), "the guard's word sits under the rows it summarises"
+    # and the study panel is the first thing on the page, measured or not
+    assert page.locator("#study").count() == 1
+    assert page.evaluate("""() => {
+      const pos = sel => document.querySelector(sel).getBoundingClientRect().top;
+      return pos('#study') < pos('#measured');
+    }"""), "the study leads; the instrument follows"
     page.close()
 
 

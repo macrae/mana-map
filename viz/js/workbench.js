@@ -601,7 +601,11 @@
       var lb = live[0];
       branchCell = '<a href="branch.html?deck=' + slug + '&branch=' + encodeURIComponent(lb.name) + '">⑂ ' + esc(lb.name) + '</a> '
         + window.branchStateBadge(lb)
-        + (lb.verdict && lb.verdict.state ? '<span class="t-sub">' + esc(lb.verdict.state) + '</span>' : '')
+        // THE STUDY LEADS (2026-11-21): the call and who decided; the goldfish's word second.
+        + (lb.study ? '<span class="t-sub">study ' + esc(lb.study.id) + ' ' + esc(lb.study.decision || 'open')
+            + (lb.study.decided_by && lb.study.decided_by.length ? ' (' + esc(lb.study.decided_by.join(', ')) + ')' : '') + '</span>'
+          : '<span class="t-sub">no study</span>')
+        + (lb.verdict && lb.verdict.state ? '<span class="t-sub">goldfish: ' + esc(lb.verdict.word || lb.verdict.state) + '</span>' : '')
         + (live.length > 1 ? '<span class="t-sub"><a href="deck.html?deck=' + slug + '#panel-branches">+' + (live.length - 1) + ' more</a></span>' : '');
     }
 

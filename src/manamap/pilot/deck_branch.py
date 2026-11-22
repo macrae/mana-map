@@ -465,6 +465,8 @@ def study_row(doc):
     call = doc.get("call") or {}
     cov = doc.get("goldfish_coverage") or {}
     return {"id": doc.get("id"), "question": doc.get("question"), "branch": doc.get("branch"),
+            # the file under studies/, so a page can fetch the whole study by its row
+            "file": (f"{doc.get('id')}-{doc['slug_name']}.json" if doc.get("slug_name") else None),
             "decision": call.get("decision", "open"), "decided_by": list(call.get("decided_by") or []),
             "pilot_words": call.get("pilot_words"), "decided_at": doc.get("decided_at"),
             "opened": doc.get("opened"), "swap": doc.get("swap"),

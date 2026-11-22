@@ -190,8 +190,19 @@
     }).join('');
     var n = profileCount(table);
     var rec = nc.recommendation || {};
-    return '<section class="panel nc-profile" id="measured">' +
-      '<h2>The profile</h2>' +
+    /* ONE INSTRUMENT, FOLDED (2026-11-21). The goldfish's table opens collapsed under a
+     * header that says what it could see of the cards that moved (`nc.coverage`, from
+     * `card_dossier.coverage_block`); the study above it is the decision. */
+    var cov = nc.coverage || {};
+    var seen = (cov.seen || []).length + (cov.partial || []).length;
+    var covLine = cov.available
+      ? 'saw ' + seen + ' of ' + (cov.named || 0) + ' changed card' + ((cov.named || 0) === 1 ? '' : 's')
+        + ((cov.dark || []).length ? ' · ' + cov.dark.length + ' DARK' : '')
+        + ((cov.invisible || []).length ? ' · ' + cov.invisible.length + ' invisible' : '')
+      : 'coverage of the changed cards not recorded on this report';
+    return '<details class="panel nc-profile instrument wide" id="measured">' +
+      '<summary><h2>The goldfish — one instrument, ' + esc(covLine) + ' <span class="asterisk" title="no opponents, no blockers, no removal: the rows are one input, never the call">*</span></h2>' +
+      '<p class="ev">No opponents, no blockers, no removal. Read as a whole profile, never one row; the study is the decision.</p></summary>' +
       '<p class="nc-count"><span class="c-better"><b>' + n.better + '</b> better</span>' +
       '<span class="c-worse"><b>' + n.worse + '</b> worse</span>' +
       '<span class="c-noise"><b>' + n.noise + '</b> no call</span></p>' +
@@ -204,9 +215,85 @@
       'no change. <b>Pts:</b> games per 100. The range is the 95% interval on the difference; ' +
       'the read is Holm-corrected across the ' + table.length + ' rows. ' +
       esc((nc.harness.iterations || 0).toLocaleString()) + ' games per list, same seeds.' +
-      (nc.design && nc.design.primary ? ' The primary is ' + esc(nc.design.primary) + '.' : '') + '</p>' +
+      (nc.design && nc.design.primary ? ' The guard row is ' + esc(nc.design.primary) + '.' : '') + '</p>' +
       objectivePanel(meta, nc) + verdictPanel(nc) +
-      '</section>';
+      '</details>';
+  }
+
+  /* THE STUDY (2026-11-21): the decision this branch rests on — the question, the call,
+   * who decided, the pilot's words — rendered FIRST from the branch row on info.json,
+   * then filled from the study file: each agent's answer folded, and what the bench
+   * knows about each card the study named. The goldfish's table sits under it, folded. */
+  var STUDY_WORD = { approve: 'approved', decline: 'declined', 'no-change': 'no change', open: 'open' };
+  function studyPanel(s, slug) {
+    if (!s) {
+      return '<section class="panel study none" id="study"><h2>The study</h2>' +
+        '<p class="lede">No study yet — nobody has decided about this branch in the pilot’s words. ' +
+        'The goldfish may have read it; that is one instrument, not a decision.</p>' +
+        '<p class="ev"><code>manamap pilot study ' + esc(slug) + ' new "&lt;question&gt;" --branch &lt;name&gt;</code>, then the agents’ answers, the call, <code>install</code>.</p></section>';
+    }
+    var by = (s.decided_by || []).map(esc).join(', ') || '—';
+    var saw = s.goldfish_saw;
+    return '<section class="panel study ' + esc(s.decision || 'open') + '" id="study">' +
+      '<h2>The study: <span class="study-call">' + esc(STUDY_WORD[s.decision] || s.decision || 'open') + '</span></h2>' +
+      '<p class="lede">' + esc(s.question || '') + '</p>' +
+      '<dl class="exec-facts">' +
+      '<dt>Decided by</dt><dd>' + by + (s.decided_at ? ' <span class="ev">(' + esc(s.decided_at) + ')</span>' : ' <span class="ev">(open)</span>') + '</dd>' +
+      (s.pilot_words ? '<dt>The pilot</dt><dd class="study-words">“' + esc(s.pilot_words) + '”</dd>' : '') +
+      (s.swap && (s.swap.out || s.swap['in']) ? '<dt>The swap</dt><dd>' + (s.swap.out ? card(s.swap.out) : '') + ' → ' + (s.swap['in'] ? card(s.swap['in']) : '') + '</dd>' : '') +
+      (saw && saw[1] ? '<dt>The goldfish</dt><dd>saw ' + esc(String(saw[0])) + ' of ' + esc(String(saw[1])) + ' named card' + (saw[1] === 1 ? '' : 's') + ' — one instrument among the facts below</dd>' : '') +
+      '</dl><div id="studyBody"><p class="ev">Loading the study…</p></div>' +
+      '<p class="ev">Study <code>' + esc(s.id) + '</code> · <code>manamap pilot study ' + esc(slug) + ' show ' + esc(s.id) + '</code></p></section>';
+  }
+
+  var TIER_MARK = { verified: '✓', data: '◆', coach: '★' };
+  function studyBody(doc) {
+    if (!doc) return '<p class="ev">The study file did not load.</p>';
+    var out = '';
+    var cs = doc.contributions || [];
+    if (cs.length) {
+      out += '<h3>What the agents said</h3>' + cs.map(function (c) {
+        return '<details class="study-agent"><summary><b>' + esc(c.agent || '?') + '</b>' +
+          (c.model ? ' <span class="ev">' + esc(c.model) + '</span>' : '') +
+          (c.elapsed_s != null ? ' <span class="ev">' + esc(String(c.elapsed_s)) + ' s</span>' : '') +
+          ' <span class="ev">' + esc(String(c.text || '').split('\n').filter(Boolean)[0] || '').slice(0, 140) + '</span></summary>' +
+          '<pre class="study-text">' + esc(c.text || '') + '</pre></details>';
+      }).join('');
+    }
+    var facts = (doc.facts || []).filter(function (f) { return f.kind !== 'goldfish_row' && f.kind !== 'goldfish_profile'; });
+    var byCard = {};
+    facts.forEach(function (f) { (byCard[f.card || '— the deck'] = byCard[f.card || '— the deck'] || []).push(f); });
+    var cards = Object.keys(byCard);
+    if (cards.length) {
+      out += '<h3>What the bench knows <span class="ev">✓ verified · ◆ data · ★ judgment</span></h3>' +
+        cards.map(function (k) {
+          return '<details class="study-card"' + (k.charAt(0) === '—' ? ' open' : '') + '><summary><b>' + (k.charAt(0) === '—' ? esc(k) : card(k)) + '</b> <span class="ev">' + byCard[k].length + ' fact' + (byCard[k].length === 1 ? '' : 's') + '</span></summary><ul class="study-facts">' +
+            byCard[k].map(function (f) {
+              return '<li><span class="tier">' + (TIER_MARK[f.tier] || '?') + '</span> ' + esc(f.text || '') + ' <span class="ev">[' + esc(f.source || '') + ']</span></li>';
+            }).join('') + '</ul></details>';
+        }).join('');
+    }
+    var gf = (doc.facts || []).filter(function (f) { return f.kind === 'goldfish_row' || f.kind === 'goldfish_profile'; });
+    if (gf.length) {
+      out += '<details class="study-card instrument"><summary><b>The goldfish</b> <span class="ev">' + gf.length + ' labelled fact' + (gf.length === 1 ? '' : 's') + ' — one instrument</span></summary><ul class="study-facts">' +
+        gf.map(function (f) { return '<li><span class="tier">◆</span> ' + esc(f.text || '') + '</li>'; }).join('') + '</ul></details>';
+    }
+    if (doc.call && doc.call.reading) {
+      out += '<h3>Jarvis’s reading</h3><p>' + esc(doc.call.reading) + '</p>';
+    }
+    return out || '<p class="ev">The study has facts and no answers yet.</p>';
+  }
+
+  function wireStudy(slug, row) {
+    var panels = document.getElementById('panels');
+    if (!panels || document.getElementById('study')) return;
+    var s = row && row.study;
+    panels.insertAdjacentHTML('afterbegin', studyPanel(s, slug));
+    if (!s || !s.file) return;
+    getJSON(DATA + 'decks/' + encodeURIComponent(slug) + '/studies/' + encodeURIComponent(s.file)).then(function (doc) {
+      var body = document.getElementById('studyBody');
+      if (body) body.innerHTML = studyBody(doc);
+    });
   }
 
   /* DEFINITIONS AT THE FOOT, ONE PANEL. Twelve folds on twelve rows put the same
@@ -677,6 +764,8 @@
         mount.insertAdjacentHTML('afterbegin',
           '<p class="ev warn" id="baseMoved">' + esc(row.base_moved) + '</p>');
       }
+      // THE STUDY FIRST (2026-11-21): the decision, before any instrument's panel.
+      wireStudy(slug, row);
       var panels = document.getElementById('slotEvidence') || document.getElementById('panels');
       if (!panels) return;
       /* AT THE TABLE (2026-10-21). The pilot's own per-game counts for this deck
@@ -732,7 +821,8 @@
                       : /^REJECT/.test(st) ? 'rejected' : /^WITHDRAW/.test(st) ? 'withdrawn' : 'open';
               return '<li><a href="branch.html?deck=' + encodeURIComponent(slug) + '&branch=' + encodeURIComponent(b.name) + '">'
                    + esc(b.name) + '</a> <span class="br-state" data-state="' + key + '">' + esc(st || 'OPEN') + '</span>'
-                   + (v.state ? ' <span class="ev">' + esc(v.state) + '</span>' : '')
+                   + (b.study ? ' <span class="ev">study ' + esc(b.study.id) + ' ' + esc(STUDY_WORD[b.study.decision] || b.study.decision) + '</span>' : '')
+                   + (v.state ? ' <span class="ev">goldfish: ' + esc(v.word || v.state) + '</span>' : '')
                    + ' ' + askBranchHtml(slug, b.name) + '</li>';
             }).join('')
           + '</ul><p class="ev"><a href="deck.html?deck=' + encodeURIComponent(slug) + '#panel-branches">\u2190 Branches, on the deck page</a></p></section>');
@@ -852,15 +942,29 @@
       '<h2>Proposed as ' + esc(p.as_version) + '</h2>' +
       '<p class="lede">Accepted ' + esc(p.at) +
       (p.why ? ' \u2014 ' + esc(p.why) : '') + '</p>';
-    if (a.state) {
-      out += '<p class="ev">On the net change: <b>' + esc(a.state) + '</b>' +
-        (a.objective ? ', objective <code>' + esc(a.objective.axis) + ' ' +
+    if (a.study) {
+      // THE STUDY SHAPE (2026-11-21): what was accepted is a decision in the pilot's
+      // words; the goldfish's read, if any, is named beside it and gated nothing.
+      out += '<p class="ev">On study <code>' + esc(a.study) + '</code>: <b>' + esc(a.decision || 'approve') + '</b>' +
+        ' \u2014 decided by ' + esc((a.decided_by || []).join(', ') || '\u2014') + '.</p>' +
+        (a.pilot_words ? '<p class="ev study-words">\u201c' + esc(a.pilot_words) + '\u201d</p>' : '');
+      var inst = a.instrument;
+      out += '<p class="ev">' + (inst
+        ? 'The goldfish read: <b>' + esc(GUARD_WORD[inst.state] || inst.state || '?') + '</b>' +
+          (inst.objective ? ', guard <code>' + esc(inst.objective.axis) + ' ' + esc(inst.objective.op) + ' ' +
+            esc(inst.objective.value) + '</code> ' + esc(String(inst.grade || '').toUpperCase()) +
+            (inst.reading != null ? ' at ' + num(inst.reading) : '') : '') +
+          (inst.current === false ? ' (an older list of this branch)' : '') + '.'
+        : 'The goldfish had not read this branch; the study decided.') + '</p>';
+    } else if (a.state) {
+      out += '<p class="ev">On the net change (the goldfish\u2019s read, under the old vocabulary): <b>' + esc(GUARD_WORD[a.state] || a.state) + '</b>' +
+        (a.objective ? ', guard <code>' + esc(a.objective.axis) + ' ' +
           esc(a.objective.op) + ' ' + esc(a.objective.value) + '</code> ' +
           esc(String(a.grade || '').toUpperCase()) +
           (a.reading != null ? ' at ' + num(a.reading) : '') : '') + '.</p>';
     }
     if (p.forced_reason) {
-      out += '<p class="ev warn">Accepted over a DO NOT MERGE \u2014 ' +
+      out += '<p class="ev warn">Accepted while the guard read \u201c' + esc(GUARD_WORD[a.state] || a.state || 'guard not met') + '\u201d \u2014 ' +
              esc(p.forced_reason) + '</p>';
     }
     if (p.proxy && p.proxy.length) {
@@ -878,16 +982,27 @@
     return out + '</section>';
   }
 
+  /* THE GUARD'S WORD, DESCRIPTIVE (2026-11-21): five reads of what the instrument saw.
+   * The 42 reports on decided branches still carry the old five (`merge`, `a trade`,
+   * `do not merge`, `inconclusive`, `no objective`) and are never re-measured, so the
+   * page reads both \u2014 `net_change.LEGACY_STATES`, mirrored here. */
+  var GUARD_WORD = {
+    'merge': 'guard met, nothing fell', 'a trade': 'guard met, rows fell',
+    'do not merge': 'guard not met', 'inconclusive': 'guard unresolved', 'no objective': 'profile only'
+  };
+  var GUARD_CLASS = {
+    'guard met, nothing fell': 'met', 'guard met, rows fell': 'unresolved',
+    'guard not met': 'failed', 'guard unresolved': 'unknown', 'profile only': 'unknown'
+  };
   function verdictPanel(nc) {
     var r = nc && nc.recommendation;
     if (!r) return '';
-    var cls = { 'merge': 'met', 'a trade': 'unresolved',
-                'do not merge': 'failed', 'inconclusive': 'unknown',
-                'no objective': 'unknown' }[r.state] || 'unknown';
+    var word = GUARD_WORD[r.state] || r.state;
+    var cls = GUARD_CLASS[word] || 'unknown';
     var because = String(r.because || '');
     if (r.forge_warning) because = because.replace(r.forge_warning, '').trim();
     var out = '<div class="verdict ' + cls + '" id="verdict"><p class="verdict-why">' +
-      (r.state === 'no objective' ? '' : 'The rule\u2019s word is <b>' + esc(r.state) + '</b>. ') +
+      (word === 'profile only' ? '' : 'The guard reads <b>' + esc(word) + '</b>. ') +
       esc(because) + '</p>';
     (r.notes || []).forEach(function (n) {
       out += '<p class="ev">' + esc(n) + '</p>';
@@ -964,7 +1079,7 @@
         return '<li class="' + cls + '"><b>' + esc(m) + '</b>' +
           (txt ? '<span class="ev">' + esc(txt) + '</span>' : '') + '</li>';
       };
-      out += '<h3>What the measurement says</h3><div class="exec-evidence">' +
+      out += '<h3>What the goldfish read <span class="ev">— one instrument, not the call</span></h3><div class="exec-evidence">' +
         '<div class="rose"><h4>▲ Rose</h4>' + ((r.rose || []).length
           ? '<ul>' + r.rose.map(function (m) { return item(m, rewardOf[m], 'rose'); }).join('') + '</ul>'
           : '<p class="ev">nothing rose</p>') + '</div>' +
@@ -980,9 +1095,10 @@
           blind.map(function (x) { return esc(x.what); }).join('; ') + '.</p>';
       }
       out += '<p class="ev">The paired goldfish: no blockers, no removal, one opponent. Read the rows together, ' +
-        'never one alone. The full table is in <a href="#measured">Profile</a>.</p>';
+        'never one alone; the decision is the study above. The full table is folded under <a href="#measured">The goldfish</a>.</p>';
     } else {
-      out += '<h3>What the measurement says</h3><p class="ev">Not measured yet: ' +
+      out += '<h3>What the goldfish read</h3><p class="ev">The goldfish has not read this branch. That is one instrument absent; ' +
+        'the study above is the decision. To hear it: ' +
         '<code>manamap pilot net-change ' + esc(slug) + ' --branch ' + esc(name) + ' --write</code></p>';
     }
 
@@ -1482,9 +1598,9 @@
              '<div id="slotEvidence"></div>' + trailPanel(meta) +
              benchPanel(meta, slug, name) + '<div id="slotActions"></div>' + definitionsPanel(nc))
           : (unread || (objectivePanel(meta, nc) + absent(
-              'The net change',
-              'This branch has not been measured against the deck yet. Until it ' +
-              'is, there is nothing here to decide on.',
+              'The goldfish',
+              'No goldfish report yet. The study is the decision; the goldfish, when run, ' +
+              'is one instrument among its facts.',
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write'))) +
             '<div id="slotEvidence"></div>' + trailPanel(meta) + benchPanel(meta, slug, name) +
             '<div id="slotActions"></div>');
@@ -1552,7 +1668,7 @@
 
   /* THE JUMP NAV, the dossier's own. Built from what actually rendered, and repainted
    * as the late panels land, so a link never points at a section that is not there. */
-  var NAV = [['summary', 'Summary'], ['measured', 'Profile'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
+  var NAV = [['study', 'Study'], ['summary', 'Summary'], ['measured', 'Goldfish'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
              ['bill', 'Cost'], ['forge', 'Forge'], ['net-change', 'Cards'],
              ['table-marks', 'At the table'], ['castProofs', 'Cast proofs'],
              ['branchStacks', 'Proven'], ['profileFigures', 'Goldfish'],

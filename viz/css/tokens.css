@@ -1643,3 +1643,23 @@ details.rost-fold > summary {
 .cg-row .todo-run { margin: 4px 8px 0 0; width: auto; display: inline-block; padding: 3px 10px; font-size: 12px; }
 .cg-fold { margin-top: 10px; border-top: 1px solid var(--rule); padding-top: 8px; }
 .cg-fold > summary { cursor: pointer; font-size: 13px; color: var(--ink-soft); }
+
+/* THE STUDY PANEL and the folded instrument (2026-11-21). The decision leads the
+   branch page; the goldfish's table sits under a <details> whose summary says what
+   it could see. */
+.panel.study { grid-column: 1 / -1; border-left: 4px solid var(--ink, #222); }
+.panel.study.approve { border-left-color: #2e7d32; }
+.panel.study.decline, .panel.study.no-change { border-left-color: #8d6e63; }
+.panel.study.none { border-left-color: var(--ink-soft, #888); opacity: 0.92; }
+.panel.study .study-call { text-transform: uppercase; letter-spacing: 0.04em; }
+.panel.study .study-words { font-style: italic; }
+.panel.study .study-text { white-space: pre-wrap; font: inherit; font-size: 0.92em; margin: 6px 0 0; }
+.panel.study details { margin: 6px 0; }
+.panel.study .study-facts { margin: 4px 0 0; padding-left: 1.2em; }
+.panel.study .study-facts .tier { display: inline-block; width: 1.2em; }
+details.panel.instrument > summary { cursor: pointer; list-style: none; }
+details.panel.instrument > summary::-webkit-details-marker { display: none; }
+details.panel.instrument > summary h2 { display: inline; }
+details.panel.instrument > summary h2 .asterisk { color: #b26a00; font-weight: 800; }
+details.panel.instrument > summary::before { content: "\25B8  "; color: var(--ink-soft, #888); }
+details.panel.instrument[open] > summary::before { content: "\25BE  "; }

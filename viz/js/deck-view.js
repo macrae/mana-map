@@ -2218,6 +2218,12 @@
     return (r === undefined || r === null) ? null : Math.round(r * 100) + '%';
   }
 
+  /* The newest study on info.json (`deck_info.compose` writes them newest first). */
+  function latestStudy(info) {
+    var rows = (info && info.studies) || [];
+    return rows.length ? rows[0] : null;
+  }
+
   function versionName(v) {
     return (v && v.tags && v.tags.length) ? v.tags[0] : ('V' + (v || {}).version);
   }
@@ -2453,10 +2459,18 @@
         : head('Format', specOf(d).name,
                specOf(d).size + (specOf(d).exact ? '' : '+') + ' cards, ' +
                specOf(d).copies + '-of, no commander')) +
-      head('Keepable sevens', keepRate(d), 'can act by turn three') +
       head('Record, ' + (cur ? versionName(cur) : 'this version'),
            vrec ? (vrec.games + ' · ' + vrec.win + '–' + vrec.loss) : null,
            cur ? 'games on this exact list' : 'no version resolved') +
+      // THE LATEST STUDY (2026-11-21) takes the goldfish's second slot on the cover:
+      // the decision and who made it, not an instrument's rate. Keepable sevens
+      // moved to the measurements chapter with the rest of the goldfish.
+      head('Latest study',
+           latestStudy(info) ? (latestStudy(info).id + ' ' + (latestStudy(info).decision || 'open')) : null,
+           latestStudy(info)
+             ? ('decided by ' + ((latestStudy(info).decided_by || []).join(', ') || '—') +
+                (latestStudy(info).branch ? ' · on ' + latestStudy(info).branch : ''))
+             : 'no study yet — a question to Jarvis opens one') +
       '</div>';
 
     var body = '<div class="cov">' + art +
