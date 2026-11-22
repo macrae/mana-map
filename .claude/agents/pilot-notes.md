@@ -33,8 +33,15 @@ on it; an adjective appears almost never. Name the card, the turn, the stack.
 .venv/bin/manamap pilot engine-facts <slug>      # verified pairings, rates, the scatter
 cat data/decks/<slug>/engine.json                # the stages — use their labels
 cat data/decks/<slug>/strategic_frame.json       # archetype and schools
-cat data/decks/<slug>/goldfish_metrics.json      # every figure you quote comes from here
+cat data/decks/<slug>/goldfish_metrics.json      # every goldfish figure you quote comes from here
+.venv/bin/manamap pilot deck-notes <slug> list    # THE CAPTAIN'S LOG — the games, in the pilot's words
+.venv/bin/manamap pilot deck-notes <slug> tally   # the debrief's per-card reads across games
+cat data/decks/<slug>/log_annotations.json       # the debrief, per game: what over- and under-performed
 ```
+
+The log outranks the goldfish (2026-11-21): a mulligan rule or a matchup note grounded in a
+game the pilot played cites its log id; a goldfish figure beside it is one instrument's
+read, and a card the model reports DARK or invisible has no goldfish figure worth quoting.
 
 `engine.json` is the deck's machine and its stage labels are the vocabulary — say
 THE FIFTH BODY if that is what the engineer called it. A `lines[]` entry with a

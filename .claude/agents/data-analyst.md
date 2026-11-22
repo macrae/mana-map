@@ -29,7 +29,9 @@ Jarvis asks Sean before anything slow runs.
 | the combos it contains, and what is one card short | `manamap pilot deck-combos <slug> --json` (read-only, deterministic, < 1 s): `included` (cards, `produces`, `infinite`, `bracket`, `assumes_other_commander`), `near` (the `missing` card; capped, `summary.near_total` is the whole count) |
 | versions, what changed when | `manamap pilot deck-version <slug> list`, `… show <ref>` |
 | games and how they ended | `data/decks/<slug>/log.jsonl`, `log_causes.json` |
-| a quick A/B of a swap | `manamap pilot try <slug> --out "A" --in "B"` (~10 s, writes nothing) |
+| everything the bench knows about one card | `manamap pilot card-dossier <slug> "<card>" [--branch B] --json` (< 1 s warm): log quotes, debrief reads, stacks, engine stage, recon, price, in-deck neighbours, goldfish coverage |
+| the debrief's card reads across games | `manamap pilot deck-notes <slug> tally [--json]` — counts with game ids, never a rate |
+| the goldfish's read of a swap, ONLY when the study asks for it | `manamap pilot try <slug> --out "A" --in "B"` (~10 s, writes nothing; prints what the model could see first — a DARK or invisible card has no read) |
 
 Use `.venv/bin/manamap`. When `manamap serve` is running, its warm worker answers
 the read-only commands in a fraction of a second. For a filter or count over `cards.json`, a short

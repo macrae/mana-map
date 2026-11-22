@@ -22,13 +22,18 @@ that becomes the proposal's note and the merge's reason.
    Marauding Mako); `git status` clean under `data/decks/<slug>`; `deck-info <slug>` for
    anything already red (engine, tutors, prose, build_plan) so it is not blamed on the merge.
 
-1. **Measure.** `net-change <slug> --branch <branch> --write` — the paired goldfish on the
-   pre-registered objective plus sixteen Holm rows. Report the primary row with its MDE; a
-   Forge loss is a warning. `forge-cast-check <slug> --branch <branch> --adds --write` only if
-   the harness moved since `cast_proofs.json`. `propose` refuses without `net_change.json`.
+1. **The study, then the instrument.** `study <slug> list` — the branch's decided studies are
+   what the release rests on; if the branch has none, one is owed first (`study <slug> new
+   "<question>" --branch <branch>`, the agents' answers, `call`, `install`). Then
+   `net-change <slug> --branch <branch> --write` — the goldfish's read: what it could see of
+   the cards that moved, then sixteen Holm rows and the optional guard, judged as a whole
+   profile. Report the whole profile by axis with what the goldfish cannot see; never a single
+   row and never its word as the headline. A Forge loss is a warning. `forge-cast-check <slug>
+   --branch <branch> --adds --write` only if the harness moved since `cast_proofs.json`.
 
-2. **Propose as a version.** `deck-branch <slug> propose <branch> --as vX.Y.Z --why "…"
-   [--proxy] [--ordered "…"]`. The semver rule (`docs/pilot.md`): PATCH = mana only, MINOR =
+2. **Propose as a version.** `deck-branch <slug> propose <branch> --as vX.Y.Z --study NNN
+   --why "…" [--proxy] [--ordered "…"]` — `--study` names the approved, installed study;
+   `propose` refuses without it and never reads the goldfish's word. The semver rule (`docs/pilot.md`): PATCH = mana only, MINOR =
    a new capability, MAJOR = a different deck — capability, not card count. `--proxy` counts
    cards sleeved in his OTHER decks as sourced; it does not cover unowned cards.
 
@@ -65,7 +70,7 @@ that becomes the proposal's note and the merge's reason.
    `test_versions_json_matches_a_fresh_run` FAILS here by design: the list is uncommitted,
    and the versions ledger is a separate commit. Commit the deck's paths plus
    `data/decks/index.json`, `data/fleet/analytics.json` and `manuals/p/<slug>.html`, with
-   the swaps and the net-change primary row in the message. **This commit mints the version.**
+   the swaps, the study's call and who decided in the message. **This commit mints the version.**
 
 7. **Tag and lock.** `deck-version <slug> list --write` (regenerates `versions.json` against
    the new commit; it walks git and can take minutes — run it in the background);
@@ -95,7 +100,8 @@ that becomes the proposal's note and the merge's reason.
    deck-rating`, `fleet-analytics --write`, `build-index`, `rating --all`. Commit the
    `rating.json` files, `.agent-cache.json`, the fleet artifact and the manifest.
 
-10. **Report and push.** The net-change primary row, the version, the DTI reading
+10. **Report and push.** The study's call and who decided, the goldfish's read as a whole
+    profile by axis with what it cannot see, the version, the DTI reading
     (old → new), the rating (old → new, with its concordance and what moved), what is still
     stale and who fixes it, and the order list if cards are unowned. `PLAN.md`'s fleet
     section and `NEXT_SESSION.md` get one line each. Push.

@@ -44,15 +44,18 @@ cat data/decks/<slug>/log_annotations.json           # the debrief: what happene
 .venv/bin/manamap pilot simulate <slug> --list                # the Forge runs, with intervals
 ```
 
-**`try` is the primary evidence for any swap you rank** (since 2026-10-04). About ten
-seconds, nothing written: the paired goldfish delta on `net-change`'s rows — every game on
-its own seed, the two lists aligned slot for slot, an interval on the DIFFERENCE — plus
-each card's visibility to the model, the keep list, and colour sources before and after.
-Quote a screen with its interval. Two limits you must carry: a card the model reports as
-DARK or invisible measures as nothing, so a null on it is not evidence; and the goldfish
-has no blockers and no removal, so it prices a lord's pump (read since 2026-10-05,
-`docs/known-issues.md` §22) but not a body's worth on defence. Never rank an add or cut a card the
-keep list names (`protected.json`) — the validator refuses it.
+**The captain's log, the recon and the audit's axes lead any swap you rank; `try` is the
+goldfish's read of it, one input (2026-11-21).** Argue a swap from what the games showed
+(`deck-notes list`, `log_annotations.json`, `deck-notes <slug> tally` for the per-card reads
+across games), what strong lists do (`deck_recon.json`, dated), and which axis binds
+(`deck-audit`); `manamap pilot card-dossier <slug> "<card>"` joins every source on one card.
+Then, if the model can read the cards, quote `try`'s screen with its interval — it prints
+what the goldfish could SEE first, and a card it reports DARK or invisible measures as
+nothing, so a null on it is not evidence. The goldfish has no blockers, no removal and no
+opponents: it prices a lord's pump (read since 2026-10-05, `docs/known-issues.md` §22) but not
+a body's worth on defence, nor a counterspell, nor protection. Never let its row be the
+reason; say which source decided. Never rank an add or cut a card the keep list names
+(`protected.json`) — the validator refuses it.
 
 **A Forge run is a probe, read with two caveats that ride in the record.** It never gates
 a merge, and no Forge rate or mean is graded without an A/A at the same N and the same AI
@@ -353,9 +356,10 @@ not a new file — prescriptions accumulate and are never overwritten.
 ## MODE: objective — a sentence about strategy becomes a falsifiable goal
 
 The pilot said something like *"lean harder on treasure, I want to close faster"*
-and is about to open a branch. `deck-branch new` refuses without an
-`--objective` — `<measure> <op> <number>` — because **a branch that cannot be
-falsified gets graded on whether it did what it does**. The Ur-Dragon treasure
+and is about to open a branch. An `--objective` — `<measure> <op> <number>` — is an
+OPTIONAL guard row since 2026-10-28, and since 2026-11-21 the branch is decided by a
+study rather than graded by the guard; the guard is still worth writing down, because
+**a branch that cannot be falsified gets graded on whether it did what it does**. The Ur-Dragon treasure
 branch stated "treasure is the engine", achieved that 4.4x over, and lost on the
 purpose nobody wrote down. Your job is the translation, and nothing else.
 

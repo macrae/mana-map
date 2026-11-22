@@ -1,12 +1,13 @@
 # Simulation — both engines
 
-*Two engines, two jobs. The **goldfish** (`src/manamap/pilot/goldfish*.py`) is the
-decision instrument: seeded, paired, about ten seconds a question. **Forge** is the probe:
+*Two engines, two jobs. The **goldfish** (`src/manamap/pilot/goldfish*.py`) is the fast
+instrument: seeded, paired, about ten seconds a question — one input to a study, never the
+decider (2026-11-21, `docs/study.md`). **Forge** is the probe:
 real rules and a real AI, asked narrow questions. The `game_state` v2 schema is in
 `docs/pilot.md`. Rewritten at the top 2026-10-05; everything from "The 2026-09-02 audit"
 down is the Forge record, still how a probe works.*
 
-## The goldfish is the decision instrument (2026-10-04)
+## The goldfish is the fast instrument (2026-10-04; one input to a study since 2026-11-21)
 
 **The goldfish and Forge are Commander-only; a 60-card deck records the reason.** Both seat a
 commander and deal against a table — the goldfish at one seat of 40 life with the authored
@@ -1191,7 +1192,7 @@ and no recommendation moves — the MDE rule (2.8016·se) was already within 2% 
 Bonferroni-12 threshold (2.865·se) at the top rank. So this changes what a verdict MEANS,
 which `design` now states in every report, not which rows carry one today.
 
-**SUPERSEDED 2026-10-04 (`460a1aa1`): a Forge loss is now a `forge_warning` beside the verdict and blocks nothing — the decision loop is the paired goldfish. The record of the rule as it was:** **The real table is in the rule (2026-09-29).** `recommend()` read twelve goldfish rows and
+**SUPERSEDED 2026-10-04 (`460a1aa1`): a Forge loss is now a `forge_warning` beside the verdict and blocks nothing — the paired goldfish became the arbiter then, and stopped being one on 2026-11-21 when the study did. The record of the rule as it was:** **The real table is in the rule (2026-09-29).** `recommend()` read twelve goldfish rows and
 the objective, and appended Forge as a `note` — on copy-burst-v1 the goldfish said MERGE
 while 73 real games read −0.061. Two changes. First, a branch may aim at the table:
 `forge.win_rate >= 0.25 @standard-v3` is an objective (`candidates.FORGE_OBJECTIVE_AXES`:
@@ -1201,7 +1202,7 @@ Forge axis is a property of the list AT A TABLE, so it names its pod or is refus
 is graded on the branch's pooled reading at that pod — never at whichever table held the
 most branch games — with the interval on the champion-to-branch difference and the table's
 null carried in the grade. Second, above every other row of the stated rule: **a Forge
-win-rate loss whose interval excludes zero at the same pod and harness is "do not merge"
+win-rate loss whose interval excludes zero at the same pod and harness was the refusal word of the time
 whatever the goldfish said**; one that spans zero is "cannot tell" and leaves the goldfish
 verdict alone. The Forge block now STORES the null beside the figure it scales (it was
 printed and never written) and carries `endpoints`, every axis with both arms, the

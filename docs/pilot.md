@@ -785,7 +785,11 @@ re-exports it under the old names so the legacy banner is unchanged.
 
 ## The swap loop and the keep list (2026-10-04)
 
-`manamap pilot try <slug> --out A --in B [...]` takes a swap idea to an answer in about
+**Since 2026-11-21 a swap is DECIDED in a study** (`study <slug> new "…" --out A --in B`, then
+the agents' answers, the call with who decided, the pilot's words; `docs/study.md`), and `try`
+is the goldfish's read of it — one input, printed after what the instrument could see of the
+cards and what the bench knows about each.
+`manamap pilot try <slug> --out A --in B [...]` takes a swap idea to the goldfish's read in about
 ten seconds and writes nothing. One screen: every card in and out with its roles, whether
 a declared target names it, what the goldfish can see of it (`model_coverage.card_state`:
 seen / DARK / invisible) and what Forge's AI did with it in runs on disk — labelled AI

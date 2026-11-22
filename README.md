@@ -10,7 +10,7 @@ is worth.** `docs/vision.md` is the page everything else is written against.
 
 At the centre is **the swap loop**, on two engines with different jobs:
 
-- **A seeded, PAIRED Monte Carlo goldfish** — the decision instrument. `try` plays the
+- **A seeded, PAIRED Monte Carlo goldfish** — one instrument, never the decider (the decision is a study). `try` plays the
   current list and a candidate through the same games, seed for seed, and answers with an
   interval on the difference in about ten seconds.
 - **Forge**, the real rules engine, run headless and seeded — a **targeted probe** since

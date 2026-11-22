@@ -65,8 +65,15 @@ v2`, 2026-10-07.)
    agents in parallel, in the background, and send each only its slice of the
    context, never the whole file. The job band shows each agent's elapsed time
    against its target. Pass interim findings on as they arrive.
-6. **Report, then ask what's next.** Never chain into new work without asking,
-   unless Sean said to keep going.
+6. **Report, then ask what's next.** Every call ends **"decided by: …"** — the sources
+   that settled it (the pilot, the log, the strategist, the doctor, the rules agent, the
+   recon, a stack; the goldfish only beside the pilot and only on cards it reads). Never
+   chain into new work without asking, unless Sean said to keep going.
+
+**The goldfish is one instrument (2026-11-21, after fourteen corrections).** Never lead
+with its row, never offer one unasked, never let it be the reason; `try` and `net-change`
+print what it could see before any figure, and a card it reports DARK or invisible has no
+read. A decision is a STUDY (Story 7); the goldfish is at most one labelled fact in it.
 
 **Never:** start a Forge run, a `regen` or anything long without being asked. Never
 edit a decklist or a Deck Context without Sean's go-ahead. Pilot-log summaries are
@@ -95,11 +102,11 @@ answer, not a gap to fill.
 | **A combo question** ("what combos does Edgar have?", "is there an infinite in this deck?", "what's one card away from a combo?") | The context's summary block carries a **Combos** line (`--slice summary`: known lines, how many infinite and two-card, how many one card short). Answer the count from it. For the lines themselves — which cards, what they produce, the missing card — send the **Data Analyst** to `manamap pilot deck-combos <slug> --json` (< 1 s, writes nothing). "Not computed" means `deck-combos <slug> --write` has not run; offer it. A line is Spellbook's claim about the cards, never a proof the deck assembles it — that is The Kill and the goldfish. |
 | **A pilot log** ("I played Sharknado, here's my log") | Story 2 below. |
 | **Card search** ("find me cards that do X", "cards like Y") | **When the ask is about the deck's ENGINE** ("more experience", "double the counters", "more of what the commander eats"), run `manamap pilot resource-scan <slug>` FIRST (~2 s, read-only): every card in the identity that makes or multiplies the declared resource, from card text, each marked READ or BLIND by the goldfish. The search is driven by the engine, never by what the goldfish can read — that is how Toph and proliferate were missed for a whole Meren session (2026-11-08). No `resources` in the brief → say so and offer to declare one. Otherwise spawn `card-scout` with the slug and his words. It returns at most 8 cards, each with a reason and an Atlas link. Relay it, then **offer** to put the list on a watch list (`watchlist.add_set`, as `/incubate` does); never add it unasked. |
-| **A swap proposal** ("should I swap A for B?") | Answer from the context if it settles it. Otherwise run the lightest check that does: an argument from How it plays (the `strategist` when it needs one); `manamap pilot try <slug> --out "A" --in "B"`. **`try` WITHHOLDS its rows when a swapped card is BLIND** (`==> BLIND`: not seen by the model, or its engine-resource text unread): that is a judgment call, so send it to the strategist or play-testing and say which decided — never re-run with `--blind-ok` to get a number to quote; `--blind-ok` is a labelled ceiling/floor for Sean to ask for. When the goldfish does read both cards, `try` is (read-only, ~10 s, paired goldfish; `--add` / `--cut` / `--set` for a change that is not a one-for-one, the same preview Build's tray shows); the `rules-question` agent for an interaction; `forge-cast-check` only for "will the AI cast it"; a **scenario slice** when it turns on a board the goldfish cannot see (removal, blockers, an opponent's answer): spawn `scenario-sim`, show Sean the board it returns, and on his OK run `manamap pilot scenario-ab --spec <path>`. Never run a slice he has not OKed. Take the goldfish with a grain of salt. It has no blockers and no removal, and `model-coverage` says what it cannot see. |
+| **A swap proposal** ("should I swap A for B?") | **Story 7: a study** (2026-11-21). Answer from the context if it settles it; otherwise open a study (`study <slug> new "…" --out A --in B [--branch B]`), read the two cards' dossiers (`card-dossier <slug> "<card>"` — the pilot's words in the log, the debrief's reads, stacks, engine stage, recon, neighbours, coverage), then spawn **in parallel** the `strategist` (an argument), `deck-doctor` (MODE prescribe, one question) and `rules-question` (if an interaction turns on it), each handed `study <slug> show NNN --facts`; `data-analyst` for a figure the facts lack. Keep every answer with `study add`. **The goldfish only if every named card reads `seen`** and the study wants its row: `try <slug> --out A --in B` (~10 s; it prints coverage first and WITHHOLDS its rows on a BLIND card — never `--blind-ok` to get a number). `forge-cast-check` only for "will the AI cast it"; a **scenario slice** when it turns on a board no instrument sees (removal, blockers, an opponent's answer): spawn `scenario-sim`, show Sean the board, and on his OK run `scenario-ab`. Then the call in HIS words: `study <slug> call NNN --decision approve\|decline\|no-change --decided-by … --pilot-words "…"`, `install`. NO CHANGE is a valid answer; never force a swap. |
 | **Strategy research** ("how do strong Edgar lists handle wipes?") | Spawn `strategist` with the slug and his question: a ≤12-line argument citing `strategy:<id>` sections, the web only when the companion and the context leave it open. `/research-strategy` is the slow path that EXPANDS the doc — offer it for the gaps the Strategist names, never run it unasked. |
 | **A rules question** ("does Nest of Scarabs trigger on persist?") | Spawn `rules-question` with the question and the cards it names: a yes/no with the rule quoted verbatim, or "Not settled". A whole multi-step line is `/resolve-stack` — ask first, it is a loop. |
 | **A queue check** ("what's in the queue? what did you find?") | `manamap pilot queue list` (fleet) or `--deck <slug>`, summarised in a sentence or two: what is promoted, what has a result waiting for his call. Testing an item is `/incubate`'s "work an item"; "add this to the queue" is its "Sean adds his own" (`queue add`, then the Challenger). |
-| **Review a branch** ("show me mean-v1", "what's on the Edgar branch", "how does the package look") | Read the branch's STORED files — `data/decks/<slug>/branches/<name>/branch.json` (the declaration: `why`, `objective`) and `net_change.json` (`objective_grade`, `recommendation` with rose/fell/no_call, `blind_spots`, `bill`) plus `cast_proofs.json` and the branch row in `info.json` (`state`, `measured`, `stacks`); **never re-run `net-change`**, which recomputes 20,000 games. Answer in a few lines: the state, the objective and its grade, the verdict with what rose and fell, the cards the goldfish could not see, what Forge's AI did with each add, the bill — and give the page: `viz/branch.html?deck=<slug>&branch=<name>` (the deck page's Branches rack lists them all, newest first; the workbench's Branches rack and each card's row link the live ones). `deck-info <slug>` prints the BRANCHES block if he is in the terminal. **And write the summary if the branch has none** (2026-10-20 — the pilot: the workbench row was "too git like… have Jarvis summarize the objective/name and quick description"): `manamap pilot deck-branch <slug> summary <name> --title "<the branch in words, ≤80 chars>" --blurb "<one sentence: what it would swap and why, ≤320 chars>"` — no digits in either (figures live in the measured fields and a quoted one goes stale on the next run); the pages read `summary` off `info.json` as the row's headline. Refresh it when the branch's intent changes (restaged, rebased). |
+| **Review a branch** ("show me mean-v1", "what's on the Edgar branch", "how does the package look") | **The studies first** (2026-11-21): `study <slug> list` — the branch's decided questions, each call and who decided, in the pilot's words; a branch with none has not been decided about, say so. Then the branch's STORED files — `data/decks/<slug>/branches/<name>/branch.json` (the declaration: `why`, the staged swaps with the pilot's reasons) and, as ONE instrument's read, `net_change.json` (`coverage` — what it could see of the cards that moved — then the rows as a whole profile by axis, `blind_spots`, `bill`) plus `cast_proofs.json` and the branch row in `info.json` (`study`, `state`, `measured`, `stacks`); **never re-run `net-change`**, which recomputes 20,000 games. Answer in a few lines: the studies and their calls, the state, what the bench knows about the cards that moved, then the goldfish's read labelled as such (never its word as a headline, never one row), what Forge's AI did with each add, the bill — and give the page: `viz/branch.html?deck=<slug>&branch=<name>` (the deck page's Branches rack lists them all, newest first; the workbench's Branches rack and each card's row link the live ones). `deck-info <slug>` prints the BRANCHES block if he is in the terminal. **And write the summary if the branch has none** (2026-10-20 — the pilot: the workbench row was "too git like… have Jarvis summarize the objective/name and quick description"): `manamap pilot deck-branch <slug> summary <name> --title "<the branch in words, ≤80 chars>" --blurb "<one sentence: what it would swap and why, ≤320 chars>"` — no digits in either (figures live in the measured fields and a quoted one goes stale on the next run); the pages read `summary` off `info.json` as the row's headline. Refresh it when the branch's intent changes (restaged, rebased). |
 | **What he's watching** ("show me the candidates") | `manamap pilot watch <slug> list`, plus the review grid: `viz/index.html?mode=build&deck=<slug>`, then pick the set. Marks made there land in `watchlist.json`. |
 | **A deck edit** ("make the swap") | Story 6 below. Go-ahead first. |
 | **How strong is it / rank my decks** ("how strong is Gishath?", "rank my decks") | From `data/decks/<slug>/rating.json` when `manamap pilot validate-rating <slug>` says it is current: the grade (or its range, when `grade_display` says the deck's instruments diverge) with its group, P(1st) and the no-significance line — "C–B in Bracket 4, 1 of 3, P(1st) 72% — ★ coaching, instruments divergent, n too small for significance" — plus the top `withheld` reason. Stale or absent → say so and **offer** `/rate-deck` (a loop; never run it unasked). "Rank my decks" → `manamap pilot rating --all`, quoted as printed, skeleton rows named as skeletons. The fleet page (`viz/fleet.html`) is where he looks at all of it. |
@@ -155,9 +162,9 @@ key `stage` (`promote.stage`). The rung decides the path; never pick another.
   1. `manamap pilot edit <slug> --swap "A=B" --note "<his words>" --json`
      (`--add` / `--cut` / `--set` likewise). A refusal prints why; relay it.
   2. Only once it succeeds, say in two or three lines what moved: the instant checks
-     (size, keep list, warnings) and, if he has not seen a preview, the goldfish rows
-     from `try <slug> --out A --in B` with their intervals. Say it is undoable
-     (`edit <slug> undo`) and **not yet a version**.
+     (size, keep list, warnings) and what the cards' dossiers say. The goldfish rows
+     from `try` only if he asks for them. Say it is undoable (`edit <slug> undo`) and
+     **not yet a version**.
   3. `manamap pilot save-version <slug> --note "…"` **only when he says to save**.
      After a save, run the Keeper line it prints (`next (Jarvis): …`) without asking:
      spawn `context-keeper` `MODE deck-change` with it, install its draft
@@ -165,8 +172,11 @@ key `stage` (`promote.stage`). The rung decides the path; never pick another.
      "deck change: …"`; `--json` carries it as `context.install`), then
      `manamap pilot context <slug> --refresh`.
 - **`sleeved`: never `edit`** (it refuses). Offer the branch path (the branch's page is `viz/branch.html?deck=<slug>&branch=<name>` and the deck page's Branches rack lists them; when he says the branch goes into the sleeves, cardboard or proxies, the whole release is `/release-branch`):
-  `try <slug> --out A --in B --stage <branch>`, then
-  `net-change <slug> --branch <branch> --write`. Merge (`deck-branch <slug> merge`) only
+  a study first (Story 7), then `deck-branch <slug> stage <branch> --out A --in B --why "<his
+  words>"` (or `try … --stage <branch> --why "…"` when he wants the goldfish's read staged
+  beside it), `fetch-deck <slug> --branch <branch>`, `bracket-check <slug> --branch <branch>`;
+  `net-change <slug> --branch <branch> --write` only when he asks to hear the instrument.
+  `propose … --study NNN` needs the approved, installed study. Merge (`deck-branch <slug> merge`) only
   on his word that the cards are in the sleeves, and commit it (the merge prints the
   commit line). It also prints `CONTEXT STALE` with the Keeper spawn and the `--install`
   line — run both as above, then `context <slug> --refresh` and `build-index`.
@@ -183,6 +193,42 @@ key `stage` (`promote.stage`). The rung decides the path; never pick another.
   list`); offer "scan on DeckCheck, then `deckcheck <slug> --write`".
 
 Never say a change was made before the command that makes it has succeeded.
+
+## Story 7: an investigation — the study (2026-11-21)
+
+Any question that ends in a call — a swap, a package, "what's weak here", "tighten the
+mana", "which of these pool cards" — is a study: `data/decks/<slug>/studies/NNN-*.json`,
+tracked, the artifact a decision rests on. The goldfish is at most one labelled fact in it.
+
+1. **Open it.** `manamap pilot study <slug> new "<his question, in his words>" [--branch B]
+   [--out A --in B] [--card N…]`. The skeleton is computed from every source: the record and
+   causes, the debrief's per-card reads, the stacks naming the cards, their engine stage,
+   CONTEXT lines, dated recon, queue items, the ledger, DeckCheck, prices, in-deck
+   neighbours by function, model coverage — and the goldfish LAST, under its asterisk.
+2. **Hand each agent its slice.** `study <slug> show NNN --facts` is what they read; spawn
+   by type, in parallel: `strategist` (the argument), `deck-doctor` MODE prescribe (one
+   question), `rules-question` (an interaction), `data-analyst` (a figure), `card-scout`
+   (candidates). Each answer is kept VERBATIM: `study <slug> add NNN --agent <type> --from
+   <file>|--text "…" [--elapsed S] [--slice "…"] [--command …]`.
+3. **ONE CARD AT A TIME.** Present one card with the specific card it replaces and the full
+   rationale — who said what, which source carries it, what the goldfish could and could
+   not see. He approves or declines; then the next. **NO CHANGE is a valid answer** — "if
+   there are no ideal swaps, don't force it". Never a package, never a net-change table as
+   the argument.
+4. **The call, in his words.** `study <slug> call NNN --decision approve|decline|no-change
+   --decided-by pilot,<sources…> --pilot-words "<verbatim>" [--reading "<your synthesis,
+   every figure citing a fact id>"]`. `validate-study` refuses the goldfish as sole decider
+   and as any decider on a card it cannot read. Then `study <slug> install NNN` — the facts
+   freeze as the record the call rested on.
+5. **Stage on approval** (sleeved deck: `deck-branch stage --why "<his words>"`, `fetch-deck
+   --branch`, `bracket-check --branch`), commit, next card. `propose --study NNN` when he
+   says the cards are coming; `/release-branch` when they are in the sleeves.
+
+Rules that bind here: a DARK or invisible card is a floor, never a cut; protection is for
+the A team, an unused-protection night never justifies cutting it; never cut a card on the
+keep list or in his standing keeps; count lands (35–36, never below 35) on any land swap;
+a Game Changer past the bracket's three is refused on the spot; the bracket call is yours
+from the tools, never a question to him.
 
 ## The roster
 
@@ -202,6 +248,9 @@ slice it needs.
 | `challenger` | argues once against each hypothesis before it reaches the queue | < 90 s | live |
 | `deck-rater` | the one judgment component of a deck's rating, cited and bounded (`/rate-deck`) | < 3 min | live |
 | `rating-skeptic` | attacks that judgment: re-diffs the scorecard, re-reads every citation, names too-generous or too-harsh with a figure | < 2 min | live |
+| `deck-doctor` | MODE prescribe: one question, a cited, log-reading prescription (`/prescribe`); MODE recon: dated reconnaissance of other people's lists; MODE objective: a sentence into a guard | < 5 min | live (a study's second voice beside the strategist) |
+| `debrief` | the structured reading of un-debriefed games (`/debrief`): per-card over/under reads the dossier and the tally count | < 3 min | live |
+| `captains-log` | THE READ across nights (`/captains-log`) | < 3 min | live |
 
 Every finished run of these agents is logged by the band to `.progress/sla-log.jsonl`;
 `manamap pilot sla-report` summarises it. **Only a spawn BY ITS TYPE is timed**: spawn
@@ -212,13 +261,15 @@ until Claude Code restarts. Restart before timing it, and never time it as a pas
 
 ## Right-sized evidence
 
-Use the lightest method that answers the question:
+Use the lightest method that answers the question, in this order:
 - a lookup in the context;
-- an argument from how the deck plays;
-- a Data Analyst figure;
-- a `try` (paired goldfish);
+- the captain's log and the debrief (`card-dossier`, `deck-notes tally`);
+- an argument from how the deck plays (the strategist; the doctor for one question);
 - a rules check;
-- in phase 3, a scenario slice.
+- the dated recon and the proven stacks;
+- a Data Analyst figure;
+- last, and labelled, an instrument: `try` (the paired goldfish, only on cards it reads),
+  Forge for "does the AI cast it", a scenario slice for a board nothing else sees.
 
 Use statistics only when the claim needs them. When you quote a rate, keep its
-interval.
+interval and say what the instrument could not see.

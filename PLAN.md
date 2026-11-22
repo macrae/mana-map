@@ -242,8 +242,9 @@ goblin-storm's ritual-into-commander, and edgar-vampires' Treasure flag.
 ## Decisions that bind
 
 - **The frontend stays LLM-free**; the pipeline and pilot commands make zero LLM calls.
-- **The goldfish decides, paired; Forge probes.** No Forge rate is graded without an A/A
-  at the same N.
+- **The study decides; the goldfish reads, paired; Forge probes (2026-11-21).** A call names
+  what decided it and the goldfish is never that alone. No Forge rate is graded without an
+  A/A at the same N.
 - **Never cut Vish Kal**, and nothing on a deck's keep list. Read every OUT list before any
   compute.
 - **A flat +1/+1 anthem is too slow**; a card earns its slot by multiplying or scaling. No

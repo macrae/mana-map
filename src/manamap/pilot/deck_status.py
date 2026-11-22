@@ -111,7 +111,7 @@ STAGES = [
     # stop checking the gate." It was measured once on `validate-issue` and
     # fixed there; these two are the same shape, found by comparing the
     # registries against each other rather than by anything going red.
-    ("sim",        "sim/",                   None,  False, "OPTIONAL Forge probe (2026-10-04): the decision loop is `try`; Forge answers narrow questions — does the AI play this card",
+    ("sim",        "sim/",                   None,  False, "OPTIONAL Forge probe (2026-10-04): a study decides, `try` is the goldfish's read; Forge answers narrow questions — does the AI play this card",
      "manamap pilot forge-cast-check {slug} --card \"<name>\""),
     ("benchmark",  "benchmark.json",         "decklist_sha256", False, "four measures under one FROZEN harness, so decks compare — `benchmark`",
      "manamap pilot benchmark {slug}"),

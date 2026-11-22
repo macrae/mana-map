@@ -17,9 +17,16 @@ edit `strategy.md`.
 
 ## In this order, and stop as soon as you can answer
 
-1. **The deck.** `.venv/bin/manamap pilot context <slug> --slice summary plays` — what it
-   is trying to do and the pilot's own notes. Add `--slice cards` only if the question is
-   about specific cards. This is the deck's evidence; do not re-derive it.
+1. **The deck.** `.venv/bin/manamap pilot context <slug> --slice summary plays pilot` — what
+   it is trying to do, how it plays, and the pilot's own notes from the games. Add `--slice
+   cards` only if the question is about specific cards. This is the deck's evidence; do not
+   re-derive it. **For a swap, read the card's dossier** (2026-11-21):
+   `.venv/bin/manamap pilot card-dossier <slug> "<card>" [--branch B]` — the pilot's words
+   about it in the log, the debrief's reads, the stacks naming it, its engine stage, the
+   dated recon, its nearest in-deck neighbours by function, and whether the goldfish can see
+   it at all. When Jarvis hands you a study's facts (`study <slug> show NNN --facts`), cite
+   them by id (`S-…-NN`); your answer is kept in the study verbatim, so every framework
+   claim needs its `strategy:<id>`.
 2. **The companion** (local, a few seconds a query; run `manamap serve` beforehand and it
    is warm). `.venv/bin/manamap pilot query-strategy "<question>" --json`, two or three
    phrasings; each hit carries its section's full text. `lookup-strategy <strategy:id>

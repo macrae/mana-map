@@ -5,12 +5,17 @@
 embedding pipeline: ~35,000 oracle cards from Scryfall, two small neural nets (128-dim), a
 2D projection, and an interactive card map served from `viz/`.
 
-**The decision loop is the goldfish, paired.** An idea becomes an answer in about ten
-seconds: `manamap pilot try <slug> --out A --in B` runs both lists through the seeded Monte
-Carlo goldfish **game by game on the same seeds**, so the interval is on the difference and
-the noise of two independent samples cancels. A swap that survives becomes a branch, and
-`net-change` reads it on sixteen Holm-corrected rows plus one optional guard, judged as a whole
-profile.
+**The decision is an argued call, recorded as a STUDY (2026-11-21).** Jarvis makes it with the
+pilot from every source — the captain's log and its debrief, the Deck Context, the handbook, the
+engine model, the strategy and rules companions, the card embeddings, dated recon and DeckCheck,
+the agents, and the instruments — and every call names what decided it (`manamap pilot study`,
+`data/decks/<slug>/studies/`). **An instrument reports; it never rules.** The seeded, paired
+Monte Carlo goldfish (`try`, `net-change`: both lists game by game on the same seeds, sixteen
+Holm-corrected rows read as a whole profile) prints what it could see of the cards in question
+before any figure; it has no opponents, no blockers and no removal, and its word gates nothing —
+`propose` rests on a study. Judgment is kept, stamped and gated like a measurement
+(`validate-study`); the pilot's words outrank every source; the goldfish is under continual
+development, its blind spots a register, not a footnote.
 Since **2026-10-04 Forge is a targeted probe, never a gate**: `forge-cast-check` answers
 "does the AI actually play this card", and a pod run is optional evidence whose loss is a
 warning (`forge_warning`), not a block. A board can be lifted out of a Forge game
@@ -112,11 +117,16 @@ manamap synergy && manamap power-creep && manamap cluster-regions && manamap car
 
 # ── THE LOOP ──────────────────────────────────────────────────────────────
 manamap pilot deck-info <slug>              # START HERE: where a deck stands and a derived NEXT
-manamap pilot try <slug> --out "A" --in "B" [--out C --in D …] [--each] [--stage NAME]
-                              # ~10 s, nothing written: every card in and out (roles, what the
-                              # goldfish can SEE of it, what Forge's AI did with it — never a
-                              # reason to cut), the keep list, colour sources before/after, the
-                              # paired net-change rows, one line. `--stage` writes a branch.
+manamap pilot study <slug> new "<question>" [--branch B] [--out A --in B]   # THE DECISION RECORD
+                              # (2026-11-21): the facts from every source with tier and stamp,
+                              # then `add` each agent's answer, `call` with who decided and the
+                              # pilot's words, `install`. `card-dossier <slug> "<card>"` is the
+                              # per-card query it is built from. `propose --study NNN` requires one.
+# ── THE INSTRUMENTS (one input to a study each; they report, never rule) ──
+manamap pilot try <slug> --out "A" --in "B" [--out C --in D …] [--each] [--stage NAME --why "…"]
+                              # ~10 s, nothing written: what the goldfish could SEE of the cards
+                              # first, what the bench knows about each, then the paired rows and
+                              # "GOLDFISH READ". `--stage` writes a branch with the PILOT's why.
 manamap pilot edit <slug> --swap "A=B" [--add N] [--cut N] [--set N=Q] [--side] [--dry-run]
                               # a BENCH or BREWING deck, edited in place: one validator (`plan`,
                               # the same one `try` reads), the final list judged, journalled,
@@ -206,6 +216,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 
 ### Evidence
 
+- **The goldfish is one instrument: it reports, it never rules (2026-11-21).** A call rests on a study that names what decided it; `validate-study` refuses the goldfish as sole decider and as any decider on a card it cannot read; `try`/`net-change` print coverage before a row; no command refuses or headlines on an instrument's word. The pilot said this fourteen times in forty-six days before it was code.
 - **A validator that fires on correct data is worse than none — measure it against the whole fleet first.** → `docs/gotchas-evidence.md`
 - **Absent means ABSENT, never zero.** An unmeasured figure is a missing key with a reason. → `docs/gotchas-bench.md`
 - **Every rate carries its interval; a comparison carries the interval on the DIFFERENCE; a family carries its correction** (net-change: sixteen Holm-corrected rows plus one optional guard, judged as a whole profile). → `docs/gotchas-bench.md`
@@ -316,7 +327,7 @@ archived deck is read-only until `deck-state revive`.
 ## Pointers
 
 - **`docs/vision.md`** — START HERE: what the bench is, the loop, the evidence contract, the vocabulary
-- **`docs/simulation.md`** — both engines: the goldfish as the decision instrument and its channel table, then Forge
+- **`docs/simulation.md`** — both engines: the goldfish as one instrument and its channel table, then Forge
 - **`docs/pilot.md`** — every command and artifact, the evidence and citation contracts
 - **`docs/testing.md`** — the tiers, markers, the cache, how to write a test; the ONLY place counts and runtimes are stated
 - **`docs/known-issues.md`** — what is wrong that no test fails on

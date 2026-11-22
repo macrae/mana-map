@@ -15,7 +15,8 @@ measurement where you can find it again.
 The centre of the workbench is **the swap loop**, and it runs on two engines with
 different jobs:
 
-- **A seeded, PAIRED Monte Carlo goldfish** — the decision instrument. `try` runs the
+- **A seeded, PAIRED Monte Carlo goldfish** — one instrument, never the decider (the
+  decision is a study, `docs/study.md`, 2026-11-21). `try` runs the
   current list and the candidate through the same games, seed for seed, and reports the
   difference with an interval on the difference, in about ten seconds. Every channel it
   reads is declared per deck and checkable with `model-coverage`, so a null can be told
@@ -46,7 +47,9 @@ not so anyone else is supported.
   "what would fix this axis?"   card-search + deck-audit     candidates that move the number
 ```
 
-**`try <slug> --out A --in B` is the flagship.** About ten seconds, nothing written: every
+**`study <slug> new "<question>"` is where a decision lives (2026-11-21)**: the facts from
+every source, each agent's answer kept, the call and who decided, in the pilot's words.
+**`try <slug> --out A --in B` is the quickest instrument.** About ten seconds, nothing written: every
 card in and out with its roles and what the goldfish can see of it, the pilot's keep list,
 colour sources before and after, and `net-change`'s rows with a PAIRED interval on the
 difference — each goldfish game seeded on its own (`seed:i`) and the two lists aligned slot
@@ -60,8 +63,9 @@ was deleted from the code.
 
 | you want to… | the bench gives you | tier |
 |---|---|---|
-| screen a swap | `try` — the paired goldfish delta in ~10 s, every card's visibility, the keep list | ◆ seeded, paired |
-| grade a candidate 99 | `deck-branch` + `net-change` — one primary objective, sixteen Holm-corrected rows, a Forge loss as a warning | ◆ seeded, paired |
+| decide a swap or a branch | `study` — every source's facts with tier and stamp, the agents' answers kept, the call and who decided; `propose --study` | ★ over ✓ ◆ |
+| hear the goldfish's read of a swap | `try` — coverage of the swapped cards first, then the paired delta in ~10 s, the keep list | ◆ seeded, paired |
+| hear the goldfish's read of a candidate 99 | `deck-branch` + `net-change` — an optional guard, sixteen Holm-corrected rows, a Forge loss as a warning; gates nothing | ◆ seeded, paired |
 | know whether the AI plays a card | `forge-cast-check` — a two-seat Forge shell: drawn / cast / activated / held while castable | ◆ seeded |
 | measure a deck against a **table** (optional) | `simulate`, `experiment` — Forge games against a named pod, every rate with its interval; graded only beside an A/A at the same N | ◆ seeded |
 | measure it against nobody | `goldfish` — Monte Carlo resource development, 10,000 seeded games. **Every channel is opt-in per deck** (draw, combat, Treasure, sacrifice, discard, the spell count, four commander abilities), so what it can see is declared and checkable with `model-coverage` | ◆ seeded |
@@ -149,9 +153,10 @@ measurement at all. What a run is genuinely good at: whether the AI plays a card
 table sets, who kills you and how, and whether the kill the goldfish measured actually
 lands. That is why it is a probe and not the judge.
 
-*The goldfish has no blockers.* It is the decision instrument because it is fast,
-paired and declared — not because it sees everything. It cannot price a blocker's value
-or removal, and its verdict on board quality is not evidence.
+*The goldfish has no blockers.* It earns its place as an instrument because it is fast,
+paired and declared — not because it sees everything, and not as the decider: it cannot
+price a blocker's value or removal, its read on board quality is not evidence, and since
+2026-11-21 its word gates nothing — a study does.
 `model-coverage` and `try` say what it cannot see, card by card.
 
 *Nineteen games. Not two hundred.* Five decks carry a captain's log (as of 2026-10-05) and
