@@ -947,6 +947,8 @@ def engine_activation(slug, cards, roles, identity, load_pool_fn, branch=None,
             "thinnest_size": comps[thinnest]["size"],
             "commander_gated": bool(target.get("commander")),
         }
+        if target.get("component"):
+            row["component"] = target["component"]             # the engine.json component it prices
         m = measured.get(target["label"])
         if m:
             row["measured"] = {k: m[k] for k in

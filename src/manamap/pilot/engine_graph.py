@@ -609,53 +609,88 @@ def _lines(nodes, edges, placed, components, by_stack, library_size):
     product of hop availabilities by turn three."""
     from manamap.pilot.manabase import cards_seen, hypergeometric_at_least
     adj = {}
+    links = {(e["from"], e["to"]) for e in edges if e["kind"] in ("feeds", "supplies", "fills", "makes")}
     for e in edges:
         if e["kind"] in ("feeds", "supplies", "fills", "ends", "makes") and e["from"] not in (OPPONENT, TURN) \
                 and e["to"] not in ("LIFE", "MANA") and e["from"] not in ("LIFE", "MANA"):
             adj.setdefault(e["from"], []).append(e)
     ignition = [c for c, p in placed.items() if p["stage"] == "ignition"]
+    # A FRONTIER EXPANSION, NOT A PATH ENUMERATION (2026-11-22). Enumerating simple
+    # paths took ten seconds on edgar (one shape had 4,800 of them) and every
+    # status row paid it. A shape is defined by its event sequence, so paths with
+    # the same events are merged as they go: a state is (node, events so far) and
+    # carries the SET of cards seen at every position; two paths reaching the same
+    # state union their sets. States are bounded by nodes x distinct event prefixes.
     shapes = {}
+    states = {}
 
-    def walk(path, events, depth):
-        last = path[-1]
-        if depth > ENGINE_LINE_MAX_DEPTH:
-            return
-        for e in adj.get(last, ()):
-            nxt = e["to"]
-            if nxt in path:
-                continue
-            if e.get("implicit") and e["event"] == "CAST" and depth > 0:
-                continue                                  # casting the ignition is the one implicit hop
-            # A hop INTO a stock is named by the stock, whichever event filled it
-            # (ETB, TOKEN or a body supplied are one loop); the hop OUT of it adds no
-            # label, since the stock already names what the outlet draws on.
-            label = nxt if nxt in STOCKS else (None if last in STOCKS else e["event"])
-            evs = events + ([label] if label else [])
-            if nxt == TERMINAL:
-                if e.get("implicit") and not (nodes[last].get("is_token") or _self_growth(nodes[last])):
-                    continue                              # a bare body's combat is not a line's end
-                if len(evs) < 2:
-                    continue                              # one hop is a spell, not a line
-                key = tuple(evs)
-                sh = shapes.setdefault(key, {"instances": [], "at": [set() for _ in range(len(path))]})
-                if len(sh["at"]) != len(path):
-                    key = key + ("+",) * (len(path) - len(key) + 1)
-                    sh = shapes.setdefault(key, {"instances": [], "at": [set() for _ in range(len(path))]})
-                sh["instances"].append(tuple(path))
-                for i, c in enumerate(path):
-                    sh["at"][i].add(c)
-                continue
-            walk(path + [nxt], evs, depth + 1)
+    def seed(path, events):
+        key = (path[-1], tuple(events))
+        sets = states.setdefault(key, [set() for _ in path])
+        for i, c in enumerate(path):
+            sets[i].add(c)
 
     for ig in ignition:
-        walk([ig], [], 0)
+        seed([ig], [])
     # A commander that consumes an event is reached by its producers: the line
-    # "cast a Vampire → Edgar → a body → …" starts at the Vampires, not at Edgar.
+    # "cast a Vampire -> Edgar -> a body -> ..." starts at the Vampires, not at Edgar.
     for cmd in [n["id"] for n in nodes.values() if n["zone"] == "command" and n["id"] in ignition]:
         for e in edges:
             if e["kind"] == "feeds" and e["to"] == cmd and e["from"] in nodes \
                     and nodes[e["from"]]["zone"] == "library":
-                walk([e["from"], cmd], [e["event"]], 1)
+                seed([e["from"], cmd], [e["event"]])
+
+    frontier = list(states.items())
+    for depth in range(ENGINE_LINE_MAX_DEPTH + 1):
+        nxt_frontier = []
+        for (last, events), sets in frontier:
+            for e in adj.get(last, ()):
+                nxt = e["to"]
+                # No revisit of a card the path definitely holds (a singleton
+                # position), and never the node we stand on.
+                if nxt == last or any(len(st) == 1 and nxt in st for st in sets):
+                    continue
+                if e.get("implicit") and len(sets) > 1 and nxt != TERMINAL:
+                    continue                              # only the ignition's own cast, entry or attack is a hop
+                label = nxt if nxt in STOCKS else (None if last in STOCKS else e["event"])
+                evs = list(events) + ([label] if label else [])
+                if nxt == TERMINAL:
+                    if e.get("implicit") and not (nodes[last].get("is_token") or _self_growth(nodes[last])):
+                        continue                          # a bare body's combat is not a line's end
+                    if len(evs) < 2:
+                        continue                          # one hop is a spell, not a line
+                    key = tuple(evs) + ("+",) * max(0, len(sets) - len(evs))
+                    sh = shapes.setdefault(key, {"at": [set() for _ in sets]})
+                    if len(sh["at"]) != len(sets):        # the same events over a different hop count
+                        key = key + ("+",)
+                        sh = shapes.setdefault(key, {"at": [set() for _ in sets]})
+                    for i, st in enumerate(sets):
+                        sh["at"][i] |= st
+                    continue
+                if depth >= ENGINE_LINE_MAX_DEPTH:
+                    continue
+                skey = (nxt, tuple(evs))
+                if skey in states:
+                    tgt = states[skey]
+                    if len(tgt) != len(sets) + 1:
+                        continue                          # same events, different hop count: rare; dropped
+                    grew = False
+                    for i, st in enumerate(sets):
+                        if not st <= tgt[i]:
+                            tgt[i] |= st
+                            grew = True
+                    if nxt not in tgt[-1]:
+                        tgt[-1].add(nxt)
+                        grew = True
+                    if grew:
+                        nxt_frontier.append((skey, tgt))
+                else:
+                    tgt = [set(st) for st in sets] + [{nxt}]
+                    states[skey] = tgt
+                    nxt_frontier.append((skey, tgt))
+        frontier = nxt_frontier
+        if not frontier:
+            break
     out = []
     for evs, sh in shapes.items():
         hops = []
@@ -666,15 +701,20 @@ def _lines(nodes, edges, placed, components, by_stack, library_size):
             tokens = sorted(m for m in members if m in nodes and nodes[m].get("is_token"))
             stocks = sorted(m for m in members if m in STOCKS)
             copies = sum(nodes[c]["copies"] for c in cards)
-            p3 = 1.0 if (cmd or stocks) else (hypergeometric_at_least(copies, cards_seen(3), 1, library_size) if copies else 0.0)
+            # A stock, a token or the commander is where the line passes, not a draw.
+            p3 = 1.0 if (cmd or stocks or (tokens and not cards)) else \
+                (hypergeometric_at_least(copies, cards_seen(3), 1, library_size) if copies else 0.0)
             avail *= p3
             hops.append({"cards": cards + cmd, "tokens": tokens, "stocks": stocks, "n": len(cards) + len(cmd),
                          "by_turn_three": round(p3, 3)})
-        inst_cards = [tuple(sorted(c for c in inst if c in nodes and nodes[c]["zone"] != "token"))
-                      for inst in sh["instances"]]
-        stacks = sorted({sid for sid, st in by_stack.items()
-                         for cards in inst_cards if len(cards) >= 2 and set(cards) <= set(st["cards"])})
-        real = [h for h in hops if not h["stocks"]]
+        # A stack stamps the shape when a CONNECTED instance of it sits inside the
+        # scenario: at every card-bearing hop the stack names a card, and each
+        # named card at hop i has an edge to a named card at hop i+1 (through the
+        # stock between them when there is one). Naming a card per hop alone
+        # stamped 38 of yawgmoth's 40 shapes; connection is what the stack proves.
+        stacks = sorted(sid for sid, st in by_stack.items()
+                        if len(set(st["cards"])) >= 2 and _stack_supports(hops, set(st["cards"]), links))
+        real = [h for h in hops if h["cards"]]
         bottleneck = min(real, key=lambda h: h["n"]) if real else None
         events = [e for e in evs if e != "+"]
 
@@ -687,7 +727,7 @@ def _lines(nodes, edges, placed, components, by_stack, library_size):
                     "from": stage_of_hop(real[0]) if real else None,
                     "to": stage_of_hop(real[-1]) if real else None,
                     "via": via, "carries": " › ".join(events),
-                    "hops": hops, "instances": len(sh["instances"]),
+                    "hops": hops, "starts": len(sh["at"][0]),
                     "cards": sorted({c for h in hops for c in h["cards"]}),
                     "bottleneck": {"position": hops.index(bottleneck), "n": bottleneck["n"],
                                    "cards": bottleneck["cards"]} if bottleneck else None,
@@ -698,6 +738,35 @@ def _lines(nodes, edges, placed, components, by_stack, library_size):
     for i, l in enumerate(out, 1):
         l["id"] = f"L{i:02d}"
     return out
+
+
+def _stack_supports(hops, named, links):
+    """Does the scenario hold a connected instance of this shape? Walk the hops;
+    at each card-bearing hop keep the named cards reachable from the previous
+    hop's kept cards (a stock or a token between two hops is crossed when both
+    sides link to it)."""
+    reach = None
+    pending_bridge = None                                 # a stock/token hop between two card hops
+    for h in hops:
+        if not h["cards"]:
+            pending_bridge = (h["stocks"] or h["tokens"] or [None])[0]
+            continue
+        here = [c for c in h["cards"] if c in named]
+        if not here:
+            return False
+        if reach is None:
+            reach = set(here)
+        else:
+            if pending_bridge:
+                nxt = {c for c in here if any((a, pending_bridge) in links and (pending_bridge, c) in links
+                                              for a in reach)}
+            else:
+                nxt = {c for c in here if any((a, c) in links for a in reach)}
+            if not nxt:
+                return False
+            reach = nxt
+        pending_bridge = None
+    return reach is not None and len(reach) >= 1
 
 
 def _spof(nodes, edges, placed, components, lines):
@@ -886,6 +955,11 @@ def write(slug, branch=None):
     old = load_json(path, default=None)
     fresh["reading"] = migrate_reading(old, fresh)
     path.write_text(json.dumps(fresh, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    # ONE MODEL: a deck that opted in (`targets_from: engine.json`) gets its goldfish
+    # targets regenerated from the components in the same write; every other deck's
+    # declaration is untouched.
+    from manamap.pilot import scaffold_targets
+    scaffold_targets.regenerate_targets(slug, branch, engine=fresh)
     return fresh, path
 
 
@@ -937,7 +1011,7 @@ def _print(doc, abilities_for=None):
             else:
                 hop_words.append(", ".join(h["tokens"]) or "?")
         print(f"  {l['id']} {l['stamp']} {' › '.join(l['events'])}: " + " → ".join(hop_words)
-              + f"  [{l['instances']} instance{'s' if l['instances'] != 1 else ''}, P3 {l['availability_by_turn_three']:.2f}]"
+              + f"  [{l['starts']} start{'s' if l['starts'] != 1 else ''}, P3 {l['availability_by_turn_three']:.2f}]"
               + (f"  stacks {','.join(l['verified_by'])}" if l["verified_by"] else "")
               + (f"  thinnest hop {bn['n']}: {', '.join(bn['cards'][:3])}" if bn and bn["n"] <= ENGINE_THIN_GROUP else ""))
     if doc["spof"]:
@@ -977,6 +1051,11 @@ def main(args):
     if getattr(args, "write", False):
         doc, path = write(slug, branch)
         print(f"wrote {path}")
+        tdoc = load_json(deck_file(slug, "goldfish_targets.json", branch), default=None) or {}
+        if tdoc.get("targets_from") == "engine.json":
+            n = sum(1 for t in tdoc.get("targets") or [] if t.get("generated"))
+            print(f"regenerated {n} goldfish target(s) from the components (targets_from: engine.json); "
+                  f"the goldfish's next run reads them — `manamap pilot regen --slug {slug}`")
     else:
         doc = build(slug, branch)
         old = load_json(deck_file(slug, "engine.json", branch), default=None)

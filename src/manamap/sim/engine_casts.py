@@ -82,6 +82,16 @@ def engine_set(slug, branch=None):
                 picked.update(n for n in (group.get("any_of") or []) if n in deck_names)
     if engine:
         sources.append("engine.json")
+        if (engine.get("_meta") or {}).get("v") == 2:
+            # ONE MODEL (2026-11-22): the producers and the deck-fed consumers of
+            # every component outside the substrate — what the graph says the
+            # engine is made of, not what a stage label says.
+            from manamap.pilot.scaffold_targets import _SUBSTRATE_EVENTS
+            for comp in engine.get("components") or []:
+                if comp.get("event") in _SUBSTRATE_EVENTS:
+                    continue
+                picked.update(n for n in (comp.get("producers") or []) if n in deck_names)
+                picked.update(n for n in (comp.get("deck_fed_consumers") or []) if n in deck_names)
         for stage in engine.get("stages") or []:
             if stage.get("stage") in _ENGINE_STAGES_EXCLUDED:
                 continue

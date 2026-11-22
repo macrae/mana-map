@@ -3614,12 +3614,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -3688,12 +3692,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -5816,12 +5824,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -8135,7 +8147,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -8144,7 +8156,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -8207,7 +8219,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -8360,7 +8372,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -8369,7 +8381,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -8432,7 +8444,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -13496,6 +13508,30 @@
     ]
    },
    {
+    "card": "Glorybringer",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
+    "card": "Goldspan Dragon",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Goldspan Dragon",
     "event": "COMBAT_DAMAGE",
     "kind": "pump",
@@ -13525,6 +13561,18 @@
     "actor": null,
     "your_turn": false,
     "filters": []
+   },
+   {
+    "card": "Smaug the Magnificent",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
    },
    {
     "card": "Solphim, Mayhem Dominus",
@@ -13758,7 +13806,11 @@
    "unproven_producers": [],
    "from_opponent": false,
    "from_turn": false,
-   "modifiers": [],
+   "modifiers": [
+    "Glorybringer",
+    "Goldspan Dragon",
+    "Smaug the Magnificent"
+   ],
    "redundancy": {
     "producers": 23,
     "consumers": 2
@@ -14284,7 +14336,6 @@
      "output"
     ],
     "Smaug the Magnificent": [
-     "conversion",
      "fuel",
      "output"
     ],
@@ -14304,7 +14355,6 @@
     "Enlightened Tutor",
     "Farseek",
     "Generous Gift",
-    "Glorybringer",
     "Hellkite Courser",
     "Lathliss, Dragon Queen",
     "Miirym, Sentinel Wyrm",
@@ -14316,7 +14366,7 @@
     "Stubborn Denial",
     "Transcendent Dragon"
    ],
-   "what_it_does": "17 card(s), by rule: nothing in the deck starts it; it produces ['ETB'] (6); nothing in the deck starts it; it produces ['HAND'] (3); nothing in the deck starts it; it produces ['ETB', 'HAND'] (3)",
+   "what_it_does": "16 card(s), by rule: nothing in the deck starts it; it produces ['ETB'] (6); nothing in the deck starts it; it produces ['HAND'] (3); nothing in the deck starts it; it produces ['ETB', 'HAND'] (3)",
    "also": {
     "The Ur-Dragon": [
      "conversion",
@@ -14336,9 +14386,6 @@
      "fuel"
     ],
     "Generous Gift": [
-     "output"
-    ],
-    "Glorybringer": [
      "output"
     ],
     "Hellkite Courser": [
@@ -14382,6 +14429,7 @@
     "Dragonspeaker Shaman",
     "Ganax, Astral Hunter",
     "Garruk's Uprising",
+    "Glorybringer",
     "Goldspan Dragon",
     "Old Gnawbone",
     "Panharmonicon",
@@ -14389,7 +14437,7 @@
     "Temur Ascendancy",
     "Urza's Incubator"
    ],
-   "what_it_does": "13 card(s), by rule: consumes ['ETB'], produces ['HAND'] (5); scales ['COST_REDUCTION'] (4); turns ['ETB'] into ['MANA']",
+   "what_it_does": "14 card(s), by rule: consumes ['ETB'], produces ['HAND'] (5); scales ['COST_REDUCTION'] (4); turns ['ETB'] into ['MANA']",
    "also": {
     "Breaching Dragonstorm": [
      "output"
@@ -14401,6 +14449,9 @@
      "output"
     ],
     "Ganax, Astral Hunter": [
+     "output"
+    ],
+    "Glorybringer": [
      "output"
     ],
     "Goldspan Dragon": [
@@ -14721,18 +14772,18 @@
    "why": "nothing in the deck starts it; it produces ['ETB']"
   },
   "Glorybringer": {
-   "stage": "ignition",
+   "stage": "conversion",
    "also": [
     "output"
    ],
-   "why": "nothing in the deck starts it; it produces ['ATTACK']"
+   "why": "scales ['ATTACK']"
   },
   "Goldspan Dragon": {
    "stage": "conversion",
    "also": [
     "output"
    ],
-   "why": "consumes ['ATTACK', 'COUNTERSPELL'], produces ['ATTACK']"
+   "why": "turns ['ATTACK', 'COUNTERSPELL'] into ['MANA']"
   },
   "Hellkite Courser": {
    "stage": "ignition",
@@ -14898,7 +14949,6 @@
   "Smaug the Magnificent": {
    "stage": "wincon",
    "also": [
-    "conversion",
     "fuel",
     "output"
    ],
@@ -15065,7 +15115,6 @@
       "Atsushi, the Blazing Sky",
       "Farseek",
       "Generous Gift",
-      "Glorybringer",
       "Hellkite Courser",
       "Lathliss, Dragon Queen",
       "Miirym, Sentinel Wyrm",
@@ -15078,7 +15127,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 14,
+     "n": 13,
      "by_turn_three": 1.0
     },
     {
@@ -15093,14 +15142,13 @@
      "by_turn_three": 0.251
     }
    ],
-   "instances": 41,
+   "starts": 13,
    "cards": [
     "Ancient Gold Dragon",
     "Atsushi, the Blazing Sky",
     "Dragon Tempest",
     "Farseek",
     "Generous Gift",
-    "Glorybringer",
     "Hellkite Courser",
     "Lathliss, Dragon Queen",
     "Miirym, Sentinel Wyrm",
@@ -15133,98 +15181,60 @@
   },
   {
    "events": [
-    "ETB",
-    "ETB",
-    "DAMAGE"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "ignition",
    "via": [
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
+    "Ancient Gold Dragon",
+    "Generous Gift",
+    "Lathliss, Dragon Queen"
    ],
-   "carries": "ETB › ETB › DAMAGE",
+   "carries": "TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
       "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
       "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
+      "Lathliss, Dragon Queen"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 14,
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_3_3_elephant",
+      "token:r_5_5_dragon_flying",
+      "token:u_1_1_faerie_dragon_flying"
+     ],
+     "stocks": [],
+     "n": 0,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
     }
    ],
-   "instances": 93,
+   "starts": 3,
    "cards": [
     "Ancient Gold Dragon",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
     "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
+    "Lathliss, Dragon Queen"
    ],
    "bottleneck": {
-    "position": 1,
+    "position": 0,
     "n": 3,
     "cards": [
-     "Ganax, Astral Hunter",
-     "Scourge of Valkas",
-     "Terror of the Peaks"
+     "Ancient Gold Dragon",
+     "Generous Gift",
+     "Lathliss, Dragon Queen"
     ]
    },
-   "availability_by_turn_three": 0.063,
+   "availability_by_turn_three": 0.251,
    "verified_by": [
+    "001",
     "002",
     "007"
    ],
@@ -15233,171 +15243,6 @@
   },
   {
    "events": [
-    "TOKEN",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ancient Gold Dragon",
-    "Dragon Tempest",
-    "Generous Gift",
-    "Lathliss, Dragon Queen",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "carries": "TOKEN › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Generous Gift",
-      "Lathliss, Dragon Queen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:g_3_3_elephant",
-      "token:r_5_5_dragon_flying",
-      "token:u_1_1_faerie_dragon_flying"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Dragon Tempest",
-    "Generous Gift",
-    "Lathliss, Dragon Queen",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "001",
-    "002",
-    "007"
-   ],
-   "stamp": "✓",
-   "id": "L03"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ancient Gold Dragon",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Lathliss, Dragon Queen",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "carries": "TOKEN › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Generous Gift",
-      "Lathliss, Dragon Queen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:g_3_3_elephant",
-      "token:r_5_5_dragon_flying",
-      "token:u_1_1_faerie_dragon_flying"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 16,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Lathliss, Dragon Queen",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "002",
-    "007"
-   ],
-   "stamp": "✓",
-   "id": "L04"
-  },
-  {
-   "events": [
     "ATTACK",
     "ETB",
     "DAMAGE"
@@ -15406,2465 +15251,12 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Atarka, World Render",
     "Dragon Tempest",
     "Scourge of Valkas",
     "Terror of the Peaks",
     "The Ur-Dragon"
    ],
    "carries": "ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atarka, World Render",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 23,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 115,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.251,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L05"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 109,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.2246,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L06"
-  },
-  {
-   "events": [
-    "CAST",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Firespitter Whelp"
-   ],
-   "carries": "CAST › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Enlightened Tutor",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Sarkhan's Triumph",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Stubborn Denial",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 17,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Firespitter Whelp"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 17,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atsushi, the Blazing Sky",
-    "Enlightened Tutor",
-    "Farseek",
-    "Firespitter Whelp",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Sarkhan's Triumph",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Stubborn Denial",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Firespitter Whelp"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L07"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atarka, World Render",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 23,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 262,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.063,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L08"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 179,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.063,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L09"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ATTACK › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 248,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0564,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L10"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ETB › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 248,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0564,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L11"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 0.734
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 172,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0463,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L12"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Firespitter Whelp",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "carries": "CAST › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Enlightened Tutor",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Sarkhan's Triumph",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Stubborn Denial",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 17,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Firespitter Whelp"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 51,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Enlightened Tutor",
-    "Farseek",
-    "Firespitter Whelp",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Sarkhan's Triumph",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Firespitter Whelp"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L13"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "carries": "COMBAT_DAMAGE › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of the Throne",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 27,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Old Gnawbone"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L14"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atarka, World Render",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 22,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 112,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Old Gnawbone"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L15"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Firespitter Whelp",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "CAST › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Enlightened Tutor",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Sarkhan's Triumph",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Stubborn Denial",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 17,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Firespitter Whelp"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 99,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Enlightened Tutor",
-    "Farseek",
-    "Firespitter Whelp",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Sarkhan's Triumph",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Firespitter Whelp"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "COMBAT_DAMAGE › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of the Throne",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 51,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Old Gnawbone"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L17"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ATTACK › COMBAT_DAMAGE › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 20,
-     "by_turn_three": 0.881
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 106,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Old Gnawbone"
-    ]
-   },
-   "availability_by_turn_three": 0.0201,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L18"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 20,
-     "by_turn_three": 0.881
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 106,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Old Gnawbone"
-    ]
-   },
-   "availability_by_turn_three": 0.0201,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Firespitter Whelp",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "CAST › ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Enlightened Tutor",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Sarkhan's Triumph",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Stubborn Denial",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 16,
-     "by_turn_three": 0.81
-    },
-    {
-     "cards": [
-      "Firespitter Whelp"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 96,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Enlightened Tutor",
-    "Farseek",
-    "Firespitter Whelp",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Sarkhan's Triumph",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Firespitter Whelp"
-    ]
-   },
-   "availability_by_turn_three": 0.0185,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L20"
-  },
-  {
-   "events": [
-    "COUNTERSPELL",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "output",
-   "via": [
-    "Stubborn Denial",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "carries": "COUNTERSPELL › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Stubborn Denial",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Thunderbreak Regent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 2,
-   "cards": [
-    "Stubborn Denial",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Thunderbreak Regent"
-    ]
-   },
-   "availability_by_turn_three": 0.0159,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L21"
-  },
-  {
-   "events": [
-    "HAND",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Solphim, Mayhem Dominus",
-    "Terror of the Peaks"
-   ],
-   "carries": "HAND › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atsushi, the Blazing Sky",
-      "Enlightened Tutor",
-      "Farseek",
-      "Nature's Lore",
-      "Sarkhan's Triumph",
-      "Skyshroud Claim",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Solphim, Mayhem Dominus"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 16,
-   "cards": [
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Enlightened Tutor",
-    "Farseek",
-    "Nature's Lore",
-    "Sarkhan's Triumph",
-    "Skyshroud Claim",
-    "Solphim, Mayhem Dominus",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Solphim, Mayhem Dominus"
-    ]
-   },
-   "availability_by_turn_three": 0.0159,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L22"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks"
-   ],
-   "carries": "ETB › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 133,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 3,
-    "cards": [
-     "Ganax, Astral Hunter",
-     "Scourge of Valkas",
-     "Terror of the Peaks"
-    ]
-   },
-   "availability_by_turn_three": 0.0158,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L23"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ETB › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atarka, World Render",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 23,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 366,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0158,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ATTACK › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 256,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0158,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L25"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ETB › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 256,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0158,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L26"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "HAND",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Solphim, Mayhem Dominus",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › HAND › ETB › DAMAGE",
    "hops": [
     {
      "cards": [
@@ -17906,1011 +15298,187 @@
      "by_turn_three": 1.0
     },
     {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
+     "cards": [
+      "Dragon Tempest",
+      "Scourge of Valkas",
+      "Terror of the Peaks"
      ],
-     "n": 0,
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 22,
+   "cards": [
+    "Ancient Gold Dragon",
+    "Atarka, World Render",
+    "Atsushi, the Blazing Sky",
+    "Dragon Tempest",
+    "Drakuseth, Maw of Flames",
+    "Firespitter Whelp",
+    "Gadrak, the Crown-Scourge",
+    "Ganax, Astral Hunter",
+    "Glorybringer",
+    "Goldspan Dragon",
+    "Hellkite Courser",
+    "Lathliss, Dragon Queen",
+    "Miirym, Sentinel Wyrm",
+    "Old Gnawbone",
+    "Scourge of Valkas",
+    "Scourge of the Throne",
+    "Smaug the Magnificent",
+    "Steel Hellkite",
+    "Terror of the Peaks",
+    "The Ur-Dragon",
+    "Thrakkus the Butcher",
+    "Thunderbreak Regent",
+    "Transcendent Dragon",
+    "Twinflame Tyrant"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "The Ur-Dragon"
+    ]
+   },
+   "availability_by_turn_three": 0.2276,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L03"
+  },
+  {
+   "events": [
+    "CAST",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Firespitter Whelp"
+   ],
+   "carries": "CAST › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Ancient Gold Dragon",
+      "Atsushi, the Blazing Sky",
+      "Enlightened Tutor",
+      "Farseek",
+      "Generous Gift",
+      "Hellkite Courser",
+      "Lathliss, Dragon Queen",
+      "Miirym, Sentinel Wyrm",
+      "Nature's Lore",
+      "Sarkhan's Triumph",
+      "Scourge of the Throne",
+      "Skyshroud Claim",
+      "Sneak Attack",
+      "Stubborn Denial",
+      "Transcendent Dragon",
+      "The Ur-Dragon"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 16,
      "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Solphim, Mayhem Dominus"
+      "Firespitter Whelp"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    },
+    }
+   ],
+   "starts": 16,
+   "cards": [
+    "Ancient Gold Dragon",
+    "Atsushi, the Blazing Sky",
+    "Enlightened Tutor",
+    "Farseek",
+    "Firespitter Whelp",
+    "Generous Gift",
+    "Hellkite Courser",
+    "Lathliss, Dragon Queen",
+    "Miirym, Sentinel Wyrm",
+    "Nature's Lore",
+    "Sarkhan's Triumph",
+    "Scourge of the Throne",
+    "Skyshroud Claim",
+    "Sneak Attack",
+    "Stubborn Denial",
+    "The Ur-Dragon",
+    "Transcendent Dragon"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Firespitter Whelp"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "COUNTERSPELL",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "output",
+   "via": [
+    "Stubborn Denial",
+    "Thunderbreak Regent",
+    "Transcendent Dragon"
+   ],
+   "carries": "COUNTERSPELL › DAMAGE",
+   "hops": [
     {
      "cards": [
-      "Dragon Tempest",
-      "Terror of the Peaks"
+      "Stubborn Denial",
+      "Transcendent Dragon"
      ],
      "tokens": [],
      "stocks": [],
      "n": 2,
      "by_turn_three": 0.174
-    }
-   ],
-   "instances": 59,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Solphim, Mayhem Dominus",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0144,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L27"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ATTACK › ETB › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
     },
     {
      "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 346,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0141,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ETB › ATTACK › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 346,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0141,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ETB › ETB › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
-      "Firespitter Whelp",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 21,
-     "by_turn_three": 0.895
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 346,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0141,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "COMBAT_DAMAGE › ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Scourge of the Throne",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Old Gnawbone"
+      "Thunderbreak Regent"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
     }
    ],
-   "instances": 48,
+   "starts": 2,
    "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
+    "Stubborn Denial",
+    "Thunderbreak Regent",
     "Transcendent Dragon"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Old Gnawbone"
+     "Thunderbreak Regent"
     ]
    },
-   "availability_by_turn_three": 0.0125,
+   "availability_by_turn_three": 0.0159,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ATTACK › ATTACK › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 0.734
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 246,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0116,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ATTACK › ETB › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 0.734
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 246,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0116,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Ganax, Astral Hunter",
-    "Scourge of Valkas",
-    "Terror of the Peaks",
-    "The Ur-Dragon"
-   ],
-   "carries": "ETB › ETB › ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Farseek",
-      "Generous Gift",
-      "Glorybringer",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Nature's Lore",
-      "Scourge of the Throne",
-      "Skyshroud Claim",
-      "Sneak Attack",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 0.734
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ganax, Astral Hunter",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 246,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Dragon Tempest",
-    "Farseek",
-    "Ganax, Astral Hunter",
-    "Generous Gift",
-    "Glorybringer",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Nature's Lore",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Skyshroud Claim",
-    "Sneak Attack",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "Atarka, World Render",
-     "The Ur-Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0116,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
+   "id": "L05"
   },
   {
    "events": [
@@ -18932,7 +15500,6 @@
       "Ancient Gold Dragon",
       "Atsushi, the Blazing Sky",
       "Farseek",
-      "Glorybringer",
       "Hellkite Courser",
       "Lathliss, Dragon Queen",
       "Miirym, Sentinel Wyrm",
@@ -18945,7 +15512,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 13,
+     "n": 12,
      "by_turn_three": 1.0
     },
     {
@@ -18967,14 +15534,13 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 13,
+   "starts": 12,
    "cards": [
     "Ancient Gold Dragon",
     "Atsushi, the Blazing Sky",
     "Breaching Dragonstorm",
     "Farseek",
     "Firespitter Whelp",
-    "Glorybringer",
     "Hellkite Courser",
     "Lathliss, Dragon Queen",
     "Miirym, Sentinel Wyrm",
@@ -18995,7 +15561,7 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L35"
+   "id": "L06"
   },
   {
    "events": [
@@ -19008,7 +15574,6 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Atarka, World Render",
     "Breaching Dragonstorm",
     "Firespitter Whelp",
     "The Ur-Dragon"
@@ -19021,388 +15586,7 @@
       "Atarka, World Render",
       "Atsushi, the Blazing Sky",
       "Drakuseth, Maw of Flames",
-      "Gadrak, the Crown-Scourge",
-      "Ganax, Astral Hunter",
-      "Glorybringer",
-      "Goldspan Dragon",
-      "Hellkite Courser",
-      "Lathliss, Dragon Queen",
-      "Miirym, Sentinel Wyrm",
-      "Old Gnawbone",
-      "Scourge of Valkas",
-      "Scourge of the Throne",
-      "Smaug the Magnificent",
-      "Steel Hellkite",
-      "Terror of the Peaks",
-      "Thrakkus the Butcher",
-      "Thunderbreak Regent",
-      "Transcendent Dragon",
-      "Twinflame Tyrant",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 22,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Breaching Dragonstorm"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Firespitter Whelp"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 38,
-   "cards": [
-    "Ancient Gold Dragon",
-    "Atarka, World Render",
-    "Atsushi, the Blazing Sky",
-    "Breaching Dragonstorm",
-    "Drakuseth, Maw of Flames",
-    "Firespitter Whelp",
-    "Gadrak, the Crown-Scourge",
-    "Ganax, Astral Hunter",
-    "Glorybringer",
-    "Goldspan Dragon",
-    "Hellkite Courser",
-    "Lathliss, Dragon Queen",
-    "Miirym, Sentinel Wyrm",
-    "Old Gnawbone",
-    "Scourge of Valkas",
-    "Scourge of the Throne",
-    "Smaug the Magnificent",
-    "Steel Hellkite",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thrakkus the Butcher",
-    "Thunderbreak Regent",
-    "Transcendent Dragon",
-    "Twinflame Tyrant"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Breaching Dragonstorm"
-    ]
-   },
-   "availability_by_turn_three": 0.0083,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "COUNTERSPELL",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "carries": "COUNTERSPELL › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Stubborn Denial",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Goldspan Dragon",
-      "Thunderbreak Regent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 12,
-   "cards": [
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 2,
-    "cards": [
-     "Stubborn Denial",
-     "Transcendent Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0076,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "COUNTERSPELL",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "carries": "COUNTERSPELL › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Stubborn Denial",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Goldspan Dragon",
-      "Thunderbreak Regent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 24,
-   "cards": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 2,
-    "cards": [
-     "Stubborn Denial",
-     "Transcendent Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0076,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "COUNTERSPELL",
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "carries": "COUNTERSPELL › ATTACK › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Stubborn Denial",
-      "Transcendent Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Goldspan Dragon",
-      "Thunderbreak Regent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Dragon Tempest",
-      "Scourge of Valkas",
-      "Terror of the Peaks"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 24,
-   "cards": [
-    "Atarka, World Render",
-    "Dragon Tempest",
-    "Goldspan Dragon",
-    "Scourge of Valkas",
-    "Stubborn Denial",
-    "Terror of the Peaks",
-    "The Ur-Dragon",
-    "Thunderbreak Regent",
-    "Transcendent Dragon"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 2,
-    "cards": [
-     "Stubborn Denial",
-     "Transcendent Dragon"
-    ]
-   },
-   "availability_by_turn_three": 0.0076,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ATTACK",
-    "ETB",
-    "CAST",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Atarka, World Render",
-    "Breaching Dragonstorm",
-    "Firespitter Whelp",
-    "The Ur-Dragon"
-   ],
-   "carries": "ATTACK › ATTACK › ETB › CAST › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancient Gold Dragon",
-      "Atsushi, the Blazing Sky",
-      "Drakuseth, Maw of Flames",
+      "Firespitter Whelp",
       "Gadrak, the Crown-Scourge",
       "Ganax, Astral Hunter",
       "Glorybringer",
@@ -19423,27 +15607,16 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 20,
-     "by_turn_three": 0.881
+     "n": 22,
+     "by_turn_three": 0.907
     },
     {
      "cards": [
-      "Atarka, World Render",
       "The Ur-Dragon"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Atarka, World Render",
-      "The Ur-Dragon"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
+     "n": 1,
      "by_turn_three": 1.0
     },
     {
@@ -19465,7 +15638,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 36,
+   "starts": 22,
    "cards": [
     "Ancient Gold Dragon",
     "Atarka, World Render",
@@ -19493,16 +15666,16 @@
     "Twinflame Tyrant"
    ],
    "bottleneck": {
-    "position": 3,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Breaching Dragonstorm"
+     "The Ur-Dragon"
     ]
    },
-   "availability_by_turn_three": 0.0073,
+   "availability_by_turn_three": 0.0075,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L40"
+   "id": "L07"
   }
  ],
  "spof": [
@@ -19510,27 +15683,16 @@
    "card": "Firespitter Whelp",
    "kind": "cut_vertex",
    "severs": [
-    "L07",
-    "L13",
-    "L16",
-    "L20",
-    "L35",
-    "L36",
-    "L40"
+    "L04",
+    "L06",
+    "L07"
    ]
   },
   {
    "card": "Old Gnawbone",
    "kind": "single_consumer",
    "event": "COMBAT_DAMAGE",
-   "severs": [
-    "L14",
-    "L15",
-    "L17",
-    "L18",
-    "L19",
-    "L31"
-   ]
+   "severs": []
   }
  ],
  "coverage": {

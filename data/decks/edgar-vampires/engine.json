@@ -100,12 +100,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -5440,12 +5444,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -8590,12 +8598,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -11431,7 +11443,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -11665,7 +11677,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -11773,7 +11785,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -16965,7 +16977,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -17154,7 +17166,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -17253,7 +17265,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -21063,6 +21075,18 @@
   ],
   "scales": [
    {
+    "card": "Edgar Markov",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Anointed Procession",
     "event": "TOKEN",
     "kind": "replacement",
@@ -21207,12 +21231,36 @@
     "filters": []
    },
    {
+    "card": "Olivia, Crimson Bride",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Urza's Incubator",
     "event": "COST_REDUCTION",
     "kind": "static",
     "actor": null,
     "your_turn": false,
     "filters": []
+   },
+   {
+    "card": "Yahenni, Undying Partisan",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
    }
   ],
   "protects": [
@@ -21339,7 +21387,11 @@
    "unproven_producers": [],
    "from_opponent": true,
    "from_turn": false,
-   "modifiers": [],
+   "modifiers": [
+    "Edgar Markov",
+    "Olivia, Crimson Bride",
+    "Yahenni, Undying Partisan"
+   ],
    "redundancy": {
     "producers": 40,
     "consumers": 2
@@ -21948,7 +22000,6 @@
    "also": {
     "Edgar Markov": [
      "conversion",
-     "fodder",
      "output"
     ],
     "Bloodline Keeper // Lord of Lineage": [
@@ -22117,10 +22168,9 @@
    "stage": "ignition",
    "also": [
     "conversion",
-    "fodder",
     "output"
    ],
-   "why": "in the command zone, producing ['ATTACK', 'BODIES', 'ETB'] the deck consumes"
+   "why": "in the command zone, producing ['BODIES', 'ETB'] the deck consumes"
   },
   "Akroma's Will": {
    "stage": "protection",
@@ -22505,7 +22555,7 @@
     "fuel",
     "output"
    ],
-   "why": "nothing in the deck starts it; it produces ['ATTACK', 'ETB']"
+   "why": "nothing in the deck starts it; it produces ['ETB']"
   },
   "Orzhov Signet": {
    "stage": "mana",
@@ -22760,75 +22810,73 @@
     "conversion",
     "output"
    ],
-   "why": "nothing in the deck starts it; it produces ['ATTACK', 'DIES']"
+   "why": "nothing in the deck starts it; it produces ['DIES']"
   }
  },
  "lines": [
   {
    "events": [
-    "ATTACK",
-    "LIFE_LOSS"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "LIFE_LOSS",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "ignition",
    "via": [
-    "Sanctum Seeker"
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism"
    ],
-   "carries": "ATTACK › LIFE_LOSS",
+   "carries": "TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
       "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
       "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
+      "Elspeth, Storm Slayer",
       "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
       "Edgar Markov"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 11,
+     "n": 5,
      "by_turn_three": 1.0
     },
     {
-     "cards": [
-      "Sanctum Seeker"
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 11,
+   "starts": 5,
    "cards": [
     "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
     "Charismatic Conqueror",
     "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Kalitas, Traitor of Ghet",
-    "Olivia, Crimson Bride",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Vish Kal, Blood Arbiter",
-    "Yahenni, Undying Partisan"
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism"
    ],
    "bottleneck": {
-    "position": 1,
-    "n": 1,
+    "position": 0,
+    "n": 5,
     "cards": [
-     "Sanctum Seeker"
+     "Bloodline Keeper // Lord of Lineage",
+     "Charismatic Conqueror",
+     "Elspeth, Storm Slayer",
+     "Preacher of the Schism",
+     "Edgar Markov"
     ]
    },
-   "availability_by_turn_three": 0.0909,
+   "availability_by_turn_three": 1.0,
    "verified_by": [
     "003"
    ],
@@ -22838,137 +22886,12 @@
   {
    "events": [
     "CAST",
-    "ATTACK",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Edgar Markov",
-    "Sanctum Seeker"
-   ],
-   "carries": "CAST › ATTACK › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 42,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.0887,
-   "verified_by": [
-    "003"
-   ],
-   "stamp": "✓",
-   "id": "L02"
-  },
-  {
-   "events": [
-    "CAST",
     "TOKEN",
     "COMBAT_DAMAGE"
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "wincon",
-   "to": null,
+   "to": "ignition",
    "via": [
     "Edgar Markov"
    ],
@@ -23031,10 +22954,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 43,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -23072,220 +22995,89 @@
     "Yahenni, Undying Partisan"
    ],
    "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.9786,
+   "verified_by": [
+    "003"
+   ],
+   "stamp": "✓",
+   "id": "L02"
+  },
+  {
+   "events": [
+    "ATTACK",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Sanctum Seeker"
+   ],
+   "carries": "ATTACK › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Charismatic Conqueror",
+      "Edgar, Ancient Bloodlord",
+      "Kalitas, Traitor of Ghet",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Tithe Drinker",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sanctum Seeker"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Kalitas, Traitor of Ghet",
+    "Olivia, Crimson Bride",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Vish Kal, Blood Arbiter",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Sanctum Seeker"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
    "verified_by": [
     "003"
    ],
    "stamp": "✓",
    "id": "L03"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "ATTACK",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bloodline Keeper // Lord of Lineage",
-    "Charismatic Conqueror",
-    "Edgar Markov",
-    "Preacher of the Schism",
-    "Sanctum Seeker"
-   ],
-   "carries": "TOKEN › ATTACK › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Charismatic Conqueror",
-      "Preacher of the Schism",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:b_1_1_vampire",
-      "token:b_2_2_vampire_flying",
-      "token:w_1_1_vampire_lifelink"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 4,
-   "cards": [
-    "Bloodline Keeper // Lord of Lineage",
-    "Charismatic Conqueror",
-    "Edgar Markov",
-    "Preacher of the Schism",
-    "Sanctum Seeker"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "003"
-   ],
-   "stamp": "✓",
-   "id": "L04"
-  },
-  {
-   "events": [
-    "CAST",
-    "TOKEN",
-    "ATTACK",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Edgar Markov",
-    "Sanctum Seeker"
-   ],
-   "carries": "CAST › TOKEN › ATTACK › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:b_1_1_vampire"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 42,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "003"
-   ],
-   "stamp": "✓",
-   "id": "L05"
   },
   {
    "events": [
@@ -23361,7 +23153,7 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 1174,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Ashnod's Altar",
@@ -23403,7 +23195,123 @@
    "availability_by_turn_three": 0.2282,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L06"
+   "id": "L04"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [],
+   "carries": "TOKEN › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blood Artist",
+      "Cruel Celebrant",
+      "Enduring Tenacity",
+      "Vein Ripper",
+      "Vraan, Executioner Thane"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Cruel Celebrant",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Enduring Tenacity",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Master of Dark Rites",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vraan, Executioner Thane",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 5,
+    "cards": [
+     "Bloodline Keeper // Lord of Lineage",
+     "Charismatic Conqueror",
+     "Elspeth, Storm Slayer",
+     "Preacher of the Schism",
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.2282,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L05"
   },
   {
    "events": [
@@ -23510,7 +23418,175 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 5439,
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Enduring Tenacity",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.2234,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L06"
+  },
+  {
+   "events": [
+    "CAST",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "wincon",
+   "to": "wincon",
+   "via": [
+    "Edgar Markov"
+   ],
+   "carries": "CAST › TOKEN › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blood Artist",
+      "Cruel Celebrant",
+      "Enduring Tenacity",
+      "Vein Ripper",
+      "Vraan, Executioner Thane"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    }
+   ],
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -23603,7 +23679,7 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 30,
+   "starts": 7,
    "cards": [
     "Blood Artist",
     "Bloodtithe Harvester",
@@ -23681,7 +23757,7 @@
      "by_turn_three": 0.174
     }
    ],
-   "instances": 24,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Bloodline Keeper // Lord of Lineage",
@@ -23790,7 +23866,7 @@
      "by_turn_three": 0.174
     }
    ],
-   "instances": 84,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -23842,6 +23918,596 @@
   {
    "events": [
     "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Elenda, the Dusk Rose",
+    "Liliana, Dreadhorde General"
+   ],
+   "carries": "BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Charismatic Conqueror",
+      "Edgar, Ancient Bloodlord",
+      "Elspeth, Storm Slayer",
+      "Ingris Stingerquill",
+      "Kalitas, Traitor of Ghet",
+      "Olivia, Crimson Bride",
+      "Path to Exile",
+      "Preacher of the Schism",
+      "Tithe Drinker",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Elenda, the Dusk Rose",
+      "Liliana, Dreadhorde General"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Ashnod's Altar",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Elspeth, Storm Slayer",
+    "Erebos, Bleak-Hearted",
+    "Ingris Stingerquill",
+    "Kalitas, Traitor of Ghet",
+    "Liliana, Dreadhorde General",
+    "Master of Dark Rites",
+    "Olivia, Crimson Bride",
+    "Path to Exile",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Tithe Drinker",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 2,
+    "cards": [
+     "Elenda, the Dusk Rose",
+     "Liliana, Dreadhorde General"
+    ]
+   },
+   "availability_by_turn_three": 0.1032,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L11"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Elenda, the Dusk Rose",
+    "Liliana, Dreadhorde General"
+   ],
+   "carries": "TOKEN › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Elenda, the Dusk Rose",
+      "Liliana, Dreadhorde General"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Ashnod's Altar",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elenda, the Dusk Rose",
+    "Elspeth, Storm Slayer",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Liliana, Dreadhorde General",
+    "Master of Dark Rites",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Elenda, the Dusk Rose",
+     "Liliana, Dreadhorde General"
+    ]
+   },
+   "availability_by_turn_three": 0.1032,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L12"
+  },
+  {
+   "events": [
+    "CAST",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "wincon",
+   "to": "conversion",
+   "via": [
+    "Edgar Markov",
+    "Elenda, the Dusk Rose",
+    "Liliana, Dreadhorde General"
+   ],
+   "carries": "CAST › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Elenda, the Dusk Rose",
+      "Liliana, Dreadhorde General"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Liliana, Dreadhorde General",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.101,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L13"
+  },
+  {
+   "events": [
+    "CAST",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "wincon",
+   "to": "conversion",
+   "via": [
+    "Edgar Markov",
+    "Elenda, the Dusk Rose",
+    "Liliana, Dreadhorde General"
+   ],
+   "carries": "CAST › TOKEN › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Elenda, the Dusk Rose",
+      "Liliana, Dreadhorde General"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Liliana, Dreadhorde General",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.101,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L14"
+  },
+  {
+   "events": [
+    "BODIES",
     "COMBAT_DAMAGE"
    ],
    "terminal": "COMBAT_DAMAGE",
@@ -23866,11 +24532,12 @@
       "Preacher of the Schism",
       "Tithe Drinker",
       "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan",
       "Edgar Markov"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 13,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -23892,7 +24559,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 26,
+   "starts": 14,
    "cards": [
     "Bloodline Keeper // Lord of Lineage",
     "Bloodtithe Harvester",
@@ -23919,7 +24586,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L11"
+   "id": "L15"
   },
   {
    "events": [
@@ -23975,7 +24642,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 27,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Bloodline Keeper // Lord of Lineage",
@@ -24003,7 +24670,175 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L12"
+   "id": "L16"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism",
+    "Yahenni, Undying Partisan"
+   ],
+   "carries": "TOKEN › BODIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Yahenni, Undying Partisan"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L17"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Anje, Maid of Dishonor",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism"
+   ],
+   "carries": "TOKEN › BODIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Preacher of the Schism"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Anje, Maid of Dishonor"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L18"
   },
   {
    "events": [
@@ -24053,12 +24888,13 @@
       "Vito, Thorn of the Dusk Rose",
       "Vraan, Executioner Thane",
       "Welcoming Vampire",
-      "Wispdrinker Vampire"
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
+     "n": 33,
+     "by_turn_three": 0.979
     },
     {
      "cards": [
@@ -24088,7 +24924,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 123,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -24132,10 +24968,10 @@
      "Edgar Markov"
     ]
    },
-   "availability_by_turn_three": 0.0887,
+   "availability_by_turn_three": 0.089,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L13"
+   "id": "L19"
   },
   {
    "events": [
@@ -24144,7 +24980,7 @@
     "LIFE_LOSS"
    ],
    "terminal": "LIFE_LOSS",
-   "from": "ignition",
+   "from": "wincon",
    "to": "wincon",
    "via": [
     "Anje, Maid of Dishonor",
@@ -24154,6 +24990,7 @@
    "hops": [
     {
      "cards": [
+      "Anje, Maid of Dishonor",
       "Anowon, the Ruin Sage",
       "Blood Artist",
       "Bloodghast",
@@ -24189,8 +25026,8 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
+     "n": 33,
+     "by_turn_three": 0.979
     },
     {
      "cards": [
@@ -24220,7 +25057,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 126,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -24264,10 +25101,372 @@
      "Edgar Markov"
     ]
    },
-   "availability_by_turn_three": 0.0887,
+   "availability_by_turn_three": 0.089,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L14"
+   "id": "L20"
+  },
+  {
+   "events": [
+    "CAST",
+    "TOKEN",
+    "BODIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "wincon",
+   "to": "ignition",
+   "via": [
+    "Edgar Markov",
+    "Yahenni, Undying Partisan"
+   ],
+   "carries": "CAST › TOKEN › BODIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.089,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L21"
+  },
+  {
+   "events": [
+    "CAST",
+    "TOKEN",
+    "BODIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "wincon",
+   "to": "wincon",
+   "via": [
+    "Anje, Maid of Dishonor",
+    "Edgar Markov"
+   ],
+   "carries": "CAST › TOKEN › BODIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.089,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L22"
+  },
+  {
+   "events": [
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Elenda, the Dusk Rose",
+    "Liliana, Dreadhorde General"
+   ],
+   "carries": "DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Bloodtithe Harvester",
+      "Edgar, Ancient Bloodlord",
+      "Elspeth, Storm Slayer",
+      "Kalitas, Traitor of Ghet",
+      "Midgar, City of Mako // Reactor Raid",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [
+      "Elenda, the Dusk Rose",
+      "Liliana, Dreadhorde General"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Bloodtithe Harvester",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Elspeth, Storm Slayer",
+    "Kalitas, Traitor of Ghet",
+    "Liliana, Dreadhorde General",
+    "Midgar, City of Mako // Reactor Raid",
+    "Vish Kal, Blood Arbiter",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Elenda, the Dusk Rose",
+     "Liliana, Dreadhorde General"
+    ]
+   },
+   "availability_by_turn_three": 0.0869,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L23"
   },
   {
    "events": [
@@ -24358,7 +25557,7 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 4199,
+   "starts": 7,
    "cards": [
     "Anje, Maid of Dishonor",
     "Ashnod's Altar",
@@ -24400,7 +25599,7 @@
    "availability_by_turn_three": 0.0835,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L15"
+   "id": "L24"
   },
   {
    "events": [
@@ -24441,7 +25640,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 12,
+   "starts": 3,
    "cards": [
     "Enduring Tenacity",
     "Kalitas, Traitor of Ghet",
@@ -24463,7 +25662,7 @@
    "availability_by_turn_three": 0.0806,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L16"
+   "id": "L25"
   },
   {
    "events": [
@@ -24536,7 +25735,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 316,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Bloodline Keeper // Lord of Lineage",
@@ -24570,7 +25769,111 @@
    "availability_by_turn_three": 0.0806,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L17"
+   "id": "L26"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Anje, Maid of Dishonor",
+    "Kalitas, Traitor of Ghet",
+    "Vish Kal, Blood Arbiter"
+   ],
+   "carries": "TOKEN › BODIES › LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Kalitas, Traitor of Ghet",
+      "Vish Kal, Blood Arbiter"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Enduring Tenacity",
+      "Marauding Blight-Priest",
+      "Sanguine Bond",
+      "Vito, Thorn of the Dusk Rose"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Edgar Markov",
+    "Elspeth, Storm Slayer",
+    "Enduring Tenacity",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Preacher of the Schism",
+    "Sanguine Bond",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 3,
+    "cards": [
+     "Anje, Maid of Dishonor",
+     "Kalitas, Traitor of Ghet",
+     "Vish Kal, Blood Arbiter"
+    ]
+   },
+   "availability_by_turn_three": 0.0806,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L27"
   },
   {
    "events": [
@@ -24673,7 +25976,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 1470,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -24722,7 +26025,169 @@
    "availability_by_turn_three": 0.0789,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L18"
+   "id": "L28"
+  },
+  {
+   "events": [
+    "CAST",
+    "TOKEN",
+    "BODIES",
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "wincon",
+   "to": "wincon",
+   "via": [
+    "Anje, Maid of Dishonor",
+    "Edgar Markov",
+    "Kalitas, Traitor of Ghet",
+    "Vish Kal, Blood Arbiter"
+   ],
+   "carries": "CAST › TOKEN › BODIES › LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Anowon, the Ruin Sage",
+      "Blood Artist",
+      "Bloodghast",
+      "Bloodletter of Aclazotz",
+      "Bloodline Keeper // Lord of Lineage",
+      "Bloodtithe Harvester",
+      "Captivating Vampire",
+      "Charismatic Conqueror",
+      "Clavileño, First of the Blessed",
+      "Cordial Vampire",
+      "Crossway Troublemakers",
+      "Cruel Celebrant",
+      "Drana and Linvala",
+      "Edgar, Ancient Bloodlord",
+      "Elenda, the Dusk Rose",
+      "Kalitas, Traitor of Ghet",
+      "Marauding Blight-Priest",
+      "Master of Dark Rites",
+      "Olivia Voldaren",
+      "Olivia, Crimson Bride",
+      "Preacher of the Schism",
+      "Sanctum Seeker",
+      "Tithe Drinker",
+      "Twilight Prophet",
+      "Vein Ripper",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Vito, Thorn of the Dusk Rose",
+      "Vraan, Executioner Thane",
+      "Welcoming Vampire",
+      "Wispdrinker Vampire",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 0.979
+    },
+    {
+     "cards": [
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Kalitas, Traitor of Ghet",
+      "Vish Kal, Blood Arbiter"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Enduring Tenacity",
+      "Marauding Blight-Priest",
+      "Sanguine Bond",
+      "Vito, Thorn of the Dusk Rose"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Anowon, the Ruin Sage",
+    "Blood Artist",
+    "Bloodghast",
+    "Bloodletter of Aclazotz",
+    "Bloodline Keeper // Lord of Lineage",
+    "Bloodtithe Harvester",
+    "Captivating Vampire",
+    "Charismatic Conqueror",
+    "Clavileño, First of the Blessed",
+    "Cordial Vampire",
+    "Crossway Troublemakers",
+    "Cruel Celebrant",
+    "Drana and Linvala",
+    "Edgar Markov",
+    "Edgar, Ancient Bloodlord",
+    "Elenda, the Dusk Rose",
+    "Enduring Tenacity",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Olivia Voldaren",
+    "Olivia, Crimson Bride",
+    "Preacher of the Schism",
+    "Sanctum Seeker",
+    "Sanguine Bond",
+    "Tithe Drinker",
+    "Twilight Prophet",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Welcoming Vampire",
+    "Wispdrinker Vampire",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Edgar Markov"
+    ]
+   },
+   "availability_by_turn_three": 0.0789,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L29"
   },
   {
    "events": [
@@ -24811,7 +26276,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 4800,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Ashnod's Altar",
@@ -24856,7 +26321,7 @@
    "availability_by_turn_three": 0.0733,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L19"
+   "id": "L30"
   },
   {
    "events": [
@@ -24945,7 +26410,7 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 2789,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Ashnod's Altar",
@@ -24989,7 +26454,139 @@
    "availability_by_turn_three": 0.0733,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L20"
+   "id": "L31"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [],
+   "carries": "TOKEN › BODIES › DIES › LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Bloodline Keeper // Lord of Lineage",
+      "Charismatic Conqueror",
+      "Elspeth, Storm Slayer",
+      "Preacher of the Schism",
+      "Edgar Markov"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire",
+      "token:b_2_2_vampire_flying",
+      "token:w_1_1_soldier",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
+      "Kalitas, Traitor of Ghet",
+      "Master of Dark Rites",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Vish Kal, Blood Arbiter",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blood Artist",
+      "Cruel Celebrant",
+      "Elenda, the Dusk Rose",
+      "Vein Ripper",
+      "Vraan, Executioner Thane"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Enduring Tenacity",
+      "Marauding Blight-Priest",
+      "Sanguine Bond",
+      "Vito, Thorn of the Dusk Rose"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Anje, Maid of Dishonor",
+    "Ashnod's Altar",
+    "Blood Artist",
+    "Bloodline Keeper // Lord of Lineage",
+    "Charismatic Conqueror",
+    "Cruel Celebrant",
+    "Edgar Markov",
+    "Elenda, the Dusk Rose",
+    "Elspeth, Storm Slayer",
+    "Enduring Tenacity",
+    "Erebos, Bleak-Hearted",
+    "Kalitas, Traitor of Ghet",
+    "Marauding Blight-Priest",
+    "Master of Dark Rites",
+    "Phyrexian Tower",
+    "Preacher of the Schism",
+    "Sanguine Bond",
+    "Vein Ripper",
+    "Viscera Seer",
+    "Vish Kal, Blood Arbiter",
+    "Vito, Thorn of the Dusk Rose",
+    "Vraan, Executioner Thane",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 5,
+    "n": 4,
+    "cards": [
+     "Enduring Tenacity",
+     "Marauding Blight-Priest",
+     "Sanguine Bond",
+     "Vito, Thorn of the Dusk Rose"
+    ]
+   },
+   "availability_by_turn_three": 0.0733,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L32"
   },
   {
    "events": [
@@ -25109,7 +26706,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 21870,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -25161,128 +26758,24 @@
    "availability_by_turn_three": 0.0717,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L21"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Anje, Maid of Dishonor",
-    "Wispdrinker Vampire"
-   ],
-   "carries": "BODIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Ingris Stingerquill",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
-      "Path to Exile",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 212,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Charismatic Conqueror",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elspeth, Storm Slayer",
-    "Ingris Stingerquill",
-    "Kalitas, Traitor of Ghet",
-    "Master of Dark Rites",
-    "Olivia, Crimson Bride",
-    "Path to Exile",
-    "Preacher of the Schism",
-    "Tithe Drinker",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "Anje, Maid of Dishonor",
-     "Wispdrinker Vampire"
-    ]
-   },
-   "availability_by_turn_three": 0.0672,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L22"
+   "id": "L33"
   },
   {
    "events": [
     "CAST",
+    "TOKEN",
     "BODIES",
-    "ETB",
+    "DIES",
+    "LIFE_GAIN",
     "LIFE_LOSS"
    ],
    "terminal": "LIFE_LOSS",
    "from": "wincon",
    "to": "wincon",
    "via": [
-    "Anje, Maid of Dishonor",
-    "Edgar Markov",
-    "Wispdrinker Vampire"
+    "Edgar Markov"
    ],
-   "carries": "CAST › BODIES › ETB › LIFE_LOSS",
+   "carries": "CAST › TOKEN › BODIES › DIES › LIFE_GAIN › LIFE_LOSS",
    "hops": [
     {
      "cards": [
@@ -25336,6 +26829,15 @@
     },
     {
      "cards": [],
+     "tokens": [
+      "token:b_1_1_vampire"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
      "tokens": [],
      "stocks": [
       "BODIES"
@@ -25345,11 +26847,28 @@
     },
     {
      "cards": [
+      "Anje, Maid of Dishonor",
+      "Ashnod's Altar",
+      "Erebos, Bleak-Hearted",
       "Kalitas, Traitor of Ghet",
       "Master of Dark Rites",
+      "Phyrexian Tower",
       "Viscera Seer",
       "Vish Kal, Blood Arbiter",
       "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blood Artist",
+      "Cruel Celebrant",
+      "Elenda, the Dusk Rose",
+      "Vein Ripper",
+      "Vraan, Executioner Thane"
      ],
      "tokens": [],
      "stocks": [],
@@ -25358,328 +26877,18 @@
     },
     {
      "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 972,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.0658,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L23"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Anje, Maid of Dishonor",
-    "Wispdrinker Vampire"
-   ],
-   "carries": "BODIES › DIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Ingris Stingerquill",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
-      "Path to Exile",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Elenda, the Dusk Rose",
       "Enduring Tenacity",
-      "Liliana, Dreadhorde General",
-      "Morbid Opportunist",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 0.633
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 3572,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Charismatic Conqueror",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Elspeth, Storm Slayer",
-    "Enduring Tenacity",
-    "Erebos, Bleak-Hearted",
-    "Ingris Stingerquill",
-    "Kalitas, Traitor of Ghet",
-    "Liliana, Dreadhorde General",
-    "Master of Dark Rites",
-    "Morbid Opportunist",
-    "Olivia, Crimson Bride",
-    "Path to Exile",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Tithe Drinker",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vraan, Executioner Thane",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 2,
-    "cards": [
-     "Anje, Maid of Dishonor",
-     "Wispdrinker Vampire"
-    ]
-   },
-   "availability_by_turn_three": 0.0653,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "DIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "wincon",
-   "to": "wincon",
-   "via": [
-    "Anje, Maid of Dishonor",
-    "Edgar Markov",
-    "Wispdrinker Vampire"
-   ],
-   "carries": "CAST › BODIES › DIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
       "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Sanctum Seeker",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
+      "Sanguine Bond",
+      "Vito, Thorn of the Dusk Rose"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 33,
-     "by_turn_three": 0.979
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Elenda, the Dusk Rose",
-      "Enduring Tenacity",
-      "Liliana, Dreadhorde General",
-      "Morbid Opportunist",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 0.633
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
+     "n": 4,
+     "by_turn_three": 0.321
     }
    ],
-   "instances": 16185,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -25702,15 +26911,14 @@
     "Enduring Tenacity",
     "Erebos, Bleak-Hearted",
     "Kalitas, Traitor of Ghet",
-    "Liliana, Dreadhorde General",
     "Marauding Blight-Priest",
     "Master of Dark Rites",
-    "Morbid Opportunist",
     "Olivia Voldaren",
     "Olivia, Crimson Bride",
     "Phyrexian Tower",
     "Preacher of the Schism",
     "Sanctum Seeker",
+    "Sanguine Bond",
     "Tithe Drinker",
     "Twilight Prophet",
     "Vein Ripper",
@@ -25729,10 +26937,10 @@
      "Edgar Markov"
     ]
    },
-   "availability_by_turn_three": 0.0639,
+   "availability_by_turn_three": 0.0717,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L25"
+   "id": "L34"
   },
   {
    "events": [
@@ -25787,7 +26995,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 140,
+   "starts": 7,
    "cards": [
     "Blood Artist",
     "Bloodtithe Harvester",
@@ -25819,7 +27027,7 @@
    "availability_by_turn_three": 0.0617,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L26"
+   "id": "L35"
   },
   {
    "events": [
@@ -25941,7 +27149,7 @@
      "by_turn_three": 0.386
     }
    ],
-   "instances": 8242,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -25992,7 +27200,7 @@
    "availability_by_turn_three": 0.0561,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L27"
+   "id": "L36"
   },
   {
    "events": [
@@ -26054,7 +27262,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 96,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Bloodline Keeper // Lord of Lineage",
@@ -26088,101 +27296,80 @@
    "availability_by_turn_three": 0.056,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L28"
+   "id": "L37"
   },
   {
    "events": [
-    "DIES",
-    "ETB",
+    "TOKEN",
+    "LIFE_GAIN",
     "LIFE_LOSS"
    ],
    "terminal": "LIFE_LOSS",
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Anje, Maid of Dishonor",
-    "Wispdrinker Vampire"
+    "Charismatic Conqueror",
+    "Enduring Tenacity",
+    "Marauding Blight-Priest",
+    "Preacher of the Schism",
+    "Sanguine Bond",
+    "Vito, Thorn of the Dusk Rose"
    ],
-   "carries": "DIES › ETB › LIFE_LOSS",
+   "carries": "TOKEN › LIFE_GAIN › LIFE_LOSS",
    "hops": [
     {
      "cards": [
-      "Bloodtithe Harvester",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Kalitas, Traitor of Ghet",
-      "Midgar, City of Mako // Reactor Raid",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 0.498
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Elenda, the Dusk Rose",
-      "Enduring Tenacity",
-      "Liliana, Dreadhorde General",
-      "Morbid Opportunist",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 0.633
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
+      "Charismatic Conqueror",
+      "Preacher of the Schism"
      ],
      "tokens": [],
      "stocks": [],
      "n": 2,
      "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Enduring Tenacity",
+      "Marauding Blight-Priest",
+      "Sanguine Bond",
+      "Vito, Thorn of the Dusk Rose"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
     }
    ],
-   "instances": 102,
+   "starts": 2,
    "cards": [
-    "Anje, Maid of Dishonor",
-    "Blood Artist",
-    "Bloodtithe Harvester",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Elspeth, Storm Slayer",
+    "Charismatic Conqueror",
     "Enduring Tenacity",
-    "Kalitas, Traitor of Ghet",
-    "Liliana, Dreadhorde General",
-    "Midgar, City of Mako // Reactor Raid",
-    "Morbid Opportunist",
-    "Vein Ripper",
-    "Vish Kal, Blood Arbiter",
-    "Vraan, Executioner Thane",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
+    "Marauding Blight-Priest",
+    "Preacher of the Schism",
+    "Sanguine Bond",
+    "Vito, Thorn of the Dusk Rose"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 0,
     "n": 2,
     "cards": [
-     "Anje, Maid of Dishonor",
-     "Wispdrinker Vampire"
+     "Charismatic Conqueror",
+     "Preacher of the Schism"
     ]
    },
-   "availability_by_turn_three": 0.055,
+   "availability_by_turn_three": 0.056,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L29"
+   "id": "L38"
   },
   {
    "events": [
@@ -26274,7 +27461,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 332,
+   "starts": 33,
    "cards": [
     "Anje, Maid of Dishonor",
     "Anowon, the Ruin Sage",
@@ -26323,7 +27510,7 @@
    "availability_by_turn_three": 0.0548,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L30"
+   "id": "L39"
   },
   {
    "events": [
@@ -26397,7 +27584,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 240,
+   "starts": 14,
    "cards": [
     "Anje, Maid of Dishonor",
     "Ashnod's Altar",
@@ -26431,1158 +27618,6 @@
    "availability_by_turn_three": 0.0538,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "DIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "wincon",
-   "to": "conversion",
-   "via": [
-    "Edgar Markov",
-    "Elenda, the Dusk Rose"
-   ],
-   "carries": "CAST › BODIES › DIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Sanctum Seeker",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Elenda, the Dusk Rose"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1107,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Erebos, Bleak-Hearted",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.0525,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "DIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": "conversion",
-   "via": [
-    "Elenda, the Dusk Rose"
-   ],
-   "carries": "DIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Bloodtithe Harvester",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Kalitas, Traitor of Ghet",
-      "Midgar, City of Mako // Reactor Raid",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 0.498
-    },
-    {
-     "cards": [
-      "Elenda, the Dusk Rose"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 7,
-   "cards": [
-    "Bloodtithe Harvester",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Elspeth, Storm Slayer",
-    "Kalitas, Traitor of Ghet",
-    "Midgar, City of Mako // Reactor Raid",
-    "Vish Kal, Blood Arbiter",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Elenda, the Dusk Rose"
-    ]
-   },
-   "availability_by_turn_three": 0.0453,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Anje, Maid of Dishonor",
-    "Bloodghast",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire"
-   ],
-   "carries": "ETB › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Ingris Stingerquill",
-      "Olivia, Crimson Bride",
-      "Path to Exile",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 11,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bloodghast",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Wispdrinker Vampire"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 41,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Bloodghast",
-    "Bloodline Keeper // Lord of Lineage",
-    "Charismatic Conqueror",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elspeth, Storm Slayer",
-    "Ingris Stingerquill",
-    "Olivia, Crimson Bride",
-    "Path to Exile",
-    "Preacher of the Schism",
-    "Tithe Drinker",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 2,
-    "cards": [
-     "Anje, Maid of Dishonor",
-     "Wispdrinker Vampire"
-    ]
-   },
-   "availability_by_turn_three": 0.0438,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ATTACK",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Sanctum Seeker"
-   ],
-   "carries": "BODIES › ATTACK › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Ingris Stingerquill",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
-      "Path to Exile",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 159,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Charismatic Conqueror",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elspeth, Storm Slayer",
-    "Ingris Stingerquill",
-    "Kalitas, Traitor of Ghet",
-    "Master of Dark Rites",
-    "Olivia, Crimson Bride",
-    "Path to Exile",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Sanctum Seeker"
-    ]
-   },
-   "availability_by_turn_three": 0.0404,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Clavileño, First of the Blessed",
-    "Sanctum Seeker"
-   ],
-   "carries": "ATTACK › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Ingris Stingerquill",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Clavileño, First of the Blessed",
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Enduring Tenacity",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    }
-   ],
-   "instances": 984,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cruel Celebrant",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Enduring Tenacity",
-    "Erebos, Bleak-Hearted",
-    "Ingris Stingerquill",
-    "Kalitas, Traitor of Ghet",
-    "Master of Dark Rites",
-    "Olivia, Crimson Bride",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vraan, Executioner Thane",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Clavileño, First of the Blessed",
-     "Sanctum Seeker"
-    ]
-   },
-   "availability_by_turn_three": 0.0398,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Erebos, Bleak-Hearted",
-    "Liliana, Dreadhorde General"
-   ],
-   "carries": "BODIES › DIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Charismatic Conqueror",
-      "Edgar, Ancient Bloodlord",
-      "Elspeth, Storm Slayer",
-      "Ingris Stingerquill",
-      "Kalitas, Traitor of Ghet",
-      "Olivia, Crimson Bride",
-      "Path to Exile",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan",
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Erebos, Bleak-Hearted",
-      "Liliana, Dreadhorde General"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Enduring Tenacity",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    }
-   ],
-   "instances": 2025,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Charismatic Conqueror",
-    "Cruel Celebrant",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elspeth, Storm Slayer",
-    "Enduring Tenacity",
-    "Erebos, Bleak-Hearted",
-    "Ingris Stingerquill",
-    "Kalitas, Traitor of Ghet",
-    "Liliana, Dreadhorde General",
-    "Master of Dark Rites",
-    "Olivia, Crimson Bride",
-    "Path to Exile",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Tithe Drinker",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vraan, Executioner Thane",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "Erebos, Bleak-Hearted",
-     "Liliana, Dreadhorde General"
-    ]
-   },
-   "availability_by_turn_three": 0.0398,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "ATTACK",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Edgar Markov",
-    "Sanctum Seeker"
-   ],
-   "carries": "CAST › BODIES › ATTACK › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 729,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.0394,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "wincon",
-   "to": "wincon",
-   "via": [
-    "Clavileño, First of the Blessed",
-    "Edgar Markov",
-    "Sanctum Seeker"
-   ],
-   "carries": "CAST › ATTACK › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Sanctum Seeker",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 0.979
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Clavileño, First of the Blessed",
-      "Sanctum Seeker"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Enduring Tenacity",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    }
-   ],
-   "instances": 3538,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Enduring Tenacity",
-    "Erebos, Bleak-Hearted",
-    "Kalitas, Traitor of Ghet",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.039,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "DIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "wincon",
-   "to": "wincon",
-   "via": [
-    "Edgar Markov",
-    "Erebos, Bleak-Hearted",
-    "Liliana, Dreadhorde General"
-   ],
-   "carries": "CAST › BODIES › DIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Anowon, the Ruin Sage",
-      "Blood Artist",
-      "Bloodghast",
-      "Bloodletter of Aclazotz",
-      "Bloodline Keeper // Lord of Lineage",
-      "Bloodtithe Harvester",
-      "Captivating Vampire",
-      "Charismatic Conqueror",
-      "Clavileño, First of the Blessed",
-      "Cordial Vampire",
-      "Crossway Troublemakers",
-      "Cruel Celebrant",
-      "Drana and Linvala",
-      "Edgar, Ancient Bloodlord",
-      "Elenda, the Dusk Rose",
-      "Kalitas, Traitor of Ghet",
-      "Marauding Blight-Priest",
-      "Master of Dark Rites",
-      "Olivia Voldaren",
-      "Olivia, Crimson Bride",
-      "Preacher of the Schism",
-      "Sanctum Seeker",
-      "Tithe Drinker",
-      "Twilight Prophet",
-      "Vein Ripper",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Vito, Thorn of the Dusk Rose",
-      "Vraan, Executioner Thane",
-      "Welcoming Vampire",
-      "Wispdrinker Vampire",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 0.979
-    },
-    {
-     "cards": [
-      "Edgar Markov"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Anje, Maid of Dishonor",
-      "Ashnod's Altar",
-      "Erebos, Bleak-Hearted",
-      "Kalitas, Traitor of Ghet",
-      "Master of Dark Rites",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Vish Kal, Blood Arbiter",
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Erebos, Bleak-Hearted",
-      "Liliana, Dreadhorde General"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Cruel Celebrant",
-      "Enduring Tenacity",
-      "Vein Ripper",
-      "Vraan, Executioner Thane"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    }
-   ],
-   "instances": 9357,
-   "cards": [
-    "Anje, Maid of Dishonor",
-    "Anowon, the Ruin Sage",
-    "Ashnod's Altar",
-    "Blood Artist",
-    "Bloodghast",
-    "Bloodletter of Aclazotz",
-    "Bloodline Keeper // Lord of Lineage",
-    "Bloodtithe Harvester",
-    "Captivating Vampire",
-    "Charismatic Conqueror",
-    "Clavileño, First of the Blessed",
-    "Cordial Vampire",
-    "Crossway Troublemakers",
-    "Cruel Celebrant",
-    "Drana and Linvala",
-    "Edgar Markov",
-    "Edgar, Ancient Bloodlord",
-    "Elenda, the Dusk Rose",
-    "Enduring Tenacity",
-    "Erebos, Bleak-Hearted",
-    "Kalitas, Traitor of Ghet",
-    "Liliana, Dreadhorde General",
-    "Marauding Blight-Priest",
-    "Master of Dark Rites",
-    "Olivia Voldaren",
-    "Olivia, Crimson Bride",
-    "Phyrexian Tower",
-    "Preacher of the Schism",
-    "Sanctum Seeker",
-    "Tithe Drinker",
-    "Twilight Prophet",
-    "Vein Ripper",
-    "Viscera Seer",
-    "Vish Kal, Blood Arbiter",
-    "Vito, Thorn of the Dusk Rose",
-    "Vraan, Executioner Thane",
-    "Welcoming Vampire",
-    "Wispdrinker Vampire",
-    "Yahenni, Undying Partisan"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Edgar Markov"
-    ]
-   },
-   "availability_by_turn_three": 0.039,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L40"
   }
  ],
@@ -27593,22 +27628,21 @@
    "event": "CAST",
    "severs": [
     "L02",
-    "L03",
-    "L05",
+    "L06",
     "L07",
     "L10",
     "L13",
     "L14",
-    "L18",
+    "L19",
+    "L20",
     "L21",
-    "L23",
-    "L25",
-    "L27",
-    "L30",
-    "L32",
-    "L38",
-    "L39",
-    "L40"
+    "L22",
+    "L28",
+    "L29",
+    "L33",
+    "L34",
+    "L36",
+    "L39"
    ]
   }
  ],

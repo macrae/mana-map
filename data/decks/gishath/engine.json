@@ -37,12 +37,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -3360,12 +3364,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -8909,7 +8917,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -9053,7 +9061,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -13189,6 +13197,18 @@
   ],
   "scales": [
    {
+    "card": "Gishath, Sun's Avatar",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Berserkers' Onslaught",
     "event": "COMBAT_DAMAGE",
     "kind": "pump",
@@ -13319,6 +13339,18 @@
      }
     ],
     "keywords": []
+   },
+   {
+    "card": "Itzquinth, Firstborn of Gishath",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
    },
    {
     "card": "Knight of the Stampede",
@@ -13577,7 +13609,10 @@
    "unproven_producers": [],
    "from_opponent": true,
    "from_turn": false,
-   "modifiers": [],
+   "modifiers": [
+    "Gishath, Sun's Avatar",
+    "Itzquinth, Firstborn of Gishath"
+   ],
    "redundancy": {
     "producers": 38,
     "consumers": 1
@@ -14475,7 +14510,7 @@
     "fuel",
     "output"
    ],
-   "why": "in the command zone, producing ['ATTACK', 'HAND'] the deck consumes"
+   "why": "in the command zone, producing ['HAND'] the deck consumes"
   },
   "Akroma's Will": {
    "stage": "protection",
@@ -15093,7 +15128,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 4,
+   "starts": 4,
    "cards": [
     "Blasphemous Act",
     "Boros Charm",
@@ -15168,7 +15203,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 15,
+   "starts": 13,
    "cards": [
     "Congregation at Dawn",
     "Earthshaker Dreadmaw",
@@ -15196,6 +15231,197 @@
    "verified_by": [],
    "stamp": "◆",
    "id": "L02"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Regisaur Alpha"
+   ],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Regisaur Alpha"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_3_3_dinosaur_trample"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Regisaur Alpha"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Regisaur Alpha"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L03"
+  },
+  {
+   "events": [
+    "ATTACK",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Ghalta and Mavren"
+   ],
+   "carries": "ATTACK › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Atzocan Seer",
+      "Earthshaker Dreadmaw",
+      "Etali, Primal Storm",
+      "Regisaur Alpha",
+      "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
+      "Zacama, Primal Calamity",
+      "Gishath, Sun's Avatar"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 8,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ghalta and Mavren"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_x_x_dinosaur_trample",
+      "token:w_1_1_vampire_lifelink"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 8,
+   "cards": [
+    "Atzocan Seer",
+    "Earthshaker Dreadmaw",
+    "Etali, Primal Storm",
+    "Ghalta and Mavren",
+    "Gishath, Sun's Avatar",
+    "Regisaur Alpha",
+    "Sunfrill Imitator",
+    "Trumpeting Carnosaur",
+    "Zacama, Primal Calamity"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Ghalta and Mavren"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Blasphemous Act",
+    "Boros Charm",
+    "Quartzwood Crasher",
+    "Trumpeting Carnosaur",
+    "Zacama, Primal Calamity"
+   ],
+   "carries": "DAMAGE › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Blasphemous Act",
+      "Boros Charm",
+      "Trumpeting Carnosaur",
+      "Zacama, Primal Calamity"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    },
+    {
+     "cards": [
+      "Quartzwood Crasher"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Blasphemous Act",
+    "Boros Charm",
+    "Quartzwood Crasher",
+    "Trumpeting Carnosaur",
+    "Zacama, Primal Calamity"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Quartzwood Crasher"
+    ]
+   },
+   "availability_by_turn_three": 0.0292,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L05"
   },
   {
    "events": [
@@ -15228,12 +15454,13 @@
       "Skyshroud Claim",
       "Sunfrill Imitator",
       "Three Visits",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 14,
+     "n": 15,
      "by_turn_three": 1.0
     },
     {
@@ -15266,7 +15493,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 40,
+   "starts": 15,
    "cards": [
     "Atzocan Seer",
     "Earthshaker Dreadmaw",
@@ -15297,7 +15524,7 @@
    "availability_by_turn_three": 0.0228,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L03"
+   "id": "L06"
   },
   {
    "events": [
@@ -15320,12 +15547,13 @@
       "Etali, Primal Storm",
       "Regisaur Alpha",
       "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 6,
+     "n": 7,
      "by_turn_three": 1.0
     },
     {
@@ -15356,7 +15584,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 6,
+   "starts": 7,
    "cards": [
     "Curious Altisaur",
     "Earthshaker Dreadmaw",
@@ -15377,7 +15605,7 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L04"
+   "id": "L07"
   },
   {
    "events": [
@@ -15443,7 +15671,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 15,
+   "starts": 13,
    "cards": [
     "Congregation at Dawn",
     "Earthshaker Dreadmaw",
@@ -15471,68 +15699,44 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L05"
+   "id": "L08"
   },
   {
    "events": [
-    "ETB",
-    "ETB",
     "HAND",
-    "DAMAGE"
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "ignition",
+   "to": "conversion",
    "via": [
-    "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
+    "Quartzwood Crasher",
+    "Trumpeting Carnosaur"
    ],
-   "carries": "ETB › ETB › HAND › DAMAGE",
+   "carries": "HAND › DAMAGE › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
+      "Congregation at Dawn",
       "Earthshaker Dreadmaw",
-      "Eerie Interlude",
+      "Enlightened Tutor",
       "Etali, Primal Storm",
       "Huatli, Poet of Unity // Roar of the Fifth People",
       "Natural Order",
       "Nature's Lore",
       "Path to Exile",
-      "Regisaur Alpha",
+      "Rishkar's Expertise",
       "Skyshroud Claim",
-      "Sunfrill Imitator",
       "Three Visits",
-      "Zacama, Primal Calamity",
+      "Worldly Tutor",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
      "n": 13,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
     },
     {
      "cards": [],
@@ -15551,40 +15755,136 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Quartzwood Crasher"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 65,
+   "starts": 13,
    "cards": [
+    "Congregation at Dawn",
     "Earthshaker Dreadmaw",
-    "Eerie Interlude",
+    "Enlightened Tutor",
     "Etali, Primal Storm",
-    "Garruk's Uprising",
     "Gishath, Sun's Avatar",
     "Huatli, Poet of Unity // Roar of the Fifth People",
     "Natural Order",
     "Nature's Lore",
-    "Pantlaza, Sun-Favored",
     "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
+    "Quartzwood Crasher",
+    "Rishkar's Expertise",
     "Skyshroud Claim",
-    "Sunfrill Imitator",
     "Three Visits",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
+    "Worldly Tutor"
    ],
    "bottleneck": {
-    "position": 4,
+    "position": 2,
     "n": 1,
     "cards": [
      "Trumpeting Carnosaur"
     ]
    },
-   "availability_by_turn_three": 0.004,
+   "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L06"
+   "id": "L09"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Blasphemous Act",
+    "Boros Charm",
+    "Quartzwood Crasher",
+    "Trumpeting Carnosaur",
+    "Wrathful Raptors",
+    "Zacama, Primal Calamity"
+   ],
+   "carries": "DAMAGE › DAMAGE › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Blasphemous Act",
+      "Boros Charm",
+      "Trumpeting Carnosaur",
+      "Zacama, Primal Calamity"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    },
+    {
+     "cards": [
+      "Wrathful Raptors"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Quartzwood Crasher"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Blasphemous Act",
+    "Boros Charm",
+    "Quartzwood Crasher",
+    "Trumpeting Carnosaur",
+    "Wrathful Raptors",
+    "Zacama, Primal Calamity"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Wrathful Raptors"
+    ]
+   },
+   "availability_by_turn_three": 0.0027,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L10"
   },
   {
    "events": [
@@ -15612,12 +15912,13 @@
       "Etali, Primal Storm",
       "Regisaur Alpha",
       "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 7,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
@@ -15659,7 +15960,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 21,
+   "starts": 8,
    "cards": [
     "Atzocan Seer",
     "Earthshaker Dreadmaw",
@@ -15684,7 +15985,7 @@
    "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L07"
+   "id": "L11"
   },
   {
    "events": [
@@ -15719,12 +16020,13 @@
       "Skyshroud Claim",
       "Sunfrill Imitator",
       "Three Visits",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 14,
+     "n": 15,
      "by_turn_three": 1.0
     },
     {
@@ -15766,7 +16068,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 40,
+   "starts": 15,
    "cards": [
     "Atzocan Seer",
     "Earthshaker Dreadmaw",
@@ -15798,28 +16100,31 @@
    "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L08"
+   "id": "L12"
   },
   {
    "events": [
     "ETB",
-    "COMBAT_DAMAGE",
     "HAND",
-    "DAMAGE"
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "ignition",
+   "to": "conversion",
    "via": [
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
+    "Garruk's Uprising",
+    "Quartzwood Crasher",
+    "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant"
    ],
-   "carries": "ETB › COMBAT_DAMAGE › HAND › DAMAGE",
+   "carries": "ETB › HAND › DAMAGE › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
+      "Atzocan Seer",
       "Earthshaker Dreadmaw",
       "Eerie Interlude",
       "Etali, Primal Storm",
@@ -15831,127 +16136,14 @@
       "Skyshroud Claim",
       "Sunfrill Imitator",
       "Three Visits",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 13,
+     "n": 15,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 26,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0014,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L09"
-  },
-  {
-   "events": [
-    "DAMAGE",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Garruk's Uprising",
-    "Quartzwood Crasher",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "carries": "DAMAGE › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Blasphemous Act",
-      "Boros Charm",
-      "Zacama, Primal Calamity"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Quartzwood Crasher",
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
     },
     {
      "cards": [
@@ -15981,76 +16173,10 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    }
-   ],
-   "instances": 18,
-   "cards": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Garruk's Uprising",
-    "Quartzwood Crasher",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Trumpeting Carnosaur"
-    ]
-   },
-   "availability_by_turn_three": 0.001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L10"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
@@ -16059,51 +16185,51 @@
     },
     {
      "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
      ],
+     "stocks": [],
      "n": 0,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
     }
    ],
-   "instances": 7,
+   "starts": 15,
    "cards": [
     "Atzocan Seer",
-    "Curious Altisaur",
     "Earthshaker Dreadmaw",
+    "Eerie Interlude",
     "Etali, Primal Storm",
-    "Ghalta and Mavren",
+    "Garruk's Uprising",
     "Gishath, Sun's Avatar",
+    "Huatli, Poet of Unity // Roar of the Fifth People",
+    "Natural Order",
+    "Nature's Lore",
+    "Path to Exile",
+    "Quartzwood Crasher",
     "Regisaur Alpha",
+    "Selvala, Heart of the Wilds",
+    "Skyshroud Claim",
     "Sunfrill Imitator",
+    "Three Visits",
     "Trumpeting Carnosaur",
+    "Vaultborn Tyrant",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
-    "position": 1,
+    "position": 3,
     "n": 1,
     "cards": [
-     "Ghalta and Mavren"
+     "Trumpeting Carnosaur"
     ]
    },
-   "availability_by_turn_three": 0.0008,
+   "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L11"
+   "id": "L13"
   },
   {
    "events": [
-    "CAST",
+    "ETB",
     "ETB",
     "HAND",
     "DAMAGE"
@@ -16112,43 +16238,38 @@
    "from": "ignition",
    "to": "ignition",
    "via": [
-    "Intrepid Paleontologist",
+    "Garruk's Uprising",
     "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur"
+    "Trumpeting Carnosaur",
+    "Vaultborn Tyrant"
    ],
-   "carries": "CAST › ETB › HAND › DAMAGE",
+   "carries": "ETB › ETB › HAND › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Atzocan Seer",
-      "Blasphemous Act",
-      "Boros Charm",
-      "Congregation at Dawn",
       "Earthshaker Dreadmaw",
       "Eerie Interlude",
-      "Enlightened Tutor",
       "Etali, Primal Storm",
       "Huatli, Poet of Unity // Roar of the Fifth People",
       "Natural Order",
       "Nature's Lore",
       "Path to Exile",
       "Regisaur Alpha",
-      "Rishkar's Expertise",
       "Skyshroud Claim",
       "Sunfrill Imitator",
       "Three Visits",
-      "Worldly Tutor",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 20,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Intrepid Paleontologist"
+      "Vaultborn Tyrant"
      ],
      "tokens": [],
      "stocks": [],
@@ -16157,12 +16278,13 @@
     },
     {
      "cards": [
+      "Garruk's Uprising",
       "Selvala, Heart of the Wilds"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -16183,135 +16305,37 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 20,
+   "starts": 14,
    "cards": [
-    "Atzocan Seer",
-    "Blasphemous Act",
-    "Boros Charm",
-    "Congregation at Dawn",
     "Earthshaker Dreadmaw",
     "Eerie Interlude",
-    "Enlightened Tutor",
     "Etali, Primal Storm",
+    "Garruk's Uprising",
     "Gishath, Sun's Avatar",
     "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
     "Natural Order",
     "Nature's Lore",
     "Path to Exile",
     "Regisaur Alpha",
-    "Rishkar's Expertise",
     "Selvala, Heart of the Wilds",
     "Skyshroud Claim",
     "Sunfrill Imitator",
     "Three Visits",
     "Trumpeting Carnosaur",
-    "Worldly Tutor",
+    "Vaultborn Tyrant",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Intrepid Paleontologist"
+     "Vaultborn Tyrant"
     ]
    },
-   "availability_by_turn_three": 0.0008,
+   "availability_by_turn_three": 0.0014,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L12"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "COMBAT_DAMAGE › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 6,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L13"
+   "id": "L14"
   },
   {
    "events": [
@@ -16336,12 +16360,13 @@
       "Etali, Primal Storm",
       "Regisaur Alpha",
       "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 6,
+     "n": 7,
      "by_turn_three": 1.0
     },
     {
@@ -16381,7 +16406,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 6,
+   "starts": 7,
    "cards": [
     "Curious Altisaur",
     "Earthshaker Dreadmaw",
@@ -16403,379 +16428,33 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L14"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ETB › ATTACK › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 93,
-   "cards": [
-    "Atzocan Seer",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Ghalta and Mavren"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L15"
   },
   {
    "events": [
-    "ETB",
-    "ETB",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ETB › ETB › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 52,
-   "cards": [
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "Trumpeting Carnosaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "DAMAGE",
     "COMBAT_DAMAGE",
     "HAND",
-    "DAMAGE"
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "ignition",
+   "to": "conversion",
    "via": [
-    "Blasphemous Act",
-    "Boros Charm",
     "Curious Altisaur",
     "Quartzwood Crasher",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
+    "Trumpeting Carnosaur"
    ],
-   "carries": "DAMAGE › COMBAT_DAMAGE › HAND › DAMAGE",
+   "carries": "COMBAT_DAMAGE › HAND › DAMAGE › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
-      "Blasphemous Act",
-      "Boros Charm",
-      "Zacama, Primal Calamity"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Quartzwood Crasher",
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 6,
-   "cards": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Curious Altisaur",
-    "Quartzwood Crasher",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0004,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L17"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ATTACK › ETB › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
       "Earthshaker Dreadmaw",
       "Etali, Primal Storm",
       "Regisaur Alpha",
       "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
@@ -16786,33 +16465,12 @@
     },
     {
      "cards": [
-      "Ghalta and Mavren"
+      "Curious Altisaur"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
     },
     {
      "cards": [],
@@ -16831,98 +16489,88 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Quartzwood Crasher"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 35,
+   "starts": 7,
    "cards": [
-    "Atzocan Seer",
+    "Curious Altisaur",
     "Earthshaker Dreadmaw",
     "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
     "Gishath, Sun's Avatar",
-    "Pantlaza, Sun-Favored",
+    "Quartzwood Crasher",
     "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
     "Sunfrill Imitator",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Ghalta and Mavren"
+     "Curious Altisaur"
     ]
    },
-   "availability_by_turn_three": 0.0004,
+   "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L18"
+   "id": "L16"
   },
   {
    "events": [
-    "ETB",
-    "ETB",
     "HAND",
     "DAMAGE",
-    "DAMAGE"
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "conversion",
    "via": [
-    "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
+    "Quartzwood Crasher",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
     "Wrathful Raptors"
    ],
-   "carries": "ETB › ETB › HAND › DAMAGE › DAMAGE",
+   "carries": "HAND › DAMAGE › DAMAGE › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
+      "Congregation at Dawn",
       "Earthshaker Dreadmaw",
-      "Eerie Interlude",
+      "Enlightened Tutor",
       "Etali, Primal Storm",
       "Huatli, Poet of Unity // Roar of the Fifth People",
       "Natural Order",
       "Nature's Lore",
       "Path to Exile",
-      "Regisaur Alpha",
+      "Rishkar's Expertise",
       "Skyshroud Claim",
-      "Sunfrill Imitator",
       "Three Visits",
-      "Zacama, Primal Calamity",
+      "Worldly Tutor",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
      "n": 13,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
     },
     {
      "cards": [],
@@ -16950,105 +16598,10 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    }
-   ],
-   "instances": 65,
-   "cards": [
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Trumpeting Carnosaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0004,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ETB › ETB › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
@@ -17057,58 +16610,48 @@
     },
     {
      "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
+     "tokens": [
+      "token:g_x_x_dinosaur_beast_trample"
      ],
+     "stocks": [],
      "n": 0,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
     }
    ],
-   "instances": 26,
+   "starts": 13,
    "cards": [
-    "Curious Altisaur",
+    "Congregation at Dawn",
     "Earthshaker Dreadmaw",
-    "Eerie Interlude",
+    "Enlightened Tutor",
     "Etali, Primal Storm",
     "Gishath, Sun's Avatar",
     "Huatli, Poet of Unity // Roar of the Fifth People",
     "Natural Order",
     "Nature's Lore",
-    "Pantlaza, Sun-Favored",
     "Path to Exile",
-    "Regisaur Alpha",
+    "Quartzwood Crasher",
+    "Rishkar's Expertise",
     "Skyshroud Claim",
-    "Sunfrill Imitator",
     "Three Visits",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
+    "Worldly Tutor",
+    "Wrathful Raptors"
    ],
    "bottleneck": {
-    "position": 3,
+    "position": 2,
     "n": 1,
     "cards": [
-     "Curious Altisaur"
+     "Trumpeting Carnosaur"
     ]
    },
-   "availability_by_turn_three": 0.0003,
+   "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L20"
+   "id": "L17"
   },
   {
    "events": [
-    "MANA",
+    "DAMAGE",
     "ETB",
     "HAND",
     "DAMAGE"
@@ -17117,27 +16660,29 @@
    "from": "ignition",
    "to": "ignition",
    "via": [
-    "Atzocan Seer",
     "Garruk's Uprising",
-    "Regal Behemoth",
+    "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant"
    ],
-   "carries": "MANA › ETB › HAND › DAMAGE",
+   "carries": "DAMAGE › ETB › HAND › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Atzocan Seer"
+      "Blasphemous Act",
+      "Boros Charm",
+      "Trumpeting Carnosaur",
+      "Zacama, Primal Calamity"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 4,
+     "by_turn_three": 0.321
     },
     {
      "cards": [
-      "Regal Behemoth"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
@@ -17174,26 +16719,28 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 3,
+   "starts": 4,
    "cards": [
-    "Atzocan Seer",
+    "Blasphemous Act",
+    "Boros Charm",
     "Garruk's Uprising",
-    "Regal Behemoth",
+    "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
+    "Vaultborn Tyrant",
+    "Zacama, Primal Calamity"
    ],
    "bottleneck": {
-    "position": 0,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Atzocan Seer"
+     "Quartzwood Crasher"
     ]
    },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0007,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L21"
+   "id": "L18"
   },
   {
    "events": [
@@ -17223,12 +16770,13 @@
       "Etali, Primal Storm",
       "Regisaur Alpha",
       "Sunfrill Imitator",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 7,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
@@ -17279,7 +16827,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 21,
+   "starts": 8,
    "cards": [
     "Atzocan Seer",
     "Earthshaker Dreadmaw",
@@ -17305,12 +16853,12 @@
    "availability_by_turn_three": 0.0002,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L22"
+   "id": "L19"
   },
   {
    "events": [
-    "CAST",
     "ATTACK",
+    "ETB",
     "ETB",
     "HAND",
     "DAMAGE"
@@ -17321,49 +16869,27 @@
    "via": [
     "Garruk's Uprising",
     "Ghalta and Mavren",
-    "Intrepid Paleontologist",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant"
    ],
-   "carries": "CAST › ATTACK › ETB › HAND › DAMAGE",
+   "carries": "ATTACK › ETB › ETB › HAND › DAMAGE",
    "hops": [
     {
      "cards": [
       "Atzocan Seer",
-      "Blasphemous Act",
-      "Boros Charm",
-      "Congregation at Dawn",
       "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Enlightened Tutor",
       "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
       "Regisaur Alpha",
-      "Rishkar's Expertise",
-      "Skyshroud Claim",
       "Sunfrill Imitator",
-      "Three Visits",
-      "Worldly Tutor",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 20,
+     "n": 8,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Intrepid Paleontologist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
     },
     {
      "cards": [
@@ -17376,14 +16902,22 @@
     },
     {
      "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
       "Vaultborn Tyrant"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Garruk's Uprising",
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -17404,51 +16938,37 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 60,
+   "starts": 8,
    "cards": [
     "Atzocan Seer",
-    "Blasphemous Act",
-    "Boros Charm",
-    "Congregation at Dawn",
     "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Enlightened Tutor",
     "Etali, Primal Storm",
     "Garruk's Uprising",
     "Ghalta and Mavren",
     "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
-    "Natural Order",
-    "Nature's Lore",
-    "Path to Exile",
     "Regisaur Alpha",
-    "Rishkar's Expertise",
     "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
     "Sunfrill Imitator",
-    "Three Visits",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant",
-    "Worldly Tutor",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Intrepid Paleontologist"
+     "Ghalta and Mavren"
     ]
    },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L23"
+   "id": "L20"
   },
   {
    "events": [
-    "CAST",
-    "MANA",
+    "DAMAGE",
+    "DAMAGE",
     "ETB",
     "HAND",
     "DAMAGE"
@@ -17458,45 +16978,29 @@
    "to": "ignition",
    "via": [
     "Garruk's Uprising",
-    "Intrepid Paleontologist",
-    "Regal Behemoth",
+    "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
+    "Vaultborn Tyrant",
+    "Wrathful Raptors"
    ],
-   "carries": "CAST › MANA › ETB › HAND › DAMAGE",
+   "carries": "DAMAGE › DAMAGE › ETB › HAND › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Atzocan Seer",
       "Blasphemous Act",
       "Boros Charm",
-      "Congregation at Dawn",
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Enlightened Tutor",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Rishkar's Expertise",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Worldly Tutor",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
+      "Trumpeting Carnosaur",
+      "Zacama, Primal Calamity"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 20,
-     "by_turn_three": 1.0
+     "n": 4,
+     "by_turn_three": 0.321
     },
     {
      "cards": [
-      "Intrepid Paleontologist"
+      "Wrathful Raptors"
      ],
      "tokens": [],
      "stocks": [],
@@ -17505,7 +17009,7 @@
     },
     {
      "cards": [
-      "Regal Behemoth"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
@@ -17542,322 +17046,71 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 60,
+   "starts": 4,
    "cards": [
-    "Atzocan Seer",
     "Blasphemous Act",
     "Boros Charm",
-    "Congregation at Dawn",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Enlightened Tutor",
-    "Etali, Primal Storm",
     "Garruk's Uprising",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
-    "Natural Order",
-    "Nature's Lore",
-    "Path to Exile",
-    "Regal Behemoth",
-    "Regisaur Alpha",
-    "Rishkar's Expertise",
+    "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant",
-    "Worldly Tutor",
+    "Wrathful Raptors",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Intrepid Paleontologist"
+     "Wrathful Raptors"
     ]
    },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ATTACK",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "COMBAT_DAMAGE › ATTACK › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 18,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L25"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "COMBAT_DAMAGE › ETB › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 18,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Garruk's Uprising",
-    "Gishath, Sun's Avatar",
-    "Pantlaza, Sun-Favored",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L26"
+   "id": "L21"
   },
   {
    "events": [
     "DAMAGE",
     "ETB",
-    "ETB",
     "HAND",
+    "DAMAGE",
     "DAMAGE"
    ],
    "terminal": "DAMAGE",
    "from": "ignition",
-   "to": "ignition",
+   "to": "wincon",
    "via": [
-    "Blasphemous Act",
-    "Boros Charm",
     "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
     "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
+    "Wrathful Raptors"
    ],
-   "carries": "DAMAGE › ETB › ETB › HAND › DAMAGE",
+   "carries": "DAMAGE › ETB › HAND › DAMAGE › DAMAGE",
    "hops": [
     {
      "cards": [
       "Blasphemous Act",
       "Boros Charm",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 4,
+     "by_turn_three": 0.321
     },
     {
      "cards": [
-      "Quartzwood Crasher",
-      "Wrathful Raptors"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
+     "n": 1,
+     "by_turn_three": 0.091
     },
     {
      "cards": [
@@ -17887,14 +17140,22 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Wrathful Raptors"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
     }
    ],
-   "instances": 30,
+   "starts": 4,
    "cards": [
     "Blasphemous Act",
     "Boros Charm",
     "Garruk's Uprising",
-    "Pantlaza, Sun-Favored",
     "Quartzwood Crasher",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
@@ -17903,41 +17164,39 @@
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
-    "position": 5,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Trumpeting Carnosaur"
+     "Quartzwood Crasher"
     ]
    },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L27"
+   "id": "L22"
   },
   {
    "events": [
     "ETB",
-    "ATTACK",
-    "COMBAT_DAMAGE",
+    "ETB",
     "HAND",
+    "DAMAGE",
     "DAMAGE"
    ],
    "terminal": "DAMAGE",
    "from": "ignition",
-   "to": "ignition",
+   "to": "wincon",
    "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Pantlaza, Sun-Favored",
+    "Garruk's Uprising",
     "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
+    "Vaultborn Tyrant",
+    "Wrathful Raptors"
    ],
-   "carries": "ETB › ATTACK › COMBAT_DAMAGE › HAND › DAMAGE",
+   "carries": "ETB › ETB › HAND › DAMAGE › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Atzocan Seer",
       "Earthshaker Dreadmaw",
       "Eerie Interlude",
       "Etali, Primal Storm",
@@ -17949,6 +17208,7 @@
       "Skyshroud Claim",
       "Sunfrill Imitator",
       "Three Visits",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity",
       "Gishath, Sun's Avatar"
      ],
@@ -17959,1040 +17219,7 @@
     },
     {
      "cards": [
-      "Pantlaza, Sun-Favored",
-      "Selvala, Heart of the Wilds",
       "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 40,
-   "cards": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Ghalta and Mavren"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "MANA",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Regal Behemoth",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "MANA › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Regal Behemoth"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Regal Behemoth",
-    "Trumpeting Carnosaur"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Atzocan Seer"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 7,
-   "cards": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ghalta and Mavren"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › HAND › DAMAGE › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 7,
-   "cards": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Regisaur Alpha",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ghalta and Mavren"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Pantlaza, Sun-Favored",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ATTACK › ETB › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Atzocan Seer",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Pantlaza, Sun-Favored",
-    "Regisaur Alpha",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ghalta and Mavren"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Ghalta and Mavren",
-    "Intrepid Paleontologist",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "CAST › ATTACK › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Blasphemous Act",
-      "Boros Charm",
-      "Congregation at Dawn",
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Enlightened Tutor",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Rishkar's Expertise",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Worldly Tutor",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 20,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Intrepid Paleontologist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 20,
-   "cards": [
-    "Atzocan Seer",
-    "Blasphemous Act",
-    "Boros Charm",
-    "Congregation at Dawn",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Enlightened Tutor",
-    "Etali, Primal Storm",
-    "Ghalta and Mavren",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
-    "Natural Order",
-    "Nature's Lore",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Rishkar's Expertise",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Worldly Tutor",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Intrepid Paleontologist"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "HAND",
-    "DAMAGE",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Intrepid Paleontologist",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors"
-   ],
-   "carries": "CAST › ETB › HAND › DAMAGE › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Blasphemous Act",
-      "Boros Charm",
-      "Congregation at Dawn",
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Enlightened Tutor",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Rishkar's Expertise",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Worldly Tutor",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 20,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Intrepid Paleontologist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 20,
-   "cards": [
-    "Atzocan Seer",
-    "Blasphemous Act",
-    "Boros Charm",
-    "Congregation at Dawn",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Enlightened Tutor",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
-    "Natural Order",
-    "Nature's Lore",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Rishkar's Expertise",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Worldly Tutor",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Intrepid Paleontologist"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "CAST",
-    "MANA",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Intrepid Paleontologist",
-    "Regal Behemoth",
-    "Trumpeting Carnosaur"
-   ],
-   "carries": "CAST › MANA › COMBAT_DAMAGE › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Atzocan Seer",
-      "Blasphemous Act",
-      "Boros Charm",
-      "Congregation at Dawn",
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Enlightened Tutor",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Rishkar's Expertise",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Worldly Tutor",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 20,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Intrepid Paleontologist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Regal Behemoth"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 20,
-   "cards": [
-    "Atzocan Seer",
-    "Blasphemous Act",
-    "Boros Charm",
-    "Congregation at Dawn",
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Enlightened Tutor",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Intrepid Paleontologist",
-    "Natural Order",
-    "Nature's Lore",
-    "Path to Exile",
-    "Regal Behemoth",
-    "Regisaur Alpha",
-    "Rishkar's Expertise",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Worldly Tutor",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Intrepid Paleontologist"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "HAND",
-    "DAMAGE",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Curious Altisaur",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors"
-   ],
-   "carries": "COMBAT_DAMAGE › ETB › HAND › DAMAGE › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Etali, Primal Storm",
-      "Regisaur Alpha",
-      "Sunfrill Imitator",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 6,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Sunfrill Imitator",
-    "Trumpeting Carnosaur",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "DAMAGE",
-    "ATTACK",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Quartzwood Crasher",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "carries": "DAMAGE › ATTACK › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Blasphemous Act",
-      "Boros Charm",
-      "Zacama, Primal Calamity"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Quartzwood Crasher",
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Ghalta and Mavren"
      ],
      "tokens": [],
      "stocks": [],
@@ -19002,13 +17229,12 @@
     {
      "cards": [
       "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Vaultborn Tyrant"
+      "Selvala, Heart of the Wilds"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -19027,38 +17253,55 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Wrathful Raptors"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
     }
    ],
-   "instances": 18,
+   "starts": 14,
    "cards": [
-    "Blasphemous Act",
-    "Boros Charm",
+    "Earthshaker Dreadmaw",
+    "Eerie Interlude",
+    "Etali, Primal Storm",
     "Garruk's Uprising",
-    "Ghalta and Mavren",
-    "Quartzwood Crasher",
+    "Gishath, Sun's Avatar",
+    "Huatli, Poet of Unity // Roar of the Fifth People",
+    "Natural Order",
+    "Nature's Lore",
+    "Path to Exile",
+    "Regisaur Alpha",
     "Selvala, Heart of the Wilds",
+    "Skyshroud Claim",
+    "Sunfrill Imitator",
+    "Three Visits",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant",
     "Wrathful Raptors",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Ghalta and Mavren"
+     "Vaultborn Tyrant"
     ]
    },
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L37"
+   "id": "L23"
   },
   {
    "events": [
     "DAMAGE",
     "ETB",
-    "COMBAT_DAMAGE",
+    "ETB",
     "HAND",
     "DAMAGE"
    ],
@@ -19066,283 +17309,55 @@
    "from": "ignition",
    "to": "ignition",
    "via": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
+    "Garruk's Uprising",
     "Quartzwood Crasher",
+    "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
+    "Vaultborn Tyrant"
    ],
-   "carries": "DAMAGE › ETB › COMBAT_DAMAGE › HAND › DAMAGE",
+   "carries": "DAMAGE › ETB › ETB › HAND › DAMAGE",
    "hops": [
     {
      "cards": [
       "Blasphemous Act",
       "Boros Charm",
+      "Trumpeting Carnosaur",
       "Zacama, Primal Calamity"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 4,
+     "by_turn_three": 0.321
     },
     {
      "cards": [
-      "Quartzwood Crasher",
-      "Wrathful Raptors"
+      "Quartzwood Crasher"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
+     "n": 1,
+     "by_turn_three": 0.091
     },
     {
      "cards": [
-      "Pantlaza, Sun-Favored",
       "Vaultborn Tyrant"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 12,
-   "cards": [
-    "Blasphemous Act",
-    "Boros Charm",
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
-    "Quartzwood Crasher",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "ETB",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "HAND",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
-    "Selvala, Heart of the Wilds",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant"
-   ],
-   "carries": "ETB › COMBAT_DAMAGE › ETB › HAND › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
     },
     {
      "cards": [
+      "Garruk's Uprising",
       "Selvala, Heart of the Wilds"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Trumpeting Carnosaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 26,
-   "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Selvala, Heart of the Wilds",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Zacama, Primal Calamity"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Curious Altisaur"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
-    "ETB",
-    "COMBAT_DAMAGE",
-    "HAND",
-    "DAMAGE",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Curious Altisaur",
-    "Pantlaza, Sun-Favored",
-    "Trumpeting Carnosaur",
-    "Vaultborn Tyrant",
-    "Wrathful Raptors"
-   ],
-   "carries": "ETB › COMBAT_DAMAGE › HAND › DAMAGE › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Earthshaker Dreadmaw",
-      "Eerie Interlude",
-      "Etali, Primal Storm",
-      "Huatli, Poet of Unity // Roar of the Fifth People",
-      "Natural Order",
-      "Nature's Lore",
-      "Path to Exile",
-      "Regisaur Alpha",
-      "Skyshroud Claim",
-      "Sunfrill Imitator",
-      "Three Visits",
-      "Zacama, Primal Calamity",
-      "Gishath, Sun's Avatar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Pantlaza, Sun-Favored",
-      "Vaultborn Tyrant"
-     ],
-     "tokens": [],
-     "stocks": [],
      "n": 2,
      "by_turn_three": 0.174
     },
     {
-     "cards": [
-      "Curious Altisaur"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
      "cards": [],
      "tokens": [],
      "stocks": [
@@ -19359,82 +17374,47 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Wrathful Raptors"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
     }
    ],
-   "instances": 26,
+   "starts": 4,
    "cards": [
-    "Curious Altisaur",
-    "Earthshaker Dreadmaw",
-    "Eerie Interlude",
-    "Etali, Primal Storm",
-    "Gishath, Sun's Avatar",
-    "Huatli, Poet of Unity // Roar of the Fifth People",
-    "Natural Order",
-    "Nature's Lore",
-    "Pantlaza, Sun-Favored",
-    "Path to Exile",
-    "Regisaur Alpha",
-    "Skyshroud Claim",
-    "Sunfrill Imitator",
-    "Three Visits",
+    "Blasphemous Act",
+    "Boros Charm",
+    "Garruk's Uprising",
+    "Quartzwood Crasher",
+    "Selvala, Heart of the Wilds",
     "Trumpeting Carnosaur",
     "Vaultborn Tyrant",
-    "Wrathful Raptors",
     "Zacama, Primal Calamity"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Curious Altisaur"
+     "Quartzwood Crasher"
     ]
    },
-   "availability_by_turn_three": 0.0001,
+   "availability_by_turn_three": 0.0,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L40"
+   "id": "L24"
   }
  ],
  "spof": [
   {
    "card": "Intrepid Paleontologist",
    "kind": "cut_vertex",
-   "severs": [
-    "L12",
-    "L23",
-    "L24",
-    "L33",
-    "L34",
-    "L35"
-   ]
+   "severs": []
   },
   {
    "card": "Ghalta and Mavren",
    "kind": "single_consumer",
    "event": "ATTACK",
    "severs": [
-    "L07",
+    "L04",
     "L11",
-    "L15",
-    "L18",
-    "L22",
-    "L23",
-    "L25",
-    "L28",
-    "L30",
-    "L31",
-    "L32",
-    "L33",
-    "L37"
+    "L19",
+    "L20"
    ]
   },
   {
@@ -19442,26 +17422,9 @@
    "kind": "single_consumer",
    "event": "COMBAT_DAMAGE",
    "severs": [
-    "L04",
-    "L09",
-    "L11",
-    "L13",
-    "L14",
-    "L17",
-    "L20",
-    "L25",
-    "L26",
-    "L28",
-    "L29",
-    "L30",
-    "L31",
-    "L32",
-    "L33",
-    "L35",
-    "L36",
-    "L38",
-    "L39",
-    "L40"
+    "L07",
+    "L15",
+    "L16"
    ]
   }
  ],

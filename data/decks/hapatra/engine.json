@@ -5189,12 +5189,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -15486,6 +15490,18 @@
      }
     ],
     "keywords": []
+   },
+   {
+    "card": "Yahenni, Undying Partisan",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
    }
   ],
   "protects": [
@@ -16889,6 +16905,61 @@
  "lines": [
   {
    "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak"
+   ],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_snake_deathtouch",
+      "token:g_1_1_squirrel"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 2,
+    "cards": [
+     "Scurry Oak",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "001"
+   ],
+   "stamp": "✓",
+   "id": "L01"
+  },
+  {
+   "events": [
     "BODIES",
     "DIES",
     "LIFE_LOSS"
@@ -16956,7 +17027,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 528,
+   "starts": 10,
    "cards": [
     "Ashnod's Altar",
     "Bastion of Remembrance",
@@ -16994,7 +17065,7 @@
     "001"
    ],
    "stamp": "✓",
-   "id": "L01"
+   "id": "L02"
   },
   {
    "events": [
@@ -17030,7 +17101,7 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     },
     {
      "cards": [],
@@ -17071,7 +17142,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 72,
+   "starts": 2,
    "cards": [
     "Ashnod's Altar",
     "Bastion of Remembrance",
@@ -17090,16 +17161,1115 @@
     "Zulaport Cutthroat"
    ],
    "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
+    "position": 0,
+    "n": 2,
+    "cards": [
+     "Scurry Oak",
+     "Hapatra, Vizier of Poisons"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.1902,
    "verified_by": [
     "001"
    ],
    "stamp": "✓",
-   "id": "L02"
+   "id": "L03"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 3,
+    "cards": [
+     "Flourishing Defenses",
+     "Nest of Scarabs",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L05"
+  },
+  {
+   "events": [
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Green Sun's Zenith",
+      "Necroskitter",
+      "Scurry Oak",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Green Sun's Zenith",
+    "Hapatra, Vizier of Poisons",
+    "Necroskitter",
+    "Nest of Scarabs",
+    "Scurry Oak",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 3,
+    "cards": [
+     "Carrion Feeder",
+     "Yahenni, Undying Partisan",
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L06"
+  },
+  {
+   "events": [
+    "BODIES",
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "BODIES › COUNTER_ADD › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Green Sun's Zenith",
+      "Necroskitter",
+      "Scurry Oak",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Green Sun's Zenith",
+    "Hapatra, Vizier of Poisons",
+    "Necroskitter",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Scurry Oak",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L07"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "COUNTER_ADD › BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 3,
+    "cards": [
+     "Carrion Feeder",
+     "Yahenni, Undying Partisan",
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L08"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Scurry Oak",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "TOKEN › BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_snake_deathtouch",
+      "token:g_1_1_squirrel"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Scurry Oak",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 2,
+    "cards": [
+     "Scurry Oak",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L09"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "BODIES",
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "COUNTER_ADD › BODIES › COUNTER_ADD › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L10"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L11"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 3,
+    "cards": [
+     "Flourishing Defenses",
+     "Nest of Scarabs",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L12"
   },
   {
    "events": [
@@ -17187,7 +18357,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 3756,
+   "starts": 14,
    "cards": [
     "Ashnod's Altar",
     "Bastion of Remembrance",
@@ -17229,7 +18399,7 @@
    "availability_by_turn_three": 0.1902,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L03"
+   "id": "L13"
   },
   {
    "events": [
@@ -17331,7 +18501,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 5700,
+   "starts": 14,
    "cards": [
     "Ashnod's Altar",
     "Bastion of Remembrance",
@@ -17371,7 +18541,420 @@
    "availability_by_turn_three": 0.1902,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L04"
+   "id": "L14"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Grim Backwoods",
+      "Lazotep Quarry",
+      "Phyrexian Altar",
+      "Viscera Seer",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ashnod's Altar",
+    "Bastion of Remembrance",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blood Artist",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Grim Backwoods",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Lazotep Quarry",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Phyrexian Altar",
+    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
+    "Serrated Arrows",
+    "Viscera Seer",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 3,
+    "cards": [
+     "Flourishing Defenses",
+     "Nest of Scarabs",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.1902,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L15"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › TOKEN › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Grim Backwoods",
+      "Lazotep Quarry",
+      "Phyrexian Altar",
+      "Viscera Seer",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ashnod's Altar",
+    "Bastion of Remembrance",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blood Artist",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Grim Backwoods",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Lazotep Quarry",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Phyrexian Altar",
+    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
+    "Serrated Arrows",
+    "Viscera Seer",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.1902,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L16"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Obelisk Spider",
+     "Hapatra, Vizier of Poisons"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L17"
   },
   {
    "events": [
@@ -17409,7 +18992,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 16,
+   "starts": 4,
    "cards": [
     "Bastion of Remembrance",
     "Blood Artist",
@@ -17433,7 +19016,292 @@
    "availability_by_turn_three": 0.1032,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L05"
+   "id": "L18"
+  },
+  {
+   "events": [
+    "BODIES",
+    "DIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Blowfly Infestation",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Nest of Scarabs"
+   ],
+   "carries": "BODIES › DIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Green Sun's Zenith",
+      "Necroskitter",
+      "Scurry Oak",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Grim Backwoods",
+      "Lazotep Quarry",
+      "Phyrexian Altar",
+      "Viscera Seer",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blowfly Infestation",
+      "Host of the Hereafter"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Ashnod's Altar",
+    "Blasting Station",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Green Sun's Zenith",
+    "Grim Backwoods",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Lazotep Quarry",
+    "Necroskitter",
+    "Nest of Scarabs",
+    "Phyrexian Altar",
+    "Scurry Oak",
+    "Viscera Seer",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 2,
+    "cards": [
+     "Blowfly Infestation",
+     "Host of the Hereafter"
+    ]
+   },
+   "availability_by_turn_three": 0.1032,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L19"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "BODIES",
+    "DIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Blowfly Infestation",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › BODIES › DIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Grim Backwoods",
+      "Lazotep Quarry",
+      "Phyrexian Altar",
+      "Viscera Seer",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 0.592
+    },
+    {
+     "cards": [
+      "Blowfly Infestation",
+      "Host of the Hereafter"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ashnod's Altar",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Grim Backwoods",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Lazotep Quarry",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Phyrexian Altar",
+    "Serrated Arrows",
+    "Viscera Seer",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Blowfly Infestation",
+     "Host of the Hereafter"
+    ]
+   },
+   "availability_by_turn_three": 0.1032,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L20"
   },
   {
    "events": [
@@ -17457,12 +19325,13 @@
       "Necroskitter",
       "Scurry Oak",
       "Walking Ballista",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 9,
+     "n": 10,
      "by_turn_three": 1.0
     },
     {
@@ -17484,7 +19353,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 14,
+   "starts": 10,
    "cards": [
     "Carrion Feeder",
     "Deadly Dispute",
@@ -17507,7 +19376,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L06"
+   "id": "L21"
   },
   {
    "events": [
@@ -17559,7 +19428,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 15,
+   "starts": 10,
    "cards": [
     "Blasting Station",
     "Carrion Feeder",
@@ -17583,7 +19452,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L07"
+   "id": "L22"
   },
   {
    "events": [
@@ -17625,7 +19494,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 9,
+   "starts": 9,
    "cards": [
     "Black Sun's Zenith",
     "Carrion Feeder",
@@ -17648,7 +19517,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L08"
+   "id": "L23"
   },
   {
    "events": [
@@ -17690,7 +19559,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 9,
+   "starts": 9,
    "cards": [
     "Blasting Station",
     "Carrion Feeder",
@@ -17713,7 +19582,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L09"
+   "id": "L24"
   },
   {
    "events": [
@@ -17742,12 +19611,13 @@
       "Obelisk Spider",
       "Serrated Arrows",
       "Walking Ballista",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 13,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -17781,7 +19651,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 97,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blowfly Infestation",
@@ -17810,7 +19680,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L10"
+   "id": "L25"
   },
   {
    "events": [
@@ -17879,7 +19749,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 108,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blasting Station",
@@ -17909,7 +19779,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L11"
+   "id": "L26"
   },
   {
    "events": [
@@ -17921,7 +19791,10 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Blasting Station"
+    "Blasting Station",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs"
    ],
    "carries": "COUNTER_ADD › ETB › DAMAGE",
    "hops": [
@@ -17951,12 +19824,11 @@
      "cards": [
       "Flourishing Defenses",
       "Nest of Scarabs",
-      "Obelisk Spider",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 4,
+     "n": 3,
      "by_turn_three": 1.0
     },
     {
@@ -17969,7 +19841,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 48,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blasting Station",
@@ -17999,7 +19871,153 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L12"
+   "id": "L27"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak",
+    "Yahenni, Undying Partisan"
+   ],
+   "carries": "TOKEN › BODIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_snake_deathtouch",
+      "token:g_1_1_squirrel"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak",
+    "Yahenni, Undying Partisan"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Yahenni, Undying Partisan"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L28"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Blasting Station",
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak"
+   ],
+   "carries": "TOKEN › BODIES › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_snake_deathtouch",
+      "token:g_1_1_squirrel"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Blasting Station"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Blasting Station",
+    "Hapatra, Vizier of Poisons",
+    "Scurry Oak"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Blasting Station"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L29"
   },
   {
    "events": [
@@ -18031,12 +20049,13 @@
       "Obelisk Spider",
       "Serrated Arrows",
       "Walking Ballista",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 13,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -18080,7 +20099,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 147,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blowfly Infestation",
@@ -18109,7 +20128,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L13"
+   "id": "L30"
   },
   {
    "events": [
@@ -18191,7 +20210,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 164,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blasting Station",
@@ -18221,7 +20240,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L14"
+   "id": "L31"
   },
   {
    "events": [
@@ -18235,7 +20254,9 @@
    "to": "wincon",
    "via": [
     "Blasting Station",
+    "Flourishing Defenses",
     "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
     "Obelisk Spider"
    ],
    "carries": "COUNTER_ADD › COUNTER_ADD › ETB › DAMAGE",
@@ -18276,12 +20297,11 @@
      "cards": [
       "Flourishing Defenses",
       "Nest of Scarabs",
-      "Obelisk Spider",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 4,
+     "n": 3,
      "by_turn_three": 1.0
     },
     {
@@ -18294,7 +20314,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 88,
+   "starts": 14,
    "cards": [
     "Black Sun's Zenith",
     "Blasting Station",
@@ -18324,2417 +20344,12 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L15"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "COUNTER_ADD",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Hapatra, Vizier of Poisons",
-    "Obelisk Spider"
-   ],
-   "carries": "COUNTER_ADD › COUNTER_ADD › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 0.704
-    },
-    {
-     "cards": [
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Obelisk Spider"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 20,
-   "cards": [
-    "Black Sun's Zenith",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Obelisk Spider",
-    "Serrated Arrows",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Hapatra, Vizier of Poisons"
-    ]
-   },
-   "availability_by_turn_three": 0.064,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Lazotep Quarry",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 72,
-   "cards": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Lazotep Quarry",
-    "Necroskitter",
-    "Scurry Oak",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.035,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L17"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "COUNTER_ADD › BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Lazotep Quarry",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 507,
-   "cards": [
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Serrated Arrows",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.035,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L18"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "COUNTER_ADD",
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Hapatra, Vizier of Poisons",
-    "Obelisk Spider"
-   ],
-   "carries": "COUNTER_ADD › COUNTER_ADD › BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Lazotep Quarry",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 769,
-   "cards": [
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Serrated Arrows",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.035,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [],
-   "carries": "DIES › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 1287,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grim Backwoods",
-    "Grim Haruspex",
-    "Host of the Hereafter",
-    "Lazotep Quarry",
-    "Morbid Opportunist",
-    "Phyrexian Altar",
-    "Pitiless Plunderer",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Viscera Seer",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 4,
-    "cards": [
-     "Carrion Feeder",
-     "Fume Spitter",
-     "Yahenni, Undying Partisan",
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0334,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L20"
-  },
-  {
-   "events": [
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 36,
-   "cards": [
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Necroskitter",
-    "Scurry Oak",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0292,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L21"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "COUNTER_ADD › ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 192,
-   "cards": [
-    "Bastion of Remembrance",
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blood Artist",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Serrated Arrows",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0292,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L22"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "COUNTER_ADD",
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Hapatra, Vizier of Poisons",
-    "Obelisk Spider"
-   ],
-   "carries": "COUNTER_ADD › COUNTER_ADD › ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 352,
-   "cards": [
-    "Bastion of Remembrance",
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blood Artist",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Serrated Arrows",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0292,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L23"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "BODIES › DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 936,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Grim Backwoods",
-    "Grim Haruspex",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Lazotep Quarry",
-    "Morbid Opportunist",
-    "Necroskitter",
-    "Phyrexian Altar",
-    "Pitiless Plunderer",
-    "Scurry Oak",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0272,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "BODIES",
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "COUNTER_ADD › BODIES › DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 6624,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blood Artist",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Grim Backwoods",
-    "Grim Haruspex",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Morbid Opportunist",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Phyrexian Altar",
-    "Pitiless Plunderer",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Serrated Arrows",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0272,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L25"
-  },
-  {
-   "events": [
-    "BODIES",
-    "COUNTER_ADD",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Carrion Feeder",
-    "Obelisk Spider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "BODIES › COUNTER_ADD › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Obelisk Spider"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 42,
-   "cards": [
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Necroskitter",
-    "Obelisk Spider",
-    "Scurry Oak",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Obelisk Spider"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L26"
-  },
-  {
-   "events": [
-    "BODIES",
-    "COUNTER_ADD",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "BODIES › COUNTER_ADD › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 159,
-   "cards": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Necroskitter",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Scurry Oak",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L27"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "BODIES",
-    "COUNTER_ADD",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Carrion Feeder",
-    "Flourishing Defenses",
-    "Hapatra, Vizier of Poisons",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "COUNTER_ADD › BODIES › COUNTER_ADD › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Obelisk Spider"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 258,
-   "cards": [
-    "Black Sun's Zenith",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Serrated Arrows",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Obelisk Spider"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "BODIES",
-    "COUNTER_ADD",
-    "COUNTER_ADD",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Hapatra, Vizier of Poisons",
-    "Obelisk Spider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "BODIES › COUNTER_ADD › COUNTER_ADD › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 216,
-   "cards": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Necroskitter",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Scurry Oak",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "BODIES",
-    "COUNTER_ADD",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Carrion Feeder",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "COUNTER_ADD › BODIES › COUNTER_ADD › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Ivy Lane Denizen",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 849,
-   "cards": [
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Serrated Arrows",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "HAND",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Green Sun's Zenith",
-      "Grim Tutor",
-      "Imperial Seal",
-      "Night's Whisper",
-      "Survival of the Fittest",
-      "Vampiric Tutor",
-      "Village Rites",
-      "Worldly Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 11,
-     "by_turn_three": 0.67
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 44,
-   "cards": [
-    "Bastion of Remembrance",
-    "Blood Artist",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Green Sun's Zenith",
-    "Grim Tutor",
-    "Imperial Seal",
-    "Night's Whisper",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Survival of the Fittest",
-    "Vampiric Tutor",
-    "Village Rites",
-    "Worldly Tutor",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0196,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "ETB",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ivy Lane Denizen"
-   ],
-   "carries": "ETB › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ivy Lane Denizen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 144,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Green Sun's Zenith",
-    "Grim Backwoods",
-    "Hapatra, Vizier of Poisons",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Necroskitter",
-    "Phyrexian Altar",
-    "Scurry Oak",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Viscera Seer",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ivy Lane Denizen"
-    ]
-   },
-   "availability_by_turn_three": 0.0173,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L32"
   },
   {
    "events": [
     "COUNTER_ADD",
-    "ETB",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Flourishing Defenses",
-    "Hapatra, Vizier of Poisons",
-    "Ivy Lane Denizen",
-    "Obelisk Spider"
-   ],
-   "carries": "COUNTER_ADD › ETB › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Blowfly Infestation",
-      "Carrion Feeder",
-      "Contagion Clasp",
-      "Fume Spitter",
-      "Grim Affliction",
-      "Host of the Hereafter",
-      "Obelisk Spider",
-      "Serrated Arrows",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 13,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ivy Lane Denizen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 1320,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Black Sun's Zenith",
-    "Blasting Station",
-    "Blood Artist",
-    "Blowfly Infestation",
-    "Carrion Feeder",
-    "Contagion Clasp",
-    "Flourishing Defenses",
-    "Fume Spitter",
-    "Grim Affliction",
-    "Grim Backwoods",
-    "Hapatra, Vizier of Poisons",
-    "Host of the Hereafter",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Obelisk Spider",
-    "Phyrexian Altar",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Serrated Arrows",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Ivy Lane Denizen"
-    ]
-   },
-   "availability_by_turn_three": 0.0173,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "ETB",
-    "COUNTER_ADD",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ivy Lane Denizen"
-   ],
-   "carries": "ETB › COUNTER_ADD › BODIES › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ivy Lane Denizen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Flourishing Defenses",
-      "Nest of Scarabs",
-      "Obelisk Spider",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Grim Backwoods",
-      "Lazotep Quarry",
-      "Phyrexian Altar",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 1044,
-   "cards": [
-    "Ashnod's Altar",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Flourishing Defenses",
-    "Green Sun's Zenith",
-    "Grim Backwoods",
-    "Hapatra, Vizier of Poisons",
-    "Ivy Lane Denizen",
-    "Lazotep Quarry",
-    "Necroskitter",
-    "Nest of Scarabs",
-    "Obelisk Spider",
-    "Phyrexian Altar",
-    "Scurry Oak",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Viscera Seer",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ivy Lane Denizen"
-    ]
-   },
-   "availability_by_turn_three": 0.0173,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "DIES › BODIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 44,
-   "cards": [
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grim Haruspex",
-    "Host of the Hereafter",
-    "Morbid Opportunist",
-    "Pitiless Plunderer",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.016,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 32,
-   "cards": [
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grim Haruspex",
-    "Host of the Hereafter",
-    "Morbid Opportunist",
-    "Pitiless Plunderer",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.016,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "BODIES",
-    "COUNTER_ADD",
-    "COUNTER_ADD",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Carrion Feeder",
-    "Hapatra, Vizier of Poisons",
-    "Obelisk Spider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "BODIES › COUNTER_ADD › COUNTER_ADD › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 0.592
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Obelisk Spider"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 33,
-   "cards": [
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Necroskitter",
-    "Obelisk Spider",
-    "Scurry Oak",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Hapatra, Vizier of Poisons"
-    ]
-   },
-   "availability_by_turn_three": 0.0135,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "DIES",
+    "TOKEN",
     "BODIES",
     "COMBAT_DAMAGE"
    ],
@@ -20742,39 +20357,56 @@
    "from": "ignition",
    "to": "ignition",
    "via": [
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan"
    ],
-   "carries": "DIES › BODIES › COMBAT_DAMAGE",
+   "carries": "COUNTER_ADD › TOKEN › BODIES › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
       "Carrion Feeder",
+      "Contagion Clasp",
       "Fume Spitter",
-      "Yawgmoth, Thran Physician"
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
-     "by_turn_three": 0.251
+     "by_turn_three": 1.0
     },
     {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Grim Haruspex",
-      "Host of the Hereafter",
-      "Morbid Opportunist",
-      "Pitiless Plunderer",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
+     "n": 0,
+     "by_turn_three": 1.0
     },
     {
      "cards": [],
@@ -20795,157 +20427,54 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 33,
+   "starts": 14,
    "cards": [
-    "Bastion of Remembrance",
-    "Blood Artist",
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
     "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
     "Fume Spitter",
-    "Grim Haruspex",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
     "Host of the Hereafter",
-    "Morbid Opportunist",
-    "Pitiless Plunderer",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
     "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
+    "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
-    "position": 3,
+    "position": 4,
     "n": 1,
     "cards": [
      "Yahenni, Undying Partisan"
     ]
    },
-   "availability_by_turn_three": 0.0125,
+   "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "BODIES › ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Green Sun's Zenith",
-      "Necroskitter",
-      "Scurry Oak",
-      "Walking Ballista",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician",
-      "Hapatra, Vizier of Poisons"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Lazotep Quarry",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 288,
-   "cards": [
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Green Sun's Zenith",
-    "Hapatra, Vizier of Poisons",
-    "Lazotep Quarry",
-    "Necroskitter",
-    "Scurry Oak",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-    "Viscera Seer",
-    "Walking Ballista",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0113,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
+   "id": "L33"
   },
   {
    "events": [
     "COUNTER_ADD",
+    "TOKEN",
     "BODIES",
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
+    "DAMAGE"
    ],
-   "terminal": "LIFE_LOSS",
+   "terminal": "DAMAGE",
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Blasting Station"
+    "Blasting Station",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs"
    ],
-   "carries": "COUNTER_ADD › BODIES › ETB › DIES › LIFE_LOSS",
+   "carries": "COUNTER_ADD › TOKEN › BODIES › DAMAGE",
    "hops": [
     {
      "cards": [
@@ -20973,12 +20502,22 @@
      "cards": [
       "Flourishing Defenses",
       "Nest of Scarabs",
-      "Obelisk Spider",
       "Hapatra, Vizier of Poisons"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 4,
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
      "by_turn_three": 1.0
     },
     {
@@ -20992,45 +20531,18 @@
     },
     {
      "cards": [
-      "Carrion Feeder",
-      "Lazotep Quarry",
-      "Viscera Seer",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
       "Blasting Station"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
     }
    ],
-   "instances": 2028,
+   "starts": 14,
    "cards": [
-    "Bastion of Remembrance",
     "Black Sun's Zenith",
     "Blasting Station",
-    "Blood Artist",
     "Blowfly Infestation",
     "Carrion Feeder",
     "Contagion Clasp",
@@ -21040,16 +20552,12 @@
     "Hapatra, Vizier of Poisons",
     "Host of the Hereafter",
     "Ivy Lane Denizen",
-    "Lazotep Quarry",
     "Nest of Scarabs",
     "Obelisk Spider",
-    "Sephiroth, Fabled SOLDIER // Sephiroth, One-Winged Angel",
     "Serrated Arrows",
-    "Viscera Seer",
     "Walking Ballista",
     "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
+    "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
     "position": 4,
@@ -21058,7 +20566,677 @@
      "Blasting Station"
     ]
    },
-   "availability_by_turn_three": 0.0113,
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L34"
+  },
+  {
+   "events": [
+    "ETB",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs"
+   ],
+   "carries": "ETB › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Green Sun's Zenith",
+      "Necroskitter",
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ivy Lane Denizen"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Flourishing Defenses",
+    "Green Sun's Zenith",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Necroskitter",
+    "Nest of Scarabs",
+    "Scurry Oak"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Ivy Lane Denizen"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L35"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Yahenni, Undying Partisan"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › TOKEN › BODIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 5,
+    "n": 1,
+    "cards": [
+     "Yahenni, Undying Partisan"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L36"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Blasting Station",
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › TOKEN › BODIES › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Blasting Station"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 5,
+    "n": 1,
+    "cards": [
+     "Blasting Station"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L37"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "ETB",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › ETB › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ivy Lane Denizen"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Ivy Lane Denizen"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L38"
+  },
+  {
+   "events": [
+    "ETB",
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "ETB › COUNTER_ADD › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Green Sun's Zenith",
+      "Necroskitter",
+      "Scurry Oak",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ivy Lane Denizen"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Flourishing Defenses",
+    "Green Sun's Zenith",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Necroskitter",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Scurry Oak"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Ivy Lane Denizen"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L39"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "COUNTER_ADD",
+    "ETB",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Flourishing Defenses",
+    "Hapatra, Vizier of Poisons",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider"
+   ],
+   "carries": "COUNTER_ADD › COUNTER_ADD › ETB › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Blowfly Infestation",
+      "Carrion Feeder",
+      "Contagion Clasp",
+      "Fume Spitter",
+      "Grim Affliction",
+      "Host of the Hereafter",
+      "Ivy Lane Denizen",
+      "Obelisk Spider",
+      "Serrated Arrows",
+      "Walking Ballista",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Obelisk Spider",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ivy Lane Denizen"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Flourishing Defenses",
+      "Nest of Scarabs",
+      "Hapatra, Vizier of Poisons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect",
+      "token:g_1_1_elf_warrior",
+      "token:g_1_1_snake_deathtouch"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Black Sun's Zenith",
+    "Blowfly Infestation",
+    "Carrion Feeder",
+    "Contagion Clasp",
+    "Flourishing Defenses",
+    "Fume Spitter",
+    "Grim Affliction",
+    "Hapatra, Vizier of Poisons",
+    "Host of the Hereafter",
+    "Ivy Lane Denizen",
+    "Nest of Scarabs",
+    "Obelisk Spider",
+    "Serrated Arrows",
+    "Walking Ballista",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Ivy Lane Denizen"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
    "id": "L40"

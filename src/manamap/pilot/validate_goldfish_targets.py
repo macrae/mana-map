@@ -189,6 +189,48 @@ def _validate_shape(doc):
     return errors
 
 
+def _validate_generated(doc, slug, branch=None):
+    """ONE MODEL (2026-11-22). On a `targets_from: engine.json` declaration the
+    generated targets must equal a fresh derivation from the deck's `engine.json`
+    (`scaffold_targets.derive_from_engine`), in order, and the rest must be the
+    `components.authored_targets` verbatim — a hand edit to a generated target is
+    the one thing that would make the goldfish time a component the graph does
+    not have. A declaration without `targets_from` is not checked here."""
+    if doc.get("targets_from") is None:
+        return []
+    if doc.get("targets_from") != "engine.json":
+        return [f"targets_from must be 'engine.json' (the only source), not {doc.get('targets_from')!r}"]
+    from manamap.pilot import scaffold_targets
+    try:
+        fresh = scaffold_targets.derive_from_engine(slug, branch, targets_doc=doc)
+    except SystemExit as exc:
+        return [str(exc)]
+    targets = doc.get("targets") or []
+    generated = [t for t in targets if t.get("generated")]
+    authored = [t for t in targets if not t.get("generated")]
+    errors = []
+    if targets[:len(generated)] != generated:
+        errors.append("generated targets must come first, then components.authored_targets")
+    if generated != fresh:
+        want = {t["component"]: t for t in fresh}
+        for t in generated:
+            f = want.get(t.get("component"))
+            if f is None:
+                errors.append(f"generated target {t.get('label')!r} has no component in engine.json — "
+                              f"`manamap pilot engine-graph {slug} --write` regenerates the list")
+            elif f != t:
+                errors.append(f"generated target {t.get('label')!r} differs from a fresh derivation "
+                              f"(a hand edit, or engine.json moved) — `engine-graph {slug} --write`; "
+                              f"to change a generated group, write a components.overrides entry with a why")
+        for f in fresh:
+            if f["component"] not in {t.get("component") for t in generated}:
+                errors.append(f"component {f['component']} has no generated target — `engine-graph {slug} --write`")
+    kept = list((doc.get("components") or {}).get("authored_targets") or [])
+    if authored != kept:
+        errors.append("the targets after the generated ones must be components.authored_targets verbatim")
+    return errors
+
+
 def _validate_shared_leg(doc):
     """No card may sit in two `any_of` legs of the SAME target.
 
@@ -392,6 +434,7 @@ def validate(doc, slug, base, branch=None, notes=None):
     main_names = {c["name"] for c in cards}
     commander_names = {c["name"] for c in cards if c.get("is_commander")}
 
+    errors += _validate_generated(doc, slug, branch)
     errors += _validate_shared_leg(doc)
     errors += _validate_membership(doc, main_names, commander_names,
                                    slug=slug, branch=branch)

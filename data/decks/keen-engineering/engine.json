@@ -11310,20 +11310,75 @@
  "lines": [
   {
    "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Launch Mishap",
+    "Sai, Master Thopterist",
+    "Whirler Rogue"
+   ],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Launch Mishap",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Launch Mishap",
+    "Sai, Master Thopterist",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 3,
+    "cards": [
+     "Launch Mishap",
+     "Whirler Rogue",
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "001",
+    "002",
+    "003"
+   ],
+   "stamp": "✓",
+   "id": "L01"
+  },
+  {
+   "events": [
     "BODIES",
     "TOKEN",
     "COMBAT_DAMAGE"
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "ignition",
    "via": [
-    "Launch Mishap",
-    "Master Transmuter",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
+    "Sai, Master Thopterist"
    ],
    "carries": "BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
@@ -11333,12 +11388,13 @@
       "Master Transmuter",
       "Steel Hellkite",
       "Thought Monitor",
-      "Whirler Rogue"
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
+     "n": 6,
+     "by_turn_three": 1.0
     },
     {
      "cards": [],
@@ -11365,10 +11421,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 8,
+   "starts": 6,
    "cards": [
     "Launch Mishap",
     "Master Transmuter",
@@ -11378,16 +11434,20 @@
     "Whirler Rogue"
    ],
    "bottleneck": {
-    "position": 3,
-    "n": 0,
-    "cards": []
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 1.0,
    "verified_by": [
-    "002"
+    "001",
+    "002",
+    "003"
    ],
    "stamp": "✓",
-   "id": "L01"
+   "id": "L02"
   },
   {
    "events": [
@@ -11397,7 +11457,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "ignition",
    "via": [
     "Sai, Master Thopterist"
    ],
@@ -11470,10 +11530,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 55,
+   "starts": 43,
    "cards": [
     "Adaptive Omnitool",
     "Aether Spellbomb",
@@ -11521,18 +11581,304 @@
     "Thought Vessel"
    ],
    "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.9956,
    "verified_by": [
     "001",
     "002",
     "003"
    ],
    "stamp": "✓",
-   "id": "L02"
+   "id": "L03"
+  },
+  {
+   "events": [
+    "DRAW",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "DRAW › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 13,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Psychosis Crawler",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thoughtcast"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "CAST",
+    "DRAW",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
+   ],
+   "carries": "CAST › DRAW › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Adaptive Omnitool",
+      "Aether Spellbomb",
+      "Arcane Signet",
+      "Chief of the Foundry",
+      "Cultivator's Caravan",
+      "Darksteel Juggernaut",
+      "Duplicant",
+      "Etherium Sculptor",
+      "Forsaken Monument",
+      "Foundry Inspector",
+      "Graaz, Unstoppable Juggernaut",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Kappa Cannoneer",
+      "Master Transmuter",
+      "Master of Etherium",
+      "Mazemind Tome",
+      "Memory Guardian",
+      "Meteor Golem",
+      "Mind Stone",
+      "Mind's Eye",
+      "Misleading Signpost",
+      "Myr Battlesphere",
+      "Myr Retriever",
+      "Nettlecyst",
+      "Nevinyrral's Disk",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Psychosis Crawler",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Shimmer Myr",
+      "Silver Myr",
+      "Skysovereign, Consul Flagship",
+      "Sol Ring",
+      "Soul-Guide Lantern",
+      "Spire Golem",
+      "Steel Hellkite",
+      "Steel Overseer",
+      "Tamiyo's Logbook",
+      "Thopter Fabricator",
+      "Thought Monitor",
+      "Thought Vessel"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 43,
+     "by_turn_three": 0.996
+    },
+    {
+     "cards": [
+      "Vedalken Archmage",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 43,
+   "cards": [
+    "Adaptive Omnitool",
+    "Aether Spellbomb",
+    "Arcane Signet",
+    "Chief of the Foundry",
+    "Cultivator's Caravan",
+    "Darksteel Juggernaut",
+    "Duplicant",
+    "Etherium Sculptor",
+    "Forsaken Monument",
+    "Foundry Inspector",
+    "Graaz, Unstoppable Juggernaut",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Master Transmuter",
+    "Master of Etherium",
+    "Mazemind Tome",
+    "Memory Guardian",
+    "Meteor Golem",
+    "Mind Stone",
+    "Mind's Eye",
+    "Misleading Signpost",
+    "Myr Battlesphere",
+    "Myr Retriever",
+    "Nettlecyst",
+    "Nevinyrral's Disk",
+    "Ornithopter of Paradise",
+    "Palladium Myr",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Scrawling Crawler",
+    "Shimmer Myr",
+    "Silver Myr",
+    "Skysovereign, Consul Flagship",
+    "Sol Ring",
+    "Soul-Guide Lantern",
+    "Spire Golem",
+    "Steel Hellkite",
+    "Steel Overseer",
+    "Tamiyo's Logbook",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thought Vessel",
+    "Vedalken Archmage"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.1736,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L05"
   },
   {
    "events": [
@@ -11578,7 +11924,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 13,
+   "starts": 13,
    "cards": [
     "Aether Spellbomb",
     "Hedron Archive",
@@ -11605,7 +11951,450 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L03"
+   "id": "L06"
+  },
+  {
+   "events": [
+    "BODIES",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist"
+   ],
+   "carries": "BODIES › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Launch Mishap",
+      "Master Transmuter",
+      "Steel Hellkite",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 6,
+   "cards": [
+    "Launch Mishap",
+    "Master Transmuter",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L07"
+  },
+  {
+   "events": [
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Thopter Fabricator"
+   ],
+   "carries": "DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 13,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thoughtcast"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Thopter Fabricator"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L08"
+  },
+  {
+   "events": [
+    "BODIES",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "BODIES › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Launch Mishap",
+      "Master Transmuter",
+      "Steel Hellkite",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 6,
+   "cards": [
+    "Launch Mishap",
+    "Master Transmuter",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L09"
+  },
+  {
+   "events": [
+    "ETB",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Kappa Cannoneer",
+    "Sai, Master Thopterist"
+   ],
+   "carries": "ETB › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Launch Mishap",
+      "Master Transmuter",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Nevinyrral's Disk",
+      "Skysovereign, Consul Flagship",
+      "Soul-Guide Lantern",
+      "Steel Hellkite",
+      "Tamiyo's Logbook",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 15,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kappa Cannoneer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 15,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Launch Mishap",
+    "Master Transmuter",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Nevinyrral's Disk",
+    "Sai, Master Thopterist",
+    "Skysovereign, Consul Flagship",
+    "Soul-Guide Lantern",
+    "Steel Hellkite",
+    "Tamiyo's Logbook",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Kappa Cannoneer"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L10"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Launch Mishap",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Whirler Rogue"
+   ],
+   "carries": "TOKEN › BODIES › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Launch Mishap",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Launch Mishap",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L11"
   },
   {
    "events": [
@@ -11653,6 +12442,7 @@
       "Nevinyrral's Disk",
       "Ornithopter of Paradise",
       "Palladium Myr",
+      "Psychosis Crawler",
       "Research Thief",
       "Scrawling Crawler",
       "Shimmer Myr",
@@ -11670,8 +12460,8 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 42,
-     "by_turn_three": 0.995
+     "n": 43,
+     "by_turn_three": 0.996
     },
     {
      "cards": [
@@ -11693,7 +12483,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 66,
+   "starts": 43,
    "cards": [
     "Adaptive Omnitool",
     "Aether Spellbomb",
@@ -11748,13 +12538,355 @@
      "Psychosis Crawler"
     ]
    },
-   "availability_by_turn_three": 0.0904,
+   "availability_by_turn_three": 0.0905,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L04"
+   "id": "L12"
   },
   {
    "events": [
+    "CAST",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
+   ],
+   "carries": "CAST › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Adaptive Omnitool",
+      "Aether Spellbomb",
+      "Arcane Signet",
+      "Chief of the Foundry",
+      "Cultivator's Caravan",
+      "Darksteel Juggernaut",
+      "Duplicant",
+      "Etherium Sculptor",
+      "Forsaken Monument",
+      "Foundry Inspector",
+      "Graaz, Unstoppable Juggernaut",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Kappa Cannoneer",
+      "Master Transmuter",
+      "Master of Etherium",
+      "Mazemind Tome",
+      "Memory Guardian",
+      "Meteor Golem",
+      "Mind Stone",
+      "Mind's Eye",
+      "Misleading Signpost",
+      "Myr Battlesphere",
+      "Myr Retriever",
+      "Nettlecyst",
+      "Nevinyrral's Disk",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Psychosis Crawler",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Shimmer Myr",
+      "Silver Myr",
+      "Skysovereign, Consul Flagship",
+      "Sol Ring",
+      "Soul-Guide Lantern",
+      "Spire Golem",
+      "Steel Hellkite",
+      "Steel Overseer",
+      "Tamiyo's Logbook",
+      "Thopter Fabricator",
+      "Thought Monitor",
+      "Thought Vessel"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 43,
+     "by_turn_three": 0.996
+    },
+    {
+     "cards": [
+      "Vedalken Archmage",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 43,
+   "cards": [
+    "Adaptive Omnitool",
+    "Aether Spellbomb",
+    "Arcane Signet",
+    "Chief of the Foundry",
+    "Cultivator's Caravan",
+    "Darksteel Juggernaut",
+    "Duplicant",
+    "Etherium Sculptor",
+    "Forsaken Monument",
+    "Foundry Inspector",
+    "Graaz, Unstoppable Juggernaut",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Master Transmuter",
+    "Master of Etherium",
+    "Mazemind Tome",
+    "Memory Guardian",
+    "Meteor Golem",
+    "Mind Stone",
+    "Mind's Eye",
+    "Misleading Signpost",
+    "Myr Battlesphere",
+    "Myr Retriever",
+    "Nettlecyst",
+    "Nevinyrral's Disk",
+    "Ornithopter of Paradise",
+    "Palladium Myr",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Scrawling Crawler",
+    "Shimmer Myr",
+    "Silver Myr",
+    "Skysovereign, Consul Flagship",
+    "Sol Ring",
+    "Soul-Guide Lantern",
+    "Spire Golem",
+    "Steel Hellkite",
+    "Steel Overseer",
+    "Tamiyo's Logbook",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thought Vessel",
+    "Vedalken Archmage"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Thopter Fabricator"
+    ]
+   },
+   "availability_by_turn_three": 0.0905,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L13"
+  },
+  {
+   "events": [
+    "GRAVEYARD",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Myr Retriever",
+    "Sai, Master Thopterist"
+   ],
+   "carries": "GRAVEYARD › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "All Is Dust",
+      "Nevinyrral's Disk",
+      "Pull from Tomorrow",
+      "Steel Hellkite",
+      "Thirst for Knowledge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "GRAVEYARD"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Myr Retriever"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "All Is Dust",
+    "Myr Retriever",
+    "Nevinyrral's Disk",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thirst for Knowledge"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Myr Retriever"
+    ]
+   },
+   "availability_by_turn_three": 0.035,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L14"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Master Transmuter",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thought Monitor"
+   ],
+   "carries": "COMBAT_DAMAGE › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Master Transmuter",
+      "Steel Hellkite",
+      "Thought Monitor"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Research Thief"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Master Transmuter",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thought Monitor"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Research Thief"
+    ]
+   },
+   "availability_by_turn_three": 0.0228,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L15"
+  },
+  {
+   "events": [
+    "DRAW",
     "BODIES",
     "DRAW",
     "LIFE_LOSS"
@@ -11764,22 +12896,41 @@
    "to": "wincon",
    "via": [
     "Psychosis Crawler",
-    "Sai, Master Thopterist"
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
    ],
-   "carries": "BODIES › DRAW › LIFE_LOSS",
+   "carries": "DRAW › BODIES › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
       "Thought Monitor",
-      "Whirler Rogue"
+      "Thoughtcast",
+      "Sai, Master Thopterist"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -11809,27 +12960,621 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 8,
+   "starts": 13,
    "cards": [
-    "Launch Mishap",
-    "Master Transmuter",
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Mazemind Tome",
+    "Mind Stone",
     "Psychosis Crawler",
+    "Pull from Tomorrow",
     "Sai, Master Thopterist",
-    "Steel Hellkite",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
     "Thought Monitor",
-    "Whirler Rogue"
+    "Thoughtcast"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 3,
     "n": 1,
     "cards": [
      "Sai, Master Thopterist"
     ]
    },
-   "availability_by_turn_three": 0.035,
+   "availability_by_turn_three": 0.0159,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L05"
+   "id": "L16"
+  },
+  {
+   "events": [
+    "ATTACK",
+    "DRAW",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Adaptive Omnitool",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "ATTACK › DRAW › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Master Transmuter",
+      "Shimmer Dragon",
+      "Steel Hellkite",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Adaptive Omnitool"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 6,
+   "cards": [
+    "Adaptive Omnitool",
+    "Master Transmuter",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Adaptive Omnitool"
+    ]
+   },
+   "availability_by_turn_three": 0.0159,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L17"
+  },
+  {
+   "events": [
+    "DRAW",
+    "BODIES",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "DRAW › BODIES › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 13,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Psychosis Crawler",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thoughtcast"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0159,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L18"
+  },
+  {
+   "events": [
+    "CAST",
+    "DRAW",
+    "BODIES",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
+   ],
+   "carries": "CAST › DRAW › BODIES › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Adaptive Omnitool",
+      "Aether Spellbomb",
+      "Arcane Signet",
+      "Chief of the Foundry",
+      "Cultivator's Caravan",
+      "Darksteel Juggernaut",
+      "Duplicant",
+      "Etherium Sculptor",
+      "Forsaken Monument",
+      "Foundry Inspector",
+      "Graaz, Unstoppable Juggernaut",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Kappa Cannoneer",
+      "Master Transmuter",
+      "Master of Etherium",
+      "Mazemind Tome",
+      "Memory Guardian",
+      "Meteor Golem",
+      "Mind Stone",
+      "Mind's Eye",
+      "Misleading Signpost",
+      "Myr Battlesphere",
+      "Myr Retriever",
+      "Nettlecyst",
+      "Nevinyrral's Disk",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Psychosis Crawler",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Shimmer Myr",
+      "Silver Myr",
+      "Skysovereign, Consul Flagship",
+      "Sol Ring",
+      "Soul-Guide Lantern",
+      "Spire Golem",
+      "Steel Hellkite",
+      "Steel Overseer",
+      "Tamiyo's Logbook",
+      "Thopter Fabricator",
+      "Thought Monitor",
+      "Thought Vessel"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 43,
+     "by_turn_three": 0.996
+    },
+    {
+     "cards": [
+      "Vedalken Archmage",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 43,
+   "cards": [
+    "Adaptive Omnitool",
+    "Aether Spellbomb",
+    "Arcane Signet",
+    "Chief of the Foundry",
+    "Cultivator's Caravan",
+    "Darksteel Juggernaut",
+    "Duplicant",
+    "Etherium Sculptor",
+    "Forsaken Monument",
+    "Foundry Inspector",
+    "Graaz, Unstoppable Juggernaut",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Master Transmuter",
+    "Master of Etherium",
+    "Mazemind Tome",
+    "Memory Guardian",
+    "Meteor Golem",
+    "Mind Stone",
+    "Mind's Eye",
+    "Misleading Signpost",
+    "Myr Battlesphere",
+    "Myr Retriever",
+    "Nettlecyst",
+    "Nevinyrral's Disk",
+    "Ornithopter of Paradise",
+    "Palladium Myr",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Scrawling Crawler",
+    "Shimmer Myr",
+    "Silver Myr",
+    "Skysovereign, Consul Flagship",
+    "Sol Ring",
+    "Soul-Guide Lantern",
+    "Spire Golem",
+    "Steel Hellkite",
+    "Steel Overseer",
+    "Tamiyo's Logbook",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thought Vessel",
+    "Vedalken Archmage"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0158,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L19"
+  },
+  {
+   "events": [
+    "CAST",
+    "DRAW",
+    "BODIES",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
+   ],
+   "carries": "CAST › DRAW › BODIES › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Adaptive Omnitool",
+      "Aether Spellbomb",
+      "Arcane Signet",
+      "Chief of the Foundry",
+      "Cultivator's Caravan",
+      "Darksteel Juggernaut",
+      "Duplicant",
+      "Etherium Sculptor",
+      "Forsaken Monument",
+      "Foundry Inspector",
+      "Graaz, Unstoppable Juggernaut",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Kappa Cannoneer",
+      "Master Transmuter",
+      "Master of Etherium",
+      "Mazemind Tome",
+      "Memory Guardian",
+      "Meteor Golem",
+      "Mind Stone",
+      "Mind's Eye",
+      "Misleading Signpost",
+      "Myr Battlesphere",
+      "Myr Retriever",
+      "Nettlecyst",
+      "Nevinyrral's Disk",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Psychosis Crawler",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Shimmer Myr",
+      "Silver Myr",
+      "Skysovereign, Consul Flagship",
+      "Sol Ring",
+      "Soul-Guide Lantern",
+      "Spire Golem",
+      "Steel Hellkite",
+      "Steel Overseer",
+      "Tamiyo's Logbook",
+      "Thopter Fabricator",
+      "Thought Monitor",
+      "Thought Vessel"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 43,
+     "by_turn_three": 0.996
+    },
+    {
+     "cards": [
+      "Vedalken Archmage",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 43,
+   "cards": [
+    "Adaptive Omnitool",
+    "Aether Spellbomb",
+    "Arcane Signet",
+    "Chief of the Foundry",
+    "Cultivator's Caravan",
+    "Darksteel Juggernaut",
+    "Duplicant",
+    "Etherium Sculptor",
+    "Forsaken Monument",
+    "Foundry Inspector",
+    "Graaz, Unstoppable Juggernaut",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Master Transmuter",
+    "Master of Etherium",
+    "Mazemind Tome",
+    "Memory Guardian",
+    "Meteor Golem",
+    "Mind Stone",
+    "Mind's Eye",
+    "Misleading Signpost",
+    "Myr Battlesphere",
+    "Myr Retriever",
+    "Nettlecyst",
+    "Nevinyrral's Disk",
+    "Ornithopter of Paradise",
+    "Palladium Myr",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Scrawling Crawler",
+    "Shimmer Myr",
+    "Silver Myr",
+    "Skysovereign, Consul Flagship",
+    "Sol Ring",
+    "Soul-Guide Lantern",
+    "Spire Golem",
+    "Steel Hellkite",
+    "Steel Overseer",
+    "Tamiyo's Logbook",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thought Vessel",
+    "Vedalken Archmage"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Sai, Master Thopterist"
+    ]
+   },
+   "availability_by_turn_three": 0.0158,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L20"
   },
   {
    "events": [
@@ -11879,7 +13624,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 6,
+   "starts": 6,
    "cards": [
     "Adaptive Omnitool",
     "Master Transmuter",
@@ -11900,12 +13645,234 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L06"
+   "id": "L21"
   },
   {
    "events": [
-    "CAST",
+    "DAMAGE",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Skysovereign, Consul Flagship",
+    "Thopter Spy Network"
+   ],
+   "carries": "DAMAGE › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Skysovereign, Consul Flagship"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Thopter Spy Network"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Skysovereign, Consul Flagship",
+    "Thopter Spy Network"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Skysovereign, Consul Flagship"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L22"
+  },
+  {
+   "events": [
     "ATTACK",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Adaptive Omnitool",
+    "Thopter Fabricator"
+   ],
+   "carries": "ATTACK › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Master Transmuter",
+      "Shimmer Dragon",
+      "Steel Hellkite",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Adaptive Omnitool"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 6,
+   "cards": [
+    "Adaptive Omnitool",
+    "Master Transmuter",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Adaptive Omnitool"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L23"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Sai, Master Thopterist",
+    "Skysovereign, Consul Flagship",
+    "Thopter Spy Network"
+   ],
+   "carries": "DAMAGE › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Skysovereign, Consul Flagship"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Thopter Spy Network"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Sai, Master Thopterist",
+    "Skysovereign, Consul Flagship",
+    "Thopter Spy Network"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Skysovereign, Consul Flagship"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L24"
+  },
+  {
+   "events": [
+    "ETB",
+    "BODIES",
     "DRAW",
     "LIFE_LOSS"
    ],
@@ -11913,15 +13880,476 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Adaptive Omnitool",
+    "Kappa Cannoneer",
     "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Vedalken Archmage"
+    "Sai, Master Thopterist"
    ],
-   "carries": "CAST › ATTACK › DRAW › LIFE_LOSS",
+   "carries": "ETB › BODIES › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Launch Mishap",
+      "Master Transmuter",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Nevinyrral's Disk",
+      "Skysovereign, Consul Flagship",
+      "Soul-Guide Lantern",
+      "Steel Hellkite",
+      "Tamiyo's Logbook",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 15,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kappa Cannoneer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 15,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Launch Mishap",
+    "Master Transmuter",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Nevinyrral's Disk",
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Skysovereign, Consul Flagship",
+    "Soul-Guide Lantern",
+    "Steel Hellkite",
+    "Tamiyo's Logbook",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Kappa Cannoneer"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L25"
+  },
+  {
+   "events": [
+    "DRAW",
+    "ETB",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Kappa Cannoneer",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "DRAW › ETB › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kappa Cannoneer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 13,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thoughtcast"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Thopter Fabricator"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L26"
+  },
+  {
+   "events": [
+    "DRAW",
+    "TOKEN",
+    "BODIES",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Psychosis Crawler",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "DRAW › TOKEN › BODIES › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Pull from Tomorrow",
+      "Shimmer Dragon",
+      "Soul-Guide Lantern",
+      "Tamiyo's Logbook",
+      "Thirst for Knowledge",
+      "Thought Monitor",
+      "Thoughtcast",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 13,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Psychosis Crawler"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 13,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Psychosis Crawler",
+    "Pull from Tomorrow",
+    "Sai, Master Thopterist",
+    "Shimmer Dragon",
+    "Soul-Guide Lantern",
+    "Tamiyo's Logbook",
+    "Thirst for Knowledge",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Thoughtcast"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Thopter Fabricator"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L27"
+  },
+  {
+   "events": [
+    "ETB",
+    "BODIES",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Kappa Cannoneer",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator"
+   ],
+   "carries": "ETB › BODIES › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Aether Spellbomb",
+      "Hedron Archive",
+      "Ichor Wellspring",
+      "Launch Mishap",
+      "Master Transmuter",
+      "Mazemind Tome",
+      "Mind Stone",
+      "Nevinyrral's Disk",
+      "Skysovereign, Consul Flagship",
+      "Soul-Guide Lantern",
+      "Steel Hellkite",
+      "Tamiyo's Logbook",
+      "Thought Monitor",
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 15,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kappa Cannoneer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 15,
+   "cards": [
+    "Aether Spellbomb",
+    "Hedron Archive",
+    "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Launch Mishap",
+    "Master Transmuter",
+    "Mazemind Tome",
+    "Mind Stone",
+    "Nevinyrral's Disk",
+    "Sai, Master Thopterist",
+    "Skysovereign, Consul Flagship",
+    "Soul-Guide Lantern",
+    "Steel Hellkite",
+    "Tamiyo's Logbook",
+    "Thopter Fabricator",
+    "Thought Monitor",
+    "Whirler Rogue"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Kappa Cannoneer"
+    ]
+   },
+   "availability_by_turn_three": 0.0083,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L28"
+  },
+  {
+   "events": [
+    "CAST",
+    "DRAW",
+    "ETB",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Kappa Cannoneer",
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
+   ],
+   "carries": "CAST › DRAW › ETB › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Adaptive Omnitool",
       "Aether Spellbomb",
       "Arcane Signet",
       "Chief of the Foundry",
@@ -11949,6 +14377,7 @@
       "Nevinyrral's Disk",
       "Ornithopter of Paradise",
       "Palladium Myr",
+      "Psychosis Crawler",
       "Research Thief",
       "Scrawling Crawler",
       "Shimmer Myr",
@@ -11966,8 +14395,8 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 41,
-     "by_turn_three": 0.994
+     "n": 43,
+     "by_turn_three": 0.996
     },
     {
      "cards": [
@@ -11981,7 +14410,7 @@
     },
     {
      "cards": [
-      "Adaptive Omnitool"
+      "Thopter Fabricator"
      ],
      "tokens": [],
      "stocks": [],
@@ -11990,15 +14419,42 @@
     },
     {
      "cards": [
-      "Psychosis Crawler"
+      "Kappa Cannoneer"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 65,
+   "starts": 43,
    "cards": [
     "Adaptive Omnitool",
     "Aether Spellbomb",
@@ -12050,17 +14506,19 @@
     "position": 2,
     "n": 1,
     "cards": [
-     "Adaptive Omnitool"
+     "Thopter Fabricator"
     ]
    },
    "availability_by_turn_three": 0.0082,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L07"
+   "id": "L29"
   },
   {
    "events": [
-    "ETB",
+    "CAST",
+    "DRAW",
+    "TOKEN",
     "BODIES",
     "DRAW",
     "LIFE_LOSS"
@@ -12069,139 +14527,73 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Kappa Cannoneer",
     "Psychosis Crawler",
-    "Sai, Master Thopterist"
+    "Sai, Master Thopterist",
+    "Thopter Fabricator",
+    "Vedalken Archmage"
    ],
-   "carries": "ETB › BODIES › DRAW › LIFE_LOSS",
+   "carries": "CAST › DRAW › TOKEN › BODIES › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
+      "Adaptive Omnitool",
       "Aether Spellbomb",
+      "Arcane Signet",
+      "Chief of the Foundry",
+      "Cultivator's Caravan",
+      "Darksteel Juggernaut",
+      "Duplicant",
+      "Etherium Sculptor",
+      "Forsaken Monument",
+      "Foundry Inspector",
+      "Graaz, Unstoppable Juggernaut",
       "Hedron Archive",
       "Ichor Wellspring",
-      "Launch Mishap",
+      "Kappa Cannoneer",
       "Master Transmuter",
+      "Master of Etherium",
       "Mazemind Tome",
+      "Memory Guardian",
+      "Meteor Golem",
       "Mind Stone",
+      "Mind's Eye",
+      "Misleading Signpost",
+      "Myr Battlesphere",
+      "Myr Retriever",
+      "Nettlecyst",
       "Nevinyrral's Disk",
+      "Ornithopter of Paradise",
+      "Palladium Myr",
+      "Psychosis Crawler",
+      "Research Thief",
+      "Scrawling Crawler",
+      "Shimmer Myr",
+      "Silver Myr",
       "Skysovereign, Consul Flagship",
+      "Sol Ring",
       "Soul-Guide Lantern",
+      "Spire Golem",
       "Steel Hellkite",
+      "Steel Overseer",
       "Tamiyo's Logbook",
+      "Thopter Fabricator",
       "Thought Monitor",
-      "Whirler Rogue"
+      "Thought Vessel"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 14,
-     "by_turn_three": 0.762
+     "n": 43,
+     "by_turn_three": 0.996
     },
     {
      "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
+      "Vedalken Archmage",
       "Sai, Master Thopterist"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
+     "n": 2,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0063,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L08"
-  },
-  {
-   "events": [
-    "DRAW",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Thopter Fabricator"
-   ],
-   "carries": "DRAW › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Pull from Tomorrow",
-      "Shimmer Dragon",
-      "Soul-Guide Lantern",
-      "Tamiyo's Logbook",
-      "Thirst for Knowledge",
-      "Thought Monitor",
-      "Thoughtcast"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 0.704
     },
     {
      "cards": [
@@ -12214,6 +14606,15 @@
     },
     {
      "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
      "tokens": [],
      "stocks": [
       "BODIES"
@@ -12240,35 +14641,167 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 24,
+   "starts": 43,
    "cards": [
+    "Adaptive Omnitool",
     "Aether Spellbomb",
+    "Arcane Signet",
+    "Chief of the Foundry",
+    "Cultivator's Caravan",
+    "Darksteel Juggernaut",
+    "Duplicant",
+    "Etherium Sculptor",
+    "Forsaken Monument",
+    "Foundry Inspector",
+    "Graaz, Unstoppable Juggernaut",
     "Hedron Archive",
     "Ichor Wellspring",
+    "Kappa Cannoneer",
+    "Master Transmuter",
+    "Master of Etherium",
     "Mazemind Tome",
+    "Memory Guardian",
+    "Meteor Golem",
     "Mind Stone",
+    "Mind's Eye",
+    "Misleading Signpost",
+    "Myr Battlesphere",
+    "Myr Retriever",
+    "Nettlecyst",
+    "Nevinyrral's Disk",
+    "Ornithopter of Paradise",
+    "Palladium Myr",
     "Psychosis Crawler",
-    "Pull from Tomorrow",
+    "Research Thief",
     "Sai, Master Thopterist",
-    "Shimmer Dragon",
+    "Scrawling Crawler",
+    "Shimmer Myr",
+    "Silver Myr",
+    "Skysovereign, Consul Flagship",
+    "Sol Ring",
     "Soul-Guide Lantern",
+    "Spire Golem",
+    "Steel Hellkite",
+    "Steel Overseer",
     "Tamiyo's Logbook",
-    "Thirst for Knowledge",
     "Thopter Fabricator",
     "Thought Monitor",
-    "Thoughtcast"
+    "Thought Vessel",
+    "Vedalken Archmage"
    ],
    "bottleneck": {
-    "position": 1,
+    "position": 2,
     "n": 1,
     "cards": [
      "Thopter Fabricator"
     ]
    },
-   "availability_by_turn_three": 0.0058,
+   "availability_by_turn_three": 0.0082,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L09"
+   "id": "L30"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "DRAW",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Master Transmuter",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor"
+   ],
+   "carries": "COMBAT_DAMAGE › DRAW › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Master Transmuter",
+      "Steel Hellkite",
+      "Thought Monitor"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Research Thief"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Master Transmuter",
+    "Psychosis Crawler",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Research Thief"
+    ]
+   },
+   "availability_by_turn_three": 0.004,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L31"
   },
   {
    "events": [
@@ -12326,7 +14859,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 5,
+   "starts": 5,
    "cards": [
     "All Is Dust",
     "Nevinyrral's Disk",
@@ -12346,97 +14879,7 @@
    "availability_by_turn_three": 0.0032,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L10"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "BODIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Adaptive Omnitool",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0032,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L11"
+   "id": "L32"
   },
   {
    "events": [
@@ -12514,7 +14957,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 5,
+   "starts": 5,
    "cards": [
     "All Is Dust",
     "Myr Retriever",
@@ -12535,7 +14978,95 @@
    "availability_by_turn_three": 0.0032,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L12"
+   "id": "L33"
+  },
+  {
+   "events": [
+    "GRAVEYARD",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Soul-Guide Lantern",
+    "Thopter Fabricator"
+   ],
+   "carries": "GRAVEYARD › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "All Is Dust",
+      "Nevinyrral's Disk",
+      "Pull from Tomorrow",
+      "Steel Hellkite",
+      "Thirst for Knowledge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "GRAVEYARD"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Soul-Guide Lantern"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "All Is Dust",
+    "Nevinyrral's Disk",
+    "Pull from Tomorrow",
+    "Soul-Guide Lantern",
+    "Steel Hellkite",
+    "Thirst for Knowledge",
+    "Thopter Fabricator"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Soul-Guide Lantern"
+    ]
+   },
+   "availability_by_turn_three": 0.0032,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L34"
   },
   {
    "events": [
@@ -12585,7 +15116,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 3,
+   "starts": 3,
    "cards": [
     "Master Transmuter",
     "Psychosis Crawler",
@@ -12603,7 +15134,7 @@
    "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L13"
+   "id": "L35"
   },
   {
    "events": [
@@ -12673,7 +15204,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 3,
+   "starts": 3,
    "cards": [
     "Master Transmuter",
     "Psychosis Crawler",
@@ -12692,2000 +15223,37 @@
    "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L14"
+   "id": "L36"
   },
   {
    "events": [
-    "DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Psychosis Crawler",
-    "Skysovereign, Consul Flagship",
-    "Thopter Spy Network"
-   ],
-   "carries": "DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Skysovereign, Consul Flagship"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Thopter Spy Network"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Psychosis Crawler",
-    "Skysovereign, Consul Flagship",
-    "Thopter Spy Network"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Skysovereign, Consul Flagship"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L15"
-  },
-  {
-   "events": [
-    "DAMAGE",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Thopter Spy Network"
-   ],
-   "carries": "DAMAGE › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Skysovereign, Consul Flagship"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Thopter Spy Network"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 2,
-   "cards": [
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Thopter Spy Network"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Skysovereign, Consul Flagship"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "DIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "DIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Adaptive Omnitool",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L17"
-  },
-  {
-   "events": [
-    "DIES",
     "COMBAT_DAMAGE",
     "DRAW",
-    "LIFE_LOSS"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "LIFE_LOSS",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "conversion",
    "via": [
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "DIES › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L18"
-  },
-  {
-   "events": [
-    "ETB",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Psychosis Crawler"
-   ],
-   "carries": "ETB › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Launch Mishap",
-      "Master Transmuter",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite",
-      "Tamiyo's Logbook",
-      "Thought Monitor",
-      "Whirler Rogue",
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 15,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 15,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Launch Mishap",
     "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "ETB",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Research Thief"
-   ],
-   "carries": "ETB › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Launch Mishap",
-      "Master Transmuter",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite",
-      "Tamiyo's Logbook",
-      "Thought Monitor",
-      "Whirler Rogue",
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 15,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 15,
-   "cards": [
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
     "Research Thief",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
     "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0008,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L20"
-  },
-  {
-   "events": [
-    "CAST",
-    "DIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "CAST › DIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Arcane Signet",
-      "Chief of the Foundry",
-      "Cultivator's Caravan",
-      "Darksteel Juggernaut",
-      "Duplicant",
-      "Etherium Sculptor",
-      "Forsaken Monument",
-      "Foundry Inspector",
-      "Graaz, Unstoppable Juggernaut",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Kappa Cannoneer",
-      "Master Transmuter",
-      "Master of Etherium",
-      "Mazemind Tome",
-      "Memory Guardian",
-      "Meteor Golem",
-      "Mind Stone",
-      "Mind's Eye",
-      "Misleading Signpost",
-      "Myr Battlesphere",
-      "Nettlecyst",
-      "Nevinyrral's Disk",
-      "Ornithopter of Paradise",
-      "Palladium Myr",
-      "Research Thief",
-      "Scrawling Crawler",
-      "Shimmer Myr",
-      "Silver Myr",
-      "Skysovereign, Consul Flagship",
-      "Sol Ring",
-      "Soul-Guide Lantern",
-      "Spire Golem",
-      "Steel Hellkite",
-      "Steel Overseer",
-      "Tamiyo's Logbook",
-      "Thopter Fabricator",
-      "Thought Monitor",
-      "Thought Vessel"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 40,
-     "by_turn_three": 0.993
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 52,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "Arcane Signet",
-    "Chief of the Foundry",
-    "Cultivator's Caravan",
-    "Darksteel Juggernaut",
-    "Duplicant",
-    "Etherium Sculptor",
-    "Forsaken Monument",
-    "Foundry Inspector",
-    "Graaz, Unstoppable Juggernaut",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Master Transmuter",
-    "Master of Etherium",
-    "Mazemind Tome",
-    "Memory Guardian",
-    "Meteor Golem",
-    "Mind Stone",
-    "Mind's Eye",
-    "Misleading Signpost",
-    "Myr Battlesphere",
-    "Myr Retriever",
-    "Nettlecyst",
-    "Nevinyrral's Disk",
-    "Ornithopter of Paradise",
-    "Palladium Myr",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Scrawling Crawler",
-    "Shimmer Myr",
-    "Silver Myr",
-    "Skysovereign, Consul Flagship",
-    "Sol Ring",
-    "Soul-Guide Lantern",
-    "Spire Golem",
-    "Steel Hellkite",
-    "Steel Overseer",
-    "Tamiyo's Logbook",
     "Thopter Fabricator",
-    "Thought Monitor",
-    "Thought Vessel"
+    "Thought Monitor"
    ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0007,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L21"
-  },
-  {
-   "events": [
-    "CAST",
-    "DIES",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "CAST › DIES › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
+   "carries": "COMBAT_DAMAGE › DRAW › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
-      "Adaptive Omnitool",
-      "Aether Spellbomb",
-      "Arcane Signet",
-      "Chief of the Foundry",
-      "Cultivator's Caravan",
-      "Darksteel Juggernaut",
-      "Duplicant",
-      "Etherium Sculptor",
-      "Forsaken Monument",
-      "Foundry Inspector",
-      "Graaz, Unstoppable Juggernaut",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Kappa Cannoneer",
       "Master Transmuter",
-      "Master of Etherium",
-      "Mazemind Tome",
-      "Memory Guardian",
-      "Meteor Golem",
-      "Mind Stone",
-      "Mind's Eye",
-      "Misleading Signpost",
-      "Myr Battlesphere",
-      "Nettlecyst",
-      "Nevinyrral's Disk",
-      "Ornithopter of Paradise",
-      "Palladium Myr",
-      "Scrawling Crawler",
-      "Shimmer Myr",
-      "Silver Myr",
-      "Skysovereign, Consul Flagship",
-      "Sol Ring",
-      "Soul-Guide Lantern",
-      "Spire Golem",
       "Steel Hellkite",
-      "Steel Overseer",
-      "Tamiyo's Logbook",
-      "Thopter Fabricator",
-      "Thought Monitor",
-      "Thought Vessel"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 40,
-     "by_turn_three": 0.993
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 52,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "Arcane Signet",
-    "Chief of the Foundry",
-    "Cultivator's Caravan",
-    "Darksteel Juggernaut",
-    "Duplicant",
-    "Etherium Sculptor",
-    "Forsaken Monument",
-    "Foundry Inspector",
-    "Graaz, Unstoppable Juggernaut",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Master Transmuter",
-    "Master of Etherium",
-    "Mazemind Tome",
-    "Memory Guardian",
-    "Meteor Golem",
-    "Mind Stone",
-    "Mind's Eye",
-    "Misleading Signpost",
-    "Myr Battlesphere",
-    "Myr Retriever",
-    "Nettlecyst",
-    "Nevinyrral's Disk",
-    "Ornithopter of Paradise",
-    "Palladium Myr",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Scrawling Crawler",
-    "Shimmer Myr",
-    "Silver Myr",
-    "Skysovereign, Consul Flagship",
-    "Sol Ring",
-    "Soul-Guide Lantern",
-    "Spire Golem",
-    "Steel Hellkite",
-    "Steel Overseer",
-    "Tamiyo's Logbook",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Thought Vessel"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0007,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L22"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Forsaken Monument",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "CAST › ETB › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "All Is Dust",
-      "Arcane Signet",
-      "Chief of the Foundry",
-      "Cultivator's Caravan",
-      "Darksteel Juggernaut",
-      "Duplicant",
-      "Etherium Sculptor",
-      "Forsaken Monument",
-      "Foundry Inspector",
-      "Graaz, Unstoppable Juggernaut",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Master Transmuter",
-      "Master of Etherium",
-      "Mazemind Tome",
-      "Memory Guardian",
-      "Meteor Golem",
-      "Mind Stone",
-      "Mind's Eye",
-      "Misleading Signpost",
-      "Myr Battlesphere",
-      "Myr Retriever",
-      "Nettlecyst",
-      "Nevinyrral's Disk",
-      "Ornithopter of Paradise",
-      "Palladium Myr",
-      "Research Thief",
-      "Scrawling Crawler",
-      "Shimmer Myr",
-      "Silver Myr",
-      "Skysovereign, Consul Flagship",
-      "Sol Ring",
-      "Soul-Guide Lantern",
-      "Spire Golem",
-      "Steel Hellkite",
-      "Steel Overseer",
-      "Tamiyo's Logbook",
-      "Thopter Fabricator",
-      "Thought Monitor",
-      "Thought Vessel"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 41,
-     "by_turn_three": 0.994
-    },
-    {
-     "cards": [
-      "Forsaken Monument",
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 62,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "All Is Dust",
-    "Arcane Signet",
-    "Chief of the Foundry",
-    "Cultivator's Caravan",
-    "Darksteel Juggernaut",
-    "Duplicant",
-    "Etherium Sculptor",
-    "Forsaken Monument",
-    "Foundry Inspector",
-    "Graaz, Unstoppable Juggernaut",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Master Transmuter",
-    "Master of Etherium",
-    "Mazemind Tome",
-    "Memory Guardian",
-    "Meteor Golem",
-    "Mind Stone",
-    "Mind's Eye",
-    "Misleading Signpost",
-    "Myr Battlesphere",
-    "Myr Retriever",
-    "Nettlecyst",
-    "Nevinyrral's Disk",
-    "Ornithopter of Paradise",
-    "Palladium Myr",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Scrawling Crawler",
-    "Shimmer Myr",
-    "Silver Myr",
-    "Skysovereign, Consul Flagship",
-    "Sol Ring",
-    "Soul-Guide Lantern",
-    "Spire Golem",
-    "Steel Hellkite",
-    "Steel Overseer",
-    "Tamiyo's Logbook",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Thought Vessel"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0007,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L23"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Forsaken Monument",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "CAST › ETB › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Adaptive Omnitool",
-      "Aether Spellbomb",
-      "All Is Dust",
-      "Arcane Signet",
-      "Chief of the Foundry",
-      "Cultivator's Caravan",
-      "Darksteel Juggernaut",
-      "Duplicant",
-      "Etherium Sculptor",
-      "Forsaken Monument",
-      "Foundry Inspector",
-      "Graaz, Unstoppable Juggernaut",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Master Transmuter",
-      "Master of Etherium",
-      "Mazemind Tome",
-      "Memory Guardian",
-      "Meteor Golem",
-      "Mind Stone",
-      "Mind's Eye",
-      "Misleading Signpost",
-      "Myr Battlesphere",
-      "Myr Retriever",
-      "Nettlecyst",
-      "Nevinyrral's Disk",
-      "Ornithopter of Paradise",
-      "Palladium Myr",
-      "Scrawling Crawler",
-      "Shimmer Myr",
-      "Silver Myr",
-      "Skysovereign, Consul Flagship",
-      "Sol Ring",
-      "Soul-Guide Lantern",
-      "Spire Golem",
-      "Steel Hellkite",
-      "Steel Overseer",
-      "Tamiyo's Logbook",
-      "Thopter Fabricator",
-      "Thought Monitor",
-      "Thought Vessel"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 41,
-     "by_turn_three": 0.994
-    },
-    {
-     "cards": [
-      "Forsaken Monument",
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 62,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "All Is Dust",
-    "Arcane Signet",
-    "Chief of the Foundry",
-    "Cultivator's Caravan",
-    "Darksteel Juggernaut",
-    "Duplicant",
-    "Etherium Sculptor",
-    "Forsaken Monument",
-    "Foundry Inspector",
-    "Graaz, Unstoppable Juggernaut",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Master Transmuter",
-    "Master of Etherium",
-    "Mazemind Tome",
-    "Memory Guardian",
-    "Meteor Golem",
-    "Mind Stone",
-    "Mind's Eye",
-    "Misleading Signpost",
-    "Myr Battlesphere",
-    "Myr Retriever",
-    "Nettlecyst",
-    "Nevinyrral's Disk",
-    "Ornithopter of Paradise",
-    "Palladium Myr",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Scrawling Crawler",
-    "Shimmer Myr",
-    "Silver Myr",
-    "Skysovereign, Consul Flagship",
-    "Sol Ring",
-    "Soul-Guide Lantern",
-    "Spire Golem",
-    "Steel Hellkite",
-    "Steel Overseer",
-    "Tamiyo's Logbook",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Thought Vessel"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0007,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "ETB",
-    "BODIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "ETB › BODIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Launch Mishap",
-      "Master Transmuter",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite",
-      "Tamiyo's Logbook",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 0.762
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0006,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L25"
-  },
-  {
-   "events": [
-    "ETB",
-    "COMBAT_DAMAGE",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "ETB › COMBAT_DAMAGE › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Launch Mishap",
-      "Master Transmuter",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite",
-      "Tamiyo's Logbook",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 0.762
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Kappa Cannoneer"
-    ]
-   },
-   "availability_by_turn_three": 0.0006,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L26"
-  },
-  {
-   "events": [
-    "CAST",
-    "DRAW",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Thopter Fabricator",
-    "Vedalken Archmage"
-   ],
-   "carries": "CAST › DRAW › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Master Transmuter",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite",
-      "Tamiyo's Logbook",
       "Thought Monitor"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
-     "by_turn_three": 0.704
-    },
-    {
-     "cards": [
-      "Vedalken Archmage"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Thopter Fabricator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 24,
-   "cards": [
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Master Transmuter",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite",
-    "Tamiyo's Logbook",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Vedalken Archmage"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Vedalken Archmage"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L27"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Forsaken Monument",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "CAST › ETB › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "All Is Dust",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Nevinyrral's Disk",
-      "Skysovereign, Consul Flagship",
-      "Soul-Guide Lantern",
-      "Steel Hellkite"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 0.633
-    },
-    {
-     "cards": [
-      "Forsaken Monument"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 10,
-   "cards": [
-    "Aether Spellbomb",
-    "All Is Dust",
-    "Forsaken Monument",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Skysovereign, Consul Flagship",
-    "Soul-Guide Lantern",
-    "Steel Hellkite"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Forsaken Monument"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "DRAW",
-    "BODIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Thopter Fabricator"
-   ],
-   "carries": "DRAW › BODIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Pull from Tomorrow",
-      "Shimmer Dragon",
-      "Soul-Guide Lantern",
-      "Tamiyo's Logbook",
-      "Thirst for Knowledge",
-      "Thought Monitor",
-      "Thoughtcast"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 0.704
-    },
-    {
-     "cards": [
-      "Thopter Fabricator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 24,
-   "cards": [
-    "Adaptive Omnitool",
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Psychosis Crawler",
-    "Pull from Tomorrow",
-    "Sai, Master Thopterist",
-    "Shimmer Dragon",
-    "Soul-Guide Lantern",
-    "Tamiyo's Logbook",
-    "Thirst for Knowledge",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Thoughtcast"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Thopter Fabricator"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
-  },
-  {
-   "events": [
-    "DRAW",
-    "ETB",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Thopter Fabricator"
-   ],
-   "carries": "DRAW › ETB › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Aether Spellbomb",
-      "Hedron Archive",
-      "Ichor Wellspring",
-      "Mazemind Tome",
-      "Mind Stone",
-      "Pull from Tomorrow",
-      "Shimmer Dragon",
-      "Soul-Guide Lantern",
-      "Tamiyo's Logbook",
-      "Thirst for Knowledge",
-      "Thought Monitor",
-      "Thoughtcast"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 0.704
-    },
-    {
-     "cards": [
-      "Thopter Fabricator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 12,
-   "cards": [
-    "Aether Spellbomb",
-    "Hedron Archive",
-    "Ichor Wellspring",
-    "Kappa Cannoneer",
-    "Mazemind Tome",
-    "Mind Stone",
-    "Psychosis Crawler",
-    "Pull from Tomorrow",
-    "Sai, Master Thopterist",
-    "Shimmer Dragon",
-    "Soul-Guide Lantern",
-    "Tamiyo's Logbook",
-    "Thirst for Knowledge",
-    "Thopter Fabricator",
-    "Thought Monitor",
-    "Thoughtcast"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Thopter Fabricator"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "GRAVEYARD",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Myr Retriever",
-    "Psychosis Crawler"
-   ],
-   "carries": "GRAVEYARD › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "All Is Dust",
-      "Nevinyrral's Disk",
-      "Pull from Tomorrow",
-      "Steel Hellkite",
-      "Thirst for Knowledge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "GRAVEYARD"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 5,
-   "cards": [
-    "Adaptive Omnitool",
-    "All Is Dust",
-    "Myr Retriever",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Pull from Tomorrow",
-    "Steel Hellkite",
-    "Thirst for Knowledge"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Myr Retriever"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "GRAVEYARD",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief"
-   ],
-   "carries": "GRAVEYARD › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "All Is Dust",
-      "Nevinyrral's Disk",
-      "Pull from Tomorrow",
-      "Steel Hellkite",
-      "Thirst for Knowledge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "GRAVEYARD"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 3,
+     "by_turn_three": 0.251
     },
     {
      "cards": [
@@ -14698,36 +15266,141 @@
     },
     {
      "cards": [
-      "Psychosis Crawler"
+      "Thopter Fabricator"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 5,
+   "starts": 3,
    "cards": [
-    "All Is Dust",
-    "Myr Retriever",
-    "Nevinyrral's Disk",
-    "Psychosis Crawler",
-    "Pull from Tomorrow",
+    "Master Transmuter",
     "Research Thief",
     "Steel Hellkite",
-    "Thirst for Knowledge"
+    "Thopter Fabricator",
+    "Thought Monitor"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Myr Retriever"
+     "Research Thief"
     ]
    },
-   "availability_by_turn_three": 0.0003,
+   "availability_by_turn_three": 0.0021,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L32"
+   "id": "L37"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "BODIES",
+    "DRAW",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Master Transmuter",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor"
+   ],
+   "carries": "COMBAT_DAMAGE › BODIES › DRAW › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Master Transmuter",
+      "Steel Hellkite",
+      "Thought Monitor"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "Research Thief"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sai, Master Thopterist"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Master Transmuter",
+    "Research Thief",
+    "Sai, Master Thopterist",
+    "Steel Hellkite",
+    "Thopter Fabricator",
+    "Thought Monitor"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Research Thief"
+    ]
+   },
+   "availability_by_turn_three": 0.0021,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L38"
   },
   {
    "events": [
@@ -14754,12 +15427,13 @@
       "Shimmer Dragon",
       "Steel Hellkite",
       "Thought Monitor",
-      "Whirler Rogue"
+      "Whirler Rogue",
+      "Sai, Master Thopterist"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
+     "n": 6,
+     "by_turn_three": 1.0
     },
     {
      "cards": [
@@ -14772,12 +15446,13 @@
     },
     {
      "cards": [
+      "Psychosis Crawler",
       "Thopter Fabricator"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -14807,7 +15482,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 10,
+   "starts": 6,
    "cards": [
     "Adaptive Omnitool",
     "Master Transmuter",
@@ -14826,642 +15501,58 @@
      "Adaptive Omnitool"
     ]
    },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "BODIES",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "ATTACK › ETB › BODIES › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Master Transmuter",
-      "Shimmer Dragon",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 5,
-   "cards": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Shimmer Dragon",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Adaptive Omnitool"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "BODIES › DIES › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Adaptive Omnitool",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "BODIES › DIES › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Myr Retriever"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Launch Mishap",
-    "Master Transmuter",
-    "Myr Retriever",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "BODIES › ETB › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Adaptive Omnitool",
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "COMBAT_DAMAGE",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Kappa Cannoneer",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist"
-   ],
-   "carries": "BODIES › ETB › COMBAT_DAMAGE › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Launch Mishap",
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor",
-      "Whirler Rogue"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Sai, Master Thopterist"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Kappa Cannoneer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 8,
-   "cards": [
-    "Kappa Cannoneer",
-    "Launch Mishap",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor",
-    "Whirler Rogue"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sai, Master Thopterist"
-    ]
-   },
-   "availability_by_turn_three": 0.0003,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ATTACK",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Adaptive Omnitool",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Steel Hellkite",
-    "Thought Monitor"
-   ],
-   "carries": "COMBAT_DAMAGE › ATTACK › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Research Thief"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Adaptive Omnitool"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 3,
-   "cards": [
-    "Adaptive Omnitool",
-    "Master Transmuter",
-    "Psychosis Crawler",
-    "Research Thief",
-    "Steel Hellkite",
-    "Thought Monitor"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Research Thief"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0014,
    "verified_by": [],
    "stamp": "◆",
    "id": "L39"
   },
   {
    "events": [
-    "COMBAT_DAMAGE",
-    "BODIES",
-    "ATTACK",
+    "DAMAGE",
     "DRAW",
-    "LIFE_LOSS"
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "LIFE_LOSS",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "ignition",
    "via": [
-    "Adaptive Omnitool",
-    "Master Transmuter",
     "Psychosis Crawler",
-    "Research Thief",
     "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor"
+    "Skysovereign, Consul Flagship",
+    "Thopter Fabricator",
+    "Thopter Spy Network"
    ],
-   "carries": "COMBAT_DAMAGE › BODIES › ATTACK › DRAW › LIFE_LOSS",
+   "carries": "DAMAGE › DRAW › BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
-      "Master Transmuter",
-      "Steel Hellkite",
-      "Thought Monitor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Research Thief"
+      "Skysovereign, Consul Flagship"
      ],
      "tokens": [],
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Thopter Spy Network"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Psychosis Crawler",
+      "Thopter Fabricator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -15482,42 +15573,31 @@
      "by_turn_three": 1.0
     },
     {
-     "cards": [
-      "Adaptive Omnitool"
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_a_thopter_flying"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 3,
+   "starts": 1,
    "cards": [
-    "Adaptive Omnitool",
-    "Master Transmuter",
     "Psychosis Crawler",
-    "Research Thief",
     "Sai, Master Thopterist",
-    "Steel Hellkite",
-    "Thought Monitor"
+    "Skysovereign, Consul Flagship",
+    "Thopter Fabricator",
+    "Thopter Spy Network"
    ],
    "bottleneck": {
-    "position": 1,
+    "position": 0,
     "n": 1,
     "cards": [
-     "Research Thief"
+     "Skysovereign, Consul Flagship"
     ]
    },
-   "availability_by_turn_three": 0.0002,
+   "availability_by_turn_three": 0.0014,
    "verified_by": [],
    "stamp": "◆",
    "id": "L40"
@@ -15528,22 +15608,10 @@
    "card": "Adaptive Omnitool",
    "kind": "cut_vertex",
    "severs": [
-    "L06",
-    "L07",
-    "L11",
     "L17",
-    "L19",
     "L21",
     "L23",
-    "L25",
-    "L29",
-    "L31",
-    "L33",
-    "L34",
-    "L35",
-    "L37",
-    "L39",
-    "L40"
+    "L39"
    ]
   },
   {
@@ -15551,18 +15619,12 @@
    "kind": "single_consumer",
    "event": "COMBAT_DAMAGE",
    "severs": [
-    "L13",
-    "L14",
-    "L18",
-    "L20",
-    "L22",
-    "L24",
-    "L26",
-    "L32",
+    "L15",
+    "L31",
+    "L35",
     "L36",
-    "L38",
-    "L39",
-    "L40"
+    "L37",
+    "L38"
    ]
   },
   {
@@ -15570,8 +15632,9 @@
    "kind": "single_consumer",
    "event": "DAMAGE",
    "severs": [
-    "L15",
-    "L16"
+    "L22",
+    "L24",
+    "L40"
    ]
   },
   {
@@ -15579,31 +15642,33 @@
    "kind": "single_producer",
    "event": "DIES",
    "severs": [
-    "L01",
     "L02",
+    "L03",
+    "L04",
     "L05",
-    "L08",
+    "L07",
     "L09",
+    "L10",
     "L11",
-    "L12",
     "L14",
+    "L15",
     "L16",
     "L17",
     "L18",
-    "L21",
-    "L22",
+    "L19",
+    "L20",
+    "L24",
     "L25",
     "L26",
     "L27",
     "L28",
     "L29",
     "L30",
+    "L31",
     "L33",
-    "L34",
-    "L35",
     "L36",
-    "L37",
     "L38",
+    "L39",
     "L40"
    ]
   },
@@ -15612,15 +15677,8 @@
    "kind": "single_consumer",
    "event": "DIES",
    "severs": [
-    "L12",
-    "L17",
-    "L18",
-    "L21",
-    "L22",
-    "L31",
-    "L32",
-    "L35",
-    "L36"
+    "L14",
+    "L33"
    ]
   },
   {
@@ -15628,27 +15686,18 @@
    "kind": "single_consumer",
    "event": "ETB",
    "severs": [
-    "L08",
-    "L19",
-    "L20",
-    "L23",
-    "L24",
+    "L10",
     "L25",
     "L26",
     "L28",
-    "L30",
-    "L34",
-    "L37",
-    "L38"
+    "L29"
    ]
   },
   {
    "card": "Forsaken Monument",
    "kind": "single_consumer",
    "event": "MANA",
-   "severs": [
-    "L28"
-   ]
+   "severs": []
   }
  ],
  "coverage": {

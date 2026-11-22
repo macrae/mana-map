@@ -9538,7 +9538,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 19,
+   "starts": 18,
    "cards": [
     "Arcane Denial",
     "Archmage's Charm",
@@ -9618,7 +9618,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 15,
+   "starts": 15,
    "cards": [
     "Arcane Denial",
     "Archmage's Charm",
@@ -9648,125 +9648,6 @@
    "verified_by": [],
    "stamp": "◆",
    "id": "L02"
-  },
-  {
-   "events": [
-    "HAND",
-    "LAND_DROP",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Eiganjo, Seat of the Empire",
-    "Horn of Greed",
-    "Otawara, Soaring City",
-    "Psychosis Crawler"
-   ],
-   "carries": "HAND › LAND_DROP › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Arcane Denial",
-      "Archmage's Charm",
-      "Braingeyser",
-      "Dig Through Time",
-      "Enlightened Tutor",
-      "Faerie Mastermind",
-      "Gleaming Splendor",
-      "Kefnet the Mindful",
-      "Kwain, Itinerant Meddler",
-      "Long-Term Plans",
-      "Mathemagics",
-      "Mind Stone",
-      "Mystical Tutor",
-      "Path to Exile",
-      "Prosperity",
-      "Skyscribing",
-      "Stroke of Genius",
-      "Temple Bell"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 18,
-     "by_turn_three": 0.849
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Eiganjo, Seat of the Empire",
-      "Otawara, Soaring City"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Horn of Greed"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Psychosis Crawler"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 38,
-   "cards": [
-    "Arcane Denial",
-    "Archmage's Charm",
-    "Braingeyser",
-    "Dig Through Time",
-    "Eiganjo, Seat of the Empire",
-    "Enlightened Tutor",
-    "Faerie Mastermind",
-    "Gleaming Splendor",
-    "Horn of Greed",
-    "Kefnet the Mindful",
-    "Kwain, Itinerant Meddler",
-    "Long-Term Plans",
-    "Mathemagics",
-    "Mind Stone",
-    "Mystical Tutor",
-    "Otawara, Soaring City",
-    "Path to Exile",
-    "Prosperity",
-    "Psychosis Crawler",
-    "Skyscribing",
-    "Stroke of Genius",
-    "Temple Bell"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Horn of Greed"
-    ]
-   },
-   "availability_by_turn_three": 0.0012,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L03"
   },
   {
    "events": [
@@ -9812,7 +9693,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 1,
    "cards": [
     "Horn of Greed",
     "Path to Exile",
@@ -9828,7 +9709,7 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L04"
+   "id": "L03"
   },
   {
    "events": [
@@ -9883,7 +9764,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 1,
    "cards": [
     "Eiganjo, Seat of the Empire",
     "Horn of Greed",
@@ -9899,7 +9780,7 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L05"
+   "id": "L04"
   }
  ],
  "spof": [
@@ -9908,8 +9789,7 @@
    "kind": "cut_vertex",
    "severs": [
     "L02",
-    "L03",
-    "L04"
+    "L03"
    ]
   },
   {
@@ -9918,8 +9798,7 @@
    "event": "LAND_DROP",
    "severs": [
     "L03",
-    "L04",
-    "L05"
+    "L04"
    ]
   }
  ],

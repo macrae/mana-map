@@ -538,6 +538,19 @@ pull one board out and ask the resolver about it.**
 
 ## What the goldfish models, channel by channel (2026-09-26)
 
+**Each channel is also an EVENT kind in the engine graph** (`config.ENGINE_EVENTS`, 2026-11-22;
+`docs/research/engine-model.md`): mana → MANA, bodies → ETB/TOKEN, tutor → TUTOR, treasure →
+TREASURE, combat → DAMAGE/COMBAT_DAMAGE/ATTACK/PUMP, draw → DRAW, sacrifice → DIES, drain →
+LIFE_GAIN/LIFE_LOSS, discard → DISCARD/CYCLE, recursion → MILL/RECURSION, attack_enabler → ATTACK,
+discover → DISCOVER, cascade → CASCADE. A test holds every channel to a registry row, so `try`'s
+coverage line and `engine-graph`'s components name the same thing. **One model (2026-11-22):** a
+deck whose declaration says `"targets_from": "engine.json"` has its `targets[]` GENERATED from
+the graph's components by `engine-graph --write` — one target per consumed event with a producer
+and a deck-fed consumer, the AND-of-ORs `_target_met` already reads — with the pilot's marks kept
+in a `components` block (`required`, `routes`, `overrides` with a why, `authored_targets`
+verbatim after the generated ones); `validate-goldfish-targets` refuses a generated target that
+differs from a fresh derivation. A deck without `targets_from` is untouched, byte for byte.
+
 Every channel below is **OFF unless its flag is set** in the deck's
 `goldfish_targets.json`, and the default figures on a deck that declares nothing are
 mana, bodies, land drops, tutors, Discover and Cascade (the last two rows, always on). `model-coverage <slug>` names, per card, which channel it

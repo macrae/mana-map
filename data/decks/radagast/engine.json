@@ -761,12 +761,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -11583,6 +11587,18 @@
     "filters": []
    },
    {
+    "card": "Craterhoof Behemoth",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Elvish Reclaimer",
     "event": "COMBAT_DAMAGE",
     "kind": "pump",
@@ -13034,7 +13050,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "conversion",
    "via": [
     "Scute Swarm"
    ],
@@ -13072,10 +13088,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 8,
+   "starts": 8,
    "cards": [
     "Chord of Calling",
     "Cultivate",
@@ -13088,11 +13104,13 @@
     "Wood Elves"
    ],
    "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Scute Swarm"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0497,
    "verified_by": [
     "003",
     "004",
@@ -13100,6 +13118,64 @@
    ],
    "stamp": "✓",
    "id": "L01"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Arasta of the Endless Web",
+    "Beast Within",
+    "Hornet Queen"
+   ],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Arasta of the Endless Web",
+      "Beast Within",
+      "Hornet Queen"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_insect_flying_deathtouch",
+      "token:g_1_2_spider_reach",
+      "token:g_3_3_beast"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 3,
+   "cards": [
+    "Arasta of the Endless Web",
+    "Beast Within",
+    "Hornet Queen"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 3,
+    "cards": [
+     "Arasta of the Endless Web",
+     "Beast Within",
+     "Hornet Queen"
+    ]
+   },
+   "availability_by_turn_three": 0.251,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L02"
   },
   {
    "events": [
@@ -13143,7 +13219,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 1,
    "cards": [
     "Deathgorge Scavenger",
     "Whiptongue Hydra"
@@ -13158,140 +13234,7 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L02"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Arasta of the Endless Web",
-    "Beast Within",
-    "Hornet Queen"
-   ],
-   "carries": "TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Arasta of the Endless Web",
-      "Beast Within",
-      "Hornet Queen"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:g_1_1_insect_flying_deathtouch",
-      "token:g_1_2_spider_reach",
-      "token:g_3_3_beast"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 3,
-   "cards": [
-    "Arasta of the Endless Web",
-    "Beast Within",
-    "Hornet Queen"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L03"
-  },
-  {
-   "events": [
-    "GRAVEYARD",
-    "ETB",
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Bala Ged Recovery // Bala Ged Sanctuary",
-    "Scute Swarm",
-    "Whiptongue Hydra"
-   ],
-   "carries": "GRAVEYARD › ETB › TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Whiptongue Hydra"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "GRAVEYARD"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bala Ged Recovery // Bala Ged Sanctuary"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Scute Swarm"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:g_1_1_insect"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Bala Ged Recovery // Bala Ged Sanctuary",
-    "Scute Swarm",
-    "Whiptongue Hydra"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L04"
   },
   {
    "events": [
@@ -13302,7 +13245,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "conversion",
    "via": [
     "Boseiju, Who Endures",
     "Scute Swarm"
@@ -13365,10 +13308,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 15,
+   "starts": 14,
    "cards": [
     "Boseiju, Who Endures",
     "Chord of Calling",
@@ -13388,11 +13331,144 @@
     "Wood Elves"
    ],
    "bottleneck": {
-    "position": 4,
-    "n": 0,
-    "cards": []
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Boseiju, Who Endures"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0063,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "ETB",
+    "HAND",
+    "ETB",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Boseiju, Who Endures",
+    "Scute Swarm"
+   ],
+   "carries": "ETB › HAND › ETB › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Arasta of the Endless Web",
+      "Beast Within",
+      "Caustic Caterpillar",
+      "Chord of Calling",
+      "Cultivate",
+      "Elvish Reclaimer",
+      "Fauna Shaman",
+      "Hornet Queen",
+      "Indrik Stomphowler",
+      "Kodama's Reach",
+      "Rampant Growth",
+      "Ravenous Sailback",
+      "Sakura-Tribe Elder",
+      "Satyr Wayfinder",
+      "Three Visits",
+      "Whiptongue Hydra",
+      "Wickerbough Elder",
+      "Wood Elves"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 18,
+     "by_turn_three": 0.849
+    },
+    {
+     "cards": [
+      "Elemental Bond",
+      "Garruk's Uprising",
+      "Selvala, Heart of the Wilds",
+      "Tribute to the World Tree"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Boseiju, Who Endures"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Scute Swarm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:g_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 18,
+   "cards": [
+    "Arasta of the Endless Web",
+    "Beast Within",
+    "Boseiju, Who Endures",
+    "Caustic Caterpillar",
+    "Chord of Calling",
+    "Cultivate",
+    "Elemental Bond",
+    "Elvish Reclaimer",
+    "Fauna Shaman",
+    "Garruk's Uprising",
+    "Hornet Queen",
+    "Indrik Stomphowler",
+    "Kodama's Reach",
+    "Rampant Growth",
+    "Ravenous Sailback",
+    "Sakura-Tribe Elder",
+    "Satyr Wayfinder",
+    "Scute Swarm",
+    "Selvala, Heart of the Wilds",
+    "Three Visits",
+    "Tribute to the World Tree",
+    "Whiptongue Hydra",
+    "Wickerbough Elder",
+    "Wood Elves"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Boseiju, Who Endures"
+    ]
+   },
+   "availability_by_turn_three": 0.0023,
    "verified_by": [],
    "stamp": "◆",
    "id": "L05"
@@ -13407,7 +13483,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "conversion",
    "via": [
     "Beast Whisperer",
     "Boseiju, Who Endures",
@@ -13492,10 +13568,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 36,
+   "starts": 24,
    "cards": [
     "Arasta of the Endless Web",
     "Beast Whisperer",
@@ -13527,11 +13603,13 @@
     "Wood Elves"
    ],
    "bottleneck": {
-    "position": 5,
-    "n": 0,
-    "cards": []
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Boseiju, Who Endures"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0013,
    "verified_by": [],
    "stamp": "◆",
    "id": "L06"
@@ -13546,7 +13624,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "conversion",
    "via": [
     "Boseiju, Who Endures",
     "Ohran Frostfang",
@@ -13619,10 +13697,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 24,
+   "starts": 12,
    "cards": [
     "Arasta of the Endless Web",
     "Boseiju, Who Endures",
@@ -13642,11 +13720,13 @@
     "Wood Elves"
    ],
    "bottleneck": {
-    "position": 5,
-    "n": 0,
-    "cards": []
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Boseiju, Who Endures"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.001,
    "verified_by": [],
    "stamp": "◆",
    "id": "L07"
@@ -13661,7 +13741,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "conversion",
    "via": [
     "Boseiju, Who Endures",
     "Fecundity",
@@ -13729,10 +13809,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 9,
+   "starts": 9,
    "cards": [
     "Beast Within",
     "Boseiju, Who Endures",
@@ -13748,143 +13828,16 @@
     "Wickerbough Elder"
    ],
    "bottleneck": {
-    "position": 5,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Fecundity"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0004,
    "verified_by": [],
    "stamp": "◆",
    "id": "L08"
-  },
-  {
-   "events": [
-    "ETB",
-    "HAND",
-    "ETB",
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Boseiju, Who Endures",
-    "Scute Swarm"
-   ],
-   "carries": "ETB › HAND › ETB › TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Arasta of the Endless Web",
-      "Beast Within",
-      "Caustic Caterpillar",
-      "Chord of Calling",
-      "Cultivate",
-      "Elvish Reclaimer",
-      "Fauna Shaman",
-      "Hornet Queen",
-      "Indrik Stomphowler",
-      "Kodama's Reach",
-      "Rampant Growth",
-      "Ravenous Sailback",
-      "Sakura-Tribe Elder",
-      "Satyr Wayfinder",
-      "Three Visits",
-      "Whiptongue Hydra",
-      "Wickerbough Elder",
-      "Wood Elves"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 18,
-     "by_turn_three": 0.849
-    },
-    {
-     "cards": [
-      "Elemental Bond",
-      "Garruk's Uprising",
-      "Selvala, Heart of the Wilds",
-      "Tribute to the World Tree"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Boseiju, Who Endures"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Scute Swarm"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:g_1_1_insect"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 61,
-   "cards": [
-    "Arasta of the Endless Web",
-    "Beast Within",
-    "Boseiju, Who Endures",
-    "Caustic Caterpillar",
-    "Chord of Calling",
-    "Cultivate",
-    "Elemental Bond",
-    "Elvish Reclaimer",
-    "Fauna Shaman",
-    "Garruk's Uprising",
-    "Hornet Queen",
-    "Indrik Stomphowler",
-    "Kodama's Reach",
-    "Rampant Growth",
-    "Ravenous Sailback",
-    "Sakura-Tribe Elder",
-    "Satyr Wayfinder",
-    "Scute Swarm",
-    "Selvala, Heart of the Wilds",
-    "Three Visits",
-    "Tribute to the World Tree",
-    "Whiptongue Hydra",
-    "Wickerbough Elder",
-    "Wood Elves"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L09"
   }
  ],
  "spof": [

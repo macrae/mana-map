@@ -6533,12 +6533,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -17241,6 +17245,18 @@
     "keywords": []
    },
    {
+    "card": "Yahenni, Undying Partisan",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Jet Medallion",
     "event": "COST_REDUCTION",
     "kind": "static",
@@ -18715,6 +18731,682 @@
   {
    "events": [
     "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Carrion Feeder",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 5,
+   "cards": [
+    "Carrion Feeder",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 5,
+    "cards": [
+     "Carrion Feeder",
+     "Warren Soultrader",
+     "Woe Strider",
+     "Yahenni, Undying Partisan",
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L01"
+  },
+  {
+   "events": [
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [],
+   "carries": "BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 12,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 12,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 11,
+    "cards": [
+     "Ashnod's Altar",
+     "Ayara, First of Locthwain",
+     "Blasting Station",
+     "Carrion Feeder",
+     "Phyrexian Altar",
+     "Phyrexian Tower",
+     "Viscera Seer",
+     "Warren Soultrader",
+     "Woe Strider",
+     "Yahenni, Undying Partisan",
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L02"
+  },
+  {
+   "events": [
+    "HAND",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Beseech the Mirror",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Plumb the Forbidden",
+    "Vampiric Tutor",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "010",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L03"
+  },
+  {
+   "events": [
+    "BODIES",
+    "HAND",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Ayara, First of Locthwain",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "BODIES › HAND › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 12,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ayara, First of Locthwain",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 12,
+   "cards": [
+    "Ayara, First of Locthwain",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 1.0,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "010",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L04"
+  },
+  {
+   "events": [
+    "HAND",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 0.633
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Beseech the Mirror",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Plumb the Forbidden",
+    "Vampiric Tutor",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.6328,
+   "verified_by": [
+    "010"
+   ],
+   "stamp": "✓",
+   "id": "L05"
+  },
+  {
+   "events": [
+    "DIES",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [],
+   "carries": "DIES › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fatal Push",
+      "Feed the Swarm",
+      "Fume Spitter",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "Pawn of Ulamog",
+      "Pitiless Plunderer",
+      "South Wind Avatar",
+      "Stitcher's Supplier",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 8,
+     "by_turn_three": 0.547
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Animate Dead",
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fatal Push",
+    "Feed the Swarm",
+    "Fume Spitter",
+    "Mirkwood Bats",
+    "Pawn of Ulamog",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Pitiless Plunderer",
+    "South Wind Avatar",
+    "Stitcher's Supplier",
+    "Victimize",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 8,
+    "cards": [
+     "Bastion of Remembrance",
+     "Blood Artist",
+     "Mirkwood Bats",
+     "Pawn of Ulamog",
+     "Pitiless Plunderer",
+     "South Wind Avatar",
+     "Stitcher's Supplier",
+     "Zulaport Cutthroat"
+    ]
+   },
+   "availability_by_turn_three": 0.5472,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L06"
+  },
+  {
+   "events": [
+    "DIES",
     "LIFE_LOSS"
    ],
    "terminal": "LIFE_LOSS",
@@ -18756,7 +19448,7 @@
      "by_turn_three": 0.444
     }
    ],
-   "instances": 59,
+   "starts": 10,
    "cards": [
     "Animate Dead",
     "Bastion of Remembrance",
@@ -18801,7 +19493,7 @@
     "014"
    ],
    "stamp": "✓",
-   "id": "L01"
+   "id": "L07"
   },
   {
    "events": [
@@ -18878,7 +19570,7 @@
      "by_turn_three": 0.444
     }
    ],
-   "instances": 1266,
+   "starts": 12,
    "cards": [
     "Ashnod's Altar",
     "Ayara, First of Locthwain",
@@ -18919,11 +19611,385 @@
    },
    "availability_by_turn_three": 0.4444,
    "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "009",
     "010",
-    "011"
+    "011",
+    "012",
+    "014"
    ],
    "stamp": "✓",
-   "id": "L02"
+   "id": "L08"
+  },
+  {
+   "events": [
+    "HAND",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Bastion of Remembrance",
+    "Beseech the Mirror",
+    "Blood Artist",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Mirkwood Bats",
+    "Plumb the Forbidden",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Vampiric Tutor",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.4444,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "010",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L09"
+  },
+  {
+   "events": [
+    "BODIES",
+    "HAND",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Ayara, First of Locthwain",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "BODIES › HAND › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 12,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ayara, First of Locthwain",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 12,
+   "cards": [
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Mirkwood Bats",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.4444,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008",
+    "010",
+    "014"
+   ],
+   "stamp": "✓",
+   "id": "L10"
+  },
+  {
+   "events": [
+    "HAND",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 0.633
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Beseech the Mirror",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Mirkwood Bats",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Plumb the Forbidden",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Vampiric Tutor",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.2812,
+   "verified_by": [
+    "010"
+   ],
+   "stamp": "✓",
+   "id": "L11"
   },
   {
    "events": [
@@ -19017,7 +20083,7 @@
      "by_turn_three": 0.444
     }
    ],
-   "instances": 7475,
+   "starts": 10,
    "cards": [
     "Animate Dead",
     "Ashnod's Altar",
@@ -19059,346 +20125,19 @@
    },
    "availability_by_turn_three": 0.2432,
    "verified_by": [
-    "010",
-    "011"
-   ],
-   "stamp": "✓",
-   "id": "L03"
-  },
-  {
-   "events": [
-    "DIES",
-    "LIFE_GAIN",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric"
-   ],
-   "carries": "DIES › LIFE_GAIN › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "South Wind Avatar",
-      "The Meathook Massacre",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Marauding Blight-Priest",
-      "South Wind Avatar",
-      "Starscape Cleric"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 155,
-   "cards": [
-    "Animate Dead",
-    "Bastion of Remembrance",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric",
-    "The Meathook Massacre",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 3,
-    "cards": [
-     "Marauding Blight-Priest",
-     "South Wind Avatar",
-     "Starscape Cleric"
-    ]
-   },
-   "availability_by_turn_three": 0.0968,
-   "verified_by": [
-    "005",
-    "012"
-   ],
-   "stamp": "✓",
-   "id": "L04"
-  },
-  {
-   "events": [
-    "LIFE_GAIN",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Exquisite Blood",
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric"
-   ],
-   "carries": "LIFE_GAIN › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Exquisite Blood"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Marauding Blight-Priest",
-      "South Wind Avatar",
-      "Starscape Cleric"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 3,
-   "cards": [
-    "Exquisite Blood",
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Exquisite Blood"
-    ]
-   },
-   "availability_by_turn_three": 0.0228,
-   "verified_by": [
-    "012"
-   ],
-   "stamp": "✓",
-   "id": "L05"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [],
-   "carries": "BODIES › DIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Ayara, First of Locthwain",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Phyrexian Altar",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 11,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 211,
-   "cards": [
-    "Ashnod's Altar",
-    "Ayara, First of Locthwain",
-    "Blasting Station",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Phyrexian Altar",
-    "Phyrexian Tower",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "010",
-    "011"
-   ],
-   "stamp": "✓",
-   "id": "L06"
-  },
-  {
-   "events": [
-    "COUNTER_ADD",
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Nest of Scarabs"
-   ],
-   "carries": "COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Black Sun's Zenith",
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Skinrender",
-      "Soul Snuffers",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Nest of Scarabs"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:b_1_1_insect"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 7,
-   "cards": [
-    "Black Sun's Zenith",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Nest of Scarabs",
-    "Skinrender",
-    "Soul Snuffers",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
     "002",
     "003",
     "004",
     "005",
-    "008"
+    "008",
+    "009",
+    "010",
+    "011",
+    "012",
+    "014"
    ],
    "stamp": "✓",
-   "id": "L07"
+   "id": "L12"
   },
   {
    "events": [
@@ -19408,7 +20147,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "wincon",
    "via": [
     "Bastion of Remembrance",
     "Pawn of Ulamog"
@@ -19451,10 +20190,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 20,
+   "starts": 10,
    "cards": [
     "Animate Dead",
     "Bastion of Remembrance",
@@ -19470,11 +20209,14 @@
     "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Bastion of Remembrance",
+     "Pawn of Ulamog"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.1744,
    "verified_by": [
     "002",
     "009",
@@ -19482,7 +20224,7 @@
     "011"
    ],
    "stamp": "✓",
-   "id": "L08"
+   "id": "L13"
   },
   {
    "events": [
@@ -19493,7 +20235,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "wincon",
    "via": [
     "Bastion of Remembrance",
     "Pawn of Ulamog"
@@ -19566,10 +20308,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 422,
+   "starts": 12,
    "cards": [
     "Ashnod's Altar",
     "Ayara, First of Locthwain",
@@ -19593,30 +20335,141 @@
     "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
-    "position": 4,
-    "n": 0,
-    "cards": []
+    "position": 3,
+    "n": 2,
+    "cards": [
+     "Bastion of Remembrance",
+     "Pawn of Ulamog"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.1744,
    "verified_by": [
+    "002",
+    "009",
     "010",
     "011"
    ],
    "stamp": "✓",
-   "id": "L09"
+   "id": "L14"
+  },
+  {
+   "events": [
+    "HAND",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Bastion of Remembrance",
+    "Pawn of Ulamog",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Pawn of Ulamog"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_0_1_eldrazi_spawn_sac",
+      "token:w_1_1_human_soldier"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Bastion of Remembrance",
+    "Beseech the Mirror",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Pawn of Ulamog",
+    "Plumb the Forbidden",
+    "Vampiric Tutor",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [
+    "002",
+    "010"
+   ],
+   "stamp": "✓",
+   "id": "L15"
   },
   {
    "events": [
     "DIES",
+    "TOKEN",
     "BODIES",
     "DIES",
     "COMBAT_DAMAGE"
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
-   "via": [],
-   "carries": "DIES › BODIES › DIES › COMBAT_DAMAGE",
+   "to": "ignition",
+   "via": [
+    "Bastion of Remembrance",
+    "Pawn of Ulamog"
+   ],
+   "carries": "DIES › TOKEN › BODIES › DIES › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -19639,18 +20492,22 @@
     {
      "cards": [
       "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
+      "Pawn of Ulamog"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_0_1_eldrazi_spawn_sac",
+      "token:w_1_1_human_soldier"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     },
     {
      "cards": [],
@@ -19687,137 +20544,24 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 1299,
+   "starts": 10,
    "cards": [
     "Animate Dead",
     "Ashnod's Altar",
     "Ayara, First of Locthwain",
     "Bastion of Remembrance",
     "Blasting Station",
-    "Blood Artist",
     "Carrion Feeder",
     "Fatal Push",
     "Feed the Swarm",
     "Fume Spitter",
-    "Mirkwood Bats",
     "Pawn of Ulamog",
     "Phyrexian Altar",
     "Phyrexian Tower",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
     "Victimize",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [
-    "010",
-    "011"
-   ],
-   "stamp": "✓",
-   "id": "L10"
-  },
-  {
-   "events": [
-    "LIFE_GAIN",
-    "BODIES",
-    "DIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Exquisite Blood",
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric"
-   ],
-   "carries": "LIFE_GAIN › BODIES › DIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Exquisite Blood"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Marauding Blight-Priest",
-      "South Wind Avatar",
-      "Starscape Cleric"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Ayara, First of Locthwain",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Phyrexian Altar",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 11,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 33,
-   "cards": [
-    "Ashnod's Altar",
-    "Ayara, First of Locthwain",
-    "Blasting Station",
-    "Carrion Feeder",
-    "Exquisite Blood",
-    "Marauding Blight-Priest",
-    "Phyrexian Altar",
-    "Phyrexian Tower",
-    "South Wind Avatar",
-    "Starscape Cleric",
     "Viscera Seer",
     "Warren Soultrader",
     "Woe Strider",
@@ -19825,16 +20569,22 @@
     "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
-    "position": 4,
-    "n": 0,
-    "cards": []
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Bastion of Remembrance",
+     "Pawn of Ulamog"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.1744,
    "verified_by": [
-    "012"
+    "002",
+    "009",
+    "010",
+    "011"
    ],
    "stamp": "✓",
-   "id": "L11"
+   "id": "L16"
   },
   {
    "events": [
@@ -19846,7 +20596,7 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "wincon",
    "via": [
     "Bastion of Remembrance",
     "Pawn of Ulamog"
@@ -19935,10 +20685,10 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 2173,
+   "starts": 10,
    "cards": [
     "Animate Dead",
     "Ashnod's Altar",
@@ -19966,21 +20716,429 @@
     "Zulaport Cutthroat"
    ],
    "bottleneck": {
-    "position": 5,
-    "n": 0,
-    "cards": []
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Bastion of Remembrance",
+     "Pawn of Ulamog"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0954,
    "verified_by": [
+    "002",
+    "009",
     "010",
     "011"
    ],
    "stamp": "✓",
-   "id": "L12"
+   "id": "L17"
   },
   {
    "events": [
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Black Sun's Zenith",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Nest of Scarabs",
+    "Skinrender",
+    "Soul Snuffers",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L18"
+  },
+  {
+   "events": [
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Deadly Dispute",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 12,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 12,
+   "cards": [
+    "Carrion Feeder",
+    "Deadly Dispute",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Nest of Scarabs",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L19"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "BODIES",
     "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Nest of Scarabs",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Skinrender",
+    "Soul Snuffers",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L20"
+  },
+  {
+   "events": [
+    "HAND",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Nest of Scarabs",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Beseech the Mirror",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Massacre Girl, Known Killer",
+    "Nest of Scarabs",
+    "Plumb the Forbidden",
+    "Vampiric Tutor",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L21"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
     "TOKEN",
     "BODIES",
     "DIES",
@@ -19988,12 +21146,136 @@
    ],
    "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": null,
+   "to": "ignition",
+   "via": [
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Nest of Scarabs",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Skinrender",
+    "Soul Snuffers",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L22"
+  },
+  {
+   "events": [
+    "DIES",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
    "via": [
     "Bastion of Remembrance",
     "Pawn of Ulamog"
    ],
-   "carries": "DIES › TOKEN › BODIES › DIES › COMBAT_DAMAGE",
+   "carries": "DIES › TOKEN › BODIES › DIES › LIFE_LOSS",
    "hops": [
     {
      "cards": [
@@ -20031,7 +21313,584 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Animate Dead",
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fatal Push",
+    "Feed the Swarm",
+    "Fume Spitter",
+    "Mirkwood Bats",
+    "Pawn of Ulamog",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Victimize",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Bastion of Remembrance",
+     "Pawn of Ulamog"
+    ]
+   },
+   "availability_by_turn_three": 0.0775,
+   "verified_by": [
+    "002",
+    "009",
+    "010",
+    "011"
+   ],
+   "stamp": "✓",
+   "id": "L23"
+  },
+  {
+   "events": [
+    "DIES",
+    "BODIES",
+    "COUNTER_ADD",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Carrion Feeder",
+    "Nest of Scarabs",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "DIES › BODIES › COUNTER_ADD › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fatal Push",
+      "Feed the Swarm",
+      "Fume Spitter",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "Pawn of Ulamog",
+      "Pitiless Plunderer",
+      "South Wind Avatar",
+      "Stitcher's Supplier",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 8,
+     "by_turn_three": 0.547
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Carrion Feeder",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Animate Dead",
+    "Bastion of Remembrance",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fatal Push",
+    "Feed the Swarm",
+    "Fume Spitter",
+    "Mirkwood Bats",
+    "Nest of Scarabs",
+    "Pawn of Ulamog",
+    "Pitiless Plunderer",
+    "South Wind Avatar",
+    "Stitcher's Supplier",
+    "Victimize",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0497,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L24"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Mirkwood Bats",
+    "Nest of Scarabs",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Skinrender",
+    "Soul Snuffers",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0404,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L25"
+  },
+  {
+   "events": [
+    "COUNTER_ADD",
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Nest of Scarabs"
+   ],
+   "carries": "COUNTER_ADD › TOKEN › BODIES › DIES › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_1_1_insect"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Mirkwood Bats",
+    "Nest of Scarabs",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Skinrender",
+    "Soul Snuffers",
+    "South Wind Avatar",
+    "The Meathook Massacre",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0404,
+   "verified_by": [
+    "002",
+    "003",
+    "004",
+    "005",
+    "008"
+   ],
+   "stamp": "✓",
+   "id": "L26"
+  },
+  {
+   "events": [
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
+   ],
+   "carries": "LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Exquisite Blood"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Exquisite Blood"
+    ]
+   },
+   "availability_by_turn_three": 0.0228,
+   "verified_by": [
+    "012"
+   ],
+   "stamp": "✓",
+   "id": "L27"
+  },
+  {
+   "events": [
+    "LIFE_GAIN",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
+   ],
+   "carries": "LIFE_GAIN › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Exquisite Blood"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
     },
     {
      "cards": [],
@@ -20068,24 +21927,21 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 210,
+   "starts": 1,
    "cards": [
-    "Animate Dead",
     "Ashnod's Altar",
     "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
     "Blasting Station",
     "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Pawn of Ulamog",
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
     "Phyrexian Altar",
     "Phyrexian Tower",
-    "Victimize",
+    "South Wind Avatar",
+    "Starscape Cleric",
     "Viscera Seer",
     "Warren Soultrader",
     "Woe Strider",
@@ -20093,21 +21949,149 @@
     "Yawgmoth, Thran Physician"
    ],
    "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Exquisite Blood"
+    ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0228,
    "verified_by": [
-    "010",
-    "011"
+    "012"
    ],
    "stamp": "✓",
-   "id": "L13"
+   "id": "L28"
   },
   {
    "events": [
-    "HAND",
+    "COUNTER_ADD",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Bastion of Remembrance",
+    "Nest of Scarabs",
+    "Pawn of Ulamog"
+   ],
+   "carries": "COUNTER_ADD › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Black Sun's Zenith",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Skinrender",
+      "Soul Snuffers",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Nest of Scarabs"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Pawn of Ulamog"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_0_1_eldrazi_spawn_sac",
+      "token:w_1_1_human_soldier"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Black Sun's Zenith",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Nest of Scarabs",
+    "Pawn of Ulamog",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Skinrender",
+    "Soul Snuffers",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Nest of Scarabs"
+    ]
+   },
+   "availability_by_turn_three": 0.0159,
+   "verified_by": [
+    "002"
+   ],
+   "stamp": "✓",
+   "id": "L29"
+  },
+  {
+   "events": [
+    "LIFE_GAIN",
+    "BODIES",
     "DIES",
     "LIFE_LOSS"
    ],
@@ -20115,42 +22099,59 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Yawgmoth, Thran Physician"
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
    ],
-   "carries": "HAND › DIES › LIFE_LOSS",
+   "carries": "LIFE_GAIN › BODIES › DIES › LIFE_LOSS",
    "hops": [
     {
      "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
+      "Exquisite Blood"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
     },
     {
      "cards": [],
      "tokens": [],
      "stocks": [
-      "HAND"
+      "BODIES"
      ],
      "n": 0,
      "by_turn_three": 1.0
     },
     {
      "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
+     "n": 11,
      "by_turn_three": 1.0
     },
     {
@@ -20168,83 +22169,219 @@
      "by_turn_three": 0.444
     }
    ],
-   "instances": 54,
+   "starts": 1,
    "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
     "Bastion of Remembrance",
-    "Beseech the Mirror",
+    "Blasting Station",
     "Blood Artist",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
+    "Carrion Feeder",
+    "Exquisite Blood",
+    "Marauding Blight-Priest",
     "Mirkwood Bats",
-    "Plumb the Forbidden",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
     "South Wind Avatar",
+    "Starscape Cleric",
     "The Meathook Massacre",
-    "Vampiric Tutor",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
     "Yawgmoth, Thran Physician",
     "Zulaport Cutthroat"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 0,
     "n": 1,
     "cards": [
-     "Yawgmoth, Thran Physician"
+     "Exquisite Blood"
     ]
    },
-   "availability_by_turn_three": 0.2432,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L14"
+   "availability_by_turn_three": 0.0101,
+   "verified_by": [
+    "012"
+   ],
+   "stamp": "✓",
+   "id": "L30"
   },
   {
    "events": [
-    "HAND",
-    "BODIES",
-    "DIES",
-    "LIFE_LOSS"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "LIFE_LOSS",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "ignition",
    "via": [
-    "Yawgmoth, Thran Physician"
+    "Grave Titan",
+    "Woe Strider"
    ],
-   "carries": "HAND › BODIES › DIES › LIFE_LOSS",
+   "carries": "TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
+      "Grave Titan",
+      "Woe Strider"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_0_1_goat"
      ],
+     "stocks": [],
      "n": 0,
      "by_turn_three": 1.0
-    },
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Grave Titan",
+    "Woe Strider"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 2,
+    "cards": [
+     "Grave Titan",
+     "Woe Strider"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L31"
+  },
+  {
+   "events": [
+    "ETB",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Ayara, First of Locthwain",
+    "Blasting Station"
+   ],
+   "carries": "ETB › DIES › COMBAT_DAMAGE",
+   "hops": [
     {
      "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Persist",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ayara, First of Locthwain",
+      "Blasting Station"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Animate Dead",
+    "Ayara, First of Locthwain",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Persist",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "Victimize",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Ayara, First of Locthwain",
+     "Blasting Station"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L32"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Grave Titan",
+    "Woe Strider"
+   ],
+   "carries": "TOKEN › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Grave Titan",
+      "Woe Strider"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:b_2_2_zombie",
+      "token:w_0_1_goat"
+     ],
+     "stocks": [],
+     "n": 0,
      "by_turn_three": 1.0
     },
     {
@@ -20267,50 +22404,127 @@
       "Viscera Seer",
       "Warren Soultrader",
       "Woe Strider",
-      "Yahenni, Undying Partisan"
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Blasting Station",
+    "Carrion Feeder",
+    "Grave Titan",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 2,
+    "cards": [
+     "Grave Titan",
+     "Woe Strider"
+    ]
+   },
+   "availability_by_turn_three": 0.1744,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L33"
+  },
+  {
+   "events": [
+    "DIES",
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
+   ],
+   "carries": "DIES › LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fatal Push",
+      "Feed the Swarm",
+      "Fume Spitter",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
      ],
      "tokens": [],
      "stocks": [],
      "n": 10,
-     "by_turn_three": 0.633
+     "by_turn_three": 1.0
     },
     {
      "cards": [
       "Bastion of Remembrance",
       "Blood Artist",
-      "Mirkwood Bats",
       "South Wind Avatar",
       "The Meathook Massacre",
       "Zulaport Cutthroat"
      ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
      "tokens": [],
      "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
+     "n": 3,
+     "by_turn_three": 0.251
     }
    ],
-   "instances": 540,
+   "starts": 10,
    "cards": [
-    "Ashnod's Altar",
-    "Ayara, First of Locthwain",
+    "Animate Dead",
     "Bastion of Remembrance",
-    "Beseech the Mirror",
-    "Blasting Station",
     "Blood Artist",
     "Carrion Feeder",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Mirkwood Bats",
-    "Phyrexian Altar",
-    "Phyrexian Tower",
-    "Plumb the Forbidden",
+    "Fatal Push",
+    "Feed the Swarm",
+    "Fume Spitter",
+    "Marauding Blight-Priest",
     "South Wind Avatar",
+    "Starscape Cleric",
     "The Meathook Massacre",
-    "Vampiric Tutor",
-    "Viscera Seer",
+    "Victimize",
     "Warren Soultrader",
     "Woe Strider",
     "Yahenni, Undying Partisan",
@@ -20319,15 +22533,17 @@
    ],
    "bottleneck": {
     "position": 2,
-    "n": 1,
+    "n": 3,
     "cards": [
-     "Yawgmoth, Thran Physician"
+     "Marauding Blight-Priest",
+     "South Wind Avatar",
+     "Starscape Cleric"
     ]
    },
-   "availability_by_turn_three": 0.1539,
+   "availability_by_turn_three": 0.0968,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L15"
+   "id": "L34"
   },
   {
    "events": [
@@ -20421,7 +22637,7 @@
      "by_turn_three": 0.251
     }
    ],
-   "instances": 3587,
+   "starts": 12,
    "cards": [
     "Ashnod's Altar",
     "Ayara, First of Locthwain",
@@ -20461,7 +22677,407 @@
    "availability_by_turn_three": 0.0968,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L16"
+   "id": "L35"
+  },
+  {
+   "events": [
+    "HAND",
+    "DIES",
+    "LIFE_GAIN",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric",
+    "Yawgmoth, Thran Physician"
+   ],
+   "carries": "HAND › DIES › LIFE_GAIN › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Beseech the Mirror",
+      "Deadly Dispute",
+      "Demonic Tutor",
+      "Diabolic Intent",
+      "Insatiable Avarice",
+      "Massacre Girl, Known Killer",
+      "Plumb the Forbidden",
+      "Vampiric Tutor",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 9,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 9,
+   "cards": [
+    "Bastion of Remembrance",
+    "Beseech the Mirror",
+    "Blood Artist",
+    "Deadly Dispute",
+    "Demonic Tutor",
+    "Diabolic Intent",
+    "Insatiable Avarice",
+    "Marauding Blight-Priest",
+    "Massacre Girl, Known Killer",
+    "Plumb the Forbidden",
+    "South Wind Avatar",
+    "Starscape Cleric",
+    "The Meathook Massacre",
+    "Vampiric Tutor",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Yawgmoth, Thran Physician"
+    ]
+   },
+   "availability_by_turn_three": 0.0968,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L36"
+  },
+  {
+   "events": [
+    "DIES",
+    "LIFE_GAIN",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Marauding Blight-Priest",
+    "South Wind Avatar",
+    "Starscape Cleric"
+   ],
+   "carries": "DIES › LIFE_GAIN › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fatal Push",
+      "Feed the Swarm",
+      "Fume Spitter",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "South Wind Avatar",
+      "The Meathook Massacre",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Marauding Blight-Priest",
+      "South Wind Avatar",
+      "Starscape Cleric"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Animate Dead",
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fatal Push",
+    "Feed the Swarm",
+    "Fume Spitter",
+    "Marauding Blight-Priest",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "South Wind Avatar",
+    "Starscape Cleric",
+    "The Meathook Massacre",
+    "Victimize",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 3,
+    "cards": [
+     "Marauding Blight-Priest",
+     "South Wind Avatar",
+     "Starscape Cleric"
+    ]
+   },
+   "availability_by_turn_three": 0.0968,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L37"
+  },
+  {
+   "events": [
+    "ETB",
+    "DIES",
+    "BODIES",
+    "DIES",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Ayara, First of Locthwain",
+    "Blasting Station"
+   ],
+   "carries": "ETB › DIES › BODIES › DIES › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Animate Dead",
+      "Carrion Feeder",
+      "Fume Spitter",
+      "Grave Titan",
+      "Massacre Girl, Known Killer",
+      "Persist",
+      "Reassembling Skeleton",
+      "Skinrender",
+      "Soul Snuffers",
+      "Victimize",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ayara, First of Locthwain",
+      "Blasting Station"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [
+      "Bastion of Remembrance",
+      "Blood Artist",
+      "Mirkwood Bats",
+      "Pawn of Ulamog",
+      "Pitiless Plunderer",
+      "South Wind Avatar",
+      "Stitcher's Supplier",
+      "Zulaport Cutthroat"
+     ],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 8,
+     "by_turn_three": 0.547
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Ashnod's Altar",
+      "Ayara, First of Locthwain",
+      "Blasting Station",
+      "Carrion Feeder",
+      "Phyrexian Altar",
+      "Phyrexian Tower",
+      "Viscera Seer",
+      "Warren Soultrader",
+      "Woe Strider",
+      "Yahenni, Undying Partisan",
+      "Yawgmoth, Thran Physician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:bg_1_1_pest_lifegain"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Animate Dead",
+    "Ashnod's Altar",
+    "Ayara, First of Locthwain",
+    "Bastion of Remembrance",
+    "Blasting Station",
+    "Blood Artist",
+    "Carrion Feeder",
+    "Fume Spitter",
+    "Grave Titan",
+    "Massacre Girl, Known Killer",
+    "Mirkwood Bats",
+    "Pawn of Ulamog",
+    "Persist",
+    "Phyrexian Altar",
+    "Phyrexian Tower",
+    "Pitiless Plunderer",
+    "Reassembling Skeleton",
+    "Skinrender",
+    "Soul Snuffers",
+    "South Wind Avatar",
+    "Stitcher's Supplier",
+    "Victimize",
+    "Viscera Seer",
+    "Warren Soultrader",
+    "Woe Strider",
+    "Yahenni, Undying Partisan",
+    "Yawgmoth, Thran Physician",
+    "Zulaport Cutthroat"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Ayara, First of Locthwain",
+     "Blasting Station"
+    ]
+   },
+   "availability_by_turn_three": 0.0954,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L38"
   },
   {
    "events": [
@@ -20488,11 +23104,12 @@
       "Soul Snuffers",
       "Warren Soultrader",
       "Woe Strider",
+      "Yahenni, Undying Partisan",
       "Yawgmoth, Thran Physician"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 11,
+     "n": 12,
      "by_turn_three": 1.0
     },
     {
@@ -20514,7 +23131,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 19,
+   "starts": 12,
    "cards": [
     "Carrion Feeder",
     "Deadly Dispute",
@@ -20539,7 +23156,7 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L17"
+   "id": "L39"
   },
   {
    "events": [
@@ -20593,7 +23210,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 20,
+   "starts": 12,
    "cards": [
     "Blasting Station",
     "Carrion Feeder",
@@ -20617,2226 +23234,6 @@
     ]
    },
    "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L18"
-  },
-  {
-   "events": [
-    "BODIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "BODIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 20,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Persist",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Animate Dead",
-    "Blasting Station",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Persist",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L20"
-  },
-  {
-   "events": [
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Persist",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 14,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Persist",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L21"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain",
-      "Carrion Feeder",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 131,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Blasting Station",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L22"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "BODIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 111,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0909,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L23"
-  },
-  {
-   "events": [
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain",
-    "Blasting Station"
-   ],
-   "carries": "ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Persist",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 14,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain",
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "South Wind Avatar",
-      "The Meathook Massacre",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    }
-   ],
-   "instances": 168,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Mirkwood Bats",
-    "Persist",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "South Wind Avatar",
-    "The Meathook Massacre",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Ayara, First of Locthwain",
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0775,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "DIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain",
-    "Blasting Station"
-   ],
-   "carries": "BODIES › ETB › DIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain",
-      "Carrion Feeder",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain",
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "South Wind Avatar",
-      "The Meathook Massacre",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    }
-   ],
-   "instances": 1452,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Mirkwood Bats",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "South Wind Avatar",
-    "The Meathook Massacre",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "Ayara, First of Locthwain",
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0775,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L25"
-  },
-  {
-   "events": [
-    "HAND",
-    "DIES",
-    "LIFE_GAIN",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › DIES › LIFE_GAIN › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "South Wind Avatar",
-      "The Meathook Massacre",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Marauding Blight-Priest",
-      "South Wind Avatar",
-      "Starscape Cleric"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 153,
-   "cards": [
-    "Bastion of Remembrance",
-    "Beseech the Mirror",
-    "Blood Artist",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Marauding Blight-Priest",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "South Wind Avatar",
-    "Starscape Cleric",
-    "The Meathook Massacre",
-    "Vampiric Tutor",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.053,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L26"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "DIES",
-    "LIFE_GAIN",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Marauding Blight-Priest",
-    "South Wind Avatar",
-    "Starscape Cleric"
-   ],
-   "carries": "DIES › BODIES › DIES › LIFE_GAIN › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Ayara, First of Locthwain",
-      "Blasting Station",
-      "Carrion Feeder",
-      "Phyrexian Altar",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 11,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "South Wind Avatar",
-      "The Meathook Massacre",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "Marauding Blight-Priest",
-      "South Wind Avatar",
-      "Starscape Cleric"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 20788,
-   "cards": [
-    "Animate Dead",
-    "Ashnod's Altar",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Marauding Blight-Priest",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Phyrexian Altar",
-    "Phyrexian Tower",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Starscape Cleric",
-    "Stitcher's Supplier",
-    "The Meathook Massacre",
-    "Victimize",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 3,
-    "cards": [
-     "Marauding Blight-Priest",
-     "South Wind Avatar",
-     "Starscape Cleric"
-    ]
-   },
-   "availability_by_turn_three": 0.053,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L27"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Yahenni, Undying Partisan"
-   ],
-   "carries": "DIES › BODIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 115,
-   "cards": [
-    "Animate Dead",
-    "Bastion of Remembrance",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Yahenni, Undying Partisan"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "DIES › BODIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 129,
-   "cards": [
-    "Animate Dead",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "DIES › BODIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 129,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 79,
-   "cards": [
-    "Animate Dead",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "HAND",
-    "BODIES",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": "ignition",
-   "via": [
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › BODIES › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yahenni, Undying Partisan"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 9,
-   "cards": [
-    "Beseech the Mirror",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "Vampiric Tutor",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "HAND",
-    "BODIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › BODIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 9,
-   "cards": [
-    "Beseech the Mirror",
-    "Blasting Station",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "Vampiric Tutor",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "HAND",
-    "BODIES",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › BODIES › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 9,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Beseech the Mirror",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "Vampiric Tutor",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "HAND",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 9,
-   "cards": [
-    "Beseech the Mirror",
-    "Blasting Station",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "Vampiric Tutor",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "HAND",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain",
-    "Yawgmoth, Thran Physician"
-   ],
-   "carries": "HAND › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Beseech the Mirror",
-      "Deadly Dispute",
-      "Demonic Tutor",
-      "Diabolic Intent",
-      "Insatiable Avarice",
-      "Massacre Girl, Known Killer",
-      "Plumb the Forbidden",
-      "Vampiric Tutor"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "HAND"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 9,
-   "cards": [
-    "Ayara, First of Locthwain",
-    "Beseech the Mirror",
-    "Deadly Dispute",
-    "Demonic Tutor",
-    "Diabolic Intent",
-    "Insatiable Avarice",
-    "Massacre Girl, Known Killer",
-    "Plumb the Forbidden",
-    "Vampiric Tutor",
-    "Yawgmoth, Thran Physician"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Yawgmoth, Thran Physician"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "BODIES › DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Deadly Dispute",
-      "Fume Spitter",
-      "Grave Titan",
-      "Massacre Girl, Known Killer",
-      "Reassembling Skeleton",
-      "Skinrender",
-      "Soul Snuffers",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ashnod's Altar",
-      "Ayara, First of Locthwain",
-      "Carrion Feeder",
-      "Phyrexian Altar",
-      "Phyrexian Tower",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1719,
-   "cards": [
-    "Ashnod's Altar",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Deadly Dispute",
-    "Fume Spitter",
-    "Grave Titan",
-    "Massacre Girl, Known Killer",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Phyrexian Altar",
-    "Phyrexian Tower",
-    "Pitiless Plunderer",
-    "Reassembling Skeleton",
-    "Skinrender",
-    "Soul Snuffers",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Blasting Station"
-   ],
-   "carries": "DIES › BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain",
-      "Carrion Feeder",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blasting Station"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 833,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blasting Station",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Blasting Station"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L38"
-  },
-  {
-   "events": [
-    "DIES",
-    "BODIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "DIES › BODIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bastion of Remembrance",
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 8,
-     "by_turn_three": 0.547
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Carrion Feeder",
-      "Viscera Seer",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 704,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Bastion of Remembrance",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Viscera Seer",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0497,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
-    "DIES",
-    "ETB",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Ayara, First of Locthwain"
-   ],
-   "carries": "DIES › ETB › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Animate Dead",
-      "Carrion Feeder",
-      "Fatal Push",
-      "Feed the Swarm",
-      "Fume Spitter",
-      "Victimize",
-      "Warren Soultrader",
-      "Woe Strider",
-      "Yahenni, Undying Partisan",
-      "Yawgmoth, Thran Physician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Blood Artist",
-      "Mirkwood Bats",
-      "Pawn of Ulamog",
-      "Pitiless Plunderer",
-      "South Wind Avatar",
-      "Stitcher's Supplier",
-      "Zulaport Cutthroat"
-     ],
-     "tokens": [
-      "token:bg_1_1_pest_lifegain"
-     ],
-     "stocks": [],
-     "n": 7,
-     "by_turn_three": 0.498
-    },
-    {
-     "cards": [
-      "Ayara, First of Locthwain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 69,
-   "cards": [
-    "Animate Dead",
-    "Ayara, First of Locthwain",
-    "Blood Artist",
-    "Carrion Feeder",
-    "Fatal Push",
-    "Feed the Swarm",
-    "Fume Spitter",
-    "Mirkwood Bats",
-    "Pawn of Ulamog",
-    "Pitiless Plunderer",
-    "South Wind Avatar",
-    "Stitcher's Supplier",
-    "Victimize",
-    "Warren Soultrader",
-    "Woe Strider",
-    "Yahenni, Undying Partisan",
-    "Yawgmoth, Thran Physician",
-    "Zulaport Cutthroat"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Ayara, First of Locthwain"
-    ]
-   },
-   "availability_by_turn_three": 0.0453,
    "verified_by": [],
    "stamp": "◆",
    "id": "L40"
@@ -22853,7 +23250,15 @@
    "kind": "single_consumer",
    "event": "COUNTER_ADD",
    "severs": [
-    "L07"
+    "L18",
+    "L19",
+    "L20",
+    "L21",
+    "L22",
+    "L24",
+    "L25",
+    "L26",
+    "L29"
    ]
   },
   {

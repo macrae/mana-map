@@ -580,12 +580,22 @@ def _replacement(doc, body, svars):
     doc["abilities"].append(row)
 
 
+#: Keywords that ENABLE an event rather than produce it (Haste lets a body attack
+#: the turn it lands; it is not an attack). They become `scales`, never `produces`.
+_ENABLER_KEYWORDS = {"Haste"}
+
+
 def _keyword_ability(doc, body):
     word = body.split(":")[0].strip()
     events = _events_for(_KEYWORDS, word, {})
     for ev in events:
-        doc["abilities"].append({"kind": "keyword", "consumes": None, "produces": [{"event": ev, "actor": "you"}],
-                                 "optional": False, "zone": "battlefield", "text": body[:80]})
+        if word in _ENABLER_KEYWORDS:
+            doc["abilities"].append({"kind": "keyword", "consumes": None, "produces": [],
+                                     "scales": {"event": ev, "actor": "you", "filters": [{"self": True}]},
+                                     "optional": False, "zone": "battlefield", "text": body[:80]})
+        else:
+            doc["abilities"].append({"kind": "keyword", "consumes": None, "produces": [{"event": ev, "actor": "you"}],
+                                     "optional": False, "zone": "battlefield", "text": body[:80]})
 
 
 # ── the goldfish's readers as the second reader ──────────────────────────────

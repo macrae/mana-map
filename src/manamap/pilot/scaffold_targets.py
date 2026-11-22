@@ -153,6 +153,99 @@ def derive(slug):
             "combos": len([t for t in targets if t["_from"] == "combo_details"])}
 
 
+# ── ONE MODEL (2026-11-22): the targets GENERATED from the engine graph ───────
+#
+# `goldfish_targets.json` stays the one authored declaration — every `model_*`
+# flag, `model_deaths`, and a `components` block the pilot writes:
+#
+#   "targets_from": "engine.json",
+#   "components": {"required": ["ev:DIES"], "routes": {"ev:LIFE_LOSS": "drain"},
+#                  "overrides": [{"component": "ev:DIES", "add": [], "drop": [], "why": "…"}],
+#                  "authored_targets": [ … the pilot's own groups, verbatim … ]}
+#
+# and `targets[]` is COMPUTED from `engine.json`'s components by `engine-graph
+# --write` through `regenerate_targets` — one target per consumed event with a
+# producer and a deck-fed consumer, as the AND-of-ORs the goldfish already
+# understands (`_target_met` unchanged), then `authored_targets` verbatim. PER DECK:
+# a deck without `targets_from` is never touched, so no fleet regen happens in any
+# commit; the pilot switches a deck with `regen --slug`. `validate-goldfish-targets`
+# refuses a generated target that differs from a fresh derivation.
+
+#: Consumed events that are substrate, never a component the goldfish should time.
+_SUBSTRATE_EVENTS = frozenset({"MANA", "COST_REDUCTION", "LAND_DROP", "TAP", "UNTAP", "TURN_PHASE",
+                               "SELECTION", "PUMP"})
+
+
+def derive_from_engine(slug, branch=None, engine=None, targets_doc=None):
+    """The generated targets for a deck whose declaration says `targets_from:
+    engine.json`. Pure over the two documents, so the validator can recompute it.
+    A commander never sits in a leg (`_target_met` reads drawn names, and a
+    commander is never drawn): a consumer leg that was only the commander becomes
+    `commander: true` on the target, the goldfish's own gate for that."""
+    from manamap.pilot.common import deck_file
+    engine = engine if engine is not None else load_json(deck_file(slug, "engine.json", branch))
+    targets_doc = targets_doc if targets_doc is not None else load_json(deck_file(slug, TARGETS_FILE, branch))
+    if not engine or (engine.get("_meta") or {}).get("v") != 2:
+        raise SystemExit(f"{slug}: targets_from is engine.json, but there is no v2 engine.json — "
+                         f"`manamap pilot engine-graph {slug} --write` first")
+    comps = (targets_doc or {}).get("components") or {}
+    required = set(comps.get("required") or [])
+    routes = comps.get("routes") or {}
+    overrides = {o.get("component"): o for o in comps.get("overrides") or [] if o.get("component")}
+    commanders = {n["id"] for n in (engine.get("graph") or {}).get("nodes") or [] if n.get("zone") == "command"}
+    out = []
+    for c in engine.get("components") or []:
+        if c["event"] in _SUBSTRATE_EVENTS:
+            continue
+        producers = [x for x in c["producers"]]
+        consumers = list(c.get("deck_fed_consumers") or [])
+        ov = overrides.get(c["id"])
+        if ov:
+            producers = [x for x in producers if x not in (ov.get("drop") or [])] + \
+                [x for x in ov.get("add") or [] if x not in producers]
+        prod_leg = sorted(x for x in producers if x not in commanders)
+        cons_leg = sorted(x for x in consumers if x not in commanders)
+        if not prod_leg or not consumers:
+            continue
+        gated = any(x in commanders for x in consumers) and not cons_leg
+        need = [{"any_of": prod_leg}] + ([{"any_of": cons_leg}] if cons_leg else [])
+        label = (f"{c['event']}: a producer with a reader "
+                 f"({len(prod_leg)} make, {len(consumers)} read{', the commander among them' if gated else ''})")
+        t = {"label": label, "need": need, "generated": True, "component": c["id"]}
+        if gated:
+            t["commander"] = True
+        if c["id"] in required:
+            t["required"] = True
+        if c["id"] in routes:
+            t["route"] = routes[c["id"]]
+        if ov and ov.get("why"):
+            t["_override"] = ov["why"]
+        out.append(t)
+    return out
+
+
+def regenerate_targets(slug, branch=None, engine=None):
+    """Rewrite `targets` on a `targets_from: engine.json` declaration — the
+    generated ones, then `components.authored_targets` verbatim. Every other key
+    is kept byte for byte. Returns the path, or None when the deck does not opt in."""
+    from manamap.pilot.common import deck_file
+    path = deck_dir(slug, branch) / TARGETS_FILE
+    if not path.exists():
+        path = deck_file(slug, TARGETS_FILE, branch)
+        if not path.exists():
+            return None
+    doc = load_json(path) or {}
+    if doc.get("targets_from") != "engine.json":
+        return None
+    generated = derive_from_engine(slug, branch, engine=engine, targets_doc=doc)
+    authored = list((doc.get("components") or {}).get("authored_targets") or [])
+    doc["targets"] = generated + authored
+    doc.pop("scaffolded", None)
+    out = deck_dir(slug, branch) / TARGETS_FILE                 # a write never falls back
+    out.write_text(json.dumps(doc, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    return out
+
+
 def scaffold(slug, force=False):
     path = deck_dir(slug) / TARGETS_FILE
     if path.exists() and not force:

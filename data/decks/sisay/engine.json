@@ -6190,12 +6190,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -11359,7 +11363,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -14790,6 +14794,18 @@
    },
    {
     "card": "Samut, Voice of Dissent",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
+    "card": "Samut, Voice of Dissent",
     "event": "COMBAT_DAMAGE",
     "kind": "pump",
     "filters": [
@@ -15075,7 +15091,9 @@
    "unproven_producers": [],
    "from_opponent": false,
    "from_turn": false,
-   "modifiers": [],
+   "modifiers": [
+    "Samut, Voice of Dissent"
+   ],
    "redundancy": {
     "producers": 3,
     "consumers": 1
@@ -15849,6 +15867,7 @@
     "Polluted Delta",
     "Rejuvenating Springs",
     "Sacred Foundry",
+    "Samut, Voice of Dissent",
     "Scalding Tarn",
     "Sea of Clouds",
     "Secluded Courtyard",
@@ -15866,7 +15885,7 @@
     "Windswept Heath",
     "Wooded Foothills"
    ],
-   "what_it_does": "40 card(s), by rule: a land that also feeds ['MANA'] (14); a land (14); a land that also feeds ['ETB'] (9)",
+   "what_it_does": "41 card(s), by rule: a land that also feeds ['MANA'] (14); a land (14); a land that also feeds ['ETB'] (9)",
    "also": {
     "Arid Mesa": [
      "ignition",
@@ -15912,6 +15931,9 @@
      "ignition",
      "conversion",
      "fuel"
+    ],
+    "Samut, Voice of Dissent": [
+     "output"
     ],
     "Scalding Tarn": [
      "ignition",
@@ -16004,11 +16026,10 @@
     "Kodama of the West Tree",
     "Loran of the Third Path",
     "Path to Exile",
-    "Samut, Voice of Dissent",
     "Swan Song",
     "Teferi, Time Raveler"
    ],
-   "what_it_does": "12 card(s), by rule: nothing in the deck starts it; it produces ['ETB'] (4); nothing in the deck starts it; it produces ['DRAW'] (3); in the command zone, producing ['ETB'] the deck consumes",
+   "what_it_does": "11 card(s), by rule: nothing in the deck starts it; it produces ['ETB'] (4); nothing in the deck starts it; it produces ['DRAW'] (3); in the command zone, producing ['ETB'] the deck consumes",
    "also": {
     "Sisay, Weatherlight Captain": [
      "fuel",
@@ -16043,9 +16064,6 @@
     ],
     "Path to Exile": [
      "fuel",
-     "output"
-    ],
-    "Samut, Voice of Dissent": [
      "output"
     ],
     "Swan Song": [
@@ -16633,11 +16651,11 @@
    "why": "a body that attacks"
   },
   "Samut, Voice of Dissent": {
-   "stage": "ignition",
+   "stage": "mana",
    "also": [
     "output"
    ],
-   "why": "nothing in the deck starts it; it produces ['ATTACK']"
+   "why": "produces only ['UNTAP']"
   },
   "Scalding Tarn": {
    "stage": "mana",
@@ -16811,6 +16829,54 @@
  "lines": [
   {
    "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [
+    "Swan Song"
+   ],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Swan Song"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:u_2_2_bird_flying"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Swan Song"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Swan Song"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L01"
+  },
+  {
+   "events": [
     "DRAW",
     "LIFE_LOSS"
    ],
@@ -16850,7 +16916,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 5,
+   "starts": 5,
    "cards": [
     "Arcane Denial",
     "Dihada, Binder of Wills",
@@ -16869,7 +16935,7 @@
    "availability_by_turn_three": 0.035,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L01"
+   "id": "L02"
   },
   {
    "events": [
@@ -16896,14 +16962,13 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
+     "n": 11,
      "by_turn_three": 1.0
     },
     {
@@ -16925,7 +16990,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 12,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -16936,7 +17001,6 @@
     "Loran of the Third Path",
     "Path to Exile",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -16952,7 +17016,7 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L02"
+   "id": "L03"
   },
   {
    "events": [
@@ -16975,13 +17039,12 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 7,
+     "n": 6,
      "by_turn_three": 1.0
     },
     {
@@ -17003,13 +17066,12 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 7,
+   "starts": 6,
    "cards": [
     "Kenrith, the Returned King",
     "Kodama of the West Tree",
     "Loran of the Third Path",
     "Path to Exile",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
@@ -17025,7 +17087,7 @@
    "availability_by_turn_three": 0.0083,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L03"
+   "id": "L04"
   },
   {
    "events": [
@@ -17055,14 +17117,13 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
+     "n": 11,
      "by_turn_three": 1.0
     },
     {
@@ -17095,7 +17156,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 36,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -17108,7 +17169,6 @@
     "Path to Exile",
     "Reki, the History of Kamigawa",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -17124,205 +17184,7 @@
    "availability_by_turn_three": 0.0028,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L04"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Jodah, the Unifier",
-    "Lotho, Corrupt Shirriff",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "CAST › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 36,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Dihada, Binder of Wills",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0021,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L05"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 21,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Path to Exile",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0021,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L06"
   },
   {
    "events": [
@@ -17370,7 +17232,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 2,
+   "starts": 1,
    "cards": [
     "Boros Charm",
     "Kutzil, Malamet Exemplar",
@@ -17387,7 +17249,175 @@
    "availability_by_turn_three": 0.0014,
    "verified_by": [],
    "stamp": "◆",
+   "id": "L06"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "An Offer You Can't Refuse",
+    "Dihada, Binder of Wills",
+    "Kinnan, Bonder Prodigy",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "TOKEN › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Dihada, Binder of Wills"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_a_treasure_sac"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 2,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Dihada, Binder of Wills",
+    "Kinnan, Bonder Prodigy",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Kinnan, Bonder Prodigy"
+    ]
+   },
+   "availability_by_turn_three": 0.0014,
+   "verified_by": [],
+   "stamp": "◆",
    "id": "L07"
+  },
+  {
+   "events": [
+    "CAST",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+    ]
+   },
+   "availability_by_turn_three": 0.0008,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L08"
   },
   {
    "events": [
@@ -17412,10 +17442,10 @@
       "Arcane Denial",
       "Boros Charm",
       "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
@@ -17462,7 +17492,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 11,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -17473,7 +17503,6 @@
     "Loran of the Third Path",
     "Path to Exile",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -17489,7 +17518,7 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L08"
+   "id": "L09"
   },
   {
    "events": [
@@ -17513,12 +17542,11 @@
       "Kenrith, the Returned King",
       "Kodama of the West Tree",
       "Loran of the Third Path",
-      "Samut, Voice of Dissent",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 5,
+     "n": 4,
      "by_turn_three": 1.0
     },
     {
@@ -17549,13 +17577,12 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 5,
+   "starts": 4,
    "cards": [
     "Derevi, Empyrial Tactician",
     "Kenrith, the Returned King",
     "Kodama of the West Tree",
     "Loran of the Third Path",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain"
@@ -17570,7 +17597,90 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L09"
+   "id": "L10"
+  },
+  {
+   "events": [
+    "ETB",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Emiel the Blessed",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "ETB › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 6,
+   "cards": [
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Emiel the Blessed"
+    ]
+   },
+   "availability_by_turn_three": 0.0008,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L11"
   },
   {
    "events": [
@@ -17595,13 +17705,12 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 7,
+     "n": 6,
      "by_turn_three": 1.0
     },
     {
@@ -17632,14 +17741,13 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 7,
+   "starts": 6,
    "cards": [
     "Kenrith, the Returned King",
     "Kinnan, Bonder Prodigy",
     "Kodama of the West Tree",
     "Loran of the Third Path",
     "Path to Exile",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
@@ -17655,13 +17763,13 @@
    "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L10"
+   "id": "L12"
   },
   {
    "events": [
     "CAST",
-    "CAST",
-    "ETB",
+    "TOKEN",
+    "MANA",
     "DRAW",
     "LIFE_LOSS"
    ],
@@ -17669,12 +17777,11 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Jodah, the Unifier",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
+    "Kinnan, Bonder Prodigy",
+    "Lotho, Corrupt Shirriff",
     "Sheoldred, the Apocalypse"
    ],
-   "carries": "CAST › CAST › ETB › DRAW › LIFE_LOSS",
+   "carries": "CAST › TOKEN › MANA › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
@@ -17686,41 +17793,36 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
+     "n": 11,
      "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Jodah, the Unifier",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+      "Lotho, Corrupt Shirriff"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
+     "n": 1,
+     "by_turn_three": 0.091
     },
     {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Reki, the History of Kamigawa",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     "cards": [],
+     "tokens": [
+      "token:c_a_treasure_sac"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
+     "n": 0,
+     "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Selvala, Heart of the Wilds"
+      "Kinnan, Bonder Prodigy"
      ],
      "tokens": [],
      "stocks": [],
@@ -17737,263 +17839,31 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 72,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
     "Boros Charm",
     "Dihada, Binder of Wills",
-    "Jodah, the Unifier",
     "Kenrith, the Returned King",
+    "Kinnan, Bonder Prodigy",
     "Kodama of the West Tree",
     "Loran of the Third Path",
     "Lotho, Corrupt Shirriff",
     "Path to Exile",
-    "Reki, the History of Kamigawa",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
     "Teferi, Time Raveler"
    ],
    "bottleneck": {
-    "position": 3,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Selvala, Heart of the Wilds"
+     "Lotho, Corrupt Shirriff"
     ]
    },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L11"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Lotho, Corrupt Shirriff",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "CAST › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 84,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L12"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ETB › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 32,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Path to Exile",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0005,
+   "availability_by_turn_three": 0.0008,
    "verified_by": [],
    "stamp": "◆",
    "id": "L13"
@@ -18027,14 +17897,13 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
+     "n": 11,
      "by_turn_three": 1.0
     },
     {
@@ -18076,7 +17945,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 24,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -18089,7 +17958,6 @@
     "Path to Exile",
     "Reki, the History of Kamigawa",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -18106,623 +17974,6 @@
    "verified_by": [],
    "stamp": "◆",
    "id": "L14"
-  },
-  {
-   "events": [
-    "CAST",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Derevi, Empyrial Tactician",
-    "Jodah, the Unifier",
-    "Lotho, Corrupt Shirriff",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "CAST › COMBAT_DAMAGE › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Derevi, Empyrial Tactician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 36,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Derevi, Empyrial Tactician",
-    "Dihada, Binder of Wills",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Derevi, Empyrial Tactician"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L15"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "MANA",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Jodah, the Unifier",
-    "Kinnan, Bonder Prodigy",
-    "Lotho, Corrupt Shirriff",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "CAST › ETB › MANA › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kinnan, Bonder Prodigy"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 36,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Dihada, Binder of Wills",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kinnan, Bonder Prodigy",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Derevi, Empyrial Tactician",
-    "Emiel the Blessed",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "COMBAT_DAMAGE › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Samut, Voice of Dissent",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Derevi, Empyrial Tactician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 15,
-   "cards": [
-    "Bristly Bill, Spine Sower",
-    "Derevi, Empyrial Tactician",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Derevi, Empyrial Tactician"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L17"
-  },
-  {
-   "events": [
-    "ETB",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Derevi, Empyrial Tactician",
-    "Emiel the Blessed",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ETB › COMBAT_DAMAGE › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Derevi, Empyrial Tactician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 21,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Bristly Bill, Spine Sower",
-    "Derevi, Empyrial Tactician",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Path to Exile",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Derevi, Empyrial Tactician"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L18"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "MANA",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Kinnan, Bonder Prodigy",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ETB › ETB › MANA › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kinnan, Bonder Prodigy"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 21,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kinnan, Bonder Prodigy",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Path to Exile",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0002,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L19"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "ATTACK › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Samut, Voice of Dissent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Samut, Voice of Dissent"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L20"
   },
   {
    "events": [
@@ -18779,7 +18030,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 1,
    "cards": [
     "Boros Charm",
     "Reki, the History of Kamigawa",
@@ -18796,7 +18047,7 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L21"
+   "id": "L15"
   },
   {
    "events": [
@@ -18810,7 +18061,6 @@
    "to": "wincon",
    "via": [
     "Boros Charm",
-    "Kutzil, Malamet Exemplar",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse"
@@ -18828,13 +18078,12 @@
     },
     {
      "cards": [
-      "Kutzil, Malamet Exemplar",
       "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
+     "n": 1,
+     "by_turn_three": 0.091
     },
     {
      "cards": [
@@ -18855,10 +18104,9 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 2,
+   "starts": 1,
    "cards": [
     "Boros Charm",
-    "Kutzil, Malamet Exemplar",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse"
@@ -18873,7 +18121,7 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L22"
+   "id": "L16"
   },
   {
    "events": [
@@ -18939,7 +18187,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 1,
    "cards": [
     "Boros Charm",
     "Kenrith, the Returned King",
@@ -18956,11 +18204,12 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L23"
+   "id": "L17"
   },
   {
    "events": [
-    "LIFE_GAIN",
+    "CAST",
+    "CAST",
     "ETB",
     "DRAW",
     "LIFE_LOSS"
@@ -18969,16 +18218,35 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Heliod, Sun-Crowned",
-    "Kenrith, the Returned King",
+    "Jodah, the Unifier",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse"
    ],
-   "carries": "LIFE_GAIN › ETB › DRAW › LIFE_LOSS",
+   "carries": "CAST › CAST › ETB › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
-      "Kenrith, the Returned King"
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Jodah, the Unifier"
      ],
      "tokens": [],
      "stocks": [],
@@ -18987,7 +18255,7 @@
     },
     {
      "cards": [
-      "Heliod, Sun-Crowned"
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
      ],
      "tokens": [],
      "stocks": [],
@@ -19013,24 +18281,35 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 11,
    "cards": [
-    "Heliod, Sun-Crowned",
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Jodah, the Unifier",
     "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
    ],
    "bottleneck": {
-    "position": 0,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Kenrith, the Returned King"
+     "Jodah, the Unifier"
     ]
    },
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L24"
+   "id": "L18"
   },
   {
    "events": [
@@ -19057,10 +18336,10 @@
       "Arcane Denial",
       "Boros Charm",
       "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
@@ -19116,7 +18395,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 11,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -19128,7 +18407,6 @@
     "Loran of the Third Path",
     "Path to Exile",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -19144,7 +18422,217 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L25"
+   "id": "L19"
+  },
+  {
+   "events": [
+    "CAST",
+    "ETB",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Emiel the Blessed",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › ETB › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+    ]
+   },
+   "availability_by_turn_three": 0.0001,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L20"
+  },
+  {
+   "events": [
+    "CAST",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Kenrith, the Returned King",
+    "Kinnan, Bonder Prodigy",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+    ]
+   },
+   "availability_by_turn_three": 0.0001,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L21"
   },
   {
    "events": [
@@ -19171,10 +18659,10 @@
       "Arcane Denial",
       "Boros Charm",
       "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
@@ -19230,7 +18718,7 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 11,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
@@ -19241,7 +18729,6 @@
     "Loran of the Third Path",
     "Path to Exile",
     "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
@@ -19258,7 +18745,98 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L26"
+   "id": "L22"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "ETB",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Derevi, Empyrial Tactician",
+    "Emiel the Blessed",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "COMBAT_DAMAGE › ETB › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Derevi, Empyrial Tactician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Derevi, Empyrial Tactician",
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Derevi, Empyrial Tactician"
+    ]
+   },
+   "availability_by_turn_three": 0.0001,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L23"
   },
   {
    "events": [
@@ -19284,12 +18862,11 @@
       "Kenrith, the Returned King",
       "Kodama of the West Tree",
       "Loran of the Third Path",
-      "Samut, Voice of Dissent",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 5,
+     "n": 4,
      "by_turn_three": 1.0
     },
     {
@@ -19329,14 +18906,13 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 5,
+   "starts": 4,
    "cards": [
     "Derevi, Empyrial Tactician",
     "Kenrith, the Returned King",
     "Kinnan, Bonder Prodigy",
     "Kodama of the West Tree",
     "Loran of the Third Path",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain"
@@ -19351,886 +18927,11 @@
    "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L27"
-  },
-  {
-   "events": [
-    "CAST",
-    "CAST",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "CAST › CAST › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Reki, the History of Kamigawa",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 156,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Reki, the History of Kamigawa",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L28"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Lotho, Corrupt Shirriff",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "CAST › ETB › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Arcane Denial",
-      "Boros Charm",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 12,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Jodah, the Unifier",
-      "Lotho, Corrupt Shirriff",
-      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 132,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Arcane Denial",
-    "Boros Charm",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Jodah, the Unifier",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Lotho, Corrupt Shirriff",
-    "Path to Exile",
-    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L29"
+   "id": "L24"
   },
   {
    "events": [
     "ETB",
-    "ETB",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Bristly Bill, Spine Sower",
-    "Emiel the Blessed",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ETB › ETB › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills",
-      "Kenrith, the Returned King",
-      "Kodama of the West Tree",
-      "Loran of the Third Path",
-      "Path to Exile",
-      "Samut, Voice of Dissent",
-      "Swan Song",
-      "Teferi, Time Raveler",
-      "Sisay, Weatherlight Captain"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 10,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Bristly Bill, Spine Sower",
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 25,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Bristly Bill, Spine Sower",
-    "Dihada, Binder of Wills",
-    "Emiel the Blessed",
-    "Kenrith, the Returned King",
-    "Kodama of the West Tree",
-    "Loran of the Third Path",
-    "Path to Exile",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Sisay, Weatherlight Captain",
-    "Swan Song",
-    "Teferi, Time Raveler",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "Selvala, Heart of the Wilds"
-    ]
-   },
-   "availability_by_turn_three": 0.0001,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Swan Song"
-   ],
-   "carries": "TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Swan Song"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:u_2_2_bird_flying"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Swan Song"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent"
-   ],
-   "carries": "ATTACK › TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Samut, Voice of Dissent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:w_1_1_warrior"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "DAMAGE",
-    "ATTACK",
-    "TOKEN",
-    "COMBAT_DAMAGE"
-   ],
-   "terminal": "COMBAT_DAMAGE",
-   "from": "ignition",
-   "to": null,
-   "via": [
-    "Boros Charm",
-    "Kutzil, Malamet Exemplar",
-    "Najeela, the Blade-Blossom"
-   ],
-   "carries": "DAMAGE › ATTACK › TOKEN › COMBAT_DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Boros Charm"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Kutzil, Malamet Exemplar"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:w_1_1_warrior"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Boros Charm",
-    "Kutzil, Malamet Exemplar",
-    "Najeela, the Blade-Blossom"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Swan Song"
-   ],
-   "carries": "TOKEN › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Swan Song"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:u_2_2_bird_flying"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Swan Song"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "TOKEN",
-    "MANA",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "An Offer You Can't Refuse",
-    "Dihada, Binder of Wills",
-    "Kinnan, Bonder Prodigy",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "TOKEN › MANA › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "An Offer You Can't Refuse",
-      "Dihada, Binder of Wills"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:c_a_treasure_sac"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Kinnan, Bonder Prodigy"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 2,
-   "cards": [
-    "An Offer You Can't Refuse",
-    "Dihada, Binder of Wills",
-    "Kinnan, Bonder Prodigy",
-    "Sheoldred, the Apocalypse"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Derevi, Empyrial Tactician",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "ATTACK › COMBAT_DAMAGE › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Samut, Voice of Dissent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Derevi, Empyrial Tactician"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Derevi, Empyrial Tactician",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Samut, Voice of Dissent"
-    ]
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Emiel the Blessed",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "carries": "ATTACK › ETB › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Samut, Voice of Dissent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Emiel the Blessed",
-      "Yoshimaru, Ever Faithful"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 2,
-   "cards": [
-    "Emiel the Blessed",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse",
-    "Yoshimaru, Ever Faithful"
-   ],
-   "bottleneck": {
-    "position": 0,
-    "n": 1,
-    "cards": [
-     "Samut, Voice of Dissent"
-    ]
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "ATTACK",
     "ETB",
     "MANA",
     "DRAW",
@@ -20240,26 +18941,30 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
+    "Emiel the Blessed",
     "Kinnan, Bonder Prodigy",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
     "Selvala, Heart of the Wilds",
     "Sheoldred, the Apocalypse"
    ],
-   "carries": "ATTACK › ETB › MANA › DRAW › LIFE_LOSS",
+   "carries": "ETB › ETB › MANA › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
-      "Samut, Voice of Dissent"
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
+     "n": 6,
+     "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Najeela, the Blade-Blossom"
+      "Emiel the Blessed"
      ],
      "tokens": [],
      "stocks": [],
@@ -20294,110 +18999,34 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 1,
+   "starts": 6,
    "cards": [
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
     "Kinnan, Bonder Prodigy",
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
     "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song"
    ],
    "bottleneck": {
-    "position": 0,
+    "position": 1,
     "n": 1,
     "cards": [
-     "Samut, Voice of Dissent"
+     "Emiel the Blessed"
     ]
    },
-   "availability_by_turn_three": 0.0,
+   "availability_by_turn_three": 0.0001,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L38"
+   "id": "L25"
   },
   {
    "events": [
-    "ATTACK",
-    "TOKEN",
-    "ETB",
-    "DRAW",
-    "LIFE_LOSS"
-   ],
-   "terminal": "LIFE_LOSS",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "carries": "ATTACK › TOKEN › ETB › DRAW › LIFE_LOSS",
-   "hops": [
-    {
-     "cards": [
-      "Samut, Voice of Dissent"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Najeela, the Blade-Blossom"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [
-      "token:w_1_1_warrior"
-     ],
-     "stocks": [],
-     "n": 0,
-     "by_turn_three": 0.0
-    },
-    {
-     "cards": [
-      "Selvala, Heart of the Wilds"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Sheoldred, the Apocalypse"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 1,
-   "cards": [
-    "Najeela, the Blade-Blossom",
-    "Samut, Voice of Dissent",
-    "Selvala, Heart of the Wilds",
-    "Sheoldred, the Apocalypse"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 0,
-    "cards": []
-   },
-   "availability_by_turn_three": 0.0,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
+    "CAST",
     "CAST",
     "TOKEN",
     "MANA",
@@ -20408,11 +19037,13 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
+    "Jodah, the Unifier",
     "Kinnan, Bonder Prodigy",
     "Lotho, Corrupt Shirriff",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Sheoldred, the Apocalypse"
    ],
-   "carries": "CAST › TOKEN › MANA › DRAW › LIFE_LOSS",
+   "carries": "CAST › CAST › TOKEN › MANA › DRAW › LIFE_LOSS",
    "hops": [
     {
      "cards": [
@@ -20424,15 +19055,24 @@
       "Kodama of the West Tree",
       "Loran of the Third Path",
       "Path to Exile",
-      "Samut, Voice of Dissent",
       "Swan Song",
       "Teferi, Time Raveler",
       "Sisay, Weatherlight Captain"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 12,
+     "n": 11,
      "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Jodah, the Unifier",
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
     },
     {
      "cards": [
@@ -20450,7 +19090,7 @@
      ],
      "stocks": [],
      "n": 0,
-     "by_turn_three": 0.0
+     "by_turn_three": 1.0
     },
     {
      "cards": [
@@ -20471,19 +19111,20 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 12,
+   "starts": 11,
    "cards": [
     "An Offer You Can't Refuse",
     "Arcane Denial",
     "Boros Charm",
     "Dihada, Binder of Wills",
+    "Jodah, the Unifier",
     "Kenrith, the Returned King",
     "Kinnan, Bonder Prodigy",
     "Kodama of the West Tree",
     "Loran of the Third Path",
     "Lotho, Corrupt Shirriff",
     "Path to Exile",
-    "Samut, Voice of Dissent",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
     "Sheoldred, the Apocalypse",
     "Sisay, Weatherlight Captain",
     "Swan Song",
@@ -20491,13 +19132,1016 @@
    ],
    "bottleneck": {
     "position": 2,
-    "n": 0,
-    "cards": []
+    "n": 1,
+    "cards": [
+     "Lotho, Corrupt Shirriff"
+    ]
+   },
+   "availability_by_turn_three": 0.0001,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L26"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "CAST",
+    "CAST",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Jodah, the Unifier",
+    "Reki, the History of Kamigawa",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › CAST › CAST › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Jodah, the Unifier"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Reki, the History of Kamigawa"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Jodah, the Unifier",
+    "Reki, the History of Kamigawa",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
    },
    "availability_by_turn_three": 0.0,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L40"
+   "id": "L27"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "ETB",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Emiel the Blessed",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › ETB › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Emiel the Blessed",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L28"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L29"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "GRAVEYARD",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Kenrith, the Returned King",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › GRAVEYARD › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "GRAVEYARD"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kenrith, the Returned King"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Kenrith, the Returned King",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L30"
+  },
+  {
+   "events": [
+    "CAST",
+    "CAST",
+    "ETB",
+    "ETB",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Emiel the Blessed",
+    "Jodah, the Unifier",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › CAST › ETB › ETB › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Jodah, the Unifier"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Emiel the Blessed",
+    "Jodah, the Unifier",
+    "Kenrith, the Returned King",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Jodah, the Unifier"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L31"
+  },
+  {
+   "events": [
+    "CAST",
+    "CAST",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Jodah, the Unifier",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › CAST › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Jodah, the Unifier"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Jodah, the Unifier",
+    "Kenrith, the Returned King",
+    "Kinnan, Bonder Prodigy",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Jodah, the Unifier"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L32"
+  },
+  {
+   "events": [
+    "CAST",
+    "ETB",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Emiel the Blessed",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "CAST › ETB › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "An Offer You Can't Refuse",
+      "Arcane Denial",
+      "Boros Charm",
+      "Dihada, Binder of Wills",
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Path to Exile",
+      "Swan Song",
+      "Teferi, Time Raveler",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 11,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 11,
+   "cards": [
+    "An Offer You Can't Refuse",
+    "Arcane Denial",
+    "Boros Charm",
+    "Dihada, Binder of Wills",
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
+    "Kinnan, Bonder Prodigy",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Path to Exile",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain",
+    "Swan Song",
+    "Teferi, Time Raveler"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L33"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "ETB",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Derevi, Empyrial Tactician",
+    "Emiel the Blessed",
+    "Kinnan, Bonder Prodigy",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "COMBAT_DAMAGE › ETB › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Kenrith, the Returned King",
+      "Kodama of the West Tree",
+      "Loran of the Third Path",
+      "Sisay, Weatherlight Captain"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Derevi, Empyrial Tactician"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Derevi, Empyrial Tactician",
+    "Emiel the Blessed",
+    "Kenrith, the Returned King",
+    "Kinnan, Bonder Prodigy",
+    "Kodama of the West Tree",
+    "Loran of the Third Path",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse",
+    "Sisay, Weatherlight Captain"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "Derevi, Empyrial Tactician"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L34"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "CAST",
+    "TOKEN",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Kinnan, Bonder Prodigy",
+    "Lotho, Corrupt Shirriff",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › CAST › TOKEN › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Lotho, Corrupt Shirriff"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_a_treasure_sac"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Kinnan, Bonder Prodigy",
+    "Lotho, Corrupt Shirriff",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L35"
+  },
+  {
+   "events": [
+    "DAMAGE",
+    "ETB",
+    "ETB",
+    "MANA",
+    "DRAW",
+    "LIFE_LOSS"
+   ],
+   "terminal": "LIFE_LOSS",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Boros Charm",
+    "Emiel the Blessed",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "carries": "DAMAGE › ETB › ETB › MANA › DRAW › LIFE_LOSS",
+   "hops": [
+    {
+     "cards": [
+      "Boros Charm"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Rona, Herald of Invasion // Rona, Tolarian Obliterator"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Emiel the Blessed"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Selvala, Heart of the Wilds"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Kinnan, Bonder Prodigy"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [
+      "Sheoldred, the Apocalypse"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    }
+   ],
+   "starts": 1,
+   "cards": [
+    "Boros Charm",
+    "Emiel the Blessed",
+    "Kinnan, Bonder Prodigy",
+    "Rona, Herald of Invasion // Rona, Tolarian Obliterator",
+    "Selvala, Heart of the Wilds",
+    "Sheoldred, the Apocalypse"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 1,
+    "cards": [
+     "Boros Charm"
+    ]
+   },
+   "availability_by_turn_three": 0.0,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L36"
   }
  ],
  "spof": [
@@ -20505,27 +20149,17 @@
    "card": "Najeela, the Blade-Blossom",
    "kind": "single_consumer",
    "event": "ATTACK",
-   "severs": [
-    "L20",
-    "L32",
-    "L33",
-    "L36",
-    "L37",
-    "L38",
-    "L39"
-   ]
+   "severs": []
   },
   {
    "card": "Derevi, Empyrial Tactician",
    "kind": "single_consumer",
    "event": "COMBAT_DAMAGE",
    "severs": [
-    "L09",
-    "L15",
-    "L17",
-    "L18",
-    "L27",
-    "L36"
+    "L10",
+    "L23",
+    "L24",
+    "L34"
    ]
   },
   {
@@ -20533,7 +20167,6 @@
    "kind": "single_consumer",
    "event": "DRAW",
    "severs": [
-    "L01",
     "L02",
     "L03",
     "L04",
@@ -20563,35 +20196,38 @@
     "L28",
     "L29",
     "L30",
+    "L31",
+    "L32",
+    "L33",
     "L34",
     "L35",
-    "L36",
-    "L37",
-    "L38",
-    "L39",
-    "L40"
+    "L36"
    ]
   },
   {
    "card": "Heliod, Sun-Crowned",
    "kind": "single_consumer",
    "event": "LIFE_GAIN",
-   "severs": [
-    "L24"
-   ]
+   "severs": []
   },
   {
    "card": "Kinnan, Bonder Prodigy",
    "kind": "single_consumer",
    "event": "MANA",
    "severs": [
-    "L10",
-    "L16",
-    "L19",
-    "L27",
+    "L07",
+    "L12",
+    "L13",
+    "L21",
+    "L24",
+    "L25",
+    "L26",
+    "L29",
+    "L32",
+    "L33",
+    "L34",
     "L35",
-    "L38",
-    "L40"
+    "L36"
    ]
   }
  ],

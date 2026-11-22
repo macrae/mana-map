@@ -696,12 +696,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -2423,12 +2427,16 @@
      {
       "kind": "keyword",
       "consumes": null,
-      "produces": [
-       {
-        "event": "ATTACK",
-        "actor": "you"
-       }
-      ],
+      "produces": [],
+      "scales": {
+       "event": "ATTACK",
+       "actor": "you",
+       "filters": [
+        {
+         "self": true
+        }
+       ]
+      },
       "optional": false,
       "zone": "battlefield",
       "text": "Haste"
@@ -7766,7 +7774,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -7802,7 +7810,7 @@
     "event": "ATTACK",
     "proven": true,
     "via": [],
-    "implicit": false
+    "implicit": true
    },
    {
     "kind": "feeds",
@@ -12377,6 +12385,18 @@
     "filters": []
    },
    {
+    "card": "Broadside Bombardiers",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
+   },
+   {
     "card": "Conspicuous Snoop",
     "event": "COMBAT_DAMAGE",
     "kind": "pump",
@@ -12430,6 +12450,18 @@
     "actor": null,
     "your_turn": false,
     "filters": []
+   },
+   {
+    "card": "Goblin Chieftain",
+    "event": "ATTACK",
+    "kind": "keyword",
+    "actor": "you",
+    "your_turn": false,
+    "filters": [
+     {
+      "self": true
+     }
+    ]
    },
    {
     "card": "Goblin Chieftain",
@@ -12683,7 +12715,10 @@
    ],
    "from_opponent": false,
    "from_turn": false,
-   "modifiers": [],
+   "modifiers": [
+    "Broadside Bombardiers",
+    "Goblin Chieftain"
+   ],
    "redundancy": {
     "producers": 23,
     "consumers": 1
@@ -13191,7 +13226,6 @@
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Fists of Flame",
     "Goblin Bombardment",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -13210,7 +13244,7 @@
     "Twinflame",
     "Untimely Malfunction"
    ],
-   "what_it_does": "31 card(s), by rule: nothing in the deck starts it; it produces ['HAND'] (9); nothing in the deck starts it; it produces ['BODIES', 'ETB'] (6); nothing in the deck starts it; it produces ['ETB'] (5)",
+   "what_it_does": "30 card(s), by rule: nothing in the deck starts it; it produces ['HAND'] (9); nothing in the deck starts it; it produces ['BODIES', 'ETB'] (6); nothing in the deck starts it; it produces ['ETB'] (5)",
    "also": {
     "Zada, Hedron Grinder": [
      "output"
@@ -13250,9 +13284,6 @@
     ],
     "Goblin Bombardment": [
      "conversion",
-     "output"
-    ],
-    "Goblin Chieftain": [
      "output"
     ],
     "Goblin Instigator": [
@@ -13367,13 +13398,14 @@
    "cards": [
     "Conspicuous Snoop",
     "Goblin Bushwhacker",
+    "Goblin Chieftain",
     "Goblin Warchief",
     "Grapeshot",
     "Grenzo, Havoc Raiser",
     "Harsh Mentor",
     "Roaming Throne"
    ],
-   "what_it_does": "7 card(s), by rule: scales ['COMBAT_DAMAGE'] (3); a body that attacks (2); reaches the terminal by ['DAMAGE']",
+   "what_it_does": "8 card(s), by rule: scales ['COMBAT_DAMAGE'] (4); a body that attacks (2); reaches the terminal by ['DAMAGE']",
    "also": {},
    "single_point_of_failure": null
   }
@@ -13591,11 +13623,9 @@
    "why": "a body that attacks"
   },
   "Goblin Chieftain": {
-   "stage": "ignition",
-   "also": [
-    "output"
-   ],
-   "why": "nothing in the deck starts it; it produces ['ATTACK']"
+   "stage": "output",
+   "also": [],
+   "why": "scales ['COMBAT_DAMAGE']"
   },
   "Goblin Instigator": {
    "stage": "ignition",
@@ -13942,6 +13972,74 @@
  "lines": [
   {
    "events": [
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "ignition",
+   "via": [],
+   "carries": "TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Goblin Instigator",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Siege-Gang Commander"
+   ],
+   "bottleneck": {
+    "position": 0,
+    "n": 7,
+    "cards": [
+     "Dragon Fodder",
+     "Empty the Warrens",
+     "Goblin Instigator",
+     "Idol of Oblivion",
+     "Krenko's Command",
+     "Krenko, Mob Boss",
+     "Siege-Gang Commander"
+    ]
+   },
+   "availability_by_turn_three": 0.4981,
+   "verified_by": [
+    "002",
+    "004"
+   ],
+   "stamp": "✓",
+   "id": "L01"
+  },
+  {
+   "events": [
     "BODIES",
     "DAMAGE"
    ],
@@ -13957,7 +14055,6 @@
       "Dragon Fodder",
       "Empty the Warrens",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -13971,7 +14068,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 15,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -13996,7 +14093,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 113,
+   "starts": 14,
    "cards": [
     "Ancestors' Aid",
     "Broadside Bombardiers",
@@ -14004,7 +14101,6 @@
     "Empty the Warrens",
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Goblin Bombardment",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -14032,7 +14128,7 @@
     "016"
    ],
    "stamp": "✓",
-   "id": "L01"
+   "id": "L02"
   },
   {
    "events": [
@@ -14122,7 +14218,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 476,
+   "starts": 33,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -14174,7 +14270,7 @@
    "availability_by_turn_three": 0.3212,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L02"
+   "id": "L03"
   },
   {
    "events": [
@@ -14197,7 +14293,6 @@
       "Electroduplicate",
       "Empty the Warrens",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -14212,7 +14307,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 16,
+     "n": 15,
      "by_turn_three": 1.0
     },
     {
@@ -14227,14 +14322,13 @@
      "by_turn_three": 0.251
     }
    ],
-   "instances": 48,
+   "starts": 15,
    "cards": [
     "Dragon Fodder",
     "Electroduplicate",
     "Empty the Warrens",
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -14256,140 +14350,6 @@
      "General Kreat, the Boltbringer",
      "Impact Tremors",
      "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.251,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L03"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 225,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "General Kreat, the Boltbringer",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
     ]
    },
    "availability_by_turn_three": 0.251,
@@ -14400,18 +14360,18 @@
   {
    "events": [
     "BODIES",
-    "ETB",
-    "DAMAGE"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "mana",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
+    "Fountainport",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
    ],
-   "carries": "BODIES › ETB › DAMAGE",
+   "carries": "BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -14419,7 +14379,6 @@
       "Dragon Fodder",
       "Empty the Warrens",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -14433,7 +14392,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 15,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -14447,64 +14406,55 @@
     },
     {
      "cards": [
-      "Broadside Bombardiers",
       "Fountainport",
       "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
      "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 426,
+   "starts": 14,
    "cards": [
     "Ancestors' Aid",
-    "Broadside Bombardiers",
     "Dragon Fodder",
     "Empty the Warrens",
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
     "Idol of Oblivion",
-    "Impact Tremors",
     "Krenko's Command",
     "Krenko, Mob Boss",
     "Pashalik Mons",
-    "Purphoros, God of the Forge",
     "Reckless Ransacking",
     "Siege-Gang Commander",
-    "Skirk Prospector",
     "Sudden Breakthrough",
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
-    "position": 3,
+    "position": 2,
     "n": 3,
     "cards": [
-     "General Kreat, the Boltbringer",
-     "Impact Tremors",
-     "Purphoros, God of the Forge"
+     "Fountainport",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
     ]
    },
-   "availability_by_turn_three": 0.0968,
+   "availability_by_turn_three": 0.251,
    "verified_by": [],
    "stamp": "◆",
    "id": "L05"
@@ -14513,20 +14463,20 @@
    "events": [
     "CAST",
     "BODIES",
-    "ETB",
-    "DAMAGE"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "mana",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
+    "Fountainport",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
     "Storm-Kiln Artist",
     "Zada, Hedron Grinder"
    ],
-   "carries": "CAST › BODIES › ETB › DAMAGE",
+   "carries": "CAST › BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -14590,30 +14540,27 @@
     },
     {
      "cards": [
-      "Broadside Bombardiers",
       "Fountainport",
       "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
      "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 1785,
+   "starts": 33,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -14622,7 +14569,6 @@
     "Battle Hymn",
     "Blasphemous Act",
     "Brightstone Ritual",
-    "Broadside Bombardiers",
     "Crimson Wisps",
     "Daring Discovery",
     "Deflecting Swat",
@@ -14632,11 +14578,9 @@
     "Expedite",
     "Fists of Flame",
     "Fountainport",
-    "General Kreat, the Boltbringer",
     "Grapeshot",
     "Great Train Heist",
     "Heat Shimmer",
-    "Impact Tremors",
     "Impolite Entrance",
     "Infuriate",
     "Krenko's Command",
@@ -14644,11 +14588,9 @@
     "Molten Duplication",
     "Pashalik Mons",
     "Past in Flames",
-    "Purphoros, God of the Forge",
     "Reckless Ransacking",
     "Renegade Tactics",
     "Siege-Gang Commander",
-    "Skirk Prospector",
     "Spinerock Knoll",
     "Storm-Kiln Artist",
     "Sudden Breakthrough",
@@ -14666,10 +14608,196 @@
      "Zada, Hedron Grinder"
     ]
    },
-   "availability_by_turn_three": 0.0968,
+   "availability_by_turn_three": 0.251,
    "verified_by": [],
    "stamp": "◆",
    "id": "L06"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [],
+   "carries": "TOKEN › BODIES › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Broadside Bombardiers",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Broadside Bombardiers",
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Goblin Bombardment",
+    "Goblin Instigator",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 4,
+    "cards": [
+     "Broadside Bombardiers",
+     "Goblin Bombardment",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
+    ]
+   },
+   "availability_by_turn_three": 0.16,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L07"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "mana",
+   "via": [
+    "Fountainport",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "carries": "TOKEN › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fountainport",
+    "Goblin Instigator",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 3,
+    "cards": [
+     "Fountainport",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
+    ]
+   },
+   "availability_by_turn_three": 0.125,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L08"
   },
   {
    "events": [
@@ -14687,7 +14815,6 @@
     {
      "cards": [
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -14698,7 +14825,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 9,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
@@ -14711,11 +14838,10 @@
      "by_turn_three": 0.091
     }
    ],
-   "instances": 9,
+   "starts": 8,
    "cards": [
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -14734,70 +14860,36 @@
    "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L07"
+   "id": "L09"
   },
   {
    "events": [
-    "CAST",
     "ATTACK",
-    "DAMAGE"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Zada, Hedron Grinder"
+    "General Kreat, the Boltbringer"
    ],
-   "carries": "CAST › ATTACK › DAMAGE",
+   "carries": "ATTACK › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
       "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander",
       "Zada, Hedron Grinder"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 1,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
@@ -14808,56 +14900,127 @@
      "stocks": [],
      "n": 1,
      "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 53,
+   "starts": 8,
    "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
-    "Grapeshot",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
     "Great Train Heist",
-    "Heat Shimmer",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Past in Flames",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Spinerock Knoll",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
+    "Krenko, Mob Boss",
+    "Siege-Gang Commander",
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Zada, Hedron Grinder"
+     "General Kreat, the Boltbringer"
     ]
    },
-   "availability_by_turn_three": 0.0887,
+   "availability_by_turn_three": 0.0909,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L08"
+   "id": "L10"
+  },
+  {
+   "events": [
+    "ETB",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "General Kreat, the Boltbringer"
+   ],
+   "carries": "ETB › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Electroduplicate",
+      "Empty the Warrens",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Heat Shimmer",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Molten Duplication",
+      "Siege-Gang Commander",
+      "Twinflame",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 15,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 15,
+   "cards": [
+    "Dragon Fodder",
+    "Electroduplicate",
+    "Empty the Warrens",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Heat Shimmer",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Molten Duplication",
+    "Siege-Gang Commander",
+    "Twinflame",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "General Kreat, the Boltbringer"
+    ]
+   },
+   "availability_by_turn_three": 0.0909,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L11"
   },
   {
    "events": [
@@ -14880,7 +15043,6 @@
       "Dragon Fodder",
       "Empty the Warrens",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -14894,7 +15056,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 15,
+     "n": 14,
      "by_turn_three": 1.0
     },
     {
@@ -14931,7 +15093,7 @@
      "by_turn_three": 0.174
     }
    ],
-   "instances": 284,
+   "starts": 14,
    "cards": [
     "Ancestors' Aid",
     "Broadside Bombardiers",
@@ -14940,7 +15102,6 @@
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Fountainport",
     "Goblin Bombardment",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -14966,7 +15127,7 @@
    "availability_by_turn_three": 0.0775,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L09"
+   "id": "L12"
   },
   {
    "events": [
@@ -15071,7 +15232,7 @@
      "by_turn_three": 0.174
     }
    ],
-   "instances": 1190,
+   "starts": 33,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -15126,7 +15287,646 @@
    "availability_by_turn_three": 0.0775,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L10"
+   "id": "L13"
+  },
+  {
+   "events": [
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mogg War Marshal",
+    "Pashalik Mons"
+   ],
+   "carries": "BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Ancestors' Aid",
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Reckless Ransacking",
+      "Siege-Gang Commander",
+      "Sudden Breakthrough",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander",
+      "Skirk Prospector"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Mogg War Marshal",
+      "Pashalik Mons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ancestors' Aid",
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "Fountainport",
+    "Goblin Bombardment",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Mogg War Marshal",
+    "Pashalik Mons",
+    "Reckless Ransacking",
+    "Siege-Gang Commander",
+    "Skirk Prospector",
+    "Sudden Breakthrough",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 2,
+    "cards": [
+     "Mogg War Marshal",
+     "Pashalik Mons"
+    ]
+   },
+   "availability_by_turn_three": 0.0672,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L14"
+  },
+  {
+   "events": [
+    "CAST",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mogg War Marshal",
+    "Pashalik Mons",
+    "Storm-Kiln Artist",
+    "Zada, Hedron Grinder"
+   ],
+   "carries": "CAST › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Abrade",
+      "Accelerate",
+      "Ancestors' Aid",
+      "Ancestral Anger",
+      "Battle Hymn",
+      "Blasphemous Act",
+      "Brightstone Ritual",
+      "Crimson Wisps",
+      "Daring Discovery",
+      "Deflecting Swat",
+      "Dragon Fodder",
+      "Electroduplicate",
+      "Empty the Warrens",
+      "Expedite",
+      "Fists of Flame",
+      "Grapeshot",
+      "Great Train Heist",
+      "Heat Shimmer",
+      "Impolite Entrance",
+      "Infuriate",
+      "Krenko's Command",
+      "Might of the Meek",
+      "Molten Duplication",
+      "Past in Flames",
+      "Reckless Ransacking",
+      "Renegade Tactics",
+      "Spinerock Knoll",
+      "Sudden Breakthrough",
+      "Ticked Off",
+      "Twinflame",
+      "Untimely Malfunction",
+      "Wild Ride",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Storm-Kiln Artist",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander",
+      "Skirk Prospector"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Mogg War Marshal",
+      "Pashalik Mons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Abrade",
+    "Accelerate",
+    "Ancestors' Aid",
+    "Ancestral Anger",
+    "Battle Hymn",
+    "Blasphemous Act",
+    "Brightstone Ritual",
+    "Crimson Wisps",
+    "Daring Discovery",
+    "Deflecting Swat",
+    "Dragon Fodder",
+    "Electroduplicate",
+    "Empty the Warrens",
+    "Expedite",
+    "Fists of Flame",
+    "Fountainport",
+    "Goblin Bombardment",
+    "Grapeshot",
+    "Great Train Heist",
+    "Heat Shimmer",
+    "Impolite Entrance",
+    "Infuriate",
+    "Krenko's Command",
+    "Might of the Meek",
+    "Mogg War Marshal",
+    "Molten Duplication",
+    "Pashalik Mons",
+    "Past in Flames",
+    "Reckless Ransacking",
+    "Renegade Tactics",
+    "Siege-Gang Commander",
+    "Skirk Prospector",
+    "Spinerock Knoll",
+    "Storm-Kiln Artist",
+    "Sudden Breakthrough",
+    "Ticked Off",
+    "Twinflame",
+    "Untimely Malfunction",
+    "Wild Ride",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Storm-Kiln Artist",
+     "Zada, Hedron Grinder"
+    ]
+   },
+   "availability_by_turn_three": 0.0672,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L15"
+  },
+  {
+   "events": [
+    "BODIES",
+    "ETB",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Impact Tremors",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander"
+   ],
+   "carries": "BODIES › ETB › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Ancestors' Aid",
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Reckless Ransacking",
+      "Siege-Gang Commander",
+      "Sudden Breakthrough",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer",
+      "Impact Tremors",
+      "Purphoros, God of the Forge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ancestors' Aid",
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Idol of Oblivion",
+    "Impact Tremors",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Reckless Ransacking",
+    "Siege-Gang Commander",
+    "Sudden Breakthrough",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 3,
+    "cards": [
+     "Fountainport",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
+    ]
+   },
+   "availability_by_turn_three": 0.063,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L16"
+  },
+  {
+   "events": [
+    "CAST",
+    "BODIES",
+    "ETB",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Impact Tremors",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander",
+    "Storm-Kiln Artist",
+    "Zada, Hedron Grinder"
+   ],
+   "carries": "CAST › BODIES › ETB › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Abrade",
+      "Accelerate",
+      "Ancestors' Aid",
+      "Ancestral Anger",
+      "Battle Hymn",
+      "Blasphemous Act",
+      "Brightstone Ritual",
+      "Crimson Wisps",
+      "Daring Discovery",
+      "Deflecting Swat",
+      "Dragon Fodder",
+      "Electroduplicate",
+      "Empty the Warrens",
+      "Expedite",
+      "Fists of Flame",
+      "Grapeshot",
+      "Great Train Heist",
+      "Heat Shimmer",
+      "Impolite Entrance",
+      "Infuriate",
+      "Krenko's Command",
+      "Might of the Meek",
+      "Molten Duplication",
+      "Past in Flames",
+      "Reckless Ransacking",
+      "Renegade Tactics",
+      "Spinerock Knoll",
+      "Sudden Breakthrough",
+      "Ticked Off",
+      "Twinflame",
+      "Untimely Malfunction",
+      "Wild Ride",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 33,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Storm-Kiln Artist",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer",
+      "Impact Tremors",
+      "Purphoros, God of the Forge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 33,
+   "cards": [
+    "Abrade",
+    "Accelerate",
+    "Ancestors' Aid",
+    "Ancestral Anger",
+    "Battle Hymn",
+    "Blasphemous Act",
+    "Brightstone Ritual",
+    "Crimson Wisps",
+    "Daring Discovery",
+    "Deflecting Swat",
+    "Dragon Fodder",
+    "Electroduplicate",
+    "Empty the Warrens",
+    "Expedite",
+    "Fists of Flame",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Grapeshot",
+    "Great Train Heist",
+    "Heat Shimmer",
+    "Impact Tremors",
+    "Impolite Entrance",
+    "Infuriate",
+    "Krenko's Command",
+    "Might of the Meek",
+    "Molten Duplication",
+    "Pashalik Mons",
+    "Past in Flames",
+    "Purphoros, God of the Forge",
+    "Reckless Ransacking",
+    "Renegade Tactics",
+    "Siege-Gang Commander",
+    "Spinerock Knoll",
+    "Storm-Kiln Artist",
+    "Sudden Breakthrough",
+    "Ticked Off",
+    "Twinflame",
+    "Untimely Malfunction",
+    "Wild Ride",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Storm-Kiln Artist",
+     "Zada, Hedron Grinder"
+    ]
+   },
+   "availability_by_turn_three": 0.063,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L17"
+  },
+  {
+   "events": [
+    "HAND",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "mana",
+   "via": [
+    "Sokenzan, Crucible of Defiance"
+   ],
+   "carries": "HAND › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Accelerate",
+      "Ancestral Anger",
+      "Crimson Wisps",
+      "Expedite",
+      "Fists of Flame",
+      "Goblin Matron",
+      "Idol of Oblivion",
+      "Impolite Entrance",
+      "Might of the Meek",
+      "Renegade Tactics"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 10,
+     "by_turn_three": 0.633
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "HAND"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Sokenzan, Crucible of Defiance"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_spirit"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Accelerate",
+    "Ancestral Anger",
+    "Crimson Wisps",
+    "Expedite",
+    "Fists of Flame",
+    "Goblin Matron",
+    "Idol of Oblivion",
+    "Impolite Entrance",
+    "Might of the Meek",
+    "Renegade Tactics",
+    "Sokenzan, Crucible of Defiance"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Sokenzan, Crucible of Defiance"
+    ]
+   },
+   "availability_by_turn_three": 0.0575,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L18"
   },
   {
    "events": [
@@ -15169,7 +15969,7 @@
      "by_turn_three": 0.174
     }
    ],
-   "instances": 8,
+   "starts": 4,
    "cards": [
     "Abrade",
     "Goblin Bombardment",
@@ -15189,7 +15989,80 @@
    "availability_by_turn_three": 0.056,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L11"
+   "id": "L19"
+  },
+  {
+   "events": [
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Abrade",
+    "Goblin Bombardment",
+    "Mogg War Marshal",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
+    "Untimely Malfunction"
+   ],
+   "carries": "DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Abrade",
+      "Goblin Bombardment",
+      "Siege-Gang Commander",
+      "Untimely Malfunction"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
+    },
+    {
+     "cards": [
+      "Mogg War Marshal",
+      "Pashalik Mons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 4,
+   "cards": [
+    "Abrade",
+    "Goblin Bombardment",
+    "Mogg War Marshal",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
+    "Untimely Malfunction"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "Mogg War Marshal",
+     "Pashalik Mons"
+    ]
+   },
+   "availability_by_turn_three": 0.056,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L20"
   },
   {
    "events": [
@@ -15212,7 +16085,6 @@
       "Electroduplicate",
       "Empty the Warrens",
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -15223,514 +16095,6 @@
       "Molten Duplication",
       "Siege-Gang Commander",
       "Twinflame",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 16,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 252,
-   "cards": [
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "General Kreat, the Boltbringer",
-    "Goblin Bombardment",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Heat Shimmer",
-    "Idol of Oblivion",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Purphoros, God of the Forge",
-    "Siege-Gang Commander",
-    "Twinflame",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "General Kreat, the Boltbringer",
-     "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.056,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L12"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "BODIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ETB › BODIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 1200,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "General Kreat, the Boltbringer",
-    "Goblin Bombardment",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Siege-Gang Commander",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
-    ]
-   },
-   "availability_by_turn_three": 0.056,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L13"
-  },
-  {
-   "events": [
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Heat Shimmer",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Molten Duplication",
-      "Siege-Gang Commander",
-      "Twinflame",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 16,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 64,
-   "cards": [
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Heat Shimmer",
-    "Idol of Oblivion",
-    "Impact Tremors",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Molten Duplication",
-    "Purphoros, God of the Forge",
-    "Siege-Gang Commander",
-    "Twinflame",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "General Kreat, the Boltbringer",
-     "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.0438,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L14"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 300,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "General Kreat, the Boltbringer",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
-    ]
-   },
-   "availability_by_turn_three": 0.0438,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L15"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "BODIES › DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancestors' Aid",
-      "Dragon Fodder",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Reckless Ransacking",
-      "Siege-Gang Commander",
-      "Sudden Breakthrough",
       "Zada, Hedron Grinder"
      ],
      "tokens": [],
@@ -15739,167 +16103,14 @@
      "by_turn_three": 1.0
     },
     {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Goblin Sharpshooter",
-      "Impulsive Pilferer",
-      "Mogg War Marshal",
-      "Pashalik Mons",
-      "Rundvelt Hordemaster"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
      "cards": [
       "General Kreat, the Boltbringer",
-      "Impact Tremors",
       "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 1956,
-   "cards": [
-    "Ancestors' Aid",
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Bombardment",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Goblin Sharpshooter",
-    "Idol of Oblivion",
-    "Impact Tremors",
-    "Impulsive Pilferer",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Mogg War Marshal",
-    "Pashalik Mons",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Rundvelt Hordemaster",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Sudden Breakthrough",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 3,
-    "cards": [
-     "General Kreat, the Boltbringer",
-     "Impact Tremors",
-     "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.043,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L16"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "DIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › BODIES › DIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
      ],
      "tokens": [],
      "stocks": [],
      "n": 2,
-     "by_turn_three": 1.0
+     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -15913,104 +16124,169 @@
     {
      "cards": [
       "Broadside Bombardiers",
-      "Fountainport",
       "Goblin Bombardment",
       "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Goblin Sharpshooter",
-      "Impulsive Pilferer",
-      "Mogg War Marshal",
-      "Pashalik Mons",
-      "Rundvelt Hordemaster"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 4,
+     "by_turn_three": 0.321
     }
    ],
-   "instances": 8211,
+   "starts": 15,
    "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
     "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
     "Dragon Fodder",
     "Electroduplicate",
     "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "Fountainport",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
     "Goblin Bombardment",
-    "Goblin Sharpshooter",
-    "Grapeshot",
-    "Great Train Heist",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
     "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Impulsive Pilferer",
-    "Infuriate",
+    "Idol of Oblivion",
     "Krenko's Command",
-    "Might of the Meek",
-    "Mogg War Marshal",
+    "Krenko, Mob Boss",
     "Molten Duplication",
     "Pashalik Mons",
-    "Past in Flames",
     "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Rundvelt Hordemaster",
     "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
     "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
     "position": 1,
     "n": 2,
     "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
+     "General Kreat, the Boltbringer",
+     "Purphoros, God of the Forge"
     ]
    },
-   "availability_by_turn_three": 0.043,
+   "availability_by_turn_three": 0.056,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L17"
+   "id": "L21"
+  },
+  {
+   "events": [
+    "ETB",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "mana",
+   "via": [
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander"
+   ],
+   "carries": "ETB › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Electroduplicate",
+      "Empty the Warrens",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Heat Shimmer",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Molten Duplication",
+      "Siege-Gang Commander",
+      "Twinflame",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 15,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer",
+      "Purphoros, God of the Forge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 15,
+   "cards": [
+    "Dragon Fodder",
+    "Electroduplicate",
+    "Empty the Warrens",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Heat Shimmer",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Molten Duplication",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander",
+    "Twinflame",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 2,
+    "cards": [
+     "General Kreat, the Boltbringer",
+     "Purphoros, God of the Forge"
+    ]
+   },
+   "availability_by_turn_three": 0.0438,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L22"
   },
   {
    "events": [
@@ -16071,7 +16347,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 94,
+   "starts": 4,
    "cards": [
     "Abrade",
     "Broadside Bombardiers",
@@ -16097,11 +16373,228 @@
    "availability_by_turn_three": 0.0398,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L18"
+   "id": "L23"
   },
   {
    "events": [
+    "TOKEN",
+    "BODIES",
     "DIES",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Goblin Sharpshooter",
+    "Pashalik Mons"
+   ],
+   "carries": "TOKEN › BODIES › DIES › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Broadside Bombardiers",
+      "Fountainport",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander",
+      "Skirk Prospector"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 6,
+     "by_turn_three": 0.444
+    },
+    {
+     "cards": [
+      "Goblin Sharpshooter",
+      "Pashalik Mons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Broadside Bombardiers",
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fountainport",
+    "Goblin Bombardment",
+    "Goblin Instigator",
+    "Goblin Sharpshooter",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
+    "Skirk Prospector"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Goblin Sharpshooter",
+     "Pashalik Mons"
+    ]
+   },
+   "availability_by_turn_three": 0.0386,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L24"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
+    "DIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "conversion",
+   "via": [
+    "Mogg War Marshal",
+    "Pashalik Mons"
+   ],
+   "carries": "TOKEN › BODIES › DIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander",
+      "Skirk Prospector"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 5,
+     "by_turn_three": 0.386
+    },
+    {
+     "cards": [
+      "Mogg War Marshal",
+      "Pashalik Mons"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 2,
+     "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fountainport",
+    "Goblin Bombardment",
+    "Goblin Instigator",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Mogg War Marshal",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
+    "Skirk Prospector"
+   ],
+   "bottleneck": {
+    "position": 4,
+    "n": 2,
+    "cards": [
+     "Mogg War Marshal",
+     "Pashalik Mons"
+    ]
+   },
+   "availability_by_turn_three": 0.0335,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L25"
+  },
+  {
+   "events": [
+    "TOKEN",
+    "BODIES",
     "ETB",
     "DAMAGE"
    ],
@@ -16109,11 +16602,117 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
+    "Fountainport",
     "General Kreat, the Boltbringer",
     "Impact Tremors",
-    "Purphoros, God of the Forge"
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander"
    ],
-   "carries": "DIES › ETB › DAMAGE",
+   "carries": "TOKEN › BODIES › ETB › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Goblin Instigator",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 7,
+     "by_turn_three": 0.498
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:c_10_10_eldrazi",
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer",
+      "Impact Tremors",
+      "Purphoros, God of the Forge"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    }
+   ],
+   "starts": 7,
+   "cards": [
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Idol of Oblivion",
+    "Impact Tremors",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Purphoros, God of the Forge",
+    "Siege-Gang Commander"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 3,
+    "cards": [
+     "Fountainport",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
+    ]
+   },
+   "availability_by_turn_three": 0.0314,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L26"
+  },
+  {
+   "events": [
+    "DIES",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "mana",
+   "via": [
+    "Fountainport",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "carries": "DIES › BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -16141,45 +16740,62 @@
      "by_turn_three": 0.386
     },
     {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
      "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
      "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 48,
+   "starts": 4,
    "cards": [
     "Abrade",
-    "General Kreat, the Boltbringer",
+    "Fountainport",
     "Goblin Bombardment",
     "Goblin Sharpshooter",
-    "Impact Tremors",
     "Impulsive Pilferer",
     "Mogg War Marshal",
     "Pashalik Mons",
-    "Purphoros, God of the Forge",
     "Rundvelt Hordemaster",
     "Siege-Gang Commander",
     "Untimely Malfunction"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 3,
     "n": 3,
     "cards": [
-     "General Kreat, the Boltbringer",
-     "Impact Tremors",
-     "Purphoros, God of the Forge"
+     "Fountainport",
+     "Pashalik Mons",
+     "Siege-Gang Commander"
     ]
    },
    "availability_by_turn_three": 0.0311,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L19"
+   "id": "L27"
   },
   {
    "events": [
@@ -16198,7 +16814,6 @@
     {
      "cards": [
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -16209,7 +16824,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 9,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
@@ -16243,13 +16858,12 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 105,
+   "starts": 8,
    "cards": [
     "Broadside Bombardiers",
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
     "Goblin Bombardment",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -16269,109 +16883,7 @@
    "availability_by_turn_three": 0.0292,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L20"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ATTACK",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer"
-   ],
-   "carries": "BODIES › ATTACK › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancestors' Aid",
-      "Dragon Fodder",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Reckless Ransacking",
-      "Siege-Gang Commander",
-      "Sudden Breakthrough",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 15,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 113,
-   "cards": [
-    "Ancestors' Aid",
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Idol of Oblivion",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Pashalik Mons",
-    "Reckless Ransacking",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Sudden Breakthrough",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 1,
-    "cards": [
-     "General Kreat, the Boltbringer"
-    ]
-   },
-   "availability_by_turn_three": 0.0292,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L21"
+   "id": "L28"
   },
   {
    "events": [
@@ -16390,7 +16902,6 @@
     {
      "cards": [
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -16400,7 +16911,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 8,
+     "n": 7,
      "by_turn_three": 1.0
     },
     {
@@ -16434,12 +16945,11 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 31,
+   "starts": 7,
    "cards": [
     "Broadside Bombardiers",
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "Goblin Bombardment",
-    "Goblin Chieftain",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
@@ -16459,74 +16969,55 @@
    "availability_by_turn_three": 0.0292,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L22"
+   "id": "L29"
   },
   {
    "events": [
-    "CAST",
-    "BODIES",
     "ATTACK",
+    "TOKEN",
+    "BODIES",
     "DAMAGE"
    ],
    "terminal": "DAMAGE",
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
+    "General Kreat, the Boltbringer"
    ],
-   "carries": "CAST › BODIES › ATTACK › DAMAGE",
+   "carries": "ATTACK › TOKEN › BODIES › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
       "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander",
       "Zada, Hedron Grinder"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 33,
+     "n": 8,
      "by_turn_three": 1.0
     },
     {
      "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
+      "General Kreat, the Boltbringer"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 2,
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
      "by_turn_three": 1.0
     },
     {
@@ -16541,69 +17032,33 @@
     {
      "cards": [
       "Broadside Bombardiers",
+      "Goblin Bombardment",
       "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 4,
      "by_turn_three": 0.321
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
     }
    ],
-   "instances": 476,
+   "starts": 8,
    "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
     "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
-    "Grapeshot",
+    "Goblin Bombardment",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
     "Great Train Heist",
-    "Heat Shimmer",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
+    "Krenko, Mob Boss",
     "Pashalik Mons",
-    "Past in Flames",
-    "Reckless Ransacking",
-    "Renegade Tactics",
     "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
-    "position": 4,
+    "position": 1,
     "n": 1,
     "cards": [
      "General Kreat, the Boltbringer"
@@ -16612,12 +17067,12 @@
    "availability_by_turn_three": 0.0292,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L23"
+   "id": "L30"
   },
   {
    "events": [
-    "CAST",
-    "COMBAT_DAMAGE",
+    "ETB",
+    "TOKEN",
     "BODIES",
     "DAMAGE"
    ],
@@ -16625,211 +17080,31 @@
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "Grenzo, Havoc Raiser",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
+    "General Kreat, the Boltbringer"
    ],
-   "carries": "CAST › COMBAT_DAMAGE › BODIES › DAMAGE",
+   "carries": "ETB › TOKEN › BODIES › DAMAGE",
    "hops": [
     {
      "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
       "Dragon Fodder",
       "Electroduplicate",
       "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
       "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
+      "Idol of Oblivion",
       "Krenko's Command",
-      "Might of the Meek",
+      "Krenko, Mob Boss",
       "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
+      "Siege-Gang Commander",
       "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
       "Zada, Hedron Grinder"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Grenzo, Havoc Raiser"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 4,
-     "by_turn_three": 0.321
-    }
-   ],
-   "instances": 300,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "Goblin Bombardment",
-    "Grapeshot",
-    "Great Train Heist",
-    "Grenzo, Havoc Raiser",
-    "Heat Shimmer",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Past in Flames",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Siege-Gang Commander",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Grenzo, Havoc Raiser"
-    ]
-   },
-   "availability_by_turn_three": 0.0292,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L24"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "BODIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ATTACK › BODIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
+     "n": 15,
      "by_turn_three": 1.0
     },
     {
@@ -16843,6 +17118,15 @@
     },
     {
      "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
      "tokens": [],
      "stocks": [
       "BODIES"
@@ -16863,58 +17147,39 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 636,
+   "starts": 15,
    "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
     "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
     "Dragon Fodder",
     "Electroduplicate",
     "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
     "General Kreat, the Boltbringer",
     "Goblin Bombardment",
-    "Grapeshot",
-    "Great Train Heist",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
     "Heat Shimmer",
-    "Impolite Entrance",
-    "Infuriate",
+    "Idol of Oblivion",
     "Krenko's Command",
-    "Might of the Meek",
+    "Krenko, Mob Boss",
     "Molten Duplication",
     "Pashalik Mons",
-    "Past in Flames",
-    "Reckless Ransacking",
-    "Renegade Tactics",
     "Siege-Gang Commander",
-    "Spinerock Knoll",
-    "Sudden Breakthrough",
-    "Ticked Off",
     "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
     "position": 1,
     "n": 1,
     "cards": [
-     "Zada, Hedron Grinder"
+     "General Kreat, the Boltbringer"
     ]
    },
-   "availability_by_turn_three": 0.0285,
+   "availability_by_turn_three": 0.0292,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L25"
+   "id": "L31"
   },
   {
    "events": [
@@ -17012,7 +17277,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 636,
+   "starts": 32,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -17063,29 +17328,240 @@
    "availability_by_turn_three": 0.0285,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L26"
+   "id": "L32"
   },
   {
    "events": [
-    "COMBAT_DAMAGE",
-    "ETB",
-    "DAMAGE"
+    "ATTACK",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "mana",
    "via": [
+    "Fountainport",
     "General Kreat, the Boltbringer",
-    "Grenzo, Havoc Raiser",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
+    "Pashalik Mons",
+    "Siege-Gang Commander"
    ],
-   "carries": "COMBAT_DAMAGE › ETB › DAMAGE",
+   "carries": "ATTACK › BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
       "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Great Train Heist",
+      "Krenko, Mob Boss",
+      "Siege-Gang Commander",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 8,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 8,
+   "cards": [
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Great Train Heist",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 1,
+    "n": 1,
+    "cards": [
+     "General Kreat, the Boltbringer"
+    ]
+   },
+   "availability_by_turn_three": 0.0228,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L33"
+  },
+  {
+   "events": [
+    "BODIES",
+    "ETB",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "carries": "BODIES › ETB › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Ancestors' Aid",
+      "Dragon Fodder",
+      "Empty the Warrens",
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+      "Goblin Instigator",
+      "Goblin Lackey",
+      "Goblin Matron",
+      "Idol of Oblivion",
+      "Krenko's Command",
+      "Krenko, Mob Boss",
+      "Reckless Ransacking",
+      "Siege-Gang Commander",
+      "Sudden Breakthrough",
+      "Zada, Hedron Grinder"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 14,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 1,
+     "by_turn_three": 0.091
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    }
+   ],
+   "starts": 14,
+   "cards": [
+    "Ancestors' Aid",
+    "Dragon Fodder",
+    "Empty the Warrens",
+    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
+    "Fountainport",
+    "General Kreat, the Boltbringer",
+    "Goblin Instigator",
+    "Goblin Lackey",
+    "Goblin Matron",
+    "Idol of Oblivion",
+    "Krenko's Command",
+    "Krenko, Mob Boss",
+    "Pashalik Mons",
+    "Reckless Ransacking",
+    "Siege-Gang Commander",
+    "Sudden Breakthrough",
+    "Zada, Hedron Grinder"
+   ],
+   "bottleneck": {
+    "position": 3,
+    "n": 1,
+    "cards": [
+     "General Kreat, the Boltbringer"
+    ]
+   },
+   "availability_by_turn_three": 0.0228,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L34"
+  },
+  {
+   "events": [
+    "COMBAT_DAMAGE",
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
+   ],
+   "terminal": "COMBAT_DAMAGE",
+   "from": "ignition",
+   "to": "mana",
+   "via": [
+    "Fountainport",
+    "Grenzo, Havoc Raiser",
+    "Pashalik Mons",
+    "Siege-Gang Commander"
+   ],
+   "carries": "COMBAT_DAMAGE › BODIES › TOKEN › COMBAT_DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
       "Goblin Instigator",
       "Goblin Lackey",
       "Goblin Matron",
@@ -17095,7 +17571,7 @@
      ],
      "tokens": [],
      "stocks": [],
-     "n": 8,
+     "n": 7,
      "by_turn_three": 1.0
     },
     {
@@ -17108,29 +17584,46 @@
      "by_turn_three": 0.091
     },
     {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
      "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
      "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 24,
+   "starts": 7,
    "cards": [
     "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
+    "Fountainport",
     "Goblin Instigator",
     "Goblin Lackey",
     "Goblin Matron",
     "Grenzo, Havoc Raiser",
-    "Impact Tremors",
     "Krenko, Mob Boss",
-    "Purphoros, God of the Forge",
+    "Pashalik Mons",
     "Siege-Gang Commander",
     "Zada, Hedron Grinder"
    ],
@@ -17144,27 +17637,28 @@
    "availability_by_turn_three": 0.0228,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L27"
+   "id": "L35"
   },
   {
    "events": [
     "CAST",
-    "COMBAT_DAMAGE",
+    "BODIES",
     "ETB",
-    "DAMAGE"
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
    "to": "wincon",
    "via": [
+    "Fountainport",
     "General Kreat, the Boltbringer",
-    "Grenzo, Havoc Raiser",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
     "Storm-Kiln Artist",
     "Zada, Hedron Grinder"
    ],
-   "carries": "CAST › COMBAT_DAMAGE › ETB › DAMAGE",
+   "carries": "CAST › BODIES › ETB › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -17218,8 +17712,28 @@
      "by_turn_three": 1.0
     },
     {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
      "cards": [
-      "Grenzo, Havoc Raiser"
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 3,
+     "by_turn_three": 0.251
+    },
+    {
+     "cards": [
+      "General Kreat, the Boltbringer"
      ],
      "tokens": [],
      "stocks": [],
@@ -17227,18 +17741,16 @@
      "by_turn_three": 0.091
     },
     {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 225,
+   "starts": 33,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -17255,21 +17767,21 @@
     "Empty the Warrens",
     "Expedite",
     "Fists of Flame",
+    "Fountainport",
     "General Kreat, the Boltbringer",
     "Grapeshot",
     "Great Train Heist",
-    "Grenzo, Havoc Raiser",
     "Heat Shimmer",
-    "Impact Tremors",
     "Impolite Entrance",
     "Infuriate",
     "Krenko's Command",
     "Might of the Meek",
     "Molten Duplication",
+    "Pashalik Mons",
     "Past in Flames",
-    "Purphoros, God of the Forge",
     "Reckless Ransacking",
     "Renegade Tactics",
+    "Siege-Gang Commander",
     "Spinerock Knoll",
     "Storm-Kiln Artist",
     "Sudden Breakthrough",
@@ -17280,35 +17792,36 @@
     "Zada, Hedron Grinder"
    ],
    "bottleneck": {
-    "position": 2,
+    "position": 4,
     "n": 1,
     "cards": [
-     "Grenzo, Havoc Raiser"
+     "General Kreat, the Boltbringer"
     ]
    },
    "availability_by_turn_three": 0.0228,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L28"
+   "id": "L36"
   },
   {
    "events": [
     "CAST",
     "CAST",
-    "ETB",
-    "DAMAGE"
+    "BODIES",
+    "TOKEN",
+    "COMBAT_DAMAGE"
    ],
-   "terminal": "DAMAGE",
+   "terminal": "COMBAT_DAMAGE",
    "from": "ignition",
-   "to": "wincon",
+   "to": "mana",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
+    "Fountainport",
+    "Pashalik Mons",
+    "Siege-Gang Commander",
     "Storm-Kiln Artist",
     "Zada, Hedron Grinder"
    ],
-   "carries": "CAST › CAST › ETB › DAMAGE",
+   "carries": "CAST › CAST › BODIES › TOKEN › COMBAT_DAMAGE",
    "hops": [
     {
      "cards": [
@@ -17369,18 +17882,37 @@
      "by_turn_three": 0.091
     },
     {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
      "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+      "Fountainport",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
      "n": 3,
      "by_turn_three": 0.251
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin",
+      "token:u_1_1_fish"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
     }
    ],
-   "instances": 159,
+   "starts": 32,
    "cards": [
     "Abrade",
     "Accelerate",
@@ -17397,20 +17929,20 @@
     "Empty the Warrens",
     "Expedite",
     "Fists of Flame",
-    "General Kreat, the Boltbringer",
+    "Fountainport",
     "Grapeshot",
     "Great Train Heist",
     "Heat Shimmer",
-    "Impact Tremors",
     "Impolite Entrance",
     "Infuriate",
     "Krenko's Command",
     "Might of the Meek",
     "Molten Duplication",
+    "Pashalik Mons",
     "Past in Flames",
-    "Purphoros, God of the Forge",
     "Reckless Ransacking",
     "Renegade Tactics",
+    "Siege-Gang Commander",
     "Spinerock Knoll",
     "Storm-Kiln Artist",
     "Sudden Breakthrough",
@@ -17430,7 +17962,7 @@
    "availability_by_turn_three": 0.0223,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L29"
+   "id": "L37"
   },
   {
    "events": [
@@ -17504,7 +18036,7 @@
      "by_turn_three": 0.321
     }
    ],
-   "instances": 80,
+   "starts": 10,
    "cards": [
     "Accelerate",
     "Ancestral Anger",
@@ -17532,1133 +18064,22 @@
    "availability_by_turn_three": 0.0185,
    "verified_by": [],
    "stamp": "◆",
-   "id": "L30"
-  },
-  {
-   "events": [
-    "BODIES",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "BODIES › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancestors' Aid",
-      "Dragon Fodder",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Reckless Ransacking",
-      "Siege-Gang Commander",
-      "Sudden Breakthrough",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 15,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 568,
-   "cards": [
-    "Ancestors' Aid",
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Idol of Oblivion",
-    "Impact Tremors",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Pashalik Mons",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Sudden Breakthrough",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 3,
-    "n": 2,
-    "cards": [
-     "General Kreat, the Boltbringer",
-     "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.0169,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L31"
-  },
-  {
-   "events": [
-    "ETB",
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "ETB › BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Heat Shimmer",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Molten Duplication",
-      "Siege-Gang Commander",
-      "Twinflame",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 16,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 632,
-   "cards": [
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Heat Shimmer",
-    "Idol of Oblivion",
-    "Impact Tremors",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Purphoros, God of the Forge",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Twinflame",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "General Kreat, the Boltbringer",
-     "Purphoros, God of the Forge"
-    ]
-   },
-   "availability_by_turn_three": 0.0169,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L32"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "ETB",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › BODIES › ETB › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 2380,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
-    ]
-   },
-   "availability_by_turn_three": 0.0169,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L33"
-  },
-  {
-   "events": [
-    "CAST",
-    "ETB",
-    "BODIES",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ETB › BODIES › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 3000,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 2,
-    "cards": [
-     "Storm-Kiln Artist",
-     "Zada, Hedron Grinder"
-    ]
-   },
-   "availability_by_turn_three": 0.0169,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L34"
-  },
-  {
-   "events": [
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Great Train Heist",
-      "Krenko, Mob Boss",
-      "Siege-Gang Commander",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 9,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 18,
-   "cards": [
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "General Kreat, the Boltbringer",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Great Train Heist",
-    "Impact Tremors",
-    "Krenko, Mob Boss",
-    "Purphoros, God of the Forge",
-    "Siege-Gang Commander",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "General Kreat, the Boltbringer"
-    ]
-   },
-   "availability_by_turn_three": 0.0159,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L35"
-  },
-  {
-   "events": [
-    "BODIES",
-    "DIES",
-    "ATTACK",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer"
-   ],
-   "carries": "BODIES › DIES › ATTACK › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Ancestors' Aid",
-      "Dragon Fodder",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Reckless Ransacking",
-      "Siege-Gang Commander",
-      "Sudden Breakthrough",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 15,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Goblin Sharpshooter",
-      "Impulsive Pilferer",
-      "Mogg War Marshal",
-      "Pashalik Mons",
-      "Rundvelt Hordemaster"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 652,
-   "cards": [
-    "Ancestors' Aid",
-    "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Bombardment",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Goblin Sharpshooter",
-    "Idol of Oblivion",
-    "Impulsive Pilferer",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Mogg War Marshal",
-    "Pashalik Mons",
-    "Reckless Ransacking",
-    "Rundvelt Hordemaster",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Sudden Breakthrough",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 4,
-    "n": 1,
-    "cards": [
-     "General Kreat, the Boltbringer"
-    ]
-   },
-   "availability_by_turn_three": 0.0156,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L36"
-  },
-  {
-   "events": [
-    "CAST",
-    "BODIES",
-    "DIES",
-    "ATTACK",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Storm-Kiln Artist",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › BODIES › DIES › ATTACK › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 33,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Storm-Kiln Artist",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [],
-     "tokens": [],
-     "stocks": [
-      "BODIES"
-     ],
-     "n": 0,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "Broadside Bombardiers",
-      "Fountainport",
-      "Goblin Bombardment",
-      "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
-    },
-    {
-     "cards": [
-      "Goblin Sharpshooter",
-      "Impulsive Pilferer",
-      "Mogg War Marshal",
-      "Pashalik Mons",
-      "Rundvelt Hordemaster"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 5,
-     "by_turn_three": 0.386
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    }
-   ],
-   "instances": 2737,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Broadside Bombardiers",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
-    "Goblin Bombardment",
-    "Goblin Sharpshooter",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impolite Entrance",
-    "Impulsive Pilferer",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Mogg War Marshal",
-    "Molten Duplication",
-    "Pashalik Mons",
-    "Past in Flames",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Rundvelt Hordemaster",
-    "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Spinerock Knoll",
-    "Storm-Kiln Artist",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 5,
-    "n": 1,
-    "cards": [
-     "General Kreat, the Boltbringer"
-    ]
-   },
-   "availability_by_turn_three": 0.0156,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L37"
-  },
-  {
-   "events": [
-    "CAST",
-    "ATTACK",
-    "ETB",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
-    "Zada, Hedron Grinder"
-   ],
-   "carries": "CAST › ATTACK › ETB › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Abrade",
-      "Accelerate",
-      "Ancestors' Aid",
-      "Ancestral Anger",
-      "Battle Hymn",
-      "Blasphemous Act",
-      "Brightstone Ritual",
-      "Crimson Wisps",
-      "Daring Discovery",
-      "Deflecting Swat",
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Expedite",
-      "Fists of Flame",
-      "Grapeshot",
-      "Great Train Heist",
-      "Heat Shimmer",
-      "Impolite Entrance",
-      "Infuriate",
-      "Krenko's Command",
-      "Might of the Meek",
-      "Molten Duplication",
-      "Past in Flames",
-      "Reckless Ransacking",
-      "Renegade Tactics",
-      "Spinerock Knoll",
-      "Sudden Breakthrough",
-      "Ticked Off",
-      "Twinflame",
-      "Untimely Malfunction",
-      "Wild Ride"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 32,
-     "by_turn_three": 0.975
-    },
-    {
-     "cards": [
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 1,
-     "by_turn_three": 0.091
-    },
-    {
-     "cards": [
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
-    }
-   ],
-   "instances": 106,
-   "cards": [
-    "Abrade",
-    "Accelerate",
-    "Ancestors' Aid",
-    "Ancestral Anger",
-    "Battle Hymn",
-    "Blasphemous Act",
-    "Brightstone Ritual",
-    "Crimson Wisps",
-    "Daring Discovery",
-    "Deflecting Swat",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Expedite",
-    "Fists of Flame",
-    "General Kreat, the Boltbringer",
-    "Grapeshot",
-    "Great Train Heist",
-    "Heat Shimmer",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Infuriate",
-    "Krenko's Command",
-    "Might of the Meek",
-    "Molten Duplication",
-    "Past in Flames",
-    "Purphoros, God of the Forge",
-    "Reckless Ransacking",
-    "Renegade Tactics",
-    "Spinerock Knoll",
-    "Sudden Breakthrough",
-    "Ticked Off",
-    "Twinflame",
-    "Untimely Malfunction",
-    "Wild Ride",
-    "Zada, Hedron Grinder"
-   ],
-   "bottleneck": {
-    "position": 1,
-    "n": 1,
-    "cards": [
-     "Zada, Hedron Grinder"
-    ]
-   },
-   "availability_by_turn_three": 0.0155,
-   "verified_by": [],
-   "stamp": "◆",
    "id": "L38"
   },
   {
    "events": [
     "HAND",
-    "ETB",
+    "TOKEN",
+    "BODIES",
     "DAMAGE"
    ],
    "terminal": "DAMAGE",
    "from": "ignition",
    "to": "wincon",
    "via": [
-    "General Kreat, the Boltbringer",
-    "Impact Tremors",
-    "Purphoros, God of the Forge",
     "Sokenzan, Crucible of Defiance"
    ],
-   "carries": "HAND › ETB › DAMAGE",
+   "carries": "HAND › TOKEN › BODIES › DAMAGE",
    "hops": [
     {
      "cards": [
@@ -18697,97 +18118,13 @@
      "by_turn_three": 0.091
     },
     {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Impact Tremors",
-      "Purphoros, God of the Forge"
+     "cards": [],
+     "tokens": [
+      "token:c_1_1_spirit"
      ],
-     "tokens": [],
      "stocks": [],
-     "n": 3,
-     "by_turn_three": 0.251
-    }
-   ],
-   "instances": 30,
-   "cards": [
-    "Accelerate",
-    "Ancestral Anger",
-    "Crimson Wisps",
-    "Expedite",
-    "Fists of Flame",
-    "General Kreat, the Boltbringer",
-    "Goblin Matron",
-    "Idol of Oblivion",
-    "Impact Tremors",
-    "Impolite Entrance",
-    "Might of the Meek",
-    "Purphoros, God of the Forge",
-    "Renegade Tactics",
-    "Sokenzan, Crucible of Defiance"
-   ],
-   "bottleneck": {
-    "position": 2,
-    "n": 1,
-    "cards": [
-     "Sokenzan, Crucible of Defiance"
-    ]
-   },
-   "availability_by_turn_three": 0.0144,
-   "verified_by": [],
-   "stamp": "◆",
-   "id": "L39"
-  },
-  {
-   "events": [
-    "ETB",
-    "BODIES",
-    "DIES",
-    "DAMAGE"
-   ],
-   "terminal": "DAMAGE",
-   "from": "ignition",
-   "to": "wincon",
-   "via": [
-    "General Kreat, the Boltbringer",
-    "Goblin Sharpshooter",
-    "Pashalik Mons",
-    "Purphoros, God of the Forge"
-   ],
-   "carries": "ETB › BODIES › DIES › DAMAGE",
-   "hops": [
-    {
-     "cards": [
-      "Dragon Fodder",
-      "Electroduplicate",
-      "Empty the Warrens",
-      "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-      "Goblin Chieftain",
-      "Goblin Instigator",
-      "Goblin Lackey",
-      "Goblin Matron",
-      "Heat Shimmer",
-      "Idol of Oblivion",
-      "Krenko's Command",
-      "Krenko, Mob Boss",
-      "Molten Duplication",
-      "Siege-Gang Commander",
-      "Twinflame",
-      "Zada, Hedron Grinder"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 16,
+     "n": 0,
      "by_turn_three": 1.0
-    },
-    {
-     "cards": [
-      "General Kreat, the Boltbringer",
-      "Purphoros, God of the Forge"
-     ],
-     "tokens": [],
-     "stocks": [],
-     "n": 2,
-     "by_turn_three": 0.174
     },
     {
      "cards": [],
@@ -18801,64 +18138,134 @@
     {
      "cards": [
       "Broadside Bombardiers",
-      "Fountainport",
       "Goblin Bombardment",
       "Pashalik Mons",
-      "Siege-Gang Commander",
-      "Skirk Prospector"
+      "Siege-Gang Commander"
      ],
      "tokens": [],
      "stocks": [],
-     "n": 6,
-     "by_turn_three": 0.444
+     "n": 4,
+     "by_turn_three": 0.321
+    }
+   ],
+   "starts": 10,
+   "cards": [
+    "Accelerate",
+    "Ancestral Anger",
+    "Broadside Bombardiers",
+    "Crimson Wisps",
+    "Expedite",
+    "Fists of Flame",
+    "Goblin Bombardment",
+    "Goblin Matron",
+    "Idol of Oblivion",
+    "Impolite Entrance",
+    "Might of the Meek",
+    "Pashalik Mons",
+    "Renegade Tactics",
+    "Siege-Gang Commander",
+    "Sokenzan, Crucible of Defiance"
+   ],
+   "bottleneck": {
+    "position": 2,
+    "n": 1,
+    "cards": [
+     "Sokenzan, Crucible of Defiance"
+    ]
+   },
+   "availability_by_turn_three": 0.0185,
+   "verified_by": [],
+   "stamp": "◆",
+   "id": "L39"
+  },
+  {
+   "events": [
+    "DIES",
+    "TOKEN",
+    "BODIES",
+    "DAMAGE"
+   ],
+   "terminal": "DAMAGE",
+   "from": "ignition",
+   "to": "wincon",
+   "via": [
+    "Mogg War Marshal",
+    "Pashalik Mons"
+   ],
+   "carries": "DIES › TOKEN › BODIES › DAMAGE",
+   "hops": [
+    {
+     "cards": [
+      "Abrade",
+      "Goblin Bombardment",
+      "Siege-Gang Commander",
+      "Untimely Malfunction"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
     },
     {
      "cards": [
-      "Goblin Sharpshooter",
+      "Mogg War Marshal",
       "Pashalik Mons"
      ],
      "tokens": [],
      "stocks": [],
      "n": 2,
      "by_turn_three": 0.174
+    },
+    {
+     "cards": [],
+     "tokens": [
+      "token:r_1_1_goblin"
+     ],
+     "stocks": [],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [],
+     "tokens": [],
+     "stocks": [
+      "BODIES"
+     ],
+     "n": 0,
+     "by_turn_three": 1.0
+    },
+    {
+     "cards": [
+      "Broadside Bombardiers",
+      "Goblin Bombardment",
+      "Pashalik Mons",
+      "Siege-Gang Commander"
+     ],
+     "tokens": [],
+     "stocks": [],
+     "n": 4,
+     "by_turn_three": 0.321
     }
    ],
-   "instances": 632,
+   "starts": 4,
    "cards": [
+    "Abrade",
     "Broadside Bombardiers",
-    "Dragon Fodder",
-    "Electroduplicate",
-    "Empty the Warrens",
-    "Fable of the Mirror-Breaker // Reflection of Kiki-Jiki",
-    "Fountainport",
-    "General Kreat, the Boltbringer",
     "Goblin Bombardment",
-    "Goblin Chieftain",
-    "Goblin Instigator",
-    "Goblin Lackey",
-    "Goblin Matron",
-    "Goblin Sharpshooter",
-    "Heat Shimmer",
-    "Idol of Oblivion",
-    "Krenko's Command",
-    "Krenko, Mob Boss",
-    "Molten Duplication",
+    "Mogg War Marshal",
     "Pashalik Mons",
-    "Purphoros, God of the Forge",
     "Siege-Gang Commander",
-    "Skirk Prospector",
-    "Twinflame",
-    "Zada, Hedron Grinder"
+    "Untimely Malfunction"
    ],
    "bottleneck": {
     "position": 1,
     "n": 2,
     "cards": [
-     "General Kreat, the Boltbringer",
-     "Purphoros, God of the Forge"
+     "Mogg War Marshal",
+     "Pashalik Mons"
     ]
    },
-   "availability_by_turn_three": 0.0135,
+   "availability_by_turn_three": 0.018,
    "verified_by": [],
    "stamp": "◆",
    "id": "L40"
@@ -18870,16 +18277,15 @@
    "kind": "single_consumer",
    "event": "ATTACK",
    "severs": [
-    "L07",
-    "L08",
-    "L20",
-    "L21",
-    "L23",
-    "L25",
-    "L35",
-    "L36",
-    "L37",
-    "L38"
+    "L09",
+    "L10",
+    "L11",
+    "L28",
+    "L30",
+    "L31",
+    "L33",
+    "L34",
+    "L36"
    ]
   },
   {
@@ -18887,10 +18293,8 @@
    "kind": "single_consumer",
    "event": "COMBAT_DAMAGE",
    "severs": [
-    "L22",
-    "L24",
-    "L27",
-    "L28"
+    "L29",
+    "L35"
    ]
   }
  ],

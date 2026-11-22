@@ -1767,7 +1767,7 @@
       var ids = stackIds(l), proved = ids.length > 0;
       var head = v2
         ? esc((l.events || []).join(' › ')) +
-          (l.instances > 1 ? ' <span class="ev">' + l.instances + ' ways</span>' : '')
+          (l.starts > 1 ? ' <span class="ev">' + l.starts + ' starts</span>' : '')
         : esc(l.from) + ' → ' + esc(l.to) + (l.carries ? ' <i>(' + esc(l.carries) + ')</i>' : '');
       var via = v2 && l.via && l.via.length ? ' <span class="ev">' + esc(l.via.join(', ')) + '</span>' : '';
       return '<span class="chip">' + (proved ? '✓' : '·') + '</span> ' + head + via +
