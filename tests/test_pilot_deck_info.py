@@ -562,3 +562,87 @@ def test_write_never_reads_the_clock_but_the_print_path_does(bare_deck, capsys, 
                                       as_json=True))
     shown = json.loads(capsys.readouterr().out)
     assert any("DTI is 45 days old" in n for n in shown["next"])
+
+
+# ── The handbook's stamps (2026-11-22) ──────────────────────────────────────
+
+
+def _handbook_deck(tmp_path):
+    """A deck whose list is V3; its mulligan prose was written for V3, its
+    procedures for V2, and its captain's-log read cites one game on V2 and names
+    a card that left at V3."""
+    base = tmp_path / "decks" / "hb"
+    base.mkdir(parents=True)
+    cur, old = "c" * 64, "b" * 64
+    (base / "cards.json").write_text(json.dumps({
+        "deck": "hb", "decklist_sha256": cur,
+        "cards": [{"name": "Shabraz, the Skyshark", "is_commander": True},
+                  {"name": "Swiftfoot Boots"}, {"name": "Island"}]}))
+    (base / "manual_prose.json").write_text(json.dumps(
+        {"mulligan": "keep lands", "decklist_sha256_prefix": cur[:12]}))
+    (base / "poh_procedures.json").write_text(json.dumps(
+        {"emergency": {}, "decklist_sha256_prefix": old[:12]}))
+    (base / "captains_log.json").write_text(json.dumps({
+        "read_meta": {"as_of_sha": old,
+                      "games_considered": [{"id": "001", "current": True},
+                                           {"id": "002", "current": True}]},
+        "read": {"mindful_of": [
+            "Cast Shabraz on curve (002).",
+            "Lightning Greaves on the shark the turn he lands (001, 002).",
+            "Swiftfoot Boots is back; put it on him (002).",
+            "A lesson that cites no game."]}}))
+    vdoc = {"current_version": 3,
+            "versions": [
+                {"version": 1, "decklist_sha256s": ["a" * 64], "out": [], "log_ids": []},
+                {"version": 2, "decklist_sha256s": [old], "out": ["Swiftfoot Boots"],
+                 "log_ids": ["001", "002"]},
+                {"version": 3, "decklist_sha256s": [cur], "out": ["Lightning Greaves"],
+                 "log_ids": []}]}
+    return base, vdoc
+
+
+def test_the_handbook_block_stamps_each_prose_file_against_the_list(tmp_path):
+    """Each authored file says which list it was written for; the block compares
+    that stamp to the list on disk ONCE so the page draws a chip and never decides
+    freshness itself. A file with no stamp is stamped for nothing, not for now."""
+    from manamap.pilot import deck_info
+
+    base, vdoc = _handbook_deck(tmp_path)
+    hb = deck_info._handbook("hb", base, vdoc)
+    assert hb["list_version"] == 3
+    assert hb["prose"] == {"written_for": "c" * 12, "current": True, "version": 3}
+    assert hb["procedures"] == {"written_for": "b" * 12, "current": False, "version": 2}
+    assert hb["tutors"] is None, "no file is None, never a stamp"
+    assert hb["read"]["current"] is False and hb["read"]["version"] == 2
+    # The read's games are placed against the list ON DISK, not the list the read
+    # was merged on: both were "current" at the merge, neither is now.
+    assert (hb["read"]["games_on_this_list"], hb["read"]["games_older"]) == (0, 2)
+
+
+def test_a_lesson_naming_a_card_that_left_is_marked_with_the_version_it_left_at(tmp_path):
+    """The captain's-log read coaches from older lists on purpose; what the page
+    owes the pilot is WHICH lessons still describe a card in the sleeves. A card that
+    left and came back is not gone; a card that left at V3 is named with V3."""
+    from manamap.pilot import deck_info
+
+    base, vdoc = _handbook_deck(tmp_path)
+    tips = deck_info._handbook("hb", base, vdoc)["read"]["tips"]
+    assert [t["games"] for t in tips] == [["002"], ["001", "002"], ["002"], []]
+    assert all(t["on_current_list"] is False for t in tips)
+    assert tips[1]["names_gone"] == [{"card": "Lightning Greaves", "left_at": 3}]
+    assert tips[2]["names_gone"] == [], "Swiftfoot Boots left at V2 and is back in the list"
+    assert tips[0]["names_gone"] == [], "a commander's short name is not a cut card"
+
+    # Reintroduce the bug: a game on the current list reads as current.
+    vdoc["versions"][2]["log_ids"] = ["002"]
+    tips = deck_info._handbook("hb", base, vdoc)["read"]["tips"]
+    assert tips[0]["on_current_list"] is True and tips[3]["on_current_list"] is False
+
+
+def test_the_handbook_block_is_composed_for_a_bare_deck(bare_deck):
+    """No prose, no log: every block is None and the list stamp is still there."""
+    from manamap.pilot import deck_info
+
+    hb = deck_info.compose(SLUG)["handbook"]
+    assert hb["list_sha"] == "x"[:12]
+    assert all(hb[k] is None for k in ("prose", "procedures", "tutors", "read"))

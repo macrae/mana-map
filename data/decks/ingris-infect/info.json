@@ -81,7 +81,7 @@
       },
       {
         "stage": "sim",
-        "what": "OPTIONAL Forge probe (2026-10-04): the decision loop is `try`; Forge answers narrow questions — does the AI play this card",
+        "what": "OPTIONAL Forge probe (2026-10-04): a study decides, `try` is the goldfish's read; Forge answers narrow questions — does the AI play this card",
         "how": "manamap pilot forge-cast-check ingris-infect --card \"<name>\""
       }
     ]
@@ -92,8 +92,8 @@
       "name": "draw-v1",
       "opened": "2026-09-10",
       "why": "CARD ADVANTAGE, ON TOP OF lands-v1 (this list carries its two fetches and the Swamp). deck-audit reads five draw copies against a target of ten. Skullclamp in: fifteen of the deck's infect bodies have one toughness, so every equip draws two, and it is the one activation docs/gotchas-bench.md shows Forge's AI actually uses (1.25 activations per cast, against 0.00 for Ashnod's Altar) -- the goldfish cannot read it and the record will. Read the Bones and Dark Confidant in as draw the goldfish CAN read. Out: Combat Celebrant and Staff of Compleation, the two cards the 55-card leave-one-out sweep ranked least needed among the non-interaction, both of whose real value is in an activation or an extra combat the model does not price; and Ogre Menial, a four-mana 3/3 the sweep found worth 0.001 of kill_by_8. Objective on the draw axis the goldfish sees; Skullclamp's share is Forge's to measure.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-11-05: Abandoned, cleared by the pilot 2026-11-05 ('clean up old/abandoned feature bran",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -821,6 +821,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 6,
         "fell": 1,
         "no_call": 3
@@ -894,8 +895,8 @@
       "name": "lands-v1",
       "opened": "2026-09-10",
       "why": "THE MANA BASE, FIRST. deck-audit reads 33 lands against a 36-38 target and mana-fit reads black short by one source and red over by seven, on a deck whose commander costs {B}{R}{R} and whose 21 infect bodies are almost all black. Two rocks out (Fellwar Stone, Talisman of Indulgence), two OWNED black-fetching lands in (Verdant Catacombs, Evolving Wilds): 35 lands, four rocks, the black gap closed, red trimmed by two. The cuts are the two cards a 55-card leave-one-out sweep (6,000 iterations each) could price with the least of its blindness: the sweep ranked Phyrexian Arena, Deadly Dispute and Demonic Tutor as the least needed, which is the goldfish saying it cannot see what card advantage or a tutor does against an unopposed 40 -- those stay. Objective: fewer missed land drops by turn five, with kill_by_8 held (0.80) as the control.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-11-05: Abandoned, cleared by the pilot 2026-11-05 ('clean up old/abandoned feature bran",
       "proposal": null,
       "pull_list": {
         "buy": [],
@@ -1602,6 +1603,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 3,
         "fell": 0,
         "no_call": 7
@@ -1668,8 +1670,8 @@
       "name": "prot-v1",
       "opened": "2026-09-10",
       "why": "PROTECTION, ON TOP OF draw-v1. deck-audit reads two protection copies (Greaves, Boots) against five to seven, on a deck whose whole plan sits on one three-drop commander every table will point removal at. THE GOLDFISH CANNOT SEE THIS AXIS -- nothing is ever removed there -- so the objective is the CONTROL: the clock must hold, and the audit's count is the evidence for the change. In: Deflecting Swat (free with the commander out, redirects the removal or the wipe's one target), Mithril Coat (flash, attaches itself to a legendary on entry: instant-speed indestructible for Ingris), Feign Death (one mana, she comes back tapped rather than to the command zone). Out: Glistening Oil, Phyresis and Tainted Strike -- infect grants on a list where twenty-one creatures already carry infect, which the 55-card leave-one-out sweep priced at +0.004 each (nothing). Corpus sweep in identity: the free-with-a-commander pair is Swat and Deadly Rollick; the dies-return family is Feign Death / Undying Malice / Supernatural Stamina / Not Dead After All / Malakir Rebirth (in); the equipment is Mithril Coat / Champion's Helm / Whispersilk Cloak / Darksteel Plate.",
-      "state": "OPEN",
-      "state_why": "no proposal — this is an experiment, not a decision",
+      "state": "REJECTED",
+      "state_why": "rejected 2026-11-05: Abandoned, cleared by the pilot 2026-11-05 ('clean up old/abandoned feature bran",
       "proposal": null,
       "pull_list": {
         "buy": [
@@ -1690,13 +1692,15 @@
               "edgar-vampires",
               "goblin-storm",
               "sharknado",
-              "ur-dragon"
+              "ur-dragon",
+              "valgavoth"
             ]
           },
           {
             "name": "Mithril Coat",
             "where": [
-              "ur-dragon"
+              "ur-dragon",
+              "valgavoth"
             ]
           }
         ],
@@ -1932,6 +1936,13 @@
               "locked": true,
               "status": null,
               "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
+              "status": null,
+              "apart": false
             }
           ],
           "free": false,
@@ -2146,6 +2157,13 @@
               "kind": "deck",
               "slug": "ur-dragon",
               "locked": true,
+              "status": null,
+              "apart": false
+            },
+            {
+              "kind": "deck",
+              "slug": "valgavoth",
+              "locked": false,
               "status": null,
               "apart": false
             }
@@ -2456,6 +2474,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 5,
         "fell": 1,
         "no_call": 4
@@ -2528,6 +2547,15 @@
       }
     }
   ],
+  "studies": [],
+  "handbook": {
+    "list_sha": "8fee61eb5aa6",
+    "list_version": 1,
+    "prose": null,
+    "procedures": null,
+    "tutors": null,
+    "read": null
+  },
   "diagnostic": null,
   "bracket": {
     "floor": 3,
@@ -2845,7 +2873,57 @@
   "open_questions": [],
   "simulation": null,
   "experiments": null,
-  "decisions": null,
+  "decisions": {
+    "count": 3,
+    "awaiting_outcome": [],
+    "latest": [
+      {
+        "id": "001",
+        "at": "2026-11-05T10:57:41-08:00",
+        "kind": "reject",
+        "branch": "draw-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "extra_cards_8",
+          "grade": "met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "002",
+        "at": "2026-11-05T10:57:42-08:00",
+        "kind": "reject",
+        "branch": "lands-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "land_drop",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      },
+      {
+        "id": "003",
+        "at": "2026-11-05T10:57:43-08:00",
+        "kind": "reject",
+        "branch": "prot-v1",
+        "as_version": null,
+        "predicted": {
+          "endpoint": "kill_by_8",
+          "grade": "not met",
+          "forge_delta": null,
+          "forge_ci95": null,
+          "pod": null
+        },
+        "realised": null
+      }
+    ]
+  },
   "next": [
     "broken down for parts — the play/measure loop is closed for this deck (broken-down); its artifacts stay as published. Suggestions to log a game, simulate or run an experiment are withheld",
     "1 artifact(s) fail their own gate (combos) — `deck-status ingris-infect` names them; fix before anything else reads them",

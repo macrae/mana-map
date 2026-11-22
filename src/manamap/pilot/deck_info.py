@@ -6,6 +6,9 @@ MAP OF THIS FILE (in order):
                     questions, and each open branch's state, bill and pull list.
   ── The engine, said in one word ──  ENGINE_HEALTH_BANDS, `engine_health`: the
                     cover sheet's word, or None with a reason.
+  _handbook         which list each authored prose block (mulligan, procedures,
+                    tutor guide, the captain's-log read) was written for, and
+                    which lessons name a card that has since left the list.
   compose           PUBLIC ENTRY: the whole view as one dict; `verify=True` runs
                     the validators (off means unknown, never clean).
   _simulation / _stale_words  the latest Forge run and whether it measured THIS
@@ -392,6 +395,122 @@ def _dti_block(slug):
     return dti.info_block(dti.load(slug), measured_sha(slug))
 
 
+# ── The handbook's stamps: which list each prose block was written for ──
+#
+# The deck page's Play-it chapter (2026-11-22) renders the mulligan, the
+# procedures, the threat read and the log's lessons. Each of those files carries
+# the sha of the list it was written against; this block compares every stamp
+# to the list on disk ONCE, in Python, so the page draws a chip and never
+# recomputes a freshness it could get wrong. A lesson that names a card the
+# list no longer holds is marked here too — `versions.json`'s `out` lists say
+# which cards ever left and at which version — because a tip about Swiftfoot
+# Boots on a list without one coaches a card that is not there.
+
+#: The prose artifacts, by the key the page reads them under. Each carries its
+#: stamp as `decklist_sha256_prefix` (the agents' hand-off field) or, on an
+#: older file, `decklist_sha256`; a file with neither is stamped for nothing.
+HANDBOOK_FILES = (("prose", "manual_prose.json"),
+                  ("procedures", "poh_procedures.json"),
+                  ("tutors", "tutor_guide.json"))
+STAMP_FIELDS = ("decklist_sha256_prefix", "decklist_sha256")
+
+_TIP_GAME_RE = None
+
+
+def _tip_games(text):
+    """The log ids a tip cites, as the captain's-log charter writes them: `(009)`,
+    `(004, 005)`. A bare three-digit figure outside parentheses is not a cite."""
+    import re
+    global _TIP_GAME_RE
+    if _TIP_GAME_RE is None:
+        _TIP_GAME_RE = re.compile(r"\((\d{3}(?:,\s*\d{3})*)\)")
+    out = []
+    for m in _TIP_GAME_RE.finditer(text or ""):
+        for gid in m.group(1).split(","):
+            gid = gid.strip()
+            if gid not in out:
+                out.append(gid)
+    return out
+
+
+def _names_gone(text, gone):
+    """Which cards that LEFT the list a line names. `gone` maps a card name to the
+    version it last left at. A legendary is matched on its full name or on the
+    part before the comma, so "Mako" does not match and "Marauding Mako" does."""
+    import re
+    hits = []
+    for name, left_at in gone.items():
+        short = name.split(",")[0].strip()
+        for probe in {name, short}:
+            if len(probe) >= 5 and re.search(r"(?<![\w'])" + re.escape(probe) + r"(?![\w'])", text or ""):
+                hits.append({"card": name, "left_at": left_at})
+                break
+    return sorted(hits, key=lambda h: h["card"])
+
+
+def _stamp(written_for, current_sha, versions):
+    """One prose block's stamp against the list on disk."""
+    if not written_for:
+        return {"written_for": None, "current": None, "version": None}
+    version = next((v["version"] for v in versions
+                    if any(s.startswith(written_for) for s in v.get("decklist_sha256s") or [])),
+                   None)
+    return {"written_for": written_for[:12],
+            "current": bool(current_sha) and current_sha.startswith(written_for),
+            "version": version}
+
+
+def _handbook(slug, base, vdoc):
+    """Every authored prose block the page renders, stamped against the list."""
+    current_sha = (load_json(base / "cards.json") or {}).get("decklist_sha256") or ""
+    versions = vdoc.get("versions") or []
+    current_version = vdoc.get("current_version")
+    out = {"list_sha": current_sha[:12] or None, "list_version": current_version}
+    for key, fname in HANDBOOK_FILES:
+        doc = load_json(base / fname)
+        written = next((doc.get(f) for f in STAMP_FIELDS if doc and doc.get(f)), None)
+        out[key] = _stamp(written, current_sha, versions) if doc else None
+
+    picard = load_json(base / "captains_log.json")
+    if not picard:
+        out["read"] = None
+        return out
+    meta = picard.get("read_meta") or {}
+    read = picard.get("read") or {}
+    stamp = _stamp(meta.get("as_of_sha"), current_sha, versions)
+    # WHICH GAMES ARE ON THIS LIST, against the list on disk rather than the
+    # list the read was merged on: the join `versions.report` already made.
+    on_list = set()
+    for v in versions:
+        if v["version"] == current_version:
+            on_list.update(v.get("log_ids") or [])
+    cited_games = [g["id"] for g in meta.get("games_considered") or []]
+    # The cards that ever left, each with the LAST version it left at; a card
+    # that came back is not gone.
+    in_list = set()
+    for c in (load_json(base / "cards.json") or {}).get("cards") or []:
+        in_list.add(c.get("name"))
+        in_list.add(str(c.get("name") or "").split(" // ")[0])
+    gone = {}
+    for v in versions:
+        for name in v.get("out") or []:
+            if name not in in_list:
+                gone[name] = v["version"]
+            else:
+                gone.pop(name, None)
+    tips = []
+    for text in read.get("mindful_of") or []:
+        games = _tip_games(text)
+        tips.append({"games": games,
+                     "on_current_list": any(g in on_list for g in games),
+                     "names_gone": _names_gone(text, gone)})
+    out["read"] = {**stamp,
+                   "games_on_this_list": sum(1 for g in cited_games if g in on_list),
+                   "games_older": sum(1 for g in cited_games if g not in on_list),
+                   "tips": tips}
+    return out
+
+
 def compose(slug, verify=False, ladder=True, today=None):
     """The workbench view. `verify` RUNS THE GATES, and costs about two seconds.
 
@@ -584,6 +703,10 @@ def compose(slug, verify=False, ladder=True, today=None):
         # first — the call, who decided, the pilot's words. The page leads with the
         # latest one; the goldfish's read of a branch follows it, never the reverse.
         "studies": _deck_branch_studies(slug),
+        # THE HANDBOOK'S STAMPS (2026-11-22): which list the mulligan, the
+        # procedures, the tutor guide and the captain's-log read were written
+        # for, and which of the read's lessons name a card that has since left.
+        "handbook": _handbook(slug, base, vdoc),
         # THE VITALS. Composed like everything else here; `diagnose --write` owns
         # the figures. It is not a lifecycle stage for the same reason `sim` is
         # not — optional, and adding one would mark twelve decks newly incomplete.
@@ -1208,6 +1331,17 @@ def _print(info):
         print(f"  studies    {len(studies)} · latest {s['id']} {s['decision']} ({by})"
               + (f" on `{s['branch']}`" if s.get("branch") else "")
               + f" — {str(s.get('question') or '')[:60]}")
+    hb = info.get("handbook") or {}
+    words = []
+    for key in ("prose", "procedures", "tutors", "read"):
+        b = hb.get(key)
+        if not b:
+            continue
+        words.append(f"{key} {'current' if b.get('current') else 'written for V' + str(b.get('version') or '?')}")
+    stale_tips = sum(1 for t in (hb.get("read") or {}).get("tips") or [] if t["names_gone"])
+    if words:
+        print(f"  handbook   {' · '.join(words)}"
+              + (f" · {stale_tips} lesson(s) name a card that left" if stale_tips else ""))
     g = info["goldfish"]
     if g:
         gl = f"commander mean t{g['commander_mean_cast_turn']} ({g['commander_cast_by_turn_6_pct']}% by t6)"

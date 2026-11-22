@@ -327,7 +327,10 @@ def gather_entries():
                             "deckcheck",
                             # A ★ rating on file (2026-10-20): the workbench fetches
                             # rating.json for its grade chip only where one exists.
-                            "rating")}
+                            "rating",
+                            # The handbook's authored half (2026-11-22): the deck
+                            # page's Play-it chapter fetches it where it exists.
+                            "poh_procedures")}
         has["log"] = (deck_path / "log.jsonl").exists()
         # The Deck Context (PRD v2): the deck page renders it first, and fetches
         # cards.json beside it for the Cards-by-role filter only when it exists.
