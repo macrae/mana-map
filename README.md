@@ -127,7 +127,7 @@ returns arbitrary same-colour cards. Linked from the shared nav on every page.
   read, then answered.
 - `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved with
   Comprehensive Rules citations and adversarially checked. The ✓ tier.
-- `/analyze-engine` — the deck's machine as eight stages, solid where a stack proves a line.
+- `/engine-reading` — the engineer's reading over the COMPUTED engine graph (`engine-graph`, 2026-11-22): the thesis, the lines that matter, an override with a why.
 - `/write-manual` + `/poh-procedures` → `build-poh` — the notes a person writes, then the
   handbook.
 
@@ -324,7 +324,7 @@ where a deck stands and what to do next; start with both.
 | `manamap pilot bracket-check <slug>` | Computed bracket floor + its evidence | **yes** |
 | `manamap pilot goldfish <slug>` | Resource curves from 10k seeded games | **yes** |
 | `manamap pilot deck-map <slug>` | The constellation: local layout + clusters | **yes** |
-| `/analyze-engine` | The engine: stages, lines, what a stack actually proves | no |
+| `/engine-reading` | The reading over the computed engine graph: thesis, named lines, overrides, what the parser could not see | no |
 | `/resolve-stack` | A verified line: resolver → validator → adversarial checker | no |
 | `manamap pilot deck-audit <slug>` | 16 cited axes plus engine activation | **yes** |
 | `manamap pilot model-coverage <slug>` | What the model cannot see, before the games: seen / dark / invisible | **yes** |

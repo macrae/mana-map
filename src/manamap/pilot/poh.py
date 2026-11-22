@@ -257,7 +257,7 @@ def render_general(d):
     e = d["engine"]
     if not e:
         return absent("General", "no engine.json — the schematic and the purpose "
-                      "are read from the engine model.", f"/analyze-engine {d['slug']}")
+                      "are read from the engine model.", f"manamap pilot engine-graph {d['slug']} --write, then /engine-reading {d['slug']}")
     body = f'<p>{esc(_reading(e).get("thesis") or "")}</p>' + schematic(e)
     absent_stages = e.get("absent_stages") or []
     if absent_stages:
@@ -499,7 +499,7 @@ def card_ref(name, card):
 def render_systems(d):
     e = d["engine"]
     if not e:
-        return absent("Systems", "no engine.json.", f"/analyze-engine {d['slug']}")
+        return absent("Systems", "no engine.json.", f"manamap pilot engine-graph {d['slug']} --write, then /engine-reading {d['slug']}")
     cards = {c["name"]: c for c in expand_copies(d["cards"].get("cards") or [])}
     seen_art = set()
     out = ""

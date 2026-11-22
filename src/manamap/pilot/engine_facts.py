@@ -208,9 +208,31 @@ def build(slug):
                     "cards": region.get("cards", []),
                 }
 
+    record = load_json(base / "engine.json") or {}
+    graph = None
+    if (record.get("_meta") or {}).get("v") == 2:
+        # THE COMPUTED RECORD (2026-11-22), summarised for the reader of this brief:
+        # the engineer's job is the words over it, so the brief says what it holds.
+        graph = {
+            "components": [{"id": c["id"], "event": c["event"], "producers": c["redundancy"]["producers"],
+                            "consumers": c["redundancy"]["consumers"], "thin": c["thin"],
+                            "from_opponent": c.get("from_opponent", False), "from_turn": c.get("from_turn", False),
+                            "by_turn_three": ((c.get("activation") or {}).get("producers") or {}).get("odds", {}).get("by_turn_three")}
+                           for c in record.get("components") or []],
+            "lines": [{"id": l["id"], "events": l["events"], "starts": l.get("starts"), "stamp": l["stamp"],
+                       "verified_by": l["verified_by"], "via": l.get("via")}
+                      for l in (record.get("lines") or [])[:12]],
+            "spof": record.get("spof") or [],
+            "coverage": record.get("coverage") or {},
+            "stages": {s["stage"]: len(s["cards"]) for s in record.get("stages") or []},
+            "unassigned": record.get("unassigned") or [],
+            "reading": {k: (record.get("reading") or {}).get(k) for k in ("written_for", "stale", "thesis")},
+        }
+
     return {
         "slug": slug,
         "decklist_sha256": deck.get("decklist_sha256"),
+        "graph": graph,
         "engine_declaration": {
             "targets": [t.get("label") for t in targets.get("targets", [])],
             "note": targets.get("_note"),
@@ -227,13 +249,24 @@ def build(slug):
                 "scatter": component_scatter(engine, deck_map)},
         "declared_engines": frame.get("engines", []),
         "roles": {c["name"]: roles.get(c["name"], []) for c in cards},
-        "notes": _notes(engine, pairings, deck_names),
+        "notes": _notes(engine, pairings, deck_names, graph),
     }
 
 
-def _notes(engine, pairings, deck_names):
+def _notes(engine, pairings, deck_names, graph=None):
     """The traps, named — the same service `deck-facts.notes[]` performs."""
     notes = []
+    if graph:
+        cov = graph.get("coverage") or {}
+        notes.append(
+            f"engine.json is a COMPUTED record (v2): {len(graph['components'])} components, "
+            f"{sum(1 for l in graph['lines'] if l['verified_by'])}/{len(graph['lines'])} listed lines "
+            f"stack-stamped, {len(graph['spof'])} single point(s) of failure; {len(cov.get('partial') or [])} "
+            f"card(s) partly read and {len(cov.get('unmapped_forge_names') or [])} Forge name(s) unmapped. "
+            f"You write the `reading` over it and nothing else — `engine-graph <slug>` prints it whole.")
+    else:
+        notes.append(
+            "No v2 engine.json: run `manamap pilot engine-graph <slug> --write` before reading the engine.")
     n = len(pairings["pairs"])
     if not n:
         notes.append(

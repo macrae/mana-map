@@ -73,7 +73,7 @@ was deleted from the code.
 | find the cards that would fix an axis | `card-search` + `deck-audit` — 16 cited axes, then deterministic mining over the corpus, filtered by what you own | ◆ |
 | know what the field actually plays | `deck-recon` — dated web reconnaissance, every card verified in-identity and legal | ★ dated |
 | know what is **true** about a line | `/resolve-stack` — a board (authored, or **lifted from a simulated game**) resolved with CR citations and adversarially checked | ✓ |
-| understand the machine | `analyze-engine` — eight stages, solid where a stack proves a line, dashed where it is a reading | ✓◆★ |
+| understand the machine | `engine-graph` — the engine COMPUTED as typed events between cards, from their Forge scripts (2026-11-22); `/engine-reading` writes the words over it | ◆✓★ |
 | know where a deck stands | `deck-info <slug>` — the whole join, and a derived **next** | ◆ |
 | keep the list honest across swaps | `deck-version` — every list from git, joined to the games played on it | ◆ |
 | remember what happened at the table | `deck-notes add` → `/debrief` → `/prescribe` | authored → ★ → ◆★ |
@@ -132,7 +132,7 @@ owns each figure.
 list, Forge as a probe (`forge-cast-check`, and `simulate`, `experiment`, `sim-scenario`
 when a question needs a table), the deterministic builder, `card-search`,
 `deck-audit`, `deck-info`, `deck-version`, `deck-notes`/`/debrief`/`/prescribe`,
-`/resolve-stack`, `analyze-engine`, `deck-recon`, the card atlas, the deck page, the
+`/resolve-stack`, `engine-graph`, `deck-recon`, the card atlas, the deck page, the
 **workbench landing page** and the **Pilot's Operating Handbook**
 (`build-poh` → `manuals/p/`).
 

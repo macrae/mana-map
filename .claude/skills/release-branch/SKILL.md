@@ -63,7 +63,7 @@ no sourcing gate, no order list, nothing to reconcile before the merge.
 5. **The deck's own artifacts.** `prices <slug> --write` (the merge leaves the old list's
    prices, INVALID); `deck-info <slug> --write`; `build-poh <slug>`; `build-index`.
    `deck-status <slug>` should now list only what was red before plus the agent files the
-   merge genuinely stales (engine, tutors, prose) — those wait for `/analyze-engine` and
+   merge genuinely stales (engine, tutors, prose) — those wait for `/engine-reading` and
    pilot-notes, and the commit message names them.
 
 6. **Check, then the merge commit.** `make check-deck SLUG=<slug>` (~1 min).
@@ -112,4 +112,4 @@ no sourcing gate, no order list, nothing to reconcile before the merge.
   leaving a stamped list under stale prose and a stale grade.
 - Never `cache-record` to green a board; never hand-patch an agent's prose.
 - The engine model, tutor guide and prose go stale on every merge and are agent work
-  (`/analyze-engine`, pilot-notes) — name them in the merge commit, do not block on them.
+  (`/engine-reading`, pilot-notes) — name them in the merge commit, do not block on them.

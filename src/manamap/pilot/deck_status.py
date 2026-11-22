@@ -3,7 +3,7 @@
 WHY THIS EXISTS. The deck lifecycle is eighteen skills and forty-four subcommands,
 and until now nothing said what a COMPLETE deck looks like. Each phase knew its
 own inputs; none knew the sequence. So a capability added in one development cycle
-— `deck-map`, its naming pass, `analyze-engine` — was reachable only by somebody
+— `deck-map`, its naming pass, `engine-reading` — was reachable only by somebody
 who remembered it existed, and a deck built the following month silently inherited
 the old pipeline instead.
 
@@ -37,7 +37,7 @@ from manamap.pilot.common import deck_dir, load_json, presentable, report_errors
 # the single statement of. So the command travels with the stage, and every
 # surface renders what it is given.
 #
-# A stage advanced by an agent names its SKILL (`/analyze-engine`), because that
+# A stage advanced by an agent names its SKILL (`/engine-reading`), because that
 # is the honest instruction — there is no subcommand that writes an engine model.
 # A stage that is authored says so instead of naming a command that cannot exist.
 #: WHICH SIMULATOR WROTE IT (2026-10-21): the stage's path to the goldfish model
@@ -74,8 +74,8 @@ STAGES = [
      "/research-strategy — MODE consult, on {slug}"),
     ("map",        "deck_map.json",          "decklist_sha256",      False, "the constellation — `deck-map`",
      "manamap pilot deck-map {slug}"),
-    ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — `analyze-engine` loop",
-     "/analyze-engine {slug}"),
+    ("engine",     "engine.json",            "decklist_sha256",      False, "how it RUNS — computed, then `/engine-reading`",
+     "manamap pilot engine-graph {slug} --write, then /engine-reading {slug}"),
     ("stacks",     "stacks/",                None,  False, "checker-passed lines: the only fact tier",
      "/resolve-stack — one board, one rules domain, cited"),
     # `decklist_sha256` and its two spellings, same as the frame: the guide is

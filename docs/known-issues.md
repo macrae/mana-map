@@ -1883,13 +1883,10 @@ read. `meta.card_advantage.draw_not_modelled` excludes death-read cards since 20
 the per-card state does not yet consult `draw.unmodelled` or `death.unreadable`. The fix
 is a fifth state or a wider "partial", with the fleet `silent_losses` test extended.
 
-## 30. `/analyze-engine` still writes a v1 `engine.json`, which `validate-engine` v2 refuses (2026-11-22)
+## 30. `/analyze-engine` wrote a v1 `engine.json` that `validate-engine` v2 refused (2026-11-22; RESOLVED the same day)
 
-`engine.json` is v2 since 2026-11-22: the computed graph (`engine-graph --write`) plus an
-authored `reading`. The `deck-engineer` charter and the `/analyze-engine` skill still produce
-the v1 shape — agent-placed stages and `lines[]` with `from`/`to`/`via` — and
-`validate-engine` refuses a file without `_meta.v = 2`, naming the migration command. Until
-the loop moves onto the graph (the `/engine-reading` skill: step 0 `engine-graph --write`,
-the engineer writes only `reading`, the critic attacks the reading against the graph), do
-not run `/analyze-engine`; the eleven migrated files carry each deck's last v1 thesis, line
-notes and critic verdict as their first reading, marked `stale` where the list has moved.
+For the hours between the v2 migration and the loop's rewrite, the `deck-engineer` charter and
+the `/analyze-engine` skill still produced the v1 shape — agent-placed stages and `lines[]`
+with `from`/`to`/`via` — which `validate-engine` refuses. Resolved: `/engine-reading` replaces
+the skill (step 0 `engine-graph --write`; the engineer writes only `reading`; the critic attacks
+the reading against the graph), both charters rewritten. Kept as a record of the gap.

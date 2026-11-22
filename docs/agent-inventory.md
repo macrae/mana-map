@@ -36,8 +36,8 @@ Every one opens by reading `.claude/agents-common.md` (the shared contract);
 | `deck-architect` | `build_plan.json` | `build-deck` | keep → Auto-Build |
 | `deck-critic` | adversarial verifier for build plans | `build-deck` | keep → Auto-Build's verify loop |
 | `deck-doctor` | `deck_recon.json`, `diagnosis.json`, `prescriptions/`, branch objectives — four modes, 421 lines, the largest charter | `diagnose-deck`, `prescribe` | keep → Scout (recon) + Build (diagnose) |
-| `deck-engineer` | `engine.json` | `analyze-engine`, `publish-deck` | keep → Build |
-| `engine-critic` | adversarial verifier for `engine.json` | `analyze-engine`, `publish-deck` | keep → Build's verify loop |
+| `deck-engineer` | `engine.json`'s `reading` (the record is computed by `engine-graph`, 2026-11-22) | `engine-reading`, `publish-deck` | keep → Build |
+| `engine-critic` | adversarial verifier for the `reading` against the computed record | `engine-reading`, `publish-deck` | keep → Build's verify loop |
 | `deck-skeptic` | adversarial verifier for diagnoses and prescriptions | `diagnose-deck`, `prescribe` | keep → Build's verify loop |
 | `deck-rater` | the `judgment` component of `rating.json` — a 0–100 sub-score at a fixed weight, a ≤250-word argument, citations that resolve; never a measured component (added 2026-10-18). `sla_s: 180`, Sonnet | `rate-deck`, `rate-fleet` | keep → Build (★ over ◆) |
 | `rating-skeptic` | adversarial verifier for a rating: re-diffs the scorecard, re-reads every citation against its whole source, names `too-generous` / `too-harsh` with a figure (added 2026-10-18). `sla_s: 120`, Sonnet | `rate-deck`, `rate-fleet` | keep → Build's verify loop |
@@ -84,7 +84,7 @@ Deck-facing, and the ones a consolidation has to re-home:
 | `rate-deck` | deck-rater ⇄ rating-skeptic | the rating loop (2026-10-18): the scorecard first, the judgment merged and validated, the skeptic, `cache-record` last; `rate-fleet` runs it over every live Commander deck and settles the ranks |
 | `release-branch` | context-keeper, deck-rater ⇄ rating-skeptic | the release of a SLEEVED deck's branch, end to end (2026-10-19): net-change → propose `--as` on a study → merge on the pilot's word that the list is in the sleeves (no sourcing gate, 2026-11-22) → `validate-goldfish-targets` and the repair → regen → the Keeper → prices → check-deck → the merge commit → `deck-version tag` + `paper` → DeckCheck Bulk Edit, rescan, `deckcheck --write` → `/rate-deck` and the bracket settled. Written after goblin-storm's release skipped the tag, the lock and the rating |
 | `prescribe` | deck-doctor (MODE prescribe) ⇄ deck-skeptic | |
-| `analyze-engine` | deck-engineer ⇄ engine-critic | |
+| `engine-reading` | deck-engineer ⇄ engine-critic over `engine-graph --write` (replaced `analyze-engine` 2026-11-22) | |
 | `resolve-stack` | stack-resolver ⇄ rules-checker | max 3 iterations |
 | `write-manual` | deck-analyst → strategy-researcher → pilot-notes | its build half renders the handbook (`build-poh`) since the magazine was deleted |
 | `author-decision` | pilot-notes | step 5 rebuilds the handbook (`build-poh`) |

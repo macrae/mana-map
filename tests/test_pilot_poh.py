@@ -169,7 +169,7 @@ def test_a_missing_artifact_renders_as_a_stated_absence():
     indistinguishable from one nobody wrote.
 
     THE DECK IS FOUND, NOT NAMED. This used to hardcode zur-enchantress, which
-    required that deck to keep having no engine model: running `/analyze-engine`
+    required that deck to keep having no engine model: running `/engine-reading`
     on it — the thing `deck-status` has been telling us to do — would have
     reddened the suite. Any deck in the same state proves the same thing, and
     if the fleet is complete there is nothing here to prove.
@@ -185,7 +185,7 @@ def test_a_missing_artifact_renders_as_a_stated_absence():
     html = _rendered(slug)
     assert "not available" in html, (
         f"{slug} has no engine.json and its handbook does not say so")
-    assert "analyze-engine" in html, (
+    assert "engine-reading" in html, (
         f"{slug}'s handbook states the absence without naming the command that "
         f"fixes it — absent must be actionable, not just honest")
 

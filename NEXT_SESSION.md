@@ -33,7 +33,7 @@ PreToolUse guard refuses a second one, and `make jobs` / `make reap` show and cl
   index's roles ARE those roles — and `regions_cardbert.json` had already been re-clustered
   in e01e4d2e. DATA_VERSION 16, busts v=273.
 - **Sharknado v2.3.0 (2026-11-05).** draw-engine-v1 merged on proxies, tagged and locked.
-  Left to do: /analyze-engine, pilot-notes (tutor guide and prose), the frame, a /debrief
+  Left to do: /engine-reading, pilot-notes (tutor guide and prose), the frame, a /debrief
   re-run for game 004 (three strict xfails come off then), and his DeckCheck paste and rescan.
 - **The decks (2026-10-30, later).** Sharknado stacks 013 (Needlehead + Gratuitous
   Violence: 14 per opponent) and 014 (Brallin + Needlehead on one wheel: 10 per opponent,

@@ -216,7 +216,7 @@ components withheld on every deck, and the rating cannot move until they land.
 
 0. **The fleet's own next moves** (above): sharknado torbran-v1 at the table and, on the
    pilot's word, `net-change` then merge; goblin-storm `deck-version paper` when all
-   thirteen cards are sleeved, then `/analyze-engine` and pilot-notes to clear its stale
+   thirteen cards are sleeved, then `/engine-reading` and pilot-notes to clear its stale
    `engine.json` / `tutor_guide.json` (the ten red regression tests on main since the v1.1.0
    merge are these); Edgar's mean-v1 discussion. `/rate-fleet` again once games are logged.
 1. **Finish the context reviews** (the PRD's Step 4). Verdicts go through a review page; a

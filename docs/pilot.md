@@ -2494,8 +2494,8 @@ stacks via `build_index.line_cards`, the contained combo lines deduped on `froze
 **scatter table** so the agent starts from the disagreement rather than discovering it.
 Computed on demand, never committed.
 
-`/analyze-engine` runs `deck-engineer` ⇄ `engine-critic`, gated by `validate-engine`, into an
-eight-stage model: `mana · ignition · fuel · fodder · conversion · output · protection ·
+`/analyze-engine` (RETIRED 2026-11-22; the loop is `/engine-reading`, below) ran `deck-engineer` ⇄
+`engine-critic`, gated by `validate-engine`, into an eight-stage model: `mana · ignition · fuel · fodder · conversion · output · protection ·
 wincon`. Not every deck has all eight — radagast has no `fodder` because nothing in the 99
 sacrifices, and saying so is a finding.
 
@@ -2526,6 +2526,17 @@ is the critic's job. Do not close it with string matching — the same wrong lin
 rephrase.
 
 ### The engine, computed (`engine-graph`, `engine.json` v2) — 2026-11-22
+
+**One model (Phase 2).** `goldfish_targets.json` keeps every `model_*` flag authored and gains an
+opt-in: `"targets_from": "engine.json"` plus a `components` block — `required` component ids,
+`routes`, `overrides` (`{component, add, drop, why}`) and `authored_targets` (the pilot's own groups,
+kept verbatim). `engine-graph --write` then regenerates `targets[]` from the components
+(`scaffold_targets.derive_from_engine`: one target per consumed event outside the substrate, a
+producer leg and a deck-fed consumer leg; a consumer leg that was only the commander becomes
+`commander: true`), followed by the authored ones; `validate-goldfish-targets` refuses a generated
+target that differs from a fresh derivation. `deck-audit`'s engine rows carry the `component` id;
+`engine_casts.engine_set` is the components' producers and deck-fed consumers. A deck without
+`targets_from` is byte-identical — switching one is the pilot's call, deck by deck (`regen --slug`).
 
 `docs/research/engine-model.md` is the argument; `manamap pilot engine-graph <slug> [--branch B]
 [--json] [--write] [--abilities [CARD …]]` is the code. **An engine is a graph of typed events

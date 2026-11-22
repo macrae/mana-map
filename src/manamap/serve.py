@@ -1160,7 +1160,7 @@ def _branch_axes(slug=None):
 # not a measurement of the command.)
 #
 # What is NOT here, deliberately: `simulate` (45-62 minutes of Forge), every
-# agent loop (`/analyze-engine`, `/resolve-stack` — the cheapest measured
+# agent loop (`/engine-reading`, `/resolve-stack` — the cheapest measured
 # routine is 54.5k tokens and `candidate-pool` is 235k), and the authored files
 # (`goldfish_targets.json`, `issue.json`), which are judgements a person makes
 # rather than work a machine does. The dossier prints THOSE as text and names

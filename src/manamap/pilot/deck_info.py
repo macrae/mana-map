@@ -1158,10 +1158,10 @@ def _next(info, today=None):
     if info["diagnosis"] and info["diagnosis"]["stale"]:
         nxt.append(f"diagnosis.json describes an older list — `/diagnose-deck {slug}`")
     if info["engine"] and info["engine"]["critic"] != "pass":
-        nxt.append(f"engine.json's critic verdict is {info['engine']['critic']!r} — `/analyze-engine {slug}`")
+        nxt.append(f"engine.json's critic verdict is {info['engine']['critic']!r} — `/engine-reading {slug}`")
     if info["engine"] and info["engine"].get("reading_stale"):
-        nxt.append(f"engine.json's reading was written for another list — `/analyze-engine {slug}` rewrites it "
-                   f"over the computed graph"),
+        nxt.append(f"engine.json's reading was written for another list — `/engine-reading {slug}` rewrites it "
+                   f"over the computed graph")
     routed = [q for q in info["open_questions"] if q.get("settled_by")]
     if routed:
         by = {}

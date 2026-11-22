@@ -175,7 +175,7 @@ def test_no_agent_artifact_names_a_card_the_deck_does_not_run():
     assert checked >= 1, "no sleeved deck has an engine model to check"
     assert not bad, "\n".join(
         ["a sleeved deck's engine model names cards it no longer runs "
-         "(re-run /analyze-engine, then `install-agent --routine deck-engine`):"]
+         "(re-run /engine-reading, then `install-agent --routine deck-engine`):"]
         + bad)
 
 

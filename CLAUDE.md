@@ -169,7 +169,7 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board ->
 
 # ── AGENTS (Claude Code skills, 29 in .claude/skills/, 30 charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
-# /analyze-engine /build-deck /debrief /captains-log /sim-debrief /poh-procedures
+# /engine-reading /build-deck /debrief /captains-log /sim-debrief /poh-procedures
 # /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents) /print-proxies
 # /rate-deck /rate-fleet — the rating loop (deck-rater ⇄ rating-skeptic): ★ coaching over ◆ inputs, within a bracket
 # /release-branch — a sleeved deck's branch into the sleeves: measure, propose, merge, Keeper, commit, tag + paper, DeckCheck, re-rate

@@ -57,7 +57,7 @@ re-laid-out from its own cards and clustered into cities. Naming them
 (`deck-cartographer` → `merge-deck-map`) is **optional** — the deterministic fallback
 names are honest, and it is not a `deck-status` stage.
 
-**5 — Engine it.** `/analyze-engine` — `deck-engineer` ⇄ `engine-critic`, gated by
+**5 — Engine it.** `manamap pilot engine-graph <slug> --write` computes the record; `/engine-reading` — `deck-engineer` ⇄ `engine-critic` over its `reading`, gated by
 `validate-engine`. **This is where the clusters become an input rather than an
 answer.** A card is clustered by what it SAYS; an engine is what cards DO TO EACH
 OTHER, and on radagast only 4 of 10 declared components sit in a single city. Expect a
@@ -181,7 +181,7 @@ the gates above, not in anyone's memory.
   named for the job their cards do. Ward not average linkage (average put 37 of 71
   cards in one city); city count grown until the largest holds under 35%; territories
   drawn per neighbourhood because a spread city's hull swallowed the map.
-- **`analyze-engine`** — the eight-stage model. It caught a prescription for the
+- **`engine-reading`** (was `analyze-engine`) — the reading over the computed graph. It caught a prescription for the
   losing board, three arrows between stages containing neither endpoint, and two
   citations pointing at stacks that showed the opposite.
 - **The legacy renderer's lints** — internal taxonomy ids in reader copy (68

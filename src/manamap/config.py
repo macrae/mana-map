@@ -1736,13 +1736,15 @@ AGENT_ROUTINES = {
     "deck-engine": {
         "agent": "deck-engineer+engine-critic",
         "artifact": "engine.json",
-        # `deck:deck_map.json?` is optional and `stacks:passing` is not: the map is
-        # an input the model may contradict, but the verified pairings are its only
-        # fact tier, so a newly passing stack must MISS this routine — it may be the
-        # thing that turns a dashed line solid.
-        "inputs": ["cards:semantic", "stacks:passing",
-                   "deck:goldfish_targets.json", "deck:deck_map.json?",
-                   "deck:strategic_frame.json?", "global:COMBO_DETAILS_PATH"],
+        # THE READING OVER A COMPUTED RECORD (2026-11-22). The routine owns ONLY the
+        # `reading` block of engine.json: `artifact_keys` makes the cache digest that
+        # block alone, so `engine-graph --write` recomputing the record never reads as
+        # a hand edit, and `deck:engine.json!reading` makes the computed record the
+        # engineer's input — a list change or a parser change MISSes the routine
+        # through it. `stacks:passing` stays: a newly passing stack stamps a line.
+        "artifact_keys": ["reading"],
+        "inputs": ["cards:semantic", "stacks:passing", "deck:engine.json!reading",
+                   "deck:goldfish_targets.json", "deck:strategic_frame.json?"],
     },
     "deck-map-names": {
         "agent": "deck-cartographer",
