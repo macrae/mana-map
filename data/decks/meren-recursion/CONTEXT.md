@@ -164,6 +164,7 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **The goldfish — one instrument.** It reads 88 of 97 distinct cards (1 DARK, 8 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on V25, 2026-11-14. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
@@ -217,6 +218,12 @@ V24 (2026-11-13). A weakness review, not a game. Graveyard hate and a lack of Me
 2026-11-14 (budget-v2). Bayou and Survival of the Fittest were too expensive, so the budget versions came in. Fauna Shaman is back after V19 took it out for Formidable Speaker: the Speaker is a tutor on entering, the Shaman is one every turn. No games are logged on it yet.
 
 Earlier calls still standing: the pilot turned down Ancient Tomb (another Game Changer) and Gravecrawler (a two-card infinite with Phyrexian Altar).
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study meren-recursion new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

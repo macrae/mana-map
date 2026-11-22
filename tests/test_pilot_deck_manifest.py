@@ -63,6 +63,10 @@ MANIFEST_KEYS = {
     # grade, `as_version`, `measured` per branch, and the open count, so the
     # landing page can show the live branch and link it.
     "branches", "branches_open",
+    # THE STUDIES (2026-11-21): count, how many open, and the latest row — the
+    # call, who decided, the pilot's words — so the landing page leads with the
+    # decision and not with an instrument's word.
+    "studies",
     # WHICH FORMAT (2026-10-09, the first 60-card deck): "commander" for the
     # fleet, written out because a generated file owes the browser a key
     # rather than a convention. `commander` is null when the format has none.

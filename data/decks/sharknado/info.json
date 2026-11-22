@@ -892,6 +892,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 1,
         "fell": 10,
         "no_call": 5
@@ -1764,6 +1765,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 12,
         "fell": 3,
         "no_call": 1
@@ -2809,6 +2811,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 3,
         "fell": 11,
         "no_call": 2
@@ -3901,6 +3904,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 0,
         "fell": 14,
         "no_call": 2
@@ -5040,6 +5044,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 0,
         "fell": 15,
         "no_call": 1
@@ -6255,6 +6260,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 1,
         "fell": 15,
         "no_call": 0
@@ -7566,6 +7572,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 0,
         "fell": 15,
         "no_call": 1
@@ -8966,6 +8973,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 2,
         "fell": 13,
         "no_call": 1
@@ -10467,6 +10475,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 0,
         "fell": 16,
         "no_call": 0
@@ -12014,6 +12023,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 1,
         "fell": 12,
         "no_call": 3
@@ -14748,6 +14758,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 2,
         "fell": 11,
         "no_call": 3
@@ -16195,6 +16206,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 2,
         "fell": 11,
         "no_call": 3
@@ -17625,6 +17637,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 3,
         "fell": 12,
         "no_call": 1
@@ -17828,6 +17841,7 @@
       ]
     }
   ],
+  "studies": [],
   "diagnostic": {
     "harness": {
       "version": 2,
@@ -18995,9 +19009,9 @@
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "branch `jaws-v1` needs 8 card(s) sourced — `manamap pilot deck-branch sharknado source jaws-v1`",
+    "branch `jaws-v1` has no study — `manamap pilot study sharknado new \"<question>\" --branch jaws-v1`, then add the agents' answers, call, install",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",
-    "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised",
-    "try a swap in seconds — `try sharknado --out \"A\" --in \"B\"`"
+    "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

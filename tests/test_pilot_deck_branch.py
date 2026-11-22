@@ -804,7 +804,9 @@ def test_a_branch_row_carries_what_a_reader_chooses_by_and_absent_stays_absent(m
     row = deck_branch.one("md", "b")
     assert row["objective"] == {"axis": "kill_by_8", "op": ">=", "value": 0.7}
     assert row["objective_grade"] == {"state": "met", "reading": 0.74, "shortfall": None}
-    assert row["verdict"] == {"state": "a trade", "rose": 2, "fell": 1, "no_call": 1}
+    # `word` (2026-11-21) is the descriptive read of either vocabulary, for the pages.
+    assert row["verdict"] == {"state": "a trade", "word": "guard met, rows fell", "rose": 2, "fell": 1, "no_call": 1}
+    assert "study" not in row, "no study on this branch — absent, never an empty row"
     assert row["measured"] is True and "measured_why" not in row
     assert row["blind_spots"] == ["Goblin Guide"]
     # THE MEASURED IMPACT (2026-10-20): names, not counts, and the headline rows

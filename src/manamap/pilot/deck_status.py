@@ -672,16 +672,25 @@ def fleet_files():
     return out
 
 
-def fleet():
+def fleet(live=False):
     """One row per deck. Nine decks and no way to ask "what is outstanding
     everywhere" is the other half of the problem `pending.json` exists for —
     `deck-status` answered it one slug at a time, so nobody ever asked it nine
-    times and the fleet picture lived only in a hand-kept PLAN.md table."""
+    times and the fleet picture lived only in a hand-kept PLAN.md table.
+
+    `live` (2026-11-21) skips the decks `regen.is_retired` skips — broken down,
+    retired, superseded — whose artifacts are a record nothing regenerates. That
+    is the view `make precommit` takes: a gate red on history is a gate nobody
+    reads, which the tracked-artifact test learned first."""
     from manamap.config import DECKS_DIR
     from manamap.pilot.validate_pending import summarise
     out = []
     for path in sorted(DECKS_DIR.glob("*/cards.json")):
         slug = path.parent.name
+        if live:
+            from manamap.pilot.regen import is_retired
+            if is_retired(slug):
+                continue
         rows = status(slug)
         # Name the ARTIFACT, not the stage: a gate row has no stage and reported as
         # "FAILS ITS GATE: —", which tells a reader nothing about what to fix.
@@ -711,11 +720,12 @@ def fleet():
 
 
 def _fleet_main(args):
-    rows = fleet()
+    live = bool(getattr(args, "live", False))
+    rows = fleet(live=live)
     if getattr(args, "as_json", False):
         print(json.dumps({"decks": rows}, indent=2))
         return
-    print(f"FLEET STATUS — {len(rows)} decks\n")
+    print(f"FLEET STATUS — {len(rows)} {'live ' if live else ''}decks\n")
     print(f"  {'deck':18}{'stages':>9}{'stale':>7}{'FAIL':>6}{'queued':>8}   notes")
     for r in rows:
         q = r["pending_open"] + r["pending_partial"]
@@ -737,7 +747,13 @@ def _fleet_main(args):
     print("\n  FLEET FILES")
     for artifact, ok, detail in files:
         print(f"  {'OK  ' if ok else 'FAIL'} {artifact:24} {detail}")
-    errors = [f"{r['slug']}: {st} is STALE" for r in rows for st in r["stale"]]
+    # STALE IS A STATE, INVALID IS A DEFECT. The live view (`make precommit`) reds only
+    # on a gate that fails: a strategic frame or an engine model written for an older
+    # list is agent work waiting for a spawn — "a scheduling decision that should be
+    # visible in the tree rather than a red suite everyone learns to scroll past"
+    # (tests/test_pilot_tracked_artifacts_validate.py) — and it is listed above.
+    errors = ([] if live else
+              [f"{r['slug']}: {st} is STALE" for r in rows for st in r["stale"]])
     errors += [f"{r['slug']}: {bad} FAILS its validator" for r in rows for bad in r["invalid"]]
     errors += [f"{artifact} FAILS its validator" for artifact, ok, _d in files if not ok]
     report_errors("fleet status", errors,

@@ -120,6 +120,10 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **DeckCheck (external, dated):** 44/96 → bracket 3, as of 2026-11-11
+- **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-20
+- **Proven lines:** 14 of 14 stack scenario(s) checker-passed (✓)
+- **The goldfish — one instrument.** It reads 87 of 97 distinct cards (4 DARK, 6 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **68%**
@@ -173,6 +177,12 @@ The first six games were all on lists before v3.0.0 (the record block counts eve
   - **Protection is for the A team.** "Just because I didn't need protection last night with the B team DOES NOT mean the deck doesn't need it, when I play with the A team, I will always need it." [Deflecting Swat](https://manamap.seanmacrae.com/viz/index.html?cards=Deflecting+Swat) and [Flawless Maneuver](https://manamap.seanmacrae.com/viz/index.html?cards=Flawless+Maneuver) sit in his hand a long time because Edgar costs six. The branch swaps them for protection that needs no commander: Boros Charm, Selfless Spirit and Giver of Runes.
   - **Removal is where the deck gets fangs: "blood in, blood out".** The branch adds Crackling Doom and Toxic Deluge. [Olivia's Wrath](https://manamap.seanmacrae.com/viz/index.html?cards=Olivia%27s+Wrath) is out there because it kills the branch's own non-Vampire engines.
   - **Lands.** "We need to be running 35 or 36 lands." The sleeved list is at 35 and the branch is back at 35.
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study edgar-vampires new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

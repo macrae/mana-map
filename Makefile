@@ -74,6 +74,16 @@ PYTEST_ARGS ?=
 test:  ## THE UNIT TIER: no tracked data, ~1 min — the inner loop (a bare pytest)
 	$(PYTEST) $(PYTEST_ARGS)
 
+# THE COMMIT GATE (2026-11-21). The long tier went red three times in one day on
+# things a minute finds: composed status files behind their inputs, derived deck
+# artifacts left stale by a swap, a gate failing on one deck. Those two preflights
+# run first and the unit tier after; the regression tier runs ONCE per push batch
+# (`make prepush`), never per commit. Under three minutes on eight cores.
+precommit:  ## THE COMMIT GATE: restamp --check + deck-status --all + the unit tier, ~3 min — per commit; `prepush` is per push
+	$(MANAMAP) pilot restamp --check
+	$(MANAMAP) pilot deck-status --all --live
+	$(PYTEST) $(PYTEST_ARGS)
+
 # The proof that the unit tier IS one: the same tests against an EMPTY data dir.
 # A unit test that fails or skips here reads tracked data and must be marked
 # `regression` (tests/test_tiers.py holds the classifier to its rules).

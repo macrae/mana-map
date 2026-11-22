@@ -2,6 +2,8 @@
 
 ```bash
 make test                 # UNIT: no tracked data — the inner loop          ~1 min
+make precommit            # THE COMMIT GATE (2026-11-21): restamp --check + deck-status --all --live + unit  ~3 min
+                          #   per commit; the regression tier runs ONCE per push batch, via prepush
 make test-unit-isolated   # the unit tier against an EMPTY data dir — proves it
 make regression           # REGRESSION: the tracked fleet + corpus, then the fleet regen alone
 make integration          # INTEGRATION: browser, Forge, pages byte-identical

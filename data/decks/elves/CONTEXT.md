@@ -103,6 +103,12 @@ None of V2's plan has a measured figure. There is no kill turn, no finisher dens
 
 No games are logged for this deck yet, so there is nothing to recount. The first games should show whether the elves untap as planned, whether the sorcery finishers get found, and whether the deck folds to the first sweeper. They will be folded in here by log id.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study elves new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 <!-- ctx:gen history -->

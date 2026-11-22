@@ -85,6 +85,9 @@ A five-colour base with a lot of untapped duals. Special ones: [Cavern of Souls]
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **DeckCheck (external, dated):** 35/96 → bracket 3, as of 2026-10-18
+- **Proven lines:** 8 of 9 stack scenario(s) checker-passed (✓)
+- **The goldfish — one instrument.** It reads 76 of 97 distinct cards (3 DARK, 18 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.3.0 (V6), 2026-09-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **32%**
@@ -132,6 +135,12 @@ The pilot's own words are the source here. The record above has the tally; games
 **Table.** The pilot's pods run little to no white. Token decks are common.
 
 **Pilot wishes from the old feedback.** Bracket 4 was approved in July. The pilot keeps coming back to Wrathful Red Dragon and Hellkite Tyrant (neither is in the 99 now).
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study ur-dragon new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

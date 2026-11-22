@@ -63,6 +63,9 @@ Mostly Islands, plus a few colourless utility lands. [Island](https://manamap.se
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **DeckCheck (external, dated):** 30/96 → bracket 2, as of 2026-10-19
+- **Proven lines:** 3 of 3 stack scenario(s) checker-passed (✓)
+- **The goldfish — one instrument.** It reads 55 of 67 distinct cards (0 DARK, 12 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **100%**
@@ -98,6 +101,12 @@ He felt like a threat and held his own through most of the game, in his words: "
 - **It is slow.** The game ran long, like most precon games. A deck that wins by building up will always be in a long game at this table.
 
 Pattern to watch as games come in: does the Thopter crowd get through in the air before the table's wide boards get big?
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study keen-engineering new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

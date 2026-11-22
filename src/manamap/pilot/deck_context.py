@@ -60,6 +60,10 @@ SECTIONS = (
     ("numbers", "Numbers", "numbers", None),
     ("pilot", "Pilot notes", "record",
      "A compact summary of the games: recurring patterns, links to log ids."),
+    # THE STUDIES (2026-11-21): every decided question about the deck — the call, who
+    # decided, the pilot's words. Generated only; a refresh inserts the section into
+    # a file written before it existed.
+    ("studies", "Studies", "studies", None),
     ("history", "Change history", "history",
      "What we tried, what happened, and why we think so — the history worth keeping."),
     ("questions", "Open questions", "queue",
@@ -68,7 +72,7 @@ SECTIONS = (
     ("changelog", "Context changelog", None, None),
 )
 SECTION_KEYS = tuple(s[0] for s in SECTIONS)
-GEN_BLOCKS = ("summary", "numbers", "record", "history", "queue")
+GEN_BLOCKS = ("summary", "numbers", "record", "studies", "history", "queue")
 PLACEHOLDER = "_(to be written)_"
 
 #: The sections that describe the list on disk, so every card they name must be in
@@ -218,12 +222,49 @@ def _combos_line(slug, info):
             f" · {near} one card short")
 
 
+def _instruments_head(slug, info):
+    """THE INSTRUMENTS, DATED, BEFORE ANY GOLDFISH FIGURE (2026-11-21): DeckCheck's
+    read, the recon's date, the proven stacks, and what share of the 99 the goldfish
+    can see at all. The block used to open on the goldfish and be about 80% goldfish;
+    the pilot's standing rule is that it is one instrument among these."""
+    base = deck_dir(slug)
+    out = []
+    dc = info.get("deckcheck") or {}
+    if dc.get("score") is not None:
+        out.append(f"- **DeckCheck (external, dated):** {dc['score']}/{dc.get('max_score')} → bracket "
+                   f"{dc.get('bracket')}, as of {dc.get('as_of')}"
+                   + (" — an older list" if dc.get("stale_list") else ""))
+    recon = load_json(base / "deck_recon.json") or {}
+    if recon.get("as_of"):
+        out.append(f"- **Recon (other people's lists, dated):** {len(recon.get('findings') or [])} finding(s) "
+                   f"as of {recon['as_of']}")
+    stacks = sorted((base / "stacks").glob("[0-9][0-9][0-9]-*.json")) if (base / "stacks").is_dir() else []
+    if stacks:
+        passed = sum(1 for p in stacks if ((load_json(p) or {}).get("checker") or {}).get("verdict") == "pass")
+        out.append(f"- **Proven lines:** {passed} of {len(stacks)} stack scenario(s) checker-passed (✓)")
+    if info.get("format"):
+        return out                                      # Commander-only: the block says so itself
+    try:
+        from manamap.pilot import model_coverage
+        rep = model_coverage.analyze(slug)
+        c = rep["counts"]
+        out.append(f"- **The goldfish — one instrument.** It reads {c['seen'] + c['partial']} of {rep['distinct']} "
+                   f"distinct cards ({c['dark']} DARK, {c['invisible']} invisible); no blockers, no removal, "
+                   f"no opponents. Its figures below are inputs to a study, never the call.")
+    except Exception:                                   # noqa: BLE001 — no corpus, no coverage line
+        out.append("- **The goldfish — one instrument.** No blockers, no removal, no opponents; its figures "
+                   "below are inputs to a study, never the call.")
+    return out
+
+
 def _block_numbers(slug, info, report):
-    """The goldfish headline, the engine's assembly rate, mana, and Forge — dated."""
+    """The instruments, dated: DeckCheck, the recon, the proven stacks, then the
+    goldfish LAST under its own asterisk — its headline, the engine's assembly
+    rate, mana, and Forge."""
     base = deck_dir(slug)
     gm = load_json(base / "goldfish_metrics.json") or {}
     meta = gm.get("meta") or {}
-    out = []
+    out = _instruments_head(slug, info)
     if info.get("format"):
         # Commander-only, and the reason is the model block's own — see
         # `deck_info._goldfish_block`. "Run goldfish" would refuse here.
@@ -333,7 +374,15 @@ def _block_history(slug, report, limit=8):
             grade = pred.get("grade")
             why = e.get("forced_reason") or (pred.get("objective") or {}).get("why") or ""
             bit = f"  - {e['kind']} `{e.get('branch')}`"
-            if pred.get("endpoint"):
+            study = pred.get("study") or {}
+            if study.get("id"):
+                # THE DECISION, IN THE PILOT'S TERMS (2026-11-21): the study and who decided;
+                # the guard's grade, if any, follows as the instrument's read.
+                bit += (f": study {study['id']} **{study.get('decision')}** — decided by "
+                        f"{', '.join(study.get('decided_by') or []) or '—'}")
+                if pred.get("endpoint"):
+                    bit += f"; the goldfish read the guard {pred['endpoint']} as {grade or '?'}"
+            elif pred.get("endpoint"):
                 bit += f": objective {pred['endpoint']}" + (f" read **{grade}**" if grade else "")
             if e.get("outcome"):
                 bit += f"; realised: {str(e['outcome'].get('realised'))[:80]}"
@@ -349,6 +398,30 @@ def _block_history(slug, report, limit=8):
     return "\n".join(out)
 
 
+def _block_studies(info, limit=8):
+    """Newest first: the call, who decided, the question, the pilot's words."""
+    rows = info.get("studies") or []
+    slug = info["slug"]
+    if not rows:
+        return (f"- No studies yet — a question to Jarvis opens one "
+                f"(`manamap pilot study {slug} new \"<question>\" [--branch B]`).")
+    out = []
+    for s in rows[:limit]:
+        by = ", ".join(s.get("decided_by") or []) or "—"
+        line = (f"- **{s['id']} {s.get('decision', 'open')}** ({by}) — {str(s.get('question') or '')[:140]}"
+                + (f" · on `{s['branch']}`" if s.get("branch") else "")
+                + (f" · {s.get('decided_at')}" if s.get("decided_at") else " · open"))
+        saw = s.get("goldfish_saw")
+        if saw and saw[1]:
+            line += f" · goldfish saw {saw[0]}/{saw[1]} named cards"
+        if s.get("pilot_words"):
+            line += f" · “{str(s['pilot_words'])[:120]}”"
+        out.append(line)
+    if len(rows) > limit:
+        out.append(f"- … {len(rows) - limit} earlier: `manamap pilot study {slug} list`")
+    return "\n".join(out)
+
+
 def render_generated(slug):
     """`{block: text}` — every generated block, from the artifacts that own it."""
     from manamap.pilot import deck_info, deck_versions, queue
@@ -359,6 +432,7 @@ def render_generated(slug):
         "summary": _block_summary(slug, info),
         "numbers": _block_numbers(slug, info, report),
         "record": _block_record(info),
+        "studies": _block_studies(info),
         "history": _block_history(slug, report),
         "queue": queue.deck_block(slug),
     }
@@ -434,11 +508,20 @@ def replace_blocks(text, blocks):
         raise ValueError("; ".join(errors))
     text = _GEN_RE.sub(lambda m: _gen(m.group(1), blocks.get(m.group(1), m.group(2))), text)
     present = {m.group(1) for m in _GEN_RE.finditer(text)}
-    for _key, heading, block, _p in SECTIONS:
+    for i, (_key, heading, block, placeholder) in enumerate(SECTIONS):
         if block and block in blocks and block not in present:
             marker = f"\n## {heading}\n"
             if marker in text:
                 text = text.replace(marker, f"{marker}\n{_gen(block, blocks[block])}\n", 1)
+            elif placeholder is None:
+                # A GENERATED-ONLY SECTION THE TEMPLATE GAINED (`studies`, 2026-11-21): a
+                # refresh inserts the whole section before the next heading the file has,
+                # so the eleven existing contexts migrate without a Keeper pass.
+                for _k2, heading2, _b2, _p2 in SECTIONS[i + 1:]:
+                    nxt = f"\n## {heading2}\n"
+                    if nxt in text:
+                        text = text.replace(nxt, f"\n## {heading}\n\n{_gen(block, blocks[block])}\n{nxt}", 1)
+                        break
     return text
 
 

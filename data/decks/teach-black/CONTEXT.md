@@ -82,6 +82,12 @@ All Swamps, so no colour-screw and no ramp to teach here.
 
 Unplayed. No games logged, so nothing to learn from yet.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study teach-black new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 

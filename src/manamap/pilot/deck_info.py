@@ -261,6 +261,15 @@ def _open_questions(base):
     return out
 
 
+def _deck_branch_studies(slug):
+    """The deck's studies as rows, from the one summariser every surface shares."""
+    try:
+        from manamap.pilot import deck_branch
+        return deck_branch.studies_of(slug)
+    except Exception:                                   # noqa: BLE001
+        return []
+
+
 def _branches(slug):
     """Open branches: their state, what each would cost, and the pull list.
 
@@ -571,6 +580,10 @@ def compose(slug, verify=False, ladder=True, today=None):
         # incomplete for something optional — the same argument that keeps `sim`
         # a todo rather than a stage.
         "branches": branches,
+        # THE STUDIES (2026-11-21): every decided question about this deck, newest
+        # first — the call, who decided, the pilot's words. The page leads with the
+        # latest one; the goldfish's read of a branch follows it, never the reverse.
+        "studies": _deck_branch_studies(slug),
         # THE VITALS. Composed like everything else here; `diagnose --write` owns
         # the figures. It is not a lifecycle stage for the same reason `sim` is
         # not — optional, and adding one would mark twelve decks newly incomplete.
@@ -986,7 +999,8 @@ def _next(info, today=None):
                        f"{b['name']} --write`")
         elif b.get("state") == deck_branch.PROPOSED_STALE:
             nxt.append(f"`{b['name']}` was proposed as {as_v} and the list has "
-                       f"changed since — re-run `net-change` and propose again, "
+                       f"changed since — recompute its study's facts (`study {slug} facts <NNN> "
+                       f"--write --force`), read them, and propose again with `--study`, "
                        f"or `deck-branch {slug} withdraw {b['name']}`")
         elif b.get("state") == deck_branch.PROPOSED_OUTRUN:
             nxt.append(f"`{b['name']}` was proposed as {as_v} against "
@@ -998,6 +1012,16 @@ def _next(info, today=None):
         elif b.get("unsourced"):
             nxt.append(f"branch `{b['name']}` needs {len(b['unsourced'])} card(s) sourced — "
                        f"`manamap pilot deck-branch {slug} source {b['name']}`")
+        # A BRANCH WITH NO STUDY HAS NOT BEEN DECIDED ABOUT (2026-11-21): the goldfish
+        # may have read it, but nobody has asked the question in the pilot's words.
+        if (not b.get("study") and not (b.get("proposal") or {}).get("as_version")
+                and str(b.get("state") or "").upper().startswith("OPEN")):
+            nxt.append(f"branch `{b['name']}` has no study — `manamap pilot study {slug} new "
+                       f"\"<question>\" --branch {b['name']}`, then add the agents' answers, call, install")
+    for s in (info.get("studies") or []):
+        if s.get("decision") == "open":
+            nxt.append(f"study {s['id']} is open: {str(s.get('question') or '')[:70]} — "
+                       f"`manamap pilot study {slug} call {s['id']} …`, then `install`")
     if info["prescriptions"]["count"] > info["prescriptions"]["answered"]:
         nxt.append(f"{info['prescriptions']['count'] - info['prescriptions']['answered']} open "
                    f"prescription(s) — `/prescribe {slug}` runs the doctor ⇄ skeptic loop")
@@ -1042,13 +1066,15 @@ def _next(info, today=None):
         info["status"]["todo"].append({
             "stage": "sim", "what": "optional: a Forge probe on a card the goldfish cannot see",
             "how": f"manamap pilot forge-cast-check {slug} --card \"<name>\""})
-    if not closed and not info.get("format"):
-        nxt.append(f"try a swap in seconds — `try {slug} --out \"A\" --in \"B\"`")
+    # NO DEFAULT `try` LINE (2026-11-21). Every live deck's NEXT used to end on "try a
+    # swap in seconds", which made the goldfish the default next step for a deck with
+    # nothing outstanding. A swap is a question for a study; the instrument is one
+    # of its inputs and is offered when a study asks for it, not here.
     if info["bracket"] and info["bracket"].get("within_target") is False:
         nxt.append(f"bracket floor {info['bracket']['floor']} exceeds target "
                    f"{info['bracket']['target']} — `bracket-check {slug}` names the drivers")
     if not nxt:
-        nxt.append("nothing outstanding — ask the doctor something (`/prescribe`) or play it")
+        nxt.append("nothing outstanding — ask Jarvis a question (it opens a study), or play it")
     elif closed and len(nxt) == 1:
         nxt.append("nothing else outstanding — this deck's record is complete as it stands")
     return nxt
@@ -1175,12 +1201,19 @@ def _print(info):
              + (f" · last {r['last_played']}" if r["last_played"] else "")
              + (f" · {len(r['undebriefed'])} un-debriefed" if r["undebriefed"] else ""))
     print(f"  record     {rline}")
+    studies = info.get("studies") or []
+    if studies:
+        s = studies[0]
+        by = ", ".join(s.get("decided_by") or []) or "—"
+        print(f"  studies    {len(studies)} · latest {s['id']} {s['decision']} ({by})"
+              + (f" on `{s['branch']}`" if s.get("branch") else "")
+              + f" — {str(s.get('question') or '')[:60]}")
     g = info["goldfish"]
     if g:
         gl = f"commander mean t{g['commander_mean_cast_turn']} ({g['commander_cast_by_turn_6_pct']}% by t6)"
         if g.get("combat"):
             gl += f" · combat: {g['combat']}"
-        print(f"  goldfish   {gl}")
+        print(f"  goldfish   {gl}   (one instrument; no blockers, no removal)")
         for t in g["targets"][:3]:
             print(f"             {t['by_turn_6_pct']}% by t6  {str(t['label'])[:70]}")
     if info["engine"]:
@@ -1242,11 +1275,16 @@ def _print(info):
             obj = b.get("objective") or {}
             og = (b.get("objective_grade") or {}).get("state")
             vd = b.get("verdict") or {}
+            st = b.get("study") or {}
+            # THE STUDY LEADS THE ROW (2026-11-21); the goldfish's read follows, labelled.
             print(f"   {b['name']:16} {str(b.get('state') or '—'):10} +{b.get('add', 0)} -{b.get('out', 0)}"
-                  + (f"  {obj['axis']} {obj['op']} {obj['value']:g}" if obj.get("axis") else "")
+                  + (f"  · study {st['id']} {st['decision']} ({', '.join(st.get('decided_by') or []) or '—'})"
+                     if st else "  · no study")
+                  + (f"  · goldfish: {vd.get('word') or vd['state']} ({vd['rose']} rose, {vd['fell']} fell)"
+                     if vd.get("state") else "  · goldfish: no read")
+                  + (f"  guard {obj['axis']} {obj['op']} {obj['value']:g}" if obj.get("axis") else "")
                   + (f" → {og}" if og else "")
-                  + (f"  · {vd['state']} ({vd['rose']} rose, {vd['fell']} fell)" if vd.get("state") else "  · unmeasured")
-                  + ("" if b.get("measured", True) else "  · STALE report")
+                  + ("" if b.get("measured", True) else "  · STALE read")
                   + (f"  · Forge {b['cast_proofs']['played']}P/{b['cast_proofs']['held']}H/{b['cast_proofs']['unplayed']}U" if b.get("cast_proofs") else "")
                   + (f"  · stacks {', '.join(h['id'] for h in b['stacks'])}" if b.get("stacks") else "")
                   + (f"  · {b['base_moved']}" if b.get("base_moved") else ""))

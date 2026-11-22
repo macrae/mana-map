@@ -1125,6 +1125,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 3,
         "fell": 7,
         "no_call": 2
@@ -2023,6 +2024,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 4,
         "fell": 0,
         "no_call": 6
@@ -2918,6 +2920,7 @@
       },
       "verdict": {
         "state": "merge",
+        "word": "guard met, nothing fell",
         "rose": 0,
         "fell": 0,
         "no_call": 10
@@ -3924,6 +3927,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 5,
         "fell": 3,
         "no_call": 2
@@ -5037,6 +5041,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 4,
         "fell": 5,
         "no_call": 1
@@ -7350,6 +7355,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 7,
         "fell": 2,
         "no_call": 3
@@ -8597,6 +8603,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 8,
         "fell": 2,
         "no_call": 0
@@ -9836,6 +9843,7 @@
       },
       "verdict": {
         "state": "inconclusive",
+        "word": "guard unresolved",
         "rose": 9,
         "fell": 1,
         "no_call": 0
@@ -11056,6 +11064,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 2,
         "no_call": 1
@@ -13457,6 +13466,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 3,
         "no_call": 0
@@ -14678,6 +14688,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 3,
         "no_call": 0
@@ -15904,6 +15915,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 3,
         "no_call": 0
@@ -17131,6 +17143,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 3,
         "no_call": 0
@@ -18328,6 +18341,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 3,
         "no_call": 0
@@ -19549,6 +19563,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 2,
         "no_call": 1
@@ -19733,6 +19748,7 @@
       ]
     }
   ],
+  "studies": [],
   "diagnostic": {
     "harness": {
       "version": 2,
@@ -20772,9 +20788,9 @@
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
     "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `threat-v1` needs 17 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
+    "branch `threat-v1` has no study — `manamap pilot study edgar-vampires new \"<question>\" --branch threat-v1`, then add the agents' answers, call, install",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
-    "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8",
-    "try a swap in seconds — `try edgar-vampires --out \"A\" --in \"B\"`"
+    "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

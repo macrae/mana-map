@@ -479,12 +479,14 @@ def test_a_60_card_deck_composes_with_its_format_no_commander_and_a_goldfish_rea
     assert head == "ELVESISH — Modern · G · 24 cards (20 lands)"
 
 
-def test_a_commander_deck_carries_no_format_key_and_still_offers_try(bare_deck, capsys):
+def test_a_commander_deck_carries_no_format_key_and_next_has_no_try_default(bare_deck, capsys):
     """The control: the default format is ABSENT, never written — byte identity
-    on every tracked info.json depends on it."""
+    on every tracked info.json depends on it. And NEXT no longer ends on a `try`
+    line (2026-11-21): the goldfish is an input to a study, not the default next step."""
     info = deck_info.compose(SLUG)
     assert "format" not in info
-    assert any("try a swap" in n for n in info["next"])
+    assert not any("try a swap" in n for n in info["next"])
+    assert info["studies"] == []
     assert "sim" in {t["stage"] for t in info["status"]["todo"]}
     deck_info._print(info)
     assert capsys.readouterr().out.splitlines()[0].startswith("INFODECK — Radagast of Rhosgobel · G ·")

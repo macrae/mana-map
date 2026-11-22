@@ -69,6 +69,7 @@ Two colours, Selesnya, with plenty of fixing: [Branchloft Pathway](https://manam
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **The goldfish — one instrument.** It reads 33 of 88 distinct cards (49 DARK, 6 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on V2, 2026-09-21. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **89%**
@@ -84,6 +85,12 @@ Goldfish, 10,000 seeded games, measured on V2, 2026-09-21. Each group below is t
 <!-- /ctx:gen record -->
 
 No games have been logged for this deck. Nothing here comes from play. Everything in How it plays is what the brief and the cards say should happen. The numbers above are goldfish only.
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study emiel-blink new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

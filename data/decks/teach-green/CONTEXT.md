@@ -92,6 +92,12 @@ The deck is unplayed by people. Forge's AI attacks cautiously with it, so how it
 
 No games by people yet. Fill this after the first game against teach-black, noting where beginners stalled on rules (stack, exert, end step, reach) rather than on cards.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study teach-green new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 <!-- ctx:gen history -->

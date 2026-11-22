@@ -67,6 +67,10 @@ Its soft spot is the commander. Lose [Heliod, the Radiant Dawn // Heliod, the Wa
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **DeckCheck (external, dated):** 46/96 → bracket 4, as of 2026-10-18
+- **Recon (other people's lists, dated):** 8 finding(s) as of 2026-11-21
+- **Proven lines:** 2 of 2 stack scenario(s) checker-passed (✓)
+- **The goldfish — one instrument.** It reads 48 of 85 distinct cards (10 DARK, 27 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **88%**
@@ -129,6 +133,12 @@ Recurring pattern: tempo and optics, and now what to do after the commander is r
 - **The fort:** [Sphere of Safety](https://manamap.seanmacrae.com/viz/index.html?cards=Sphere+of+Safety) joins Ghostly Prison and Propaganda. [The Second Doctor](https://manamap.seanmacrae.com/viz/index.html?cards=The+Second+Doctor) is in the 99 already.
 - **Answers and mana:** [Austere Command](https://manamap.seanmacrae.com/viz/index.html?cards=Austere+Command), [Winds of Abandon](https://manamap.seanmacrae.com/viz/index.html?cards=Winds+of+Abandon), [Soul-Guide Lantern](https://manamap.seanmacrae.com/viz/index.html?cards=Soul-Guide+Lantern), and the land pass to thirty-five blue-weighted lands ([Sea of Clouds](https://manamap.seanmacrae.com/viz/index.html?cards=Sea+of+Clouds), [Floodfarm Verge](https://manamap.seanmacrae.com/viz/index.html?cards=Floodfarm+Verge)).
 The branch is a plan, not a result: nothing in it has been played.
+
+## Studies
+
+<!-- ctx:gen studies -->
+- **001 approve** (pilot, deck-doctor, data-analyst, log) — Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change · on `b3-v1` · 2026-11-21 · goldfish saw 0/2 named cards · “ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)”
+<!-- /ctx:gen studies -->
 
 ## Change history
 

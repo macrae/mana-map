@@ -87,6 +87,12 @@ White has no ramp, so the deck cannot show mana ramp itself. The other four deck
 
 Nothing has been played. Everything above is the design intent, not something a game has confirmed. Log the first game against teach-red.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study teach-white new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 <!-- ctx:gen history -->

@@ -386,11 +386,19 @@ def gather_entries():
         info_doc = load_json(deck_path / "info.json", {}) or {}
         branches = [{"name": b.get("name"), "state": b.get("state"), "opened": b.get("opened"),
                      "add": b.get("add"), "out": b.get("out"),
+                     # THE STUDY LEADS (2026-11-21): the call and who decided, before the
+                     # instrument's word; `verdict_word` is the descriptive read of either vocabulary.
+                     "study": b.get("study"),
                      "verdict": (b.get("verdict") or {}).get("state"),
+                     "verdict_word": (b.get("verdict") or {}).get("word"),
                      "objective_grade": (b.get("objective_grade") or {}).get("state"),
                      "as_version": (b.get("proposal") or {}).get("as_version"),
                      "measured": b.get("measured")}
                     for b in (info_doc.get("branches") or []) if isinstance(b, dict) and not b.get("unreadable")]
+        studies_rows = info_doc.get("studies") or []
+        studies = {"count": len(studies_rows),
+                   "open": sum(1 for s in studies_rows if s.get("decision") == "open"),
+                   "latest": (studies_rows[0] if studies_rows else None)}
         entries.append({
             "slug": slug,
             "published": published,
@@ -398,6 +406,7 @@ def gather_entries():
             "has": has,
             "branches": branches,
             "branches_open": sum(1 for b in branches if b.get("state") == "OPEN"),
+            "studies": studies,
             # EVERY NAME IN THE 99 AND THE COMMAND ZONE, both faces of a
             # double-faced card (2026-10-20): the Atlas's "in these decks" pill
             # does an exact `includes` against this, so face-matching stays in

@@ -12,7 +12,8 @@ SHA = "ce0ceaa6adbe2d8c1e51eeef0b90f1697b2421e964cb686032427db861dfe129"
 DECK = ["Shabraz, the Skyshark", "Brallin, Skyshark Rider", "Windfall",
         "Treasure Map // Treasure Cove", "Island"]
 BLOCKS = {"summary": "- v1.2.0", "numbers": "- wheel by T6: **94%**",
-          "record": "- No games logged yet.", "history": "- **v1.2.0 · V7**",
+          "record": "- No games logged yet.", "studies": "- No studies yet.",
+          "history": "- **v1.2.0 · V7**",
           "queue": "- Nothing queued for this deck yet."}
 
 

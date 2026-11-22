@@ -160,6 +160,7 @@ Mostly two-colour duals, a few painlands and filter lands. [Mount Doom](https://
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **The goldfish — one instrument.** It reads 33 of 88 distinct cards (41 DARK, 14 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v0.1.0 (V1), 2026-11-12. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **94%**
@@ -180,6 +181,12 @@ Never played, so nothing here comes from a game. What follows is what Sean decid
 - Budget matters. He rejected Mox Diamond as too expensive. Badlands, Gemstone Caverns and Wheel of Fortune were cut for price, and Magus of the Wheel took the Wheel of Fortune slot.
 - Standing dislikes: go-wide tokens, flat anthems, two-card infinites. Other infinites are fine.
 - The goldfish has no blockers or removal and does not read about half the list. Treat its figures as a floor on the plan, not a verdict.
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study valgavoth new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

@@ -394,6 +394,12 @@ def review(slug, branch, doc=None, src=None):
     m = doc if doc is not None else meta(slug, branch)
     s = src if src is not None else source(slug, branch, proxy=recorded_proxy(m))
     out = {}
+    # THE STUDY FIRST (2026-11-21): the latest decided question about this branch —
+    # the call, who decided, the pilot's words — is what a reader chooses on; the
+    # instrument's read follows it.
+    latest = latest_study(slug, branch)
+    if latest:
+        out["study"] = latest
     obj = m.get("objective") or {}
     if obj.get("axis"):
         out["objective"] = {k: obj.get(k) for k in ("axis", "op", "value", "pod") if obj.get(k) is not None}
@@ -402,7 +408,8 @@ def review(slug, branch, doc=None, src=None):
     nc = load_json(deck_dir(slug, branch) / "net_change.json")
     if nc:
         rec = nc.get("recommendation") or {}
-        out["verdict"] = {"state": rec.get("state"),
+        from manamap.pilot.net_change import state_word  # local: net_change imports this module
+        out["verdict"] = {"state": rec.get("state"), "word": state_word(rec),
                           "rose": len(rec.get("rose") or []), "fell": len(rec.get("fell") or []),
                           "no_call": len(rec.get("no_call") or [])}
         if nc.get("objective_grade"):
@@ -451,6 +458,38 @@ def review(slug, branch, doc=None, src=None):
         if hits:
             out["stacks"] = hits
     return out
+
+
+def study_row(doc):
+    """One study as every surface summarises it: id, question, call, who decided."""
+    call = doc.get("call") or {}
+    cov = doc.get("goldfish_coverage") or {}
+    return {"id": doc.get("id"), "question": doc.get("question"), "branch": doc.get("branch"),
+            "decision": call.get("decision", "open"), "decided_by": list(call.get("decided_by") or []),
+            "pilot_words": call.get("pilot_words"), "decided_at": doc.get("decided_at"),
+            "opened": doc.get("opened"), "swap": doc.get("swap"),
+            "goldfish_saw": ((len(cov.get("seen") or []) + len(cov.get("partial") or []), cov.get("named"))
+                             if cov.get("named") else None)}
+
+
+def studies_of(slug):
+    """Every study of a deck as rows, newest first; [] when there are none."""
+    try:
+        from manamap.pilot import study as st
+        rows = [study_row(d) for d in st.list_studies(slug)]
+    except Exception:                                   # noqa: BLE001 — no deck tree, no studies
+        return []
+    rows.sort(key=lambda r: (r.get("decided_at") or r.get("opened") or "", r.get("id") or ""), reverse=True)
+    return rows
+
+
+def latest_study(slug, branch):
+    """The newest study about one branch, decided ones first; None when none."""
+    rows = [r for r in studies_of(slug) if r.get("branch") == branch]
+    if not rows:
+        return None
+    decided = [r for r in rows if r["decision"] != "open"]
+    return (decided or rows)[0]
 
 
 def stacks_naming(slug, names):

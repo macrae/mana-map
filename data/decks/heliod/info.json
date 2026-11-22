@@ -891,6 +891,29 @@
         }
       ],
       "has_cards": true,
+      "study": {
+        "id": "001",
+        "question": "Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change",
+        "branch": "b3-v1",
+        "decision": "approve",
+        "decided_by": [
+          "pilot",
+          "deck-doctor",
+          "data-analyst",
+          "log"
+        ],
+        "pilot_words": "ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)",
+        "decided_at": "2026-11-21",
+        "opened": "2026-11-21",
+        "swap": {
+          "out": "Flawless Maneuver",
+          "in": "Dawn's Truce"
+        },
+        "goldfish_saw": [
+          0,
+          2
+        ]
+      },
       "summary": {
         "title": "Heliod to bracket three: Approach locked, the table's draws become the kill",
         "blurb": "Keeps Rhystic Study, Smothering Tithe and Mystical Tutor; finds and protects Approach, forces the table to draw so Heliod's discount pays for big X spells, adds two three-card infinites on Smothering Tithe, a firmer pillow fort and a blue-weighted mana base.",
@@ -899,6 +922,7 @@
       },
       "verdict": {
         "state": "no objective",
+        "word": "profile only",
         "rose": 2,
         "fell": 4,
         "no_call": 4
@@ -1663,6 +1687,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 0,
         "fell": 0,
         "no_call": 10
@@ -2416,6 +2441,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 0,
         "fell": 4,
         "no_call": 6
@@ -3172,6 +3198,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 0,
         "fell": 6,
         "no_call": 4
@@ -3909,6 +3936,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 0,
         "fell": 2,
         "no_call": 8
@@ -4660,6 +4688,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 0,
         "fell": 6,
         "no_call": 4
@@ -4736,6 +4765,31 @@
           }
         ]
       }
+    }
+  ],
+  "studies": [
+    {
+      "id": "001",
+      "question": "Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change",
+      "branch": "b3-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "data-analyst",
+        "log"
+      ],
+      "pilot_words": "ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)",
+      "decided_at": "2026-11-21",
+      "opened": "2026-11-21",
+      "swap": {
+        "out": "Flawless Maneuver",
+        "in": "Dawn's Truce"
+      },
+      "goldfish_saw": [
+        0,
+        2
+      ]
     }
   ],
   "diagnostic": {
@@ -5681,8 +5735,7 @@
     "branch `b3-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `b3-v1` needs 21 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
-    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9",
-    "try a swap in seconds — `try heliod --out \"A\" --in \"B\"`"
+    "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

@@ -91,6 +91,9 @@ Green first. [Secluded Courtyard](https://manamap.seanmacrae.com/viz/index.html?
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **DeckCheck (external, dated):** 36/96 → bracket 3, as of 2026-11-06
+- **Proven lines:** 5 of 5 stack scenario(s) checker-passed (✓)
+- **The goldfish — one instrument.** It reads 80 of 93 distinct cards (4 DARK, 9 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.2.0 (V6), 2026-11-06. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **40%**
@@ -132,6 +135,12 @@ Three games are logged, all before v1.2.0. The Record block has the count. The p
 **Molten Echoes.** The pilot found in play that it worked less well with Gishath than he expected, because Gishath's dinosaurs arrive after the attack. That, and a deck that should be creatures through and through, is why it left with Purphoros.
 
 **The pilot's follow-ups.** Close lethal when it is on the board, and protect planeswalkers. Commit attacks when ahead, and pick the real threat at the table to hit.
+
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study gishath new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
 
 ## Change history
 

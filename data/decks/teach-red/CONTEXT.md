@@ -92,6 +92,12 @@ Against teach-white, combat is the thing to watch. The Numbers section says the 
 
 Unplayed. No games yet. The list is calibrated by argument only, and nothing here is proved by play.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study teach-red new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 <!-- ctx:gen history -->

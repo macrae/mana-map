@@ -555,6 +555,9 @@ def add_pilot_parser(subparsers):
             # everywhere" was the other half of the problem `pending.json` fixes.
             cmd.add_argument("--all", action="store_true", dest="all_decks",
                              help="Every deck, one row each, plus fleet totals")
+            cmd.add_argument("--live", action="store_true",
+                             help="--all: only the live decks (skip broken-down, retired, superseded), "
+                                  "the view `make precommit` gates on")
         if name == "validate-pending":
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "card-value":

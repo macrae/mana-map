@@ -89,6 +89,12 @@ The brief for the five teach-* decks is mana ramp, the differences between colou
 
 Things to explain at the table: hexproof on Plumecreed Escort, casting Mystic Restraints before attackers, Merfolk Looter's summoning sickness, and cycling on Curator of Mysteries.
 
+## Studies
+
+<!-- ctx:gen studies -->
+- No studies yet — a question to Jarvis opens one (`manamap pilot study teach-blue new "<question>" [--branch B]`).
+<!-- /ctx:gen studies -->
+
 ## Change history
 
 <!-- ctx:gen history -->

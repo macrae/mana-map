@@ -781,6 +781,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 0,
         "fell": 0,
         "no_call": 11
@@ -1575,6 +1576,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 1,
         "fell": 0,
         "no_call": 10
@@ -2545,6 +2547,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 4,
         "fell": 1,
         "no_call": 6
@@ -3479,6 +3482,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 2,
         "fell": 5,
         "no_call": 4
@@ -4493,6 +4497,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 8,
         "fell": 0,
         "no_call": 3
@@ -5404,6 +5409,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 2,
         "fell": 2,
         "no_call": 7
@@ -6329,6 +6335,7 @@
       },
       "verdict": {
         "state": "do not merge",
+        "word": "guard not met",
         "rose": 7,
         "fell": 2,
         "no_call": 2
@@ -7247,6 +7254,7 @@
       },
       "verdict": {
         "state": "a trade",
+        "word": "guard met, rows fell",
         "rose": 7,
         "fell": 1,
         "no_call": 3
@@ -7328,6 +7336,7 @@
       }
     }
   ],
+  "studies": [],
   "diagnostic": {
     "harness": {
       "version": 2,
@@ -8553,8 +8562,7 @@
   "next": [
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug ur-dragon` re-reads them when you want, never on its own",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
-    "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×11",
-    "try a swap in seconds — `try ur-dragon --out \"A\" --in \"B\"`"
+    "open questions routed: diagnose ×6, goldfish ×11, research-strategy ×6, resolve-stack ×11"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }
