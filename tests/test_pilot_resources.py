@@ -139,7 +139,7 @@ def test_a_withheld_read_prints_no_rows():
          "verdict": {"call": "blind", "better": [], "worse": [], "trust": "none", "raise": []},
          "harness": {"iterations": 10, "seed": 1, "champion_cached": False}}
     text = try_swap.render(r)
-    assert "WITHHELD — BLIND" in text and "==> BLIND" in text
+    assert "WITHHELD — BLIND" in text and "GOLDFISH READ: blind" in text
     assert "interval on the difference" not in text
 
 

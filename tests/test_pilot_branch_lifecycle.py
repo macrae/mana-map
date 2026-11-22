@@ -541,10 +541,21 @@ def test_the_recorded_proxy_is_names_and_never_a_boolean():
 
 # ── propose and withdraw: the refusals ───────────────────────────────────
 
-def _proposable(tmp_path, monkeypatch, *, nc=None, tags=None, current=2):
+def _study(sha, **over):
+    """An approved, installed study of branch `b` — what a proposal rests on (2026-11-21)."""
+    doc = {"id": "001", "slug": "d", "branch": "b", "question": "swap it?", "opened": "2026-01-01",
+           "decided_at": "2026-01-02", "decklist_sha256": sha, "cards": [], "facts": [],
+           "contributions": [],
+           "call": {"decision": "approve", "decided_by": ["pilot", "strategist"],
+                    "pilot_words": "yes, do it", "reading": ""}}
+    doc.update(over)
+    return doc
+
+
+def _proposable(tmp_path, monkeypatch, *, nc=None, tags=None, current=2, study=None):
     """A branch that `propose` would accept, so each test can break one thing."""
     from manamap.pilot import deck_branch as db
-    from manamap.pilot import deck_versions
+    from manamap.pilot import deck_versions, study as st
 
     root = tmp_path / "b"
     root.mkdir(parents=True)
@@ -558,6 +569,9 @@ def _proposable(tmp_path, monkeypatch, *, nc=None, tags=None, current=2):
               "harness": {"iterations": 10000, "seed": 1}}
     if nc is not None:
         report = nc
+    # THE STUDY the proposal rests on, read through the one seam `_study_for` uses.
+    sdoc = study if study is not None else _study(sha)
+    monkeypatch.setattr(st, "read", lambda s, sid: sdoc)
 
     monkeypatch.setattr(db, "branch_root", lambda s: tmp_path)
     monkeypatch.setattr(db, "meta", lambda s, b: doc)
@@ -582,46 +596,78 @@ def test_a_proposal_freezes_the_report_it_was_accepted_on(tmp_path, monkeypatch)
     have been made against a list that has since moved."""
     from manamap.pilot import deck_branch as db
     _proposable(tmp_path, monkeypatch)
-    got = db.propose("d", "b", "v1.0.2", why="because", at="2026-01-02")
+    got = db.propose("d", "b", "v1.0.2", why="because", at="2026-01-02", study="001")
     p = got["proposal"]
     assert p["as_version"] == "v1.0.2" and p["why"] == "because"
     assert p["decklist_sha256"] and p["accepted_on"]["decklist_sha256"]
-    assert p["accepted_on"]["state"] == "a trade"
-    assert p["accepted_on"]["grade"] == "met"
+    # THE STUDY IS WHAT WAS ACCEPTED (2026-11-21); the instrument's read sits beside it.
+    a = p["accepted_on"]
+    assert a["study"] == "001" and a["decision"] == "approve"
+    assert a["decided_by"] == ["pilot", "strategist"] and a["pilot_words"] == "yes, do it"
+    assert a["instrument"]["state"] == "a trade" and a["instrument"]["grade"] == "met"
+    assert a["instrument"]["current"] is True
     assert p["base_version"] == 2
 
 
-def test_a_proposal_needs_a_measurement(tmp_path, monkeypatch):
+def test_a_proposal_needs_a_study(tmp_path, monkeypatch):
+    """Without one it is a preference — and the goldfish's report is NOT one."""
     from manamap.pilot import deck_branch as db
-    _proposable(tmp_path, monkeypatch, nc={})
+    _proposable(tmp_path, monkeypatch)
     with pytest.raises(SystemExit) as e:
         db.propose("d", "b", "v1.0.2")
-    assert "net-change" in str(e.value)
+    assert "STUDY" in str(e.value) and "manamap pilot study d" in str(e.value)
 
 
-def test_a_report_that_measured_a_different_list_is_refused(tmp_path, monkeypatch):
+def test_propose_accepts_an_approved_study_without_net_change(tmp_path, monkeypatch):
+    """The instrument never gates: a branch the goldfish has not read proposes on
+    its study, and the acceptance records that no read exists."""
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch, nc={})
+    got = db.propose("d", "b", "v1.0.2", study="001")
+    assert got["proposal"]["accepted_on"]["instrument"] is None
+    assert got["proposal"]["accepted_on"]["study"] == "001"
+
+
+def test_the_guard_word_never_blocks_a_proposal(tmp_path, monkeypatch):
+    """`do not merge` refused a proposal for seven weeks and the pilot overrode it
+    fourteen times. Under either vocabulary the word is recorded and gates nothing."""
+    from manamap.pilot import deck_branch as db
+    text_sha = hashlib.sha256(b"1 Sol Ring\n").hexdigest()
+    for word in ("do not merge", "guard not met"):
+        _proposable(tmp_path / word.replace(" ", "_"), monkeypatch,
+                    nc={"decklist_sha256": text_sha,
+                        "recommendation": {"state": word, "because": "worse"}})
+        got = db.propose("d", "b", "v1.0.2", study="001")
+        assert got["proposal"]["accepted_on"]["instrument"]["state"] == word
+        assert "forced_reason" not in got["proposal"]
+
+
+def test_propose_refuses_a_study_of_a_different_list(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    _proposable(tmp_path, monkeypatch, study=_study("stale"))
+    with pytest.raises(SystemExit) as e:
+        db.propose("d", "b", "v1.0.2", study="001")
+    assert "different list" in str(e.value) and "facts 001 --write" in str(e.value)
+
+
+def test_propose_refuses_a_study_that_is_open_uninstalled_or_about_another_branch(tmp_path, monkeypatch):
+    from manamap.pilot import deck_branch as db
+    sha = hashlib.sha256(b"1 Sol Ring\n").hexdigest()
+    for bad, word in ((_study(sha, call={"decision": "open", "decided_by": [], "pilot_words": ""}), "open"),
+                      (_study(sha, decided_at=None), "not installed"),
+                      (_study(sha, branch="other"), "about branch")):
+        _proposable(tmp_path / word.replace(" ", "_"), monkeypatch, study=bad)
+        with pytest.raises(SystemExit) as e:
+            db.propose("d", "b", "v1.0.2", study="001")
+        assert word in str(e.value), str(e.value)
+
+
+def test_a_stale_net_change_is_recorded_as_an_older_read_and_does_not_refuse(tmp_path, monkeypatch):
     from manamap.pilot import deck_branch as db
     _proposable(tmp_path, monkeypatch,
                 nc={"decklist_sha256": "stale", "recommendation": {"state": "merge"}})
-    with pytest.raises(SystemExit) as e:
-        db.propose("d", "b", "v1.0.2")
-    assert "different list" in str(e.value)
-
-
-def test_a_do_not_merge_needs_a_reason_to_override(tmp_path, monkeypatch):
-    from manamap.pilot import deck_branch as db
-    text_sha = hashlib.sha256(b"1 Sol Ring\n").hexdigest()
-    _proposable(tmp_path, monkeypatch,
-                nc={"decklist_sha256": text_sha,
-                    "recommendation": {"state": "do not merge", "because": "worse"}})
-    with pytest.raises(SystemExit) as e:
-        db.propose("d", "b", "v1.0.2")
-    assert "DO NOT MERGE" in str(e.value)
-    with pytest.raises(SystemExit) as e2:
-        db.propose("d", "b", "v1.0.2", anyway=True)
-    assert "--reason" in str(e2.value)
-    got = db.propose("d", "b", "v1.0.2", anyway=True, reason="the log disagrees")
-    assert got["proposal"]["forced_reason"] == "the log disagrees"
+    got = db.propose("d", "b", "v1.0.2", study="001")
+    assert got["proposal"]["accepted_on"]["instrument"]["current"] is False
 
 
 @pytest.mark.parametrize("bad", ["1.0", "v1", "latest", "v1.2.3.4", ""])
@@ -647,7 +693,7 @@ def test_proposing_twice_is_refused_and_withdraw_is_the_way_back(
         tmp_path, monkeypatch):
     from manamap.pilot import deck_branch as db
     doc = _proposable(tmp_path, monkeypatch)
-    db.propose("d", "b", "v1.0.2", at="2026-01-02")
+    db.propose("d", "b", "v1.0.2", at="2026-01-02", study="001")
     with pytest.raises(SystemExit) as e:
         db.propose("d", "b", "v1.0.3")
     assert "already proposed" in str(e.value) and "withdraw" in str(e.value)
@@ -730,6 +776,10 @@ def _proposed_branch(tmp_path, monkeypatch):
     (branch / "branch.json").write_text(json.dumps({
         "slug": "slug", "branch": "b1", "opened": "2026-09-01",
         "base_version": 1, "staged": []}), encoding="utf-8")
+    # THE STUDY the proposal rests on (2026-11-21), on disk where `study.read` finds it.
+    (root / "slug" / "studies").mkdir()
+    (root / "slug" / "studies" / "001-swap-it.json").write_text(json.dumps(
+        _study(live, slug="slug", branch="b1")), encoding="utf-8")
     monkeypatch.setattr(config, "DECKS_DIR", root)
     # `propose` imports `deck_versions` lazily, so the module is the patch
     # point rather than an attribute of `deck_branch`.
@@ -755,8 +805,8 @@ def test_proposing_the_same_version_again_amends_instead_of_refusing(tmp_path,
     from manamap.pilot import deck_branch
 
     branch = _proposed_branch(tmp_path, monkeypatch)
-    deck_branch.propose("slug", "b1", "v1.0.1", why="the first reason")
-    deck_branch.propose("slug", "b1", "v1.0.1", why="and the second")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="the first reason", study="001")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="and the second", study="001")
 
     prop = json.loads((branch / "branch.json").read_text())["proposal"]
     assert prop["as_version"] == "v1.0.1", "the amend moved the version"
@@ -773,8 +823,8 @@ def test_an_amend_with_no_new_reason_keeps_the_old_one(tmp_path, monkeypatch):
     from manamap.pilot import deck_branch
 
     branch = _proposed_branch(tmp_path, monkeypatch)
-    deck_branch.propose("slug", "b1", "v1.0.1", why="the only reason")
-    deck_branch.propose("slug", "b1", "v1.0.1")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="the only reason", study="001")
+    deck_branch.propose("slug", "b1", "v1.0.1", study="001")
 
     prop = json.loads((branch / "branch.json").read_text())["proposal"]
     assert prop["why"] == "the only reason", "an amend with no --why blanked it"
@@ -786,13 +836,13 @@ def test_proposing_a_different_version_still_needs_a_withdraw(tmp_path, monkeypa
     from manamap.pilot import deck_branch
 
     _proposed_branch(tmp_path, monkeypatch)
-    deck_branch.propose("slug", "b1", "v1.0.1", why="first")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="first", study="001")
     with pytest.raises(SystemExit) as caught:
-        deck_branch.propose("slug", "b1", "v1.0.2", why="second")
+        deck_branch.propose("slug", "b1", "v1.0.2", why="second", study="001")
     assert "withdraw" in str(caught.value)
 
 
-def test_propose_refuses_reason_without_anyway(tmp_path, monkeypatch):
+def test_propose_refuses_reason_which_is_merges_flag(tmp_path, monkeypatch):
     """`--reason` and `--why` are both on the shared `deck-branch` parser, so
     `propose … --reason "…"` PARSED, proposed, and wrote `proposal.why: ""`.
     The pilot's sentence went nowhere and was found by reading branch.json
@@ -805,7 +855,7 @@ def test_propose_refuses_reason_without_anyway(tmp_path, monkeypatch):
 
     _proposed_branch(tmp_path, monkeypatch)
     with pytest.raises(SystemExit) as caught:
-        deck_branch.propose("slug", "b1", "v1.0.1", reason="my actual reason")
+        deck_branch.propose("slug", "b1", "v1.0.1", reason="my actual reason", study="001")
     assert "--why" in str(caught.value), "the refusal does not name the right option"
 
 
@@ -816,7 +866,7 @@ def test_staging_on_a_proposed_branch_says_what_it_will_do(tmp_path, monkeypatch
     from manamap.pilot import deck_branch
 
     _proposed_branch(tmp_path, monkeypatch)
-    deck_branch.propose("slug", "b1", "v1.0.1", why="first")
+    deck_branch.propose("slug", "b1", "v1.0.1", why="first", study="001")
     capsys.readouterr()
 
     deck_branch.warn_if_proposed("slug", "b1", "commit")

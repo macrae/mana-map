@@ -99,12 +99,34 @@ def test_a_proposal_freezes_the_sha_the_report_measured():
     assert any("has moved since" in e for e in errors)
 
 
-def test_a_do_not_merge_accepted_anyway_must_say_why():
+def test_a_legacy_do_not_merge_accepted_anyway_must_say_why():
+    """The shape written before 2026-11-21 keeps its rule, so the nine proposals on
+    disk still validate as they were accepted."""
     p = _proposal(accepted_on={"decklist_sha256": "b" * 64,
                                "state": "do not merge"})
     assert any("forced_reason" in e for e in validate_branch.validate(_doc(proposal=p)))
     p["forced_reason"] = "the log disagrees with the goldfish"
     assert validate_branch.validate(_doc(proposal=p)) == []
+
+
+def test_a_proposal_resting_on_a_study_names_what_decided_it():
+    """THE STUDY SHAPE (2026-11-21): the instrument's word is recorded under
+    `instrument` and gates nothing; what is required is who decided."""
+    good = {"study": "003", "question": "q", "decision": "approve",
+            "decided_by": ["pilot", "strategist"], "pilot_words": "do it",
+            "decklist_sha256": "b" * 64,
+            "instrument": {"state": "guard not met", "grade": "not met", "decklist_sha256": "b" * 64}}
+    assert validate_branch.validate(_doc(proposal=_proposal(accepted_on=good))) == [], (
+        "a guard-not-met read beside an approved study is not an error")
+    assert validate_branch.validate(_doc(proposal=_proposal(accepted_on=dict(good, instrument=None)))) == []
+    legacy_word = dict(good, instrument={"state": "do not merge", "decklist_sha256": "b" * 64})
+    assert validate_branch.validate(_doc(proposal=_proposal(accepted_on=legacy_word))) == []
+    bad = dict(good, decided_by=[])
+    assert any("decided_by is empty" in e for e in validate_branch.validate(_doc(proposal=_proposal(accepted_on=bad))))
+    bad = dict(good, decision="decline")
+    assert any("only an approved study" in e for e in validate_branch.validate(_doc(proposal=_proposal(accepted_on=bad))))
+    bad = dict(good, instrument={"state": "lgtm"})
+    assert any("not a net-change state" in e for e in validate_branch.validate(_doc(proposal=_proposal(accepted_on=bad))))
 
 
 def test_a_state_that_is_not_a_net_change_state_is_refused():

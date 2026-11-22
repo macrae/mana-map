@@ -146,7 +146,7 @@ def test_the_ledger_sorts_every_row_and_loses_none():
 
 def test_objective_met_and_nothing_lost_is_a_merge():
     got = net_change.recommend(_ledger("met", ["better", "noise"]))
-    assert got["state"] == "merge"
+    assert got["state"] == "guard met, nothing fell"
     assert "nothing measured here got worse" in got["because"]
 
 
@@ -154,7 +154,7 @@ def test_objective_met_with_something_lost_is_a_trade_that_names_both_sides():
     """A metric falling is not a veto — it is a price. The report's job is to
     put both halves in one sentence so the pilot can decide."""
     got = net_change.recommend(_ledger("met", ["better", "worse"]))
-    assert got["state"] == "a trade"
+    assert got["state"] == "guard met, rows fell"
     assert "buy" in got["because"] and "pay" in got["because"]
     assert "m0" in got["because"] and "m1" in got["because"]
     assert got["bill"] == {"buy": 21, "box": 7}
@@ -164,13 +164,13 @@ def test_objective_not_met_is_a_refusal_even_when_other_things_improved():
     """THE UR-DRAGON FAILURE, as a rule. That branch hit its stated engine
     figure 4.4x over while getting worse at the thing it was for."""
     got = net_change.recommend(_ledger("not met", ["better", "better"]))
-    assert got["state"] == "do not merge"
-    assert "different branch's case" in got["because"]
+    assert got["state"] == "guard not met"
+    assert "weighs" in got["because"]
 
 
 def test_a_miss_the_run_cannot_see_is_inconclusive_not_a_failure():
     got = net_change.recommend(_ledger("not resolvable", ["noise"]))
-    assert got["state"] == "inconclusive"
+    assert got["state"] == "guard unresolved"
     assert "larger N" in got["because"]
 
 
@@ -180,7 +180,7 @@ def test_an_unreadable_objective_is_inconclusive_and_names_the_axis():
     along; collapsing the two lets a branch that stated nothing borrow the
     credibility of one that did."""
     got = net_change.recommend(_ledger("not measured", ["better"]))
-    assert got["state"] == "inconclusive"
+    assert got["state"] == "guard unresolved"
     assert "hoard_8" in got["because"]
     assert got["state"] != net_change.recommend(
         _ledger(None, ["better"], objective=False))["state"]
@@ -188,7 +188,7 @@ def test_an_unreadable_objective_is_inconclusive_and_names_the_axis():
 
 def test_no_objective_says_the_ledger_still_stands():
     got = net_change.recommend(_ledger(None, ["better", "worse"], objective=False))
-    assert got["state"] == "no objective"
+    assert got["state"] == "profile only"
     assert "only what changed" in got["because"]
     assert got["rose"] and got["fell"], "the ledger is still reported"
 
@@ -207,7 +207,7 @@ def test_the_real_table_is_named_beside_the_verdict_and_never_folded_into_it():
     doc = _ledger("met", ["better"])
     doc["forge"] = {"available": True, "delta": -0.011, "ci95": [-0.102, 0.080]}
     got = net_change.recommend(doc)
-    assert got["state"] == "merge", "the note must not change the verdict"
+    assert got["state"] == "guard met, nothing fell", "the note must not change the verdict"
     assert any("cannot separate" in n for n in got["notes"])
 
 
@@ -221,16 +221,19 @@ def test_the_report_that_stopped_a_purchase_still_stops_it():
     """
     doc = _doc()
     got = doc.get("recommendation") or net_change.recommend(doc)
-    assert got["state"] in net_change.STATES
+    # A TRACKED REPORT MAY CARRY EITHER VOCABULARY (2026-11-21): a decided branch is
+    # never re-measured, so its word is read through `state_word`.
+    assert got["state"] in set(net_change.STATES) | set(net_change.LEGACY_STATES)
+    word = net_change.state_word(got)
     measures = {r["measure"] for r in doc["table"]}
     named = set(got["rose"]) | set(got["fell"]) | set(got["no_call"])
     assert named == measures, "the ledger must account for every measured row"
     grade = (doc.get("objective_grade") or {}).get("state")
     if grade == "not met":
-        # THE RULE THAT MATTERS: improvements elsewhere do not buy a merge.
-        assert got["state"] == "do not merge", got
-    if got["state"] == "merge":
-        assert not got["fell"], "a merge with something worse is a trade"
+        # THE RULE THAT MATTERS: improvements elsewhere do not meet the guard.
+        assert word == "guard not met", got
+    if word == "guard met, nothing fell":
+        assert not got["fell"], "a met guard with something worse reads rows fell"
 
 
 def test_a_table_where_nothing_moved_says_so():
@@ -1760,7 +1763,7 @@ def test_a_real_table_loss_that_excludes_zero_is_a_loud_warning_not_a_gate(monke
     for fn in ("reward", "risk", "cost"):
         monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
     got = net_change.recommend(_forge_doc(-0.12, -0.20, -0.04))
-    assert got["state"] == "merge", got
+    assert got["state"] == "guard met, nothing fell", got
     assert got["forge_warning"].startswith("WARNING"), got
     assert "standard-v3" in got["because"] and "0.233" in got["because"]
     assert "AI plays the swapped cards" in got["because"]
@@ -1772,10 +1775,10 @@ def test_a_real_table_that_spans_zero_leaves_a_goldfish_verdict_alone(monkeypatc
     for fn in ("reward", "risk", "cost"):
         monkeypatch.setattr(net_change, fn, lambda doc: {} if fn != "reward" else [])
     got = net_change.recommend(_forge_doc(-0.06, -0.13, +0.01))
-    assert got["state"] == "merge", got
+    assert got["state"] == "guard met, nothing fell", got
     assert any("cannot separate" in n for n in got["notes"])
     # and a real-table GAIN never blocks anything
-    assert net_change.recommend(_forge_doc(+0.12, +0.04, +0.20))["state"] == "merge"
+    assert net_change.recommend(_forge_doc(+0.12, +0.04, +0.20))["state"] == "guard met, nothing fell"
 
 
 def _stamped_record(root, rel, pod, seat, sha, wins, decided, games, per_game=None, resolved=None):
@@ -1865,7 +1868,7 @@ def test_a_forge_objective_is_graded_at_its_own_pod_with_the_interval_on_the_dif
     assert g["state"] == "met" and g["reading"] == round(9 / 33, 4), g
     assert g["difference"]["ci95"] and g["null"]["rate"] == 0.233
     assert doc["design"]["primary"] == "forge.win_rate"
-    assert doc["recommendation"]["state"] == "merge", doc["recommendation"]
+    assert doc["recommendation"]["state"] == "guard met, nothing fell", doc["recommendation"]
     assert not validate_net_change.validate(doc), validate_net_change.validate(doc)
 
     # the same objective at a table nobody has run: not measured, and it says which
@@ -1874,7 +1877,7 @@ def test_a_forge_objective_is_graded_at_its_own_pod_with_the_interval_on_the_dif
     doc2 = net_change.build("x", "b")
     assert doc2["forge"]["available"] is False and "playgroup" in doc2["forge"]["why"]
     assert doc2["objective_grade"]["state"] == "not measured"
-    assert doc2["recommendation"]["state"] == "inconclusive"
+    assert doc2["recommendation"]["state"] == "guard unresolved"
 
 
 def test_the_validator_holds_a_forge_objective_to_its_pod_and_its_interval():
@@ -1947,8 +1950,8 @@ def _printed(doc, **kw):
 
 def test_the_profile_prints_first_and_the_rules_word_follows_the_rows():
     out = _printed(_printable())
-    assert out.index("THE PROFILE") < out.index("killed by T6") < out.index("do not merge")
-    assert out.index("do not merge") < out.index("WHAT THIS CANNOT SEE") < out.index("THE MANA")
+    assert out.index("THE PROFILE") < out.index("killed by T6") < out.index("guard not met")
+    assert out.index("guard not met") < out.index("WHAT THIS CANNOT SEE") < out.index("THE MANA")
     assert out.index("THE COST") < out.index("THE CHANGE") < out.index("WHAT THE ROWS MEASURE")
     assert "1 better, 0 worse, 1 no call" in out
     assert "==>" not in out, "a single word on top of the profile again"

@@ -954,8 +954,12 @@ def swap_entries(slug, branch, entries, out_name, in_name):
     return staged_entries, out_e, in_e
 
 
-def stage(slug, branch, out_name, in_name, strength=None, why=None):
+def stage(slug, branch, out_name, in_name, strength=None, why=None, instrument=None):
     """One card out, one card in — the staging area, and its provenance.
+
+    `why` is the PILOT'S reason, in words; `instrument` (2026-11-21) is what the
+    goldfish read of the swap when `try --stage` wrote it, kept beside the reason
+    and never in its place — `try` used to write its own verdict as the `why`.
 
     THE SWAP IS THE UNIT, not the card. A card added and a card cut are two edits
     a reader has to pair up by hand; a swap is one edit that already says what it
@@ -1010,10 +1014,12 @@ def stage(slug, branch, out_name, in_name, strength=None, why=None):
     except Exception:                                  # noqa: BLE001 - no Forge, no warning
         pass
     doc = meta(slug, branch) or {"slug": slug, "branch": branch, "v": 2}
-    doc.setdefault("staged", []).append({
-        "at": datetime.date.today().isoformat(),
-        "out": out_e["name"], "in": in_name,
-        "strength": strength, "why": why or ""})
+    entry = {"at": datetime.date.today().isoformat(),
+             "out": out_e["name"], "in": in_name,
+             "strength": strength, "why": why or ""}
+    if instrument:
+        entry["instrument"] = instrument
+    doc.setdefault("staged", []).append(entry)
     _write_meta(slug, branch, doc)
     return {"slug": slug, "branch": branch, "out": out_e["name"], "in": in_name,
             "staged": len(doc["staged"]), "warnings": checked["warnings"]}
@@ -1361,9 +1367,48 @@ def pull_list(slug, branch, doc=None, src=None):
             "procurement": prop.get("procurement")}
 
 
+def _study_for(slug, branch, study_id):
+    """The approved study a proposal rests on, read and checked (2026-11-21):
+    it must be about THIS branch, decided `approve`, and about the list on disk.
+    One seam, so a test can hand in a study without a deck tree."""
+    from manamap.pilot import study as st
+    if not study_id:
+        raise SystemExit(
+            f"A PROPOSAL RESTS ON A STUDY. Nothing has been decided about {slug}/{branch} in the "
+            f"pilot's words — the question, the facts from every source, the agents' arguments, "
+            f"the call and who decided:\n"
+            f"  manamap pilot study {slug} list\n"
+            f"  manamap pilot study {slug} new \"<question>\" --branch {branch}   # then add, call, install\n"
+            f"  manamap pilot deck-branch {slug} propose {branch} --as <vX.Y.Z> --study <NNN>")
+    doc = st.read(slug, study_id)
+    if doc.get("branch") != branch:
+        raise SystemExit(f"study {study_id} is about branch {doc.get('branch')!r}, not {branch!r}")
+    call = doc.get("call") or {}
+    if call.get("decision") != "approve":
+        raise SystemExit(f"study {study_id} reads {call.get('decision', 'open')!r} — only an approved, "
+                         f"installed study proposes (`study {slug} call {study_id} …`, then `install`)")
+    if not doc.get("decided_at"):
+        raise SystemExit(f"study {study_id} is not installed — `manamap pilot study {slug} install {study_id}`")
+    live = _sha_of_list(slug, branch)
+    if doc.get("decklist_sha256") != live:
+        raise SystemExit(
+            f"study {study_id} studied a different list than the one on disk — the list moved after "
+            f"the call. Recompute its facts and read them again before proposing:\n"
+            f"  manamap pilot study {slug} facts {study_id} --write --force")
+    return doc
+
+
 def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
-            anyway=False, reason=None, at=None):
+            reason=None, at=None, study=None):
     """Accept this branch as the deck's next version, and wait for the cardboard.
+
+    IT RESTS ON A STUDY (2026-11-21), never on the goldfish's word. `--study NNN`
+    names an approved, installed study of this branch; the instrument's read
+    (`net_change.json`), when there is one, is frozen beside it under
+    `accepted_on.instrument` and gates nothing. The old gate — refuse without a
+    report, refuse on "do not merge" unless `--anyway --reason` — made a solitaire
+    simulator with no opponents the arbiter of a purchase, and the pilot overrode
+    it fourteen times.
 
     THE STAGE THE BENCH HAD NO ROOM FOR. `commit`'s own docstring names the gap —
     "a commit says 'this is the deck I am committed to running'; a merge says
@@ -1434,51 +1479,28 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
             f"{as_version} already names V{existing[as_version].get('version')} "
             f"on {slug}. A tag is a claim about one exact list — pick the next one.")
 
-    # A PROPOSAL RESTS ON A MEASUREMENT. Without one this is a preference, and
-    # the report is the only thing that can say what the branch costs and buys.
-    nc = load_json(deck_dir(slug, branch) / "net_change.json") or {}
-    if not nc:
-        raise SystemExit(
-            f"Nothing has measured {slug}/{branch}. A proposal is an acceptance of "
-            f"the net change, so there has to be one:\n"
-            f"  manamap pilot net-change {slug} --branch {branch} --write")
+    # A PROPOSAL RESTS ON A STUDY (2026-11-21). The study is the decision in the
+    # pilot's words with every source behind it; the instrument's report, if one
+    # exists, is frozen beside it and gates nothing.
+    sdoc = _study_for(slug, branch, study)
     live = _sha_of_list(slug, branch)
-    if nc.get("decklist_sha256") and nc["decklist_sha256"] != live:
-        raise SystemExit(
-            f"net_change.json measured a different list than the one on disk.\n"
-            f"RE-RUNNING `net-change` ALONE REPRODUCES IT — it measures "
-            f"cards.json, and cards.json is what is behind. Three commands, in "
-            f"this order:\n"
-            f"  manamap pilot fetch-deck {slug} --branch {branch}\n"
-            f"  manamap pilot goldfish {slug} --branch {branch}\n"
-            f"  manamap pilot net-change {slug} --branch {branch} --write")
+    nc = load_json(deck_dir(slug, branch) / "net_change.json") or {}
     rec = nc.get("recommendation") or {}
-    if rec.get("state") == "do not merge" and not anyway:
-        raise SystemExit(
-            f"The net change says DO NOT MERGE — {rec.get('because', '')}\n"
-            f"`--anyway --reason \"…\"` records why you are proposing it regardless.")
-    if anyway and not reason:
-        raise SystemExit("--anyway needs --reason: overriding the report should "
-                         "say what it is assuming.")
-    # `--reason` WITHOUT `--anyway` IS ALMOST CERTAINLY A TYPO FOR `--why`.
+    # `--reason` ON PROPOSE IS ALMOST CERTAINLY A TYPO FOR `--why`.
     #
     # Both options live on the shared `deck-branch` parser — `--reason` is
-    # merge's sourcing override and propose's `--anyway` justification, `--why`
-    # is new's and stage's. So `propose … --as v1.2.2 --reason "…"` PARSED,
-    # proposed, and wrote `proposal.why: ""`. The pilot's sentence went nowhere
-    # and was found by reading branch.json (#48).
-    #
-    # Refused rather than silently mapped to `--why`: the two words mean
-    # different things on this same parser, and quietly reinterpreting one as
-    # the other is how this class of bug starts rather than ends.
-    if reason and not anyway:
+    # merge's sourcing override, `--why` is new's and stage's. So `propose … --as
+    # v1.2.2 --reason "…"` PARSED, proposed, and wrote `proposal.why: ""`. The
+    # pilot's sentence went nowhere and was found by reading branch.json (#48).
+    # Refused rather than silently mapped to `--why`.
+    if reason:
         raise SystemExit(
-            f"--reason is for overriding the report (`--anyway --reason \"…\"`) "
-            f"and for merge's sourcing gate. Did you mean --why?\n"
+            f"--reason is merge's sourcing override. Did you mean --why?\n"
             f"  manamap pilot deck-branch {slug} propose {branch} "
-            f"--as {as_version} --why \"{reason[:60]}\"")
+            f"--as {as_version} --study {study} --why \"{reason[:60]}\"")
 
     grade = nc.get("objective_grade") or {}
+    call = sdoc.get("call") or {}
     held = doc.get("proposal") or {}
     # THE PREVIOUS ACCEPTANCE IS KEPT, not overwritten. `accepted_on` is the
     # only record of what the report said at the moment the pilot said yes, and
@@ -1493,13 +1515,24 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
         "why": "\n".join(reasons),
         "base_version": deck_versions.report(slug).get("current_version"),
         "decklist_sha256": live,
+        # WHAT THE PILOT SAID YES TO: the study, in their words, and the
+        # instrument's read beside it (null when the branch was never measured).
         "accepted_on": {
-            "decklist_sha256": nc.get("decklist_sha256"),
-            "state": rec.get("state"),
-            "objective": nc.get("objective"),
-            "grade": grade.get("state"),
-            "reading": grade.get("reading"),
-            "harness": nc.get("harness"),
+            "study": sdoc.get("id"),
+            "question": sdoc.get("question"),
+            "decision": call.get("decision"),
+            "decided_by": list(call.get("decided_by") or []),
+            "pilot_words": call.get("pilot_words"),
+            "decklist_sha256": sdoc.get("decklist_sha256"),
+            "instrument": ({
+                "state": rec.get("state"),
+                "objective": nc.get("objective"),
+                "grade": grade.get("state"),
+                "reading": grade.get("reading"),
+                "harness": nc.get("harness"),
+                "decklist_sha256": nc.get("decklist_sha256"),
+                "current": nc.get("decklist_sha256") == live,
+            } if nc else None),
         },
     }
     if history:
@@ -1527,19 +1560,20 @@ def propose(slug, branch, as_version, why=None, proxy=False, ordered=None,
         # in the house. It is here so the pilot does not buy the same six twice.
         prop["procurement"] = {"at": (at or datetime.date.today().isoformat()),
                                "note": ordered}
-    if reason:
-        prop["forced_reason"] = reason
     doc["proposal"] = prop
     doc["v"] = max(int(doc.get("v") or 2), 3)
     _write_meta(slug, branch, doc)
     # THE LEDGER LINE. `accepted_on` stays here (it is what `branch_state`
-    # reads); the ledger is the history, and it carries the report's Forge
-    # block too, so a later `outcome` has a prediction to close against.
+    # reads); the ledger is the history, and it carries the study's call and
+    # the report's Forge block too, so a later `outcome` has a prediction to
+    # close against.
     from manamap.pilot import decisions
     decisions.append(slug, "amend" if amending else "propose", branch=branch,
                      as_version=as_version, reason=prop.get("why") or None,
-                     forced_reason=reason, branch_decklist_sha256=live,
-                     prediction=decisions.prediction_from(nc), base=deck_dir(slug))
+                     study=sdoc.get("id"), decided_by=list(call.get("decided_by") or []),
+                     pilot_words=call.get("pilot_words") or None,
+                     branch_decklist_sha256=live,
+                     prediction=decisions.prediction_from(nc, sdoc), base=deck_dir(slug))
     return {"slug": slug, "branch": branch, "proposal": prop,
             "state": branch_state(slug, branch, doc=doc),
             "pull_list": pull_list(slug, branch, doc=doc)}
@@ -2077,8 +2111,8 @@ def _dispatch(args):
                       why=getattr(args, "why", None),
                       proxy=bool(getattr(args, "proxy", False)),
                       ordered=getattr(args, "ordered", None),
-                      anyway=bool(getattr(args, "anyway", False)),
-                      reason=getattr(args, "reason", None))
+                      reason=getattr(args, "reason", None),
+                      study=getattr(args, "study", None))
         if getattr(args, "json", False):
             print(json.dumps(got, indent=1)); return
         p = got["proposal"]
@@ -2088,10 +2122,20 @@ def _dispatch(args):
         if p.get("why"):
             print(f"  {p['why']}")
         a = p["accepted_on"]
-        print(f"\n  accepted on the net change: {a.get('state')}"
-              + (f", objective {a['objective']['axis']} {a['objective']['op']} "
-                 f"{a['objective']['value']} {a.get('grade', '').upper()}"
-                 f" at {a.get('reading')}" if a.get("objective") else ""))
+        print(f"\n  accepted on study {a.get('study')}: {a.get('decision')} — decided by "
+              f"{', '.join(a.get('decided_by') or []) or '—'}")
+        if a.get("pilot_words"):
+            print(f"  pilot: “{a['pilot_words']}”")
+        inst = a.get("instrument")
+        if inst:
+            from manamap.pilot.net_change import state_word
+            print(f"  the goldfish read: {state_word(inst)}"
+                  + (f", guard {inst['objective']['axis']} {inst['objective']['op']} "
+                     f"{inst['objective']['value']} {str(inst.get('grade') or '').upper()}"
+                     f" at {inst.get('reading')}" if inst.get("objective") else "")
+                  + ("" if inst.get("current") else " (an older list of this branch)"))
+        else:
+            print("  the goldfish has not read this branch; the study decided")
         if p.get("proxy"):
             print(f"  proxying {len(p['proxy'])}: {', '.join(p['proxy'])}")
         _print_pull_list(got["pull_list"], slug, branch, p["as_version"])

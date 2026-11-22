@@ -826,7 +826,11 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--each", action="store_true",
                              help="also measure every swap alone, to see which one moves what")
             cmd.add_argument("--stage", default=None, metavar="NAME",
-                             help="after the screen, write the swaps to this branch (opened if new)")
+                             help="after the screen, write the swaps to this branch (opened if new); "
+                                  "needs --why")
+            cmd.add_argument("--why", default=None,
+                             help="--stage: the pilot's reason for the swap, in words — the branch's "
+                                  "why is never the goldfish's line (that is kept beside it)")
             cmd.add_argument("--blind-ok", action="store_true", dest="blind_ok",
                              help="print the goldfish rows even when a swapped card is BLIND to "
                                   "the model, labelled as a ceiling/floor (default: the rows are "
@@ -991,8 +995,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--force", action="store_true",
                              help="merge: apply despite unsourced cards (needs --reason)")
             cmd.add_argument("--reason", default=None,
-                             help="merge: why the sourcing gate is being skipped; "
-                                  "propose: why the report is being overridden")
+                             help="merge: why the sourcing gate is being skipped")
+            cmd.add_argument("--study", default=None, metavar="NNN",
+                             help="propose: the approved, installed study of this branch the "
+                                  "proposal rests on (`manamap pilot study <slug> list`)")
             cmd.add_argument("--as", dest="as_version", default=None,
                              metavar="VERSION",
                              help="propose: the release tag this list is meant to "
@@ -1004,9 +1010,6 @@ def add_pilot_parser(subparsers):
                                   '("6 ordered 2026-08-28 via TCGplayer"). A NOTE '
                                   "only: ownership means a box, so nothing here "
                                   "moves the blocker")
-            cmd.add_argument("--anyway", action="store_true",
-                             help="propose: accept a branch the net change says "
-                                  "DO NOT MERGE (needs --reason)")
             cmd.add_argument("--proxy", action="store_true",
                              help="count cards sleeved in your OTHER decks as "
                                   "sourced — you own them, and proxying across "

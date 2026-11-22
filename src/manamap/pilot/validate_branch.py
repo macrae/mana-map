@@ -28,9 +28,12 @@ WHAT IT CHECKS is the discipline, not the figures. Nothing here re-measures:
      only thing standing between a decision and a list that quietly moved under
      it.
 
-  4. **A PROPOSAL OVER A "DO NOT MERGE" SAYS WHY.** `propose` refuses it without
-     `--anyway --reason`; this is the same claim held at rest, so a hand-edited
-     file cannot carry an override with no argument attached.
+  4. **A PROPOSAL RESTS ON A STUDY (2026-11-21).** `accepted_on.study` names the
+     study id, `decided_by` is non-empty and the decision is `approve`; the
+     instrument's read, if any, sits under `accepted_on.instrument` and gates
+     nothing. The LEGACY shape (no `study`, a bare `state`) stays valid for the
+     proposals written before this date, under its old rule: an acceptance over a
+     `do not merge` read carries a `forced_reason`.
 
   5. **`merged` AND `proposal` DO NOT CONTRADICT.** A merged branch that still
      advertises an unfulfilled proposal reads as pending work that is already
@@ -153,13 +156,31 @@ def validate(doc, slug=None, branch=None):
             errors.append(
                 "proposal.accepted_on: no 'decklist_sha256' — without the sha the "
                 "report measured, nothing can say the list has moved since")
-        state = accepted.get("state")
-        if state and state not in net_change.STATES:
-            errors.append(f"proposal.accepted_on: {state!r} is not a net-change state")
-        if state == "do not merge" and not prop.get("forced_reason"):
-            errors.append(
-                "proposal: the net change said DO NOT MERGE and no 'forced_reason' "
-                "says why it was accepted anyway")
+        known_states = set(net_change.STATES) | set(net_change.LEGACY_STATES)
+        if accepted.get("study"):
+            # THE STUDY SHAPE (2026-11-21): the decision names what decided it.
+            if not str(accepted.get("study") or "").strip():
+                errors.append("proposal.accepted_on.study is empty")
+            if not (accepted.get("decided_by") or []):
+                errors.append("proposal.accepted_on: a proposal rests on a study and the study "
+                              "must say what decided it (decided_by is empty)")
+            if accepted.get("decision") not in (None, "approve"):
+                errors.append(f"proposal.accepted_on.decision {accepted.get('decision')!r} — only an "
+                              f"approved study proposes")
+            inst = accepted.get("instrument")
+            if inst is not None and not isinstance(inst, dict):
+                errors.append("proposal.accepted_on.instrument must be an object or null")
+            istate = (inst or {}).get("state")
+            if istate and istate not in known_states:
+                errors.append(f"proposal.accepted_on.instrument: {istate!r} is not a net-change state")
+        else:
+            state = accepted.get("state")
+            if state and state not in known_states:
+                errors.append(f"proposal.accepted_on: {state!r} is not a net-change state")
+            if state == "do not merge" and not prop.get("forced_reason"):
+                errors.append(
+                    "proposal: the net change said DO NOT MERGE and no 'forced_reason' "
+                    "says why it was accepted anyway")
         # ── the revision record (#46) ────────────────────────────────────
         #
         # `propose` with the SAME `--as` amends rather than refusing, and pushes

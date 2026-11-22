@@ -108,13 +108,16 @@ def latest_for(slug, branch, base=None):
 
 # ── the prediction: what the report said when the decision was taken ──────────
 
-def prediction_from(nc):
-    """The frozen prediction a `propose` / `merge` line carries, read from the
-    branch's `net_change.json` at that moment. A superset of `accepted_on`:
-    the objective and its grade, the harness, and — where the real table was
-    measured — the Forge block's delta, interval, MDE, null and run ids."""
-    if not nc:
+def prediction_from(nc, study=None):
+    """The frozen prediction a `propose` / `merge` line carries: the STUDY the
+    decision rested on (its id, question, call, `decided_by` and the pilot's
+    words — 2026-11-21), and the instrument's read from the branch's
+    `net_change.json` at that moment — the objective and its grade, the harness,
+    and, where the real table was measured, the Forge block's delta, interval,
+    MDE, null and run ids. Either half may be absent; a line with neither is None."""
+    if not nc and not study:
         return None
+    nc = nc or {}
     grade = nc.get("objective_grade") or {}
     f = nc.get("forge") or {}
     pred = {"endpoint": (nc.get("objective") or {}).get("axis"),
@@ -123,6 +126,13 @@ def prediction_from(nc):
             "recommendation": (nc.get("recommendation") or {}).get("state"),
             "harness": nc.get("harness"),
             "measured_decklist_sha256": nc.get("decklist_sha256")}
+    if study:
+        call = study.get("call") or {}
+        pred["study"] = {"id": study.get("id"), "question": study.get("question"),
+                         "decision": call.get("decision"), "decided_by": list(call.get("decided_by") or []),
+                         "pilot_words": call.get("pilot_words"),
+                         "decklist_sha256": study.get("decklist_sha256")}
+        pred["decided_by"] = list(call.get("decided_by") or [])
     if f.get("available"):
         wr = (f.get("endpoints") or {}).get("forge.win_rate") or {}
         pred["forge"] = {

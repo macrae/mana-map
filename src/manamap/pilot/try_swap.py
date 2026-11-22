@@ -670,15 +670,44 @@ def preview(slug, ops, branch=None, goldfish=True, iterations=None, seed=None):
     return out
 
 
+#: Above this many swapped cards the per-card dossier is left to `card-dossier`.
+DOSSIER_CARDS = 6
+
+
+def coverage_text(r):
+    """THE FIRST LINE OF THE SCREEN (2026-11-21): what the goldfish could see of
+    the swapped cards, from the same `card_state` the rows were built on."""
+    from manamap.pilot import card_dossier
+    names = [c["name"] for c in r["cards"]]
+    read = [c["name"] for c in r["cards"] if c["state"] in ("seen", "partial") and not c.get("engine_unread")]
+    dark = [c["name"] for c in r["cards"] if c["state"] == "dark"]
+    invisible = [c["name"] for c in r["cards"] if c["state"] == "invisible"]
+    unread = [c["name"] for c in r["cards"] if c.get("engine_unread") and c["name"] not in invisible]
+    bits = []
+    if read:
+        bits.append("seen: " + ", ".join(read))
+    if dark:
+        bits.append("DARK (a channel is off): " + ", ".join(dark))
+    if invisible:
+        bits.append("invisible (nothing reads them): " + ", ".join(invisible))
+    if unread:
+        bits.append("engine text unread: " + ", ".join(unread))
+    return (f"* ONE INSTRUMENT — the goldfish sees {len(read)} of {len(names)} swapped card(s)"
+            + (" (" + "; ".join(bits) + ")" if bits else "") + ". " + card_dossier.ASTERISK)
+
+
 def render(r):
-    from manamap.pilot import net_change
+    from manamap.pilot import card_dossier, net_change
     L = []
     w = L.append
     where = r["slug"] + (f"@{r['branch']}" if r["branch"] else "")
     w(f"TRY — {where}: {len(r['swaps'])} swap(s), {r['harness']['iterations']:,} goldfish games per list"
-      f"{' (champion cached)' if r['harness']['champion_cached'] else ''}")
+      f"{' (champion cached)' if r['harness']['champion_cached'] else ''}   — one instrument's read; the study decides")
+    w("")
+    w("  " + coverage_text(r))
     w("")
     w("  THE SWAPS   roles · declared target · what the goldfish sees · Forge AI on record")
+    few = len(r["cards"]) <= DOSSIER_CARDS
     for c in r["cards"]:
         mark = "-" if c["side"] == "out" else "+"
         seen = c["state"].upper() if c["state"] != "seen" else "seen"
@@ -692,6 +721,17 @@ def render(r):
         w(f"    {mark} {c['name'][:34]:34} {', '.join(c['roles'])[:44] or 'no role':44} "
           f"{'TARGET' if c['in_target'] else '      '}  {seen}")
         w(f"      {'':34} {forge}")
+        # WHAT THE BENCH KNOWS ABOUT THE CARD, before any row: the log, the debrief,
+        # the stacks, the engine, the recon, the queue — the sources a call rests on.
+        if few:
+            try:
+                d = card_dossier.dossier(r["slug"], c["name"], r["branch"])
+                for line in card_dossier.dossier_lines(
+                        {**d, "facts": [f_ for f_ in d["facts"] if f_["kind"] not in ("oracle", "coverage")]},
+                        limit=4):
+                    w("    " + line)
+            except Exception as exc:                    # noqa: BLE001 — a dossier never stops a screen
+                w(f"        dossier unavailable ({str(exc)[:80]})")
     if r["forge_run"]:
         w("    (Forge columns are AI BEHAVIOUR from runs on disk — never a reason to cut a card.)")
     w("")
@@ -731,23 +771,32 @@ def render(r):
             w(f"    - {s['out'][:26]:26} + {s['in'][:26]:26} {moved}")
     v = r["verdict"]
     w("")
-    w(f"  ==> {v['call'].upper()}"
-      + (f": better on {', '.join(v['better'])}" if v["better"] else "")
-      + (f"; worse on {', '.join(v['worse'])}" if v["worse"] else ""))
+    w(f"  GOLDFISH READ: {v['call']}"
+      + (f" — better on {', '.join(v['better'])}" if v["better"] else "")
+      + (f"; worse on {', '.join(v['worse'])}" if v["worse"] else "")
+      + ". One instrument; the call is the study's.")
     w(f"      trust: {v['trust']}")
     for x in v["raise"]:
         w(f"      raise it: {x}")
     return "\n".join(L)
 
 
-def stage(slug, name, swaps, why, base_branch=None):
-    """Write the swaps to branch `name` — only ever called after the screen."""
+def instrument_line(r):
+    """The goldfish's read of the swap as one line, kept BESIDE the pilot's reason
+    on a staged swap — never as the reason itself."""
+    v = r["verdict"]
+    return f"goldfish read: {v['call']} — {v['trust']}"
+
+
+def stage(slug, name, swaps, why, base_branch=None, instrument=None):
+    """Write the swaps to branch `name` — only ever called after the screen.
+    `why` is the PILOT'S reason; `instrument` is the goldfish's line, kept beside it."""
     root = deck_branch.branch_root(slug) / name
     if not root.exists():
         text = (deck_dir(slug, base_branch) / "decklist.txt").read_text(encoding="utf-8")
         deck_branch.new(slug, name, text, why=why)
     for o, i in swaps:
-        deck_branch.stage(slug, name, o, i, why=why)
+        deck_branch.stage(slug, name, o, i, why=why, instrument=instrument)
     return root
 
 
@@ -767,6 +816,13 @@ def main(args):
         raise SystemExit("--stage writes SWAPS to a branch; an --add, --cut or --set changes "
                          "the list's size or counts — open a branch with the whole list "
                          "(`deck-branch new`) instead")
+    why = getattr(args, "why", None)
+    if name and not (why or "").strip():
+        # THE BRANCH'S WHY IS THE PILOT'S WORDS, NOT THE GOLDFISH'S (2026-11-21). `try
+        # --stage` wrote its own verdict line as the reason for every swap it staged,
+        # and the branch page had to filter those lines out as "auto why".
+        raise SystemExit("--stage needs --why \"…\": the branch's why is the pilot's words, not the "
+                         "goldfish's. The goldfish's read is kept beside it, labelled.")
     from manamap import console
     n = len(swaps) + len(ops)
     with console.task(f"Trying {n} change(s) on {args.slug}", total=1, unit="run") as bar:
@@ -780,7 +836,7 @@ def main(args):
     else:
         print(render(r))
     if name:
-        line = f"try: {r['verdict']['call']} — {r['verdict']['trust']}"
-        stage(args.slug, name, swaps, line, base_branch=getattr(args, "branch", None))
+        stage(args.slug, name, swaps, why.strip(), base_branch=getattr(args, "branch", None),
+              instrument=instrument_line(r))
         print(f"\nStaged {len(swaps)} swap(s) on {args.slug}/{name}. "
               f"`manamap pilot deck-branch {args.slug} commit {name} -m \"…\"` when it settles.")

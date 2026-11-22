@@ -231,7 +231,7 @@ def test_every_tracked_per_deck_artifact_is_documented():
     tracked = subprocess.run(
         ["git", "ls-files", "data/decks/"], cwd=ROOT,
         capture_output=True, text=True, check=True).stdout.split()
-    instanced = ("/stacks/", "/decisions/", "/prescriptions/", "/sim/", "/experiments/")
+    instanced = ("/stacks/", "/decisions/", "/prescriptions/", "/sim/", "/experiments/", "/studies/")
     names = sorted({Path(t).name for t in tracked
                     if not any(d in t for d in instanced)})
     prose = ((ROOT / "docs" / "data-artifacts.md").read_text(encoding="utf-8")

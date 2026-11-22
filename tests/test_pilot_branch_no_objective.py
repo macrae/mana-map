@@ -146,6 +146,6 @@ def test_a_branch_opened_with_no_objective_is_valid_and_net_change_reads_its_pro
     assert got["design"]["exploratory_rows"] == len(net_change.ROWS)
     assert len(got["table"]) == len(net_change.ROWS)
     rec = got["recommendation"]
-    assert rec["state"] == "no objective" and "whole profile" in rec["because"], rec
+    assert rec["state"] == "profile only" and "whole profile" in rec["because"], rec
     assert rec["rose"], "the profile is still read when no guard was named"
     assert not validate_net_change.validate(got), validate_net_change.validate(got)

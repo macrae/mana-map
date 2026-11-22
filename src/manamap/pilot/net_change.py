@@ -21,10 +21,14 @@ MAP OF THIS FILE (in order):
                     Forge loss is a `forge_warning` beside it, never a gate.
   _print*           the terminal report, sections split out so tests can drive them.
 
-THIS IS THE DOCUMENT A SPENDING DECISION RESTS ON. It was assembled by hand once —
-eight commands and a page of HTML — to decide whether to buy 21 cards for the
-Ur-Dragon treasure refactor. The answer was no, and the report is why the money
-stayed in the bank. Doing that by hand again is how the next one gets skipped.
+THIS IS ONE INSTRUMENT'S READ OF A BRANCH, NOT THE DECISION (2026-11-21). The decision
+is a STUDY (`study.py`): the question, the facts from every source, the agents'
+arguments, the call and who decided, in the pilot's words — and this report is one
+labelled fact inside it. It was assembled by hand once — eight commands and a page
+of HTML — for the Ur-Dragon treasure refactor, and it earned its place by stopping a
+purchase; it lost its place as the gate the day the pilot had said for the
+fourteenth time that a solitaire simulator with no opponents is not the arbiter.
+`propose` no longer reads its word; `study` is what `propose` requires.
 
 IT COMPOSES AND IT MEASURES NOTHING OF ITS OWN. Every figure here comes from a
 command that already owns it — `compare_readings` here, over `diagnostic` readings
@@ -50,10 +54,11 @@ sitting in the block a spending decision reads first. What is left is arithmetic
 sampled rates with Newcombe intervals on the difference, deterministic
 hypergeometric source counts, and a bill.
 
-WHAT IT WILL AND WILL NOT DO. It grades the objective the branch was opened
-with, names both sides of the trade, prices it, and ends on one of five stated
-words — `recommend` is a RULE, written out in that function so it can be argued
-with, not a score. What it will not do is collapse the axes into a number: they
+WHAT IT WILL AND WILL NOT DO. It grades the guard the branch was opened with (if
+one was named), names both sides of the trade, prices it, and ends on one of five
+DESCRIPTIVE words about what the instrument read — `recommend` is a RULE, written
+out in that function so it can be argued with, not a score, and since 2026-11-21
+none of its words is an imperative: the instrument reports, it never rules. What it will not do is collapse the axes into a number: they
 move in both directions, weighting them would invent the weights, and this repo
 deleted a six-factor card scorer for exactly that. Which side of a trade is
 worth taking stays the pilot's call; the report's job is that the call is made
@@ -1816,6 +1821,9 @@ def build(slug, branch, iterations=None, seed=None):
         "objective_grade": grade,
         "staged": staged,
         "changes": change_doc,
+        # WHAT THE INSTRUMENT COULD SEE OF THE CARDS THAT MOVED (2026-11-21): printed
+        # before any row, and the first fact a study takes from this file.
+        "coverage": _coverage(slug, branch),
         "blind_spots": blind_spots(slug, branch, change_doc),
         "definitions": {"rows": METRICS,
                         "forge_endpoints": candidates.FORGE_OBJECTIVE_AXES,
@@ -1896,9 +1904,23 @@ def main(args):
         print(f"\n  Wrote {out}", file=aside)
 
 
-#: The states a recommendation may be in. A merge decision is not a scalar, and
-#: five words is the whole vocabulary.
-STATES = ("merge", "a trade", "do not merge", "inconclusive", "no objective")
+#: The states a recommendation may be in: five DESCRIPTIVE reads of what the
+#: instrument saw, never an imperative (2026-11-21). The old five — `merge`,
+#: `a trade`, `do not merge`, `inconclusive`, `no objective` — were a verdict the
+#: pilot had to override fourteen times; 42 tracked reports on decided branches
+#: still carry them (a decided branch is never re-measured), so `LEGACY_STATES`
+#: maps each to its descriptive word and `state_word` reads either.
+STATES = ("profile only", "guard met, nothing fell", "guard met, rows fell",
+          "guard not met", "guard unresolved")
+LEGACY_STATES = {"no objective": "profile only", "merge": "guard met, nothing fell",
+                 "a trade": "guard met, rows fell", "do not merge": "guard not met",
+                 "inconclusive": "guard unresolved"}
+
+
+def state_word(rec):
+    """The descriptive word for a recommendation written under either vocabulary."""
+    s = (rec or {}).get("state") if isinstance(rec, dict) else rec
+    return LEGACY_STATES.get(s, s)
 
 
 def recommend(doc):
@@ -1909,11 +1931,15 @@ def recommend(doc):
     six-factor card scorer for exactly that. What a pilot needs instead is the
     LEDGER plus a rule stated plainly enough to argue with:
 
-        objective met, nothing fell      -> merge
-        objective met, something fell    -> a trade; name both sides and the bill
-        objective not met                -> do not merge
-        objective stated but unreadable  -> inconclusive, and say WHY it is
-        no objective at all              -> no objective; the ledger still stands
+        guard met, nothing fell          -> "guard met, nothing fell"
+        guard met, something fell        -> "guard met, rows fell"; name both sides and the bill
+        guard not met                    -> "guard not met"
+        guard stated but unreadable      -> "guard unresolved", and say WHY it is
+        no guard at all                  -> "profile only"; the ledger still stands
+
+    THE WORDS DESCRIBE, THEY DO NOT INSTRUCT (2026-11-21). "merge" and "do not
+    merge" were the first vocabulary, and `propose` refused on the second; the
+    decision now rests on a study, and this rule only says what the instrument saw.
 
     THE LAST TWO ARE DIFFERENT AND WERE ONE STATE IN THE FIRST DRAFT. A branch
     that stated a goal the run could not read has been falsifiable all along and
@@ -1960,30 +1986,30 @@ def recommend(doc):
     if not objective:
         # No guard named (optional since 2026-10-28): nothing to grade against, so
         # the report says what changed and the branch is read as its profile.
-        out = ("no objective",
+        out = ("profile only",
                "No guard was named, so nothing here grades the branch — only what "
                "changed: read the rows as a whole profile.")
     elif state == "met":
         if fell:
-            out = ("a trade",
+            out = ("guard met, rows fell",
                    f"You buy {_and(rose)} and pay {_and(fell)}.")
         else:
-            out = ("merge",
-                   f"The objective is met and nothing measured here got worse"
+            out = ("guard met, nothing fell",
+                   f"The guard is met and nothing measured here got worse"
                    + (f"; {_and(rose)} improved." if rose else "."))
     elif state == "not met":
-        out = ("do not merge",
-               f"The objective is not met"
+        out = ("guard not met",
+               f"The guard is not met"
                + (f" — {grade.get('why')}" if grade.get("why") else ".")
-               + (f" {_and(rose).capitalize()} improved anyway, which is a "
-                  f"different branch's case." if rose else ""))
+               + (f" {_and(rose).capitalize()} improved anyway, which the study "
+                  f"weighs with everything the goldfish cannot see." if rose else ""))
     elif state == "not resolvable":
-        out = ("inconclusive",
+        out = ("guard unresolved",
                f"The miss is smaller than this run can see. "
                f"{grade.get('why', '')} A larger N is the only thing that "
                f"settles it.")
     else:                                            # "not measured", or absent
-        out = ("inconclusive",
+        out = ("guard unresolved",
                f"The objective names {objective.get('axis')}, and this list has "
                f"no reading for it. That is a missing measurement, not a failure "
                f"— the axis may need a model flag set in goldfish_targets.json.")
@@ -2708,10 +2734,62 @@ def _print_profile(doc):
         because = str(rec.get("because") or "")
         if warn:
             because = because.replace(warn, "").strip()
-        print(_wrap(because if not o else f"The rule's word is \"{rec['state']}\": {because}",
+        print(_wrap(because if not o else f"The guard reads \"{state_word(rec)}\": {because}",
                     indent="  "))
         for n in rec.get("notes") or []:
             print(_wrap(n, indent="  "))
+
+
+#: Above this many changed names the per-card dossier lines are left to
+#: `card-dossier`; the coverage block prints either way.
+DOSSIER_CARDS = 8
+
+
+def _coverage(slug, branch):
+    """The changed cards' coverage, from one home (`card_dossier.coverage`)."""
+    from manamap.pilot import card_dossier
+    names = []
+    try:
+        d = deck_branch.diff(slug, branch)
+        names = list(dict.fromkeys(list(d.get("add") or []) + list(d.get("out") or [])))
+        text, cov = card_dossier.coverage_block(slug, names, branch)
+    except Exception as exc:                            # noqa: BLE001 — a header, never a crash
+        return {"available": False, "why": str(exc)[:160], "names": names}
+    return {"available": True, "text": text, "names": names, **cov}
+
+
+def _print_coverage(doc):
+    """FIRST, before a single row: what the goldfish could see of the cards that
+    moved, then what the bench knows about each (when there are few enough to
+    read). The rows come after, under their own asterisk."""
+    cov = doc.get("coverage") or {}
+    if not cov.get("available"):
+        print("\n  * ONE INSTRUMENT — coverage of the changed cards not computed"
+              + (f" ({cov.get('why')})" if cov.get("why") else "") + ". " + _asterisk())
+        return
+    print()
+    print(_wrap(cov["text"], indent="  "))
+    names = cov.get("names") or []
+    if 0 < len(names) <= DOSSIER_CARDS:
+        from manamap.pilot import card_dossier
+        print("\n  WHAT THE BENCH KNOWS ABOUT EACH   ✓ verified  ◆ data  ★ judgment")
+        for n in names:
+            try:
+                d = card_dossier.dossier(doc["slug"], n, doc.get("branch"))
+            except Exception as exc:                    # noqa: BLE001
+                print(f"    {n}: dossier unavailable ({str(exc)[:80]})")
+                continue
+            print(f"    {n}")
+            for line in card_dossier.dossier_lines(d, limit=4):
+                print("  " + line)
+    elif names:
+        print(f"    {len(names)} cards moved — `manamap pilot card-dossier {doc['slug']} \"<card>\""
+              f" --branch {doc.get('branch')}` for any of them")
+
+
+def _asterisk():
+    from manamap.pilot import card_dossier
+    return card_dossier.ASTERISK
 
 
 def _print_blind(doc, full=False):
@@ -2853,16 +2931,19 @@ def _print_ledger(doc):
 
 
 def _print(doc, full=False):
-    """The report, in the order a reader decides: the profile, what it cannot see,
-    the mana, the cost, then the cards and the definitions. No single word sits on
-    top, because the bench judges the whole profile (`no-single-metric`); the rule's
-    word is still printed, under the table it summarises. `--full` adds the long
-    definitions, every automatic note, the ledger and where each card is."""
+    """The report, in the order a reader decides: what the instrument could see
+    of the cards that moved and what the bench knows about them (2026-11-21), the
+    profile, what it cannot see, the mana, the cost, then the cards and the
+    definitions. No single word sits on top, because the bench judges the whole
+    profile (`no-single-metric`); the guard's word is printed under the table it
+    summarises. `--full` adds the long definitions, every automatic note, the
+    ledger and where each card is."""
     h = doc["harness"]
     base = _base_label(doc)
-    print(f"\nNET CHANGE   {doc['slug']} @ {doc['branch']}")
+    print(f"\nNET CHANGE   {doc['slug']} @ {doc['branch']}   — one instrument's read; the study decides")
     print(f"  {'against ' + base + ', ' if base else ''}"
           f"{h['iterations']:,} goldfish games per list, same seeds (seed {h['seed']})")
+    _print_coverage(doc)
     _print_profile(doc)
     _print_blind(doc, full)
     _print_mana(doc, full)

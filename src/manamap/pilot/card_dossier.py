@@ -58,10 +58,15 @@ def _mentions(text, card):
     return any(n in low for n in _names_of(card))
 
 
+_MD_LINK = re.compile(r"\[([^\]]+)\]\([^)]+\)")
+
+
 def _sentences_naming(text, card, limit=2):
-    """The sentences of a passage that name the card, trimmed."""
+    """The sentences of a passage that name the card, trimmed; a markdown link
+    reads as its text, so a CONTEXT line quotes card names, not URLs."""
     out = []
-    for sent in re.split(r"(?<=[.!?])\s+|\n+", text or ""):
+    text = _MD_LINK.sub(r"\1", text or "")
+    for sent in re.split(r"(?<=[.!?])\s+|\n+", text):
         if _mentions(sent, card):
             s = " ".join(sent.split())
             out.append(s if len(s) <= 220 else s[:217] + "…")
@@ -279,13 +284,33 @@ def dossier(slug, card, branch=None):
 ASTERISK = ("No blockers, no removal, no opponents: the rows are one input, never the call.")
 
 
+def coverage_state(slug, card, branch=None):
+    """One card's `model_coverage.card_state` state, read the way the goldfish
+    reads the deck (branch declaration falling back to the deck's), or None when
+    the card is in neither list and the corpus is not here. The cheap half of
+    `dossier`, for an instrument's header over thirty changed cards."""
+    row, _ = _card_row(slug, card, branch)
+    text_row = row or _corpus_row(card)
+    if not text_row:
+        return None
+    try:
+        from manamap.pilot import model_coverage
+        flags, named = model_coverage.declaration(slug, branch)
+        return model_coverage.card_state({"name": text_row.get("name") or card,
+                                          "type_line": text_row.get("type_line") or "",
+                                          "oracle_text": text_row.get("oracle_text") or "",
+                                          **({k: row[k] for k in row} if row else {})}, flags, named)["state"]
+    except Exception:                                   # noqa: BLE001
+        return None
+
+
 def coverage(slug, cards, branch=None):
     """`{named, seen, partial, dark, invisible, unknown, share}` over the cards an
     instrument's reading is about — the figure every goldfish table carries first."""
     out = {"named": 0, "seen": [], "partial": [], "dark": [], "invisible": [], "unknown": []}
     for c in cards:
         out["named"] += 1
-        st = dossier(slug, c, branch).get("coverage")
+        st = coverage_state(slug, c, branch)
         out[st if st in ("seen", "partial", "dark", "invisible") else "unknown"].append(c)
     read = len(out["seen"]) + len(out["partial"])
     out["share"] = round(read / out["named"], 3) if out["named"] else None

@@ -38,8 +38,10 @@ from manamap.pilot.common import deck_dir, report_errors
 
 
 def net_change_states():
-    from manamap.pilot.net_change import STATES as S
-    return S
+    """The live vocabulary AND the legacy one: 42 tracked reports on decided
+    branches carry `merge` / `do not merge` and are never re-measured."""
+    from manamap.pilot.net_change import LEGACY_STATES, STATES as S
+    return tuple(S) + tuple(LEGACY_STATES)
 
 ARTIFACT = "net_change.json"
 STATES = {"met", "not met", "not resolvable", "not measured"}
