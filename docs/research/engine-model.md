@@ -425,6 +425,47 @@ tracked fleet):
 5. A permutation null: shuffle event kinds across cards and show the hub structure collapses, so
    that what we see is not an artefact of vocabulary granularity.
 
+### 6.1 Measured, 2026-11-22 (after Phase 1 and 2; `engine_graph.agreement`)
+
+The validation plan's first three measurements, run over the eleven decks with a record. The
+"engine set" is every producer and deck-fed consumer of a component outside the substrate.
+
+| deck | engine set | declared set | Jaccard | declared, not in graph | graph, not declared | Forge ρ (N, games) | log reads |
+|---|---|---|---|---|---|---|---|
+| edgar-vampires | 77 | 41 | 0.33 | 12 | 48 | 0.13 (20, 400) | 26 |
+| gishath | 71 | 36 | 0.49 | 1 | 36 | 0.12 (44, 40) | 10 |
+| goblin-storm | 66 | 19 | 0.29 | 0 | 47 | 0.04 (36, 100) | 14 |
+| hapatra | 47 | 18 | 0.20 | 7 | 36 | 0.33 (37, 20) | 0 |
+| heliod | 27 | 54 | 0.45 | 29 | 2 | 0.21 (48, 120) | 9 |
+| keen-engineering | 57 | 52 | 0.79 | 4 | 9 | — | 0 |
+| radagast | 70 | 58 | 0.83 | 0 | 12 | 0.08 (48, 20) | 0 |
+| sharknado | 62 | 49 | 0.79 | 0 | 13 | −0.16 (14, 200) | 15 |
+| sisay | 98 | 27 | 0.28 | 0 | 71 | 0.04 (47, 20) | 0 |
+| ur-dragon | 68 | 51 | 0.75 | 0 | 17 | 0.09 (36, 100) | 31 |
+| yawgmoth-swarm | 64 | 49 | 0.74 | 1 | 16 | −0.25 (45, 20) | 0 |
+
+**What this says.** (1) The graph's engine set is too BROAD: on sisay it is 98 of 99 cards, and
+it is larger than the declaration on ten decks of eleven. The cause is the implicit edges — every
+nonland is a CAST and every permanent an ETB, so any "whenever you cast" or "whenever a creature
+enters" card makes most of the deck a producer. The set says "can feed", not "is the engine";
+narrowing it (count a component as engine only where it reaches a terminal, or weight edges by
+how specific the filter is) is the next parser work, and the declaration agreement is the number
+that should move. (2) Where the declaration is a broad hand list (keen, radagast, sharknado,
+ur-dragon, yawgmoth) the graph contains almost all of it — "declared, not in graph" is 0–4 — so
+the graph is not missing what the pilot names; it adds. Heliod is the exception: 29 declared
+cards the graph does not place in the engine, because its declaration counts protection and
+answers as engine and the graph files them under protection, by design. (3) **Forge does not
+confirm graph centrality**: ρ between a card's feeds degree and its plays per game is between
+−0.25 and 0.33 on every deck, none with N above 48. Forge plays cheap cards and answers whatever
+their degree; this is a statement about Forge's AI as much as the graph, and it is why ✓ never
+derives from either. (4) The pilot's 105 per-card reads do not concentrate on hubs: on edgar
+13 of 26 reads are hub cards, on ur-dragon 13 of 31, on sharknado 7 of 15, and reads of cards
+outside the engine are as common as reads of leaves. Hubness is not what the pilot notices.
+
+Not yet run: measurement (4), Spellbook lines as pure event cycles, and (5), the permutation null.
+Both wait on the narrowed engine set, since a null against a set that is the whole deck is
+uninformative.
+
 **Open questions the code must settle** (each is a decision, not a research gap): typed stocks
 (an untyped HAND connects every draw to every cast — type it by the spell filter of the consumer);
 the filter whitelist (about thirty properties; anything else makes an unproven edge); replacement

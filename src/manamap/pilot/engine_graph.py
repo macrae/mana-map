@@ -1066,3 +1066,108 @@ def main(args):
     abilities = getattr(args, "abilities", None)
     _print(doc, abilities_for=abilities if abilities is not None else None)
     return 0
+
+
+# ── AGREEMENT: the computed graph against three other witnesses (memo §6) ────────
+#
+# Reported as MEASUREMENTS, never pass/fail: (1) the hand-written goldfish
+# declaration — Jaccard of its card set against the graph's engine set, and per
+# declared group its best Jaccard against any component's producers or consumers;
+# (2) Forge — Spearman of a node's feeds degree against its casts plus activations
+# per game in the deck's largest logged run, over cards Forge's AI is allowed to
+# play, with N; (3) the pilot — how the captain's-log card reads fall on hubs
+# (degree at or above the engine's median), leaves, and cards outside the engine.
+
+def _jaccard(a, b):
+    a, b = set(a), set(b)
+    return round(len(a & b) / len(a | b), 3) if (a | b) else None
+
+
+def _ranks(xs):
+    order = sorted(range(len(xs)), key=lambda i: xs[i])
+    r = [0.0] * len(xs)
+    i = 0
+    while i < len(order):
+        j = i
+        while j + 1 < len(order) and xs[order[j + 1]] == xs[order[i]]:
+            j += 1
+        for k in range(i, j + 1):
+            r[order[k]] = (i + j) / 2 + 1
+        i = j + 1
+    return r
+
+
+def spearman(xs, ys):
+    """Spearman's rho with average ranks for ties; None under three points or a constant side."""
+    if len(xs) < 3:
+        return None
+    rx, ry = _ranks(xs), _ranks(ys)
+    mx, my = sum(rx) / len(rx), sum(ry) / len(ry)
+    num = sum((a - mx) * (b - my) for a, b in zip(rx, ry))
+    den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+    return round(num / den, 3) if den else None
+
+
+def agreement(slug, doc=None):
+    from manamap.pilot.scaffold_targets import _SUBSTRATE_EVENTS
+    doc = doc or build(slug)
+    base = deck_dir(slug)
+    deck_nodes = {n["id"]: n for n in doc["graph"]["nodes"] if n["zone"] in ("command", "library")}
+    commanders = {k for k, n in deck_nodes.items() if n["zone"] == "command"}
+    comps = [c for c in doc["components"] if c["event"] not in _SUBSTRATE_EVENTS]
+    engine_set = {x for c in comps for x in c["producers"] + list(c.get("deck_fed_consumers") or [])} - commanders
+    out = {"slug": slug, "engine_cards": len(engine_set)}
+
+    targets = load_json(base / "goldfish_targets.json") or {}
+    groups = [g.get("any_of") or [] for t in targets.get("targets") or [] if not t.get("generated")
+              for g in t.get("need") or []]
+    declared = {x for g in groups for x in g if x in deck_nodes} - commanders
+    if groups:
+        comp_sets = [set(c["producers"]) for c in comps] + [set(c.get("deck_fed_consumers") or []) for c in comps]
+        best = [max((_jaccard(set(g) - commanders, cs) or 0) for cs in comp_sets) if comp_sets else 0 for g in groups]
+        out["declared"] = {"cards": len(declared), "jaccard": _jaccard(declared, engine_set),
+                           "groups": len(groups), "group_best_jaccard_median": sorted(best)[len(best) // 2],
+                           "declared_outside_graph": len(declared - engine_set),
+                           "graph_outside_declared": len(engine_set - declared)}
+    else:
+        out["declared"] = None
+
+    degree = {k: 0 for k in deck_nodes}
+    for e in doc["graph"]["edges"]:
+        if e["kind"] != "feeds":
+            continue
+        for end in (e["from"], e["to"]):
+            if end in degree:
+                degree[end] += 1
+    runs = []
+    for p in sorted((base / "sim").glob("*.json")) if (base / "sim").is_dir() else []:
+        ec = (load_json(p) or {}).get("engine_casts") or {}
+        if ec.get("by_card") and ec.get("games"):
+            runs.append((ec["games"], p.name, ec))
+    if runs:
+        games, name, ec = max(runs)
+        pts = [(degree[c], (row.get("cast", 0) + row.get("activated", 0)) / games)
+               for c, row in ec["by_card"].items()
+               if c in degree and c not in commanders and not deck_nodes[c]["coverage"].get("ai_remove_deck")
+               and "Land" not in deck_nodes[c]["types"]]
+        out["forge"] = {"run": name, "games": games, "n": len(pts),
+                        "spearman_degree_vs_plays": spearman([a for a, _ in pts], [b for _, b in pts])}
+    else:
+        out["forge"] = None
+
+    ann = load_json(base / "log_annotations.json") or {}
+    eng_deg = sorted(degree[c] for c in engine_set if c in degree)
+    median = eng_deg[len(eng_deg) // 2] if eng_deg else 0
+    table = {}
+    n_reads = 0
+    for e in (ann.get("entries") or {}).values():
+        for r in e.get("cards") or []:
+            c, read = r.get("card"), r.get("read")
+            if c not in deck_nodes or read is None:
+                continue
+            where = "hub" if c in engine_set and degree[c] >= median else "leaf" if c in engine_set else "outside"
+            table.setdefault(where, {}).setdefault(read, 0)
+            table[where][read] += 1
+            n_reads += 1
+    out["log_reads"] = {"n": n_reads, "hub_degree_at_least": median, "by_position": table} if n_reads else None
+    return out
