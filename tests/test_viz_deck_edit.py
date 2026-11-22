@@ -371,13 +371,18 @@ def test_the_branch_page_measures_and_unstages(browser, viz_server):
     page, st = _open(browser, viz_server, f"?deck={BENCH}&branch={BRANCH}",
                      api_slug=BENCH, path="branch.html")
     try:
+        # The bench verbs fold behind their title (2026-11-22); open the fold to press one.
+        page.wait_for_selector("#benchActions [data-act='unstage']", timeout=30000, state="attached")
+        page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
         page.wait_for_selector("#benchActions [data-act='unstage']", timeout=30000)
         assert len(page.query_selector_all("#benchActions [data-act='unstage']")) == len(meta["staged"])
         page.click("#benchActions [data-act='unstage']")
         _until(page, lambda: st["posted"].get("branch/stage"))
-        page.wait_for_selector("#benchActions [data-act='measure']", timeout=10000)
+        page.wait_for_selector("#benchActions [data-act='measure']", timeout=10000, state="attached")
         assert st["posted"]["branch/stage"] == [{"slug": BENCH, "branch": BRANCH, "undo": True,
                                                 "out": first["out"], "card": first["in"]}]
+        # The page re-rendered the bench verbs from the artifacts, folded again.
+        page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
         page.click("#benchActions [data-act='measure']")
         _until(page, lambda: st["posted"].get("branch/net-change"))
         # The job is polled to `done` and the page re-renders from the artifacts:

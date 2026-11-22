@@ -1596,6 +1596,37 @@ depends on no `MM`, and reads only committed artifacts. Neither page loads the m
 **The workbench's Teaching rack (2026-11-03).** A manifest entry with `purpose: "teaching"` sits on
 its own rack under Sleeved, and in no other rack or the Fleet table, whatever its rung or lock.
 
+**The card leads with the deck in one sentence and its latest call (2026-11-22).**
+`info.lead` is the Context Summary's first sentence with its links flattened
+(`deck_info._lead`), drawn under the commander line before any chip; `info.studies[0]` —
+the call, who decided, the branch — follows the chips. The sim, experiment and question
+count chips are gone from the card (instruments' tallies, not the deck; the fleet table
+still carries the runs). Every branch row (`BranchRows.row`, shared with Build) carries
+its study's call and leads its links with `#study`. `tests/test_viz_branch_chapters.py`.
+
+## The branch page (`branch.html`) — four chapters, the call first (2026-11-22)
+
+Measured on sharknado@jaws-v1 before: 12,466 px at a 693 px viewport — 18 screens, 15
+panels, nothing folded but the goldfish (which was open), the glossary alone 2,712 px.
+Fifteen functions build its panels and three of them arrive by fetch into slots, so the
+page was not rewritten: `arrange()` creates four chapters and moves every panel it knows
+into one by id (`PLACE`, in `ORDER`), on the first render and again from the
+`MutationObserver` as late panels land; `foldPanels()` wraps every panel past the call
+in a `<details>` inside its own `<section id>` with the title in the summary and a count
+beside it (`data-note`, else `FOLD_COUNT`). After: ~4,300 px.
+
+| # | chapter | holds |
+|---|---|---|
+| 1 | **The call** | the study (first, whatever order the fetches landed), the proposal (deck, why, goal, the bill in one line, the swaps table), the bill folded |
+| 2 | **The cards** | the net change list/gallery, proven lines on this branch, what Forge's AI did with each add, the marks at the table |
+| 3 | **Instruments** | the goldfish (its own `<details>`, now CLOSED, the read in words first inside it), what it cannot see, the mana, the real table, the deck's own goldfish |
+| 4 | **The trail** | the trail, the bench verbs, candidate swaps, the deck's other branches, what the figures mean |
+
+The nav is the chapters. Every id is unchanged, so the workbench's `#measured`,
+`#net-change` and `#swaps` links land and open their fold (`openHash`). A browser test
+that reads a folded panel unfolds first (`_branch_page` in the behaviour suite does, as
+do the buy-list and bench-verb tests); the chapter tests do not.
+
 ## The deck dossier (`deck.html`)
 
 **The art (`#panel-art`, 2026-11-03).** Every line of the list as the card it is: art, artist,

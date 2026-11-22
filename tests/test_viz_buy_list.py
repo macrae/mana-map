@@ -102,6 +102,8 @@ def _buy_page(browser, viz_server, slug, branch, api_calls=None, prices=None):
         page.route("**/api/branch/buy-list*", buy)
     page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
     idle(page)
+    # The bill folds behind its title (2026-11-22); the buy list lives inside it.
+    page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
     page.js_errors = errors
     return page
 

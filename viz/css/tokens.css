@@ -253,6 +253,12 @@ details.case .body { padding: 0 14px 14px; }
   color: var(--stamp-red); letter-spacing: .04em; margin-bottom: 8px;
 }
 .wb-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+/* The card's lead sentence and its latest call (2026-11-22), before any chip. */
+.wb-lead { margin: 6px 0 8px; font-size: 14px; line-height: 1.45; color: var(--ink); max-width: 60ch; }
+.wb-study { margin: 8px 0 0; font-size: 13px; color: var(--ink-soft); }
+.wb-study b { color: var(--ink); text-transform: uppercase; letter-spacing: .04em; font-size: 12px; }
+.wb-br-study { margin: 4px 0 2px; font-size: 13px; color: var(--ink-soft); }
+.wb-br-study b { color: var(--ink); text-transform: uppercase; letter-spacing: .04em; font-size: 12px; }
 .wb-chip {
   font-family: var(--condensed); font-size: 11px; letter-spacing: .03em;
   text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
@@ -1593,14 +1599,21 @@ details.rost-fold > summary {
 /* THE FOLDS (2026-11-22): a panel's <details> sits inside its <section>, the
    title in the summary with a one-line count. One screen open, the rest behind
    a title; a deep link opens its fold (deck-view.js `openHash`). */
-.dossier .panel.fold > details > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.dossier .panel.fold > details > summary::-webkit-details-marker { display: none; }
-.dossier .panel.fold > details > summary::before { content: "\25B8"; color: var(--ink-soft); font-size: 14px; }
-.dossier .panel.fold > details[open] > summary::before { content: "\25BE"; }
-.dossier .panel.fold > details > summary .panel-title { display: inline; margin: 0; }
-.dossier .panel.fold > details > summary:hover .panel-title { color: var(--burst-yellow); }
-.dossier .fold-note { color: var(--ink-soft); font-size: 13px; margin-left: auto; }
-.dossier .panel.fold > details > .promise { margin-top: 10px; }
+.panel.fold > details > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.panel.fold > details > summary::-webkit-details-marker { display: none; }
+.panel.fold > details > summary::before { content: "\25B8"; color: var(--ink-soft); font-size: 14px; }
+.panel.fold > details[open] > summary::before { content: "\25BE"; }
+.panel.fold > details > summary .panel-title, .panel.fold > details > summary h2 { display: inline; margin: 0; }
+.panel.fold > details > summary:hover .panel-title, .panel.fold > details > summary:hover h2 { color: var(--burst-yellow); }
+.fold-note { color: var(--ink-soft); font-size: 13px; margin-left: auto; font-family: var(--body); text-transform: none; letter-spacing: 0; }
+.panel.fold > details > .promise { margin-top: 10px; }
+/* The branch page's chapters (2026-11-22): one column, as the report always was;
+   the goldfish's own <details> reads like the folds around it. */
+.branch-report .chapter .panels { grid-template-columns: minmax(0, 1fr); }
+.branch-report .chapter { margin-bottom: 36px; }
+.branch-report .panel.fold > details > .ev:first-of-type { margin-top: 10px; }
+.branch-report .exec-summary { margin-bottom: 0; }
+.branch-report details.panel.instrument > summary h2 { font-size: 1.02em; }
 /* The handbook's blocks: the stamp chips, the cards that left, the lessons. */
 .dossier .chip.stamp-ok { color: var(--ink-soft); border-color: var(--rule); }
 .dossier .chip.cut { color: #d08a2a; border-color: #d08a2a; margin-left: 6px; text-transform: none; letter-spacing: 0; }

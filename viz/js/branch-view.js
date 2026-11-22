@@ -74,6 +74,123 @@
            (how ? '<pre class="cmd">' + esc(how) + '</pre>' : '') + '</section>';
   }
 
+  /* ── FOUR CHAPTERS, THE CALL FIRST (2026-11-22) ─────────────────────────
+   *
+   * Measured on sharknado@jaws-v1 before: 12,466 px at a 693 px viewport — 18
+   * screens, 15 panels, nothing folded but the goldfish (which was OPEN), the
+   * glossary alone 2,712 px. The panels are built by fifteen functions and
+   * three of them arrive by fetch into slots, so the page is not rewritten:
+   * `arrange()` moves every panel it knows into its chapter by id, on the first
+   * render and again as late panels land, and `foldPanels()` puts every panel
+   * past the call behind its own title with a count. The ids do not change;
+   * every deep link and every test still addresses the section. */
+  var CHAPTERS = [
+    ['call', 'The call', 'The study and who decided, the swaps and the why, the bill.'],
+    ['cards', 'The cards', 'What moves, the lines proven on this branch, what Forge’s AI did with each add, the marks at the table.'],
+    ['instruments', 'Instruments', 'The goldfish, what it cannot see, the mana, the real table — they report, they never rule.'],
+    ['trail', 'The trail', 'How the branch got here, the bench verbs, the deck’s other branches, what the figures mean.']
+  ];
+  var PLACE = {
+    study: 'call', summary: 'call', bill: 'call',
+    'net-change': 'cards', slotEvidence: 'cards', branchStacks: 'cards', castProofs: 'cards', 'table-marks': 'cards',
+    measured: 'instruments', blindSpots: 'instruments', mana: 'instruments', forge: 'instruments', profileFigures: 'instruments',
+    trail: 'trail', benchActions: 'trail', slotActions: 'trail', swaps: 'trail', branchSiblings: 'trail', definitions: 'trail'
+  };
+  var ORDER = { study: 0, summary: 1, bill: 2,
+                'net-change': 0, slotEvidence: 1, branchStacks: 2, castProofs: 3, 'table-marks': 4,
+                measured: 0, blindSpots: 1, mana: 2, forge: 3, profileFigures: 4,
+                trail: 0, benchActions: 1, swaps: 2, slotActions: 3, branchSiblings: 4, definitions: 5 };
+  /* What folds, and how it opens. The study and the proposal stay plain; the
+   * goldfish is its own <details> (closed now; the summary says what it saw). */
+  var FOLDS = {
+    bill: 'closed', 'net-change': 'closed', branchStacks: 'closed', castProofs: 'closed', 'table-marks': 'closed',
+    blindSpots: 'closed', mana: 'closed', forge: 'closed', profileFigures: 'closed',
+    trail: 'closed', benchActions: 'closed', swaps: 'closed', branchSiblings: 'closed', definitions: 'closed'
+  };
+  /* The one line beside a folded title: a panel's own `data-note`, else a count
+   * of what it holds — never a figure that goes stale. */
+  var FOLD_COUNT = {
+    branchStacks: ['details, li', 'line'], castProofs: ['tbody tr, li', 'card'], 'table-marks': ['li', 'mark'],
+    blindSpots: ['.nc-blind li', 'unpriced card'], definitions: ['dt', 'defined figure'],
+    branchSiblings: ['a[href*="branch.html"]', 'branch'], swaps: ['li.swap', 'candidate'],
+    mana: ['tr, li', 'row'], forge: ['tr, li', 'row'], trail: ['li', 'step'], profileFigures: ['tr', 'row']
+  };
+
+  function arrange() {
+    var panels = document.getElementById('panels');
+    if (!panels) return;
+    if (!document.getElementById('ch-call')) {
+      panels.insertAdjacentHTML('beforeend', CHAPTERS.map(function (c) {
+        return '<div class="chapter" id="ch-' + c[0] + '" hidden><h2 class="chapter-title">' + esc(c[1]) + '</h2>' +
+          '<p class="chapter-promise">' + esc(c[2]) + '</p><div class="panels" data-chapter="' + c[0] + '"></div></div>';
+      }).join(''));
+    }
+    Array.prototype.slice.call(panels.querySelectorAll('[id]')).forEach(function (el) {
+      var ch = PLACE[el.id];
+      if (!ch) return;
+      var host = panels.querySelector('.panels[data-chapter="' + ch + '"]');
+      if (host && !host.contains(el)) host.appendChild(el);
+    });
+    CHAPTERS.forEach(function (c) {
+      var ch = document.getElementById('ch-' + c[0]);
+      var body = ch.querySelector('.panels');
+      // In the order the chapter reads: the study before the proposal, the goldfish
+      // before what it cannot see — whatever order the fetches landed in.
+      var kids = Array.prototype.slice.call(body.children);
+      var rank = function (k) { return ORDER[k.id] === undefined ? 50 : ORDER[k.id]; };
+      var sorted = kids.slice().sort(function (a, b) { return rank(a) - rank(b) || kids.indexOf(a) - kids.indexOf(b); });
+      if (sorted.some(function (k, i) { return k !== kids[i]; })) sorted.forEach(function (k) { body.appendChild(k); });
+      ch.hidden = !Array.prototype.some.call(body.children, function (k) {
+        return k.tagName !== 'DIV' || k.children.length > 0;
+      });
+    });
+  }
+
+  function foldPanels() {
+    Object.keys(FOLDS).forEach(function (id) {
+      var sec = document.getElementById(id);
+      if (sec && sec.tagName === 'DIV') sec = sec.querySelector(':scope > section');
+      if (!sec || sec.tagName !== 'SECTION' || sec.getAttribute('data-folded')) return;
+      var h = sec.querySelector(':scope > h2');
+      if (!h) return;
+      var det = document.createElement('details');
+      if (FOLDS[id] === 'open') det.open = true;
+      var sum = document.createElement('summary');
+      det.appendChild(sum);
+      while (sec.firstChild) det.appendChild(sec.firstChild);
+      sum.appendChild(h);
+      var note = sec.getAttribute('data-note') || '';
+      if (!note && FOLD_COUNT[id]) {
+        var n = det.querySelectorAll(FOLD_COUNT[id][0]).length;
+        var noun = FOLD_COUNT[id][1];
+        if (n) note = n + ' ' + noun + (n === 1 ? '' : (/(ch|s|x)$/.test(noun) ? 'es' : 's'));
+      }
+      if (note) {
+        var sp = document.createElement('span');
+        sp.className = 'fold-note';
+        sp.textContent = note;
+        sum.appendChild(sp);
+      }
+      sec.appendChild(det);
+      sec.classList.add('fold');
+      sec.setAttribute('data-folded', '1');
+    });
+    openHash();
+  }
+
+  /* A deep link opens its fold, or the jump lands on a title with nothing under it. */
+  function openHash() {
+    var id = (location.hash || '').slice(1);
+    var el = id ? document.getElementById(id) : null;
+    if (!el) return;
+    if (el.tagName === 'DETAILS') el.open = true;
+    var det = el.querySelector(':scope > details, :scope > section > details');
+    if (det) det.open = true;
+    var up = el.parentElement;
+    while (up) { if (up.tagName === 'DETAILS') up.open = true; up = up.parentElement; }
+  }
+  window.addEventListener('hashchange', openHash);
+
   function objectivePanel(meta, nc) {
     var o = (nc && nc.objective) || (meta && meta.objective);
     var g = nc && nc.objective_grade;
@@ -200,11 +317,13 @@
         + ((cov.dark || []).length ? ' · ' + cov.dark.length + ' DARK' : '')
         + ((cov.invisible || []).length ? ' · ' + cov.invisible.length + ' invisible' : '')
       : 'coverage of the changed cards not recorded on this report';
-    // OPEN by default: the fold is for the reader who has seen enough; hidden figures
-    // would also be figures a text search cannot find.
-    return '<details class="panel nc-profile instrument wide" id="measured" open>' +
+    // CLOSED by default (2026-11-22): an instrument in the Instruments chapter; the
+    // summary says what it saw, a deep link (`#measured`) opens it, and the read in
+    // words sits first inside.
+    return '<details class="panel nc-profile instrument wide" id="measured">' +
       '<summary><h2>The goldfish — one instrument, ' + esc(covLine) + ' <span class="asterisk" title="no opponents, no blockers, no removal: the rows are one input, never the call">*</span></h2>' +
       '<p class="ev">No opponents, no blockers, no removal. Read as a whole profile, never one row; the study is the decision.</p></summary>' +
+      readBlock(nc) +
       '<p class="nc-count"><span class="c-better"><b>' + n.better + '</b> better</span>' +
       '<span class="c-worse"><b>' + n.worse + '</b> worse</span>' +
       '<span class="c-noise"><b>' + n.noise + '</b> no call</span></p>' +
@@ -490,7 +609,8 @@
             return x.name + ' (' + x.decks.join(', ') + ')';
           }).join('; ')) + '.</p>' : '') + '</details>'
       : '';
-    return '<section class="panel" id="bill"><h2>The bill</h2>' +
+    return '<section class="panel" id="bill" data-note="' + esc((buy.length ? buy.length + ' to buy' : 'nothing to buy') +
+        ' · own ' + owned + ' of ' + total) + '"><h2>The bill</h2>' +
       '<div class="tiles">' + tiles + '</div>' +
       (rc.reads_as ? '<p class="ev">' + esc(rc.reads_as) + '</p>' : '') +
       (rc.mergeable === false ? '<p class="ev warn">NOT MERGEABLE YET — <code>deck-branch ' +
@@ -1041,6 +1161,36 @@
       '<ul>' + parts.slice(1).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></details>';
   }
 
+  /* THE GOLDFISH'S READ IN WORDS — what rose, what fell, what it cannot see — inside
+   * its own fold (2026-11-22; it led the proposal panel before). */
+  function readBlock(nc) {
+    var r = nc && nc.recommendation;
+    if (!r) return '';
+    var rewardOf = {}, riskOf = {};
+    (r.reward || []).forEach(function (x) { rewardOf[x.measure] = x.reads_as; });
+    (r.risk || []).forEach(function (x) { if (x.kind === 'paid') riskOf[x.what] = x.detail; });
+    var item = function (m, txt, cls) {
+      return '<li class="' + cls + '"><b>' + esc(m) + '</b>' +
+        (txt ? '<span class="ev">' + esc(txt) + '</span>' : '') + '</li>';
+    };
+    var out = '<div class="exec-evidence">' +
+      '<div class="rose"><h4>▲ Rose</h4>' + ((r.rose || []).length
+        ? '<ul>' + r.rose.map(function (m) { return item(m, rewardOf[m], 'rose'); }).join('') + '</ul>'
+        : '<p class="ev">nothing rose</p>') + '</div>' +
+      '<div class="fell"><h4>▼ Fell</h4>' + ((r.fell || []).length
+        ? '<ul>' + r.fell.map(function (m) { return item(m, riskOf[m], 'fell'); }).join('') + '</ul>'
+        : '<p class="ev">nothing fell</p>') + '</div></div>';
+    if ((r.no_call || []).length) {
+      out += '<p class="ev">No call either way: ' + r.no_call.map(esc).join(', ') + '.</p>';
+    }
+    var blind = (r.risk || []).filter(function (x) { return x.kind === 'unmeasured'; });
+    if (blind.length) {
+      out += '<p class="ev exec-blind"><b>What it cannot see</b> — judgment, not measurement: ' +
+        blind.map(function (x) { return esc(x.what); }).join('; ') + '.</p>';
+    }
+    return out;
+  }
+
   function summaryPanel(meta, nc, slug, name) {
     var sum = (meta && meta.summary) || {};
     var deckName = window.DeckFacts && DeckFacts.displayName
@@ -1050,7 +1200,7 @@
       : '';
     var why = meta && meta.why && !isAutoWhy(meta.why) ? meta.why : (sum.blurb || '');
     var out = '<section class="panel exec-summary" id="summary">' +
-      '<h2>The proposal at a glance</h2>' +
+      '<h2>The proposal</h2>' +
       '<dl class="exec-facts">' +
       '<dt>The deck</dt><dd><b>' + esc(deckName) + '</b>' +
       (ver ? ' as it stands at <b>' + esc(ver) + '</b>' : '') +
@@ -1069,40 +1219,19 @@
       goal = esc(sum.title) + '.';
     }
     if (goal) out += '<dt>The goal</dt><dd>' + goal + '</dd>';
-    out += '</dl>';
-
-    // THE EVIDENCE, as a profile: what rose, what fell, what it cannot see.
-    var r = nc && nc.recommendation;
-    if (r) {
-      var rewardOf = {}, riskOf = {};
-      (r.reward || []).forEach(function (x) { rewardOf[x.measure] = x.reads_as; });
-      (r.risk || []).forEach(function (x) { if (x.kind === 'paid') riskOf[x.what] = x.detail; });
-      var item = function (m, txt, cls) {
-        return '<li class="' + cls + '"><b>' + esc(m) + '</b>' +
-          (txt ? '<span class="ev">' + esc(txt) + '</span>' : '') + '</li>';
-      };
-      out += '<h3>What the goldfish read <span class="ev">— one instrument, not the call</span></h3><div class="exec-evidence">' +
-        '<div class="rose"><h4>▲ Rose</h4>' + ((r.rose || []).length
-          ? '<ul>' + r.rose.map(function (m) { return item(m, rewardOf[m], 'rose'); }).join('') + '</ul>'
-          : '<p class="ev">nothing rose</p>') + '</div>' +
-        '<div class="fell"><h4>▼ Fell</h4>' + ((r.fell || []).length
-          ? '<ul>' + r.fell.map(function (m) { return item(m, riskOf[m], 'fell'); }).join('') + '</ul>'
-          : '<p class="ev">nothing fell</p>') + '</div></div>';
-      if ((r.no_call || []).length) {
-        out += '<p class="ev">No call either way: ' + r.no_call.map(esc).join(', ') + '.</p>';
-      }
-      var blind = (r.risk || []).filter(function (x) { return x.kind === 'unmeasured'; });
-      if (blind.length) {
-        out += '<p class="ev exec-blind"><b>What the goldfish cannot see</b> — these are judgment, not measurement: ' +
-          blind.map(function (x) { return esc(x.what); }).join('; ') + '.</p>';
-      }
-      out += '<p class="ev">The paired goldfish: no blockers, no removal, one opponent. Read the rows together, ' +
-        'never one alone; the decision is the study above. The full table is folded under <a href="#measured">The goldfish</a>.</p>';
-    } else {
-      out += '<h3>What the goldfish read</h3><p class="ev">The goldfish has not read this branch. That is one instrument absent; ' +
-        'the study above is the decision. To hear it: ' +
-        '<code>manamap pilot net-change ' + esc(slug) + ' --branch ' + esc(name) + ' --write</code></p>';
+    // THE BILL IN ONE LINE; the panel with the tiles and the buy list folds below.
+    var bc = (nc && nc.bill && nc.bill.cards) || [];
+    var toBuy = bc.filter(function (x) { return x.state === 'buy'; }).length;
+    if (bc.length) {
+      out += '<dt>The bill</dt><dd>' + (toBuy ? '<b>' + toBuy + '</b> card' + (toBuy === 1 ? '' : 's') + ' to buy'
+        : 'nothing to buy') + ' of ' + bc.length + ' that move · <a href="#bill">the bill</a>' +
+        (nc && !nc.recommendation ? '' : '') + '</dd>';
     }
+    if (!nc) {
+      out += '<dt>The goldfish</dt><dd class="ev">has not read this branch — one instrument absent; the study above is the decision. ' +
+        '<code>manamap pilot net-change ' + esc(slug) + ' --branch ' + esc(name) + ' --write</code></dd>';
+    }
+    out += '</dl>';
 
     // THE SWAPS, paired, with the reason for each. Hover a name to see the card.
     var d = nc && nc.changes && nc.changes.diff;
@@ -1357,7 +1486,8 @@
      * this page is for; the pictures are what a card decision is made on. Both
      * are rendered and CSS picks — the gallery's images are `loading="lazy"`,
      * so the one you are not looking at costs nothing. */
-    var out = '<section class="panel netchange" id="net-change" data-view="list">' +
+    var out = '<section class="panel netchange" id="net-change" data-view="list" data-note="' +
+      esc('−' + (c.out_copies == null ? c.out : c.out_copies) + ' out · +' + (c.in_copies == null ? c['in'] : c.in_copies) + ' in') + '">' +
       '<h2>The cards' +
       '<span class="viewtoggle">' +
       '<button type="button" class="vt is-on" data-view="list">list</button>' +
@@ -1606,15 +1736,17 @@
               'manamap pilot net-change ' + slug + ' --branch ' + name + ' --write'))) +
             '<div id="slotEvidence"></div>' + trailPanel(meta) + benchPanel(meta, slug, name) +
             '<div id="slotActions"></div>');
+        arrange();
+        foldPanels();
         paintNav();
         wireViewToggle();
         wireBaseMoved(slug, name);
         wireCastProofs(base);
         wireProfileFigures(slug, name, base);
-        // Late panels arrive by fetch; the nav follows them in.
+        // Late panels arrive by fetch; they are placed, folded and the nav follows.
         var slot = document.getElementById('panels');
         if (window.MutationObserver && slot && !slot._navWatch) {
-          slot._navWatch = new MutationObserver(function () { paintNav(); });
+          slot._navWatch = new MutationObserver(function () { arrange(); foldPanels(); paintNav(); });
           slot._navWatch.observe(slot, { childList: true, subtree: true });
         }
         if (nc && nc.bill) {
@@ -1670,17 +1802,16 @@
 
   /* THE JUMP NAV, the dossier's own. Built from what actually rendered, and repainted
    * as the late panels land, so a link never points at a section that is not there. */
-  var NAV = [['study', 'Study'], ['summary', 'Summary'], ['measured', 'Goldfish'], ['blindSpots', 'Cannot see'], ['mana', 'Mana'],
-             ['bill', 'Cost'], ['forge', 'Forge'], ['net-change', 'Cards'],
-             ['table-marks', 'At the table'], ['castProofs', 'Cast proofs'],
-             ['branchStacks', 'Proven'], ['profileFigures', 'Goldfish'],
-             ['trail', 'Trail'], ['benchActions', 'Bench'], ['swaps', 'Swaps'],
-             ['branchSiblings', 'Other branches'], ['definitions', 'Definitions']];
+  // The chapters (2026-11-22), not the seventeen panels they hold.
+  var NAV = CHAPTERS.map(function (c) { return ['ch-' + c[0], c[1]]; });
 
   function paintNav() {
     var host = document.getElementById('branchNav');
     if (!host) return;
-    var here = NAV.filter(function (n) { return document.getElementById(n[0]); });
+    var here = NAV.filter(function (n) {
+      var el = document.getElementById(n[0]);
+      return el && !el.hidden;
+    });
     host.innerHTML = here.map(function (n) {
       return '<a href="#' + n[0] + '" data-ch="' + n[0] + '">' + esc(n[1]) + '</a>';
     }).join('');

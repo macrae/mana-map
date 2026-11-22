@@ -236,15 +236,23 @@ window.BranchRows = (function () {
     var blurb = sm.blurb
       ? '<p class="wb-br-blurb">' + e(sm.blurb) + '</p>'
       : '<p class="wb-br-blurb wb-br-unsummarised">No summary yet — ask Jarvis to review the branch and it writes one.</p>';
+    // THE CALL ON EVERY ROW (2026-11-22): the latest study's decision and who made
+    // it, in words; the goldfish's figures stay on the branch page.
+    var st = b.study;
+    var study = '<p class="wb-br-study">' + (st
+      ? 'Study ' + e(st.id) + ' <b>' + e(st.decision || 'open') + '</b>'
+        + (st.decided_by && st.decided_by.length ? ' · decided by ' + e(st.decided_by.join(', ')) : ' · open')
+      : 'No study yet — nobody has decided about this branch in the pilot’s words') + '</p>';
     var links = '<nav class="wb-br-links">'
-      + '<a href="' + href + '#swaps">the swaps</a>'
-      + '<a href="' + href + '#measured">what was measured</a>'
-      + '<a href="' + href + '#net-change">the net change</a>'
+      + '<a href="' + href + '#study">the call</a>'
+      + '<a href="' + href + '#swaps">candidate swaps</a>'
+      + '<a href="' + href + '#measured">the goldfish</a>'
+      + '<a href="' + href + '#net-change">the cards</a>'
       + '<a href="deck.html?deck=' + slug + '#panel-branches">all of this deck’s branches</a>'
       + '</nav>';
     return '<div class="wb-branch-row" data-state="' + e(String(b.state || 'OPEN').toLowerCase()) + '">'
       + '<div class="wb-br-head">' + head + '</div>'
-      + blurb
+      + study + blurb
       + (opts.profile ? profileLine(b) : '')
       + links + (opts.ask ? askHtml(deck, b) : '') + '</div>';
   }

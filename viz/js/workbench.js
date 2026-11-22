@@ -209,9 +209,9 @@
      * highlight feature branches (like git), with easy access to recommended
      * card swaps, measured impact, net change report… from the workbench is
      * critical". A decided branch (merged, rejected, withdrawn) is not open work. */
-    if ((e.sim_runs || []).length) out += chip((e.sim_runs || []).length + ' sim');
-    if ((e.experiments || []).length) out += chip((e.experiments || []).length + ' experiment');
-    if ((e.prescriptions || []).length) out += chip((e.prescriptions || []).length + ' question');
+    /* THE SIM, EXPERIMENT AND QUESTION COUNTS LEFT THE CARD (2026-11-22): they are
+     * instruments' tallies, not the deck, and the fleet table still carries the
+     * runs. The card leads with what the deck IS and the latest call. */
     /* NOTHING TO SHOW IS TWO DIFFERENT DECKS, and a bare card cannot tell them
      * apart. A deck built this afternoon and a deck nobody has touched in six
      * months both render as a title and no chips — so the newest thing on the
@@ -375,8 +375,8 @@
     if (!rows.length) return '';
     rows.sort(function (x, y) { return String(y.b.opened || '').localeCompare(String(x.b.opened || '')); });
     return '<section class="wb-rack wb-branchlist"><h2>Branches <span class="wb-count">' + rows.length + '</span></h2>'
-      + '<p class="wb-blurb">Every live branch on the bench, newest first: what it would swap, what the paired '
-      + 'goldfish measured, and the report. A decided branch lives in its deck’s rack.</p>'
+      + '<p class="wb-blurb">Every live branch on the bench, newest first: the call so far, what it would swap, '
+      + 'and the report behind it. A decided branch lives in its deck’s rack.</p>'
       + '<div class="wb-branches">' + rows.map(function (r) { return branchRow(r.e, r.b, true); }).join('') + '</div>'
       + '</section>';
   }
@@ -426,14 +426,30 @@
     var sub = (e.commander && e.commander !== (e.deck_name || ''))
       ? esc(e.commander)
       : identityLine(info, e);
+    /* THE DECK IN ONE SENTENCE (2026-11-22): the Context's first line, written by
+     * the Keeper and carried on info.json (`lead`); then the latest study — the
+     * call and who made it — before any chip. A deck with no Context has no lead
+     * and no stand-in. */
+    var lead = info && info.lead ? '<p class="wb-lead">' + esc(info.lead) + '</p>' : '';
+    var studies = (info && info.studies) || [];
+    var s = studies[0];
+    var study = s
+      ? '<p class="wb-study">Latest study <b>' + esc(s.id) + ' ' + esc(s.decision || 'open') + '</b>'
+        + (s.decided_by && s.decided_by.length ? ' · ' + esc(s.decided_by.join(', ')) : '')
+        + (s.branch ? ' · on ' + esc(s.branch) : '')
+        + (studies.length > 1 ? ' <span class="wb-study-n">· ' + studies.length + ' studies</span>' : '')
+        + '</p>'
+      : '';
     return '<div class="wb-card' + (dead ? ' is-dead' : '') + '">'
       + '<div class="wb-artwrap">' + art + versionStamp(e) + '</div>'
       + '<div class="wb-body">'
       +   heading
       +   '<div class="wb-sub">' + sub + '</div>'
       +   (dead ? '<div class="wb-dead">' + esc(dead[1]) + '</div>' : '')
+      +   lead
       +   '<div class="wb-chips">' + lockChips(e.paper) + proposalChip(info)
       +     evidenceChips(e, info, rt) + '</div>'
+      +   study
       +   branchBlock(e, info)
       +   links
       + '</div></div>';

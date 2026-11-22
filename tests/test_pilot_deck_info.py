@@ -646,3 +646,20 @@ def test_the_handbook_block_is_composed_for_a_bare_deck(bare_deck):
     hb = deck_info.compose(SLUG)["handbook"]
     assert hb["list_sha"] == "x"[:12]
     assert all(hb[k] is None for k in ("prose", "procedures", "tutors", "read"))
+
+
+def test_the_lead_is_the_contexts_first_sentence_with_its_links_flattened(tmp_path):
+    """The workbench card leads with the deck in one sentence: the Context's
+    Summary, first sentence, card links read as names. No Context, no lead — never
+    a stand-in sentence."""
+    from manamap.pilot import deck_info
+
+    base = tmp_path / "decks" / "ld"
+    base.mkdir(parents=True)
+    assert deck_info._lead(base) is None
+    (base / "CONTEXT.md").write_text(
+        "# Deck — Deck Context\n\n<!-- ctx:written-for version=v1 sha=abc at=2026-11-01 -->\n\n"
+        "<!-- ctx:gen summary -->\n- **Commander:** x\n<!-- /ctx:gen summary -->\n\n"
+        "## Summary\n\nThis is a [Shabraz, the Skyshark](https://x/?cards=Shabraz)-first deck. "
+        "It draws cards.\n\nSecond paragraph.\n\n## How it plays\n\nIgnored.\n", encoding="utf-8")
+    assert deck_info._lead(base) == "This is a Shabraz, the Skyshark-first deck."

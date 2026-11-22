@@ -5020,10 +5020,13 @@ def test_every_live_branch_is_a_git_style_row_on_the_card(browser, viz_server):
         hrefs = [a.get_attribute("href") for a in rows.first.locator(".wb-br-links a").all()]
         # The rack's copy of a branch WITHOUT a summary says so rather than inventing one.
         assert page.locator(".wb-br-unsummarised").count() == 0
-        assert hrefs == ["branch.html?deck=alpha&branch=mean-v2#swaps",
+        # The call leads the links (2026-11-22); the goldfish and the cards follow.
+        assert hrefs == ["branch.html?deck=alpha&branch=mean-v2#study",
+                         "branch.html?deck=alpha&branch=mean-v2#swaps",
                          "branch.html?deck=alpha&branch=mean-v2#measured",
                          "branch.html?deck=alpha&branch=mean-v2#net-change",
                          "deck.html?deck=alpha#panel-branches"]
+        assert rows.first.locator(".wb-br-study").count() == 1
         assert page.locator(".wb-chips a.wb-branch").count() == 0, "the chip is gone; the block replaced it"
     finally:
         page.close()
@@ -7756,6 +7759,10 @@ def _branch_page(browser, viz_server, slug, branch):
             else None)
     page.goto(f"{viz_server}/viz/branch.html?deck={slug}&branch={branch}")
     idle(page)
+    # Past the call the page folds (2026-11-22); these tests read the panels'
+    # content, so they open every fold first. The goldfish's own <details> is left
+    # as the page draws it: the profile test opens it itself to measure the order.
+    page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
     page.js_errors = errors
     return page
 
@@ -7824,8 +7831,9 @@ def test_the_branch_page_leads_with_the_executive_summary(browser, viz_server):
         assert not page.js_errors, page.js_errors
         # THE STUDY LEADS (2026-11-21), the summary follows it: the decision in the
         # pilot's words before the proposal's own account of itself.
-        assert page.locator("#panels > section.panel").first.get_attribute("id") == "study", "the study does not lead the page"
-        first = page.locator("#panels > section.panel").nth(1)
+        # In the call chapter, the first of four (2026-11-22).
+        assert page.locator("#ch-call .panels > section.panel").first.get_attribute("id") == "study", "the study does not lead the page"
+        first = page.locator("#ch-call .panels > section.panel").nth(1)
         assert first.get_attribute("id") == "summary", "the summary does not follow the study"
         text = first.inner_text().lower()
         assert "the deck" in text and "why" in text

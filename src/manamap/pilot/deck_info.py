@@ -460,6 +460,26 @@ def _stamp(written_for, current_sha, versions):
             "version": version}
 
 
+def _lead(base):
+    """THE DECK IN ONE SENTENCE (2026-11-22): the first sentence of the Deck
+    Context's Summary, links flattened to card names. The workbench card leads
+    with it, before any chip; a deck with no Context has none, never a stand-in."""
+    import re
+    from manamap.pilot import deck_context
+    try:
+        text = (base / deck_context.ARTIFACT).read_text(encoding="utf-8")
+    except (FileNotFoundError, OSError):
+        return None
+    summary = deck_context.authored(deck_context.sections(text).get("summary") or "")
+    body = "\n".join(ln for ln in summary.splitlines() if not ln.startswith("## ")).strip()
+    body = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", body)
+    body = re.sub(r"[*_`]", "", body)
+    para = next((p.strip() for p in re.split(r"\n\s*\n", body) if p.strip()), "")
+    m = re.match(r"(.+?[.!?])(\s|$)", para.replace("\n", " "))
+    lead = (m.group(1) if m else para).strip()
+    return lead[:240] or None
+
+
 def _handbook(slug, base, vdoc):
     """Every authored prose block the page renders, stamped against the list."""
     current_sha = (load_json(base / "cards.json") or {}).get("decklist_sha256") or ""
@@ -707,6 +727,8 @@ def compose(slug, verify=False, ladder=True, today=None):
         # procedures, the tutor guide and the captain's-log read were written
         # for, and which of the read's lessons name a card that has since left.
         "handbook": _handbook(slug, base, vdoc),
+        # THE DECK IN ONE SENTENCE, from the Context's Summary (the workbench card's lead).
+        "lead": _lead(base),
         # THE VITALS. Composed like everything else here; `diagnose --write` owns
         # the figures. It is not a lifecycle stage for the same reason `sim` is
         # not — optional, and adding one would mark twelve decks newly incomplete.
