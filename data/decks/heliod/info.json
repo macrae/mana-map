@@ -901,21 +901,21 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 3,
+        "rose": 2,
         "fell": 4,
-        "no_call": 3
+        "no_call": 4
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Austere Command",
         "Cathar Commando",
+        "Clever Concealment",
         "Consecrated Sphinx",
         "Cyclonic Rift",
+        "Dawn's Truce",
         "Day of Judgment",
         "Disenchant",
         "Fierce Guardianship",
-        "Flawless Maneuver",
         "Floodfarm Verge",
         "Folio of Fancies",
         "Kefnet the Mindful",
@@ -938,8 +938,7 @@
         "state": "no objective",
         "rose": [
           "missed drop by T5",
-          "mulliganed",
-          "interaction affordable @T6"
+          "mulliganed"
         ],
         "fell": [
           "damage @T10",
@@ -950,22 +949,22 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.7473,
+            "delta": -2.7856,
             "ci95_diff": [
-              -2.8493,
-              -2.6453
+              -2.8876,
+              -2.6836
             ],
-            "mde": 0.1459,
+            "mde": 0.1458,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.1107,
+            "delta": -0.1077,
             "ci95_diff": [
-              -0.1182,
-              -0.1032
+              -0.1152,
+              -0.1002
             ],
             "mde": 0.0107,
             "verdict": "worse",
@@ -974,24 +973,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": -1.3696,
+            "delta": -1.3532,
             "ci95_diff": [
-              -1.427,
-              -1.3122
+              -1.4108,
+              -1.2956
             ],
-            "mde": 0.0821,
+            "mde": 0.0824,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.5044,
+            "delta": -0.4775,
             "ci95_diff": [
-              -0.5701,
-              -0.4387
+              -0.5434,
+              -0.4116
             ],
-            "mde": 0.094,
+            "mde": 0.0941,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"

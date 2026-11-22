@@ -1126,23 +1126,28 @@
       "verdict": {
         "state": "no objective",
         "rose": 3,
-        "fell": 6,
-        "no_call": 3
+        "fell": 7,
+        "no_call": 2
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
+        "Akroma's Will",
         "Anowon, the Ruin Sage",
+        "Black Market Connections",
         "Boros Charm",
+        "Champion of Dusk",
+        "Clever Concealment",
         "Crackling Doom",
         "Deflecting Swat",
         "Flawless Maneuver",
         "Giver of Runes",
+        "Lethal Scheme",
         "Midgar, City of Mako // Reactor Raid",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
         "Path to Exile",
         "Plains",
+        "Preacher of the Schism",
         "Rakdos Signet",
         "Reassembling Skeleton",
         "Sacred Foundry",
@@ -1166,6 +1171,7 @@
         "fell": [
           "damage @T10",
           "board power @T6",
+          "killed by T6",
           "killed by T10",
           "stall, 2 in a row",
           "extra cards by T8",
@@ -1174,48 +1180,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -5.8957,
+            "delta": -7.4182,
             "ci95_diff": [
-              -6.1575,
-              -5.6339
+              -7.6753,
+              -7.1611
             ],
-            "mde": 0.3742,
+            "mde": 0.3675,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0382,
+            "delta": -0.0683,
             "ci95_diff": [
-              -0.0463,
-              -0.0301
+              -0.0768,
+              -0.0598
             ],
-            "mde": 0.0116,
+            "mde": 0.0122,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.0238,
+            "delta": -1.3498,
             "ci95_diff": [
-              -1.1038,
-              -0.9438
+              -1.4376,
+              -1.262
             ],
-            "mde": 0.1144,
+            "mde": 0.1255,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.4764,
+            "delta": -0.8436,
             "ci95_diff": [
-              -0.5468,
-              -0.406
+              -0.9129,
+              -0.7743
             ],
-            "mde": 0.1007,
+            "mde": 0.099,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"

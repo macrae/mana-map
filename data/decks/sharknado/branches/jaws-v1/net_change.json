@@ -81,12 +81,6 @@
    },
    {
     "free": false,
-    "name": "Ceremonial Knife",
-    "state": "buy",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Chaos Warp",
     "state": "in_deck",
     "where": []
@@ -177,12 +171,6 @@
    },
    {
     "free": false,
-    "name": "Fireshrieker",
-    "state": "in_deck",
-    "where": []
-   },
-   {
-    "free": false,
     "name": "Flawless Maneuver",
     "state": "in_deck",
     "where": []
@@ -268,6 +256,12 @@
    {
     "free": false,
     "name": "Kozilek's Return",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
+    "name": "Library of Leng",
     "state": "buy",
     "where": []
    },
@@ -561,6 +555,12 @@
    },
    {
     "free": false,
+    "name": "Unsettled Mariner",
+    "state": "buy",
+    "where": []
+   },
+   {
+    "free": false,
     "name": "Valeria Richards, Precocious",
     "state": "in_deck",
     "where": []
@@ -604,24 +604,25 @@
   ],
   "counts": {
    "box": 1,
-   "buy": 7,
+   "buy": 8,
    "elsewhere": 0,
    "free": 0,
-   "in_deck": 91
+   "in_deck": 90
   },
   "counts_are": "distinct names",
   "diff": {
    "add": [
     "Cascade Bluffs",
-    "Ceremonial Knife",
     "Inti, Seneschal of the Sun",
     "Jaws, Relentless Predator",
     "Kozilek's Return",
+    "Library of Leng",
     "Prince Imrahil the Fair",
     "Temple of Epiphany",
+    "Unsettled Mariner",
     "Voracious Greatshark"
    ],
-   "add_copies": 8,
+   "add_copies": 9,
    "base_names": 99,
    "base_size": 100,
    "names": 99,
@@ -629,13 +630,14 @@
     "Boros Signet",
     "Brotherhood Regalia",
     "Fiery Emancipation",
+    "Fireshrieker",
     "Gemstone Caverns",
     "Hengegate Pathway // Mistgate Pathway",
     "Lae'zel, Vlaakith's Champion",
     "Mind Stone",
     "Sunbillow Verge"
    ],
-   "out_copies": 8,
+   "out_copies": 9,
    "quantity": [],
    "size": 100
   },
@@ -645,12 +647,13 @@
   "proxy": false,
   "slug": "sharknado",
   "unsourced": [
-   "Ceremonial Knife",
    "Inti, Seneschal of the Sun",
    "Jaws, Relentless Predator",
    "Kozilek's Return",
+   "Library of Leng",
    "Prince Imrahil the Fair",
    "Temple of Epiphany",
+   "Unsettled Mariner",
    "Voracious Greatshark"
   ]
  },
@@ -665,11 +668,10 @@
   },
   {
    "cards": [
-    "Ceremonial Knife",
     "Jaws, Relentless Predator"
    ],
    "class": "draw",
-   "headline": "2 card(s) carrying a draw effect",
+   "headline": "1 card(s) carrying a draw effect",
    "why": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead"
   },
   {
@@ -703,36 +705,36 @@
  ],
  "branch": "jaws-v1",
  "changes": {
-  "count": 11,
+  "count": 13,
   "counts": {
-   "in": 8,
-   "out": 8,
-   "rows": 11
+   "in": 9,
+   "out": 9,
+   "rows": 13
   },
   "diff": {
    "base_names": 99,
    "base_size": 100,
    "changed": [],
    "counts": {
-    "in": 8,
-    "in_copies": 8,
+    "in": 9,
+    "in_copies": 9,
     "lands_in": 2,
     "lands_out": 3,
-    "out": 8,
-    "out_copies": 8,
-    "spells_in": 6,
-    "spells_out": 5
+    "out": 9,
+    "out_copies": 9,
+    "spells_in": 7,
+    "spells_out": 6
    },
    "in": [
     {
      "cmc": 1,
      "copies": 1,
      "kind": "spell",
-     "name": "Ceremonial Knife",
+     "name": "Library of Leng",
      "pair": "Boros Signet",
      "state": "buy",
-     "type_line": "Artifact \u2014 Equipment",
-     "why": "pilot 2026-11-14: Blood on every combat hit, two a swing with double strike"
+     "type_line": "Artifact",
+     "why": "Card 1 (2026-11-20, pilot approved; doctor + analyst, strategist dissented for Mariner): the branch ran zero no-maximum-hand-size effects beside five draw-sevens; Leng lets each wheel discard go on top instead, so a wheel is seven Shabraz counters while the hand is kept and Brallin still pings per card (stacks 001-003). Knife's Blood token is the discard-to-draw step the pilot called laborious (logs 005-007)."
     },
     {
      "cmc": 2,
@@ -753,6 +755,16 @@
      "state": "buy",
      "type_line": "Legendary Creature \u2014 Human Noble",
      "why": "pilot 2026-11-14: a Human token on every second draw, and Shabraz makes Humans fly; Fellwar's colours depend on the opponents' lands"
+    },
+    {
+     "cmc": 2,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Unsettled Mariner",
+     "pair": "Fireshrieker",
+     "state": "buy",
+     "type_line": "Creature \u2014 Shapeshifter",
+     "why": "Card 2 (2026-11-20, pilot approved; doctor + analyst; strategist wanted Mask of Memory cut, rejected as draw on the axis): a turn-two Human+Shark body for the raced-from-an-empty-board loss shape (003/004/005/009) that taxes every targeted spell on Shabraz; Fireshrieker was the dearest and only single-job piece of five kill-from-eleven enablers, and stack 006 re-resolves on Lizard Blades. Runner-up cut was Talisman of Creativity."
     },
     {
      "cmc": 3,
@@ -812,7 +824,7 @@
      "copies": 1,
      "kind": "spell",
      "name": "Boros Signet",
-     "pair": "Ceremonial Knife",
+     "pair": "Library of Leng",
      "type_line": "Artifact",
      "why": "pilot 2026-11-14: Blood on every combat hit, two a swing with double strike"
     },
@@ -833,6 +845,15 @@
      "pair": "Voracious Greatshark",
      "type_line": "Artifact",
      "why": "pilot 2026-11-14: a flash Shark that counters a creature or artifact spell \u2014 the deck had no answer to a creature spell; ten rocks was the fleet's most"
+    },
+    {
+     "cmc": 3,
+     "copies": 1,
+     "kind": "spell",
+     "name": "Fireshrieker",
+     "pair": "Unsettled Mariner",
+     "type_line": "Artifact \u2014 Equipment",
+     "why": "Card 2 (2026-11-20, pilot approved; doctor + analyst; strategist wanted Mask of Memory cut, rejected as draw on the axis): a turn-two Human+Shark body for the raced-from-an-empty-board loss shape (003/004/005/009) that taxes every targeted spell on Shabraz; Fireshrieker was the dearest and only single-job piece of five kill-from-eleven enablers, and stack 006 re-resolves on Lizard Blades. Runner-up cut was Talisman of Creativity."
     },
     {
      "cmc": 3,
@@ -916,12 +937,6 @@
   "spells": [
    {
     "at": "2026-11-14",
-    "in": "Ceremonial Knife",
-    "out": "Boros Signet",
-    "why": "pilot 2026-11-14: Blood on every combat hit, two a swing with double strike"
-   },
-   {
-    "at": "2026-11-14",
     "in": "Inti, Seneschal of the Sun",
     "out": "Brotherhood Regalia",
     "why": "pilot 2026-11-14: a Human: attacking discards a card (Brallin: counter and a ping) and gives an attacker a counter and trample; Regalia's evasion is redundant on a flying Shabraz"
@@ -939,10 +954,22 @@
     "why": "pilot 2026-11-14: an instant-speed sweeper for go-wide tables (Krenko, Wilhelt + Blood Artist, Magda); the branch had none \u2014 Arterial Alchemy was the weakest part of the Blood line"
    },
    {
+    "at": "2026-11-20",
+    "in": "Library of Leng",
+    "out": null,
+    "why": "Card 1 (2026-11-20, pilot approved; doctor + analyst, strategist dissented for Mariner): the branch ran zero no-maximum-hand-size effects beside five draw-sevens; Leng lets each wheel discard go on top instead, so a wheel is seven Shabraz counters while the hand is kept and Brallin still pings per card (stacks 001-003). Knife's Blood token is the discard-to-draw step the pilot called laborious (logs 005-007)."
+   },
+   {
     "at": "2026-11-14",
     "in": "Prince Imrahil the Fair",
     "out": null,
     "why": "pilot 2026-11-14: a Human token on every second draw, and Shabraz makes Humans fly; Fellwar's colours depend on the opponents' lands"
+   },
+   {
+    "at": "2026-11-20",
+    "in": "Unsettled Mariner",
+    "out": "Fireshrieker",
+    "why": "Card 2 (2026-11-20, pilot approved; doctor + analyst; strategist wanted Mask of Memory cut, rejected as draw on the axis): a turn-two Human+Shark body for the raced-from-an-empty-board loss shape (003/004/005/009) that taxes every targeted spell on Shabraz; Fireshrieker was the dearest and only single-job piece of five kill-from-eleven enablers, and stack 006 re-resolves on Lizard Blades. Runner-up cut was Talisman of Creativity."
    },
    {
     "at": "2026-11-14",
@@ -953,14 +980,20 @@
    {
     "at": "2026-11-14",
     "in": null,
+    "out": "Boros Signet",
+    "why": "pilot 2026-11-14: Blood on every combat hit, two a swing with double strike"
+   },
+   {
+    "at": "2026-11-14",
+    "in": null,
     "out": "Lae'zel, Vlaakith's Champion",
     "why": "pilot 2026-11-14: a flying Shark that makes a body off every noncreature spell; Lae'zel's extra counter is dwarfed by the Blood engine"
    }
   ],
-  "staged_count": 11,
+  "staged_count": 13,
   "why": "Sharks, Humans and Blood (pilot, 2026-11-14): more Sharks and Humans for Shabraz's flying and Brallin's trample, and a Blood-token line \u2014 a Blood activation discards (Brallin: counter, ping) and draws (Shabraz: counter, life), and Jaws pings again on the sacrifice. Strong and uncompromising: nothing given up unless it buys something bigger."
  },
- "decklist_sha256": "b67d41cfa947ef7c420757b8d33c689751a4961b9837bd93c0785f1eec050065",
+ "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
  "definitions": {
   "derived": [
    {
@@ -1505,40 +1538,39 @@
   "because": "No guard was named, so nothing here grades the branch \u2014 only what changed: read the rows as a whole profile.",
   "bill": {
    "box": 1,
-   "buy": 7,
+   "buy": 8,
    "elsewhere": 0,
    "free": 0,
-   "in_deck": 91
+   "in_deck": 90
   },
   "cost": {
-   "buy": 7,
+   "buy": 8,
    "buy_cards": [
-    "Ceremonial Knife",
     "Inti, Seneschal of the Sun",
     "Jaws, Relentless Predator",
     "Kozilek's Return",
+    "Library of Leng",
     "Prince Imrahil the Fair",
     "Temple of Epiphany",
+    "Unsettled Mariner",
     "Voracious Greatshark"
    ],
    "counts": {
     "box": 1,
-    "buy": 7,
+    "buy": 8,
     "elsewhere": 0,
     "free": 0,
-    "in_deck": 91
+    "in_deck": 90
    },
    "free_to_raid": [],
    "mergeable": false,
    "must_unsleeve": [],
-   "owned": 92,
-   "reads_as": "7 to buy; 92 of 99 already owned",
+   "owned": 91,
+   "reads_as": "8 to buy; 91 of 99 already owned",
    "total": 99
   },
   "fell": [
-   "hoard @T10",
    "damage @T10",
-   "board power @T6",
    "killed by T6",
    "killed by T10",
    "missed drop by T5",
@@ -1550,31 +1582,26 @@
    "dead wheels in hand @T5"
   ],
   "no_call": [
+   "hoard @T10",
    "hoard @T6",
+   "board power @T6",
    "stall, 2 in a row",
-   "hand can act by T3",
-   "kept hand passes the pilot's keep rule"
+   "hand can act by T3"
   ],
   "notes": [],
-  "reward": [],
+  "reward": [
+   {
+    "measure": "kept hand passes the pilot's keep rule",
+    "reads_as": "82 games in 100 -> 83 in 100, a swing of 1 games per 100",
+    "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship."
+   }
+  ],
   "risk": [
    {
-    "detail": "2.62 -> 2.21, a change of -0.41 (-16%)",
-    "kind": "paid",
-    "what": "hoard @T10",
-    "why_it_matters": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it."
-   },
-   {
-    "detail": "291.78 -> 155.25, a change of -136.53 (-47%)",
+    "detail": "291.78 -> 159.37, a change of -132.41 (-45%)",
     "kind": "paid",
     "what": "damage @T10",
     "why_it_matters": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win."
-   },
-   {
-    "detail": "16.71 -> 15.93, a change of -0.77 (-5%)",
-    "kind": "paid",
-    "what": "board power @T6",
-    "why_it_matters": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does."
    },
    {
     "detail": "25 games in 100 -> 19 in 100, a swing of 6 games per 100",
@@ -1589,7 +1616,7 @@
     "why_it_matters": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead."
    },
    {
-    "detail": "31 games in 100 -> 34 in 100, a swing of 3 games per 100",
+    "detail": "31 games in 100 -> 33 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "missed drop by T5",
     "why_it_matters": "The single best predictor of a slow start, and the row most sensitive to a land count change."
@@ -1601,39 +1628,39 @@
     "why_it_matters": "A proxy for whether the land count fits the curve. It should barely move unless the land count did."
    },
    {
-    "detail": "25.42 -> 23.93, a change of -1.50 (-6%)",
+    "detail": "25.42 -> 24.68, a change of -0.74 (-3%)",
     "kind": "paid",
     "what": "extra cards by T8",
     "why_it_matters": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser."
    },
    {
-    "detail": "60 games in 100 -> 56 in 100, a swing of 4 games per 100",
+    "detail": "60 games in 100 -> 58 in 100, a swing of 2 games per 100",
     "kind": "paid",
     "what": "interaction affordable @T6",
     "why_it_matters": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher."
    },
    {
-    "detail": "80 games in 100 -> 78 in 100, a swing of 2 games per 100",
+    "detail": "80 games in 100 -> 79 in 100, a swing of 1 games per 100",
     "kind": "paid",
     "what": "finisher wheel by T8",
     "why_it_matters": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else."
    },
    {
-    "detail": "2.99 -> 2.86, a change of -0.13 (-4%)",
+    "detail": "2.99 -> 2.83, a change of -0.16 (-5%)",
     "kind": "paid",
     "what": "wheels cast by T10",
     "why_it_matters": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone."
    },
    {
-    "detail": "0.08 -> 0.09, a change of +0.02 (+22%)",
+    "detail": "0.08 -> 0.09, a change of +0.02 (+23%)",
     "kind": "paid",
     "what": "dead wheels in hand @T5",
     "why_it_matters": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage."
    },
    {
-    "detail": "the largest is hand can act by T3 at -0.003 against an MDE of 0.005. This run rules out a difference bigger than that and says nothing about a smaller one.",
+    "detail": "the largest is hoard @T10 at +0.175 against an MDE of 0.263. This run rules out a difference bigger than that and says nothing about a smaller one.",
     "kind": "unresolved",
-    "what": "4 row(s) returned no call",
+    "what": "5 row(s) returned no call",
     "why_it_matters": "an unresolved row is an open question, not a settled zero"
    },
    {
@@ -1647,12 +1674,11 @@
    },
    {
     "cards": [
-     "Ceremonial Knife",
      "Jaws, Relentless Predator"
     ],
     "detail": "this card's draw is not one of the shapes the model reads \u2014 see `meta.draw_not_modelled` for what it does instead",
     "kind": "unmeasured",
-    "what": "2 card(s) carrying a draw effect",
+    "what": "1 card(s) carrying a draw effect",
     "why_it_matters": "it is the EFFECT that no figure above can price, not the whole card \u2014 a body or a trigger on the same card is still measured"
    },
    {
@@ -1699,77 +1725,79 @@
     "why_it_matters": "every figure above is a goldfish: no blockers, no removal, damage measured against one seat at 40 life who does nothing (three seats only for what we gain off their draws)"
    }
   ],
-  "rose": [],
+  "rose": [
+   "kept hand passes the pilot's keep rule"
+  ],
   "state": "no objective"
  },
  "slug": "sharknado",
- "staged": 11,
+ "staged": 13,
  "table": [
   {
    "better_is": "higher",
-   "branch": 2.207,
+   "branch": 2.7947,
    "champion": 2.6199,
    "ci95_diff": [
-    -0.56,
-    -0.2658
+    -0.0089,
+    0.3585
    ],
-   "delta": -0.4129,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 8,
-    "significant": true,
-    "threshold": 2.773
-   },
-   "mde": 0.2103,
-   "measure": "hoard @T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "2.62 -> 2.21, a change of -0.41 (-16%)",
-   "role": "exploratory",
-   "scale": null,
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
-   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
-   "z": -5.501
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.2468,
-   "champion": 0.2646,
-   "ci95_diff": [
-    -0.0384,
-    0.0028
-   ],
-   "delta": -0.0178,
+   "delta": 0.1748,
    "excludes_zero": false,
    "holm": {
     "family": 16,
-    "rank": 14,
+    "rank": 12,
     "significant": false,
-    "threshold": 2.394
+    "threshold": 2.576
    },
-   "mde": 0.0295,
+   "mde": 0.2626,
+   "measure": "hoard @T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.175 is smaller than the 0.263 this run can resolve",
+   "role": "exploratory",
+   "scale": null,
+   "unit": "mean",
+   "verdict": "noise",
+   "what": "Treasures still standing at the END of turn 10, after the turn has spent what it spent, averaged over every game. (Until 2026-11-04 the number was read before the turn's spending, under this same label.)",
+   "why_we_care": "The second axis, and the only one that is not combat. It is near-uncorrelated with damage, power and kill (r = 0.08-0.25 across the fleet), so it can fall while they rise and mean it.",
+   "z": 1.865
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.2753,
+   "champion": 0.2646,
+   "ci95_diff": [
+    -0.011,
+    0.0324
+   ],
+   "delta": 0.0107,
+   "excludes_zero": false,
+   "holm": {
+    "family": 16,
+    "rank": 15,
+    "significant": false,
+    "threshold": 2.241
+   },
+   "mde": 0.031,
    "measure": "hoard @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.018 is smaller than the 0.029 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.011 is smaller than the 0.031 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
    "verdict": "noise",
    "what": "The same count at the end of turn 6 \u2014 the hoard you actually have when the deck wants to deploy, rather than the one you end up with.",
    "why_we_care": "A big turn-10 hoard that was not there on turn 6 arrived too late to cast anything that mattered.",
-   "z": -1.69
+   "z": 0.966
   },
   {
    "better_is": "higher",
-   "branch": 155.2515,
+   "branch": 159.3681,
    "champion": 291.7776,
    "ci95_diff": [
-    -142.5108,
-    -130.5414
+    -138.4768,
+    -126.3422
    ],
-   "delta": -136.5261,
+   "delta": -132.4095,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -1777,55 +1805,55 @@
     "significant": true,
     "threshold": 2.955
    },
-   "mde": 8.5545,
+   "mde": 8.6726,
    "measure": "damage @T10",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "291.78 -> 155.25, a change of -136.53 (-47%)",
+   "reads_as": "291.78 -> 159.37, a change of -132.41 (-45%)",
    "role": "exploratory",
    "scale": "one turn's damage, so 40.0 would be lethal in a single swing from an opponent at full life \u2014 not a total across the game",
    "unit": "mean",
    "verdict": "worse",
    "what": "Damage dealt to the single goldfish opponent ON turn 10, averaged over every game \u2014 the clock at its tenth turn, not a running total. THE SWING AND WHAT FIRES AROUND IT: combat damage, attack triggers, arrival and burn. IT EXCLUDES the payoffs on a discard or a draw and the drain; `output.total_damage_by_turn` in the diagnostic is the figure with them (not a row: it tracks this one game for game, one measurement twice). The cumulative series does not exist for this pillar; `mean_cumulative_event_damage_by_turn` is the only running total the model keeps, and it covers event damage alone.",
    "why_we_care": "The headline output figure and the one a doubler moves. It has no ceiling, so unlike the kill rate it keeps separating two lists after both of them already win.",
-   "z": -44.713
+   "z": -42.774
   },
   {
    "better_is": "higher",
-   "branch": 15.9333,
+   "branch": 16.6078,
    "champion": 16.7052,
    "ci95_diff": [
-    -0.9418,
-    -0.602
+    -0.2674,
+    0.0726
    ],
-   "delta": -0.7719,
-   "excludes_zero": true,
+   "delta": -0.0974,
+   "excludes_zero": false,
    "holm": {
     "family": 16,
-    "rank": 4,
-    "significant": true,
-    "threshold": 2.891
+    "rank": 14,
+    "significant": false,
+    "threshold": 2.394
    },
-   "mde": 0.2428,
+   "mde": 0.243,
    "measure": "board power @T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "16.71 -> 15.93, a change of -0.77 (-5%)",
+   "reads_as": "no call \u2014 the gap of 0.097 is smaller than the 0.243 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "mean",
-   "verdict": "worse",
+   "verdict": "noise",
    "what": "Total power on the battlefield at the end of turn 6: printed power, anthems, lords, power that reads the hand or the graveyard, and +1/+1 counters (since 2026-11-04; they had been left out). One-turn pumps and prowess have worn off.",
    "why_we_care": "The deck's turn-6 threat, before any of it has connected. It is what a table sees and decides to answer, and it moves earlier than damage does.",
-   "z": -8.906
+   "z": -1.123
   },
   {
    "better_is": "higher",
-   "branch": 0.1887,
+   "branch": 0.1857,
    "champion": 0.2492,
    "ci95_diff": [
-    -0.0679,
-    -0.0531
+    -0.0711,
+    -0.0559
    ],
-   "delta": -0.0605,
+   "delta": -0.0635,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -1833,7 +1861,7 @@
     "significant": true,
     "threshold": 2.935
    },
-   "mde": 0.0105,
+   "mde": 0.0108,
    "measure": "killed by T6",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
    "reads_as": "25 games in 100 -> 19 in 100, a swing of 6 games per 100",
@@ -1843,23 +1871,23 @@
    "verdict": "worse",
    "what": "The share of games in which cumulative damage reaches 40 by the end of turn 6.",
    "why_we_care": "THE CLOCK, at the turn a real pod is still setting up. This is the figure a faster list is bought for.",
-   "z": -16.097
+   "z": -16.435
   },
   {
    "better_is": "higher",
    "branch": 0.9914,
    "champion": 0.9947,
    "ci95_diff": [
-    -0.0051,
-    -0.0015
+    -0.005,
+    -0.0016
    ],
    "delta": -0.0033,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 11,
+    "rank": 10,
     "significant": true,
-    "threshold": 2.638
+    "threshold": 2.69
    },
    "mde": 0.0025,
    "measure": "killed by T10",
@@ -1871,17 +1899,17 @@
    "verdict": "worse",
    "what": "The same, by the end of turn 10 \u2014 the harness's last turn.",
    "why_we_care": "Whether the deck closes at all. It saturates near 1.0, so on a list that already wins it stops discriminating and damage @T10 is the honest axis instead.",
-   "z": -3.669
+   "z": -3.763
   },
   {
    "better_is": "lower",
-   "branch": 0.0924,
+   "branch": 0.0893,
    "champion": 0.0906,
    "ci95_diff": [
-    -0.004,
-    0.0076
+    -0.0072,
+    0.0046
    ],
-   "delta": 0.0018,
+   "delta": -0.0013,
    "excludes_zero": false,
    "holm": {
     "family": 16,
@@ -1889,61 +1917,61 @@
     "significant": false,
     "threshold": 1.96
    },
-   "mde": 0.0083,
+   "mde": 0.0084,
    "measure": "stall, 2 in a row",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.008 this run can resolve",
+   "reads_as": "no call \u2014 the gap of 0.001 is smaller than the 0.008 this run can resolve",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "noise",
    "what": "The share of games with two consecutive turns, from turn 2 on, where nothing in hand could be cast with the mana available.",
    "why_we_care": "Two dead turns in a row is how a deck loses without ever being interacted with. Curve and colour problems both surface here.",
-   "z": 0.609
+   "z": -0.432
   },
   {
    "better_is": "lower",
-   "branch": 0.3372,
+   "branch": 0.3326,
    "champion": 0.3115,
    "ci95_diff": [
-    0.018,
-    0.0334
+    0.0134,
+    0.0288
    ],
-   "delta": 0.0257,
+   "delta": 0.0211,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 7,
+    "rank": 5,
     "significant": true,
-    "threshold": 2.807
+    "threshold": 2.865
    },
    "mde": 0.011,
    "measure": "missed drop by T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "31 games in 100 -> 34 in 100, a swing of 3 games per 100",
+   "reads_as": "31 games in 100 -> 33 in 100, a swing of 2 games per 100",
    "role": "exploratory",
    "scale": null,
    "unit": "rate",
    "verdict": "worse",
    "what": "The share of games that miss at least one land drop across turns 1 to 5.",
    "why_we_care": "The single best predictor of a slow start, and the row most sensitive to a land count change.",
-   "z": 6.531
+   "z": 5.365
   },
   {
    "better_is": "lower",
-   "branch": 0.1919,
+   "branch": 0.1946,
    "champion": 0.1827,
    "ci95_diff": [
-    0.0038,
-    0.0146
+    0.0065,
+    0.0173
    ],
-   "delta": 0.0092,
+   "delta": 0.0119,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 12,
+    "rank": 8,
     "significant": true,
-    "threshold": 2.576
+    "threshold": 2.773
    },
    "mde": 0.0077,
    "measure": "mulliganed",
@@ -1955,129 +1983,17 @@
    "verdict": "worse",
    "what": "The share of games that took at least one mulligan under the harness rule: keep a 7 with 2-5 lands, up to two redraws.",
    "why_we_care": "A proxy for whether the land count fits the curve. It should barely move unless the land count did.",
-   "z": 3.343
+   "z": 4.329
   },
   {
    "better_is": "higher",
-   "branch": 23.9253,
+   "branch": 24.678,
    "champion": 25.4227,
    "ci95_diff": [
-    -1.7843,
-    -1.2105
+    -1.0436,
+    -0.4458
    ],
-   "delta": -1.4974,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 3,
-    "significant": true,
-    "threshold": 2.914
-   },
-   "mde": 0.4101,
-   "measure": "extra cards by T8",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "25.42 -> 23.93, a change of -1.50 (-6%)",
-   "role": "exploratory",
-   "scale": "against the 8 cards every deck draws for free by then",
-   "unit": "mean",
-   "verdict": "worse",
-   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
-   "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
-   "z": -10.229
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.565,
-   "champion": 0.6017,
-   "ci95_diff": [
-    -0.0525,
-    -0.0208
-   ],
-   "delta": -0.0367,
-   "excludes_zero": true,
-   "holm": {
-    "family": 16,
-    "rank": 10,
-    "significant": true,
-    "threshold": 2.69
-   },
-   "mde": 0.0227,
-   "measure": "interaction affordable @T6",
-   "method": "Newcombe score interval on the difference of proportions",
-   "reads_as": "60 games in 100 -> 56 in 100, a swing of 4 games per 100",
-   "role": "exploratory",
-   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
-   "unit": "rate",
-   "verdict": "worse",
-   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it, or where it is free for controlling a commander and one is out. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
-   "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
-   "z": -4.543
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.9656,
-   "champion": 0.9687,
-   "ci95_diff": [
-    -0.0063,
-    0.0001
-   ],
-   "delta": -0.0031,
-   "excludes_zero": false,
-   "holm": {
-    "family": 16,
-    "rank": 13,
-    "significant": false,
-    "threshold": 2.498
-   },
-   "mde": 0.0046,
-   "measure": "hand can act by T3",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.003 is smaller than the 0.005 this run can resolve",
-   "role": "exploratory",
-   "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
-   "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
-   "z": -1.897
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.8194,
-   "champion": 0.8154,
-   "ci95_diff": [
-    -0.0007,
-    0.0087
-   ],
-   "delta": 0.004,
-   "excludes_zero": false,
-   "holm": {
-    "family": 16,
-    "rank": 15,
-    "significant": false,
-    "threshold": 2.241
-   },
-   "mde": 0.0067,
-   "measure": "kept hand passes the pilot's keep rule",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "no call \u2014 the gap of 0.004 is smaller than the 0.007 this run can resolve",
-   "role": "exploratory",
-   "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
-   "unit": "rate",
-   "verdict": "noise",
-   "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
-   "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship.",
-   "z": 1.664
-  },
-  {
-   "better_is": "higher",
-   "branch": 0.7807,
-   "champion": 0.8012,
-   "ci95_diff": [
-    -0.0264,
-    -0.0146
-   ],
-   "delta": -0.0205,
+   "delta": -0.7447,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2085,55 +2001,111 @@
     "significant": true,
     "threshold": 2.838
    },
-   "mde": 0.0085,
-   "measure": "finisher wheel by T8",
+   "mde": 0.4273,
+   "measure": "extra cards by T8",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "80 games in 100 -> 78 in 100, a swing of 2 games per 100",
+   "reads_as": "25.42 -> 24.68, a change of -0.74 (-3%)",
    "role": "exploratory",
-   "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
-   "unit": "rate",
+   "scale": "against the 8 cards every deck draws for free by then",
+   "unit": "mean",
    "verdict": "worse",
-   "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also needed four nonlands left in hand, which the model's deploy-first turn now spends before it wheels.) Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
-   "why_we_care": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else.",
-   "z": -6.77
+   "what": "Cards drawn BEYOND the one-a-turn draw step, cumulative to the end of turn 8, averaged over every game. Counts only draw the model can price \u2014 a card's own ETB draw, an instant or sorcery that draws, an upkeep trigger, a trigger that draws when other creatures or tokens enter, and (since 2026-10-19) a trigger that draws when a creature dies, on the deaths the sacrifice and death channels produce and no others, activated draws at the end of the main phase while spare mana pays and X-cost draw spells with what is left (2026-11-04: this said those were not counted, and they have been). A draw whose cost has no reader ('you may pay 2 life. If you do') is NOT counted, and the card is named in the goldfish artifact.",
+   "why_we_care": "A board with nothing in hand has no way to rebuild, and until 2026-08-28 the model could not see it: it drew one card a turn whatever the list said. Read it against the count of draw cards, not alone \u2014 a deck listing twelve draw sources whose modelled figure is one has almost no UNCONDITIONAL card advantage, and that is a fact about the deck rather than a limit of the parser.",
+   "z": -4.883
   },
   {
    "better_is": "higher",
-   "branch": 2.8602,
-   "champion": 2.9946,
+   "branch": 0.5769,
+   "champion": 0.6017,
    "ci95_diff": [
-    -0.1642,
-    -0.1046
+    -0.0406,
+    -0.009
    ],
-   "delta": -0.1344,
+   "delta": -0.0248,
    "excludes_zero": true,
    "holm": {
     "family": 16,
-    "rank": 5,
+    "rank": 11,
     "significant": true,
-    "threshold": 2.865
+    "threshold": 2.638
    },
-   "mde": 0.0426,
-   "measure": "wheels cast by T10",
-   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "2.99 -> 2.86, a change of -0.13 (-4%)",
+   "mde": 0.0226,
+   "measure": "interaction affordable @T6",
+   "method": "Newcombe score interval on the difference of proportions",
+   "reads_as": "60 games in 100 -> 58 in 100, a swing of 2 games per 100",
    "role": "exploratory",
-   "scale": "against the wheel-shaped cards the declaration names",
-   "unit": "mean",
+   "scale": "conditional on holding one \u2014 the denominator is games where an answer was in hand, not all games",
+   "unit": "rate",
    "verdict": "worse",
-   "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
-   "why_we_care": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone.",
-   "z": -8.843
+   "what": "Of the games where an answer was in hand on turn 6, the share where the turn also ended with enough unspent mana to cast it, or where it is free for controlling a commander and one is out. The suite is removal + sweepers + protection, the same set `deck-audit` counts.",
+   "why_we_care": "Whether the deck can spend its mana developing and still hold up the answer in its hand. It is CONDITIONAL on purpose: the raw castable rate falls when you simply cut interaction, which answers a different question. Measured at the END OF THE MAIN PHASE, before combat is paid for. And it is a FLOOR \u2014 the model casts everything it can afford every turn, so a pilot choosing to hold up scores higher.",
+   "z": -3.081
   },
   {
-   "better_is": "lower",
-   "branch": 0.0917,
-   "champion": 0.0753,
+   "better_is": "higher",
+   "branch": 0.967,
+   "champion": 0.9687,
    "ci95_diff": [
-    0.0098,
-    0.023
+    -0.0044,
+    0.001
    ],
-   "delta": 0.0164,
+   "delta": -0.0017,
+   "excludes_zero": false,
+   "holm": {
+    "family": 16,
+    "rank": 13,
+    "significant": false,
+    "threshold": 2.498
+   },
+   "mde": 0.0039,
+   "measure": "hand can act by T3",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "no call \u2014 the gap of 0.002 is smaller than the 0.004 this run can resolve",
+   "role": "exploratory",
+   "scale": "against the keep rate itself \u2014 this is a property of the seven cards kept, assuming no draws",
+   "unit": "rate",
+   "verdict": "noise",
+   "what": "The share of kept opening hands containing a nonland card the hand's own lands can pay for by turn three, counting at most three land drops and no draws.",
+   "why_we_care": "A stricter threshold than the 2-5 lands rule the model actually mulligans by, and it is REPORTED rather than enforced, so it cannot restate a figure on any deck. It separates \"this hand had lands\" from \"this hand could do something\" \u2014 the distinction behind a two-land keep that never got going.",
+   "z": -1.217
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.827,
+   "champion": 0.8154,
+   "ci95_diff": [
+    0.0066,
+    0.0166
+   ],
+   "delta": 0.0116,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 7,
+    "significant": true,
+    "threshold": 2.807
+   },
+   "mde": 0.0072,
+   "measure": "kept hand passes the pilot's keep rule",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "82 games in 100 -> 83 in 100, a swing of 1 games per 100",
+   "role": "exploratory",
+   "scale": "against the keep rate itself \u2014 a property of the seven cards kept, assuming no draws",
+   "unit": "rate",
+   "verdict": "better",
+   "what": "The share of kept opening hands that the pilot's own keep rule (`pilot_policy.json`, verb `keep`: a cap per class, one card of a needed class) would also have kept.",
+   "why_we_care": "REPORTED and never enforced, so it cannot restate a figure on any deck, and absent on a deck that has written no rule. It prices how often the list deals a seven the pilot would ship.",
+   "z": 4.506
+  },
+  {
+   "better_is": "higher",
+   "branch": 0.7893,
+   "champion": 0.8012,
+   "ci95_diff": [
+    -0.0179,
+    -0.0059
+   ],
+   "delta": -0.0119,
    "excludes_zero": true,
    "holm": {
     "family": 16,
@@ -2141,17 +2113,73 @@
     "significant": true,
     "threshold": 2.734
    },
-   "mde": 0.0095,
+   "mde": 0.0086,
+   "measure": "finisher wheel by T8",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "80 games in 100 -> 79 in 100, a swing of 1 games per 100",
+   "role": "exploratory",
+   "scale": "against the games themselves \u2014 one finisher per game counts, however many wheels followed it",
+   "unit": "rate",
+   "verdict": "worse",
+   "what": "The share of games in which, by the end of turn 8, a wheel resolved with a COMMANDER on the battlefield. (Until 2026-11-04 it also needed four nonlands left in hand, which the model's deploy-first turn now spends before it wheels.) Spell wheels and activated wheels both count; the discard wheels the model cannot parse are named in the goldfish declaration and are in no figure here.",
+   "why_we_care": "A wheel played as a finisher dropped onto a commander rather than as early tempo. Under a hold policy every wheel waits for a commander, so this row is when the first one LANDS, and a list that cannot get a commander down with a wheel in hand by turn 8 reads low here before it reads low anywhere else.",
+   "z": -3.866
+  },
+  {
+   "better_is": "higher",
+   "branch": 2.8312,
+   "champion": 2.9946,
+   "ci95_diff": [
+    -0.1954,
+    -0.1314
+   ],
+   "delta": -0.1634,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 3,
+    "significant": true,
+    "threshold": 2.914
+   },
+   "mde": 0.0458,
+   "measure": "wheels cast by T10",
+   "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
+   "reads_as": "2.99 -> 2.83, a change of -0.16 (-5%)",
+   "role": "exploratory",
+   "scale": "against the wheel-shaped cards the declaration names",
+   "unit": "mean",
+   "verdict": "worse",
+   "what": "Wheels resolved \u2014 spell or activated \u2014 cumulative to the end of turn 10, averaged over every game.",
+   "why_we_care": "A wheel engine's trigger count: a discard or draw payoff has nothing to do until a hand empties. Reported with a direction for the report's sake, but the table's dislike of a wheel is in no figure here \u2014 this counts what the model fired, not what a pod forgave \u2014 so read it beside the finisher row, never alone.",
+   "z": -9.998
+  },
+  {
+   "better_is": "lower",
+   "branch": 0.0927,
+   "champion": 0.0753,
+   "ci95_diff": [
+    0.011,
+    0.0238
+   ],
+   "delta": 0.0174,
+   "excludes_zero": true,
+   "holm": {
+    "family": 16,
+    "rank": 4,
+    "significant": true,
+    "threshold": 2.891
+   },
+   "mde": 0.0091,
    "measure": "dead wheels in hand @T5",
    "method": "paired t interval on 10,000 game-by-game differences (same seed per game)",
-   "reads_as": "0.08 -> 0.09, a change of +0.02 (+22%)",
+   "reads_as": "0.08 -> 0.09, a change of +0.02 (+23%)",
    "role": "exploratory",
    "scale": "against the cards in hand at the end of turn 5",
    "unit": "mean",
    "verdict": "worse",
    "what": "Wheel cards held at the end of turn 5 while no discard or draw payoff is on the battlefield, averaged over every game; zero whenever a payoff is out.",
    "why_we_care": "The clog: a hand of wheels with little else to play, as a number. It rises with the wheel count and with a hold policy, which is the point \u2014 a branch that cuts wheels is graded here, and a branch that cannot land a commander shows up here before it shows up in damage.",
-   "z": 4.85
+   "z": 5.367
   }
  ]
 }

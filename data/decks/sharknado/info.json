@@ -894,16 +894,14 @@
       },
       "verdict": {
         "state": "no objective",
-        "rose": 0,
-        "fell": 12,
-        "no_call": 4
+        "rose": 1,
+        "fell": 10,
+        "no_call": 5
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Brotherhood Regalia",
         "Cascade Bluffs",
-        "Ceremonial Knife",
         "Gemstone Caverns",
         "Hengegate Pathway // Mistgate Pathway",
         "Jaws, Relentless Predator",
@@ -914,11 +912,11 @@
       ],
       "impact": {
         "state": "no objective",
-        "rose": [],
+        "rose": [
+          "kept hand passes the pilot's keep rule"
+        ],
         "fell": [
-          "hoard @T10",
           "damage @T10",
-          "board power @T6",
           "killed by T6",
           "killed by T10",
           "missed drop by T5",
@@ -932,12 +930,12 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -136.5261,
+            "delta": -132.4095,
             "ci95_diff": [
-              -142.5108,
-              -130.5414
+              -138.4768,
+              -126.3422
             ],
-            "mde": 8.5545,
+            "mde": 8.6726,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -946,8 +944,8 @@
             "measure": "killed by T10",
             "delta": -0.0033,
             "ci95_diff": [
-              -0.0051,
-              -0.0015
+              -0.005,
+              -0.0016
             ],
             "mde": 0.0025,
             "verdict": "worse",
@@ -956,24 +954,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": -0.7719,
+            "delta": -0.0974,
             "ci95_diff": [
-              -0.9418,
-              -0.602
+              -0.2674,
+              0.0726
             ],
-            "mde": 0.2428,
-            "verdict": "worse",
+            "mde": 0.243,
+            "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -1.4974,
+            "delta": -0.7447,
             "ci95_diff": [
-              -1.7843,
-              -1.2105
+              -1.0436,
+              -0.4458
             ],
-            "mde": 0.4101,
+            "mde": 0.4273,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
