@@ -93,11 +93,13 @@ def test_propose_and_merge_refuse_a_branch_that_cuts_it(monkeypatch):
     monkeypatch.setattr(deck_branch, "diff", lambda slug, branch: {"out": [VISH], "add": ["X"]})
     lines = protected.refusals(EDGAR, deck_branch.diff(EDGAR, "any")["out"])
     assert len(lines) == 1 and VISH in lines[0]
-    # The merge gate folds the keep list into its blocking list, so `--force`
-    # (a sourcing override) cannot reach it.
+    # The merge gate folds the keep list into its blocking list, and merge has no
+    # override at all (the sourcing `--force` left with the ownership layer,
+    # 2026-11-22): the pilot releases a card by editing protected.json, never by a flag.
     import inspect
     src = inspect.getsource(deck_branch.merge)
-    assert "protected.refusals" in src and "force" in src
+    assert "protected.refusals" in src
+    assert "force" not in inspect.signature(deck_branch.merge).parameters
     src = inspect.getsource(deck_branch.propose)
     assert "protected.refuse" in src
 
