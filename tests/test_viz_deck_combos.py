@@ -16,7 +16,7 @@ import json
 import pytest
 
 from manamap.config import DECKS_DIR
-from test_viz_deck_context import _manifest, _open
+from test_viz_deck_context import UNFOLD, _manifest, _open
 
 pytestmark = pytest.mark.browser
 
@@ -51,7 +51,11 @@ def _route(page, slug, file, body, status=200):
                                            body=body))
 
 
-def _new_page(browser, viz_server, slug, routes):
+def _new_page(browser, viz_server, slug, routes, unfold=True):
+    """A deck page with fixtures routed in. Panels past the brief fold behind
+    their titles (2026-11-22); a test about a panel's CONTENT opens every fold
+    first, since Playwright will not read or click what is not visible. A test
+    about the folds themselves passes `unfold=False`."""
     page = browser.new_page()
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
@@ -59,6 +63,8 @@ def _new_page(browser, viz_server, slug, routes):
         _route(page, slug, file, body, status)
     page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
     page.wait_for_selector("#panels section", timeout=15000)
+    if unfold:
+        page.evaluate(UNFOLD)
     return page, errors
 
 
@@ -69,11 +75,12 @@ def test_the_known_combos_panel_lists_the_lines_and_links_the_missing_card(brows
         panel = page.locator("#panel-combos")
         assert panel.count() == 1
         assert errors == []
-        # Order: right after the bracket floor — or after the DTI panel, which sits
-        # between the two when the deck has a deckcheck.json (sharknado does).
+        # In the cards chapter beside the verified lines (2026-11-22), folded
+        # behind its count; the bracket floor is an instrument and sits last.
         ids = page.locator("#panels section").evaluate_all("els => els.map(e => e.id)")
-        assert ids[ids.index("panel-combos") - 1] in ("panel-dti", "panel-bracket")
-        assert ids.index("panel-bracket") < ids.index("panel-combos")
+        assert page.locator("#ch-cards #panel-combos").count() == 1
+        assert ids.index("panel-combos") < ids.index("panel-bracket")
+        assert "2 line" in page.text_content("#panel-combos .fold-note")
 
         deck = panel.locator(".combo-line.is-deck")
         assert deck.count() == 2

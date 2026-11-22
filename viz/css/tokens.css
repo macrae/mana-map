@@ -1588,8 +1588,34 @@ details.rost-fold > summary {
 .dossier .panel:has(table) { overflow-x: auto; }
 /* The overview: the masthead already names the deck, so the card does not repeat it. */
 .dossier .dossier-head > div:first-child > .slug-line:first-child { display: none; }
-.dossier #ch-overview > .chapter-title, .dossier #ch-overview > .chapter-promise { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.dossier #ch-overview { margin-bottom: 32px; }
+.dossier #ch-brief > .chapter-title, .dossier #ch-brief > .chapter-promise { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.dossier #ch-brief { margin-bottom: 32px; }
+/* THE FOLDS (2026-11-22): a panel's <details> sits inside its <section>, the
+   title in the summary with a one-line count. One screen open, the rest behind
+   a title; a deep link opens its fold (deck-view.js `openHash`). */
+.dossier .panel.fold > details > summary { cursor: pointer; list-style: none; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.dossier .panel.fold > details > summary::-webkit-details-marker { display: none; }
+.dossier .panel.fold > details > summary::before { content: "\25B8"; color: var(--ink-soft); font-size: 14px; }
+.dossier .panel.fold > details[open] > summary::before { content: "\25BE"; }
+.dossier .panel.fold > details > summary .panel-title { display: inline; margin: 0; }
+.dossier .panel.fold > details > summary:hover .panel-title { color: var(--burst-yellow); }
+.dossier .fold-note { color: var(--ink-soft); font-size: 13px; margin-left: auto; }
+.dossier .panel.fold > details > .promise { margin-top: 10px; }
+/* The handbook's blocks: the stamp chips, the cards that left, the lessons. */
+.dossier .chip.stamp-ok { color: var(--ink-soft); border-color: var(--rule); }
+.dossier .chip.cut { color: #d08a2a; border-color: #d08a2a; margin-left: 6px; text-transform: none; letter-spacing: 0; }
+.dossier .cut-card { border-bottom: 1px dotted #d08a2a; }
+.dossier .lead { font-family: var(--condensed); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.dossier .keep-line { margin: 12px 0 0; max-width: 74ch; }
+.dossier .lessons { padding-left: 1.2em; margin: 6px 0; }
+.dossier .lessons li { margin: 8px 0; max-width: 74ch; }
+.dossier .lessons li.is-current::marker { color: var(--burst-yellow); }
+.dossier .lessons li .ev { margin-top: 2px; }
+.dossier .mull-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 0 24px; margin-top: 8px; }
+.dossier .mull-cols h4, .dossier #panel-table-read h4, .dossier #panel-emergencies h4 { margin: 12px 0 2px; font-family: var(--condensed); text-transform: uppercase; letter-spacing: .1em; font-size: 12px; color: var(--ink-soft); }
+.dossier .steps .step { display: flex; gap: 10px; align-items: baseline; max-width: 74ch; }
+.dossier details.case > summary .ev { display: inline; margin: 0 0 0 8px; text-transform: none; letter-spacing: 0; font-family: var(--body); }
+.dossier .line-intro { border-left: 2px solid var(--rule); padding-left: 12px; margin: 8px 0 12px; }
 .dossier #panel-cover > .panel-title, .dossier .cov-alias { display: none; }
 .dossier .cov { grid-template-columns: 170px minmax(0, 1fr); gap: 16px; }
 .dossier .cov-stamp { margin-bottom: 8px; }

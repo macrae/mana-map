@@ -21,12 +21,20 @@ def _manifest():
     return json.loads((DECKS_DIR / "index.json").read_text())["decks"]
 
 
-def _open(browser, viz_server, slug):
+#: Open every folded panel (2026-11-22). Playwright will not read or click what is
+#: not visible, and past the brief the page folds; a test about a panel's CONTENT
+#: unfolds first, a test about the folds (`test_viz_deck_handbook.py`) does not.
+UNFOLD = "document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })"
+
+
+def _open(browser, viz_server, slug, unfold=True):
     page = browser.new_page()
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(f"{viz_server}/viz/deck.html?deck={slug}")
     page.wait_for_selector("#panels section", timeout=15000)
+    if unfold:
+        page.evaluate(UNFOLD)
     return page, errors
 
 
@@ -57,6 +65,8 @@ def test_the_overview_leads_and_the_context_carries_card_links_and_hover_art(bro
     try:
         first = page.locator("#panels section").first
         assert first.get_attribute("id") == "panel-cover"
+        # Cards by job folds behind its title (2026-11-22); open it to hover a card.
+        page.evaluate("document.querySelector('#panel-context > details').open = true")
         refs = page.locator("#panel-context a.cardref")
         assert refs.count() >= 50
         assert refs.first.get_attribute("href").startswith("index.html?cards=")
@@ -168,7 +178,7 @@ def test_a_missing_thing_is_said_once_with_its_id_and_the_nav_lands(browser, viz
         assert len(ids) == len(set(ids)) and "panel-goldfish" in ids
         assert page.locator("#panel-goldfish .na-line").count() == 1
         links = page.locator(".dossier-nav a").evaluate_all("els => els.map(a => a.getAttribute('href'))")
-        assert "#ch-decklist" in links
+        assert "#ch-cards" in links
         for href in links:
             assert page.locator(href).count() == 1, href
         assert page.evaluate("getComputedStyle(document.querySelector('.dossier-nav')).position") == "sticky"

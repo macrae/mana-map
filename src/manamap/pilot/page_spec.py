@@ -117,30 +117,28 @@ FROM_DEPARTMENT = {
 # the one living document per deck — what Jarvis reads first and what Sean reads
 # himself — so it leads, and the file below it becomes its evidence.
 DOSSIER_SECTIONS = [
-    ("overview", "Overview",
-     "What this deck is, what state it is in, and what to do next.",
+    # FIVE CHAPTERS, PILOT FIRST (2026-11-22). The eight before them put the
+    # mulligan, the procedures and the log's lessons off the page or forty
+    # screens down it (measured on sharknado: 72 screens, 33 panels, nothing
+    # folded). One screen says what the deck is and how it wins; the handbook's
+    # authored half comes next; the cards, the record and the instruments fold
+    # behind a count. The order is the reading order and a test asserts it.
+    ("brief", "Brief",
+     "What this deck is, how it wins, and where it stands.",
      ("data", "coach")),
-    ("decklist", "Decklist",
-     "Every card and how many copies, with the mana curve.",
-     ("data",)),
-    ("plays", "How it plays",
-     "The game plan in words, and every card by the job it does.",
+    ("play", "Play it",
+     "The mulligan, the turns, what to do when it goes wrong, the table, "
+     "and what the games have taught.",
      ("coach", "data")),
-    ("mana", "Mana",
-     "Whether the mana base keeps its promises, and what limits the deck.",
-     ("data", "coach")),
-    ("games", "Games",
-     "Every game played by people, in the pilot's own words.",
-     ("coach",)),
-    ("measurements", "Measurements",
-     "What the instruments say, each with its limits and the list it describes.",
-     ("verified", "data")),
-    ("versions", "Versions",
-     "Candidate lists, and every version this deck has been.",
-     ("data", "coach")),
-    ("notes", "Notes",
-     "Open questions, the written intent, and the assessment last.",
-     ("coach",)),
+    ("cards", "The cards",
+     "Every card and its copies, by job, with the lines they make.",
+     ("verified", "data", "coach")),
+    ("record", "The record",
+     "Every game in the pilot's words, every version, every branch and study.",
+     ("coach", "data")),
+    ("instruments", "Instruments",
+     "What each instrument could see and what it read; they report, they never rule.",
+     ("data",)),
 ]
 
 DOSSIER_IDS = [s[0] for s in DOSSIER_SECTIONS]

@@ -196,6 +196,8 @@ def test_the_deck_page_says_the_60_and_not_measured(browser, viz_server):
     page.on("pageerror", lambda e: errors.append(str(e)))
     page.goto(f"{viz_server}/viz/deck.html?deck={SLUG}")
     page.wait_for_selector("#panels section", timeout=15000)
+    # The page folds past the brief (2026-11-22); this test reads folded panels.
+    page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
     try:
         text = page.inner_text("#panels")
         assert "The 60" in text and "The 99" not in text

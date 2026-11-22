@@ -24,22 +24,16 @@
    * PYTHON OWNS THE ORDER. This is a transcription and a test locks the two
    * together, the same contract `decklist.js` lives under. */
   var DOSSIER = [
-    ['overview', 'Overview',
-     'What this deck is, what state it is in, and what to do next.', ['data', 'coach']],
-    ['decklist', 'Decklist',
-     'Every card and how many copies, with the mana curve.', ['data']],
-    ['plays', 'How it plays',
-     'The game plan in words, and every card by the job it does.', ['coach', 'data']],
-    ['mana', 'Mana',
-     'Whether the mana base keeps its promises, and what limits the deck.', ['data', 'coach']],
-    ['games', 'Games',
-     'Every game played by people, in the pilot\'s own words.', ['coach']],
-    ['measurements', 'Measurements',
-     'What the instruments say, each with its limits and the list it describes.', ['verified', 'data']],
-    ['versions', 'Versions',
-     'Candidate lists, and every version this deck has been.', ['data', 'coach']],
-    ['notes', 'Notes',
-     'Open questions, the written intent, and the assessment last.', ['coach']]
+    ['brief', 'Brief',
+     'What this deck is, how it wins, and where it stands.', ['data', 'coach']],
+    ['play', 'Play it',
+     'The mulligan, the turns, what to do when it goes wrong, the table, and what the games have taught.', ['coach', 'data']],
+    ['cards', 'The cards',
+     'Every card and its copies, by job, with the lines they make.', ['verified', 'data', 'coach']],
+    ['record', 'The record',
+     'Every game in the pilot\'s words, every version, every branch and study.', ['coach', 'data']],
+    ['instruments', 'Instruments',
+     'What each instrument could see and what it read; they report, they never rule.', ['data']]
   ];
 
   /* ONE PLAIN NAME PER PANEL, whatever its data (2026-11-02). Five panels used to
@@ -48,7 +42,12 @@
    * Floor / Bracket) and the crime-file vocabulary had to be learned. The ids are
    * unchanged, because deep links and tests address them. */
   var PLAIN = {
-    cover: 'At a glance', summary: 'Summary', next: 'What to do next',
+    cover: 'At a glance', summary: 'What it is', next: 'What to do next',
+    // THE HANDBOOK ON THE PAGE (2026-11-22): the authored half of the Pilot's
+    // Operating Handbook, which PRD v2 had left on an unlinked page.
+    wins: 'How it wins', mulligan: 'Mulligan', procedures: 'The turns',
+    emergencies: 'When it goes wrong', 'table-read': 'The table',
+    lessons: 'Lessons from the log', 'studies-ctx': 'Studies',
     context: 'Game plan and cards by job', associates: 'Cards by deck region',
     constellation: 'Deck map', map: 'Deck map', tutors: 'What to fetch',
     mana: 'Mana base', audit: 'Deck targets',
@@ -179,16 +178,61 @@
    * wall. Membership is a property of the content, not of the id, but the id is
    * what the caller has. */
   var WIDE = { context: 1, kill: 1, ten: 1, cover: 1, 'rap-sheet': 1, priors: 1,
-               decklist: 1, art: 1, coverage: 1, logs: 1 };
+               decklist: 1, art: 1, coverage: 1, logs: 1,
+               mulligan: 1, lessons: 1, 'table-read': 1, emergencies: 1 };
+
+  /* WHAT FOLDS, AND HOW IT OPENS (2026-11-22). Measured on sharknado the page
+   * was 72 screens and 33 panels with nothing folded, and the handbook was not
+   * on it. Now one screen is open — the brief, the mulligan, the lessons, the
+   * list, the game record — and every other panel sits behind its title with a
+   * one-line count. The panel element stays a <section id="panel-…"> so deep
+   * links, selectors and tests hold; the fold is a <details> inside it. A panel
+   * not named here is plain. `branches` is decided at render: open while a
+   * branch is in flight. */
+  var FOLDS = {
+    next: 'closed',
+    procedures: 'closed', emergencies: 'closed', 'table-read': 'closed',
+    tutors: 'closed', 'pilot-notes': 'closed',
+    context: 'closed', combos: 'closed', kill: 'closed', associates: 'closed',
+    constellation: 'closed', art: 'closed',
+    logs: 'closed', history: 'closed', 'rap-sheet': 'closed', leads: 'closed',
+    questions: 'closed', brief: 'closed', build: 'closed', assessment: 'closed',
+    asked: 'closed', ten: 'closed', 'studies-ctx': 'closed',
+    mana: 'closed', audit: 'closed', vitals: 'closed', goldfish: 'closed',
+    table: 'closed', targeting: 'closed', bracket: 'closed', dti: 'closed',
+    engine: 'closed', numbers: 'closed'
+  };
+  /* The one line a folded panel shows beside its title: a count, never a
+   * figure that goes stale. A panel sets its own before it returns. */
+  var FOLD_NOTES = {};
+  function foldNote(id, text) { FOLD_NOTES[id] = text; }
 
   function panel(id, title, promise, tiers, accent, body) {
     // A branch's roster names the branch; every other title is the plain one.
     var shownTitle = (PLAIN[id] && String(title).indexOf(' — branch ') < 0) ? PLAIN[id] : title;
-    return '<section class="panel' + (WIDE[id] ? ' wide' : '') +
-      '" id="panel-' + id + '" style="--accent:' + accent + '">' +
-      '<h3 class="panel-title">' + esc(shownTitle) + '</h3>' +
-      '<div class="promise">' + esc(promise) + ' ' +
-      tiers.map(badge).join(' ') + '</div>' + body + '</section>';
+    var fold = FOLDS[id];
+    var titleHtml = '<h3 class="panel-title">' + esc(shownTitle) + '</h3>';
+    var promiseHtml = '<div class="promise">' + esc(promise) + ' ' +
+      tiers.map(badge).join(' ') + '</div>';
+    var open = '<section class="panel' + (WIDE[id] ? ' wide' : '') + (fold ? ' fold' : '') +
+      '" id="panel-' + id + '" style="--accent:' + accent + '">';
+    if (!fold) return open + titleHtml + promiseHtml + body + '</section>';
+    return open + '<details' + (fold === 'open' ? ' open' : '') + '><summary>' + titleHtml +
+      (FOLD_NOTES[id] ? '<span class="fold-note">' + esc(FOLD_NOTES[id]) + '</span>' : '') +
+      '</summary>' + promiseHtml + body + '</details></section>';
+  }
+
+  /* A deep link to a folded panel opens it: the hash names the <section>, the
+   * fold is the <details> inside, and a closed fold scrolled into view is a
+   * title with nothing under it. On load and on every hash change. */
+  function openHash() {
+    var id = (location.hash || '').slice(1);
+    var el = id ? document.getElementById(id) : null;
+    if (!el) return;
+    var det = el.querySelector(':scope > details');
+    if (det) det.open = true;
+    var up = el.parentElement;
+    while (up) { if (up.tagName === 'DETAILS') up.open = true; up = up.parentElement; }
   }
 
   // ── Panels ───────────────────────────────────────────────────────────
@@ -530,6 +574,7 @@
     // NAMED FOR WHAT THEY ARE, and named so the pilot can find them: "Branches"
     // is the word he uses, and the rack sits right after NEXT because a branch
     // is the deck's next decision.
+    foldNote('branches', live.length + ' in flight \u00b7 ' + decided.length + ' decided');
     return panel('branches', 'Branches',
                  'Candidate lists that are NOT this deck \u2014 the work in flight, newest first. '
                  + 'Each links to its own page: the objective and whether it was met, the paired '
@@ -672,13 +717,25 @@
     return panel(id, PLAIN[id], promise, tiers, accent, '<div class="ctx-body">' + html + '</div>');
   }
 
-  /* What the deck is, from the Context's own Summary, then its generated facts
-   * (version, bracket floor, DTI, combos), which sit ahead of the first heading. */
+  /* What the deck is, from the Context's own Summary: the first two paragraphs
+   * open, the rest and the generated facts (version, bracket floor, DTI,
+   * combos) behind one fold. The brief is a screen, not a chapter. */
   function summaryPanel(d) {
     var c = d.ctxParts;
     if (!c || !c.by.summary) return '';
+    var ps = c.by.summary.body.split(/(?=<p>)/);
+    var lead = ps.slice(0, 2).join(''), rest = ps.slice(2).join('');
+    var facts = c.lead ? '<div class="ctx-facts">' + c.lead + '</div>' : '';
     return ctxPanel('summary', 'What the deck is, by the Context Keeper.', ['coach', 'data'], '#c4a747',
-      c.by.summary.body + (c.lead ? '<div class="ctx-facts">' + c.lead + '</div>' : ''));
+      lead + ((rest || facts)
+        ? '<details class="m-detail"><summary>the rest, and the facts</summary>' + rest + facts + '</details>'
+        : ''));
+  }
+
+  /* One Context section's body, for a panel that folds it inside its own. */
+  function ctxBody(d, slug) {
+    var c = d.ctxParts;
+    return (c && c.by[slug]) ? c.by[slug].body : '';
   }
 
   function contextPanel(d) {
@@ -690,7 +747,8 @@
     // Everything the other chapters do not claim stays here, so a new heading
     // written by the Keeper can never fall off the page.
     var claimed = { summary: 1, numbers: 1, 'pilot-notes': 1, 'change-history': 1,
-                    'open-questions': 1, 'context-changelog': 1 };
+                    'open-questions': 1, 'context-changelog': 1, studies: 1 };
+    foldNote('context', c.order.filter(function (k) { return !claimed[k]; }).length + ' section(s)');
     var body = c.order.filter(function (k) { return !claimed[k]; })
       .map(function (k) { return c.by[k].whole; }).join('');
     return panel('context', PLAIN.context,
@@ -1255,6 +1313,7 @@
         ' variants)' : '') +
       '. A line is a Spellbook claim about the cards, not a proof this deck assembles it: ' +
       'the goldfish and The Kill say that.</p>';
+    foldNote('combos', included.length + ' line(s) · ' + total + ' one card short');
     return panel('combos', 'Known combos', 'Every Spellbook line the list contains, and one card short.',
                  ['data'], 'var(--tier-data)', out);
   }
@@ -1471,6 +1530,7 @@
       + (rest ? '<details class="m-detail"><summary>the rest of the read</summary>'
                 + '<p>' + esc(rest) + '</p></details>' : '')
       + items;
+    foldNote('tutors', (t.tutors || []).length + ' tutor(s)');
     return panel('tutors', 'Fetch Quests', 'One wish per tutor.',
                  ['coach'], 'var(--tier-coach)', body);
   }
@@ -1487,13 +1547,18 @@
           esc(st.action) + '<span class="ev">' + esc(st.effect) + '</span>' + cites + '</div>';
       }).join('');
       var ck = s.checker || {};
+      // The pilot notes' argued intro to this line (`manual_prose.combo_lines`,
+      // keyed by stack id), ahead of the rules steps it introduces (2026-11-22).
+      var intro = paras((((d.prose || {}).combo_lines) || {})[s.id]);
       return '<details class="case"><summary>Case A-' + esc(s.id) + ' · ' + esc(s.title) +
         ' <span class="chip">' + esc(ck.iterations) + ' review cycle(s)</span></summary>' +
-        '<div class="body"><p class="ev">' +
-          esc((s.scenario || {}).question || '') + '</p>' + steps +
+        '<div class="body">' +
+        (intro.length ? '<div class="line-intro">' + intro.map(function (p) { return leadPara(p, d); }).join('') + '</div>' : '') +
+        '<p class="ev">' + esc((s.scenario || {}).question || '') + '</p>' + steps +
         '<p class="ev"><b>Result.</b> ' +
           esc(((s.resolution || {}).final_state || {}).summary || '') + '</p></div></details>';
     }).join('');
+    foldNote('kill', d.stacks.length + ' verified line(s)');
     return panel('kill', 'The Kill', 'Every claim, with the rule text behind it.',
                  ['verified'], 'var(--tier-verified)', cases);
   }
@@ -1667,6 +1732,7 @@
   function nextPanel(d) {
     var info = d.info;
     if (!info || !info.next || !info.next.length) return '';
+    foldNote('next', info.next.length + ' line(s) · ' + esc(String(info.next[0]).slice(0, 70)));
     return panel('next', 'What to do next',
       'Derived from a condition that is true right now.', ['data'],
       'var(--tier-data)',
@@ -1885,6 +1951,7 @@
       'rates its own AI "poor to ok in control, pretty bad for combo", so a control ' +
       'deck\'s rate is a lower bound and a combo deck\'s is not a measurement. A ' +
       'figure without its interval and its N is not a figure.</p>';
+    foldNote('table', runs.length + ' run(s) · ' + exps.length + ' experiment(s)');
     return panel('table', 'At a table',
       'Seeded Forge games against the pilot\'s own pod.', ['data'],
       'var(--tier-data)', body);
@@ -1984,6 +2051,8 @@
       if (!notes[e.id]) undebriefed++;
     });
     var last = entries[entries.length - 1] || {};
+    foldNote('logs', entries.length + ' game(s) · ' + wins + 'W ' + losses + 'L'
+      + (undebriefed ? ' · ' + undebriefed + ' not debriefed' : ''));
     var body = '<div class="log-sum">'
       + '<span class="log-n">' + entries.length + '</span> game(s) logged'
       + ' · <b>' + wins + 'W ' + losses + 'L</b>'
@@ -2029,9 +2098,10 @@
       pairs.forEach(function (pair) {
         if (pair[1]) { out += '<h4>' + pair[0] + '</h4><p>' + esc(pair[1]) + '</p>'; }
       });
+      // "What to be mindful of" is the Lessons panel in Play it (2026-11-22).
       if ((r.mindful_of || []).length) {
-        out += '<h4>What to be mindful of</h4>'
-          + list(r.mindful_of.map(function (t) { return esc(t); }));
+        out += '<p class="ev"><a href="#panel-lessons">' + r.mindful_of.length
+          + ' lesson(s) from these games →</a></p>';
       }
       if (r.what_changed) {
         out += '<h4>What changed</h4><p>' + esc(r.what_changed) + '</p>';
@@ -2152,9 +2222,272 @@
       return '<span class="chip">' + esc(q.settled_by || '?') + '</span> ' +
         esc(q.question) + '<span class="ev">from ' + esc(q.from) + '</span>';
     });
+    foldNote('leads', qs.length + ' open · ' + routes.length + ' route(s)');
     return section('leads', 'var(--tier-coach)', head
       + '<details class="m-detail"><summary>read all ' + qs.length
       + '</summary>' + list(items) + '</details>');
+  }
+
+  // ── The handbook on the page (2026-11-22) ────────────────────────────
+  //
+  // The mulligan, the turns, the emergencies, the table and the log's lessons.
+  // `manual_prose.json` (pilot-notes) and `poh_procedures.json` (poh-procedures)
+  // were rendered only on the handbook page under manuals/p/, which PRD v2
+  // unlinked; the captain's-log read was on this page at screen forty-five.
+  // Every block carries the stamp `deck-info` computed for it (info.handbook):
+  // which list it was written for, and — for a lesson — which cards it names
+  // that the list no longer holds. The page compares nothing; it draws.
+
+  function paras(text) {
+    return String(text || '').split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+  }
+
+  /* The chip that says which list a prose block describes. From `info.handbook`
+   * only: `current` is deck-info's comparison, never one made here. */
+  function stampChip(d, key) {
+    var hb = (d.info || {}).handbook || {}, s = hb[key];
+    if (!s) return '';
+    if (s.current) return '<span class="chip stamp-ok">written for this list</span>';
+    if (!s.written_for) return '<span class="chip stale">no list stamp</span>';
+    return '<span class="chip stale">written for ' +
+      (s.version ? 'V' + esc(s.version) : esc(s.written_for)) +
+      (hb.list_version ? ' · list is V' + esc(hb.list_version) : '') + '</span>';
+  }
+
+  /* THE CARDS THAT LEFT, each with the version it last left at. A join of two
+   * files the page already holds — `versions.json`'s `out` lists and the
+   * `cards.json` names in `deckCards` — so a procedure or a matchup line that
+   * names a card no longer in the sleeves can say so where it stands. A card
+   * that left and came back is not gone. */
+  var goneCache = null;
+  function goneCards(d) {
+    if (goneCache) return goneCache;
+    var inList = {};
+    Object.keys(deckCards).forEach(function (n) { inList[n] = 1; inList[n.split(' // ')[0]] = 1; });
+    var g = {};
+    (((d.versions || {}).versions) || []).forEach(function (v) {
+      (v.out || []).forEach(function (n) { if (inList[n]) delete g[n]; else g[n] = v.version; });
+    });
+    goneCache = g;
+    return g;
+  }
+
+  /* Escaped text with each departed card marked. Matched on the full name or
+   * the part before the comma, whole-word, once per card. */
+  function markGone(text, d) {
+    var html = esc(text), g = goneCards(d);
+    Object.keys(g).forEach(function (name) {
+      var short = name.split(',')[0];
+      [name, short].some(function (probe) {
+        if (probe.length < 5) return false;
+        var p = esc(probe).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        var re = new RegExp("(^|[^\\w'])(" + p + ")(?![\\w'])");
+        if (!re.test(html)) return false;
+        html = html.replace(re, '$1<span class="cut-card">$2<span class="chip cut">left at V' +
+          esc(g[name]) + '</span></span>');
+        return true;
+      });
+    });
+    return html;
+  }
+
+  /* The notes' paragraphs open with a lead in capitals ("KILL ON SIGHT."); the
+   * page sets it as the heading it is. */
+  function leadPara(p, d) {
+    var m = /^([A-Z][A-Z0-9 ,'’\-]{2,}[.:])\s+([\s\S]*)$/.exec(p);
+    return m ? '<p><b class="lead">' + esc(m[1]) + '</b> ' + markGone(m[2], d) + '</p>'
+             : '<p>' + markGone(p, d) + '</p>';
+  }
+
+  function stepList(steps, d, ordered) {
+    return '<div class="steps">' + (steps || []).map(function (s, i) {
+      return '<div class="step"><span class="n">' + (ordered ? (i + 1) : '→') + '</span>' +
+        '<span>' + markGone(s, d) + '</span></div>';
+    }).join('') + '</div>';
+  }
+
+  function winsPanel(d) {
+    var ps = paras((d.prose || {}).how_it_wins);
+    var thesis = ((d.info || {}).engine || {}).thesis;
+    if (!ps.length && !thesis) {
+      return noted('wins', 'No handbook prose yet: how the deck wins, in the notes\' voice.',
+        '/write-manual ' + d.slug);
+    }
+    var keep = ((((d.procedures || {}).normal) || {}).preflight || {}).keep || [];
+    var body = ps.length
+      ? '<p class="brief-lede">' + markGone(ps[0], d) + '</p>' +
+        (ps.length > 1
+          ? '<details class="m-detail"><summary>the rest of the argument</summary>' +
+            ps.slice(1).map(function (p) { return leadPara(p, d); }).join('') + '</details>'
+          : '')
+      : '<p class="brief-lede">' + esc(thesis) + '</p>' +
+        '<p class="ev">From the engine model; no handbook prose yet.</p>';
+    if (keep.length) {
+      body += '<p class="keep-line"><b class="lead">Keep.</b> ' + markGone(keep[0], d) +
+        ' <a href="#panel-mulligan">the mulligan →</a></p>';
+    }
+    var chip = stampChip(d, 'prose');
+    if (chip) body += '<p class="ev">' + chip + ' pilot notes, how_it_wins</p>';
+    return panel('wins', PLAIN.wins, 'How this deck wins, from the pilot notes.',
+                 ['coach'], 'var(--tier-coach)', body);
+  }
+
+  function mulliganPanel(d) {
+    var ps = paras((d.prose || {}).mulligan);
+    var pre = (((d.procedures || {}).normal) || {}).preflight || null;
+    if (!ps.length && !pre) {
+      return noted('mulligan', 'No mulligan written yet: what a keepable hand looks like, and what to ship.',
+        '/write-manual ' + d.slug);
+    }
+    var body = '';
+    if (ps.length) {
+      body += ps.slice(0, 2).map(function (p) { return leadPara(p, d); }).join('') +
+        (ps.length > 2
+          ? '<details class="m-detail"><summary>the rest: ramp, colour, what makes a keep</summary>' +
+            ps.slice(2).map(function (p) { return leadPara(p, d); }).join('') + '</details>'
+          : '');
+    }
+    if (pre) {
+      body += '<div class="mull-cols">' +
+        ((pre.keep || []).length ? '<div><h4>Keep</h4>' + stepList(pre.keep, d, false) + '</div>' : '') +
+        ((pre.ship || []).length ? '<div><h4>Ship</h4>' + stepList(pre.ship, d, false) + '</div>' : '') +
+        '</div>' +
+        (pre.note ? '<p class="ev">' + markGone(pre.note, d) + '</p>' : '');
+    }
+    var chips = [stampChip(d, 'prose'), stampChip(d, 'procedures')].filter(Boolean).join(' ');
+    if (chips) body += '<p class="ev">' + chips + ' pilot notes and the pre-flight procedure</p>';
+    return panel('mulligan', PLAIN.mulligan, 'What a keepable hand looks like, and what to ship.',
+                 ['coach', 'data'], 'var(--tier-coach)', body);
+  }
+
+  var PHASES = [['startup', 'Turns one to three'], ['assembly', 'Engine assembly'],
+                ['cruise', 'Cruise: the per-turn cycle'], ['closing', 'Closing: lethal, or wait a turn']];
+
+  function proceduresPanel(d) {
+    var normal = (d.procedures || {}).normal;
+    if (!normal) {
+      return noted('procedures', 'No procedures written yet: the turns, as numbered checklists.',
+        '/poh-procedures ' + d.slug);
+    }
+    var cases = PHASES.filter(function (ph) { return ((normal[ph[0]] || {}).steps || []).length; });
+    foldNote('procedures', cases.length + ' phase(s)');
+    var body = cases.map(function (ph) {
+      var steps = normal[ph[0]].steps;
+      return '<details class="case"><summary>' + esc(ph[1]) +
+        ' <span class="chip">' + steps.length + ' steps</span></summary>' +
+        '<div class="body">' + stepList(steps, d, true) + '</div></details>';
+    }).join('');
+    var chip = stampChip(d, 'procedures');
+    return panel('procedures', PLAIN.procedures, 'Pre-flight is the mulligan above; these are the turns.',
+                 ['coach'], 'var(--tier-coach)', body + (chip ? '<p class="ev">' + chip + '</p>' : ''));
+  }
+
+  function emergenciesPanel(d) {
+    var em = (d.procedures || {}).emergency;
+    var items = Array.isArray(em) ? em : Object.keys(em || {}).map(function (k) { return em[k]; });
+    if (!items.length) {
+      return noted('emergencies', 'No emergency procedures yet: one condition per page, what to do.',
+        '/poh-procedures ' + d.slug);
+    }
+    foldNote('emergencies', items.length + ' condition(s)');
+    var body = items.map(function (e) {
+      var grounded = (e.grounded_in || []).map(function (g) {
+        return '<span class="chip">' + esc(g) + '</span>';
+      }).join(' ');
+      return '<details class="case"><summary>' + esc(e.condition || '') +
+        '<span class="ev">' + esc(e.condition_text || '') + '</span></summary>' +
+        '<div class="body">' +
+        ((e.indications || []).length ? '<h4>How you know</h4>' + stepList(e.indications, d, false) : '') +
+        ((e.immediate || []).length ? '<h4>Immediately</h4>' + stepList(e.immediate, d, true) : '') +
+        ((e.subsequent || []).length ? '<h4>Then</h4>' + stepList(e.subsequent, d, false) : '') +
+        (e.notes ? '<p class="ev">' + markGone(e.notes, d) + '</p>' : '') +
+        (grounded ? '<p class="ev">grounded in ' + grounded + '</p>' : '') +
+        '</div></details>';
+    }).join('');
+    var chip = stampChip(d, 'procedures');
+    return panel('emergencies', PLAIN.emergencies, 'One condition per fold: how you know, what to do.',
+                 ['coach'], 'var(--tier-coach)', body + (chip ? '<p class="ev">' + chip + '</p>' : ''));
+  }
+
+  var HANDLING = [['optics', 'How the table reads you'], ['reveal', 'What gives you away'],
+                  ['alliances', 'Alliances'], ['targets', 'Who to hit first']];
+
+  function tableReadPanel(d) {
+    var threat = paras((d.prose || {}).threat_assessment);
+    var match = paras((d.prose || {}).matchups);
+    var handling = (d.procedures || {}).handling || null;
+    if (!threat.length && !match.length && !handling) {
+      return noted('table-read', 'No table read yet: threat optics, the seats, who to hit first.',
+        '/write-manual ' + d.slug);
+    }
+    var seats = match.filter(function (p) { return /^[A-Z][A-Z0-9 ,'’\-]{2,}[.:]\s/.test(p); }).length;
+    foldNote('table-read', (seats ? seats + ' seat(s) read' : (threat.length + match.length) + ' paragraph(s)'));
+    var body = '';
+    if (threat.length) body += '<h4>Threat</h4>' + threat.map(function (p) { return leadPara(p, d); }).join('');
+    if (match.length) body += '<h4>Seat by seat</h4>' + match.map(function (p) { return leadPara(p, d); }).join('');
+    if (handling) {
+      body += HANDLING.map(function (h) {
+        var rows = handling[h[0]] || [];
+        return rows.length ? '<h4>' + esc(h[1]) + '</h4>' + stepList(rows, d, false) : '';
+      }).join('');
+    }
+    var chips = [stampChip(d, 'prose'), stampChip(d, 'procedures')].filter(Boolean).join(' ');
+    if (chips) body += '<p class="ev">' + chips + ' pilot notes and the handling procedure</p>';
+    return panel('table-read', PLAIN['table-read'],
+                 'Who the table thinks you are, seat by seat, and who to hit first.',
+                 ['coach'], 'var(--tier-coach)', body);
+  }
+
+  /* THE LESSONS: the captain's-log read's "mindful of" list, one line each,
+   * the ones from games on this list first and the older ones folded, every
+   * one with its game ids and a mark on any card it names that has left. The
+   * Context's own Pilot notes fold underneath. */
+  function lessonsPanel(d) {
+    var tips = ((d.captainsLog || {}).read || {}).mindful_of || [];
+    var hb = ((d.info || {}).handbook || {}).read || {};
+    var stamps = hb.tips || [];
+    var notes = ctxBody(d, 'pilot-notes');
+    if (!tips.length && !notes) {
+      return noted('lessons', 'No lessons yet: the captain\'s-log read writes them from the games.',
+        '/captains-log ' + d.slug);
+    }
+    function row(t, i) {
+      var s = stamps[i] || {};
+      var bits = [];
+      if ((s.games || []).length) bits.push('game' + (s.games.length > 1 ? 's ' : ' ') + s.games.join(', '));
+      // The departed cards deck-info named are marked inline by `markGone`; the
+      // stamp is kept on the row as data for the page's own tests and readers.
+      var gone = (s.names_gone || []).map(function (g) { return g.card; }).join('|');
+      return '<li class="lesson' + (s.on_current_list ? ' is-current' : '') + '"' +
+        (gone ? ' data-names-gone="' + esc(gone) + '"' : '') + '>' + markGone(t, d) +
+        (bits.length ? '<span class="ev">' + esc(bits.join(' · ')) + '</span>' : '') +
+        '</li>';
+    }
+    var cur = [], older = [];
+    tips.forEach(function (t, i) {
+      // No stamps on file (an info.json older than this page): every lesson shows, none folded.
+      ((stamps.length && !(stamps[i] || {}).on_current_list) ? older : cur).push(row(t, i));
+    });
+    var body = (cur.length
+        ? '<ul class="lessons">' + cur.join('') + '</ul>'
+        : (tips.length ? '<p class="ev">No lesson yet from a game on this list.</p>' : '')) +
+      (older.length
+        ? '<details class="m-detail"' + (cur.length ? '' : ' open') + '><summary>' + older.length +
+          ' from older lists</summary><ul class="lessons">' + older.join('') + '</ul></details>'
+        : '') +
+      (notes
+        ? '<details class="m-detail"><summary>Pilot notes from the Deck Context</summary>' +
+          '<div class="ctx-body">' + notes + '</div></details>'
+        : '');
+    if (tips.length) {
+      body += '<p class="ev">' + stampChip(d, 'read') + ' From the captain\'s-log read' +
+        (stamps.length ? ': ' + (hb.games_on_this_list || 0) + ' game(s) on this list, ' +
+          (hb.games_older || 0) + ' older' : '') +
+        '. A lesson that names a card the list no longer holds says so.</p>';
+    }
+    foldNote('lessons', tips.length + ' lesson(s)' + (stamps.length ? ' · ' + cur.length + ' from this list' : ''));
+    return panel('lessons', PLAIN.lessons, 'What the games have taught, in the pilot\'s words, the current list first.',
+                 ['coach'], 'var(--tier-coach)', body);
   }
 
   // ── Assembly ─────────────────────────────────────────────────────────
@@ -2448,13 +2781,18 @@
      * "record" is the most misleading thing this page could do. */
     var cur = currentVersion(d);
     var vrec = versionRecord(cur);
+    /* THE BRACKET, where the goldfish head was (2026-11-22). The floor is the
+     * gate and the DTI the dated second opinion; no instrument's rate sits on
+     * the cover. "Commander by T6" lives with the goldfish, in Instruments. */
+    var b = info.bracket || {}, dc = info.deckcheck || {};
+    var bracketNote = [b.floor_name ? 'floor: ' + b.floor_name : null,
+                       typeof dc.score === 'number'
+                         ? 'DTI ' + dc.score + '/' + dc.max_score + ' (' + dc.as_of +
+                           (dc.stale_list ? ', older list' : '') + ')' : null]
+      .filter(Boolean).join(' · ');
     var nums = '<div class="cov-nums">' +
       (specOf(d).commanders
-        ? head('Commander by T6',
-           (g.commander_cast_by_turn_6_pct === undefined ||
-            g.commander_cast_by_turn_6_pct === null)
-             ? null : g.commander_cast_by_turn_6_pct + '%',
-           'seeded goldfish')
+        ? head('Bracket', b.floor ? 'B' + b.floor : null, bracketNote || 'no bracket report')
         // No commander to cast: the slot says what the deck IS instead.
         : head('Format', specOf(d).name,
                specOf(d).size + (specOf(d).exact ? '' : '+') + ' cards, ' +
@@ -2588,6 +2926,7 @@
         '<td class="rap-obs">' + observed + '</td></tr>';
     }).join('');
 
+    foldNote('rap-sheet', vs.length + ' version(s)');
     return section('rap-sheet', 'var(--tier-data)',
       '<div class="rap-wrap"><table class="rap">' +
       '<thead><tr><th scope="col">Version</th><th scope="col">Date</th>' +
@@ -2769,24 +3108,30 @@
      * drawn: its absences are in the strip at the foot, which is built LAST because
      * every panel above reports to it. Panels keep their `#panel-<id>`. */
     missing = [];
+    FOLD_NOTES = {};
+    goneCache = null;
     d.ctxParts = contextParts(d);
     d.ctxChangelog = (d.ctxParts && d.ctxParts.by['context-changelog'])
       ? d.ctxParts.by['context-changelog'].body : '';
+    // Branches stay open while one is in flight; decided ones fold.
+    var inFlight = ((d.info || {}).branches || []).some(function (x) { return !x.unreadable && !branchDecided(x); });
+    FOLDS.branches = inFlight ? 'open' : 'closed';
     var content = {
-      overview: [coverPanel(d), summaryPanel(d), nextPanel(d)],
-      decklist: [decklistPanel(d), artPanel(d)],
-      plays: [contextPanel(d), rosterPanel(d), constellationPanel(d), tutorPanel(d)],
-      mana: [manaPanel(d), auditPanel(d)],
-      games: [priorsPanel(d), logPanel(d),
-              ctxPart(d, 'pilot-notes', 'pilot-notes', 'What the games have taught, by the Context Keeper.', ['coach'])],
-      measurements: [vitalsPanel(d), goldfishPanel(d), tablePanel(d), targetingPanel(d),
-                     bracketPanel(d), dtiPanel(d), combosPanel(d), enginePanel(d), stacksPanel(d),
-                     ctxPart(d, 'numbers', 'numbers', 'Generated figures from the Deck Context.', ['data'])],
-      versions: [branchPanel(d), rapSheetPanel(d),
-                 ctxPart(d, 'history', 'change-history', 'What changed in the deck, by the Context Keeper.', ['coach'])],
-      notes: [ctxPart(d, 'questions', 'open-questions', 'Questions only games or tests can settle.', ['coach']),
-              questionsPanel(d), briefPanel(d), askedPanel(d), tenPanel(d), buildPlanPanel(d),
-              assessmentPanel(d)]
+      brief: [coverPanel(d), summaryPanel(d), winsPanel(d), nextPanel(d)],
+      play: [mulliganPanel(d), lessonsPanel(d), proceduresPanel(d), emergenciesPanel(d),
+             tableReadPanel(d), tutorPanel(d)],
+      cards: [decklistPanel(d), contextPanel(d), combosPanel(d), stacksPanel(d),
+              rosterPanel(d), constellationPanel(d), artPanel(d)],
+      record: [priorsPanel(d), branchPanel(d), logPanel(d),
+               ctxPart(d, 'history', 'change-history', 'What changed in the deck, by the Context Keeper.', ['coach']),
+               rapSheetPanel(d),
+               ctxPart(d, 'studies-ctx', 'studies', 'The studies, as the Deck Context lists them.', ['coach']),
+               ctxPart(d, 'questions', 'open-questions', 'Questions only games or tests can settle.', ['coach']),
+               questionsPanel(d), briefPanel(d), askedPanel(d), tenPanel(d), buildPlanPanel(d),
+               assessmentPanel(d)],
+      instruments: [manaPanel(d), auditPanel(d), vitalsPanel(d), goldfishPanel(d), tablePanel(d),
+                    targetingPanel(d), bracketPanel(d), dtiPanel(d), enginePanel(d),
+                    ctxPart(d, 'numbers', 'numbers', 'Generated figures from the Deck Context.', ['data'])]
     };
     var coverage = coveragePanel(d);
     var chapters = DOSSIER.map(function (c) {
@@ -2802,8 +3147,14 @@
     }).join('') + (coverage ? '<div class="chapter" id="ch-coverage"><div class="panels">' + coverage + '</div></div>' : '');
     document.getElementById('panels').innerHTML = html;
     // THE DEEP LINK LANDS (2026-10-20): the workbench links `#panel-branches`
-    // and the panels did not exist when the browser tried to jump.
+    // and the panels did not exist when the browser tried to jump. A folded
+    // panel opens first (2026-11-22), on load and on every in-page jump.
+    openHash();
     if (window.scrollToHash) window.scrollToHash();
+    if (!render.hashWired) {
+      render.hashWired = true;
+      window.addEventListener('hashchange', openHash);
+    }
     wireContext(d);
     wireDecklist(d);
     wireMoxfield(d);
@@ -2892,6 +3243,8 @@
 
   function artPanel(d) {
     if (!d.listText || !d.cards) return '';
+    var counted = artRows(d).filter(function (r) { return !r.anyBasic; });
+    foldNote('art', counted.filter(function (r) { return r.pinned; }).length + ' of ' + counted.length + ' pinned');
     return panel('art', 'The art', 'Which physical card each line is. An order buys what is pinned here; ' +
       'a card that is not pinned lets the shop choose.', ['data'], 'var(--tier-data, #888)',
       '<div data-art-body>' + artBody(d) + '</div>');
@@ -3155,6 +3508,12 @@
         .then(function (r) { return r.ok ? r.text() : ''; }).catch(function () { return ''; });
       var picardJob = (entry.has || {}).captains_log
         ? getJSON(BASE + entry.slug + '/captains_log.json') : Promise.resolve(null);
+      // THE HANDBOOK'S AUTHORED HALF (2026-11-22), gated on the manifest like the
+      // log: the pilot notes' prose and the procedures.
+      var proseJob = (entry.has || {}).manual_prose
+        ? getJSON(BASE + entry.slug + '/manual_prose.json') : Promise.resolve(null);
+      var procJob = (entry.has || {}).poh_procedures
+        ? getJSON(BASE + entry.slug + '/poh_procedures.json') : Promise.resolve(null);
       // `audit.json` for its `not_measured` map, which `info.audit` does not carry.
       // Only a non-Commander deck has one, so only that deck pays the fetch.
       var auditJob = (entry.format && entry.format !== 'commander')
@@ -3163,7 +3522,7 @@
       return Promise.all([Promise.all(jobs), Promise.all(stackJobs),
                           Promise.all(simJobs), Promise.all(expJobs),
                           Promise.all(rxJobs), logJob, debriefJob, picardJob,
-                          contextJob, cardsJob, auditJob, listJob])
+                          contextJob, cardsJob, auditJob, listJob, proseJob, procJob])
         .then(function (both) {
           var d = { stacks: both[1].filter(Boolean) };
           both[0].forEach(function (p) { d[p[0]] = p[1]; });
@@ -3172,6 +3531,8 @@
           d.cards = both[9];
           d.audit = both[10];
           d.listText = both[11] || '';
+          d.prose = both[12];
+          d.procedures = both[13];
           // By name, for every panel that draws a card's art: the row IS the
           // sleeved printing. Empty when the page did not fetch cards.json.
           deckCards = {};

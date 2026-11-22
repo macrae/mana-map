@@ -74,6 +74,9 @@ def _serve(page, api=True):
 
 def _open(page):
     page.goto(page.url.split("/viz/")[0] + f"/viz/deck.html?deck={SLUG}")
+    # The art folds behind its title (2026-11-22); these tests are about the tiles.
+    page.wait_for_selector("#panel-art", timeout=30000)
+    page.evaluate("document.querySelectorAll('section.panel.fold > details').forEach(d => { d.open = true; })")
     page.wait_for_selector("#panel-art .art-tile", timeout=30000)
 
 

@@ -139,7 +139,7 @@
  *   13       `purpose`: a teaching deck has its own rack (2026-11-03). A cached
  *            manifest without it files the five in Brewing.
  */
-window.MANIFEST_VERSION = 14;
+window.MANIFEST_VERSION = 15;   // 15: has.poh_procedures (2026-11-22); 14: studies
 window.MANIFEST_URL = '../data/decks/index.json?v=' + window.MANIFEST_VERSION;
 
 /* ── A branch's state badge — ONE home (2026-10-20) ──────────────────────────

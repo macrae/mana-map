@@ -1605,34 +1605,46 @@ posts `art/set`, polled as a job; **Pin everything shown** is `art/pin-shown`, *
 `art/undo`, and **Copy for Mana Pool** is `order --check`, or on the static site the same lines
 written from the list. Moving one tile of a split card posts all its arts, so the others stay.
 
-### It is a DOSSIER, not a report — nine sections with a spine
+### It is a DOSSIER, not a report — five chapters, one screen open
 
 A report has a conclusion; a dossier has a **latest entry**. The page renders
-nine sections whose order is owned by **`pilot/page_spec.DOSSIER_SECTIONS`**
+five chapters whose order is owned by **`pilot/page_spec.DOSSIER_SECTIONS`**
 and transcribed into `deck-view.js`'s `DOSSIER` literal, with
 `tests/test_viz_deck_lens.py` locking the two together — the same contract
 `decklist.js` lives under. Before that the order was an anonymous array inside
 `render()`, so "what sections does this page have, and why that order" was
 answerable only by reading the assembly line.
 
-| # | chapter | what it holds | from |
-|---|---|---|---|
-| 1 | **Overview** | stage, price, three numbers, the Context's summary, what to do next | `info.json`, the manifest, `prices.json`, `CONTEXT.md` |
-| 2 | **Decklist** | every card with its copies, by type (the default), name, cost or job, and the curve | `cards.json` |
-| 3 | **How it plays** | the game plan, cards by job, deck regions and map, what to fetch | `CONTEXT.md`, `deck_map.json`, `tutor_guide.json` |
-| 4 | **Mana** | the mana base and the deck targets | `mana_analysis.json`, `info.audit`, `audit.json` |
-| 5 | **Games** | every game, the pilot's words, pilot notes | `log.jsonl`, `log_causes.json`, `CONTEXT.md` |
-| 6 | **Measurements** | vitals, goldfish, Forge, targeting, bracket, DTI, combos, engine, verified lines | `info.json`, `sim/`, `stacks/` and their own files |
-| 7 | **Versions** | branches, version history, change history | `info.branches`, `versions.json`, `CONTEXT.md` |
-| 8 | **Notes** | open questions and leads, the brief, the shortlist, the assessment | `CONTEXT.md`, `info.json` |
+**Rebuilt for the pilot 2026-11-22.** Measured on sharknado the eight-chapter page was
+72 screens and 33 panels with nothing folded; the handbook's authored half — the
+mulligan, the turns, the emergency procedures, the table read — was not on it at all
+(`manual_prose.json` and `poh_procedures.json` rendered only under `manuals/p/`, which
+PRD v2 unlinked), and the captain's-log lessons sat at screen 45. Now:
 
-Below them, **Not on this deck yet** lists every absence once. Rebuilt 2026-11-02 after a UX
-audit: one scrollable page with a sticky jump nav, no decklist before it (no copy count was
-in the rendered text of any deck), the summary four screens down, and thirteen of a new
-deck's twenty-two sections empty. Every panel keeps its `#panel-<id>`, a missing one on its
-row in the strip, so deep links and selectors hold. Plain names only: `PLAIN` in
-`deck-view.js` gives one title per panel whatever its data. `.dossier` scopes the layout,
-because `tokens.css` serves six pages.
+| # | chapter | open | folded behind a title and a count | from |
+|---|---|---|---|---|
+| 1 | **Brief** | the cover (bracket floor + dated DTI, record on this list, latest study), What it is, How it wins with the first keep rule | the rest of the summary, What to do next | `info.json`, `CONTEXT.md`, `manual_prose.json`, `poh_procedures.json` |
+| 2 | **Play it** | Mulligan; Lessons from the log (this list first, older lists folded) | The turns (one fold per phase), When it goes wrong (one per condition), The table (threat, seat by seat, handling), What to fetch, the Context's pilot notes | `manual_prose.json`, `poh_procedures.json`, `captains_log.json`, `tutor_guide.json` |
+| 3 | **The cards** | The 99 with the curve | cards by job (the Context), known combos, the verified lines with their argued intros, deck regions and map, the art | `cards.json`, `CONTEXT.md`, `combos.json`, `stacks/`, `deck_map.json` |
+| 4 | **The record** | the game record; Branches while one is in flight | every game and the read, change history, versions, studies, open questions and leads, the brief, the build record, the assessment | `log.jsonl`, `captains_log.json`, `versions.json`, `info.json`, `CONTEXT.md` |
+| 5 | **Instruments** | nothing | mana base and targets, vitals, goldfish, Forge, who the table attacks, bracket floor, DeckCheck, engine, numbers — they report, they never rule | their own files |
+
+The fold is a `<details>` INSIDE the `<section id="panel-…">`, so every deep link,
+selector and test still addresses the section; `openHash()` opens a fold the hash names,
+on load and on every in-page jump. A folded panel's one line is a COUNT (`foldNote`), never
+a figure that goes stale. **Every handbook block carries deck-info's stamp**
+(`info.handbook`: which list the prose, the procedures, the tutor guide and the read were
+written for), and a line that names a card the list no longer holds is marked inline with
+the version it left at (`markGone`: `versions.json`'s `out` lists against the `cards.json`
+names the page holds — a join of two files already fetched, never a figure).
+`tests/test_viz_deck_handbook.py` holds the page to it.
+
+Below them, **Not on this deck yet** lists every absence once. The 2026-11-02 rebuild
+(one scrollable page with a sticky jump nav, no decklist before it, the summary four
+screens down, thirteen of a new deck's twenty-two sections empty) is kept in its rules
+below. Every panel keeps its `#panel-<id>`, a missing one on its row in the strip, so deep
+links and selectors hold. Plain names only: `PLAIN` in `deck-view.js` gives one title per
+panel whatever its data. `.dossier` scopes the layout, because `tokens.css` serves six pages.
 
 Rules the page is built to:
 

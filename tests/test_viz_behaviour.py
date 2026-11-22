@@ -9516,10 +9516,10 @@ def test_the_deck_page_puts_branches_right_after_next_with_every_state_badged(br
     page = _dossier(browser, viz_server, slug)
     try:
         page.wait_for_selector("#panel-branches", timeout=25000)
-        order = page.evaluate("Array.from(document.querySelectorAll('section[id^=panel-]')).map(s => s.id)")
-        # The first thing in the Versions chapter, which the sticky nav reaches.
-        first = page.evaluate("document.querySelector('#ch-versions section[id^=panel-]').id")
-        assert first == "panel-branches", order
+        # In the record chapter, which the sticky nav reaches, and OPEN while a
+        # branch is in flight (2026-11-22: the page folds; a decided-only rack folds too).
+        assert page.locator("#ch-record #panel-branches").count() == 1
+        assert page.evaluate("document.querySelector('#panel-branches > details').open") is True
         assert "Branches" in page.text_content("#panel-branches .panel-title")
         states = page.locator("#panel-branches .br-state[data-state='open']")
         assert states.count() >= 1

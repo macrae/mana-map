@@ -150,6 +150,7 @@ stacks proven on it, and the way to its siblings were all on disk and none were 
 
 ## 2026-11-02 — a page can hold everything and still not hold the list
 
+- **THE DECK PAGE IS FIVE CHAPTERS AND ONE SCREEN OPEN (2026-11-22).** Measured on sharknado before: 49,951 px at a 693 px viewport — 72 screens, 33 panels, nothing folded — with the mulligan, the procedures and the table read (`manual_prose.json`, `poh_procedures.json`) not fetched at all and the log's lessons at screen 45. After: under 10,000 px, the handbook second, everything past the brief behind a `<details>` INSIDE its `<section id="panel-…">` so every selector holds. The fold's line is a count, never a figure; a deep link opens its fold (`openHash`); every prose block wears deck-info's stamp and a line naming a departed card says so inline. → `docs/viz.md`
 - **Measure a page as a reader, not as a file.** The dossier composed every artifact and had
   no decklist: no copy count anywhere in its rendered text. Its "thirty seconds" cover started
   at y=3709. Rendered text and section offsets found both in a minute, and fifteen files of

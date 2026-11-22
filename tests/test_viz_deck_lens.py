@@ -278,16 +278,16 @@ def test_the_dossier_sections_match_the_python_registry():
         assert list(got[3]) == list(want[3]), f"{got[0]}: tiers differ"
 
 
-def test_the_overview_is_first_and_the_notes_are_last():
-    """The order is the argument, so it is asserted rather than assumed: where the
-    deck stands, what is in it, how it plays, the evidence, and the notes (which hold
-    the analyst's assessment) last, because a file where that opinion sits inside the
-    record loses trust."""
+def test_the_brief_is_first_and_the_instruments_are_last():
+    """The order is the argument, so it is asserted rather than assumed (2026-11-22):
+    what the deck is and how it wins, then how to play it, then the cards, then the
+    record, and the instruments last — they report, they never rule, and a page
+    that opened on a goldfish figure said otherwise for a year."""
     from manamap.pilot.page_spec import DOSSIER_IDS
 
-    assert DOSSIER_IDS[:2] == ["overview", "decklist"]
-    assert DOSSIER_IDS[-1] == "notes"
-    assert DOSSIER_IDS.index("plays") < DOSSIER_IDS.index("measurements")
+    assert DOSSIER_IDS[:2] == ["brief", "play"]
+    assert DOSSIER_IDS[-1] == "instruments"
+    assert DOSSIER_IDS.index("play") < DOSSIER_IDS.index("record") < DOSSIER_IDS.index("instruments")
 
 
 def test_every_dossier_section_grants_a_tier_it_can_actually_mint():
@@ -302,10 +302,9 @@ def test_every_dossier_section_grants_a_tier_it_can_actually_mint():
         assert set(tiers) <= known, f"{sid}: {tiers}"
         assert len(promise) > 25, f"{sid} has no usable promise"
     grants = {s[0]: set(s[3]) for s in DOSSIER_SECTIONS}
-    # The games are the pilot speaking. They cannot mint a measurement.
-    assert grants["games"] == {"coach"}
-    assert grants["notes"] == {"coach"}
-    # The list is read from cards.json; nothing about it is an opinion.
-    assert grants["decklist"] == {"data"}
-    # Only the evidence chapter may mint a check mark.
-    assert [k for k, v in grants.items() if "verified" in v] == ["measurements"]
+    # The instruments report; nothing in that chapter is an opinion or a proof.
+    assert grants["instruments"] == {"data"}
+    # Only the cards chapter, where the verified lines live, may mint a check mark.
+    assert [k for k, v in grants.items() if "verified" in v] == ["cards"]
+    # The handbook chapter is coaching over data, never a proof.
+    assert "verified" not in grants["play"] and "coach" in grants["play"]
