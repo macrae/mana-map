@@ -2535,7 +2535,11 @@ kept verbatim). `engine-graph --write` then regenerates `targets[]` from the com
 producer leg and a deck-fed consumer leg; a consumer leg that was only the commander becomes
 `commander: true`), followed by the authored ones; `validate-goldfish-targets` refuses a generated
 target that differs from a fresh derivation. `deck-audit`'s engine rows carry the `component` id;
-`engine_casts.engine_set` is the components' producers and deck-fed consumers. A deck without
+`engine_casts.engine_set` is the components' producers and deck-fed consumers. `scan-candidates <slug>
+--dimension feeds[:EVENT]` (2026-11-22) admits every pool card whose Forge script PRODUCES the
+event — the deck's thinnest consumed event when none is named — read by the same parser, each
+row saying how it produces it, whether it was read whole, and which events it consumes that the
+deck already produces (`fits_back`, sorted first); a view, never written to `candidate_scan.json`. A deck without
 `targets_from` is byte-identical — switching one is the pilot's call, deck by deck (`regen --slug`).
 
 `docs/research/engine-model.md` is the argument; `manamap pilot engine-graph <slug> [--branch B]

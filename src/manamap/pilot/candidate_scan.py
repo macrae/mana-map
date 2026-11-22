@@ -379,6 +379,92 @@ def _flags(dim, rec, oracle, kw, fired, roles):
     return f
 
 
+# ── THE FEEDS DIMENSION (2026-11-22; docs/research/engine-model.md) ───────────────
+#
+# `--dimension feeds:<EVENT>` admits every pool card whose Forge script PRODUCES the
+# event — read by the same parser the engine graph uses (`ability_graph`), never by an
+# oracle regex — and `--dimension feeds` picks the deck's THINNEST consumed event from
+# its computed `engine.json`. Each row says what it produces, whether its abilities
+# were read whole, and which events it CONSUMES that the deck already produces
+# (`fits_back`): a card that both feeds the thin component and reads one the deck is
+# rich in is a two-way fit. A view, never written to the tracked artifact.
+
+FEEDS_PREFIX = "feeds"
+
+
+def is_feeds_dim(dim):
+    return dim == FEEDS_PREFIX or str(dim).startswith(FEEDS_PREFIX + ":")
+
+
+def feeds_events(slug, dim, branch=None):
+    """(event, why) for a feeds dimension; the thinnest deck-fed component when the
+    dimension names no event. Refuses without a v2 engine.json."""
+    from manamap.config import ENGINE_EVENTS
+    from manamap.pilot.scaffold_targets import _SUBSTRATE_EVENTS
+    from manamap.pilot.common import deck_file
+    engine = load_json(deck_file(slug, "engine.json", branch)) or {}
+    if (engine.get("_meta") or {}).get("v") != 2:
+        raise SystemExit(f"--dimension {dim} reads the computed engine record and {slug} has none — "
+                         f"`manamap pilot engine-graph {slug} --write` first")
+    if ":" in dim:
+        ev = dim.split(":", 1)[1].strip().upper()
+        if ev not in ENGINE_EVENTS:
+            raise SystemExit(f"{ev!r} is not an event kind; the registry has {', '.join(sorted(ENGINE_EVENTS))}")
+        return ev, f"named on the command line", engine
+    comps = [c for c in engine.get("components") or []
+             if c["event"] not in _SUBSTRATE_EVENTS and c.get("deck_fed_consumers")]
+    if not comps:
+        raise SystemExit(f"{slug}'s engine has no deck-fed component outside the substrate to feed")
+    thin = min(comps, key=lambda c: (c["redundancy"]["producers"], c["event"]))
+    return thin["event"], (f"the deck's thinnest consumed event: {thin['redundancy']['producers']} producer(s) for "
+                           f"{thin['redundancy']['consumers']} consumer(s)"), engine
+
+
+#: Events every card touches: not a fit, just Magic. Kept out of `fits_back` and the
+#: `consumes` column (a cost's stock — HAND, MANA — is not an event the card reads).
+_COMMON_EVENTS = frozenset({"MANA", "COST_REDUCTION", "LAND_DROP", "TAP", "UNTAP", "TURN_PHASE", "ETB",
+                            "HAND", "BODIES", "LIFE", "GRAVEYARD", "PUMP", "SELECTION"})
+
+
+def deck_produced_events(engine):
+    """Every event the deck's own cards produce explicitly, from the computed record."""
+    out = set()
+    for n in (engine.get("graph") or {}).get("nodes") or []:
+        if n.get("zone") not in ("command", "library"):
+            continue
+        for a in n.get("abilities") or []:
+            if a.get("kind") == "implicit":
+                continue
+            out.update(p["event"] for p in a.get("produces") or [])
+            out.update(k["event"] for k in a.get("costs") or [] if k.get("event"))
+    return out
+
+
+def card_events(parsed):
+    """(produces, consumes, how) off one `ability_graph.card_abilities` row: the events
+    its explicit abilities produce (a sacrifice COST produces a death), the events its
+    triggers and costs consume, and a one-line `how` per produced event."""
+    produces, consumes, how = set(), set(), {}
+    for a in parsed.get("abilities") or []:
+        if a.get("kind") == "implicit":
+            continue
+        c = a.get("consumes")
+        if c:
+            consumes.add(c["event"])
+        for k in a.get("costs") or []:
+            if k.get("event") and k.get("stock"):
+                consumes.add(k["stock"])
+                if k["event"] in ("DIES", "DISCARD"):
+                    produces.add(k["event"])
+                    how.setdefault(k["event"], f"{a['kind']}: a {k['event'].lower()} as its cost")
+        for pr in a.get("produces") or []:
+            produces.add(pr["event"])
+            how.setdefault(pr["event"], f"{a['kind']}" + (f" on {c['event']}" if c else "")
+                           + (f" ×{pr['amount']}" if pr.get("amount") is not None else "")
+                           + (f" → {pr['actor']}" if pr.get("actor") else ""))
+    return produces, consumes, how
+
+
 def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
     pool = load_pool()
     if pool is None:
@@ -394,6 +480,13 @@ def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
     present = staged_names(slug, branch)
     edhrec_as_of, edhrec = _edhrec(slug)
     dims = list(dimensions)
+    feeds = {}                                            # dim -> (event, why)
+    engine = None
+    for d in [d for d in dims if is_feeds_dim(d)]:
+        ev, why, engine = feeds_events(slug, d, branch)
+        feeds[d] = (ev, why)
+    deck_produces = deck_produced_events(engine) if engine else set()
+    eligible = []                                         # cards past the filters, for the batch parse
 
     excluded = {"in_99": 0, "identity": 0, "illegal": 0, "game_changer": []}
     found = {d: [] for d in dims}
@@ -415,7 +508,11 @@ def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
         fired = {k for k, p in PREDICATES.items() if p.search(low)}
         roles = roles_map.get(name) or []
         kw = keywords.get(name) or {"keywords": [], "power": None, "toughness": None}
+        if feeds:
+            eligible.append((name, rec, fr, text, roles, kw, fired))
         for dim in dims:
+            if dim in feeds:
+                continue                                  # admitted after the batch parse below
             hit = _admitted(dim, name, fr, text, roles, kw, fired)
             if hit is None:
                 continue
@@ -448,15 +545,65 @@ def scan(slug, dimensions=DIMENSIONS, branch=None, limit=DEFAULT_LIMIT):
                     row["edhrec"] = e
             found[dim].append(row)
 
+    if feeds and eligible:
+        # ONE zip open for every eligible pool card, the same parser as engine-graph.
+        from manamap.pilot import ability_graph as ag
+        texts = forge_cards.scripts([e[0] for e in eligible])
+        for name, rec, fr, text, roles, kw, fired in eligible:
+            parsed = ag.card_abilities(name, texts.get(name), None)
+            if parsed["reader"] != "forge":
+                continue                                  # no script: nothing to read, and said so in `limits`
+            produces, consumes, how = card_events(parsed)
+            consumes = consumes - _COMMON_EVENTS
+            for dim, (ev, _why) in feeds.items():
+                if ev not in produces:
+                    continue
+                if rec["game_changer"]:
+                    if name not in excluded["game_changer"]:
+                        excluded["game_changer"].append(name)
+                    continue
+                inf, lines, bmax = _two_card_lines(name, present, details)
+                fits_back = sorted(consumes & deck_produces)
+                row = {
+                    "name": name, "cmc": fr["cmc"], "mana_cost": fr["mana_cost"], "type_line": fr["type_line"],
+                    "keywords": kw["keywords"], "power": kw["power"], "toughness": kw["toughness"],
+                    "roles": sorted(roles), "tags": fr["tags"], "edhrec_rank": rec["edhrec_rank"],
+                    "matched": {"produces": [f"{ev} ({how.get(ev, '?')})"],
+                                "consumes": sorted(consumes), "fits_back": fits_back},
+                    "flags": {"partial": parsed["partial"], "unmapped": ", ".join(parsed["unmapped"][:3]) or None,
+                              "fits_back": len(fits_back)},
+                    "synergy_into_99": [{"partner": e["partner"], "rules": e.get("synergies") or []}
+                                        for e in (synergy.get(name) or []) if expand_faces(e["partner"]) & present],
+                    "combos": {"infinite_with": inf, "two_card_lines": lines, "bracket_max": bmax},
+                    "forge_ai_flag": parsed.get("ai_remove_deck") or forge_cards.ai_flag(name),
+                    "trigger_events": trigger_events(text),
+                    "function_overlap": function_overlap(name, present),
+                    "oracle_text": text,
+                    "fits_back": fits_back,
+                }
+                if edhrec:
+                    e = edhrec.get(name) or edhrec.get(name.split(" // ")[0])
+                    if e is not None:
+                        row["edhrec"] = e
+                found[dim].append(row)
+
     def key(r):
-        return (1 if r["combos"]["infinite_with"] else 0,
+        # A feeds row that also READS an event the deck is rich in sorts first; every
+        # other dimension's rows carry no `fits_back` and keep their order.
+        return (1 if r["combos"]["infinite_with"] else 0, -len(r.get("fits_back") or []),
                 r["edhrec_rank"] if r["edhrec_rank"] is not None else UNRANKED, r["name"])
     out_dims = {}
     for dim in dims:
         allrows = sorted(found[dim], key=key)
+        if dim in feeds:
+            ev, why = feeds[dim]
+            admits = {"produces": [ev], "why": why, "reader": "Forge card scripts via ability_graph; a card "
+                      "with no script is not read", "rank": "fits_back first, then EDHREC rank"}
+        else:
+            admits = {k: list(v) for k, v in ADMIT[dim].items()} | (
+                {"power_at_least": THREAT_MIN_POWER, "scary_keywords": list(SCARY_KEYWORDS)} if dim == "threat" else {})
         out_dims[dim] = {
-            "admits": {k: list(v) for k, v in ADMIT[dim].items()} | (
-                {"power_at_least": THREAT_MIN_POWER, "scary_keywords": list(SCARY_KEYWORDS)} if dim == "threat" else {}),
+            "admits": admits,
             "matched": len(allrows),
             "flagged_infinite": sum(1 for r in allrows if r["combos"]["infinite_with"]),
             "candidates": allrows[:limit],
@@ -560,6 +707,8 @@ def main(args):
             print(f"  wrote {p}")
         return
     dim = getattr(args, "dimension", None) or "all"
+    if dim != "all" and dim not in DIMENSIONS and not is_feeds_dim(dim):
+        raise SystemExit(f"--dimension must be one of {', '.join(DIMENSIONS)}, all, feeds or feeds:<EVENT>")
     dims = DIMENSIONS if dim == "all" else (dim,)
     doc = scan(slug, dims, branch=getattr(args, "against_branch", None),
                limit=getattr(args, "limit", None) or DEFAULT_LIMIT)

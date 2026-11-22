@@ -1585,8 +1585,10 @@ def add_pilot_parser(subparsers):
             cmd.add_argument("--json", action="store_true", dest="as_json")
         if name == "scan-candidates":
             from manamap.pilot.candidate_scan import DEFAULT_LIMIT, DIMENSIONS
-            cmd.add_argument("--dimension", default="all", choices=(*DIMENSIONS, "all"),
-                             help="one dimension, or all (the default; --write needs all)")
+            cmd.add_argument("--dimension", default="all", metavar="DIM",
+                             help=f"one of {', '.join(DIMENSIONS)}, all (the default; --write needs all), "
+                                  f"or feeds[:EVENT] — every pool card whose Forge script PRODUCES the event "
+                                  f"(the deck's thinnest consumed event when none is named; needs engine.json v2)")
             cmd.add_argument("--against-branch", default=None, metavar="NAME", dest="against_branch",
                              help="exclude and check infinites against a BRANCH's staged list rather "
                                   "than the deck's — Conqueror's departure is honoured")
