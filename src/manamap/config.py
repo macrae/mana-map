@@ -2003,3 +2003,106 @@ FLEET_MIN_GROUP = 3
 RATING_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "rating.py"
 RATING_MC_PATH = _REPO_ROOT / "src" / "manamap" / "pilot" / "rating_mc.py"   # its priors and sampler (v2)
 RATING_MAX_ITERATIONS = 3
+
+# ── THE ENGINE AS TYPED EVENTS (2026-11-22; docs/research/engine-model.md) ──
+# ONE HOME for the vocabulary the computed engine graph speaks. Each kind names
+# the Forge trigger Modes that CONSUME it, the Forge effect APIs that PRODUCE it,
+# the replacement events that SCALE it, the cost words that consume a stock and
+# produce it, and the goldfish channel (`model_coverage.CHANNELS`) that reads it
+# — so the goldfish's channels and the graph's events are one vocabulary. A
+# matcher is a bare Forge name or `(name, {param: value})` where every value must
+# appear in the script's parameter. Anything outside this table is reported as
+# UNMAPPED with its Forge name, never guessed (`ability_graph`). `channel` is one
+# goldfish channel or a list of them.
+ABILITY_GRAPH_VERSION = "1"
+ENGINE_EVENTS = {
+    "CAST": {"triggers": ["SpellCast", "SpellCastOrCopy", "AbilityCast", "SpellAbilityCast"],
+             "effects": ["Play", "CopySpellAbility"], "replacements": [], "channel": None},
+    "ETB": {"triggers": [("ChangesZone", {"Destination": "Battlefield"}),
+                         ("ChangesZoneAll", {"Destination": "Battlefield"})],
+            "effects": [("ChangeZone", {"Destination": "Battlefield"}),
+                        ("ChangeZoneAll", {"Destination": "Battlefield"}),
+                        "Token", "CopyPermanent", "Clone", "Amass", "Investigate"],
+            "replacements": ["Moved"], "channel": "bodies"},
+    "DIES": {"triggers": [("ChangesZone", {"Origin": "Battlefield", "Destination": "Graveyard"}),
+                          ("ChangesZoneAll", {"Origin": "Battlefield", "Destination": "Graveyard"}),
+                          "Sacrificed", "Exploited", "Destroyed"],
+             "effects": ["Destroy", "DestroyAll", "Sacrifice", "SacrificeAll"],
+             "costs": ["Sac"], "replacements": [], "channel": "sacrifice"},
+    "LTB": {"triggers": [("ChangesZone", {"Origin": "Battlefield"})],
+            "effects": [("ChangeZone", {"Origin": "Battlefield"})], "replacements": [], "channel": None},
+    "TOKEN": {"triggers": ["TokenCreated", ("ChangesZone", {"Destination": "Battlefield", "ValidCard": "token"})],
+              "effects": ["Token", "Amass", "Investigate"], "replacements": ["CreateToken"], "channel": "bodies"},
+    "TREASURE": {"triggers": [], "effects": [("Token", {"TokenScript": "treasure"})],
+                 "replacements": [], "channel": "treasure"},
+    "DRAW": {"triggers": ["Drawn"], "effects": ["Draw", "Dig"], "replacements": ["Draw"], "channel": "draw"},
+    "DISCARD": {"triggers": ["Discarded", "DiscardedAll"], "effects": ["Discard"],
+                "costs": ["Discard"], "replacements": ["Discard"], "channel": "discard"},
+    "CYCLE": {"triggers": ["Cycled"], "effects": [], "keywords": ["Cycling"], "replacements": [], "channel": "discard"},
+    "MILL": {"triggers": [("ChangesZone", {"Origin": "Library", "Destination": "Graveyard"})],
+             "effects": ["Mill", "Surveil"], "replacements": [], "channel": "recursion"},
+    "RECURSION": {"triggers": [("ChangesZone", {"Origin": "Graveyard"})],
+                  "effects": [("ChangeZone", {"Origin": "Graveyard"})], "replacements": [], "channel": "recursion"},
+    "LIFE_GAIN": {"triggers": ["LifeGained"], "effects": ["GainLife"], "keywords": ["Lifelink"],
+                  "replacements": ["GainLife"], "channel": "drain"},
+    "LIFE_LOSS": {"triggers": ["LifeLost"], "effects": ["LoseLife"], "replacements": ["LifeReduced"],
+                  "channel": "drain", "terminal": True},
+    "DAMAGE": {"triggers": ["DamageDone", "DamageDoneOnce", "DamageDealtOnce", "DamageAll", "ExcessDamage"],
+               "effects": ["DealDamage", "DamageAll", "Fight"], "replacements": ["DamageDone"],
+               "channel": "combat", "terminal": True},
+    "COMBAT_DAMAGE": {"triggers": [("DamageDone", {"CombatDamage": "True"})], "effects": [],
+                      "replacements": [], "channel": "combat", "terminal": True},
+    "ATTACK": {"triggers": ["Attacks", "AttackersDeclared", "AttackerBlocked", "AttackerUnblocked",
+                            "AttackerBlockedOnce", "AttackerUnblockedOnce"],
+               "effects": ["AddPhase"], "keywords": ["Haste"], "replacements": [],
+               "channel": ["combat", "attack_enabler"]},
+    "BLOCK": {"triggers": ["Blocks", "BlockersDeclared"], "effects": [], "replacements": [], "channel": None},
+    "POISON": {"triggers": [], "effects": ["Poison"], "keywords": ["Infect", "Toxic"],
+               "replacements": [], "channel": "combat", "terminal": True},
+    "COUNTER_ADD": {"triggers": ["CounterAdded", "CounterAddedOnce"],
+                    "effects": ["PutCounter", "PutCounterAll", "Proliferate", "MultiplyCounter"],
+                    "replacements": ["AddCounter"], "channel": None},
+    "COUNTER_REMOVE": {"triggers": ["CounterRemoved", "CounterRemovedOnce"], "effects": ["RemoveCounter"],
+                       "replacements": [], "channel": None},
+    "LAND_DROP": {"triggers": ["LandPlayed"], "effects": [("ChangeZone", {"ChangeType": "Land", "Destination": "Battlefield"})],
+                  "replacements": [], "channel": "mana"},
+    "MANA": {"triggers": ["TapsForMana", "ManaExpend"], "effects": ["Mana", "ManaReflected"],
+             "replacements": ["ProduceMana"], "channel": "mana"},
+    "COST_REDUCTION": {"triggers": [], "effects": [], "statics": ["ReduceCost", "AlternativeCost"],
+                       "replacements": [], "channel": "mana"},
+    "TAP": {"triggers": ["Taps"], "effects": ["Tap", "TapAll"], "costs": ["T"], "replacements": [], "channel": None},
+    "UNTAP": {"triggers": ["Untaps"], "effects": ["Untap", "UntapAll"], "replacements": ["Untap"], "channel": None},
+    "TUTOR": {"triggers": ["SearchedLibrary"],
+              "effects": [("ChangeZone", {"Origin": "Library"}), "Dig", "DigUntil", "Seek"],
+              "replacements": [], "channel": "tutor"},
+    "DISCOVER": {"triggers": [], "effects": ["Discover"], "keywords": ["Discover"], "replacements": [],
+                 "channel": "discover"},
+    "CASCADE": {"triggers": [], "effects": [], "keywords": ["Cascade"], "replacements": [], "channel": "cascade"},
+    "SELECTION": {"triggers": ["Scry"], "effects": ["Scry"], "replacements": [], "channel": "tutor"},
+    "REMOVAL": {"triggers": [], "effects": [("ChangeZone", {"Destination": "Exile"}), "Destroy", "DestroyAll"],
+                "replacements": [], "channel": None},
+    "COUNTERSPELL": {"triggers": ["Countered", "BecomesTarget"], "effects": ["Counter"],
+                     "replacements": ["Counter"], "channel": None},
+    "PUMP": {"triggers": [], "effects": ["Pump", "PumpAll", "Animate", "AnimateAll"],
+             "statics": ["Continuous"], "replacements": [], "channel": "combat"},
+    "COPY": {"triggers": ["SpellCopy"], "effects": ["CopyPermanent", "CopySpellAbility", "Clone"],
+             "replacements": [], "channel": None},
+    "TURN_PHASE": {"triggers": ["Phase", "NewGame"], "effects": [], "replacements": ["BeginPhase"], "channel": None},
+    "ALT_WIN": {"triggers": [], "effects": ["WinsGame"], "replacements": [], "channel": None, "terminal": True},
+    "GAME_LOSS": {"triggers": ["LosesGame"], "effects": ["LosesGame"], "replacements": ["GameLoss"], "channel": None},
+}
+#: Events that end the game when aimed at an opponent; a node that produces one is
+#: an OUTPUT, and a line ends there.
+ENGINE_TERMINALS = tuple(k for k, v in ENGINE_EVENTS.items() if v.get("terminal"))
+#: The filter properties the parser turns into predicates. A property outside this
+#: list leaves the filter UNPARSED and the edge it would make unproven.
+ENGINE_FILTER_PROPERTIES = (
+    "Self", "Other", "YouCtrl", "OppCtrl", "YouOwn", "OppOwn", "token", "nonToken",
+    "nonCreature", "nonLand", "nonBasic", "attacking", "blocking", "tapped", "untapped",
+    "IsCommander", "inZoneBattlefield", "White", "Blue", "Black", "Red", "Green",
+    "Colorless", "MultiColor", "MonoColor", "EquippedBy", "StrictlySelf",
+)
+#: Card types the filter grammar treats as a TYPE; any other head word is a subtype
+#: (Vampire, Human, Shark) or a player word.
+ENGINE_CARD_TYPES = ("Card", "Permanent", "Spell", "Creature", "Artifact", "Enchantment",
+                     "Land", "Planeswalker", "Instant", "Sorcery", "Battle", "Kindred", "Token")
