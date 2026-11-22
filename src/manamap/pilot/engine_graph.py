@@ -238,6 +238,30 @@ def _subjectless_accepts(alts):
     return None if None in verdicts else False
 
 
+#: Types a filter can name and still accept "anything of that kind" — a creature
+#: entering, a spell cast. Naming only these is GENERIC.
+_GENERIC_TYPES = {"Card", "Permanent", "Spell", "Creature"}
+
+
+def generic_filter(alts):
+    """True when no alternative narrows past a broad type: no subtype, colour,
+    power/toughness bound, excluded type or token clause. An IMPLICIT production
+    (every creature enters, every nonland is cast) read by a generic filter is a
+    CLASS edge — "most of the deck can do this" — not an engine edge (memo §6.1:
+    without this rule sisay's engine was 98 of 99 cards)."""
+    if not alts:
+        return True
+    for alt in alts:
+        if alt.get("player"):
+            continue
+        if alt.get("subtypes") or alt.get("colors") or alt.get("bounds") or alt.get("not_types") \
+                or "token" in alt or alt.get("self"):
+            return False
+        if set(alt.get("types") or []) - _GENERIC_TYPES:
+            return False
+    return True
+
+
 def _actor_ok(consumer_actor, producer_actor):
     if consumer_actor in (None, "player"):
         return True
@@ -255,12 +279,12 @@ def _edges(nodes, productions, consumptions):
     adds to a stock. Deduped on (from, to, event)."""
     edges = OrderedDict()
 
-    def add(kind, frm, to, event, proven=True, via=None, implicit=False, checked=None):
+    def add(kind, frm, to, event, proven=True, via=None, implicit=False, checked=None, klass=False):
         key = (frm, to, event)
         row = edges.get(key)
         if row is None:
             row = {"kind": kind, "from": frm, "to": to, "event": event, "proven": proven,
-                   "via": [], "implicit": implicit}
+                   "via": [], "implicit": implicit, "class": klass}
             edges[key] = row
         if via and via not in row["via"]:
             row["via"].append(via)
@@ -268,6 +292,8 @@ def _edges(nodes, productions, consumptions):
             row["proven"] = True
         if not implicit:
             row["implicit"] = False
+        if not klass:
+            row["class"] = False
 
     by_event = {}
     for p in productions:
@@ -302,7 +328,8 @@ def _edges(nodes, productions, consumptions):
             if v is False:
                 continue
             add("feeds", p["from"], c["to"], c["event"], proven=v is True, via=p.get("via"),
-                implicit=p.get("implicit", False))
+                implicit=p.get("implicit", False),
+                klass=bool(p.get("implicit")) and generic_filter(c["filters"]))
     # A maker reaches its token: the token's own abilities and combat are the
     # maker's reach (Shark Typhoon's shark is the payoff, not Shark Typhoon).
     for p in productions:
@@ -379,11 +406,18 @@ def _components(nodes, edges, deck_names, roles, library_size):
             c["opponent"] = True
         elif e["from"] == TURN:
             c["turn"] = True
+        elif e.get("class"):
+            c["deck_fed"].add(e["to"])                    # fed by the deck, by a CLASS
+            c.setdefault("class", set()).add(e["from"])
         else:
             c["deck_fed"].add(e["to"])                    # a consumer the DECK feeds
             if nodes.get(e["from"], {}).get("zone") != "token":
-                c["producers"].add(e["from"])
-                if not e["proven"]:
+                # PRODUCERS ARE PROVEN EDGES. An unproven one — a fetchland moving a
+                # card the script does not name into a "whenever a Vampire enters" —
+                # is listed apart and never counted as redundancy.
+                if e["proven"]:
+                    c["producers"].add(e["from"])
+                else:
                     c["unproven"].add(e["from"])
     scales, _ = _modifiers(nodes)
     out = []
@@ -396,6 +430,7 @@ def _components(nodes, edges, deck_names, roles, library_size):
         out.append({
             "id": f"ev:{ev}", "event": ev, "producers": producers, "consumers": consumers,
             "deck_fed_consumers": sorted(c["deck_fed"]),
+            "class_producers": len(c.get("class") or ()),
             "unproven_producers": sorted(c["unproven"]),
             "from_opponent": c["opponent"], "from_turn": c["turn"],
             "modifiers": [m["card"] for m in scales if m["event"] == ev],

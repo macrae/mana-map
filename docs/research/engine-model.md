@@ -462,6 +462,31 @@ derives from either. (4) The pilot's 105 per-card reads do not concentrate on hu
 13 of 26 reads are hub cards, on ur-dragon 13 of 31, on sharknado 7 of 15, and reads of cards
 outside the engine are as common as reads of leaves. Hubness is not what the pilot notices.
 
+**Narrowed the same day.** Two rules, both in `engine_graph`: an IMPLICIT production (every
+creature enters, every nonland is cast) read by a GENERIC filter — no subtype, colour, bound,
+excluded type or token clause — is a `class` edge, kept in the graph and counted in
+`class_producers`, never in a component's producers; and only PROVEN edges count as producers
+(a fetchland moving an unnamed card into "whenever a Vampire enters" is listed under
+`unproven_producers`). Re-measured:
+
+| deck | engine set | Jaccard | declared, not in graph | graph, not declared |
+|---|---|---|---|---|
+| edgar-vampires | 75 | 0.33 | 12 | 46 |
+| gishath | 37 | 0.26 | 21 | 22 |
+| goblin-storm | 63 | 0.30 | 0 | 44 |
+| hapatra | 35 | 0.23 | 8 | 25 |
+| heliod | 27 | 0.45 | 29 | 2 |
+| keen-engineering | 55 | 0.75 | 6 | 9 |
+| radagast | 38 | 0.46 | 28 | 8 |
+| sharknado | 56 | 0.81 | 2 | 9 |
+| sisay | 67 | 0.09 | 19 | 59 |
+| ur-dragon | 57 | 0.69 | 7 | 13 |
+| yawgmoth-swarm | 58 | 0.78 | 2 | 11 |
+
+The composite decks narrowed (gishath, radagast, hapatra, sisay); the typal ones did not, and
+should not — Anje and Wispdrinker Vampire really do read every Vampire entering. Forge's ρ is
+unchanged: it was measured on degree, and the class edges were never most of the degree.
+
 Not yet run: measurement (4), Spellbook lines as pure event cycles, and (5), the permutation null.
 Both wait on the narrowed engine set, since a null against a set that is the whole deck is
 uninformative.
