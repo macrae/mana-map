@@ -1,0 +1,601 @@
+{
+  "id": "003",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card three on jaws-v1: Narset, Jeskai Waymaster for Mask of Memory, or no change?",
+  "opened": "2026-11-21",
+  "decided_at": "2026-11-21",
+  "cards": [
+    "Narset, Jeskai Waymaster",
+    "Mask of Memory",
+    "Kindred Discovery",
+    "Library of Leng"
+  ],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 3 — strategist, 2026-11-20 (saved by Jarvis; the agent cannot write files). Read every oracle text this round.\n\nNO CHANGE defensible; if adding: Narset, Jeskai Waymaster in, Talisman of Creativity out.\n- Narset: 3-mana Human body (009 thin start); \"may\" discard at end step, never forced. With Library of Leng, discards go on top; if spells cast ≥ hand size you redraw it all — each draw a Shabraz counter + life, each discard a Brallin counter + ping. A sequencing tool for the dump-then-end-step turn, not a standing engine (strategy:card-advantage.plan-draw). Without Leng or with hand > spells cast she is card disadvantage.\n- Creativity: analyst shows W16/U25/R25 after the cut vs W16/U26/R26; white untouched; 7 rocks + 37 lands; cut rocks before lands; 1-damage ping a small cost.\n- Rejected: Kindred Discovery (5 MV UU; Human is the right name — 14 Humans vs 4 Sharks — but ~14 triggers in 99 is thin and attacking with small Humans is the opposite of the plan; strategy:deckbuilding.curve, light). Cavalier of Gales best raw card (5/5 flyer, draw 3) but a fifth five-drop — runner-up for the same slot. Mirror Entity late-only. Knowledge Is Power flat anthem. Mishra's Command, Channeled Force, Demand Answers, Tolarian Winds, Locust God, Dack below Narset.\n- Does not defend cutting Collective Defiance or Prismari Command: interaction thin, Force/Command not clean replacements.\n- Expected dissent: Narset needs W+U+R on turn three with W at 11 sure lands, often stranded; no stack names her, argument only — NO CHANGE wins ties.\n- Test: stack scenario, end-step Narset with Leng. `try` cannot see it (Leng invisible).\nOpen: companion has no section on end-step hand-reset engines; research-strategy topic: W thinnest colour and three-pip gold three-drops.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:deckbuilding.curve"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:28-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card3-strategist.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Leng redirects; Mirror Entity layers — rules-question, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nPART 1 — Library of Leng redirects EFFECT discards, not COST discards.\n- Narset, Jeskai Waymaster: NO. \"You may discard your hand. If you do, draw…\" — 118.12: the \"[do something]\" in \"may… if you do\" is a COST paid on resolution. Leng ruling: \"You can't use the Library of Leng ability… when you discard a card as a cost, because costs aren't effects.\" Her hand goes to the graveyard; no redraw. Brallin still triggers per card (701.9a).\n- Windfall: Leng applies (701.9b effect discard); redirected cards are still discarded (Leng ruling: \"replaces the normal discard action with a discard action that puts the card on the library\"). Agent marks the \"greatest number discarded this way\" count Not settled (no Windfall ruling); Jarvis: stacks 002/003 passed on \"a redirected discard is still a discard\", so they count.\n- Kitsa: Leng applies ({T} is the only cost; \"draw, then discard\" is effect text).\n- Collective Defiance discard mode: Leng applies; the redraw takes the top cards (121.1) in the order stacked — inference, not a ruling.\n- Shark Typhoon cycling: Leng does NOT apply (702.29a; the discard is the cost, 118.1).\n- Brallin triggers on every effect discard Leng redirects.\n- DB note: discard is 701.9 in this CR, not 701.8.\n\nPART 2 — Mirror Entity over Shabraz with ten counters: (X+10)/(X+10) (613.4b sets base, 613.4c counters apply after; Mirror Entity ruling). At X=0 Shabraz survives as 10/10. All creatures you controlled as it resolved are Human AND Shark this turn (613.1d layer 4; 205.3m), so Shabraz's Human flying grant and Brallin's Shark trample grant can target any of them — but only creatures present at resolution (611.2c); later entrants are not.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "118.1",
+          "118.12",
+          "121.1",
+          "205.3m",
+          "611.2c",
+          "613.1d",
+          "613.4b",
+          "613.4c",
+          "701.9",
+          "701.9a",
+          "701.9b",
+          "702.29a"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:28-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card3-rules-leng-mirror.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 3 — data-analyst facts, 2026-11-20 (saved by Jarvis; the agent cannot write files). Branch after cards 1-2.\n\nKindred bodies: Humans 14 (Brallin, Archmage Emeritus, Bard, Blade Historian, Esper Sentinel, Grand Abolisher, Inti, Magus of the Wheel, Prince Imrahil, Shang-Chi, Sokka, Valeria, Willie Lumpkin, Mariner changeling) + Prince Imrahil's Human Soldier tokens (second draw each turn). Sharks 4 (Shabraz, Jaws, Voracious Greatshark, Mariner) + Shark Typhoon tokens. Attack incentives: Sokka, Inti, Willie, Blade Historian, Jaws, Enduring Curiosity.\n\nInteraction: targeted removal 5 (Get Lost, Swords, Chaos Warp, Collective Defiance, Prismari Command); phase-out 2; counters 3; mass 1 (Kozilek's Return); protection 5. Cutting Defiance OR Prismari → targeted removal 4.\n\nCurve (61 non-land): MV1 9 | 2 20 | 3 13 | 4 10 | 5 5 | 6 4. MV5: Gratuitous Violence, Jaws, Reforge, Time Reversal, Greatshark. MV6: Bard, Sphinx, Echo, Shark Typhoon. UU cards 9, none UUU. Blue: mana_analysis 30 lands + 6 rocks = 36, 35 U pips over 26 cards, on-curve 0.822 lands-only / 0.906 with rocks.\n\nOracle (pool): Kindred Discovery — chosen type enters or attacks: draw. Cavalier of Gales — flying 5/5, ETB draw 3 then put 2 from hand on top; dies: shuffle in, scry 2. Channeled Force — additional cost discard X; target player draws X; X dmg to up to one creature/PW. The Locust God — Insect per draw; {2}{U}{R} loot; returns to hand on death. Mishra's Command — choose two of discard-up-to-X/draw, X to creature, X to PW, +X/+0 haste. Dack — +1 target player draws 2 discards 2; -2 steal artifact. Mirror Entity — {X}: base X/X, all creature types. Narset JW — end step may discard hand, draw = spells cast this turn. Tolarian Winds — discard hand, draw that many. Demand Answers — sac artifact or discard; draw 2. Knowledge Is Power — +X/+X, X = cards drawn this turn.\nOracle (branch): Collective Defiance escalate {1}: target player discards hand draws that many / 4 to creature / 3 to opponent or PW. Prismari Command choose two: 2 any target / draw 2 discard 2 / Treasure / destroy artifact. Will of the Jeskai: each player may discard and draw five / flashback to graveyard spells (both with a commander). Enduring Curiosity flash, combat damage to player: draw; returns as enchantment. Training Center enters tapped unless 2+ opponents, U/R. Talisman of Creativity C or U/R (1 dmg). Azorius Signet.\n\nStacks: none of Defiance, Prismari, Will, Enduring Curiosity, Training Center, Azorius Signet, Talisman of Creativity is named by any passing stack.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:28-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card3-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-21",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: card three, or no change. Answer: Narset, Jeskai Waymaster in, Mask of Memory out; contested, and NO CHANGE is the fallback the pilot's rule permits, never a rock or an interaction cut. The branch audit reads every counted axis at target (interaction 8, exactly Walser's floor; card-advantage 27 against 10; colour sources blue 36 of 36, red 36 of 36, white 24 of 22), so nothing in the pool closes a measured gap and the swap has to earn its place as body-for-costume on the axis the log keeps naming: three losses opened with no board (003, 004, 009) and 005 blames small creatures that wanted resources, while the two combat-draw pieces already in the list only draw once Shabraz connects. The strategist's picks are rejected for the reason the orchestrator named: Collective Defiance and Prismari Command are two of the five targeted-removal cards, interaction sits at the floor and below the recon's consensus, and cutting either for a draw card puts the axis at 7; Prismari is also the heuristic's one artifact answer. Kindred Discovery's natural cut is a rock and the try screen reads blue and red one under target after a Talisman of Creativity cut; if it is ever added it is named Human (13 Humans in the 99 plus Brallin plus Imrahil's tokens, against four Sharks). Narset plus Library of Leng is real but is one card in 99 finding another; the case for Narset is the 3/4 Human body on three, with the refill as the rider, and the case against Mask is that Enduring Curiosity already does its job for every creature (Q046, decided).\n\nadd_candidates: [{\"card\": \"Narset, Jeskai Waymaster\", \"rank\": 1, \"closes\": \"creatures: a 3/4 Human on three for the no-board openings the log names (003, 004, 009), the fourteenth Human for Shabraz's flying grant, with an optional end-step refill as the rider\", \"source\": \"pool\", \"why\": \"{U}{R}{W} for a 3/4 that blocks a Krenko goblin or a Dwarf and flies for {W/U}. Her trigger is MAY: discard your hand at end step, draw one per spell cast this turn. Without Library of Leng it is used only when the hand is small after a busy turn (discard two, draw three: three Shabraz counters, two Brallin pings, a card up), which is the opposite of 005's complaint about forced discards stranding a small hand. With Leng out, the Leng rulings say the ability applies to any discard that is part of an effect, Narset's discard is her trigger's effect and not a cost, and you choose the order on top: the hand goes on top, S cards come back, the rest wait for the next draws, and Brallin still pings per card. With Teferi's Ageless Insight or Bard out, each of those draws is two. That is three jobs on one three-drop; Mask of Memory has one, and only after Shabraz connects. Model: the try screen reads Narset seen by the goldfish and Mask invisible, so a paired read of this swap would be a blind cut; the pilot asked for no goldfish and none is quoted. Forge has no cast record for her; forge-cast-check before any arm, since the AI must choose to activate a MAY discard. Bracket: no Game Changer, no tutor, zero combo ids \n\ncut_candidates: [{\"card\": \"Mask of Memory\", \"why\": \"THE CUT. Two to cast, one to equip at sorcery speed, and it draws nothing until the equipped creature deals combat damage to a player. Three of the 27 card-advantage copies trigger on combat damage to a player (Mask of Memory, Enduring Curiosity, Willie Lumpkin, enumerated from the audit's list by oracle text); Mask is the only Equipment among the 27 (the only Artifact — Equipment type line in that list) and the only one of the three that needs a second card to carry it. The deck's own queue already ruled on the duplication: Q046 (decided) found Enduring Curiosity does the same job for EVERY creature that connects, at flash speed, and returns as an enchantment when it dies. The cutting rule says cut duplicated function first, and the ceiling copy before the median: Mask is the copy that is dead when Shabraz is answered, the recon's first failure mode. The try screen reads Mask INVISIBLE to the goldfish, so no figure argues either way; Forge's record (cast 7, activated 4, held castable 20) is reported and is never a reason to cut.\", \"cost_of_cutting\": \"On a connecting Shabraz, Mask draws two (two counters, two life) and discards one (a Brallin counter and ping, or under Library of Leng a card placed on top), so a Shabraz hit grows him by two more each swing; that is a real acceleration toward 21 and it goes. The pilot chose Mask himself (one of his four cardboard swaps of 2026-10-01) and Q042 promoted it as a cheap sink he named, so this is",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:28-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-jaws-v1-card3.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "rules-question",
+      "deck-doctor"
+    ],
+    "pilot_words": "continue",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-three-on-jaws-v1-narset-jeskai-waymaster-fo",
+  "facts": [
+    {
+      "id": "S-b337de3c-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-b337de3c-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-b337de3c-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-b337de3c-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Human Monk · {U}{R}{W} — At the beginning of your end step, you may discard your hand. If you do, draw cards equal to the number of spells you've cast this turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Narset, Jeskai Waymaster"
+    },
+    {
+      "id": "S-b337de3c-05",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE PILOT'S CANDIDATES, BY WHAT THE CROWD ACTUALLY DOES WITH THEM. (a) Consensus cards of the WHEEL deck: Curiosity pair 2329/3974 (59%) / Upgraded 178/339 (53%) / solo 40/274 (15%); Tolarian Winds 2227 (56%) / 191 (56%) / solo 79 (29%) — l",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Narset, Jeskai Waymaster",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-b337de3c-06",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Jace's Archivist (0.93), Naktamun Lorespinner // Wheel of Fortune (0.92), Magus of the Wheel (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Narset, Jeskai Waymaster",
+      "neighbours": [
+        {
+          "name": "Jace's Archivist",
+          "score": 0.9266
+        },
+        {
+          "name": "Naktamun Lorespinner // Wheel of Fortune",
+          "score": 0.9184
+        },
+        {
+          "name": "Magus of the Wheel",
+          "score": 0.9135
+        }
+      ]
+    },
+    {
+      "id": "S-b337de3c-07",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Narset, Jeskai Waymaster",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "discard"
+      ]
+    },
+    {
+      "id": "S-b337de3c-08",
+      "kind": "oracle",
+      "text": "Artifact — Equipment · {2} — Whenever equipped creature deals combat damage to a player, you may draw two cards. If you do, discard a card. | Equip {1} ({1}: Attach to target creature you control. Equip only as a sorcery.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Mask of Memory"
+    },
+    {
+      "id": "S-b337de3c-09",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: EVERY CARD DRAWN",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Mask of Memory",
+      "stage": "fuel"
+    },
+    {
+      "id": "S-b337de3c-10",
+      "kind": "context",
+      "text": "CONTEXT plays: Mask of Memory draws two on a hit, for two counters.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Mask of Memory"
+    },
+    {
+      "id": "S-b337de3c-11",
+      "kind": "context",
+      "text": "CONTEXT cards: - Mask of Memory",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Mask of Memory"
+    },
+    {
+      "id": "S-b337de3c-12",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE 'VOLTRON' FILTER IS THE WHEEL DECK WEARING BOOTS. Voltron-tagged pair decks (42) run Windfall 32/42, Faithless Looting 30/42, Frantic Search 28/42, Magus of the Wheel 27/42, Glint-Horn 24/42, Curiosity 22/42, Captain Howler 20/41; the p",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-b337de3c-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): SOLO SHABRAZ (274 DECKS) IS THE SHABRAZ-FIRST ARCHETYPE, AND ITS SPINE IS PARALLEL GROWERS PLUS NO-MAXIMUM-HAND-SIZE. The solo page's top synergy cards are all draw-matters bodies and engines: Chasm Skulker 151/274 (55%, +0.49), Teferi's Ag",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-b337de3c-14",
+      "kind": "queue",
+      "text": "Q042 EXPIRED: Mask of Memory is a net-positive draw for Shabraz (draw two on a combat hit, then discard one, so two counters and one more card) that also pays Brallin, Mako a",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-06",
+      "queue_id": "Q042"
+    },
+    {
+      "id": "S-b337de3c-15",
+      "kind": "queue",
+      "text": "Q044 EXPIRED: Swapping Archmage Emeritus in for Idyllic Tutor does not lower the share killed by T6 or the wheel rows, and raises Shabraz counters; read as an upper bound, si → supported: Archmage Emeritus for Idyllic Tutor on shabraz-v1 (with Preordain), paired goldfish, 4,000 games, seed 3: 21 commander damage by T6 +0.0, by T8 +0.0, Shabraz by",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-06",
+      "queue_id": "Q044"
+    },
+    {
+      "id": "S-b337de3c-16",
+      "kind": "queue",
+      "text": "Q046 DECIDED: Leitmotif Composer is the weakest slot for Shabraz's plan and its slot is better spent on one of Arjun, the Shifting Flame, Enduring Curiosity, Teferi's Puzzle  → supported: Leitmotif's slot is best spent on Enduring Curiosity: same job (a card on a combat hit) but for EVERY creature that connects, Shabraz and the flying Humans incl",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-06",
+      "queue_id": "Q046"
+    },
+    {
+      "id": "S-b337de3c-17",
+      "kind": "decision",
+      "text": "decision 003 propose `shelter-v1` (2026-09-21): Shelter for Astral Drift, a one-card patch on the sleeved v1.0.0. The deck has no instant-speed protection and protection reads 3 against a 5-7 target. Shelter ",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Mask of Memory",
+      "as_of": "2026-09-21"
+    },
+    {
+      "id": "S-b337de3c-18",
+      "kind": "price",
+      "text": "$0.31 NM ((CMR) 324) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Mask of Memory",
+      "as_of": "2026-11-21",
+      "figure": 0.31
+    },
+    {
+      "id": "S-b337de3c-19",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Consecrated Sphinx (0.93), Rhystic Study (0.90), Faerie Mastermind (0.89)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Mask of Memory",
+      "neighbours": [
+        {
+          "name": "Consecrated Sphinx",
+          "score": 0.925
+        },
+        {
+          "name": "Rhystic Study",
+          "score": 0.8975
+        },
+        {
+          "name": "Faerie Mastermind",
+          "score": 0.8926
+        }
+      ]
+    },
+    {
+      "id": "S-b337de3c-20",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Mask of Memory",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-b337de3c-21",
+      "kind": "oracle",
+      "text": "Enchantment · {3}{U}{U} — As this enchantment enters, choose a creature type. Whenever a creature you control of the chosen type enters or attacks, draw a card.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Kindred Discovery"
+    },
+    {
+      "id": "S-b337de3c-22",
+      "kind": "recon",
+      "text": "recon (2026-11-20): HUMAN TYPAL SUPPORT DOES NOT EXIST IN ANY LIST; SHARK TYPAL IS EIGHT TO NINE NAMED SHARKS. The Humans theme on the pair is 8 of 3,974 decks and its own top-synergy cards are Sharks (Captain Howler 5/5 +0.99, Marauding Mako 5/5 +0.99, Thunde",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Kindred Discovery",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-b337de3c-23",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Archmage Emeritus (0.87), Rhystic Study (0.87), Esper Sentinel (0.85)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Kindred Discovery",
+      "neighbours": [
+        {
+          "name": "Archmage Emeritus",
+          "score": 0.869
+        },
+        {
+          "name": "Rhystic Study",
+          "score": 0.8674
+        },
+        {
+          "name": "Esper Sentinel",
+          "score": 0.8502
+        }
+      ]
+    },
+    {
+      "id": "S-b337de3c-24",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Kindred Discovery",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-b337de3c-25",
+      "kind": "oracle",
+      "text": "Artifact · {1} — You have no maximum hand size. | If an effect causes you to discard a card, discard it, but you may put it on top of your library instead of into your graveyard.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Library of Leng"
+    },
+    {
+      "id": "S-b337de3c-26",
+      "kind": "stack",
+      "text": "stack 001 — Windfall with both commanders out: seven discards, seven triggers, and when they stack (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/001",
+      "card": "Library of Leng",
+      "stack": "001"
+    },
+    {
+      "id": "S-b337de3c-27",
+      "kind": "stack",
+      "text": "stack 002 — Windfall under Library of Leng: a discard redirected to the top of the library is still a discard (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Library of Leng",
+      "stack": "002"
+    },
+    {
+      "id": "S-b337de3c-28",
+      "kind": "stack",
+      "text": "stack 003 — Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/003",
+      "card": "Library of Leng",
+      "stack": "003"
+    },
+    {
+      "id": "S-b337de3c-29",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE CURIOSITY LOOP'S BRACKET LABEL HAS NOT MOVED. Commander Spellbook, Brallin + Curiosity (fetched 2026-11-20): prerequisites 'Curiosity attached to Brallin' and 'You have a number of cards in hand greater than your maximum hand size'; ste",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-b337de3c-30",
+      "kind": "queue",
+      "text": "Q027 KILLED: Library of Leng and Bag of Holding do not make a wheel net-positive in hand size. Leng turns it into a SELECTION: after a wheel the hand is 7 either way, and wh",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Library of Leng",
+      "as_of": "2026-11-12",
+      "queue_id": "Q027"
+    },
+    {
+      "id": "S-b337de3c-31",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Ceremonial Knife → Library of Leng — Card 1 (2026-11-20, pilot approved; doctor + analyst, strategist dissented for Mariner): the branch ran zero no-maximum-hand-size effects beside five draw-sevens; Leng lets each wheel discard go on top instead, so a whee",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-b337de3c-32",
+      "kind": "price",
+      "text": "$7.26 NM ((SPG) 158) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-21",
+      "figure": 7.26
+    },
+    {
+      "id": "S-b337de3c-33",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Teferi's Ageless Insight (0.87), Torbran, Thane of Red Fell (0.87), Deflecting Swat (0.87)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Library of Leng",
+      "neighbours": [
+        {
+          "name": "Teferi's Ageless Insight",
+          "score": 0.8731
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.8674
+        },
+        {
+          "name": "Deflecting Swat",
+          "score": 0.8669
+        }
+      ]
+    },
+    {
+      "id": "S-b337de3c-34",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Library of Leng",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-b337de3c-35",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 4 named card(s) read: 1 rows better, 10 worse, 5 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.25,
+      "n": 10000
+    },
+    {
+      "id": "S-b337de3c-36",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 159.37, a change of -132.41 (-45%) [-138.4768, -126.3422] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -132.4095,
+      "ci95": [
+        -138.4768,
+        -126.3422
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b337de3c-37",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.005, -0.0016] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0033,
+      "ci95": [
+        -0.005,
+        -0.0016
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b337de3c-38",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.097 is smaller than the 0.243 this run can resolve [-0.2674, 0.0726] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -0.0974,
+      "ci95": [
+        -0.2674,
+        0.0726
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-b337de3c-39",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.68, a change of -0.74 (-3%) [-1.0436, -0.4458] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.7447,
+      "ci95": [
+        -1.0436,
+        -0.4458
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b337de3c-40",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0134, 0.0288] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0211,
+      "ci95": [
+        0.0134,
+        0.0288
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b337de3c-41",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 4,
+    "seen": [
+      "Narset, Jeskai Waymaster"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Mask of Memory",
+      "Kindred Discovery",
+      "Library of Leng"
+    ],
+    "unknown": [],
+    "share": 0.25
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:30-08:00",
+    "facts": 41
+  }
+}

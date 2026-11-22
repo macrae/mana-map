@@ -1,0 +1,409 @@
+{
+  "id": "002",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card two on jaws-v1: the one cut for Unsettled Mariner, or no change?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Fireshrieker",
+    "Unsettled Mariner"
+  ],
+  "swap": {
+    "out": "Fireshrieker",
+    "in": "Unsettled Mariner"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 2 (Unsettled Mariner's cut) — strategist, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nCut: Mask of Memory; runner-up Enduring Curiosity; no rock cut. Caveat: did not read Mask's or Curiosity's oracle text, nor the doctor's argument.\n- Mask: a fifth equipment-style piece for a one-body plan, adds nothing when Shabraz is absent, costs no white source, 4/42 voltron pair decks. \"Only cut that costs nothing the plan needs.\"\n- Runner-up Enduring Curiosity: draw-on-damage for a deck that already draws. (Jarvis: the strategist's \"Shabraz already supplies the draw\" is backwards — Shabraz grows ON draws; the rest of the deck is the draw engine.)\n- Would NOT cut Fireshrieker (strategy:conversion.availability, loose; recon says the double-strike package is the pilot's own idea; cutting leaves three pieces and orphans 006). Would not touch Gratuitous Violence (007/013/014, Torbran pair).\n- White: Mariner is a white two-drop and W is thinnest; cutting Azorius Signet costs W+U fixing on the turn Mariner wants W. A non-white rock costs less.\n- Rock at all? strategy:deckbuilding.mana-base: budget sources, not lands; 8 rocks + 37 lands is high, so a rock isn't obviously wrong — but 009's land-light start says early game is the weakness, and Fellwar was the pilot's own 14th-Nov call. Keep every rock.\n- NO CHANGE legitimate; Mariner enters on argument alone (no presence in any pair list).\n- Expected dissent: doctor says Fireshrieker (least efficient double-strike piece) and that Mask/Curiosity are draw on the deck's axis.\nOpen: Mask/Curiosity stack or keep entries; /research-strategy topic: redundancy of voltron win pieces (no companion section).",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:conversion.availability",
+          "strategy:deckbuilding.mana-base"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:24-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card2-strategist.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# What Unsettled Mariner taxes — rules-question, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nPrinted text (MH1): \"Whenever you or a permanent you control becomes the target of a spell or ability an opponent controls, counter that spell or ability unless its controller pays {1}.\"\n\n(a) Swords on Shabraz with no mana left: countered (118.12a \"unless\" = may pay, if not, do). One spell targeting two of my permanents = two triggers (ruling 2019-06-14; 603.2c), two separate {1} payments (118.10).\n(b) NOT taxed: overloaded Cyclonic Rift (no targets, ruling 2024-01-12; 115.1), Blasphemous Act, Toxic Deluge, Fleshbag Marauder ETB, Krenko's ability (115.10a — no \"target\" word, no target). TAXED: an opponent's equip onto my creature (702.6a targets). Opponent's Aura cast on my creature: expected taxed, not settled by the rules fetched.\n(c) Windfall, Rhystic Study, \"each opponent\"/\"each player\" effects: never targets (115.10a); \"you\" in an object's text is not a target (115.10b). \"Target player\" effects aimed at me ARE taxed (115.1d).\n\nNet for the deck: Mariner is a tax on single-target removal and theft (Swords, Path, Chaos Warp, Rapid Hybridization, steal effects, targeted bounce) and on targeted triggers; it does nothing against wipes, edicts, overloaded Rift, or the A-team's Blasphemous Acts.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "115.1",
+          "115.10a",
+          "115.10b",
+          "115.1d",
+          "118.10",
+          "118.12a",
+          "603.2c",
+          "702.6a"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:24-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card2-rules-mariner.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 2 (Mariner's cut) — data-analyst facts, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nSources (sure = unconditional; max adds conditional modes; fetches excluded; reconciles to mana_analysis.json once its four fetches are added back):\n- Lands only (33 non-fetch): sure W12 U21 R22; max W15 U26 R27.\n- Rocks (8): sure W4 U5 R4. Lands+rocks sure W16 U26 R26 / max W20 U32 R32.\n- After cutting one rock (lands+rocks sure W U R): Azorius Signet 15/25/26; Talisman of Conviction 15/26/25; Talisman of Creativity 16/25/25 (makes no W); Talisman of Progress 15/25/26; Fellwar Stone 16/26/26 (W only via opponents' lands).\n\nDouble strike / damage: Fireshrieker (stack 006 only); Lizard Blades (no stack); Blade Historian (no stack); Akroma's Will (no stack); Gratuitous Violence (007, 013, 014); Torbran (005, 007, 011, 013, 014).\nStack 006: \"Shabraz at 10/10 double strike: a loot between the two damage steps makes 10 + 11 = 21 commander damage\" (Kitsa loot in the first-strike step).\n\nMV ≤ 2 non-land permanents: 19. Creatures 8: Esper Sentinel (1), Faerie Mastermind, Grand Abolisher, Inti, Kitsa, Lizard Blades, Prince Imrahil, Willie Lumpkin. Non-creature 11: Sol Ring, Library of Leng, Arcane/Azorius/Izzet Signets, Fellwar, three Talismans, Mask of Memory, Swiftfoot Boots.\n\nGames: 001 won (result unrecorded); 002 loss combo; 003 raced (unrecorded); 004 loss raced; 005 loss raced; 006 loss combo; 007 stalled (unrecorded); 008 loss combo; 009 loss raced.\n\nOracle: Enduring Curiosity {2}{U}{U} flash, \"Whenever a creature you control deals combat damage to a player, draw a card\" (returns as an enchantment on death). Mask of Memory {2} equip {1}, \"equipped creature deals combat damage to a player: may draw two, if you do discard one\". Collective Defiance escalate: discard/redraw hand; 4 to a creature; 3 to an opponent/PW. Training Center U/R land. None of these is named by a stack or in staged[].\n\nModel-coverage (branch read via Python; CLI lacks --branch): Library of Leng \"invisible\" (not DARK, not seen). Unsettled Mariner not in the branch, so unread.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:24-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card2-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: the one cut for Unsettled Mariner, or no change. Answer: Fireshrieker out, Unsettled Mariner in; contested, not forced, and the pilot's keep-four-grants veto would make it NO CHANGE rather than a worse cut. The branch (37 lands, 46 mana sources against a Burgess target of 39, 9 rocks, 11 ramp) is not short of mana pieces, and its finisher axis reads 6 against Zupke's 3-5; what it is short of is bodies before turn three: eight creatures at mana value two or less (Esper Sentinel, Faerie Mastermind, Grand Abolisher, Inti, Kitsa, Lizard Blades, Prince Imrahil, Willie Lumpkin, enumerated from the branch cards.json), and four of the six logged losses opened with no board (003, 004, 005, 009; 009 verbatim: no board until about turn four, took everyone's attacks). So the slot should come from the finisher surplus or the mana surplus, not from interaction (8, exactly the floor), a Human, a draw-seven or a land. Of the five cards that make an 11-power Shabraz lethal (Akroma's Will, Blade Historian, Fireshrieker, Lizard Blades, Gratuitous Violence, enumerated by oracle text), Fireshrieker is the dearest to deploy (three to cast plus two to equip, sorcery speed), the only one that is neither a body, a Human, an instant nor a ping doubler, and the one with no colour: the try screen reads colour sources W +2, U 0, R 0 before and after. Every rock cut touches blue or red, which sit at exactly their Karsten target after the pilot's own two-land pass; Azorius Signet is the best of them (W +2 to +1, U 0 to -1) and is the runner-up. Gratuitous Violence is the other runner-up: the ceiling card by the cutting principle and the right cut if the pilot's priority is the curve, but it orphans three stacks and is the last doubler, so painful.\n\nadd_candidates: [{\"card\": \"Unsettled Mariner\", \"rank\": 1, \"closes\": \"creatures: the thin early board the log names (009 no board until turn four; 005, 004, 003), as a ninth creature at mana value two or less that is a Human (Shabraz's flying grant, 009's 'cast the Humans as blockers') and a Shark (Brallin's trample grant); the pool's other two changelings, Mirror Entity (three mana, 1/1) and Shapesharer (two mana, 1/1), were ranked eighth and do-not-play in the pool pass\", \"source\": \"pool\", \"why\": \"A 2/2 changeling on turn two that asks for nothing afterwards, which is the answer to 005's 'small creatures eat the win line's resources': the creatures that did that were discard-engine pieces wanting an action every turn. Its rider taxes every spell or ability an opponent aims at you or at a permanent you control, {1} or it is countered: Swords, Path, Chaos Warp and bounce at a grown Shabraz, edicts and burn at the pilot. The recon's first failure mode is 'Shabraz is vulnerable to removal once it has grown' and the protection axis already reads 8, so the tax is a rider and the body is the case. The recon finds Mariner in no Brallin or Shabraz list; absence of evidence about a Shabraz-first build nobody else plays. Colour: {W}{U}, white the thinnest colour; the cut named is colourless so the swap adds one white pip card (16 to 17) and removes no source. Bracket: not a Game Changer, no tutor, no mass land denial, no two-card line; the floor stays 3 on three Game Changers (bracket-check on the bra\n\ncut_candidates: [{\"card\": \"Fireshrieker\", \"why\": \"THE CUT. Three to cast and two to equip, sorcery speed, for double strike on one creature and nothing else. The branch holds five cards that make an 11-power Shabraz lethal (Akroma's Will, Blade Historian, Fireshrieker, Lizard Blades, Gratuitous Violence, enumerated from the branch cards.json by oracle text); Fireshrieker is the dearest to deploy, the only one with no second job (Blades is a 2-mana double-striking body, Historian is a Human and grants every attacker, Will is an instant with a protection mode, Violence doubles Brallin's pings), and the only colourless one, so its slot costs no colour source. Threat-density goes 6 to 5, inside Zupke's 3-5. The try screen reports it invisible to the goldfish, so no figure argues either way, and Forge's AI cast it 2 times while castable-uncast 15 — reported, never a reason.\", \"cost_of_cutting\": \"Double-strike grants go from four to three, and the kill-from-11 set from five to four, so in the games where Fireshrieker was the grant drawn, Shabraz needs 21 power or a second enabler and the kill turn moves later. Equipment survives a creature wipe where Blade Historian does not (Lizard Blades, reconfigured, also survives). Stack 006 (Shabraz 10/10 double strike, Kitsa loot between the strikes, 10 + 11 = 21) was written on Fireshrieker and is orphaned as recorded; its logic rests on the double-strike keyword, not the card (checker note on step 1), and needs regenerating on Lizard Blades. The pilot cut",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:24-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-jaws-v1-card2.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "data-analyst",
+      "rules-question"
+    ],
+    "pilot_words": "approve! stage it and go to card three",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-two-on-jaws-v1-the-one-cut-for-unsettled-ma",
+  "facts": [
+    {
+      "id": "S-0233bef7-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-0233bef7-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-0233bef7-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0233bef7-04",
+      "kind": "oracle",
+      "text": "Artifact — Equipment · {3} — Equipped creature has double strike. (It deals both first-strike and regular combat damage.) | Equip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Fireshrieker"
+    },
+    {
+      "id": "S-0233bef7-05",
+      "kind": "stack",
+      "text": "stack 006 — Shabraz at 10/10 double strike: a loot between the two damage steps makes 10 + 11 = 21 commander damage (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/006",
+      "card": "Fireshrieker",
+      "stack": "006"
+    },
+    {
+      "id": "S-0233bef7-06",
+      "kind": "engine_stage",
+      "text": "engine stage wincon: TWENTY-ONE IN ONE SWING",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Fireshrieker",
+      "stage": "wincon"
+    },
+    {
+      "id": "S-0233bef7-07",
+      "kind": "context",
+      "text": "CONTEXT plays: **Make him big and evasive.** Fireshrieker and Lizard Blades give double strike, and Blade Historian gives it to every attacker.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Fireshrieker"
+    },
+    {
+      "id": "S-0233bef7-08",
+      "kind": "context",
+      "text": "CONTEXT cards: - Fireshrieker",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Fireshrieker"
+    },
+    {
+      "id": "S-0233bef7-09",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE 'VOLTRON' FILTER IS THE WHEEL DECK WEARING BOOTS. Voltron-tagged pair decks (42) run Windfall 32/42, Faithless Looting 30/42, Frantic Search 28/42, Magus of the Wheel 27/42, Glint-Horn 24/42, Curiosity 22/42, Captain Howler 20/41; the p",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Fireshrieker",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-0233bef7-10",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Fireshrieker → Unsettled Mariner — Card 2 (2026-11-20, pilot approved; doctor + analyst; strategist wanted Mask of Memory cut, rejected as draw on the axis): a turn-two Human+Shark body for the raced-from-an-empty-board loss shape (003/004/005/009) that t",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Fireshrieker",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0233bef7-11",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Lizard Blades (0.95), Gratuitous Violence (0.92), Blade Historian (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Fireshrieker",
+      "neighbours": [
+        {
+          "name": "Lizard Blades",
+          "score": 0.9499
+        },
+        {
+          "name": "Gratuitous Violence",
+          "score": 0.9168
+        },
+        {
+          "name": "Blade Historian",
+          "score": 0.9085
+        }
+      ]
+    },
+    {
+      "id": "S-0233bef7-12",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Fireshrieker",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-0233bef7-13",
+      "kind": "oracle",
+      "text": "Creature — Shapeshifter · {W}{U} — Changeling (This card is every creature type.) | Whenever you or a permanent you control becomes the target of a spell or ability an opponent controls, counter that spell or ability unless its controller pays {1}.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Unsettled Mariner"
+    },
+    {
+      "id": "S-0233bef7-14",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE PILOT'S CANDIDATES, BY WHAT THE CROWD ACTUALLY DOES WITH THEM. (a) Consensus cards of the WHEEL deck: Curiosity pair 2329/3974 (59%) / Upgraded 178/339 (53%) / solo 40/274 (15%); Tolarian Winds 2227 (56%) / 191 (56%) / solo 79 (29%) — l",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Unsettled Mariner",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-0233bef7-15",
+      "kind": "price",
+      "text": "$3.52 NM ((MH1) 216) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Unsettled Mariner",
+      "as_of": "2026-11-21",
+      "figure": 3.52
+    },
+    {
+      "id": "S-0233bef7-16",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Deflecting Swat (0.91), Lae'zel, Vlaakith's Champion (0.89), Torbran, Thane of Red Fell (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Unsettled Mariner",
+      "neighbours": [
+        {
+          "name": "Deflecting Swat",
+          "score": 0.9149
+        },
+        {
+          "name": "Lae'zel, Vlaakith's Champion",
+          "score": 0.8865
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.862
+        }
+      ]
+    },
+    {
+      "id": "S-0233bef7-17",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Unsettled Mariner",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-0233bef7-18",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read: 1 rows better, 10 worse, 5 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-0233bef7-19",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 159.37, a change of -132.41 (-45%) [-138.4768, -126.3422] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -132.4095,
+      "ci95": [
+        -138.4768,
+        -126.3422
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0233bef7-20",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.005, -0.0016] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0033,
+      "ci95": [
+        -0.005,
+        -0.0016
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0233bef7-21",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.097 is smaller than the 0.243 this run can resolve [-0.2674, 0.0726] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -0.0974,
+      "ci95": [
+        -0.2674,
+        0.0726
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-0233bef7-22",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.68, a change of -0.74 (-3%) [-1.0436, -0.4458] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.7447,
+      "ci95": [
+        -1.0436,
+        -0.4458
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0233bef7-23",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0134, 0.0288] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0211,
+      "ci95": [
+        0.0134,
+        0.0288
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0233bef7-24",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Unsettled Mariner"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Fireshrieker"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:26-08:00",
+    "facts": 24
+  }
+}

@@ -278,7 +278,10 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
-- No studies yet — a question to Jarvis opens one (`manamap pilot study sharknado new "<question>" [--branch B]`).
+- **004 decline** (pilot) — Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/3 named cards · “no change”
+- **003 no-change** (pilot, strategist, rules-question, deck-doctor) — Card three on jaws-v1: Narset, Jeskai Waymaster for Mask of Memory, or no change? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/4 named cards · “continue”
+- **002 approve** (pilot, deck-doctor, data-analyst, rules-question) — Card two on jaws-v1: the one cut for Unsettled Mariner, or no change? · on `jaws-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approve! stage it and go to card three”
+- **001 approve** (pilot, deck-doctor, data-analyst, rules-question) — The pool for jaws-v1: which of the pasted cards goes in first, and what comes out — Library of Leng for Ceremonial Knife? · on `jaws-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approve!”
 <!-- /ctx:gen studies -->
 
 ## Change history

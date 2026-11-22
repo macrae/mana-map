@@ -1,0 +1,489 @@
+{
+  "id": "001",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "The pool for jaws-v1: which of the pasted cards goes in first, and what comes out — Library of Leng for Ceremonial Knife?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Ceremonial Knife",
+    "Library of Leng"
+  ],
+  "swap": {
+    "out": "Ceremonial Knife",
+    "in": "Library of Leng"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# jaws-v1 candidate pool — strategist, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nAnswer: Unsettled Mariner in / Ceremonial Knife out stays first. Pool adds three that earn a slot: Cavalier of Gales, Channeled Force, Kindred Discovery. Cuts other than the Knife are role-based guesses. Did not read the recon or the branch role tags.\n\n1. Mariner for Knife — changeling (Human + Shark), taxes targeted spells on Shabraz (the protect step), the early blocker 009 lacked. Knife's Blood token is the discard-to-draw step the pilot rejected. No inclusion signal for Mariner (argument only).\n2. Cavalier of Gales for Collective Defiance — 5-mana flyer, draws three (three counters, three life), tucks two back (not a discard); body + draw-three + recursive. Defiance's discard-then-draw mode is the laborious step.\n3. Channeled Force for Prismari Command — discard X, draw X, X damage to a creature: draw and removal in one card; the only pool card that fixes thin interaction AND draws. Wants a full hand.\n4. Kindred Discovery (Shark) for a Talisman — draws on enter or attack; Shabraz attacks every turn; Shark Typhoon tokens draw as they enter. Check Shabraz is a Shark. Rock-cut caution: Sol Ring/Signets stay, lands ≥ 35.\n5. Tolarian Winds for Fellwar Stone — 2-mana instant draw-seven-ish; fixes a land-heavy keep like 009; value tracks hand size (strategy:card-advantage.plan-draw).\n6. Narset, Jeskai Waymaster for Training Center — 3-mana WUR Human; discard optional; marginal.\n\nLibrary of Leng: NO. Thought Vessel in place of a Talisman gives no-max-hand-size and ramps; Reliquary Tower costs a coloured source in WUR; Leng is dead on its own.\n\nDiscard-side: none belong except where a draw comes with it (Force, Winds). OUT: Flux (symmetric), Big Score (Treasure he sits on, 009), Demand Answers, Glint-Horn, Howler, Containment Construct, Ghost of Ramirez, Ghostly Pilferer; Dack and Bazaar Trademage (loot steps, net nothing on an empty hand). Tireless Tribe a 0/4 W Human blocker \"maybe\", below the six.\n\nTypal: none (strategy:deckbuilding.typal-density — lords want 30+ bodies; twelve Humans, three Sharks fails the multiply-or-scale rule). Arcane Adaptation, Herald's Horn, Icon of Ancestry flat/cost-reduction, no draw; Door of Destinies scales only per chosen-type cast; Mirror Entity scales but is a go-wide sink and Shabraz supplies size; Shapesharer a weaker Mariner; Mystic Reflection nothing. Kindred Discovery the exception because it draws.\n\nOther OUT: Idyllic Tutor (few targets), Mishra's Command (not draw), Calamitous Tide (6 mana bounce + loot), Thunderhead Gunner, Loan Shark, Ghyrson (nothing for the plan), Wheel of Misfortune (not a draw), Surestrike Trident (equip 4). Chrome Host Seedshark best leftover body (flying Shark for 3), below the six, draws nothing.\n\nOpen: (1) Shabraz/Brallin Shark types (Jarvis: Shabraz is a Shark, Brallin a Human Shaman). (2) model-coverage on Force and Winds — a DARK card is a floor, not a cut.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:deckbuilding.typal-density"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-pool-strategist.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# jaws-v1 candidate pool — data-analyst facts, 2026-11-20 (saved by Jarvis; the agent cannot write files)",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-pool-analyst.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Ghyrson Starn with Brallin and Torbran — rules-question, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nCorpus card: Ghyrson Starn, Kelermorph, {1}{U}{R}, R/U, Ward {2}.\n\n(a) Brallin + Ghyrson, no Torbran, three cards discarded to one wheel: each opponent takes 9 (3 Brallin + 6 Ghyrson). Each discard is its own Brallin trigger (603.2c: \"An ability triggers only once each time its trigger event occurs. However, it can trigger repeatedly if one event contains multiple occurrences.\"). Ghyrson reads the damage actually dealt (120.4b). Ghyrson's own 2 is not \"exactly 1\", no retrigger.\n\n(b) Brallin + Ghyrson + Torbran: Torbran's replacement makes Brallin's 1 into 3 BEFORE any trigger looks at it (120.4b \"damage is dealt, as modified by replacement and prevention effects\"; 614.6 \"A modified event occurs instead, which may in turn trigger abilities.\"). Ghyrson never triggers off Brallin with Torbran out. Ghyrson is red (105.2b multicolored is each of its colours), so its own 2 becomes 4 under Torbran when it does trigger. Ruling 2019-10-04: Torbran's extra damage is dealt by the same source.\n\n(c) Non-red 1-damage sources in jaws-v1: only the pain lands and Talismans (Adarkar Wastes, Battlefield Forge, City of Brass, Shivan Reef, Talisman of Conviction/Creativity/Progress), colourless (105.2c), and they damage YOU, so Ghyrson would deal 2 to you. Red 1-damage sources: Brallin and Jaws (1 to each opponent per noncreature artifact sacrificed or destroyed) — Torbran makes them 3, Ghyrson silent.\n\nNet: Ghyrson and Torbran (a keep) are anti-synergistic; Ghyrson only pays when Torbran is absent, and then only off Brallin/Jaws pings — the discard-side engine the thesis traded away.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "105.2b",
+          "105.2c",
+          "120.4b",
+          "603.2c",
+          "614.6"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-pool-rules-ghyrson.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Sharknado jaws-v1 card 1 — strategist + data-analyst, 2026-11-20 (saved by Jarvis; the agents cannot write files)",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card1-strategist-analyst.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Strategist — Tandem Lookout in, Ceremonial Knife out (argument)\n1. Binding loss shape: RACED (4 of 9); 009's thin start was the hand (land-heavy, no early creatures). 008/009 are piloting errors not a deck shape. strategy:tempo, strategy:combat-math.racing, strategy:mulligans.engine-hands: a body on turns 2-3 ranks ahead of more protection/evasion/draw.\n2. Tandem Lookout {2}{U} Human Scout: a turn-3 blocker; a Human (Shabraz grants flying); soulbond with Shabraz puts draw-on-damage on the flyer with no extra card. Curiosity/Ophidian Eye fix the late game only (need Shabraz out first). Library of Leng / Narset are late draw (strategy:card-advantage.plan-draw).\n3. Weakest slot: Ceremonial Knife (~3 mana to do anything, needs a connecting body, Blood costs {1} + discard). CAUTION (Jarvis): the pilot staged it himself 2026-11-14 for the Blood line; cutting it removes the second Blood source (Jaws, Inti remain).\n4. Protection shield (Boots, Shelter, Slip Out the Back) matches strategy:multiplayer.commander-insurance; jaws-v1 adds Blood/Sharks, does not fix turns 1-3.\nNext: Unsettled Mariner / Bazaar Trademage if cheap Human bodies; then Curiosity. Open: Shabraz's flying grant + Lookout soulbond (rules); Q011 mulligan rule (research-strategy).",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:combat-math.racing",
+          "strategy:mulligans.engine-hands",
+          "strategy:multiplayer.commander-insurance",
+          "strategy:tempo"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card1-strategist-analyst.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Data-analyst — branch facts (sha b67d41cf…, cards.json/bracket_report/combos all current)\n- 100 cards: 2 commanders + 61 non-land + 37 lands (4 fetches). GCs 3: Rhystic Study, Consecrated Sphinx, Smothering Tithe.\n- Draw: repeatable 16 (Rhystic, Sphinx, Esper Sentinel, Faerie Mastermind, Kitsa, Jace's Archivist, Archmage Emeritus, Enduring Curiosity, Valeria, Sokka, Willie Lumpkin, Mask of Memory, Shang-Chi, Teferi MoT, Teferi's Ageless Insight, Bard); one-shot 4 (Brainstorm, Shelter, Prismari Command loot, Fiery Islet); wheels 9 (Winds of Change, Windfall, Wheel of Fortune, Reforge the Soul, Time Reversal, Echo of Eons, Will of the Jeskai, Magus of the Wheel, Jace's Archivist) of which draw-sevens 5.\n- Protection for Shabraz: instants Loran's Escape, Shelter, Slip Out the Back, Flawless Maneuver, Akroma's Will; Swiftfoot Boots; counters Negate, Stubborn Denial, Deflecting Swat, Voracious Greatshark; Grand Abolisher. No bounce-to-save.\n- Removal: Swords, Get Lost, Chaos Warp, Collective Defiance (S), Prismari Command, Teferi −3 (S); mass Kozilek's Return.\n- Finishers/evasion: Fireshrieker, Lizard Blades, Akroma's Will, Blade Historian, Gratuitous Violence, Jaws, Willie Lumpkin, Faerie Mastermind, Boots haste, Torbran. No extra combat.\n- Rocks 8 (Sol Ring + 7 at MV2). Humans 12: Esper Sentinel, Grand Abolisher, Inti, Prince Imrahil, Willie Lumpkin, Magus of the Wheel, Shang-Chi, Sokka, Archmage Emeritus, Blade Historian, Valeria, Bard (+ Brallin). Sharks 2: Jaws, Voracious Greatshark (+ Shabraz; Shark Typhoon tokens). Creatures MV≤2: 8.\n- Curve non-land 1:9 2:19 3:14 4:10 5:5 6:4. Colour sources sure/max (fetches excluded): W 16/20, U 26/32, R 26/32.\n- Passing stacks (14) naming branch cards: Sol Ring, Windfall, Smothering Tithe, Negate, Torbran, Wheel of Fortune, Gratuitous Violence, Swords, Arcane Signet, Kitsa, Rhystic, Boots, Reforge, Sphinx, Fireshrieker, Shark Typhoon (+ both commanders). Stack-named NOT on branch: Library of Leng 001-003, Razorkin Needlehead 011/013/014, Lightning Greaves 004/005, Sticky Fingers 001-004, Faithless Looting, Mako, Rielle, Boros Charm, Char, Artist's Talent, Treasure Map, Lae'zel, Fiery Emancipation, Magmakin Artillerist, Spider-Man.\n- Candidates: all 37 within WUR; Underworld Breach IS a Game Changer (excluded). Ghyrson Starn {1}{U}{R} ward 2; Curiosity {U} aura; Ophidian Eye {2}{U} flash aura; Tireless Tribe {W}; Tolarian Winds {1}{U}; Library of Leng {1}; Captain Howler {2}{U}{R} Shark Pirate; Narset Jeskai Waymaster {U}{R}{W}; Glint-Horn {1}{R}{R}; Unsettled Mariner {W}{U} changeling 1/3; Loan Shark {3}{U}; Bazaar Trademage {2}{U} flyer ETB draw 2 discard 3; Kindred Discovery {3}{U}{U}; Mystic Reflection {1}{U}; Surestrike Trident {2}; Tandem Lookout {2}{U} Human Scout soulbond; Ghostly Pilferer {1}{U}; Dack Fayden {1}{U}{R}; Idyllic Tutor {2}{W}; Knowledge Is Power {3}{W}{U}; Thunderhead Gunner {4}{R} Shark 4/4; Big Score {3}{R}; Mishra's Command {X}{R}; Calamitous Tide {4}{U}{U}; Demand Answers {1}{R}; Containment Construct {2}; Wheel of Misfortune {2}{R}; Herald's Horn {3}; Icon of Ancestry {3}; Door of Destinies {4}; Arcane Adaptation {2}{U}; Mirror Entity {2}{W}; Shapesharer {1}{U}; The Locust God {4}{U}{R}; Flux {2}{U}.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "100"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/jaws-v1-card1-strategist-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: which of 36 pool cards goes into jaws-v1 first, what comes out, how the rest rank, and which should not be played. The branch audit reads every axis at target except sweepers (0, a taxonomy miss: Kozilek's Return deals 2 to each creature and is filed removal:damage) and interaction-breadth (3 of 5 classes; graveyard and land uncovered), and the pool holds no graveyard or land answer, so the pool cannot close the one under-target axis that is real. What the pool CAN close is the recon's named structural gap, zero no-maximum-hand-size effects in a deck whose wheel component is ten cards, seven of which discard your hand, and the log's recurring list-level shape, the thin early board (009, 005, 004, 003). First swap: Library of Leng in, Ceremonial Knife out. Second, contested: Unsettled Mariner in, Fireshrieker out. The previous round's pending call (Mariner for Knife) changes: Knife's slot goes to Leng, Mariner moves to Fireshrieker's slot or waits. Twenty-three of the 36 should not be played here, most because they are the discard-ping engine v3.0.0 traded away; NO CHANGE is the honest answer for every ranked card below the second.\n\nadd_candidates: [{\"card\": \"Library of Leng\", \"rank\": 1, \"closes\": \"the recon's no-maximum-hand-size gap: zero such effects in the 99 (enumerated from the branch's cards.json), in a deck whose wheel component is ten cards\", \"source\": \"pool\", \"why\": \"FIRST. One mana. Two jobs. (1) No maximum hand size: a Shabraz turn draws past seven and today the surplus is discarded at cleanup; solo-Shabraz lists run Reliquary Tower 71% and Thought Vessel 64% for exactly this, and this deck has put Thought Vessel in and out three times (finisher-v1 in, voltron-v1 out, draw-engine-v1 in, shabraz-v1 out) because a two-mana rock kept losing to tempo. Leng is the one-mana version. (2) Every discard-wheel becomes optional-discard: seven of the ten wheel-component cards discard your hand (Wheel of Fortune, Windfall, Reforge the Soul, Magus of the Wheel, Jace's Archivist, Collective Defiance mode one, Will of the Jeskai mode one; Echo of Eons, Time Reversal and Winds of Change shuffle and Leng does nothing for them). Under Leng you put the cards you want on top in the order you choose and draw them straight back, and the discard still pays Brallin: stack 002 (checker pass) resolves Windfall under Leng and finds each redirected card is still a discarded card. That is the pilot's own ask in 006 ('modal draw where discarding is optional') and 005 ('I also don't want to discard any of these cards'), and it is the thesis sentence 'wheels are draw-sevens, not discard pings' made literal. Limits: Leng does not apply to a \n\ncut_candidates: [{\"card\": \"Ceremonial Knife\", \"why\": \"One mana plus equip two for +1/+0 and one Blood token per connecting hit. Jaws already makes Blood on every hit and pings on every Treasure or Blood sacrificed, so the Knife is the Blood line's smallest and slowest piece. It is the branch's lowest-impact slot and the like-for-like home for a one-mana artifact.\", \"cost_of_cutting\": \"One fewer Blood source: with Jaws out the Knife adds one Blood per Shabraz hit (two with double strike), each Blood a discard-plus-draw that pays both commanders. Without the Knife, Blood comes from Jaws alone.\", \"orphans_stack\": [], \"difficulty\": \"easy\", \"citations\": [{\"rule\": \"strategy:deckbuilding.cutting\", \"quote\": \"cut duplicated function before any uncovered class, and cut the ceiling card before the median one\"}]}, {\"card\": \"Fireshrieker\", \"why\": \"Three to cast and two to equip for double strike with no body and no second mode. The branch holds four double-strike grants: Fireshrieker, Lizard Blades (two mana, reconfigure two, a 1/1 double striker itself), Blade Historian (a Human, all attackers) and Akroma's Will (an instant with a protection mode). Fireshrieker is the dearest to deploy and the only one that is pure costume. It was already cut once (v2.1.0, answers-v1) and came back in v3.0.0.\", \"cost_of_cutting\": \"Double-strike grants go from four to three, and the kill-from-ten line in stack 006 (Shabraz 10/10 double strike, Kitsa loot between the strikes, 10 + 11 = 21) was written on Fireshrieker; it",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.cutting"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:20-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-jaws-v1-pool.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "data-analyst",
+      "rules-question"
+    ],
+    "pilot_words": "approve!",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "the-pool-for-jaws-v1-which-of-the-pasted-cards-g",
+  "facts": [
+    {
+      "id": "S-f3a66209-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-f3a66209-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-f3a66209-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f3a66209-04",
+      "kind": "oracle",
+      "text": "Artifact — Equipment · {1} — Equipped creature gets +1/+0 and has \"Whenever this creature deals combat damage, create a Blood token.\" (It's an artifact with \"{1}, {T}, Discard a card, Sacrifice this token: Draw a card.\") Equip {2} ({2}: Attach to target creature you control. Equip only as a sorcery.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Ceremonial Knife"
+    },
+    {
+      "id": "S-f3a66209-05",
+      "kind": "recon",
+      "text": "recon (2026-11-20): WHAT THE UPGRADED (BRACKET 3) PAIR PAGE RUNS THAT JAWS-V1 LACKS, SPLIT BY WHETHER THE PILOT CUT IT ON PURPOSE. 49 nonland cards sit at 20%+ of the 339 Upgraded decks and are not in the branch. 33 are discard-side (oracle text contains 'disc",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Ceremonial Knife",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-f3a66209-06",
+      "kind": "staged",
+      "text": "staged 2026-11-14: Boros Signet → Ceremonial Knife — pilot 2026-11-14: Blood on every combat hit, two a swing with double strike",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Ceremonial Knife",
+      "as_of": "2026-11-14"
+    },
+    {
+      "id": "S-f3a66209-07",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Ceremonial Knife → Library of Leng — Card 1 (2026-11-20, pilot approved; doctor + analyst, strategist dissented for Mariner): the branch ran zero no-maximum-hand-size effects beside five draw-sevens; Leng lets each wheel discard go on top instead, so a whee",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Ceremonial Knife",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f3a66209-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Mask of Memory (0.93), Enduring Curiosity (0.86), Esper Sentinel (0.85)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Ceremonial Knife",
+      "neighbours": [
+        {
+          "name": "Mask of Memory",
+          "score": 0.9324
+        },
+        {
+          "name": "Enduring Curiosity",
+          "score": 0.8589
+        },
+        {
+          "name": "Esper Sentinel",
+          "score": 0.8544
+        }
+      ]
+    },
+    {
+      "id": "S-f3a66209-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Ceremonial Knife",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-f3a66209-10",
+      "kind": "oracle",
+      "text": "Artifact · {1} — You have no maximum hand size. | If an effect causes you to discard a card, discard it, but you may put it on top of your library instead of into your graveyard.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Library of Leng"
+    },
+    {
+      "id": "S-f3a66209-11",
+      "kind": "stack",
+      "text": "stack 001 — Windfall with both commanders out: seven discards, seven triggers, and when they stack (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/001",
+      "card": "Library of Leng",
+      "stack": "001"
+    },
+    {
+      "id": "S-f3a66209-12",
+      "kind": "stack",
+      "text": "stack 002 — Windfall under Library of Leng: a discard redirected to the top of the library is still a discard (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Library of Leng",
+      "stack": "002"
+    },
+    {
+      "id": "S-f3a66209-13",
+      "kind": "stack",
+      "text": "stack 003 — Cycling under Library of Leng: a discard paid as a cost is a discard for Brallin, but not an effect for Leng (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/003",
+      "card": "Library of Leng",
+      "stack": "003"
+    },
+    {
+      "id": "S-f3a66209-14",
+      "kind": "recon",
+      "text": "recon (2026-11-20): SOLO SHABRAZ (274 DECKS) IS THE SHABRAZ-FIRST ARCHETYPE, AND ITS SPINE IS PARALLEL GROWERS PLUS NO-MAXIMUM-HAND-SIZE. The solo page's top synergy cards are all draw-matters bodies and engines: Chasm Skulker 151/274 (55%, +0.49), Teferi's Ag",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-f3a66209-15",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE PILOT'S CANDIDATES, BY WHAT THE CROWD ACTUALLY DOES WITH THEM. (a) Consensus cards of the WHEEL deck: Curiosity pair 2329/3974 (59%) / Upgraded 178/339 (53%) / solo 40/274 (15%); Tolarian Winds 2227 (56%) / 191 (56%) / solo 79 (29%) — l",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-f3a66209-16",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE CURIOSITY LOOP'S BRACKET LABEL HAS NOT MOVED. Commander Spellbook, Brallin + Curiosity (fetched 2026-11-20): prerequisites 'Curiosity attached to Brallin' and 'You have a number of cards in hand greater than your maximum hand size'; ste",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-f3a66209-17",
+      "kind": "queue",
+      "text": "Q027 KILLED: Library of Leng and Bag of Holding do not make a wheel net-positive in hand size. Leng turns it into a SELECTION: after a wheel the hand is 7 either way, and wh",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Library of Leng",
+      "as_of": "2026-11-12",
+      "queue_id": "Q027"
+    },
+    {
+      "id": "S-f3a66209-18",
+      "kind": "price",
+      "text": "$7.26 NM ((SPG) 158) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Library of Leng",
+      "as_of": "2026-11-21",
+      "figure": 7.26
+    },
+    {
+      "id": "S-f3a66209-19",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Teferi's Ageless Insight (0.87), Torbran, Thane of Red Fell (0.87), Deflecting Swat (0.87)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Library of Leng",
+      "neighbours": [
+        {
+          "name": "Teferi's Ageless Insight",
+          "score": 0.8731
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.8674
+        },
+        {
+          "name": "Deflecting Swat",
+          "score": 0.8669
+        }
+      ]
+    },
+    {
+      "id": "S-f3a66209-20",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Library of Leng",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-f3a66209-21",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read: 1 rows better, 10 worse, 5 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-f3a66209-22",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 159.37, a change of -132.41 (-45%) [-138.4768, -126.3422] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -132.4095,
+      "ci95": [
+        -138.4768,
+        -126.3422
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f3a66209-23",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.005, -0.0016] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0033,
+      "ci95": [
+        -0.005,
+        -0.0016
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f3a66209-24",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.097 is smaller than the 0.243 this run can resolve [-0.2674, 0.0726] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -0.0974,
+      "ci95": [
+        -0.2674,
+        0.0726
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-f3a66209-25",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.68, a change of -0.74 (-3%) [-1.0436, -0.4458] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.7447,
+      "ci95": [
+        -1.0436,
+        -0.4458
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f3a66209-26",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0134, 0.0288] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0211,
+      "ci95": [
+        0.0134,
+        0.0288
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f3a66209-27",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Ceremonial Knife"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Library of Leng"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:22-08:00",
+    "facts": 27
+  }
+}

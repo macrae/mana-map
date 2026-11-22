@@ -892,26 +892,23 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "001",
-        "question": "Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change",
+        "id": "003",
+        "question": "Card three on b3-v1: Words of Wisdom, Archive, Narset or another draw piece — or no change?",
         "branch": "b3-v1",
-        "decision": "approve",
+        "decision": "no-change",
         "decided_by": [
           "pilot",
-          "deck-doctor",
-          "data-analyst",
-          "log"
+          "strategist",
+          "rules-question",
+          "data-analyst"
         ],
-        "pilot_words": "ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)",
+        "pilot_words": "yup... and a last pass to tighten up the mana please",
         "decided_at": "2026-11-21",
         "opened": "2026-11-21",
-        "swap": {
-          "out": "Flawless Maneuver",
-          "in": "Dawn's Truce"
-        },
+        "swap": null,
         "goldfish_saw": [
-          0,
-          2
+          2,
+          6
         ]
       },
       "summary": {
@@ -4769,6 +4766,64 @@
   ],
   "studies": [
     {
+      "id": "004",
+      "question": "The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, or a 36th land for Stroke of Genius?",
+      "branch": "b3-v1",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-21",
+      "swap": null,
+      "goldfish_saw": [
+        4,
+        4
+      ]
+    },
+    {
+      "id": "003",
+      "question": "Card three on b3-v1: Words of Wisdom, Archive, Narset or another draw piece — or no change?",
+      "branch": "b3-v1",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "rules-question",
+        "data-analyst"
+      ],
+      "pilot_words": "yup... and a last pass to tighten up the mana please",
+      "decided_at": "2026-11-21",
+      "opened": "2026-11-21",
+      "swap": null,
+      "goldfish_saw": [
+        2,
+        6
+      ]
+    },
+    {
+      "id": "002",
+      "question": "Card two on b3-v1: the non-GC whole-board answer to non-targeted loss — Clever Concealment for Drift of Phantasms?",
+      "branch": "b3-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist",
+        "rules-question"
+      ],
+      "pilot_words": "approved! it's a nice card in the pillow fort strategy but I think we should stage it and go to card three",
+      "decided_at": "2026-11-21",
+      "opened": "2026-11-21",
+      "swap": {
+        "out": "Drift of Phantasms",
+        "in": "Clever Concealment"
+      },
+      "goldfish_saw": [
+        1,
+        2
+      ]
+    },
+    {
       "id": "001",
       "question": "Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change",
       "branch": "b3-v1",
@@ -5734,6 +5789,7 @@
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
     "branch `b3-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `b3-v1` needs 21 card(s) sourced — `manamap pilot deck-branch heliod source b3-v1`",
+    "study 004 is open: The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, o — `manamap pilot study heliod call 004 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"
   ],

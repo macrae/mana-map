@@ -1,0 +1,408 @@
+{
+  "id": "006",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Preacher of the Schism",
+    "Champion of Dusk"
+  ],
+  "swap": {
+    "out": "Preacher of the Schism",
+    "in": "Champion of Dusk"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 6 on threat-v1 — strategist + rules-question, 2026-11-20 (saved by Jarvis; the agents cannot write files)",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:16-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card6-strategist-rules.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Strategist — NO CHANGE\nCaveat: could not read .agent-out files this run (path issue); worked from the decklist, thesis and two strategy queries. Argument, not evidence.\n1. Pact of the Serpent: aimed at yourself naming Vampire it is the right refuel shape (strategy:card-advantage.plan-draw) but a sorcery that blanks right after a wipe (X = 0 or 1), the turn you most need cards. Aimed at an opponent: no — strategy:multiplayer.politics; handing a Goblin player X cards while you need the answer is a poor trade; a finisher only when the drain math already kills. Versus Champion of Dusk: Champion is a Vampire body (fuel, Skullclamp, drainers) and close on refuel; Pact is the weakest of the three on this board. Preacher stays: Seeker rewarding attacks does not make Preacher's connect easier, and Preacher is a Vampire body with repeatable draw.\n2. Ruthless Lawbringer: Vampire, death trigger, third noncreature answer (strategy:deckbuilding.interaction-suite) — but sorcery speed, a sacrifice cost, fails on indestructible Purphoros; no redundant outlet to displace.\n3. Viscera Seer not redundant (strategy:aristocrats: a free outlet fires in response to removal; the cheapest decoy). Twilight Prophet keep (ascend easy by T6-7). Bloodline Keeper keep (transform scales; tokens are fuel). Yahenni: no evidence it is worse. Deadly Dispute: no defensible cut.\n4. Watch at the table: hellbent by T7-8 with Vampires on board (case for Pact/Champion later); an indestructible permanent blocking the game (case for Lawbringer or a non-destroy answer); whether Preacher draws on attack now that Seeker is in.\nOpen: research-strategy topic — how many free outlets a typal drain deck needs; Idol of Oblivion vs Champion for the refuel slot needs text + a scenario.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats",
+          "strategy:card-advantage.plan-draw",
+          "strategy:deckbuilding.interaction-suite",
+          "strategy:multiplayer.politics"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:16-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card6-strategist-rules.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Rules-question\nOracle (corpus): Pact of the Serpent — \"Choose a creature type. Target player draws X cards and loses X life, where X is the number of creatures THEY control of the chosen type.\" Ruthless Lawbringer — \"When this creature enters, you MAY sacrifice another creature. When you do, destroy target nonland permanent.\" Purphoros — indestructible; not a creature below devotion five.\n(a) Pact at yourself: draw first, then lose life, in order (608.2c); X counts tokens and changelings (702.73a) as it resolves (ruling 2021-02-05); drawing past the library = loss at next SBA (104.3c / 704.5b).\n(b) Pact at an opponent: they draw X AND lose X, draw first (608.2c); 0 or less life loses at the next SBA (704.5a). The draw happens even if the loss kills them.\n(c) Lawbringer: reflexive trigger (603.12; ruling 2024-04-12), target chosen as it goes on the stack after the sacrifice, respondable. No other creature → nothing (608.2d). Tokens can be sacrificed (701.21a). Destroy fails on indestructible (702.12b). Purphoros as a non-creature enchantment is a legal \"nonland permanent\" target; the destroy still fails.\n(d) A sacrificed token dies (700.4; 111.7 — triggers before it ceases to exist), so Blood Artist fires. Eminence triggers on CASTING Lawbringer (Vampire Assassin), not on entry — from Edgar's printed text; the CR DB has no eminence rule chunk.\nGap: Zulaport Cutthroat and Bastion of Remembrance not in the corpus for the agent's card-search; not cited.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "104.3c",
+          "111.7",
+          "603.12",
+          "608.2c",
+          "608.2d",
+          "700.4",
+          "701.21a",
+          "702.12b",
+          "702.73a",
+          "704.5a",
+          "704.5b"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:16-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card6-strategist-rules.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: after five approved swaps, is there a sixth upgrade that FITS, or is the right answer no change. There is one, and it is modest and clean: Champion of Dusk in, Preacher of the Schism out. The axis is the one the thesis makes mandatory, draw, and the gap is shape rather than count. Enumerated from the branch's cards.json (sha 4783e555…, current): nine cards draw by oracle text — Black Market Connections, Caretaker's Talent, Crossway Troublemakers, Erebos, Liliana, Morbid Opportunist, Preacher of the Schism, Skullclamp, Welcoming Vampire — plus three that only select (Anje's and Bloodtithe Harvester's Blood tokens, Lethal Scheme's connive) and three tutors. Every one of the nine pays one card per event (Skullclamp two), eight of the nine need a board to fire, and NOT ONE scales with the board: the branch has zero 'draw X' refuel (Lethal Scheme's connive scales with its convokers, but connive is draw-then-discard — selection, net zero cards). That is the recon's first failure mode for this commander ('Vampire-count burst draw, which the branch has none of', as_of 2026-11-20) and the loss shape the log records four times (002 'vampires on board, nothing in hand', 003 'the finding, again', 006 'turn eight, nine, ten and not have enough cards in hand', 001 Champion of Dusk countered — 'the refuel that would have closed the game', the pilot 'would happily have paid the five life'). Champion over Pact of the Serpent, reversing my card-4/5 rank, for reasons specific to this list: Master of Dark Rites' BBB pays for Vampire, Cleric and Demon SPELLS only (deck-facts restricted_mana, verdict spells_only) — it casts Champion and never Pact; Urza's Incubator makes Champion {1}{B}{B}, Pact's own price, and does nothing for Pact; Champion is a Vampire spell, so with eminence live (Edgar in the command zone or on the battlefield) a token is down before it resolves and X is at least 2 on an empty board where Pact's X is 0 — the post-wipe case plan-draw warns about; and the Vampire count (28 in the 99) and the eminence trigger are unchanged Vampire-for-Vampire. Pact's aimed mode, priced as asked: the target loses X and DRAWS X; it is lethal only when X is at least their life (half of it with Bloodletter, since a sorcery always resolves on our turn), and a miss hands the one seat built to go wide X fresh cards. It is a kill condition with a punishing failure mode, and card 2 (Malakir Bloodwitch) already bought the Vampire-count each-opponent drain with no gift attached. On Preacher, the orchestrator's point is right and I say so: Sanctum Seeker made attacking correct, so Preacher's trigger fires more often than it did at card 4, and the 'combat-gated in a non-combat thesis' reason I gave then is weaker now. The cut stands on a different ground: per attack Preacher yields EITHER a 1/1 lifelink token (attacking the most-life opponent) OR one card for 1 life (while the pilot has the most life) — never both unless tied — which is the steady, board-dependent shape the branch has nine of and the corpus's rule for the last slots is to cut duplicated function first. It is contested, not easy. If the pilot wants every card to carry one of his four words, Champion carries none of them (it loses life, drains nobody) and NO CHANGE is the honest answer; stopping at five costs little. I recommend the swap because the one draw shape missing is the one the log keeps losing to. Removal is not re-opened: card 4 put the branch at seven true removal spells, and Ruthless Lawbringer (rank 4) closes a class the branch covers twice already. Deck-audit's figures below describe the SLEEVED v3.0.0 and are labelled so; no goldfish figure appears here, by the pilot's ruling.\n\nadd_candidates: [{\"card\": \"Champion of Dusk\", \"closes\": \"card-advantage — the burst-refuel shape the branch has none of (taxonomy: threat:body, value:etb — the audit's count will not move; by oracle text the draw suite goes from nine steady sources to eight steady plus one that scales with the board)\", \"source\": \"log\", \"why\": \"Rank 1. {3}{B}{B} 4/4 Vampire Knight: on entry draw X and lose X, X = Vampires you control. The pilot named it himself (log 001: 'the refuel that would have closed the game'; he 'would happily have paid the five life'). Why it beats Pact of the Serpent on THIS list, reversing my card-4/5 rank: it is a Vampire SPELL, so eminence makes a token while it is on the stack, so with Edgar in the command zone or on the battlefield X is at least 2 — Pact on the same empty board draws 0, the correlation plan-draw warns about; Master of Dark Rites' BBB is spend-only on Vampire, Cleric and Demon spells (deck-facts restricted_mana, spells_only) and pays for Champion but never for Pact; Urza's Incubator cuts it to {1}{B}{B}, Pact's price, and does nothing for Pact; its token entering fires Wispdrinker's drain and Elas's gain, and draws off Welcoming Vampire or Caretaker's Talent if neither has fired that turn; it adds two to Malakir Bloodwitch's and Sanctum Seeker's counts. It scales with the fuel rather than adding to it, so it passes the pilot's anthem rule. Costs, plainly: five mana without Incubator, on the turn the pilot wants Edgar (log 001 held Edgar to eight mana); it loses X\n\ncut_candidates: [{\"card\": \"Preacher of the Schism\", \"why\": \"A three-mana 2/4 deathtouch Vampire whose two payoffs both fire only when it attacks, and only one of them per attack: a 1/1 lifelink Vampire token when it attacks the player with the most life, or draw a card and lose 1 life when the pilot has the most life (both only when tied). Sanctum Seeker (card 5) made attacking correct every turn, so this trigger fires more than it did at card 4 — I said then it was combat-gated in a non-combat thesis, and that reason is weaker now. The reason that survives is shape: one unit of value per turn, dependent on a board and a combat step, is the steady on-plan shape the branch has nine of by oracle text, and the corpus's rule for the last slots is to cut the duplicated function. Swapped for Champion of Dusk the Vampire count (28 in the 99) and the eminence trigger are unchanged. The audit's possible_uncounted lists it, so the taxonomy's draw count does not move. No checker-passed stack names it (enumerated over stacks 001-014).\", \"cost_of_cutting\": \"One conditional steady draw (the pilot is often the seat with the most life — log 002 had him at ~50 against ~20 — but not always: log 008 had Steven at 38 to his 20, when Preacher would have made tokens, not cards); one token maker of fourteen by oracle text (thirteen after); a deathtouch body that deters a block and holds off one big attacker; and a Sanctum Seeker attacker that drains each opponent on declaration like every other Vampire. The branch",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:16-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-threat-v1-card6.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "approved! stage it, commit, and move to Sharknado",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-six-on-threat-v1-champion-of-dusk-for-preac",
+  "facts": [
+    {
+      "id": "S-66242892-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-66242892-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-66242892-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-66242892-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire Cleric · {2}{B} — Deathtouch | Whenever this creature attacks the player with the most life or tied for most life, create a 1/1 white Vampire creature token with lifelink. | Whenever this creature attacks while you have the most life or are tied for most life, you draw a card and you lose 1 life.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Preacher of the Schism"
+    },
+    {
+      "id": "S-66242892-05",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: DRAW WHEN THINGS DIE, AND THREE TUTORS",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Preacher of the Schism",
+      "stage": "fuel"
+    },
+    {
+      "id": "S-66242892-06",
+      "kind": "context",
+      "text": "CONTEXT cards: Tithe Drinker, Viscera Seer, Preacher of the Schism, Welcoming Vampire, Twilight Prophet, Crossway Troublemakers, Yahenni, Undying Partisan, Master of Dark Rites, Cordial Vampire, Charismatic Conqueror, Morbid Opportu…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Preacher of the Schism"
+    },
+    {
+      "id": "S-66242892-07",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Preacher of the Schism → Champion of Dusk — Card 6 (2026-11-20, pilot approved; the doctor called it modest, the strategist would have stopped): the branch's nine draw cards are all one-per-event and it had no draw-X refuel, the shape of the losses in logs 001/002",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Preacher of the Schism",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-66242892-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Blood Artist (0.94), Enduring Tenacity (0.93), Sanctum Seeker (0.93)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Preacher of the Schism",
+      "neighbours": [
+        {
+          "name": "Blood Artist",
+          "score": 0.9405
+        },
+        {
+          "name": "Enduring Tenacity",
+          "score": 0.9336
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.9315
+        }
+      ]
+    },
+    {
+      "id": "S-66242892-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Preacher of the Schism",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-66242892-10",
+      "kind": "oracle",
+      "text": "Creature — Vampire Knight · {3}{B}{B} — When this creature enters, you draw X cards and you lose X life, where X is the number of Vampires you control.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Champion of Dusk"
+    },
+    {
+      "id": "S-66242892-11",
+      "kind": "log",
+      "text": "log 001 (2026-08-22, loss): “Tom countered Champion of Dusk when I was about to draw five off it and would happily have paid the five life; that was the refuel that would have closed the game.”",
+      "tier": "coach",
+      "source": "log.jsonl#001",
+      "card": "Champion of Dusk",
+      "as_of": "2026-08-22",
+      "game": "001"
+    },
+    {
+      "id": "S-66242892-12",
+      "kind": "card_read",
+      "text": "log 001: read under — countered before it resolved; the note calls it 'the refuel that would have closed the game' and says the pilot 'would happily have paid the five life'. The card was drawn and cast — it was answered, ",
+      "tier": "coach",
+      "source": "log_annotations.json#001",
+      "card": "Champion of Dusk",
+      "read": "under",
+      "game": "001"
+    },
+    {
+      "id": "S-66242892-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): Running out of cards is answered in the strong lists by Vampire-count burst draw, which the branch has none of. Champion of Dusk: 47.3% Upgraded (2,777), 50.0% Upgraded Aristocrats; Walser #12, it 'converts a massive board into a ton of car",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Champion of Dusk",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-66242892-14",
+      "kind": "price",
+      "text": "$0.17 NM ((LCC) 188) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Champion of Dusk",
+      "as_of": "2026-11-21",
+      "figure": 0.17
+    },
+    {
+      "id": "S-66242892-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Bloodtithe Harvester (0.86), Bloodletter of Aclazotz (0.80), Sanctum Seeker (0.80)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Champion of Dusk",
+      "neighbours": [
+        {
+          "name": "Bloodtithe Harvester",
+          "score": 0.8591
+        },
+        {
+          "name": "Bloodletter of Aclazotz",
+          "score": 0.7994
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.798
+        }
+      ]
+    },
+    {
+      "id": "S-66242892-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Champion of Dusk",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-66242892-17",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-66242892-18",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-66242892-19",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-66242892-20",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-66242892-21",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-66242892-22",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-66242892-23",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Preacher of the Schism",
+      "Champion of Dusk"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:18-08:00",
+    "facts": 23
+  }
+}

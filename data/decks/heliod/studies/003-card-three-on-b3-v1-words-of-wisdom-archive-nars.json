@@ -1,0 +1,741 @@
+{
+  "id": "003",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "Card three on b3-v1: Words of Wisdom, Archive, Narset or another draw piece — or no change?",
+  "opened": "2026-11-21",
+  "decided_at": "2026-11-21",
+  "cards": [
+    "Stroke of Genius",
+    "Leyline of Anticipation",
+    "Howling Mine",
+    "Isochron Scepter",
+    "Teferi's Ageless Insight",
+    "Bard, King of Dale"
+  ],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# b3-v1 card 3 — strategist, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nNO CHANGE. Protection at target; none of the candidates closes a gap better than its cut.\n- Weakest axis: what happens after a wrath / edict / Armageddon, which Concealment half covers; no single non-GC card fixes it; rule 1 (let it resolve with Tithe) is the piloting fix (strategy:multiplayer.commander-insurance, strategy:resource-hedging).\n- Words of Wisdom for Stroke: NO. Psychosis Crawler counts YOUR draws; Stroke at X is the scalable self-draw (X pings); Heliod's discount cheapens Stroke's X; Words is fixed and too small to kill with. Words only as an addition.\n- Archive for Leyline: NO. Heliod's flash is back-face only and rule 2 expects him removed; Leyline is free in an opener, gives Approach / Mathemagics / Prosperity / Fascination instant speed without Heliod (the 003 hand). Archive a fifth MV-5 artifact, a third doubler mattering only while the Crawler lives.\n- Mine / Dictate / Font: KEEP, on-plan (feed Rhystic, Tithe, discount, Scrawling tax every round; Dictate's flash best; Font the 6-card outlier). The liability — feeding a B4 table — is a table read, not a cut (strategy:card-advantage.plan-draw).\n- Isochron Scepter: a real card (12 imprints; Counterspell / Silence / Swords / Truce repeatable at {2}); no two-card infinite.\n- Runner-up: none this round. Dissent: slow cheap draw too small vs a B4 table; NO CHANGE leaves the Armageddon hole, which no non-GC card closes.\nOpen: stack scenario Mathemagics + Insight + Crawler; forge-cast-check Concealment; Stroke at an opponent vs at yourself under the discount — untested.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:multiplayer.commander-insurance",
+          "strategy:resource-hedging"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:38-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card3-strategist.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Draw doublers compound; Words of Wisdom; Leyline vs Heliod — rules-question, 2026-11-21 (saved by Jarvis)\n\n(a) Two doublers (Insight + Bard, or + Archive) COMPOUND: one would-be draw becomes four (614.5 — one opportunity each, but the second may replace the modified event; 616.1 affected player orders; rulings: Archive 2015-06-22 \"four times\", Bard 2026-06-29 \"multiplied by four\", Teferi's 2020-06-23). Insight's exception keeps the first draw-step draw single. Psychosis Crawler triggers per card (121.2; ruling 2011-06-01): \"draw two\" → 4 cards / 4 triggers under one doubler, 8 / 8 under two.\n(b) Words of Wisdom on an opponent's turn with Heliod out: you draw 4 under Insight (4 Crawler triggers); each other player draws 1 (not doubled — \"If YOU would draw\"); those 3 opponent draws count for Heliod's discount on any spell you cast later that turn (no \"my turn\" limit; 601.2f lock-in), trigger Tithe ×3 and Scrawling Crawler ×3. Your own draws never count for Heliod.\n(c) Leyline of Anticipation and Heliod's flash are redundant permissions (601.3, 702.8a); Leyline matters only while the back face is not on the battlefield.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "121.2",
+          "601.2f",
+          "601.3",
+          "614.5",
+          "616.1",
+          "702.8a"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:38-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card3-rules-doublers.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# b3-v1 card 3 — data-analyst facts, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nHeliod's discount is BACK FACE only (transform {3}{U/P}, sorcery speed); front face has none.\nDraw-step artifacts, extra draws per cycle (3 opponents): Mine 3 / Dictate 3 / Font 6 / all three 12 to opponents; to you 1/1/2/4 — Insight doubles every EXTRA draw (exempts only the normal first), so 2/2/4/8; your draw step 5 cards bare, 9 with Insight.\nX spells, generic portion the discount eats (N = opponent draws this turn): Prosperity {X}{U}; Fascination {X}{U}{U}; Zenith {X}{U}{U}{U}; Stroke {X}{2}{U}; Mathemagics {X}{X}{U}{U} draws 2^X; Folio {X}{X},T is an ability — no discount.\nMana to draw D to yourself at N=0/3/6: D=10 Prosperity 11/8/5, Stroke 13/10/7, Mathemagics X=4 (16) 10/7/4; D=20 Prosperity 21/18/15, Mathemagics X=5 (32) 12/9/6; D=40 Prosperity 41/38/35, Mathemagics X=6 (64) 14/11/8.\nPsychosis Crawler kill (40 of YOUR draw events): bare 40 → Mathemagics X=6 for 14/11/8 mana; Insight only 20 → Mathemagics X=5 for 12/9/6; Insight + Bard (both IN the branch; compounding now rules-confirmed 1→4) 10 → Mathemagics X=4 for 10/7/4, or Prosperity X=10 for 11/8/5 (also hands each opponent 10).\nStaged by the pilot 11-13: Psychosis Crawler (for Mind's Eye), Zenith (Braingeyser), Folio (Decanter), Fascination (Cut a Deal), Bard (Mystic Remora). Carried from v1.4.0: Leyline, Scepter, Mine, Dictate, Font, Stroke, Sapphire Medallion, Insight. Archive was cut in v1.4.0 (2026-09-20).\nStacks: Howling Mine ×3 in 002 only. Instants 19 / sorceries 9 (Leyline gives flash to the 9 sorceries: Approach, Austere Command, Fascination, Mathemagics, Personal Tutor, Prosperity, Solve the Equation, Supreme Verdict, Winds of Abandon).\nmana_analysis.json for the branch is NOT stamped to the current cards.json (stale since the Maneuver list): lands W19 U29, with rocks W23 U33 vs targets W22 U36; on-curve lands-only W .866 U .804. Refresh needs `mana-analysis heliod` for the branch (writes).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:38-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card3-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-21",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: card three for b3-v1 — the one in and one out, or NO CHANGE — weighing Words of Wisdom for Stroke of Genius, Alhammarret's Archive for Leyline of Anticipation, the draw-step trio (Howling Mine, Dictate of Kruphix, Font of Mythos), Isochron Scepter, and which axis is next weakest now that protection reads 5 (at, 5-7). Answer: NO CHANGE on the nonland slots. The audit on the branch (sha 7f98f262) reads under on four axes — colour-sources -3 (blue 33 of 36 sources), mana-base 35 against the control frame's 37-39, sweepers 2 against the frame's 5-7, interaction-breadth 4 of 5 (land) — and not one of the cards asked about touches any of them: Words and Archive add to card-advantage (15 against 10), Leyline is the deck's only flash source for permanent spells when Heliod is gone (log 001 and 003 are exactly that game), the trio is the discount's static supply (five opponent draws on each opponent's turn with all three out), and Scepter has twelve legal imprints in the branch and two on-thesis engines (Vision Skeins, Mystical Tutor), so it is a real card, not a leftover. The one measured gap a single card does close is in the land base — a 36th land that makes both colours — and that is a land-pass patch with its own instruments (mana-fit, mana-analysis), offered as the runner-up for the pilot to take or leave, never forced into card three.\n\nadd_candidates: [{\"card\": \"Fabled Passage\", \"closes\": \"colour-sources\", \"source\": \"pool\", \"why\": \"RUNNER-UP, as a 36th land, not a card-three swap. Of the four under-target axes, coloured sources is the one that is a card-count shortfall rather than a frame override (mana-base and sweepers are the control frame's bands; interaction-breadth's uncovered class is land, excluded by the pilot's rule): blue 33 of 36 on every instrument, white disputed between the audit's stale 22 and mana-fit's 36. mana-fit on the branch ranks lands that make BOTH colours first and lists Exotic Orchard, Evolving Wilds and Terramorphic Expanse as owned, then the fetches (Polluted Delta, Misty Rainforest, Fabled Passage, Windswept Heath, Scalding Tarn), and says no existing land is safe to cut on colour grounds — so the vehicle is a 36th land for a nonland, inside the pilot's 35-36 band. Fabled Passage is named because it fetches an Island or a Plains, is in print and not a Reserved List price; a true fetch is better on turns one to three, where Passage's basic enters tapped. Exotic Orchard's colours are a property of the table and Wilds/Expanse are a tempo tax. Land total: 35 → 36.\", \"evidence\": {\"combo_lines_opened\": []}, \"natural_cut\": \"Stroke of Genius\", \"citations\": [{\"rule\": \"strategy:deckbuilding.mana-base.color-sources\", \"quote\": \"his 99-card column assumes 40 lands, on the play, casting on curve, \\\"consistently\\\" ≈ 90%\"}]}, {\"card\": \"Settle the Wreckage\", \"closes\": \"sweepers\", \"source\": \"pool\", \"why\": \"Of t\n\ncut_candidates: [{\"card\": \"Stroke of Genius\", \"why\": \"Named only as the natural cut for Words of Wisdom or a 36th land; NOT recommended on its own. Of the branch's three targeted X draws it is the most generic-heavy ({X}{2}{U} against Zenith's {X}{U}{U}{U} and Mathemagics' {X}{X}{U}{U}), so Heliod's discount cheapens it most: six banked opponent draws make X=4 cost {U}.\", \"cost_of_cutting\": \"One of two instant-speed self-draws that turn Psychosis Crawler into a kill (Blue Sun's Zenith keeps the other at UUU), one Mystic Sanctuary target, and the deck's one X spell where the discount pays X at the cheapest rate. The card-two pass left the X-and-discount timing as an open stack question.\", \"orphans_stack\": [], \"difficulty\": \"contested\"}, {\"card\": \"Leyline of Anticipation\", \"why\": \"Named only as Alhammarret's Archive's natural cut; NOT recommended. The question was whether it is redundant with Heliod's back face. Enumerated from the branch's cards.json: three cards grant flash to spells — Heliod, the Warped Eclipse (all spells, command zone), Leyline (all spells, the 99), Teferi, Time Raveler (+1: sorceries only, until your next turn). Leyline is the only card in the 99 that gives a permanent spell flash when Heliod is gone or still on his front face.\", \"cost_of_cutting\": \"Every end-step Rhystic Study, Smothering Tithe, Propaganda, Crawler and Bard becomes sorcery-speed the moment Heliod leaves — which is two of three logged games (001 removed in a stack war, 003 removed after the Armageddon co",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.mana-base.color-sources"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:38-08:00",
+      "from": "data/decks/heliod/.agent-out/deck-doctor-prescribe-b3-v1-card3.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "rules-question",
+      "data-analyst"
+    ],
+    "pilot_words": "yup... and a last pass to tighten up the mana please",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-three-on-b3-v1-words-of-wisdom-archive-nars",
+  "facts": [
+    {
+      "id": "S-cd4f522c-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-cd4f522c-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-cd4f522c-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-cd4f522c-04",
+      "kind": "oracle",
+      "text": "Instant · {X}{2}{U} — Target player draws X cards.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Stroke of Genius"
+    },
+    {
+      "id": "S-cd4f522c-05",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: YOUR OWN CARDS, AND TWO ROUTES TO THE WIN",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Stroke of Genius",
+      "stage": "fuel",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-cd4f522c-06",
+      "kind": "context",
+      "text": "CONTEXT cards: Approach of the Second Sun, Long-Term Plans, Mystical Tutor, Enlightened Tutor, Drift of Phantasms, Braingeyser, Stroke of Genius, Mathemagics, Walking Ballista",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Stroke of Genius"
+    },
+    {
+      "id": "S-cd4f522c-07",
+      "kind": "context",
+      "text": "CONTEXT cards: Dig Through Time, Archmage's Charm, Braingeyser, Stroke of Genius, Mathemagics, Mind Stone",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Stroke of Genius"
+    },
+    {
+      "id": "S-cd4f522c-08",
+      "kind": "recon",
+      "text": "recon (2026-11-21): The forced-draw kill's arithmetic, derived here from oracle text (no fetched source states it; status 'needs a stack scenario' for the doubling interaction). Psychosis Crawler drains each opponent 1 per card YOU draw, so three opponents at ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Stroke of Genius",
+      "as_of": "2026-11-21",
+      "confidence": "one source"
+    },
+    {
+      "id": "S-cd4f522c-09",
+      "kind": "price",
+      "text": "$0.34 NM ((C15) 108) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Stroke of Genius",
+      "as_of": "2026-11-21",
+      "figure": 0.34
+    },
+    {
+      "id": "S-cd4f522c-10",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Braingeyser (0.98), Mathemagics (0.96), Teferi's Ageless Insight (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Stroke of Genius",
+      "neighbours": [
+        {
+          "name": "Braingeyser",
+          "score": 0.9788
+        },
+        {
+          "name": "Mathemagics",
+          "score": 0.9627
+        },
+        {
+          "name": "Teferi's Ageless Insight",
+          "score": 0.9097
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-11",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Stroke of Genius",
+      "state": "seen",
+      "channels": [
+        "draw",
+        "target"
+      ]
+    },
+    {
+      "id": "S-cd4f522c-12",
+      "kind": "oracle",
+      "text": "Enchantment · {2}{U}{U} — If this card is in your opening hand, you may begin the game with it on the battlefield. | You may cast spells as though they had flash.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Leyline of Anticipation"
+    },
+    {
+      "id": "S-cd4f522c-13",
+      "kind": "engine_stage",
+      "text": "engine stage protection: TWENTY-FIVE CARDS BUYING TURNS FOR A SEVEN-DROP",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Leyline of Anticipation",
+      "stage": "protection",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-cd4f522c-14",
+      "kind": "context",
+      "text": "CONTEXT cards: Howling Mine, Kami of the Crescent Moon, Font of Mythos, Dictate of Kruphix, Temple Bell, Mikokoro, Center of the Sea, Kwain, Itinerant Meddler, Horn of Greed, The Second Doctor, Prosperity, Skyscribing, Scrawling Cra…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Leyline of Anticipation"
+    },
+    {
+      "id": "S-cd4f522c-15",
+      "kind": "recon",
+      "text": "recon (2026-11-21): Group-hug payoffs and fort: the branch matches the consensus on the punishers and the fort and is alone on the doublers. Psychosis Crawler 62.0%, Scrawling Crawler 58.5%, Faerie Mastermind 43.7%, Smothering Tithe 46.8%, Dictate of Kruphix 3",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Leyline of Anticipation",
+      "as_of": "2026-11-21",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-cd4f522c-16",
+      "kind": "price",
+      "text": "$4.63 NM ((CLB) 726) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Leyline of Anticipation",
+      "as_of": "2026-11-21",
+      "figure": 4.63
+    },
+    {
+      "id": "S-cd4f522c-17",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Dictate of Kruphix (0.92), Dig Through Time (0.91), Braingeyser (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Leyline of Anticipation",
+      "neighbours": [
+        {
+          "name": "Dictate of Kruphix",
+          "score": 0.9176
+        },
+        {
+          "name": "Dig Through Time",
+          "score": 0.9138
+        },
+        {
+          "name": "Braingeyser",
+          "score": 0.9064
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-18",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Leyline of Anticipation",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-cd4f522c-19",
+      "kind": "oracle",
+      "text": "Artifact · {2} — At the beginning of each player's draw step, if this artifact is untapped, that player draws an additional card.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Howling Mine"
+    },
+    {
+      "id": "S-cd4f522c-20",
+      "kind": "stack",
+      "text": "stack 002 — Approach of the Second Sun, second cast off Mystical Tutor (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Howling Mine",
+      "stack": "002"
+    },
+    {
+      "id": "S-cd4f522c-21",
+      "kind": "engine_stage",
+      "text": "engine stage ignition: THE GIFT -- THE TABLE HAS TO BE DRAWING",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Howling Mine",
+      "stage": "ignition",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-cd4f522c-22",
+      "kind": "context",
+      "text": "CONTEXT plays: **Set the table drawing.** Cheap draw-for-everyone permanents go down early: Howling Mine, Kami of the Crescent Moon, Font of Mythos, Dictate of Kruphix, Temple Bell, Kwain, Itinerant Meddler.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Howling Mine"
+    },
+    {
+      "id": "S-cd4f522c-23",
+      "kind": "context",
+      "text": "CONTEXT cards: Howling Mine, Kami of the Crescent Moon, Font of Mythos, Dictate of Kruphix, Temple Bell, Mikokoro, Center of the Sea, Kwain, Itinerant Meddler, Horn of Greed, The Second Doctor, Prosperity, Skyscribing, Scrawling Cra…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Howling Mine"
+    },
+    {
+      "id": "S-cd4f522c-24",
+      "kind": "price",
+      "text": "$73.85 NM ((30A) 244) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Howling Mine",
+      "as_of": "2026-11-21",
+      "figure": 73.85
+    },
+    {
+      "id": "S-cd4f522c-25",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Font of Mythos (0.98), Horn of Greed (0.95), Temple Bell (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Howling Mine",
+      "neighbours": [
+        {
+          "name": "Font of Mythos",
+          "score": 0.9764
+        },
+        {
+          "name": "Horn of Greed",
+          "score": 0.9481
+        },
+        {
+          "name": "Temple Bell",
+          "score": 0.948
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-26",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Howling Mine",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-cd4f522c-27",
+      "kind": "oracle",
+      "text": "Artifact · {2} — Imprint — When this artifact enters, you may exile an instant card with mana value 2 or less from your hand. | {2}, {T}: You may copy the exiled card. If you do, you may cast the copy without paying its mana cost.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Isochron Scepter"
+    },
+    {
+      "id": "S-cd4f522c-28",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: YOUR OWN CARDS, AND TWO ROUTES TO THE WIN",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Isochron Scepter",
+      "stage": "fuel",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-cd4f522c-29",
+      "kind": "context",
+      "text": "CONTEXT cards: Counterspell, Arcane Denial, An Offer You Can't Refuse, Dovin's Veto, Swan Song, Force of Negation, Fierce Guardianship, Archmage's Charm, Isochron Scepter",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Isochron Scepter"
+    },
+    {
+      "id": "S-cd4f522c-30",
+      "kind": "recon",
+      "text": "recon (2026-11-21): Two-card infinites: none in the branch, by two independent checks, and three popular consensus cards would create one. The bench's Spellbook snapshot (114,443 variants, 2026-10-10) finds zero two-card infinites in the branch and two three-c",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Isochron Scepter",
+      "as_of": "2026-11-21",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-cd4f522c-31",
+      "kind": "decision",
+      "text": "decision 002 propose `artifacts-v1` (2026-09-16): three owned generic-cost artifacts that the flipped Heliod casts for free, for three cards the doctor had already named as cuts: Isochron Scepter for Mikaeus (t",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Isochron Scepter",
+      "as_of": "2026-09-16"
+    },
+    {
+      "id": "S-cd4f522c-32",
+      "kind": "price",
+      "text": "$9.47 NM ((2XM) 264) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Isochron Scepter",
+      "as_of": "2026-11-21",
+      "figure": 9.47
+    },
+    {
+      "id": "S-cd4f522c-33",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Loran of the Third Path (0.88), Mind Stone (0.86), Kwain, Itinerant Meddler (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Isochron Scepter",
+      "neighbours": [
+        {
+          "name": "Loran of the Third Path",
+          "score": 0.8789
+        },
+        {
+          "name": "Mind Stone",
+          "score": 0.859
+        },
+        {
+          "name": "Kwain, Itinerant Meddler",
+          "score": 0.8567
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-34",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Isochron Scepter",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-cd4f522c-35",
+      "kind": "oracle",
+      "text": "Legendary Enchantment · {2}{U}{U} — If you would draw a card except the first one you draw in each of your draw steps, draw two cards instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Teferi's Ageless Insight"
+    },
+    {
+      "id": "S-cd4f522c-36",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: YOUR OWN CARDS, AND TWO ROUTES TO THE WIN",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Teferi's Ageless Insight",
+      "stage": "fuel",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-cd4f522c-37",
+      "kind": "context",
+      "text": "CONTEXT cards: Rhystic Study, Mystic Remora, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Gleaming Splendor, Teferi's Ageless Insight, Psychosis Crawler, Kefnet the Mindful",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Teferi's Ageless Insight"
+    },
+    {
+      "id": "S-cd4f522c-38",
+      "kind": "price",
+      "text": "$4.20 NM ((MKC) 119) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Teferi's Ageless Insight",
+      "as_of": "2026-11-21",
+      "figure": 4.2
+    },
+    {
+      "id": "S-cd4f522c-39",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Howling Mine (0.95), Dictate of Kruphix (0.94), Font of Mythos (0.93)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Teferi's Ageless Insight",
+      "neighbours": [
+        {
+          "name": "Howling Mine",
+          "score": 0.9452
+        },
+        {
+          "name": "Dictate of Kruphix",
+          "score": 0.9445
+        },
+        {
+          "name": "Font of Mythos",
+          "score": 0.9306
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-40",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Teferi's Ageless Insight",
+      "state": "seen",
+      "channels": [
+        "draw",
+        "target"
+      ]
+    },
+    {
+      "id": "S-cd4f522c-41",
+      "kind": "oracle",
+      "text": "Legendary Creature — Human Noble Archer · {4}{W}{U} — Reach, vigilance | If you would draw a card except the first one you draw in each of your draw steps, draw two cards instead. | If one or more tokens would be created under your control, twice that many of those tokens are created instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Bard, King of Dale"
+    },
+    {
+      "id": "S-cd4f522c-42",
+      "kind": "context",
+      "text": "CONTEXT pilot: - **Two three-card infinites on Smothering Tithe:** Bard, King of Dale with Gleaming Splendor, and Faerie Mastermind with Mirrormade.",
+      "tier": "coach",
+      "source": "CONTEXT.md#pilot",
+      "card": "Bard, King of Dale"
+    },
+    {
+      "id": "S-cd4f522c-43",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Mystic Remora → Bard, King of Dale — pilot 2026-11-13: doubles every draw outside the draw step (with Ageless Insight, each becomes four) and completes the three-card Bard + Gleaming Splendor + Smothering Tithe infinite; Remora fades by turn four or five",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Bard, King of Dale",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-cd4f522c-44",
+      "kind": "price",
+      "text": "$3.12 NM ((HOB) 144) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Bard, King of Dale",
+      "as_of": "2026-11-21",
+      "figure": 3.12
+    },
+    {
+      "id": "S-cd4f522c-45",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: The Second Doctor (0.92), Rhystic Study (0.90), Howling Mine (0.89)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Bard, King of Dale",
+      "neighbours": [
+        {
+          "name": "The Second Doctor",
+          "score": 0.9196
+        },
+        {
+          "name": "Rhystic Study",
+          "score": 0.9037
+        },
+        {
+          "name": "Howling Mine",
+          "score": 0.8931
+        }
+      ]
+    },
+    {
+      "id": "S-cd4f522c-46",
+      "kind": "coverage",
+      "text": "goldfish: dark (channels off: treasure)",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Bard, King of Dale",
+      "state": "dark",
+      "channels": [
+        "bodies",
+        "combat",
+        "draw"
+      ]
+    },
+    {
+      "id": "S-cd4f522c-47",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 6 named card(s) read: 2 rows better, 4 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.333,
+      "n": 10000
+    },
+    {
+      "id": "S-cd4f522c-48",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 7.10 -> 4.31, a change of -2.79 (-39%) [-2.8876, -2.6836] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.7856,
+      "ci95": [
+        -2.8876,
+        -2.6836
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-cd4f522c-49",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 16 games in 100 -> 5 in 100, a swing of 11 games per 100 [-0.1152, -0.1002] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.1077,
+      "ci95": [
+        -0.1152,
+        -0.1002
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-cd4f522c-50",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 3.29 -> 1.94, a change of -1.35 (-41%) [-1.4108, -1.2956] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3532,
+      "ci95": [
+        -1.4108,
+        -1.2956
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-cd4f522c-51",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 3.00 -> 2.53, a change of -0.48 (-16%) [-0.5434, -0.4116] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4775,
+      "ci95": [
+        -0.5434,
+        -0.4116
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-cd4f522c-52",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 54 games in 100 -> 48 in 100, a swing of 6 games per 100 [-0.069, -0.0468] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0579,
+      "ci95": [
+        -0.069,
+        -0.0468
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-cd4f522c-53",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 6,
+    "seen": [
+      "Stroke of Genius",
+      "Teferi's Ageless Insight"
+    ],
+    "partial": [],
+    "dark": [
+      "Bard, King of Dale"
+    ],
+    "invisible": [
+      "Leyline of Anticipation",
+      "Howling Mine",
+      "Isochron Scepter"
+    ],
+    "unknown": [],
+    "share": 0.333
+  },
+  "absent": [],
+  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:39-08:00",
+    "facts": 53
+  }
+}

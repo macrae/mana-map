@@ -1,0 +1,387 @@
+{
+  "id": "001",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card one on threat-v1: the research pass — steady, board-independent draw that survives a wipe?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Midnight Reaper",
+    "Black Market Connections"
+  ],
+  "swap": {
+    "out": "Midnight Reaper",
+    "in": "Black Market Connections"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: of twenty-six researched cards, the ONE best upgrade to threat-v1 and the card it replaces. The answer is Black Market Connections for Midnight Reaper. The log's two loss shapes are wipes (001, 002, 006, cause `wipe` x3) and an empty hand by turns 8-10 (001, 002, 003, 006 — 'it is not a new finding, it is the finding, again'); the one win (008) was tokens converting through Blood Artist, Wispdrinker and Ashnod's Altar. The branch already closed the axes the other candidates aim at: by card_roles.json its 99 carries 11 removal-role cards (Anguished Unmaking, Boros Charm, Crackling Doom, Elspeth, Erebos, Liliana, Swords to Plowshares, The Meathook Massacre, Toxic Deluge, Vanishing Verse, Vish Kal), 2 sweepers and 7 protection-role cards (Akroma's Will, Boros Charm, Erebos, Giver of Runes, Selfless Spirit, Teferi's Protection, Yahenni), so Lethal Scheme, Damn, Winds, Everything Comes to Dust, Patron, Guardian of Faith and Clever Concealment close no measured gap. What the branch did NOT close is draw SHAPE. I enumerated every draw source among the 64 non-lands: Caretaker's Talent (a token enters), Welcoming Vampire (a power-2-or-less creature enters), Skullclamp (the equipped creature dies), Liliana (a creature dies), Morbid Opportunist (a creature dies), Erebos (a creature dies, 2 life), Crossway Troublemakers (an attacking Vampire dies), Midnight Reaper (a NONTOKEN creature dies), Twilight Prophet (upkeep, once ascended — on a body), Bloodtithe Harvester and Anje (Blood tokens: a rummage, not a card), and three tutors (selection, not advantage). Every one of them is on-plan or on a creature; the only board-independent draw left in the branch is a land, Castle Locthwain, because the branch traded Phyrexian Arena for Skullclamp. That is exactly the stacked shape strategy:card-advantage.plan-draw says empties a hand at turn 7-8, and it fails hardest in the state the log keeps recording: after a wipe, with nothing to cast. Black Market Connections is the one candidate that is steady draw AND rebuilds the fuel: each first main phase a card, a Treasure, and a 3/2 changeling token — a Vampire body that enters (Elas gains 1, so Vito, Sanguine Bond, Enduring Tenacity and Blight-Priest drain; Caretaker's Talent and Anje trigger) and then dies to any of the branch's eight outlets into eight each-opponent death drains. It is an enchantment, so the wipe that kills the fodder leaves it; it needs no Edgar; the life it costs is the resource the drain engine refunds. The taxonomy files it ramp:treasure/threat:tokens, so the audit's card-advantage count will not move — the oracle text does the job the count cannot see. Midnight Reaper is the cut because the branch has already ruled on its shape: Grim Haruspex was cut on 2026-11-13 because it 'draws only on nontoken deaths', and Reaper reads the same clause while also costing a life per card; the deck's deaths are tokens, which Reaper never sees. It is also a cheap non-Vampire — 'a cheap non-Vampire is only a body' is the thesis's own words. Not the goldfish: the pilot ruled it out, and no goldfish figure appears here.\n\nadd_candidates: [{\"card\": \"Black Market Connections\", \"closes\": \"the draw axis by shape — the branch's only steady, board-independent, wipe-proof card advantage (card-advantage by oracle text; the taxonomy files it ramp:treasure/threat:tokens, so the audit count will not move)\", \"source\": \"prompt\", \"why\": \"Rank 1. Three mana, enchantment. Each of your first main phases: draw a card (2 life), a Treasure (1 life), a 3/2 changeling token (3 life) — modes chosen each turn. The card is the steady draw the branch lost when Phyrexian Arena became Skullclamp; the token is a Vampire body that arrives every turn, triggering Elas (gain 1 → Vito, Sanguine Bond, Enduring Tenacity, Blight-Priest each drain), Caretaker's Talent and Anje, and then dies to any of eight outlets into eight each-opponent death drains and Skullclamp; the Treasure recasts after a wipe and is Plunderer-style artifact fodder for Deadly Dispute-shaped effects. It needs no Edgar, survives every creature wipe, and the life it costs is the resource the engine refunds (log 002: 'I gained 11'). It is a Vampire on the battlefield, not a Vampire spell — no eminence token, say so plainly. Power 3, so Wispdrinker and Welcoming Vampire do not see it. Recon (as_of 2026-09-30) files it as an upkeep draw engine at 145/484 Lifedrain lists; EDHREC's Edgar page lists it under enchantments for base, aristocrats and lifedrain. Not a Game Changer; the floor stays 3 and the two-card-infinite count stays 0 (bracket_mod.assess). History the orchestrator \n\ncut_candidates: [{\"card\": \"Midnight Reaper\", \"why\": \"Its draw reads 'nontoken creature you control dies' — the branch's deaths are eminence tokens, Conqueror tokens, Bloodline Keeper tokens, Elenda's tokens and Bastion's Human, none of which Reaper sees. The branch cut Grim Haruspex on 2026-11-13 for exactly this clause; Reaper has the same clause plus a life per card. It is a 3-mana non-Vampire, so it casts without an eminence token, and it is a creature, so it dies in the wipe it is meant to insure.\", \"cost_of_cutting\": \"The branch's one death-draw that pays in a creature wipe: with Reaper out when a wrath resolves, each nontoken creature of the roughly forty creatures on the branch that dies alongside it is a card (Reaper sees itself and the others leave together). That is a real rebuild in the exact loss shape the log records, and it is the reason this is contested rather than easy. It leaves with no checker-passed stack behind it (stacks_naming: none).\", \"orphans_stack\": [], \"difficulty\": \"contested\", \"citations\": [{\"rule\": \"strategy:aristocrats.wipe-insurance\", \"quote\": \"The four shapes differ on what counts. Midnight Reaper and Grim Haruspex read nontoken creatures (Haruspex only yours, Reaper a life per card)\"}]}, {\"card\": \"Cordial Vampire\", \"why\": \"The alternative cut, and the card log 006 describes: '+1/+1 counter on each Vampire you control' whenever a creature dies — combat value in a non-combat thesis, and the pilot's own words were 'generic every-vampire-gets-+1/+1-when-a-creat",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:card-advantage.plan-draw"
+        ],
+        "rules": [
+          "145",
+          "484"
+        ]
+      },
+      "added_at": "2026-11-21T22:03:55-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-threat-v1.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "log"
+    ],
+    "pilot_words": "approved, write it to threat-v1 and go to card two",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-one-on-threat-v1-the-research-pass-steady-b",
+  "facts": [
+    {
+      "id": "S-f7c62b08-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-f7c62b08-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-f7c62b08-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f7c62b08-04",
+      "kind": "oracle",
+      "text": "Creature — Zombie Knight · {2}{B} — Whenever a nontoken creature you control dies, this creature deals 1 damage to you and you draw a card.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Midnight Reaper"
+    },
+    {
+      "id": "S-f7c62b08-05",
+      "kind": "engine_stage",
+      "text": "engine stage fuel: DRAW WHEN THINGS DIE, AND THREE TUTORS",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Midnight Reaper",
+      "stage": "fuel"
+    },
+    {
+      "id": "S-f7c62b08-06",
+      "kind": "context",
+      "text": "CONTEXT plays: Midnight Reaper draws a card when one of the pilot's nontoken creatures dies, and Grim Haruspex does the same for the nontoken creatures that were not born here.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Midnight Reaper"
+    },
+    {
+      "id": "S-f7c62b08-07",
+      "kind": "context",
+      "text": "CONTEXT plays: The death-draw cards (Liliana, Dreadhorde General, Welcoming Vampire, Morbid Opportunist, Clavileño, First of the Blessed, Midnight Reaper, Grim Haruspex) are the fix the pilot prefers.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Midnight Reaper"
+    },
+    {
+      "id": "S-f7c62b08-08",
+      "kind": "context",
+      "text": "CONTEXT cards: Kalitas, Traitor of Ghet, Midnight Reaper, Grim Haruspex, Morbid Opportunist, Clavileño, First of the Blessed, Liliana, Dreadhorde General, Welcoming Vampire, Cordial Vampire, Vraan, Executioner Thane, Vein Ripper",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Midnight Reaper"
+    },
+    {
+      "id": "S-f7c62b08-09",
+      "kind": "context",
+      "text": "CONTEXT cards: Liliana, Dreadhorde General, Phyrexian Arena, Caretaker's Talent, Welcoming Vampire, Twilight Prophet, Morbid Opportunist, Clavileño, First of the Blessed, Midnight Reaper, Grim Haruspex",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Midnight Reaper"
+    },
+    {
+      "id": "S-f7c62b08-10",
+      "kind": "queue",
+      "text": "Q039 KILLED: Filling the two slots freed by the Q037 cut (Exquisite Blood, Bloodthirsty Conqueror) and the Enlightened Tutor slot with Midnight Reaper, Kalitas, Traitor of G",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Midnight Reaper",
+      "as_of": "2026-11-12",
+      "queue_id": "Q039"
+    },
+    {
+      "id": "S-f7c62b08-11",
+      "kind": "decision",
+      "text": "decision 019 propose `bracket3-v1` (2026-11-10): Edgar brought to bracket 3: the eight two-card infinites go (Bloodthirsty Conqueror, Exquisite Blood), Ancient Tomb and Enlightened Tutor leave the Game Changer",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Midnight Reaper",
+      "as_of": "2026-11-10"
+    },
+    {
+      "id": "S-f7c62b08-12",
+      "kind": "decision",
+      "text": "decision 020 merge `bracket3-v1` (2026-11-10)",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Midnight Reaper",
+      "as_of": "2026-11-10"
+    },
+    {
+      "id": "S-f7c62b08-13",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Midnight Reaper → Black Market Connections — Pilot approved 2026-11-20 (card 1 of the research pass): steady, board-independent draw that survives a wipe — the loss shape in logs 001/002/003/006 was a wipe then an empty hand by T8-10; every other draw source on the",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Midnight Reaper",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f7c62b08-14",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Grim Haruspex (0.95), Crossway Troublemakers (0.92), Morbid Opportunist (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Midnight Reaper",
+      "neighbours": [
+        {
+          "name": "Grim Haruspex",
+          "score": 0.946
+        },
+        {
+          "name": "Crossway Troublemakers",
+          "score": 0.9215
+        },
+        {
+          "name": "Morbid Opportunist",
+          "score": 0.913
+        }
+      ]
+    },
+    {
+      "id": "S-f7c62b08-15",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Midnight Reaper",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "sacrifice"
+      ]
+    },
+    {
+      "id": "S-f7c62b08-16",
+      "kind": "oracle",
+      "text": "Enchantment · {2}{B} — At the beginning of your first main phase, choose one or more — | • Sell Contraband — Create a Treasure token. You lose 1 life. | • Buy Information — Draw a card. You lose 2 life. | • Hire a Mercenary — Create a 3/2 colorless Shapeshifter creature token with changeling. You lose 3 life. (It is every",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Black Market Connections"
+    },
+    {
+      "id": "S-f7c62b08-17",
+      "kind": "recon",
+      "text": "recon (2026-11-20): The pilot's remaining weighed cards, with what the strong lists say — which is mostly a number and no prose. Shared Animosity 38.7% Upgraded (2,275), 36.8% Upgraded Aristocrats, in the average 99 and Nerd Leagues' combat win conditions ('a ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Black Market Connections",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-f7c62b08-18",
+      "kind": "price",
+      "text": "$14.05 NM ((MSC) 155) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Black Market Connections",
+      "as_of": "2026-11-21",
+      "figure": 14.05
+    },
+    {
+      "id": "S-f7c62b08-19",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Preacher of the Schism (0.78), Enduring Tenacity (0.78), Anje, Maid of Dishonor (0.78)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Black Market Connections",
+      "neighbours": [
+        {
+          "name": "Preacher of the Schism",
+          "score": 0.7842
+        },
+        {
+          "name": "Enduring Tenacity",
+          "score": 0.7818
+        },
+        {
+          "name": "Anje, Maid of Dishonor",
+          "score": 0.776
+        }
+      ]
+    },
+    {
+      "id": "S-f7c62b08-20",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Black Market Connections",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-f7c62b08-21",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-f7c62b08-22",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f7c62b08-23",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f7c62b08-24",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f7c62b08-25",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f7c62b08-26",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-f7c62b08-27",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Midnight Reaper",
+      "Black Market Connections"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:03:58-08:00",
+    "facts": 27
+  }
+}

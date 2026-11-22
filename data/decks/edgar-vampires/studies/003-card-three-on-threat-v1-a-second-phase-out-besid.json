@@ -1,0 +1,385 @@
+{
+  "id": "003",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card three on threat-v1: a second phase-out beside Teferi's Protection — Clever Concealment for Akroma's Will?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Akroma's Will",
+    "Clever Concealment"
+  ],
+  "swap": {
+    "out": "Akroma's Will",
+    "in": "Clever Concealment"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 3 on threat-v1 — strategist, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nRecommendation: Clever Concealment in, Boros Charm out. Keep Akroma's Will. Argument (★) unless marked evidence. No goldfish figures.\n\n1. Rank. Concealment is the right card 3.\n- Evidence: wipes ended games 001, 002 and 006; hand empty by turns 7-10.\n- strategy:resource-hedging.wrath-math (\"assume the wrath\", buy resilience instead of restraint); strategy:multiplayer.commander-insurance (constant protection \"useless against wraths\"; a single-use instant \"can cover the board\"). Concealment is the second kind and convoke means no held mana.\n- The doctor's shape count holds: Teferi's Protection is the only phase-out; the rest is indestructible/protection-from-colour, which the list's own Toxic Deluge and Meathook beat.\n- Next: Lethal Scheme for Olivia Voldaren (removal 6 vs norm 8-10; Olivia is a Vampire and a repeatable ping engine, a real trade). Then Pact of the Serpent. Roaming Throne, Idol of Oblivion, Champion of Dusk lower.\n- Sanctum Seeker is not in the branch; restoring it is a separate swap with its own cut.\n\n2. Cut. Boros Charm is the weakest slot.\n- Its indestructible mode is the shape Concealment replaces; its burn mode is 4 to one player; no draw.\n- Akroma's Will is the better card: lifelink flying double-strike alpha pairs with Vito, Sanguine Bond, Enduring Tenacity, Blight-Priest. The Edgar gating is a cost, not a reason to cut the finisher.\n- Selfless Spirit is a poor cut: a body that feeds sacrifice and drain triggers, works without Edgar; body count is the rebuild's fuel (strategy:sixty-card.threat-density).\n\n3. How strong Edgar lists handle wipes.\n- Evidence (recon): Teferi's Protection 30.9%, Boros Charm 29.3%, Akroma's Will 23.1%, Clever Concealment 11%; Walser: phasing counters sweepers and bounce.\n- strategy:aristocrats.wipe-insurance: protection plus a rebuild package. The branch has the rebuild: Haruspex, Opportunist, Welcoming Vampire, Liliana. Furtado (strategy:deckbuilding.typal-density.lord-exposure): the Edgar deck \"can get back online pretty quickly after one\".\n- Caveats: phasing returns at your untap, so the board is exposed again for a turn; a phased board cannot block or drain, so Concealment answers a wipe, it does not keep winning.\n- Teferi's Protection stays (covers life, already a Game Changer).\n\n4. Finisher loss.\n- Keeping the Will: almost nothing changes. Bloodwitch is a drain-and-gain body, not an alpha; she does not replace the Will's lifelink swing.\n- Cutting Boros Charm costs a little burn reach.\n\nOpen gaps: no strategy section on phasing vs wipe timing; no companion section on removal-count norms per commander (6 vs 8-10 has no citation).\n\nRan: context --slice summary plays; query-strategy ×5; deck-notes list; grep on the branch decklist and protected.json.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:deckbuilding.typal-density.lord-exposure",
+          "strategy:multiplayer.commander-insurance",
+          "strategy:resource-hedging.wrath-math",
+          "strategy:sixty-card.threat-density"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:04-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/strategist-threat-v1-card3.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Clever Concealment phasing — rules-question agent, 2026-11-20 (saved by Jarvis; the agent cannot write files)\n\nSingle interaction only. The full Rift/Deluge stack needs /resolve-stack.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:04-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/rules-clever-concealment.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Rules quoted\n- 702.26d: \"Tokens continue to exist on the battlefield while phased out.\" Ruling 2023-02-04: \"Permanents phase back in during their controller's untap step, immediately before that player untaps their permanents.\"\n- 702.26g: \"When a permanent phases out, any Auras, Equipment, or Fortifications attached to that permanent phase out at the same time… An Aura, Equipment, or Fortification that phased out indirectly won't phase in by itself, but instead phases in along with the permanent it's attached to.\"\n- 702.26b: \"a phased-out permanent is treated as though it does not exist. It can't affect or be affected by anything else in the game.\" Ruling 2023-02-04: \"their triggered abilities can't trigger.\" Example under 702.26b: \"You control a phased-out creature. You cast a spell that says 'Destroy all creatures.' The phased-out creature is not destroyed.\"\n- 702.26a: \"During each player's untap step, before the active player untaps permanents, all phased-in permanents with phasing that player controls 'phase out.' Simultaneously, all phased-out permanents that had phased out under that player's control 'phase in.'\" 502.1: \"This turn-based action doesn't use the stack.\"\n- 702.51a (convoke): \"…you may tap an untapped creature of that color you control rather than pay that mana… For each generic mana… you may tap an untapped creature you control…\" 302.6 reaches only tap abilities and attacking, not convoke. Ruling 2024-01-12: \"You can tap any untapped creature you control to convoke a spell, even one you haven't controlled continuously since the beginning of your most recent turn.\"\n- Clever Concealment oracle: \"Convoke… Any number of target nonland permanents you control phase out. (Treat them and anything attached to them as though they don't exist until your next turn.)\"",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "302.6",
+          "502.1",
+          "702.26a",
+          "702.26b",
+          "702.26d",
+          "702.26g",
+          "702.51a"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:04-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/rules-clever-concealment.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Opponents' mass removal by shape — data-analyst, 2026-11-20 (saved by Jarvis; the agent is read-only)\n\nSource: data/opponents/<seat>/decklist.txt (22 seats) joined to card_pool.corpus_oracle(). Facts only.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:04-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/data-analyst-opponent-wipes.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "rules-question",
+      "data-analyst"
+    ],
+    "pilot_words": "approved!",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-three-on-threat-v1-a-second-phase-out-besid",
+  "facts": [
+    {
+      "id": "S-6c6506c2-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-6c6506c2-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-6c6506c2-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-6c6506c2-04",
+      "kind": "oracle",
+      "text": "Instant · {3}{W} — Choose one. If you control a commander as you cast this spell, you may choose both instead. | • Creatures you control gain flying, vigilance, and double strike until end of turn. | • Creatures you control gain lifelink, indestructible, and protection from each color until end of turn.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Akroma's Will"
+    },
+    {
+      "id": "S-6c6506c2-05",
+      "kind": "engine_stage",
+      "text": "engine stage protection: FOUR HELD, THREE OF THEM FREE OR DOUBLED WITH EDGAR OUT",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Akroma's Will",
+      "stage": "protection"
+    },
+    {
+      "id": "S-6c6506c2-06",
+      "kind": "context",
+      "text": "CONTEXT cards: Akroma's Will, Flawless Maneuver, Teferi's Protection, Deflecting Swat, Charismatic Conqueror",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Akroma's Will"
+    },
+    {
+      "id": "S-6c6506c2-07",
+      "kind": "recon",
+      "text": "recon (2026-11-20): On protection the branch is already above consensus, not below it. Bracket-3 lists run two or three: Teferi's Protection 30.9% (1,815), Boros Charm 29.3% (1,721), Akroma's Will 23.1% (1,355), and the average bracket-3 aristocrats 99 carries",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Akroma's Will",
+      "as_of": "2026-11-20",
+      "confidence": "contested"
+    },
+    {
+      "id": "S-6c6506c2-08",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Akroma's Will → Clever Concealment — Card 3 (2026-11-20, pilot approved): the branch's second phase-out beside Teferi's Protection — the one shape that beats the sacrifice, -X/-X, bounce and exile wipes (a third of the 60 across the 22 opponent seats) that ",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Akroma's Will",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-6c6506c2-09",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Flawless Maneuver (0.90), Teferi's Protection (0.88), Vein Ripper (0.77)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Akroma's Will",
+      "neighbours": [
+        {
+          "name": "Flawless Maneuver",
+          "score": 0.9043
+        },
+        {
+          "name": "Teferi's Protection",
+          "score": 0.8825
+        },
+        {
+          "name": "Vein Ripper",
+          "score": 0.7667
+        }
+      ]
+    },
+    {
+      "id": "S-6c6506c2-10",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Akroma's Will",
+      "state": "seen",
+      "channels": [
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-6c6506c2-11",
+      "kind": "oracle",
+      "text": "Instant · {2}{W}{W} — Convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.) | Any number of target nonland permanents you control phase out. (Treat them and anything attached to them as though they don't exist until your next t",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Clever Concealment"
+    },
+    {
+      "id": "S-6c6506c2-12",
+      "kind": "price",
+      "text": "$3.87 NM ((MSC) 125) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Clever Concealment",
+      "as_of": "2026-11-21",
+      "figure": 3.87
+    },
+    {
+      "id": "S-6c6506c2-13",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Flawless Maneuver (0.92), Akroma's Will (0.86), Teferi's Protection (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Clever Concealment",
+      "neighbours": [
+        {
+          "name": "Flawless Maneuver",
+          "score": 0.9197
+        },
+        {
+          "name": "Akroma's Will",
+          "score": 0.8648
+        },
+        {
+          "name": "Teferi's Protection",
+          "score": 0.8551
+        }
+      ]
+    },
+    {
+      "id": "S-6c6506c2-14",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Clever Concealment",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-6c6506c2-15",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-6c6506c2-16",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6c6506c2-17",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6c6506c2-18",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6c6506c2-19",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6c6506c2-20",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-6c6506c2-21",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Akroma's Will"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Clever Concealment"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:06-08:00",
+    "facts": 21
+  }
+}

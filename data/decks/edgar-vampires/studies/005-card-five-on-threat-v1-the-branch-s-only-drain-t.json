@@ -1,0 +1,470 @@
+{
+  "id": "005",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card five on threat-v1: the branch's only drain that converts board width — Sanctum Seeker for Falkenrath Noble?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Falkenrath Noble",
+    "Sanctum Seeker"
+  ],
+  "swap": {
+    "out": "Falkenrath Noble",
+    "in": "Sanctum Seeker"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Card 5 on threat-v1 — strategist + data-analyst, 2026-11-20 (saved by Jarvis; the agents cannot write files)",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:12-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card5-strategist-analyst.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Strategist — Sanctum Seeker in, Giver of Runes out\nCorrection: Pact of the Serpent is {1}{B}{B} sorcery, \"target player draws X and loses X life, X = creatures THEY control of the chosen type\" — no each-opponent drain, no five-mana slot. Champion of Dusk {3}{B}{B} Vampire: ETB draw X lose X (X = your Vampires). Idol of Oblivion {2}: tap, draw if you made a token this turn.\n1. Why Seeker left: branch.json staged[6] 2026-11-11, out Seeker in Elas il-Kor, why \"every Edgar token gains 1 (Vito/Bond drain), every death drains\" — a judgment on Elas, none on Seeker; the pilot never rejected Seeker. Recon: 71.1% of B3 lists, in a combat-swarm-with-drain-rider consensus. Trigger on attack: each opponent loses 1, you gain 1, per attacking Vampire, blocks irrelevant; stack 003 (Bloodletter + Seeker) is checker-passed scaling (strategy:aristocrats.drain-scope). \"At a distance\" only in the weak sense (needs no block to connect) but needs Vampires alive to attack; Deluge/Meathook/Skeleton loops do not feed it. It is the one repeatable gain-linked drain that works WITHOUT a death.\n2. Draw candidates (strategy:card-advantage.plan-draw): Champion of Dusk is the best draw add (Vampire body, burst, life priced against the drain refund) — a separate card 6; Pact is cheaper but no body/no eminence; Idol one card a turn. None beats Seeker's slot value.\n3. Weakest slots: Giver of Runes (non-Vampire, 1 MV, protects only others, dies to the first wipe; Spirit/Charm/Teferi's/Tenacity cover the job); Preacher of the Schism (attack-conditional draw; cut candidate if Seeker returns since both want attackers — though note Seeker + Preacher both reward attacking). Morbid Opportunist is NOT a cut (best draw rate per slot); Reassembling Skeleton is NOT (stack 013). Sac outlets: Altar, Seer, Yahenni, Tower = 4 + Spirit self-sac.\n4. Recommendation: Seeker for Giver. Pairs with Teysa (x2), Bloodletter (x2), Vito/Bond (x3). Fallback if protection is kept: Seeker for Preacher. Next: Champion of Dusk for Preacher; then Pact for the weakest non-Vampire body.\nOpen: ledger note on whether Seeker's cut was the thesis or the Elas swap; strategy topic \"attack-trigger drains in a non-combat plan\".",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:card-advantage.plan-draw"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:12-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card5-strategist-analyst.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Data-analyst — branch facts\n- 64 non-lands. Keeps present: Vish Kal (7, V), Elspeth (5, PW), Crossway (6, V), Tithe Drinker (2, V), Master of Dark Rites (1, V), Wispdrinker (4, V).\n- Vampire creatures 28 (Edgar excluded). Non-Vampire creatures 10: Elas il-Kor, Enduring Tenacity, Erebos (devotion), Giver of Runes, Morbid Opportunist, Pitiless Plunderer, Reassembling Skeleton, Selfless Spirit, Teysa Karlov, Zulaport Cutthroat.\n- Sac outlets (agent counted 12 incl. costed): free instant-speed Ashnod's Altar, Viscera Seer, Selfless Spirit, Yahenni, Vish Kal, Master of Dark Rites (tap); costed Erebos {1}{B}, Edgar Ancient Bloodlord {2}, Anje {2}, Kalitas {2}{B}. Death drain: Bastion, Blood Artist, Cruel Celebrant, Elas, Enduring Tenacity, Falkenrath Noble, Meathook, Zulaport. Death draw: Crossway, Erebos, Liliana, Skullclamp.\n- Token makers (14): Anje, Anointed Procession, Bastion, BMC, Bloodline Keeper, Bloodtithe Harvester, Caretaker's Talent, Charismatic Conqueror, Elenda, Elspeth, Kalitas, Liliana, Pitiless Plunderer, Preacher.\n- Draw: steady Skullclamp, Morbid Opportunist, Welcoming Vampire, Liliana, Caretaker's Talent, Preacher (attack, most life), Erebos; tutors Demonic, Vampiric, Diabolic Intent; Blood tokens Anje, Bloodtithe.\n- Curve MV 0:0 1:7 2:20 3:15 4:16 5:3 6:2 7+:1.\n- Passing stacks (14) naming branch non-lands: Anointed Procession 002,008,009,010,011; Cruel Celebrant 001,005,014; Vito 001,004; Sanguine Bond 005,006; Bloodletter 003,007; Ashnod's Altar 013,014; Zulaport 013,014; Enduring Tenacity 012; Pitiless Plunderer 013; Reassembling Skeleton 013; Blight-Priest 014; Teysa 014; Elspeth 010. Other 50 non-lands in no passing stack. NOT in branch but named by passing stacks: Sanctum Seeker 001,003,005,007; Cordial Vampire 002,009,010.\n- Sanctum Seeker history: only branch.json staged[6] (out Seeker / in Elas, 2026-11-11, why about Elas). CONTEXT.md lines 43/74 still list Seeker as the sleeved list's drain-without-combat card.\n- Candidates: Sanctum Seeker MV4 Vampire Knight, B, not GC; Pact of the Serpent MV3 sorcery, B; Champion of Dusk MV5 Vampire Knight, B; Idol of Oblivion MV2 artifact. All within Mardu identity; pool legality field null (unverified).\n- Gaps: deck-facts --json rejected by this CLI build; roles not inlined.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:12-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card5-strategist-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: after Black Market Connections, Malakir Bloodwitch, Clever Concealment and Lethal Scheme, the ONE next upgrade to threat-v1 and the card it replaces, with Sanctum Seeker (A) and Pact of the Serpent (B) leading. The answer is Sanctum Seeker for Falkenrath Noble. Cards 1-4 bought draw shape, a finisher body, a wipe answer and free removal; what the log still shows is a wide board that does not close before the next wipe — 006 'got a wider board, bigger +1/+1 counters, and just couldn't convert before the next wipe', 001 lost with Alex on 1 life when the pilot 'needed one more vampire and had nothing'. Enumerated from the branch's 64 non-lands: no card drains per ATTACKING Vampire (the three with attack text are Preacher of the Schism, Crossway Troublemakers and the commander's own counters); every repeatable drain the branch owns either consumes a body (eight death-drains, ten repeatable outlets) or waits on a gain, an entry, an arrival or an upkeep. Seeker is the one candidate in the brief's list that turns board WIDTH into an each-opponent drain every turn without spending the fuel, and it is non-combat in the pilot's own sense (006: 'ways to assign damage that is not combat damage') — the loss is a trigger on declaration, blockers and indestructible never see it (checker-passed stack 003: seven attackers with Bloodletter drained each opponent 14 'before blockers are even declared'). Noble is the cut because it is the eighth death-drain and the one in the lowest yield quadrant (targeted, 1 per event, four mana) while Blood Artist does the same job at two; no checker-passed stack names it. Pact is the runner-up, and the question's premise about it is wrong: Pact costs {1}{B}{B}, three mana, not five — Champion of Dusk is the five. Pact does not compete with Edgar's six-mana turn, and aimed at an opponent naming THEIR type it is a kill through indestructible that nobody in the brief mentioned. It is second, not first, because its self-cast refuel reads the board the wipe just took and the deck's recorded failure is conversion, not count: the branch already holds ten draw sources by oracle text. No goldfish figure appears here, by the pilot's ruling; every count is from the branch decklist, its cards.json (sha a78d3f55…, current), card_roles.json and oracle text.\n\nadd_candidates: [{\"card\": \"Sanctum Seeker\", \"closes\": \"threat-density — the conversion step: an each-opponent drain that scales with board width every turn and consumes no fodder (card_roles.json: wincon:drain, threat:body; the role count stays flat with Noble out)\", \"source\": \"prompt\", \"why\": \"Rank 1. {2}{B}{B} 3/4 Vampire Knight: whenever a Vampire you control attacks, each opponent loses 1 and you gain 1. Fit to the thesis word by word — drain, gain, action at a distance (the loss is a trigger on the attack declaration; it does not need to connect, and blockers and indestructible never touch it, which is how 006 was lost), ferocious (it rewards swinging the fuel every turn). It snowballs with what the branch already runs: Bloodletter doubles each loss on our turn (stack 003, checker-passed on the sleeved list: seven attackers = 14 to each opponent before blocks, one opponent dead from 14); each gain event fires Marauding Blight-Priest (each opponent 1 more, doubled again) and Vito, Bond and Tenacity (aimed); Teysa gives the tokens vigilance so they attack, drain and still convoke Clever Concealment or Lethal Scheme afterwards; Crossway makes the attackers deathtouch-lifelink so a token that IS blocked kills the blocker and gains again. Malakir Bloodwitch counts Vampires once; Seeker counts them every turn. It is a Vampire, so an eminence token on cast, a body for Bloodwitch's count, fodder at the end. Why it left: branch.json 2026-11-11 'out Sanctum Seeker, in Elas il-Kor' — the slot was \n\ncut_candidates: [{\"card\": \"Falkenrath Noble\", \"why\": \"The eighth death-drain on the branch and the one with the worst rate. Enumerated: Blood Artist, Falkenrath Noble, Zulaport Cutthroat, Cruel Celebrant, Bastion of Remembrance, Elas il-Kor, Vraan and The Meathook Massacre drain on a death; Noble and Blood Artist are the two that read any creature's death and drain ONE target player for 1. Noble does Blood Artist's job at four mana instead of two, in the quadrant the corpus prices lowest (targeted, count-scaled, 1 per event). The branch's aimed drain for the kill is already carried by Vito, Sanguine Bond and Enduring Tenacity off every gain. Cutting duplicated function at the worst rate is the corpus's rule for the last slots, and this swap keeps the Vampire count at 28, the curve flat and every draw source in place.\", \"cost_of_cutting\": \"A four-mana 2/2 flying Vampire body: an eminence token on cast, a Vampire for Bloodwitch's and Seeker's counts, a flyer for Vish Kal's counters. The branch's second drain that triggers on OPPONENTS' creatures dying (Blood Artist is the other), which matters when the table's Blasphemous Act or our Meathook kills twenty creatures at once, and when the table 'remove[s] Blood Artist early' (log 008) Noble was the aimed backup. Death-drain class 8 -> 7; wincon:drain role count flat (Seeker carries it too). No checker-passed stack names Falkenrath Noble.\", \"orphans_stack\": [], \"difficulty\": \"contested\", \"citations\": [{\"rule\": \"strategy:deckbuilding.cutting\", \"quo",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.cutting"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:12-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-threat-v1-card5.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "deck-doctor",
+      "data-analyst"
+    ],
+    "pilot_words": "approved! stage it and go to card six",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-five-on-threat-v1-the-branch-s-only-drain-t",
+  "facts": [
+    {
+      "id": "S-3e3d40b6-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-3e3d40b6-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-3e3d40b6-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-3e3d40b6-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire Noble · {3}{B} — Flying Whenever this creature or another creature dies, target player loses 1 life and you gain 1 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Falkenrath Noble"
+    },
+    {
+      "id": "S-3e3d40b6-05",
+      "kind": "staged",
+      "text": "staged 2026-11-11: Vein Ripper → Falkenrath Noble — four-mana flyer that drains on any creature death; recon 103/484",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Falkenrath Noble",
+      "as_of": "2026-11-11"
+    },
+    {
+      "id": "S-3e3d40b6-06",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Falkenrath Noble → Sanctum Seeker — Card 5 (2026-11-20, pilot approved): restores the branch's only drain that converts board width — each attacking Vampire drains each opponent on declaration, blockers never see it (the pilot's own notes: 'drain from a di",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Falkenrath Noble",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-3e3d40b6-07",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Blood Artist (0.96), Enduring Tenacity (0.95), Wispdrinker Vampire (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Falkenrath Noble",
+      "neighbours": [
+        {
+          "name": "Blood Artist",
+          "score": 0.9597
+        },
+        {
+          "name": "Enduring Tenacity",
+          "score": 0.9542
+        },
+        {
+          "name": "Wispdrinker Vampire",
+          "score": 0.9497
+        }
+      ]
+    },
+    {
+      "id": "S-3e3d40b6-08",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Falkenrath Noble",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "sacrifice"
+      ]
+    },
+    {
+      "id": "S-3e3d40b6-09",
+      "kind": "oracle",
+      "text": "Creature — Vampire Knight · {2}{B}{B} — Whenever a Vampire you control attacks, each opponent loses 1 life and you gain 1 life.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Sanctum Seeker"
+    },
+    {
+      "id": "S-3e3d40b6-10",
+      "kind": "stack",
+      "text": "stack 001 — Exquisite Blood + Vito: is the classic drain loop a table-kill? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/001",
+      "card": "Sanctum Seeker",
+      "stack": "001"
+    },
+    {
+      "id": "S-3e3d40b6-11",
+      "kind": "stack",
+      "text": "stack 003 — Bloodletter + Sanctum Seeker: what does an attack actually drain? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/003",
+      "card": "Sanctum Seeker",
+      "stack": "003"
+    },
+    {
+      "id": "S-3e3d40b6-12",
+      "kind": "stack",
+      "text": "stack 005 — Sanguine Bond + Exquisite Blood: the two-enchantment loop, verified for the swap (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/005",
+      "card": "Sanctum Seeker",
+      "stack": "005"
+    },
+    {
+      "id": "S-3e3d40b6-13",
+      "kind": "stack",
+      "text": "stack 007 — Throne of the God-Pharaoh + Bloodletter: does the end step drain double? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Sanctum Seeker",
+      "stack": "007"
+    },
+    {
+      "id": "S-3e3d40b6-14",
+      "kind": "engine_stage",
+      "text": "engine stage output: LIFE LOSS WITHOUT COMBAT, AND THE DENIAL SUITE",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Sanctum Seeker",
+      "stage": "output"
+    },
+    {
+      "id": "S-3e3d40b6-15",
+      "kind": "context",
+      "text": "CONTEXT plays: - Drain without combat: Blood Artist, Cruel Celebrant, Sanctum Seeker, Wispdrinker Vampire and Tithe Drinker chip away at the table every time something dies, attacks or arrives.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Sanctum Seeker"
+    },
+    {
+      "id": "S-3e3d40b6-16",
+      "kind": "context",
+      "text": "CONTEXT cards: Blood Artist, Cruel Celebrant, Sanctum Seeker, Wispdrinker Vampire, Ingris Stingerquill, Vraan, Executioner Thane, Vein Ripper, Kalitas, Traitor of Ghet",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Sanctum Seeker"
+    },
+    {
+      "id": "S-3e3d40b6-17",
+      "kind": "recon",
+      "text": "recon (2026-11-20): The most-run non-combat finisher in bracket 3 is one the branch does not have: Sanctum Seeker, 71.1% of Upgraded decks (4,180/5,876), 69.1% of Upgraded Aristocrats (362/524), 66.7% of Upgraded Lifedrain (58/87). Nerd Leagues lists it among ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-3e3d40b6-18",
+      "kind": "recon",
+      "text": "recon (2026-11-20): On protection the branch is already above consensus, not below it. Bracket-3 lists run two or three: Teferi's Protection 30.9% (1,815), Boros Charm 29.3% (1,721), Akroma's Will 23.1% (1,355), and the average bracket-3 aristocrats 99 carries",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-20",
+      "confidence": "contested"
+    },
+    {
+      "id": "S-3e3d40b6-19",
+      "kind": "recon",
+      "text": "recon (2026-11-20): The pilot's remaining weighed cards, with what the strong lists say — which is mostly a number and no prose. Shared Animosity 38.7% Upgraded (2,275), 36.8% Upgraded Aristocrats, in the average 99 and Nerd Leagues' combat win conditions ('a ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-3e3d40b6-20",
+      "kind": "queue",
+      "text": "Q029 DECIDED: Given the Butcher resolves and attacks, mobilize is where the card pays in blood drain and cards, not in deathtouch: each attack puts two Warriors on the pilot' → supported: Given the Butcher is seen, a death payoff (8 cards) is also seen 59% by T4, 66% by T6, 72% by T8 (exact, 7+T cards; MC T6 65.7% [65.1, 66.3]); 71/78/83% with th",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-04",
+      "queue_id": "Q029"
+    },
+    {
+      "id": "S-3e3d40b6-21",
+      "kind": "staged",
+      "text": "staged 2026-11-11: Sanctum Seeker → Elas il-Kor, Sadistic Pilgrim — every Edgar token gains 1 (Vito/Bond drain), every death drains",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-11"
+    },
+    {
+      "id": "S-3e3d40b6-22",
+      "kind": "price",
+      "text": "$0.31 NM ((J25) 485) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Sanctum Seeker",
+      "as_of": "2026-11-21",
+      "figure": 0.31
+    },
+    {
+      "id": "S-3e3d40b6-23",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Marauding Blight-Priest (0.98), Cruel Celebrant (0.97), Blood Artist (0.97)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Sanctum Seeker",
+      "neighbours": [
+        {
+          "name": "Marauding Blight-Priest",
+          "score": 0.9784
+        },
+        {
+          "name": "Cruel Celebrant",
+          "score": 0.9738
+        },
+        {
+          "name": "Blood Artist",
+          "score": 0.969
+        }
+      ]
+    },
+    {
+      "id": "S-3e3d40b6-24",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Sanctum Seeker",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-3e3d40b6-25",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-3e3d40b6-26",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-3e3d40b6-27",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-3e3d40b6-28",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-3e3d40b6-29",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-3e3d40b6-30",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-3e3d40b6-31",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Falkenrath Noble",
+      "Sanctum Seeker"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:14-08:00",
+    "facts": 31
+  }
+}

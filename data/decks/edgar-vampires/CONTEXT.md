@@ -181,7 +181,12 @@ The first six games were all on lists before v3.0.0 (the record block counts eve
 ## Studies
 
 <!-- ctx:gen studies -->
-- No studies yet — a question to Jarvis opens one (`manamap pilot study edgar-vampires new "<question>" [--branch B]`).
+- **006 approve** (pilot, deck-doctor) — Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it, commit, and move to Sharknado”
+- **005 approve** (pilot, strategist, deck-doctor, data-analyst) — Card five on threat-v1: the branch's only drain that converts board width — Sanctum Seeker for Falkenrath Noble? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it and go to card six”
+- **004 approve** (pilot, strategist, deck-doctor, data-analyst, rules-question) — Card four on threat-v1: removal is the thinnest axis left — Lethal Scheme for Olivia Voldaren? · on `threat-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approved! stage it and go to card five”
+- **003 approve** (pilot, strategist, rules-question, data-analyst) — Card three on threat-v1: a second phase-out beside Teferi's Protection — Clever Concealment for Akroma's Will? · on `threat-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approved!”
+- **002 approve** (pilot, deck-doctor) — Card two on threat-v1: a Vampire-count finisher after Sanctum Seeker's cut? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! yes, on  Malakir Bloodwitch in, Cordial Vampire out...”
+- **001 approve** (pilot, deck-doctor, log) — Card one on threat-v1: the research pass — steady, board-independent draw that survives a wipe? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved, write it to threat-v1 and go to card two”
 <!-- /ctx:gen studies -->
 
 ## Change history

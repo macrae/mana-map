@@ -143,11 +143,15 @@ def validate(doc, slug=None, strict=False):
         for r in cites.get("rules") or []:
             if not RULE_ID_RE.match(r):
                 errors.append(f"{where} cites {r!r} — not a CR rule number")
+        # A BACKFILLED study keeps answers given before this contract existed (the
+        # hand-saved `.agent-out/*.md` of 2026-11-20/21): an uncited one is a NOTE there,
+        # an error on any study opened since.
+        soft = notes if doc.get("backfilled") else errors
         if c.get("agent") == "strategist" and not (cites.get("strategy") or []):
-            errors.append(f"{where}: a strategist argument with no strategy:<id> citation — "
-                          f"the charter grounds every framework claim in the companion")
+            soft.append(f"{where}: a strategist argument with no strategy:<id> citation — "
+                        f"the charter grounds every framework claim in the companion")
         if c.get("agent") == "rules-question" and not (cites.get("rules") or []):
-            errors.append(f"{where}: a rules answer with no CR number quoted")
+            soft.append(f"{where}: a rules answer with no CR number quoted")
         if c.get("agent") == "data-analyst" and not (c.get("commands") or []):
             notes.append(f"{where}: an analyst answer naming no commands — its figures cannot be re-run")
 

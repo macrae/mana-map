@@ -137,6 +137,9 @@ The branch is a plan, not a result: nothing in it has been played.
 ## Studies
 
 <!-- ctx:gen studies -->
+- **004 open** (—) — The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, or a 36th land for Stroke of Genius? · on `b3-v1` · open · goldfish saw 4/4 named cards
+- **003 no-change** (pilot, strategist, rules-question, data-analyst) — Card three on b3-v1: Words of Wisdom, Archive, Narset or another draw piece — or no change? · on `b3-v1` · 2026-11-21 · goldfish saw 2/6 named cards · “yup... and a last pass to tighten up the mana please”
+- **002 approve** (pilot, deck-doctor, strategist, rules-question) — Card two on b3-v1: the non-GC whole-board answer to non-targeted loss — Clever Concealment for Drift of Phantasms? · on `b3-v1` · 2026-11-21 · goldfish saw 1/2 named cards · “approved! it's a nice card in the pillow fort strategy but I think we should stage it and go to card three”
 - **001 approve** (pilot, deck-doctor, data-analyst, log) — Card one on b3-v1: the one card in and one card out that most improves the branch on its thesis, or no change · on `b3-v1` · 2026-11-21 · goldfish saw 0/2 named cards · “ohhhh... I got you! yes, you are correct, I see now... yes, Dawn's Truce in for Flawless Maneuver :)”
 <!-- /ctx:gen studies -->
 

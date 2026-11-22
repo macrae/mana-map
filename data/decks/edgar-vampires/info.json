@@ -1117,6 +1117,27 @@
         }
       ],
       "has_cards": true,
+      "study": {
+        "id": "006",
+        "question": "Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change?",
+        "branch": "threat-v1",
+        "decision": "approve",
+        "decided_by": [
+          "pilot",
+          "deck-doctor"
+        ],
+        "pilot_words": "approved! stage it, commit, and move to Sharknado",
+        "decided_at": "2026-11-20",
+        "opened": "2026-11-20",
+        "swap": {
+          "out": "Preacher of the Schism",
+          "in": "Champion of Dusk"
+        },
+        "goldfish_saw": [
+          2,
+          2
+        ]
+      },
       "summary": {
         "title": "Vampires as fuel: drain every death, removal with fangs, draw, a finisher",
         "blurb": "Turns Edgar's tokens into a drain engine (each-opponent death triggers, Teysa doubling them, a Plunderer and Altar loop, Skullclamp draw); adds edicts and a chosen-size wipe, protection that needs no commander, Black Market Connections for steady draw, Malakir Bloodwitch as the Vampire-count finisher, and more lands.",
@@ -19748,7 +19769,142 @@
       ]
     }
   ],
-  "studies": [],
+  "studies": [
+    {
+      "id": "006",
+      "question": "Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "approved! stage it, commit, and move to Sharknado",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Preacher of the Schism",
+        "in": "Champion of Dusk"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "005",
+      "question": "Card five on threat-v1: the branch's only drain that converts board width — Sanctum Seeker for Falkenrath Noble?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "deck-doctor",
+        "data-analyst"
+      ],
+      "pilot_words": "approved! stage it and go to card six",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Falkenrath Noble",
+        "in": "Sanctum Seeker"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "004",
+      "question": "Card four on threat-v1: removal is the thinnest axis left — Lethal Scheme for Olivia Voldaren?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "deck-doctor",
+        "data-analyst",
+        "rules-question"
+      ],
+      "pilot_words": "approved! stage it and go to card five",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Olivia Voldaren",
+        "in": "Lethal Scheme"
+      },
+      "goldfish_saw": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "003",
+      "question": "Card three on threat-v1: a second phase-out beside Teferi's Protection — Clever Concealment for Akroma's Will?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "rules-question",
+        "data-analyst"
+      ],
+      "pilot_words": "approved!",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Akroma's Will",
+        "in": "Clever Concealment"
+      },
+      "goldfish_saw": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "002",
+      "question": "Card two on threat-v1: a Vampire-count finisher after Sanctum Seeker's cut?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "approved! yes, on  Malakir Bloodwitch in, Cordial Vampire out...",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Cordial Vampire",
+        "in": "Malakir Bloodwitch"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "001",
+      "question": "Card one on threat-v1: the research pass — steady, board-independent draw that survives a wipe?",
+      "branch": "threat-v1",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "log"
+      ],
+      "pilot_words": "approved, write it to threat-v1 and go to card two",
+      "decided_at": "2026-11-20",
+      "opened": "2026-11-20",
+      "swap": {
+        "out": "Midnight Reaper",
+        "in": "Black Market Connections"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    }
+  ],
   "diagnostic": {
     "harness": {
       "version": 2,
@@ -20788,7 +20944,6 @@
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
     "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `threat-v1` needs 17 card(s) sourced — `manamap pilot deck-branch edgar-vampires source threat-v1`",
-    "branch `threat-v1` has no study — `manamap pilot study edgar-vampires new \"<question>\" --branch threat-v1`, then add the agents' answers, call, install",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8"
   ],

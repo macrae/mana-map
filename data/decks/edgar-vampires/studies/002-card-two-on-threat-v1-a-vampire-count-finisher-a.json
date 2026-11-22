@@ -1,0 +1,419 @@
+{
+  "id": "002",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card two on threat-v1: a Vampire-count finisher after Sanctum Seeker's cut?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Cordial Vampire",
+    "Malakir Bloodwitch"
+  ],
+  "swap": {
+    "out": "Cordial Vampire",
+    "in": "Malakir Bloodwitch"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: with Black Market Connections already in for Midnight Reaper, the ONE next upgrade to threat-v1 and the card it replaces. The answer is Clever Concealment for Akroma's Will. The log's dominant loss is the wipe (001, 002, 006 — three of five losses, cause `wipe`), and 002's structural read still holds: 'my mana was spent casting vampires, so there was never open mana to hold up'. I enumerated the branch's protection by shape, not count: of seven protection-role cards (Akroma's Will, Boros Charm, Erebos, Giver of Runes, Selfless Spirit, Teferi's Protection, Yahenni), six are indestructible- or protection-shaped and stop only a destroy-wipe; exactly one — Teferi's Protection — survives the bounce Tom showed in 001 (Cyclonic Rift), a -X/-X wipe or an exile wipe. The branch also runs zero convoke spells (enumerated: none of the 64 non-lands). Clever Concealment is the one candidate that is both: a phase-out of every nonland permanent (tokens, Blood Artist, Elspeth, Bastion, Black Market Connections, Skullclamp) at instant speed, paid by tapping the white-and-black eminence tokens, needing no Edgar and no open mana. Akroma's Will is the cut because it is the same slot with the worse shape: its protection mode fails to the three wipe shapes Concealment stops, and its finisher mode — the one that makes it a wincon — is gated on controlling the commander, the exact gating the pilot removed from the suite on 2026-11-13. Removal reconciliation: my 'interaction closed, 11' was a role count, not a card count — see axes_engaged. Not the goldfish: no goldfish figure appears here, by the pilot's ruling.\n\nadd_candidates: [{\"card\": \"Clever Concealment\", \"closes\": \"protection — by shape, not count: the branch's second phase-out (after Teferi's Protection), the one shape that beats a bounce, a -X/-X and an exile wipe, and the first protection the fuel pays for (card_roles.json files it protection:self, so the audit count moves 7 -> 7 with the Will cut)\", \"source\": \"prompt\", \"why\": \"Rank 1. {2}{W}{W} instant, convoke: any number of target nonland permanents you control phase out until your next turn. Edgar's eminence tokens are white AND black, so four untapped tokens cast it for nothing, at instant speed, on an opponent's turn, with every land tapped on Vampires — which is log 002's structural problem answered by the fuel itself. It protects what the thesis has been moving onto noncreatures and the creature wipes cannot reach but Rift, Farewell and Austere Command can: Bastion, Black Market Connections, Sanguine Bond, Anointed Procession, Caretaker's Talent, Skullclamp, plus Elspeth (log 005: 'protect the engine before pushing tempo') and Blood Artist (log 008: the table will 'remove Blood Artist early'). Against a single targeted removal spell it is a free fizzle on any engine piece. It needs no Edgar. The costs, said plainly: a phased-out board cannot block and its drainers miss opponents' deaths until it phases in; convoke taps the tokens Ashnod's Altar would otherwise sacrifice; tokens that attacked are tapped and cannot convoke, which the non-combat thesis mostly avoids. Not a Game Changer;\n\ncut_candidates: [{\"card\": \"Akroma's Will\", \"why\": \"Same slot as the add — a four-mana instant protection spell — with the worse shape. Its protection mode gives indestructible, lifelink and protection from each colour: that stops a destroy-wipe and targeted coloured removal, and does nothing against Cyclonic Rift (Tom, log 001), Toxic Deluge or Meathook-style -X/-X, or Farewell-style exile — the three shapes the branch covers only with Teferi's Protection. Its second mode, the flying double-strike alpha, is the reason it carries wincon:combat, and it is available only 'if you control a commander as you cast this spell' — the gating the pilot removed from the suite on 2026-11-13 (Deflecting Swat, Flawless Maneuver out). It costs four real mana at instant speed in a deck whose log says the mana is spent on Vampires. It is a combat finisher in a non-combat thesis (log 006: 'I want it to play more like life gain / life drain').\", \"cost_of_cutting\": \"A finisher, not just a protection card: with Edgar on the field both modes make the token board a flying, double-striking, lifelinking alpha, and every point of that lifelink is a drain through Vito, Sanguine Bond, Enduring Tenacity and Marauding Blight-Priest. The branch's wincon:combat count falls from 3 (Akroma's Will, Boros Charm, Edgar Ancient Bloodlord) to 2. It is also the branch's only protection that lets the creatures still BLOCK during the turn it protects them — a phased-out board cannot block, so Concealment is not an answer to an alpha",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:00-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-threat-v1-card2.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "approved! yes, on  Malakir Bloodwitch in, Cordial Vampire out...",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-two-on-threat-v1-a-vampire-count-finisher-a",
+  "facts": [
+    {
+      "id": "S-125ef266-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-125ef266-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-125ef266-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-125ef266-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire · {B}{B} — Whenever this creature or another creature dies, put a +1/+1 counter on each Vampire you control.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Cordial Vampire"
+    },
+    {
+      "id": "S-125ef266-05",
+      "kind": "log",
+      "text": "log 003 (2026-08-28, loss): “Named as keepers in the conversation: Cordial Vampire (whenever any creature dies, +1/+1 counter distributed — real payoff for a deck that makes and loses bodies) and Welcoming Vampire (card draw off small creatures e…”",
+      "tier": "coach",
+      "source": "log.jsonl#003",
+      "card": "Cordial Vampire",
+      "as_of": "2026-08-28",
+      "game": "003"
+    },
+    {
+      "id": "S-125ef266-06",
+      "kind": "stack",
+      "text": "stack 002 — Edgar's eminence through two doublers: how many bodies per cast? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Cordial Vampire",
+      "stack": "002"
+    },
+    {
+      "id": "S-125ef266-07",
+      "kind": "stack",
+      "text": "stack 009 — The primary plan, composing: three token-to-damage payoffs on one two-mana Vampire (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/009",
+      "card": "Cordial Vampire",
+      "stack": "009"
+    },
+    {
+      "id": "S-125ef266-08",
+      "kind": "stack",
+      "text": "stack 010 — Elspeth as the third doubler: does she double eminence, and what does the pilot's own board actually make? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/010",
+      "card": "Cordial Vampire",
+      "stack": "010"
+    },
+    {
+      "id": "S-125ef266-09",
+      "kind": "engine_stage",
+      "text": "engine stage conversion: THE OUTLETS, AND THE TWO THAT MAKE A DEATH PAY IN SIZE",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Cordial Vampire",
+      "stage": "conversion"
+    },
+    {
+      "id": "S-125ef266-10",
+      "kind": "context",
+      "text": "CONTEXT plays: Cordial Vampire grows every Vampire whenever any creature dies, so the swarm gets bigger when it is wiped at or traded off.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Cordial Vampire"
+    },
+    {
+      "id": "S-125ef266-11",
+      "kind": "context",
+      "text": "CONTEXT cards: Tithe Drinker, Viscera Seer, Preacher of the Schism, Welcoming Vampire, Twilight Prophet, Crossway Troublemakers, Yahenni, Undying Partisan, Master of Dark Rites, Cordial Vampire, Charismatic Conqueror, Morbid Opportu…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Cordial Vampire"
+    },
+    {
+      "id": "S-125ef266-12",
+      "kind": "context",
+      "text": "CONTEXT cards: Kalitas, Traitor of Ghet, Midnight Reaper, Grim Haruspex, Morbid Opportunist, Clavileño, First of the Blessed, Liliana, Dreadhorde General, Welcoming Vampire, Cordial Vampire, Vraan, Executioner Thane, Vein Ripper",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Cordial Vampire"
+    },
+    {
+      "id": "S-125ef266-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): The bracket-3 consensus core is lords. Of the eight Vampire lords/pseudo-lords above 50% in the 5,876-deck Upgraded filter, the branch runs three (Cordial Vampire, Bloodline Keeper, Master of Dark Rites) and lacks five: Captivating Vampire ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Cordial Vampire",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-125ef266-14",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Cordial Vampire → Malakir Bloodwitch — Card 2 (2026-11-20, pilot approved): the branch had no Vampire-count finisher after cutting Sanctum Seeker; Bloodwitch is the thesis in one card (drain, gain, action at a distance, scales with the fuel, pro-white flyer).",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Cordial Vampire",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-125ef266-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Elenda, the Dusk Rose (0.92), Olivia Voldaren (0.91), Edgar Markov (0.89)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Cordial Vampire",
+      "neighbours": [
+        {
+          "name": "Elenda, the Dusk Rose",
+          "score": 0.9202
+        },
+        {
+          "name": "Olivia Voldaren",
+          "score": 0.9108
+        },
+        {
+          "name": "Edgar Markov",
+          "score": 0.894
+        }
+      ]
+    },
+    {
+      "id": "S-125ef266-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Cordial Vampire",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-125ef266-17",
+      "kind": "oracle",
+      "text": "Creature — Vampire Shaman · {3}{B}{B} — Flying, protection from white | When this creature enters, each opponent loses life equal to the number of Vampires you control. You gain life equal to the life lost this way.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Malakir Bloodwitch"
+    },
+    {
+      "id": "S-125ef266-18",
+      "kind": "context",
+      "text": "CONTEXT pilot: Vampire-count cards such as Malakir Bloodwitch are the kind of thing that refactor looks at; it is not in the 99.",
+      "tier": "coach",
+      "source": "CONTEXT.md#pilot",
+      "card": "Malakir Bloodwitch"
+    },
+    {
+      "id": "S-125ef266-19",
+      "kind": "recon",
+      "text": "recon (2026-11-20): The most-run non-combat finisher in bracket 3 is one the branch does not have: Sanctum Seeker, 71.1% of Upgraded decks (4,180/5,876), 69.1% of Upgraded Aristocrats (362/524), 66.7% of Upgraded Lifedrain (58/87). Nerd Leagues lists it among ",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Malakir Bloodwitch",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-125ef266-20",
+      "kind": "staged",
+      "text": "staged 2026-11-11: Talisman of Hierarchy → Malakir Bloodwitch — the archetype's most-run drain finisher (recon 261/484); 8 rocks leave room",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Malakir Bloodwitch",
+      "as_of": "2026-11-11"
+    },
+    {
+      "id": "S-125ef266-21",
+      "kind": "staged",
+      "text": "staged 2026-11-12: Malakir Bloodwitch → Bastion of Remembrance",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Malakir Bloodwitch",
+      "as_of": "2026-11-12"
+    },
+    {
+      "id": "S-125ef266-22",
+      "kind": "price",
+      "text": "$3.01 NM ((VOC) 131) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Malakir Bloodwitch",
+      "as_of": "2026-11-21",
+      "figure": 3.01
+    },
+    {
+      "id": "S-125ef266-23",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Vein Ripper (0.88), Wispdrinker Vampire (0.88), Twilight Prophet (0.88)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Malakir Bloodwitch",
+      "neighbours": [
+        {
+          "name": "Vein Ripper",
+          "score": 0.8815
+        },
+        {
+          "name": "Wispdrinker Vampire",
+          "score": 0.881
+        },
+        {
+          "name": "Twilight Prophet",
+          "score": 0.875
+        }
+      ]
+    },
+    {
+      "id": "S-125ef266-24",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Malakir Bloodwitch",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "drain"
+      ]
+    },
+    {
+      "id": "S-125ef266-25",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-125ef266-26",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-125ef266-27",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-125ef266-28",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-125ef266-29",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-125ef266-30",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-125ef266-31",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Cordial Vampire",
+      "Malakir Bloodwitch"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:02-08:00",
+    "facts": 31
+  }
+}

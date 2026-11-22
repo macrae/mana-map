@@ -1,0 +1,381 @@
+{
+  "id": "002",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "Card two on b3-v1: the non-GC whole-board answer to non-targeted loss — Clever Concealment for Drift of Phantasms?",
+  "opened": "2026-11-21",
+  "decided_at": "2026-11-21",
+  "cards": [
+    "Drift of Phantasms",
+    "Clever Concealment"
+  ],
+  "swap": {
+    "out": "Drift of Phantasms",
+    "in": "Clever Concealment"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# b3-v1 card 2 — strategist, 2026-11-21 (saved by Jarvis; the agent cannot write files). Argument only.\n\nClever Concealment in, Drift of Phantasms out. Non-targeted loss is the larger gap.\n1. Targeted protection on Heliod is deep (Auramancy, Blessing, Guardian, Spellskite, Truce); what's missing is a non-GC answer to wrath / edict (003 was that loss; rule 2 \"recast at the tax\" assumes the board survives). Constant protection is useless against wraths; the cover is a held instant (strategy:multiplayer.commander-insurance). Concealment phases out Heliod, both Crawlers and the fort in one cast; convoke suits a counter-mana turn.\n2. Limit: does not save lands → not an Armageddon answer (pair with the Tithe let-it-resolve line); strategy:resource-hedging.wrath-math (snippet only).\n3. Kill reach already seven-plus pieces; Alhammarret's Archive a fifth MV-5 artifact buying a third doubler, and doubling only matters while Psychosis Crawler survives → protecting the Crawler outranks reach.\n4. Drift: a 3-mana 0/3 defender whose transmute is {1}{U}{U} sorcery speed — effectively a six-mana two-turn tutor for MV 3; Approach/Dig finders already present; least efficient tutor, first slot to give (strategy:deckbuilding.redundancy-vs-tutors).\n5. Stroke of Genius is self-draw for Psychosis Crawler, not mill; Words of Wisdom the better every-player fit but marginal — hold for card three.\n6. Unwind / Rewind: no, counters already deep.\nRunner-up: Words of Wisdom for Stroke of Genius.\nDissent: protection density already high → NO CHANGE defensible; Concealment 4 mana or taps scarce creatures; doesn't stop Armageddon; Drift is a 0/3 flying blocker; transmute fetches only MV 3.\nNeeds: forge-cast-check Concealment; scenario Concealment vs wrath with Crawler + Insight on board.\nCaveats: did not read analyst/rules/recon notes; Insight text from card-one note.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.redundancy-vs-tutors",
+          "strategy:multiplayer.commander-insurance",
+          "strategy:resource-hedging.wrath-math"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:35-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card2-strategist.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# Dawn's Truce gift timing; Clever Concealment and Heliod — rules-question, 2026-11-21 (saved by Jarvis)\n\n(a) Gift draw happens on resolution (702.174j/e), after Truce's cost locked (601.2f) — so it does not cut Truce's own cost but counts for Heliod's discount on later spells this turn. It triggers Smothering Tithe and Scrawling Crawler (121.1). Gifting an opponent with an empty library: they lose at the next SBA check (121.4, 704.5b), after Truce finishes resolving (704.3; inference).\n(b) Phased-out Heliod: treated as nonexistent (702.26b) — no discount, no flash grant until he phases in at your untap (702.26a). Concealment's cost is locked before resolution; Heliod's reduction applies at 601.2f, convoke after (702.51b); reduction is generic only, so with three opponent draws {2}{W}{W} → {W}{W}, payable by tapping two white creatures (702.51a).\n(c) Hexproof does nothing vs Supreme Verdict / Austere Command (no targets, 702.11b). Indestructible from the gift stops their destroy modes (702.12b), only for permanents present when the gift resolved (611.2c). Winds of Abandon exile is NOT stopped by indestructible; its single-target mode is stopped by hexproof; overload is untargeted. Edicts are NOT stopped by indestructible (701.21a).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "121.1",
+          "121.4",
+          "601.2f",
+          "611.2c",
+          "701.21a",
+          "702.11b",
+          "702.12b",
+          "702.174j",
+          "702.26a",
+          "702.26b",
+          "702.51a",
+          "702.51b",
+          "704.3",
+          "704.5b"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:35-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card2-rules-truce-concealment.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# b3-v1 card 2 — data-analyst facts, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nNone of the 17 cards checked is a Game Changer. Not in branch: Words of Wisdom, Clever Concealment, Alhammarret's Archive, Unwind, Rewind.\nOracle: Words of Wisdom {1}{U} I \"You draw two cards, then each other player draws a card.\" Clever Concealment {2}{W}{W} I convoke, any number of target nonland permanents you control phase out. Alhammarret's Archive 5, doubles life gain and non-first draws. Unwind 3 counter noncreature + untap 3 lands. Rewind 4 counter + untap 4. Stroke of Genius 3 I target player draws X. Drift of Phantasms 3 defender flyer, transmute {1}{U}{U} (sorcery speed). Howling Mine / Font of Mythos (+2) / Dictate (flash) symmetric draw-step draw. Isochron Scepter imprint instant MV ≤2, {2},T copy. Spellskite {U/P} redirect. Guardian of Faith flash, ETB phase out other creatures. Loran: ETB destroy artifact/enchantment; T: you and target opponent each draw. Karametra's Blessing +2/+2, hexproof+indestructible if enchantment creature. Greater Auramancy: other enchantments shroud.\nDrift transmute targets (MV 3, 15): Archmage's Charm, Blue Sun's Zenith, Dictate, Force of Negation, Ghostly Prison, Guardian of Faith, Long-Term Plans, Loran, Mirrormade, Propaganda, Rhystic Study, Scrawling Crawler, Solve the Equation, Stroke of Genius, Teferi TR.\nScepter imprints (12): An Offer, Karametra's Blessing, Mystical Tutor, Path, Silence, Swords, Pact of Negation, Arcane Denial, Counterspell, Dawn's Truce, Dovin's Veto, Vision Skeins.\nCreatures (12): Ballista 0, Faerie Mastermind 2, Spellskite 2, Drift 3, Guardian 3, Loran 3, Scrawling Crawler 3, Heliod 4, Second Doctor 4, Venser 4, Psychosis Crawler 5, Bard 6. Heliod: Legendary Enchantment Creature — God.\nStacks: only Howling Mine (002 board). None of Stroke, Drift, Font, Dictate, Scepter, Spellskite, Guardian, Loran in a stack.\nPilot-staged IN on 11-12/13 among these: Spellskite only (for Archangel of Tithes). Stroke, Drift, Howling Mine, Font, Dictate, Scepter, Guardian, Loran, Sapphire Medallion all carried from v1.4.0.\nCounters 7: hard Pact 0, Counterspell 2, Arcane Denial 2, Archmage's Charm 3 (mode); noncreature An Offer 1, Dovin's Veto 2, Force of Negation 3. Instant forced draw: Vision Skeins, Stroke, Zenith, Charm mode. Sorcery: Prosperity, Mathemagics, Fascination. Triggers/activations: Mine, Font, Dictate, Loran, Folio, Mastermind, Splendor, Scrawling, Second Doctor, Fruition, Rhystic.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:35-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-card2-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-21",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: card two for b3-v1 — the one in and the one out, or no change — settling between Words of Wisdom for Stroke of Genius and Clever Concealment for Drift of Phantasms, with Alhammarret's Archive and Unwind/Rewind as alternates and every wheel off the list. The audit on the branch (Dawn's Truce already in) reads protection 4 against a 5-7 target and still under, card-advantage 15 against 10 and interaction 13 against 12-15 both at; the log's one recurring takeaway (001, 003) is Heliod removed before protection landed, and in 001 the counter that would have saved him was itself countered. So the draw-side candidates and the counterspells touch axes that are not binding, and the protection side is: Clever Concealment in, Drift of Phantasms out. Concealment phases out any number of your nonland permanents — Heliod, both Crawlers, Rhystic Study, Smothering Tithe, Teferi's Ageless Insight and the fort — against the shapes Dawn's Truce does not cover (exile-wipes, bounce, edicts, -X/-X, an uncounterable Supreme Verdict from across the table); Drift is the one tutor of the five whose fetch is an activated, sorcery-speed ability, so Heliod's discount and flash never touch it, and it is the slowest of nine Approach routes.\n\nadd_candidates: [{\"card\": \"Clever Concealment\", \"closes\": \"protection\", \"source\": \"pool\", \"why\": \"{2}{W}{W} instant, convoke: any number of target nonland permanents you control phase out until your next turn. Protection reads 4 → 5, the low edge of target, and the fifth copy covers the shapes the first four do not: exile-wipes (Farewell, Sunfall, Merciless Eviction, an opponent's overloaded Winds of Abandon), bounce-wipes (Cyclonic Rift, Evacuation), edicts and -X/-X, and an uncounterable Supreme Verdict — for Heliod, Psychosis Crawler, Scrawling Crawler, Rhystic Study, Smothering Tithe, Teferi's Ageless Insight and the fort at once. Enumerated from card-search over WU non-Game-Changer instants not in the 99: thirteen phase-out instants, of which only Clever Concealment and Perch Protection phase out your permanents of every nonland type at once — Perch Protection at {4}{W}{W} with an extra turn gifted; Ripples of Potential needs counters on the permanents; Reality Ripple takes one artifact, creature or land and Vision Charm one artifact; Slip Out the Back, March of Swirling Mist, Galadriel's Dismissal and Change of Plans are creatures only; Sapphire Charm, Divine Smite and Teferi's Reproach act on an opponent's permanents; Time and Tide phases nothing of yours out; the hexproof-and-indestructible family (Flare of Fortitude, Restoration Magic's Curaga, Ultimate Magic: Holy, Surge of Salvation) duplicates Dawn's Truce and stops neither exile nor bounce nor an edict. Heliod discounts the {2};\n\ncut_candidates: [{\"card\": \"Drift of Phantasms\", \"why\": \"The one tutor of the five whose fetch is an activated ability ({1}{U}{U}, transmute only as a sorcery): Heliod's back face discounts spells and grants flash to spells, so the discount and the flash never reach it. Its transmute set in the branch is the fifteen other mana-value-3 nonland cards (Archmage's Charm, Blue Sun's Zenith, Dictate of Kruphix, Force of Negation, Ghostly Prison, Guardian of Faith, Long-Term Plans, Loran of the Third Path, Mirrormade, Propaganda, Rhystic Study, Scrawling Crawler, Solve the Equation, Stroke of Genius, Teferi, Time Raveler); Approach is two steps away through Solve the Equation or Long-Term Plans, the slowest of the nine routes. Propaganda, Ghostly Prison, Rhystic Study, Dictate, Mirrormade, Teferi and Scrawling Crawler are also reachable by Long-Term Plans (any card, third from top), so Drift is not the only tutor for a permanent — it is the only one that puts a permanent straight into hand.\", \"cost_of_cutting\": \"A 0/5 flying defender the fort can use as a blocker; the branch's only to-hand tutor for Rhystic Study, Propaganda, Ghostly Prison, Dictate of Kruphix, Mirrormade, Teferi, Time Raveler or Scrawling Crawler (Long-Term Plans reaches them third from top, Top and Scroll Rack accelerate that); one of two tutors for Scrawling Crawler, half of the audit's thinnest engine component (Psychosis Crawler or Scrawling Crawler drawn, size 2). Tutors read 4 instead of 5.\", \"orphans_stack\": [], \"difficulty\"",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:35-08:00",
+      "from": "data/decks/heliod/.agent-out/deck-doctor-prescribe-b3-v1-card2.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist",
+      "rules-question"
+    ],
+    "pilot_words": "approved! it's a nice card in the pillow fort strategy but I think we should stage it and go to card three",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-two-on-b3-v1-the-non-gc-whole-board-answer",
+  "facts": [
+    {
+      "id": "S-2c261c68-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-2c261c68-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-2c261c68-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-2c261c68-04",
+      "kind": "oracle",
+      "text": "Creature — Spirit · {2}{U} — Defender (This creature can't attack.) | Flying | Transmute {1}{U}{U} ({1}{U}{U}, Discard this card: Search your library for a card with the same mana value as this card, reveal it, put it into your hand, then shuffle. Transmute only as a sorcery.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Drift of Phantasms"
+    },
+    {
+      "id": "S-2c261c68-05",
+      "kind": "engine_stage",
+      "text": "engine stage protection: TWENTY-FIVE CARDS BUYING TURNS FOR A SEVEN-DROP",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Drift of Phantasms",
+      "stage": "protection",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-2c261c68-06",
+      "kind": "context",
+      "text": "CONTEXT cards: Approach of the Second Sun, Long-Term Plans, Mystical Tutor, Enlightened Tutor, Drift of Phantasms, Braingeyser, Stroke of Genius, Mathemagics, Walking Ballista",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Drift of Phantasms"
+    },
+    {
+      "id": "S-2c261c68-07",
+      "kind": "staged",
+      "text": "staged 2026-11-21: Drift of Phantasms → Clever Concealment — Card 2 (2026-11-21, pilot approved; doctor + strategist agreed): the non-GC whole-board answer to the non-targeted loss Dawn's Truce cannot stop (exile wipe, bounce wipe, edict, -X/-X, uncounterable Verdict) — phases out",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Drift of Phantasms",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-2c261c68-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Mystical Tutor (0.96), Enlightened Tutor (0.95), Long-Term Plans (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Drift of Phantasms",
+      "neighbours": [
+        {
+          "name": "Mystical Tutor",
+          "score": 0.959
+        },
+        {
+          "name": "Enlightened Tutor",
+          "score": 0.9503
+        },
+        {
+          "name": "Long-Term Plans",
+          "score": 0.949
+        }
+      ]
+    },
+    {
+      "id": "S-2c261c68-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Drift of Phantasms",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "target",
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-2c261c68-10",
+      "kind": "oracle",
+      "text": "Instant · {2}{W}{W} — Convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.) | Any number of target nonland permanents you control phase out. (Treat them and anything attached to them as though they don't exist until your next t",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Clever Concealment"
+    },
+    {
+      "id": "S-2c261c68-11",
+      "kind": "price",
+      "text": "$3.87 NM ((MSC) 125) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Clever Concealment",
+      "as_of": "2026-11-21",
+      "figure": 3.87
+    },
+    {
+      "id": "S-2c261c68-12",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Karametra's Blessing (0.90), Greater Auramancy (0.89), Guardian of Faith (0.89)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Clever Concealment",
+      "neighbours": [
+        {
+          "name": "Karametra's Blessing",
+          "score": 0.8955
+        },
+        {
+          "name": "Greater Auramancy",
+          "score": 0.8921
+        },
+        {
+          "name": "Guardian of Faith",
+          "score": 0.8875
+        }
+      ]
+    },
+    {
+      "id": "S-2c261c68-13",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Clever Concealment",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-2c261c68-14",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read: 2 rows better, 4 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-2c261c68-15",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 7.10 -> 4.31, a change of -2.79 (-39%) [-2.8876, -2.6836] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.7856,
+      "ci95": [
+        -2.8876,
+        -2.6836
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2c261c68-16",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 16 games in 100 -> 5 in 100, a swing of 11 games per 100 [-0.1152, -0.1002] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.1077,
+      "ci95": [
+        -0.1152,
+        -0.1002
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2c261c68-17",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 3.29 -> 1.94, a change of -1.35 (-41%) [-1.4108, -1.2956] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3532,
+      "ci95": [
+        -1.4108,
+        -1.2956
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2c261c68-18",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 3.00 -> 2.53, a change of -0.48 (-16%) [-0.5434, -0.4116] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4775,
+      "ci95": [
+        -0.5434,
+        -0.4116
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2c261c68-19",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 54 games in 100 -> 48 in 100, a swing of 6 games per 100 [-0.069, -0.0468] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0579,
+      "ci95": [
+        -0.069,
+        -0.0468
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-2c261c68-20",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Drift of Phantasms"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Clever Concealment"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:36-08:00",
+    "facts": 20
+  }
+}

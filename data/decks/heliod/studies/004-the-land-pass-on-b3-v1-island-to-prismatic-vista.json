@@ -1,0 +1,505 @@
+{
+  "id": "004",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, or a 36th land for Stroke of Genius?",
+  "opened": "2026-11-21",
+  "decided_at": null,
+  "cards": [
+    "Island",
+    "Prismatic Vista",
+    "Plains",
+    "Nimbus Maze"
+  ],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-21",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "# b3-v1 land pass — data-analyst facts, 2026-11-21 (saved by Jarvis; the agent cannot write files)\n\nLands 35. Untapped WU: Adarkar Wastes, Command Tower, Floodfarm Verge (U needs Plains/Island), Flooded Strand (fetch), Mana Confluence, Skycloud Expanse (gated). Conditional-tapped WU: Deserted Beach, Glacial Fortress, Hallowed Fountain, Prairie Stream, Sea of Clouds (untapped at 4 seats), Seachrome Coast. Always tapped WU: Irrigated Farmland, Temple of Enlightenment. Mono: Eiganjo W, Plains ×4, Island ×13, Otawara U, Mystic Sanctuary U (needs 3+ other Islands), Mikokoro C. Enters tapped 9 (2 always, 7 conditional). Typed Island 17 (13 basics + Hallowed, Irrigated, Prairie, Sanctuary); typed Plains 7.\nDemand: W 22 cards / 27 pips (incl. Heliod {2}{W}{W}); WW: Austere Command 6, Clever Concealment 4, Guardian of Faith 3, Supreme Verdict 4; single W at MV1: Blessing, Path, Silence, Swords; MV2: Truce, Splendor, Auramancy, Winds. U 31 cards / 46 pips; UUU: Archmage's Charm, Zenith; UU: Counterspell, Fascination, Mathemagics, Dictate, Force, Mirrormade, Leyline, Insight, Venser, Fruition, Dig.\nRefreshed mana_analysis: lands W19 U29 (+rocks W23 U33); on-curve lands-only W .548 U .804; targets 36/36 (yardstick).\nExact hypergeometric (lands only), columns W≥1 by T2 | W≥2 by T4 | U≥1 T2 | U≥2 T3 | U≥3 T5:\n A current 35L W19 U29: 83.1 | 61.1 | 94.5 | 80.4 | 68.2\n B Island→Plains (W20 U28): 84.8 | 64.3 | 93.8 | 78.5 | 65.4\n C 2× Island→Plains (W21 U27): 86.3 | 67.3 | 93.0 | 76.4 | 62.4\n D 36th WU land, cut a nonland (W20 U30): 84.8 | 64.3 | 95.1 | 82.2 | 70.9\n E 36th land + Island→Plains (W21 U29): 86.3 | 67.3 | 94.5 | 80.4 | 68.2\n F Island→WU dual (W20 U29): 84.8 | 64.3 | 94.5 | 80.4 | 68.2\nWU lands not in branch: untapped Tundra, Nimbus Maze (W with an Island, U with a Plains — both true here), Gleaming Bastion (conditional), Thalakos Lowlands / Cloudcrest Lake (skip untap); fetches Misty Rainforest, Windswept Heath, Arid Mesa, Tranquil/Perilous Landscape, Brokers Hideout; Polluted Delta / Marsh Flats / Scalding Tarn / Fabled Passage not flagged WU by the corpus check (they fetch by type). prices.json (2026-10-09) prices none of them.\nNonlands 64 by MV: 0:2 1:11 2:21 3:15 4:8 5:2 6:3 7:1 8:1. Rocks 5 (Sol Ring, Arcane Signet, Azorius Signet, Fellwar, Talisman of Progress); Sapphire Medallion a reducer. Always-tapped: Irrigated Farmland, Temple of Enlightenment.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:40-08:00",
+      "from": "data/decks/heliod/.agent-out/b3-v1-landpass-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-21",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: a last pass to tighten the mana on b3-v1 (35 lands, lands-only W 19 / U 29, with rocks W 23 / U 33; on-curve lands-only W 0.548 / U 0.804; mana-fit short W 13, U 3 against 36/36). The white figure is mostly an instrument step, not a hole that opened: the pre-Concealment list reads effective_pips 1 and a W target of 22 (on-curve 0.866); Clever Concealment is the fifth double-W card among 22 white cards (Austere Command, Clever Concealment, Guardian of Faith, Heliod, Supreme Verdict — enumerated from the branch cards.json), the 20% quorum is five, so effective_pips became 2 and the same 19 Plains-side lands now score against WW-by-turn-3 (36 sources, which no 35-land two-colour base can reach for both colours). 'Short by 13' is therefore a yardstick; but the requirement under it is real, because the commander himself is {2}{W}{W}: with the production hypergeometric, WW among the ten cards seen by turn 4 is 0.611 off lands and 0.728 with the four W rocks counted, so roughly one game in four cannot cast Heliod on curve without a mulligan or a tutor. Every single-card white fix moves lands-only W on-curve by exactly one source, 0.548 to 0.580 (WW by turn 4: 0.611 to 0.643); the options differ only in what blue and the pilot pay. The smallest change that tightens white and charges blue nothing is one land for one land: a basic Island out, Prismatic Vista in — untapped, fetches a basic Plains or Island with the hand in view, one life, blue stays at 29 land sources (0.804), lands stay at 35, Mystic Sanctuary keeps 15 other Islands. Island to Plains does the same for white free of charge but costs blue one source (0.804 to 0.785) and reverses one of the 13th's three Plains-to-Island moves, whose 'white over target' why was true under the 22 target and is not under the 36. The log (001, 002, 003) records no colour-screw: this pass is driven by instruments, not by a game.\n\nadd_candidates: [{\"card\": \"Prismatic Vista\", \"closes\": \"colour-sources\", \"source\": \"pool\", \"why\": \"THE CHANGE: Island out, Prismatic Vista in, 35 lands stay 35. Production mana-analysis run in memory on the swapped list: W lands 19 to 20 (total 23 to 24), U lands 29 unchanged, on-curve lands-only W 0.548 to 0.580, U 0.804 unchanged; WW by turn 4 off lands 0.611 to 0.643; always-tapped 2 unchanged; no Game Changer (cards.csv game_changer False, reserved False). It is a basic of either type chosen with the hand in view, enters untapped, and its shuffle is live with Scroll Rack and Sensei's Divining Top, both in the branch. Cost: one life, and prices.json (2026-11-13) does not carry it — unpriced.\", \"natural_cut\": \"Island\", \"citations\": [{\"rule\": \"strategy:deckbuilding.mana-base.color-sources\", \"quote\": \"Only untapped sources count for turn one\"}]}, {\"card\": \"Hengegate Pathway // Mistgate Pathway\", \"closes\": \"colour-sources\", \"source\": \"pool\", \"why\": \"The no-life twin of the pick: the instrument reads it identically (W 20 / U 29, on-curve W 0.580 / U 0.804), it enters untapped and costs no life, and it weakly dominates the Island it replaces because the face is chosen when it is played. It loses Vista's shuffle and is a one-colour land once played; the model counts both faces, which is a limit noted in gaps. Unpriced in prices.json; not Reserved List.\", \"natural_cut\": \"Island\"}, {\"card\": \"Plains\", \"closes\": \"colour-sources\", \"source\": \"prompt\", \"why\": \"Option (a), the free one: W lands 19 to 20\n\ncut_candidates: [{\"card\": \"Island\", \"why\": \"One of thirteen basic Islands is the natural out for any white-side land: blue keeps 29 land sources only if the land coming in also makes blue (Prismatic Vista, Hengegate Pathway, a fetch, Tundra); a Plains in its place drops blue to 28 (on-curve 0.804 to 0.785).\", \"cost_of_cutting\": \"Mystic Sanctuary's other-Islands count falls 16 to 15 (needs three); Prairie Stream's basics count 17 to 16 (needs two); one fewer Flooded Strand target of the 20 typed Plains/Island cards. None of these bind.\", \"orphans_stack\": [], \"difficulty\": \"easy\"}, {\"card\": \"Stroke of Genius\", \"why\": \"NOT recommended in this pass; named only as the slot a 36th land would take (the pilot's 35-36 band). A 36th dual-type land (Prismatic Vista or Fabled Passage) is the one change that lifts both colours — W 0.548 to 0.580 and U 0.804 to 0.822 lands-only — but it costs a spell, and the question asked for the smallest change.\", \"cost_of_cutting\": \"One of two instant-speed self-draws that turn Psychosis Crawler into a kill (Blue Sun's Zenith remains at UUU), one Mystic Sanctuary target, and the deck's X spell whose generic portion Heliod's discount pays at the cheapest rate ({X}{2}{U}). Card three priced this cut contested and it stays contested.\", \"orphans_stack\": [], \"difficulty\": \"contested\"}, {\"card\": \"Skycloud Expanse\", \"why\": \"Considered and REJECTED as the out. It is the one gated land ({1},{T}: WU), so cutting it for a Plains raises only the ungated W reading (0.515 to 0.548)",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.mana-base.color-sources"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:40-08:00",
+      "from": "data/decks/heliod/.agent-out/deck-doctor-prescribe-b3-v1-landpass.json"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "backfilled": true,
+  "slug_name": "the-land-pass-on-b3-v1-island-to-prismatic-vista",
+  "facts": [
+    {
+      "id": "S-4f1caf90-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-4f1caf90-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-4f1caf90-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-4f1caf90-04",
+      "kind": "oracle",
+      "text": "Basic Land — Island — ({T}: Add {U}.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Island"
+    },
+    {
+      "id": "S-4f1caf90-05",
+      "kind": "stack",
+      "text": "stack 002 — Approach of the Second Sun, second cast off Mystical Tutor (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Island",
+      "stack": "002"
+    },
+    {
+      "id": "S-4f1caf90-06",
+      "kind": "stack",
+      "text": "stack 007 — Second Approach of the Second Sun, cast at instant speed with Teferi, Time Raveler out: can anyone counter it with a spell? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Island",
+      "stack": "007"
+    },
+    {
+      "id": "S-4f1caf90-07",
+      "kind": "engine_stage",
+      "text": "engine stage mana: WHAT PAYS FOR {6}{W} TWICE, AND IT IS SHORT",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Island",
+      "stage": "mana",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-4f1caf90-08",
+      "kind": "context",
+      "text": "CONTEXT cards: Command Tower, Mana Confluence, Flooded Strand, Hallowed Fountain, Glacial Fortress, Adarkar Wastes, Deserted Beach, Prairie Stream, Seachrome Coast, Skycloud Expanse, Irrigated Farmland, Temple of Enlightenment, Reli…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Island"
+    },
+    {
+      "id": "S-4f1caf90-09",
+      "kind": "decision",
+      "text": "decision 004 propose `splendor-v2` (2026-09-20): The real content of splendor-v1 and blue-v1, rebased onto the sleeved V11 so neither reverts the artifact package merged as v1.3.0. Gleaming Splendor for Alhamm",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Island",
+      "as_of": "2026-09-20"
+    },
+    {
+      "id": "S-4f1caf90-10",
+      "kind": "decision",
+      "text": "decision 007 reject `blue-v1` (2026-10-19): absorbed: the colour audit's Plains-to-Island shift merged in splendor-v2 as v1.4.0 (2026-09-20); its diff now reads backwards against the moved base — the pilo",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Island",
+      "as_of": "2026-10-19"
+    },
+    {
+      "id": "S-4f1caf90-11",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Island → Mystic Sanctuary — pilot 2026-11-13: puts a countered Approach (or Zenith, Stroke) back on top; replaces Archaeomancer at no spell slot; ten Islands, so it enters untapped",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Island",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-4f1caf90-12",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Reliquary Tower → Island — pilot 2026-11-13: land pass: a colourless land out for a blue source; Decanter of Endless Water covers hand size",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Island",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-4f1caf90-13",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Plains → Island — pilot 2026-11-13: land pass: white is over target, blue under",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Island",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-4f1caf90-14",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Plains → Island — pilot 2026-11-13: land pass: white still over target, blue short",
+      "tier": "coach",
+      "source": "branches/b3-v1/branch.json",
+      "card": "Island",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-4f1caf90-15",
+      "kind": "price",
+      "text": "$0.15 NM ((TDM) 280) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Island",
+      "as_of": "2026-11-21",
+      "figure": 0.15
+    },
+    {
+      "id": "S-4f1caf90-16",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Plains (0.98), Skycloud Expanse (0.98), Adarkar Wastes (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Island",
+      "neighbours": [
+        {
+          "name": "Plains",
+          "score": 0.985
+        },
+        {
+          "name": "Skycloud Expanse",
+          "score": 0.9832
+        },
+        {
+          "name": "Adarkar Wastes",
+          "score": 0.9598
+        }
+      ]
+    },
+    {
+      "id": "S-4f1caf90-17",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Island",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-4f1caf90-18",
+      "kind": "oracle",
+      "text": "Land — {T}, Pay 1 life, Sacrifice this land: Search your library for a basic land card, put it onto the battlefield, then shuffle.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Prismatic Vista"
+    },
+    {
+      "id": "S-4f1caf90-19",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Flooded Strand (1.00), Irrigated Farmland (0.91), Mikokoro, Center of the Sea (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Prismatic Vista",
+      "neighbours": [
+        {
+          "name": "Flooded Strand",
+          "score": 0.9974
+        },
+        {
+          "name": "Irrigated Farmland",
+          "score": 0.9105
+        },
+        {
+          "name": "Mikokoro, Center of the Sea",
+          "score": 0.9029
+        }
+      ]
+    },
+    {
+      "id": "S-4f1caf90-20",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Prismatic Vista",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-4f1caf90-21",
+      "kind": "oracle",
+      "text": "Basic Land — Plains — ({T}: Add {W}.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Plains"
+    },
+    {
+      "id": "S-4f1caf90-22",
+      "kind": "engine_stage",
+      "text": "engine stage mana: WHAT PAYS FOR {6}{W} TWICE, AND IT IS SHORT",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Plains",
+      "stage": "mana",
+      "as_of": "f7e21dc6a8bb"
+    },
+    {
+      "id": "S-4f1caf90-23",
+      "kind": "context",
+      "text": "CONTEXT cards: Command Tower, Mana Confluence, Flooded Strand, Hallowed Fountain, Glacial Fortress, Adarkar Wastes, Deserted Beach, Prairie Stream, Seachrome Coast, Skycloud Expanse, Irrigated Farmland, Temple of Enlightenment, Reli…",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Plains"
+    },
+    {
+      "id": "S-4f1caf90-24",
+      "kind": "price",
+      "text": "$0.15 NM ((ECL) 269) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Plains",
+      "as_of": "2026-11-21",
+      "figure": 0.15
+    },
+    {
+      "id": "S-4f1caf90-25",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Island (0.98), Skycloud Expanse (0.97), Adarkar Wastes (0.94)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Plains",
+      "neighbours": [
+        {
+          "name": "Island",
+          "score": 0.985
+        },
+        {
+          "name": "Skycloud Expanse",
+          "score": 0.969
+        },
+        {
+          "name": "Adarkar Wastes",
+          "score": 0.9423
+        }
+      ]
+    },
+    {
+      "id": "S-4f1caf90-26",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Plains",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-4f1caf90-27",
+      "kind": "oracle",
+      "text": "Land — {T}: Add {C}. {T}: Add {W}. Activate only if you control an Island. {T}: Add {U}. Activate only if you control a Plains.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Nimbus Maze"
+    },
+    {
+      "id": "S-4f1caf90-28",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Skycloud Expanse (0.98), Island (0.98), Adarkar Wastes (0.98)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Nimbus Maze",
+      "neighbours": [
+        {
+          "name": "Skycloud Expanse",
+          "score": 0.9807
+        },
+        {
+          "name": "Island",
+          "score": 0.9798
+        },
+        {
+          "name": "Adarkar Wastes",
+          "score": 0.9789
+        }
+      ]
+    },
+    {
+      "id": "S-4f1caf90-29",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Nimbus Maze",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-4f1caf90-30",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 4 of 4 named card(s) read: 2 rows better, 4 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-4f1caf90-31",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 7.10 -> 4.31, a change of -2.79 (-39%) [-2.8876, -2.6836] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.7856,
+      "ci95": [
+        -2.8876,
+        -2.6836
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4f1caf90-32",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 16 games in 100 -> 5 in 100, a swing of 11 games per 100 [-0.1152, -0.1002] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.1077,
+      "ci95": [
+        -0.1152,
+        -0.1002
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4f1caf90-33",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 3.29 -> 1.94, a change of -1.35 (-41%) [-1.4108, -1.2956] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3532,
+      "ci95": [
+        -1.4108,
+        -1.2956
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4f1caf90-34",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 3.00 -> 2.53, a change of -0.48 (-16%) [-0.5434, -0.4116] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4775,
+      "ci95": [
+        -0.5434,
+        -0.4116
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4f1caf90-35",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 54 games in 100 -> 48 in 100, a swing of 6 games per 100 [-0.069, -0.0468] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0579,
+      "ci95": [
+        -0.069,
+        -0.0468
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-4f1caf90-36",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 4,
+    "seen": [
+      "Island",
+      "Prismatic Vista",
+      "Plains",
+      "Nimbus Maze"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:40-08:00",
+    "facts": 36
+  }
+}

@@ -236,6 +236,18 @@ def test_a_rules_cite_outside_RULE_ID_RE_and_an_ungrounded_strategist_are_refuse
         st.add_contribution(doc, "goldfish", "I am not an agent.")
 
 
+def test_a_backfilled_study_reads_an_uncited_answer_as_a_note_and_a_new_one_as_an_error(deck):
+    """The hand-saved answers of 2026-11-20/21 predate the citation contract; a study
+    opened since holds its agents to it."""
+    doc = _decided(deck, ["pilot", "strategist"])
+    st.add_contribution(doc, "strategist", "Just do it, it feels right.")
+    errs, notes = vs.validate(doc, "x")
+    assert any("no strategy:<id> citation" in e for e in errs) and not notes
+    doc["backfilled"] = True
+    errs, notes = vs.validate(doc, "x")
+    assert errs == [] and any("no strategy:<id> citation" in n for n in notes)
+
+
 def test_the_swap_must_name_a_card_the_list_or_the_branch_actually_had(deck):
     doc = _decided(deck, ["pilot"])
     assert vs.validate(doc, "x")[0] == []

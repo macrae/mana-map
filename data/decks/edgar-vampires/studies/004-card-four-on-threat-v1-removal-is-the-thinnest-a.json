@@ -1,0 +1,387 @@
+{
+  "id": "004",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card four on threat-v1: removal is the thinnest axis left — Lethal Scheme for Olivia Voldaren?",
+  "opened": "2026-11-20",
+  "decided_at": "2026-11-20",
+  "cards": [
+    "Olivia Voldaren",
+    "Lethal Scheme"
+  ],
+  "swap": {
+    "out": "Olivia Voldaren",
+    "in": "Lethal Scheme"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Strategist\nRecommendation: add Lethal Scheme. Cut Boros Charm, not Olivia; if the Charm stays, cut Olivia. Argument unless marked evidence; no goldfish.\n1. Removal is the next binding axis, but 8-10 does not transfer: Walser's baseline (strategy:deckbuilding.interaction-suite) assumes only 2-3 resolve; Hinds says derive counts from the deck's failure modes (strategy:deckbuilding.ratios); linear decks win on speed, redundancy, resilience (strategy:critical-mass). Evidence: log 002 tagged interaction-stranded. Aim ~7 true instant-speed answers, not 10.\n2. Olivia is not the weakest slot: Vampire flyer, pings at a distance, steals (two of four words), works without Edgar. Costs real ({1}{R} pings, {3}{B}{B} steal). Weakest alternative: Boros Charm (indestructible duplicates Concealment/Teferi's; 4 to one player; no draw, no drain, not a Vampire). Anje, Bastion, Diabolic Intent are not cuts.\n3. Scheme over Damn (sorcery, 2WW overload), Winds (sorcery, six-mana overload), Dust (exiles our engine). Scheme misses Purphoros-as-enchantment; Unmaking and Verse cover that.\n4. Connive is minor value: a loot per convoker serves the draw axis; counters take 1/1 tokens out of Skullclamp reach — an edge cost.\n5. If removal is not binding: Pact of the Serpent, then Sanctum Seeker; Throne/Idol/Champion lower.\nOpen: companion lacks removal-count norms for linear drain decks and convoke timing (/research-strategy topics).",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:critical-mass",
+          "strategy:deckbuilding.interaction-suite",
+          "strategy:deckbuilding.ratios"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:08-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card4-strategist-rules-analyst.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Rules-question (Lethal Scheme convoked by four eminence tokens)\n(a) Four SEPARATE draw-then-discard sequences in order (701.50c, 701.50a; ruling 2022-04-29). One-card hand: 4 drawn, 4 discarded, up to 4 counters; the hand never empties. Max four convokers (ruling 2022-04-29).\n(b) A tapped convoker still connives (702.51c; connive has no untapped requirement). A convoker that left the battlefield still connives, no counter placed (ruling 2022-04-29; 701.50b).\n(c) Summoning-sick tokens can convoke (702.51a; ruling 2024-01-12; 302.6 does not reach convoke).\n(d) 2/2 token + Skullclamp = 3/1, lives (704.5f fires only at toughness ≤0; 613.4c both effects layer 7c, additive).\n(e) Bloodghast returning by landfall triggers Wispdrinker and Welcoming Vampire (603.6a; rulings check power on entry) IF its power is 2 (DB output lacked P/T; printed 2/1). Eminence does NOT trigger: returning is not casting (701.5a; Edgar ruling 2025-01-24).\n(f) Planeswalker vs creature target changes nothing for convoke or connive (701.8a/b); Skullclamp draws only on \"equipped creature dies\".",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "302.6",
+          "603.6a",
+          "613.4c",
+          "701.50a",
+          "701.50b",
+          "701.50c",
+          "701.5a",
+          "701.8a",
+          "702.51a",
+          "702.51c",
+          "704.5f"
+        ]
+      },
+      "added_at": "2026-11-21T22:04:08-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card4-strategist-rules-analyst.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "spawned_at": "2026-11-20",
+      "slice": "saved by Jarvis during the harness round; the agent read the context slices and the branch files it names",
+      "text": "## Data-analyst (branch facts)\n- Branch removal: Swords {W} I exile creature; Anguished Unmaking {1}{W}{B} I exile any nonland; Vanishing Verse {W}{B} I exile monocoloured; Crackling Doom {R}{W}{B} I edict greatest power + 2 each opp; Toxic Deluge {2}{B} S mass -X/-X; Meathook {X}{B}{B} mass -X/-X on ETB; Bloodtithe Harvester sorcery-speed sac -X/-X; Olivia {1}{R} ping (instant speed) / {3}{B}{B} steal; Erebos {1}{B}+sac -2/-1; Vish Kal counters; Elspeth -3 (MV ≥3 creature); Liliana -4 edict two; Boros Charm 4 to player/PW only.\n- Instants (8): Anguished Unmaking, Boros Charm, Clever Concealment, Crackling Doom, Swords, Teferi's Protection, Vampiric Tutor, Vanishing Verse.\n- Red pips: 5 nonland cards (Anje, Bloodtithe, Boros Charm, Crackling Doom, Olivia + ping). Sources sure/max: R 13/15, W 17/19, B 26/28. Lands 35. Fetches excluded.\n- Vampires: 29 in the 99 (30 with Edgar); 19 with power ≤2.\n- Opponents: Scheme hits Krenko, Tannuk, Magda, Neyith, Teval, Wilhelt, Zur, Sythis; NOT Purphoros (enchantment below devotion 5, indestructible above); NOT Inspirit until station ≥8; not Teval's Altar. All 14 planeswalkers across seats hittable (Clive unverified, not in corpus).\n- Candidates: Lethal Scheme {2}{B}{B} I convoke destroy creature/PW; Damn {B}{B} S / overload {2}{W}{W}; Winds of Abandon {1}{W} S exile / overload {4}{W}{W}; Everything Comes to Dust {7}{W}{W}{W} S convoke, exiles all creatures not sharing a type with a convoker plus ALL artifacts and enchantments.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:08-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/card4-strategist-rules-analyst.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "spawned_at": "2026-11-20",
+      "slice": "MODE prescribe: the branch's deck-audit, the captain's log, deck_recon.json",
+      "text": "Asked: with cards 1-3 in (Black Market Connections, Malakir Bloodwitch, Clever Concealment), is Lethal Scheme for Olivia Voldaren the right fourth card, and is Olivia the right cut. Yes on the add, and the cut is right but painful. Removal is the axis left under target that one card moves: the branch's honest single-target count is 6 spells (Anguished Unmaking, Swords to Plowshares, Vanishing Verse, Crackling Doom, plus Toxic Deluge and The Meathook Massacre) against Walser's 8-10, the pod's three kill-on-sight commanders (the seat notes, the pilot's calls of 2026-11-10) are Krenko, Tannuk and Purphoros, and the two that are creatures have a one-turn window, and log 002's structural finding still stands: the mana is spent on Vampires, so there is never open mana to hold up. Of the four removal candidates on the pilot's list (Damn, Winds of Abandon, Everything Comes to Dust, Lethal Scheme) two convoke, and Scheme is the one that does so without exiling the branch's own engine — four eminence tokens cast it at instant speed, in the opponent's upkeep, for zero mana — and it is a third hard answer to a planeswalker beside Anguished Unmaking and the monocolored-only Vanishing Verse (14 walkers across 13 of the 22 stand-in seats). What it does not do, said plainly: it never touches Purphoros (not a creature under five devotion; indestructible when it is), so log 005's 'white disruption for Purphoros' ask stays open at two answers (Unmaking, Verse). Olivia is the cut because her removal is the most expensive per point on the branch — {1}{R} per point of damage, red on every activation in the colour the branch's lands support least (18 red land sources against a 22 target; B 30/36, W 21/22) — and because of the pilot's four words she carries distance and ferocity but neither drain nor gain; the taxonomy files her as a body with counters, not as removal. The cost is real and is stated in cut_candidates: she is the branch's only repeatable creature ping and its only steal, and a ping that kills an X/1 is a death Blood Artist, Falkenrath Noble and Meathook pay on. If the pilot weighs the empty hand by turn eight (logs 002, 003, 006) above the pod's kill-on-sight creatures, the card is Pact of the Serpent (rank 2), not a removal spell at all. Draw check, the pilot's required axis: Olivia draws nothing, so the swap lowers no draw; Scheme's connive is selection, not advantage. No goldfish figure appears here, by the pilot's ruling. STATE: this is the reading of the branch BEFORE card 4 (sha c686192d…); while it was being written branch.json acquired a pilot-approved card-4 entry (Olivia out, Lethal Scheme in) and the branch now hashes a78d3f55… — see gaps for the three places that entry's `why` and this evidence disagree.\n\nadd_candidates: [{\"card\": \"Lethal Scheme\", \"closes\": \"interaction\", \"source\": \"prompt\", \"why\": \"Rank 1. {2}{B}{B} instant, convoke: destroy target creature or planeswalker; each convoking creature connives. Edgar's eminence tokens are black, so two of them pay {B}{B} and two more pay the generic — four tokens cast it for nothing, at instant speed, on an opponent's turn, with every land tapped on Vampires: log 002's structural problem answered by the fuel, the same way card 3 was. Against the pod's named threats: KILLS Krenko (3/3) in Oliver's upkeep before his first activation — the seat note's window; KILLS Tannuk (3/5) in Alex's upkeep before the warp turn — the seat note asks for exactly instant speed, and destroy over bounce; KILLS Zur, Eternal Schemer (hexproof goes to his enchantment creatures, not to him) and Magda; KILLS a planeswalker — 14 across 13 of the 22 stand-in seats, 4 of the 8 A-team seats (Chandra, Acolyte of Flame; Koth, Fire of Resistance; Domri, Anarch of Bolas; Liliana, Death's Majesty), where the branch's answers are Anguished Unmaking, Vanishing Verse (monocolored only — not Domri) and Boros Charm's 4 damage. DOES NOT TOUCH Purphoros (not a creature under five devotion; indestructible above it), Zur's animated enchantments (hexproof — Crackling Doom's edict is the branch's answer), or a token board. Connive, priced honestly: each convoking token draws then discards — four loots, net zero cards, so it does not satisfy the draw axis on its own; the discards are live va\n\ncut_candidates: [{\"card\": \"Olivia Voldaren\", \"why\": \"Removal for removal, and hers is the most expensive per point on the branch (enumerated against Erebos's {1}{B} plus a sacrifice for -2/-1, Bloodtithe Harvester's free tap-and-sacrifice for -X/-X, Vish Kal's free counters). Her ping is {1}{R} for 1 damage to a creature — two mana a point, red every time, in the colour the branch's lands support least (18 red land sources against a 22 target). Against the pod's named must-answers she kills none outright: Krenko (3/3) is six mana of pings or {1}{R} then {3}{B}{B} to steal him — seven mana over two turns; Tannuk (3/5) is ten mana; Purphoros is not a creature. She drains nobody and gains nothing: of the pilot's four words she carries action at a distance and ferocity, not blood drain or life gain, and card_roles.json files her buff:counters and threat:body — no removal role at all. Lethal Scheme does her removal job at instant speed for zero mana against both kill-on-sight commanders, and the swap moves the interaction count where cutting a drainer or a draw source would move an axis the thesis needs.\", \"cost_of_cutting\": \"A four-mana 3/3 flying Vampire — an eminence token on cast, so one unit of fuel — and the branch's ONLY repeatable creature ping and ONLY steal effect (enumerated from the corpus oracle over the pre-swap 99: no other card deals damage to a creature or gains control of one, and no other card has an activated ability with a red pip). Against a token seat (Krenko, Chatterfang,",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-21T22:04:08-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-threat-v1-card4.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "deck-doctor",
+      "data-analyst",
+      "rules-question"
+    ],
+    "pilot_words": "approved! stage it and go to card five",
+    "reading": "",
+    "at": "2026-11-21"
+  },
+  "backfilled": true,
+  "slug_name": "card-four-on-threat-v1-removal-is-the-thinnest-a",
+  "facts": [
+    {
+      "id": "S-0dfb70d0-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-0dfb70d0-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-0dfb70d0-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0dfb70d0-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire · {2}{B}{R} — Flying | {1}{R}: Olivia Voldaren deals 1 damage to another target creature. That creature becomes a Vampire in addition to its other types. Put a +1/+1 counter on Olivia Voldaren. | {3}{B}{B}: Gain control of target Vampire for as long as you control Olivia Voldaren.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Olivia Voldaren"
+    },
+    {
+      "id": "S-0dfb70d0-05",
+      "kind": "engine_stage",
+      "text": "engine stage output: LIFE LOSS WITHOUT COMBAT, AND THE DENIAL SUITE",
+      "tier": "coach",
+      "source": "engine.json",
+      "card": "Olivia Voldaren",
+      "stage": "output"
+    },
+    {
+      "id": "S-0dfb70d0-06",
+      "kind": "context",
+      "text": "CONTEXT cards: Vish Kal, Blood Arbiter, Elenda, the Dusk Rose, Olivia Voldaren, Olivia, Crimson Bride, Cordial Vampire, Vein Ripper, Captivating Vampire",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Olivia Voldaren"
+    },
+    {
+      "id": "S-0dfb70d0-07",
+      "kind": "staged",
+      "text": "staged 2026-11-20: Olivia Voldaren → Lethal Scheme — Card 4 (2026-11-20, pilot approved): removal was the thinnest axis left (four single-target instants plus two wipes); Scheme is the only removal candidate the eminence tokens cast for free at instant speed (log 002: no o",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Olivia Voldaren",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0dfb70d0-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Cordial Vampire (0.91), Edgar Markov (0.90), Elenda, the Dusk Rose (0.87)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Olivia Voldaren",
+      "neighbours": [
+        {
+          "name": "Cordial Vampire",
+          "score": 0.9108
+        },
+        {
+          "name": "Edgar Markov",
+          "score": 0.9045
+        },
+        {
+          "name": "Elenda, the Dusk Rose",
+          "score": 0.8683
+        }
+      ]
+    },
+    {
+      "id": "S-0dfb70d0-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Olivia Voldaren",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-0dfb70d0-10",
+      "kind": "oracle",
+      "text": "Instant · {2}{B}{B} — Convoke (Your creatures can help cast this spell. Each creature you tap while casting this spell pays for {1} or one mana of that creature's color.) | Destroy target creature or planeswalker. Each creature that convoked this spell connives. (Draw a card, then discard a card. If you discarded a nonla",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Lethal Scheme"
+    },
+    {
+      "id": "S-0dfb70d0-11",
+      "kind": "recon",
+      "text": "recon (2026-11-20): On protection the branch is already above consensus, not below it. Bracket-3 lists run two or three: Teferi's Protection 30.9% (1,815), Boros Charm 29.3% (1,721), Akroma's Will 23.1% (1,355), and the average bracket-3 aristocrats 99 carries",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Lethal Scheme",
+      "as_of": "2026-11-20",
+      "confidence": "contested"
+    },
+    {
+      "id": "S-0dfb70d0-12",
+      "kind": "price",
+      "text": "$0.15 NM ((MSC) 157) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Lethal Scheme",
+      "as_of": "2026-11-21",
+      "figure": 0.15
+    },
+    {
+      "id": "S-0dfb70d0-13",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Path to Exile (0.87), Olivia's Wrath (0.85), Anguished Unmaking (0.84)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Lethal Scheme",
+      "neighbours": [
+        {
+          "name": "Path to Exile",
+          "score": 0.8723
+        },
+        {
+          "name": "Olivia's Wrath",
+          "score": 0.8544
+        },
+        {
+          "name": "Anguished Unmaking",
+          "score": 0.8403
+        }
+      ]
+    },
+    {
+      "id": "S-0dfb70d0-14",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Lethal Scheme",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-0dfb70d0-15",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read: 3 rows better, 7 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-0dfb70d0-16",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 22.25 -> 14.83, a change of -7.42 (-33%) [-7.6753, -7.1611] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -7.4182,
+      "ci95": [
+        -7.6753,
+        -7.1611
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dfb70d0-17",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 85 games in 100 -> 79 in 100, a swing of 7 games per 100 [-0.0768, -0.0598] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0683,
+      "ci95": [
+        -0.0768,
+        -0.0598
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dfb70d0-18",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 8.64 -> 7.29, a change of -1.35 (-16%) [-1.4376, -1.262] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.3498,
+      "ci95": [
+        -1.4376,
+        -1.262
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dfb70d0-19",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.82 -> 1.97, a change of -0.84 (-30%) [-0.9129, -0.7743] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.8436,
+      "ci95": [
+        -0.9129,
+        -0.7743
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dfb70d0-20",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.001 is smaller than the 0.011 this run can resolve [-0.0091, 0.0067] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0091,
+        0.0067
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-0dfb70d0-21",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Olivia Voldaren"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Lethal Scheme"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-21T22:04:10-08:00",
+    "facts": 21
+  }
+}
