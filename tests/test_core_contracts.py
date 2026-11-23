@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_every_core_entry_is_a_collected_unit_test():
     out = subprocess.run(
         [sys.executable, "-m", "pytest", "--collect-only", "-q", "-o", "addopts=", "-m", "core and unit",
-         "-p", "no:xdist", "--no-header"],
+         "-p", "no:xdist", "--no-header", *sorted({"tests/" + k.split("::")[0] for k in CORE})],
         cwd=ROOT, capture_output=True, text=True, timeout=600)
     ids = [ln.strip() for ln in out.stdout.splitlines() if "::" in ln]
     seen = {f"{Path(i.split('::')[0]).name}::{i.split('::')[-1].split('[')[0]}" for i in ids}
@@ -29,6 +29,8 @@ def test_every_core_entry_names_its_rule():
 
 
 def test_every_pending_rule_still_names_a_real_test():
+    if not PENDING:
+        return                                        # nothing owed; never collect the whole suite for it
     out = subprocess.run(
         [sys.executable, "-m", "pytest", "--collect-only", "-q", "-o", "addopts=",
          "-p", "no:xdist", "--no-header", *sorted({"tests/" + k.split("::")[0] for k in PENDING})],
