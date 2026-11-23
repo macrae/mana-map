@@ -158,23 +158,25 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 ## Numbers
 
 <!-- ctx:gen numbers -->
+- **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-23
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on V30, 2026-11-22. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **92%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 4.151**
-- A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **43%**
-- A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **24%**
-- A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
-- STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss: **0%**
-- RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **34%**
-- THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **2%**
-- A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **24%**
-- RAMP drawn — an accelerant of any kind: **35%**
-- REMOVAL drawn — a spell or ability that answers a permanent: **34%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **12%**
+- A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand: **74%**
+- A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out: **65%**
+- THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn: **47%**
+- AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate): **52%**
+- A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return: **74%**
+- CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience: **34%**
+- THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience: **24%**
+- A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own): **36%**
+- A TUTOR drawn — finds the missing half of the experience engine: **44%**
+- RAMP drawn — an accelerant of any kind: **44%**
+- REMOVAL drawn — a spell or a returning body that answers a permanent: **82%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's: **12%**
 - share of opening sevens the model would keep: **80%**
 - Colour on curve (lands + rocks): B 90%, G 94%
 <!-- /ctx:gen numbers -->

@@ -1,16 +1,16 @@
 {
   "slug": "meren-recursion",
-  "as_of_decklist_sha256": "7c8d527d99ba200c3e39e9e48946612666830f6784c2b9f51c2bbaebc125ffcf",
-  "archetype": "Golgari reanimator: load a fat creature, return it on turn three or four, and let Meren return it again each end step, with Grave Pact and Dictate of Erebos turning deaths into edicts. The declared goldfish frame (death drain) no longer matches this list, and the audit applied base targets because no archetype was established.",
-  "verdict": "It is fast and deep. Mana is reliable (0.91 turn-3 land drop), there are 10 tutors, and 11 of its 19 interaction pieces are on creatures Meren can return. It also has six answers to a Rest in Peace or Leyline of the Void. What limits it at a real table is that nothing in the 99 stops a counterspell on the reanimate turn, and that its card flow depends on its own graveyard: Meren returns a creature card every end step and five of its seven draw cards need a death, an entry or attack, or combat damage, so a wipe followed by graveyard exile is the hand it cannot rebuild from.",
+  "as_of_decklist_sha256": "c9e7d41682c64e3c2192a3542a2acae94987d70b7d473f3dac429eadc27d0e0c",
+  "archetype": "Golgari sacrifice-and-recursion value deck with a reanimator opening: tokens and cheap ETB bodies die to free outlets, Meren returns one creature per end step, and fatties that pay on entering and dying are the payoffs. The audit established no archetype frame (base targets apply), and the goldfish_targets.json declaration still describes the September drain plan (Starscape Cleric, single-target drain), so its 0% rows are not a reading of this deck.",
+  "verdict": "The deck functions: the turn-3 land drop lands 0.91 of the time, Meren is cast by turn six in 92.5% of goldfish games (median turn 4), and interaction is deep (18 copies, all five classes). What binds is engine speed: experience averages 2.433 at turn 6 and 4.266 at turn 7, so the fatties come back to hand rather than to the battlefield until roughly turn 8, and after the V29 and V30 cuts the early reanimator bridge rests on two cheap spells. Draw is the short axis behind it: one steady source (Sylvan Library), the rest on death, on mill or one-shot. No games are logged, and no swap weighed here (Haywire Mite and Eternal Witness included) is a clear upgrade, so the prescription is NO CHANGE until the first games say which exposure is real.",
   "axes": [
     {
       "axis": "mana-base",
       "verdict": "adequate",
       "measured": {
-        "value": 34
+        "value": 35
       },
-      "reading": "34 counts land cards only; Agadeem's Awakening and Malakir Rebirth are two more land drops, so 36 slots can be played as lands. With 43 mana sources and a 0.91 turn-3 land drop, mana is not what loses games.",
+      "reading": "35 land copies is one under the strategy band and exactly the pilot's floor of 35; Agadeem's Awakening and Malakir Rebirth are two more land drops on their back faces. The turn-3 land drop at 0.91 says the count is not what loses games.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -20,11 +20,11 @@
     },
     {
       "axis": "mana-sources",
-      "verdict": "adequate",
+      "verdict": "strength",
       "measured": {
-        "value": 43
+        "value": 42
       },
-      "reading": "43 sources against 37: nine persistent producers on top of the lands. The deck casts its spells on time.",
+      "reading": "42 against the 37 the formula asks for: seven persistent producers on top of 35 lands, so Meren on turn 4 is reliable.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -36,14 +36,10 @@
       "axis": "taplands",
       "verdict": "adequate",
       "measured": {
-        "value": 5
+        "value": 4
       },
-      "reading": "The audit counts 5, but Necroblossom Snarl enters untapped when we reveal a Swamp or Forest card, so the unconditional count is 4: Bojuka Bog, Festering Thicket, Khalni Garden, Underground Mortuary. That sits at Karsten's cap, which is the right bar for a deck with a turn-one Entomb line, not the eight a slow deck tolerates.",
+      "reading": "4 unconditional taplands, well inside the slow-deck allowance; five more are conditional or shock-style.",
       "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "Karsten caps pure taplands at about four"
-        },
         {
           "rule": "strategy:deckbuilding.mana-base",
           "quote": "around eight taplands is comfortable in a slow deck, near zero in an aggressive one"
@@ -52,11 +48,11 @@
     },
     {
       "axis": "colour-sources",
-      "verdict": "weakness",
+      "verdict": "adequate",
       "measured": {
-        "value": -2
+        "value": -1
       },
-      "reading": "Black is 2 short (34 of 36), and the two MDFCs are already in that 34 as nonland sources. Grave Pact (BBB), Dictate of Erebos, Yawgmoth and Vile Entomber all want BB. A land-for-land fix closes half of it.",
+      "reading": "Black is one source short (35 of 36) while green is four over (26 of 22); mana_analysis puts black on curve at 0.895 with rocks and dorks. Real but small: swapping Karn's Bastion for a Swamp would close it, and Urborg already turns Bastion, High Market and Phyrexian Tower into black sources when it is out, so the gain is modest and not recommended.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base.color-sources",
@@ -68,9 +64,9 @@
       "axis": "ramp",
       "verdict": "adequate",
       "measured": {
-        "value": 12
+        "value": 9
       },
-      "reading": "12 ramp, at the top of the band. Four of them are one-mana dorks that also count as fodder.",
+      "reading": "9 counted, and two of them (Agadeem's Awakening, Malakir Rebirth) are spell-lands rather than accelerants. The pilot cut ramp in V21 on purpose; mean available mana is 4.089 on turn 4 and Meren's median cast turn is 4, so ramp is not binding.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
@@ -80,19 +76,19 @@
     },
     {
       "axis": "card-advantage",
-      "verdict": "adequate",
+      "verdict": "weakness",
       "measured": {
-        "value": 3
+        "value": 2
       },
-      "reading": "The taxonomy counts 3; the oracle text adds Archon, Yawgmoth, Nurturing Peatland and Festering Thicket for 7, above the 5 a graveyard deck legitimately runs, and Meren returns a creature card to the battlefield or hand every end step on top. The real limit is shape, not count: all of it is on-plan, so it fails together when our graveyard is exiled after a wipe (see single_points_of_failure).",
+      "reading": "2 by the taxonomy against 10, and the probe cards change the shape more than the size: Sylvan Library is the one steady source; Dark Prophecy, Skullclamp, Yawgmoth and Archon of Cruelty draw on deaths or on Archon's entering and attacking; Unshakable Tail draws only when a creature card is milled, at {2} a Clue; Festering Thicket and Nurturing Peatland are one-shot. Study 009 called draw the short axis and nothing since has changed that; it is short, but it sits behind engine speed, which is what the deck's slow turns show.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.ratios",
-          "quote": "a graveyard deck legitimately runs 5 draw"
+          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
         },
         {
           "rule": "strategy:card-advantage.plan-draw",
-          "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
+          "quote": "steady draw live in the enabler-less keep"
         }
       ]
     },
@@ -100,9 +96,9 @@
       "axis": "interaction",
       "verdict": "strength",
       "measured": {
-        "value": 19
+        "value": 18
       },
-      "reading": "19 by the taxonomy, and most of them loop: Meren returns Plaguecrafter, Accursed Marauder or Ravenous Chupacabra every end step, and Grave Pact and Dictate of Erebos edict on every death.",
+      "reading": "18 copies, and the suite is mostly re-buyable bodies (Hapatra, Cavalier of Night, Noxious Gearhulk, Archon, Massacre Wurm, Cankerbloom) that Meren fires again.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -116,7 +112,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Toxic Deluge and The Meathook Massacre. The deck profits from its own wipe, because the dead feed Meren.",
+      "reading": "Golgari Charm's -1/-1 and The Meathook Massacre; Massacre Wurm's -2/-2 to opponents' creatures is a third, one-sided, which Meren can re-fire. Hapatra is not a sweep: she puts counters on up to one creature per opponent.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -126,25 +122,29 @@
     },
     {
       "axis": "protection",
-      "verdict": "weakness",
+      "verdict": "adequate",
       "measured": {
-        "value": 3
+        "value": 2
       },
-      "reading": "3 counted: Heroic Intervention, Lightning Greaves, Spore Frog, and Spore Frog stops only combat damage. Nothing in the 99 makes a spell uncounterable, so the reanimate turn has no answer to a counterspell.",
+      "reading": "2 counted (Heroic Intervention, Tamiyo's Safekeeping), inside the generic 2-4 band; Golgari Charm (regenerate) and Malakir Rebirth also cover destroy and damage, not exile. Meren is this engine's hub, a four-drop recast at six, so the insurance section's hub branch applies, not its cheap-value-commander branch; whether that buys more slots turns on what this table removes, and with no games logged that is unknown.",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.threat-density",
-          "quote": "3-5 finishers, \"at least 3 finishers in your deck\", 5-7 protection slots, 20-25 flexible strategy cards"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Commander Deck Maker: 2-4 protection generic, 4-6 combo, 6-8 Voltron"
+        },
+        {
+          "rule": "strategy:multiplayer.commander-insurance",
+          "quote": "His decision test: how critical is the commander to the plan, and what removal this table actually runs."
         }
       ]
     },
     {
       "axis": "threat-density",
-      "verdict": "adequate",
+      "verdict": "strength",
       "measured": {
-        "value": 6
+        "value": 9
       },
-      "reading": "The 6 counted are mostly lock pieces and drains. The real kills are reanimated fat (Archon, Grave Titan, the Sheoldreds) and Craterhoof Behemoth. There are enough finishers; the issue is getting them to resolve and stay.",
+      "reading": "9 counted finishers against a floor of 3, plus five three-card lines (none verified). The deck does not lack a way to win.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.threat-density",
@@ -156,9 +156,9 @@
       "axis": "creatures",
       "verdict": "adequate",
       "measured": {
-        "value": 32
+        "value": 41
       },
-      "reading": "32 creatures: plenty of bodies for the outlets and for Meren to return.",
+      "reading": "41 creatures, above the recon aggregate's ~37: the body count the end-step loop wants.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -168,11 +168,11 @@
     },
     {
       "axis": "interaction-breadth",
-      "verdict": "weakness",
+      "verdict": "strength",
       "measured": {
-        "value": 4
+        "value": 5
       },
-      "reading": "The audit reads graveyard uncovered. Read by the text, Bojuka Bog covers it once, and the heuristic skips lands; The True Scriptures' chapter III is gated ({4}{B}, sorcery speed, an opponent at eight cards) and is not an answer. One tapland is the whole graveyard suite against opposing reanimator, so the audit's under stands.",
+      "reading": "All five classes answered. Graveyard hate has four instant-speed answers (Assassin's Trophy, Boseiju, Cankerbloom, Golgari Charm for enchantments): four copies in 99, so the class is covered but a given hand often holds none.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.interaction-suite",
@@ -186,7 +186,7 @@
       "measured": {
         "value": 0.91
       },
-      "reading": "0.91 hit the turn-3 land drop, and 0.79 of first sevens are keepable. The deck works.",
+      "reading": "0.91 hit the turn-3 land drop and the model keeps 0.805 of first sevens.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.mana-base",
@@ -200,7 +200,7 @@
       "measured": {
         "value": 2
       },
-      "reading": "Modal mana value 2, with 19 two-drops and 16 three-drops. The 8-drops (Archon, Craterhoof) are meant to be reanimated, not hard-cast.",
+      "reading": "Modal mana value 2, with 19 two-drops and 17 three-drops: the cheap bodies Meren returns to the battlefield first.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.curve",
@@ -214,7 +214,7 @@
       "measured": {
         "value": 3
       },
-      "reading": "Floor 3 on three Game Changers (Demonic Tutor, Survival of the Fittest, Tergrid). That is the ceiling the pilot set: there is no room for a fourth.",
+      "reading": "Bracket floor 3 on two Game Changers (Demonic Tutor, Tergrid); a third slot is open and every candidate offered this month was declined.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.power-level",
@@ -224,11 +224,11 @@
     },
     {
       "axis": "tutors",
-      "verdict": "strength",
+      "verdict": "adequate",
       "measured": {
-        "value": 10
+        "value": 8
       },
-      "reading": "10 tutors, five of them graveyard-facing (Entomb, Buried Alive, Unmarked Grave, Vile Entomber, Survival of the Fittest), so the deck finds a target and a loader almost every game.",
+      "reading": "8 tutors, five of them on bodies or to the graveyard; the nested tutoring the pilot asked for is there.",
       "citations": [
         {
           "rule": "strategy:deckbuilding.archetype-selection",
@@ -238,144 +238,155 @@
     }
   ],
   "engine": {
-    "declared": "Loaders bin a fat creature, reanimation spells return it, and tokens dying to free outlets build Meren's experience so she returns it again each end step. The goldfish_targets.json groups still describe the retired drain plan, so the audit's engine rates are not a reading of this engine.",
+    "declared": "Tokens and cheap ETB bodies die to free outlets for experience; Meren returns one creature per end step (to the battlefield once its mana value is at or under the count, to hand otherwise); loaders and reanimation spells land a fatty before the counters catch up.",
     "components": [
-      {
-        "role": "ignition",
-        "have": [
-          "Entomb",
-          "Buried Alive",
-          "Unmarked Grave",
-          "Final Parting",
-          "Vile Entomber",
-          "Survival of the Fittest",
-          "Fauna Shaman",
-          "Altar of Dementia",
-          "Grist, the Hunger Tide"
-        ],
-        "count": 9,
-        "thinnest": false,
-        "reading": "The loaders: five tutor directly to the graveyard, the rest discard or mill. Deep enough; the stale declaration does not measure them."
-      },
-      {
-        "role": "piece",
-        "have": [
-          "Animate Dead",
-          "Reanimate",
-          "Necromancy",
-          "Persist",
-          "Victimize",
-          "Agadeem's Awakening // Agadeem, the Undercrypt",
-          "Sheoldred, Whispering One"
-        ],
-        "count": 7,
-        "thinnest": false,
-        "reading": "Seven reanimation effects plus Meren. Four of them (Persist, Victimize, Agadeem's Awakening, Sheoldred) and Meren read only our graveyard. Animate Dead, Reanimate and Necromancy can take from any graveyard; Tergrid (an opponent's sacrificed or discarded permanent card) and The True Scriptures' chapter III (gated) also take from opponents' yards. Persist and Unmarked Grave cannot touch the legendary targets (Hogaak, both Sheoldreds, Tergrid)."
-      },
-      {
-        "role": "payoff",
-        "have": [
-          "Archon of Cruelty",
-          "Craterhoof Behemoth",
-          "Grave Titan",
-          "Hogaak, Arisen Necropolis",
-          "Sheoldred, Whispering One",
-          "Sheoldred // The True Scriptures",
-          "Noxious Gearhulk",
-          "Tergrid, God of Fright // Tergrid's Lantern"
-        ],
-        "count": 8,
-        "thinnest": false,
-        "reading": "The fat. Only four are nonlegendary (Archon, Craterhoof, Grave Titan, Noxious Gearhulk), so only those four work with Unmarked Grave and Persist."
-      },
       {
         "role": "outlet",
         "have": [
           "Viscera Seer",
-          "Carrion Feeder",
           "Woe Strider",
           "Ashnod's Altar",
           "Phyrexian Altar",
           "Altar of Dementia",
-          "Spawning Pit",
           "Yawgmoth, Thran Physician",
+          "Blasting Station",
+          "High Market",
           "Phyrexian Tower",
-          "High Market"
+          "Ghoulcaller Gisa",
+          "Fiend Artisan",
+          "Jarad, Golgari Lich Lord",
+          "Cauldron of Essence"
         ],
-        "count": 10,
+        "count": 13,
         "thinnest": false,
-        "reading": "Ten sacrifice outlets that cost no mana (Phyrexian Tower and High Market once per turn). The stale declaration names five of them and reads 68.6% for those five; the full set is unmeasured and higher. This component can give up a slot."
+        "reading": "Six free, unlimited outlets (Seer, Strider, both altars, Altar of Dementia, Yawgmoth), three tap outlets and four that cost mana and pay. Q050's 'outlets are thin' was written against the stale 4-card target group; by oracle text the outlet supply is deep."
       },
       {
         "role": "fodder",
         "have": [
           "Bitterblossom",
-          "Bitterbloom Bearer",
           "Jadar, Ghoulcaller of Nephalia",
           "Ophiomancer",
-          "Grist, the Hunger Tide",
           "Scute Swarm",
-          "Woe Strider",
-          "Khalni Garden"
+          "Reassembling Skeleton",
+          "Ozox, the Clattering King",
+          "Pawn of Ulamog"
         ],
-        "count": 8,
+        "count": 7,
         "thinnest": false,
-        "reading": "Six recurring token makers (counting Scute Swarm) plus two one-shot bodies. Enough fodder for Skullclamp and for the outlets."
+        "reading": "Seven repeatable fodder sources, plus one-shot bodies (Woe Strider's Goat, Grave Titan's Zombies, Gisa's Zombies, Grist's Insects). Mean sacrifices are 1.343 by turn 6 in the goldfish, so fodder arrives but deaths are still slow early."
+      },
+      {
+        "role": "ignition",
+        "have": [
+          "Entomb",
+          "Buried Alive",
+          "Vile Entomber",
+          "Fauna Shaman",
+          "Formidable Speaker",
+          "Satyr Wayfinder",
+          "Six",
+          "Nyx Weaver",
+          "Stitcher's Supplier",
+          "Twilight Diviner",
+          "Unshakable Tail",
+          "Altar of Dementia",
+          "Underground Mortuary"
+        ],
+        "count": 13,
+        "thinnest": false,
+        "reading": "Loaders and millers are deep after V26; the yard fills faster than it empties."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Reanimate",
+          "Animate Dead"
+        ],
+        "count": 2,
+        "thinnest": true,
+        "reading": "Cheap reanimation that can land a binned fatty on turn 2-3. Cauldron of Essence (cast turn 3, first activation turn 4), Agadeem's Awakening (X-scaled) and Sheoldred are later lanes. The goldfish reads a 6+ drop out by turn 6 in 13.3% of games today; studies 008 and 009 recorded the V29 and V30 cuts each lowering it. A trade the pilot made knowingly for grind value."
+      },
+      {
+        "role": "payoff",
+        "have": [
+          "Archon of Cruelty",
+          "Kokusho, the Evening Star",
+          "Massacre Wurm",
+          "Gray Merchant of Asphodel",
+          "Cavalier of Night",
+          "Hapatra, the Desert Fang",
+          "Noxious Gearhulk",
+          "Sheoldred, Whispering One",
+          "Grave Titan",
+          "Zulaport Cutthroat",
+          "Grave Pact",
+          "The Meathook Massacre",
+          "Dark Prophecy",
+          "Skullclamp"
+        ],
+        "count": 14,
+        "thinnest": false,
+        "reading": "Nine fatties that pay on entering, dying or each upkeep, and five death payoffs. Six drain cards are not modelled by the goldfish, so its turn-9 median kill does not read this side."
+      },
+      {
+        "role": "piece",
+        "have": [
+          "Winding Constrictor",
+          "Toph, Earthbending Master",
+          "Yawgmoth, Thran Physician",
+          "Cankerbloom",
+          "Karn's Bastion"
+        ],
+        "count": 5,
+        "thinnest": false,
+        "reading": "Experience accelerants: only Winding Constrictor multiplies; Toph, Yawgmoth, Cankerbloom and Karn's Bastion add counters. The goldfish's mean experience is 2.433 at turn 6 and 6.628 at turn 8, and it is a slight floor, since Cankerbloom's proliferate is not paid in the model. Before turn 8 Meren is mostly a regrowth engine."
       },
       {
         "role": "protection",
         "have": [
           "Heroic Intervention",
-          "Lightning Greaves",
-          "Spore Frog",
+          "Tamiyo's Safekeeping",
+          "Golgari Charm",
           "Malakir Rebirth // Malakir Mire"
         ],
         "count": 4,
-        "thinnest": true,
-        "reading": "Read by the text, this is the thinnest component. None of the four stops a counterspell. Spore Frog stops only combat damage, and Malakir Rebirth covers one creature against one death."
+        "thinnest": false,
+        "reading": "Four pieces cover Meren against destroy; two (Heroic Intervention, Tamiyo's Safekeeping) cover targeted exile. No card in the 99 answers a counterspell since Veil of Summer left in V23."
       }
     ],
     "single_points_of_failure": [
       {
-        "component": "our graveyard",
-        "why": "Persist, Victimize, Agadeem's Awakening, Sheoldred's upkeep return, Meren's return, Hogaak's cast from the graveyard, Woe Strider's escape and Takenuma's channel all read only our yard; Animate Dead, Reanimate and Necromancy fall back on an opponent's. A Rest in Peace or Leyline of the Void can be answered: Assassin's Trophy, Beast Within, Cankerbloom, Haywire Mite, Boseiju and Glissa all remove an enchantment. No card in the 99 stops an instant-speed exile (Bojuka Bog, a Soul-Guide Lantern activation). Takenuma, Abandoned Mire's channel ({3}{B}, from hand, whenever we have priority) answers it in part: in response it returns one creature card to hand before the exile resolves. Whether Necromancy in response saves a second target, to the battlefield, is an open question. After one, the recovery is hard-casting from hand, Meren's end-step return needs a creature card in our yard, and five of the seven draw cards need a death, an entry or attack, or combat damage.",
+        "component": "the graveyard",
+        "why": "Meren, Cauldron, Reanimate, Animate Dead, Six's retrace, Jarad, Fiend Artisan and Hapatra's X all read our yard. Permanent hate is reduced, not answered: four instant-speed answers (Assassin's Trophy, Boseiju, Cankerbloom, Golgari Charm for enchantments) are four copies in 99, roughly 41% to hold one among 12 cards by turn 6 before tutors. One-shot exile (Bojuka Bog, Tormod's Crypt) is answered only by the self-returners (Reassembling Skeleton, Unshakable Tail with a Clue out, Jarad) and to-hand salvage (Takenuma's channel, Nyx Weaver). Jarvis's exposure (1) is real on both counts.",
         "closers": [
+          "Assassin's Trophy",
+          "Boseiju, Who Endures",
+          "Cankerbloom",
           "Golgari Charm",
-          "Sylvan Library",
-          "Black Market Connections",
-          "Moldervine Reclamation"
-        ],
-        "citations": [
-          {
-            "rule": "strategy:card-advantage.plan-draw",
-            "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
-          }
+          "Takenuma, Abandoned Mire",
+          "Nyx Weaver"
         ]
       },
       {
-        "component": "the load-and-reanimate turn",
-        "why": "No card in the 99 reads \"can't be countered\". A one-mana Reanimate, or a three-mana Necromancy, countered with the target already binned leaves a loader spent and a fatty stranded.",
+        "component": "Meren on the battlefield at end step",
+        "why": "The one-per-turn return is the engine's clock, so Meren is the hub. Her counters survive her death (they are the player's), so removal costs a recast at six and a tempo turn, not the pool. The insurance section says a hub justifies constant protection; the deck runs none (no Greaves or Boots) and holds two hexproof instants. Whether that is short is the section's own table test, unread until games are logged.",
         "closers": [
-          "Veil of Summer",
-          "Autumn's Veil"
-        ],
-        "citations": [
-          {
-            "rule": "strategy:multiplayer.commander-insurance",
-            "quote": "single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)"
-          }
-        ]
-      },
-      {
-        "component": "Meren of Clan Nel Toth",
-        "why": "She is the engine's hub. Exile removal on her ends the end-step returns, and each recast costs {2} more. What covers her is Lightning Greaves, Heroic Intervention, and Malakir Rebirth (against a death, not exile). Veil of Summer covers her only against blue and black; Swords to Plowshares, Path to Exile and Chaos Warp still target her through it.",
-        "closers": [
-          "Tamiyo's Safekeeping"
+          "Heroic Intervention",
+          "Tamiyo's Safekeeping",
+          "Golgari Charm",
+          "Malakir Rebirth // Malakir Mire",
+          "Cauldron of Essence",
+          "Sheoldred, Whispering One"
         ],
         "citations": [
           {
             "rule": "strategy:multiplayer.commander-insurance",
             "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
+          },
+          {
+            "rule": "strategy:multiplayer.commander-insurance",
+            "quote": "against light-interaction pods, skip the insurance, pay the tax, rebuild"
           }
         ]
       }
@@ -383,310 +394,116 @@
   },
   "lean_into": [
     {
-      "what": "The edict loop under Grave Pact and Dictate of Erebos",
-      "why": "Meren returning Plaguecrafter, Accursed Marauder or Ravenous Chupacabra each end step is repeatable removal, and with a sacrifice tax out, each fodder death costs every opponent a creature too. This is the deck's real strength against creature decks.",
+      "what": "Sacrifice the cheap ETB bodies early, not the fatties.",
+      "why": "With 2.433 experience at turn 6 and 4.266 at turn 7, Meren returns two- and three-drops to the battlefield (Cankerbloom, Satyr Wayfinder, Stitcher's Supplier, Formidable Speaker, Twilight Diviner, Unshakable Tail) long before a six-drop. Early, a fatty in the yard is a card to hand; a three-drop is a free re-fire.",
       "evidence": {
-        "axis": "interaction",
-        "value": 19
+        "goldfish": "commander_recursion.mean_experience_by_turn T6 2.433, T7 4.266, T8 6.628; mean_returned_to_battlefield 4.054, mean_returned_to_hand 1.048 (10,000 games, V30)"
       }
     },
     {
-      "what": "Skullclamp on recurring tokens",
-      "why": "Bitterblossom, Bitterbloom Bearer, Jadar, Ophiomancer and Grist make bodies turn after turn. Equipped for {1} and sacrificed to a free outlet, each body is two cards. This is draw that runs when the plan runs, so protect Skullclamp and tutor for it when the hand runs dry.",
+      "what": "The interaction suite is a strength; leave it alone.",
+      "why": "18 copies over five classes, most of them bodies Meren fires again. No axis argues for more removal or less.",
+      "evidence": {
+        "audit": "interaction 18, interaction-breadth 5, sweepers 2"
+      },
       "citations": [
         {
-          "rule": "strategy:card-advantage.plan-draw",
-          "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
+          "rule": "strategy:deckbuilding.interaction-suite",
+          "quote": "Walser's baseline is \"at least 8-10 removal spells\" inside a \"15- to 20-card interactive suite\""
         }
       ]
     },
     {
-      "what": "Answers to permanent graveyard hate",
-      "why": "Six cards remove an enchantment-based hate piece, and five of them also hit artifacts. Keep those answers in hand on the turn before a big reanimation rather than spending them early.",
+      "what": "Keep Sylvan Library live in the slow hand; it is the one steady draw.",
+      "why": "The draw is not all death-dependent, but it is mostly on-plan. Steady: Sylvan Library. On deaths or on Archon's triggers: Dark Prophecy, Skullclamp, Yawgmoth, Archon of Cruelty. On mill: Unshakable Tail's Clues, at {2} each. One-shot: Festering Thicket, Nurturing Peatland. Meren's to-hand returns refill on-plan too. Jarvis's exposure (5) holds: when the engine stalls, the hand refills from one card.",
+      "evidence": {
+        "audit_probe": "card-advantage possible_uncounted: Archon of Cruelty, Festering Thicket, Nurturing Peatland, Unshakable Tail, Yawgmoth"
+      },
       "citations": [
         {
-          "rule": "strategy:card-advantage.virtual",
-          "quote": "a graveyard hoser blanks half a dredge hand"
+          "rule": "strategy:card-advantage.plan-draw",
+          "quote": "The trade is correlation: steady draw diversifies, on-plan draw fails with the plan and refills with it."
         }
       ]
     }
   ],
   "cut_candidates": [
     {
-      "card": "Spawning Pit",
-      "why": "It is the tenth free outlet and the weakest alone: no body, no mana, no scry, no draw, and it pays {1} for a 2/2 every two sacrifices.",
-      "cost_of_cutting": "The paired screen with Moldervine Reclamation in its slot reads experience @T7 4.29 -> 3.88 [-0.46, -0.37]. That is the figure the pilot added it for in V9. It is also an instant-speed outlet that does not die to creature removal.",
-      "orphans_stack": [],
-      "difficulty": "contested"
-    },
-    {
-      "card": "Khalni Garden",
-      "why": "A tapland that makes only green, when black is the short colour (34 of 36).",
-      "cost_of_cutting": "A 0/1 Plant for the outlets, and the pilot made the opposite swap (Garden in for Mana Confluence) in V8. Confluence costs a life per tap in a deck already paying life to Bitterblossom, Bitterbloom Bearer, fetches and Reanimate. Paired screen: 2 rows better, 0 worse, 13 no call.",
+      "card": "Woe Strider",
+      "why": "If a clear add arrives, this is the slot. It is one of six free unlimited outlets (Viscera Seer, Woe Strider, Ashnod's Altar, Phyrexian Altar, Altar of Dementia, Yawgmoth), and its ETB makes one Goat.",
+      "cost_of_cutting": "One fodder body per return, a scry outlet, and an escape that recurs it without Meren. It sits in three declared target groups (A FREE SACRIFICE OUTLET, RECURRING FODDER, THE CORE TRIO), whose assembly rates fall without it. In `try` against Eternal Witness the goldfish reads experience @T7 4.28 -> 4.22 [-0.08, -0.06] and board power @T6 8.91 -> 8.79 [-0.13, -0.11]: small, but it sees what Strider does.",
       "orphans_stack": [],
       "difficulty": "contested",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
+          "rule": "strategy:conversion.quiet-contributors",
+          "quote": "before cutting, name the channel the card feeds and the figure that would fall without it"
         }
       ]
     },
     {
-      "card": "Scute Swarm",
-      "why": "Fodder alongside five other recurring token makers (Bitterblossom, Bitterbloom Bearer, Jadar, Ophiomancer, Grist). It took Eternal Witness's slot in V8, and the deck needs a card-flow slot more than a sixth token maker.",
-      "cost_of_cutting": "The paired screen with Sylvan Library in its slot reads killed by T10 83.7% -> 82.5% [-1.5, -0.9]. The goldfish cannot see Library, so that is the cost without the gain. With six fetches it becomes a late landfall army.",
-      "orphans_stack": [],
-      "difficulty": "contested",
-      "citations": [
-        {
-          "rule": "strategy:card-advantage.plan-draw",
-          "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
-        }
-      ]
-    },
-    {
-      "card": "Carrion Feeder",
-      "why": "One of ten free outlets, and it cannot block. The outlet component is the deepest in the deck.",
-      "cost_of_cutting": "A turn-one outlet beside Viscera Seer, and one of the five named in the declared outlet group. The paired screen with Scavenging Ooze in its slot (10,000 games per list) reads experience @T7 -0.04 [-0.06, -0.03], extra cards by T8 -0.05 [-0.06, -0.04], a 6+ drop out by T6 -0.4 pts [-0.5, -0.2] and turns saved on big bodies -0.02 [-0.03, -0.01]; better only on stall, 2 in a row -0.5 pts [-0.6, -0.3].",
-      "orphans_stack": [],
-      "difficulty": "contested"
-    },
-    {
-      "card": "Elvish Mystic",
-      "why": "Green is 30 sources against a target of 22, and ramp sits at 12, the top of the band. A green-only one-mana dork is the slot that can pay for Veil of Summer without touching black. Dark Ritual, proposed here in round 1, is withdrawn: it is one of the six nonland black sources, the screen moves black from 2 short to 3 short, and the pilot's V11 swap put Elves of Deep Shadow back to stop exactly that erosion.",
-      "cost_of_cutting": "A turn-one accelerant and a body for the outlets. The paired screen with Veil of Summer in its slot (10,000 games per list) reads 3 better, 5 worse, 7 no call. Worse: damage @T10 24.4 -> 23.7 [-1.1, -0.3], a 6+ drop out by T6 30.0% -> 29.5% [-0.9, -0.3], killed by T6 4.4% -> 4.2% [-0.3, -0.1], board power @T6 -0.09 [-0.12, -0.06] and experience @T7 -0.07 [-0.09, -0.05]. Better: missed drop by T5 43.7% -> 42.7% [-1.1, -0.8], extra cards by T8 1.74 -> 1.86 [+0.11, +0.13] and turns saved on big bodies 1.91 -> 1.99 [+0.06, +0.09]. The better side is a model artefact: the goldfish reads Veil as an unconditional cantrip (draw_profile spell_draw 1), but Veil draws only if an opponent cast a blue or black spell this turn, and a goldfish opponent casts nothing. The extra-cards row is a draw that never happens; the missed-drop and big-body rows plausibly ride on that phantom card too, which the screen cannot separate. So the real cost is at least the five worse rows. Green goes +8 -> +7 and black is unchanged at 2 short. The goldfish has no counterspells, so Veil's actual job is not on the screen.",
+      "card": "Ozox, the Clattering King",
+      "why": "Three mana of fodder that returns to hand, not to the battlefield. Each cast is two deaths (Ozox, then a Jumblebones) and a card back, more than Reassembling Skeleton's one death per {1}{B}, but slower to redeploy under Meren.",
+      "cost_of_cutting": "Two of the five contained three-card lines (Ozox + Ashnod's Altar + Phyrexian Altar; Ozox + Phyrexian Altar + Pawn of Ulamog), and the pilot asked to lean into the combos. Reassembling Skeleton + Phyrexian Altar + Pawn of Ulamog remains the same shape. No line has a stack scenario.",
       "orphans_stack": [],
       "difficulty": "painful",
       "citations": [
         {
-          "rule": "strategy:deckbuilding.ratios",
-          "quote": "36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes"
+          "rule": "strategy:conversion.quiet-contributors",
+          "quote": "before cutting, name the channel the card feeds and the figure that would fall without it"
         }
       ]
     }
   ],
-  "add_candidates": [
-    {
-      "card": "Veil of Summer",
-      "closes": "protection",
-      "source": "pool",
-      "why": "One green mana: our spells can't be countered this turn, and we and our permanents gain hexproof from blue and black. It covers the reanimate turn against any counterspell, but it shields Meren only from blue and black removal. It draws a card off a blue or black spell. It is not a Game Changer.",
-      "natural_cut": "Elvish Mystic",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)"
-        }
-      ]
-    },
-    {
-      "card": "Moldervine Reclamation",
-      "closes": "our graveyard (single point of failure): draw on every death, which survives a wipe and a later exile because the cards are already in hand",
-      "source": "pool",
-      "why": "Five mana ({3}{B}{G}) in place of a two-mana outlet: it draws a card and gains a life on every creature death, tokens included, so a wipe answered by sacrificing the board in response leaves a full hand even if the yard is then exiled. The paired screen against Spawning Pit (10,000 games per list) is a real trade: better on extra cards by T8 1.74 -> 2.24 [+0.45, +0.55], killed by T10 +0.8 pts [+0.5, +1.1], damage @T10 +1.3 [+1.0, +1.6], board power @T6 +0.10 [+0.07, +0.12] and killed by T6 +0.1 pts [+0.0, +0.2]; worse on experience @T7 -0.41 [-0.46, -0.37], a 6+ drop out by T6 -0.3 pts [-0.5, -0.1], turns saved on big bodies -0.06 [-0.07, -0.05] and hand can act by T3 -0.3 pts [-0.4, -0.2]. The big-body rows are the deck's core plan, so this is a contested add, not a free one.",
-      "natural_cut": "Spawning Pit",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:aristocrats.wipe-insurance",
-          "quote": "With a free outlet and a death-draw body on board, a wrath on the stack is answered by sacrificing the whole board in response"
-        }
-      ]
-    },
-    {
-      "card": "Sylvan Library",
-      "closes": "our graveyard (single point of failure): steady draw that needs no board and no graveyard",
-      "source": "pool",
-      "why": "It draws with no board and no graveyard, which none of the deck's seven draw cards does turn after turn, and Meren cannot either once the yard is exiled. That is exactly the hand left after a wipe and a Bojuka Bog. For two mana it also sets up the next draws. Not a Game Changer. The goldfish cannot see it, so the screen against Scute Swarm prices only the cut.",
-      "natural_cut": "Scute Swarm",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:card-advantage.plan-draw",
-          "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
-        }
-      ]
-    },
-    {
-      "card": "Golgari Charm",
-      "closes": "resilience: one instant that answers Rest in Peace or Leyline of the Void (destroy target enchantment), a destroy-wipe (regenerate each creature you control), or opposing 1/1 tokens",
-      "source": "pool",
-      "why": "It saves the reanimated board from Wrath and kills the hate piece, at instant speed for two mana. The -1/-1 mode also kills our own Faeries, so choose the mode deliberately.",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        }
-      ]
-    },
-    {
-      "card": "Scavenging Ooze",
-      "closes": "interaction-breadth",
-      "source": "pool",
-      "why": "A repeatable graveyard answer on a creature Meren can return, against opposing reanimator and recursion decks; it moves interaction-breadth from 4 to 5. It also feeds itself and gains life to pay for Bitterblossom. Today graveyard is covered only by Bojuka Bog, once.",
-      "natural_cut": "Carrion Feeder",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.interaction-suite",
-          "quote": "cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any"
-        }
-      ]
-    },
-    {
-      "card": "Mana Confluence",
-      "closes": "colour-sources",
-      "source": "pool",
-      "why": "An untapped black and green source in place of a tapped green-only land, which closes one of the two missing black sources. Paired screen: no row worse.",
-      "natural_cut": "Khalni Garden",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:deckbuilding.mana-base.color-sources",
-          "quote": "his 99-card column assumes 40 lands, on the play, casting on curve, \"consistently\" ≈ 90%"
-        }
-      ]
-    },
-    {
-      "card": "Supernatural Stamina",
-      "closes": "resilience of the reanimated target against destroy effects and edicts",
-      "source": "pool",
-      "why": "One black mana at instant speed: if the creature dies, it returns, which also re-triggers the entry ability of Archon of Cruelty, Grave Titan, Noxious Gearhulk or Ravenous Chupacabra. The taxonomy files it under no protection role. Two-card combo check against this 99: none found.",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)"
-        }
-      ]
-    },
-    {
-      "card": "Black Market Connections",
-      "closes": "our graveyard (single point of failure): steady draw that needs no board and no graveyard",
-      "source": "pool",
-      "why": "Draw each turn whatever the board does, and the Shapeshifter mode is a body for the outlets. Not a Game Changer. The cost is life, so take Library or this, not both, alongside Mana Confluence.",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:card-advantage.plan-draw",
-          "quote": "steady draw diversifies, on-plan draw fails with the plan and refills with it"
-        }
-      ]
-    },
-    {
-      "card": "Tamiyo's Safekeeping",
-      "closes": "protection",
-      "source": "pool",
-      "why": "One mana: hexproof and indestructible on Meren or the reanimated fatty, and it saves either from targeted removal or a destroy-wipe.",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "the engine's hub justifies constant protection down plus a held response on the pivot turn"
-        }
-      ]
-    },
-    {
-      "card": "Autumn's Veil",
-      "closes": "counterspell protection on the reanimate turn, a second copy of Veil of Summer's main job",
-      "source": "pool",
-      "why": "One green mana: blue and black spells can't counter ours this turn, and they can't target our creatures. It is weaker than Veil (no draw, and it covers only creatures), so add it only if the table is heavy on counters.",
-      "bracket_delta": {
-        "before": 3,
-        "after": 3
-      },
-      "citations": [
-        {
-          "rule": "strategy:multiplayer.commander-insurance",
-          "quote": "single-use instants (cost held mana all game but protect at the decisive moment and can cover the board)"
-        }
-      ]
-    }
-  ],
+  "add_candidates": [],
   "open_questions": [
     {
-      "question": "Rewrite goldfish_targets.json for the reanimator plan: replace the drain, Starscape and core-trio groups with a loader group, a reanimation group (the seven pieces above), a nonlegendary-target group, and the full ten-card outlet group.",
-      "settled_by": "goldfish",
-      "why_it_matters": "Nine of the eleven declared groups name a card no longer in the 99 (table-wide drain, single-target drain, Starscape, recurring fodder, core trio, reanimation, tutor, ramp, removal); only the free-outlet group and the Grave Pact group are fully current. So the audit's engine block and the CONTEXT numbers measure a deck that no longer exists, and every future try or net-change engine row reads against them."
-    },
-    {
-      "question": "Does Necromancy, cast at instant speed in response to Bojuka Bog's trigger or a Soul-Guide Lantern activation, return a creature before the yard is exiled?",
+      "question": "Do the five contained three-card lines work as Spellbook lists them (Yawgmoth + Zulaport Cutthroat + Pawn of Ulamog; Reassembling Skeleton + Phyrexian Altar + Pawn of Ulamog; Ozox + Ashnod's Altar + Phyrexian Altar; Ozox + Phyrexian Altar + Pawn of Ulamog; Yawgmoth + Pawn of Ulamog + Cauldron of Essence)? Each needs a stack scenario.",
       "settled_by": "resolve-stack",
-      "why_it_matters": "Takenuma's channel already saves one creature card to hand in response, with no rules question. If Necromancy also works, it is the second partial answer and the only one that puts the creature onto the battlefield, so the graveyard single point of failure is narrower than stated."
+      "why_it_matters": "They are the fastest wins on the list and the reason Ozox is a painful cut; none is verified."
     },
     {
-      "question": "How often do the pilot's bracket-3 tables run graveyard hate (Rest in Peace, Leyline of the Void, Soul-Guide Lantern, Farewell) and counterspells?",
-      "settled_by": "research-strategy",
-      "why_it_matters": "How to size Veil, Golgari Charm and Autumn's Veil depends on what the table actually runs: copy the answer your table beats you with. With no log entries and no recon, the strategist's matchup read is still argument."
+      "question": "Re-author goldfish_targets.json for the end-step plan (Meren's experience, cheap reanimation drawn, a fatty in the yard), retiring the Starscape Cleric and single-target-drain groups.",
+      "settled_by": "goldfish",
+      "why_it_matters": "The audit's engine block measures a plan the deck abandoned; until it is rewritten its thinnest component reads 0% for cards the deck chose not to run."
+    },
+    {
+      "question": "Model the six drain cards the goldfish reports as not modelled (Cauldron of Essence, Gray Merchant, Jarad, Kokusho, The Meathook Massacre, Zulaport Cutthroat).",
+      "settled_by": "goldfish",
+      "why_it_matters": "Jarvis's exposure (4), the turn-9 median kill, is read off a model blind to six of the nine finishers, so it cannot say whether the clock is slow."
     }
   ],
   "gaps": [
-    "No captain's log entries exist for this deck, so no matchup claim here comes from play. The graveyard-hate and counterspell weaknesses come from the oracle text plus a strategist's argument.",
-    "No deck_recon.json: no inclusion-rate evidence for any add.",
-    "No Forge run and no checker-passed stacks. Protection, interaction and graveyard hate are invisible to the goldfish; the pilot asked for a judgment on them, and that is what this is.",
-    "The goldfish has a life channel, but no screen here priced the combined life load of Sylvan Library, Black Market Connections and Mana Confluence on a deck already paying for Bitterblossom, Bitterbloom Bearer, six fetches, Reanimate, Dismember and Toxic Deluge.",
-    "The audit's engine block measures the stale drain declaration. Every engine component above is enumerated from cards.json and carries no measured rate.",
-    "deck_audit's taplands axis files Necroblossom Snarl as unconditional; its oracle text enters untapped on revealing a Swamp or Forest card. The axis value 5 is carried as the audit's figure; the reading gives 4. That is an audit defect to log, not a deck finding.",
-    "The goldfish has no counterspells, so no screen prices Veil of Summer's main job; its cut is priced, its gain is argued.",
-    "Goldfish defect: goldfish_profiles.draw_profile reads Veil of Summer's conditional draw ('Draw a card if an opponent has cast a blue or black spell this turn') as spell_draw 1, an unconditional cantrip. A goldfish opponent never casts a spell, so the draw should be 0. Every screen with Veil in it overstates extra cards by T8, and any row fed by that card. Fix the conditional-cantrip parse, then re-screen Elvish Mystic -> Veil."
+    "No games are logged. Every exposure here is from card text and the goldfish; none has met a table.",
+    "Exposure (3), self life loss, is unmeasured. mana_analysis counts 8 life of one-time land costs and 3 per tap cycle from recurring lands; on top are Bitterblossom, Dark Prophecy, Reanimate, Yawgmoth, Sylvan Library and Malakir Rebirth. Eleven cards gain life (Zulaport, Cauldron, Meathook, Gray Merchant, Kokusho, Archon, Cavalier, Noxious Gearhulk, High Market, Scavenging Ooze, Tamiyo's Safekeeping). No artifact tracks our life total, so whether it costs games is for the log; the pilot's own note already says count life before a Dark Prophecy turn.",
+    "Exposure (6), piloting load, has no measure: one return a turn to choose, Twilight Diviner sequencing, Six's retrace, five unverified three-card lines and Dark Prophecy's life count. The first logged games are the only evidence.",
+    "Recon gaps, ranked by the inclusion rates recon records (2026-11-23), absent from the 99: Spore Frog 82% (cut V23 for the sacrifice-engine balance; a combat Fog loop), Eternal Witness 80% (cut V8), Victimize 71% (cut V29), Plaguecrafter 66% (an ETB edict loop), Accursed Marauder 61% (an ETB edict body; flagged, not pitched: its edict is symmetric, each player sacrifices a nontoken creature, and the pilot declined Braids as symmetric), Haywire Mite 58% (cut V17). Eternal Witness is a strong one: a three-drop Meren re-buys that regrows any of the nine instants and sorceries (eleven with the two spell-lands), which Meren and Six cannot reach. Not prescribed: `try` reads it for Woe Strider as slightly worse on what the goldfish sees (killed by T10 -0.7 pts [-0.9, -0.5], experience @T7 -0.07), and the spell re-buy has no measurement. Close, not clear.",
+    "No Forge run and no forge-cast-check on any card; the AI's handling of Meren's end-step choice is unaudited.",
+    "Haywire Mite, weighed and not prescribed. For it: recon's standout loopable artifact/enchantment answer, a fifth instant-speed answer to permanent graveyard hate, and `try --out \"Woe Strider\" --in \"Haywire Mite\"` (both seen, trust high) reads better on the binding axis: experience @T7 4.28 -> 4.40 [+0.10, +0.13], a 6+ drop out by T6 13.3% -> 13.7% [+0.2, +0.5]. Against: it is worse on damage @T10 (-0.1 [-0.1, -0.0]) and stall (+0.7 pts [+0.5, +0.9]); the gains are a cheap body the goldfish sacrifices, which Woe Strider's Goat and Skeleton already supply; and against Rest in Peace or Leyline of the Void it answers once but does not loop, since its sacrifice resolves while that hate still exiles it; it answers Tormod's Crypt only before Crypt is activated. Against Grafdigger's Cage, a noncreature artifact, it does loop: Mite exiles Cage, goes to a yard Meren can reach, and returns at end step for one experience counter. Cankerbloom (study 007, the pilot's pick) already fills the repeatable artifact/enchantment slot, and the pilot cut Mite at V17 for Constrictor and Toph. The Cage loop is real but narrow, one hate piece of four. The call stands on the rest of the case: a modest, mixed one-instrument read on a 0.12-counter margin, overlap with Cankerbloom, and the pilot's V17 cut. That is not a clear upgrade under the pilot's rule. If a logged game is lost to an artifact or enchantment graveyard hater, Mite for Woe Strider is the first swap to reopen."
   ],
   "skeptic": {
-    "verdict": "fail",
+    "verdict": "pass",
+    "iteration": 3,
     "findings": [
       {
-        "where": "engine.single_points_of_failure[0]",
+        "where": "gaps[5]",
         "status": "supported",
-        "note": "Round-2 over-claim fixed. The Takenuma oracle text in the corpus reads 'Channel — {3}{B}, Discard this card: Mill three cards, then return a creature or planeswalker card from your graveyard to your hand.' It is an activated ability from hand, usable at instant speed, so it resolves before Bojuka Bog's ETB trigger (which targets a player) or a Soul-Guide Lantern activation. 'Answers it in part ... returns one creature card to hand' is accurate. I enumerated every card in cards.json whose oracle text mentions a graveyard and that is an instant, has flash or channel: Entomb, Necromancy, Takenuma and Agadeem (a sorcery). So Takenuma and Necromancy are the only candidates, and the re-scoped superlative holds. Minor point: the base cost is quoted, but with Meren in play the legendary discount makes it {2}{B}. That understates the answer and does not make it false. The Necromancy clause here shares the defect recorded on open_questions[1]."
+        "note": "Round-2 finding fixed. The Grafdigger's Cage sentence now matches oracle text (cards.csv): Cage is a noncreature artifact, so it is a legal target for Mite ('Exile target noncreature artifact or noncreature enchantment'). Mite is sacrificed as the cost, Cage is exiled, and at end step Meren returns Mite (MV 1). The RIP/Leyline 'answers once, does not loop' half and the Tormod's Crypt half are unchanged and still correct. I re-ran `try --out \"Woe Strider\" --in \"Haywire Mite\"` and every quoted figure reproduces exactly: exp @T7 4.28->4.40 [+0.10,+0.13], 6+ by T6 13.3->13.7% [+0.2,+0.5], damage @T10 -0.1 [-0.1,-0.0], stall +0.7 [+0.5,+0.9], trust high. NO CHANGE now rests on that mixed read, the Cankerbloom overlap (Cankerbloom count 1 in decklist), the V17 cut and the clear-upgrades-only rule. The sentence 'one hate piece of four' scopes the Cage loop honestly, and the reopen trigger is concrete."
       },
       {
-        "where": "open_questions[1]",
-        "status": "over-claimed",
-        "note": "'If Necromancy also works, it is the second partial answer and the only one that puts the creature onto the battlefield.' Necromancy's own oracle text reads 'If you cast it any time a sorcery couldn't have been cast, the controller of the permanent it becomes sacrifices it at the beginning of the next cleanup step.' Cast in response to Bog or Lantern, which is by definition not sorcery timing, the creature stays only until cleanup. You get its ETB and a possible block, and it then goes back to a yard that has already been exiled, so it is still around for a later reanimation. That is real value, but it is not 'onto the battlefield' as a lasting answer, and the rider is never mentioned. The matching clause in engine.single_points_of_failure[0] ('saves a second target, to the battlefield') inherits the same omission. The timing question itself is answered by the printed flash permission. What a resolve-stack would actually settle is what the cleanup sacrifice leaves behind. I accepted this framing in round 2 ('Necromancy returns to the battlefield rather than to hand'); that was my miss, and this note corrects it. Fix: state the cleanup sacrifice and re-scope the claim to 'a one-turn body plus the card back in the post-exile yard'."
+        "where": "gaps[3]",
+        "status": "supported",
+        "note": "Round-2 finding fixed. Haywire Mite carries 58% (deck_recon.json line 69) and Accursed Marauder 61% is inserted in rank order (recon line 15). I checked the whole ranked band: every named card greps 0 in decklist.txt. The other recon cards at 58% or more (Sakura-Tribe Elder 89%, Viscera Seer 74%, Reanimate 59%) are in the 99, so none is missing. Forest 99% is a basic and not a card gap. The Marauder flag ('each player sacrifices a nontoken creature', the pilot declined Braids as symmetric) matches its oracle and recon's pilot_history (line 16). A nit, not a finding: Plaguecrafter's edict is just as symmetric ('each player sacrifices a creature or planeswalker') and its entry does not say so. Nothing pitches it, so no claim is wrong. The Eternal Witness try figures re-run exactly: killed by T10 -0.7 [-0.9,-0.5], exp @T7 -0.07."
       },
       {
-        "where": "cut_candidates[4]",
+        "where": "axes",
         "status": "supported",
-        "note": "Re-ran `try meren-recursion --out \"Elvish Mystic\" --in \"Veil of Summer\"` (10,000 games per list). Every figure reproduces: 3 better, 5 worse, 7 no call. Worse: damage @T10 24.4->23.7 [-1.1,-0.3], 6+ drop by T6 30.0->29.5 [-0.9,-0.3], killed by T6 4.4->4.2 [-0.3,-0.1], board power -0.09 [-0.12,-0.06], experience -0.07 [-0.09,-0.05]. Better: missed drop 43.7->42.7 [-1.1,-0.8], extra cards 1.74->1.86 [+0.11,+0.13], turns saved 1.91->1.99 [+0.06,+0.09]. Sources: G +8 -> +7, B -2 unchanged. The better side is now quoted. The artefact claim holds: corpus oracle 'Draw a card if an opponent has cast a blue or black spell this turn'. The pool card carries no oracle key, so I fed draw_profile a dict with oracle_text set, and it returns spell_draw 1. 'Plausibly ride on that phantom card' on the missed-drop and big-body rows is hedged as the screen cannot separate it, which is right. And 'the real cost is at least the five worse rows' points the right way, because the phantom draw props up the branch."
+        "note": "I re-ran deck-audit (fresh, --out to scratchpad). All 16 measured.value figures match today's audit, and card-advantage is still the single weakness at 2, engaging the probe list. as_of_decklist_sha256 equals the current decklist sha (c9e7d416...). The other round-2 supported findings (verdict, axes[5], axes[7], lean_into[0,2], engine SPOFs and components[5], open_questions) show no regression on spot-check."
       },
       {
-        "where": "gaps[7]",
+        "where": "cut_candidates",
         "status": "supported",
-        "note": "The new goldfish-defect entry matches what I reproduced: draw_profile on Veil of Summer's oracle_text gives spell_draw 1, while the printed draw is conditional on an opponent's blue or black spell, which a goldfish never casts. 'Fix the conditional-cantrip parse, then re-screen' is the right remedy."
-      },
-      {
-        "where": "(unchanged pieces)",
-        "status": "supported",
-        "note": "validate-diagnosis passes (16 axes, 3 weak, 5 cut / 10 add, 3 open questions). The round-2 supported findings on axes[2], axes[5], axes[11], add_candidates[1], open_questions[0], engine.single_points_of_failure[2] and engine.components[1] cover unchanged text, so they stand."
+        "note": "No regression. The Woe Strider cost_of_cutting figures reproduce under a re-run of try against Eternal Witness: exp @T7 4.28->4.22 [-0.08,-0.06], board power @T6 8.91->8.79 [-0.13,-0.11]. Ozox is still 'painful' and is priced on the two unverified three-card lines, which the open questions mark as needing stack scenarios. validate-diagnosis passes."
       }
     ],
     "iterations": 3

@@ -25,7 +25,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -1804,91 +1806,99 @@
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 43,
+        "target:A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand": {
+          "value": 74,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
+          "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 24,
+        "target:A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out": {
+          "value": 65,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
+          "definition": "share of games assembling 'A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically": {
-          "value": 0,
+        "target:THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn": {
+          "value": 47,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically' by turn six",
+          "definition": "share of games assembling 'THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss": {
-          "value": 0,
+        "target:AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)": {
+          "value": 52,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss' by turn six",
+          "definition": "share of games assembling 'AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
+        "target:A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return": {
+          "value": 74,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience": {
           "value": 34,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
+          "definition": "share of games assembling 'CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build": {
-          "value": 2,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count": {
-          "value": 13,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling \"A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count\" by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
+        "target:THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience": {
           "value": 24,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
+          "definition": "share of games assembling 'THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)": {
+          "value": 36,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling \"A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A TUTOR drawn — finds the missing half of the experience engine": {
+          "value": 44,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A TUTOR drawn — finds the missing half of the experience engine' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
         "target:RAMP drawn — an accelerant of any kind": {
-          "value": 35,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RAMP drawn — an accelerant of any kind' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 34,
+        "target:REMOVAL drawn — a spell or a returning body that answers a permanent": {
+          "value": 82,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
+          "definition": "share of games assembling 'REMOVAL drawn — a spell or a returning body that answers a permanent' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
+        "target:A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's": {
           "value": 12,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
+          "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's\" by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -2059,47 +2069,51 @@
     "commander_cast_by_turn_6_pct": 92,
     "targets": [
       {
-        "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 43
+        "label": "A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand",
+        "by_turn_6_pct": 74
       },
       {
-        "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 24
+        "label": "A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out",
+        "by_turn_6_pct": 65
       },
       {
-        "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
-        "by_turn_6_pct": 0
+        "label": "THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn",
+        "by_turn_6_pct": 47
       },
       {
-        "label": "STARSCAPE CLERIC plus any drain that gains life — the multiplier: every drain trigger fires a second table-wide loss",
-        "by_turn_6_pct": 0
+        "label": "AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)",
+        "by_turn_6_pct": 52
       },
       {
-        "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
+        "label": "A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return",
+        "by_turn_6_pct": 74
+      },
+      {
+        "label": "CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience",
         "by_turn_6_pct": 34
       },
       {
-        "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
-        "by_turn_6_pct": 2
-      },
-      {
-        "label": "A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count",
-        "by_turn_6_pct": 13
-      },
-      {
-        "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
+        "label": "THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience",
         "by_turn_6_pct": 24
+      },
+      {
+        "label": "A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)",
+        "by_turn_6_pct": 36
+      },
+      {
+        "label": "A TUTOR drawn — finds the missing half of the experience engine",
+        "by_turn_6_pct": 44
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 44
       },
       {
-        "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 34
+        "label": "REMOVAL drawn — a spell or a returning body that answers a permanent",
+        "by_turn_6_pct": 82
       },
       {
-        "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
+        "label": "A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's",
         "by_turn_6_pct": 12
       }
     ],
@@ -2123,9 +2137,9 @@
   "engine_health": null,
   "engine": null,
   "diagnosis": {
-    "verdict": "It is fast and deep. Mana is reliable (0.91 turn-3 land drop), there are 10 tutors, and 11 of its 19 interaction pieces are on creatures Meren can return. It also has six answers to a Rest in Peace or Leyline of the Void. What limits it at a real table is that nothing in the 99 stops a counterspell on the reanimate turn, and that its card flow depends on its own graveyard: Meren returns a creature card every end step and five of its seven draw cards need a death, an entry or attack, or combat damage, so a wipe followed by graveyard exile is the hand it cannot rebuild from.",
-    "skeptic": "fail",
-    "stale": true
+    "verdict": "The deck functions: the turn-3 land drop lands 0.91 of the time, Meren is cast by turn six in 92.5% of goldfish games (median turn 4), and interaction is deep (18 copies, all five classes). What binds is engine speed: experience averages 2.433 at turn 6 and 4.266 at turn 7, so the fatties come back to hand rather than to the battlefield until roughly turn 8, and after the V29 and V30 cuts the early reanimator bridge rests on two cheap spells. Draw is the short axis behind it: one steady source (Sylvan Library), the rest on death, on mill or one-shot. No games are logged, and no swap weighed here (Haywire Mite and Eternal Witness included) is a clear upgrade, so the prescription is NO CHANGE until the first games say which exposure is real.",
+    "skeptic": "pass",
+    "stale": false
   },
   "audit": {
     "archetype": null,
@@ -2147,18 +2161,18 @@
   "open_questions": [
     {
       "from": "diagnosis",
-      "question": "Rewrite goldfish_targets.json for the reanimator plan: replace the drain, Starscape and core-trio groups with a loader group, a reanimation group (the seven pieces above), a nonlegendary-target group, and the full ten-card outlet group.",
-      "settled_by": "goldfish"
-    },
-    {
-      "from": "diagnosis",
-      "question": "Does Necromancy, cast at instant speed in response to Bojuka Bog's trigger or a Soul-Guide Lantern activation, return a creature before the yard is exiled?",
+      "question": "Do the five contained three-card lines work as Spellbook lists them (Yawgmoth + Zulaport Cutthroat + Pawn of Ulamog; Reassembling Skeleton + Phyrexian Altar + Pawn of Ulamog; Ozox + Ashnod's Altar + Phyrexian Altar; Ozox + Phyrexian Altar + Pawn of Ulamog; Yawgmoth + Pawn of Ulamog + Cauldron of Essence)? Each needs a stack scenario.",
       "settled_by": "resolve-stack"
     },
     {
       "from": "diagnosis",
-      "question": "How often do the pilot's bracket-3 tables run graveyard hate (Rest in Peace, Leyline of the Void, Soul-Guide Lantern, Farewell) and counterspells?",
-      "settled_by": "research-strategy"
+      "question": "Re-author goldfish_targets.json for the end-step plan (Meren's experience, cheap reanimation drawn, a fatty in the yard), retiring the Starscape Cleric and single-target-drain groups.",
+      "settled_by": "goldfish"
+    },
+    {
+      "from": "diagnosis",
+      "question": "Model the six drain cards the goldfish reports as not modelled (Cauldron of Essence, Gray Merchant, Jarad, Kokusho, The Meathook Massacre, Zulaport Cutthroat).",
+      "settled_by": "goldfish"
     }
   ],
   "simulation": null,
@@ -2211,13 +2225,13 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
     "DeckCheck copy is V1, the list is V30 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 20 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
-    "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1"
+    "open questions routed: goldfish ×2, resolve-stack ×1"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
 }

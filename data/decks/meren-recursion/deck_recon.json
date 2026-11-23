@@ -1,0 +1,264 @@
+{
+ "slug": "meren-recursion",
+ "commander": "Meren of Clan Nel Toth",
+ "as_of": "2026-11-23",
+ "consensus": "The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%), regrowth (Eternal Witness 80%), Fog loops (Spore Frog 82%) and ETB edicts (Plaguecrafter 66%, Accursed Marauder 61%). Free outlets go beside them (Viscera Seer 74%, Ashnod's Altar 53%), plus a few one-shot reanimation spells (Victimize 71%, Reanimate 59%). Written guides agree the deck wins by grinding value rather than one combo, and that it 'only really comes online once those counters start adding up' (Draftsim). The aggregate is thin on protection. No equipment or protection spell reaches 35% of Upgraded lists, which suggests most bracket-3 Meren decks accept the commander-removal risk rather than build against it.",
+ "findings": [
+  {
+   "claim": "Repeatable ETB edicts are a core Meren package at bracket 3. A cheap body that makes each player sacrifice comes back every end step, and both sources treat that as near-lock pressure. The deck runs none of the three most common ones.",
+   "cards": [
+    "Plaguecrafter",
+    "Accursed Marauder",
+    "Fleshbag Marauder"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded: Plaguecrafter 66%, Accursed Marauder 61%, Fleshbag Marauder 42%. The Oct 2026 Precon Remastered adds Fleshbag and Plaguecrafter, noting they can loop 'into a soft lock'. Bringing Magic to Life (2019) lists all three as its removal/stax suite.",
+   "pilot_history": "These edicts are symmetric, and the pilot declined Braids as 'symmetric stax'. Ask before pitching; Grave Pact and Massacre Wurm already make our deaths one-sided.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/",
+    "https://edhrec.com/articles/bringing-magic-to-life-unburying-the-dead"
+   ]
+  },
+  {
+   "claim": "Eternal Witness is the third-most-included card in Upgraded Meren and is absent here. It is a 3-MV regrowth that Meren can return to the battlefield on almost any end step. Its job is rebuying a spell such as a removal or tutor, which Meren herself cannot reach.",
+   "cards": [
+    "Eternal Witness"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded 80%. Kept in the Precon Remastered list (Oct 2026). Listed in the Tail Recursion [Upgraded] recursion slot.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/",
+    "https://archidekt.com/decks/24403754/tail_recursion_core"
+   ]
+  },
+  {
+   "claim": "Strong lists take card draw from bodies that die, not from enchantments. Grim Haruspex and Midnight Reaper are the common pair. Simulacrum Shaper (land on ETB, draw on death) is the fastest-adopted new Meren card. Liliana, Dreadhorde General, Moldervine Reclamation and Grim Backwoods fill the noncreature slots.",
+   "cards": [
+    "Grim Haruspex",
+    "Midnight Reaper",
+    "Simulacrum Shaper",
+    "Liliana, Dreadhorde General",
+    "Moldervine Reclamation",
+    "Grim Backwoods",
+    "Morbid Opportunist"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded: Grim Haruspex 55%, Simulacrum Shaper 29% (top 'New Cards' entry), Midnight Reaper 27%, Moldervine Reclamation 26%, Grim Backwoods 26%, Morbid Opportunist 31%, Liliana, Dreadhorde General 16%. Draftsim names Haruspex and Reaper as the deck's draw. The Oct 2026 remaster adds Moldervine and Deathreap Ritual to keep 'a full grip of cards'.",
+   "pilot_history": "Grim Haruspex was cut in V23 (2026-11-13). Draw is recorded as the deck's short axis (V30 note). Simulacrum Shaper's basic search finds only Swamps in this list.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://draftsim.com/meren-edh-deck/",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/"
+   ]
+  },
+  {
+   "claim": "Strong lists answer artifacts and enchantments, the common graveyard hate, with creature bodies Meren can loop. Haywire Mite is the standout: MV1 and colourless, so it returns to the battlefield with a single experience counter. Its sacrifice exiles a noncreature artifact or enchantment, which covers Rest in Peace, Leyline of the Void and Grafdigger's Cage, and the sacrifice itself feeds an experience counter.",
+   "cards": [
+    "Haywire Mite",
+    "Reclamation Sage",
+    "Acidic Slime",
+    "Beast Within",
+    "Abrupt Decay"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded: Haywire Mite 58%, Reclamation Sage 40%, Beast Within 35%, Abrupt Decay 22%, Acidic Slime 15%. The Oct 2026 remaster adds Haywire Mite and Cankerbloom. Haywire Mite oracle (cards.csv): '{G}, Sacrifice this creature: Exile target noncreature artifact or noncreature enchantment.'",
+   "pilot_history": "The deck already runs Cankerbloom, Assassin's Trophy and Boseiju for this job. Beast Within was cut in V23.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/"
+   ]
+  },
+  {
+   "claim": "Commander protection is light across the aggregate and contested in strong lists. Equipment (Lightning Greaves, Swiftfoot Boots) is the most common form. The one explicit B3 list surveyed runs four instant or creature protection pieces instead.",
+   "cards": [
+    "Lightning Greaves",
+    "Swiftfoot Boots",
+    "Veil of Summer",
+    "Allosaurus Shepherd",
+    "Spore Frog"
+   ],
+   "confidence": "contested",
+   "evidence": "EDHREC Upgraded: Lightning Greaves 33%, Heroic Intervention 20% (in the 99), Swiftfoot Boots 17%, Veil of Summer 6%. Spore Frog 82% is a combat Fog loop, not commander protection. The Tail Recursion [Upgraded] list tags 4 cards as Protection: Allosaurus Shepherd, Heroic Intervention, Spore Frog, Veil of Summer.",
+   "pilot_history": "Lightning Greaves, Spore Frog and Veil of Summer were all cut in V23. The deck already runs Heroic Intervention, Tamiyo's Safekeeping and Golgari Charm.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://archidekt.com/decks/24403754/tail_recursion_core"
+   ]
+  },
+  {
+   "claim": "Living Death is the common second mass-recursion card. It is the stated hedge against losing Meren or a board wipe, since one spell refills the board from a yard the deck has been stocking. It does NOT answer exile-based graveyard hate.",
+   "cards": [
+    "Living Death"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded 43% and in the all-brackets average deck. The Oct 2026 remaster article suggests it as a cut-in (it does not appear in that article's final list). EDHREC's combo page lists Phyrexian Altar + Eternal Witness + Living Death (+1 prerequisite) as a line. Phyrexian Altar is in the 99, so adding both other cards would assemble a listed 3-card line. It needs a stack scenario, and the pilot's B3 rule bars two-card infinites only.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/average-decks/meren-of-clan-nel-toth",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/",
+    "https://edhrec.com/combos/meren-of-clan-nel-toth"
+   ]
+  },
+  {
+   "claim": "Mikaeus, the Unhallowed (36% of Upgraded lists) and Carrion Feeder (51%) are common. EDHREC's combo page lists Mikaeus as a 2-card line with five outlets this deck already runs: Ashnod's Altar, Phyrexian Altar, Viscera Seer, Altar of Dementia and Woe Strider. It also lists Mikaeus + Carrion Feeder. Under the pilot's bracket-3 rule (no two-card infinites), Mikaeus is excluded here. Carrion Feeder alone is a 1-MV outlet with no listed 2-card line without Mikaeus.",
+   "cards": [
+    "Mikaeus, the Unhallowed",
+    "Carrion Feeder"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded: Carrion Feeder 51%, Mikaeus 36%. EDHREC combo page: Viscera Seer + Mikaeus, Ashnod's Altar + Mikaeus, Carrion Feeder + Mikaeus, Phyrexian Altar + Mikaeus and Altar of Dementia + Mikaeus are each shown as 2 cards with no prerequisite. EDHREC's combo data (JSON) also lists Mikaeus + Woe Strider. No line is verified here, and none has a stack scenario.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/combos/meren-of-clan-nel-toth",
+    "https://archidekt.com/decks/24403754/tail_recursion_core",
+    "https://json.edhrec.com/pages/combos/meren-of-clan-nel-toth.json"
+   ]
+  },
+  {
+   "claim": "Two new cards are adopted quickly in Meren lists. Simulacrum Shaper (29%) is a ramp body that draws on death. Avacyn, Angel of Horror (22%) is an 8-MV flying deathtouch body that returns each nontoken creature of ours that dies at the next end step. Avacyn would duplicate Meren's end-step return across the whole board, but Meren needs 8 experience counters to put Avacyn herself onto the battlefield.",
+   "cards": [
+    "Simulacrum Shaper",
+    "Avacyn, Angel of Horror",
+    "Gardenize"
+   ],
+   "confidence": "one source",
+   "evidence": "EDHREC Upgraded 'New Cards' panel: Simulacrum Shaper 29%, Avacyn, Angel of Horror 22%, Gardenize 12%. EDHREC published an Avacyn article on 2026-10-08. Oracle text is from cards.csv.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth"
+   ]
+  },
+  {
+   "claim": "The Upgraded aggregate also runs death-drain payoffs and a second Grave Pact this deck does not. Blood Artist (55%) and Syr Konrad, the Grim (46%) are the drains. Dictate of Erebos (27%) is a flash Grave Pact that can be cast main phase, so it is not a hold-mana-open card.",
+   "cards": [
+    "Blood Artist",
+    "Syr Konrad, the Grim",
+    "Dictate of Erebos"
+   ],
+   "confidence": "widely agreed",
+   "evidence": "EDHREC Upgraded: Blood Artist 55%, Syr Konrad 46%, Dictate of Erebos 27%. The remaster adds Blood Artist. Draftsim names Syr Konrad and Blood Artist as drain routes.",
+   "pilot_history": "The deck already runs Zulaport Cutthroat, Grave Pact, Dark Prophecy and Gray Merchant.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+    "https://edhrec.com/articles/plunder-the-graves-precon-remastered/",
+    "https://draftsim.com/meren-edh-deck/"
+   ]
+  },
+  {
+   "claim": "Typical Upgraded mana differs from this list in two places. It runs basic Forests (listed at 99%; this 99 has none) and a 2-mana rock (Arcane Signet 53%). Golgari Rot Farm (40%) is common.",
+   "cards": [
+    "Forest",
+    "Arcane Signet",
+    "Golgari Rot Farm"
+   ],
+   "confidence": "one source",
+   "evidence": "EDHREC Upgraded: Forest 99%, Swamp 99%, Arcane Signet 53%, Golgari Rot Farm 40%. Average land count 35 (18 basic / 17 nonbasic).",
+   "pilot_history": "Pilot rule is 35-36 lands and 'mana isn't the limit' (ramp packages screened worse). This is a description of other decks, not a recommendation.",
+   "sources": [
+    "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+    "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json"
+   ]
+  }
+ ],
+ "known_failure_modes": [
+  "Removal on the commander, graveyard hate and board wipes. Draftsim says shutting the deck down takes 'multiple kill spells for your commander, graveyard hate, and board wipes'.",
+  "Slow to start. Draftsim says the deck 'only really comes online once those counters start adding up', so early disruption of the outlet and fodder delays everything.",
+  "Exile-based graveyard hate (Rest in Peace, Leyline of the Void, Bojuka Bog) shuts off Meren and the reanimation spells together. Grafdigger's Cage turns Meren's battlefield return into a return to hand: by its oracle text, creature cards in graveyards can't enter the battlefield. The sources that raised Cage specifically could not be fetched; see gaps."
+ ],
+ "contested": [
+  "Combo or no combo at bracket 3. The written guides build for grind and 'avoid immediate combos' (Bringing Magic to Life; Draftsim: wins via value, not an infinite). The one explicit 'Upgraded' Archidekt list surveyed runs Mikaeus beside Ashnod's Altar, Carrion Feeder and Viscera Seer, which EDHREC lists as two-card lines. Self-labelled B3 lists do not all respect the two-card rule, so inclusion rates for Mikaeus, Protean Hulk and Walking Ballista partly reflect B4-shaped decks.",
+  "Protection: equipment vs instants vs none. Greaves sits at 33%, Heroic Intervention at 20% and Veil at 6%. The Tail Recursion list runs 4 protection pieces. The aggregate implies most lists run 0-2.",
+  "Symmetric edicts. Plaguecrafter, Accursed Marauder and Fleshbag sit at 42-66% and the remaster calls the loop a 'soft lock'. Bringing Magic to Life notes that stax-style loops can make a pod's games miserable, which is a table-feel cost the aggregate does not price."
+ ],
+ "sources": [
+  {
+   "title": "Meren of Clan Nel Toth (Commander) — all brackets",
+   "author": "EDHREC (aggregate)",
+   "url": "https://edhrec.com/commanders/meren-of-clan-nel-toth",
+   "date": "fetched 2026-11-23; 22,830 decks; latest linked article 2026-10-09",
+   "contributed": "Theme counts (Reanimator 1.95K, Aristocrats 1.55K), top/high-lift card lists, New Cards panel."
+  },
+  {
+   "title": "Meren of Clan Nel Toth (Commander) — Upgraded",
+   "author": "EDHREC (aggregate)",
+   "url": "https://edhrec.com/commanders/meren-of-clan-nel-toth/upgraded",
+   "date": "fetched 2026-11-23; 2,710 decks",
+   "contributed": "Bracket-3 card lists. The page renders inclusion % only for New Cards."
+  },
+  {
+   "title": "EDHREC JSON behind the Upgraded page",
+   "author": "EDHREC (aggregate)",
+   "url": "https://json.edhrec.com/pages/commanders/meren-of-clan-nel-toth/upgraded.json",
+   "date": "fetched 2026-11-23",
+   "contributed": "Per-card inclusion (num_decks / potential_decks) for every card quoted as a % in this artifact."
+  },
+  {
+   "title": "Average Deck for Meren of Clan Nel Toth",
+   "author": "EDHREC (aggregate)",
+   "url": "https://edhrec.com/average-decks/meren-of-clan-nel-toth",
+   "date": "fetched 2026-11-23; 22,830 decks",
+   "contributed": "The modal 100: 36 creatures, 34 lands, Living Death, Toxic Deluge, Victimize, Lightning Greaves."
+  },
+  {
+   "title": "Meren of Clan Nel Toth combos",
+   "author": "EDHREC / Commander Spellbook data",
+   "url": "https://edhrec.com/combos/meren-of-clan-nel-toth",
+   "date": "fetched 2026-11-23",
+   "contributed": "Mikaeus listed as 2-card lines with five outlets in this 99. Living Death + Eternal Witness + Phyrexian Altar listed as a 3-card line."
+  },
+  {
+   "title": "EDHREC JSON behind the combos page",
+   "author": "EDHREC / Commander Spellbook data",
+   "url": "https://json.edhrec.com/pages/combos/meren-of-clan-nel-toth.json",
+   "date": "fetched 2026-11-23",
+   "contributed": "Mikaeus + Woe Strider (5,782 decks) and the other Mikaeus 2-card pairings with deck counts."
+  },
+  {
+   "title": "Plunder the Graves | Precon Remastered",
+   "author": "Owain Roberts (EDHREC)",
+   "url": "https://edhrec.com/articles/plunder-the-graves-precon-remastered/",
+   "date": "2026-10-09",
+   "contributed": "The current mid-power build direction: Haywire Mite, Plaguecrafter, Fleshbag, Spore Frog, Blood Artist, Cauldron of Essence, Moldervine and Deathreap Ritual added."
+  },
+  {
+   "title": "Meren of Clan Nel Toth Commander Deck Guide",
+   "author": "Jake Henderson (Draftsim)",
+   "url": "https://draftsim.com/meren-edh-deck/",
+   "date": "2022-02-22, updated 2024-09-26",
+   "contributed": "Win by value, not an infinite. Named failure modes. Draw via Haruspex and Reaper."
+  },
+  {
+   "title": "Bringing Magic to Life - Unburying the Dead!",
+   "author": "Kya Vess (EDHREC)",
+   "url": "https://edhrec.com/articles/bringing-magic-to-life-unburying-the-dead",
+   "date": "2019-05-07",
+   "contributed": "An older, explicitly non-combo framing. The edict trio and finishers (Sheoldred, Kokusho)."
+  },
+  {
+   "title": "Tail Recursion [Upgraded]",
+   "author": "Luuke (Archidekt)",
+   "url": "https://archidekt.com/decks/24403754/tail_recursion_core",
+   "date": "updated ~2026-11-22 (page read '32 hrs ago' on 2026-11-23)",
+   "contributed": "One self-labelled B3 list's category counts: 7 draw, 4 protection, 14 removal, 35 lands, Mikaeus/Hulk finishers."
+  }
+ ],
+ "gaps": [
+  "No written 2025-2026 Meren primer was found. Draftsim's guide is 2022, updated 2024. The only 2026 article (Oct 9) remasters a precon at a $120 budget. Inclusion rates carry most of this recon.",
+  "TappedOut primers ('Funeral in Carpathia', 'Meren Takes Us to Nel Toth') and mtg.wiki returned HTTP 403 and are not cited, including the Grafdigger's Cage discussion a search snippet attributed to them.",
+  "DeckCheck deckview pages render no deck content to the fetcher, so no DeckCheck B3 Meren list is cited.",
+  "Moxfield is not searchable from here. No Moxfield bracket-3 list was found or cited.",
+  "EDHREC Upgraded is self-reported bracket. The Tail Recursion example shows two-card lines inside 'Upgraded', so its rates are an upper bound on what a strict-B3 list runs.",
+  "No video was used; none could be read."
+ ]
+}
