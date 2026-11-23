@@ -88,7 +88,6 @@ def test_the_joint_and_the_product_disagree_on_the_real_deck_too():
         f"positively correlated, so this suggests it is being composed")
 
 
-@needs_deck
 def test_an_absent_declaration_gives_an_absent_figure_never_a_zero():
     """"0.0" is a measurement nobody made. Same contract as `model_treasures`."""
     got = diagnostic.engine([], [{"label": "x", "need": []}])

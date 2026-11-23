@@ -54,7 +54,22 @@ CORE = {
     "test_pilot_diagnostic.py::test_a_frequency_never_erases_a_difference_the_interval_shows":
         "a rounded frequency never hides what the interval shows",
 
+    "test_core_keep_list_and_pairing.py::test_a_list_against_itself_reads_exactly_zero_and_two_seeds_make_no_call":
+        "A/A reads exactly zero; two seeds make no call — the pairing, proven",
+    "test_pilot_diagnostic.py::test_an_absent_declaration_gives_an_absent_figure_never_a_zero":
+        "absent means absent, never zero",
+
     # ── the pilot's word binds ───────────────────────────────────────────────
+    "test_core_keep_list_and_pairing.py::test_the_keep_list_refuses_the_swap_arithmetic_and_lifting_it_lets_the_same_call_through":
+        "the keep list: a protected card is never cut by a swap",
+    "test_core_keep_list_and_pairing.py::test_try_refuses_a_protected_cut_before_spending_a_game":
+        "the keep list: try refuses before spending a game",
+    "test_core_keep_list_and_pairing.py::test_a_branch_without_the_card_is_never_opened":
+        "the keep list: a branch without the card is never opened",
+    "test_core_keep_list_and_pairing.py::test_propose_and_merge_read_the_same_refusal":
+        "the keep list: propose and merge refuse it, and merge has no override",
+    "test_core_keep_list_and_pairing.py::test_the_keep_list_validator_fails_every_broken_shape":
+        "the keep list's own shape is gated",
     "test_pilot_deck_edit.py::test_the_keep_list_refuses_every_way_out":
         "the keep list: no edit path removes a protected card",
     "test_pilot_deck_edit.py::test_a_sleeved_deck_is_refused_with_the_branch_path":
@@ -139,24 +154,9 @@ CORE = {
 }
 
 
-#: SACRED RULES WITH NO FAST GUARD YET. Each is held today only by a test that reads the
-#: tracked fleet (regression tier), so it cannot sit in the smoke run. Phase C of the
-#: 2026-11-22 test plan writes an inline-data version of each and moves it into CORE;
-#: until then `test_core_contracts.py` holds every name here to a real collected test,
-#: so the debt cannot be forgotten or renamed away.
-PENDING = {
-    "test_pilot_diagnostic.py::test_an_absent_declaration_gives_an_absent_figure_never_a_zero":
-        "absent means absent, never zero",
-    "test_pilot_net_change.py::test_a_staged_swap_pairs_BOTH_ways_and_the_reason_is_recoverable":
-        "a branch and its deck are paired game by game, both directions",
-    "test_pilot_try_and_protected.py::test_a_list_against_itself_pairs_to_exactly_zero_and_two_seeds_make_no_call":
-        "A/A reads exactly zero; noise is never a call",
-    "test_pilot_try_and_protected.py::test_a_protected_cut_is_refused_by_the_swap_arithmetic":
-        "the keep list: a protected card is never cut by a swap",
-    "test_pilot_try_and_protected.py::test_propose_and_merge_refuse_a_branch_that_cuts_it":
-        "the keep list: a branch cutting it can't be proposed or merged",
-    "test_pilot_try_and_protected.py::test_the_validator_fails_the_broken_shapes":
-        "the keep list's own shape is gated",
-    "test_pilot_try_and_protected.py::test_try_refuses_a_protected_cut_before_measuring_anything":
-        "the keep list: try refuses before spending a game",
-}
+#: SACRED RULES WITH NO FAST GUARD YET. Each is held only by a test that reads the tracked
+#: fleet (regression tier), so it cannot sit in the smoke run; it moves into CORE when it
+#: gets an inline-data version. Emptied 2026-11-22: the keep-list refusals and the A/A
+#: pairing now run on a deck built in tmp_path (`test_core_keep_list_and_pairing.py`), and
+#: absent-not-zero lost a deck gate its body never used.
+PENDING = {}
