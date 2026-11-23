@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve artifacts clean check demo docs-sizes jobs reap
+.PHONY: help setup smoke test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve artifacts clean check demo docs-sizes jobs reap
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -105,6 +105,9 @@ regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer 
 # gate is `make artifacts` + `git diff --exit-code` (docs/testing.md, 2026-10-21). The
 # model-stamp equality test rides the same `regen` marker since 2026-10-21, so a
 # model edit in the pilot's loop never reds the push: an older stamp is a state.
+smoke:  ## THE CORE: the must-never-break contracts (tests/core_contracts.py), ~20 s
+	$(PYTEST) -m "core and unit" $(PYTEST_ARGS)
+
 regression-prepush:  ## the regression tier WITHOUT the fleet regen (CI runs that on every push)
 	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
 

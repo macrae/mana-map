@@ -226,6 +226,26 @@ The five slowest tests: `test_every_tracked_simulation_run_passes_its_validator[
 
 <!-- suite-report:end -->
 
+## The core: `make smoke` (2026-11-22)
+
+**The contracts this bench may never break**, listed in `tests/core_contracts.py` with the rule
+each one guards, marked `core` at collection, run by `make smoke` in about 20 seconds. They are
+the rules a deck lives or dies by: the instrument is honest (same seed, same game; paired draws;
+a list against itself reads zero; an interval on the difference; absent is not zero), the
+pilot's word binds (the keep list refuses every way out, a sleeved list changes only through a
+branch, undo restores the bytes, the paper lock moves only on his act), the rules hold (the
+bracket floor, legality, an engine edge only where one card's event meets another's filter),
+and the gates gate (every validator fails through its exit code).
+
+`tests/test_core_contracts.py` holds every entry to a collected **unit-tier** test, so the
+smoke run never reads tracked data and never silently shrinks when a test is renamed.
+`PENDING` in the same file lists the sacred rules still guarded only by a fleet test; each
+moves into `CORE` when it gets an inline-data version. Proven by mutation: making
+`ability_graph.filter_accepts` accept every filter turns five core tests red.
+
+**A new core rule** is a test on inline data plus one line in `CORE` saying what breaks if it
+goes. Keep the set small: it runs on every change.
+
 ## Markers
 
 Registered in `pyproject.toml`:

@@ -248,10 +248,19 @@ def tier_of(item):
 
 
 @pytest.hookimpl(tryfirst=True)
+def _core_key(item):
+    """`<file>::<function>` — the form `core_contracts.CORE` is written in; a
+    parametrized case is matched by its function, every case included."""
+    return f"{item.path.name}::{getattr(item, 'originalname', None) or item.name}"
+
+
 def pytest_collection_modifyitems(config, items):
-    # tryfirst: the tier must be on the item before `-m` deselects anything.
+    # tryfirst: the tier (and `core`) must be on the item before `-m` deselects anything.
+    from core_contracts import CORE
     for item in items:
         item.add_marker(getattr(pytest.mark, tier_of(item)))
+        if _core_key(item) in CORE:
+            item.add_marker(pytest.mark.core)
 
 
 def pytest_addoption(parser):

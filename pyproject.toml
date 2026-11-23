@@ -103,6 +103,9 @@ markers = [
     "regression: reads the tracked fleet or corpus, or re-runs a producer (assigned in conftest)",
     "integration: a real browser, the Forge engine, or the network (assigned in conftest)",
     "network: reaches an outside service (Scryfall, EDHREC); integration tier",
+    # THE CORE (2026-11-22): the contracts this bench may never break, listed with the
+    # rule each guards in tests/core_contracts.py and marked at collection. `make smoke`.
+    "core: a must-never-break contract (tests/core_contracts.py); always unit tier",
     # The one test that runs `manamap pilot regen` over the whole fleet, IN PLACE.
     # It must not share the machine's decks with a parallel run, so `make
     # regression` runs it alone after the rest (`-m regen -n0`).
