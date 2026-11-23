@@ -302,6 +302,10 @@ def channels_for(profile):
     if (yard.get("reanimate") or yard.get("to_yard") or yard.get("discard_tutor")
             or own.get("no_mana") or own.get("cast_from_yard")
             or own.get("sac_team_counter") or own.get("team_pump_x")
+            # the self-feeding bodies (2026-11-23, study 010): dies as it enters, exploit,
+            # tokens that sacrifice themselves -- applied under Meren's declaration only
+            or own.get("dies_on_entry") or own.get("self_sac_tokens")
+            or own.get("exploit") is not None
             or rec.get("upkeep") or rec.get("end_step") or rec.get("return_cost")
             or rec.get("return_landfall")
             or _experience_read(profile)):

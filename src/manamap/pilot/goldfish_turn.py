@@ -802,6 +802,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # resolve (Plaguecrafter), and clamps in play (Skullclamp). One dict, so no closure needs
     # a `nonlocal` for it.
     own_deaths = {"costed_outlet": False, "pending_edicts": 0, "clamps": [],
+                  # CARDS THAT FEED MEREN ON THEIR OWN (2026-11-23, study 010): the bodies that
+                  # die as they enter (Phyrexian Dreadnought, Hangarback Walker at X=0), and the
+                  # exploits waiting to resolve, each its payoff's card draw
+                  "dying": [], "exploits": [],
                   # the bodies that come back every turn (`recurring_body_profile`), read under
                   # Meren's declaration: token makers in play, and the turn a land last entered
                   "makers": [], "landfall_turn": None,
@@ -1698,6 +1702,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 deck.remove(_c)
                 yard_creatures.append(_c)
 
+        def _token_info(card):
+            """A token that sacrifices itself (an Eldrazi Spawn or Scion) is its own outlet
+            (2026-11-23): marked so Meren's sweep takes it with no altar out. None otherwise,
+            which is what every token carried before."""
+            if commander_recursion and (card.get("own_death") or {}).get("self_sac_tokens"):
+                return {"name": f'{card["name"]} token', "scales": None, "prowess": 0,
+                        "vigilance": False, "self_sac": True}
+            return None
+
         def _enter_by(card, route):
             own_deaths["route"] = route
             try:
@@ -1746,6 +1759,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     own_deaths["upkeep_reanimators"].append(turn)
             if enters and od.get("sac_team_counter"):
                 own_deaths["sac_counters"] += 1
+            # Under Meren's declaration only: the "unless" is never paid and the 0/0 is cast at
+            # X=0, so the body dies for her counter; an exploit is always taken, for its payoff.
+            if enters and commander_recursion and od.get("dies_on_entry"):
+                own_deaths["dying"].append(card)
+            if enters and commander_recursion and od.get("exploit") is not None:
+                own_deaths["exploits"].append(od["exploit"]["draw"])
             if commander_recursion and (card.get("yard") or {}).get("discard_tutor"):
                 own_deaths["discard_tutors"].append(card["yard"]["discard_tutor"])
             rec = card.get("recurring") or {}
@@ -1800,7 +1819,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
-                    creature_entered(each, turn, False, 1, is_token=True)
+                    creature_entered(each, turn, False, 1, is_token=True,
+                                     info=_token_info(card))
             if model_combat:
                 if combat["team_haste"]:
                     haste_grants.append(combat["team_haste"])
@@ -2390,7 +2410,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if arrivals_matter and combat["token_bodies"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
-                    creature_entered(each, turn, False, 1, is_token=True)
+                    creature_entered(each, turn, False, 1, is_token=True,
+                                     info=_token_info(card))
             if model_combat:
                 _register_damage_scale(combat)
                 if combat["extra_combat_free"]:
@@ -3865,8 +3886,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             # Spend what's left on bodies, cheapest-first. Never a spell no mana may pay for
             # (Hogaak: convoke and delve, cast after combat below).
+            # A body that dies as it enters is held until Meren is out (2026-11-23): before her,
+            # its death pays nothing. Mirrored in `model_coverage.never_cast`'s note.
             for card in sorted((c for c in hand if c["bodies"] > 0
-                                and not (c.get("own_death") or {}).get("no_mana")),
+                                and not (c.get("own_death") or {}).get("no_mana")
+                                and not (commander_recursion and commander_turn is None
+                                         and (c.get("own_death") or {}).get("dies_on_entry"))),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:      # a free cast's discard took it
                     continue
@@ -5034,6 +5059,28 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             and (battlefield[i][12].get("card") or {}).get("is_commander"))]
                 if _pool:
                     _kill(min(_pool, key=lambda i: battlefield[i][0]))
+            # DIES AS IT ENTERS (2026-11-23): the card itself, never a spare -- Dreadnought's
+            # "sacrifice it unless" left unpaid, a 0/0 cast at X=0. No outlet is needed.
+            for _c in own_deaths["dying"]:
+                _at = next((i for i in range(len(battlefield) - 1, -1, -1)
+                            if len(battlefield[i]) > 12 and battlefield[i][12]
+                            and battlefield[i][12].get("card") is _c), None)
+                if _at is not None:
+                    _kill(_at)
+            own_deaths["dying"].clear()
+            # EXPLOIT (2026-11-23): the smallest spare body, else the exploiter itself (it is a
+            # body Meren brings back); its payoff's draw is read, a tutor payoff is not.
+            for _draw in own_deaths["exploits"]:
+                _pool = [i for i in range(len(battlefield)) if _expendable(i)] or [
+                    i for i in range(len(battlefield))
+                    if not (len(battlefield[i]) > 12 and battlefield[i][12]
+                            and (battlefield[i][12].get("card") or {}).get("is_commander"))]
+                if not _pool:
+                    break
+                _kill(min(_pool, key=lambda i: battlefield[i][0]))
+                if model_draw and _draw:
+                    draw_n(_draw)
+            own_deaths["exploits"].clear()
             # THE BODIES THAT COME BACK (2026-11-07, `recurring_body_profile`), read under
             # Meren's declaration. A token made at an upkeep is summoning-sick, so making it here,
             # after combat, changes no attack; it is there for the outlet and her counter.
@@ -5133,9 +5180,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     _note_cast(card, from_yard=_in_yard)
                     bodies_cum += card["creature_bodies"] if model_combat else card["bodies"]
                     _resolve_body(card)
-                # EVERY TOKEN GOES TO THE OUTLET with Meren out: each one is a counter.
-                if _outlet:
-                    for _i in sorted((i for i, e in enumerate(battlefield) if e[4]), reverse=True):
+                # EVERY TOKEN GOES TO THE OUTLET with Meren out: each one is a counter. A token
+                # that sacrifices itself (Spawn, Scion) is its own outlet, so it goes with no
+                # altar out too (2026-11-23); the {C} it makes is not counted, a floor.
+                if _outlet or commander_turn is not None:
+                    for _i in sorted((i for i, e in enumerate(battlefield) if e[4] and (
+                            _outlet or (len(e) > 12 and e[12] and e[12].get("self_sac")))),
+                            reverse=True):
                         _kill(_i)
             if commander_recursion and commander_turn is not None:
                 # SELF-SACRIFICE, the Meren pilot's habit: Sakura-Tribe Elder, Spore Frog,
@@ -5217,6 +5268,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     recursion_to_battlefield += 1
                     meren_returns.append((int(_pick["cmc"]), turn))
                     _enter_by(_pick, "meren")
+                    # A body that dies as it enters dies here, in her end step (2026-11-23):
+                    # Hangarback Walker back at X=0 is a counter every end step.
+                    if _pick in own_deaths["dying"]:
+                        own_deaths["dying"].remove(_pick)
+                        _at = next((i for i in range(len(battlefield) - 1, -1, -1)
+                                    if len(battlefield[i]) > 12 and battlefield[i][12]
+                                    and battlefield[i][12].get("card") is _pick), None)
+                        if _at is not None:
+                            _kill(_at)
                 else:
                     recursion_to_hand += 1
                     hand.append(_pick)

@@ -1694,8 +1694,28 @@ def sac_outlet_profile(card):
 _SELF_SAC_RE = re.compile(
     r"(?:^|\n)(?:[^\n:]*,\s*)?sacrifice this creature\s*(?:,[^\n:]*)?:", re.IGNORECASE)
 _SELF_EDICT_RE = re.compile(
-    r"when this creature enters,[^.\n]{0,40}each player sacrifices (?:a|one) creature",
+    r"when this creature enters,(?:[^.\n]{0,40}each player sacrifices| sacrifice) (?:a|one) creature",
     re.IGNORECASE)
+#: CARDS THAT FEED MEREN ON THEIR OWN (2026-11-23, study 010: "bodies with built in sac
+#: outlets solve for the early engine assembly problem"). Each needs no second piece:
+#:   dies_on_entry   "When this creature enters, sacrifice it unless ..." (Phyrexian Dreadnought),
+#:                   or a printed 0/0 that "enters with X +1/+1 counters" and costs only X
+#:                   (Hangarback Walker, Walking Ballista) cast at X=0: it dies at once (CR 704.5f)
+#:   exploit         "Exploit (When this creature enters, you may sacrifice a creature.)", and its
+#:                   payoff's card draw (Fell Stinger, Vulturous Aven); a tutor payoff (Sidisi) is
+#:                   not read
+#:   self_sac_tokens the tokens it makes sacrifice themselves (Eldrazi Spawn and Scion, or a token
+#:                   granted "Sacrifice this token/creature: ..."), so they are their own outlet
+_DIES_ON_ENTRY_RE = re.compile(r"when this creature enters, sacrifice it unless", re.IGNORECASE)
+_ENTERS_WITH_X_RE = re.compile(r"enters with X \+1/\+1 counters", re.IGNORECASE)
+_EXPLOIT_RE = re.compile(
+    r"\bexploit \(when this creature enters, you may sacrifice a creature", re.IGNORECASE)
+_EXPLOIT_DRAW_RE = re.compile(
+    r"when (?:this creature|[^.\n]{0,40}) exploits a creature,[^.\n]*?draws? (\w+) cards?",
+    re.IGNORECASE)
+_SELF_SAC_TOKEN_RE = re.compile(
+    r"create[^.\n]*?(?:eldrazi (?:spawn|scion)[^.\n]*?tokens?|tokens?[^.\n]*?"
+    r"\"sacrifice this (?:token|creature)[:,])", re.IGNORECASE)
 _CLAMP_TOUGH_RE = re.compile(r"equipped creature gets [+-]\d+/-(\d+)", re.IGNORECASE)
 _CLAMP_DRAW_RE = re.compile(r"whenever equipped creature dies, draw (\w+) cards?", re.IGNORECASE)
 _CLAMP_EQUIP_RE = re.compile(r"(?:^|\n)equip \{(\d+)\}", re.IGNORECASE)
@@ -1761,6 +1781,14 @@ def own_death_profile(card):
             "team_pump_x": team_pump_x(card),
             "self_sac": bool(sac), "self_sac_cost": sac_cost,
             "self_edict": bool(is_creature and _SELF_EDICT_RE.search(text)),
+            "dies_on_entry": bool(is_creature and (
+                _DIES_ON_ENTRY_RE.search(text)
+                or (str(card.get("toughness")) == "0" and _ENTERS_WITH_X_RE.search(text)
+                    and re.fullmatch(r"(?:\{X\})+", card.get("mana_cost") or "")))),
+            "exploit": ({"draw": _DRAW_WORDS.get(_m.group(1).lower(), 0)
+                         if (_m := _EXPLOIT_DRAW_RE.search(text)) else 0}
+                        if is_creature and _EXPLOIT_RE.search(text) else None),
+            "self_sac_tokens": bool(_SELF_SAC_TOKEN_RE.search(text)),
             "clamp": clamp}
 
 
