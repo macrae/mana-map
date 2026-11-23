@@ -150,6 +150,32 @@ def test_a_decided_study_is_frozen_unless_forced(deck):
         st.main(args)
 
 
+def test_a_study_whose_list_moved_while_it_ran_installs_with_its_citations_intact(deck):
+    """THE BENCH FLOW (2026-11-22): a bench deck is edited in place swap by swap as the
+    pilot approves each one, so by the call the list is not the one studied. Install
+    rebuilt the skeleton on the moved list, every fact id hashes the list, and every
+    citation the agents made went dangling — meren-recursion's study 001 could not be
+    installed. Proved by re-introducing the bug: always re-skeleton in `install`."""
+    doc = st.new("x", "is the deck light on counters?", cards=["Haze of Rage"])
+    fid = doc["facts"][0]["id"]
+    doc["contributions"].append({"agent": "deck-doctor", "text": f"per {fid}, yes",
+                                 "cites": {"facts": [fid], "strategy": [], "rules": []}})
+    st.set_call(doc, "approve", ["pilot", "deck-doctor"], "approve, make the swap")
+    doc["call"]["reading"] = f"the record {fid} carries it"
+    st.write("x", doc)
+    studied = doc["decklist_sha256"]
+    (deck / "decklist.txt").write_text((deck / "decklist.txt").read_text()
+                                       .replace("Swords to Plowshares", "Dawn's Truce"))
+    cards = json.loads((deck / "cards.json").read_text())
+    cards["decklist_sha256"] = "c" * 64
+    (deck / "cards.json").write_text(json.dumps(cards))
+    p, _notes = st.install("x", doc["id"])
+    frozen = json.loads(p.read_text())
+    assert frozen["decklist_sha256"] == studied, "the record names the list that was studied"
+    assert frozen["decided_on_decklist_sha256"] not in (None, studied), "and the list the call produced"
+    assert fid in {f["id"] for f in frozen["facts"]}, "the facts the agents cited are the facts kept"
+
+
 # ── the gate ──────────────────────────────────────────────────────────────────
 
 def _decided(deck, by, cards_state=None):

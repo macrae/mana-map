@@ -352,7 +352,18 @@ def install(slug, study_id):
     study a record."""
     from manamap.pilot import validate_study
     doc = read(slug, study_id)
-    doc = with_authored(skeleton(slug, {k: v for k, v in doc.items()}), doc)
+    branch = doc.get("branch")
+    now = decklist_sha256(slug, branch) if (branch is None or _branch_exists(slug, branch)) else None
+    if doc.get("decklist_sha256") and now and now != doc["decklist_sha256"]:
+        # THE LIST MOVED DURING THE STUDY (2026-11-22): a bench deck is edited in place
+        # swap by swap as the pilot approves each one, so by the call the list is not the
+        # one studied. The fact ids hash the list studied, and a recomputed skeleton
+        # renamed every fact the agents had cited — meren-recursion's study 001 could
+        # not be installed. The record is what the call rested on: freeze the stored
+        # facts and stamp the list the call produced beside the one studied.
+        doc["decided_on_decklist_sha256"] = now
+    else:
+        doc = with_authored(skeleton(slug, {k: v for k, v in doc.items()}), doc)
     errors, notes = validate_study.validate(doc, slug, strict=True)
     if errors:
         raise SystemExit(f"refusing to install study {study_id} — " + f"{len(errors)} error(s):\n  - "
