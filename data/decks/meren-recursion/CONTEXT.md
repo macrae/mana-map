@@ -1,10 +1,10 @@
 # Meren of Clan Nel Toth — Deck Context
 
-<!-- ctx:written-for version=V26 sha=48daf86b6629 at=2026-11-22 -->
+<!-- ctx:written-for version=V27 sha=2aae8b5cbb02 at=2026-11-22 -->
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
+- **Version:** V27 · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 4 known lines (4 infinite, 0 two-card) · 245 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -14,7 +14,7 @@
 
 This is an optimized bracket 3 Golgari reanimator with [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth) as the engine. The point is big bodies early for what they cost. Bin the fattest creature, bring it back on turn three or four, and let Meren return it again later. Every creature that dies gives her an experience counter. At each end step she hands one creature card back to your hand, or puts it straight onto the battlefield once the counters have caught up.
 
-The plan is to fill the yard on purpose and empty it fast. [Entomb](https://manamap.seanmacrae.com/viz/index.html?cards=Entomb), [Buried Alive](https://manamap.seanmacrae.com/viz/index.html?cards=Buried+Alive), [Fauna Shaman](https://manamap.seanmacrae.com/viz/index.html?cards=Fauna+Shaman) and [Unmarked Grave](https://manamap.seanmacrae.com/viz/index.html?cards=Unmarked+Grave) load it by choice, and [Satyr Wayfinder](https://manamap.seanmacrae.com/viz/index.html?cards=Satyr+Wayfinder), [Six](https://manamap.seanmacrae.com/viz/index.html?cards=Six), [Nyx Weaver](https://manamap.seanmacrae.com/viz/index.html?cards=Nyx+Weaver) and [Stitcher's Supplier](https://manamap.seanmacrae.com/viz/index.html?cards=Stitcher%27s+Supplier) mill it by volume. [Reanimate](https://manamap.seanmacrae.com/viz/index.html?cards=Reanimate), [Necromancy](https://manamap.seanmacrae.com/viz/index.html?cards=Necromancy), [Animate Dead](https://manamap.seanmacrae.com/viz/index.html?cards=Animate+Dead), [Victimize](https://manamap.seanmacrae.com/viz/index.html?cards=Victimize) and Meren empty it. The targets are [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty), [Sheoldred, Whispering One](https://manamap.seanmacrae.com/viz/index.html?cards=Sheoldred%2C+Whispering+One), [Grave Titan](https://manamap.seanmacrae.com/viz/index.html?cards=Grave+Titan), [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk) and the fatties that do something both coming in and dying: [Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm), [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel), [Cavalier of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Cavalier+of+Night), [Shriekmaw](https://manamap.seanmacrae.com/viz/index.html?cards=Shriekmaw) and [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider).
+The plan is to fill the yard on purpose and empty it fast. [Entomb](https://manamap.seanmacrae.com/viz/index.html?cards=Entomb), [Buried Alive](https://manamap.seanmacrae.com/viz/index.html?cards=Buried+Alive), [Fauna Shaman](https://manamap.seanmacrae.com/viz/index.html?cards=Fauna+Shaman) and [Unmarked Grave](https://manamap.seanmacrae.com/viz/index.html?cards=Unmarked+Grave) load it by choice, and [Satyr Wayfinder](https://manamap.seanmacrae.com/viz/index.html?cards=Satyr+Wayfinder), [Six](https://manamap.seanmacrae.com/viz/index.html?cards=Six), [Nyx Weaver](https://manamap.seanmacrae.com/viz/index.html?cards=Nyx+Weaver) and [Stitcher's Supplier](https://manamap.seanmacrae.com/viz/index.html?cards=Stitcher%27s+Supplier) mill it by volume. [Reanimate](https://manamap.seanmacrae.com/viz/index.html?cards=Reanimate), [Necromancy](https://manamap.seanmacrae.com/viz/index.html?cards=Necromancy), [Animate Dead](https://manamap.seanmacrae.com/viz/index.html?cards=Animate+Dead), [Victimize](https://manamap.seanmacrae.com/viz/index.html?cards=Victimize) and Meren empty it. The targets are [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty), [Sheoldred, Whispering One](https://manamap.seanmacrae.com/viz/index.html?cards=Sheoldred%2C+Whispering+One), [Grave Titan](https://manamap.seanmacrae.com/viz/index.html?cards=Grave+Titan), [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk) and the fatties that do something both coming in and dying: [Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm), [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel), [Cavalier of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Cavalier+of+Night), [Hapatra, the Desert Fang](https://manamap.seanmacrae.com/viz/index.html?cards=Hapatra%2C+the+Desert+Fang) (one-sided counters sized by the yard) and [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider).
 
 The deck is built around one line the pilot named himself: Meren "wants to bring cards back IN THE END STEP". Swing with a big creature, sacrifice it for value, bring it back at the end step, and it comes back untapped with its enter trigger fired again. Sacrifice the fatty when its enter trigger is removal or drain, and when its death trigger pays too. Sacrifice fodder when the sacrifice itself pays. Meren returns only ONE card per end step, so choose what comes back. A creature she returns at the end step can attack next turn.
 
@@ -50,7 +50,7 @@ V26 is about the yard. The pilot felt the deck was light on milling: "the plan i
 - [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider) turns a sacrifice into the removal of any nonland permanent on entering.
 - [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel) drains the table.
 - [Cavalier of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Cavalier+of+Night) sacrifices another creature to destroy one of theirs, and gets something again when it dies.
-- [Shriekmaw](https://manamap.seanmacrae.com/viz/index.html?cards=Shriekmaw) kills a creature.
+- [Hapatra, the Desert Fang](https://manamap.seanmacrae.com/viz/index.html?cards=Hapatra%2C+the+Desert+Fang) puts -1/-1 counters on one of each opponent's creatures when she enters, as many as the biggest mana value in our yard. It never touches our board, counters beat indestructible, and the fatties we bin set the size. Meren re-buys her for another shot.
 - [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk), [Sheoldred, Whispering One](https://manamap.seanmacrae.com/viz/index.html?cards=Sheoldred%2C+Whispering+One) and [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty) clear something every time they land.
 - [Jarad, Golgari Lich Lord](https://manamap.seanmacrae.com/viz/index.html?cards=Jarad%2C+Golgari+Lich+Lord) turns the sacrifice into a drain, and the returned body's power is the size of it.
 - [Ghoulcaller Gisa](https://manamap.seanmacrae.com/viz/index.html?cards=Ghoulcaller+Gisa) turns the sacrificed body's power into Zombies, so the bigger the fatty, the bigger the swarm.
@@ -127,7 +127,7 @@ V26 is about the yard. The pilot felt the deck was light on milling: "the plan i
 [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty), [Grave Titan](https://manamap.seanmacrae.com/viz/index.html?cards=Grave+Titan), [Sheoldred, Whispering One](https://manamap.seanmacrae.com/viz/index.html?cards=Sheoldred%2C+Whispering+One), [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk), [Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm)
 
 ### something on entering and on dying (sacrifice the fatty, Meren re-buys it)
-[Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star) (drains on dying), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm) (shrinks them on entering, taxes their deaths), [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider) (removes a nonland permanent on entering), [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel), [Cavalier of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Cavalier+of+Night), [Shriekmaw](https://manamap.seanmacrae.com/viz/index.html?cards=Shriekmaw), [Jarad, Golgari Lich Lord](https://manamap.seanmacrae.com/viz/index.html?cards=Jarad%2C+Golgari+Lich+Lord), [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk), [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty), [Tergrid, God of Fright // Tergrid's Lantern](https://manamap.seanmacrae.com/viz/index.html?cards=Tergrid%2C+God+of+Fright+%2F%2F+Tergrid%27s+Lantern), [Formidable Speaker](https://manamap.seanmacrae.com/viz/index.html?cards=Formidable+Speaker), [Stitcher's Supplier](https://manamap.seanmacrae.com/viz/index.html?cards=Stitcher%27s+Supplier)
+[Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star) (drains on dying), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm) (shrinks them on entering, taxes their deaths), [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider) (removes a nonland permanent on entering), [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel), [Cavalier of Night](https://manamap.seanmacrae.com/viz/index.html?cards=Cavalier+of+Night), [Hapatra, the Desert Fang](https://manamap.seanmacrae.com/viz/index.html?cards=Hapatra%2C+the+Desert+Fang) (one-sided counters on entering, sized by the yard), [Jarad, Golgari Lich Lord](https://manamap.seanmacrae.com/viz/index.html?cards=Jarad%2C+Golgari+Lich+Lord), [Noxious Gearhulk](https://manamap.seanmacrae.com/viz/index.html?cards=Noxious+Gearhulk), [Archon of Cruelty](https://manamap.seanmacrae.com/viz/index.html?cards=Archon+of+Cruelty), [Tergrid, God of Fright // Tergrid's Lantern](https://manamap.seanmacrae.com/viz/index.html?cards=Tergrid%2C+God+of+Fright+%2F%2F+Tergrid%27s+Lantern), [Formidable Speaker](https://manamap.seanmacrae.com/viz/index.html?cards=Formidable+Speaker), [Stitcher's Supplier](https://manamap.seanmacrae.com/viz/index.html?cards=Stitcher%27s+Supplier)
 
 ### free from hand or the table (no mana needed)
 [Heroic Intervention](https://manamap.seanmacrae.com/viz/index.html?cards=Heroic+Intervention), [Deadly Rollick](https://manamap.seanmacrae.com/viz/index.html?cards=Deadly+Rollick)
@@ -150,6 +150,9 @@ V26 is about the yard. The pilot felt the deck was light on milling: "the plan i
 
 ### wipe the table and drain on deaths
 [The Meathook Massacre](https://manamap.seanmacrae.com/viz/index.html?cards=The+Meathook+Massacre), [Grave Pact](https://manamap.seanmacrae.com/viz/index.html?cards=Grave+Pact), [Gray Merchant of Asphodel](https://manamap.seanmacrae.com/viz/index.html?cards=Gray+Merchant+of+Asphodel), [Massacre Wurm](https://manamap.seanmacrae.com/viz/index.html?cards=Massacre+Wurm), [Kokusho, the Evening Star](https://manamap.seanmacrae.com/viz/index.html?cards=Kokusho%2C+the+Evening+Star), [Zulaport Cutthroat](https://manamap.seanmacrae.com/viz/index.html?cards=Zulaport+Cutthroat)
+
+### repeatable one-sided removal (the yard sets the size)
+[Hapatra, the Desert Fang](https://manamap.seanmacrae.com/viz/index.html?cards=Hapatra%2C+the+Desert+Fang) hits one creature per opponent for the biggest mana value in our graveyard. Counters get past indestructible and our own board is safe. The binned fatties and the millers make X big, and Meren re-buys her.
 
 ### cheap removal and answers
 [Assassin's Trophy](https://manamap.seanmacrae.com/viz/index.html?cards=Assassin%27s+Trophy), [Deadly Rollick](https://manamap.seanmacrae.com/viz/index.html?cards=Deadly+Rollick), [Blasting Station](https://manamap.seanmacrae.com/viz/index.html?cards=Blasting+Station), [Boseiju, Who Endures](https://manamap.seanmacrae.com/viz/index.html?cards=Boseiju%2C+Who+Endures), [Skyfisher Spider](https://manamap.seanmacrae.com/viz/index.html?cards=Skyfisher+Spider)
@@ -175,7 +178,7 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 
 <!-- ctx:gen numbers -->
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on V27, 2026-11-22. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
@@ -229,6 +232,8 @@ V24 (2026-11-13). A weakness review, not a game. Graveyard hate and a lack of Me
 
 V26 (2026-11-22), study 001. The pilot: the deck felt light on milling, and "the plan is to play cards from the graveyard primarily... we need to fill the graveyard faster than casting creatures and them dying." In: Satyr Wayfinder, Six, Nyx Weaver (the volume millers), Exotic Orchard and Fabled Passage and Fauna Shaman (already in since budget-v2). Out: Tendershoot Dryad, Bone Splinters, Savra, Queen of the Golgari, and the budget-v2 outs Bayou, Darkbore Pathway and Survival of the Fittest. He said "approve, make the swap" and kept Scavenging Ooze, the only repeatable graveyard hate. One correction: this file called Savra a free sacrifice outlet and said her edict cost two life. She was neither (she charges mana, and pays only when you sacrifice something), and she is gone. The Context now says the deck runs two Game Changers, Demonic Tutor and Tergrid. No games are logged on V26.
 
+V27 (2026-11-22), study 005. [Hapatra, the Desert Fang](https://manamap.seanmacrae.com/viz/index.html?cards=Hapatra%2C+the+Desert+Fang) in for Shriekmaw. The pilot: "shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's a clear line here ... it feels like Hapatra is the stronger, meaner, card." She is one-sided, so our board stays. The counters beat indestructible. The size is the biggest mana value in our yard, and the binned fatties and the V26 millers set it. Meren re-buys her, to hand early and onto the battlefield once the experience counters catch up. No games yet, so none of this has met a table.
+
 Earlier calls still standing: the pilot turned down Ancient Tomb (another Game Changer) and Gravecrawler (a two-card infinite with Phyrexian Altar).
 
 ## Studies
@@ -244,6 +249,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Change history
 
 <!-- ctx:gen history -->
+- **V27** (2026-11-22) — in: Hapatra, the Desert Fang; out: Shriekmaw
 - **V26** (2026-11-22) — in: Nyx Weaver, Satyr Wayfinder, Six; out: Bone Splinters, Savra, Queen of the Golgari, Tendershoot Dryad
 - **V25** (2026-11-14) — in: Exotic Orchard, Fabled Passage, Fauna Shaman; out: Bayou, Darkbore Pathway, Survival of the Fittest
   - merge `budget-v2` — Meren is brewing (pilot, 2026-11-14): merge the budget swaps now; Fabled Passage goes on the buy list
@@ -252,9 +258,10 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 - **V22** (2026-11-13) — in: Fiend Artisan, Ghoulcaller Gisa, Kokusho, the Evening Star, Massacre Wurm, Skyfisher Spider; out: Craterhoof Behemoth, Dark Ritual, Hogaak, Arisen Necropolis, Infested Thrinax, Korozda Guildmage, Mazirek, Kraul Death Priest
 - **V21** (2026-11-12) — in: Grist, Voracious Larva // Grist, the Plague Swarm, Mazirek, Kraul Death Priest, Reassembling Skeleton, Savra, Queen of the Golgari; out: Cankerbloom, Elves of Deep Shadow, Nature's Lore, Persist
 - **V20** (2026-11-09) — in: Karn's Bastion; out: 
-- **V19** (2026-11-09) — in: Formidable Speaker; out: Fauna Shaman
-- … 18 earlier version(s): `manamap pilot deck-version meren-recursion list`
+- … 19 earlier version(s): `manamap pilot deck-version meren-recursion list`
 <!-- /ctx:gen history -->
+
+**V27 (2026-11-22).** In: Hapatra, the Desert Fang. Out: Shriekmaw. The pilot called Hapatra "the stronger, meaner, card" next to a Toxic Deluge at five, six or eight, because tutoring and milling put the big creatures in the yard. Shriekmaw killed one creature for a flat price. Hapatra scales with the yard, never hurts our side, and Meren can fire her again. Lands unchanged.
 
 **V26 (2026-11-22).** In: Satyr Wayfinder, Six, Nyx Weaver. Out: Tendershoot Dryad, Bone Splinters, Savra, Queen of the Golgari. Lands unchanged at thirty-five. Why each moved:
 - Satyr Wayfinder for Tendershoot Dryad: a body that mills about three and re-fires on every Meren return, in place of a Saproling a turn.
@@ -289,7 +296,7 @@ What came in: Blasting Station is the instant-speed outlet that kills. Bone Spli
 
 What came in: Kokusho drains each opponent when it dies, then Meren brings it back. Massacre Wurm is a one-sided shrink every return and taxes their deaths. Skyfisher Spider turns a sacrifice into removal. Fiend Artisan is the nested tutor. Ghoulcaller Gisa turns a sacrificed creature's power into Zombies. Mazirek's counters-on-sacrifice job, added a version earlier, is dropped: the Savra and Grave Pact edicts are the sacrifice payoff that stays. Kokusho is back after going out for Hogaak at V6, now that the end step is the plan.
 
-**V21 (2026-11-10).** In: Grist, Voracious Larva, Reassembling Skeleton, Savra, Queen of the Golgari, Mazirek, Kraul Death Priest. Out: Cankerbloom, Nature's Lore, Persist, Elves of Deep Shadow. The sacrifice package: ramp and a small body made way for cards that turn each sacrifice into value. Held for a later round: Hapatra, the Desert Fang and Aatchik, Emerald Radiant. Considered and dropped: Culling the Weak, Izoni, Gravecrawler (a two-card infinite with Phyrexian Altar), Butcher Ghoul (+1/+1 counters switch off undying), Sylvan Safekeeper, Evolution Sage, Prosperous Innkeeper.
+**V21 (2026-11-10).** In: Grist, Voracious Larva, Reassembling Skeleton, Savra, Queen of the Golgari, Mazirek, Kraul Death Priest. Out: Cankerbloom, Nature's Lore, Persist, Elves of Deep Shadow. The sacrifice package: ramp and a small body made way for cards that turn each sacrifice into value. Held for a later round: Hapatra, the Desert Fang (she came in at V27) and Aatchik, Emerald Radiant. Considered and dropped: Culling the Weak, Izoni, Gravecrawler (a two-card infinite with Phyrexian Altar), Butcher Ghoul (+1/+1 counters switch off undying), Sylvan Safekeeper, Evolution Sage, Prosperous Innkeeper.
 
 **V20 (2026-11-09).** Karn's Bastion in, one Forest out. Free proliferate from a land slot: experience for Meren, growth for Yawgmoth's and Toph's counters, a late mana sink.
 
@@ -318,6 +325,7 @@ What came in: Kokusho drains each opponent when it dies, then Meren brings it ba
 - **Q050** promoted — The deck's supply of free outlets plus recurring fodder is thin against its graveyard fillers, so if a logged game shows a full yard with low counters, the missing piece is a free outlet, not another filler.
 <!-- /ctx:gen queue -->
 
+- Does Hapatra's X come in big enough? The claim: with a binned Archon, Sheoldred, Grave Titan or Kokusho in the yard, her counters kill most creatures the table plays, and Meren's re-buy makes her a repeating answer. She is weak when the yard is still empty, so watch the first games for the turn she lands and what X was. The Numbers block does not measure yard size.
 - Does Fauna Shaman stay alive long enough to matter? The claim: it pays for itself if it lives one turn cycle, and a wipe or a removal spell on it costs a tempo, not the deck. Watch the first games for it dying before its first activation. It has had no Forge cast check.
 
 - Does the end-step loop work at a real table? The claim: with Meren out and a fatty with a good enter and death trigger in the yard, sacrificing it after combat and getting it back at the end step clears or drains every turn cycle. It needs logged games, because the goldfish has no opponents.
@@ -359,3 +367,4 @@ What came in: Kokusho drains each opponent when it dies, then Meren brings it ba
 - 2026-11-13 · Keeper · deck change: V24 — Golgari Charm, Tamiyo's Safekeeping, a Swamp for the Forest
 - 2026-11-14 · Keeper · deck change: budget-v2 merged — Fabled Passage, Exotic Orchard, Fauna Shaman
 - 2026-11-22 · Keeper · deck change: V26 study 001 yard fill — Satyr Wayfinder, Six, Nyx Weaver in
+- 2026-11-22 · Keeper · deck change: V27 study 005 — Hapatra for Shriekmaw
