@@ -233,6 +233,18 @@ components withheld on every deck, and the rating cannot move until they land.
 5. **The PRD's open questions**: the context length limit before pruning, whether a pilot
    log starts the incubation pod or Jarvis asks, how the queue is prioritised, and the
    final per-agent targets.
+6. **The goldfish test refactor** (deferred from the 2026-11-22 test overhaul, by the
+   pilot's call). The goldfish's tests are about 43 files named by date or by card
+   (`test_goldfish_audit_2026_11.py`, `test_pilot_goldfish_gishath.py`, …) rather than by
+   mechanic. Reorganise them by what the simulator does, for example mana, draw, combat,
+   deaths, tokens and discard. Fold the 94 audit tests into those files and share one stacked-library helper.
+   Merge overlapping draw coverage (`test_goldfish_cast_draw`, `_mana_into_cards`,
+   `_drain_and_draw`) only after reading the three side by side. Rules: no test deleted
+   unless a kept test guards the same behaviour; the core entries in
+   `tests/core_contracts.py` are repointed in the same commit; `make smoke` and the unit
+   tier stay green at every step. There is no speed gain. The point is that a mechanic's
+   tests can be found in one place. Also worth a pass: `goldfish_turn.py`
+   is the largest simulator module (5.7k lines) at about 67% unit coverage.
 
 Still open from 2026-10-05 (`docs/history/plan-to-2026-10-05.md` has the detail):
 edgar-vampires' diagnosis re-run after the static-lord fix, sharknado's Forge piloting,
