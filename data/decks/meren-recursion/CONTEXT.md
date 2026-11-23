@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V30 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 5 known lines (5 infinite, 0 two-card) · 258 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -160,25 +160,25 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 <!-- ctx:gen numbers -->
 - **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-23
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on V30, 2026-11-22. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **92%**
-- MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.151**
-- A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand: **74%**
+- MEDIAN turn the goldfish kills on, not the mean: **turn 8**
+- mean turn the commander is first cast: **turn 4.254**
+- A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand: **75%**
 - A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out: **65%**
-- THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn: **47%**
-- AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate): **52%**
+- THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn: **48%**
+- AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate): **53%**
 - A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return: **74%**
-- CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience: **34%**
-- THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience: **24%**
-- A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own): **36%**
-- A TUTOR drawn — finds the missing half of the experience engine: **44%**
-- RAMP drawn — an accelerant of any kind: **44%**
+- CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience: **35%**
+- THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience: **26%**
+- A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own): **37%**
+- A TUTOR drawn — finds the missing half of the experience engine: **45%**
+- RAMP drawn — an accelerant of any kind: **36%**
 - REMOVAL drawn — a spell or a returning body that answers a permanent: **82%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's: **12%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's: **13%**
 - share of opening sevens the model would keep: **80%**
-- Colour on curve (lands + rocks): B 90%, G 94%
+- Colour on curve (lands + rocks): B 88%, G 94%
 <!-- /ctx:gen numbers -->
 
 The block above is re-rendered for the current list. The goldfish has no opponents, no blockers and no removal, so it cannot see the sweepers, the protection, the cheap removal or the graveyard hate. Read the commander-cast and kill lines as an upper bound. The drain rows were written for an older plan, so read their names with care. The Numbers still say nothing about how many counters Meren has by a given turn, and nothing about how often the end-step loop gets going. The pilot's line is that the goldfish is not the arbiter.

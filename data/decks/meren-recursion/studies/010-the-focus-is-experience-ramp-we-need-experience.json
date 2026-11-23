@@ -1,0 +1,123 @@
+{
+  "id": "010",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for that to happen consistently, and how do we back into a solution",
+  "opened": "2026-11-23",
+  "decided_at": null,
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "text": "Answer: don't change the 99. A consistent 5-6 drop via Meren's counters by T6 isn't achievable in a singleton 99. The one lever worth testing is a turn-earlier engine, not more deaths.\n\n1. Is it realistic? No, not as a consistent goal.\n- Counters >=5 by T6 means about 5 deaths across the T4-T6 end steps, or about 3 with Winding Constrictor out (it adds a counter per gain). That is roughly 2 deaths a turn from the turn Meren lands.\n- The goldfish shows about 1 death a turn, with experience >=5 by T6 at 14% and a 5+ drop via Meren at 1.7%. Sacrificing every body moved >=5@T6 only from 14% to 17%, so body volume is not the bottleneck.\n- Singleton makes it harder: \"consistency has two purchases: redundancy or tutoring\" (strategy:deckbuilding.redundancy-vs-tutors). A named card is about 7% of an opener, and this plan needs about four named pieces.\n- By T4 you need Meren cast, a free outlet, a self-replenishing fodder source (Ophiomancer, Bitterblossom or Scute Swarm) and ideally Constrictor already on the table. Both engine halves are drawn together by T6 in 67% of games, which is already the ceiling.\n\n2. Which lever? Assembling the engine a turn earlier is the only one that compounds.\n- Counters grow linearly with turns Meren is out, and she lands at T4. One turn earlier is worth about one extra end step of counters.\n- More bodies per turn is flat: the sacrifice-everything experiment gained 3 points.\n- The multiplier is already in the 99 (Constrictor, on the keep list). I found no obvious proliferate card, and I didn't check that against any strategy section.\n- Fiend Artisan and Fauna Shaman already work as tutors. The tutor section (strategy:deckbuilding.redundancy-vs-tutors) supports tutoring for the missing half, but the list has little room to add more.\n\n3. Weakest slot. I can't name one that is clearly better to change.\n- Every card I'd be tempted to cut serves the end-step loop, the removal suite or card draw, and cutting fodder or outlets lowers the death rate.\n- Pilot rule: only clearly advantageous swaps, and an open slot is fine. NO CHANGE.\n\n4. Does the reanimation line already cover T5? Yes, by a different mechanism.\n- Entomb or Buried Alive, then Reanimate or Animate Dead, Cauldron of Essence or Agadeem's Awakening, lands a fatty at T3-T5 without counters.\n- So experience only needs to cover T6 onward. Mean experience at T6 is 2.4 and Meren hands the card to hand until the counters catch up, which puts a free 5-drop return around T7-T8.\n- This is arithmetic from the Deck Context, not a measured rate.\n\nTo test: run `try` with the free outlet or the fodder forced into the opening hand. That gives the ceiling for the turn-earlier lever. It is a ceiling only, since the goldfish has no removal or blockers.\n\nopen:\n- Does the goldfish count tokens and Constrictor's extra counter in \"experience at T6\"? Confirm with a scenario slice.\n- /research-strategy topic: tempo of engine assembly and the experience-counter curve for Meren-style commanders.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.redundancy-vs-tutors"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-23T13:17:48-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-010.md"
+    },
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "text": "Eight candidates for study 010, best first. Per-turn-cycle figures are arithmetic from card text, not a measurement.\n\n1. Wriggling Grub {1}{B} (MV 2) — \"When this creature dies, create two 1/1 Worm tokens.\" One card is three deaths (~+3 experience with Meren out and an outlet). Goldfish: seen.\n2. Bitterbloom Bearer {B}{B} (MV 2) — Flash, flying; each upkeep lose 1 life and make a 1/1 Faerie. A second Bitterblossom-class engine on a body (~+1 per turn cycle, plus its own death). Goldfish: seen.\n3. Awakening Zone {2}{G} (MV 3) — each upkeep a 0/1 Eldrazi Spawn that sacrifices itself for {C}: a free death every turn with no altar (~+1 per cycle), plus mana. Enchantment: Meren can't return it, a creature wipe can't kill it. Goldfish: seen.\n4. Doomed Dissenter {1}{B} (MV 2) — dies into a 2/2 Zombie: two deaths per card (~+2). Goldfish: seen.\n5. Nested Shambler {B} (MV 1) — dies into Squirrels equal to its power (1): two deaths for one mana (~+2). Goldfish: seen.\n6. Putrid Goblin {1}{B} (MV 2) — persist: dies twice (~+2) without spending Meren's return; no loop (second death final). Goldfish: seen.\n7. Drown in Ichor {1}{B} (MV 2) — -4/-4 then proliferate; on our own fodder, a death plus +1 experience (~+2 once, +3 with Constrictor). One-shot. Goldfish: invisible.\n8. Innkeeper's Talent {1}{G} (MV 2) — level 3 doubles counters put on a permanent OR PLAYER (experience doubles); seven mana across turns to level, rarely by T5-6. Goldfish: invisible.\n\nNotes: 1, 4, 5, 6 add deaths only with an outlet out. Cheap proliferate is thin in BG (Thirsting Roots, Unnatural Restoration ~+1 once). Left out: Geralf's Messenger (Butcher Ghoul shape), Vorinclex (MV 6), Verdant Force (MV 8). None symmetric, none a Game Changer, none on the exclusion list.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-23T13:18:17-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/card-scout-010.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "text": "{\n  \"slug\": \"meren-recursion\",\n  \"as_of_decklist_sha256\": \"c9e7d41682c64e3c2192a3542a2acae94987d70b7d473f3dac429eadc27d0e0c\",\n  \"reading\": \"NO CHANGE. Swaps cannot get this deck to a turn-6 fatty through Meren, because the gap is deaths. To return a 5-drop at the turn-6 end step, Meren must be out by turn 4 (median cast turn 4, 92.5% cast by turn 6). She then needs about five deaths over her first three end steps, or about three with Winding Constrictor adding one per counter event, and a 5+ creature card must be in the yard. The goldfish averages 1.343 sacrifices by turn 6 and 2.433 experience. The outlet-plus-fodder pair is drawn by turn 6 in 46.6% of games (57.9% with tutors), so the goal reads 14.2% and 1.7%. The two seen fodder and proliferate adds I screened move those rows by +0.4 to +0.9 points and +0.0 to +0.2 points, which is below the clear-upgrade bar. Backing into it: the turn-6 goal is a mulligan and sequencing target (keep outlet plus fodder, tutor for Ophiomancer or Constrictor before a fatty). Turn 7-8 is where the list reaches it today (experience 4.266 at turn 7, 6.628 at turn 8).\",\n  \"log_entries_read\": [],\n  \"axes_engaged\": [\n    {\n      \"axis\": \"creatures\",\n      \"verdict\": \"adequate\",\n      \"measured\": {\"value\": 41},\n      \"reading\": \"41 bodies is plenty of potential fodder. The goldfish only sacrifices tokens, though, so experience grows with the token makers (Bitterblossom, Jadar, Ophiomancer, Scute Swarm, Woe Strider's Goat, Pawn of Ulamog's Spawn) and not with the creature count.\"\n    },\n    {\n      \"axis\": \"consistency\",\n      \"verdict\": \"strength\",\n      \"measured\": {\"value\": 0.91},\n      \"reading\": \"The turn-3 land drop hits 0.91 and Meren's median cast turn is 4, so the mana is on time. The turn-6 miss happens after she lands, not before.\"\n    },\n    {\n      \"axis\": \"tutors\",\n      \"verdict\": \"adequate\",\n      \"measured\": {\"value\": 8},\n      \"reading\": \"Eight tutors raise the engine pair's turn-6 rate from 0.466 to 0.579 when used for it, which is the largest lever the goldfish shows here. That makes it a play pattern: Demonic Tutor and Fiend Artisan go to Ophiomancer or Winding Constrictor before a fatty.\",\n      \"citations\": [{\"rule\": \"strategy:mulligans.engine-hands\", \"quote\": \"100-card singleton means you mulligan to enabler\\n*classes*, not named cards; build the redundancy your keeps depend on.\"}]\n    }\n  ],\n  \"cut_candidates\": [],\n  \"add_candidates\": [],\n  \"open_questions\": [\n    {\n      \"question\": \"Why is 'a 5+ drop via Meren by T6' (1.7%) so far below 'experience 5+ by T6' (14.2%)? Is it the yard (no 5+ creature card left once Reanimate or Animate Dead has used it), the timing (experience reaching 5 only after the turn-6 end-step trigger), or how the model picks Meren's target?\",\n      \"settled_by\": \"goldfish\",\n      \"why_it_matters\": \"If the cause is timing, the turn-5 or turn-6 goal is out of reach for this list, and the honest target is turn 7. If it is the yard, the lever is keeping a binned fatty for Meren rather than spending it on a reanimation spell. That is a play choice, not a swap.\"\n    },\n    {\n      \"question\": \"The brief says the outlet-plus-fodder pair is drawn by T6 in 67% of games. goldfish_metrics.json's 'THE EXPERIENCE ENGINE drawn' target reads by_turn_6_rate 0.466 (assisted 0.579). Which figure does the 67% come from?\",\n      \"settled_by\": \"goldfish\",\n      \"why_it_matters\": \"At 47-58% the drawing gap is still real, and 'the gap is deaths, not drawing' is only half true. Both factors cap the goal row.\"\n    },\n    {\n      \"question\": \"Chatterfang, Squirrel General (add a 1/1 Squirrel on every token creation) is PARTIAL to the model, so try withheld its rows. On paper it adds roughly one death per token, which is the variable that binds. Is it worth teaching the model, or judging by play?\",\n      \"settled_by\": \"research-strategy\",\n      \"why_it_matters\": \"It is the one candidate I found that multiplies deaths per turn at three mana. No figure exists for it, and I have not checked whether it opens a two-card line with this 99.\"\n    }\n  ],\n  \"gaps\": [\n    \"Screened in try (10,000 paired games, cut Zulaport Cutthroat, a drain payoff that is not an outlet, fodder engine, removal or draw): Tendershoot Dryad (seen) experience 5+ by T6 14.2% -> 15.1%, +0.9 pts [+0.7, +1.1]; a 5+ drop via Meren by T6 1.7% -> 1.9%, +0.2 pts [+0.1, +0.2]; worse on killed by T10 (-0.7 pts [-0.9, -0.4]) and a 6+ drop out by T6 (-0.3 pts [-0.4, -0.1]). Evolution Sage (seen) 14.2% -> 14.6%, +0.4 pts [+0.3, +0.6]; via Meren 1.7% -> 1.7%, +0.0 [-0.0, +0.1]. Both are resolvable but small, and neither is a clear upgrade under the pilot's rule. The third screen (Chatterfang) was withheld as PARTIAL, so it has no reading.\",\n    \"No games are logged (deck-notes list is empty), so nothing at the table confirms or contradicts the goldfish's death rate. The goldfish has no opponents' removal, which helps Meren, and no chump attacks, which a real pilot uses for deaths.\",\n    \"The goldfish sacrifices only tokens. A pilot who sacrifices nontoken bodies that Meren will return gets more experience than the model reads, so 14.2% is a floor for skilled sequencing. How much higher is unmeasured.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:mulligans.engine-hands"
+        ],
+        "rules": [
+          "100"
+        ]
+      },
+      "added_at": "2026-11-23T13:22:38-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-010.json"
+    },
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "text": "CARD SCOUT 010 (deep) — self-sacrificing bodies, tokens that die on their own, creatures that die more than once. Deaths-per-card figures are arithmetic from card text. Combos checked against combo_details.json (2026-10-10) joined with the 99: none of the 15 forms any line; Sifter of Skulls and Venerated Stormsinger form 3-card lines and were left out. All 15 read \"seen\" by card-dossier on the body channel only; card-search shows no channel for their sacrifice/exploit/token text, so `try` would not price that ability.\n\nA. Self-sacrificing, MV<=3: Blood Pet {B} (free sac: add {B}; storable death, Meren returns at 1); Fume Spitter {B} (free sac: -1/-1 counter on target; one-sided). Same shape, not ranked: Death Cultist, Krosan Wayfarer, Shambling Shell (dredge 3), Morgue Thrull, Dawntreader Elk, Doomed/Apprentice Necromancer. Spore Frog (cut V23) and Haywire Mite (cut V17) noted only.\nB. Tokens that die on their own: Eyeless Watcher {3}{G} (two Scions on ETB, 2 deaths with mana back, 2 more per Meren return; also Kozilek's Predator, Nest Invader, Eldrazi Repurposer, Scion Summoner); Call the Scions {2}{G} (2 deaths, one-shot); Avenger of the Fallen {2}{B} (mobilize X = creature cards in yard, sacrificed at next end step; not live the turn it lands); Rot-Curse Rakshasa {1}{B} (decayed; Renew puts decayed on X of our creatures); Nightblade Brigade {2}{B} (mobilize 1, surveil 1). Not ranked: Catacomb Sifter, Malevolent Rumble, Grave Birthing.\nC. Dies more than once: Hangarback Walker {X}{X} (X=0 dies on entry for free, MV 0 so Meren returns it at any experience; Constrictor at X=1 leaves 2 Thopters); Caldaia Guardian {3}{G} (two Citizens on each 4+ death; blitz: dies on its own and draws); Nine-Lives Familiar {1}{B}{B} (returns itself up to eight times; needs an outlet). Not ranked: Synapse Necromage, Infernal Vessel, Deranged Hermit. With Constrictor, persist (Putrid Goblin) returns with two -1/-1 counters.\nD. Outlet that is also fodder: Chittering Witch {3}{B} (a Rat per opponent; {1}{B}, sac a creature: -2/-2). Not ranked: Lampad of Death's Vigil, Carrion Feeder.\nE. Dies on its own: Fell Stinger {2}{B} (exploit itself: draw 2, lose 2; Meren returns at 3); Sidisi, Undead Vizier {3}{B}{B} (exploit: tutor; Meren returns at 5); Phyrexian Dreadnought {1} (dies on entry unless 12 power sacrificed); Accursed Centaur {B} (ETB sacrifice a creature, itself if need be). Not ranked: Vulturous Aven, Qarsi Sadist, Minister of Pain, Hidden Horror, Mercenary Knight, Unscrupulous Contractor, Lord Skitter's Butcher, Crypt Lurker, Disciple of Bolas, Bone Shredder, Multani's Acolyte, Footsteps of the Goryo, Come Back Wrong, Wake the Dead, blitz bodies, Bloodghast, Teacher's Pest, Demonlord of Ashmouth.\n\nTop five for the thesis (fodder and outlet in one card, live the turn it lands): 1 Hangarback Walker, 2 Fell Stinger, 3 Eyeless Watcher, 4 Phyrexian Dreadnought, 5 Blood Pet. Near misses: Call the Scions, Rot-Curse Rakshasa, Sidisi.\nCurrent cards that serve this thesis least (not a cut recommendation): make no deaths themselves — Scavenging Ooze, Hapatra, Formidable Speaker, Twilight Diviner (keep: doubles entries); need a second piece — Ophiomancer, Scute Swarm, Bitterblossom; already the shape — Cankerbloom, Jadar.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-23T13:36:21-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/card-scout-010-deep.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "text": "INTEGRATED CREATURE DESIGN (strategist, study 010; argument (J), arithmetic (A); written before the goldfish read self-sacrifice text).\n\n1. THE COMPOUNDING LOOP. Meren's end-step check is on resolution; one card per end step. Today's engine makes about one death a turn. The new lever is deaths per Meren return, because the same card is re-bought every end step (A): Hangarback Walker, MV 0, comes back at 0 experience and dies at once (1 death, 2 with a Diviner copy); Wriggling Grub 3 deaths with an outlet; Eyeless Watcher itself plus 2 self-sacrificing Scions (3; 6 with a Diviner copy); Fell Stinger exploiting itself 1 death and draw 2; Grave Titan 3 bodies; Constrictor doubles every death. It is a ladder (J): the slot returns the highest-yield body within experience, switching to the fatty once experience reaches it. Stalls: the one return per end step, outlets for Grub/Dissenter, Diviner's one copy a turn, Constrictor as a single 2/3, singleton assembly (strategy:deckbuilding.redundancy-vs-tutors: fix by class size), life (Stinger, Bitterblossom, Dark Prophecy; Zulaport pays it back). Framework: strategy:aristocrats, strategy:conversion.entries-vs-deaths, strategy:deckbuilding.curve.\n\n2. THE ELEVEN AT MV 5+: KEEP Grave Titan (Meren and Reanimate target), Kokusho (Meren), Noxious Gearhulk (both), Cavalier of Night (Meren; its death returns MV<=3), Ghoulcaller Gisa (keep list), Hapatra (keep list), Sheoldred (Entomb/Reanimate target), Massacre Wurm (keeps the removal suite whole). FLAG Archon of Cruelty: Reanimate/Entomb/Fauna target only, never a Meren target (8 experience: median T10, never by T10 in 41%); recommend keeping, the cap is the pilot's call. TRIM Gray Merchant (no death value; others convert) and Tergrid (weakest fit; Game Changers 2 -> 1; costs the Grave Pact steal engine, needs a stack scenario before claimed).\n\n3. MV 1-4: top tier Woe Strider, Sakura-Tribe Elder, Pawn of Ulamog, Ozox, Stitcher's Supplier, Cankerbloom, Skeleton, Grist, Viscera Seer, Fiend Artisan, Yawgmoth, Twilight Diviner, Constrictor. Middle: Formidable Speaker, Satyr Wayfinder, Vile Entomber, Unshakable Tail, Fauna Shaman, Six, Jarad, Toph, Ophiomancer, Scute Swarm, Jadar. Weakest: Birds of Paradise and Llanowar Elves (mana only; keep one), Nyx Weaver (yard fill only); Zulaport kept (three-card line, life).\n\n4. TARGET DISTRIBUTION (41): MV0 1, MV1 4, MV2 11, MV3 10, MV4 6, MV5 3, MV6 4, MV7 1, MV8 1 (today 0/5/10/10/5/5/4/1/1). Free outlets hold at 9; bodies that die with no outlet 2 -> 5; starter class (free outlet or self-dying body) 11 -> 14, P(at least one in 10 cards) 71% -> 80% (A).\n\n5. SWAP SEQUENCE (one at a time, stop anywhere, NO CHANGE valid; none forms a line with the 99 in combo_details.json; no Game Changer; lands untouched):\n 1. Tergrid -> Hangarback Walker (starts Meren at experience 0 with no outlet; Game Changers 2 -> 1).\n 2. Gray Merchant -> Fell Stinger (exploit itself: draw 2 for 2 life, the weak draw axis; Meren returns it at 3).\n 3. Nyx Weaver -> Eyeless Watcher (MV4 return, two self-sacrificing Scions; loses two mills a turn).\n 4. Birds of Paradise -> Wriggling Grub (3 deaths per card with the 9 outlets; costs a mana source — check the Meren cast turn row first).\n 5. (only if the cap must be literal, not recommended) Archon of Cruelty -> Chatterfang.\n 6. (optional) Llanowar Elves -> Blood Pet; prefer NO CHANGE unless pair 4 tests clean.\nOpen: is the 14% vs 2.2% gap the yard or the end-step timing; /research-strategy on opening-hand density of engine starters.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats",
+          "strategy:conversion.entries-vs-deaths",
+          "strategy:deckbuilding.curve",
+          "strategy:deckbuilding.redundancy-vs-tutors"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-23T14:00:33-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-010-design.md"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "the-focus-is-experience-ramp-we-need-experience",
+  "facts": [
+    {
+      "id": "S-f1b07565-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-f1b07565-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "c9e7d41682c64e3c2192a3542a2acae94987d70b7d473f3dac429eadc27d0e0c",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-23T13:15:51-08:00",
+    "facts": 2
+  }
+}
