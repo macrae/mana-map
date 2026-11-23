@@ -21,11 +21,9 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [
       "CONTEXT.md"
@@ -1440,6 +1438,72 @@
   ],
   "studies": [
     {
+      "id": "004",
+      "question": "Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the army is fodder, and it punishes extra draws; which card comes out?",
+      "branch": null,
+      "file": "004-orcish-bowmasters-in-as-the-third-game-changer-a.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "strategist"
+      ],
+      "pilot_words": "eh... ok... forget it.. we only want clearly advantageous, obvious updates!",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Orcish Bowmasters"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "003",
+      "question": "Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder for a guaranteed death (experience, Grave Pact, Zulaport, Jarad) and Meren returns Braids; which card comes out?",
+      "branch": null,
+      "file": "003-braids-cabal-minion-in-as-the-third-game-changer.json",
+      "decision": "decline",
+      "decided_by": [
+        "pilot",
+        "strategist"
+      ],
+      "pilot_words": "yeah, I agree... then orcish bowmasters is the better option?",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Braids, Cabal Minion"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "002",
+      "question": "Survival of the Fittest in as the third Game Changer — discard a creature to tutor a creature bins the fatty we want in the yard; which card comes out? (the pilot: we can run up to 3 game changers)",
+      "branch": null,
+      "file": "002-survival-of-the-fittest-in-as-the-third-game-cha.json",
+      "decision": "decline",
+      "decided_by": [
+        "pilot",
+        "strategist"
+      ],
+      "pilot_words": "jfc I forgot it's a $400 card!!!! no, we can't survival of the fittest... we just can't",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Survival of the Fittest"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "001",
       "question": "the deck feels light on milling — the plan is to play cards from the graveyard primarily, so the yard must fill faster than casting creatures and them dying; optimize for filling the yard while keeping the deck's synergy and most powerful elements",
       "branch": null,
@@ -1452,7 +1516,7 @@
         "card-scout"
       ],
       "pilot_words": "approve, make the swap; next please (Satyr Wayfinder for Tendershoot Dryad, Six for Bone Splinters, Nyx Weaver for Savra) — no change on the Ooze, save the version",
-      "decided_at": null,
+      "decided_at": "2026-11-22",
       "opened": "2026-11-22",
       "swap": null,
       "goldfish_saw": null
@@ -1460,7 +1524,7 @@
   ],
   "handbook": {
     "list_sha": "48daf86b6629",
-    "list_version": null,
+    "list_version": 26,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -2022,10 +2086,8 @@
   },
   "next": [
     "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V26 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
