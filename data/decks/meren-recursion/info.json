@@ -21,11 +21,9 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -1442,10 +1440,16 @@
       "question": "the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for that to happen consistently, and how do we back into a solution",
       "branch": null,
       "file": "010-the-focus-is-experience-ramp-we-need-experience.json",
-      "decision": "open",
-      "decided_by": [],
-      "pilot_words": "",
-      "decided_at": null,
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "card-scout",
+        "deck-doctor",
+        "goldfish"
+      ],
+      "pilot_words": "i like it [Hangarback Walker for Tergrid] / approve, make the swap; next please [Fell Stinger for Gray Merchant] / I like eyeless watcher, but not for nyx weaver! — park it, next please / approve, make the swap; next please [Wriggling Grub for Birds of Paradise] / no change on both, save [Archon kept, Llanowar kept]",
+      "decided_at": "2026-11-23",
       "opened": "2026-11-23",
       "swap": null,
       "goldfish_saw": null
@@ -1643,7 +1647,7 @@
   ],
   "handbook": {
     "list_sha": "2d5005da9227",
-    "list_version": null,
+    "list_version": 31,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -2238,14 +2242,11 @@
     ]
   },
   "next": [
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V31 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "study 010 is open: the focus is experience ramp, we need experience counter ramp to land  — `manamap pilot study meren-recursion call 010 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×2, resolve-stack ×1"
   ],
