@@ -112,3 +112,25 @@ def test_a_list_against_itself_reads_exactly_zero_and_two_seeds_make_no_call(kee
         assert row["ci95_diff"] == [0.0, 0.0], row["measure"]
     other = diagnostic.run(SLUG, iterations=400, seed=8, quiet=True, keep_games=True)
     assert all(r["verdict"] == "noise" for r in net_change.compare_readings(a, other))
+
+
+def test_a_matrix_that_does_not_line_up_with_the_corpus_is_refused(monkeypatch):
+    """INDEX ALIGNMENT: row i of every embedding is card i of `cards.csv`. A matrix built
+    for another corpus ranks the WRONG cards with full confidence, so similarity refuses
+    to read it rather than answering — on a three-card synthetic corpus."""
+    import numpy as np
+    import pandas as pd
+    from manamap.pilot import similar_cards as sc
+    frame = pd.DataFrame({"name": ["Blood Artist", "Zulaport Cutthroat", "Sol Ring"]})
+    pool = {n: {"legal": True, "color_identity": set(), "game_changer": False, "edhrec_rank": 1,
+                "mana_cost": "", "cmc": 1, "type_line": "Creature"} for n in frame["name"]}
+    monkeypatch.setattr(sc, "load_frame", lambda: frame)
+    monkeypatch.setattr(sc, "load_pool", lambda: pool)
+    monkeypatch.setattr(sc, "space_matrix", lambda space=None: (np.eye(4, dtype=np.float32), "test space"))
+    with pytest.raises(SystemExit, match="index alignment broken"):
+        sc.similar(["Blood Artist"])
+    monkeypatch.setattr(sc, "space_matrix", lambda space=None: (np.eye(3, dtype=np.float32), "test space"))
+    monkeypatch.setattr(sc, "corpus_oracle", lambda: {})
+    monkeypatch.setattr(sc, "load_card_roles", lambda: {})
+    rows, meta = sc.similar(["Blood Artist"], limit=2)
+    assert meta["space"] == "test space" and {r["name"] for r in rows} <= {"Zulaport Cutthroat", "Sol Ring"}

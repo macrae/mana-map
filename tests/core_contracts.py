@@ -142,6 +142,9 @@ CORE = {
     "test_pilot_engine_graph.py::test_the_record_is_byte_identical_across_runs":
         "the computed engine is deterministic",
 
+    "test_core_keep_list_and_pairing.py::test_a_matrix_that_does_not_line_up_with_the_corpus_is_refused":
+        "index alignment: a matrix that does not line up with cards.csv is refused, never ranked",
+
     # ── the gates gate ───────────────────────────────────────────────────────
     "test_validators_actually_fail.py::test_a_validator_signals_failure_through_the_exit_code":
         "every validator fails through its exit code",
