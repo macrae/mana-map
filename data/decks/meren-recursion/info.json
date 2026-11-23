@@ -21,11 +21,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -116,8 +120,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 6,
-      "out": 6,
+      "add": 7,
+      "out": 7,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -469,7 +473,7 @@
         },
         {
           "name": "Victimize",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vile Entomber",
@@ -526,8 +530,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 19,
-      "out": 19,
+      "add": 20,
+      "out": 20,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -891,7 +895,7 @@
         },
         {
           "name": "Victimize",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Vile Entomber",
@@ -937,8 +941,8 @@
       "proposal": null,
       "base_version": 1,
       "size": 100,
-      "add": 70,
-      "out": 70,
+      "add": 69,
+      "out": 69,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -1002,7 +1006,7 @@
         },
         {
           "name": "Cauldron of Essence",
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Chrome Mox",
@@ -1436,6 +1440,28 @@
   ],
   "studies": [
     {
+      "id": "008",
+      "question": "Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Diviner copies) and drains 1 on every creature death; the pilot accepted its main-phase-only return; which card comes out?",
+      "branch": null,
+      "file": "008-cauldron-of-essence-in-doubles-creature-recursio.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Cauldron of Essence"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "007",
       "question": "artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, an incrementally better way to answer artifacts and enchantments",
       "branch": null,
@@ -1582,8 +1608,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "1afa16f6d92c",
-    "list_version": 28,
+    "list_sha": "c0ed49516ebb",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1602,10 +1628,10 @@
     "summary": {
       "excluded_commander_assumption": 0,
       "highest_bracket": 1,
-      "included": 4,
-      "infinite": 4,
+      "included": 5,
+      "infinite": 5,
       "near": 50,
-      "near_total": 245,
+      "near_total": 258,
       "two_card_infinite": 0
     },
     "source_timestamp": "2026-10-10T19:11:22.235510+00:00",
@@ -1687,6 +1713,28 @@
         "bracket": 1,
         "popularity": 962,
         "assumes_other_commander": false
+      },
+      {
+        "id": "4279-4314-7452--216",
+        "cards": [
+          "Yawgmoth, Thran Physician",
+          "Pawn of Ulamog",
+          "Cauldron of Essence"
+        ],
+        "produces": [
+          "Infinite card draw",
+          "Infinite draw triggers",
+          "Near-infinite creature ETB",
+          "Near-infinite creature LTB",
+          "Near-infinite creature sacrifice triggers",
+          "Near-infinite death triggers",
+          "Near-infinite lifegain triggers",
+          "Near-infinite lifeloss"
+        ],
+        "infinite": true,
+        "bracket": 1,
+        "popularity": 487,
+        "assumes_other_commander": false
       }
     ]
   },
@@ -1712,7 +1760,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 92,
+          "value": 93,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1730,7 +1778,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.164,
+          "value": 4.171,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1738,7 +1786,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 43,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -1884,7 +1932,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 80,
+          "value": 81,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -1895,15 +1943,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.814,
-            "2": 2.23,
-            "3": 3.231,
-            "4": 4.086,
-            "5": 4.791,
-            "6": 5.47,
-            "7": 6.069,
+            "10": 7.808,
+            "2": 2.222,
+            "3": 3.223,
+            "4": 4.083,
+            "5": 4.792,
+            "6": 5.473,
+            "7": 6.067,
             "8": 6.645,
-            "9": 7.224
+            "9": 7.22
           },
           "tier": "data",
           "weight": "detail",
@@ -1914,15 +1962,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.529,
+            "10": 0.528,
             "2": 0.997,
-            "3": 0.913,
-            "4": 0.792,
-            "5": 0.681,
-            "6": 0.607,
-            "7": 0.549,
-            "8": 0.524,
-            "9": 0.521
+            "3": 0.916,
+            "4": 0.803,
+            "5": 0.685,
+            "6": 0.599,
+            "7": 0.544,
+            "8": 0.526,
+            "9": 0.514
           },
           "tier": "data",
           "weight": "detail",
@@ -1932,16 +1980,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.166,
-            "10": 14.332,
-            "2": 0.719,
-            "3": 1.332,
-            "4": 1.782,
-            "5": 3.137,
-            "6": 4.921,
-            "7": 6.93,
+            "1": 0.167,
+            "10": 14.373,
+            "2": 0.727,
+            "3": 1.299,
+            "4": 1.724,
+            "5": 3.055,
+            "6": 4.855,
+            "7": 6.902,
             "8": 9.188,
-            "9": 11.643
+            "9": 11.676
           },
           "tier": "data",
           "weight": "detail",
@@ -1951,14 +1999,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 318,
-            "1": 1565,
-            "2": 2857,
-            "3": 2981,
-            "4": 1617,
-            "5": 564,
-            "6": 90,
-            "7": 8
+            "0": 305,
+            "1": 1512,
+            "2": 2886,
+            "3": 2932,
+            "4": 1700,
+            "5": 560,
+            "6": 101,
+            "7": 4
           },
           "tier": "data",
           "weight": "detail",
@@ -1967,12 +2015,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1850,
-            "5": 4,
-            "6": 95,
-            "7": 1071,
-            "8": 2667,
-            "9": 3212
+            "10": 1987,
+            "5": 2,
+            "6": 102,
+            "7": 1041,
+            "8": 2590,
+            "9": 3275
           },
           "tier": "data",
           "weight": "detail",
@@ -1988,12 +2036,12 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.164,
-    "commander_cast_by_turn_6_pct": 92,
+    "commander_mean_cast_turn": 4.171,
+    "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 43
+        "by_turn_6_pct": 44
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
@@ -2037,19 +2085,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.634,
+      "mean_kill_turn": 8.667,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 38,
+      "kill_by_turn_8_pct": 37,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 11,
+      "no_kill_by_max_turn_pct": 10,
       "kill_turn_histogram": {
-        "10": 1850,
-        "5": 4,
-        "6": 95,
-        "7": 1071,
-        "8": 2667,
-        "9": 3212
+        "10": 1987,
+        "5": 2,
+        "6": 102,
+        "7": 1041,
+        "8": 2590,
+        "9": 3275
       }
     }
   },
@@ -2144,11 +2192,14 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V28 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 18 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 19 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1"
   ],

@@ -1,0 +1,130 @@
+{
+  "id": "008",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Diviner copies) and drains 1 on every creature death; the pilot accepted its main-phase-only return; which card comes out?",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Cauldron of Essence"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Cauldron of Essence"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "slice": "study 008 facts; deck-audit; deck-facts; the pilot's acceptance of the main-phase return",
+      "text": "# deck-doctor · prescribe · meren-recursion · study 008\n\nQuestion: Cauldron of Essence goes in. Which one card comes out?\nDiagnosed list: decklist_sha256 1afa16f6d92ca39ef338dc76ac5622779ff4b8ef7aef4a2209f5aa25e0a9bce0 (V28).\n\n## Call: Victimize out, Cauldron of Essence in (contested)\n\n## Reading\n- Cauldron is a sorcery-speed \"sacrifice a creature, return a creature\". It is the same job as Victimize, and Cauldron does it every turn instead of once.\n- Meren returns creature cards only. A spent reanimation spell stays spent. Cauldron is a permanent, so it keeps working.\n- Victimize's one unique feature is returning two bodies at once. Agadeem's Awakening also does a multi-body burst, so the deck keeps one burst lane.\n- No log entries exist (`deck-notes list`: none). This is judgment plus the goldfish, not table evidence.\n\n## Combo / bracket check\n- `combo_details.json` by_card \"Cauldron of Essence\": 101 lines. 26 use 3 cards, 75 use 4, and none uses 2.\n- Of those, the only line wholly in the 99 plus the commander is Yawgmoth + Pawn of Ulamog + Cauldron. It mirrors the existing Yawgmoth + Zulaport + Pawn line.\n- No two-card infinite exists. Cauldron is not a Game Changer, so the floor stays 3. Spellbook data is a candidate list, not a stack: \"needs a stack scenario\".\n- There are no stacks for this deck, so every cut below has `orphans_stack: []`.\n\n## Ranked cuts\n1. **Victimize**: contested. It is the most direct overlap.\n   - Cost: the Buried Alive → Victimize turn-four play that puts two fatties in at once. One of the five on-demand reanimation effects becomes a slower one: Cauldron is cast turn 3 and first activated turn 4, 6 mana in total.\n   - Goldfish (`try`, 10,000 paired games, both cards seen): board power @T6 9.01→8.82 [-0.22,-0.17]; a 6+ drop by T6 15.7%→15.3% [-0.6,-0.1]; turns saved 0.772→0.754 [-0.028,-0.007]; stall +0.9 pts [+0.7,+1.1]; killed by T6 +0.1 pts [+0.0,+0.2].\n   - These are the smallest big-body losses of the three reanimation cuts I screened. Necromancy reads -0.9 pts on the 6+ drop, and Animate Dead reads -1.0 pts and worse on 9 rows.\n2. **The Meathook Massacre**: painful.\n   - Once Cauldron is in, Meathook is the third death-drain card, alongside Zulaport and Cauldron.\n   - Cost: it is the deck's X-sweeper, and CONTEXT's \"Sweep and survive\" is built on it. The sweepers axis goes 2→1, leaving Golgari Charm's -1/-1. That is still at the target low of 1.\n   - The goldfish reads this cut as better (turns saved +0.070, experience @T7 +0.12), but it cannot see a sweeper because it has no opposing creatures. That row is blind on Meathook's main job and decides nothing. A $24 card.\n3. **Necromancy**: painful.\n   - Cost: the only instant-speed reanimation. It answers graveyard hate in response and can take a creature from an opponent's yard.\n   - Goldfish: worse on 6 rows, including a 6+ drop by T6 -0.9 pts [-1.1,-0.7].\n\nNot ranked:\n- Animate Dead: the cheapest reanimation after Reanimate, and the goldfish's worst cut.\n- Golgari Charm: protection and enchantment hate per V24. The goldfish is blind to it.\n- Blasting Station and Dark Prophecy: the pilot's V23 \"outlets that kill\" and draw. Card-advantage is under target at 2.\n- Zulaport Cutthroat: a 2-drop, so the curve rule keeps it.\n\n## Caveat the pilot should know\nTwilight Diviner copies only \"once each turn\". Cauldron (main phase) and Meren (end step) return on the same turn, so they compete for that one copy rather than each getting one. Cauldron gets the Diviner copy only on a turn when Meren's return is not copied.\n\n## Open questions\n- Lift a Yawgmoth + Pawn + Cauldron board to /resolve-stack before calling it a combo.\n- Logged games should show whether losing Victimize's two-body turn four costs more than a repeatable lane gains.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "101"
+        ]
+      },
+      "added_at": "2026-11-22T23:27:18-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-008.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "cauldron-of-essence-in-doubles-creature-recursio",
+  "facts": [
+    {
+      "id": "S-5afe71c8-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-5afe71c8-02",
+      "kind": "oracle",
+      "text": "Artifact · {1}{B}{G} — Whenever a creature you control dies, each opponent loses 1 life and you gain 1 life. {1}{B}{G}, {T}, Sacrifice a creature: Return target creature card from your graveyard to the battlefield. Activate only as a sorcery.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Cauldron of Essence"
+    },
+    {
+      "id": "S-5afe71c8-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Jarad, Golgari Lich Lord (0.94), Victimize (0.91), Cavalier of Night (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Cauldron of Essence",
+      "neighbours": [
+        {
+          "name": "Jarad, Golgari Lich Lord",
+          "score": 0.9437
+        },
+        {
+          "name": "Victimize",
+          "score": 0.9097
+        },
+        {
+          "name": "Cavalier of Night",
+          "score": 0.9019
+        }
+      ]
+    },
+    {
+      "id": "S-5afe71c8-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Cauldron of Essence",
+      "state": "seen",
+      "channels": [
+        "recursion",
+        "sacrifice"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Cauldron of Essence"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Cauldron of Essence",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Cauldron of Essence",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Cauldron of Essence",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "1afa16f6d92ca39ef338dc76ac5622779ff4b8ef7aef4a2209f5aa25e0a9bce0",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T23:23:26-08:00",
+    "facts": 4
+  },
+  "decided_on_decklist_sha256": "c0ed49516ebb3f875512479e50c653c1bc41ff9c8f100e9db9a0d4cc81efdcce"
+}
