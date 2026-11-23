@@ -345,21 +345,33 @@ def test_constellation_is_read_on_both_sides():
     assert coinsmith["gain_per_enchantment"] == 1
 
 
-def test_a_deck_that_has_not_opted_in_is_byte_identical():
-    """THE CONTROL, and the only reason this change was safe to land.
+_OPT_IN_FLAGS = ("model_treasures", "model_combat", "model_draw", "model_sacrifice",
+                 "model_drain", "model_discard", "model_colors", "model_hand_limit")
 
-    `model_drain` is opt-in like `model_combat` and `model_draw`. Re-running
-    every tracked deck after this shipped moved exactly one line in each —
-    `meta.model_version` — and no figure at all.
-    """
+
+@pytest.mark.parametrize("flag", _OPT_IN_FLAGS)
+def test_every_model_channel_is_off_unless_a_deck_opts_in(flag):
+    """THE CONTROL every optional channel lands under: a deck that does not opt in
+    plays exactly the game it played before the channel existed. Driven, not read:
+    a seeded game with the flag omitted is byte-identical to one with it set False,
+    on a deck holding a card each channel would read. (It read the simulator's SOURCE
+    for "model_drain=False" until 2026-11-22 — a test of a string, one channel wide.)"""
+    import random
     from manamap.pilot import goldfish
-
-    import inspect
-    src = inspect.getsource(goldfish.simulate_once)
-    assert "model_drain=False" in src, "the flag must default OFF"
-    body = src[src.index("if model_drain:"):]
-    assert body, "the drain step must be guarded by the flag"
-
+    land = {"name": "Swamp", "oracle_text": "", "cmc": 0, "type_line": "Basic Land — Swamp", "quantity": 34}
+    texts = ["At the beginning of your upkeep, create a Treasure token.",
+             "Whenever another creature you control dies, each opponent loses 1 life and you gain 1 life.",
+             "When this creature enters, draw a card.",
+             "Sacrifice a creature: Scry 1.",
+             "Flying"]
+    cards = [land] + [{"name": f"C{i}", "oracle_text": t, "cmc": 2, "type_line": "Creature — Vampire",
+                       "power": "2", "toughness": "2", "quantity": 13} for i, t in enumerate(texts)]
+    library = []
+    for c in cards:
+        library.extend([goldfish.classify(c)] * c["quantity"])
+    default = goldfish.simulate_once(random.Random(7), list(library), 4, [], 10)
+    off = goldfish.simulate_once(random.Random(7), list(library), 4, [], 10, **{flag: False})
+    assert default == off, f"{flag} changes a game it was not asked into"
 
 def test_X_is_a_real_count_and_the_subject_set_is_closed():
     """SCORING X AS 1 MAKES A SCALING CARD UNABLE TO SCALE.

@@ -29,7 +29,7 @@ CORE = {
         "the same seed plays the same game — every paired read rests on it",
     "test_pilot_goldfish.py::test_different_seeds_differ":
         "a seed is a real input, not a constant",
-    "test_pilot_goldfish.py::test_a_deck_that_has_not_opted_in_is_byte_identical":
+    "test_pilot_goldfish.py::test_every_model_channel_is_off_unless_a_deck_opts_in":
         "a channel a deck did not declare changes nothing about its games",
     "test_pilot_goldfish.py::test_a_death_rate_without_a_source_is_refused":
         "an authored rate must name where it came from",
