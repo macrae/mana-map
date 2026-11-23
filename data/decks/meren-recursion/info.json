@@ -21,11 +21,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -116,8 +120,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 7,
-      "out": 7,
+      "add": 8,
+      "out": 8,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -321,7 +325,7 @@
         },
         {
           "name": "Necromancy",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Noxious Gearhulk",
@@ -526,8 +530,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 20,
-      "out": 20,
+      "add": 21,
+      "out": 21,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -751,7 +755,7 @@
         },
         {
           "name": "Necromancy",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Noxious Gearhulk",
@@ -1436,6 +1440,29 @@
   ],
   "studies": [
     {
+      "id": "009",
+      "question": "Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning the deck's yard fill into card draw (the short resource); which card comes out?",
+      "branch": null,
+      "file": "009-unshakable-tail-in-surveil-on-entering-and-every.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "card-scout",
+        "deck-doctor"
+      ],
+      "pilot_words": "approve, make the swap and save",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Unshakable Tail"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "008",
       "question": "Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Diviner copies) and drains 1 on every creature death; the pilot accepted its main-phase-only return; which card comes out?",
       "branch": null,
@@ -1604,8 +1631,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "c0ed49516ebb",
-    "list_version": 29,
+    "list_sha": "c9e7d41682c6",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1756,7 +1783,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 93,
+          "value": 92,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1774,7 +1801,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.171,
+          "value": 4.151,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1782,7 +1809,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one": {
-          "value": 44,
+          "value": 43,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one' by turn six",
@@ -1790,7 +1817,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone": {
-          "value": 25,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone\" by turn six",
@@ -1838,7 +1865,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 25,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1854,7 +1881,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or ability that answers a permanent": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or ability that answers a permanent' by turn six",
@@ -1862,7 +1889,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 12,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -1928,7 +1955,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 81,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -1939,15 +1966,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.808,
-            "2": 2.222,
-            "3": 3.223,
-            "4": 4.083,
-            "5": 4.792,
-            "6": 5.473,
-            "7": 6.067,
-            "8": 6.645,
-            "9": 7.22
+            "10": 7.785,
+            "2": 2.233,
+            "3": 3.233,
+            "4": 4.089,
+            "5": 4.793,
+            "6": 5.458,
+            "7": 6.059,
+            "8": 6.635,
+            "9": 7.203
           },
           "tier": "data",
           "weight": "detail",
@@ -1958,14 +1985,14 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.528,
+            "10": 0.522,
             "2": 0.997,
-            "3": 0.916,
-            "4": 0.803,
-            "5": 0.685,
-            "6": 0.599,
-            "7": 0.544,
-            "8": 0.526,
+            "3": 0.91,
+            "4": 0.798,
+            "5": 0.681,
+            "6": 0.592,
+            "7": 0.549,
+            "8": 0.524,
             "9": 0.514
           },
           "tier": "data",
@@ -1976,16 +2003,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.167,
-            "10": 14.373,
-            "2": 0.727,
-            "3": 1.299,
-            "4": 1.724,
-            "5": 3.055,
-            "6": 4.855,
-            "7": 6.902,
-            "8": 9.188,
-            "9": 11.676
+            "1": 0.172,
+            "10": 14.625,
+            "2": 0.733,
+            "3": 1.317,
+            "4": 1.752,
+            "5": 3.106,
+            "6": 4.92,
+            "7": 7.027,
+            "8": 9.373,
+            "9": 11.896
           },
           "tier": "data",
           "weight": "detail",
@@ -1995,14 +2022,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 305,
-            "1": 1512,
-            "2": 2886,
-            "3": 2932,
-            "4": 1700,
-            "5": 560,
-            "6": 101,
-            "7": 4
+            "0": 301,
+            "1": 1541,
+            "2": 2895,
+            "3": 2919,
+            "4": 1687,
+            "5": 554,
+            "6": 94,
+            "7": 9
           },
           "tier": "data",
           "weight": "detail",
@@ -2011,12 +2038,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1987,
+            "10": 1847,
             "5": 2,
-            "6": 102,
-            "7": 1041,
-            "8": 2590,
-            "9": 3275
+            "6": 89,
+            "7": 1084,
+            "8": 2670,
+            "9": 3355
           },
           "tier": "data",
           "weight": "detail",
@@ -2032,16 +2059,16 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.171,
-    "commander_cast_by_turn_6_pct": 93,
+    "commander_mean_cast_turn": 4.151,
+    "commander_cast_by_turn_6_pct": 92,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 43
       },
       {
         "label": "A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 24
       },
       {
         "label": "A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically",
@@ -2065,7 +2092,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 24
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2073,27 +2100,27 @@
       },
       {
         "label": "REMOVAL drawn — a spell or ability that answers a permanent",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 12
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.667,
+      "mean_kill_turn": 8.639,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 37,
+      "kill_by_turn_8_pct": 38,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 10,
       "kill_turn_histogram": {
-        "10": 1987,
+        "10": 1847,
         "5": 2,
-        "6": 102,
-        "7": 1041,
-        "8": 2590,
-        "9": 3275
+        "6": 89,
+        "7": 1084,
+        "8": 2670,
+        "9": 3355
       }
     }
   },
@@ -2188,10 +2215,13 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V29 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 19 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 20 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1"

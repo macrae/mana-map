@@ -1,0 +1,131 @@
+{
+  "id": "009",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning the deck's yard fill into card draw (the short resource); which card comes out?",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Unshakable Tail"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Unshakable Tail"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "slice": "study 009 facts; deck-audit; deck-facts",
+      "text": "# deck-doctor · prescribe · meren-recursion · study 009\n\nQuestion: Unshakable Tail goes in (approved in principle). Which one card comes out?\nDiagnosed list: decklist_sha256 c0ed49516ebb3f875512479e50c653c1bc41ff9c8f100e9db9a0d4cc81efdcce (V29).\n\n## Call: Necromancy out, Unshakable Tail in (contested)\n\n`try meren-recursion --out \"Necromancy\" --in \"Unshakable Tail\"`. Keep list: clear.\n\n## Reading\n- The audit's card-advantage axis reads **2** (Dark Prophecy, Skullclamp) against a target low of 10. Quote (strategy:deckbuilding.ratios): \"36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes\".\n  - The audit's probe note lists Archon of Cruelty, Festering Thicket, Nurturing Peatland and Yawgmoth as draw the taxonomy did not count. Sylvan Library has no role entry. So the true count is higher than 2, but draw is still the short axis.\n- Tail draws off mill events the deck already makes. Its investigate fires on \"one or more\" creature cards milled, so it makes one Clue per event, not one per card. The repeating sources:\n  - Nyx Weaver mills 2 every upkeep.\n  - Six mills 3 every time it attacks.\n  - Satyr Wayfinder and Stitcher's Supplier mill again on every Meren return.\n  - Tail's own upkeep surveil, and Twilight Diviner's.\n  - Entomb, Buried Alive and Vile Entomber count when they bin a creature.\n- Tail also returns itself to hand for {2} plus a Clue. That makes it fodder that comes back without Meren's one return a turn.\n- No log entries exist (`deck-notes list`: none; no log_annotations.json). This is judgment on the audit axis, not table evidence. log_entries_read: none.\n\n## Combo / bracket check\n- `combo_details.json` by_card \"Unshakable Tail\" has 7 lines, all 4-card. Every one needs 3 cards that are not in the 99 (Arcbound Reclaimer, Golbez, Sarinth Steelseeker and others).\n- No two-card infinite. deck-facts still reads `two_card_infinites: 0`, with 5 contained 3-card lines, none of which touches Tail or Necromancy.\n- Tail is not a Game Changer. The Game Changers stay Demonic Tutor and Tergrid, so the floor stays 3.\n- There are no stacks for this deck, so every cut below has `orphans_stack: []`.\n\n## Ranked cuts\n1. **Necromancy** (PICK): contested.\n   - Why: after Cauldron (V29), it is one of five on-demand reanimation lanes: Reanimate, Animate Dead, Necromancy, Cauldron, Agadeem's Awakening. Meren and Sheoldred are on top of those.\n   - Animate Dead and Reanimate also take from any graveyard. Necromancy's only unique feature is flash. A creature it returns at instant speed is sacrificed at cleanup, which is still a death for Meren.\n   - Cost of cutting: the instant-speed answer to graveyard hate in response, and the end-of-turn Kokusho/Archon blink. It is a 3-drop out for a 3-drop in, so the curve is unchanged and the 1–4 creature count goes up by one (40 → 41 creatures).\n   - Goldfish (10,000 paired games, both cards seen): a trade.\n     - Worse: a 6+ drop by T6 14.9%→12.6% [-2.6,-2.0]; turns saved on big bodies 0.754→0.657 [-0.110,-0.085]; stall +1.1 pts [+0.8,+1.3].\n     - Better: killed by T10 +0.5 pts [+0.3,+0.8]; board power @T6 +0.06 [+0.03,+0.08].\n     - Read with care: extra cards by T8 *falls* (1.42→1.36). For a card whose point is Clues, that suggests the model is not pricing investigate-on-mill. The goldfish is blind on the axis this swap is for.\n   - In 008 I ranked Necromancy painful, against Victimize. With Victimize gone and Cauldron in, it is now the most redundant reanimation slot.\n2. **Gray Merchant of Asphodel**: painful.\n   - Why: threat-density reads 9 against a floor of 3. Gary is one of nine finishers, alongside Kokusho, Zulaport, Meathook, Cauldron, Jarad, Massacre Wurm, Sheoldred and Tergrid.\n   - Cost of cutting: a drain Meren re-buys at 5 experience (V18 brought it in for exactly that). The goldfish reads the cut as better on 6 rows and worse on 0, but it measures damage against one seat. It undercounts a drain that hits each opponent, so that row does not decide.\n3. **Blasting Station**: painful.\n   - Why: a noncreature 3-drop. The goldfish reads the cut as better on 5 rows and worse on 0 (killed by T10 +1.9 pts [+1.6,+2.2]).\n   - Cost of cutting: the pilot's V23 \"outlet that kills\". Besides Yawgmoth's counters, it is one of two outlets that kill a creature. The goldfish has no opposing creatures, so it cannot see that job. Its rows are blind on the reason the card is in the deck.\n\nNot ranked:\n- Buried Alive: Tail's fuel, and the goldfish's worst cut (a 6+ drop by T6 -4.6 pts).\n- Fauna Shaman: worse on 8 rows, 0 better.\n- Stitcher's Supplier, Entomb, Vile Entomber: Tail's fuel.\n- Ozox: in 2 of the 5 contained combo lines.\n- Dark Prophecy, Skullclamp, Sylvan Library: the draw Tail is joining.\n- Ramp (axis 9 vs 10–12).\n- Heroic Intervention, Tamiyo's Safekeeping, Golgari Charm: protection reads 2 vs 5–7, and Heroic Intervention is invisible to the goldfish.\n\n## Verdict\nThe swap is advantageous. A redundant one-shot reanimation spell becomes a repeatable draw engine on the deck's shortest axis, and the deck already makes the mill events that fuel it. The call rests on the audit axis and the oracle text, not the goldfish, which appears blind to Tail's main job.\n\n## Open questions\n- Does the goldfish price \"whenever one or more creature cards are put into your graveyard from your library, investigate\"? (settled_by: goldfish model work; check `model-coverage`)\n- How many Clues per game does it actually make? First logged games should count them. (settled_by: the log)\n\n## Gaps\n- No captain's-log entries. Colour sources stay B −1 against target, before and after.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.ratios"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T23:51:48-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-009.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "card-scout",
+      "deck-doctor"
+    ],
+    "pilot_words": "approve, make the swap and save",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "unshakable-tail-in-surveil-on-entering-and-every",
+  "facts": [
+    {
+      "id": "S-38704766-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-38704766-02",
+      "kind": "oracle",
+      "text": "Creature — Zombie Detective · {2}{B} — When this creature enters and at the beginning of your upkeep, surveil 1. Whenever one or more creature cards are put into your graveyard from your library, investigate. (Create a Clue token. It's an artifact with \"{2}, Sacrifice this token: Draw a card.\") {2}, Sacrifice a Clue: Return this card fro",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Unshakable Tail"
+    },
+    {
+      "id": "S-38704766-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Woe Strider (0.93), Cauldron of Essence (0.90), Phyrexian Altar (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Unshakable Tail",
+      "neighbours": [
+        {
+          "name": "Woe Strider",
+          "score": 0.9318
+        },
+        {
+          "name": "Cauldron of Essence",
+          "score": 0.9048
+        },
+        {
+          "name": "Phyrexian Altar",
+          "score": 0.9023
+        }
+      ]
+    },
+    {
+      "id": "S-38704766-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Unshakable Tail",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "sacrifice"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Unshakable Tail"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Unshakable Tail",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Unshakable Tail",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Unshakable Tail",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "c0ed49516ebb3f875512479e50c653c1bc41ff9c8f100e9db9a0d4cc81efdcce",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T23:47:05-08:00",
+    "facts": 4
+  },
+  "decided_on_decklist_sha256": "c9e7d41682c64e3c2192a3542a2acae94987d70b7d473f3dac429eadc27d0e0c"
+}
