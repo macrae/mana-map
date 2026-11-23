@@ -21,11 +21,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -116,8 +120,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 4,
-      "out": 4,
+      "add": 6,
+      "out": 6,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -397,7 +401,7 @@
         },
         {
           "name": "Skyfisher Spider",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Sol Ring",
@@ -457,7 +461,7 @@
         },
         {
           "name": "Unmarked Grave",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Urborg, Tomb of Yawgmoth",
@@ -526,8 +530,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 18,
-      "out": 18,
+      "add": 19,
+      "out": 19,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -875,7 +879,7 @@
         },
         {
           "name": "Unmarked Grave",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Urborg, Tomb of Yawgmoth",
@@ -1436,6 +1440,45 @@
   ],
   "studies": [
     {
+      "id": "007",
+      "question": "artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, an incrementally better way to answer artifacts and enchantments",
+      "branch": null,
+      "file": "007-artifact-enchantment-removal-back-in-an-optimal.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "card-scout",
+        "deck-doctor"
+      ],
+      "pilot_words": "cankerbloom is amazing in this deck!!!! — approve, make the swap and save",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": null,
+      "goldfish_saw": null
+    },
+    {
+      "id": "006",
+      "question": "Twilight Diviner in — copies a creature entering from the graveyard once each turn (Meren's end-step return, Reanimate, retrace), surveil 2 on entering; which card comes out, keeping the 1-4 drops and token makers",
+      "branch": null,
+      "file": "006-twilight-diviner-in-copies-a-creature-entering-f.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "I approve... and let's open a search after for adding artifact/enchantment removal in an optimal way post-this update and optimization",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Twilight Diviner"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "005",
       "question": "Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes out, mindful of the creature curve and how fast Meren gets experience — keep the 1-4 drops and token makers that fill early turns",
       "branch": null,
@@ -1543,8 +1586,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "2aae8b5cbb02",
-    "list_version": 27,
+    "list_sha": "1afa16f6d92c",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1673,7 +1716,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 93,
+          "value": 92,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1691,7 +1734,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.165,
+          "value": 4.164,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1755,7 +1798,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 24,
+          "value": 25,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1779,7 +1822,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 14,
+          "value": 13,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -1845,7 +1888,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 81,
+          "value": 80,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -1856,15 +1899,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.878,
-            "2": 2.231,
-            "3": 3.226,
-            "4": 4.083,
-            "5": 4.799,
-            "6": 5.486,
-            "7": 6.091,
-            "8": 6.678,
-            "9": 7.268
+            "10": 7.814,
+            "2": 2.23,
+            "3": 3.231,
+            "4": 4.086,
+            "5": 4.791,
+            "6": 5.47,
+            "7": 6.069,
+            "8": 6.645,
+            "9": 7.224
           },
           "tier": "data",
           "weight": "detail",
@@ -1875,15 +1918,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.541,
+            "10": 0.529,
             "2": 0.997,
-            "3": 0.912,
-            "4": 0.8,
-            "5": 0.691,
-            "6": 0.613,
-            "7": 0.553,
-            "8": 0.529,
-            "9": 0.53
+            "3": 0.913,
+            "4": 0.792,
+            "5": 0.681,
+            "6": 0.607,
+            "7": 0.549,
+            "8": 0.524,
+            "9": 0.521
           },
           "tier": "data",
           "weight": "detail",
@@ -1893,16 +1936,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.164,
-            "10": 13.868,
-            "2": 0.676,
-            "3": 1.267,
-            "4": 1.67,
-            "5": 2.926,
-            "6": 4.596,
-            "7": 6.545,
-            "8": 8.736,
-            "9": 11.181
+            "1": 0.166,
+            "10": 14.332,
+            "2": 0.719,
+            "3": 1.332,
+            "4": 1.782,
+            "5": 3.137,
+            "6": 4.921,
+            "7": 6.93,
+            "8": 9.188,
+            "9": 11.643
           },
           "tier": "data",
           "weight": "detail",
@@ -1912,14 +1955,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 338,
-            "1": 1476,
-            "2": 2853,
-            "3": 2963,
-            "4": 1687,
-            "5": 594,
-            "6": 83,
-            "7": 6
+            "0": 318,
+            "1": 1565,
+            "2": 2857,
+            "3": 2981,
+            "4": 1617,
+            "5": 564,
+            "6": 90,
+            "7": 8
           },
           "tier": "data",
           "weight": "detail",
@@ -1928,12 +1971,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2005,
-            "5": 2,
-            "6": 97,
-            "7": 1045,
-            "8": 2396,
-            "9": 3198
+            "10": 1850,
+            "5": 4,
+            "6": 95,
+            "7": 1071,
+            "8": 2667,
+            "9": 3212
           },
           "tier": "data",
           "weight": "detail",
@@ -1949,8 +1992,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.165,
-    "commander_cast_by_turn_6_pct": 93,
+    "commander_mean_cast_turn": 4.164,
+    "commander_cast_by_turn_6_pct": 92,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one",
@@ -1982,7 +2025,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 25
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -1994,23 +2037,23 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 14
+        "by_turn_6_pct": 13
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.682,
+      "mean_kill_turn": 8.634,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 35,
+      "kill_by_turn_8_pct": 38,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 13,
+      "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 2005,
-        "5": 2,
-        "6": 97,
-        "7": 1045,
-        "8": 2396,
-        "9": 3198
+        "10": 1850,
+        "5": 4,
+        "6": 95,
+        "7": 1071,
+        "8": 2667,
+        "9": 3212
       }
     }
   },
@@ -2105,10 +2148,13 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V27 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 17 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 18 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1"

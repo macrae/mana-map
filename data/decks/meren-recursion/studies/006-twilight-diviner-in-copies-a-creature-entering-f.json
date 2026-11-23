@@ -1,0 +1,127 @@
+{
+  "id": "006",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Twilight Diviner in — copies a creature entering from the graveyard once each turn (Meren's end-step return, Reanimate, retrace), surveil 2 on entering; which card comes out, keeping the 1-4 drops and token makers",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Twilight Diviner"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Twilight Diviner"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "slice": "study 006 facts; deck-audit; deck-facts; the pilot's curve rule",
+      "text": "# deck-doctor — MODE prescribe — study 006: Twilight Diviner in, which ONE card out?\n\nDeck: meren-recursion, V27, 35 lands (stays 35; no land is touched). No games logged (`deck-notes list` is empty), so `log_entries_read` is []. The captain's log can't speak to this; the Deck Context and the audit decide.\n\n## Reading\n\nDiviner multiplies the end-step loop. Any creature that comes back from the yard on our turn makes a token copy, once per turn. That covers Meren's return, Reanimate, Animate Dead, Necromancy, Victimize, Six's retrace and Reassembling Skeleton. The copy brings a second enter trigger from Gray Merchant, Cavalier, Gearhulk, Archon, Hapatra or Satyr Wayfinder. So the cut should be a card that *ends* a loop turn on its own and that the deck covers elsewhere. It should not be a reanimation spell or a yard-loader, because those are the cards that feed Diviner its triggers.\n\n## Ranked cuts\n\n1. **Skyfisher Spider (PICK)**: contested\n   - why: It's a 4-mana value body whose one job is \"sacrifice another creature, destroy a nonland permanent\". The deck has 16 creature answers (audit `interaction-breadth` by_class: creature 16, artifact 3, enchantment 4, graveyard 1, land 1; 5 classes answered, target 5). Only its artifact and enchantment coverage is scarce. Diviner is cheaper by one (Meren returns it from 3 counters, not 4), surveils 2 on every return, and turns each Meren return of Cavalier, Gearhulk, Hapatra or Archon into a second removal trigger. So the deck's repeatable removal goes *up* whenever Diviner is out with a fatty in the yard.\n   - cost_of_cutting: The artifact answers fall from 3 to 2: Assassin's Trophy and Boseiju, both one-shot. The enchantment answers fall from 4 to 3: Trophy, Boseiju and Golgari Charm. The class stays covered, but the deck loses its only answer to an artifact or enchantment that sits on a body Meren can re-buy. Interaction drops from 18 to 17 against a target of 8. The death-trigger lifegain goes too. The goldfish can't see removal, so its row (5 better, 0 worse, 10 no call; killed by T10 +0.5 pts [+0.4, +0.7]) says nothing about this cost and did not decide the call.\n   - orphans_stack: []. The deck has no checker-passed stacks, and Skyfisher is in none of the 4 known combo lines.\n2. **Victimize**: painful\n   - why: It's the other \"do it twice\" card: one sacrifice, two creatures back.\n   - cost_of_cutting: It's a burst reanimation, and every reanimation is a Diviner trigger, so cutting it shrinks Diviner's own supply. The goldfish reads it as a trade: 2 better, 5 worse, 8 no call. It is worse on turns saved on big bodies (-0.093 [-0.107, -0.079]) and on a 6+ drop out by T6 (-1.6 pts [-1.8, -1.3]). Not recommended.\n3. **Unmarked Grave**: painful\n   - why: It's a narrow tutor that bins one nonlegendary card. It's the least flexible of the four loaders.\n   - cost_of_cutting: It's a turn-1/2 fatty-to-yard line, and Diviner's value depends on exactly that line. The goldfish reads it as a trade: 2 better, 6 worse, 7 no call. It is the worst of the three on turns saved on big bodies (-0.175 [-0.194, -0.157]) and on a 6+ drop out by T6 (-3.0 pts [-3.4, -2.7]). Not recommended.\n\nI screened Noxious Gearhulk and set it aside. The goldfish reads a trade, and the Context quotes the pilot calling it \"dope\", so that is the pilot's word.\n\nI didn't rank these, because they fall under the pilot's never-cut list or the brief's rules: Ozox, Pawn, Zulaport and Yawgmoth are pieces in the 4 known three-card lines. Blasting Station is the pilot's V23 \"sac outlets to kill\" call. Dark Prophecy and Skullclamp are 2 of only 2 counted card-advantage copies (`card-advantage` 2, target >= 10, UNDER). Sylvan Library is one of the draw cards the audit's heuristic misses, and draw is already UNDER. Protection is UNDER (2, target 5-7), so I left it alone.\n\n## Add\n\n- **Twilight Diviner**: closes the engine component \"REANIMATION effect drawn / Meren return\" as a multiplier. Source: prompt. natural_cut: Skyfisher Spider. Bracket: not a Game Changer, so the floor stays 3 (2 Game Changers stay 2).\n- Combo check: combo_index has one Diviner line, Kheru Goldkeeper + Twilight Diviner + Chthonian Nightmare. Kheru Goldkeeper and Chthonian Nightmare are missing from this 99. There is no two-card infinite, and the copy trigger fires once each turn, so it can't loop with Skeleton or the altars on its own. Status: no line opened, so no stack scenario is needed.\n- Curve after the swap: the 4-drops go from 5 to 4 and the 3-drops from 8 to 9. Creatures stay at 39.\n\n## Verdict\n\n**Cut Skyfisher Spider for Twilight Diviner.** It's a clear but not free swap. The deck gives up one repeatable artifact or enchantment answer. In return its whole fatty package gets a second enter trigger, on a cheaper body that also fills the yard. If the pilot's tables lean on artifacts or enchantments that must die, keep Skyfisher and choose NO CHANGE. Victimize and Unmarked Grave would both cost Diviner its fuel.\n\n## Open questions\n\n- Is Skyfisher's repeatable artifact and enchantment removal what wins games at Oliver's table or the pod? This would be settled by research-strategy or table play, since no log exists. It matters because it is the whole cost of the pick.\n\n## Gaps\n\n- No captain's-log games, no deck_recon.json and no Forge record for Diviner or Skyfisher.\n- Diviner's copy trigger is \"seen\" by the goldfish, but the copies' removal and edict value against opponents is not.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-22T22:29:30-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-006.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "I approve... and let's open a search after for adding artifact/enchantment removal in an optimal way post-this update and optimization",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "twilight-diviner-in-copies-a-creature-entering-f",
+  "facts": [
+    {
+      "id": "S-5d18c6d1-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-5d18c6d1-02",
+      "kind": "oracle",
+      "text": "Creature — Elf Cleric · {2}{B} — When this creature enters, surveil 2. (Look at the top two cards of your library, then put any number of them into your graveyard and the rest on top of your library in any order.) Whenever one or more other creatures you control enter, if they entered or were cast from a graveyard, create a token t",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Twilight Diviner"
+    },
+    {
+      "id": "S-5d18c6d1-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Satyr Wayfinder (0.91), Toph, Earthbending Master (0.87), Scute Swarm (0.87)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Twilight Diviner",
+      "neighbours": [
+        {
+          "name": "Satyr Wayfinder",
+          "score": 0.9079
+        },
+        {
+          "name": "Toph, Earthbending Master",
+          "score": 0.8745
+        },
+        {
+          "name": "Scute Swarm",
+          "score": 0.8734
+        }
+      ]
+    },
+    {
+      "id": "S-5d18c6d1-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Twilight Diviner",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Twilight Diviner"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Twilight Diviner",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Twilight Diviner",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Twilight Diviner",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "2aae8b5cbb02b574b67eea01ed29f9f9ff13a760587204a0888b25415c9e7f0e",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T22:25:22-08:00",
+    "facts": 4
+  },
+  "decided_on_decklist_sha256": "a57431d04dc0ac6a22a9d44e9ddf73aa2e64672a686f131fdc61443e7c00ea83"
+}

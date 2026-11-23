@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V27 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 4 known lines (4 infinite, 0 two-card) · 245 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -178,11 +178,11 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 
 <!-- ctx:gen numbers -->
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on V27, 2026-11-22. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **93%**
+- share of seeded games where the commander was CAST by turn six: **92%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.165**
+- mean turn the commander is first cast: **turn 4.164**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **43%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **25%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
@@ -190,11 +190,11 @@ Goldfish, 10,000 seeded games, measured on V27, 2026-11-22. Each group below is 
 - RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats: **34%**
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **2%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
-- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **24%**
+- A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **25%**
 - RAMP drawn — an accelerant of any kind: **35%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **35%**
-- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **14%**
-- share of opening sevens the model would keep: **81%**
+- A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
+- share of opening sevens the model would keep: **80%**
 - Colour on curve (lands + rocks): B 90%, G 94%
 <!-- /ctx:gen numbers -->
 
@@ -239,6 +239,8 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
+- **007 approve** (pilot, card-scout, deck-doctor) — artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, a · 2026-11-22 · “cankerbloom is amazing in this deck!!!! — approve, make the swap and save”
+- **006 approve** (pilot, deck-doctor) — Twilight Diviner in — copies a creature entering from the graveyard once each turn (Meren's end-step return, Reanimate, retrace), surveil 2  · 2026-11-22 · goldfish saw 1/1 named cards · “I approve... and let's open a search after for adding artifact/enchantment removal in an optimal way post-this update an”
 - **005 approve** (pilot, deck-doctor) — Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes  · 2026-11-22 · goldfish saw 1/1 named cards · “shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's ”
 - **004 no-change** (pilot, strategist) — Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the  · 2026-11-22 · goldfish saw 1/1 named cards · “eh... ok... forget it.. we only want clearly advantageous, obvious updates!”
 - **003 decline** (pilot, strategist) — Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder fo · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, I agree... then orcish bowmasters is the better option?”

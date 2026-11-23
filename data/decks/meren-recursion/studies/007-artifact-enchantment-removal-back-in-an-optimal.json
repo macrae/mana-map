@@ -1,0 +1,80 @@
+{
+  "id": "007",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, an incrementally better way to answer artifacts and enchantments",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "slice": "the pilot's words; the design; current answers",
+      "text": "Card scout, 2026-11-22 — artifact/enchantment answers that fit Meren's loop (all creatures; no Game Changers; no two-card infinite with the altars; goldfish model: — on all, it cannot price them):\n1. Reclamation Sage {2}{G} — ETB may destroy target artifact or enchantment; closest to Skyfisher Spider, cheaper; Meren re-buys at MV 3, Diviner copies a graveyard entry (two answers a turn); fodder.\n2. Chomping Changeling {2}{G} — ETB destroy up to one target artifact or enchantment; same loop, changeling; new (ecl, 2026).\n3. Cankerbloom {1}{G} — {1}, sacrifice: destroy target artifact, or enchantment, or proliferate; instant speed, on demand; the sacrifice is a death (experience); Meren re-buys at MV 2; proliferate adds experience when nothing needs answering.\n4. Insidious Fungus {G} — {2}, sacrifice: destroy target artifact / enchantment, or draw a card and maybe put a land; MV 1 re-buy.\n5. Thrashing Brontodon {1}{G}{G} — {1}, sacrifice: destroy target artifact or enchantment; 3/4 body.\n6. Damage Control Crew {3}{G} — ETB modal: exile target artifact or enchantment, or return a card with MV 4+ from graveyard to hand.\n7. Foundation Breaker {3}{G} — ETB may destroy target artifact or enchantment; evoke {1}{G} (a death without an outlet); Meren returns it as a body.\n8. Myconid Spore Tender {3}{G} — ETB destroy up to one target artifact or enchantment; the Sage at a higher cost.\nLeft out: Undergrowth Leopard, Voracious Varmint, Viridian Zealot, Caustic Caterpillar (sac-only, below Cankerbloom/Fungus); Masked Vandal (exiles a creature card from OUR yard); Acidic Slime, Titan of Industry (cost); Glissa Sunslayer (combat only). Noncreature: Abrupt Decay, Krosan Grip — not repeatable, feed neither Meren nor Diviner.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-22T22:34:49-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/card-scout-007.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "slice": "study 007 facts; scout shortlist; deck-audit; the pilot's pick: Cankerbloom",
+      "text": "# deck-doctor — prescribe, study 007 (meren-recursion, V27 + Twilight Diviner, unsaved)\n\n**Add: Cankerbloom** (pilot's call, 2026-11-22: \"cankerbloom is amazing in this deck!!!!\"). Adds were not ranked.\n**Cut: Unmarked Grave.** One swap: `--out \"Unmarked Grave\" --in \"Cankerbloom\"`.\n\n## What the audit says (deck-audit, current list)\n- interaction-breadth: 5 classes, by_class artifact 2 / enchantment 3 / creature 15 / graveyard 1 / land 1.\n  Target quote (strategy:deckbuilding.interaction-suite): \"cover the classes — creature, artifact, enchantment, graveyard, land — before doubling any\".\n  The 2 artifact answers are Assassin's Trophy and Boseiju, Who Endures. The 3 enchantment answers are those two plus Golgari Charm. I read the oracle text of every card that names artifact/enchantment with destroy/exile/sacrifice; no other card answers either class. All three are one-shot. With Skyfisher Spider gone, nothing Meren can re-buy answers an artifact or enchantment. Creature answers are 15, the most doubled class.\n- interaction: 17 copies (target low 8). It is not short. The gap is in which classes those 17 copies answer.\n- creatures: 39. curve modal 2 (19 two-drops, 17 three-drops).\n\n## Why Cankerbloom fits the loop (from the oracle text; no stack verified)\n- {1}, sacrifice: destroy an artifact, or an enchantment, or proliferate. It answers at instant speed. The self-sacrifice is a death, so it gives Meren experience and triggers Zulaport, Pawn, Dark Prophecy and Grave Pact.\n- MV 2, so Meren returns it to the battlefield at 2 experience. If Twilight Diviner sees it come back from the graveyard, Diviner makes a token copy (once a turn), which is a second answer.\n- With no target, proliferate gives Meren's experience another counter.\n- Goldfish: `try` reports Cankerbloom as \"engine text unread\", and the read is **blind**. It gives no evidence either way. The call rests on the pilot's word and the breadth axis.\n\n## Cuts, ranked (none is on the keep list; `try` keep-list check: clear)\n1. **Unmarked Grave**: PICK. difficulty: contested.\n   Why: it is the weakest of the yard loaders (Entomb, Buried Alive, Vile Entomber, Fauna Shaman, Formidable Speaker, plus Satyr Wayfinder, Six, Nyx Weaver and Stitcher's Supplier for milling). It is a sorcery with no body. Meren cannot re-buy it. It cannot bin a legendary target (Sheoldred, Kokusho).\n   Cost of cutting: one fewer turn-2 setup for a turn-2/3 Reanimate or Animate Dead on Archon / Grave Titan / Massacre Wurm / Noxious Gearhulk. It also loses a way to bin a noncreature permanent for Six to recast. tutors axis 9 → 8.\n   Curve: noncreature out, a 2-drop creature in, so the 1–4 creature count goes **up** by one (39 → 40 creatures). Nothing is orphaned: there are no checker-passed stacks, and it is in none of the 4 contained combo lines.\n2. **Stitcher's Supplier**: contested.\n   Why: a 1/1 for {B} that mills 3 on entering and on dying. It is one of five millers.\n   Cost of cutting: the cheapest Meren return (MV 1) that refills the yard every loop, and cheap fodder. Swapping it for Cankerbloom keeps the creature count, but the deck loses yard fill that it chose in V23.\n3. **Victimize**: **painful**.\n   Why: it is the fifth reanimation spell (Reanimate, Animate Dead, Necromancy, Agadeem's Awakening).\n   Cost of cutting: it is the only one that returns two creatures. Its sacrifice is itself a death for experience. Twilight Diviner copies one of the two returns. This is a real two-for-one, and the cut is listed only for completeness.\n\nNot cut: Noxious Gearhulk (pilot: \"Noxious Gearhulk is dope!\"), Blasting Station (V23, pilot: \"we need sac outlets to kill creatures\"), Ozox (in 2 contained 3-card combo lines), Dark Prophecy (card-advantage reads 2 against a target of 10), ramp pieces (ramp reads 9 against a target of 10–12), Golgari Charm, Heroic Intervention and Tamiyo's Safekeeping (protection reads 2 against a target of 5–7).\n\n## Verdict\nThe swap is clearly advantageous. After it, artifact answers go 2 → 3 and enchantment answers 3 → 4, the counts V27 had before the Diviner swap. The re-buyable artifact/enchantment answer comes back, at MV 2 instead of 3. Power and design are unchanged: the only loss is a redundant sorcery loader.\n\n## Open questions\n- Does Diviner's copy of a re-bought Cankerbloom give two answers in one turn cycle? This is read from the oracle text and needs a stack scenario (settled_by: resolve-stack).\n- The goldfish cannot read Cankerbloom, so no figure measures the add (settled_by: goldfish model work, not this call).\n\n## Gaps\n- No captain's-log entries (study 007 fact S-8d45c96f-01: \"no games logged\"). log_entries_read: none.\n- Colour sources are B −1 against target before and after. The swap does not change that.",
+      "cites": {
+        "facts": [
+          "S-8d45c96f-01"
+        ],
+        "strategy": [
+          "strategy:deckbuilding.interaction-suite"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T22:37:55-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-007.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "card-scout",
+      "deck-doctor"
+    ],
+    "pilot_words": "cankerbloom is amazing in this deck!!!! — approve, make the swap and save",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "artifact-enchantment-removal-back-in-an-optimal",
+  "facts": [
+    {
+      "id": "S-8d45c96f-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "a57431d04dc0ac6a22a9d44e9ddf73aa2e64672a686f131fdc61443e7c00ea83",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T22:33:40-08:00",
+    "facts": 1
+  },
+  "decided_on_decklist_sha256": "1afa16f6d92ca39ef338dc76ac5622779ff4b8ef7aef4a2209f5aa25e0a9bce0"
+}
