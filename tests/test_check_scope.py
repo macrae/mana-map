@@ -169,7 +169,7 @@ def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypat
     plan = cs.classify(["something/new.bin"])
     assert cs.steps(plan) == [[["make", "test"]], [["make", "test-unit-isolated"]],
                               [["make", "regression-prepush"]], [["make", "test-browser"]]]
-    assert cs.pytest_runs(plan) == 5
+    assert cs.pytest_runs(plan) == 4
     # The pair is opt-in: measured once, it cost a flake for four minutes.
     monkeypatch.setenv(cs.PAIR_ENV, "1")
     assert cs.steps(plan)[-1] == [["make", "regression-prepush"],

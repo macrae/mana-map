@@ -182,14 +182,11 @@ endif
 # BROWSER_WORKERS: four Chromiums alone; `prepush` passes 2 when the suite shares
 # the machine with the regression tier's `-n auto` (src/manamap/check_scope.py).
 BROWSER_WORKERS ?= 4
-test-browser:  ## The playwright suite (~7 min; needs `make setup`)
-	$(PYTEST) -m "browser and not serial_only" -n $(BROWSER_WORKERS)
-	# `-n0` IS LOAD-BEARING. `addopts` carries `-n auto`, so this line was never
-	# actually serial — it only looked it, because `serial_only` held exactly ONE
-	# test and xdist ran the one alone. The moment a second joined, the phase
-	# named "serial" went parallel and the wall-clock budget it exists to protect
-	# read 35 ms against a 30 ms limit with the renderer untouched.
-	$(PYTEST) -m "browser and serial_only" -n0
+test-browser:  ## The playwright suite: the behaviour core per page + the feature files (~2.5 min; needs `make setup`)
+	$(PYTEST) -m "browser" -n $(BROWSER_WORKERS)
+# The serial phase (`-m "browser and serial_only" -n0`) is gone (2026-11-22): its one test
+# was a wall-clock render budget, cut with the rest of the timing tests in the behaviour
+# core, and an empty selection exits 5. A new wall-clock test does not belong here.
 
 test-all: test-fresh test-unit-isolated integration  ## Every tier, uncached — what CI runs across its jobs
 

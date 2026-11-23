@@ -142,7 +142,7 @@ _SUBSUMED = {"decks": {"unit", "regression"}, "docs": {"unit", "regression"}}
 #: The pytest runs each tier makes — the band's `total` for a prepush row, which
 #: counts its finished pytest children (`_finished_children`).
 PYTEST_RUNS = {"docs": 1, "plugin": 0, "smoke": 1, "unit": 1, "unit-isolated": 1, "decks": 1,
-               "regression": 2, "browser": 2}
+               "regression": 2, "browser": 1}
 #: The browser suite's workers when it shares the machine with the regression
 #: tier (`-n auto`, every core): four Chromiums beside eight pytest workers
 #: oversubscribe an 8-core Mac. `make test-browser` alone keeps its four.
