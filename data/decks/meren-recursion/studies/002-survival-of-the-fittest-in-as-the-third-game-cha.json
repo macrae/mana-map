@@ -1,0 +1,153 @@
+{
+  "id": "002",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Survival of the Fittest in as the third Game Changer — discard a creature to tutor a creature bins the fatty we want in the yard; which card comes out? (the pilot: we can run up to 3 game changers)",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Survival of the Fittest"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Survival of the Fittest"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "slice": "study 002 facts; context summary+plays+cards; the pilot's question",
+      "text": "Survival of the Fittest fits as a creature-discard tutor. Cut Fauna Shaman for it: the same job on a body that wipes and spot removal kill. Sequencing below is untested argument, not evidence.\n\n1. How it plays (argument; no games logged, S-5c484134-01)\n- Survival: \"{G}, Discard a creature card: search for a creature card\" (S-5c484134-02). Discarding gives Meren no experience (only deaths do): each activation is yard-fill plus a tutor, not counter fuel.\n- Turn 2-3 with Reanimate in hand: cast Survival turn 2; turn 3 pitch the biggest creature, keep a cheap creature as the next discard; fetch what cannot be in the yard yet (a payoff or outlet: Fiend Artisan, Skyfisher Spider); Reanimate the pitched fatty — a fatty in play on turn 3 with a second creature to sacrifice.\n- Mid-game with Meren out: Meren's trigger targets when it goes on the stack, so activate Survival in the main phase, not at end step. Pitch the fatty you want back; Meren returns it at end step (to hand below its MV, to the battlefield once counters catch up). Fetch what the yard cannot supply (a missing outlet, Gisa). Tutoring costs tempo, not a free copy (strategy:deckbuilding.redundancy-vs-tutors).\n- Traps: never fetch a creature already in the yard; don't pitch the creature you mean to cast this turn; don't pitch Reassembling Skeleton or Sakura-Tribe Elder (free recurring fodder); Survival is an enchantment, so enchantment removal hits it and nothing protects it.\n\n2. Role overlap and cut (argument)\n- Survival belongs to \"find the missing piece\": Fauna Shaman, Formidable Speaker, Fiend Artisan, Demonic Tutor. Nearest in-deck by function: Fauna Shaman 0.99 (S-5c484134-05); goldfish sees it (S-5c484134-06); no engine model or recon.\n- Fauna Shaman is the same effect; the context says it \"dies to wipes\", and the deck runs its own sweepers (Massacre Wurm, Meathook). Survival leaves no body to protect and survives our own sweepers. Cost of cutting Shaman: it is a body Meren can return. Backup cut: Vile Entomber (the other one-shot loader). Keep Fiend Artisan (tutors and reanimates in one sacrifice).\n- Demonic Tutor stays: it finds Entomb, Reanimate or Grave Pact, which no creature-only tutor can.\n- Survival is the third Game Changer with Demonic and Tergrid; strategy:deckbuilding.power-level.barometers says the bracket relies on Game Changers to catch the most efficient tutors, supporting \"up to three\".\n\nopen: can Survival respond to Meren's trigger for a fresh target (likely not — it targets on the stack; a rules query); is Fauna Shaman on the keep list?",
+      "cites": {
+        "facts": [
+          "S-5c484134-01",
+          "S-5c484134-02",
+          "S-5c484134-05",
+          "S-5c484134-06"
+        ],
+        "strategy": [
+          "strategy:deckbuilding.power-level.barometers",
+          "strategy:deckbuilding.redundancy-vs-tutors"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T21:13:07-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-002.md"
+    }
+  ],
+  "call": {
+    "decision": "decline",
+    "decided_by": [
+      "pilot",
+      "strategist"
+    ],
+    "pilot_words": "jfc I forgot it's a $400 card!!!! no, we can't survival of the fittest... we just can't",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "survival-of-the-fittest-in-as-the-third-game-cha",
+  "facts": [
+    {
+      "id": "S-5c484134-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-5c484134-02",
+      "kind": "oracle",
+      "text": "Enchantment · {1}{G} — {G}, Discard a creature card: Search your library for a creature card, reveal that card, put it into your hand, then shuffle.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Survival of the Fittest",
+      "game_changer": true
+    },
+    {
+      "id": "S-5c484134-03",
+      "kind": "context",
+      "text": "CONTEXT pilot: Plus ability to untap target permanent!!!!\" That is Survival of the Fittest on a body, re-fired at each Meren return.",
+      "tier": "coach",
+      "source": "CONTEXT.md#pilot",
+      "card": "Survival of the Fittest"
+    },
+    {
+      "id": "S-5c484134-04",
+      "kind": "context",
+      "text": "CONTEXT pilot: Bayou and Survival of the Fittest were too expensive, so the budget versions came in.",
+      "tier": "coach",
+      "source": "CONTEXT.md#pilot",
+      "card": "Survival of the Fittest"
+    },
+    {
+      "id": "S-5c484134-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Fauna Shaman (0.99), Demonic Tutor (0.98), Entomb (0.98)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Survival of the Fittest",
+      "neighbours": [
+        {
+          "name": "Fauna Shaman",
+          "score": 0.9878
+        },
+        {
+          "name": "Demonic Tutor",
+          "score": 0.9775
+        },
+        {
+          "name": "Entomb",
+          "score": 0.9766
+        }
+      ]
+    },
+    {
+      "id": "S-5c484134-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Survival of the Fittest",
+      "state": "seen",
+      "channels": [
+        "recursion",
+        "target"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Survival of the Fittest"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Survival of the Fittest",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Survival of the Fittest",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Survival of the Fittest",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "48daf86b662921f00771091bd81712e86a77f2b319bc0783b537f8fa6405292d",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T21:15:00-08:00",
+    "facts": 6
+  }
+}
