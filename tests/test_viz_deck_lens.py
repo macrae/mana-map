@@ -53,13 +53,6 @@ def _lens_families() -> set[str]:
     return set(re.findall(r"'?([a-z-]+)'?\s*:", block.group(1)))
 
 
-def test_lens_exposes_the_overlay_contract():
-    """mana-map.js calls exactly these two methods on whichever mode owns the panel."""
-    src = _lens_source()
-    for member in ("getOverlayTraces", "getDimmedIndices", "enter", "exit"):
-        assert f"    {member},\n" in src or f"  {member}," in src, f"Build.{member} not exported"
-
-
 def test_index_html_loads_the_lens_at_the_shared_cache_bust():
     html = INDEX_HTML.read_text(encoding="utf-8")
     assert 'value="build"' in html, "Build missing from the mode selector"
@@ -163,39 +156,6 @@ def test_every_deck_names_a_commander_the_map_knows():
             f"{deck['slug']}: commander {deck['commander']!r} is not on the map"
         )
     assert checked >= 1
-
-
-def test_build_picks_the_cheap_dimming_path_when_it_can():
-    """Per-point opacity means a 34,000-entry array per colour group, every render.
-
-    Two dimming strategies, one module, and the choice matters. Dimming EVERYTHING and
-    redrawing the 99 on top is one scalar and ~free — that is the normal case, and it was
-    the Lens's. Dimming a GENUINE SUBSET — what you may not legally play, by format or by
-    the commander's colour identity — has nothing drawn over it, so it needs the array;
-    that was the builder's, and it is opt-in here because it is the expensive one.
-
-    `dimsAll()` is how the mode declares which it is, and it must yield to the per-point
-    path rather than both being true at once.
-    """
-    src = _lens_source()
-    assert "function dimsAll()" in src
-    assert re.search(r"^\s+dimsAll,$", src, re.M), "dimsAll not exported"
-    assert "!showIllegal" in src, (
-        "dimsAll must stand down when the per-point legality path is on, or the scalar "
-        "wins and nothing is singled out"
-    )
-    assert "function getDimmedIndices()" in src
-    assert "isColorIdentitySubset" in src and "isLegalInFormat" in src, (
-        "the per-point path is what colour identity and format legality are FOR"
-    )
-
-    map_src = (VIZ_DIR / "js" / "mana-map.js").read_text(encoding="utf-8")
-    assert "overlay.dimsAll && overlay.dimsAll()" in map_src
-    # The SHAPE, not the brightness: this test is about the per-point path existing, and
-    # pinning the lit alpha made a visual-tuning change look like the path had been deleted.
-    assert re.search(r"dimmedIndices\.has\(idx\) \? 0\.08 : 0\.\d+", map_src), (
-        "the per-point path must survive — it is the whole point of getDimmedIndices"
-    )
 
 
 def test_deck_html_busts_its_own_assets():

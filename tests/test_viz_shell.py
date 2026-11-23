@@ -8,7 +8,7 @@ rule written into one file governs some surfaces and not others, and the failure
 is silent — the drawer simply looks different on four pages out of five.
 
 That is what these tests are for. There is no JS runtime here; the browser suite
-asserts the drawer's actual behaviour (`test_viz_behaviour.py`). What is decidable
+asserts the drawer's actual behaviour (`test_viz_library_behaviour.py`). What is decidable
 from the source is whether the two copies still say the same thing.
 
 MEASURED BEFORE BEING KEPT, as this repo requires of a new check: the extraction

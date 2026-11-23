@@ -162,7 +162,7 @@ kept running until it was killed by hand.
 | **unit** — `make test` | inline data only; no tracked artifact, no outside system | 2,515 | **0:42** uncached |
 | unit, isolated — `make test-unit-isolated` | the same, against an empty `MANAMAP_DATA_DIR` | 2,515 | **0:38** |
 | **regression** — `make regression` | the tracked fleet and corpus: every artifact validator, the constants calibrated across the fleet — in parallel; then, ALONE, one `regen` of the whole fleet compared byte for byte (`test_the_fleet_regenerates_byte_identically`, marker `regen`; it replaced 85 per-artifact re-derivations that were 74% of the tier's CPU) | 1,582 | **13:10** uncached (6:25 parallel + 6:43 regen) |
-| **integration** — `make integration` | a real browser (264), the Forge engine (1), the network; then `make artifacts` + `git diff --exit-code` | 265 | ~7 min + |
+| **integration** — `make integration` | a real browser, the Forge engine (1), the network; then `make artifacts` + `git diff --exit-code` | 265 | ~7 min + |
 | **total collected** | | **4,362** | |
 
 **What decides the tier is what a test TOUCHES, never its runtime** — runtime flaps,
@@ -254,6 +254,18 @@ Line coverage: the unit tier alone **56.6%**; both measured tiers **76.0%** of 3
 The five slowest tests: `test_every_tracked_simulation_run_passes_its_validator[edgar-vampires]` 356s; `test_net_change_matches_a_fresh_run[goblin-storm@copy-burst-v1]` 268s; `test_net_change_matches_a_fresh_run[edgar-vampires@drain-v1]` 204s; `test_a_procedure_page_names_only_cards_the_deck_runs` 174s; `test_futility_stops_only_when_the_asked_for_effect_is_excluded` 163s.
 
 <!-- suite-report:end -->
+
+## The browser suite: a behaviour core (2026-11-22)
+
+`tests/test_viz_<page>_behaviour.py`, one file per page (deck, branch, workbench, fleet,
+library, atlas, and cross-page contracts), cut from one 272-test file to
+62 tests that guard what a page must DO: boot without a JS error, read and write the right
+files and endpoints, land deep links and URL state, show exactly what the artifacts hold,
+and keep the contracts between pages. The feature files beside them (`test_viz_deck_edit`,
+`_jarvis_ask`, `_page_state`, `_art_gallery`, `_moxfield`, `_printings` …) own the actions.
+**Not tested, by rule:** wording, labels, ordering of copy, layout and pixels, timing budgets,
+and JS source text — the pages change fast and those tests broke on every change while a
+`ReferenceError` passed them. The 62 run in about 30 s on four workers.
 
 ## The core: `make smoke` (2026-11-22)
 

@@ -38,7 +38,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-# playwright drives the behavioural viz tests (tests/test_viz_behaviour.py). It needs a
+# playwright drives the behavioural viz tests (tests/test_viz_*_behaviour.py, one per page). It needs a
 # one-time browser download: `.venv/bin/python -m playwright install chromium`. Those
 # tests skip cleanly without it, so the suite still runs on a fresh clone.
 #
