@@ -14,14 +14,20 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 19,
     "stale": [
       "frame",
       "map"
     ],
-    "older_model": [],
-    "invalid": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [],
     "todo": []
@@ -11190,7 +11196,9 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug edgar-vampires` re-reads them when you want, never on its own",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
     "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

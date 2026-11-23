@@ -228,6 +228,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
+- **010 open** (—) — the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for th · open
 - **009 approve** (pilot, card-scout, deck-doctor) — Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning · 2026-11-22 · goldfish saw 1/1 named cards · “approve, make the swap and save”
 - **008 approve** (pilot, deck-doctor) — Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Div · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save”
 - **007 approve** (pilot, card-scout, deck-doctor) — artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, a · 2026-11-22 · “cankerbloom is amazing in this deck!!!! — approve, make the swap and save”
@@ -235,8 +236,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 - **005 approve** (pilot, deck-doctor) — Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes  · 2026-11-22 · goldfish saw 1/1 named cards · “shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's ”
 - **004 no-change** (pilot, strategist) — Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the  · 2026-11-22 · goldfish saw 1/1 named cards · “eh... ok... forget it.. we only want clearly advantageous, obvious updates!”
 - **003 decline** (pilot, strategist) — Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder fo · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, I agree... then orcish bowmasters is the better option?”
-- **002 decline** (pilot, strategist) — Survival of the Fittest in as the third Game Changer — discard a creature to tutor a creature bins the fatty we want in the yard; which card · 2026-11-22 · goldfish saw 1/1 named cards · “jfc I forgot it's a $400 card!!!! no, we can't survival of the fittest... we just can't”
-- … 1 earlier: `manamap pilot study meren-recursion list`
+- … 2 earlier: `manamap pilot study meren-recursion list`
 <!-- /ctx:gen studies -->
 
 ## Change history

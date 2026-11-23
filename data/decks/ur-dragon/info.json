@@ -16,7 +16,7 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 18,
+    "complete": 17,
     "of": 19,
     "stale": [],
     "older_model": [
@@ -24,7 +24,9 @@
       "mana",
       "benchmark"
     ],
-    "invalid": [],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -5288,6 +5290,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (engine) — `deck-status ur-dragon` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug ur-dragon` re-reads them when you want, never on its own",
     "diagnosis.json describes an older list — `/diagnose-deck ur-dragon`",
     "engine.json's reading was written for another list — `/engine-reading ur-dragon` rewrites it over the computed graph",

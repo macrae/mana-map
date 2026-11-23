@@ -25,9 +25,7 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [
-      "CONTEXT.md"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "frame",
@@ -1438,6 +1436,19 @@
   ],
   "studies": [
     {
+      "id": "010",
+      "question": "the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for that to happen consistently, and how do we back into a solution",
+      "branch": null,
+      "file": "010-the-focus-is-experience-ramp-we-need-experience.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-23",
+      "swap": null,
+      "goldfish_saw": null
+    },
+    {
       "id": "009",
       "question": "Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning the deck's yard fill into card draw (the short resource); which card comes out?",
       "branch": null,
@@ -2225,12 +2236,12 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
     "DeckCheck copy is V1, the list is V30 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 20 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "study 010 is open: the focus is experience ramp, we need experience counter ramp to land  — `manamap pilot study meren-recursion call 010 …`, then `install`",
     "open questions routed: goldfish ×2, resolve-stack ×1"
   ],
   "_note": "Written by `deck-info --write`. The version block is deliberately absent: it is a git walk, and a committed copy is one commit behind forever. The deck page reads versions.json instead."
