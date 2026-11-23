@@ -79,8 +79,7 @@ test:  ## THE UNIT TIER: no tracked data, ~1 min — the inner loop (a bare pyte
 # artifacts left stale by a swap, a gate failing on one deck. Those two preflights
 # run first and the unit tier after; the regression tier runs ONCE per push batch
 # (`make prepush`), never per commit. Under three minutes on eight cores.
-precommit:  ## THE COMMIT GATE: restamp --check + the core + the unit tests the change reaches (~20-40 s); `prepush` is per push
-	$(MANAMAP) pilot restamp --check
+precommit:  ## THE COMMIT GATE: the core + the unit tests the change reaches (~20-40 s); restamp --check only when decks, data or pilot code moved
 	$(PY) -m manamap.check_scope precommit
 
 impact-map:  ## Rebuild the measured test-impact map (the unit tier under per-test coverage, ~2 min)

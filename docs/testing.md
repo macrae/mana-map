@@ -29,22 +29,47 @@ almost every commit; README and CLAUDE.md point here instead. The dated record o
 how the suite got here — every earlier measurement, every lesson in full, the
 2026-09-21 adversarial audit — is [`history/testing-log.md`](history/testing-log.md).
 
-## Before a push: the scope follows the diff, by area (2026-10-09)
+## The minimum path: per commit, per push, nightly (2026-11-22)
 
-`make prepush` runs `python -m manamap.check_scope prepush`, which reads what the
-push would carry, puts every changed path in an AREA, and runs the union of the
-tiers those areas can break:
+**Per commit — `make precommit`** (~20 s to ~1.5 min): `restamp --check`, then
+`python -m manamap.check_scope precommit` over the working tree. It always runs **the core**
+(`make smoke`, below). For a python change it then runs the unit tests the change can
+reach, chosen by `manamap.test_impact`. A harness file, `config.py`, or anything the
+selector cannot place runs the whole unit tier instead.
+
+**How a change finds its tests** (`src/manamap/test_impact.py`). The selector reads a
+**measured map**: coverage recorded per test (`--cov-context=test`) says which source
+files each test actually executed. `make impact-map` rebuilds it in about two minutes into
+`.pytest_cache/manamap/impact-map.json`; rebuild it after a large refactor. Measured on the
+unit tier, a `bracket.py` edit reaches 2 test files, `ability_graph` 7, `deck_edit` 7,
+`goldfish_turn` 16 and `pilot/common.py` 107. The static import graph alone said 275 of
+311, because `common.py` lazily imports half the package and `deck_edit` names every
+rebuild step by string. A module the map has never seen falls back to that import graph
+(string edges and CLI-driving tests counted, the shared harness not propagated). Three
+things widen to the whole tier: `config.py`, a non-Python file under the package, and a
+shared test helper. **The one known gap** is a module reached only through a conftest
+fixture; the nightly run covers it.
+
+**Per push — `make prepush`** reads what the push would carry, puts every changed path in
+an AREA, and runs the union of the tiers those areas can break:
 
 | area | the push carries | it runs | about |
 |---|---|---|---|
-| **docs** | `docs/**`, `README.md`, `CLAUDE.md`, any `*.md` | the doc guards (`test_docs_counts`, `test_docs_section_count`) | 10 s |
-| **decks** | `data/decks/<slug>/**`, `manuals/p/<slug>.html`, the manifest | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected, the fleet regen excluded) + the doc guards | 1 min |
-| **data** | the rest of `data/` — corpus artifacts, pods, overrides | the regression tier, without the fleet regen | 7 min |
-| **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the unit tier (the JS parse and cache-bust tests live there) + `make test-browser`; never regression or the regen | 8 min |
-| **agents** | `.claude/**` — charters, skills, settings | the unit tier + the doc guards | 1 min |
-| **plugin** | `tools/claude-plugins/**` | `claude plugin test tools/claude-plugins/job-band` (30 tests) | 5 s |
-| **python** | `src/manamap/**`, `tests/**` (not viz), `tools/*.py` | unit + regression, without the fleet regen (the isolation proof is the harness's and CI's, since 2026-10-29) | 9 min |
-| **full** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `src/manamap/config.py`, CI, `.mcp.json` — or any path not listed above | unit, isolated, regression without the fleet regen, browser | 15 min |
+| **docs** | `docs/**`, `README.md`, `CLAUDE.md`, any `*.md` | the doc guards | 10 s |
+| **decks** | `data/decks/<slug>/**`, the manifest | that deck's artifact tests (`check_scope.DECK_TESTS`, other decks deselected) + the doc guards | 1 min |
+| **data** | the rest of `data/` | the regression tier, without the fleet regen | 15 min |
+| **viz** | `viz/**`, `tests/test_viz_*.py`, `tests/conftest_viz.py` | the core, the `test_viz_*` unit files, `make test-browser` | 5 min |
+| **agents** | `.claude/**` | the unit tier + the doc guards | 1 min |
+| **plugin** | `tools/claude-plugins/**` | `claude plugin test` | 5 s |
+| **python** | `src/manamap/**`, `tests/**`, `tools/*.py` | the core, then the unit and regression tests the change reaches; per-deck fleet loops only for the decks the push moved plus `REPRESENTATIVE_DECKS` (sharknado, edgar-vampires) | 1–4 min |
+| **harness** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `core_contracts.py`, `report_plugin.py`, `repo_tree.py`, `.mcp.json` | the core, the unit tier, its isolation proof | 3 min |
+| **ci** | `.github/**` | the doc guards | 10 s |
+| **full** | any path not listed above | unit, isolated, regression without the regen, browser | 22 min |
+
+**Nightly — CI** (`.github/workflows/test.yml`, `0 7 * * *`): the whole regression tier
+with the fleet regen, every deck. A push to CI runs the unit tier, its isolation proof,
+`make regression-scoped` (every regression test, the per-deck loops on the representatives)
+and the browser suite. `make prepush-full` is the same full run, locally, before a release.
 
 **A preflight runs first** (2026-11-12) whenever a tier reads the decks (regression,
 decks): an untracked `data/decks/<slug>/` is refused by name (every fleet test reads the

@@ -15,14 +15,21 @@ two long tiers run side by side:
 
     docs     docs/**, README, CLAUDE.md, any *.md       -> the doc guards       ~10 s
     decks    data/decks/<slug>/** -> that deck's checks   ~1 min
-    data     the rest of data/ (corpus, pods, overrides) -> the regression tier  ~7 min
-    viz      viz/**, tests/test_viz_*, conftest_viz.py   -> unit + browser       ~8 min
+    data     the rest of data/ (corpus, pods, overrides) -> the regression tier  ~15 min
+    viz      viz/**, tests/test_viz_*, conftest_viz.py   -> the core + the viz unit
+                                                            files + browser      ~5 min
     agents   .claude/** (charters, skills)               -> unit + doc guards    ~1 min
     plugin   tools/claude-plugins/**                      -> `claude plugin test`  ~5 s
-    python   src/manamap/**, tests/**, tools/*.py          -> unit + isolated +
-                                                            regression           ~10 min
-    full     Makefile, pyproject, conftest.py, config.py,
-             CI, and any path not listed above            -> everything          ~15 min
+    python   src/manamap/**, tests/**, tools/*.py          -> THE MINIMUM PATH: the core,
+                                                            then the unit and regression
+                                                            tests the change reaches
+                                                            (`manamap.test_impact`), the
+                                                            fleet loops on the changed +
+                                                            representative decks   ~1-4 min
+    harness  Makefile, pyproject, conftest.py, core_contracts, report_plugin, repo_tree,
+             .mcp.json                                    -> core + unit + isolated ~3 min
+    ci       .github/**                                   -> the doc guards       ~10 s
+    full     any path not listed above                    -> everything          ~22 min
 
 Only TRACKED changes count: commits ahead of the push base (the upstream, or
 `origin/main` for a branch that has none), what is staged, and tracked files
@@ -33,9 +40,9 @@ CONCURRENTLY, each output captured to a file and printed in order at the end,
 the browser at `-n 2` so the pair fits an 8-core machine (docs/testing.md).
 
 Never less safe than it looks: a path this file does not recognise is FULL, no
-push base means FULL, `make prepush-full` is FULL unconditionally, and CI runs the
-whole suite on every push regardless — this only decides what blocks the pilot
-locally.
+push base means FULL, a python change the selector cannot place runs each tier whole,
+`make prepush-full` is FULL unconditionally, and CI runs the whole fleet with the regen
+NIGHTLY (2026-11-22) — this only decides what blocks the pilot per push.
 
     python -m manamap.check_scope plan [--base REV]   what prepush would run, and why
     python -m manamap.check_scope prepush [--base REV]   run it
@@ -594,6 +601,11 @@ def run_precommit():
     else:
         cmds = [["make", "smoke"]] + ([[py, "-m", "pytest", "-m", "unit", *selected]] if selected else [])
         why = f"the core + {len(selected)} test file(s) the change reaches"
+    # THE COMPOSED FILES only when something that composes them moved: a deck, fleet data,
+    # or pilot/sim code. A docs or test-only commit does not pay ~40 s for it, and the
+    # prepush preflight runs it on every push regardless.
+    if any(p.startswith(("data/", "src/manamap/pilot/", "src/manamap/sim/")) for p in paths):
+        cmds = [[py, "-m", "manamap.cli", "pilot", "restamp", "--check"]] + cmds
     print(f"PRECOMMIT — {why}")
     for c in cmds:
         print("  $ " + _show(c))

@@ -180,7 +180,10 @@ manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board ->
 make test                     # the UNIT tier: no tracked data, ~1 min (runtimes: docs/testing.md)
 make regression               # the tracked fleet + corpus, every producer re-run
 make integration              # browser + Forge + the pages rebuilt byte-identically
-make prepush                  # before every push, BY AREA: docs 10 s, deck ~1 min, viz ~8, python ~10, full ~20
+make smoke                    # THE CORE: the must-never-break contracts (tests/core_contracts.py), ~20 s
+make precommit                # per commit: the core + the unit tests the change reaches (manamap.test_impact)
+make prepush                  # per push, BY AREA: python = the core + the tests it reaches (1-4 min); full nightly in CI
+make impact-map               # rebuild the measured test-impact map (~2 min) after a large refactor
 make check-deck SLUG=<slug>   # a deck's own checks while iterating on its list (~1 min)
 make test-browser             # playwright; local only
 make test-report              # unit tier + coverage, ~2 min -> data/test_reports/ (FULL=1: + regression)
