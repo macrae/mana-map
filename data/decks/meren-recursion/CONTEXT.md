@@ -234,6 +234,9 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
+- **004 no-change** (pilot, strategist) — Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the  · 2026-11-22 · goldfish saw 1/1 named cards · “eh... ok... forget it.. we only want clearly advantageous, obvious updates!”
+- **003 decline** (pilot, strategist) — Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder fo · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, I agree... then orcish bowmasters is the better option?”
+- **002 decline** (pilot, strategist) — Survival of the Fittest in as the third Game Changer — discard a creature to tutor a creature bins the fatty we want in the yard; which card · 2026-11-22 · goldfish saw 1/1 named cards · “jfc I forgot it's a $400 card!!!! no, we can't survival of the fittest... we just can't”
 - **001 approve** (pilot, deck-doctor, strategist, card-scout) — the deck feels light on milling — the plan is to play cards from the graveyard primarily, so the yard must fill faster than casting creature · 2026-11-22 · “approve, make the swap; next please (Satyr Wayfinder for Tendershoot Dryad, Six for Bone Splinters, Nyx Weaver for Savra”
 <!-- /ctx:gen studies -->
 
