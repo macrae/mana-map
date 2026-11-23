@@ -1,0 +1,99 @@
+{
+  "id": "001",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "the deck feels light on milling — the plan is to play cards from the graveyard primarily, so the yard must fill faster than casting creatures and them dying; optimize for filling the yard while keeping the deck's synergy and most powerful elements",
+  "opened": "2026-11-22",
+  "decided_at": null,
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "slice": "context summary+plays; the pilot's words; current yard fill; standing keeps and dropped list",
+      "text": "Card scout, 2026-11-22 — cheap BG self-mill that feeds Meren's loop (no Game Changers, no two-card infinites, none on the dropped list; all `model: —`, the goldfish cannot price any of them):\n\n1. Undead Butler {1}{B} — mills 3 on enter, again on each Meren return. MV 2, returns from her first counter; on death you may exile it to return a creature card from the yard to hand.\n2. Crow of Dark Tidings {2}{B} — mills 2 on enter AND 2 on death, up to 4 per body; MV 3, 2/2 flyer, outlet fodder. The only one that mills on both triggers.\n3. Skull Prophet {B}{G} — {T}: mill 2 every turn, or tap for B/G; MV 2, repeatable, instant speed, doubles as a dork (milling means no mana that turn).\n4. Nyx Weaver {1}{B}{G} — mills 2 each upkeep, automatically; MV 3, reach; one-shot exile ability returns any card to hand.\n5. Mire Triton {1}{B} — mills 2 on enter (+2 life), again on each Meren return; MV 2 deathtouch.\n6. Seedship Broodtender {B}{G} — mills 3 on enter, again on each Meren return; MV 2; {3}{B}{G} sac returns a creature yard→battlefield (likely sorcery speed: a bonus, not the reason).\n7. Glowspore Shaman {B}{G} — mills 3 on enter, again on each Meren return; may put a milled land on top; MV 2, plainest.\n8. Dreadhound {4}{B}{B} — mills 3 on enter; each opponent loses 1 whenever any creature dies or a creature card is milled; MV 6, a late return or an Entomb target.\n\nLeft out: Colossal Grave-Reaver (MV 8), Doom Whisperer / Blight Titan (MV 5+, pay per activation), Kagha / Winter (mill only on attack). Creatures only were searched.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-22T20:25:12-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/card-scout.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "slice": "context summary+plays+cards; study 001 facts; the pilot's words; standing keeps",
+      "text": "Answer: he is partly right. The deck has plenty of targeted loading but little volume, and the gap is worst on turns 1-3, before any deaths. Add 3 volume-mill slots, mostly repeatable, taken from the overlapping answer/protection role.\n\n(1) Is volume light? Mixed; the pilot's feel is argument and no games are logged to check it.\n- Evidence (Deck Context V25): volume sources are Stitcher's Supplier, Takenuma (one-shot), Grist (mill 1) and Altar of Dementia (competes with opponent-mill); Supplier is the only repeatable one. Entomb, Buried Alive, Unmarked Grave, Vile Entomber each load one fatty. Fauna Shaman and Formidable Speaker are loot outlets that need a creature already in hand.\n- It bites early: Meren returns MV <= counters, counters come from deaths; turns 1-3 have few deaths, so the yard is fed only by loaders and Supplier — the window where Jarad is small and Meren has little to return.\n- Later the deck makes its own fuel: every sacrificed body is a card in the yard. \"Mill vs creatures dying\" is turn-dependent, not global.\n- Study 001 holds only \"no games logged\" (S-a1febab6-01).\n- The companion has no self-mill/reanimator section. Nearest: strategy:deckbuilding.ratios (\"a graveyard deck legitimately runs 5 draw\"; counts come \"from the deck's actual failure modes\", not a template).\n\n(2) Slots and kind (argument; no web source).\n- Three or four volume slots, not a package (strategy:conversion.payoff-density; strategy:deckbuilding.ratios).\n- Repeatable over one-shot, cheap bodies over spells: a cheap body that mills on ETB/death is mill + fodder + a Meren re-buy at 1-2 counters (strategy:aristocrats: fodder is \"tokens, cheap bodies, recursion\"; Supplier is that shape).\n- Candidates (card-search, BG; coverage and Forge unchecked): Aftermath Analyst (2 MV, mill 3 on ETB); Skull Prophet (dork + tap: mill 2; could replace Llanowar Elves at no net slot cost); Ripples of Undeath (2 MV enchantment, mill 3 each turn, pay {1} and 3 life to take a card; survives a creature wipe per strategy:conversion.durability; a hidden draw slot); Grisly Salvage (instant, mills ~4, finds a creature).\n- Skip one-shots beyond Takenuma. Mill is not free (strategy:deckbuilding.ratios: one card filling two functions can hide a cost).\n\n(3) Most expendable role (argument).\n- The overlapping protection/hedge pile: Tamiyo's Safekeeping, Golgari Charm, Heroic Intervention all \"keep the engine alive\"; the goldfish cannot see this role. strategy:aristocrats.wipe-insurance supports one wipe-recovery piece, not three. Trim one; keep Intervention (free).\n- Second: generic card flow (Sylvan Library or Skullclamp); Skullclamp pays through deaths, keep it.\n- Bojuka Bog hurts a yard deck but is a land slot; land-for-land is fine at 35, never below.\n- Never-cut list stays; no Game Changers added.\n\nTest: `try meren-recursion --out \"Tamiyo's Safekeeping\" --in \"Aftermath Analyst\" --each`, coverage line first; the goldfish has no removal or opponents, so it cannot grade the cut. The real test is play: log whether the yard was thin on turns 3-5.\n\nopen: a /research-strategy topic on self-mill and graveyard enablers (the companion has nothing); does the goldfish model Meren's counters and mill triggers? (model-coverage before any try).",
+      "cites": {
+        "facts": [
+          "S-a1febab6-01"
+        ],
+        "strategy": [
+          "strategy:aristocrats",
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:conversion.durability",
+          "strategy:conversion.payoff-density",
+          "strategy:deckbuilding.ratios"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T20:25:50-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "slice": "study 001 facts; deck-audit; deck-facts; the pilot's words; standing keeps",
+      "text": "# deck-doctor — MODE prescribe — meren-recursion\n\ndecklist sha256: `0a7a970915ae0abb8e6fb129736693e1ad6cd040301016e93069b8486bfdf9e1`\n\n> it feels a little light on the milling aspect. the plan is to play cards from the graveyard primarily... we need to fill the graveyard faster than casting creatures and them dying\n\n## Reading\n\nThe premise holds. I read the oracle text of all 97 entries. Twelve cards put cards other than themselves into the yard. Seven are one-shot or targeted: Entomb, Buried Alive, Unmarked Grave, Vile Entomber, Formidable Speaker, Takenuma (channel) and Underground Mortuary (surveil 1). Only five do it more than once: Fauna Shaman and Yawgmoth (one discarded card per activation), Stitcher's Supplier (on each Meren return), Altar of Dementia (spends a creature each time) and Grist (only after it flips). So besides deaths, the yard grows by about one precise card a turn. The fix is cheap bodies that mill when they enter or attack. Meren returns them for 2-3 experience every end step, so each one fills the yard again and is fodder again. They replace the parts of the deck with the most redundancy (token fodder, edicts, spare removal at 20 copies against a target of 8). The engine and the pilot's keeps stay as they are.\n\n## Axes engaged\n\n- **interaction** = 20 (strength): The target is 8, so 20 is well over. This is the surplus that pays for two of the swaps. Bone Splinters and Savra both count toward it.\n- **interaction-breadth** = 5 (adequate): One card covers the graveyard class: Scavenging Ooze (by_class graveyard: 1). That is why cutting the Ooze is painful. By the audit's heuristic, breadth would fall to 4 of 5, with Bojuka Bog left as a one-shot land answer.\n- **card-advantage** = 2 (weakness): The axis counts only Dark Prophecy and Skullclamp, and it misses Yawgmoth, Archon and two lands. Even so, it rules out dredge: Stinkweed Imp mills by giving up draws, and draws are the short resource. Satyr Wayfinder and Six each hand you a land, so they add a card rather than cost one.\n\n## Cut candidates (least contribution first)\n\n### Tendershoot Dryad — contested\n- why: Five mana for 1/1 Saprolings. Tokens never go to the yard as cards. Fodder is the most redundant class in the 99: Bitterblossom, Jadar, Ophiomancer, Scute Swarm, Woe Strider, Reassembling Skeleton, Ozox, Pawn of Ulamog's Spawn and Grave Titan all make or are recurring bodies.\n- cost of cutting: The only token maker that makes a body in every player's upkeep whatever is on board (Ophiomancer also triggers each upkeep, but only while you control no Snake), about four bodies a round once it is down. Those deaths feed Dark Prophecy and Zulaport. Goldfish (Dryad out, Satyr Wayfinder in, 10,000 paired games): experience at turn 7 falls from 4.22 to 4.07 [-0.18, -0.12]. Killed by turn 10 rises from 86.6% to 86.9% [+0.2, +0.6]. The goldfish reads Wayfinder as a body only, because it does not model mill.\n- orphans stack: none (no stacks/ for this deck)\n\n### Bone Splinters — contested\n- why: A sorcery that needs a body and a target. Interaction sits at 20 against a target of 8. The sac-to-kill job is also done by Blasting Station, Yawgmoth, Cavalier of Night, Skyfisher Spider and Grave Pact.\n- cost of cutting: One of the 'outlets that kill' the pilot added in V23, and the cheapest one: a single black mana. Interaction drops to 19. The goldfish cannot read it (INVISIBLE), so no figure exists for this cut.\n- orphans stack: none (no stacks/ for this deck)\n\n### Savra, Queen of the Golgari — contested\n- why: Does nothing on entering or dying, so Meren's loop gets nothing from returning her. Her edict needs a black sacrifice and 2 life, and Grave Pact already turns every one of our deaths into an edict.\n- cost of cutting: With Grave Pact out, a black sacrifice is two edicts per opponent instead of one. That is the edict lock's redundancy if Grave Pact is answered. Green sacrifices no longer gain 2 life, which partly offsets Bitterblossom and Dark Prophecy. Interaction drops to 19.\n- orphans stack: none (no stacks/ for this deck)\n\n### Scavenging Ooze — painful\n- why: It exiles graveyard cards, and its best target is often our own yard. In a deck whose plan is casting from the yard, it pulls against the plan.\n- cost of cutting: The audit credits it as the deck's only graveyard-class answer (interaction-breadth graveyard: 1). Without it, breadth falls to 4 of 5 by the heuristic, with Bojuka Bog left as a one-shot land answer. It is also the deck's only instant-speed, repeatable answer to an opposing reanimator, and it gains life.\n- orphans stack: none (no stacks/ for this deck)\n\n### Blasting Station — painful\n- why: Next-weakest for this question: three mana, no yard contribution.\n- cost of cutting: The only outlet that deals damage to any target. It untaps on every creature entering, so it is a removal engine with the token makers. The pilot named it in V23: 'we need sac outlets to kill creatures'. NOT recommended this round. It is listed only so the pilot can see it was considered.\n- orphans stack: none (no stacks/ for this deck)\n\n## Adds, ranked\n\n1. **Satyr Wayfinder** ← cut **Tendershoot Dryad** (closes: graveyard fill (engine component not yet declared in goldfish_targets.json); source: pool; bracket 3→3)\n   {1}{G}. On entering it reveals four, puts a land in your hand and the rest in the yard. Its mana value is 2, so from 2 experience Meren returns it to the battlefield every end step: about three more cards in the yard each turn, plus a land, on a body any free outlet eats. It adds a card rather than costing one. It is on the deck's Golgari pool shelf.\n\n2. **Six** ← cut **Bone Splinters** (closes: graveyard fill (engine component not yet declared in goldfish_targets.json); source: pool; bracket 3→3)\n   {2}{G}, a 2/4 reach. Whenever it attacks, it mills three and you may put a land into your hand, which fits the swing-first plan. During your turn, nonland permanent cards in your yard have retrace: cast them from the yard by discarding a land as an extra cost. That is the pilot's 'play cards from the graveyard' read literally. Every creature cast this way also flips Grist. No Game Changer. No line in combo_details completes with the 99; the nearest needs Myr Retriever, which is not in the deck.\n\n3. **Nyx Weaver** ← cut **Savra, Queen of the Golgari** (closes: graveyard fill (engine component not yet declared in goldfish_targets.json); source: pool; bracket 3→3)\n   {1}{B}{G}. Mills two in every one of your upkeeps without spending a creature or mana, which among the current twelve only Grist's +1 does, and only after Grist flips. Late in the game, {1}{B}{G} and exiling it returns any card from the yard to your hand: a spent Reanimate, Demonic Tutor or Grave Pact. Mana value 3, so Meren returns it from 3 experience. Goldfish (Savra out): killed by turn 10 rises from 86.6% to 87.0% [+0.3, +0.6] and stall falls from 10.3% to 9.7% [-0.8, -0.4]. That reads the body only.\n\n4. **Mire Triton** ← cut **Scavenging Ooze** (closes: graveyard fill (engine component not yet declared in goldfish_targets.json); source: pool; bracket 3→3)\n   {1}{B}, deathtouch. On entering it mills two and gains 2 life. Mana value 2, so it is a Meren end-step return from 2 experience, and the life offsets Bitterblossom and Dark Prophecy. A single black pip, because black is the deck's short colour (colour-sources -1). Goldfish (Ooze out): better on extra cards by turn 8 and experience at turn 7, with no row worse.\n\n5. **NO CHANGE** (closes: —; source: prompt)\n   Ranks 1-4 add four repeatable fillers to a deck that has five, and they stay inside the pilot's V23 balance. A fifth swap would have to cut Blasting Station or the combo or fodder keeps. Underrealm Lich is the best fifth: every draw becomes look at three, keep one, bin two, and it is not a Game Changer. Its only cut is Blasting Station, which costs the only damage outlet. Hold it until the four have been played.\n\n## Open questions\n\n- [goldfish] The goldfish does not model mill, retrace, dredge or surveil: no goldfish file contains them as an effect. So every row on Satyr Wayfinder, Six, Nyx Weaver and Mire Triton measures their bodies, not their job. Should a graveyard-size channel and a 'yard fill drawn' target be declared? — This question is about the size of the yard, and no instrument reads it. Without the channel, a null on these adds is not evidence.\n- [goldfish] goldfish_targets.json's engine block is out of date for this list. Its groups name Starscape Cleric, Carrion Feeder, Izoni and Survival of the Fittest, none of which is in the 99. The 'free sacrifice outlet' group finds 4 cards while the 99 runs more (Viscera Seer, Woe Strider, the three altars, High Market, Phyrexian Tower, Yawgmoth, Blasting Station). — The audit's engine block, and the thinnest component it names, are computed from a declaration that does not describe this deck.\n- [resolve-stack] Does Six's retrace let Meren-era creatures cast from the yard flip Grist, and can a land discarded to retrace be the one Satyr Wayfinder or Six put in hand? (These are rules reads, not combos.) — Six is ranked second on the retrace read.\n\n## Gaps\n\n- No games logged (study 001 fact S-a1febab6-01), so no log entry supports or refutes 'feels light'. The premise rests on the oracle-text enumeration alone.\n- No deck_recon.json. Nothing was used about what other Meren lists run.\n- The Game Changer count: bracket_report.json lists two (Demonic Tutor, Tergrid). Survival of the Fittest is NOT in the 99; CONTEXT.md says a third went out in a budget swap. The brief's 'no 4th Game Changer' assumed three. The pilot has one Game Changer slot open, which this prescription leaves unused.\n- bracket-check runs only on the list or a branch. The bracket deltas (3 to 3) come from cards.csv game_changer flags and a combo_details by_card scan, not from bracket-check on a staged branch. Run it on the branch before propose.\n- CONTEXT.md calls Savra 'a free outlet in her own right'. Her oracle text has no sacrifice ability; that line should be corrected.",
+      "cites": {
+        "facts": [
+          "S-a1febab6-01"
+        ],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-22T20:34:42-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist",
+      "card-scout"
+    ],
+    "pilot_words": "approve, make the swap; next please (Satyr Wayfinder for Tendershoot Dryad, Six for Bone Splinters, Nyx Weaver for Savra) — no change on the Ooze, save the version",
+    "reading": "Three volume-mill slots in, per the strategist's three-to-four and the doctor's ranked adds; Mire Triton for Scavenging Ooze declined to keep the deck's only repeatable graveyard hate. No games logged (S-a1febab6-01); the goldfish does not model mill, so it decided nothing.",
+    "at": "2026-11-22"
+  },
+  "slug_name": "the-deck-feels-light-on-milling-the-plan-is-to-p",
+  "facts": [
+    {
+      "id": "S-a1febab6-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "0a7a970915ae0abb8e6fb129736693e1ad6cd040301016e93069b8486bfdf9e1",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T20:23:37-08:00",
+    "facts": 1
+  }
+}

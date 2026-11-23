@@ -4,9 +4,9 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V25 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
-- **Combos:** 4 known lines (4 infinite, 0 two-card) · 246 one card short
+- **Combos:** 4 known lines (4 infinite, 0 two-card) · 245 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
 <!-- /ctx:gen summary -->
 
@@ -164,12 +164,12 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 ## Numbers
 
 <!-- ctx:gen numbers -->
-- **The goldfish — one instrument.** It reads 88 of 97 distinct cards (1 DARK, 8 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on V25, 2026-11-14. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+- **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **93%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
-- mean turn the commander is first cast: **turn 4.173**
+- mean turn the commander is first cast: **turn 4.143**
 - A FREE SACRIFICE OUTLET drawn — unlimited, no mana; the deck pays every payoff in deaths and has no other way to make one: **43%**
 - A TABLE-WIDE death drain drawn — 'each opponent loses', 3 life per death; 40 deaths closes the pod alone: **25%**
 - A SINGLE-TARGET death drain drawn — one third the rate of the group above; declared apart because the names read identically: **0%**
@@ -178,10 +178,10 @@ Goldfish, 10,000 seeded games, measured on V25, 2026-11-14. Each group below is 
 - THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build: **2%**
 - A REANIMATION effect drawn — the other half of Meren's job, for the bodies above her experience count: **13%**
 - A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo: **25%**
-- RAMP drawn — an accelerant of any kind: **34%**
+- RAMP drawn — an accelerant of any kind: **35%**
 - REMOVAL drawn — a spell or ability that answers a permanent: **35%**
 - A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's: **13%**
-- share of opening sevens the model would keep: **80%**
+- share of opening sevens the model would keep: **81%**
 - Colour on curve (lands + rocks): B 90%, G 94%
 <!-- /ctx:gen numbers -->
 
@@ -222,7 +222,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
-- No studies yet — a question to Jarvis opens one (`manamap pilot study meren-recursion new "<question>" [--branch B]`).
+- **001 approve** (pilot, deck-doctor, strategist, card-scout) — the deck feels light on milling — the plan is to play cards from the graveyard primarily, so the yard must fill faster than casting creature · open · “approve, make the swap; next please (Satyr Wayfinder for Tendershoot Dryad, Six for Bone Splinters, Nyx Weaver for Savra”
 <!-- /ctx:gen studies -->
 
 ## Change history
