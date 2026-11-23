@@ -250,7 +250,8 @@
     ['Cards and answers', ['extra cards by T8', 'interaction affordable @T6',
                            'finisher wheel by T8', 'wheels cast by T10',
                            'dead wheels in hand @T5']],
-    ['Big bodies', ['a 6+ drop out by T6', 'turns saved on big bodies', 'experience @T7']]
+    ['Big bodies', ['a 6+ drop out by T6', 'turns saved on big bodies', 'experience @T7',
+                   'experience 5+ by T6', 'a 5+ drop via Meren by T6']]
   ];
   var READ_WORD = { better: 'Better', worse: 'Worse', noise: 'No call' };
 

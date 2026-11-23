@@ -122,6 +122,9 @@ ROWS = (
     ("experience @T7", "recursion", "experience_by_turn", "7", +1),
     ("a 6+ drop out by T6", "recursion", "first_fatty_by_turn", "6", +1),
     ("turns saved on big bodies", "recursion", "turns_saved", None, +1),
+    # THE PILOT'S GOAL (2026-11-23): a fatty back free through Meren by turn six.
+    ("experience 5+ by T6", "recursion", "experience_goal_by_turn", "6", +1),
+    ("a 5+ drop via Meren by T6", "recursion", "fatty_via_meren_by_turn", "6", +1),
 )
 
 #: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
@@ -159,6 +162,24 @@ METRICS = {
                 "by Meren or tutored onto it.",
         "why": "The deck's payoff is its big bodies early. The pilot named it (2026-11-07): "
                "when the fatties arrive, against the turn they could be cast.",
+    },
+    "experience 5+ by T6": {
+        "unit": "rate",
+        "scale": "against the games themselves",
+        "what": "The share of games in which Meren's experience is 5 or more by the end of "
+                "turn 6. Experience is the player's: our creatures dying while she is out, "
+                "Toph's landfall, proliferate, each through Winding Constrictor.",
+        "why": "The pilot's goal (2026-11-23): a 5-6 drop back to the battlefield through "
+               "experience by turn six. Five is the cheapest fatty she returns free.",
+    },
+    "a 5+ drop via Meren by T6": {
+        "unit": "rate",
+        "scale": "against the games themselves",
+        "what": "The share of games in which Meren's end step put a creature of mana value "
+                "5 or more onto the battlefield by the end of turn 6. Casts, reanimation "
+                "spells and tutors do not count here; 'a 6+ drop out by T6' counts them.",
+        "why": "The goal itself, by its own route: the fatty returned free by experience, "
+               "not the one Reanimate or a hard cast puts out.",
     },
     "turns saved on big bodies": {
         "unit": "mean",
@@ -2186,7 +2207,8 @@ ROW_GROUPS = (
     ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
                            "finisher wheel by T8", "wheels cast by T10",
                            "dead wheels in hand @T5")),
-    ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7")),
+    ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7",
+                    "experience 5+ by T6", "a 5+ drop via Meren by T6")),
 )
 
 ROW_KEY = ("No call: smaller than this run can resolve, which is not the same as no "

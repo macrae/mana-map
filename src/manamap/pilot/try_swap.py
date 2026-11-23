@@ -31,6 +31,7 @@ staged branch is always one somebody looked at.
 """
 import hashlib
 import json
+from pathlib import Path
 
 from manamap import config
 from manamap.pilot import deck_branch, protected
@@ -223,8 +224,12 @@ def apply_swaps(slug, branch, swaps):
 
 def _champion_key(slug, branch, iterations, seed):
     from manamap.pilot import diagnostic, goldfish
+    # The reading is diagnostic.py's arithmetic over the games, so its source is an
+    # input: a new paired row (2026-11-23) must not be served from a cached reading
+    # that never computed it, which would print the row as absent on both arms.
+    reading_code = hashlib.sha256(Path(diagnostic.__file__).read_bytes()).hexdigest()
     parts = [slug, branch or "", str(iterations), str(seed), json.dumps(diagnostic.HARNESS, sort_keys=True),
-             goldfish.model_version()]
+             goldfish.model_version(), reading_code]
     for name in ("cards.json",):
         p = deck_dir(slug, branch) / name
         parts.append(hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else "")

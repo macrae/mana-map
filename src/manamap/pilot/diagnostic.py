@@ -679,9 +679,22 @@ def _two_stalls(r):
     return 1 if any(xs[i] and xs[i + 1] for i in range(i0, len(xs) - 1)) else 0
 
 
-def _first_big(r, mv):
-    """The turn the first creature of mana value `mv`+ entered, or 99 (2026-11-07)."""
-    return min((t for m, t, _route in r.get("big_arrivals") or () if m >= mv), default=99)
+def _first_big(r, mv, route=None):
+    """The turn the first creature of mana value `mv`+ entered, or 99 (2026-11-07);
+    with `route`, only an arrival by that route (cast, meren, reanimate, tutor)."""
+    return min((t for m, t, rt in r.get("big_arrivals") or ()
+                if m >= mv and (route is None or rt == route)), default=99)
+
+
+#: THE PILOT'S GOAL (2026-11-23): a 5-6 drop onto the battlefield THROUGH MEREN'S
+#: EXPERIENCE by turn six. The threshold is the cheapest fatty she can return free.
+EXPERIENCE_GOAL = 5
+EXPERIENCE_GOAL_TURN = 6
+
+
+def _experience_at_least(r, n, turn):
+    xs = r.get("experience_by_turn")
+    return None if xs is None else (1 if len(xs) >= turn and xs[turn - 1] >= n else 0)
 
 
 def _turns_saved(r):
@@ -704,11 +717,18 @@ def recursion(rows):
     n = len(rows)
     T = range(len(rows[0]["experience_by_turn"]))
     first6 = [_first_big(r, 6) for r in rows]
+    via_meren = [_first_big(r, EXPERIENCE_GOAL, "meren") for r in rows]
     return {
         "experience_by_turn": {str(t + 1): _mean_cell([r["experience_by_turn"][t] for r in rows])
                                for t in T},
+        "experience_goal_by_turn": {
+            str(t + 1): _rate(sum(1 for r in rows
+                                  if r["experience_by_turn"][t] >= EXPERIENCE_GOAL), n)
+            for t in T},
         "first_fatty_by_turn": {str(t + 1): _rate(sum(1 for f in first6 if f <= t + 1), n)
                                 for t in T},
+        "fatty_via_meren_by_turn": {
+            str(t + 1): _rate(sum(1 for f in via_meren if f <= t + 1), n) for t in T},
         "turns_saved": _mean_cell([_turns_saved(r) for r in rows]),
         "basis": ("a big body is a creature of mana value 5+; its route is cast, meren (her end "
                   "step), reanimate or tutor; its curve turn is the first turn THIS game's mana "
@@ -756,6 +776,12 @@ PER_GAME = {
         lambda r: None if "big_arrivals" not in r else (1 if _first_big(r, 6) <= 6 else 0),
     ("recursion", "turns_saved", None):
         lambda r: None if "big_arrivals" not in r else _turns_saved(r),
+    # The pilot's goal (2026-11-23): Meren returning a fatty FREE by turn six.
+    ("recursion", "experience_goal_by_turn", str(EXPERIENCE_GOAL_TURN)):
+        lambda r: _experience_at_least(r, EXPERIENCE_GOAL, EXPERIENCE_GOAL_TURN),
+    ("recursion", "fatty_via_meren_by_turn", str(EXPERIENCE_GOAL_TURN)):
+        lambda r: None if "big_arrivals" not in r else
+        (1 if _first_big(r, EXPERIENCE_GOAL, "meren") <= EXPERIENCE_GOAL_TURN else 0),
 }
 
 
