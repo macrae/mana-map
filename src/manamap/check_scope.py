@@ -26,7 +26,8 @@ two long tiers run side by side:
                                                             (`manamap.test_impact`), the
                                                             fleet loops on the changed +
                                                             representative decks   ~1-4 min
-    harness  Makefile, pyproject, conftest.py, core_contracts, report_plugin, repo_tree,
+    core     tests/core_contracts.py                       -> core + unit           ~2 min
+    harness  Makefile, pyproject, conftest.py, report_plugin, repo_tree,
              .mcp.json                                    -> core + unit + isolated ~3 min
     ci       .github/**                                   -> the doc guards       ~10 s
     full     any path not listed above                    -> everything          ~22 min
@@ -74,11 +75,14 @@ _VIZ_TEST = re.compile(r"^tests/(test_viz_[^/]*\.py|conftest_viz\.py)$")
 #: full run covers the rest. `config.py` moved to `python`: `test_impact` sends it to the
 #: whole tier anyway, since every producer reads its constants at import.
 _HARNESS = re.compile(r"^(Makefile|pyproject\.toml|setup\.(py|cfg)|tests/conftest\.py"
-                      r"|tests/core_contracts\.py"
+
                       r"|tests/report_plugin\.py|tests/repo_tree\.py|\.mcp\.json)$")
 _CI = re.compile(r"^\.github/")
+#: The core's list: it can only change which tests carry the `core` mark — the smoke run
+#: and the unit tier see that, nothing else does (a list edit cost a 16-minute prepush).
+_CORE_LIST = "tests/core_contracts.py"
 
-AREAS = ("full", "harness", "python", "viz", "data", "decks", "agents", "plugin", "ci", "docs")
+AREAS = ("full", "harness", "core", "python", "viz", "data", "decks", "agents", "plugin", "ci", "docs")
 
 DOC_GUARDS = ["tests/test_docs_counts.py", "tests/test_docs_section_count.py"]
 PLUGIN_DIR = "tools/claude-plugins/job-band"
@@ -102,6 +106,7 @@ DECK_TESTS = ["tests/test_pilot_tracked_artifacts_validate.py",
 #: page; the regression tier is where a corpus or pilot change shows.
 AREA_TIERS = {
     "harness": ["smoke", "unit", "unit-isolated"],
+    "core": ["smoke", "unit"],
     "ci": ["docs"],
     "docs": ["docs"],
     "decks": ["decks", "docs"],
@@ -189,6 +194,8 @@ def area_of(path):
     """The area one changed path belongs to (see the module docstring)."""
     if _HARNESS.match(path):
         return "harness"
+    if path == _CORE_LIST:
+        return "core"
     if _CI.match(path):
         return "ci"
     if _DECK_PATH.match(path) or path in _DECK_DERIVED:
@@ -239,6 +246,7 @@ def classify(paths):
     decks = sorted({d for p in areas.get("decks", []) if (d := _deck_of(p))})
     tiers = tiers_for(set(areas))
     selected = select_tests(areas)
+    unit_whole = "core" in areas
     if selected is not None:
         # A NARROWED run no longer holds the named-file tiers it subsumed: the deck checks
         # and the doc guards come back whenever their area moved.
@@ -259,6 +267,8 @@ def classify(paths):
         scope, shown = "decks", "only fleet-derived files changed"
     plan = _plan(scope, areas, decks, shown, tiers)
     plan["selected"] = selected
+    if unit_whole:
+        plan["unit_whole"] = True                      # a core-list edit: the whole unit tier, nothing wider
     return plan
 
 
@@ -271,8 +281,8 @@ def select_tests(areas):
     narrows through `manamap.test_impact`; a `viz` edit adds the `test_viz_*` files
     (their unit-tier tests: cache busts, page specs — the browser tier renders the rest).
     A harness edit, a data edit, or a path the selector cannot place returns None."""
-    narrowable = {"python", "viz", "docs", "agents", "decks", "ci"}
-    if set(areas) - narrowable or not ({"python", "viz"} & set(areas)):
+    narrowable = {"python", "viz", "docs", "agents", "decks", "ci", "core"}
+    if set(areas) - narrowable or not ({"python", "viz", "core"} & set(areas)):
         return None
     out = set()
     if "python" in areas:
@@ -328,6 +338,8 @@ def tier_command(tier, plan, paired=False):
     if tier == "smoke":
         return ["make", "smoke"]
     if tier == "unit":
+        if plan.get("unit_whole"):
+            return ["make", "test"]
         if selected is not None:
             return [py, "-m", "pytest", "-m", "unit", *selected] if selected else None
         return ["make", "test"]

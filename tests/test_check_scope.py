@@ -153,7 +153,7 @@ def test_the_harness_runs_the_unit_tier_and_its_isolation_proof_and_an_unknown_p
     and its isolation proof are what can see that; the nightly run covers the fleet. A
     path this module has never heard of is still not a reason to run less."""
     for p in ("Makefile", "pyproject.toml", "tests/conftest.py", "tests/report_plugin.py",
-              ".mcp.json", "tests/core_contracts.py"):
+              ".mcp.json"):
         plan = cs.classify([p])
         assert plan["scope"] == "harness", (p, plan)
         assert plan["tiers"] == ["smoke", "unit", "unit-isolated"], p
@@ -475,3 +475,16 @@ def test_a_narrowed_regression_run_keeps_the_changed_decks_and_the_representativ
     assert k == "not gishath", k
     for slug in cs.REPRESENTATIVE_DECKS:
         assert (cs.REPO / "data" / "decks" / slug).is_dir(), slug
+
+
+def test_a_core_list_edit_runs_the_core_and_the_unit_tier_and_nothing_wider(two_files):
+    """`core_contracts.py` only moves the `core` mark; a 16-minute prepush for a list edit
+    was the harness rule over-reaching."""
+    plan = cs.classify(["tests/core_contracts.py"])
+    assert plan["scope"] == "core" and plan["tiers"] == ["smoke", "unit"]
+    assert cs.commands(plan) == [["make", "smoke"], ["make", "test"]]
+    plan = cs.classify(["tests/core_contracts.py", "src/manamap/pilot/bracket.py"])
+    cmds = cs.commands(plan)
+    assert ["make", "test"] in cmds and any("regression and not regen" in c for c in cmds)
+    reg = next(c for c in cmds if "regression and not regen" in c)
+    assert reg[-2:] == ["tests/test_a.py", "tests/test_b.py"], "the python change still narrows regression"

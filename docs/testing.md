@@ -63,7 +63,8 @@ an AREA, and runs the union of the tiers those areas can break:
 | **agents** | `.claude/**` | the unit tier + the doc guards | 1 min |
 | **plugin** | `tools/claude-plugins/**` | `claude plugin test` | 5 s |
 | **python** | `src/manamap/**`, `tests/**`, `tools/*.py` | the core, then the unit and regression tests the change reaches; per-deck fleet loops only for the decks the push moved plus `REPRESENTATIVE_DECKS` (sharknado, edgar-vampires) | 1–4 min |
-| **harness** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `core_contracts.py`, `report_plugin.py`, `repo_tree.py`, `.mcp.json` | the core, the unit tier, its isolation proof | 3 min |
+| **harness** | `Makefile`, `pyproject.toml`, `tests/conftest.py`, `report_plugin.py`, `repo_tree.py`, `.mcp.json` | the core, the unit tier, its isolation proof | 3 min |
+| **core** | `tests/core_contracts.py` | the core and the unit tier — the list only moves the `core` mark | 2 min |
 | **ci** | `.github/**` | the doc guards | 10 s |
 | **full** | any path not listed above | unit, isolated, regression without the regen, browser | 22 min |
 
