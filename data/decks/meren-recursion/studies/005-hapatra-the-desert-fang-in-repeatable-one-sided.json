@@ -1,0 +1,127 @@
+{
+  "id": "005",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes out, mindful of the creature curve and how fast Meren gets experience — keep the 1-4 drops and token makers that fill early turns",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Hapatra, the Desert Fang"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Hapatra, the Desert Fang"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "slice": "study 005 facts; deck-audit; deck-facts; the pilot's curve rule; creature curve",
+      "text": "# deck-doctor — prescribe, study 005: Hapatra, the Desert Fang in; which ONE out?\n\nDeck: meren-recursion (V26, 35 lands, bracket floor 3). Read-only. Sources: `study show 005 --facts`, `deck-audit`, `deck-facts`, `cards.json`, `CONTEXT.md`, `try` (x4), `card-dossier`.\n\n## Reading\nHapatra is a 5-drop whose enter trigger Meren re-buys at 5 experience. The slot it competes with is the other five-mana creature that only kills on entering, Shriekmaw. Hapatra beats it on every count once the yard holds a fatty: one target per opponent instead of one, no nonblack/nonartifact limit, and counters get past indestructible. Cut Shriekmaw. It is a real but small loss, not a free one.\n\n## Evidence\n- No games logged (`deck-notes list`: no entries). There is no log to lean on. That is a gap.\n- No stack artifacts exist for this deck, so no cut below orphans a verified line (`orphans_stack: []` for all three).\n- Audit, interaction: 18 copies (target >= 8). Shriekmaw is in the list. Hapatra is tagged `removal:debuff`, so the count holds at 18. Removal is the surplus axis. The pilot said so at V23: \"removal was the surplus axis\".\n- Audit, threat-density: 9 copies (target >= 3). Shriekmaw is one of the 9 (fear, tagged combat). Hapatra carries no wincon tag, so the count goes to 8. That is still far over target.\n- Enumerated, the in-deck creatures that kill a creature on entering (from cards.json oracle text): Shriekmaw (5, one target, nonblack/nonartifact), Cavalier of Night (5, costs another creature), Noxious Gearhulk (6, one target), Massacre Wurm (6, -2/-2 to their side), Archon of Cruelty (8, edict), Skyfisher Spider. Only Shriekmaw sits at Hapatra's mana value with a strictly narrower version of the same job.\n- `try`, Shriekmaw out / Hapatra in: GOLDFISH READ \"no call\" on every row. Coverage: both cards are seen. The goldfish has no opponent creatures, so it cannot value either removal trigger. This null is not evidence for or against. It only shows the swap costs nothing the model can measure: experience @T7 is 4.08 -> 4.08, a 6+ drop out by T6 is 18.3% -> 18.3%, and the colour check is unchanged (B -1 before and after).\n- `try`, Noxious Gearhulk out: \"worse\" (a 6+ drop out by T6 18.3% -> 17.1%, [-1.4, -1.0]). `try`, Massacre Wurm out: a trade (damage @T10 worse, a 6+ drop out by T6 18.3% -> 16.9%, experience @T7 better). The goldfish did not decide this. The pilot's words and the overlap did.\n\n## Ranked cuts\n\n1. **Shriekmaw** (PICK). Difficulty: contested.\n   - Why: Hapatra does the same job at the same mana value, and Meren reaches her at the same experience. It hits up to three creatures with no colour or artifact limit.\n   - Cost of cutting: you lose the {1}{B} evoke. That is a sorcery-speed kill on turn 2-3, and the evoked body dying gives Meren an experience counter. Hapatra has no cheap mode, and her X is 0 on an empty yard, so the early answer is gone. You also lose a fear attacker (threat-density 9 -> 8). It is not `painful`, because Deadly Rollick, Assassin's Trophy and Golgari Charm still cover the early answers.\n   - orphans_stack: []\n\n2. **Massacre Wurm**. Difficulty: painful.\n   - Why: it overlaps Hapatra as one-sided creature removal, and it sits a mana higher.\n   - Cost of cutting: it is one of only two one-sided sweepers. The pilot brought it back at V22 on purpose. It also carries the drain tax that goes with Kokusho and the edicts. The goldfish reads it worse on damage @T10 and on 6+ drops by T6.\n   - orphans_stack: []\n\n3. **Deadly Rollick**. Difficulty: painful.\n   - Why: it is a noncreature answer that Hapatra makes partly redundant.\n   - Cost of cutting: it is free instant-speed exile whenever Meren is out, the deck's best answer to an indestructible or recursive threat. Cutting it also ADDS a creature to the top end (39 -> 40 creatures, 5+ count 11 -> 12). That works against the pilot's curve constraint.\n   - orphans_stack: []\n\nNot ranked:\n- Noxious Gearhulk: the pilot said \"Noxious Gearhulk is dope!\", and the goldfish reads its cut as worse.\n- Cavalier of Night: the pilot said \"Cavalier of Night is great!\"\n- Kokusho, Gray Merchant, Grave Titan, Sheoldred and Archon: none of them overlaps the removal job.\n- The protection cards: weaker options exist.\n\n## The swap, in one line\nShriekmaw for Hapatra keeps the 5+ creature count at 11 (five-drops 5 -> 5; 6:4, 7:1 and 8:1 unchanged). The early curve 1:5 / 2:10 / 3:8 / 4:5 is untouched. The deck still has 39 creatures and 35 lands. The hidden cost is that the evoke was a two-mana play.\n\n## Verdict\nCHANGE: Shriekmaw out, Hapatra in. This is a clear upgrade on what the card is for, which is a removal trigger Meren repeats. Its one real cost is the early evoke.\n\n## Open questions\n- Is Hapatra's X large enough by the time Meren can return her? (settled_by: goldfish or table play.) Her value rests on a 6+ card being in the yard. Entomb, Buried Alive and the mill package make that likely, but nothing measures it.\n- Does the deck miss the turn-2 evoke kill against the pod's aggro decks? (settled_by: table play, then the log.) This is the one cost of the pick, and no instrument can see it.\n\n## Gaps\n- No captain's log entries, so this answer has no game evidence.\n- No dated recon (`deck_recon.json` is absent).\n- The goldfish has no opponent creatures and cannot price either removal trigger.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-22T22:00:09-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-005.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's a clear line here ... it feels like Hapatra is the stronger, meaner, card. — yes, make the swap",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "hapatra-the-desert-fang-in-repeatable-one-sided",
+  "facts": [
+    {
+      "id": "S-88485ede-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-88485ede-02",
+      "kind": "oracle",
+      "text": "Legendary Creature — Human Cleric · {2}{B}{B}{G} — When Hapatra enters, for each opponent, put X -1/-1 counters on up to one target creature that player controls, where X is the greatest mana value among cards in your graveyard.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Hapatra, the Desert Fang"
+    },
+    {
+      "id": "S-88485ede-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Noxious Gearhulk (0.91), Gray Merchant of Asphodel (0.87), Toph, Earthbending Master (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Hapatra, the Desert Fang",
+      "neighbours": [
+        {
+          "name": "Noxious Gearhulk",
+          "score": 0.9098
+        },
+        {
+          "name": "Gray Merchant of Asphodel",
+          "score": 0.8741
+        },
+        {
+          "name": "Toph, Earthbending Master",
+          "score": 0.8612
+        }
+      ]
+    },
+    {
+      "id": "S-88485ede-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Hapatra, the Desert Fang",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Hapatra, the Desert Fang"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Hapatra, the Desert Fang",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Hapatra, the Desert Fang",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Hapatra, the Desert Fang",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "48daf86b662921f00771091bd81712e86a77f2b319bc0783b537f8fa6405292d",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T21:56:55-08:00",
+    "facts": 4
+  },
+  "decided_on_decklist_sha256": "2aae8b5cbb02b574b67eea01ed29f9f9ff13a760587204a0888b25415c9e7f0e"
+}

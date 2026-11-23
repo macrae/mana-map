@@ -21,11 +21,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -116,8 +120,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 3,
-      "out": 3,
+      "add": 4,
+      "out": 4,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -389,7 +393,7 @@
         },
         {
           "name": "Shriekmaw",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skullclamp",
@@ -526,8 +530,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 17,
-      "out": 17,
+      "add": 18,
+      "out": 18,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -815,7 +819,7 @@
         },
         {
           "name": "Shriekmaw",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Skullclamp",
@@ -1436,6 +1440,28 @@
   ],
   "studies": [
     {
+      "id": "005",
+      "question": "Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes out, mindful of the creature curve and how fast Meren gets experience — keep the 1-4 drops and token makers that fill early turns",
+      "branch": null,
+      "file": "005-hapatra-the-desert-fang-in-repeatable-one-sided.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's a clear line here ... it feels like Hapatra is the stronger, meaner, card. — yes, make the swap",
+      "decided_at": "2026-11-22",
+      "opened": "2026-11-22",
+      "swap": {
+        "out": null,
+        "in": "Hapatra, the Desert Fang"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "004",
       "question": "Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the army is fodder, and it punishes extra draws; which card comes out?",
       "branch": null,
@@ -1521,8 +1547,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "48daf86b6629",
-    "list_version": 26,
+    "list_sha": "2aae8b5cbb02",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1669,7 +1695,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.143,
+          "value": 4.165,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1709,7 +1735,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats' by turn six",
@@ -1733,7 +1759,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo": {
-          "value": 25,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo' by turn six",
@@ -1757,7 +1783,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's": {
-          "value": 13,
+          "value": 14,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's\" by turn six",
@@ -1834,15 +1860,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.868,
-            "2": 2.233,
-            "3": 3.233,
-            "4": 4.096,
-            "5": 4.813,
-            "6": 5.493,
-            "7": 6.095,
-            "8": 6.676,
-            "9": 7.26
+            "10": 7.878,
+            "2": 2.231,
+            "3": 3.226,
+            "4": 4.083,
+            "5": 4.799,
+            "6": 5.486,
+            "7": 6.091,
+            "8": 6.678,
+            "9": 7.268
           },
           "tier": "data",
           "weight": "detail",
@@ -1854,14 +1880,14 @@
           "value": {
             "1": 0.999,
             "10": 0.541,
-            "2": 0.998,
-            "3": 0.915,
-            "4": 0.803,
-            "5": 0.69,
-            "6": 0.608,
-            "7": 0.554,
-            "8": 0.522,
-            "9": 0.526
+            "2": 0.997,
+            "3": 0.912,
+            "4": 0.8,
+            "5": 0.691,
+            "6": 0.613,
+            "7": 0.553,
+            "8": 0.529,
+            "9": 0.53
           },
           "tier": "data",
           "weight": "detail",
@@ -1871,16 +1897,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.167,
-            "10": 13.907,
-            "2": 0.671,
-            "3": 1.261,
-            "4": 1.686,
-            "5": 2.944,
-            "6": 4.631,
-            "7": 6.565,
-            "8": 8.785,
-            "9": 11.217
+            "1": 0.164,
+            "10": 13.868,
+            "2": 0.676,
+            "3": 1.267,
+            "4": 1.67,
+            "5": 2.926,
+            "6": 4.596,
+            "7": 6.545,
+            "8": 8.736,
+            "9": 11.181
           },
           "tier": "data",
           "weight": "detail",
@@ -1890,14 +1916,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 317,
-            "1": 1459,
-            "2": 2849,
-            "3": 3001,
-            "4": 1683,
-            "5": 564,
-            "6": 120,
-            "7": 7
+            "0": 338,
+            "1": 1476,
+            "2": 2853,
+            "3": 2963,
+            "4": 1687,
+            "5": 594,
+            "6": 83,
+            "7": 6
           },
           "tier": "data",
           "weight": "detail",
@@ -1906,12 +1932,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2062,
-            "5": 7,
-            "6": 89,
-            "7": 1002,
-            "8": 2523,
-            "9": 3102
+            "10": 2005,
+            "5": 2,
+            "6": 97,
+            "7": 1045,
+            "8": 2396,
+            "9": 3198
           },
           "tier": "data",
           "weight": "detail",
@@ -1927,7 +1953,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.143,
+    "commander_mean_cast_turn": 4.165,
     "commander_cast_by_turn_6_pct": 93,
     "targets": [
       {
@@ -1948,7 +1974,7 @@
       },
       {
         "label": "RECURRING FODDER drawn — a body that returns itself, or a repeatable token maker; this is what the outlet eats",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "THE CORE TRIO drawn — an outlet, a table-wide drain and recurring fodder; the board the deck is trying to build",
@@ -1960,7 +1986,7 @@
       },
       {
         "label": "A TUTOR drawn — this deck tutors for a missing engine piece, not for a combo",
-        "by_turn_6_pct": 25
+        "by_turn_6_pct": 24
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -1972,23 +1998,23 @@
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns your own deaths into the table's",
-        "by_turn_6_pct": 13
+        "by_turn_6_pct": 14
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.686,
+      "mean_kill_turn": 8.682,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
-      "kill_by_turn_8_pct": 36,
+      "kill_by_turn_8_pct": 35,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 12,
+      "no_kill_by_max_turn_pct": 13,
       "kill_turn_histogram": {
-        "10": 2062,
-        "5": 7,
-        "6": 89,
-        "7": 1002,
-        "8": 2523,
-        "9": 3102
+        "10": 2005,
+        "5": 2,
+        "6": 97,
+        "7": 1045,
+        "8": 2396,
+        "9": 3198
       }
     }
   },
@@ -2083,10 +2109,13 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V26 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 16 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 17 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 47 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×1, research-strategy ×1, resolve-stack ×1"
