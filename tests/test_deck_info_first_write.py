@@ -18,18 +18,24 @@ SLUG = "valgavoth"
 
 @pytest.mark.regression
 @requires_deck
-def test_the_first_write_equals_the_second():
-    path = DECKS_DIR / SLUG / "info.json"
-    if not path.is_file():
+def test_the_first_write_equals_the_second(tmp_path, monkeypatch):
+    """ON A COPY (2026-11-22). It deleted the tracked `valgavoth/info.json` in place, and
+    under parallel workers `test_info_json_matches_a_fresh_run[valgavoth]` read the hole
+    — a prepush failed on a file that was fine. No test mutates a tracked deck file that
+    another worker can read."""
+    import shutil
+    src = DECKS_DIR / SLUG
+    if not (src / "info.json").is_file():
         pytest.skip(f"{SLUG} has no tracked info.json")
-    kept = path.read_bytes()
+    decks = tmp_path / "decks"
+    shutil.copytree(src, decks / SLUG)
+    monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
+    path = decks / SLUG / "info.json"
     args = type("Args", (), {"slug": SLUG, "branch": None, "write": True})()
-    try:
-        path.unlink()
-        deck_info.main(args)
-        first = json.loads(path.read_text())
-        deck_info.main(args)
-        second = json.loads(path.read_text())
-    finally:
-        path.write_bytes(kept)
+    path.unlink()
+    deck_info.main(args)
+    first = json.loads(path.read_text())
+    deck_info.main(args)
+    second = json.loads(path.read_text())
     assert first == second
+    assert (src / "info.json").is_file(), "the tracked file was never touched"
