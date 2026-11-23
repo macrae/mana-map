@@ -31,6 +31,15 @@ def _tiers(*paths):
 
 # ── the areas ────────────────────────────────────────────────────────────
 
+@pytest.fixture
+def two_files(monkeypatch):
+    """The selector stubbed to two test files: these tests are about the PLAN, and the
+    measured map under `.pytest_cache` is local state a clean checkout does not have."""
+    from manamap import test_impact
+    monkeypatch.setattr(test_impact, "affected_tests",
+                        lambda paths: ["tests/test_a.py", "tests/test_b.py"])
+
+
 def test_docs_alone_run_the_doc_guards_and_nothing_else():
     plan = cs.classify(["docs/testing.md", "README.md", "CLAUDE.md", "docs/history/x.md"])
     assert plan["scope"] == "docs" and plan["tiers"] == ["docs"]
@@ -64,44 +73,61 @@ def test_the_deck_scope_drops_only_the_other_decks():
     assert "edgar-vampires" not in pytest_cmd[pytest_cmd.index("-k") + 1]
 
 
-def test_viz_runs_the_unit_tier_and_the_browser_suite_and_no_regression():
-    """The unit tier holds the JS parse and cache-bust tests; the browser suite is
-    the only thing that renders a page. The regression tier and the fleet regen
-    cannot see a line of JS, and they were the twelve minutes a viz push paid."""
+def test_viz_runs_the_core_its_own_unit_files_and_the_browser_suite():
+    """A JS edit cannot move a Python test: the core, the `test_viz_*` unit files (cache
+    busts, page specs) and the browser suite — no whole unit tier, no regression."""
     for p in ("viz/js/shell.js", "viz/deck.html", "viz/style.css",
               "tests/test_viz_shell.py", "tests/conftest_viz.py"):
         assert cs.area_of(p) == "viz", p
     plan = cs.classify(["viz/js/shell.js", "tests/test_viz_shell.py"])
-    assert plan["scope"] == "viz" and plan["tiers"] == ["unit", "browser"]
-    assert cs.commands(plan) == [["make", "test"], ["make", "test-browser"]]
+    assert plan["scope"] == "viz" and plan["tiers"] == ["smoke", "unit", "browser"]
+    cmds = cs.commands(plan)
+    assert cmds[0] == ["make", "smoke"] and cmds[-1] == ["make", "test-browser"]
+    unit = cmds[1]
+    assert unit[:5][-2:] == ["-m", "unit"] and all(f.startswith("tests/test_viz_") for f in unit[5:])
 
 
-def test_python_runs_unit_and_regression_and_no_browser():
-    """No isolation proof for a source change: only a harness change can break it,
-    and CI runs it on every push (2026-10-29). A harness change still runs it."""
-    plan = cs.classify(["src/manamap/pilot/net_change.py", "tests/test_pilot_net_change.py",
-                        "tools/docs_index_sizes.py"])
-    assert plan["scope"] == "python"
-    assert plan["tiers"] == ["unit", "regression"]
+def test_python_runs_the_core_then_only_the_tests_it_reaches(two_files):
+    """THE MINIMUM PATH (2026-11-22): a source edit runs the core, then the unit and
+    regression tests the change can reach — not 3,700 tests and fifteen minutes."""
+    plan = cs.classify(["src/manamap/pilot/net_change.py", "tests/test_pilot_net_change.py"])
+    assert plan["scope"] == "python" and plan["selected"] == ["tests/test_a.py", "tests/test_b.py"]
+    assert plan["tiers"] == ["smoke", "unit", "regression"]
+    cmds = cs.commands(plan)
+    assert cmds[0] == ["make", "smoke"]
+    assert cmds[1][-3:] == ["unit", "tests/test_a.py", "tests/test_b.py"]
+    assert "regression and not regen" in cmds[2] and cmds[2][-2:] == ["tests/test_a.py", "tests/test_b.py"]
+
+
+def test_a_change_the_selector_cannot_place_runs_each_tier_whole(monkeypatch):
+    from manamap import test_impact
+    monkeypatch.setattr(test_impact, "affected_tests", lambda paths: None)
+    plan = cs.classify(["src/manamap/config.py"])
+    assert plan["selected"] is None
     assert cs.commands(plan) == [["make", "test"], ["make", "regression-prepush"]]
-    assert "unit-isolated" in cs.classify(["tests/conftest.py"])["tiers"]
+    plan = cs.classify(["tools/docs_index_sizes.py"])
+    assert cs.commands(plan) == [["make", "test"], ["make", "regression-prepush"]]
 
 
-def test_prepush_leaves_the_fleet_regen_to_ci_and_prepush_full_runs_it():
-    """The fleet regen is CI's rebuild-and-compare run a second time, serial, for
-    7-15 minutes; a scoped push skips it. Asking for everything still runs it."""
+def test_a_narrowed_tier_that_selects_nothing_runs_nothing(monkeypatch):
+    from manamap import test_impact
+    monkeypatch.setattr(test_impact, "affected_tests", lambda paths: [])
+    assert cs.commands(cs.classify(["src/manamap/pilot/net_change.py"])) == [["make", "smoke"]]
+
+
+def test_prepush_leaves_the_fleet_regen_to_the_nightly_run_and_prepush_full_runs_it(monkeypatch):
+    """The fleet regen is the nightly run's (and `make prepush-full`'s), serial, 7-15
+    minutes; a scoped push skips it. Asking for everything still runs it."""
+    from manamap import test_impact
+    monkeypatch.setattr(test_impact, "affected_tests", lambda paths: None)
     plan = cs.classify(["src/manamap/pilot/net_change.py"])
     assert ["make", "regression-prepush"] in cs.commands(plan)
-    assert cs.pytest_runs(plan) == 2              # unit + regression-prepush
     everything = {**plan, "everything": True}
     assert ["make", "regression"] in cs.commands(everything)
-    assert cs.pytest_runs(everything) == 3        # unit + regression (two runs)
     recipe = (cs.REPO / "Makefile").read_text()
     target = re.search(r"^regression-prepush:.*\n((?:\t.*\n)+)", recipe, re.M)
     assert target and "REGRESSION_PARALLEL" in target.group(1)
     assert "REGRESSION_SERIAL" not in target.group(1)
-    ci = (cs.REPO / ".github" / "workflows" / "test.yml").read_text()
-    assert "make regression " in ci or "make regression\n" in ci, "CI must still run the regen"
 
 
 def test_fleet_data_runs_the_regression_tier():
@@ -122,22 +148,25 @@ def test_the_plugin_runs_its_own_tests_only():
     assert cs.commands(plan) == [["claude", "plugin", "test", cs.PLUGIN_DIR]]
 
 
-def test_the_harness_itself_or_an_unrecognised_path_is_full():
-    """Nothing is scoped below a change every tier can see; and a path this module
-    has never heard of is not a reason to run less."""
-    for p in ("Makefile", "pyproject.toml", "tests/conftest.py", "src/manamap/config.py",
-              ".github/workflows/test.yml", "tests/report_plugin.py", ".mcp.json",
-              "something/new.bin", "manuals/index.html"):
-        plan = cs.classify(["data/decks/edgar-vampires/decklist.txt", p])
-        assert plan["scope"] == "full", (p, plan)
-        assert plan["tiers"] == ["unit", "unit-isolated", "regression", "browser"], p
+def test_the_harness_runs_the_unit_tier_and_its_isolation_proof_and_an_unknown_path_is_full():
+    """A harness edit changes WHICH tests run and how they are tiered — the whole unit tier
+    and its isolation proof are what can see that; the nightly run covers the fleet. A
+    path this module has never heard of is still not a reason to run less."""
+    for p in ("Makefile", "pyproject.toml", "tests/conftest.py", "tests/report_plugin.py",
+              ".mcp.json", "tests/core_contracts.py"):
+        plan = cs.classify([p])
+        assert plan["scope"] == "harness", (p, plan)
+        assert plan["tiers"] == ["smoke", "unit", "unit-isolated"], p
+    assert cs.classify([".github/workflows/test.yml"])["scope"] == "ci"
+    for p in ("something/new.bin", "manuals/index.html"):
+        assert cs.classify([p])["scope"] == "full", p
     assert cs.classify(None)["scope"] == "full"
     assert cs.classify([])["scope"] == "none" and cs.commands(cs.classify([])) == []
 
 
 def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypatch):
     monkeypatch.delenv(cs.PAIR_ENV, raising=False)
-    plan = cs.classify(["Makefile"])
+    plan = cs.classify(["something/new.bin"])
     assert cs.steps(plan) == [[["make", "test"]], [["make", "test-unit-isolated"]],
                               [["make", "regression-prepush"]], [["make", "test-browser"]]]
     assert cs.pytest_runs(plan) == 5
@@ -155,24 +184,26 @@ def test_full_is_everything_serial_by_default_and_prepush_full_runs_it(monkeypat
 
 # ── a mixed diff is the union ────────────────────────────────────────────
 
-def test_a_mixed_diff_runs_the_union_of_its_areas():
+def test_a_mixed_diff_runs_the_union_of_its_areas(two_files):
     plan = cs.classify(["viz/js/shell.js", "src/manamap/pilot/net_change.py"])
     assert plan["scope"] == "python+viz"
-    assert plan["tiers"] == ["unit", "regression", "browser"]
+    assert plan["tiers"] == ["smoke", "unit", "regression", "browser"]
     assert sorted(plan["areas"]) == ["python", "viz"]
+    assert {"tests/test_a.py", "tests/test_b.py"} <= set(plan["selected"])
+    assert any(f.startswith("tests/test_viz_") for f in plan["selected"])
     plan = cs.classify(["docs/viz.md", "viz/js/shell.js"])
-    assert plan["scope"] == "docs+viz" and plan["tiers"] == ["docs", "unit", "browser"]
-    plan = cs.classify(["Makefile", "tools/claude-plugins/job-band/hooks/register.tsx"])
+    assert plan["scope"] == "docs+viz" and plan["tiers"] == ["docs", "smoke", "unit", "browser"]
+    plan = cs.classify(["something/new.bin", "tools/claude-plugins/job-band/hooks/register.tsx"])
     assert plan["scope"] == "full" and "plugin" in plan["tiers"]
 
 
-def test_an_area_another_already_covers_adds_nothing():
-    """The deck checks and the doc guards are unit- and regression-tier tests of
-    named files, so a python change beside a decklist runs them once, not twice."""
+def test_a_narrowed_run_keeps_the_deck_checks_and_doc_guards_it_used_to_subsume(two_files):
+    """A narrowed unit or regression run may not hold the deck checks or the doc guards,
+    so a python change beside a decklist and a doc still runs both."""
     plan = cs.classify(["data/decks/heliod/decklist.txt", "src/manamap/pilot/goldfish.py",
                         "docs/pilot.md"])
-    assert plan["scope"] == "python" and plan["decks"] == ["heliod"]
-    assert plan["tiers"] == ["unit", "regression"]
+    assert plan["decks"] == ["heliod"]
+    assert plan["tiers"] == ["docs", "smoke", "unit", "decks", "regression"]
     assert "python" in plan["why"] and "decks" in plan["why"] and "docs" in plan["why"]
 
 
@@ -231,7 +262,8 @@ def test_an_explicit_base_plans_the_working_tree_alone(monkeypatch, capsys):
     assert ("diff", "--name-only", "-z", "HEAD...HEAD") in seen
     assert not any(a[:2] == ("rev-parse", "--abbrev-ref") for a in seen)
     out = json.loads(capsys.readouterr().out)
-    assert out["scope"] == "viz" and out["commands"] == ["make test", "make test-browser"]
+    assert out["scope"] == "viz"
+    assert out["commands"][0] == "make smoke" and out["commands"][-1] == "make test-browser"
     assert out["concurrent"] == []
 
 
@@ -270,13 +302,14 @@ def test_the_concurrent_runner_prints_both_outputs_in_order_and_fails_if_either_
 
 def test_a_full_run_launches_the_pair_together_when_asked_and_the_rest_one_at_a_time(monkeypatch):
     monkeypatch.setenv(cs.PAIR_ENV, "1")
+    monkeypatch.setattr(cs, "preflight", lambda plan: 0)
     launched, ran = [], []
     monkeypatch.setattr(cs.subprocess, "Popen",
                         lambda cmd, **kw: (launched.append(cmd),
                                            _FakeProc(cmd, kw["stdout"], 0, ""))[1])
     monkeypatch.setattr(cs.subprocess, "run",
                         lambda cmd, cwd=None: (ran.append(cmd), type("R", (), {"returncode": 0}))[1])
-    assert cs._run(cs.classify(["Makefile"])) == 0
+    assert cs._run(cs.classify(["something/new.bin"])) == 0
     assert ran == [["make", "test"], ["make", "test-unit-isolated"]]
     assert launched == [["make", "regression-prepush"],
                         ["make", "test-browser", "BROWSER_WORKERS=2"]]
@@ -329,7 +362,7 @@ def test_prepush_keeps_counting_a_child_whose_file_was_pruned():
     assert cs._finished_children("prepush-9", seen) == 2
 
 
-def test_the_pair_runs_under_the_prepush_row_two_children_at_once(monkeypatch):
+def test_the_pair_runs_under_the_prepush_row_two_children_at_once(monkeypatch, two_files):
     """Both halves of the pair start while `MANAMAP_JOB_PARENT` names the prepush
     row, so the band draws them side by side beneath it."""
     from manamap import progress
@@ -341,12 +374,12 @@ def test_the_pair_runs_under_the_prepush_row_two_children_at_once(monkeypatch):
 
     monkeypatch.delenv(progress.PARENT_ENV, raising=False)
     monkeypatch.setenv(cs.PAIR_ENV, "1")
+    monkeypatch.setattr(cs, "preflight", lambda plan: 0)
     monkeypatch.setattr(cs.subprocess, "Popen", fake_popen)
     monkeypatch.setattr(cs.subprocess, "run",
                         lambda cmd, cwd=None: type("R", (), {"returncode": 0})())
     assert cs.run(cs.classify(["src/manamap/pilot/x.py", "viz/x.js"])) == 0
     assert parents == [f"prepush-{os.getpid()}"] * 2
-    assert cs.pytest_runs(cs.classify(["viz/x.js"])) == 3       # unit 1 + browser 2
 
 
 # ── the preflight (2026-11-12) ───────────────────────────────────────────
@@ -430,3 +463,15 @@ def test_the_preflight_refuses_a_branch_staged_after_its_measurement(monkeypatch
     monkeypatch.setattr(restamp, "targets", lambda artifact: [("deck", None), ("deck", "b1")])
     assert cs.preflight({"scope": "decks", "tiers": ["decks"]}) == 1
     assert any("validate-net-change" in c and "b1" in c for c in calls)
+
+
+def test_a_narrowed_regression_run_keeps_the_changed_decks_and_the_representatives(two_files, monkeypatch):
+    """Per-deck fleet loops (a fresh net-change per branch, 100-350 s each) run on the decks
+    the push moved and the representatives; the nightly run takes the whole fleet."""
+    monkeypatch.setattr(cs, "all_slugs", lambda: ["edgar-vampires", "heliod", "sharknado", "gishath"])
+    plan = cs.classify(["src/manamap/pilot/net_change.py", "data/decks/heliod/decklist.txt"])
+    reg = next(c for c in cs.commands(plan) if "regression and not regen" in c)
+    k = reg[reg.index("-k") + 1]
+    assert k == "not gishath", k
+    for slug in cs.REPRESENTATIVE_DECKS:
+        assert (cs.REPO / "data" / "decks" / slug).is_dir(), slug

@@ -60,11 +60,18 @@ _DECK_DERIVED = {"data/decks/index.json"}
 _VIZ_TEST = re.compile(r"^tests/(test_viz_[^/]*\.py|conftest_viz\.py)$")
 #: The harness itself, or a constant every producer reads: nothing is scoped
 #: below a change here, because every tier can see it.
-_FULL = re.compile(r"^(Makefile|pyproject\.toml|setup\.(py|cfg)|tests/conftest\.py"
-                   r"|tests/report_plugin\.py|tests/repo_tree\.py|src/manamap/config\.py"
-                   r"|\.github/.*|\.mcp\.json)$")
+#: THE HARNESS (2026-11-22): what decides how tests are collected and run. It used to be
+#: `full` — a one-line Makefile edit ran every tier, ~22 min — but a harness edit can
+#: change WHICH tests run and how they are tiered, not what the product does: the whole
+#: unit tier plus its isolation proof is the check that can see it, and the nightly
+#: full run covers the rest. `config.py` moved to `python`: `test_impact` sends it to the
+#: whole tier anyway, since every producer reads its constants at import.
+_HARNESS = re.compile(r"^(Makefile|pyproject\.toml|setup\.(py|cfg)|tests/conftest\.py"
+                      r"|tests/core_contracts\.py"
+                      r"|tests/report_plugin\.py|tests/repo_tree\.py|\.mcp\.json)$")
+_CI = re.compile(r"^\.github/")
 
-AREAS = ("full", "python", "viz", "data", "decks", "agents", "plugin", "docs")
+AREAS = ("full", "harness", "python", "viz", "data", "decks", "agents", "plugin", "ci", "docs")
 
 DOC_GUARDS = ["tests/test_docs_counts.py", "tests/test_docs_section_count.py"]
 PLUGIN_DIR = "tools/claude-plugins/job-band"
@@ -87,22 +94,27 @@ DECK_TESTS = ["tests/test_pilot_tracked_artifacts_validate.py",
 #: edits skip it; the browser suite renders `viz/` and nothing else re-tests a
 #: page; the regression tier is where a corpus or pilot change shows.
 AREA_TIERS = {
+    "harness": ["smoke", "unit", "unit-isolated"],
+    "ci": ["docs"],
     "docs": ["docs"],
     "decks": ["decks", "docs"],
     "data": ["regression"],
-    "viz": ["unit", "browser"],
+    "viz": ["smoke", "unit", "browser"],
     "agents": ["unit", "docs"],
     "plugin": ["plugin"],
     # No isolation proof for a source change (2026-10-29): it re-ran the whole unit
     # tier (~1 min, on the critical path) to prove what only a HARNESS change can
     # break, and CI runs it on every push. `full` keeps it.
-    "python": ["unit", "regression"],
+    # THE MINIMUM PATH (2026-11-22): the core, then the unit and regression tests the
+    # change can reach (`manamap.test_impact` — a measured map, the import graph behind
+    # it). A change the selector cannot place runs each tier whole.
+    "python": ["smoke", "unit", "regression"],
 }
 #: Everything `make prepush-full` runs: both tiers, the isolation proof and the
 #: browser suite. The plugin's tests join only when the plugin changed.
 FULL_TIERS = ["unit", "unit-isolated", "regression", "browser"]
 #: Cheap and fast-failing first; the two long tiers last, side by side.
-TIER_ORDER = ["docs", "plugin", "unit", "unit-isolated", "decks", "regression", "browser"]
+TIER_ORDER = ["docs", "plugin", "smoke", "unit", "unit-isolated", "decks", "regression", "browser"]
 #: The pair that CAN run concurrently when both are in a plan — opt-in with
 #: `MANAMAP_PREPUSH_PAIR=1`. Measured 2026-10-09 on the 8-core Mac: paired, the
 #: browser suite at two workers took 15 min beside regression (7 min alone at
@@ -118,9 +130,11 @@ def pair_enabled():
 #: A tier that is a subset of others, dropped when they are all present: the deck
 #: checks and the doc guards are regression- and unit-tier tests of named files.
 _SUBSUMED = {"decks": {"unit", "regression"}, "docs": {"unit", "regression"}}
+#: The smoke run is part of every unit run that is NOT narrowed; `tier_command` drops it
+#: then, so a whole-tier run never pays for the core twice.
 #: The pytest runs each tier makes — the band's `total` for a prepush row, which
 #: counts its finished pytest children (`_finished_children`).
-PYTEST_RUNS = {"docs": 1, "plugin": 0, "unit": 1, "unit-isolated": 1, "decks": 1,
+PYTEST_RUNS = {"docs": 1, "plugin": 0, "smoke": 1, "unit": 1, "unit-isolated": 1, "decks": 1,
                "regression": 2, "browser": 2}
 #: The browser suite's workers when it shares the machine with the regression
 #: tier (`-n auto`, every core): four Chromiums beside eight pytest workers
@@ -166,8 +180,10 @@ def changed_paths(base=None):
 
 def area_of(path):
     """The area one changed path belongs to (see the module docstring)."""
-    if _FULL.match(path):
-        return "full"
+    if _HARNESS.match(path):
+        return "harness"
+    if _CI.match(path):
+        return "ci"
     if _DECK_PATH.match(path) or path in _DECK_DERIVED:
         return "decks"
     if path.startswith("data/"):
@@ -215,9 +231,17 @@ def classify(paths):
         areas.setdefault(area_of(p), []).append(p)
     decks = sorted({d for p in areas.get("decks", []) if (d := _deck_of(p))})
     tiers = tiers_for(set(areas))
+    selected = select_tests(areas)
+    if selected is not None:
+        # A NARROWED run no longer holds the named-file tiers it subsumed: the deck checks
+        # and the doc guards come back whenever their area moved.
+        wanted = {t for a in areas for t in AREA_TIERS.get(a, ()) if t in ("docs", "decks")}
+        tiers = [t for t in TIER_ORDER if t in set(tiers) | wanted]
     shown = "; ".join(f"{a}: {_some(ps)}" for a in AREAS if (ps := areas.get(a)))
     if "full" in areas:
         return _plan("full", areas, decks, f"the whole suite — {shown}", tiers)
+    if selected is not None:
+        shown += f" — {len(selected)} test file(s) reach it"
     named = sorted(areas)
     # An area the others already cover — drop it and no tier moves — adds nothing
     # to the name: a decklist beside a pilot edit is a "python" push.
@@ -226,7 +250,33 @@ def classify(paths):
     scope = "+".join(a for a in named if a not in covered) or named[0]
     if scope == "decks" and not decks:
         scope, shown = "decks", "only fleet-derived files changed"
-    return _plan(scope, areas, decks, shown, tiers)
+    plan = _plan(scope, areas, decks, shown, tiers)
+    plan["selected"] = selected
+    return plan
+
+
+def _viz_unit_files():
+    return sorted(str(p.relative_to(REPO)) for p in (REPO / "tests").glob("test_viz_*.py"))
+
+
+def select_tests(areas):
+    """The test files a change reaches, or None for "run each tier whole". `python`
+    narrows through `manamap.test_impact`; a `viz` edit adds the `test_viz_*` files
+    (their unit-tier tests: cache busts, page specs — the browser tier renders the rest).
+    A harness edit, a data edit, or a path the selector cannot place returns None."""
+    narrowable = {"python", "viz", "docs", "agents", "decks", "ci"}
+    if set(areas) - narrowable or not ({"python", "viz"} & set(areas)):
+        return None
+    out = set()
+    if "python" in areas:
+        from manamap import test_impact
+        got = test_impact.affected_tests(areas["python"])
+        if got is None:
+            return None
+        out |= set(got)
+    if "viz" in areas:
+        out |= set(_viz_unit_files())
+    return sorted(out)
 
 
 def _some(paths, n=3):
@@ -237,6 +287,12 @@ def _plan(scope, areas, decks, why, tiers=None):
     if tiers is None:
         tiers = tiers_for({scope}) if scope in AREA_TIERS or scope == "full" else []
     return {"scope": scope, "areas": areas, "tiers": tiers, "decks": decks, "why": why}
+
+
+#: The decks a narrowed regression run keeps beside the ones the push moved: the two
+#: with the most branches, stacks, channels and logged games, so a change to how decks
+#: are measured meets both a typal swarm and a draw-and-discard voltron before the push.
+REPRESENTATIVE_DECKS = ("sharknado", "edgar-vampires")
 
 
 def all_slugs():
@@ -261,12 +317,26 @@ def tier_command(tier, plan, paired=False):
     """The command one tier runs (a list, from the repo root). The Makefile is the
     one home of each tier's definition; this composes them."""
     py = sys.executable
+    selected = plan.get("selected")
+    if tier == "smoke":
+        return ["make", "smoke"]
     if tier == "unit":
+        if selected is not None:
+            return [py, "-m", "pytest", "-m", "unit", *selected] if selected else None
         return ["make", "test"]
     if tier == "unit-isolated":
         return ["make", "test-unit-isolated"]
     if tier == "regression":
         # The fleet regen is left to CI unless everything was asked for.
+        if selected is not None and not plan.get("everything"):
+            if not selected:
+                return None
+            # THE FLEET LOOPS, SCOPED (2026-11-22): a narrowed run re-simulates only the
+            # decks the push moved plus the representatives; every deck runs nightly.
+            keep = sorted(set(plan.get("decks") or []) | set(REPRESENTATIVE_DECKS))
+            k = deck_keyword(keep)
+            return [py, "-m", "pytest", "-m", "regression and not regen",
+                    "-o", "addopts=-q -n auto --dist worksteal", *(["-k", k] if k else []), *selected]
         return ["make", "regression" if plan.get("everything") else "regression-prepush"]
     if tier == "browser":
         return ["make", "test-browser"] + (
@@ -290,8 +360,13 @@ def steps(plan):
     tiers = plan_tiers(plan)
     paired = pair_enabled() and all(t in tiers for t in CONCURRENT)
     out, pair = [], []
+    narrowed = plan.get("selected") is not None
     for tier in tiers:
+        if tier == "smoke" and not narrowed and "unit" in tiers and plan.get("scope") != "harness":
+            continue                                   # a whole unit run already holds the core
         cmd = tier_command(tier, plan, paired=paired and tier in CONCURRENT)
+        if cmd is None:
+            continue                                   # a narrowed tier that selected nothing
         if paired and tier in CONCURRENT:
             pair.append(cmd)
             if len(pair) == len(CONCURRENT):
@@ -435,6 +510,15 @@ def preflight(plan):
     if rc:
         print("CHECK SCOPE — PREFLIGHT FAILED: run `manamap pilot restamp`, commit, retry")
         return rc
+    # The fleet's gates, moved here from the commit gate (2026-11-22): every tracked
+    # artifact's validator over every live deck — a push-time question, about a minute.
+    print("  $ manamap pilot deck-status --all --live   (preflight: every deck's gates)")
+    rc = subprocess.run([sys.executable, "-m", "manamap.cli", "pilot", "deck-status", "--all", "--live"],
+                        cwd=REPO, capture_output=True, text=True)
+    if rc.returncode:
+        print(rc.stdout[-2000:] + rc.stderr[-1000:])
+        print("CHECK SCOPE — PREFLIGHT FAILED: a deck's gate fails (`manamap pilot deck-status --all`)")
+        return rc.returncode
     # AN OPEN BRANCH STAGED AFTER ITS MEASUREMENT (2026-11-12): threat-v1 took three
     # swaps after `net-change --write`, so its report described a list no longer on disk,
     # and the tracked-artifact gate said so fifteen minutes into the regression tier.
@@ -481,6 +565,46 @@ def _run(plan):
     return 0
 
 
+def working_tree_paths():
+    """What the NEXT commit would carry: staged and unstaged tracked changes against HEAD."""
+    paths = set()
+    for args in (("--cached",), ()):
+        rc, out = _git("diff", "--name-only", "-z", *args)
+        if rc == 0:
+            paths.update(_nul_split(out))
+    return sorted(paths)
+
+
+def run_precommit():
+    """THE COMMIT GATE, narrowed (2026-11-22): the core always; then the unit tests the
+    working tree's python changes reach, or the whole unit tier when a change cannot be
+    placed (a harness file, config.py, a viz edit). Fleet checks stay with `prepush`."""
+    paths = working_tree_paths()
+    areas = {}
+    for p in paths:
+        areas.setdefault(area_of(p), []).append(p)
+    selected = select_tests(areas) if ({"python", "viz"} & set(areas)) else None
+    py = sys.executable
+    if not paths or set(areas) <= {"docs", "agents", "ci", "decks", "data", "plugin"}:
+        cmds = [["make", "smoke"]]
+        why = "no python change in the working tree: the core only"
+    elif selected is None:
+        cmds = [["make", "test"]]
+        why = "a change the selector cannot narrow: the whole unit tier"
+    else:
+        cmds = [["make", "smoke"]] + ([[py, "-m", "pytest", "-m", "unit", *selected]] if selected else [])
+        why = f"the core + {len(selected)} test file(s) the change reaches"
+    print(f"PRECOMMIT — {why}")
+    for c in cmds:
+        print("  $ " + _show(c))
+        rc = subprocess.run(c, cwd=REPO).returncode
+        if rc not in (0, 5):
+            print(f"PRECOMMIT — FAILED (exit {rc})")
+            return rc
+    print("PRECOMMIT — PASSED")
+    return 0
+
+
 def _printable(plan):
     return {**plan, "commands": [" ".join(c) for c in commands(plan)],
             "concurrent": [[" ".join(c) for c in g] for g in steps(plan) if len(g) > 1]}
@@ -503,13 +627,21 @@ def main(argv=None):
     if cmd == "full":
         return run({**_plan("full", {}, [], "asked for everything (make prepush-full)"),
                     "everything": True})
+    if cmd == "precommit":
+        return run_precommit()
+    if cmd == "keyword":
+        # The `-k` that keeps the decks this push moved and the representatives
+        # (`make regression-scoped`, CI per push). Prints nothing to keep every deck.
+        moved = classify(changed_paths(base)).get("decks") or []
+        print(deck_keyword(sorted(set(moved) | set(REPRESENTATIVE_DECKS))))
+        return 0
     plan = classify(changed_paths(base))
     if cmd == "plan":
         print(json.dumps(_printable(plan), indent=1))
         return 0
     if cmd == "prepush":
         return run(plan)
-    raise SystemExit(f"unknown command {cmd!r}: plan | prepush | full | deck <slug>... "
+    raise SystemExit(f"unknown command {cmd!r}: plan | precommit | keyword | prepush | full | deck <slug>... "
                      "[--base REV]")
 
 

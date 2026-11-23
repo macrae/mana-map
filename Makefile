@@ -29,7 +29,7 @@ PORT    ?= 8000
 PYTHON310 ?= python3.10
 
 .DEFAULT_GOAL := help
-.PHONY: help setup smoke test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve artifacts clean check demo docs-sizes jobs reap
+.PHONY: help setup smoke impact-map regression-scoped test test-unit-isolated regression integration prepush prepush-full check-deck test-all test-browser test-fresh test-report serve artifacts clean check demo docs-sizes jobs reap
 
 help:  ## Show this help
 	@grep -hE '^[a-z-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -79,10 +79,15 @@ test:  ## THE UNIT TIER: no tracked data, ~1 min — the inner loop (a bare pyte
 # artifacts left stale by a swap, a gate failing on one deck. Those two preflights
 # run first and the unit tier after; the regression tier runs ONCE per push batch
 # (`make prepush`), never per commit. Under three minutes on eight cores.
-precommit:  ## THE COMMIT GATE: restamp --check + deck-status --all + the unit tier, ~3 min — per commit; `prepush` is per push
+precommit:  ## THE COMMIT GATE: restamp --check + the core + the unit tests the change reaches (~20-40 s); `prepush` is per push
 	$(MANAMAP) pilot restamp --check
-	$(MANAMAP) pilot deck-status --all --live
-	$(PYTEST) $(PYTEST_ARGS)
+	$(PY) -m manamap.check_scope precommit
+
+impact-map:  ## Rebuild the measured test-impact map (the unit tier under per-test coverage, ~2 min)
+	rm -f .pytest_cache/manamap/.coverage-impact*
+	COVERAGE_FILE=.pytest_cache/manamap/.coverage-impact $(PYTEST) --no-test-cache --cov=manamap \
+		--cov-context=test --cov-report= $(PYTEST_ARGS)
+	$(PY) -m manamap.test_impact --build .pytest_cache/manamap/.coverage-impact
 
 # The proof that the unit tier IS one: the same tests against an EMPTY data dir.
 # A unit test that fails or skips here reads tracked data and must be marked
@@ -107,6 +112,9 @@ regression:  ## THE REGRESSION TIER: the tracked fleet + corpus, every producer 
 # model edit in the pilot's loop never reds the push: an older stamp is a state.
 smoke:  ## THE CORE: the must-never-break contracts (tests/core_contracts.py), ~20 s
 	$(PYTEST) -m "core and unit" $(PYTEST_ARGS)
+
+regression-scoped:  ## the regression tier, no regen, per-deck loops only for changed + representative decks (CI per push)
+	$(PYTEST) $(REGRESSION_PARALLEL) -k "$$($(PY) -m manamap.check_scope keyword)" $(PYTEST_ARGS)
 
 regression-prepush:  ## the regression tier WITHOUT the fleet regen (CI runs that on every push)
 	$(PYTEST) $(REGRESSION_PARALLEL) $(PYTEST_ARGS)
