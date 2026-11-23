@@ -1,0 +1,136 @@
+{
+  "id": "003",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder for a guaranteed death (experience, Grave Pact, Zulaport, Jarad) and Meren returns Braids; which card comes out?",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Braids, Cabal Minion"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Braids, Cabal Minion"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "slice": "study 003 facts; context summary+plays+cards",
+      "text": "Braids is a playable but marginal fit. Cut Grave Pact for it only if the pilot wants a pressure piece; otherwise keep the slot — Braids is mostly a second Grave Pact that also eats our own permanents. E = evidence, A = argument.\n\n1. Fit (A). The deck has an edict-per-death engine: Grave Pact (\"every death of ours is an edict\"), plus Zulaport and Jarad. Braids' nearest in-deck neighbours by function: Grave Pact (0.96), Tergrid (0.92), Victimize (0.86) (E, S-fd5d0cf0-03). Goldfish saw Braids (E, S-fd5d0cf0-04); no games logged, no recon (E, S-fd5d0cf0-01). The edict need not hit a player's best permanent. Symmetric: we sacrifice at our own upkeep too. Backfires with no fodder (a slow or early board) and against grindy opponents with spare tokens or lands; it can force us to sacrifice a land or a real creature, which hurts the 35-land, big-body plan. The companion does not cover this deck's case.\n\n2. Play (A). Cast it only with spare fodder (Scute Swarm, Bitterblossom, Spawn tokens) plus an outlet; each forced sacrifice then feeds experience, Zulaport, Jarad. strategy:threat-assessment.resource-denial calls this stax (\"strips resources already amassed (sacrifice effects…)\") and says break parity: be the one not hurt — Braids only does that if our fodder outruns the table's. Meren should not return it casually (one return per end step; counters are better spent on fatties); a yard Braids is worth returning only for the late \"own the sacrifice\" turn.\n\n3. Politics (A). strategy:multiplayer.threat-deflection: keep perceived threat below real threat. A symmetric prison piece on turn 4 is a loud tell; strategy:threat-assessment: \"board quality… outrank[s] quantity\", re-rank every turn. Expect it to draw removal and focus — soaking answers meant for Meren, but turning the table on us. Time it for the turn it matters. A third Game Changer is within bracket 3, but this one reads as stax.\n\n4. Cut (A). Overlaps most with Grave Pact (E: 0.96), and Zulaport/Jarad as drain payoffs: cut from the edict-and-drain group (Grave Pact itself, or Victimize).\n\nVerdict: no goldfish figure or stack backs it either way; the call is the pilot's (★). Lightest test: a `try` Braids for Grave Pact read for coverage, or one logged game noting the focus it draws.\nopen: a strategy topic on symmetric edict/prison effects in a sacrifice deck; does returning Braids ever beat returning a fatty?",
+      "cites": {
+        "facts": [
+          "S-fd5d0cf0-01",
+          "S-fd5d0cf0-03",
+          "S-fd5d0cf0-04"
+        ],
+        "strategy": [
+          "strategy:multiplayer.threat-deflection",
+          "strategy:threat-assessment",
+          "strategy:threat-assessment.resource-denial"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T21:19:55-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-003.md"
+    }
+  ],
+  "call": {
+    "decision": "decline",
+    "decided_by": [
+      "pilot",
+      "strategist"
+    ],
+    "pilot_words": "yeah, I agree... then orcish bowmasters is the better option?",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "braids-cabal-minion-in-as-the-third-game-changer",
+  "facts": [
+    {
+      "id": "S-fd5d0cf0-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-fd5d0cf0-02",
+      "kind": "oracle",
+      "text": "Legendary Creature — Human Minion · {2}{B}{B} — At the beginning of each player's upkeep, that player sacrifices an artifact, creature, or land of their choice.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Braids, Cabal Minion",
+      "game_changer": true
+    },
+    {
+      "id": "S-fd5d0cf0-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Grave Pact (0.96), Tergrid, God of Fright // Tergrid's Lantern (0.92), Victimize (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Braids, Cabal Minion",
+      "neighbours": [
+        {
+          "name": "Grave Pact",
+          "score": 0.9623
+        },
+        {
+          "name": "Tergrid, God of Fright // Tergrid's Lantern",
+          "score": 0.9188
+        },
+        {
+          "name": "Victimize",
+          "score": 0.8552
+        }
+      ]
+    },
+    {
+      "id": "S-fd5d0cf0-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Braids, Cabal Minion",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Braids, Cabal Minion"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Braids, Cabal Minion",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Braids, Cabal Minion",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Braids, Cabal Minion",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "48daf86b662921f00771091bd81712e86a77f2b319bc0783b537f8fa6405292d",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T21:20:49-08:00",
+    "facts": 4
+  }
+}
