@@ -1,0 +1,135 @@
+{
+  "id": "004",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the army is fodder, and it punishes extra draws; which card comes out?",
+  "opened": "2026-11-22",
+  "decided_at": "2026-11-22",
+  "cards": [
+    "Orcish Bowmasters"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Orcish Bowmasters"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "slice": "study 004 facts; context summary+plays+cards",
+      "text": "Answer: add Orcish Bowmasters only as a cheap, flexible body replacing a 2-mana fodder or value body — not as a Game Changer that must earn the slot. A modest fit; leaving the slot open is close to a tie.\n\n1. Fit (argument). MV 2, so Meren returns it from 2 counters; each return pings 1 and amasses, and the Army is more fodder (S-6e55f400-02). Winding Constrictor should add a +1/+1 counter on each amass (a rules check). A small tempo-and-fodder engine; the deck's plan is a fatty back at end step with its ETB and death triggers, and Bowmasters adds little to that. No games, engine model or recon (S-6e55f400-01).\n2. Play (argument). Flash it at end of turn or in response to an opponent's tutor or draw spell. Meren returns one card per end step: sacrifice Bowmasters only when no fatty needs the slot, or when a ping is the kill. Reassembling Skeleton already does \"free fodder that doesn't spend Meren's return\". Under Grave Pact each Bowmasters death is also an edict.\n3. Slot. Bracket 3 allows up to three Game Changers (strategy:deckbuilding.power-level); the deck has two. The pilot declines overlapping cards (Braids over Grave Pact), and Bowmasters overlaps too. The goldfish saw it (S-6e55f400-04) but has no opponents, so it cannot price the draw-punisher half. Hold the slot unless the pilot wants anti-tutor/anti-draw punishment at his table.\n4. Overlap and cut. Nearest in-deck: Toph, Scute Swarm, Archon of Cruelty (S-6e55f400-03) — the first two never-cut. Functionally closest to cheap fodder and pingers (Blasting Station already pings). Cut from the cheap-ETB-body group: Sakura-Tribe Elder first (mana is not the limit), not Stitcher's Supplier (it mills, the V26 theme). A lean, not a verdict.\nopen: does Winding Constrictor add to amass; does the pilot want an anti-draw card at his table?",
+      "cites": {
+        "facts": [
+          "S-6e55f400-01",
+          "S-6e55f400-02",
+          "S-6e55f400-03",
+          "S-6e55f400-04"
+        ],
+        "strategy": [
+          "strategy:deckbuilding.power-level"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-22T21:22:58-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-004.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "strategist"
+    ],
+    "pilot_words": "eh... ok... forget it.. we only want clearly advantageous, obvious updates!",
+    "reading": "",
+    "at": "2026-11-22"
+  },
+  "slug_name": "orcish-bowmasters-in-as-the-third-game-changer-a",
+  "facts": [
+    {
+      "id": "S-6e55f400-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-6e55f400-02",
+      "kind": "oracle",
+      "text": "Creature — Orc Archer · {1}{B} — Flash When this creature enters and whenever an opponent draws a card except the first one they draw in each of their draw steps, this creature deals 1 damage to any target. Then amass Orcs 1.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Orcish Bowmasters",
+      "game_changer": true
+    },
+    {
+      "id": "S-6e55f400-03",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Toph, Earthbending Master (0.85), Scute Swarm (0.85), Archon of Cruelty (0.83)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Orcish Bowmasters",
+      "neighbours": [
+        {
+          "name": "Toph, Earthbending Master",
+          "score": 0.8548
+        },
+        {
+          "name": "Scute Swarm",
+          "score": 0.8476
+        },
+        {
+          "name": "Archon of Cruelty",
+          "score": 0.8339
+        }
+      ]
+    },
+    {
+      "id": "S-6e55f400-04",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Orcish Bowmasters",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Orcish Bowmasters"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Orcish Bowmasters",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Orcish Bowmasters",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Orcish Bowmasters",
+      "source": "deck_recon.json",
+      "why": "no dated recon"
+    }
+  ],
+  "decklist_sha256": "48daf86b662921f00771091bd81712e86a77f2b319bc0783b537f8fa6405292d",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-22T21:26:16-08:00",
+    "facts": 4
+  }
+}
