@@ -137,9 +137,10 @@ to `claude -p`, deliberately, so the local Build page can ask for an agent.
 - **Spen** — `publish-deck` is the router today and knows the sequence.
 
 **The two magazine couplings are gone** (2026-09-13): `write-manual`'s build half and
-`author-decision`'s step 5 called `build-manual`, and both call `build-poh` now.
-`validate_poh.py` is still the **only** validator that touches `manual_prose.json`,
-so retiring the handbook would leave the router's prose output ungated.
+`author-decision`'s step 5 called `build-manual`; both called `build-poh` until the rendered
+handbook was retired on 2026-11-22, and recompose the deck page (`deck-info --write`) now.
+Its gate checked only the RENDERED page's structure, so `manual_prose.json`'s only check is
+the list stamp `deck-status` reads — a prose-budget gate on the JSON is a known gap.
 
 ## Cost, per routine
 

@@ -321,8 +321,6 @@ def refresh(slug, branch=None, echo=None):
     steps = [] if branch else [("build-index", "manamap.pilot.deck_manifest", {}),
                                ("fleet-analytics", "manamap.pilot.fleet_analytics",
                                 {"write": True})]
-    if not branch and (deck_edit._repo_root() / "manuals" / "p" / f"{slug}.html").exists():
-        steps.insert(0, ("build-poh", "manamap.pilot.poh", {"slug": slug}))
     for name, dotted, kwargs in steps:
         try:
             with contextlib.redirect_stdout(io.StringIO()):

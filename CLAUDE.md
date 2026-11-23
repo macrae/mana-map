@@ -35,8 +35,9 @@ compared (`viz/fleet.html`, 2026-10-18), the card atlas (`viz/index.html`), the 
 (`viz/deck.html?deck=<slug>`), the branch workbench (`viz/branch.html`), Curate
 (`viz/library.html`) and the embedding-space appendix (`viz/spaces.html`) — all rendering
 committed artifacts, figures with their intervals. The
-Pilot's Operating Handbook (`src/manamap/pilot/poh.py`) renders `manuals/p/<slug>.html`; the
-magazine before it was **deleted 2026-09-13** (record: `docs/gotchas-magazine-legacy.md`).
+**The deck page is the one place a deck is read** (2026-11-22): the rendered Pilot's Operating
+Handbook (`manuals/p/`) was retired, its data kept; the magazine before it was **deleted
+2026-09-13** (record: `docs/gotchas-magazine-legacy.md`).
 Runs locally on a Mac. **The pipeline and the pilot commands make zero LLM calls**; two
 opt-in exceptions do — `serve.py`'s `ask` bridge (shells out to `claude -p`) and `mm ask`
 (Sven Botstrom, an optional extra the core install does not pull).
@@ -104,7 +105,7 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 160 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists all 158 pilot subcommands; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
@@ -157,7 +158,7 @@ manamap pilot regen --slug S | --fleet [--only STAGE] [--jobs 8]
                               # LAZY (2026-10-21): --slug re-reads the deck you are iterating
                               # (its OPEN branches too; a decided one never); --fleet is the
                               # pilot's explicit fleet-wide rebuild at a release; a bare regen
-                              # refuses. `make manuals` is release-time only. Bit-identical
+                              # refuses. `make artifacts` is release-time only. Bit-identical
                               # across --jobs.
 
 # ── FORGE: THE PROBE ──────────────────────────────────────────────────────
@@ -249,7 +250,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 - **A creature that may not attack does not attack** — Defender and "can't attack unless" gate it (`attack_gate`); Kefnet was a free 5/5 flyer every turn. → `docs/simulation.md`
 - **A flag the model sets is a claim the model must ACT ON** (`tests/test_metric_hygiene.py`).
 - **A one-turn grant is not a permanent doubler; a channel placed where it cannot fire is not a channel.** → `docs/gotchas-bench.md`
-- **A model change stales the fleet's STAMP, and that is a state, not a rebuild** (2026-10-21). `meta.model_version` hashes all five simulator files BYTE FOR BYTE (the four goldfish files and `pilot_policy.py`). Locally an older stamp is reported — `deck-status` says OLDER MODEL, the workbench shows a chip — and no test reds on it in `make prepush`; re-read the deck you are iterating with `regen --slug <slug>`; the fleet catches up with `regen --fleet` at a release or on the pilot's word; `make manuals` is release-time only. A merged or rejected branch is never re-measured. → `docs/gotchas-bench.md`
+- **A model change stales the fleet's STAMP, and that is a state, not a rebuild** (2026-10-21). `meta.model_version` hashes all five simulator files BYTE FOR BYTE (the four goldfish files and `pilot_policy.py`). Locally an older stamp is reported — `deck-status` says OLDER MODEL, the workbench shows a chip — and no test reds on it in `make prepush`; re-read the deck you are iterating with `regen --slug <slug>`; the fleet catches up with `regen --fleet` at a release or on the pilot's word; `make artifacts` is release-time only. A merged or rejected branch is never re-measured. → `docs/gotchas-bench.md`
 - **The goldfish cannot rank two lands that make the same colours**; `mana-analysis` and `mana-fit` are the evidence for a land swap. → `docs/gotchas-bench.md`
 - **Adding a metric requires re-running the independence check** (`pytest -m fleet`; one pair is over the line today — known-issues 9b).
 
@@ -320,9 +321,9 @@ archived deck is read-only until `deck-state revive`.
 ## Data artifacts
 
 - **The deck manifest is generated**: `manamap pilot build-index` writes `data/decks/index.json`, which every page fetches; a test asserts it matches the artifacts.
-- **The fleet artifact is generated and carries no score**: `manamap pilot fleet-analytics --write` writes `data/fleet/analytics.json` (the last step of `make manuals` and of `regen`): every live deck's figures with interval, N, source and sha, per-bracket bands over the SLEEVED decks at three or more, placements, comparisons. The fleet is the sleeved decks: a bench deck keeps a row and joins no group, and `viz/fleet.html` draws members only. `validate-fleet-analytics` refuses a composite number; the rating is ★ and lives per sleeved deck.
+- **The fleet artifact is generated and carries no score**: `manamap pilot fleet-analytics --write` writes `data/fleet/analytics.json` (the last step of `make artifacts` and of `regen`): every live deck's figures with interval, N, source and sha, per-bracket bands over the SLEEVED decks at three or more, placements, comparisons. The fleet is the sleeved decks: a bench deck keeps a row and joins no group, and `viz/fleet.html` draws members only. `validate-fleet-analytics` refuses a composite number; the rating is ★ and lives per sleeved deck.
 - **`mana_analysis.json` is tracked and staleness-tested**: run `manamap pilot mana-analysis <slug>` AFTER `goldfish`, since it embeds goldfish figures.
-- **CI** (`.github/workflows/test.yml`) runs the unit tier, its isolation proof and the regression tier on every push and PR, then `make manuals` and `git diff --exit-code -- manuals/ data/decks/ data/fleet/` — the determinism claim asserted from outside the code. An `integration` job runs the browser suite on every push; Forge stays local. A weekly `corpus-gates` job downloads the corpus (the network leg) and runs the gates a push cannot reach.
+- **CI** (`.github/workflows/test.yml`) runs the unit tier, its isolation proof and the regression tier on every push and PR, then `make artifacts` and `git diff --exit-code -- data/decks/ data/fleet/` — the determinism claim asserted from outside the code. An `integration` job runs the browser suite on every push; Forge stays local. A weekly `corpus-gates` job downloads the corpus (the network leg) and runs the gates a push cannot reach.
 
 ## Pointers
 

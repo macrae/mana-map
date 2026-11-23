@@ -122,19 +122,20 @@ jobs:
         # job below runs it for real.
         run: make regression PYTEST_ARGS=-rs
 
-      - name: The manuals and version lists must still rebuild byte-identically
+      - name: The version lists, the manifest and the fleet artifact must still rebuild byte-identically
         # Cheap (9 s) and it is the project's central determinism claim, so it
         # is worth asserting outside the suite that also asserts it.
         #
-        # `data/decks/` IN FULL, not just `index.json`. `make manuals` now also
+        # `data/decks/` IN FULL, not just `index.json`. `make artifacts` (was `make manuals`, whose
+        # handbook pages were retired 2026-11-22) also
         # regenerates every `versions.json` — a git walk, tracked since
         # 2026-09-02 — and a gate that rebuilds a file without comparing it is a
         # gate that cannot fail. Satisfiable only because a commit never carries
         # both a decklist and its version list, which
         # `tests/test_pilot_commit_protocol.py` enforces directly.
         run: |
-          make manuals
-          git diff --exit-code -- manuals/ data/decks/ data/fleet/
+          make artifacts
+          git diff --exit-code -- data/decks/ data/fleet/
 
   # ── THE INTEGRATION TIER: the pages, in a real browser ────────────────────
   #

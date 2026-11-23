@@ -22,7 +22,7 @@ have not, so a tier, a marker and the cache mean what the suite means by them.
 ## The verdict
 
 - **WAIT** — `running` is non-empty. Name each process. A suite run, `regen`,
-  `simulate`, `experiment`, a pipeline step or `make manuals` reads or writes what the
+  `simulate`, `experiment`, a pipeline step or `make artifacts` reads or writes what the
   suite reads; "never edit source while the suite or regen is running" holds in
   reverse, and this machine has crashed with two heavy jobs at once. Never suggest
   killing a process — say what to wait for.

@@ -10,9 +10,9 @@ that is the failure this runbook exists to stop: a capability added in one
 development cycle is reachable only by somebody who remembers it exists, so a deck
 built the following month silently inherits the old pipeline. The vision this serves
 is `docs/vision.md`: a lab bench for one pilot's paper decks — version it, measure it,
-prove its lines, play it, log it, ask it questions. The page it renders is the **Pilot's
-Operating Handbook** (`build-poh`, live since 2026-09-02); the magazine renderer it
-replaced was deleted on 2026-09-13.
+prove its lines, play it, log it, ask it questions. The page a deck is read on is the
+**deck page** (`viz/deck.html?deck=<slug>`); the rendered Pilot's Operating Handbook was
+retired on 2026-11-22 and the magazine renderer before it on 2026-09-13.
 
 ## Start here, always
 
@@ -81,11 +81,10 @@ keys (`how_it_wins`, `mulligan`, `combo_lines`, `threat_assessment`, `matchups`)
 merged by key ownership via `merge-prose` so the frozen legacy keys on a published
 deck survive untouched.
 
-**9 — Render the page.** `build-poh` → `build-index`, then `validate-poh`. This is
-the **Pilot's Operating Handbook**, the live renderer since 2026-09-02, and it owns
-`manuals/p/<slug>.html`. Sections 0, 1, 2, 5 and 6 regenerate from tracked artifacts;
-sections 3, 4 and 7 are authored with an agent's first draft (`/poh-procedures`). The
-magazine renderer this phase used to describe was deleted on 2026-09-13.
+**9 — Compose the page.** `deck-info <slug> --write` → `build-index`. The deck page
+reads everything from there: the brief, the procedures (`/poh-procedures`), the notes,
+the cards, the record and the instruments. The rendered handbook this phase used to
+produce under `manuals/p/` was retired on 2026-11-22.
 
 **10 — Simulate it (OPTIONAL since 2026-10-04).** Forge is a targeted probe, not a
 gate: the pilot ruled the overnight pod run out of the decision loop (slow, brittle, and
@@ -165,7 +164,7 @@ manamap pilot validate-debrief <slug>         # the log's annotations, held to t
 manamap pilot validate-prescription <slug>    # every question the doctor answered
 manamap pilot validate-branch <slug> --branch N  # the objective is falsifiable; a
                                               #   proposal freezes what it accepted
-`manamap pilot validate-poh <slug>`
+manamap pilot validate-poh-procedures <slug>  # the procedures the deck page shows
 .venv/bin/python -m pytest -m "not browser and not forge" -n auto
 ```
 
@@ -185,9 +184,9 @@ the gates above, not in anyone's memory.
   losing board, three arrows between stages containing neither endpoint, and two
   citations pointing at stacks that showed the opposite.
 - **The legacy renderer's lints** — internal taxonomy ids in reader copy (68
-  occurrences across eight pages) and deks that open with a question (14) — still
-  run under `validate-poh` on the frozen pages; the taxonomy-id rule carries over to
-  the pilot notes.
+  occurrences across eight pages) and deks that open with a question (14) — retired
+  with the rendered handbook on 2026-11-22; the taxonomy-id rule carries over to the
+  pilot notes.
 - **The workbench pivot (2026-08-19)** — the log, versions, prescriptions, the
   simulation harness and the bridge; the magazine agents retired (see
   `docs/history/agent-audit-2026-08-19.md`).

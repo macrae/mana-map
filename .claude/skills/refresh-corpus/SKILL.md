@@ -13,7 +13,7 @@ description: Pull a fresh Scryfall dump and regenerate the whole corpus — the 
 > the MPS training, and Claude Code reaps idle background shells under pressure; and
 > the CardBERT map's L0/L1 regions need authored names too (81 named that day — it is
 > the only map the pages show). Then 133 region names, `regen --jobs 8` (6 min),
-> `make manuals` (1 min), the cache pass.
+> `make artifacts` (1 min), the cache pass.
 >
 > **Previous: 2026-10-02, Reality Fracture** — 34,890 → 34,955 (+281: FRA 249,
 > FRC 17, other 15; −216 Alchemy `A-` rebalances Scryfall dropped from its oracle

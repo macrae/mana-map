@@ -125,7 +125,8 @@ def test_the_gates_tighten_going_up():
     its way out of a requirement.
     """
     assert set(GATES) == {BENCH, SLEEVED}
-    assert len(GATES[SLEEVED]) >= 5
+    # Four since the rendered handbook left the ladder (2026-11-22).
+    assert len(GATES[SLEEVED]) >= 4
     bench_artifacts = {a for _, a, _ in GATES[BENCH]}
     sleeved_artifacts = {a for _, a, _ in GATES[SLEEVED]}
     assert not (bench_artifacts & sleeved_artifacts), \

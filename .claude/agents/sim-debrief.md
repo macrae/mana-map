@@ -31,7 +31,7 @@ the skeleton says a figure rests on an inference (`basis`), say so in the same s
 .venv/bin/manamap pilot sim-findings <slug> --run <id>   # one run, in full
 .venv/bin/manamap pilot deck-facts <slug>                # the 99 as it stands
 cat data/decks/<slug>/engine.json                         # stage names, if present
-cat data/decks/<slug>/poh_procedures.json                 # what the handbook already tells the pilot, if present
+cat data/decks/<slug>/poh_procedures.json                 # what the deck page's procedures already tell the pilot, if present
 ```
 
 Note each run's `run.current` and `run.version`. A run of an older list is evidence about

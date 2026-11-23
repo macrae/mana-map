@@ -41,7 +41,7 @@ no sourcing gate, no order list, nothing to reconcile before the merge.
 3. **Merge.** `deck-branch <slug> merge <branch> --write`, on the pilot's word that the list
    is in the sleeves — that word is the whole gate. The merge
    runs the chain itself (fetch-deck → goldfish → mana-analysis → regen → deck-map →
-   build-poh → build-index) and prints STALE, INVALID, CONTEXT STALE and the commit line.
+   build-index) and prints STALE, INVALID, CONTEXT STALE and the commit line.
    Then **`validate-goldfish-targets <slug>`**: the declaration is hand-written and a swap
    strands names in it — the merge's first goldfish ran with seven stranded names on
    sharknado, which silently deflates a group's rate. Repair it by oracle text (remove the
@@ -61,7 +61,7 @@ no sourcing gate, no order list, nothing to reconcile before the merge.
    `context <slug> --check` says current.
 
 5. **The deck's own artifacts.** `prices <slug> --write` (the merge leaves the old list's
-   prices, INVALID); `deck-info <slug> --write`; `build-poh <slug>`; `build-index`.
+   prices, INVALID); `deck-info <slug> --write`; `build-index`.
    `deck-status <slug>` should now list only what was red before plus the agent files the
    merge genuinely stales (engine, tutors, prose) — those wait for `/engine-reading` and
    pilot-notes, and the commit message names them.
@@ -69,7 +69,7 @@ no sourcing gate, no order list, nothing to reconcile before the merge.
 6. **Check, then the merge commit.** `make check-deck SLUG=<slug>` (~1 min).
    `test_versions_json_matches_a_fresh_run` FAILS here by design: the list is uncommitted,
    and the versions ledger is a separate commit. Commit the deck's paths plus
-   `data/decks/index.json`, `data/fleet/analytics.json` and `manuals/p/<slug>.html`, with
+   `data/decks/index.json` and `data/fleet/analytics.json`, with
    the swaps, the study's call and who decided in the message. **This commit mints the version.**
 
 7. **Tag and lock.** `deck-version <slug> list --write` (regenerates `versions.json` against

@@ -207,6 +207,17 @@ def _face_card(cards):
     return max(pool, key=lambda c: (int(c.get("quantity") or 1), -cards.index(c)))
 
 
+def is_published(slug):
+    """Has this deck gone to press? PAST BREWING — on the bench, in sleeves, or
+    archived — or one of the decks whose handbook was rendered before the rendered
+    handbook was retired (2026-11-22; `config.PRESSED_DECKS`). Until then the rule
+    was "a page exists under `manuals/p/`", and CI rendered a page for every deck
+    past `dev`, so the two agree on every deck but emiel-blink, which went to press
+    and was sent back to brewing; the frozen list keeps it a record."""
+    from manamap.pilot import promote
+    return slug in config.PRESSED_DECKS or promote.stage(slug) != promote.DEV
+
+
 def gather_entries():
     """One scan, two questions — and they are not the same question.
 
@@ -214,13 +225,8 @@ def gather_entries():
     yet is a DRAFT and gets its own list, because every consumer of `decks`
     assumes keys a draft does not have.
 
-    `published` MEANS THE HANDBOOK EXISTS. It used to mean `manuals/<slug>.html`
-    — that the frozen magazine renderer had run — so a deck could be fully
-    built, validated and rules-verified and still read as unpublished until
-    somebody spent an agent budget on magazine prose for it. The Pilot's
-    Operating Handbook replaced that renderer on 2026-09-02 and is what a reader
-    actually opens, so it is what the word points at now: 8 decks had an issue,
-    12 have a handbook.
+    `published` means the deck has gone to press (`is_published`): past brewing,
+    or one of the decks that had a rendered handbook before it was retired.
     """
     entries = []
     if not config.DECKS_DIR.is_dir():
@@ -256,7 +262,7 @@ def gather_entries():
                     "published": False,
                 })
             continue
-        published = (config.MANUALS_DIR / "p" / f"{slug}.html").exists()
+        published = is_published(slug)
         doc = load_json(cards_path)
         commanders = [c for c in doc["cards"] if c.get("is_commander")]
         commander = commanders[0] if commanders else {}
@@ -335,13 +341,6 @@ def gather_entries():
         # The Deck Context (PRD v2): the deck page renders it first, and fetches
         # cards.json beside it for the Cards-by-role filter only when it exists.
         has["context"] = (deck_path / "CONTEXT.md").exists()
-        # The rendered page under `manuals/p/` — since 2026-09-02 the Pilot's
-        # OPERATING HANDBOOK, which superseded the compact page and took its
-        # path. The key keeps its name because it is a wire format the four viz
-        # call sites read; what it means is "a page is rendered for this deck",
-        # which is all any of them do with it. The browser cannot list a
-        # directory, so presence rides here.
-        has["page"] = (config.MANUALS_DIR / "p" / f"{slug}.html").exists()
 
         # IS THIS DECK BUILT IN PAPER? The workbench's front door filters on it,
         # and no other field answers it — `status` marks only the dead decks, so

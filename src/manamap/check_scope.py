@@ -14,7 +14,7 @@ each area names the tiers that can see it, a mixed diff runs the union, and the
 two long tiers run side by side:
 
     docs     docs/**, README, CLAUDE.md, any *.md       -> the doc guards       ~10 s
-    decks    data/decks/<slug>/**, manuals/p/<slug>.html -> that deck's checks   ~1 min
+    decks    data/decks/<slug>/** -> that deck's checks   ~1 min
     data     the rest of data/ (corpus, pods, overrides) -> the regression tier  ~7 min
     viz      viz/**, tests/test_viz_*, conftest_viz.py   -> unit + browser       ~8 min
     agents   .claude/** (charters, skills)               -> unit + doc guards    ~1 min
@@ -54,10 +54,9 @@ REPO = Path(__file__).resolve().parents[2]
 DECKS = REPO / "data" / "decks"
 
 _DECK_PATH = re.compile(r"^data/decks/([a-z0-9][a-z0-9-]*)/")
-_MANUAL_PATH = re.compile(r"^manuals/p/([a-z0-9][a-z0-9-]*)\.html$")
 #: Generated FROM the decks, so a deck edit legitimately moves them; their own
 #: freshness tests name no single deck and are kept in the deck scope.
-_DECK_DERIVED = {"data/decks/index.json", "manuals/page.css"}
+_DECK_DERIVED = {"data/decks/index.json"}
 _VIZ_TEST = re.compile(r"^tests/(test_viz_[^/]*\.py|conftest_viz\.py)$")
 #: The harness itself, or a constant every producer reads: nothing is scoped
 #: below a change here, because every tier can see it.
@@ -169,7 +168,7 @@ def area_of(path):
     """The area one changed path belongs to (see the module docstring)."""
     if _FULL.match(path):
         return "full"
-    if _DECK_PATH.match(path) or _MANUAL_PATH.match(path) or path in _DECK_DERIVED:
+    if _DECK_PATH.match(path) or path in _DECK_DERIVED:
         return "decks"
     if path.startswith("data/"):
         return "data"
@@ -188,7 +187,7 @@ def area_of(path):
 
 
 def _deck_of(path):
-    m = _DECK_PATH.match(path) or _MANUAL_PATH.match(path)
+    m = _DECK_PATH.match(path)
     return m.group(1) if m else None
 
 

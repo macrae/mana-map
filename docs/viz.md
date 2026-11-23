@@ -1707,7 +1707,7 @@ re-deriving anything, so it cannot disagree with the command that owns each figu
 |---|---|---|
 | **What to do next** (the derived `next`) | `info.json` | ◆ |
 | Where it stands (stages, gates, bracket, record) | `info.json` | ◆ |
-| Every list this deck has been | `versions.json` (TRACKED; `make manuals`) | ◆ |
+| Every list this deck has been | `versions.json` (TRACKED; `make artifacts`) | ◆ |
 | What limits it (audit axes + diagnosis) | `info.json` | ◆★ |
 | The engine (stages, lines solid where a stack proves them) | `engine.json` | ✓◆★ |
 | At a table (sim runs + experiments) | `sim/*.json`, `experiments/*.json` | ◆ |

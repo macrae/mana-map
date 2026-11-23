@@ -1211,8 +1211,6 @@ def _consistency(slug, echo):
     steps = []
     if (deck_dir(slug) / "deck_map.json").exists():
         steps.append(("deck-map", "manamap.pilot.deck_map", {"slug": slug}))
-    if (_repo_root() / "manuals" / "p" / f"{slug}.html").exists():
-        steps.append(("build-poh", "manamap.pilot.poh", {"slug": slug}))
     steps.append(("build-index", "manamap.pilot.deck_manifest", {}))
     for name, dotted, kwargs in steps:
         try:
@@ -1261,9 +1259,9 @@ def _commit_version_list(slug, version, consistency):
 
     Only when the deck tracks one (a deck without it is not asked to start).
     `deck-version <slug> list --write` re-derives it from git — now including
-    commit 1 — and `build-poh` re-renders the handbook where it exists, because
-    the handbook reads versions.json (`poh.load`). Both are committed with
-    `git commit --only`, so anything the pilot has staged stays out. Returns
+    commit 1 — and it is committed with `git commit --only`, so anything the
+    pilot has staged stays out. (It re-rendered the handbook too, until the
+    rendered handbook was retired on 2026-11-22.) Returns
     `(sha or None, paths)`; a failure lands in `consistency["failures"]` and
     never undoes commit 1."""
     import importlib
@@ -1271,11 +1269,8 @@ def _commit_version_list(slug, version, consistency):
     directory = deck_dir(slug)
     if not (directory / "versions.json").exists():
         return None, []
-    poh = _repo_root() / "manuals" / "p" / f"{slug}.html"
     steps = [("deck-version list", "manamap.pilot.deck_versions",
               {"slug": slug, "action": "list", "write": True})]
-    if poh.exists():
-        steps.append(("build-poh", "manamap.pilot.poh", {"slug": slug}))
     for name, dotted, kwargs in steps:
         try:
             with contextlib.redirect_stdout(io.StringIO()):
@@ -1284,8 +1279,6 @@ def _commit_version_list(slug, version, consistency):
             consistency.setdefault("failures", []).append(
                 f"{name} (version list): {type(exc).__name__}: {exc}")
     specs = [_rel(directory / "versions.json")]
-    if poh.exists():
-        specs.append(str(poh.relative_to(_repo_root())))
     paths = _changed_paths(*specs)
     if not paths:
         return None, []

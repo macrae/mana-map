@@ -60,7 +60,7 @@ rewrites them all.
 `make regression` and `make prepush-full`. **CI does not run it**, whatever its workflow
 says: the test is `requires_data` (`data/embeddings.npy`, gitignored, built by no job), so
 it and every other recomputation test SKIP there (run 39503405826), and CI's one
-determinism gate that fires is `make manuals` followed by `git diff --exit-code` over
+determinism gate that fires is `make artifacts` followed by `git diff --exit-code` over
 `manuals/ data/decks/ data/fleet/`. Since 2026-10-21 the model-stamp equality test
 (`test_the_fleet_is_stamped_with_the_model_that_is_running`) carries the `regen` marker
 too, so a model edit no longer reds the python area: locally an older stamp is a STATE
@@ -136,7 +136,7 @@ kept running until it was killed by hand.
 | **unit** — `make test` | inline data only; no tracked artifact, no outside system | 2,515 | **0:42** uncached |
 | unit, isolated — `make test-unit-isolated` | the same, against an empty `MANAMAP_DATA_DIR` | 2,515 | **0:38** |
 | **regression** — `make regression` | the tracked fleet and corpus: every artifact validator, the constants calibrated across the fleet — in parallel; then, ALONE, one `regen` of the whole fleet compared byte for byte (`test_the_fleet_regenerates_byte_identically`, marker `regen`; it replaced 85 per-artifact re-derivations that were 74% of the tier's CPU) | 1,582 | **13:10** uncached (6:25 parallel + 6:43 regen) |
-| **integration** — `make integration` | a real browser (264), the Forge engine (1), the network; then `make manuals` + `git diff --exit-code` | 265 | ~7 min + |
+| **integration** — `make integration` | a real browser (264), the Forge engine (1), the network; then `make artifacts` + `git diff --exit-code` | 265 | ~7 min + |
 | **total collected** | | **4,362** | |
 
 **What decides the tier is what a test TOUCHES, never its runtime** — runtime flaps,

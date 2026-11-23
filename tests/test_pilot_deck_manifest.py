@@ -112,18 +112,13 @@ def test_presence_flags_match_the_files_on_disk():
     """`has` exists so the page knows whether to fetch at all. `getJSON` swallows a
     404 to null, so "absent artifact" and "failed request" are indistinguishable —
     the flag is what makes them different."""
-    from manamap.config import MANUALS_DIR
     for deck in json.loads((DECKS_DIR / "index.json").read_text())["decks"]:
         slug = deck["slug"]
         base = DECKS_DIR / slug
         for name, flag in deck["has"].items():
-            # Almost every flag names a file in the deck's own directory. `page`
-            # is the exception on purpose: the compact Pilot's Manual is a
-            # RENDERED page, so it lives under `manuals/p/` beside the magazine
-            # it replaces, not in the artifact directory it was rendered from.
-            if name == "page":
-                path = MANUALS_DIR / "p" / f"{slug}.html"
-            elif name == "log":
+            # Every flag names a file in the deck's own directory (`page`, the
+            # rendered handbook, left with it on 2026-11-22).
+            if name == "log":
                 path = base / "log.jsonl"
             elif name == "context":
                 path = base / "CONTEXT.md"
@@ -206,7 +201,6 @@ def test_every_entry_carries_its_format_and_a_60_card_deck_has_no_commander(tmp_
     nonland's art. A brief with a format and no commander is a draft."""
     decks = tmp_path / "decks"
     monkeypatch.setattr("manamap.config.DECKS_DIR", decks)
-    monkeypatch.setattr("manamap.config.MANUALS_DIR", tmp_path / "manuals")
     cmdr = decks / "cmdr"
     cmdr.mkdir(parents=True)
     (cmdr / "decklist.txt").write_text("1 Radagast of Rhosgobel *CMDR*\n1 Forest\n")

@@ -949,7 +949,14 @@ BULK_RULINGS_TYPE = "rulings"
 
 # ── Pilot: Decks & Manuals ───────────────────────────────────────────────
 DECKS_DIR = DATA_DIR / "decks"
-MANUALS_DIR = _REPO_ROOT / "manuals"
+#: THE RENDERED HANDBOOK IS RETIRED (2026-11-22): `manuals/` and `build-poh` are gone
+#: and the deck page is the one place a deck is read. These are the decks that went to
+#: press under it — a published deck is a record and cannot be deleted, only archived
+#: (`deck_manifest.is_published`).
+PRESSED_DECKS = frozenset({
+    "edgar-vampires", "elves", "emiel-blink", "gishath", "goblin-storm", "hapatra",
+    "heliod", "ingris-infect", "keen-engineering", "meren-recursion", "radagast",
+    "sharknado", "sisay", "ur-dragon", "yawgmoth-swarm", "zur-enchantress"})
 
 # No card-ownership constant lives here any more (2026-11-22): the bench has no
 # notion of a box, a buy or a bill. What survives of the physical card is the

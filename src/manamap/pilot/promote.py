@@ -84,8 +84,6 @@ GATES = {
          "what to keep and what to wish for, at the table"),
         ("benchmark score", "benchmark.json",
          "four measures under one frozen harness, so decks compare"),
-        ("handbook", "manuals/p/<slug>.html",
-         "the Pilot's Operating Handbook — procedures for when it goes wrong"),
         ("dossier", "info.json",
          "the composed view the deck page fetches"),
         # No ownership row (2026-11-22): the bench has no notion of a box, so the
@@ -183,14 +181,6 @@ def gate(slug, to):
     by_artifact = {row["artifact"]: row for row in deck_status.status(slug)}
     rows = []
     for label, artifact, why in GATES[to]:
-        if artifact.startswith("manuals/"):
-            from manamap.config import MANUALS_DIR
-
-            path = MANUALS_DIR / "p" / f"{slug}.html"
-            rows.append({"label": label, "artifact": artifact, "why": why,
-                         "state": "present" if path.exists() else "missing",
-                         "detail": "", "how": f"manamap pilot build-poh {slug}"})
-            continue
         row = by_artifact.get(artifact)
         if row is None:
             # `deck_status` does not track it, so presence is the only question

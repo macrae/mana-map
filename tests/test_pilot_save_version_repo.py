@@ -56,13 +56,6 @@ def repo(tmp_path, monkeypatch):
                                                   "*.prev", ".agent-out"))
     shutil.copy2(config.DECKS_DIR / "index.json", decks / "index.json")
     shutil.copy2(REAL_ROOT / ".gitignore", root / ".gitignore")
-    poh = REAL_ROOT / "manuals" / "p" / f"{SLUG}.html"
-    if poh.exists():
-        (root / "manuals" / "p").mkdir(parents=True)
-        shutil.copy2(poh, root / "manuals" / "p" / poh.name)
-        css = poh.parent / "poh.css"          # tracked beside it; build-poh rewrites it
-        if css.exists():
-            shutil.copy2(css, root / "manuals" / "p" / css.name)
     (root / "docs").mkdir()
     (root / "docs" / "notes.md").write_text("tracked, unrelated\n")
     _git(root, "init", "-q")
@@ -71,10 +64,8 @@ def repo(tmp_path, monkeypatch):
     _git(root, "add", "-A")
     _git(root, "commit", "-q", "-m", "a prior commit")
 
-    from manamap.pilot import deck_context, deck_history, poh
+    from manamap.pilot import deck_context, deck_history
     monkeypatch.setattr(config, "DECKS_DIR", decks)
-    # Commit 2 re-renders the handbook: into THIS repo, never the checkout's.
-    monkeypatch.setattr(poh, "MANUALS_DIR", root / "manuals")
     monkeypatch.setattr(deck_history, "_REPO_ROOT", root)
     monkeypatch.setattr(deck_edit, "_NAME_MEMO", {})
 
@@ -104,7 +95,7 @@ def test_save_version_is_the_list_then_its_version_list(repo):
     assert _git(repo, "rev-list", "--count", f"{head}..HEAD").strip() == "2"
     versions_json = f"data/decks/{SLUG}/versions.json"
     committed = _git(repo, "show", "--name-only", "--format=", "HEAD~1").split()
-    allowed = (f"data/decks/{SLUG}/", "data/decks/index.json", "manuals/p/")
+    allowed = (f"data/decks/{SLUG}/", "data/decks/index.json")
     assert committed and all(p.startswith(allowed) for p in committed), committed
     assert f"data/decks/{SLUG}/decklist.txt" in committed
     assert "data/decks/index.json" in committed
@@ -112,7 +103,7 @@ def test_save_version_is_the_list_then_its_version_list(repo):
     assert not any("edits.jsonl" in p or p.endswith((".lock", ".bak")) for p in committed)
     second = _git(repo, "show", "--name-only", "--format=", "HEAD").split()
     assert versions_json in second and f"data/decks/{SLUG}/decklist.txt" not in second
-    assert set(second) <= {versions_json, f"manuals/p/{SLUG}.html"}, second
+    assert set(second) == {versions_json}, second
     assert r["commit"] == _git(repo, "rev-parse", "HEAD~1").strip()
     assert r["versions_commit"] == _git(repo, "rev-parse", "HEAD").strip()
 

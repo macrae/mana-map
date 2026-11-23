@@ -1,23 +1,21 @@
 ---
 name: poh-procedures
-description: Write the authored half of a deck's Pilot's Operating Handbook — emergency procedures, normal procedures, rules of engagement. Numbered checklists grounded in the deck's own games. Use after `build-poh` renders the data sections.
+description: Write a deck's procedures — emergency procedures, normal procedures, rules of engagement (poh_procedures.json) — numbered checklists grounded in the deck's own games, shown on the deck page's "Play it" chapter. Use when a deck's procedures are missing or name cards it no longer runs.
 ---
 
-# The handbook's authored half
+# The procedures (`poh_procedures.json`)
 
-Sections 0, 1, 2, 5 and 6 regenerate from tracked artifacts. Sections **3
-(Emergency)**, **4 (Normal)** and **7 (Handling)** are written by a person with
-an agent's first draft, and they are what make the book a handbook rather than a
-report.
+Emergency procedures, normal procedures and handling — written by a person with
+an agent's first draft, and read on the deck page's **Play it** chapter
+(`viz/deck.html?deck=<slug>`: the turns, the emergencies, the table read). The
+rendered Pilot's Operating Handbook that first carried them was retired on
+2026-11-22; the file and its name stayed.
 
 ## Loop
 
-0. **See what the data half says** — free, and it is the brief:
-
-   ```bash
-   .venv/bin/manamap pilot build-poh <slug>
-   .venv/bin/manamap pilot validate-poh <slug>   # NOTEs the sections still missing
-   ```
+0. **See what the deck page already says** — free, and it is the brief:
+   `.venv/bin/manamap pilot deck-info <slug>` (its handbook line says whether the
+   procedures exist and which list they were written for).
 
 1. **Cache gate**:
 
@@ -33,13 +31,12 @@ report.
    for a wipe is grounded in the games that ended in one. It writes
    `.agent-out/poh-procedures.json`.
 
-3. **Install, then validate** — in that order, because the validator reads the
-   rendered page:
+3. **Install, then validate, then recompose the page's data**:
 
    ```bash
    .venv/bin/manamap pilot install-agent <slug> --routine poh-procedures
-   .venv/bin/manamap pilot build-poh <slug>
-   .venv/bin/manamap pilot validate-poh <slug>
+   .venv/bin/manamap pilot validate-poh-procedures <slug>
+   .venv/bin/manamap pilot deck-info <slug> --write && .venv/bin/manamap pilot build-index
    ```
 
 4. **Record**, only once the validator passes:
@@ -56,10 +53,10 @@ report.
 
 ## What the gate can and cannot see
 
-`validate-poh` checks the callout cap per page, that every cross-reference
-resolves, that no `<script>` and no build date reached the output. It cannot tell
-whether a checklist is *followable* — that is the whole content of the section
-and it is not mechanically decidable.
+`validate-poh-procedures` holds every condition to `deck_notes.CAUSES`, every phase to
+the ones the page draws, and every card named to the 99. It cannot tell whether a
+checklist is *followable* — that is the whole content of the section and it is not
+mechanically decidable.
 
 ## Notes
 

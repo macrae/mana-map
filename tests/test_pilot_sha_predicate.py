@@ -256,11 +256,7 @@ def test_patching_the_configured_root_reaches_every_reader(tmp_path, monkeypatch
 
 #: Gate entries that are NOT a per-deck file, and so cannot be a `deck-status`
 #: stage. Each is exempt for a stated reason rather than by being forgotten.
-_NOT_A_DECK_FILE = {
-    # Rendered OUTSIDE the deck directory, into `manuals/p/`. (`@ownership`, the
-    # one computed gate, left with the ownership layer on 2026-11-22.)
-    "manuals/p/<slug>.html",
-}
+_NOT_A_DECK_FILE = set()   # the rendered handbook (manuals/p/) left 2026-11-22; @ownership with the ownership layer
 
 #: Written only when the pilot acts — `deck-link` records where a deck was
 #: published; `deckcheck --write` records a Threat Index reading after the

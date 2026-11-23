@@ -25,7 +25,6 @@ SHA = list_sha256(LIST)       # the "what I pasted" stamp the fixture list earns
 def decks(tmp_path, monkeypatch):
     root = tmp_path / "decks"
     monkeypatch.setattr("manamap.config.DECKS_DIR", root)
-    monkeypatch.setattr("manamap.config.MANUALS_DIR", tmp_path / "manuals")
     d = root / "ldeck"
     d.mkdir(parents=True)
     (d / "decklist.txt").write_text(LIST)

@@ -44,7 +44,6 @@ import subprocess
 from manamap.config import DATA_DIR
 from manamap.pilot.common import deck_dir, load_json
 
-MANUALS = DATA_DIR.parent / "manuals"
 
 
 def blockers(slug, base=None):
@@ -64,12 +63,12 @@ def blockers(slug, base=None):
     """
     base = base if base is not None else deck_dir(slug)
     out = []
-    # The HANDBOOK, not the deleted magazine page. Both are "went to press";
-    # only one still exists.
-    if (MANUALS / "p" / f"{slug}.html").exists():
-        out.append("it went to press — `manuals/p/{}.html` is a published "
-                   "record; archive it instead (`deck-state {} retire`)"
-                   .format(slug, slug))
+    # WENT TO PRESS: past brewing, or one of the decks whose handbook was
+    # rendered before the rendered handbook was retired (2026-11-22).
+    from manamap.pilot.deck_manifest import is_published
+    if is_published(slug):
+        out.append("it went to press — a published deck is a record; archive it "
+                   "instead (`deck-state {} retire`)".format(slug))
     # The log is read from `base`, not by slug, for the same reason. An
     # unreadable or absent log is not a game we played.
     log = base / "log.jsonl"
@@ -130,8 +129,7 @@ def delete(slug, force=False):
             f"the archive rack.")
 
     claims = holders(slug)
-    page = MANUALS / "p" / f"{slug}.html"
-    paths = [base] + ([page] if page.exists() else [])
+    paths = [base]
 
     # `git rm -r --cached` then remove, rather than `git rm -rf`: the latter
     # refuses when the tree has uncommitted changes under the path, which is

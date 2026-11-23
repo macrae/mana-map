@@ -1,17 +1,16 @@
 ---
 name: write-manual
-description: Write a deck's pilot notes (the five prose keys, via pilot-notes) and render its Pilot's Operating Handbook — evidence gathering, prose, and the deterministic HTML build. Use when the user wants the notes or the page (re)generated for a deck that has cards.json and verified stack scenarios.
+description: Write a deck's pilot notes — the five prose keys (pilot-notes), the strategic frame, the decision spreads and the tutor guide — that the deck page shows. Use when a deck's notes are missing or were written for an older list. (The rendered handbook this used to finish with was retired 2026-11-22.)
 ---
 
-# Write the pilot notes and render the handbook
+# Write the pilot notes (shown on the deck page)
 
-Pipeline for `data/decks/<slug>/` → `manuals/p/<slug>.html`. The HTML step is
-**`build-poh`, the Pilot's Operating Handbook** — the live renderer since 2026-09-02; the
-magazine renderer it replaced was deleted 2026-09-13. It renders from the tracked
-artifacts, byte-identically. Evidence tiers: ✓ rules-verified, ◆ data-derived, ★ coaching
+Pipeline for `data/decks/<slug>/` → the deck page (`viz/deck.html?deck=<slug>`), which reads
+the tracked prose through `deck-info --write`. The rendered Pilot's Operating Handbook
+this skill used to finish with was retired on 2026-11-22.
 (see `docs/pilot.md`, `docs/vision.md`).
 
-**This skill writes only the prose half.** Sections 3, 4 and 7 of the handbook — the
+**This skill writes only the prose.** The procedures — the
 emergency procedures, the normal procedures and the rules of engagement — belong to
 `/poh-procedures`, a different agent and a different routine.
 
@@ -50,13 +49,12 @@ emergency procedures, the normal procedures and the rules of engagement — belo
    `manamap pilot merge-prose <slug> pilot-notes` — the merge touches ONLY the five
    owned keys, so the frozen legacy keys on a published deck (`card_roles`,
    `mana_base`, `upgrades`, `editors_letter`, `pilots_log`) survive — then
-   `validate-poh <slug>` (the legacy page gate: budgets, taxonomy leaks, the voice bans) and
    `cache-record <slug> --routine pilot-notes`. Zero-guessing rule throughout;
    surface "needs a stack scenario" flags to the user. Decision spreads and the tutor
    guide are the same agent under their own routines — `decision:<NNN>` (the
    author-decision skill) and `tutor-guide`.
-6. **Build**: `.venv/bin/manamap pilot build-poh <slug>` then `.venv/bin/manamap pilot build-index` — deterministic; only verified stacks appear; a section with no prose degrades to ABSENT, never to `[TODO]`.
-7. **Review**: open `manuals/p/<slug>.html`; the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
+6. **Compose**: `.venv/bin/manamap pilot deck-info <slug> --write` then `.venv/bin/manamap pilot build-index` — deterministic; the deck page reads the notes from there, stamped with the list they were written for.
+7. **Review**: open `viz/deck.html?deck=<slug>`; the decisions, the notes and the strategic frame are the review surface (tracked JSON, red-linable).
 
 `manual_prose.json` is tracked and human-editable — tune the wording directly and rebuild without re-running agents. The cache reports a hand edit as `EDITED` and still says "don't spawn"; run `cache-record` to bless it.
 

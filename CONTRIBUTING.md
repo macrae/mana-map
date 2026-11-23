@@ -121,11 +121,11 @@ asserts it, because a mismatched pair is how `build.js` ends up calling a stale
 `mana-map.js`. `manuals/page.css` is content-addressed instead, so editing
 `poh_design.py` obliges you to rebuild **every handbook**.
 
-**A handbook must equal a fresh render of its artifacts.** `make manuals` is free
+**A handbook must equal a fresh render of its artifacts.** `make artifacts` is free
 and deterministic; run it after touching the renderer and commit the result.
 Four deck pages once spent days serving content their own artifacts no longer
 supported, and a stale page renders perfectly. CI asserts this from outside the
-code that asserts it: `make manuals`, then `git diff --exit-code`.
+code that asserts it: `make artifacts`, then `git diff --exit-code`.
 
 **Never put `data/` on Git LFS.** GitHub Pages serves LFS pointers, which would
 break the deployed site for everyone. The large tracked JSON is deliberate.

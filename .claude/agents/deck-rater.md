@@ -41,7 +41,7 @@ Then read, as they exist: `data/decks/<slug>/engine.json` (the thesis and the li
 which are verified), `diagnosis.json` (the axis that binds, the skeptic's verdict),
 `deckcheck.json` (DeckCheck's read — context, never a figure you score),
 `stacks/*.json` whose `checker.verdict` is `pass`, `decisions.jsonl`,
-`deck_versions.json`, and `manuals/p/<slug>.html` (the handbook's procedures).
+`deck_versions.json`, and `poh_procedures.json` (the procedures the deck page shows).
 
 **The skeleton's `withheld[]` is the first thing to say.** What the measured components
 could not see — no logged games, no survey, no Forge run on this list, the goldfish's

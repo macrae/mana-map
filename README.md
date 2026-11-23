@@ -330,7 +330,6 @@ where a deck stands and what to do next; start with both.
 | `manamap pilot model-coverage <slug>` | What the model cannot see, before the games: seen / dark / invisible | **yes** |
 | `/write-manual` | The pilot's notes: game plan, mulligan, line intros, threats, matchups | no |
 | `/poh-procedures` | The half a person writes: emergency and normal procedures, rules of engagement | no |
-| `manamap pilot build-poh <slug>` + `build-index` | The Pilot's Operating Handbook (`manuals/p/`, deterministic, no `<script>`) | **yes** |
 
 Then the loop the bench exists for — all CLI except the two agents:
 
@@ -378,7 +377,7 @@ Surface     artifacts → deck-info --write → info.json ─┐
 ```
 
 `manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (**160 pilot subcommands** against 29 top-level ones).
+`manamap pilot <cmd>` drives the rest (**158 pilot subcommands** against 29 top-level ones).
 All constants live in `src/manamap/config.py`; both CLIs are registry-driven with lazy
 imports.
 
@@ -771,8 +770,8 @@ they document open questions.
 
 **Determinism.** Agents return JSON and never write HTML. That keeps every renderer a pure
 function of committed artifacts, byte-identical on rebuild — and asserted from *outside* the
-code that asserts it: CI runs `make manuals` and then `git diff --exit-code`, because
-otherwise the Makefile is the one thing nothing checks (and it was, until `make manuals` broke
+code that asserts it: CI runs `make artifacts` and then `git diff --exit-code`, because
+otherwise the Makefile is the one thing nothing checks (and it was, until `make artifacts` broke
 on CI's first run). It is also *why* goldfish and Forge runs are seeded, why a dated artifact
 carries an authored date rather than a generated one, and why image URLs get their
 cache-busters stripped.
@@ -803,7 +802,7 @@ The ones that cost the most; `CLAUDE.md` has one line per rule and the gotchas p
 - **Index alignment**: `projection[i]` ≡ `cards.csv[i]` ≡ `embeddings[i]`, positionally.
   Never partially regenerate after a card-count change.
 - **An edit to any of the four goldfish files is a model change** — its bytes are the
-  `model_version` stamp — so it means `manamap pilot regen --jobs 8 && make manuals`.
+  `model_version` stamp — so it means `manamap pilot regen --jobs 8 && make artifacts`.
 - **`manamap serve` holds the old modules.** Restart it after editing Python.
 - **Bump `?v=N`** on the script and CSS tags in `viz/index.html` after any frontend edit.
 - **Cache ordering for agents**: check → spawn → write → validate → **record last**.

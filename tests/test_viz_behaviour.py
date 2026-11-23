@@ -3597,26 +3597,6 @@ def test_no_live_surface_links_into_the_magazine(browser, viz_server):
         page.close()
 
 
-def test_the_dossier_offers_no_manual_link(browser, viz_server):
-    """PRD v2 Step 3 (2026-10-07): the Deck Context leads the dossier and replaces
-    the Pilot's Manual as the thing a pilot reads, so no surface links to
-    `manuals/p/` any more — even for a deck whose handbook is still on disk."""
-    import json
-    from manamap.config import DECKS_DIR
-
-    manifest = json.loads((DECKS_DIR / "index.json").read_text())
-    with_page = [d for d in manifest["decks"] if (d.get("has") or {}).get("page")]
-    if not with_page:
-        pytest.skip("no deck in the manifest has a rendered handbook")
-    page = _dossier(browser, viz_server, with_page[0]["slug"])
-    try:
-        assert page.query_selector("#manualLink") is None
-        hrefs = page.eval_on_selector_all("a", "els => els.map(e => e.getAttribute('href'))")
-        assert not [h for h in hrefs if h and "manuals/" in h], hrefs
-    finally:
-        page.close()
-
-
 # ── The verified-line spotlight ──────────────────────────────────────────
 #
 # `Build.focusLine` existed and was wired to the sidebar click, but all it did was

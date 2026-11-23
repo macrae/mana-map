@@ -40,7 +40,7 @@ def test_docs_alone_run_the_doc_guards_and_nothing_else():
 
 def test_deck_data_alone_is_scoped_to_those_decks():
     plan = cs.classify(["data/decks/edgar-vampires/branches/mardu-combo-v1/decklist.txt",
-                        "data/decks/edgar-vampires/info.json", "manuals/p/heliod.html",
+                        "data/decks/edgar-vampires/info.json", "data/decks/heliod/info.json",
                         "data/decks/index.json", "docs/testing.md"])
     assert plan["scope"] == "decks" and plan["decks"] == ["edgar-vampires", "heliod"]
     assert plan["tiers"] == ["docs", "decks"]
