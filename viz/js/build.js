@@ -1554,7 +1554,9 @@
      * because a pair pointing two ways is a pair whose direction is not a
      * fact. */
     const lines = engine.lines.filter(function (l) {
-      if (!l || !l.from || !l.to) return false;
+      // A line whose two ends sit in one stage says nothing about direction (v2,
+      // 2026-11-22: a computed shape can start and end among ignition cards).
+      if (!l || !l.from || !l.to || l.from === l.to) return false;
       // v2 (2026-11-22) stamps a line with EVERY passing stack that names its cards.
       const ids = Array.isArray(l.verified_by) ? l.verified_by : (l.verified_by ? [l.verified_by] : []);
       return ids.map(String).indexOf(String(stackId)) >= 0;

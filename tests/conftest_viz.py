@@ -101,8 +101,13 @@ def _wait_for_boot(page, condition, what):
         ) from exc
 
 
-def _boot(browser, viz_server, query=""):
+def _boot(browser, viz_server, query="", route=None):
     page = browser.new_page(viewport={"width": 1440, "height": 900})
+    if route:
+        # `(glob, json body)`: a stated artifact in place of the tracked one, so a test
+        # can reach a shape no tracked file has today.
+        page.route(route[0], lambda r: r.fulfill(status=200, content_type="application/json",
+                                                 body=route[1]))
     errors: list[str] = []
     _add = _record(errors)
     page.on("pageerror", lambda e: _add(e))

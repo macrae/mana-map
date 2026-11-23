@@ -3623,12 +3623,12 @@ _INK = """
 """
 
 
-def _build_page(browser, viz_server, slug, tab="deck"):
+def _build_page(browser, viz_server, slug, tab="deck", route=None):
     """Build with `slug` loaded, on `tab`. The panel is tabs since 2026-10-28 and a
     sleeved deck opens on Change; the verified lines and the role budget are Deck's,
     the curve is Numbers'."""
     from conftest_viz import _boot
-    page = _boot(browser, viz_server, f"?deck={slug}&tab={tab}")
+    page = _boot(browser, viz_server, f"?deck={slug}&tab={tab}", route=route)
     page.wait_for_function("() => window.Force && Force.nodeCount > 0", timeout=BOOT_TIMEOUT_MS)
     idle(page)
     return page
@@ -5640,7 +5640,20 @@ def test_a_stack_carrying_two_engine_lines_keeps_both_nouns(browser, viz_server)
     stack DISAGREED on direction, no arrowhead is drawn at all, because a pair
     pointing two ways is a pair whose direction is not a fact.
     """
-    page = _build_page(browser, viz_server, "ur-dragon")
+    # The SHAPE is fed directly (2026-11-22): engine.json v2 stamps no stack with two
+    # directed lines today, and the behaviour must not depend on that. A copy of the
+    # tracked record with the first directed stamped line duplicated under a second noun.
+    import json
+    from manamap.config import DECKS_DIR
+    doc = json.loads((DECKS_DIR / "ur-dragon" / "engine.json").read_text())
+    line = next((l for l in doc["lines"] if l.get("verified_by") and l.get("from") and l.get("to")
+                 and l["from"] != l["to"]), None)
+    if line is None:
+        pytest.skip("ur-dragon has no directed stack-stamped line")
+    doc["lines"].append(dict(line, id="LX", carries="a second noun"))
+    body = json.dumps(doc)
+    page = _build_page(browser, viz_server, "ur-dragon",
+                       route=("**/ur-dragon/engine.json*", body))
     try:
         carries = page.evaluate(
             "[...new Set(Force.links().filter(l => l.dir).map(l => l.carries))]")
@@ -9695,6 +9708,9 @@ def _report_page(browser, viz_server, body, status=200, width=1440):
         status=status, content_type="application/json", body=body))
     page.goto(f"{viz_server}/viz/branch.html?deck=ur-dragon&branch={A_BRANCH}")
     idle(page)
+    # The page folds past the call and closes the goldfish (2026-11-22); these tests
+    # read the report's text, so every <details> is opened first, the goldfish's own included.
+    page.evaluate("document.querySelectorAll('details').forEach(d => { d.open = true; })")
     return page
 
 
