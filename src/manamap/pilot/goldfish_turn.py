@@ -792,6 +792,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     experience = 0
     experience_by_turn = []
     recursion_to_battlefield = 0
+    # (mana value, turn) of EVERY creature Meren's end step put onto the battlefield, a
+    # body cast or reanimated earlier included (2026-11-23): `big_arrivals` keeps only each
+    # big body's first arrival, so a fatty cast, sacrificed and returned read as 'cast'.
+    meren_returns = []
     recursion_to_hand = 0
     # DEATHS A CARD CAUSES AMONG OUR OWN CREATURES (2026-11-07, `own_death_profile`): a costed
     # outlet in play (Birthing Pod, Fiend Artisan), enter-the-battlefield edicts waiting to
@@ -5211,6 +5215,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 yard_creatures.remove(_pick)
                 if _ok:
                     recursion_to_battlefield += 1
+                    meren_returns.append((int(_pick["cmc"]), turn))
                     _enter_by(_pick, "meren")
                 else:
                     recursion_to_hand += 1
@@ -5699,6 +5704,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             "big_arrivals": list(own_deaths["arrivals"].values()),
             "big_arrival_names": list(own_deaths["arrivals"]),     # same order, for a reader
             "recursion_to_battlefield": recursion_to_battlefield,
+            "meren_returns": meren_returns,
             "recursion_to_hand": recursion_to_hand} if commander_recursion else {}),
         "sac_cap_hits": sac_cap_hits,
         "interaction_in_hand_by_turn": interaction_in_hand_by_turn,
