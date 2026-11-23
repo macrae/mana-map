@@ -22,7 +22,8 @@
       "benchmark"
     ],
     "invalid": [
-      "engine"
+      "engine",
+      "CONTEXT.md"
     ],
     "verified": true,
     "missing": [
@@ -3890,7 +3891,7 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status heliod` names them; fix before anything else reads them",
+    "2 artifact(s) fail their own gate (engine, CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
     "branch `b3-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

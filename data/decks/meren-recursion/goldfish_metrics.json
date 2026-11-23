@@ -105,7 +105,7 @@
       "LIFE LOSS ON ARRIVAL COUNTS AS DAMAGE. 'Each opponent loses 1 life' (Corpse Knight) and 'deals 1 damage to each opponent' (Impact Tremors) are the same event, the same cadence and the same number against one opponent at 40 life, and only the second was priced until 2026-08-28. They are NOT the same in the rules — lifelink, damage prevention and 'whenever an opponent loses life' all separate them — and this model has none of those. Nine corpus cards read through this channel, plus Mirkwood Bats through a token-creation channel of its own.",
       "DEATH-TRIGGERED DRAIN FIRES ONLY ON THE DEATHS THIS MODEL PRODUCES. Blood Artist, Cruel Celebrant, Zulaport Cutthroat, Bastion of Remembrance, Vraan and Vein Ripper key on a creature DYING, and a death happens here in three places and nowhere else: a free sacrifice outlet converting tokens (`model_sacrifice`), a one-turn copy leaving at the end step, and the per-turn rate read off a Forge run (`model_deaths`). No blockers and no removal, so a deck with neither channel on has no deaths and the contribution is ABSENT, not zero; a deck whose kill runs through them is understated by however much that line is worth. `simulate` against a real pod is where that number lives."
     ],
-    "model_version": "0eff092ef85c",
+    "model_version": "7528c026dc32",
     "seed": 42,
     "targets_sha256": "a457169959d37f933e00df668ee0b6bdccf013db4f62eb6224163f2556f46642",
     "treasure_sources_not_modelled": []
@@ -114,7 +114,7 @@
     "combat": {
       "combo_wins": {
         "1385-4279-4314--216": 58,
-        "4279-4314-7452--216": 55
+        "4279-4314-7452--216": 53
       },
       "kill_by_combo_rate": 0.011,
       "kill_by_poison_rate": 0.0,
@@ -126,43 +126,43 @@
         "4": 0.0,
         "5": 0.0,
         "6": 0.009,
-        "7": 0.117,
-        "8": 0.385,
-        "9": 0.72
+        "7": 0.119,
+        "8": 0.387,
+        "9": 0.722
       },
       "kill_turn_histogram": {
-        "10": 1847,
+        "10": 1837,
         "5": 2,
-        "6": 89,
-        "7": 1084,
-        "8": 2670,
-        "9": 3355
+        "6": 91,
+        "7": 1099,
+        "8": 2678,
+        "9": 3347
       },
       "mean_board_power_by_turn": {
         "1": 0.087,
-        "10": 24.463,
+        "10": 24.555,
         "2": 1.056,
         "3": 2.42,
-        "4": 4.718,
-        "5": 6.502,
-        "6": 8.854,
-        "7": 11.747,
-        "8": 15.254,
-        "9": 19.434
+        "4": 4.719,
+        "5": 6.514,
+        "6": 8.878,
+        "7": 11.786,
+        "8": 15.308,
+        "9": 19.501
       },
       "mean_damage_by_turn": {
         "1": 0.0,
-        "10": 19.852,
+        "10": 19.917,
         "2": 0.087,
         "3": 1.058,
         "4": 2.426,
-        "5": 4.751,
-        "6": 6.574,
-        "7": 8.967,
-        "8": 11.937,
-        "9": 15.552
+        "5": 4.752,
+        "6": 6.586,
+        "7": 8.99,
+        "8": 11.975,
+        "9": 15.603
       },
-      "mean_kill_turn": 8.639,
+      "mean_kill_turn": 8.633,
       "mean_poison_by_turn": {
         "1": 0.0,
         "10": 0.0,
@@ -198,55 +198,55 @@
     "commander_recursion": {
       "mean_experience_by_turn": {
         "1": 0.0,
-        "10": 13.022,
+        "10": 13.144,
         "2": 0.0,
-        "3": 0.025,
-        "4": 0.331,
-        "5": 1.11,
-        "6": 2.433,
-        "7": 4.266,
-        "8": 6.628,
-        "9": 9.519
+        "3": 0.026,
+        "4": 0.346,
+        "5": 1.147,
+        "6": 2.493,
+        "7": 4.35,
+        "8": 6.727,
+        "9": 9.636
       },
-      "mean_returned_to_battlefield": 4.054,
-      "mean_returned_to_hand": 1.048
+      "mean_returned_to_battlefield": 4.079,
+      "mean_returned_to_hand": 1.028
     },
     "drain": {
       "mean_cumulative_drain_by_turn": {
         "1": 0.0,
-        "10": 3.617,
+        "10": 3.675,
         "2": 0.0,
         "3": 0.004,
-        "4": 0.043,
-        "5": 0.203,
-        "6": 0.506,
-        "7": 0.974,
-        "8": 1.618,
-        "9": 2.489
+        "4": 0.045,
+        "5": 0.211,
+        "6": 0.524,
+        "7": 1.006,
+        "8": 1.658,
+        "9": 2.538
       },
       "mean_drain_by_turn": {
         "1": 0.0,
-        "10": 1.128,
+        "10": 1.137,
         "2": 0.0,
         "3": 0.004,
-        "4": 0.039,
-        "5": 0.16,
-        "6": 0.303,
-        "7": 0.468,
-        "8": 0.644,
-        "9": 0.871
+        "4": 0.041,
+        "5": 0.167,
+        "6": 0.313,
+        "7": 0.482,
+        "8": 0.652,
+        "9": 0.88
       },
-      "share_of_games_draining_by_turn_10": 0.425
+      "share_of_games_draining_by_turn_10": 0.429
     },
     "interaction_castable_by_turn": {
       "1": 0.072,
-      "10": 0.603,
+      "10": 0.604,
       "2": 0.126,
       "3": 0.104,
       "4": 0.15,
-      "5": 0.279,
-      "6": 0.352,
-      "7": 0.424,
+      "5": 0.278,
+      "6": 0.353,
+      "7": 0.425,
       "8": 0.494,
       "9": 0.547
     },
@@ -258,8 +258,8 @@
       "4": 0.874,
       "5": 0.896,
       "6": 0.897,
-      "7": 0.892,
-      "8": 0.88,
+      "7": 0.891,
+      "8": 0.879,
       "9": 0.872
     },
     "iterations": 10000,
@@ -270,58 +270,58 @@
       "3": 0.91,
       "4": 0.798,
       "5": 0.681,
-      "6": 0.592,
-      "7": 0.549,
+      "6": 0.593,
+      "7": 0.548,
       "8": 0.524,
-      "9": 0.514
+      "9": 0.513
     },
     "mean_available_mana_by_turn": {
       "1": 0.999,
-      "10": 7.785,
+      "10": 7.783,
       "2": 2.233,
       "3": 3.233,
       "4": 4.089,
-      "5": 4.793,
+      "5": 4.792,
       "6": 5.458,
       "7": 6.059,
       "8": 6.635,
-      "9": 7.203
+      "9": 7.202
     },
     "mean_bodies_by_turn": {
       "1": 0.172,
-      "10": 14.625,
+      "10": 14.631,
       "2": 0.733,
       "3": 1.317,
       "4": 1.752,
       "5": 3.106,
-      "6": 4.92,
-      "7": 7.027,
-      "8": 9.373,
-      "9": 11.896
+      "6": 4.923,
+      "7": 7.032,
+      "8": 9.381,
+      "9": 11.903
     },
     "mean_extra_cards_drawn_by_turn": {
       "1": 0.0,
-      "10": 2.989,
+      "10": 2.981,
       "2": 0.016,
       "3": 0.064,
       "4": 0.113,
-      "5": 0.261,
-      "6": 0.512,
-      "7": 0.872,
-      "8": 1.397,
-      "9": 2.088
+      "5": 0.26,
+      "6": 0.511,
+      "7": 0.871,
+      "8": 1.391,
+      "9": 2.084
     },
     "mean_sacrifices_by_turn": {
       "1": 0.0,
-      "10": 5.606,
+      "10": 5.598,
       "2": 0.0,
       "3": 0.016,
       "4": 0.208,
       "5": 0.66,
-      "6": 1.343,
-      "7": 2.188,
-      "8": 3.183,
-      "9": 4.322
+      "6": 1.342,
+      "7": 2.186,
+      "8": 3.181,
+      "9": 4.318
     },
     "opening_hand": {
       "first_seven_land_histogram": {
@@ -350,13 +350,13 @@
     "sac_cap_hit_rate": 0.0,
     "targets": [
       {
-        "assembled_rate": 0.858,
+        "assembled_rate": 0.857,
         "assembled_rate_assisted": 0.908,
         "by_turn_6_rate": 0.738,
         "by_turn_6_rate_assisted": 0.804,
         "label": "A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand",
-        "mean_turn": 2.766,
-        "mean_turn_assisted": 2.682
+        "mean_turn": 2.761,
+        "mean_turn_assisted": 2.68
       },
       {
         "assembled_rate": 0.783,
@@ -364,26 +364,26 @@
         "by_turn_6_rate": 0.647,
         "by_turn_6_rate_assisted": 0.737,
         "label": "A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out",
-        "mean_turn": 3.062,
+        "mean_turn": 3.064,
         "mean_turn_assisted": 2.975
       },
       {
-        "assembled_rate": 0.669,
+        "assembled_rate": 0.668,
         "assembled_rate_assisted": 0.773,
         "by_turn_6_rate": 0.466,
         "by_turn_6_rate_assisted": 0.579,
         "label": "THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn",
-        "mean_turn": 4.437,
-        "mean_turn_assisted": 4.258
+        "mean_turn": 4.434,
+        "mean_turn_assisted": 4.257
       },
       {
-        "assembled_rate": 0.67,
-        "assembled_rate_assisted": 0.782,
+        "assembled_rate": 0.671,
+        "assembled_rate_assisted": 0.781,
         "by_turn_6_rate": 0.521,
         "by_turn_6_rate_assisted": 0.634,
         "label": "AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)",
-        "mean_turn": 3.507,
-        "mean_turn_assisted": 3.46
+        "mean_turn": 3.509,
+        "mean_turn_assisted": 3.459
       },
       {
         "assembled_rate": 0.856,
@@ -392,34 +392,34 @@
         "by_turn_6_rate_assisted": 0.776,
         "label": "A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return",
         "mean_turn": 2.757,
-        "mean_turn_assisted": 2.662
+        "mean_turn_assisted": 2.661
       },
       {
         "assembled_rate": 0.474,
         "assembled_rate_assisted": 0.654,
         "by_turn_6_rate": 0.341,
-        "by_turn_6_rate_assisted": 0.494,
+        "by_turn_6_rate_assisted": 0.495,
         "label": "CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience",
-        "mean_turn": 3.958,
-        "mean_turn_assisted": 4.052
+        "mean_turn": 3.956,
+        "mean_turn_assisted": 4.054
       },
       {
         "assembled_rate": 0.404,
-        "assembled_rate_assisted": 0.583,
+        "assembled_rate_assisted": 0.584,
         "by_turn_6_rate": 0.242,
         "by_turn_6_rate_assisted": 0.386,
         "label": "THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience",
-        "mean_turn": 5.16,
-        "mean_turn_assisted": 5.043
+        "mean_turn": 5.158,
+        "mean_turn_assisted": 5.045
       },
       {
         "assembled_rate": 0.508,
-        "assembled_rate_assisted": 0.673,
+        "assembled_rate_assisted": 0.672,
         "by_turn_6_rate": 0.358,
         "by_turn_6_rate_assisted": 0.507,
         "label": "A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)",
         "mean_turn": 4.142,
-        "mean_turn_assisted": 4.096
+        "mean_turn_assisted": 4.094
       },
       {
         "assembled_rate": 0.585,
@@ -427,17 +427,17 @@
         "by_turn_6_rate": 0.44,
         "by_turn_6_rate_assisted": 0.506,
         "label": "A TUTOR drawn — finds the missing half of the experience engine",
-        "mean_turn": 3.742,
+        "mean_turn": 3.744,
         "mean_turn_assisted": 3.921
       },
       {
-        "assembled_rate": 0.582,
+        "assembled_rate": 0.581,
         "assembled_rate_assisted": 0.72,
         "by_turn_6_rate": 0.445,
         "by_turn_6_rate_assisted": 0.569,
         "label": "RAMP drawn — an accelerant of any kind",
-        "mean_turn": 3.628,
-        "mean_turn_assisted": 3.692
+        "mean_turn": 3.627,
+        "mean_turn_assisted": 3.691
       },
       {
         "assembled_rate": 0.92,
@@ -446,16 +446,16 @@
         "by_turn_6_rate_assisted": 0.865,
         "label": "REMOVAL drawn — a spell or a returning body that answers a permanent",
         "mean_turn": 2.569,
-        "mean_turn_assisted": 2.462
+        "mean_turn_assisted": 2.464
       },
       {
         "assembled_rate": 0.196,
-        "assembled_rate_assisted": 0.468,
+        "assembled_rate_assisted": 0.467,
         "by_turn_6_rate": 0.123,
         "by_turn_6_rate_assisted": 0.322,
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's",
-        "mean_turn": 4.681,
-        "mean_turn_assisted": 4.867
+        "mean_turn": 4.677,
+        "mean_turn_assisted": 4.864
       }
     ],
     "treasure": {
