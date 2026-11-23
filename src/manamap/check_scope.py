@@ -601,11 +601,9 @@ def run_precommit():
     else:
         cmds = [["make", "smoke"]] + ([[py, "-m", "pytest", "-m", "unit", *selected]] if selected else [])
         why = f"the core + {len(selected)} test file(s) the change reaches"
-    # THE COMPOSED FILES only when something that composes them moved: a deck, fleet data,
-    # or pilot/sim code. A docs or test-only commit does not pay ~40 s for it, and the
-    # prepush preflight runs it on every push regardless.
-    if any(p.startswith(("data/", "src/manamap/pilot/", "src/manamap/sim/")) for p in paths):
-        cmds = [[py, "-m", "manamap.cli", "pilot", "restamp", "--check"]] + cmds
+    # NO `restamp --check` HERE (2026-11-22): it recomposes all 34 status files (~45 s,
+    # twice the tests a one-line edit selects). A stale composed file is not a bug at
+    # commit time, and the prepush preflight runs it before anything leaves the machine.
     print(f"PRECOMMIT — {why}")
     for c in cmds:
         print("  $ " + _show(c))

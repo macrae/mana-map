@@ -31,8 +31,9 @@ how the suite got here — every earlier measurement, every lesson in full, the
 
 ## The minimum path: per commit, per push, nightly (2026-11-22)
 
-**Per commit — `make precommit`** (~20 s to ~1.5 min): `restamp --check`, then
-`python -m manamap.check_scope precommit` over the working tree. It always runs **the core**
+**Per commit — `make precommit`** (~25 s; ~1.5 min when the whole unit tier runs):
+`python -m manamap.check_scope precommit` over the working tree. `restamp --check` (~45 s,
+all 34 composed files) is the prepush preflight's, not the commit's. It always runs **the core**
 (`make smoke`, below). For a python change it then runs the unit tests the change can
 reach, chosen by `manamap.test_impact`. A harness file, `config.py`, or anything the
 selector cannot place runs the whole unit tier instead.
