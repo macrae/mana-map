@@ -2087,7 +2087,7 @@ ENGINE_EVENTS = {
                 "replacements": [], "channel": None},
     "DENIAL": {"triggers": [], "effects": [],
                "statics": ["CantAttackUnless", "CantAttack", "CantBlock", "CantBeCast", "CantBeActivated",
-                           "CantTarget", "CantBeTargetedBy", "CantAttack,CantBlock", "MustAttack"],
+                           "CantTarget", "MustAttack"],
                "replacements": [], "channel": None},
     "COUNTERSPELL": {"triggers": ["Countered", "BecomesTarget"], "effects": ["Counter"],
                      "replacements": ["Counter"], "channel": None},

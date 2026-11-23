@@ -380,7 +380,7 @@ the deck, over 598 queries from the card pairs a checker-passed stack names toge
 | ability space (the incumbent) | 0.212 |
 | CardBERT (the pages) | 0.214 |
 | feeds (either direction) | 0.151 |
-| interaction (alike) | 0.140 |
+| interaction (alike) | 0.139 |
 | random | 0.117 |
 | synergy graph | 0.109 |
 

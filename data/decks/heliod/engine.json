@@ -3390,16 +3390,6 @@
     "mana_cost": "2 U",
     "abilities": [
      {
-      "kind": "static",
-      "consumes": null,
-      "produces": [],
-      "scales": {
-       "event": "DENIAL"
-      },
-      "zone": "battlefield",
-      "text": "NICKNAME can't attack or block unless you have seven or more cards in hand."
-     },
-     {
       "kind": "activated",
       "consumes": null,
       "costs": [
@@ -3461,8 +3451,10 @@
     ],
     "coverage": {
      "reader": "forge",
-     "partial": false,
-     "unmapped": [],
+     "partial": true,
+     "unmapped": [
+      "static:CantAttack,CantBlock"
+     ],
      "loose": [],
      "ai_remove_deck": null
     },
@@ -8538,14 +8530,6 @@
     "kind": "spell"
    },
    {
-    "card": "Kefnet the Mindful",
-    "filters": [],
-    "keywords": [
-     "NICKNAME can't attack or block unless you have seven or more"
-    ],
-    "kind": "denial"
-   },
-   {
     "card": "Propaganda",
     "filters": [],
     "keywords": [
@@ -9973,6 +9957,7 @@
    "Guardian of Faith",
    "Heliod, the Radiant Dawn // Heliod, the Warped Eclipse",
    "Isochron Scepter",
+   "Kefnet the Mindful",
    "Leyline of Anticipation",
    "Teferi's Protection",
    "The Second Doctor"
@@ -9982,6 +9967,7 @@
    "effect:GainControl",
    "effect:Phases",
    "effect:SetState",
+   "static:CantAttack,CantBlock",
    "static:CantBlockUnless",
    "static:CastWithFlash",
    "trigger:ChangesZone"
