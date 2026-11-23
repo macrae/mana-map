@@ -376,8 +376,8 @@ Surface     artifacts → deck-info --write → info.json ─┐
             build-index → index.json ──────────────────┴→ viz/deck.html
 ```
 
-`manamap run` drives the first (15 steps, ~40–60 min, internet at two of them).
-`manamap pilot <cmd>` drives the rest (**158 pilot subcommands** against 29 top-level ones).
+`manamap run` drives the first (~40–60 min, internet at two steps).
+`manamap pilot <cmd>` drives the rest (`manamap pilot --help` lists them).
 All constants live in `src/manamap/config.py`; both CLIs are registry-driven with lazy
 imports.
 
@@ -841,7 +841,7 @@ records below, which saves reading 12,000 lines of the latter by accident.
 | `docs/simulation.md` | Both engines: Forge's spike and harness, the parser, the pod, the bridge — and the goldfish channel-by-channel |
 | `docs/pilot.md` | Evidence contract, the bench's commands and artifacts, rules and strategy DBs |
 | `docs/architecture.md` | Models, mechanical tags, synergy rules, power creep, regions |
-| `docs/pipeline.md` | All 15 steps: inputs, outputs, runtimes, when to re-run |
+| `docs/pipeline.md` | Every step: inputs, outputs, runtimes, when to re-run |
 | `docs/data-artifacts.md` | Every `data/` file: producer, size, git status, consumers |
 | `docs/viz.md` | Frontend structure, the `window.MM` API, Pages layout |
 | `docs/testing.md` | Test layout, skip markers, conventions — **and the only stated runtimes** |

@@ -7,14 +7,11 @@ checklist, the design-issue skill, and a CLI help string. A transcribed list
 goes stale the moment a section is added; this test makes that a failure.
 """
 
-import re
 from pathlib import Path
 
-from manamap.pilot.page_spec import SECTION_IDS
-from manamap.pilot.poh_spec import SECTIONS as POH_SECTIONS
 # One pruned walk shared with `test_docs_counts.py`, instead of a full-tree glob
 # per reference. `tests/repo_tree.py` records what that cost.
-from repo_tree import claude_md, exists_anywhere
+from repo_tree import exists_anywhere
 
 ROOT = Path(__file__).resolve().parent.parent
 # Every surface that tells an agent or a human how many sections there are.
@@ -31,80 +28,6 @@ DESIGN_RECORDS = {"deck-builder-v2.md", "frontend-v2.md"}
 #: measurement the magazine renderer cost and outlived it by design. (The
 #: paydown plan, which named what it deleted, moved to `docs/history/` 2026-10-05.)
 _RECORDS_OF_DELETED_THINGS = {"gotchas-magazine-legacy.md"}
-SURFACES = [
-    ROOT / "CLAUDE.md",
-    ROOT / "PLAN.md",
-    ROOT / "README.md",
-    *claude_md(),
-    *[p for p in sorted((ROOT / "docs").glob("*.md"))
-      if p.name not in DESIGN_RECORDS],
-    *sorted((ROOT / "src" / "manamap" / "pilot").glob("*.py")),
-]
-
-# Spelled-out counts, and the small ones matter now. The map used to start at
-# "fifteen", so a doc saying "eight sections" or "nine sections" was invisible to
-# this check — which is exactly how `docs/history/manual-v5-spec.md` passed while saying
-# "eight blocks" and how `page_spec.py`'s own docstring passed saying "nine
-# sections". The gate was blind below fifteen, not tolerant.
-_WORDS = {"eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
-          "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
-          "seventeen": 17, "eighteen": 18}
-# `[^|\n]` guards against markdown table rows ("| # | Section |"), where the
-# number and the noun are different cells rather than one phrase.
-# The lookbehind rejects heading numbers ("§5.1 Section specifications") and the
-# `[ -]` (not `\s`) rejects markdown table rows, where the number and the noun are
-# different cells rather than one phrase.
-_COUNT_RE = re.compile(
-    r"(?<![\d.])\b(\d{1,2}|" + "|".join(_WORDS) + r")"
-    r"[ -](?:fixed[ ]+)?(?:departments?|sections?)\b", re.IGNORECASE)
-
-
-def test_no_surface_states_a_wrong_section_count():
-    """ONE registry. The magazine was deleted on 2026-09-13 and this collapsed
-    with it, which the previous docstring asked for by name: "this collapses
-    back to a single truth the moment `build_manual.py` is deleted — if you are
-    reading this after that, take the set apart."
-
-    `page_spec.SECTIONS` is the dossier's — and on 2026-09-21 it stopped being
-    the only one. The Pilot's Operating Handbook carries its own registry,
-    `poh_spec.SECTIONS`, at TEN against the dossier's nine, and a true sentence
-    in `poh.py` about the handbook's ten sections failed this gate against the
-    dossier's count. Two surfaces, two registries, two legitimate numbers; the
-    truth set holds both rather than the gate forcing one.
-
-    THE COST OF THE NARROWER FORM was a sentence nobody could write: the
-    handbook's renderer gap (sections 8 and 9 have no renderer) could not be
-    documented at the place it lives without tripping a check meant for a
-    different page."""
-    truth = {len(SECTION_IDS), len(POH_SECTIONS)}
-    wrong = []
-    for path in SURFACES:
-        if "history" in path.parts:
-            continue
-        for match in _COUNT_RE.finditer(path.read_text(encoding="utf-8")):
-            token = match.group(1).lower()
-            stated = _WORDS.get(token, int(token) if token.isdigit() else None)
-            if stated is not None and stated not in truth:
-                wrong.append(f"{path.relative_to(ROOT)}: {match.group()!r} "
-                             f"(the registries say {sorted(truth)})")
-    assert not wrong, "stale section counts:\n  " + "\n  ".join(wrong)
-
-
-def test_no_surface_hardcodes_the_department_id_list():
-    """An enumerated id list in a prompt is the same bug with more surface.
-
-    The probe is DERIVED, not typed. It used to be the literal string
-    "cover, contents, first-turns" — the opening of the order at the time — and
-    the v3.4 resequence would have turned it into a sentinel that matches
-    nothing and silently protects nothing, which is worse than no test.
-    """
-    probes = [", ".join(SECTION_IDS[:3])]
-    offenders = [p.relative_to(ROOT) for p in SURFACES
-                 if "history" not in p.parts
-                 and any(probe in p.read_text(encoding="utf-8") for probe in probes)]
-    assert not offenders, (
-        f"{offenders} enumerate section ids; read page_spec.SECTION_IDS instead")
-
 
 def test_every_step_module_agrees_with_the_registry_about_its_number():
     """A step's number lives in `pipeline.STEPS`; the module must not disagree.

@@ -56,7 +56,7 @@ cases skip without it, every one labelled with the command that would enable it.
 **Needs [Claude Code](https://claude.com/claude-code):** the agent phases only —
 generating a *new* deck's prose, engine model, debrief or prescription. Everything
 deterministic is a CLI subcommand. If you do not have it, you can still work on
-the frontend, the models, the pipeline, all 102 pilot subcommands, the Forge
+the frontend, the models, the pipeline, every pilot subcommand, the Forge
 harness, the renderer and the tests, which is nearly all of the code.
 
 ---
@@ -167,7 +167,7 @@ you are welcome to write in it.
 
 `docs/README.md` indexes everything and separates current reference from
 historical design records. The two most useful starting points are
-`docs/pipeline.md` (the 15 steps, what each produces) and `docs/testing.md`
+`docs/pipeline.md` (every step, what each produces) and `docs/testing.md`
 (how the suite is organised, the counts, the runtimes, and the lessons about
 testing this thing that were learned the hard way). Before touching a subsystem,
 read its gotcha page — `docs/gotchas-bench.md` for `pilot/` and `sim/`,

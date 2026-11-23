@@ -22,7 +22,7 @@ manifest half of `build_index.py` lives on as `deck_manifest.py`, which writes t
 
 So Epic D was a **re-grouping of 18 charters**, not an excavation.
 
-## Agents — 30 charters in `.claude/agents/`
+## Agents — the charters in `.claude/agents/`
 
 Every one opens by reading `.claude/agents-common.md` (the shared contract);
 `pipeline-runner` and `viz-dev` are exempt there by name.

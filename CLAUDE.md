@@ -51,7 +51,7 @@ src/manamap/          # the Python package (pip install -e ".[dev]")
   mechanical_tags.py  # regex tags — a FROZEN, model-facing vocabulary
   progress.py         # live .progress/<job>.json + heartbeat (regen, simulate, pytest) for
                       #   the Claude Code job band; display only, never a result
-  pipeline.py, cli.py # the 15-step STEPS registry; `manamap` console script
+  pipeline.py, cli.py # the STEPS registry; `manamap` console script
   ingest/ training/ export/ analysis/   # the card pipeline (docs/pipeline.md)
   sim/                # Forge, OUTSIDE the repo engine: forge.py (seeded harness), parse.py
                       #   (logs -> facts -> aggregates + CIs), stats.py (exact power, no
@@ -105,12 +105,12 @@ docs/                 # docs/README.md indexes them, with line counts a test ass
 
 ## Commands
 
-`manamap pilot --help` lists all 158 pilot subcommands; `docs/pilot.md` is the reference.
+`manamap pilot --help` lists every pilot subcommand; `docs/pilot.md` is the reference.
 The annotated block this file used to carry, measurements included, is kept verbatim at the
 end of `docs/gotchas-bench.md`.
 
 ```bash
-manamap run [--from STEP]     # the 15-step card pipeline; `manamap --help` lists all 29 top-level subcommands
+manamap run [--from STEP]     # the card pipeline; `manamap --help` lists every top-level subcommand
 manamap synergy && manamap power-creep && manamap cluster-regions && manamap card-roles
                               # analysis-only refresh, no retrain
 
@@ -168,7 +168,7 @@ manamap pilot simulate <slug> --pod standard-v3 --games N   # optional; prints i
 manamap pilot experiment <slug> --a V1 --b working --pod <name> --games N [--looks K] [--aa]
 manamap pilot sim-scenario <slug> <run> --game G --turn T --stack   # a board -> /resolve-stack
 
-# ── AGENTS (Claude Code skills, 29 in .claude/skills/, 30 charters in .claude/agents/) ──
+# ── AGENTS (Claude Code skills in .claude/skills/, charters in .claude/agents/) ──
 # /publish-deck sequences the lifecycle; /diagnose-deck /prescribe /resolve-stack
 # /engine-reading /build-deck /debrief /captains-log /sim-debrief /poh-procedures
 # /write-manual /research-strategy /refresh-corpus /test-report (pre/post-test agents) /print-proxies
@@ -287,7 +287,7 @@ previous full-length digest is kept verbatim at the end of `docs/gotchas-bench.m
 ### The frontend
 
 - **A pinned printing is the pilot's art: `manamap pilot art` sets it on any live deck, sleeved included, and it is never a version or a swap.** Compare cards through `common.split_printing`, never raw text. `deck_versions.same_list` keeps stamps current across a change of art. → `docs/pilot.md`
-- **Cache-bust `?v=N` on every script and CSS tag in ALL SEVEN pages under `viz/` after any JS/CSS change** (`tests/test_viz_cache_busts.py` holds them to one number); `index.html`'s sixteen busts (fourteen scripts, two stylesheets) move together. Bump `DATA_VERSION` when a consumer would draw a DIFFERENT CONCLUSION from the bytes.
+- **Cache-bust `?v=N` on every script and CSS tag in ALL SEVEN pages under `viz/` after any JS/CSS change** (`tests/test_viz_cache_busts.py` holds every page to one number). Bump `DATA_VERSION` when a consumer would draw a DIFFERENT CONCLUSION from the bytes.
 - **`viz/` and `data/` must stay top-level siblings**; every fetch is `../data/<file>`. Serve from the repo root.
 - **The deck page is five chapters, one screen open (2026-11-22)**: brief, play it (the handbook's mulligan, turns, emergencies, table, the log's lessons), the cards, the record, the instruments last. Every other panel folds behind a count inside its `<section id="panel-…">`; every prose block says which list it was written for (`info.handbook`) and a line naming a departed card says so. `page_spec.DOSSIER_SECTIONS` owns the order. **The branch page is four** — the call (study, proposal, bill), the cards, the instruments (the goldfish closed), the trail — placed and folded after render by `arrange()`/`foldPanels()` so late-fetched panels and every id hold; **the workbench card** leads with `info.lead` (the Context's first sentence) and the latest study, and every branch row with its call. → `docs/viz.md`
 - **A renderer kept behind a flag is a renderer nobody is testing.** → `docs/gotchas-viz.md`
