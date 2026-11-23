@@ -242,9 +242,27 @@ def tier_of(item):
         return "integration"
     if names & _REGRESSION_MARKS or "skipif" in names:
         return "regression"
-    if DATA_FIXTURES & set(getattr(item, "fixturenames", ())):
+    if any(_is_shared_data_fixture(item, name)
+           for name in DATA_FIXTURES & set(getattr(item, "fixturenames", ()))):
         return "regression"
     return "unit"
+
+
+def _is_shared_data_fixture(item, name):
+    """Is `name` THIS conftest's data fixture, or a test file's own fixture that only
+    shares the name? Matched by name alone, a test module's synthetic `deck` (a deck
+    built in `tmp_path`) was tiered regression — `test_pilot_study.py`'s goldfish-is-
+    never-the-sole-decider rule ran only in the slow tier for it (2026-11-22). The
+    resolved definition decides; an unresolvable one stays regression (safe)."""
+    defs = (getattr(getattr(item, "_fixtureinfo", None), "name2fixturedefs", None) or {}).get(name)
+    if not defs:
+        return True
+    module = getattr(defs[-1].func, "__module__", "") or ""
+    # A `@parametrize("slug", <the fleet>)` argument is pytest's own pseudo-fixture:
+    # the name still means "a tracked deck", so it stays regression.
+    if module.startswith("_pytest"):
+        return True
+    return module == "conftest" or module.endswith(".conftest") or module.startswith("conftest")
 
 
 @pytest.hookimpl(tryfirst=True)

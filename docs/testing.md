@@ -172,7 +172,10 @@ assigns every test exactly one, before `-m` deselects anything:
 - **integration** — marked `browser`, `forge` or `network`.
 - **regression** — marked `slow` or `fleet`; or carrying any `skipif` (every one in
   this suite is a data gate: `requires_*`, `needs_*`); or taking a fixture whose value
-  is tracked data (`conftest.DATA_FIXTURES`: `unchanged`, `deck`, `slug`, `corpus`, …).
+  is tracked data (`conftest.DATA_FIXTURES`: `unchanged`, `deck`, `slug`, `corpus`, …) —
+  resolved, not matched by name (2026-11-22): a test file's own synthetic `deck` built in
+  `tmp_path` is unit; the shared conftest fixture, or a `@parametrize("slug", <the fleet>)`
+  argument, is regression. 222 tests moved to the fast tier, the isolation proof clean.
 - **unit** — everything else.
 - An explicit `@pytest.mark.unit|regression|integration` (or a module `pytestmark`)
   wins. 183 tests carry one: the ones `make test-unit-isolated` caught reading the

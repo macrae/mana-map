@@ -80,6 +80,17 @@ CORE = {
     "test_pilot_deck_versions.py::test_a_sleeved_deck_restores_only_to_its_paper_version":
         "a sleeved deck restores only to what is in the sleeves",
 
+    "test_pilot_study.py::test_goldfish_may_never_be_the_sole_decider":
+        "the goldfish reports; it never decides alone",
+    "test_pilot_study.py::test_goldfish_in_decided_by_is_refused_when_a_named_card_is_dark":
+        "the goldfish never decides about a card it cannot read",
+    "test_pilot_study.py::test_validate_study_refuses_a_decision_with_no_decided_by":
+        "a decision names who decided, in the pilot's words",
+    "test_pilot_study.py::test_an_uncited_figure_in_the_reading_is_refused_and_ids_are_not_numbers":
+        "every figure in a call cites a fact",
+    "test_pilot_study.py::test_a_decided_study_is_frozen_unless_forced":
+        "a decided study is frozen",
+
     # ── the rules hold ───────────────────────────────────────────────────────
     "test_pilot_bracket.py::test_no_game_changers_leaves_floor_at_one":
         "bracket floor: no Game Changers, no raise",
