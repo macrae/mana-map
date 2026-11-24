@@ -841,6 +841,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     heliod_flip_turn = None
     held_pool = held_treasures = 0
     window_wins = 0
+    # THE DISCOUNT ON THEIR STEP, per turn after the flip (absent before it): the active
+    # opponent's own draws, what our cards could force with the window's mana, and what the
+    # window actually reached (2026-11-23, the pilot: "knowing the relative size of the
+    # discount on their step is a nice measurement").
+    window_base_by_turn = [None] * max_turn
+    window_reach_by_turn = [None] * max_turn
+    window_disc_by_turn = [None] * max_turn
     # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
@@ -2770,6 +2777,47 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # named: it is cast once, it stays, which is the same generous
             # direction the rest of this model takes.
             _commander_arrives(commander_combat, commander_event, commander_damage)
+
+        def _reachable_forced(mana, base):
+            """WHAT OUR CARDS COULD MAKE THE TABLE DRAW in the window with `mana`, a dry run
+            that spends and draws nothing: each-player draws (x the seats) and target-player
+            draws, each cheaper as the discount grows; Folio's activation is not a spell and
+            takes no discount. A measurement of the discount on their step, not a play."""
+            _d, _m = base, mana
+
+            def _cost(c, x=0):
+                _p = len(c["pips"] or [])
+                return max(0, int(c["cmc"]) - _p + x - _d) + _p
+            for c in sorted((c for c in hand if c["window"]["spell_each_draw"]
+                             or isinstance(c["window"]["target_draw"], int)
+                             and c["window"]["target_draw"]), key=lambda c: c["cmc"]):
+                _k = _cost(c)
+                if _k <= _m:
+                    _m -= _k
+                    _d += (c["window"]["spell_each_draw"] * GOLDFISH_OPPONENTS
+                           or c["window"]["target_draw"])
+            for c in [c for c in hand if c["draw"]["x_draw_each_player"]]:
+                _p = len(c["pips"] or [])
+                _x = max(0, _m - _p + _d - (int(c["cmc"]) - _p))   # every spare mana into X
+                if _x:
+                    _m -= _cost(c, _x)
+                    _d += _x * GOLDFISH_OPPONENTS
+            for c in [c for c in permanents_in_play if c["window"]["folio"]]:
+                _x = _m // 2
+                _m -= 2 * _x
+                _d += _x * GOLDFISH_OPPONENTS
+            for c in [c for c in hand if c["window"]["target_draw"] in ("x", "pow2")]:
+                _p = len(c["pips"] or [])
+                _spare = max(0, _m - _p + _d - (int(c["cmc"]) - _p))
+                if c["window"]["target_draw"] == "x":
+                    _x = _spare
+                    _d, _m = _d + _x, _m - _cost(c, _x)
+                else:
+                    # AN OPPONENT CANNOT DRAW MORE THAN THEIR LIBRARY: 2^X is capped at what a
+                    # 99-card library holds by this turn (7 in the opener, one a turn since).
+                    _x = min(_spare // 2, 7)
+                    _d, _m = _d + min(2 ** _x if _x else 0, 99 - 7 - turn), _m - _cost(c, 2 * _x)
+            return _d - base
 
         def _window_reaches_approach():
             """Approach is in hand, or this cycle's window can reach it: a tutor that finds it,
@@ -5776,21 +5824,29 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # already been written (#34).
         # ── HELIOD'S FLASH WINDOW: the last opponent's end step (2026-11-23) ──────────────
         # Every spell has flash and costs {1} less per card the opponents drew THIS turn. The
-        # mana is what this turn left untapped plus what the main phase held. The discount
-        # starts at the active opponent's own draws (their draw step, Howling Mine-style extras,
-        # Forced Fruition at FRUITION_OPPONENT_SPELLS_PER_TURN) and grows by every card our
-        # each-player draws hand the table (x the opponents). The line, a stated policy: find
-        # Approach (a tutor, then Sensei's Top or Scroll Rack), force just enough draws to make
-        # it near free, cast it; after a first cast, Dig Through Time / Scroll Rack / Top bring
-        # it back from seventh down and it is cast again -- the win. Unopposed. NOT read here:
-        # colour requirements, Smothering Tithe's Treasure off these draws, Mathemagics.
-        if commander_flash_discount and heliod_flip_turn is not None and model_approach \
-                and kill_turn is None:
+        # mana is what this turn left untapped plus what the main phase held. The opponents'
+        # draws are counted PER SEAT: the active opponent starts at their own draws (their draw
+        # step, Howling Mine-style extras, Forced Fruition at FRUITION_OPPONENT_SPELLS_PER_TURN),
+        # the other two at none; an each-player draw adds to every seat, a "target player draws"
+        # to the active one. The discount is the sum. Each card they draw is taxed by Smothering
+        # Tithe at TITHE_PAY_RATE, and a seat reaching its second card pays Gleaming Splendor:
+        # the Treasure is window mana at once. The line, a stated policy: find Approach (a
+        # tutor, then Sensei's Top or Scroll Rack; Dig Through Time after a first cast), force
+        # just enough draws that it costs its {W}, cast it; after a first cast, find it again
+        # and cast it -- the win. Unopposed. NOT read here: colour requirements, Mikokoro and
+        # Loran's activations, the discount on our own turn's spells.
+        if commander_flash_discount and heliod_flip_turn is not None:
+            _base = 1 + sum(c["window"]["static_extra"] for c in permanents_in_play) \
+                + sum(c["window"]["fruition"] for c in permanents_in_play) \
+                * commander_flash_discount["fruition_spells"]
             _w = {"m": pool + held_pool, "t": treasures + held_treasures,
-                  "d": 1 + sum(c["window"]["static_extra"] for c in permanents_in_play)
-                  + sum(c["window"]["fruition"] for c in permanents_in_play)
-                  * commander_flash_discount["fruition_spells"]}
+                  "seats": [_base] + [0] * (GOLDFISH_OPPONENTS - 1)}
             held_pool = held_treasures = 0
+            window_base_by_turn[turn - 1] = _base
+            window_reach_by_turn[turn - 1] = _base + _reachable_forced(_w["m"] + _w["t"], _base)
+
+            def _disc():
+                return sum(_w["seats"])
 
             def _wpay(n):
                 if _w["m"] + _w["t"] < n:
@@ -5802,7 +5858,31 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             def _wcost(card, x=0):
                 _pips = len(card["pips"] or [])
-                return max(0, int(card["cmc"]) - _pips + x - _w["d"]) + _pips
+                return max(0, int(card["cmc"]) - _pips + x - _disc()) + _pips
+
+            def _worth(spend_n, gain):
+                """A draw that makes Approach affordable after it is paid for -- otherwise the
+                card is kept, not burned for a discount nobody can use (2026-11-23)."""
+                _ap = next((c for c in hand if c["approach"]), None)
+                if _ap is None:
+                    return False
+                _pips = len(_ap["pips"] or [])
+                _after = max(0, int(_ap["cmc"]) - _pips - _disc() - gain) + _pips
+                return _w["m"] + _w["t"] - spend_n >= _after
+
+            def _they_draw(n, seats):
+                """`n` cards to each seat named: the discount grows, and Tithe and Splendor pay."""
+                for _s in seats:
+                    _before = _w["seats"][_s]
+                    _w["seats"][_s] += n
+                    for _rec in treasure_engines:
+                        if _rec["trigger"] == "opponent_draw_tax":
+                            _made = sum(1 for _ in range(n) if rng.random() >= TITHE_PAY_RATE)
+                        elif _rec["trigger"] == "opponent_second_draw":
+                            _made = 1 if _before < 2 <= _w["seats"][_s] else 0
+                        else:
+                            continue
+                        _w["t"] += _made * (_rec["n"] + treasure_bonus) * treasure_multiplier
 
             def _ap_index():
                 return next((i for i, c in enumerate(deck) if c["approach"]), None)
@@ -5857,44 +5937,89 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         deck.insert(0 if _dest == "top" else min(2, len(deck)), _ap)
                         _grab_from_top()
                     return
+                # NO TUTOR REACHES IT: a target-player X draw aimed at US digs for it, with the
+                # mana left (Stroke of Genius, Blue Sun's Zenith; Mathemagics' 2^X).
+                for _sd in sorted((c for c in hand if c["window"]["target_draw"] in ("x", "pow2")),
+                                  key=lambda c: c["window"]["target_draw"] != "pow2"):
+                    _p = len(_sd["pips"] or [])
+                    _spare = _w["m"] + _w["t"] - _p + _disc() - (int(_sd["cmc"]) - _p)
+                    _x = (min(_spare // 2, 7) if _sd["window"]["target_draw"] == "pow2"
+                          else min(_spare, len(deck)))      # never more than the library holds
+                    _gen = 2 * _x if _sd["window"]["target_draw"] == "pow2" else _x
+                    if _x > 0 and _wpay(_wcost(_sd, _gen)):
+                        _note_cast(_sd)
+                        draw_n(min(2 ** _x, len(deck)) if _sd["window"]["target_draw"] == "pow2"
+                               else _x)
+                        return
 
             def _force_draws(need):
-                """Each-player draws, the cheapest first, until Approach costs only its {W}."""
-                for _vs in [c for c in hand if c["window"]["spell_each_draw"]]:
-                    if _w["d"] >= need:
-                        return
-                    if _wpay(_wcost(_vs)):
-                        _note_cast(_vs)
-                        _w["d"] += _vs["window"]["spell_each_draw"] * GOLDFISH_OPPONENTS
-                        draw_n(_vs["window"]["spell_each_draw"])
-                for _fo in [c for c in permanents_in_play if c["window"]["folio"]]:
-                    _x = max(0, -(-(need - _w["d"]) // GOLDFISH_OPPONENTS))
-                    if _x and _wpay(2 * _x):
-                        _w["d"] += _x * GOLDFISH_OPPONENTS
-                        draw_n(_x)
-                for _xs in [c for c in hand if c["draw"]["x_draw_each_player"]]:
-                    _x = max(0, -(-(need - _w["d"]) // GOLDFISH_OPPONENTS))
-                    if _x and _wpay(_wcost(_xs, _x)):
-                        _note_cast(_xs)
-                        _w["d"] += _x * GOLDFISH_OPPONENTS
-                        draw_n(_x)
+                """Opponents' draws until Approach costs only its {W}, the most discount per mana
+                first: an each-player draw (three seats a card), then Mathemagics (2^X to one
+                seat), then a target-player draw (one seat a card)."""
+                _all = range(GOLDFISH_OPPONENTS)
 
-            for _pass in range(2):
-                _find()
-                _ap = next((c for c in hand if c["approach"]), None)
-                if _ap is None:
-                    break
-                _force_draws(int(_ap["cmc"]) - len(_ap["pips"] or []))
-                if not _wpay(_wcost(_ap)):
-                    break
-                _note_cast(_ap)
-                if approach_first_turn is not None:
-                    approach_win_turn = turn
-                    kill_turn, kill_by = turn, "approach"
-                    window_wins += 1
-                    break
-                approach_first_turn = turn
-                deck.insert(min(6, len(deck)), _ap)
+                def _seats_x():
+                    return max(0, -(-(need - _disc()) // GOLDFISH_OPPONENTS))
+                for _vs in [c for c in hand if c["window"]["spell_each_draw"]]:
+                    if _disc() >= need:
+                        return
+                    if _worth(_wcost(_vs), _vs["window"]["spell_each_draw"] * GOLDFISH_OPPONENTS) \
+                            and _wpay(_wcost(_vs)):
+                        _note_cast(_vs)
+                        _they_draw(_vs["window"]["spell_each_draw"], _all)
+                        draw_n(_vs["window"]["spell_each_draw"])
+                for _xs in [c for c in hand if c["draw"]["x_draw_each_player"]]:
+                    _x = _seats_x()
+                    if _x and _worth(_wcost(_xs, _x), _x * GOLDFISH_OPPONENTS) \
+                            and _wpay(_wcost(_xs, _x)):
+                        _note_cast(_xs)
+                        _they_draw(_x, _all)
+                        draw_n(_x)
+                for _fo in [c for c in permanents_in_play if c["window"]["folio"]]:
+                    _x = _seats_x()
+                    if _x and _worth(2 * _x, _x * GOLDFISH_OPPONENTS) and _wpay(2 * _x):
+                        _they_draw(_x, _all)
+                        draw_n(_x)
+                for _mm in [c for c in hand if c["window"]["target_draw"] == "pow2"]:
+                    _left = need - _disc()
+                    if _left <= 0:
+                        return
+                    _x = max(0, (_left - 1).bit_length())
+                    if _worth(_wcost(_mm, 2 * _x), 2 ** _x) and _wpay(_wcost(_mm, 2 * _x)):
+                        _note_cast(_mm)
+                        _they_draw(2 ** _x, [0])
+                for _ch in [c for c in hand if isinstance(c["window"]["target_draw"], int)
+                            and c["window"]["target_draw"]]:
+                    if _disc() >= need:
+                        return
+                    if _worth(_wcost(_ch), _ch["window"]["target_draw"]) and _wpay(_wcost(_ch)):
+                        _note_cast(_ch)
+                        _they_draw(_ch["window"]["target_draw"], [0])
+                for _ts in [c for c in hand if c["window"]["target_draw"] == "x"]:
+                    _left = need - _disc()
+                    if _left > 0 and _worth(_wcost(_ts, _left), _left) \
+                            and _wpay(_wcost(_ts, _left)):
+                        _note_cast(_ts)
+                        _they_draw(_left, [0])
+
+            if model_approach and kill_turn is None:
+                for _pass in range(2):
+                    _find()
+                    _ap = next((c for c in hand if c["approach"]), None)
+                    if _ap is None:
+                        break
+                    _force_draws(int(_ap["cmc"]) - len(_ap["pips"] or []))
+                    if not _wpay(_wcost(_ap)):
+                        break
+                    _note_cast(_ap)
+                    if approach_first_turn is not None:
+                        approach_win_turn = turn
+                        kill_turn, kill_by = turn, "approach"
+                        window_wins += 1
+                        break
+                    approach_first_turn = turn
+                    deck.insert(min(6, len(deck)), _ap)
+            window_disc_by_turn[turn - 1] = _disc()
             treasures = _w["t"]
         sacrifices_by_turn.append(sacrifices)
         experience_by_turn.append(experience)
@@ -5981,6 +6106,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "combo_win": combo_win,
         "approach_first_turn": approach_first_turn,
         "heliod_flip_turn": heliod_flip_turn,
+        "window_base_by_turn": window_base_by_turn,
+        "window_reach_by_turn": window_reach_by_turn,
+        "window_disc_by_turn": window_disc_by_turn,
         "approach_window_win": bool(window_wins),
         "approach_win_turn": approach_win_turn,
         "drain_by_turn": drain_by_turn,

@@ -1793,6 +1793,9 @@ _WIN_DIG_RE = re.compile(
     r"look at the top (\w+) cards of your library\. put two of them into your hand", re.IGNORECASE)
 _WIN_NUM = {"an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
             "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+#: "Target player draws N | X | 2ˣ cards" on an instant or sorcery (Archmage's Charm's mode,
+#: Blue Sun's Zenith, Stroke of Genius, Mathemagics): in the window the target is an opponent.
+_WIN_TARGET_DRAW_RE = re.compile(r"\btarget player draws (two|three|four|X|2ˣ) cards", re.IGNORECASE)
 
 
 def window_profile(card):
@@ -1812,6 +1815,10 @@ def window_profile(card):
             "scroll_rack": bool(_WIN_SCROLL_RE.search(text)),
             "top": bool(_WIN_TOP_RE.search(text)),
             "dig": _WIN_NUM.get(m_dig.group(1).lower(), 0) if (spell and m_dig) else 0,
+            # "x", "pow2" or a fixed count: an opponent made to draw (2026-11-23)
+            "target_draw": (lambda g: None if g is None else "pow2" if g == "2ˣ" else "x"
+                            if g.lower() == "x" else _WIN_NUM.get(g.lower(), 0))(
+                m_td.group(1) if spell and (m_td := _WIN_TARGET_DRAW_RE.search(text)) else None),
             "delve": bool(re.search(r"\bdelve\b", text, re.IGNORECASE)),
             "tutor_dest": dest}
 

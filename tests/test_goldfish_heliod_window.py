@@ -100,3 +100,44 @@ def test_heliod_flips_and_wins_faster_in_the_window_than_without_it():
     assert any(r["approach_window_win"] for r in rows_on)
     assert not any(r["approach_window_win"] for r in rows_off)
     assert on["metrics"]["approach"]["win_by_turn"]["10"] > off["metrics"]["approach"]["win_by_turn"]["10"]
+
+
+MATH = _c("Mathemagics", "Target player draws 2ˣ cards. (2⁰ = 1, 2¹ = 2, 2² = 4, 2³ = 8, 2⁴ = "
+          "16, 2⁵ = 32, and so on.)", "Sorcery", 2, "{X}{X}{U}{U}")
+STROKE = _c("Stroke of Genius", "Target player draws X cards.", "Instant", 3, "{X}{2}{U}")
+CHARM = _c("Archmage's Charm", "Choose one —\n• Counter target spell.\n• Target player draws "
+           "two cards.\n• Gain control of target nonland permanent with mana value 1 or less.",
+           "Instant", 3, "{U}{U}{U}")
+
+
+def test_the_target_player_draws_read_as_an_opponent_made_to_draw():
+    assert window_profile(MATH)["target_draw"] == "pow2"
+    assert window_profile(STROKE)["target_draw"] == "x"
+    assert window_profile(CHARM)["target_draw"] == 2
+    assert window_profile(SKEINS)["target_draw"] is None
+
+
+@requires_deck
+def test_the_discount_on_their_step_is_measured_after_the_flip_and_absent_before():
+    m = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False,
+                     with_results=True)
+    h = m["metrics"]["heliod_window"]
+    assert h["mean_base_discount_by_turn"]["8"] >= 1          # their own draw step at least
+    assert h["median_reachable_discount_by_turn"]["8"] >= 0
+    for r in m["_results"]:
+        if r["heliod_flip_turn"] is None:
+            assert all(x is None for x in r["window_base_by_turn"]), "absent, never zero"
+        else:
+            assert all(x is None for x in r["window_base_by_turn"][:r["heliod_flip_turn"] - 1])
+
+
+@requires_deck
+def test_tithe_pays_treasure_off_the_window_s_forced_draws(monkeypatch):
+    """PAIRED: the same games with Tithe always paid out against never paid out -- the
+    Treasure is window mana, so the deck wins by Approach at least as often, and more."""
+    from manamap.pilot import goldfish_turn
+    monkeypatch.setattr(goldfish_turn, "TITHE_PAY_RATE", 0.0)
+    always = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
+    monkeypatch.setattr(goldfish_turn, "TITHE_PAY_RATE", 1.01)
+    never = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
+    assert always["approach"]["win_by_turn"]["10"] > never["approach"]["win_by_turn"]["10"]

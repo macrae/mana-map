@@ -1029,6 +1029,35 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                           "is not tracked; Scroll Rack and the top-of-library tricks are "
                           "read only where the draw channel reads them.")}}
            if any(r.get("approach_first_turn") is not None for r in results) else {}),
+        # HELIOD'S DISCOUNT ON THEIR STEP (2026-11-23), over the games where he had flipped
+        # by that turn (absent, never zero, before): the active opponent's own draws, what our
+        # cards could make the table draw with the window's mana, and what the window reached.
+        **({"heliod_window": {
+            "flipped_by_turn": {str(t): _round(sum(
+                1 for r in results if r.get("heliod_flip_turn") is not None
+                and r["heliod_flip_turn"] <= t) / n) for t in turns},
+            **{key: {str(t): (lambda xs: _round(sum(xs) / len(xs)) if xs else None)(
+                [r[series][t - 1] for r in results if r[series][t - 1] is not None])
+                for t in turns}
+               for key, series in (("mean_base_discount_by_turn", "window_base_by_turn"),
+                                   ("mean_reached_discount_by_turn", "window_disc_by_turn"))},
+            # A MEDIAN, NOT A MEAN: Mathemagics makes the reachable figure exponential, so one
+            # game's 2^X would set the average.
+            "median_reachable_discount_by_turn": {str(t): (lambda xs: sorted(xs)[len(xs) // 2]
+                                                           if xs else None)(
+                [r["window_reach_by_turn"][t - 1] for r in results
+                 if r["window_reach_by_turn"][t - 1] is not None]) for t in turns},
+            "reachable_discount_at_least_6_by_turn": {str(t): (lambda xs: _round(
+                sum(1 for x in xs if x >= 6) / len(xs)) if xs else None)(
+                [r["window_reach_by_turn"][t - 1] for r in results
+                 if r["window_reach_by_turn"][t - 1] is not None]) for t in turns},
+            "basis": ("the last opponent's end step: base = the active opponent's own draws "
+                      "(the draw step, Howling Mine-style extras, Forced Fruition at "
+                      "FRUITION_OPPONENT_SPELLS_PER_TURN); reachable = base plus what our "
+                      "each-player and target-player draws could force with the window's mana "
+                      "(a dry run); reached = what the window actually did. Six off makes "
+                      "Approach cost only its {W}.")}}
+           if any(r.get("heliod_flip_turn") is not None for r in results) else {}),
         # MEREN'S ENGINE (2026-11-06), only where `model_commander_recursion` is declared.
         **({"commander_recursion": {
             "mean_experience_by_turn": {
