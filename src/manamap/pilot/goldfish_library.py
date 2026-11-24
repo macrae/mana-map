@@ -82,6 +82,12 @@ from manamap.pilot.goldfish_profiles import (
     experience_profile,
     sac_mana_profile,
     sac_consolidate_profile,
+    costed_sac_profile,
+    blood_arrival_profile,
+    paid_arrival_draw_profile,
+    self_death_tokens_profile,
+    grows_on_death_profile,
+    sac_cost_spell_profile,
     first_main_modes_profile,
     sac_outlet_profile,
     subtypes_of,
@@ -233,6 +239,18 @@ def classify(card, pool=None):
         "sac_mana": sac_mana_profile(card),
         # Vish Kal grows by what it eats (2026-11-24).
         "sac_consolidate": sac_consolidate_profile(card),
+        # CONVOKE (2026-11-24): each creature tapped pays {1} -- Lethal Scheme, Clever
+        # Concealment. Read by the interaction-affordable check, summoning-sick bodies included.
+        "convoke": bool(re.search(r"(?:^|\n|\s)Convoke\b", card.get("oracle_text") or "")),
+        # Costed sacrifices that drain or draw, Anje's Blood, Mentor's paid draw (2026-11-24).
+        "costed_sac": costed_sac_profile(card),
+        "blood_arrival": blood_arrival_profile(card),
+        "paid_arrival_draw": paid_arrival_draw_profile(card),
+        # Elenda: a counter on every death, X tokens when she dies (2026-11-24).
+        "self_death_tokens": self_death_tokens_profile(card),
+        "grows_on_death": grows_on_death_profile(card),
+        # Village Rites, Deadly Dispute: a body for cards (2026-11-24).
+        "sac_cost_spell": sac_cost_spell_profile(card),
         # Black Market Connections' modes, every first main phase (2026-11-24).
         "first_main_modes": first_main_modes_profile(card),
         # Deaths it causes among OUR creatures (Meren's experience, 2026-11-07).

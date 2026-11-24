@@ -355,6 +355,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     draw_engines = []
     # BLACK MARKET CONNECTIONS (2026-11-24): its modes, fired at each first main phase.
     first_main_engines = []
+    # COSTED SACRIFICES, ANJE'S BLOOD, MENTOR'S PAID DRAW (2026-11-24): registered at the
+    # statics door; the step after combat spends what the turn left on them.
+    costed_sac_engines = []
+    blood_arrival_types = []
+    paid_arrival_engines = []
+    blood_arrival_used = [False]   # once each turn; a list so the door can set it
+    small_arrivals = [0]           # small creatures that entered this turn, for Mentor
     # THE WHEELS THAT ARE ALREADY ON THE TABLE. Held apart from `draw_engines`
     # because this one needs the BODY as well as the profile: a cost that says
     # "Sacrifice this creature" takes the body with it, and a draw profile has
@@ -472,6 +479,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         permanents_in_play.append(card)
         if card["first_main_modes"]:
             first_main_engines.append(card["first_main_modes"])
+        if card["costed_sac"]:
+            costed_sac_engines.append(card["costed_sac"])
+        if card["blood_arrival"]:
+            blood_arrival_types.append(card["blood_arrival"])
+        if card["paid_arrival_draw"]:
+            paid_arrival_engines.append(card["paid_arrival_draw"])
         if "Artifact" in (card.get("type_line") or ""):
             _refresh_gated_lands()    # Spire of Industry
         _eng = card["engine"]
@@ -1104,6 +1117,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 treasures += (_rec["n"] + treasure_bonus) * treasure_multiplier
 
         etb_by.update(creature=0, other=0, life=0)
+        blood_arrival_used[0] = False
+        small_arrivals[0] = 0
         bodies_cum_bump[0] = 0
         arrival_draw_used = set()
         # "THIS ABILITY TRIGGERS ONLY ONCE EACH TURN" (Morbid Opportunist, Vraan):
@@ -1157,6 +1172,32 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     treasures += eng["death_treasure"] * reps
             if is_token and paid:
                 tokens_converted += n_died
+            _grow_on_death(n_died)
+
+        def _grow_on_death(n_died):
+            """ELENDA GROWS ON EVERY DEATH (2026-11-24): a +1/+1 counter each, through the
+            counter replacements, on every creature of ours whose text says so."""
+            if n_died <= 0:
+                return
+            for _gi, _ge in enumerate(battlefield):
+                _gc = _ge[12].get("card") if len(_ge) > 12 and _ge[12] else None
+                if _gc and _gc["grows_on_death"]:
+                    _k = sum(apply_counter_mod(1, counter_plus, counter_times) for _ in range(n_died))
+                    battlefield[_gi] = (_ge[0] + _k,) + _ge[1:6] + (_ge[6] + _k,) + _ge[7:]
+
+        def _body_died(entry):
+            """A CREATURE THAT LEAVES TOKENS WHEN IT DIES (2026-11-24): Elenda's X, her power as
+            she died; Carrier Thrall's Scion. Typed, so a count of the type sees them; Elenda's
+            tokens' lifelink is not read (a floor)."""
+            _bc = entry[12].get("card") if len(entry) > 12 and entry[12] else None
+            _sd = _bc["self_death_tokens"] if _bc else None
+            if not _sd:
+                return
+            _n = max(0, entry[0]) if _sd["n"] == "X" else _sd["n"]
+            for _ in range(_n * token_multiplier):
+                creature_entered(_sd["power"], turn, False, 1, is_token=True,
+                                 toughness=_sd["toughness"],
+                                 type_line="Token Creature — " + _sd["type"])
 
         def draw_n(n):
             """Take n off the top. The deck running out is a real outcome and
@@ -1342,9 +1383,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             reported, because a loop that terminates silently cannot be told
             from one that never ran.
             """
-            nonlocal etb_chain_hits, tokens_made
+            nonlocal etb_chain_hits, tokens_made, blood
             if is_token:
                 tokens_made += 1
+            # ANJE'S BLOOD: once a turn when one of her type enters (2026-11-24).
+            if (blood_arrival_types and not blood_arrival_used[0]
+                    and any(t in (type_line or "") for t in blood_arrival_types)):
+                blood_arrival_used[0] = True
+                blood += 1
+            if paid_arrival_engines and power <= max(e["power_max"] for e in paid_arrival_engines):
+                small_arrivals[0] += 1
             # The sixth field is the poison pair (infect, toxic). It rides IN
             # the entry rather than in a parallel list, because the sacrifice
             # site below rebuilds `battlefield` and a parallel list would not
@@ -3242,6 +3290,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal first_right_card_turn, free_sac_outlet, land_mana_bonus, sac_mana_per
             nonlocal lifelink_power, mass_animate_threshold, rock_production
             nonlocal team_anthem, treasure_bonus, treasure_multiplier
+            nonlocal sacrifices, tokens_converted, treasures
 
             # A COST REDUCER IS NEITHER A ROCK, A TUTOR NOR A BODY — the third card
             # to fall through this hole, after Aggravated Assault and Primal Vigor.
@@ -3408,6 +3457,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if card["tutor_needs_body"]:
                         _i = min(_fodder, key=lambda i: battlefield[i][0])
                         _e = battlefield.pop(_i); creature_types.pop(_i); creature_flying.pop(_i)
+                        _body_died(_e)
                         # THE BODY IT COSTS DIES (2026-11-07): a death like any other, paid
                         # through the one helper (Natural Order, Savage Order, Eldritch Evolution).
                         if commander_recursion and len(_e) > 12 and _e[12] and _e[12].get("card") \
@@ -3670,6 +3720,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         continue
                     _note_cast(card)
                     _resolve_draw(card)
+
+            # A SPELL THAT COSTS A BODY (2026-11-24, Deadly Dispute, Village Rites). A STATED
+            # POLICY: cast only with a creature token to pay, a summoning-sick one first (it could
+            # not attack this turn anyway); it dies through the one death door, so every payoff
+            # out sees it.
+            if model_sacrifice:
+                for card in sorted((c for c in hand if c["sac_cost_spell"] and not c["is_land"]),
+                                   key=lambda c: reduced_cost(c, reductions, chosen_type)):
+                    _toks = [i for i, e in enumerate(battlefield) if e[4]]
+                    if card not in hand or not _toks:
+                        continue
+                    if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        continue
+                    _note_cast(card)
+                    _ti = min(_toks, key=lambda i: (battlefield[i][1] != turn, battlefield[i][0]))
+                    battlefield.pop(_ti)
+                    creature_types.pop(_ti)
+                    creature_flying.pop(_ti)
+                    sacrifices += 1
+                    own_deaths["sacs"] += 1
+                    _before = tokens_converted
+                    _deaths_after_combat(1, True)
+                    if tokens_converted == _before:
+                        tokens_converted += 1
+                    if model_draw:
+                        draw_n(card["sac_cost_spell"]["draw"])
+                    if model_treasures:
+                        treasures += card["sac_cost_spell"]["treasure"]
 
             # DISCOVER, THE FLOOR. A discover spell is not a body, a draw, a pump or
             # a storm card, so until this loop it fell through every loop above and
@@ -4792,8 +4870,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         interaction_in_hand_by_turn.append(bool(held))
         # "IF YOU CONTROL A COMMANDER, YOU MAY CAST THIS SPELL WITHOUT PAYING" (2026-11-04):
         # Deflecting Swat and Flawless Maneuver were priced at three they do not cost.
+        # CONVOKE COUNTS THE BOARD (2026-11-24): every creature, summoning-sick or not, pays {1}
+        # of a convoke spell (Lethal Scheme, Clever Concealment), so Edgar's tokens are mana here.
         interaction_castable_by_turn.append(
             any(c["cmc"] <= pool + treasures
+                or (c["convoke"] and c["cmc"] <= pool + treasures + len(battlefield))
                 or (c["engine"]["free_with_commander"] and _cmd_out() >= 1) for c in held))
 
         # ONE-TURN GRANTS WITH WHAT IS LEFT (2026-11-04). Akroma's Will's first mode is the team
@@ -5215,6 +5296,49 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # SACRIFICE, AFTER THE SWING IS SNAPSHOTTED. `attackers` was taken
             # above, so a token converted here has already attacked — this is a
             # conversion, not a trade against this turn's combat.
+            # COSTED SACRIFICES WITH WHAT THE TURN LEFT (2026-11-24, Edgar: "tokens into value").
+            # A STATED POLICY, after the swing, before the free sweep: the lands' and rocks' mana
+            # left over (never a Treasure -- that is next turn's mana) goes on the costed payoffs,
+            # drains before draws, one activation at a time while mana and fodder last. Anje eats
+            # a Blood token before a body. Each creature token sacrificed dies through the one
+            # death door, so every payoff out sees it. Then Mentor of the Meek's {1} per small
+            # creature that entered this turn, from what is still left.
+            if model_sacrifice and (costed_sac_engines or paid_arrival_engines):
+                for _ce in sorted(costed_sac_engines, key=lambda e: (-e["drain"], -e["draw"])):
+                    while pool >= _ce["cost"]:
+                        _use_blood = _ce["blood_ok"] and blood > 0
+                        _toks = [i for i, e in enumerate(battlefield) if e[4]]
+                        if not _use_blood and not _toks:
+                            break
+                        if not spend(_ce["cost"], list(_ce["pips"])):
+                            break
+                        if _use_blood:
+                            blood -= 1
+                            artifact_sacs += 1
+                            artifact_sacs_this_turn += 1
+                        else:
+                            _ti = min(_toks, key=lambda i: battlefield[i][0])
+                            battlefield.pop(_ti)
+                            creature_types.pop(_ti)
+                            creature_flying.pop(_ti)
+                            sacrifices += 1
+                            own_deaths["sacs"] += 1
+                            _before = tokens_converted
+                            _deaths_after_combat(1, True)
+                            if tokens_converted == _before:   # the activation is the value
+                                tokens_converted += 1
+                        etb_by["life"] += _ce["drain"]
+                        if _ce["gain"]:
+                            event_gain_events += 1
+                            event_gain_total += _ce["gain"]
+                        if _ce["draw"] and model_draw:
+                            draw_n(_ce["draw"])
+                if model_draw:
+                    for _pe in paid_arrival_engines:
+                        for _ in range(small_arrivals[0]):
+                            if pool < _pe["cost"] or not spend(_pe["cost"], []):
+                                break
+                            draw_n(1)
             # A CONSOLIDATOR IS A REASON TO SACRIFICE ON ITS OWN (2026-11-24): the tokens that
             # already attacked go into Vish Kal as counters, a stated policy, whether or not a
             # death payoff is out. Its body must be on the battlefield to grow.
@@ -5321,6 +5445,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _e = battlefield.pop(i)
                 creature_types.pop(i)
                 creature_flying.pop(i)
+                _body_died(_e)
                 _c = (_e[12].get("card") if len(_e) > 12 and _e[12] else None)
                 if commander_recursion and _c and not _e[4]:
                     yard_creatures.append(_c)
@@ -5821,6 +5946,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _died = battlefield.pop(weakest)
                 creature_types.pop(weakest)
                 creature_flying.pop(weakest)
+                _body_died(_died)
                 bodies_cum = max(0, bodies_cum - 1)
                 # A goldfish has one opponent at 40 life, so damage and life
                 # loss reduce the same number — but they are counted from
@@ -5842,6 +5968,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     continue
                 for prof in opponent_death_gains:
                     deaths_gained += prof["gain_on_opponent_death"] * death_trigger_mult
+                _grow_on_death(1)
                 # ANY CREATURE DYING PAYS (2026-11-24): Blood Artist and Falkenrath Noble see an
                 # opponent's creature die too; "you control" payoffs do not.
                 _fired_opp = set()

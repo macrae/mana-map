@@ -380,3 +380,111 @@ def test_a_consolidator_grows_by_the_tokens_it_eats():
     assert grown(plain) == 0
     assert grown(vish) > 1
     assert _mean(vish, lambda r: r["tokens_converted_by_turn"][-1]) > 1
+
+
+# ── the experiments' cards (2026-11-24): costed sacrifices, Anje's Blood, Mentor, Elenda,
+#    convoke, a spell that costs a body ────────────────────────────────────────────────────
+
+from manamap.pilot.goldfish_profiles import (blood_arrival_profile, costed_sac_profile,
+                                             grows_on_death_profile, paid_arrival_draw_profile,
+                                             sac_cost_spell_profile, self_death_tokens_profile)
+
+ANJE = ("Whenever Anje and/or one or more other Vampires you control enter, create a Blood token. "
+        "This ability triggers only once each turn.\n{2}, Sacrifice another creature or a Blood "
+        "token: Each opponent loses 2 life and you gain 2 life.")
+CHEF = "{1}{B}, Sacrifice an artifact or creature: Draw a card."
+MENTOR = ("Whenever another creature you control with power 2 or less enters, you may pay {1}. "
+          "If you do, draw a card.")
+ELENDA = ("Lifelink\nWhenever another creature dies, put a +1/+1 counter on Elenda.\nWhen Elenda "
+          "dies, create X 1/1 white Vampire creature tokens with lifelink, where X is Elenda's power.")
+DISPUTE = ("As an additional cost to cast this spell, sacrifice an artifact or creature.\nDraw two "
+           "cards and create a Treasure token.")
+SCHEME = ("Convoke\nDestroy target creature or planeswalker. Each creature that convoked this spell "
+          "connives.")
+
+
+def test_the_new_readers_read_their_cards_and_refuse_a_condition():
+    assert costed_sac_profile({"oracle_text": ANJE}) == {
+        "cost": 2, "pips": (), "drain": 2, "gain": 2, "draw": 0, "blood_ok": True}
+    assert costed_sac_profile({"oracle_text": CHEF})["draw"] == 1
+    lyzolda = "{R}, Sacrifice a creature: Draw a card if the sacrificed creature was red."
+    assert costed_sac_profile({"oracle_text": lyzolda}) is None
+    assert costed_sac_profile({"oracle_text": "{T}, Sacrifice a creature: Add {B}{B}."}) is None
+    assert blood_arrival_profile({"oracle_text": ANJE}) == "Vampire"
+    assert paid_arrival_draw_profile({"oracle_text": MENTOR}) == {"power_max": 2, "cost": 1}
+    assert self_death_tokens_profile({"oracle_text": ELENDA})["n"] == "X"
+    assert grows_on_death_profile({"oracle_text": ELENDA})
+    assert sac_cost_spell_profile({"oracle_text": DISPUTE, "type_line": "Instant"}) == {
+        "draw": 2, "treasure": 1}
+
+
+def _maker_doc(payoff_name, payoff_text, payoff_cmc, payoff_type, maker_type="Vampire", n=10):
+    maker = f"When this creature enters, create two 1/1 black {maker_type} creature tokens."
+    cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+             _c(payoff_name, payoff_text, payoff_cmc, payoff_type, quantity=n, power="1",
+                toughness="3"),
+             _c("Maker", maker, 2, "Creature — " + maker_type, quantity=30, power="1",
+                toughness="1")]
+    cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+    return {"cards": cards}
+
+
+def _with_without(text, cmc, type_line, **kw):
+    on = _plain_games(_maker_doc("Payoff", text, cmc, type_line), **kw)
+    off = _plain_games(_maker_doc("Payoff", "", cmc, type_line), **kw)
+    return on, off
+
+
+def test_anje_drains_off_tokens_and_blood_with_what_the_turn_left():
+    on, off = _with_without(ANJE, 4, "Legendary Creature — Vampire", model_drain=True)
+    noncombat = lambda rs: _mean(rs, lambda r: goldfish.noncombat_life(r, 10))
+    assert noncombat(on) > noncombat(off) + 2
+
+
+def test_a_costed_sacrifice_draws():
+    on, off = _with_without(CHEF, 1, "Creature — Human Pirate")
+    extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
+    assert extra(on) > extra(off) + 1
+
+
+def test_mentor_pays_for_a_card_per_small_arrival():
+    on, off = _with_without(MENTOR, 3, "Creature — Human Soldier")
+    extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
+    assert extra(on) > extra(off) + 0.5
+
+
+def test_elenda_grows_on_the_deaths_and_leaves_tokens():
+    kw = dict(model_deaths={"own_per_turn": 1.0, "opponent_per_turn": 1.0})
+    on, off = _with_without(ELENDA, 4, "Legendary Creature — Vampire Knight", **kw)
+    power = lambda rs: _mean(rs, lambda r: r["board_power_by_turn"][-1])
+    made = lambda rs: _mean(rs, lambda r: r["tokens_made_by_turn"][-1])
+    assert power(on) > power(off) + 1
+    assert made(on) >= made(off)
+
+
+def test_a_body_cost_spell_is_cast_on_a_token_and_draws():
+    doc = _maker_doc("Dispute", DISPUTE, 2, "Instant")
+    plain = _maker_doc("Dispute", "", 2, "Instant")
+    on, off = _plain_games(doc), _plain_games(plain)
+    extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
+    assert extra(on) > extra(off) + 1
+    assert _mean(on, lambda r: r["sacrifices_by_turn"][-1]) > _mean(off, lambda r: r["sacrifices_by_turn"][-1])
+
+
+def test_convoke_counts_the_board_for_interaction():
+    def doc(text):
+        cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+                 _c("Lethal Scheme", text, 4, "Instant", quantity=10),
+                 _c("Maker", "When this creature enters, create two 1/1 black Vampire creature "
+                    "tokens.", 2, "Creature — Vampire", quantity=30, power="1", toughness="1")]
+        cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+        return {"cards": cards}
+    library, _ = goldfish.build_library(doc(SCHEME))
+    rng = random.Random(4)
+    games = [goldfish.simulate_once(rng, library, 3, [], 6, model_combat=True,
+                                    interaction_names=frozenset({"Lethal Scheme"}))
+             for _ in range(200)]
+    early = _mean(games, lambda r: 1 if r["interaction_castable_by_turn"][2] else 0)
+    held = _mean(games, lambda r: 1 if r["interaction_in_hand_by_turn"][2] else 0)
+    assert held > 0
+    assert early > 0, "with tokens out, a convoke answer is castable on turn three"

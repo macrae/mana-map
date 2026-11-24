@@ -1743,6 +1743,121 @@ def sac_consolidate_profile(card):
     return bool(_SAC_CONSOLIDATE_RE.search(card.get("oracle_text", "") or ""))
 
 
+#: A COSTED SACRIFICE THAT PAYS (2026-11-24, Edgar: "tokens into value"). Mana, then a
+#: sacrifice of a creature (or a Blood token), for a drain or a card: Anje, Maid of Dishonor
+#: ("{2}, Sacrifice another creature or a Blood token: Each opponent loses 2 life and you gain
+#: 2 life"), Skullport Merchant and Dockside Chef ("{1}{B}, Sacrifice ...: Draw a card"). No
+#: tap symbol, so it repeats while mana and fodder last. A typed sacrifice (Kalitas: "another
+#: Vampire or Zombie") and a counters-only payoff (Edgar, Ancient Bloodlord) are not read here.
+_COSTED_SAC_RE = re.compile(
+    r"(?:^|\n|[.)\"]\s)((?:\{[0-9WUBRGC]\})+), sacrifice (?:another|a|an) "
+    r"(?:creature|artifact or creature|creature or artifact)"
+    r"(?P<alt> or an? (?:blood|treasure)(?: token)?)?(?: or planeswalker)?: ([^\n]*)", re.I)
+
+
+def costed_sac_profile(card):
+    """{cost, pips, drain, gain, draw, blood_ok} for a repeatable mana-and-sacrifice payoff."""
+    m = _COSTED_SAC_RE.search(card.get("oracle_text", "") or "")
+    if not m:
+        return None
+    effect = m.group(3)
+    # A payoff behind a condition ("Draw a card if the sacrificed creature was red", Lyzolda)
+    # is not one the model can promise, and a loot ("Discard a card, then draw", Drowned
+    # Rusalka) is no card at all: the same contracts the death and draw channels keep.
+    if re.search(r"\bif\b|\bunless\b|\bdiscard\b", effect, re.I):
+        return None
+    drain = re.search(r"each opponent loses (\d+) life", effect, re.I)
+    gain = re.search(r"you gain (\d+) life", effect, re.I)
+    draw = re.search(r"\bdraw (a|one|two) cards?", effect, re.I)
+    if not (drain or draw):
+        return None
+    syms = re.findall(r"\{([0-9WUBRGC])\}", m.group(1))
+    return {"cost": sum(int(x) if x.isdigit() else 1 for x in syms),
+            "pips": tuple(frozenset({x}) for x in syms if not x.isdigit() and x != "C"),
+            "drain": int(drain.group(1)) if drain else 0,
+            "gain": int(gain.group(1)) if gain else 0,
+            "draw": _NUMBER_WORDS.get(draw.group(1).lower(), 1) if draw else 0,
+            "blood_ok": bool(m.group("alt") and "blood" in m.group("alt").lower())}
+
+
+#: A BLOOD WHEN ONE OF A TYPE ARRIVES (2026-11-24, Anje: "Whenever Anje and/or one or more other
+#: Vampires you control enter, create a Blood token. This ability triggers only once each turn").
+_BLOOD_ARRIVAL_RE = re.compile(
+    r"whenever [^.]{0,40}?one or more other ([A-Z][a-z]+?)s you control enter, create a blood "
+    r"token\. this ability triggers only once each turn", re.I)
+
+
+def blood_arrival_profile(card):
+    """The creature type whose arrival makes one Blood a turn, or None."""
+    m = _BLOOD_ARRIVAL_RE.search(card.get("oracle_text", "") or "")
+    return m.group(1) if m else None
+
+
+#: A PAID DRAW ON A SMALL ARRIVAL (2026-11-24, Mentor of the Meek: "Whenever another creature
+#: with power 2 or less you control enters, you may pay {1}. If you do, draw a card").
+_PAID_ARRIVAL_DRAW_RE = re.compile(
+    r"whenever another creature (?:you control )?with power (\d+) or less (?:you control )?enters"
+    r"(?: the battlefield under your control)?, you may pay \{(\d+)\}\. if you do, draw a card",
+    re.I)
+
+
+def paid_arrival_draw_profile(card):
+    """{power_max, cost} or None."""
+    m = _PAID_ARRIVAL_DRAW_RE.search(card.get("oracle_text", "") or "")
+    return {"power_max": int(m.group(1)), "cost": int(m.group(2))} if m else None
+
+
+#: TOKENS WHEN THIS DIES, AND A COUNTER ON EVERY DEATH (2026-11-24, Elenda, the Dusk Rose:
+#: "Whenever another creature dies, put a +1/+1 counter on Elenda. When Elenda dies, create X
+#: 1/1 white Vampire creature tokens with lifelink, where X is Elenda's power"; Carrier Thrall:
+#: "When this creature dies, create a 1/1 colorless Eldrazi Scion creature token").
+_SELF_DEATH_TOKENS_RE = re.compile(
+    r"when (?:this creature|[A-Z][\w' ,-]{2,30}?) dies, create (X|a|an|one|two|three|\d+) "
+    r"(\d+)/(\d+) [a-z ]*?([A-Z][a-z]+) creature tokens?", re.I)
+_GROWS_ON_DEATH_RE = re.compile(
+    r"whenever (?:another|a) creature dies, put a \+1/\+1 counter on (?:this creature|[A-Z][\w' ,-]{2,30}?)\.",
+    re.I)
+
+
+def self_death_tokens_profile(card):
+    """{n ("X" = its power), power, toughness, type} for the tokens it leaves, or None."""
+    m = _SELF_DEATH_TOKENS_RE.search(card.get("oracle_text", "") or "")
+    if not m:
+        return None
+    w = m.group(1)
+    n = "X" if w.upper() == "X" else (int(w) if w.isdigit() else _NUMBER_WORDS.get(w.lower(), 1))
+    return {"n": n, "power": int(m.group(2)), "toughness": int(m.group(3)), "type": m.group(4)}
+
+
+def grows_on_death_profile(card):
+    """True when this creature takes a +1/+1 counter whenever ANY other creature dies."""
+    return bool(_GROWS_ON_DEATH_RE.search(card.get("oracle_text", "") or ""))
+
+
+#: A SPELL THAT COSTS A BODY (2026-11-24). `_DRAW_ADDITIONAL_COST_RE` above left Village Rites,
+#: Deadly Dispute and Altar's Reap unread because the model had no sacrifice to pay with; under
+#: `model_sacrifice` it has one now. "As an additional cost to cast this spell, sacrifice a
+#: creature [or artifact]. Draw two cards [and create a Treasure token]."
+_SAC_COST_SPELL_RE = re.compile(
+    r"as an additional cost to cast this spell, sacrifice an? "
+    r"(?:creature|artifact or creature|creature or artifact)\.\s*([^\n]*)", re.I)
+
+
+def sac_cost_spell_profile(card):
+    """{draw, treasure} for an instant or sorcery whose extra cost is a body, or None."""
+    m = _SAC_COST_SPELL_RE.search(card.get("oracle_text", "") or "")
+    if not m or not re.search(r"\b(?:Instant|Sorcery)\b", card.get("type_line") or ""):
+        return None
+    effect = m.group(1)
+    if re.search(r"\bif\b|\bunless\b|\bdiscard\b", effect, re.I):
+        return None
+    d = re.search(r"\bdraw (a|one|two|three) cards?", effect, re.I)
+    t = re.search(r"create an? treasure token", effect, re.I)
+    if not (d or t):
+        return None
+    return {"draw": _NUMBER_WORDS.get(d.group(1).lower(), 1) if d else 0, "treasure": 1 if t else 0}
+
+
 def sac_mana_profile(card):
     """Mana a free sacrifice outlet adds for each creature it eats, or 0."""
     m = _SAC_MANA_RE.search(card.get("oracle_text", "") or "")

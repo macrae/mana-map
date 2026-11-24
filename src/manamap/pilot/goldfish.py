@@ -426,6 +426,14 @@ def draw_is_unread(card, *, model_discard, model_combat, model_deaths):
         return False
     if (first_main_modes_profile(card) or {}).get("draw"):
         return False
+    # The costed sacrifices, the body-cost spells and Mentor's paid draw (2026-11-24), all read
+    # under the sacrifice channel (`model_deaths` here is sacrifice-or-deaths).
+    from manamap.pilot.goldfish_profiles import (costed_sac_profile, paid_arrival_draw_profile,
+                                                 sac_cost_spell_profile)
+    if model_deaths and ((costed_sac_profile(card) or {}).get("draw")
+                         or (sac_cost_spell_profile(card) or {}).get("draw")
+                         or paid_arrival_draw_profile(card)):
+        return False
     return True
 
 
@@ -1874,6 +1882,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                                    or c["death"]["gain_on_opponent_death"]))
         # Sanctum Seeker's drain is read on the attack (2026-11-24, `attack_drain_typed`).
         and not (model_combat and c["combat"]["attack_drain_typed"])
+        # Anje's {2}-and-a-sacrifice drain, read on the costed step (2026-11-24).
+        and not (model_sacrifice and (c["costed_sac"] or {}).get("drain"))
     }) if model_drain else []
 
     # A SEED PER GAME (2026-10-04). One shared stream meant two lists played the
