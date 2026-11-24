@@ -76,15 +76,15 @@ Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group 
 - share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 4.374**
-- Table draw engine online (opponents are drawing): **82%**
+- Table draw engine online (opponents are drawing): **83%**
 - Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W}): **57%**
-- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **29%**
-- Table draw engine plus a draw-triggered drain, both drawn: **22%**
-- Heliod down with an asymmetric card engine: **55%**
-- Free or cheap interaction held: **71%**
+- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **30%**
+- Table draw engine plus a draw-triggered drain, both drawn: **23%**
+- Heliod down with an asymmetric card engine: **56%**
+- Free or cheap interaction held: **72%**
 - An X-spell finisher drawn (the mana sink the discount pays for): **69%**
 - Win condition access (Approach, or a tutor that can actually find a sorcery): **37%**
-- Heliod protected, or a flash grant that does not need him: **53%**
+- Heliod protected, or a flash grant that does not need him: **54%**
 - A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block): **53%**
 - A taxer down (attackers pay, flying or not): **37%**
 - share of opening sevens the model would keep: **75%**

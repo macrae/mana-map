@@ -491,15 +491,15 @@
    },
    "heliod": {
     "1": 0.0,
-    "10": 0.418,
+    "10": 0.51,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.001,
-    "6": 0.009,
-    "7": 0.036,
-    "8": 0.105,
-    "9": 0.235
+    "6": 0.01,
+    "7": 0.042,
+    "8": 0.138,
+    "9": 0.304
    },
    "keen-engineering": {
     "1": 0.0,
@@ -613,15 +613,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 0.645,
+    "10": 0.691,
     "2": 0.991,
     "3": 0.866,
     "4": 0.722,
     "5": 0.599,
-    "6": 0.525,
-    "7": 0.524,
-    "8": 0.553,
-    "9": 0.602
+    "6": 0.533,
+    "7": 0.548,
+    "8": 0.589,
+    "9": 0.648
    },
    "keen-engineering": {
     "1": 1.0,
@@ -735,15 +735,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 8.518,
+    "10": 8.759,
     "2": 2.133,
     "3": 3.28,
     "4": 4.168,
-    "5": 4.832,
-    "6": 5.469,
-    "7": 6.145,
-    "8": 6.864,
-    "9": 7.643
+    "5": 4.833,
+    "6": 5.477,
+    "7": 6.178,
+    "8": 6.938,
+    "9": 7.783
    },
    "keen-engineering": {
     "1": 1.0,
@@ -2397,38 +2397,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4084,
-      0.4277
+      0.5002,
+      0.5198
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.418
+     "value": 0.51
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0073,
-      0.011
+      0.0082,
+      0.0121
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.009
+     "value": 0.01
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0991,
-      0.1112
+      0.1314,
+      0.1449
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.105
+     "value": 0.138
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -2436,14 +2436,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.832
+     "value": 4.833
     },
     "mana_stdev_turn_five": {
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.1572
+     "value": 1.1576
     },
     "median_kill_turn": {
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
@@ -2455,14 +2455,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.2509,
-      0.2681
+      0.2493,
+      0.2665
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.2594
+     "value": 0.2578
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -2479,14 +2479,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.5723,
-      0.5916
+      0.4792,
+      0.4988
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.582
+     "value": 0.489
     }
    },
    "bracket": {
@@ -2502,14 +2502,14 @@
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.5159,
-      0.5355
+      0.5157,
+      0.5353
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.5257
+     "value": 0.5255
     },
     "mulliganed": {
      "ci95": [
@@ -2524,14 +2524,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.0109,
-      0.0153
+      0.0107,
+      0.0151
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.0129
+     "value": 0.0127
     }
    },
    "dti": {
@@ -2606,7 +2606,7 @@
      "model_draw": true,
      "model_treasures": true
     },
-    "model_version": "f00018ac3899",
+    "model_version": "849fd3504203",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5441,13 +5441,13 @@
    "n": 7
   },
   "missed_land_drop_by_five": {
-   "max": 0.5257,
+   "max": 0.5255,
    "median": 0.4674,
    "min": 0.3115,
    "n": 7
   },
   "missed_land_drop_rate": {
-   "max": 0.2594,
+   "max": 0.2578,
    "median": 0.219,
    "min": 0.1152,
    "n": 7
@@ -5459,7 +5459,7 @@
    "n": 7
   },
   "never_kills_rate": {
-   "max": 0.582,
+   "max": 0.489,
    "median": 0.148,
    "min": 0.004,
    "n": 7
@@ -5467,7 +5467,7 @@
   "stall_two_in_a_row": {
    "max": 0.2298,
    "median": 0.0906,
-   "min": 0.0129,
+   "min": 0.0127,
    "n": 7
   }
  },
@@ -5747,7 +5747,7 @@
    "gishath": "ac1f8a6f777f",
    "goblin-storm": "ac1f8a6f777f",
    "hapatra": "9ea49ecb247d",
-   "heliod": "f00018ac3899",
+   "heliod": "849fd3504203",
    "ingris-infect": "61c2ffdcbefb",
    "keen-engineering": "ac1f8a6f777f",
    "meren-recursion": "7528c026dc32",
