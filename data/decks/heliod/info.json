@@ -17,7 +17,9 @@
     "of": 19,
     "stale": [],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "brief"
@@ -42,8 +44,8 @@
       "proposal": null,
       "base_version": 12,
       "size": 100,
-      "add": 29,
-      "out": 29,
+      "add": 30,
+      "out": 30,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -282,10 +284,6 @@
           "is_new": false
         },
         {
-          "name": "Sapphire Medallion",
-          "is_new": false
-        },
-        {
           "name": "Scrawling Crawler",
           "is_new": false
         },
@@ -382,6 +380,10 @@
           "is_new": false
         },
         {
+          "name": "Windfall",
+          "is_new": true
+        },
+        {
           "name": "Winds of Abandon",
           "is_new": true
         }
@@ -421,7 +423,8 @@
         "fell": 3,
         "no_call": 6
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Austere Command",
         "Cathar Commando",
@@ -2754,6 +2757,19 @@
   ],
   "studies": [
     {
+      "id": "005",
+      "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
+      "branch": "b3-v1",
+      "file": "005-what-if-we-went-all-in-on-drain-on-my-draws-when.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-23",
+      "swap": null,
+      "goldfish_saw": null
+    },
+    {
       "id": "004",
       "question": "The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, or a 36th land for Stroke of Genius?",
       "branch": "b3-v1",
@@ -3899,8 +3915,10 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `b3-v1`: 24 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "study 005 is open: what if we went all in on drain on my draws... when they draw, I get d — `manamap pilot study heliod call 005 …`, then `install`",
     "study 004 is open: The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, o — `manamap pilot study heliod call 004 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"

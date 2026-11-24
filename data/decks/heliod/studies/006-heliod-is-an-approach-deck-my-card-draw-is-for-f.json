@@ -1,0 +1,201 @@
+{
+  "id": "006",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time... the next line is making opponents draw big and translating that into value/damage via HUGE discounts.. I need game winning discounts, combos I can cast super cheap or free with enough generic mana discount, or loading up walking ballista with huge X spell cast... and if there are cards currently staged that don't fit the bill, we can remove pull and swap from them",
+  "opened": "2026-11-23",
+  "decided_at": null,
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "text": "Study 006 (heliod / b3-v1): 14 discount payoffs in W/U/colourless, none in the list, none a Game Changer by the card_pool flag where it printed (Treachery and Sphinx's Revelation assumed), none a two-card infinite with the list (deck-combos b3-v1; only a 3-card near-miss, Hullbreaker Horror with Sol Ring). Discount removes generic only; \"free at N\" = a discount of N empties the generic share. Measured windows: 10+ ~30%, 15+ ~22%, 20+ ~16% by T8.\nA. X sinks: Stonecoil Serpent {X} (no pips; a 10/10 trampler at flash at 10+; seen); Martial Coup {X}{W}{W} (X Soldiers, at X>=5 destroys all other creatures; invisible); Sphinx's Revelation {X}{W}{U}{U} (gain X, draw X — finds Approach; invisible); Kozilek's Command {X}{C}{C} (weak: little {C}); Aetherflux Reservoir {4} (life per spell; 50 damage for 50 life; invisible).\nB. Big generic spells: Omniscience {7}{U}{U}{U} (cast spells from hand free; free at 7; invisible); Ugin, Eye of the Storms {7} (exile a coloured permanent on cast and on each colourless spell; free at 7; invisible); Ulamog, the Defiler {10} (cast trigger exiles half an opponent's library — near the pilot's mill exclusion; seen); Treachery {3}{U}{U} (steal, untaps five lands; invisible); Hullbreaker Horror {5}{U}{U} (flash, uncounterable, bounce on each cast; seen); Maelstrom Colossus {8} (cascade; seen); Myr Battlesphere {7} (Myr, attack damage; seen).\nExtra-turn spells: Time Stretch {8}{U}{U} (two extra turns); Expropriate {7}{U}{U} (council's dilemma: extra turns or steal).\nLeft out: Emrakul, the Promised End (the extra turn is the opponent's); Metalwork Colossus (few noncreature artifacts).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-23T22:28:03-08:00",
+      "from": "data/decks/heliod/.agent-out/card-scout-006.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "text": "Study 006 design (read-only). [MEAS] goldfish, [ARITH] oracle arithmetic, [ARG] argument. The deck already holds the payoff shape; the gaps are finding the converter and a second Approach outlet. Three pairs; NO CHANGE on the rest.\n1. Payoff shape. Heliod's discount D (generic only, X counts) by T8 [MEAS]: median 4; 30% of windows 10+, 22% 15+, 16% 20+ (best-case reachable — a ceiling). D needed to pay only pips [ARITH]: Approach {6}{W} D>=6; Venser {2}{U}{U} D>=2; Remand {1}{U} D>=1; Windfall D>=2; Mathemagics X=3 (8 cards) D>=3; Psychosis Crawler {5} D>=5; Scrawling Crawler {3} D>=3; Forced Fruition D>=4; Prosperity/Fascination X=7 D>=7; Stroke X=7 D>=9; Ballista {X}{X} 2X. Ranked shapes: (a) Approach twice in one window — Approach, Venser bouncing it (combo 553-3634 on b3-v1; the first cast need not resolve), Approach again; at D>=7 the line is W+UU+W; or 7+ draws (Mathemagics X=3, Windfall, Prosperity X=7); Teferi first (stack 007). Bottleneck: Approach in hand, not the discount. (b) Draw-X into a converter: Scrawling (each opponent draw costs them 1) and Psychosis (each of our draws costs each opponent 1), each-opponent drain (strategy:conversion.yield); Prosperity or Fascination X=20 with both Crawlers is 40 to each opponent for 2 mana at D>=20; a chain from low D (Folio X=2 -> Prosperity X~11 -> Fascination X~40) needs a stack scenario and a library-size check; Crawler drain is 3.5% of kills by T10 [MEAS] because there are two Crawlers in 99 (strategy:conversion.availability, strategy:deckbuilding.redundancy-vs-tutors). (c) Ballista as the X sink: D=20 -> X=15 for 10 mana, 15 damage — one seat's finisher or the Tithe infinites' sink, not the table kill. (d) Big colourless spells (Ulamog, Kozilek, Blightsteel, Ugin) need D>=8-12, swing not win; Ugin's -X exiles our Heliod; not proposed. Bracket: three Game Changers (Mystical, Rhystic, Tithe); Hullbreaker Horror out (with Sol Ring an infinite, near-line 513-5034--46); Reversal/Scepter infinites out; mill and Lab Man out; extra turns allowed in low quantity unchained (strategy:deckbuilding.power-level.barometers) but add nothing to an end-step window — not proposed; shuffling wheels displace Approach.\n2. Staged-card audit: finds or recasts Approach (Personal Tutor, Solve the Equation, Sensei's Top, Mystic Sanctuary, Venser, Windfall, Fellwar Stone); protects (Teferi Time Raveler, Silence, Pact, Spellskite, Dawn's Truce, Clever Concealment, Karametra's Blessing, Greater Auramancy, Guardian of Faith, the counters); the discount line (Fascination, Vision Skeins, Folio, Forced Fruition, Bard, Mirrormade, The Second Doctor, Dictate, Howling Mine, Font, Loran, Faerie Mastermind, Gleaming Splendor, Teferi's Ageless Insight, Mathemagics, Prosperity, Stroke, both Crawlers; Arcane Denial's draws); wipes (Austere Command, Winds of Abandon, Supreme Verdict). Fits neither: Soul-Guide Lantern (the pilot's \"only graveyard answer\" — his call), Sphere of Safety (a 5-mana pillow fort), Isochron Scepter (not staged; only Vision Skeins imprint; a latent bracket liability). No clear dead card among the staged adds.\n3. Swaps (none measured; the goldfish reads none of the adds; strategy:conversion.substitution): 1 Soul-Guide Lantern -> Scour for Scrap (instant tutor for the Crawlers, Ballista, Folio; needs his OK on the Lantern); 2 Isochron Scepter -> Remand (a second outlet to bounce your own Approach — Approach + Remand wins, non-infinite; check bracket after staging); 3 Sphere of Safety -> Triskaidekaphile (a third win line; his taste call). Not proposed: Finale of Revelation, Sphinx's Revelation, Aetherflux Reservoir, Alhammarret's Archive, Jin-Gitaxias. 35 lands stay.\nOpen: /research-strategy on an X-draw chain bootstrapping its own cost reduction; stack scenarios for the Folio -> Prosperity -> Fascination chain under Scrawling, and Trisk with Stroke to exactly 13.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:conversion.availability",
+          "strategy:conversion.substitution",
+          "strategy:conversion.yield",
+          "strategy:deckbuilding.power-level.barometers",
+          "strategy:deckbuilding.redundancy-vs-tutors"
+        ],
+        "rules": [
+          "513",
+          "553"
+        ]
+      },
+      "added_at": "2026-11-23T22:32:39-08:00",
+      "from": "data/decks/heliod/.agent-out/strategist-006.md"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "heliod-is-an-approach-deck-my-card-draw-is-for-f",
+  "facts": [
+    {
+      "id": "S-0bb6e9b5-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-0bb6e9b5-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-0bb6e9b5-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-0bb6e9b5-04",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 0 of 0 named card(s) read; an OLDER list of this branch: 6 rows better, 3 worse, 6 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "n": 10000
+    },
+    {
+      "id": "S-0bb6e9b5-05",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 9.26 -> 6.67, a change of -2.58 (-28%) [-2.8965, -2.2679] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.5822,
+      "ci95": [
+        -2.8965,
+        -2.2679
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0bb6e9b5-06",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 51 games in 100 -> 59 in 100, a swing of 8 games per 100 [0.068, 0.0926] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": 0.0803,
+      "ci95": [
+        0.068,
+        0.0926
+      ],
+      "measure": "killed by T10",
+      "verdict": "better"
+    },
+    {
+      "id": "S-0bb6e9b5-07",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 2.02 -> 1.15, a change of -0.87 (-43%) [-0.922, -0.8126] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -0.8673,
+      "ci95": [
+        -0.922,
+        -0.8126
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0bb6e9b5-08",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 6.73 -> 7.22, a change of +0.49 (+7%) [0.2012, 0.7692] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": 0.4852,
+      "ci95": [
+        0.2012,
+        0.7692
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "better"
+    },
+    {
+      "id": "S-0bb6e9b5-09",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 53 games in 100 -> 46 in 100, a swing of 7 games per 100 [-0.0809, -0.0585] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0697,
+      "ci95": [
+        -0.0809,
+        -0.0585
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-0bb6e9b5-10",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "09de45c632d05d1ef33b0240d970c6e9a551a5397e28464dce999e84b1766020",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-23T22:24:52-08:00",
+    "facts": 10
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "005",
+  "slug": "heliod",
+  "branch": "b3-v1",
+  "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
+  "opened": "2026-11-23",
+  "decided_at": "2026-11-23",
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "text": "Study 005 (heliod / b3-v1), 12 candidates in W, U or colourless, none in the list. None forms a two-card infinite (combos_raw.json.gz, variants of 3 or fewer against b3-v1); Windfall forms a two-card NON-infinite \"win the game\" line with Approach of the Second Sun. No mill or Laboratory-Maniac cards (Psychic Corrosion, Sphinx's Tutelage, Teferi's Tutelage dropped).\n\n(A) Converters. 1 Monument to Endurance {3}: whenever you discard, choose one not chosen this turn — draw a card; create a Treasure; each opponent loses 3 life (turns every wheel's discard into drain). Not GC; seen. 2 Consecrated Sphinx {4}{U}{U}: whenever an opponent draws, you may draw two. GC (the branch is at three). Seen. 3 Smuggler's Share {2}{W}: each end step, draw for each opponent who drew two or more this turn; Treasure for each with two or more lands entering. Not GC; seen. 4 Tataru Taru {1}{W}: ETB you draw, target opponent may draw; whenever an opponent draws off their turn, a tapped Treasure (once a turn). Not GC; seen. 5 Mind's Eye {5}: pay {1} per opponent draw to draw — staged in and reverted 2026-11-13 by the pilot (\"per-card tax competed with the discount\"). 6 Struggle for Project Purity {3}{U}: Brotherhood — each opponent draws at your upkeep, you draw that many. Invisible. 7 Teferi, Temporal Pilgrim {3}{U}{U}: loyalty per draw; weak converter.\n(B) Wheels. 8 Windfall {2}{U}: each player discards and draws the greatest number; does NOT shuffle; invisible; 78.8% of bracket-3 Heliod lists (recon). 9 Jace's Archivist {1}{U}{U}: {U},{T} repeatable Windfall; does NOT shuffle. 10 Timetwister {2}{U}: SHUFFLES hand and graveyard into the library — moves Approach out of its seventh-from-the-top slot (also Time Reversal, Day's Undoing, Echo of Eons — all shuffle). 11 Jace Beleren {1}{U}{U}: +2 each player draws a card; does not shuffle; invisible.\n(C) Tithe infinites. 12 Enlightened Tutor {W}: artifact/enchantment to top (Tithe, Splendor, Mirrormade) — GC (a fourth) and SHUFFLES. Alternatives Idyllic Tutor, Moon-Blessed Cleric (enchantments, shuffle). No other redundant piece found.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-23T21:56:06-08:00",
+      "from": "data/decks/heliod/.agent-out/card-scout-005.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "text": "Design: b3-v1 turned to two lines (read-only). Three swaps are clear; the rest NO CHANGE. [M] one instrument, [N] arithmetic from oracle text, [A] argument.\n1. Shape. Line 2 has one converter, Psychosis Crawler: no other W/U/colourless \"whenever you draw\" card drains or damages (the rest grow a body or mill, and mill is out by the pilot's rule) [A]; a body hits one seat where Crawler drains each (strategy:conversion.yield), so: one converter found reliably (strategy:conversion.availability) plus doublers and bursts. Kill sizing [N]: three opponents at 40 need 40 of our draws with Crawler out; one doubler (Teferi's Ageless Insight, Bard) makes it 20, two make it 10; Mathemagics X=4 draws 16 (32 doubled). Drip (Mine, Dictate, Font ~5 a turn, ~9 under Insight) is a clock of 4-8 turns; the kill is a burst turn with Crawler out (strategy:card-advantage.plan-draw). Wheels feed both lines [A]: their draws are discount, Treasure, Mastermind and Rhystic cards, Scrawling life; ours are Psychosis drain; a non-shuffling wheel at seven cards pulls Approach's seventh slot into hand. Dangers [N]: any shuffle after Approach's first cast displaces it (Day's Undoing, Echo of Eons, Time Spiral, Timetwister, a cracked fetch, tutoring for anything else) — play shuffles before Approach is set; Windfall discards our hand, Approach included; decking (library ~92; a doubled Mathemagics can exceed it); Venser recasts a bounced Approach (combo 553-3634, needs a stack scenario).\n2. Cuts: no combat body is left to cut. Weakest: Sapphire Medallion (Approach is white; the discount does the cost work); Greater Auramancy (targeted-removal shield only; Clever Concealment and Dawn's Truce cover wipes; pilot added it 2026-09); Soul-Guide Lantern (the pilot's \"only graveyard answer\", 2026-11-13 — cut only if he accepts that).\n3. Adds (none a Game Changer; b3-v1 holds three: Mystical Tutor, Rhystic Study, Smothering Tithe): Windfall [M: kill by T10 60.7 -> 61.2, no call; extra cards by T8 +0.58 [+0.49,+0.67]; hoard @T10 1.60 -> 3.31; damage @T10 -0.19; dead wheels @T5 +0.066]; Alhammarret's Archive (a third doubler; cut by the pilot 2026-09-20 for Gleaming Splendor — his call); Scour for Scrap (finds Psychosis Crawler and the doublers; strategy:conversion.availability); Idyllic Tutor (Tithe, Mirrormade, Splendor); Muddle the Mixture (transmutes to Faerie Mastermind or Splendor); Recruiter of the Guard, The Seriema; Words of Wisdom, Cut a Deal (Cut a Deal went to Fascination 2026-11-13); Jace's Archivist, Thought Reflection. Held: Aetherflux Reservoir, Triskaidekaphile (an alternate win — ask). Tithe infinites need opponents who won't pay {2} (authored 50%); more pieces raise assembly, not that brake.\n4. Order (one at a time; NO CHANGE valid; strategy:conversion.substitution): 1 Sapphire Medallion -> Windfall; 2 Greater Auramancy -> Alhammarret's Archive (needs a stack scenario before trusting a count); 3 Soul-Guide Lantern -> Scour for Scrap (only if he gives up the Lantern's job); 4+ no clear OUT. Keep 35 lands.\nOpen: a stack scenario for Insight with Bard and Archive, and Mathemagics against library size; how Forge pods pay Tithe's {2}.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:conversion.availability",
+          "strategy:conversion.substitution",
+          "strategy:conversion.yield"
+        ],
+        "rules": [
+          "553"
+        ]
+      },
+      "added_at": "2026-11-23T22:02:20-08:00",
+      "from": "data/decks/heliod/.agent-out/strategist-005.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "card-scout"
+    ],
+    "pilot_words": "approve! [Windfall for Sapphire Medallion] / ok.. no monument, it's not a fit; also, this is not a wheels deck, per se / greater auramancy is protection on heliod, which is critical... I don't like this [Alhammarret's Archive declined] / heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time",
+    "reading": "Windfall replaces Sapphire Medallion on b3-v1: a non-shuffling symmetric draw that feeds Heliod's discount and the Treasure and draw payoffs without moving Approach from its slot. Monument to Endurance declined (the deck barely discards; not a wheels deck). Alhammarret's Archive declined: Greater Auramancy gives Heliod, an enchantment creature, shroud, and protects the enchantment engine. The drain-on-our-draws line was set aside: Psychosis Crawler is its only converter in these colours. The pilot reframed the second line as game-winning discounts, opened as its own study.",
+    "at": "2026-11-23"
+  },
+  "slug_name": "what-if-we-went-all-in-on-drain-on-my-draws-when",
+  "facts": [
+    {
+      "id": "S-06850fc6-01",
+      "kind": "record",
+      "text": "3 game(s): 1W 2L; how they ended: combo 1, removal 1, won 1; not yet debriefed: 003",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-03",
+      "n": 3,
+      "figure": {
+        "win": 1,
+        "loss": 2
+      }
+    },
+    {
+      "id": "S-06850fc6-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 4 score 46/96 as of 2026-10-18",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-18",
+      "figure": 46
+    },
+    {
+      "id": "S-06850fc6-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-21: Heliod, the Radiant Dawn lists (6,607 on EDHREC; 590 self-tagged bracket 3) are wheel decks first: Windfall 78.8%, Day's Undoing 62.5%, Echo of Eons 33.6% and Jace's Archivist 35.8% at bracket 3, backed by cheap symmetric draw (Cut a Deal 59.7%, Howling Mine 5",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-21"
+    },
+    {
+      "id": "S-06850fc6-04",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 0 of 0 named card(s) read: 6 rows better, 3 worse, 6 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "n": 10000
+    },
+    {
+      "id": "S-06850fc6-05",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 9.26 -> 6.67, a change of -2.58 (-28%) [-2.8965, -2.2679] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -2.5822,
+      "ci95": [
+        -2.8965,
+        -2.2679
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-06850fc6-06",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 51 games in 100 -> 59 in 100, a swing of 8 games per 100 [0.068, 0.0926] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": 0.0803,
+      "ci95": [
+        0.068,
+        0.0926
+      ],
+      "measure": "killed by T10",
+      "verdict": "better"
+    },
+    {
+      "id": "S-06850fc6-07",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 2.02 -> 1.15, a change of -0.87 (-43%) [-0.922, -0.8126] — worse",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -0.8673,
+      "ci95": [
+        -0.922,
+        -0.8126
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-06850fc6-08",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 6.73 -> 7.22, a change of +0.49 (+7%) [0.2012, 0.7692] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": 0.4852,
+      "ci95": [
+        0.2012,
+        0.7692
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "better"
+    },
+    {
+      "id": "S-06850fc6-09",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 53 games in 100 -> 46 in 100, a swing of 7 games per 100 [-0.0809, -0.0585] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0697,
+      "ci95": [
+        -0.0809,
+        -0.0585
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "better"
+    },
+    {
+      "id": "S-06850fc6-10",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 26 games in 100 -> 22 in 100, a swing of 4 games per 100 [-0.0445, -0.0275] — better",
+      "tier": "data",
+      "source": "branches/b3-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.036,
+      "ci95": [
+        -0.0445,
+        -0.0275
+      ],
+      "measure": "mulliganed",
+      "verdict": "better"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "base_decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-23T21:53:01-08:00",
+    "facts": 10
+  },
+  "decided_on_decklist_sha256": "09de45c632d05d1ef33b0240d970c6e9a551a5397e28464dce999e84b1766020"
+}
