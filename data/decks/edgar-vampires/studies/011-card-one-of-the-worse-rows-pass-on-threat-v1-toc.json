@@ -1,0 +1,481 @@
+{
+  "id": "011",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card one of the worse-rows pass on threat-v1: Tocasia's Welcome for Anje, Maid of Dishonor — draw that survives a wipe, for the steam rows?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Anje, Maid of Dishonor",
+    "Tocasia's Welcome"
+  ],
+  "swap": {
+    "out": "Anje, Maid of Dishonor",
+    "in": "Tocasia's Welcome"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 350.0,
+      "slice": "MODE prescribe: the worse rows on threat-v1 (2026-11-24); verbatim",
+      "text": "Edgar threat-v1, the prescribe pass: I recommend one swap, offer one contested swap for your call, and recommend no change in the other three slots. Nothing was written to disk. Running bracket-check on threat-v1 rewrote the branch's bracket_report.json, and I reverted it with git checkout. The tree is clean.\n\nWhat limits the deck now: the deck-audit has ramp at 8 against a 10-12 target and card-advantage at 7 against 10. try's checks count colour sources at black 2 short and red 2 short today. The audit's own colour-sources figure is stale (its mana_analysis.json was computed on a different list), so don't quote it. The steam complaint comes from log games 001/002/003/006; 002 is tagged ran-out-of-steam and 003 no-card-draw.\n\n**1. Anje, Maid of Dishonor -> Tocasia's Welcome** (recommended; difficulty contested)\n- **Why the cut:** Anje is in none of the 14 engine groups the deck declares. It costs 4 mana, and each drain costs another {2} plus a sacrifice. That is mana the triage already says is short. Its Blood token only swaps a card for a card; it is not card advantage.\n- **Why the add:** Tocasia's Welcome costs 3 and draws once a turn when a creature with mana value 3 or less enters. Every Edgar eminence token is mana value 0, so it fires off the command zone. Being an enchantment, it survives the creature wipe that keeps beating the deck. It draws off tokens entering, as you asked. Its nearest match in the deck is Welcoming Vampire (0.94), but both are once a turn and both can fire.\n- **What try could read:** the goldfish can't read Anje's drain, so it gave no rows for this exact pair. The same add with Cruel Celebrant cut (both cards readable) moved extra cards by T8 from 2.50 to 2.85 [+0.33, +0.38], cards in hand @T8 from 3.98 to 4.19 [+0.20, +0.23], and stall from 16.7% to 15.9%. That gets back most of the steam the branch lost against V7 (2.93 and 4.25).\n- **What it gave back in that read:** about a quarter of the drain gain. Life lost outside combat fell 1.2 [-1.4, -0.9] and killed outside combat fell 0.8 points. That loss came from Celebrant, which sits in three declared drain groups; Anje sits in none. Anje's real drain value is a judgment call, because the goldfish cannot see it.\n- **Bracket:** Tocasia's Welcome is not a Game Changer, so GCs stay 3 of 3, and it makes no two-card infinite. The floor stays 3. bracket-check only reads a list on disk, so it was run on threat-v1 as it stands.\n- **Price:** unpriced.\n\n**2. A rock, Talisman of Indulgence (fixes black and red)** (your call; I lean no change)\n- **Why a rock:** the 2026-11-20 recon says five or six rocks is the consensus, and the branch has three. try says the Talisman would close one of the two missing sources in each colour.\n- **No clean cut was found. Two readable cuts both read as trades:**\n  - Cutting Urza's Incubator: stall improved 1.1 points, but life gained fell 0.58, life lost outside combat fell 0.9 and damage @T10 fell 0.6.\n  - Cutting Cruel Celebrant: life lost outside combat fell 1.3, killed outside combat fell 0.9, tokens converted fell 0.21, and extra cards rose only 0.05.\n- **The only other cut, Anointed Procession:** it doubles every eminence token, the goldfish can't read it, and losing it shrinks the token-multiplier group from 4 cards to 3. That is painful and gives back conversion.\n- **By your clear-upgrades-only rule, this is no change for now.** Not a Game Changer; unpriced.\n\n**3-5. No change.** Every other flex card sits in a declared drain, Vampire, converter or loop group, or is a protected card or a land.\n- **Watch, don't swap:** Dark Prophecy ({B}{B}{B}, draws on every death, tokens included, for 1 life each) and Mentor of the Meek ({1} per small creature entering). Both fit what you asked for, but the goldfish can't see either. Dark Prophecy's life cost inside the Ashnod's loop needs the strategist and a stack scenario before it is staged.\n\n**Not done:**\n- No bracket-check on either hypothetical list.\n- No Forge run, no regen.\n- All six try runs are used. Two were spent on Anointed Procession swaps that the goldfish couldn't read and printed no rows, so I have no figures for them.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T15:57:28-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-tocasia.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 56.0,
+      "slice": "ROI order for threat-v1's worse rows; verbatim",
+      "text": "Answer: the two rows that most stop a T7-8 kill at a real table are (1) input and velocity (ramp 8 vs 10-12, which shows up in cards in hand @T8 and board power @T6) and (2) running dry by T8-10 against sweepers (extra cards by T8 and cards in hand @T8). Fix those first. I did not run CONTEXT.md or the stacks, so the \"ignore\" list below is argued from your row descriptions, not checked against the deck's plays.\n\nRanking by what stops the kill (argued from strategy:conversion.raising-the-ceiling, strategy:card-advantage, strategy:tempo, strategy:deckbuilding.curve):\n1. **Ramp and input.** The raising-the-ceiling text says the ceiling sits upstream of the payoffs, in how many input events the deck generates and how fast. It names mana first and cost reduction second. Cutting three Talismans and Rakdos Signet left 8 ramp and black/red at 34/20 sources. That is below the 10-12 template (strategy:deckbuilding.ratios) and below the \"hit 2, 4 and 6 reliably\" curve rule (strategy:deckbuilding.curve). Four-player turn cycles make an off-curve turn expensive, so \"board power @T6 11.7->9.6\" is the same cause showing up in a different row. This is probably the best ROI, because it is one cause behind several worse rows.\n2. **Hand and refuel.** Hands were empty by T8-10 in 4 of 8 games, and wipes ended 3 of 8 games. Card advantage governs the late game once mana is abundant (strategy:card-advantage). Tempo governs the early turns (strategy:tempo). A deck that spends its hand by T8 and then meets a wipe has no second wave. That is the real failure at a four-player table, where you cannot race three life totals (strategy:combat-math.racing). Extra cards by T8 (2.93->2.53) and cards in hand @T8 (4.25->3.99) are the honest rows for this.\n3. **Stall 2-in-a-row (15->17).** This is a symptom of 1 and 2, so it is not worth treating separately.\n\nWhat each fix looks like:\n- **For 1, replace the mana you cut.** Cheap mana rocks or dorks at 1-2 mana, or cost reducers, since Edgar triggers on casts and each cast is another trigger. The raising-the-ceiling text says cost reduction means more casts per turn off the same lands. Fixing the red/black source gap probably belongs in the same slot (land swaps, not new spells).\n- **For 2, refuel that survives a wipe.** Death-triggered or sacrifice-outlet draw (the pilot already says prefer death-triggered draw), cheap card flow, or recursion and flashback that stays good when the board is gone. Cards that draw off the tokens you already make match \"tokens converted +0.42\" and \"killed outside combat 4->10\". Protection from wipes counts too, but the pilot's standing rule is that unused protection on a B-team night never justifies a cut.\n\nRows to IGNORE or discount:\n- **Killed by T6 (14->11), killed by T10 (89->84), damage @T10 (44->34).** These measure combat into an empty board with no blockers or removal (the goldfish rule). The branch gave up combat damage on purpose for drain, and \"life lost outside combat T10 +5.4\" and \"killed outside combat 4->10\" are the matching gains. Treat them as a trade you chose, not a weakness.\n- **Interaction affordable @T6 (32->17).** You flagged it as overstated because convoke spells are invisible. Do not fix it from this row.\n- **Board power @T6.** Read it only as a symptom of the ramp gap, not as a goal.\n\nCheapest test: a `try` that swaps back one Talisman or Signet and one 1-2 mana accelerant. It tells you whether the ramp rows and the hand rows move together. It cannot say anything about wipes, so for those use the log (3 of 8 games ended by wipes) and a stack scenario.\n\nopen: (a) A /research-strategy topic on how much ramp a drain deck with a 4-6 mana commander needs at B3. (b) Whether the companion has anything on rebuilding after a wipe in multiplayer. My queries only found general card-advantage text.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage",
+          "strategy:combat-math.racing",
+          "strategy:conversion.raising-the-ceiling",
+          "strategy:deckbuilding.curve",
+          "strategy:deckbuilding.ratios",
+          "strategy:tempo"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T15:57:29-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strategist-roi.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no keep Anje",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "card-one-of-the-worse-rows-pass-on-threat-v1-toc",
+  "facts": [
+    {
+      "id": "S-277fb283-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-277fb283-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-277fb283-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-277fb283-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire · {2}{B}{R} — Whenever Anje and/or one or more other Vampires you control enter, create a Blood token. This ability triggers only once each turn. (It's an artifact with \"{1}, {T}, Discard a card, Sacrifice this token: Draw a card.\") | {2}, Sacrifice another creature or a Blood token: Each opponent loses 2 life an",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Anje, Maid of Dishonor"
+    },
+    {
+      "id": "S-277fb283-05",
+      "kind": "engine_stage",
+      "text": "engine stage wincon: Win condition",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "stage": "wincon",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-277fb283-06",
+      "kind": "engine_events",
+      "text": "consumes ETB; produces ETB, LIFE_GAIN, LIFE_LOSS, TOKEN (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "consumes": [
+        "ETB"
+      ],
+      "produces": [
+        "ETB",
+        "LIFE_GAIN",
+        "LIFE_LOSS",
+        "TOKEN"
+      ],
+      "reader": "forge",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-277fb283-07",
+      "kind": "engine_fed_by",
+      "text": "fed by on ETB: Anowon, the Ruin Sage, Arid Mesa (unproven), Blood Artist, Bloodghast, Bloodletter of Aclazotz, Bloodline Keeper // Lord of Lineage, Bloodstained Mire (unproven), Bloodtithe Harvester … (44)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "ETB",
+      "cards": [
+        "Anowon, the Ruin Sage",
+        "Arid Mesa (unproven)",
+        "Blood Artist",
+        "Bloodghast",
+        "Bloodletter of Aclazotz",
+        "Bloodline Keeper // Lord of Lineage",
+        "Bloodstained Mire (unproven)",
+        "Bloodtithe Harvester",
+        "Captivating Vampire",
+        "Charismatic Conqueror",
+        "Clavileño, First of the Blessed",
+        "Cordial Vampire",
+        "Crossway Troublemakers",
+        "Cruel Celebrant",
+        "Drana and Linvala",
+        "Edgar Markov",
+        "Edgar, Ancient Bloodlord",
+        "Elenda, the Dusk Rose",
+        "Enduring Tenacity (unproven)",
+        "Ingris Stingerquill (unproven)",
+        "Kalitas, Traitor of Ghet",
+        "Marauding Blight-Priest",
+        "Marsh Flats (unproven)",
+        "Master of Dark Rites",
+        "Olivia Voldaren",
+        "Olivia, Crimson Bride",
+        "Path to Exile (unproven)",
+        "Preacher of the Schism",
+        "Sanctum Seeker",
+        "Tithe Drinker",
+        "Twilight Prophet",
+        "Vein Ripper",
+        "Verdant Catacombs (unproven)",
+        "Viscera Seer",
+        "Vish Kal, Blood Arbiter",
+        "Vito, Thorn of the Dusk Rose",
+        "Vraan, Executioner Thane",
+        "Welcoming Vampire",
+        "Wispdrinker Vampire",
+        "Wooded Foothills (unproven)",
+        "Yahenni, Undying Partisan",
+        "token:b_1_1_vampire",
+        "token:b_2_2_vampire_flying",
+        "token:w_1_1_vampire_lifelink"
+      ]
+    },
+    {
+      "id": "S-277fb283-08",
+      "kind": "engine_feeds",
+      "text": "feeds on ATTACK: Clavileño, First of the Blessed, Sanctum Seeker",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "ATTACK",
+      "cards": [
+        "Clavileño, First of the Blessed",
+        "Sanctum Seeker"
+      ]
+    },
+    {
+      "id": "S-277fb283-09",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Edgar Markov",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "CAST",
+      "cards": [
+        "Edgar Markov"
+      ]
+    },
+    {
+      "id": "S-277fb283-10",
+      "kind": "engine_feeds",
+      "text": "feeds on DIES: Blood Artist, Cordial Vampire, Crossway Troublemakers, Cruel Celebrant, Elenda, the Dusk Rose, Enduring Tenacity, Erebos, Bleak-Hearted, Grim Haruspex … (13)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "DIES",
+      "cards": [
+        "Blood Artist",
+        "Cordial Vampire",
+        "Crossway Troublemakers",
+        "Cruel Celebrant",
+        "Elenda, the Dusk Rose",
+        "Enduring Tenacity",
+        "Erebos, Bleak-Hearted",
+        "Grim Haruspex",
+        "Liliana, Dreadhorde General",
+        "Midnight Reaper",
+        "Morbid Opportunist",
+        "Vein Ripper",
+        "Vraan, Executioner Thane"
+      ]
+    },
+    {
+      "id": "S-277fb283-11",
+      "kind": "engine_feeds",
+      "text": "feeds on ETB: Caretaker's Talent",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "ETB",
+      "cards": [
+        "Caretaker's Talent"
+      ]
+    },
+    {
+      "id": "S-277fb283-12",
+      "kind": "engine_feeds",
+      "text": "feeds on LIFE_GAIN: Enduring Tenacity, Marauding Blight-Priest, Sanguine Bond, Vito, Thorn of the Dusk Rose",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Anje, Maid of Dishonor",
+      "event": "LIFE_GAIN",
+      "cards": [
+        "Enduring Tenacity",
+        "Marauding Blight-Priest",
+        "Sanguine Bond",
+        "Vito, Thorn of the Dusk Rose"
+      ]
+    },
+    {
+      "id": "S-277fb283-13",
+      "kind": "context",
+      "text": "CONTEXT cards: Edgar Markov, Edgar, Ancient Bloodlord, Anje, Maid of Dishonor, Bloodtithe Harvester, Bloodline Keeper // Lord of Lineage",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Anje, Maid of Dishonor"
+    },
+    {
+      "id": "S-277fb283-14",
+      "kind": "price",
+      "text": "$0.20 NM ((VOW) 231) as of 2026-11-24",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Anje, Maid of Dishonor",
+      "as_of": "2026-11-24",
+      "figure": 0.2
+    },
+    {
+      "id": "S-277fb283-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Kalitas, Traitor of Ghet (0.92), Erebos, Bleak-Hearted (0.91), Vish Kal, Blood Arbiter (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Anje, Maid of Dishonor",
+      "neighbours": [
+        {
+          "name": "Kalitas, Traitor of Ghet",
+          "score": 0.9216
+        },
+        {
+          "name": "Erebos, Bleak-Hearted",
+          "score": 0.9057
+        },
+        {
+          "name": "Vish Kal, Blood Arbiter",
+          "score": 0.9021
+        }
+      ]
+    },
+    {
+      "id": "S-277fb283-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Anje, Maid of Dishonor",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "sacrifice"
+      ]
+    },
+    {
+      "id": "S-277fb283-17",
+      "kind": "oracle",
+      "text": "Enchantment · {2}{W} — Whenever one or more creatures you control with mana value 3 or less enter, draw a card. This ability triggers only once each turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Tocasia's Welcome"
+    },
+    {
+      "id": "S-277fb283-18",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Welcoming Vampire (0.94), Morbid Opportunist (0.92), Caretaker's Talent (0.92)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Tocasia's Welcome",
+      "neighbours": [
+        {
+          "name": "Welcoming Vampire",
+          "score": 0.939
+        },
+        {
+          "name": "Morbid Opportunist",
+          "score": 0.9235
+        },
+        {
+          "name": "Caretaker's Talent",
+          "score": 0.9232
+        }
+      ]
+    },
+    {
+      "id": "S-277fb283-19",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Tocasia's Welcome",
+      "state": "seen",
+      "channels": [
+        "draw"
+      ]
+    },
+    {
+      "id": "S-277fb283-20",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-277fb283-21",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 34.80, a change of -9.92 (-22%) [-10.7493, -9.0809] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -9.9151,
+      "ci95": [
+        -10.7493,
+        -9.0809
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-277fb283-22",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 85 in 100, a swing of 4 games per 100 [-0.0501, -0.0335] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0418,
+      "ci95": [
+        -0.0501,
+        -0.0335
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-277fb283-23",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.70, a change of -2.01 (-17%) [-2.1889, -1.8281] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0085,
+      "ci95": [
+        -2.1889,
+        -1.8281
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-277fb283-24",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.52, a change of -0.42 (-14%) [-0.4959, -0.3459] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4209,
+      "ci95": [
+        -0.4959,
+        -0.3459
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-277fb283-25",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.004 is smaller than the 0.015 this run can resolve [-0.0068, 0.0138] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0035,
+      "ci95": [
+        -0.0068,
+        0.0138
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-277fb283-26",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Anje, Maid of Dishonor",
+      "Tocasia's Welcome"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T15:57:34-08:00",
+    "facts": 26
+  }
+}
