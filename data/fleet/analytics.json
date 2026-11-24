@@ -491,15 +491,15 @@
    },
    "heliod": {
     "1": 0.0,
-    "10": 0.19,
+    "10": 0.244,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.0,
     "6": 0.0,
-    "7": 0.001,
-    "8": 0.008,
-    "9": 0.055
+    "7": 0.003,
+    "8": 0.02,
+    "9": 0.088
    },
    "keen-engineering": {
     "1": 0.0,
@@ -613,15 +613,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 0.607,
+    "10": 0.591,
     "2": 0.991,
-    "3": 0.861,
-    "4": 0.714,
-    "5": 0.587,
-    "6": 0.531,
-    "7": 0.531,
-    "8": 0.559,
-    "9": 0.573
+    "3": 0.86,
+    "4": 0.712,
+    "5": 0.585,
+    "6": 0.527,
+    "7": 0.523,
+    "8": 0.549,
+    "9": 0.56
    },
    "keen-engineering": {
     "1": 1.0,
@@ -735,15 +735,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 8.555,
+    "10": 8.472,
     "2": 2.133,
     "3": 3.372,
-    "4": 4.235,
-    "5": 4.959,
-    "6": 5.631,
-    "7": 6.298,
-    "8": 7.007,
-    "9": 7.757
+    "4": 4.232,
+    "5": 4.954,
+    "6": 5.62,
+    "7": 6.278,
+    "8": 6.973,
+    "9": 7.701
    },
    "keen-engineering": {
     "1": 1.0,
@@ -2397,14 +2397,14 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1824,
-      0.1978
+      0.2357,
+      0.2525
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.19
+     "value": 0.244
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -2421,14 +2421,14 @@
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0064,
-      0.0099
+      0.0174,
+      0.0229
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.008
+     "value": 0.02
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -2436,14 +2436,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 4.959
+     "value": 4.954
     },
     "mana_stdev_turn_five": {
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.2423
+     "value": 1.2451
     },
     "median_kill_turn": {
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
@@ -2455,14 +2455,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.2547,
-      0.2719
+      0.2564,
+      0.2737
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.2632
+     "value": 0.265
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -2479,14 +2479,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8022,
-      0.8176
+      0.7475,
+      0.7643
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.81
+     "value": 0.756
     }
    },
    "bracket": {
@@ -2502,14 +2502,14 @@
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.5279,
-      0.5475
+      0.5313,
+      0.5508
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.5377
+     "value": 0.5411
     },
     "mulliganed": {
      "ci95": [
@@ -2524,14 +2524,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.0064,
-      0.0099
+      0.0079,
+      0.0117
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.008
+     "value": 0.0096
     }
    },
    "dti": {
@@ -2595,13 +2595,14 @@
    "lifecycle": null,
    "member": true,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.881,
+    "commander_cast_by_turn_6_rate": 0.88,
     "comparable": false,
     "declared_flags": {
+     "model_approach": true,
      "model_combat": true,
      "model_draw": true
     },
-    "model_version": "ac1f8a6f777f",
+    "model_version": "b3904a532e0f",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5426,7 +5427,7 @@
   "kill_by_turn_8": {
    "max": 0.958,
    "median": 0.489,
-   "min": 0.008,
+   "min": 0.02,
    "n": 7
   },
   "mana_at_turn_five": {
@@ -5436,13 +5437,13 @@
    "n": 7
   },
   "missed_land_drop_by_five": {
-   "max": 0.5377,
+   "max": 0.5411,
    "median": 0.4674,
    "min": 0.3115,
    "n": 7
   },
   "missed_land_drop_rate": {
-   "max": 0.2632,
+   "max": 0.265,
    "median": 0.219,
    "min": 0.1152,
    "n": 7
@@ -5454,7 +5455,7 @@
    "n": 7
   },
   "never_kills_rate": {
-   "max": 0.81,
+   "max": 0.756,
    "median": 0.148,
    "min": 0.004,
    "n": 7
@@ -5462,7 +5463,7 @@
   "stall_two_in_a_row": {
    "max": 0.2298,
    "median": 0.0906,
-   "min": 0.008,
+   "min": 0.0096,
    "n": 7
   }
  },
@@ -5742,7 +5743,7 @@
    "gishath": "ac1f8a6f777f",
    "goblin-storm": "ac1f8a6f777f",
    "hapatra": "9ea49ecb247d",
-   "heliod": "ac1f8a6f777f",
+   "heliod": "b3904a532e0f",
    "ingris-infect": "61c2ffdcbefb",
    "keen-engineering": "ac1f8a6f777f",
    "meren-recursion": "7528c026dc32",
