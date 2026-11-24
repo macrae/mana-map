@@ -297,3 +297,17 @@ def test_study_is_a_read_only_action_on_the_warm_worker():
     from manamap import serve
     assert "study" in serve.CLI_READONLY and "card-dossier" in serve.CLI_READONLY
     assert serve.CLI_READONLY_ACTIONS["study"] == frozenset({None, "list", "show"})
+
+
+def test_installing_a_study_re_renders_the_deck_context_s_generated_blocks(deck, monkeypatch):
+    """THE STUDIES BLOCK IS GENERATED FROM THE STUDY FILES (2026-11-23): an installed study
+    left CONTEXT.md's block stale and the push gate failed on it three times in two days.
+    Proved by removing the call: install must re-render the Context for its deck."""
+    from manamap.pilot import deck_context
+    seen = []
+    monkeypatch.setattr(deck_context, "refresh", lambda slug: seen.append(slug) or True)
+    doc = st.new("x", "is the deck light on counters?", cards=["Haze of Rage"])
+    st.set_call(doc, "approve", ["pilot"], "approve, make the swap")
+    st.write("x", doc)
+    st.install("x", doc["id"])
+    assert seen == ["x"]

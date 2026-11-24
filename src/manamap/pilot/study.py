@@ -372,7 +372,13 @@ def install(slug, study_id):
         raise SystemExit(f"study {study_id} is still open — `study {slug} call {study_id} --decision … "
                          f"--decided-by … --pilot-words \"…\"` first")
     doc["decided_at"] = doc.get("decided_at") or _today()
-    return write(slug, doc), notes
+    out = write(slug, doc)
+    # THE DECK CONTEXT'S STUDIES BLOCK IS GENERATED FROM THESE FILES (2026-11-23): installing a
+    # study left it stale, and the push gate failed on it three times in two days. Re-render
+    # the generated blocks here, so an installed study and the Context never disagree.
+    from manamap.pilot import deck_context
+    deck_context.refresh(slug)
+    return out, notes
 
 
 # ── printing ──────────────────────────────────────────────────────────────────
