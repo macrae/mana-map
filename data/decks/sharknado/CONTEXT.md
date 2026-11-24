@@ -209,7 +209,7 @@ Three colours from four fetches, shocks, pathways, a Triome and the untapped dua
 - **DeckCheck (external, dated):** 39/96 → bracket 3, as of 2026-10-28 — an older list
 - **Recon (other people's lists, dated):** 9 finding(s) as of 2026-11-20
 - **Proven lines:** 14 of 14 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 85 of 99 distinct cards (3 DARK, 11 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 84 of 99 distinct cards (4 DARK, 11 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **96%**
