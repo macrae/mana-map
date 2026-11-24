@@ -1824,6 +1824,19 @@ def window_profile(card):
             "x_pinger": bool(re.search(r"\{\d+\}: put a \+1/\+1 counter on this creature\.\s*remove a "
                                        r"\+1/\+1 counter from this creature: it deals 1 damage to any "
                                        r"target", text, re.IGNORECASE)),
+            # A SPELL BACK TO HAND (2026-11-23): Remand's "put it into its owner's hand instead",
+            # Venser's "return target spell or permanent to its owner's hand" -- aimed at our own
+            # Approach of the Second Sun, the first cast counts and the second wins.
+            "self_bounce": bool(re.search(
+                r"return target spell(?: or (?:nonland )?permanent)? to its owner's hand"
+                r"|if that spell is countered this way, put it into its owner's hand", text, re.I)),
+            "bounce_draws": 1 if re.search(r"put it into its owner's hand[^.]*\.\s*draw a card",
+                                           text, re.I) else 0,
+            # how many {X} the cost holds (Walking Ballista's {X}{X}: two per counter)
+            "x_count": (card.get("mana_cost") or "").count("{X}"),
+            # TRISKAIDEKAPHILE: "if you have exactly thirteen cards in your hand, you win the game"
+            "trisk": bool(re.search(r"if you have exactly thirteen cards in your hand, you win the game",
+                                    text, re.I)),
             "tutor_dest": dest}
 
 

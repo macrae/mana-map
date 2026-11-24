@@ -321,7 +321,7 @@ def channels_for(profile):
         found.add("approach")
     if any((profile.get("window") or {}).get(k) for k in (
             "static_extra", "fruition", "folio", "spell_each_draw", "scroll_rack", "top", "dig",
-            "target_draw")):
+            "target_draw", "self_bounce", "trisk", "x_pinger")):
         found.add("flash_window")
     if profile.get("discover_n"):
         found.add("discover")
@@ -358,7 +358,8 @@ def never_cast(profile, flags):
             or (flags.get("model_commander_flash_discount") and any(
                 (profile.get("window") or {}).get(k) for k in (
                     "static_extra", "fruition", "folio", "scroll_rack", "top")
-                + (("spell_each_draw", "dig", "target_draw") if flags.get("model_approach") else ()))):
+                + (("spell_each_draw", "dig", "target_draw", "self_bounce", "x_pinger")
+                   if flags.get("model_approach") else ()))):
         # the discover / cascade loops cast it (2026-10-11); the Approach loop (2026-11-23)
         return False
     cb = profile.get("combat") or {}

@@ -194,3 +194,40 @@ def test_the_crawlers_drain_in_the_window_and_go_when_their_payoffs_go(monkeypat
     off = goldfish.run("heliod", branch="b3-v1", iterations=1500, seed=7, quiet=True,
                        _band=False)["metrics"]["heliod_window"]["engine_damage_by_turn"]["10"]
     assert on > off
+
+
+REMAND = _c("Remand", "Counter target spell. If that spell is countered this way, put it into "
+            "its owner's hand instead of into that player's graveyard.\nDraw a card.", "Instant",
+            2, "{1}{U}")
+VENSER = _c("Venser, Shaper Savant", "Flash\nWhen Venser enters, return target spell or "
+            "permanent to its owner's hand.", "Legendary Creature — Human Wizard", 4, "{2}{U}{U}")
+TRISK = _c("Triskaidekaphile", "You have no maximum hand size.\nAt the beginning of your upkeep, "
+           "if you have exactly thirteen cards in your hand, you win the game.\n{3}{U}: Draw a "
+           "card.", "Creature — Human Wizard", 2, "{1}{U}")
+BALLISTA = _c("Walking Ballista", "This creature enters with X +1/+1 counters on it.\n{4}: Put a "
+              "+1/+1 counter on this creature.\nRemove a +1/+1 counter from this creature: It "
+              "deals 1 damage to any target.", "Artifact Creature — Construct", 0, "{X}{X}")
+
+
+def test_the_three_new_shapes_read_from_the_text():
+    assert window_profile(REMAND)["self_bounce"] and window_profile(REMAND)["bounce_draws"] == 1
+    assert window_profile(VENSER)["self_bounce"] and not window_profile(VENSER)["bounce_draws"]
+    assert window_profile(TRISK)["trisk"]
+    b = window_profile(BALLISTA)
+    assert b["x_pinger"] and b["x_count"] == 2
+    assert not window_profile(_c("Boomerang", "Return target permanent to its owner's hand.",
+                                 "Instant", 2, "{U}{U}"))["self_bounce"]
+
+
+@requires_deck
+def test_bouncing_our_own_approach_wins_and_goes_when_the_reading_goes(monkeypatch):
+    """PROVED BY REMOVING IT: Venser in b3-v1 bounces the first Approach back to hand for the
+    second cast; blank `self_bounce` and Approach wins by T8 less often."""
+    from manamap.pilot import goldfish_library as gl
+    on = goldfish.run("heliod", branch="b3-v1", iterations=2000, seed=7, quiet=True,
+                      _band=False)["metrics"]["approach"]["win_by_turn"]["8"]
+    real = gl.window_profile
+    monkeypatch.setattr(gl, "window_profile", lambda c: {**real(c), "self_bounce": False})
+    off = goldfish.run("heliod", branch="b3-v1", iterations=2000, seed=7, quiet=True,
+                       _band=False)["metrics"]["approach"]["win_by_turn"]["8"]
+    assert on > off

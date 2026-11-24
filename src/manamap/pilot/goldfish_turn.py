@@ -1011,6 +1011,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         noncreature_casts_this_turn = 0
         treasures += tapped_treasures      # Mary Read's, tapped since last turn
         tapped_treasures = 0
+        # TRISKAIDEKAPHILE, at the beginning of our upkeep -- before the draw (2026-11-23).
+        if kill_turn is None and len(hand) == 13 and any(
+                len(e) > 12 and e[12] and ((e[12].get("card") or {}).get("window") or {}).get("trisk")
+                for e in battlefield):
+            kill_turn, kill_by = turn, "trisk"
         if deck:
             drawn = deck.pop(0)
             hand.append(drawn)
@@ -4029,6 +4034,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         kill_turn, kill_by = turn, "approach"
                         break
                     approach_first_turn = turn
+                    _bn = next((c for c in hand if c["window"]["self_bounce"]), None)
+                    if _bn is not None and spend(reduced_cost(_bn, reductions, chosen_type), _bn["pips"]):
+                        _note_cast(_bn)
+                        if _bn["bodies"] > 0 and "Creature" in (_bn["type_line"] or ""):
+                            _resolve_body(_bn)
+                        if _bn["window"]["bounce_draws"]:
+                            draw_n(_bn["window"]["bounce_draws"])
+                        hand.append(card)            # back in hand: the first cast counted
+                        if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                            _note_cast(card)
+                            approach_win_turn = turn
+                            kill_turn, kill_by = turn, "approach"
+                            break
+                        continue
                     deck.insert(min(6, len(deck)), card)
             # A body that dies as it enters is held until Meren is out (2026-11-23): before her,
             # its death pays nothing. Mirrored in `model_coverage.never_cast`'s note.
@@ -6112,6 +6131,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         window_wins += 1
                         break
                     approach_first_turn = turn
+                    # BOUNCE OUR OWN APPROACH (2026-11-23): Remand or Venser on the first cast puts
+                    # it back in hand -- the cast counted -- and the next pass casts it again, the
+                    # win, when the mana covers the bounce and the second cast.
+                    _bn = next((c for c in hand if c["window"]["self_bounce"]
+                                and _wcost(c) + _wcost(_ap) <= _w["m"] + _w["t"]), None)
+                    if _bn is not None and _wcast(_bn):
+                        _note_cast(_bn)
+                        if _bn["bodies"] > 0 and "Creature" in (_bn["type_line"] or ""):
+                            _resolve_body(_bn)
+                        hand.append(_ap)
+                        if _bn["window"]["bounce_draws"]:
+                            draw_n(_bn["window"]["bounce_draws"])
+                        continue
                     deck.insert(min(6, len(deck)), _ap)
             # THE ENGINE, after the Approach line or in its place (2026-11-23), a stated policy:
             # with a payoff that makes the table's draws ours (Tithe, Splendor, Sphinx, Mastermind,
@@ -6153,6 +6185,26 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         _note_cast(_sd)
                         window_engine["max_x"] = max(window_engine["max_x"], _x)
                         draw_n(min(2 ** _x, len(deck)) if _pow else _x)
+                # TRISKAIDEKAPHILE OUT: draw to EXACTLY thirteen for the win at our upkeep -- a
+                # target-player X draw sized to the gap, else its own {3}{U} a card (2026-11-23).
+                if any(len(e) > 12 and e[12] and ((e[12].get("card") or {}).get("window") or {})
+                       .get("trisk") for e in battlefield) and len(hand) < 13:
+                    _gap = 13 - len(hand)
+                    _xd = next((c for c in hand if c["window"]["target_draw"] == "x"), None)
+                    if _xd is not None and _gap > 1 and _wcast(_xd, _gap):
+                        _note_cast(_xd)
+                        draw_n(_gap)
+                    while len(hand) < 13 and deck and _wpay(4):
+                        draw_n(1)
+                # WALKING BALLISTA AS THE SINK (2026-11-23): every mana left, discounted, into X;
+                # each counter is a point of damage to the tracked seat -- {X}{X} is two a counter.
+                for _bl in [c for c in hand if c["window"]["x_pinger"] and c["window"]["x_count"]]:
+                    _per = _bl["window"]["x_count"]
+                    _x = (_w["m"] + _w["t"] + _disc()) // _per
+                    if _x >= 2 and _wcast(_bl, _per * _x):
+                        _note_cast(_bl)
+                        window_engine["max_x"] = max(window_engine["max_x"], _x)
+                        _w["dmg"] += _x
                 for _cr in sorted((c for c in hand if c["bodies"] > 0 and not c["is_land"]
                                    and "Creature" in (c["type_line"] or "")
                                    and not (c.get("own_death") or {}).get("no_mana")),
