@@ -12,7 +12,7 @@
   "size": 100,
   "lands": 40,
   "status": {
-    "complete": 16,
+    "complete": 17,
     "of": 19,
     "stale": [],
     "older_model": [
@@ -20,9 +20,7 @@
       "mana",
       "benchmark"
     ],
-    "invalid": [
-      "engine"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [
       "tutors",
@@ -858,7 +856,6 @@
   "experiments": null,
   "decisions": null,
   "next": [
-    "1 artifact(s) fail their own gate (engine) — `deck-status keen-engineering` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug keen-engineering` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (001) — `/debrief keen-engineering`",
     "engine.json's reading was written for another list — `/engine-reading keen-engineering` rewrites it over the computed graph",
