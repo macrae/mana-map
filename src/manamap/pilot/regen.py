@@ -87,6 +87,12 @@ STAGES = (
     ("net-change", "net_change.json", "manamap.pilot.net_change", {"write": True}, True, True),
     ("diagnose", "diagnostic.json", "manamap.pilot.diagnostic", {"write": True}, False, True),
     ("benchmark", "benchmark.json", "manamap.pilot.benchmark", {}, False, True),
+    # THE SIMULATED RUNS' SKELETON (2026-11-24), after the goldfish it reads: a card's "never
+    # cast" share is judged against the natural draws the deck's goldfish expects, so every
+    # re-measure moved it and left the tracked file stale for the push gate to catch (Edgar,
+    # three runs, `played_share`). Refresh only, where the file exists; the prose carries over.
+    ("sim-findings", "sim_findings.json", "manamap.pilot.pilot_findings", {"write": True},
+     False, False),
     ("deck-info", "info.json", "manamap.pilot.deck_info", {"write": True}, False, False),
     # LAST, after everything it quotes: the Deck Context's generated blocks are
     # rendered from compose() and the version report. Refresh only — a missing

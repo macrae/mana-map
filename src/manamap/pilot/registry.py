@@ -800,7 +800,8 @@ def add_pilot_parser(subparsers):
                              metavar="STAGE",
                              help="just this stage (repeatable): bracket, goldfish, "
                                   "mana-analysis, deck-combos, net-change, diagnose, "
-                                  "benchmark, deck-info, context, fleet-analytics")
+                                  "benchmark, sim-findings, deck-info, context, "
+                                  "fleet-analytics")
             cmd.add_argument("--jobs", type=int, default=None,
                              help="parallel workers (default: one per core). "
                                   "Targets run in parallel; the GAMES inside one "

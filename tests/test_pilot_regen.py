@@ -33,7 +33,11 @@ def test_stages_run_in_dependency_order():
                            ("goldfish", "diagnose"),
                            ("diagnose", "deck-info"),
                            ("mana-analysis", "deck-info"),
-                           ("bracket", "deck-info")):
+                           ("bracket", "deck-info"),
+                           # 2026-11-24: the "never cast" share reads the goldfish's draws,
+                           # and the stage was missing -- Edgar's file went stale on a regen.
+                           ("goldfish", "sim-findings"),
+                           ("sim-findings", "deck-info")):
         assert order.index(earlier) < order.index(later), f"{earlier} after {later}"
 
 
