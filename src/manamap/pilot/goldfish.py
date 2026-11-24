@@ -1047,6 +1047,18 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                                                            if xs else None)(
                 [r["window_reach_by_turn"][t - 1] for r in results
                  if r["window_reach_by_turn"][t - 1] is not None]) for t in turns},
+            # THE GROUP-HUG ENGINE'S OUTPUT (2026-11-23): cumulative per game by each turn, over
+            # the games where Heliod had flipped by then -- spells cast in the window, their mana
+            # value (X included), the mana Heliod's discount saved, the cards we drew on their
+            # turns, the damage the window dealt; and the biggest X any window reached.
+            **{f"engine_{key}_by_turn": {str(t): (lambda xs: _round(sum(xs) / len(xs)) if xs else None)(
+                [sum(v or 0 for v in r["window_engine"][key][:t]) for r in results
+                 if r.get("heliod_flip_turn") is not None and r["heliod_flip_turn"] <= t])
+                for t in turns}
+               for key in ("spells", "mv", "saved", "drawn", "damage")},
+            "engine_max_x": (lambda xs: {"median": xs[len(xs) // 2], "p90": xs[int(len(xs) * 0.9)],
+                                         "max": xs[-1]} if xs else None)(sorted(
+                r["window_engine"]["max_x"] for r in results if r.get("heliod_flip_turn") is not None)),
             "reachable_discount_at_least_6_by_turn": {str(t): (lambda xs: _round(
                 sum(1 for x in xs if x >= 6) / len(xs)) if xs else None)(
                 [r["window_reach_by_turn"][t - 1] for r in results

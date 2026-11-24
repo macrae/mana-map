@@ -150,3 +150,21 @@ def test_a_fractional_fruition_rate_is_sampled_not_a_crash(monkeypatch):
     monkeypatch.setattr(goldfish, "FRUITION_OPPONENT_SPELLS_PER_TURN", 1.264)
     m = goldfish.run("heliod", branch="b3-v1", iterations=600, seed=7, quiet=True, _band=False)
     assert m["metrics"]["approach"]["win_by_turn"]["10"] > 0
+
+
+@requires_deck
+def test_the_engine_s_output_is_measured_and_its_opponent_draw_payoffs_pay(monkeypatch):
+    """The group-hug engine is reported per turn after the flip, and the window's forced draws
+    pay "whenever an opponent draws" payoffs. PROVED BY REMOVING THEM: blank Consecrated
+    Sphinx's draw on the sleeved list and the cards we draw on their turns fall."""
+    from manamap.pilot import goldfish_library as gl
+    on = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
+    h = on["heliod_window"]
+    for key in ("spells", "mv", "saved", "drawn", "damage"):
+        assert h[f"engine_{key}_by_turn"]["10"] is not None
+    assert h["engine_saved_by_turn"]["10"] > 0 and h["engine_mv_by_turn"]["10"] > 0
+    real = gl.event_payoffs
+    monkeypatch.setattr(gl, "event_payoffs",
+                        lambda card: {**real(card), "per_opponent_draw_our_draw": 0})
+    off = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
+    assert off["heliod_window"]["engine_drawn_by_turn"]["10"] < h["engine_drawn_by_turn"]["10"]
