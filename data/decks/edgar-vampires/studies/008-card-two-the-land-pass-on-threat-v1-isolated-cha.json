@@ -1,0 +1,343 @@
+{
+  "id": "008",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card two, the land pass on threat-v1: Isolated Chapel for the basic Plains, to close the black-source gap the rock cuts left (33 against a target of 36)",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Plains",
+    "Isolated Chapel"
+  ],
+  "swap": {
+    "out": "Plains",
+    "in": "Isolated Chapel"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 554.0,
+      "slice": "MODE prescribe on threat-v1 (2026-11-24): opportunity #2, verbatim from .agent-out/deck-doctor-prescribe.md",
+      "text": "### #2: Plains → Isolated Chapel. Easy.\n\n- **Closes:** `colour-sources` (B).\n- **Why:**\n  - Black goes 33 → 34 against a target of 36, and white stays at 23 (target 22). Black is the deck's heaviest colour (48 spells), and it lost five sources on the branch.\n  - The Chapel enters untapped with a Plains or Swamp in play. Besides the basics, the branch has five such lands: Godless Shrine, Blood Crypt, Smoldering Marsh, Sacred Foundry and Savai Triome.\n  - The Plains came in on 2026-11-13 because \"every basic was a Swamp\". The Chapel keeps that white source and adds the black one.\n- **Cost of cutting:** the only basic Plains. Marsh Flats and Arid Mesa still find Godless Shrine, Sacred Foundry and Savai Triome. Fetching a shock land instead of the basic costs 2 more life.\n- **Orphans stack:** 011 and 013 use the Plains only as generic mana.\n- **Taken together, #1 and #2:** they recover 2 of the 8 coloured sources the branch lost, with no spell cut and 35 lands. Scrubland and Badlands do the same job with no tapped risk, but they have no dated price in the file.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T14:21:13-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-chapel.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 138.0,
+      "slice": "the pilot's deep-research question on Edgar (2026-11-24); verbatim",
+      "text": "**Answer.** Edgar closes a four-player game by turn 7-8 by compressing a few strong turns: fodder, a mana or sacrifice outlet, and each-opponent drain, all kept alive through a sweeper. Threat-v1 adds drain yield but gives up resilience and development. I would not merge it whole. That is argument throughout; the figures come from your brief and the branch's net_change.\n\n**What the companion says (argument)**\n- A four-player game trends long, so inevitability compounds. A turn-7 win means you are the beatdown and must compress the game before the late game arrives (strategy:whos-the-beatdown.metagame-clock; role is set per threat, strategy:whos-the-beatdown).\n- Production is not conversion. Diagnose a deck that doesn't close as units produced × the fraction a converter is live for × life per unit (strategy:conversion).\n- This bench measures Edgar at 9.64 of its own creatures dying a game, with death-drains firing 1.90 times, about a 20% conversion. Payoff density is not the lever: yawgmoth-swarm runs nine payoffs against Edgar's four and fires fewer times (strategy:conversion.payoff-density).\n- Yield matters. An each-opponent drain moves about 3 life per death in a pod against Blood Artist's 1. The rule is \"each-opponent for the race, targeted for the kill\" (strategy:aristocrats.drain-scope). V7's each-opponent drains are Cruel Celebrant and Vraan, and the pilot's win came off targeted Blood Artist.\n- The sweeper answer is a free outlet plus a death-draw body, so a wrath resolves against an empty table and a full hand. Midnight Reaper and Grim Haruspex are named as the post-wrath fix (strategy:aristocrats.wipe-insurance). Don't over-commit into a sweeper (strategy:resource-hedging.wrath-math).\n- Aim for 3-5 finishers; unsynergistic win conditions dilute a list (strategy:deckbuilding.threat-density).\n- The web added nothing usable. The EDHREC average-deck results were only snippets and I fetched none. The only external numbers are the companion's EDHREC counts: Blood Artist in 93% of 1,496 Edgar aristocrats decks, Celebrant 79%, Vito 72%.\n\n**What works (evidence: log 008, CONTEXT)**\n- The one win came from conversion, not combat. Tokens became Altar mana, which cast Crossway Troublemakers and Edgar. Blood Artist and Wispdrinker drained, and Charismatic Conqueror kept supplying fodder.\n- Cheap Vampires each add a body plus an Edgar token, and the swarm doesn't need Edgar cast.\n- V7 already holds outlets and death-draw bodies: Viscera Seer, Reaper, Haruspex, Clavileño, Opportunist. Wipes are 3 of the 8 endings, and the hand is empty by turns 8-10.\n\n**What's weak**\n- Edgar costs six and lands late, and protection sits in hand until he does. Converters are thin on the first three turns.\n- Targeted drain dominates, so total pod life (~120) is out of reach on the race half of the strategy:aristocrats.drain-scope rule.\n- Too little of the strategy:conversion product is live at once. The 20% conversion is the number to move.\n\n**Threat-v1 against that (goldfish read: one instrument, no wipes, no opponents)**\n- Gains: non-combat life lost by T10 rose 24.9 → 29.8. Tokens converted by T8 rose 2.31 → 2.77. Life gained by T8 rose 5.5 → 7.6. Kills outside combat went 4 → 10 per 100. These match the direction of aristocrats.drain-scope and conversion.\n- Costs: killed by T6 fell 14 → 11 per 100. Killed by T10 fell 89 → 84. Damage by T10 fell 44.0 → 33.9. Extra cards by T8 fell 2.93 → 2.46. Cards in hand by T8 fell 4.25 → 3.97. Interaction affordable by T6 fell 32 → 19 per 100. Colour sources went backwards (black gap +2 → -3, red +0 → -3).\n- It cuts Reaper, Haruspex, Clavileño and Olivia's Wrath, the pieces strategy:aristocrats.wipe-insurance names, for Skullclamp and Black Market Connections. The goldfish has no sweepers, so it cannot score that trade either way.\n- It cuts Talismans of Conviction, Hierarchy and Indulgence and Rakdos Signet, the ramp Edgar's six mana needs, for only a land swap.\n- The Plunderer/Altar loop is whole by T8 in about 0.1% of games. It is upside, not a plan.\n\n**Highest-leverage opportunities (argument)**\n1. Take each-opponent drain (Zulaport, Elas il-Kor, Bastion) for yield, funded from non-keeps rather than the death-draw core.\n2. Keep Reaper, Haruspex and a second outlet held for the rebuild. That answers the top failure.\n3. Hold the ramp. A T7 plan needs Edgar or Altar mana by T5-6.\n4. Keep the commander-free protection (Boros Charm, Selfless Spirit, Giver of Runes), since the pilot says the A team always needs protection.\n5. No flat anthems; cap finishers at 3-5.\n\n**Lightest test:** a `try` of a half-branch (drain adds only, death-draw and ramp kept) against V7, reading colour sources, killed by T6 and hand at T8. The wipe question needs table play or a sim-scenario.\n\nopen: (1) How much does a held outlet plus a death-draw body recover after a real wrath? That is a `/research-strategy` topic. (2) I found no source stating a typical turn-to-kill for Edgar aristocrats at B3.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:conversion",
+          "strategy:conversion.payoff-density",
+          "strategy:deckbuilding.threat-density",
+          "strategy:resource-hedging.wrath-math",
+          "strategy:whos-the-beatdown",
+          "strategy:whos-the-beatdown.metagame-clock"
+        ],
+        "rules": [
+          "120",
+          "496"
+        ]
+      },
+      "added_at": "2026-11-24T14:21:14-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strategist-edgar.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "approve, make the swap, but no need to push it; next please",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "card-two-the-land-pass-on-threat-v1-isolated-cha",
+  "facts": [
+    {
+      "id": "S-2b28b5d1-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-2b28b5d1-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-2b28b5d1-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-2b28b5d1-04",
+      "kind": "oracle",
+      "text": "Basic Land — Plains — ({T}: Add {W}.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Plains"
+    },
+    {
+      "id": "S-2b28b5d1-05",
+      "kind": "stack",
+      "text": "stack 011 — Mirkwood Bats and a doubled eminence trigger: one drain or two? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/011",
+      "card": "Plains",
+      "stack": "011"
+    },
+    {
+      "id": "S-2b28b5d1-06",
+      "kind": "stack",
+      "text": "stack 013 — Pitiless Plunderer + Ashnod's Altar + Reassembling Skeleton: is the loop mana-positive? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/013",
+      "card": "Plains",
+      "stack": "013"
+    },
+    {
+      "id": "S-2b28b5d1-07",
+      "kind": "staged",
+      "text": "staged 2026-11-13: Talisman of Indulgence → Plains — pilot 2026-11-13: back to 35 lands; white costs rose, every basic was a Swamp",
+      "tier": "coach",
+      "source": "branches/threat-v1/branch.json",
+      "card": "Plains",
+      "as_of": "2026-11-13"
+    },
+    {
+      "id": "S-2b28b5d1-08",
+      "kind": "price",
+      "text": "$0.15 NM ((40K) 306) as of 2026-11-24",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Plains",
+      "as_of": "2026-11-24",
+      "figure": 0.15
+    },
+    {
+      "id": "S-2b28b5d1-09",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Swamp (0.99), Bleachbone Verge (0.97), Blazemire Verge (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Plains",
+      "neighbours": [
+        {
+          "name": "Swamp",
+          "score": 0.9894
+        },
+        {
+          "name": "Bleachbone Verge",
+          "score": 0.9656
+        },
+        {
+          "name": "Blazemire Verge",
+          "score": 0.957
+        }
+      ]
+    },
+    {
+      "id": "S-2b28b5d1-10",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Plains",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-2b28b5d1-11",
+      "kind": "oracle",
+      "text": "Land — This land enters tapped unless you control a Plains or a Swamp. {T}: Add {W} or {B}.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Isolated Chapel"
+    },
+    {
+      "id": "S-2b28b5d1-12",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Concealed Courtyard (1.00), Shattered Sanctum (0.99), Haunted Ridge (0.99)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Isolated Chapel",
+      "neighbours": [
+        {
+          "name": "Concealed Courtyard",
+          "score": 0.9955
+        },
+        {
+          "name": "Shattered Sanctum",
+          "score": 0.9942
+        },
+        {
+          "name": "Haunted Ridge",
+          "score": 0.9894
+        }
+      ]
+    },
+    {
+      "id": "S-2b28b5d1-13",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Isolated Chapel",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-2b28b5d1-14",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 7 rows better, 8 worse, 3 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-2b28b5d1-15",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.00 -> 33.88, a change of -10.11 (-23%) [-10.9155, -9.3061] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -10.1108,
+      "ci95": [
+        -10.9155,
+        -9.3061
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2b28b5d1-16",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 84 in 100, a swing of 4 games per 100 [-0.0537, -0.0363] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.045,
+      "ci95": [
+        -0.0537,
+        -0.0363
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2b28b5d1-17",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.65 -> 9.58, a change of -2.07 (-18%) [-2.2476, -1.8884] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.068,
+      "ci95": [
+        -2.2476,
+        -1.8884
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2b28b5d1-18",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.93 -> 2.50, a change of -0.43 (-15%) [-0.5047, -0.3547] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4297,
+      "ci95": [
+        -0.5047,
+        -0.3547
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2b28b5d1-19",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.002 is smaller than the 0.015 this run can resolve [-0.0091, 0.0125] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0017,
+      "ci95": [
+        -0.0091,
+        0.0125
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-2b28b5d1-20",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.002 is smaller than the 0.011 this run can resolve [-0.0101, 0.0055] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0023,
+      "ci95": [
+        -0.0101,
+        0.0055
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Plains",
+      "Isolated Chapel"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "cfeeb8edbef1316ae7cd3a4d40c268d1613d466329c828f9bf7fa266b1e94fdb",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T14:21:20-08:00",
+    "facts": 20
+  }
+}

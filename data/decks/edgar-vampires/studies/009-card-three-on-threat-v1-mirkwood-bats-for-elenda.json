@@ -1,0 +1,448 @@
+{
+  "id": "009",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card three on threat-v1: Mirkwood Bats for Elenda, the Dusk Rose — a token-arrival drain (the pilot's 'tax the front end')?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Elenda, the Dusk Rose",
+    "Mirkwood Bats"
+  ],
+  "swap": {
+    "out": "Elenda, the Dusk Rose",
+    "in": "Mirkwood Bats"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 554.0,
+      "slice": "MODE prescribe on threat-v1 (2026-11-24): opportunity #3, verbatim",
+      "text": "### #3: Elenda, the Dusk Rose → Mirkwood Bats. The fit is clear; the cut is contested.\n\n- **Closes:** the engine component \"A drain on an arrival or an attack — no death needed\", which has 3 cards. It also adds to the death-drain component.\n- **Bats' text:** \"Whenever you create or sacrifice a token, each opponent loses 1 life.\"\n- **Why it fits:**\n  - **It is the pilot's own ask (2026-11-13):** \"we want to immediately tax the front end when the tokens arrive.\" Bats taxes token arrival and token sacrifice in one card.\n  - **The stack is already checked.** Stack 011 (pass): Bats triggers **once per token created**, so Anointed Procession and Elspeth double its drain.\n  - **It counts every kind of token.** Treasure and Blood are tokens too, so each of these drains twice, once as the token is made and once as it is spent:\n    - Pitiless Plunderer's Treasure\n    - Black Market Connections' Treasure\n    - Anje's Blood\n    - Bloodtithe Harvester's Blood\n  - **It is not a Vampire,** which suits \"dense, not all Vampires\" (log 007).\n- **Not proven yet:**\n  - Whether Bats on stack 013's loop board drains each opponent twice per cycle (once for the Treasure made, once for the Treasure spent) **needs a stack scenario**.\n  - Bats sat in the rejected Forge arm boss-v1 (decision 006, on a bracket-4 list under a different thesis). That is a note, not evidence against it.\n- **Cost of cutting Elenda:** a 4-mana lifelink body that grows on every death and leaves X lifelink tokens behind, and the pilot's own paper swap from 2026-09. She is one of five in the \"Consolidate — fodder into one big threat\" group (Edgar Ancient Bloodlord, Elenda, Kalitas, Vish Kal, Yahenni), so the group drops to four. Her payoff is mostly combat, which the thesis puts second.\n- **No orphaned stack:** no checker-passed stack names Elenda.\n- **Cuts weighed and rejected:**\n  - **Bloodline Keeper:** it is one of only 4 token makers or multipliers, and Bats scales off it.\n  - **Drana and Linvala:** the pilot kept it on 2026-11-11 because it shuts off Krenko.\n- **If neither cut works for the pilot, the answer is no change.** He turned down Impact Tremors, Corpse Knight and Ayara on 2026-11-13 over their cuts, not over the effect.\n- **Before any Forge arm:** run `forge-cast-check` on Bats.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T14:21:50-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-bats.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 44.0,
+      "slice": "one swap: Bats for Elenda; verbatim",
+      "text": "Lean: NO CHANGE. Decline Bats-for-Elenda unless a cut elsewhere is already due. This is argument, not evidence. The only measured piece (stack 011) bears on Bats alone.\n\nFOR Bats (argument):\n- It matches the pilot's 2026-11-13 line about taxing the front end when tokens arrive.\n- Stack 011 passed the checker: Bats triggers once per token created, so Anointed Procession and Elspeth double it. Treasure and Blood count too, so it triggers more often than a Vampire-only reading suggests.\n- It drains each opponent. In a four-player pod that moves about 3 life per trigger against 1 for a targeted drain (strategy:aristocrats.drain-scope, \"each-opponent for the race, targeted for the kill\").\n- It is a 2/3 flyer for {3}{B}, and Elenda is {2}{W}{B}. It is also mono-black, which helps in a WBR deck.\n\nFOR Elenda (argument):\n- She is the deck's \"Consolidate\" piece, the fodder-to-bigger-creature conversion the pilot named on 2026-11-24. Bats does not do that job. Cutting her leaves four Consolidate cards.\n- Her death trigger gives wipe insurance. Wipes ended 3 of 8 logged games. strategy:aristocrats.wipe-insurance says to buy the rebuild with the slot and to hold a draw body or a second outlet back. A flyer that drains only while tokens keep arriving is not a rebuild.\n- She was the pilot's own paper swap in 2026-09 (decision 001, elenda-v1). She is not on a keep list that I found, but the pilot chose her.\n- strategy:deckbuilding.typal-density.lord-exposure frames Furtado's Edgar deck as one that \"can get back online pretty quickly\" after a wipe. Elenda is part of that recovery.\n\nEVIDENCE GAPS:\n- The goldfish cannot read Elenda's death tokens, so those rows are withheld. It reads only Bats' create half. A try would compare a half-seen card against a withheld one, so it would settle nothing.\n- The deck doctor ranked this swap third and called the cut \"contested\".\n- The dossier lists Elenda as fed by 15 death sources and feeding on life gain. That engine stage is Conversion, which the swap would remove.\n\nLIGHTEST TEST: a stack scenario, not the goldfish. Build a board with Procession and a token-making turn, then compare Bats' drain total against Elenda's post-wipe token count. That would show whether the trade is a real upgrade rather than a lateral move, which the pilot's \"only clear upgrades\" rule needs.\n\nopen: Does the pilot want a token-enter drain slot (Bats, Wispdrinker class) cut from something other than Elenda, for instance a non-Consolidate, non-keep card? That may be worth a /research-strategy topic.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:deckbuilding.typal-density.lord-exposure"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T14:21:50-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strategist-bats.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change, keep Elenda; next please",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "card-three-on-threat-v1-mirkwood-bats-for-elenda",
+  "facts": [
+    {
+      "id": "S-48828183-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-48828183-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-48828183-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-48828183-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire Knight · {2}{W}{B} — Lifelink | Whenever another creature dies, put a +1/+1 counter on Elenda. | When Elenda dies, create X 1/1 white Vampire creature tokens with lifelink, where X is Elenda's power.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Elenda, the Dusk Rose"
+    },
+    {
+      "id": "S-48828183-05",
+      "kind": "engine_stage",
+      "text": "engine stage conversion: Conversion",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "stage": "conversion",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-48828183-06",
+      "kind": "engine_events",
+      "text": "consumes DIES; produces COUNTER_ADD, ETB, LIFE_GAIN, TOKEN (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "consumes": [
+        "DIES"
+      ],
+      "produces": [
+        "COUNTER_ADD",
+        "ETB",
+        "LIFE_GAIN",
+        "TOKEN"
+      ],
+      "reader": "forge",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-48828183-07",
+      "kind": "engine_fed_by",
+      "text": "fed by on DIES: Anje, Maid of Dishonor, Anowon, the Ruin Sage (unproven), Ashnod's Altar, Bloodtithe Harvester, Edgar, Ancient Bloodlord (unproven), Elspeth, Storm Slayer (unproven), Erebos, Bleak-Hearted, Kalitas, Traitor of Ghet … (15)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "event": "DIES",
+      "cards": [
+        "Anje, Maid of Dishonor",
+        "Anowon, the Ruin Sage (unproven)",
+        "Ashnod's Altar",
+        "Bloodtithe Harvester",
+        "Edgar, Ancient Bloodlord (unproven)",
+        "Elspeth, Storm Slayer (unproven)",
+        "Erebos, Bleak-Hearted",
+        "Kalitas, Traitor of Ghet",
+        "Liliana, Dreadhorde General (unproven)",
+        "Master of Dark Rites",
+        "Midgar, City of Mako // Reactor Raid (unproven)",
+        "Phyrexian Tower",
+        "Viscera Seer",
+        "Vish Kal, Blood Arbiter",
+        "Yahenni, Undying Partisan"
+      ]
+    },
+    {
+      "id": "S-48828183-08",
+      "kind": "engine_feeds",
+      "text": "feeds on ATTACK: Clavileño, First of the Blessed, Sanctum Seeker",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "event": "ATTACK",
+      "cards": [
+        "Clavileño, First of the Blessed",
+        "Sanctum Seeker"
+      ]
+    },
+    {
+      "id": "S-48828183-09",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Edgar Markov",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "event": "CAST",
+      "cards": [
+        "Edgar Markov"
+      ]
+    },
+    {
+      "id": "S-48828183-10",
+      "kind": "engine_feeds",
+      "text": "feeds on ETB: Anje, Maid of Dishonor, Caretaker's Talent, Welcoming Vampire, Wispdrinker Vampire",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "event": "ETB",
+      "cards": [
+        "Anje, Maid of Dishonor",
+        "Caretaker's Talent",
+        "Welcoming Vampire",
+        "Wispdrinker Vampire"
+      ]
+    },
+    {
+      "id": "S-48828183-11",
+      "kind": "engine_feeds",
+      "text": "feeds on LIFE_GAIN: Enduring Tenacity, Marauding Blight-Priest, Sanguine Bond, Vito, Thorn of the Dusk Rose",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Elenda, the Dusk Rose",
+      "event": "LIFE_GAIN",
+      "cards": [
+        "Enduring Tenacity",
+        "Marauding Blight-Priest",
+        "Sanguine Bond",
+        "Vito, Thorn of the Dusk Rose"
+      ]
+    },
+    {
+      "id": "S-48828183-12",
+      "kind": "context",
+      "text": "CONTEXT cards: Vish Kal, Blood Arbiter, Elenda, the Dusk Rose, Olivia Voldaren, Olivia, Crimson Bride, Cordial Vampire, Vein Ripper, Captivating Vampire",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Elenda, the Dusk Rose"
+    },
+    {
+      "id": "S-48828183-13",
+      "kind": "decision",
+      "text": "decision 001 propose `elenda-v1` (2026-09-16): two swaps the pilot settled 2026-09-16: Blade of the Bloodchief for Unbounded Potential (a repeatable counter engine for the one-shot), and Elenda, the Dusk Ros",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Elenda, the Dusk Rose",
+      "as_of": "2026-09-16"
+    },
+    {
+      "id": "S-48828183-14",
+      "kind": "price",
+      "text": "$4.99 NM ((LCC) 268) as of 2026-11-24",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Elenda, the Dusk Rose",
+      "as_of": "2026-11-24",
+      "figure": 4.99
+    },
+    {
+      "id": "S-48828183-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Edgar Markov (0.92), Cordial Vampire (0.92), Olivia Voldaren (0.87)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Elenda, the Dusk Rose",
+      "neighbours": [
+        {
+          "name": "Edgar Markov",
+          "score": 0.9244
+        },
+        {
+          "name": "Cordial Vampire",
+          "score": 0.9202
+        },
+        {
+          "name": "Olivia Voldaren",
+          "score": 0.8683
+        }
+      ]
+    },
+    {
+      "id": "S-48828183-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Elenda, the Dusk Rose",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "drain",
+        "target"
+      ]
+    },
+    {
+      "id": "S-48828183-17",
+      "kind": "oracle",
+      "text": "Creature — Bat · {3}{B} — Flying Whenever you create or sacrifice a token, each opponent loses 1 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Mirkwood Bats"
+    },
+    {
+      "id": "S-48828183-18",
+      "kind": "stack",
+      "text": "stack 011 — Mirkwood Bats and a doubled eminence trigger: one drain or two? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/011",
+      "card": "Mirkwood Bats",
+      "stack": "011"
+    },
+    {
+      "id": "S-48828183-19",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Anje, Maid of Dishonor (0.93), Sanctum Seeker (0.91), Blood Artist (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Mirkwood Bats",
+      "neighbours": [
+        {
+          "name": "Anje, Maid of Dishonor",
+          "score": 0.9338
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.9101
+        },
+        {
+          "name": "Blood Artist",
+          "score": 0.9071
+        }
+      ]
+    },
+    {
+      "id": "S-48828183-20",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Mirkwood Bats",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-48828183-21",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read; an OLDER list of this branch: 7 rows better, 8 worse, 3 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-48828183-22",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.00 -> 33.88, a change of -10.11 (-23%) [-10.9155, -9.3061] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -10.1108,
+      "ci95": [
+        -10.9155,
+        -9.3061
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-48828183-23",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 84 in 100, a swing of 4 games per 100 [-0.0537, -0.0363] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.045,
+      "ci95": [
+        -0.0537,
+        -0.0363
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-48828183-24",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.65 -> 9.58, a change of -2.07 (-18%) [-2.2476, -1.8884] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.068,
+      "ci95": [
+        -2.2476,
+        -1.8884
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-48828183-25",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.93 -> 2.50, a change of -0.43 (-15%) [-0.5047, -0.3547] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4297,
+      "ci95": [
+        -0.5047,
+        -0.3547
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-48828183-26",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.002 is smaller than the 0.015 this run can resolve [-0.0091, 0.0125] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0017,
+      "ci95": [
+        -0.0091,
+        0.0125
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-48828183-27",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.002 is smaller than the 0.011 this run can resolve [-0.0101, 0.0055] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0023,
+      "ci95": [
+        -0.0101,
+        0.0055
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Elenda, the Dusk Rose",
+      "Mirkwood Bats"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T14:21:55-08:00",
+    "facts": 27
+  }
+}

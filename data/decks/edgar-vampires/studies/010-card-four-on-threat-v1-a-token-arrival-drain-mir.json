@@ -1,0 +1,402 @@
+{
+  "id": "010",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card four on threat-v1: a token-arrival drain (Mirkwood Bats) for Drana and Linvala, the weakest fit for the thesis?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Drana and Linvala",
+    "Mirkwood Bats"
+  ],
+  "swap": {
+    "out": "Drana and Linvala",
+    "in": "Mirkwood Bats"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 227.0,
+      "slice": "MODE prescribe, one question: the cut for a token-arrival drain; verbatim",
+      "text": "**I'd cut Drana and Linvala for Mirkwood Bats. It's contested, not a clear win, so the pilot should decide.** I didn't write a prescription JSON, because no prescribe id was opened and you asked for the answer in this message. Nothing was run except read-only dossiers, `deck-audit` and `deck-notes tally`.\n\n1. **Drana and Linvala (my pick, contested).** In engine.json it \"consumes nothing; produces nothing the registry names\". Its job is shutting off and copying the opponents' creature abilities. It doesn't touch tokens, drain, life gain, draw or removal. Nobody has commented on it in any of the 7 debriefed games. Recon and the studies never argue for it. EDHREC has it in 11,794 of 51,322 decks (23%). engine.json files it under \"protection\", but the audit doesn't count it there (the protection 7 is Boros Charm, Clever Concealment, Erebos, Giver, Selfless Spirit, Teferi's, Yahenni), so it isn't on the keep-list of protection cards.\n   - **Cost:** one fewer Vampire. That means one fewer eminence token, Edgar counter and Champion of Dusk count, and Bats is a Bat, not a Vampire. It also loses the only card that shuts off Krenko's tap ability at Oliver's table. Swords and Vanishing Verse were staged to answer Krenko already.\n2. **Sanguine Bond (contested to painful).** It's the 5-mana, single-opponent copy of a job Vito, Enduring Tenacity and Marauding Blight-Priest already do. Its stacks 005 and 006 need Exquisite Blood or Bloodthirsty Conqueror, both already cut. Bats costs 4 and hits each opponent.\n   - **Cost:** the \"life-gain-to-loss converter drawn\" target drops from 4 cards (62.4%). An enchantment is what survives a wipe, and wipes ended 3 of the 7 logged games. EDHREC has it in 45% of decks. The pilot's log 001 calls it a live half.\n3. **Urza's Incubator (painful, I wouldn't).** It's off the token thesis, and recon calls slow kindred artifacts a minority pick (14% on EDHREC). But ramp is already UNDER at 8 against a 10-12 target since the Talismans and Signet left, and it's one of those 8. Cutting it makes the mana problem worse.\n\n**Bats does fit the thesis.** It pays on token creation and again on token sacrifice. That covers eminence, Charismatic Conqueror, Bloodline Keeper, Elspeth, Liliana, Black Market Connections' changeling, and Blood or Treasure tokens, then Ashnod's Altar, Viscera Seer, Yahenni or Phyrexian Tower when they're sacrificed. Stack 011 is checker-passed: one trigger per token, doubled by Anointed Procession or Elspeth. The goldfish can see both Bats and Drana.\n\n**If the pilot rates the Krenko answer, the call is no change.** Nothing on the list is clearly worse than Bats is good. Drana is only the weakest fit for the thesis.\n\nLeft out on purpose: Bloodghast, because the goldfish can't model it so a null on it proves nothing, and Twilight Prophet, Erebos, Cruel Celebrant and Welcoming Vampire, which each do a thesis job.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "322",
+          "794"
+        ]
+      },
+      "added_at": "2026-11-24T14:22:35-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-drana.md"
+    },
+    {
+      "agent": "card-scout",
+      "model": "sonnet",
+      "elapsed_s": 46.0,
+      "slice": "the best token-arrival drain in WBR; verbatim",
+      "text": "None of these beats Mirkwood Bats on the \"tokens arrive\" trigger. Kambal is the only real alternative, and it fills a different role. I found no Vampire that drains on token entry. Every card below is non-Vampire, so none makes an eminence token when cast. None is a Game Changer. All show `model: —`, so the goldfish cannot price any of them, Bats included.\n\nBaseline, Mirkwood Bats {3}{B}: each opponent loses 1. It triggers once per token, on create or sacrifice, so it also pays on sacrifice. That covers Treasure and Blood sacrifices as well as Vampire tokens. It has flying and is not a Vampire.\n\n1. [Kambal, Profiteering Mayor](https://manamap.seanmacrae.com/viz/index.html?cards=Kambal%2C+Profiteering+Mayor) {1}{W}{B}\n   - Each opponent: \"Whenever one or more tokens you control enter, each opponent loses 1 life and…\". The search output cut the text off there, so confirm whether it also gains you life.\n   - It triggers once per event, not per token. A batch of tokens from one source pays only 1, and Bats pays once per token.\n   - It also fires on Treasure and Blood tokens, and it costs 1 less mana than Bats.\n   - It does not pay on sacrifice or death.\n   - Its second ability copies tokens your opponents create, and that is extra value.\n   - It is the closest fit to \"tax the front end when tokens arrive\", and it is in the deck's exact colours.\n   - Its trigger is gated by event count, so it is worse than Bats on a big mass-token turn.\n\n2. [Elas il-Kor, Sadistic Pilgrim](https://manamap.seanmacrae.com/viz/index.html?cards=Elas+il-Kor%2C+Sadistic+Pilgrim) {W}{B}\n   - Each opponent, per creature. \"Whenever another creature you control dies, each opponent loses 1 life.\"\n   - On entry it only gains you 1 life. The drain is on death only, so it is back-end, not front-end.\n   - It pays per token, and Vampire tokens that chump, trade or are sacrificed count. It also has deathtouch and costs 2.\n   - It is the cheapest fit if Bats's sacrifice half is what you actually want.\n\n3. [Pactdoll Terror](https://manamap.seanmacrae.com/viz/index.html?cards=Pactdoll+Terror) {3}{B}\n   - Each opponent loses 1 and you gain 1. The trigger is \"this creature or another artifact you control enters\", and it fires per artifact.\n   - It covers only artifact tokens, which means Treasure and Blood. It misses the Vampire tokens, which is the bulk of the deck's tokens.\n   - It does not pay on death or sacrifice.\n   - It is a narrow partial overlap, so it ranks below the cards that count every token.\n\n4. [Purphoros, God of the Forge](https://manamap.seanmacrae.com/viz/index.html?cards=Purphoros%2C+God+of+the+Forge) {3}{R}\n   - Each opponent, per creature. \"Whenever another creature you control enters, Purphoros deals 2 damage to each opponent.\"\n   - It is 2 damage per token, the hardest hitter here. Tokens count, and it is indestructible.\n   - It is not a creature below 5 red devotion.\n   - It does not pay on death.\n   - It does not trigger on Treasure or Blood, and it adds a red-heavy card to a mostly W/B deck.\n   - The pilot has said Purphoros is a kill-on-sight card at his table (Oliver's table note). Treat it as a high-risk, high-damage option.\n\n5. Previously declined by the pilot over their proposed cuts, not the effect:\n   - [Corpse Knight](https://manamap.seanmacrae.com/viz/index.html?cards=Corpse+Knight) {W}{B}\n     - Each opponent loses 1 per creature that enters, tokens included. It does not pay on death, and it does not trigger on Treasure or Blood.\n     - It is the cleanest per-token creature drain at 2 mana.\n     - It beats Bats on cost, since Bats costs 4, but loses to Bats on non-creature tokens and on sacrifice.\n   - [Ayara, First of Locthwain](https://manamap.seanmacrae.com/viz/index.html?cards=Ayara%2C+First+of+Locthwain) {B}{B}{B}\n     - Each opponent loses 1 and you gain 1 per black creature that enters. Vampire tokens are white and black, so they count.\n     - Her sacrifice ability only draws a card, and that sacrifice of a black creature is not a drain.\n     - The {B}{B}{B} cost strains the W/B/R mana.\n\n6. [Impact Tremors](https://manamap.seanmacrae.com/viz/index.html?cards=Impact+Tremors) {1}{R} (previously declined)\n   - Each opponent, per creature. It deals 1 damage per creature that enters, tokens included, and it is not a body.\n   - It does not pay on death or sacrifice.\n   - It costs 2 mana. Gishath-style red-light builds like it, but it sits awkwardly in a deck whose red is light.\n\nNot listed because they only drain on death or leaving: Marionette Apprentice (creature or artifact dying, {1}{B}), Nadier's Nightblade (token leaves, {2}{B}). Also not listed because they are creature-only red pingers: Witty Roastmaster, Molten Gatekeeper, Agate Instigator and General Kreat. Warleader's Call is out as a flat anthem.\n\nRecommendation: Kambal is the one clear non-Bats alternative. Ranking Bats against the rest is close. Bats stays the default for per-token plus sacrifice. Kambal wins on cost and colour precision but misses on batch events.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T14:22:36-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/scout-drain.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "card-scout"
+    ],
+    "pilot_words": "no change, keep Drana; next please",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "card-four-on-threat-v1-a-token-arrival-drain-mir",
+  "facts": [
+    {
+      "id": "S-6d4827ab-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-6d4827ab-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-6d4827ab-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-6d4827ab-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire Angel · {1}{W}{W}{B} — Flying, vigilance | Activated abilities of creatures your opponents control can't be activated. | Drana and Linvala has all activated abilities of all creatures your opponents control. You may spend mana as though it were mana of any color to activate those abilities.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Drana and Linvala"
+    },
+    {
+      "id": "S-6d4827ab-05",
+      "kind": "engine_stage",
+      "text": "engine stage protection: Protection",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Drana and Linvala",
+      "stage": "protection",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-6d4827ab-06",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Drana and Linvala",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-6d4827ab-07",
+      "kind": "engine_feeds",
+      "text": "feeds on ATTACK: Clavileño, First of the Blessed, Sanctum Seeker",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Drana and Linvala",
+      "event": "ATTACK",
+      "cards": [
+        "Clavileño, First of the Blessed",
+        "Sanctum Seeker"
+      ]
+    },
+    {
+      "id": "S-6d4827ab-08",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Edgar Markov",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Drana and Linvala",
+      "event": "CAST",
+      "cards": [
+        "Edgar Markov"
+      ]
+    },
+    {
+      "id": "S-6d4827ab-09",
+      "kind": "engine_feeds",
+      "text": "feeds on ETB: Anje, Maid of Dishonor",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Drana and Linvala",
+      "event": "ETB",
+      "cards": [
+        "Anje, Maid of Dishonor"
+      ]
+    },
+    {
+      "id": "S-6d4827ab-10",
+      "kind": "context",
+      "text": "CONTEXT plays: **Deny them first.** Anowon, the Ruin Sage makes each table member give up a non-Vampire, Drana and Linvala locks their activated abilities, and Captivating Vampire grows the Vampires and can steal a creature.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Drana and Linvala"
+    },
+    {
+      "id": "S-6d4827ab-11",
+      "kind": "context",
+      "text": "CONTEXT cards: Anowon, the Ruin Sage, Drana and Linvala, Captivating Vampire, Charismatic Conqueror",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Drana and Linvala"
+    },
+    {
+      "id": "S-6d4827ab-12",
+      "kind": "decision",
+      "text": "decision 017 propose `mean-v2` (2026-10-20): THE MEANEST BRACKET 4 EDGAR on the scan-confirmed v2.0.1: the profile package (Incubator, two Talismans, Phyrexian Tower, Morbid, Clavileño, Vraan, Vein Ripper,",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Drana and Linvala",
+      "as_of": "2026-10-20"
+    },
+    {
+      "id": "S-6d4827ab-13",
+      "kind": "price",
+      "text": "$5.30 NM ((MOM) 222) as of 2026-11-24",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Drana and Linvala",
+      "as_of": "2026-11-24",
+      "figure": 5.3
+    },
+    {
+      "id": "S-6d4827ab-14",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Deflecting Swat (0.87), Bloodletter of Aclazotz (0.81), Anointed Procession (0.79)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Drana and Linvala",
+      "neighbours": [
+        {
+          "name": "Deflecting Swat",
+          "score": 0.8729
+        },
+        {
+          "name": "Bloodletter of Aclazotz",
+          "score": 0.8113
+        },
+        {
+          "name": "Anointed Procession",
+          "score": 0.7948
+        }
+      ]
+    },
+    {
+      "id": "S-6d4827ab-15",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Drana and Linvala",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-6d4827ab-16",
+      "kind": "oracle",
+      "text": "Creature — Bat · {3}{B} — Flying Whenever you create or sacrifice a token, each opponent loses 1 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Mirkwood Bats"
+    },
+    {
+      "id": "S-6d4827ab-17",
+      "kind": "stack",
+      "text": "stack 011 — Mirkwood Bats and a doubled eminence trigger: one drain or two? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/011",
+      "card": "Mirkwood Bats",
+      "stack": "011"
+    },
+    {
+      "id": "S-6d4827ab-18",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Anje, Maid of Dishonor (0.93), Sanctum Seeker (0.91), Blood Artist (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Mirkwood Bats",
+      "neighbours": [
+        {
+          "name": "Anje, Maid of Dishonor",
+          "score": 0.9338
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.9101
+        },
+        {
+          "name": "Blood Artist",
+          "score": 0.9071
+        }
+      ]
+    },
+    {
+      "id": "S-6d4827ab-19",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Mirkwood Bats",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-6d4827ab-20",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read; an OLDER list of this branch: 7 rows better, 8 worse, 3 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-6d4827ab-21",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.00 -> 33.88, a change of -10.11 (-23%) [-10.9155, -9.3061] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -10.1108,
+      "ci95": [
+        -10.9155,
+        -9.3061
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6d4827ab-22",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 84 in 100, a swing of 4 games per 100 [-0.0537, -0.0363] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.045,
+      "ci95": [
+        -0.0537,
+        -0.0363
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6d4827ab-23",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.65 -> 9.58, a change of -2.07 (-18%) [-2.2476, -1.8884] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.068,
+      "ci95": [
+        -2.2476,
+        -1.8884
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6d4827ab-24",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.93 -> 2.50, a change of -0.43 (-15%) [-0.5047, -0.3547] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4297,
+      "ci95": [
+        -0.5047,
+        -0.3547
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6d4827ab-25",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.002 is smaller than the 0.015 this run can resolve [-0.0091, 0.0125] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0017,
+      "ci95": [
+        -0.0091,
+        0.0125
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-6d4827ab-26",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.002 is smaller than the 0.011 this run can resolve [-0.0101, 0.0055] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0023,
+      "ci95": [
+        -0.0101,
+        0.0055
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Drana and Linvala",
+      "Mirkwood Bats"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T14:22:41-08:00",
+    "facts": 26
+  }
+}

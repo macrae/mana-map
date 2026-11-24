@@ -250,6 +250,10 @@
           "is_new": false
         },
         {
+          "name": "Isolated Chapel",
+          "is_new": true
+        },
+        {
           "name": "Kalitas, Traitor of Ghet",
           "is_new": false
         },
@@ -307,10 +311,6 @@
         },
         {
           "name": "Pitiless Plunderer",
-          "is_new": true
-        },
-        {
-          "name": "Plains",
           "is_new": true
         },
         {
@@ -460,22 +460,22 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "007",
-        "question": "Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a target of 22)",
+        "id": "010",
+        "question": "Card four on threat-v1: a token-arrival drain (Mirkwood Bats) for Drana and Linvala, the weakest fit for the thesis?",
         "branch": "threat-v1",
-        "file": "007-card-one-the-land-pass-on-threat-v1-dragonskull.json",
-        "decision": "approve",
+        "file": "010-card-four-on-threat-v1-a-token-arrival-drain-mir.json",
+        "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor",
-          "strategist"
+          "card-scout"
         ],
-        "pilot_words": "approve, make the swap and push it; next please",
+        "pilot_words": "no change, keep Drana; next please",
         "decided_at": "2026-11-24",
         "opened": "2026-11-24",
         "swap": {
-          "out": "Swamp",
-          "in": "Dragonskull Summit"
+          "out": "Drana and Linvala",
+          "in": "Mirkwood Bats"
         },
         "goldfish_saw": [
           2,
@@ -506,12 +506,12 @@
         "Dragonskull Summit",
         "Flawless Maneuver",
         "Giver of Runes",
+        "Isolated Chapel",
         "Lethal Scheme",
         "Midgar, City of Mako // Reactor Raid",
         "Olivia's Wrath",
         "Olivia, Crimson Bride",
         "Path to Exile",
-        "Plains",
         "Preacher of the Schism",
         "Rakdos Signet",
         "Reassembling Skeleton",
@@ -519,7 +519,6 @@
         "Selfless Spirit",
         "Survivors' Encampment",
         "Swords to Plowshares",
-        "Talisman of Indulgence",
         "The Meathook Massacre",
         "Toxic Deluge",
         "Vanishing Verse",
@@ -549,48 +548,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -10.1108,
+            "delta": -9.9366,
             "ci95_diff": [
-              -10.9155,
-              -9.3061
+              -10.7595,
+              -9.1137
             ],
-            "mde": 1.1503,
+            "mde": 1.1763,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.045,
+            "delta": -0.0434,
             "ci95_diff": [
-              -0.0537,
-              -0.0363
+              -0.0519,
+              -0.0349
             ],
-            "mde": 0.0124,
+            "mde": 0.0122,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.068,
+            "delta": -2.0302,
             "ci95_diff": [
-              -2.2476,
-              -1.8884
+              -2.2096,
+              -1.8508
             ],
-            "mde": 0.2567,
+            "mde": 0.2564,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.4297,
+            "delta": -0.4087,
             "ci95_diff": [
-              -0.5047,
-              -0.3547
+              -0.4839,
+              -0.3335
             ],
-            "mde": 0.1072,
+            "mde": 0.1075,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -616,20 +615,11 @@
       },
       "stacks": [
         {
-          "id": "011",
-          "title": "Mirkwood Bats and a doubled eminence trigger: one drain or two?",
-          "checker": "pass",
-          "names": [
-            "Plains"
-          ]
-        },
-        {
           "id": "013",
           "title": "Pitiless Plunderer + Ashnod's Altar + Reassembling Skeleton: is the loop mana-positive?",
           "checker": "pass",
           "names": [
             "Pitiless Plunderer",
-            "Plains",
             "Reassembling Skeleton",
             "Zulaport Cutthroat"
           ]
@@ -9879,6 +9869,75 @@
     }
   ],
   "studies": [
+    {
+      "id": "010",
+      "question": "Card four on threat-v1: a token-arrival drain (Mirkwood Bats) for Drana and Linvala, the weakest fit for the thesis?",
+      "branch": "threat-v1",
+      "file": "010-card-four-on-threat-v1-a-token-arrival-drain-mir.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "card-scout"
+      ],
+      "pilot_words": "no change, keep Drana; next please",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": "Drana and Linvala",
+        "in": "Mirkwood Bats"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "009",
+      "question": "Card three on threat-v1: Mirkwood Bats for Elenda, the Dusk Rose — a token-arrival drain (the pilot's 'tax the front end')?",
+      "branch": "threat-v1",
+      "file": "009-card-three-on-threat-v1-mirkwood-bats-for-elenda.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "deck-doctor"
+      ],
+      "pilot_words": "no change, keep Elenda; next please",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": "Elenda, the Dusk Rose",
+        "in": "Mirkwood Bats"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "008",
+      "question": "Card two, the land pass on threat-v1: Isolated Chapel for the basic Plains, to close the black-source gap the rock cuts left (33 against a target of 36)",
+      "branch": "threat-v1",
+      "file": "008-card-two-the-land-pass-on-threat-v1-isolated-cha.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "approve, make the swap, but no need to push it; next please",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": "Plains",
+        "in": "Isolated Chapel"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
     {
       "id": "007",
       "question": "Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a target of 22)",
