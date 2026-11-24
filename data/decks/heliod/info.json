@@ -394,17 +394,18 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "005",
-        "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
+        "id": "006",
+        "question": "heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time... the next line is making opponents draw big and translating that into value/damage via HUGE discounts.. I need game winning discounts, combos I can cast super cheap or free with enough generic mana discount, or loading up walking ballista with huge X spell cast... and if there are cards currently staged that don't fit the bill, we can remove pull and swap from them",
         "branch": "b3-v1",
-        "file": "005-what-if-we-went-all-in-on-drain-on-my-draws-when.json",
+        "file": "006-heliod-is-an-approach-deck-my-card-draw-is-for-f.json",
         "decision": "approve",
         "decided_by": [
           "pilot",
           "strategist",
-          "card-scout"
+          "card-scout",
+          "goldfish"
         ],
-        "pilot_words": "approve! [Windfall for Sapphire Medallion] / ok.. no monument, it's not a fit; also, this is not a wheels deck, per se / greater auramancy is protection on heliod, which is critical... I don't like this [Alhammarret's Archive declined] / heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time",
+        "pilot_words": "approve, make the swap; next please [Remand for Isochron Scepter] / no change, keep the lantern; but I like the artifact tutor, that helps bring things together a lot / ok... no scour the scrap then, it looks like [Scour for Scrap declined] / I like the trisk line a lot! I can do with one less fort piece! [Triskaidekaphile for Sphere of Safety]",
         "decided_at": "2026-11-23",
         "opened": "2026-11-23",
         "swap": null,
@@ -419,12 +420,11 @@
       "verdict": {
         "state": "profile only",
         "word": "profile only",
-        "rose": 6,
-        "fell": 3,
-        "no_call": 6
+        "rose": 8,
+        "fell": 4,
+        "no_call": 3
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Austere Command",
         "Cathar Commando",
@@ -442,6 +442,7 @@
         "Mystic Sanctuary",
         "Pact of Negation",
         "Reliquary Tower",
+        "Remand",
         "Sea of Clouds",
         "Soul-Guide Lantern",
         "Swan Song",
@@ -459,58 +460,61 @@
           "killed by T10",
           "missed drop by T5",
           "mulliganed",
-          "extra cards by T8"
+          "extra cards by T8",
+          "finisher wheel by T8",
+          "wheels cast by T10"
         ],
         "fell": [
           "damage @T10",
           "board power @T6",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "dead wheels in hand @T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.5822,
+            "delta": -2.5709,
             "ci95_diff": [
-              -2.8965,
-              -2.2679
+              -2.8776,
+              -2.2642
             ],
-            "mde": 0.4492,
+            "mde": 0.4384,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0803,
+            "delta": 0.1239,
             "ci95_diff": [
-              0.068,
-              0.0926
+              0.1116,
+              0.1362
             ],
-            "mde": 0.0176,
+            "mde": 0.0175,
             "verdict": "better",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -0.8673,
+            "delta": -0.792,
             "ci95_diff": [
-              -0.922,
-              -0.8126
+              -0.8494,
+              -0.7346
             ],
-            "mde": 0.0781,
+            "mde": 0.0821,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.4852,
+            "delta": 1.1354,
             "ci95_diff": [
-              0.2012,
-              0.7692
+              0.8536,
+              1.4172
             ],
-            "mde": 0.406,
+            "mde": 0.4028,
             "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
@@ -2761,10 +2765,15 @@
       "question": "heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time... the next line is making opponents draw big and translating that into value/damage via HUGE discounts.. I need game winning discounts, combos I can cast super cheap or free with enough generic mana discount, or loading up walking ballista with huge X spell cast... and if there are cards currently staged that don't fit the bill, we can remove pull and swap from them",
       "branch": "b3-v1",
       "file": "006-heliod-is-an-approach-deck-my-card-draw-is-for-f.json",
-      "decision": "open",
-      "decided_by": [],
-      "pilot_words": "",
-      "decided_at": null,
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "card-scout",
+        "goldfish"
+      ],
+      "pilot_words": "approve, make the swap; next please [Remand for Isochron Scepter] / no change, keep the lantern; but I like the artifact tutor, that helps bring things together a lot / ok... no scour the scrap then, it looks like [Scour for Scrap declined] / I like the trisk line a lot! I can do with one less fort piece! [Triskaidekaphile for Sphere of Safety]",
+      "decided_at": "2026-11-23",
       "opened": "2026-11-23",
       "swap": null,
       "goldfish_saw": null
@@ -3936,7 +3945,6 @@
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
     "branch `b3-v1`: 25 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "study 006 is open: heliod is an approach deck... my card draw is for finding approach and — `manamap pilot study heliod call 006 …`, then `install`",
     "study 004 is open: The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, o — `manamap pilot study heliod call 004 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"
