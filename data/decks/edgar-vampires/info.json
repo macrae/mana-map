@@ -20,11 +20,7 @@
       "frame",
       "map"
     ],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
-    ],
+    "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [],
@@ -488,19 +484,17 @@
         "at": "2026-11-20"
       },
       "verdict": {
-        "state": "no objective",
+        "state": "profile only",
         "word": "profile only",
-        "rose": 3,
-        "fell": 7,
+        "rose": 8,
+        "fell": 8,
         "no_call": 2
       },
       "measured": true,
       "blind_spots": [
         "Akroma's Will",
         "Anowon, the Ruin Sage",
-        "Black Market Connections",
         "Boros Charm",
-        "Champion of Dusk",
         "Clever Concealment",
         "Crackling Doom",
         "Deflecting Swat",
@@ -517,7 +511,6 @@
         "Reassembling Skeleton",
         "Sacred Foundry",
         "Selfless Spirit",
-        "Skullclamp",
         "Survivors' Encampment",
         "Swords to Plowshares",
         "Talisman of Indulgence",
@@ -527,11 +520,16 @@
         "Vein Ripper"
       ],
       "impact": {
-        "state": "no objective",
+        "state": "profile only",
         "rose": [
           "hoard @T10",
           "hoard @T6",
-          "hand can act by T3"
+          "hand can act by T3",
+          "tokens converted by T8",
+          "life lost outside combat @T10",
+          "killed outside combat by T10",
+          "a combo line whole by T8",
+          "life gained by T8"
         ],
         "fell": [
           "damage @T10",
@@ -540,53 +538,54 @@
           "killed by T10",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6"
+          "interaction affordable @T6",
+          "cards in hand @T8"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -7.4182,
+            "delta": -10.1457,
             "ci95_diff": [
-              -7.6753,
-              -7.1611
+              -10.8492,
+              -9.4422
             ],
-            "mde": 0.3675,
+            "mde": 1.0056,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0683,
+            "delta": -0.0447,
             "ci95_diff": [
-              -0.0768,
-              -0.0598
+              -0.0524,
+              -0.037
             ],
-            "mde": 0.0122,
+            "mde": 0.011,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -1.3498,
+            "delta": -2.0673,
             "ci95_diff": [
-              -1.4376,
-              -1.262
+              -2.219,
+              -1.9156
             ],
-            "mde": 0.1255,
+            "mde": 0.2169,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.8436,
+            "delta": -0.4767,
             "ci95_diff": [
-              -0.9129,
-              -0.7743
+              -0.5459,
+              -0.4075
             ],
-            "mde": 0.099,
+            "mde": 0.0989,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -10160,7 +10159,7 @@
     "engine": {
       "available": false,
       "why": "no target in goldfish_targets.json is marked `required: true`, so there is nothing to call the engine. Mark the components this deck cannot do without — the alternatives get `route`.",
-      "declared_targets": 11
+      "declared_targets": 14
     },
     "stall": {
       "by_turn": {
@@ -10189,22 +10188,14 @@
           "n": 10000
         },
         "4": {
-          "rate": 0.0386,
+          "rate": 0.0385,
           "ci95": [
-            0.035,
-            0.0426
+            0.0349,
+            0.0425
           ],
           "n": 10000
         },
         "5": {
-          "rate": 0.0375,
-          "ci95": [
-            0.034,
-            0.0414
-          ],
-          "n": 10000
-        },
-        "6": {
           "rate": 0.0372,
           "ci95": [
             0.0337,
@@ -10212,112 +10203,120 @@
           ],
           "n": 10000
         },
-        "7": {
-          "rate": 0.054,
+        "6": {
+          "rate": 0.0366,
           "ci95": [
-            0.0497,
-            0.0586
+            0.0331,
+            0.0405
+          ],
+          "n": 10000
+        },
+        "7": {
+          "rate": 0.0522,
+          "ci95": [
+            0.048,
+            0.0567
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0665,
+          "rate": 0.0633,
           "ci95": [
-            0.0618,
-            0.0716
+            0.0587,
+            0.0682
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0883,
+          "rate": 0.0805,
           "ci95": [
-            0.0829,
-            0.094
+            0.0753,
+            0.086
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0759,
+          "rate": 0.0695,
           "ci95": [
-            0.0709,
-            0.0813
+            0.0647,
+            0.0747
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1504,
+        "rate": 0.1451,
         "ci95": [
-          0.1435,
-          0.1575
+          0.1383,
+          0.1521
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7776,
-        "hand_empty": 1923,
-        "mana_short": 5853
+        "stall_turns": 7574,
+        "hand_empty": 1769,
+        "mana_short": 5805
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 2847,
-        "hand_empty": 1806,
-        "mana_short": 1041,
+        "stall_turns": 2655,
+        "hand_empty": 1660,
+        "mana_short": 995,
         "stall_rate": {
-          "rate": 0.0712,
+          "rate": 0.0664,
           "ci95": [
-            0.0687,
-            0.0737
+            0.064,
+            0.0689
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.0372,
-          "diff": 0.034,
+          "floor_rate": 0.0366,
+          "diff": 0.0298,
           "ci95": [
-            0.0294,
-            0.0383
+            0.0252,
+            0.0341
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 4.2101,
+            "rate": 4.2603,
             "ci95": [
-              4.1649,
-              4.2553
+              4.2148,
+              4.3058
             ],
-            "sd": 2.3065,
+            "sd": 2.3212,
             "n": 10000
           },
           "8": {
-            "rate": 4.163,
+            "rate": 4.2455,
             "ci95": [
-              4.1124,
-              4.2136
+              4.1944,
+              4.2966
             ],
-            "sd": 2.581,
+            "sd": 2.6066,
             "n": 10000
           },
           "9": {
-            "rate": 3.8184,
+            "rate": 4.0298,
             "ci95": [
-              3.7664,
-              3.8704
+              3.9757,
+              4.0839
             ],
-            "sd": 2.6516,
+            "sd": 2.7591,
             "n": 10000
           },
           "10": {
-            "rate": 4.1259,
+            "rate": 4.4174,
             "ci95": [
-              4.0681,
-              4.1837
+              4.3556,
+              4.4792
             ],
-            "sd": 2.9506,
+            "sd": 3.1554,
             "n": 10000
           }
         },
@@ -10327,14 +10326,14 @@
     },
     "mana": {
       "missed_land_drop_by_five": {
-        "rate": 0.4674,
+        "rate": 0.467,
         "ci95": [
-          0.4576,
-          0.4772
+          0.4572,
+          0.4768
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2756,
+      "missed_land_drop_rate": 0.2715,
       "mulliganed": {
         "rate": 0.227,
         "ci95": [
@@ -10348,16 +10347,16 @@
         "2": 2.14,
         "3": 3.489,
         "4": 4.408,
-        "5": 5.147,
-        "6": 5.851,
-        "7": 6.542,
-        "8": 7.274,
-        "9": 8.023,
-        "10": 8.768
+        "5": 5.148,
+        "6": 5.852,
+        "7": 6.548,
+        "8": 7.287,
+        "9": 8.046,
+        "10": 8.816
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.2016
+      "mana_stdev_turn_five": 1.2017
     },
     "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82"
   },
@@ -10483,82 +10482,26 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.916,
+          "value": 5.92,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:A drain that fires when a creature DIES (a reachable second line, not the kill's leg)": {
-          "value": 45,
+        "target:A castable Vampire drawn — the eminence trigger every kill proof opens on": {
+          "value": 83,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling \"A drain that fires when a creature DIES (a reachable second line, not the kill's leg)\" by turn six",
+          "definition": "share of games assembling 'A castable Vampire drawn — the eminence trigger every kill proof opens on' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
         "target:A token multiplier or extra token-maker drawn": {
-          "value": 25,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'A token multiplier or extra token-maker drawn' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A Vampire lord or anthem drawn (the combat plan)": {
           "value": 36,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A Vampire lord or anthem drawn (the combat plan)' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:Ramp or fixing drawn": {
-          "value": 60,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A draw engine drawn": {
-          "value": 64,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'A draw engine drawn' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:Protection held for the swarm": {
-          "value": 45,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'Protection held for the swarm' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)": {
-          "value": 14,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source": {
-          "value": 2,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A castable Vampire drawn — the eminence trigger every kill proof opens on": {
-          "value": 72,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'A castable Vampire drawn — the eminence trigger every kill proof opens on' by turn six",
+          "definition": "share of games assembling 'A token multiplier or extra token-maker drawn' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -10570,11 +10513,91 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
+        "target:A drain that fires when a creature DIES (a reachable second line, not the kill's leg)": {
+          "value": 45,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling \"A drain that fires when a creature DIES (a reachable second line, not the kill's leg)\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A drain on an arrival or an attack — no death needed (Bloodwitch, Seeker, Wispdrinker)": {
+          "value": 26,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A drain on an arrival or an attack — no death needed (Bloodwitch, Seeker, Wispdrinker)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Lifelink across the swarm — Crossway Troublemakers, Teysa's tokens, Elas on every arrival": {
+          "value": 14,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling \"Lifelink across the swarm — Crossway Troublemakers, Teysa's tokens, Elas on every arrival\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
         "target:A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)": {
-          "value": 44,
+          "value": 45,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A draw engine drawn": {
+          "value": 68,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A draw engine drawn' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Consolidate — fodder into one big threat (Vish Kal, Kalitas, Edgar, Elenda, Yahenni)": {
+          "value": 54,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Consolidate — fodder into one big threat (Vish Kal, Kalitas, Edgar, Elenda, Yahenni)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source": {
+          "value": 8,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:THE LOOP (stack 013): Pitiless Plunderer + Ashnod's Altar + a recursive body": {
+          "value": 0,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling \"THE LOOP (stack 013): Pitiless Plunderer + Ashnod's Altar + a recursive body\" by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Ramp or fixing drawn": {
+          "value": 72,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Ramp or fixing drawn' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Removal drawn — a creature, a permanent, or the board (read as drawn, never cast)": {
+          "value": 36,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Removal drawn — a creature, a permanent, or the board (read as drawn, never cast)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Protection held for the swarm": {
+          "value": 45,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Protection held for the swarm' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -10648,15 +10671,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.774,
+            "10": 8.827,
             "2": 2.142,
             "3": 3.475,
             "4": 4.396,
-            "5": 5.15,
-            "6": 5.853,
-            "7": 6.54,
-            "8": 7.28,
-            "9": 8.031
+            "5": 5.151,
+            "6": 5.855,
+            "7": 6.546,
+            "8": 7.292,
+            "9": 8.058
           },
           "tier": "data",
           "weight": "detail",
@@ -10667,15 +10690,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.581,
+            "10": 0.605,
             "2": 0.994,
             "3": 0.888,
             "4": 0.76,
             "5": 0.66,
-            "6": 0.603,
-            "7": 0.582,
-            "8": 0.59,
-            "9": 0.606
+            "6": 0.605,
+            "7": 0.586,
+            "8": 0.594,
+            "9": 0.616
           },
           "tier": "data",
           "weight": "detail",
@@ -10686,15 +10709,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.233,
-            "10": 10.978,
+            "10": 11.165,
             "2": 0.885,
             "3": 2.154,
-            "4": 2.846,
-            "5": 3.531,
-            "6": 4.328,
-            "7": 5.501,
-            "8": 6.873,
-            "9": 8.431
+            "4": 2.847,
+            "5": 3.532,
+            "6": 4.33,
+            "7": 5.506,
+            "8": 6.899,
+            "9": 8.514
           },
           "tier": "data",
           "weight": "detail",
@@ -10720,12 +10743,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1568,
-            "5": 23,
-            "6": 370,
-            "7": 1810,
-            "8": 2690,
-            "9": 2057
+            "10": 1095,
+            "4": 2,
+            "5": 160,
+            "6": 1228,
+            "7": 2692,
+            "8": 2260,
+            "9": 1485
           },
           "tier": "data",
           "weight": "detail",
@@ -10741,68 +10765,81 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.916,
+    "commander_mean_cast_turn": 5.92,
     "commander_cast_by_turn_6_pct": 68,
     "targets": [
       {
-        "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
-        "by_turn_6_pct": 45
+        "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
+        "by_turn_6_pct": 83
       },
       {
         "label": "A token multiplier or extra token-maker drawn",
-        "by_turn_6_pct": 25
-      },
-      {
-        "label": "A Vampire lord or anthem drawn (the combat plan)",
         "by_turn_6_pct": 36
-      },
-      {
-        "label": "Ramp or fixing drawn",
-        "by_turn_6_pct": 60
-      },
-      {
-        "label": "A draw engine drawn",
-        "by_turn_6_pct": 64
-      },
-      {
-        "label": "Protection held for the swarm",
-        "by_turn_6_pct": 45
-      },
-      {
-        "label": "An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)",
-        "by_turn_6_pct": 14
-      },
-      {
-        "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
-        "by_turn_6_pct": 2
-      },
-      {
-        "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-        "by_turn_6_pct": 72
       },
       {
         "label": "A free sacrifice outlet drawn (bloodline's new engine)",
         "by_turn_6_pct": 55
       },
       {
+        "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+        "by_turn_6_pct": 45
+      },
+      {
+        "label": "A drain on an arrival or an attack — no death needed (Bloodwitch, Seeker, Wispdrinker)",
+        "by_turn_6_pct": 26
+      },
+      {
+        "label": "Lifelink across the swarm — Crossway Troublemakers, Teysa's tokens, Elas on every arrival",
+        "by_turn_6_pct": 14
+      },
+      {
         "label": "A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)",
-        "by_turn_6_pct": 44
+        "by_turn_6_pct": 45
+      },
+      {
+        "label": "A draw engine drawn",
+        "by_turn_6_pct": 68
+      },
+      {
+        "label": "Consolidate — fodder into one big threat (Vish Kal, Kalitas, Edgar, Elenda, Yahenni)",
+        "by_turn_6_pct": 54
+      },
+      {
+        "label": "THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source",
+        "by_turn_6_pct": 8
+      },
+      {
+        "label": "THE LOOP (stack 013): Pitiless Plunderer + Ashnod's Altar + a recursive body",
+        "by_turn_6_pct": 0
+      },
+      {
+        "label": "Ramp or fixing drawn",
+        "by_turn_6_pct": 72
+      },
+      {
+        "label": "Removal drawn — a creature, a permanent, or the board (read as drawn, never cast)",
+        "by_turn_6_pct": 36
+      },
+      {
+        "label": "Protection held for the swarm",
+        "by_turn_6_pct": 45
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.302,
+      "mean_kill_turn": 7.78,
       "median_kill_turn": 8,
-      "kill_by_turn_6_pct": 4,
-      "kill_by_turn_8_pct": 49,
+      "kill_by_turn_6_pct": 14,
+      "kill_by_turn_8_pct": 63,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 15,
+      "no_kill_by_max_turn_pct": 11,
       "kill_turn_histogram": {
-        "10": 1568,
-        "5": 23,
-        "6": 370,
-        "7": 1810,
-        "8": 2690,
-        "9": 2057
+        "10": 1095,
+        "4": 2,
+        "5": 160,
+        "6": 1228,
+        "7": 2692,
+        "8": 2260,
+        "9": 1485
       }
     }
   },
@@ -11195,7 +11232,6 @@
   },
   "next": [
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug edgar-vampires` re-reads them when you want, never on its own",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
     "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",

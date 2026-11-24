@@ -128,18 +128,21 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group b
 
 - share of seeded games where the commander was CAST by turn six: **68%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 5.916**
-- A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **45%**
-- A token multiplier or extra token-maker drawn: **25%**
-- A Vampire lord or anthem drawn (the combat plan): **36%**
-- Ramp or fixing drawn: **60%**
-- A draw engine drawn: **64%**
-- Protection held for the swarm: **45%**
-- An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0): **14%**
-- THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **2%**
-- A castable Vampire drawn — the eminence trigger every kill proof opens on: **72%**
+- mean turn the commander is first cast: **turn 5.92**
+- A castable Vampire drawn — the eminence trigger every kill proof opens on: **83%**
+- A token multiplier or extra token-maker drawn: **36%**
 - A free sacrifice outlet drawn (bloodline's new engine): **55%**
-- A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table): **44%**
+- A drain that fires when a creature DIES (a reachable second line, not the kill's leg): **45%**
+- A drain on an arrival or an attack — no death needed (Bloodwitch, Seeker, Wispdrinker): **26%**
+- Lifelink across the swarm — Crossway Troublemakers, Teysa's tokens, Elas on every arrival: **14%**
+- A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table): **45%**
+- A draw engine drawn: **68%**
+- Consolidate — fodder into one big threat (Vish Kal, Kalitas, Edgar, Elenda, Yahenni): **54%**
+- THE DRAIN DOUBLER (stacks 003/007): Bloodletter of Aclazotz + a drain source: **8%**
+- THE LOOP (stack 013): Pitiless Plunderer + Ashnod's Altar + a recursive body: **0%**
+- Ramp or fixing drawn: **72%**
+- Removal drawn — a creature, a permanent, or the board (read as drawn, never cast): **36%**
+- Protection held for the swarm: **45%**
 - share of opening sevens the model would keep: **77%**
 - Colour on curve (lands + rocks): W 93%, B 92%, R 91%
 - Forge (an optional probe, not a gate): last run 2026-10-02, 48/200 won (31% (95% CI 24%–39%)) on V3 — on an older list

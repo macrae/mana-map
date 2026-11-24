@@ -443,15 +443,15 @@
   "kill_curves": {
    "edgar-vampires": {
     "1": 0.0,
-    "10": 0.852,
+    "10": 0.892,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
-    "5": 0.002,
-    "6": 0.039,
-    "7": 0.22,
-    "8": 0.489,
-    "9": 0.695
+    "5": 0.016,
+    "6": 0.139,
+    "7": 0.408,
+    "8": 0.634,
+    "9": 0.783
    },
    "emiel-blink": {
     "1": 0.0,
@@ -565,15 +565,15 @@
   "land_curves": {
    "edgar-vampires": {
     "1": 0.999,
-    "10": 0.581,
+    "10": 0.605,
     "2": 0.994,
     "3": 0.888,
     "4": 0.76,
     "5": 0.66,
-    "6": 0.603,
-    "7": 0.582,
-    "8": 0.59,
-    "9": 0.606
+    "6": 0.605,
+    "7": 0.586,
+    "8": 0.594,
+    "9": 0.616
    },
    "emiel-blink": {
     "1": 0.999,
@@ -687,15 +687,15 @@
   "mana_curves": {
    "edgar-vampires": {
     "1": 0.999,
-    "10": 8.774,
+    "10": 8.827,
     "2": 2.142,
     "3": 3.475,
     "4": 4.396,
-    "5": 5.15,
-    "6": 5.853,
-    "7": 6.54,
-    "8": 7.28,
-    "9": 8.031
+    "5": 5.151,
+    "6": 5.855,
+    "7": 6.546,
+    "8": 7.292,
+    "9": 8.058
    },
    "emiel-blink": {
     "1": 0.999,
@@ -945,38 +945,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8449,
-      0.8588
+      0.8858,
+      0.8979
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.852
+     "value": 0.892
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0354,
-      0.043
+      0.1324,
+      0.1459
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.039
+     "value": 0.139
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4792,
-      0.4988
+      0.6245,
+      0.6434
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.489
+     "value": 0.634
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -984,14 +984,14 @@
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.mana_at_turn_five",
      "stale": false,
-     "value": 5.15
+     "value": 5.151
     },
     "mana_stdev_turn_five": {
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.184
+     "value": 1.1844
     },
     "median_kill_turn": {
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
@@ -1003,14 +1003,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.211,
-      0.2272
+      0.2106,
+      0.2268
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.219
+     "value": 0.2186
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -1027,14 +1027,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1412,
-      0.1551
+      0.1021,
+      0.1142
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.148
+     "value": 0.108
     }
    },
    "bracket": {
@@ -1050,14 +1050,14 @@
     "harness_version": 2,
     "missed_land_drop_by_five": {
      "ci95": [
-      0.4576,
-      0.4772
+      0.4572,
+      0.4768
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "diagnostic.json#mana.missed_land_drop_by_five",
      "stale": false,
-     "value": 0.4674
+     "value": 0.467
     },
     "mulliganed": {
      "ci95": [
@@ -1072,14 +1072,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.1435,
-      0.1575
+      0.1383,
+      0.1521
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.1504
+     "value": 0.1451
     }
    },
    "dti": {
@@ -1143,7 +1143,7 @@
    "lifecycle": null,
    "member": true,
    "own_goldfish": {
-    "commander_cast_by_turn_6_rate": 0.677,
+    "commander_cast_by_turn_6_rate": 0.678,
     "comparable": false,
     "declared_flags": {
      "model_combat": true,
@@ -1158,7 +1158,7 @@
      "model_sacrifice": true,
      "model_treasures": true
     },
-    "model_version": "75ea059969f2",
+    "model_version": "3e815222f987",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5424,13 +5424,13 @@
   },
   "kill_by_turn_6": {
    "max": 0.253,
-   "median": 0.048,
+   "median": 0.139,
    "min": 0.0,
    "n": 7
   },
   "kill_by_turn_8": {
    "max": 0.958,
-   "median": 0.489,
+   "median": 0.634,
    "min": 0.055,
    "n": 7
   },
@@ -5442,13 +5442,13 @@
   },
   "missed_land_drop_by_five": {
    "max": 0.5255,
-   "median": 0.4674,
+   "median": 0.467,
    "min": 0.3115,
    "n": 7
   },
   "missed_land_drop_rate": {
    "max": 0.2578,
-   "median": 0.219,
+   "median": 0.2186,
    "min": 0.1152,
    "n": 7
   },
@@ -5460,7 +5460,7 @@
   },
   "never_kills_rate": {
    "max": 0.491,
-   "median": 0.148,
+   "median": 0.108,
    "min": 0.004,
    "n": 7
   },
@@ -5537,7 +5537,7 @@
     "kill_by_turn_6": {
      "max": 0.253,
      "median": 0.182,
-     "min": 0.039,
+     "min": 0.048,
      "n": 5
     },
     "kill_by_turn_8": {
@@ -5554,13 +5554,13 @@
     },
     "missed_land_drop_by_five": {
      "max": 0.5006,
-     "median": 0.4674,
+     "median": 0.467,
      "min": 0.3115,
      "n": 5
     },
     "missed_land_drop_rate": {
      "max": 0.2482,
-     "median": 0.219,
+     "median": 0.2186,
      "min": 0.1152,
      "n": 5
     },
@@ -5578,7 +5578,7 @@
     },
     "stall_two_in_a_row": {
      "max": 0.2298,
-     "median": 0.1504,
+     "median": 0.1451,
      "min": 0.0844,
      "n": 5
     }
@@ -5741,7 +5741,7 @@
   },
   "min_group": 3,
   "model_version": {
-   "edgar-vampires": "75ea059969f2",
+   "edgar-vampires": "3e815222f987",
    "elves": null,
    "emiel-blink": "ac1f8a6f777f",
    "gishath": "ac1f8a6f777f",
