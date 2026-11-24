@@ -64,8 +64,7 @@ def test_a_scaling_reduction_is_refused_rather_than_counted_flat(text):
 
 
 @pytest.mark.parametrize("word", [
-    "Noncreature", "Artifact", "Equipment", "Enchantment", "Aura",
-    "White", "Blue", "Black", "Red", "Green", "Colorless", "Legendary",
+    "Noncreature", "Artifact", "Equipment", "Enchantment", "Aura", "Colorless", "Legendary",
 ])
 def test_a_word_that_is_not_a_creature_type_is_refused_not_silently_ignored(word):
     """The sweep found the regex capturing `Noncreature` on 7 cards, `Artifact`
@@ -76,6 +75,16 @@ def test_a_word_that_is_not_a_creature_type_is_refused_not_silently_ignored(word
     reduction is real and simply not modelled; refusing says so."""
     text = f"{word} spells you cast cost {{1}} less to cast."
     assert goldfish.cost_reduction({"oracle_text": text}) is None
+
+
+@pytest.mark.parametrize("word,colour", [
+    ("White", "W"), ("Blue", "U"), ("Black", "B"), ("Red", "R"), ("Green", "G")])
+def test_a_colour_word_is_a_colour_reducer_now_that_one_is_modelled(word, colour):
+    """THE FIVE COLOUR WORDS MOVED OUT OF THE REFUSAL ABOVE (2026-11-23): colour reduction is
+    modelled now (the Medallions; `reduced_cost` cuts a spell with that colour's pip), so a
+    refusal would hide a card the model reads."""
+    text = f"{word} spells you cast cost {{1}} less to cast."
+    assert goldfish.cost_reduction({"oracle_text": text}) == (1, ("color", colour), False)
 
 
 def test_a_card_with_no_reduction_reads_as_none():
@@ -230,7 +239,9 @@ def test_a_deck_with_no_reducer_is_byte_identical():
     """The widening rule every optional model in this file follows: a deck that
     does not opt in must measure exactly as it did before."""
     from manamap.pilot.common import load_deck_cards
-    doc = load_deck_cards("heliod")
+    # sharknado, not heliod (2026-11-23): Heliod's Pearl and Sapphire Medallion read as
+    # colour reducers now, so it stopped being an example of a deck with none.
+    doc = load_deck_cards("sharknado")
     lib, cmds = goldfish.build_library(doc)
     assert not any(c["reduces"] for c in lib)
     assert not any(goldfish.cost_reduction(c, goldfish._corpus_creature_types())

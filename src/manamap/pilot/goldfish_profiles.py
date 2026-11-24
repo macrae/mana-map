@@ -1820,6 +1820,10 @@ def window_profile(card):
                             if g.lower() == "x" else _WIN_NUM.get(g.lower(), 0))(
                 m_td.group(1) if spell and (m_td := _WIN_TARGET_DRAW_RE.search(text)) else None),
             "delve": bool(re.search(r"\bdelve\b", text, re.IGNORECASE)),
+            # A MANA SINK THAT KILLS (Walking Ballista): with infinite mana, counters become damage
+            "x_pinger": bool(re.search(r"\{\d+\}: put a \+1/\+1 counter on this creature\.\s*remove a "
+                                       r"\+1/\+1 counter from this creature: it deals 1 damage to any "
+                                       r"target", text, re.IGNORECASE)),
             "tutor_dest": dest}
 
 
@@ -5445,6 +5449,18 @@ _SCALING_REDUCTION_RE = re.compile(r"\A for each\b")
 _ALL_CREATURES = ("Creature",)
 
 
+#: REDUCERS THAT ARE NOT ABOUT A CREATURE (2026-11-23, Heliod b3-v1's Sapphire Medallion):
+#: "<Colour> spells you cast cost {1} less" (the five Medallions), "Instant and sorcery spells
+#: you cast cost {1} less" (Goblin Electromancer) and "Spells cost {1} less to cast" (Helm of
+#: Awakening, symmetric -- ours is what is priced). The pattern above matched the Medallions'
+#: "Blue spells" and refused them, because Blue is not a creature type.
+_COLOUR_WORDS = {"White": "W", "Blue": "U", "Black": "B", "Red": "R", "Green": "G"}
+_INSTANT_SORCERY_REDUCTION_RE = re.compile(
+    r"\binstant and sorcery spells you cast cost \{(?P<amount>\d)\} less to cast", re.IGNORECASE)
+_ALL_SPELLS_REDUCTION_RE = re.compile(r"(?:^|\n|\. )spells (?:you cast )?cost \{(?P<amount>\d)\} less to cast",
+                                      re.IGNORECASE)
+
+
 def cost_reduction(card, creature_types=None):
     """`(amount, applies_to, excludes_self)` for a static reducer, else None.
 
@@ -5454,12 +5470,20 @@ def cost_reduction(card, creature_types=None):
     zero.
     """
     text = card.get("oracle_text") or ""
+    _is = _INSTANT_SORCERY_REDUCTION_RE.search(text)
+    if _is and not _SCALING_REDUCTION_RE.match(text[_is.end():]):
+        return (int(_is.group("amount")), ("types", ("Instant", "Sorcery")), False)
+    _all = _ALL_SPELLS_REDUCTION_RE.search(text)
+    if _all and not _SCALING_REDUCTION_RE.match(text[_all.end():]):
+        return (int(_all.group("amount")), ("any",), False)
     got = _COST_REDUCTION_RE.search(text)
     if not got:
         return None
     if _SCALING_REDUCTION_RE.match(text[got.end():]):
         return None
     what = got.group("what")
+    if what in _COLOUR_WORDS and not got.group("chosen"):
+        return (int(got.group("amount")), ("color", _COLOUR_WORDS[what]), bool(got.group("other")))
     if got.group("chosen"):
         applies = CHOSEN_TYPE
     elif what in _ALL_CREATURES:
@@ -5516,6 +5540,13 @@ def reduced_cost(card, reductions, chosen=None):
             continue
         if applies is None:
             if card["is_creature"]:
+                total += amount
+        elif isinstance(applies, tuple):
+            # a colour ("Blue spells"), a pair of card types, or every spell (2026-11-23)
+            if applies[0] == "any" \
+                    or applies[0] == "color" and any(applies[1] in p for p in card["pips"]) \
+                    or applies[0] == "types" and any(t in (card["type_line"] or "")
+                                                    for t in applies[1]):
                 total += amount
         elif applies is CHOSEN_TYPE:
             if chosen and chosen in card["subtypes"]:

@@ -2787,7 +2787,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             def _cost(c, x=0):
                 _p = len(c["pips"] or [])
-                return max(0, int(c["cmc"]) - _p + x - _d) + _p
+                return max(0, reduced_cost(c, reductions, chosen_type) - _p + x - _d) + _p
             for c in sorted((c for c in hand if c["window"]["spell_each_draw"]
                              or isinstance(c["window"]["target_draw"], int)
                              and c["window"]["target_draw"]), key=lambda c: c["cmc"]):
@@ -3031,6 +3031,18 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      "infinite life loss")):
                 return True
             if "infinite death triggers" in _p and death_drains:
+                return True
+            # THE TITHE INFINITES' FINISHERS (2026-11-23, Heliod b3-v1): infinite mana with a
+            # counter-to-damage sink in hand or out (Walking Ballista pings every opponent), or
+            # infinite card draw and mana with Approach in the list (draw it, cast it, draw it
+            # again from seventh down, cast it again).
+            if "infinite" in _p and "mana" in _p and (
+                    any(c["window"]["x_pinger"] for c in hand)
+                    or any(len(e) > 12 and e[12] and (e[12].get("card") or {}).get("window", {})
+                           .get("x_pinger") for e in battlefield)):
+                return True
+            if model_approach and "infinite card draw" in _p and "mana" in _p \
+                    and any(c["approach"] for c in hand + deck):
                 return True
             return "infinite" in _p and "mana" in _p and any(
                 (c.get("own_death") or {}).get("team_pump_x") for c in hand)
@@ -5857,8 +5869,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 return True
 
             def _wcost(card, x=0):
+                # the static reducers first (Sapphire Medallion), then Heliod's discount
                 _pips = len(card["pips"] or [])
-                return max(0, int(card["cmc"]) - _pips + x - _disc()) + _pips
+                _gen = reduced_cost(card, reductions, chosen_type) - _pips
+                return max(0, _gen + x - _disc()) + _pips
 
             def _worth(spend_n, gain):
                 """A draw that makes Approach affordable after it is paid for -- otherwise the
