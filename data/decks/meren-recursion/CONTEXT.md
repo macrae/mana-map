@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
+- **Version:** V32 · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 5 known lines (5 infinite, 0 two-card) · 258 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -169,7 +169,7 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 <!-- ctx:gen numbers -->
 - **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-23
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on V32, 2026-11-23. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **91%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
@@ -239,7 +239,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
-- **011 open** (—) — we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then s · open · goldfish saw 2/2 named cards
+- **011 approve** (pilot, strategist, deck-doctor) — we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then s · 2026-11-23 · goldfish saw 2/2 named cards · “approve, make the swap; next please [Vampiric Tutor for Vile Entomber] / no change on worldly, sIX IS A GREAT CARD! save”
 - **010 approve** (pilot, strategist, card-scout, deck-doctor, goldfish) — the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for th · 2026-11-23 · “i like it [Hangarback Walker for Tergrid] / approve, make the swap; next please [Fell Stinger for Gray Merchant] / I lik”
 - **009 approve** (pilot, card-scout, deck-doctor) — Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning · 2026-11-22 · goldfish saw 1/1 named cards · “approve, make the swap and save”
 - **008 approve** (pilot, deck-doctor) — Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Div · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save”
@@ -253,6 +253,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Change history
 
 <!-- ctx:gen history -->
+- **V32** (2026-11-23) — in: Vampiric Tutor; out: Vile Entomber
 - **V31** (2026-11-23) — in: Fell Stinger, Hangarback Walker, Wriggling Grub; out: Birds of Paradise, Gray Merchant of Asphodel, Tergrid, God of Fright // Tergrid's Lantern
 - **V30** (2026-11-22) — in: Unshakable Tail; out: Necromancy
 - **V29** (2026-11-22) — in: Cauldron of Essence; out: Victimize
@@ -261,8 +262,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 - **V26** (2026-11-22) — in: Nyx Weaver, Satyr Wayfinder, Six; out: Bone Splinters, Savra, Queen of the Golgari, Tendershoot Dryad
 - **V25** (2026-11-14) — in: Exotic Orchard, Fabled Passage, Fauna Shaman; out: Bayou, Darkbore Pathway, Survival of the Fittest
   - merge `budget-v2` — Meren is brewing (pilot, 2026-11-14): merge the budget swaps now; Fabled Passage goes on the buy list
-- **V24** (2026-11-13) — in: Golgari Charm, Tamiyo's Safekeeping; out: Final Parting, Forest, Toxic Deluge
-- … 23 earlier version(s): `manamap pilot deck-version meren-recursion list`
+- … 24 earlier version(s): `manamap pilot deck-version meren-recursion list`
 <!-- /ctx:gen history -->
 
 **V31 (2026-11-23), study 010.** In: Hangarback Walker, Fell Stinger, Wriggling Grub. Out: Tergrid, God of Fright // Tergrid's Lantern, Gray Merchant of Asphodel, Birds of Paradise. Lands unchanged at thirty-five. The aim is experience ramp, so Meren is online sooner and the few fatties can land early.

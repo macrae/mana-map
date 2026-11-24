@@ -21,11 +21,9 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 11,
+    "complete": 12,
     "of": 19,
-    "stale": [
-      "map"
-    ],
+    "stale": [],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -1442,10 +1440,14 @@
       "question": "we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then surveil to graveyard is nice, vampiric is nice too.. could do it",
       "branch": null,
       "file": "011-we-have-room-for-2-game-changers-with-a-surveil.json",
-      "decision": "open",
-      "decided_by": [],
-      "pilot_words": "",
-      "decided_at": null,
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "deck-doctor"
+      ],
+      "pilot_words": "approve, make the swap; next please [Vampiric Tutor for Vile Entomber] / no change on worldly, sIX IS A GREAT CARD! save",
+      "decided_at": "2026-11-23",
       "opened": "2026-11-23",
       "swap": null,
       "goldfish_saw": [
@@ -1665,7 +1667,7 @@
   ],
   "handbook": {
     "list_sha": "105b2fc28f73",
-    "list_version": null,
+    "list_version": 32,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -2260,14 +2262,11 @@
     ]
   },
   "next": [
-    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
-    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
+    "DeckCheck copy is V1, the list is V32 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
     "branch `budget-v1`: 24 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 45 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "study 011 is open: we have room for 2 game changers... with a surveil on the battlefield, — `manamap pilot study meren-recursion call 011 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×2, resolve-stack ×1"
   ],
