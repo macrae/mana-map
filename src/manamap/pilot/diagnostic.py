@@ -790,6 +790,13 @@ def clock(rows):
             str(t): _rate(sum(1 for r in rows if r["combo_assembled_turn"] is not None
                               and r["combo_assembled_turn"] <= t), n) for t in T}}
            if "combo_assembled_turn" in rows[0] else {}),
+        # Life gained, cumulative, and the hand at the end of the turn (2026-11-24: the log's
+        # "every game ran dry by turn eight").
+        **({"life_gained_by_turn": {str(t): _mean_cell([r["life_gained_by_turn"][t - 1]
+                                                        for r in rows]) for t in T}}
+           if "life_gained_by_turn" in rows[0] else {}),
+        "hand_size_by_turn": {str(t): _mean_cell([r["hand_size_by_turn"][t - 1] for r in rows])
+                              for t in T},
         "basis": ("non-combat = every point of life lost that was not the attack: drains, "
                   "death and arrival triggers, pings. A non-combat kill is a life kill where "
                   "those out-dealt the attacks, or a combo. The attacks meet no blockers."),
@@ -848,6 +855,10 @@ PER_GAME = {
         lambda r: None if "tokens_converted_by_turn" not in r else _noncombat_life(r, 10),
     ("clock", "noncombat_kill_by_turn", "10"):
         lambda r: None if "tokens_converted_by_turn" not in r else _noncombat_kill(r, 10),
+    ("clock", "life_gained_by_turn", "8"):
+        lambda r: None if "tokens_converted_by_turn" not in r else _at("life_gained_by_turn", 7)(r),
+    ("clock", "hand_size_by_turn", "8"):
+        lambda r: None if "tokens_converted_by_turn" not in r else _at("hand_size_by_turn", 7)(r),
     ("clock", "combo_assembled_by_turn", "8"):
         lambda r: None if "tokens_converted_by_turn" not in r or "combo_assembled_turn" not in r
         else (1 if r["combo_assembled_turn"] is not None and r["combo_assembled_turn"] <= 8 else 0),

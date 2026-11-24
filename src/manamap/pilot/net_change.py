@@ -131,6 +131,8 @@ ROWS = (
     ("life lost outside combat @T10", "clock", "noncombat_life_by_turn", "10", +1),
     ("killed outside combat by T10", "clock", "noncombat_kill_by_turn", "10", +1),
     ("a combo line whole by T8", "clock", "combo_assembled_by_turn", "8", +1),
+    ("life gained by T8", "clock", "life_gained_by_turn", "8", +1),
+    ("cards in hand @T8", "clock", "hand_size_by_turn", "8", +1),
 )
 
 #: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
@@ -194,6 +196,22 @@ METRICS = {
                 "out-dealt the attacks by the kill turn, or a combo line ended it.",
         "why": "Which clock wins, not only how fast. A list that kills sooner by attacking an "
                "empty board is not the deck the pilot is building.",
+    },
+    "life gained by T8": {
+        "unit": "mean",
+        "scale": "life, cumulative",
+        "what": "Life we gained by the end of turn 8, every gain event counted: lifelink on "
+                "the damage dealt, death and arrival triggers, attack triggers.",
+        "why": "Half of the pilot's four words (2026-11-11): life gain, life drain. Gained life "
+               "is what the gain-to-loss converters turn into the table's life loss.",
+    },
+    "cards in hand @T8": {
+        "unit": "mean",
+        "scale": "cards, end of turn",
+        "what": "Cards in hand at the end of turn 8, after the model cast everything it could "
+                "afford -- a floor on what a pilot holding cards back would have.",
+        "why": "The captain's log: by turn eight or ten the hand was empty, game after game. "
+               "Extra cards drawn says how much came in; this says what is left to play.",
     },
     "a combo line whole by T8": {
         "unit": "rate",
@@ -2248,11 +2266,12 @@ ROW_GROUPS = (
                         "kept hand passes the pilot's keep rule")),
     ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
                            "finisher wheel by T8", "wheels cast by T10",
-                           "dead wheels in hand @T5")),
+                           "dead wheels in hand @T5", "cards in hand @T8")),
     ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7",
                     "experience 5+ by T6", "a 5+ drop via Meren by T6")),
     ("Fodder into value", ("tokens converted by T8", "life lost outside combat @T10",
-                           "killed outside combat by T10", "a combo line whole by T8")),
+                           "killed outside combat by T10", "a combo line whole by T8",
+                           "life gained by T8")),
 )
 
 ROW_KEY = ("No call: smaller than this run can resolve, which is not the same as no "

@@ -162,3 +162,106 @@ def test_a_combo_line_is_whole_at_least_as_often_as_it_kills():
     whole = sum(1 for r in rows if r["combo_assembled_turn"] is not None)
     killed = sum(1 for r in rows if r["kill_by"] == "combo")
     assert whole >= killed
+
+
+# ── items 4-5 (2026-11-24): the opponents' deaths, typed attack triggers, life gained ─────
+
+from manamap.pilot.goldfish_profiles import cast_token_profile, combat_profile, death_profile
+
+NOBLE = "Whenever this creature or another creature dies, target player loses 1 life and you gain 1 life."
+ZULAPORT = ("Whenever this creature or another creature you control dies, each opponent loses 1 "
+            "life and you gain 1 life.")
+KALITAS = ("Lifelink\nIf a nontoken creature an opponent controls would die, instead exile that "
+           "card and create a tapped 2/2 black Zombie creature token.")
+SEEKER = "Whenever a Vampire you control attacks, each opponent loses 1 life and you gain 1 life."
+CAPTAIN = "Whenever this creature attacks, put a +1/+1 counter on each Vampire you control."
+
+
+@pytest.mark.parametrize("text, anyone", [
+    (NOBLE, True),
+    (ZULAPORT, False),
+    ("Whenever this creature or another Zombie dies, each opponent loses 1 life.", False),
+    ("Whenever a creature dies, that creature's controller may draw a card.", False),
+])
+def test_a_death_payoff_knows_whose_creature_it_pays_on(text, anyone):
+    assert death_profile({"oracle_text": text, "name": "X"})["death_any_controller"] is anyone
+
+
+def test_the_typed_readers_read_their_cards():
+    assert death_profile({"oracle_text": KALITAS, "name": "K"})["opp_death_token"] == {
+        "power": 2, "toughness": 2, "type": "Zombie"}
+    edgar = ("Eminence — Whenever you cast another Vampire spell, if Edgar Markov is in the "
+             "command zone or on the battlefield, create a 1/1 black Vampire creature token.")
+    assert cast_token_profile({"oracle_text": edgar})["token_type"] == "Vampire"
+    body = {"name": "B", "type_line": "Creature — Vampire", "power": "2", "toughness": "2",
+            "keywords": [], "cmc": 3}
+    assert combat_profile(dict(body, oracle_text=SEEKER))["attack_drain_typed"] == {
+        "type": "Vampire", "drain": 1, "gain": 1}
+    assert combat_profile(dict(body, oracle_text=CAPTAIN))["attack_counters_typed"] == {
+        "type": "Vampire", "n": 1}
+    finneas = ("Whenever this creature attacks, put a +1/+1 counter on each other creature you "
+               "control that's a token or a Rabbit.")
+    assert combat_profile(dict(body, oracle_text=finneas))["attack_counters_typed"] is None
+
+
+def _typed_doc(payoff_text, body_type, payoff_type="Creature — Human"):
+    cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+             _c("Payoff", payoff_text, 2, payoff_type, quantity=10, power="1", toughness="3"),
+             _c("Body", "", 2, "Creature — " + body_type, quantity=40, power="2", toughness="2")]
+    cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+    return {"cards": cards}
+
+
+def _mean(rs, f):
+    return sum(f(r) for r in rs) / len(rs)
+
+
+def test_an_any_creature_payoff_drains_on_the_opponents_deaths():
+    """Only opponents' creatures die here: Noble pays, Zulaport does not."""
+    kw = dict(model_deaths={"own_per_turn": 0.0, "opponent_per_turn": 1.0})
+    lib_n, _ = goldfish.build_library(_typed_doc(NOBLE, "Human"))
+    lib_z, _ = goldfish.build_library(_typed_doc(ZULAPORT, "Human"))
+    run = lambda lib: (lambda rng: [goldfish.simulate_once(
+        rng, lib, 3, [], 10, model_combat=True, model_drain=True, model_sacrifice=True, **kw)
+        for _ in range(200)])(random.Random(5))
+    drained = lambda rs: _mean(rs, lambda r: sum(r["drain_by_turn"]))
+    assert drained(run(lib_n)) > 0
+    assert drained(run(lib_z)) == 0
+
+
+def test_kalitas_turns_the_opponents_deaths_into_our_tokens():
+    kw = dict(model_deaths={"own_per_turn": 0.0, "opponent_per_turn": 1.0})
+    lib_k, _ = goldfish.build_library(_typed_doc(KALITAS, "Human"))
+    lib_0, _ = goldfish.build_library(_typed_doc("", "Human"))
+    run = lambda lib: (lambda rng: [goldfish.simulate_once(
+        rng, lib, 3, [], 10, model_combat=True, model_drain=True, model_sacrifice=True, **kw)
+        for _ in range(200)])(random.Random(5))
+    made = lambda rs: _mean(rs, lambda r: r["tokens_made_by_turn"][-1])
+    assert made(run(lib_k)) > made(run(lib_0)) + 1
+
+
+def test_sanctum_seeker_drains_per_attacking_vampire_and_the_gain_is_counted():
+    vamp = _games(_typed_doc(SEEKER, "Vampire"), 200)
+    human = _games(_typed_doc(SEEKER, "Human"), 200)
+    noncombat = lambda rs: _mean(rs, lambda r: goldfish.noncombat_life(r, 10))
+    gained = lambda rs: _mean(rs, lambda r: r["life_gained_by_turn"][-1])
+    assert noncombat(vamp) > noncombat(human) + 1
+    assert gained(vamp) > gained(human)
+    for r in vamp:
+        g = r["life_gained_by_turn"]
+        assert all(a <= b for a, b in zip(g, g[1:])), "cumulative"
+
+
+def test_a_typed_attack_counter_grows_that_type_only():
+    vamp = _games(_typed_doc(CAPTAIN, "Vampire"), 200)
+    human = _games(_typed_doc(CAPTAIN, "Human"), 200)
+    power = lambda rs: _mean(rs, lambda r: r["board_power_by_turn"][-1])
+    assert power(vamp) > power(human) + 2
+
+
+def test_the_life_and_hand_rows_are_absent_off_a_fodder_deck():
+    library, _ = goldfish.build_library(_doc(True))
+    r = goldfish.simulate_once(random.Random(3), library, 3, [], 10, model_combat=True,
+                               model_drain=True)
+    for key in (("clock", "life_gained_by_turn", "8"), ("clock", "hand_size_by_turn", "8")):
+        assert diagnostic.PER_GAME[key](r) is None

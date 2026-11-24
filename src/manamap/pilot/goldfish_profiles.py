@@ -1635,6 +1635,10 @@ _CAST_TOKEN_SCALES_RE = re.compile(
     r"power and toughness are each equal to the number of", re.I)
 
 
+_TOKEN_COLOUR_WORDS = {"white", "blue", "black", "red", "green", "colorless", "and",
+                       "legendary", "tapped", "attacking", "artifact", "enchantment", "snow"}
+
+
 def cast_token_profile(card):
     """A "cast an X spell -> make a token" trigger, or None.
 
@@ -1663,10 +1667,16 @@ def cast_token_profile(card):
         return None
     pt = _PT_RE.search(m.group(3) or "")
     gate = _CAST_TOKEN_TYPE_GATES.get(subtype.lower())
+    # THE TOKEN'S OWN CREATURE TYPE (2026-11-24): "a 1/1 black Vampire creature token" is a
+    # Vampire, and it entered with no type line, so Malakir Bloodwitch, Sanctum Seeker and
+    # Edgar's attack counters never saw the deck's fodder. The last word before "creature".
+    _words = [w for w in re.findall(r"[A-Za-z]+", m.group(3) or "")
+              if w.lower() not in _TOKEN_COLOUR_WORDS]
     return {"subtype": gate or subtype,
             "gate_kind": "type" if gate else "subtype",
             "bodies": _DRAW_WORDS[m.group(2).lower()],
             "power": int(pt.group(1)) if pt else 1,
+            "token_type": _words[-1] if _words else None,
             "scales": bool(_CAST_TOKEN_SCALES_RE.search(text))}
 
 
@@ -2167,6 +2177,18 @@ _DEATH_DAMAGE_RE = re.compile(
     r"|target opponent)", re.I)
 
 
+#: WHOSE CREATURE (2026-11-24). A death trigger whose subject says "you control" (Zulaport,
+#: Bastion) pays on ours only; one that does not (Blood Artist, Falkenrath Noble: "another
+#: creature dies") pays on the opponents' as well.
+_OWN_SUBJECT_RE = re.compile(r"\byou control\b|\byou own\b|\bopponent", re.I)
+#: KALITAS (2026-11-24): "If a nontoken creature an opponent controls would die, instead exile
+#: that card and create a tapped 2/2 black Zombie creature token." A replacement: the creature
+#: never dies, so no death trigger sees it, and the token is ours.
+_OPP_DEATH_REPLACE_RE = re.compile(
+    r"if a nontoken creature an opponent controls would die, instead exile (?:that card|it)"
+    r"[^.]*?create an? (?:tapped )?(\d+)/(\d+) [a-z ]*?([A-Z]\w+) creature token", re.I)
+
+
 def death_profile(card):
     """What fires when ANOTHER creature you control dies.
 
@@ -2179,8 +2201,15 @@ def death_profile(card):
            "death_damage": 0,
            "gain_on_opponent_death": 0, "unreadable": None,
            "nontoken_only": False,
+           "death_any_controller": False,
+           # Kalitas: an opponent's creature is exiled instead and we get the token.
+           "opp_death_token": None,
            # "This ability triggers only once each turn" — a cap on the trigger.
            "death_once": False}
+    _k = _OPP_DEATH_REPLACE_RE.search(text)
+    if _k:
+        out["opp_death_token"] = {"power": int(_k.group(1)), "toughness": int(_k.group(2)),
+                                  "type": _k.group(3)}
     # THE OTHER HALF OF THE MEATHOOK. "Whenever a creature an OPPONENT controls
     # dies, you gain 1 life" is a separate trigger from the one above, and in a
     # deck that turns life gained into life lost it means every removal spell
@@ -2203,6 +2232,14 @@ def death_profile(card):
     # edgar skeptic, 2026-10-05). It still fires on the measured own-death
     # rate, where the creature that dies to removal is a real one.
     out["nontoken_only"] = bool(re.search(r"\bnontoken\b", m.group(0), re.I))
+    # ANY CREATURE, NOT ONLY OURS (2026-11-24): "Whenever Blood Artist or another creature
+    # dies" pays on an opponent's creature too; "another creature YOU CONTROL" does not.
+    # A typed subject ("another Zombie dies") cannot be checked against an opponent's creature,
+    # and a payoff that goes to "that creature's controller" (Fecundity) is theirs, not ours.
+    out["death_any_controller"] = bool(
+        not _OWN_SUBJECT_RE.search(m.group(0))
+        and re.search(r"\bcreatures?\b", re.sub(r"this creature or ", "", m.group(0), flags=re.I), re.I)
+        and not re.search(r"that creature's controller", text[m.start():m.start() + 170], re.I))
     clause = text[m.start():m.start() + 170]
     out["death_once"] = bool(_DEATH_ONCE_RE.search(clause))
     # THE PAYLOAD IS THE FIRST SENTENCE AFTER THE TRIGGER, and a choice or a
@@ -3277,6 +3314,15 @@ _ATTACK_PING_EACH_RE = re.compile(
     r"whenever a creature you control attacks, (?:that creature|it) deals (\d+) damage to each opponent",
     re.IGNORECASE)
 _EXTRA_COMBAT_RE = re.compile(r"additional combat phase", re.IGNORECASE)
+_ATTACK_DRAIN_TYPED_RE = re.compile(
+    r"whenever an? ([A-Z]\w+) you control attacks, each opponent loses (\d+) life"
+    r"(?: and you gain (\d+) life)?", re.I)
+_ATTACK_COUNTERS_TYPED_RE = re.compile(
+    # A qualifier after "you control" ("that's a token or a Rabbit", Finneas) narrows the team:
+    # not read rather than over-read.
+    r"put (a|an|one|two|three|\d+) \+1/\+1 counters? on each (?:other )?([A-Z]\w+) you control"
+    r"(?! that| with| who)",
+    re.I)
 # An ACTIVATED extra combat (Aggravated Assault's {3}{R}{R}), as opposed to a
 # triggered one (Scourge of the Throne). The cost decides whether it is a free
 # repeat button or one you have to buy every turn.
@@ -4792,6 +4838,8 @@ def combat_profile(card):
         "infect": False,
         "toxic": 0,
         "attack_ping_per_attacker": 0,
+        "attack_drain_typed": None,       # Sanctum Seeker, 2026-11-24
+        "attack_counters_typed": None,    # Edgar Markov, 2026-11-24
         # The enters-the-battlefield family. Read for every card, acted on only
         # under model_combat, so a deck that does not opt in is byte-identical.
         "etb_damage_self_power": False,
@@ -4974,6 +5022,19 @@ def combat_profile(card):
             count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
             profile["attack_token_bodies"] += count
             profile["attack_token_power"] += count * _stat(tok.group(2))
+        # A DRAIN PER TYPED ATTACKER (2026-11-24, Sanctum Seeker): "Whenever a Vampire you
+        # control attacks, each opponent loses 1 life and you gain 1 life."
+        _ad_ = _ATTACK_DRAIN_TYPED_RE.search(window)
+        if _ad_:
+            profile["attack_drain_typed"] = {"type": _ad_.group(1), "drain": int(_ad_.group(2)),
+                                             "gain": int(_ad_.group(3) or 0)}
+        # COUNTERS ON A TYPE WHEN THIS ATTACKS (2026-11-24, Edgar Markov): "Whenever Edgar
+        # Markov attacks, put a +1/+1 counter on each Vampire you control."
+        _ac_ = _ATTACK_COUNTERS_TYPED_RE.search(window)
+        if _ac_:
+            profile["attack_counters_typed"] = {
+                "type": _ac_.group(2), "n": _NUMBER_WORDS.get(_ac_.group(1).lower(), 1)
+                if not _ac_.group(1).isdigit() else int(_ac_.group(1))}
         if _ATTACK_TOKEN_SCALES_RE.search(window):
             profile["attack_token_bodies"] += 1
             profile["attack_token_scales"] = True
@@ -4986,6 +5047,8 @@ def combat_profile(card):
                     profile["team_damage_multiplier"] > 1,
                     profile["double_strike"],
                     profile["attack_ping_per_attacker"],
+                    profile.get("attack_drain_typed"),
+                    profile.get("attack_counters_typed"),
                     # Checked against the FULL text, not the window: Scourge of
                     # the Throne's reminder clause pushes "additional combat
                     # phase" past 220 characters, and flagging a card whose

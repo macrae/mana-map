@@ -498,8 +498,9 @@ def test_the_commander_mints_a_token_on_cast_and_the_model_reads_it():
     # `gate_kind` and `scales` arrived with the cast-token channel (9d2efd9):
     # a gate naming a CARD TYPE (Sigil: "enchantment spell") is not a creature
     # subtype, and a token whose size is self-referential is floored, not read.
+    # `token_type` (2026-11-24): the token is a Vampire, which typed counts and triggers read.
     assert edgar == {"subtype": "Vampire", "gate_kind": "subtype", "bodies": 1,
-                     "power": 1, "scales": False}
+                     "power": 1, "token_type": "Vampire", "scales": False}
 
 
 def test_a_cost_reducing_eminence_is_not_a_token_eminence():

@@ -249,11 +249,12 @@
                         'hand can act by T3', "kept hand passes the pilot's keep rule"]],
     ['Cards and answers', ['extra cards by T8', 'interaction affordable @T6',
                            'finisher wheel by T8', 'wheels cast by T10',
-                           'dead wheels in hand @T5']],
+                           'dead wheels in hand @T5', 'cards in hand @T8']],
     ['Big bodies', ['a 6+ drop out by T6', 'turns saved on big bodies', 'experience @T7',
                    'experience 5+ by T6', 'a 5+ drop via Meren by T6']],
     ['Fodder into value', ['tokens converted by T8', 'life lost outside combat @T10',
-                           'killed outside combat by T10', 'a combo line whole by T8']]
+                           'killed outside combat by T10', 'a combo line whole by T8',
+                           'life gained by T8']]
   ];
   var READ_WORD = { better: 'Better', worse: 'Worse', noise: 'No call' };
 

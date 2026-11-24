@@ -1123,6 +1123,9 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                 __import__("collections").Counter(
                     kill_source(r) for r in results
                     if r["kill_turn"] is not None and r["kill_turn"] <= 10)),
+            **({"mean_life_gained_by_turn": {
+                str(t): _round(sum(r["life_gained_by_turn"][t - 1] for r in results) / n)
+                for t in turns}} if results and "life_gained_by_turn" in results[0] else {}),
             **({"combo_assembled_by_turn": {str(t): _round(sum(
                 1 for r in results if r["combo_assembled_turn"] is not None
                 and r["combo_assembled_turn"] <= t) / n) for t in turns}}
@@ -1861,6 +1864,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         if c["drain"]["unmodelled"]
         and not (model_deaths and (c["death"]["death_drain"]
                                    or c["death"]["gain_on_opponent_death"]))
+        # Sanctum Seeker's drain is read on the attack (2026-11-24, `attack_drain_typed`).
+        and not (model_combat and c["combat"]["attack_drain_typed"])
     }) if model_drain else []
 
     # A SEED PER GAME (2026-10-04). One shared stream meant two lists played the

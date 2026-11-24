@@ -341,6 +341,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # is NOT spent by this model -- a reported figure, a floor on what the turn could do.
     tokens_made = 0
     tokens_made_by_turn = []
+    life_gained = 0               # cumulative, under `model_drain` (2026-11-24)
+    life_gained_by_turn = []
     tokens_converted = 0
     tokens_converted_by_turn = []
     sac_mana_per = 0              # the best free outlet in play: mana per creature
@@ -943,6 +945,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     opponent_death_debt = 0.0
     death_drains = []          # profiles that fire when OUR creature dies
     opponent_death_gains = []  # profiles that gain when THEIRS does
+    # KALITAS (2026-11-24): an opponent's creature is exiled instead of dying, and we get the
+    # token. Under `model_deaths` only; the measured opponent death rate is what feeds it.
+    opponent_death_replacers = []
     lifelink_power = 0
     drain_by_turn = []
     # Type lines of nonland permanents on the battlefield, so a card whose X is
@@ -1565,7 +1570,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if any((cprof["attack_mana"], cprof["attack_damage"],
                         cprof["attack_treasure"], cprof["attack_draw"],
                         cprof["attack_token_bodies"],
-                        cprof["attack_ping_per_attacker"])):
+                        cprof["attack_ping_per_attacker"],
+                        cprof["attack_drain_typed"], cprof["attack_counters_typed"])):
                     combat_engines.append(cprof)
                 if cprof["extra_combat_free"]:
                     extra_combat_free += 1
@@ -1882,7 +1888,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if any((combat["attack_mana"], combat["attack_treasure"],
                         combat["attack_draw"], combat["damage_scales_with_treasure"],
                         combat["attack_damage"], combat["attack_token_bodies"],
-                        combat["attack_ping_per_attacker"])):
+                        combat["attack_ping_per_attacker"],
+                        combat["attack_drain_typed"], combat["attack_counters_typed"])):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -2452,8 +2459,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     and commander_cast_token["subtype"] in card["subtypes"]):
                 minted = commander_cast_token["bodies"] * token_multiplier
                 for _ in range(minted):
+                    # TYPED (2026-11-24): Edgar's are Vampires, which Bloodwitch, Sanctum
+                    # Seeker and his own attack counters count.
                     creature_entered(commander_cast_token["power"], turn,
-                                     False, 1, is_token=True)
+                                     False, 1, is_token=True,
+                                     type_line=("Token Creature — " + commander_cast_token["token_type"]
+                                                if commander_cast_token.get("token_type") else ""))
                 bodies_cum += minted
             # Creature tokens arrive with summoning sickness too, and they
             # arrive on the turn their maker resolved.
@@ -2471,7 +2482,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if any((combat["attack_mana"], combat["attack_treasure"],
                         combat["attack_draw"], combat["damage_scales_with_treasure"],
                         combat["attack_damage"], combat["attack_token_bodies"],
-                        combat["attack_ping_per_attacker"])):
+                        combat["attack_ping_per_attacker"],
+                        combat["attack_drain_typed"], combat["attack_counters_typed"])):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -2506,6 +2518,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     death_drains.append(card["death"])
                 if card["death"]["gain_on_opponent_death"]:
                     opponent_death_gains.append(card["death"])
+                if card["death"]["opp_death_token"]:
+                    opponent_death_replacers.append(card["death"]["opp_death_token"])
             if card["attack_enabler"]:
                 attack_enabler_out = True
             if card["combat"]["mass_animate_threshold"]:
@@ -3947,6 +3961,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             death_drains.append(card["death"])
                         if card["death"]["gain_on_opponent_death"]:
                             opponent_death_gains.append(card["death"])
+                        if card["death"]["opp_death_token"]:
+                            opponent_death_replacers.append(card["death"]["opp_death_token"])
                     if card["attack_enabler"]:
                         attack_enabler_out = True
                     if card["combat"]["mass_animate_threshold"]:
@@ -4890,6 +4906,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 _eq_pow[_t] = _eq_pow.get(_t, 0) + _eng["equip_power"]
                 if _eng["equip_double_strike"]:
                     _eq_ds.add(_t)
+            # COUNTERS ON A TYPE WHEN THE SOURCE ATTACKS (2026-11-24, Edgar Markov: "put a +1/+1
+            # counter on each Vampire you control"). The trigger resolves in the declare-attackers
+            # step, so this swing carries them. A commander's fires only when IT is attacking; a
+            # card in the 99 whenever anything attacks (its own attack is not tracked, a ceiling).
+            if _able:
+                _cmd_att = {_cmdr_of(i) for i in _able}
+                _cmd_ids = {id(commander_combat)} | ({id((partner or {}).get("combat"))}
+                                                     if (partner or {}).get("combat") else set())
+                for _eng in combat_engines:
+                    _ct = _eng.get("attack_counters_typed")
+                    if not _ct or (id(_eng) in _cmd_ids and id(_eng) not in _cmd_att):
+                        continue
+                    _n = apply_counter_mod(_ct["n"], counter_plus, counter_times)
+                    _all = _ct["type"].lower() == "creature"
+                    for _i, _tl in enumerate(creature_types):
+                        if _all or _ct["type"] in (_tl or ""):
+                            _e = battlefield[_i]
+                            battlefield[_i] = (_e[0] + _n,) + _e[1:6] + (_e[6] + _n,) + _e[7:]
             _lbs = _lord_bonuses()
             attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump
                             + _eq_pow.get(_cmdr_of(i), 0)) * _power_mult)
@@ -5072,6 +5106,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     if engine.get("attack_needs_company") \
                             and len(attackers) < 1 + engine["attack_needs_company"]:
                         continue
+                    # A DRAIN PER ATTACKER OF A TYPE (2026-11-24, Sanctum Seeker): life loss, not
+                    # combat damage, and each gain its own event for Vito and Blight-Priest.
+                    _dt = engine["attack_drain_typed"]
+                    if _dt:
+                        _k = sum(1 for _i in _able
+                                 if _dt["type"].lower() == "creature"
+                                 or _dt["type"] in (creature_types[_i] or ""))
+                        etb_by["life"] += _dt["drain"] * _k
+                        if _dt["gain"] and _k:
+                            event_gain_events += _k
+                            event_gain_total += _dt["gain"] * _k
                     pool += engine["attack_mana"]
                     etb_by["creature" if engine["is_creature"] else "other"] += engine["attack_damage"]
                     if model_treasures:
@@ -5735,8 +5780,36 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # sees the real creature and not the token (2026-10-19).
                 _deaths_after_combat(1, bool(_died[4]))
             for _ in range(n_opp):
+                # KALITAS FIRST (2026-11-24): the creature is exiled instead, so nothing sees
+                # it die, and we get the token. Every opponent death is read as nontoken here
+                # (the measured rate does not split them), a ceiling on the tokens.
+                if opponent_death_replacers:
+                    _tk = opponent_death_replacers[0]
+                    creature_entered(_tk["power"], turn, False, 1, toughness=_tk["toughness"],
+                                     is_token=True, type_line="Token Creature — " + _tk["type"])
+                    continue
                 for prof in opponent_death_gains:
                     deaths_gained += prof["gain_on_opponent_death"] * death_trigger_mult
+                # ANY CREATURE DYING PAYS (2026-11-24): Blood Artist and Falkenrath Noble see an
+                # opponent's creature die too; "you control" payoffs do not.
+                _fired_opp = set()
+                for eng in death_drains:
+                    if not eng.get("death_any_controller") or id(eng) in _fired_opp:
+                        continue
+                    _fired_opp.add(id(eng))
+                    if eng.get("death_once"):
+                        if id(eng) in death_once_used:
+                            continue
+                        death_once_used.add(id(eng))
+                        _reps = 1
+                    else:
+                        _reps = death_trigger_mult
+                    deaths_drained += eng["death_drain"] * _reps
+                    deaths_damaged += eng["death_damage"] * _reps
+                    if eng["death_draw"]:
+                        draw_n(eng["death_draw"] * _reps)
+                    if model_treasures:
+                        treasures += eng["death_treasure"] * _reps
 
         # ── the drain pillar ────────────────────────────────────────────────
         #
@@ -5818,6 +5891,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if linked > 0:
                     gain_total += linked; gain_events += 1
 
+            # THE LIFE WE GAINED, cumulative (2026-11-24): every gain event this turn, lifelink
+            # included -- the half of the pilot's "life gain, life drain" nothing reported.
+            life_gained += gain_total
+            life_gained_by_turn.append(life_gained)
             # COUNTERS ON A GAIN EVENT (Archangel of Thune, Ajani's Pridemate),
             # through the counter replacements like every other counter event.
             # Applied here, after combat, so this turn's gains grow next turn's
@@ -6333,6 +6410,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         **({"tokens_made_by_turn": tokens_made_by_turn,
             "tokens_converted_by_turn": tokens_converted_by_turn,
             "sac_mana_by_turn": sac_mana_by_turn} if model_sacrifice else {}),
+        **({"life_gained_by_turn": life_gained_by_turn} if model_drain else {}),
         "combat_only_by_turn": combat_only_by_turn,
         # Declared and no line in the list is a ZERO, not an absence: the channel looked.
         **({"combo_assembled_turn": combo_assembled_turn} if combo_lines is not None else {}),
