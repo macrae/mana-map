@@ -4,7 +4,7 @@
 
 <!-- ctx:gen summary -->
 - **Commander:** [Meren of Clan Nel Toth](https://manamap.seanmacrae.com/viz/index.html?cards=Meren+of+Clan+Nel+Toth)
-- **Version:** V31 · **status:** on the bench (bench)
+- **Version:** VNone + uncommitted edits · **status:** on the bench (bench)
 - **Colours:** BG · **lands:** 35 · **bracket floor:** 3 (Upgraded)
 - **Combos:** 5 known lines (5 infinite, 0 two-card) · 258 one card short
 - **Links:** [deck page](https://manamap.seanmacrae.com/viz/deck.html?deck=meren-recursion) · [on the map](https://manamap.seanmacrae.com/viz/index.html?deck=meren-recursion)
@@ -169,18 +169,18 @@ Thirty-five lands, four of them plain Swamps. Mostly untapped duals and fetches 
 <!-- ctx:gen numbers -->
 - **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-23
 - **The goldfish — one instrument.** It reads 89 of 97 distinct cards (1 DARK, 7 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
-Goldfish, 10,000 seeded games, measured on V31, 2026-11-23. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
+Goldfish, 10,000 seeded games, measured on the working list (uncommitted). Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **92%**
+- share of seeded games where the commander was CAST by turn six: **91%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 4.254**
+- mean turn the commander is first cast: **turn 4.276**
 - A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand: **75%**
-- A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out: **65%**
+- A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out: **66%**
 - THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn: **48%**
 - AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate): **53%**
-- A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return: **74%**
+- A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return: **70%**
 - CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience: **35%**
-- THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience: **26%**
+- THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience: **24%**
 - A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own): **37%**
 - A TUTOR drawn — finds the missing half of the experience engine: **45%**
 - RAMP drawn — an accelerant of any kind: **36%**
@@ -239,6 +239,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
+- **011 open** (—) — we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then s · open · goldfish saw 2/2 named cards
 - **010 approve** (pilot, strategist, card-scout, deck-doctor, goldfish) — the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for th · 2026-11-23 · “i like it [Hangarback Walker for Tergrid] / approve, make the swap; next please [Fell Stinger for Gray Merchant] / I lik”
 - **009 approve** (pilot, card-scout, deck-doctor) — Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning · 2026-11-22 · goldfish saw 1/1 named cards · “approve, make the swap and save”
 - **008 approve** (pilot, deck-doctor) — Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Div · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save”
@@ -246,8 +247,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 - **006 approve** (pilot, deck-doctor) — Twilight Diviner in — copies a creature entering from the graveyard once each turn (Meren's end-step return, Reanimate, retrace), surveil 2  · 2026-11-22 · goldfish saw 1/1 named cards · “I approve... and let's open a search after for adding artifact/enchantment removal in an optimal way post-this update an”
 - **005 approve** (pilot, deck-doctor) — Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes  · 2026-11-22 · goldfish saw 1/1 named cards · “shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's ”
 - **004 no-change** (pilot, strategist) — Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the  · 2026-11-22 · goldfish saw 1/1 named cards · “eh... ok... forget it.. we only want clearly advantageous, obvious updates!”
-- **003 decline** (pilot, strategist) — Braids, Cabal Minion in as the third Game Changer — each upkeep every player sacrifices an artifact, creature or land; we pay with fodder fo · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, I agree... then orcish bowmasters is the better option?”
-- … 2 earlier: `manamap pilot study meren-recursion list`
+- … 3 earlier: `manamap pilot study meren-recursion list`
 <!-- /ctx:gen studies -->
 
 ## Change history

@@ -21,9 +21,11 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
+    "stale": [
+      "map"
+    ],
     "older_model": [],
     "invalid": [],
     "verified": true,
@@ -116,8 +118,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 11,
-      "out": 11,
+      "add": 12,
+      "out": 12,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -473,7 +475,7 @@
         },
         {
           "name": "Vile Entomber",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Viscera Seer",
@@ -526,8 +528,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 24,
-      "out": 24,
+      "add": 25,
+      "out": 25,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -895,7 +897,7 @@
         },
         {
           "name": "Vile Entomber",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Viscera Seer",
@@ -937,8 +939,8 @@
       "proposal": null,
       "base_version": 1,
       "size": 100,
-      "add": 69,
-      "out": 69,
+      "add": 68,
+      "out": 68,
       "cards": [
         {
           "name": "Abstergo Entertainment",
@@ -1306,7 +1308,7 @@
         },
         {
           "name": "Vampiric Tutor",
-          "is_new": true
+          "is_new": false
         },
         {
           "name": "Vernal Fen",
@@ -1435,6 +1437,22 @@
     }
   ],
   "studies": [
+    {
+      "id": "011",
+      "question": "we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then surveil to graveyard is nice, vampiric is nice too.. could do it",
+      "branch": null,
+      "file": "011-we-have-room-for-2-game-changers-with-a-surveil.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-23",
+      "swap": null,
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
     {
       "id": "010",
       "question": "the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for that to happen consistently, and how do we back into a solution",
@@ -1646,8 +1664,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "2d5005da9227",
-    "list_version": 31,
+    "list_sha": "105b2fc28f73",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1798,7 +1816,7 @@
       "title": "Goldfish",
       "facts": {
         "commander_by_t6": {
-          "value": 92,
+          "value": 91,
           "tier": "data",
           "weight": "headline",
           "definition": "share of seeded games where the commander was CAST by turn six — cast, not drawn",
@@ -1816,7 +1834,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.254,
+          "value": 4.276,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1832,7 +1850,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out": {
-          "value": 65,
+          "value": 66,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out' by turn six",
@@ -1856,7 +1874,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return": {
-          "value": 74,
+          "value": 70,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return' by turn six",
@@ -1872,7 +1890,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience": {
-          "value": 26,
+          "value": 24,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience' by turn six",
@@ -1989,15 +2007,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.785,
+            "10": 7.753,
             "2": 2.195,
-            "3": 3.168,
-            "4": 4.005,
-            "5": 4.705,
-            "6": 5.375,
-            "7": 5.985,
-            "8": 6.582,
-            "9": 7.179
+            "3": 3.16,
+            "4": 3.988,
+            "5": 4.69,
+            "6": 5.355,
+            "7": 5.96,
+            "8": 6.554,
+            "9": 7.147
           },
           "tier": "data",
           "weight": "detail",
@@ -2008,15 +2026,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.554,
+            "10": 0.556,
             "2": 0.997,
-            "3": 0.918,
-            "4": 0.797,
+            "3": 0.911,
+            "4": 0.788,
             "5": 0.684,
-            "6": 0.611,
-            "7": 0.571,
+            "6": 0.606,
+            "7": 0.566,
             "8": 0.552,
-            "9": 0.554
+            "9": 0.547
           },
           "tier": "data",
           "weight": "detail",
@@ -2026,16 +2044,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.182,
-            "10": 16.876,
-            "2": 0.851,
-            "3": 1.549,
-            "4": 2.122,
-            "5": 3.751,
-            "6": 5.894,
-            "7": 8.291,
-            "8": 10.942,
-            "9": 13.809
+            "1": 0.172,
+            "10": 16.927,
+            "2": 0.833,
+            "3": 1.536,
+            "4": 2.118,
+            "5": 3.825,
+            "6": 5.999,
+            "7": 8.397,
+            "8": 11.033,
+            "9": 13.868
           },
           "tier": "data",
           "weight": "detail",
@@ -2045,14 +2063,14 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 309,
-            "1": 1574,
-            "2": 2893,
-            "3": 2891,
-            "4": 1701,
-            "5": 531,
+            "0": 306,
+            "1": 1556,
+            "2": 2943,
+            "3": 2837,
+            "4": 1721,
+            "5": 537,
             "6": 90,
-            "7": 11
+            "7": 10
           },
           "tier": "data",
           "weight": "detail",
@@ -2061,12 +2079,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1495,
-            "5": 2,
-            "6": 159,
-            "7": 1404,
-            "8": 3106,
-            "9": 3135
+            "10": 1466,
+            "5": 4,
+            "6": 155,
+            "7": 1424,
+            "8": 3137,
+            "9": 3118
           },
           "tier": "data",
           "weight": "detail",
@@ -2082,8 +2100,8 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.254,
-    "commander_cast_by_turn_6_pct": 92,
+    "commander_mean_cast_turn": 4.276,
+    "commander_cast_by_turn_6_pct": 91,
     "targets": [
       {
         "label": "A FREE SACRIFICE OUTLET drawn — no mana per use; every experience counter is a death, and the deck has no other way to make one on demand",
@@ -2091,7 +2109,7 @@
       },
       {
         "label": "A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out",
-        "by_turn_6_pct": 65
+        "by_turn_6_pct": 66
       },
       {
         "label": "THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn",
@@ -2103,7 +2121,7 @@
       },
       {
         "label": "A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return",
-        "by_turn_6_pct": 74
+        "by_turn_6_pct": 70
       },
       {
         "label": "CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience",
@@ -2111,7 +2129,7 @@
       },
       {
         "label": "THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience",
-        "by_turn_6_pct": 26
+        "by_turn_6_pct": 24
       },
       {
         "label": "A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)",
@@ -2135,19 +2153,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.473,
+      "mean_kill_turn": 8.463,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 2,
       "kill_by_turn_8_pct": 47,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 7,
       "kill_turn_histogram": {
-        "10": 1495,
-        "5": 2,
-        "6": 159,
-        "7": 1404,
-        "8": 3106,
-        "9": 3135
+        "10": 1466,
+        "5": 4,
+        "6": 155,
+        "7": 1424,
+        "8": 3137,
+        "9": 3118
       }
     }
   },
@@ -2242,11 +2260,14 @@
     ]
   },
   "next": [
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V31 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 23 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "branch `drain-density-v1`: 46 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 24 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `drain-density-v1`: 45 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "study 011 is open: we have room for 2 game changers... with a surveil on the battlefield, — `manamap pilot study meren-recursion call 011 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×2, resolve-stack ×1"
   ],

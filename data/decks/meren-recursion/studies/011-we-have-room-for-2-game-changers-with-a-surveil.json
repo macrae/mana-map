@@ -1,0 +1,195 @@
+{
+  "id": "011",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then surveil to graveyard is nice, vampiric is nice too.. could do it",
+  "opened": "2026-11-23",
+  "decided_at": null,
+  "cards": [
+    "Worldly Tutor",
+    "Vampiric Tutor"
+  ],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "text": "Add both tutors, cutting Six and Vile Entomber; NO CHANGE elsewhere; Eyeless Watcher stays parked. Argument only: no stack and no goldfish row has tested the line.\n1. Rules: the line is right. Worldly Tutor: instant, {G}, creature card only, on top (S-60d6f4e6-03) — cannot find Reanimate, Animate Dead, Cauldron or a noncreature outlet. Vampiric Tutor: instant, {B}, any card, on top, lose 2 life (S-60d6f4e6-06). Unshakable Tail surveils 1 at the beginning of our upkeep, before the draw (bin it or keep it; a binned creature card also investigates). Nyx Weaver mills two at upkeep: bins it for certain plus a free extra mill. With neither on board, the tutor is an instant-speed Demonic Tutor on mana otherwise wasted (strategy:deckbuilding.redundancy-vs-tutors); holding mana up leaves the table guessing (strategy:multiplayer.pod-management). Best finds: Worldly — the missing engine half (Ophiomancer, Constrictor) or a fatty to bin (Archon, Sheoldred) with Tail or Weaver out; Vampiric — whatever the board lacks (Reanimate or Cauldron once a fatty is in the yard, or the free outlet). Study 010's doctor: tutoring lifts the outlet-plus-fodder pair by T6 (goldfish, unopposed) — an argument for tutors over a third fodder body.\n2. Cuts: Six — mills only when it attacks; a 3-mana 2/4 attacking into a table is the card least tied to the end step, and Tail, Weaver, Wayfinder, Supplier and Diviner fill the yard. Vile Entomber — a 4-mana sorcery-speed load; Entomb, Buried Alive, Fauna Shaman, Formidable Speaker and now two tutors do that job (function neighbours Speaker, Entomb). Weighed and kept: Woe Strider (free outlet, the self-feeding thesis), Ozox (three-card lines), Stitcher's Supplier and Satyr Wayfinder (self-feeding bodies), Sylvan Library (pairs with a tutored top card), Sol Ring. Fallback if Entomber stays: Blasting Station. Eyeless Watcher: fodder is not the bottleneck by study 010; a tutor beats it for a slot.\n3. Life: Vampiric's 2 life is minor; skip it on a turn that stacks Reanimate on a big fatty, Dark Prophecy, Bitterblossom and Fell Stinger.\nOpen: does the goldfish model end-step tutors and Tail's top-of-library surveil? A scenario slice or rules check is the lightest test of the line.",
+      "cites": {
+        "facts": [
+          "S-60d6f4e6-03",
+          "S-60d6f4e6-06"
+        ],
+        "strategy": [
+          "strategy:deckbuilding.redundancy-vs-tutors",
+          "strategy:multiplayer.pod-management"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-23T15:20:23-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/strategist-011.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "text": "{\n  \"slug\": \"meren-recursion\",\n  \"as_of_decklist_sha256\": \"2d5005da92276e8c13572ed83f0ed9afb173d3234d2e3c707358fa196fde6383\",\n  \"reading\": \"The pilot wants Worldly Tutor and Vampiric Tutor as Game Changers two and three. Bracket stays 3 either way: today's floor is 3 on one Game Changer (Demonic Tutor). Vampiric Tutor for Vile Entomber is the one clear swap. The goldfish (10,000 paired games) reads it better on 8 rows and worse on 2 small ones, and it trades a 4-mana {2}{B}{B} loader out of the deck's most redundant group (A YARD LOADER, 9 cards, 86.8%) for a 1-mana answer to anything. Worldly Tutor gets NO CHANGE for now: both cuts tested for it (Woe Strider, Ozox) read worse on 6 to 8 rows, and the surveil and instant-speed line the pilot named is the part the goldfish cannot see. So nothing measured argues for it yet.\",\n  \"log_entries_read\": [],\n  \"axes_engaged\": [\n    {\"axis\": \"tutors\", \"verdict\": \"adequate\",\n     \"measured\": {\"value\": 8},\n     \"reading\": \"Eight tutors by role: Buried Alive, Demonic Tutor, Entomb, Fauna Shaman, Fiend Artisan, Formidable Speaker, Sakura-Tribe Elder and Vile Entomber. Swapping Vampiric for Entomber keeps the count at 8, and the cheapest unrestricted one replaces the dearest.\"},\n    {\"axis\": \"ramp\", \"verdict\": \"weakness\",\n     \"measured\": {\"value\": 8},\n     \"reading\": \"8 against a 10-12 target. That is why Sol Ring was not tested as a cut: losing it would widen the gap that already shows in 'missed drop by T5' at 40.3%.\"},\n    {\"axis\": \"colour-sources\", \"verdict\": \"weakness\",\n     \"measured\": {\"value\": -2},\n     \"reading\": \"Black is 2 sources short (34 of 36). Vampiric's {B} in place of Entomber's {2}{B}{B} lowers the black pip load. Worldly's {G} would draw on green, which has 3 sources to spare.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Vile Entomber\",\n     \"why\": \"It is one of 9 cards in A YARD LOADER (86.8% drawn), the deck's most redundant group, alongside Entomb, Buried Alive, Fauna Shaman, Formidable Speaker, Satyr Wayfinder, Stitcher's Supplier, Nyx Weaver and Six. At 4 mana with {B}{B} it is the dearest way to do what Entomb does for {B}. In the goldfish, Vampiric in its slot reads better on 8 of 16 rows.\",\n     \"cost_of_cutting\": \"A deathtouch body that Meren can return each end step. Every return is another Entomb on a body, which is a repeatable tutor-to-yard engine that Vampiric cannot repeat. You also lose one piece of fodder and one blocker. The goldfish does not credit the ETB search as a tutor (it counts cast instant/sorcery tutors only), so this loop is undercounted on both sides of the read.\",\n     \"orphans_stack\": [],\n     \"difficulty\": \"contested\"}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Vampiric Tutor\",\n     \"closes\": \"A TUTOR drawn — finds the missing half of the experience engine\",\n     \"source\": \"prompt\",\n     \"why\": \"This is the pilot's pick. The tutor group is 4 cards and lands in 60.2% of games. A 1-mana instant that finds any card can reach Grave Pact (A SACRIFICE TAX, 1 card, 20.5%, the thinnest group), a reanimation spell or a missing outlet. Goldfish vs V31, Vile Entomber out (paired, 10,000 games, ci95 on the difference). Better: experience 5+ by T6 22.6% -> 23.1% [+0.3, +0.7] pts; experience @T7 5.21 -> 5.28 [+0.06, +0.10]; a 6+ drop out by T6 13.9% -> 14.2% [+0.1, +0.5] pts; turns saved on big bodies 0.770 -> 0.788 [+0.010, +0.025]; extra cards by T8 1.95 -> 1.97 [+0.01, +0.04]; hand can act by T3 97.8% -> 98.2% [+0.2, +0.5] pts; board power @T6 9.57 -> 9.73 [+0.13, +0.17]; damage @T10 21.7 -> 21.8 [+0.05, +0.18]. Worse: stall, 2 in a row 11.6% -> 12.2% [+0.3, +0.8] pts; missed drop by T5 40.3% -> 40.9% [+0.5, +0.8] pts. No call: a 5+ drop via Meren by T6 2.9% -> 3.0% [-0.0, +0.2] pts. Every gain is under a point. The swap stands on the card argument (1 mana against 4, any card against one to the yard), and the goldfish agrees without deciding it. The model reads Vampiric as a wildcard delayed one turn. It cannot see the 2 life or the instant-speed end-step cast that dodges sorcery-speed answers.\",\n     \"evidence\": {\"recon_support\": \"deck_recon.json (as of 2026-11-23): the aggregate bracket-3 list is a creature-dense sacrifice/reanimator deck. Recon is about other people's lists and is not the reason here.\"},\n     \"natural_cut\": \"Vile Entomber\",\n     \"bracket_delta\": {\"before\": 3, \"after\": 3}}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Worldly Tutor: is the line 'cast it in the previous player's end step, then bin the creature with Unshakable Tail's upkeep surveil or Nyx Weaver's upkeep mill 2' worth a slot? Note that Satyr Wayfinder and Stitcher's Supplier ETBs answered at instant speed do the same job, so neither should be the cut.\",\n     \"settled_by\": \"goldfish\",\n     \"why_it_matters\": \"This line is the pilot's whole case for Worldly, and the goldfish models none of it. It treats Worldly as a creature-filtered wildcard that arrives on the next draw (goldfish.py: 'a tutor that puts the card on top of the library costs a turn'). It never mills or surveils the tutored card. On that model the two cuts tested read worse. Woe Strider out: 8 worse, including experience 5+ by T6 22.6% -> 21.9% [-1.0, -0.5] pts, killed by T10 92.4% -> 91.2% [-1.4, -0.9] pts and missed drop by T5 +1.0 [+0.8, +1.2] pts; it also leaves A FREE SACRIFICE OUTLET (9 cards). Ozox out, the least-bad: 6 worse, including board power @T6 9.57 -> 9.42 [-0.18, -0.13], killed by T10 -0.7 [-0.9, -0.5] pts and missed drop by T5 +0.9 [+0.7, +1.1] pts; experience 5+ by T6 had no call at -0.2 [-0.4, 0.0] pts. Better only on hand can act by T3 +0.2 [+0.1, +0.3] pts and a 6+ drop out by T6 +0.3 [+0.1, +0.5] pts. By the pilot's clear-upgrade rule, that is NO CHANGE until the line is modelled or played. If he wants the third Game Changer anyway, Ozox is the cheapest cut measured.\"},\n    {\"question\": \"Should Vampiric Tutor (and Worldly, if it goes in) join the declared 'A TUTOR drawn' group in goldfish_targets.json? That group is Demonic Tutor, Fiend Artisan, Formidable Speaker and Fauna Shaman.\",\n     \"settled_by\": \"goldfish\",\n     \"why_it_matters\": \"Today a new tutor counts only as a wildcard. The declared group's by-T6 rate cannot move, so this screen cannot report it. This is a proposal only; I have not edited anything.\"}\n  ],\n  \"gaps\": [\n    \"No games are logged on V31 (deck-notes list is empty), so no table evidence backs or refutes either tutor.\",\n    \"`try` does not print the declared groups' by-T6 rates (THE EXPERIENCE ENGINE drawn, etc.), only the 16 profile rows. The audit's group figures (THE EXPERIENCE ENGINE drawn 69.1%, A TUTOR drawn 60.2%, A YARD LOADER 86.8%) are for V31 as it stands, not for the swapped lists.\",\n    \"Only four pairs were screened: Worldly for Woe Strider, Worldly for Ozox, Vampiric for Vile Entomber, Vampiric for Ozox. Worldly for Vile Entomber was not run; that slot goes to Vampiric. Satyr Wayfinder, Stitcher's Supplier, Six and Sol Ring were not screened. The first three are yard loaders that also feed the pilot's top-then-bin line, and Sol Ring is ramp on an axis already under target.\",\n    \"Vampiric for Ozox read worse on 4 rows (damage @T10 -0.23 [-0.30, -0.17], board power @T6 -0.14 [-0.17, -0.12], killed by T10 -0.7 [-0.9, -0.5] pts, missed drop by T5 +0.8 [+0.6, +1.0] pts). The gain belongs to the Entomber slot, not to Vampiric alone.\",\n    \"No checker-passed stacks exist for this deck, so no cut orphans a verified line.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-23T15:23:46-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-011.json"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "we-have-room-for-2-game-changers-with-a-surveil",
+  "facts": [
+    {
+      "id": "S-60d6f4e6-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-60d6f4e6-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-60d6f4e6-03",
+      "kind": "oracle",
+      "text": "Instant · {G} — Search your library for a creature card, reveal it, then shuffle and put the card on top.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Worldly Tutor",
+      "game_changer": true
+    },
+    {
+      "id": "S-60d6f4e6-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Entomb (0.98), Demonic Tutor (0.98), Fauna Shaman (0.97)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Worldly Tutor",
+      "neighbours": [
+        {
+          "name": "Entomb",
+          "score": 0.9838
+        },
+        {
+          "name": "Demonic Tutor",
+          "score": 0.9772
+        },
+        {
+          "name": "Fauna Shaman",
+          "score": 0.9703
+        }
+      ]
+    },
+    {
+      "id": "S-60d6f4e6-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Worldly Tutor",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    },
+    {
+      "id": "S-60d6f4e6-06",
+      "kind": "oracle",
+      "text": "Instant · {B} — Search your library for a card, then shuffle and put that card on top. You lose 2 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Vampiric Tutor",
+      "game_changer": true
+    },
+    {
+      "id": "S-60d6f4e6-07",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Demonic Tutor (0.98), Entomb (0.97), Buried Alive (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Vampiric Tutor",
+      "neighbours": [
+        {
+          "name": "Demonic Tutor",
+          "score": 0.976
+        },
+        {
+          "name": "Entomb",
+          "score": 0.9726
+        },
+        {
+          "name": "Buried Alive",
+          "score": 0.9592
+        }
+      ]
+    },
+    {
+      "id": "S-60d6f4e6-08",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Vampiric Tutor",
+      "state": "seen",
+      "channels": [
+        "tutor"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Worldly Tutor",
+      "Vampiric Tutor"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Worldly Tutor",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Worldly Tutor",
+      "source": "engine.json",
+      "why": "no engine model"
+    },
+    {
+      "card": "Vampiric Tutor",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Vampiric Tutor",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "2d5005da92276e8c13572ed83f0ed9afb173d3234d2e3c707358fa196fde6383",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-23T15:18:24-08:00",
+    "facts": 8
+  }
+}
