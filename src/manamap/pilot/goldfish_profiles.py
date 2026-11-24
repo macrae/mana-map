@@ -5558,8 +5558,9 @@ def reduced_cost(card, reductions, chosen=None):
             # a colour ("Blue spells"), a pair of card types, or every spell (2026-11-23)
             if applies[0] == "any" \
                     or applies[0] == "color" and any(applies[1] in p for p in card["pips"]) \
-                    or applies[0] == "types" and any(t in (card["type_line"] or "")
+                    or applies[0] == "types" and any(t in (card.get("type_line") or "")
                                                     for t in applies[1]):
+                # `.get`: the commander's record is built by hand and carries no type line
                 total += amount
         elif applies is CHOSEN_TYPE:
             if chosen and chosen in card["subtypes"]:

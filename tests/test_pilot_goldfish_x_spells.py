@@ -166,10 +166,25 @@ def test_the_channel_carries_a_deck_that_is_built_out_of_it(monkeypatch):
     def blind(card):
         p = real(card)
         p["x_draw_multiplier"] = 0
+        p["x_draw_each_player"] = False
         return p
+
+    # SINCE 2026-11-23 HELIOD'S FLASH WINDOW CASTS X DRAWS TOO (Prosperity and Fascination
+    # through `x_draw_each_player`, Stroke and Mathemagics through `window.target_draw`), so
+    # blinding the main-phase multiplier alone left the window drawing them and read 15.9
+    # against 15.5. Every X-draw reader is blinded, which is what "the channel" means.
+    from manamap.pilot import goldfish_library as _gl
+    real_window = _gl.window_profile
+
+    def blind_window(card):
+        w = real_window(card)
+        if w["target_draw"] in ("x", "pow2"):
+            w["target_draw"] = None
+        return w
 
     on = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     patch_model(monkeypatch, "draw_profile", blind)
+    monkeypatch.setattr(_gl, "window_profile", blind_window)
     off = goldfish.run("heliod", iterations=2000, quiet=True)["metrics"]
     a = on["mean_extra_cards_drawn_by_turn"]["10"]
     b = off["mean_extra_cards_drawn_by_turn"]["10"]
