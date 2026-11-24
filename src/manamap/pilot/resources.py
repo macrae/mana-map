@@ -162,7 +162,34 @@ def reading(resource, name, makes_hits, mult_hits, readers, card=None):
             return "read"
     if mult_hits and set(mult_hits) <= READ_MULTIPLIERS and not makes_hits:
         return "read"
+    # THE PROFILE SAYS WHETHER THE TEXT IS READ (2026-11-24). Every trigger and token resource
+    # read BLIND here unless it was the commander's, so a `try` on Anje -- whose costed drain
+    # the turn loop now applies -- was withheld, as a swap of Blood Artist or Ashnod's Altar
+    # would have been. A card is READ for a resource when its goldfish profile carries the
+    # parsed field that resource's text feeds; a creature seen only as a body (Elenda before
+    # her death tokens were read) stays BLIND.
+    if card is not None and makes_hits and _profile_reads(resource.get("kind"), card):
+        return "read"
     return "blind"
+
+
+def _profile_reads(kind, card):
+    """Whether the goldfish applies this card's text for a resource of `kind`."""
+    from manamap.pilot import goldfish
+    p = goldfish.classify(dict(card, oracle_text=card.get("oracle_text") or ""))
+    death, drain, combat = p.get("death") or {}, p.get("drain") or {}, p.get("combat") or {}
+    if kind == "trigger":
+        return bool(any(death.get(k) for k in ("death_drain", "death_draw", "death_damage",
+                                                "death_treasure", "gain_on_opponent_death"))
+                    or p.get("sac_outlet") == "free" or p.get("costed_sac") or p.get("sac_cost_spell")
+                    or p.get("sac_consolidate")
+                    or drain.get("payoff_equal") or drain.get("payoff_fixed")
+                    or combat.get("attack_drain_typed"))
+    if kind == "token":
+        return bool(combat.get("token_bodies") or p.get("cast_token") or p.get("self_death_tokens")
+                    or death.get("opp_death_token") or combat.get("attack_token_bodies")
+                    or (p.get("first_main_modes") or {}).get("token_power"))
+    return False
 
 
 def engine_unread(slug, card, resources=None, readers=None):

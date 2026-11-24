@@ -488,3 +488,23 @@ def test_convoke_counts_the_board_for_interaction():
     held = _mean(games, lambda r: 1 if r["interaction_in_hand_by_turn"][2] else 0)
     assert held > 0
     assert early > 0, "with tokens out, a convoke answer is castable on turn three"
+
+
+def test_a_resource_card_is_read_when_its_profile_carries_the_text():
+    """`try`'s second gate (resources.engine_unread) called every trigger or token card BLIND
+    unless it was the commander, so Anje's newly read drain still withheld the rows."""
+    from manamap.pilot import resources
+    death = {"name": "death drain", "kind": "trigger",
+             "makes": [r"\bsacrifice (?:a|another) (?:creature|Vampire)\b[^.:]*:"]}
+    anje = {"name": "Anje", "type_line": "Legendary Creature — Vampire", "oracle_text": ANJE}
+    mk, mu = resources.match(death, anje["oracle_text"])
+    assert mk and resources.reading(death, "Anje", mk, mu, set(), anje) == "read"
+    flavour = {"name": "Odd", "type_line": "Creature — Vampire",
+               "oracle_text": "Sacrifice another creature: Odd gains flying until end of turn."}
+    mk, mu = resources.match(death, flavour["oracle_text"])
+    assert mk and resources.reading(death, "Odd", mk, mu, set(), flavour) == "read", \
+        "a free outlet is read by the sweep"
+    blind = {"name": "Typed", "type_line": "Creature — Vampire",
+             "oracle_text": "{2}{B}, Sacrifice another Vampire: Typed gets two +1/+1 counters."}
+    mk, mu = resources.match(death, blind["oracle_text"])
+    assert mk and resources.reading(death, "Typed", mk, mu, set(), blind) == "blind"
