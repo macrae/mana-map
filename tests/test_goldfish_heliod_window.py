@@ -168,3 +168,29 @@ def test_the_engine_s_output_is_measured_and_its_opponent_draw_payoffs_pay(monke
                         lambda card: {**real(card), "per_opponent_draw_our_draw": 0})
     off = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
     assert off["heliod_window"]["engine_drawn_by_turn"]["10"] < h["engine_drawn_by_turn"]["10"]
+
+
+@requires_deck
+def test_life_kills_are_split_by_source_and_never_exceed_the_life_kills():
+    doc = goldfish.run("heliod", branch="b3-v1", iterations=1500, seed=7, quiet=True,
+                       _band=False, with_results=True)
+    src = doc["metrics"]["heliod_window"]["life_kill_source_by_turn_10"]
+    assert set(src) <= {"combat", "drain", "window"}
+    life = sum(1 for r in doc["_results"] if r["kill_by"] == "life" and r["kill_turn"] <= 10)
+    assert abs(sum(src.values()) - life / len(doc["_results"])) < 0.002
+
+
+@requires_deck
+def test_the_crawlers_drain_in_the_window_and_go_when_their_payoffs_go(monkeypatch):
+    """PROVED BY REMOVING THEM: blank the per-draw damage (Psychosis Crawler) and the
+    per-opponent-draw damage (Scrawling Crawler, now paid on Forced Fruition's sevens too) and
+    the window's damage on b3-v1 falls."""
+    from manamap.pilot import goldfish_library as gl
+    on = goldfish.run("heliod", branch="b3-v1", iterations=1500, seed=7, quiet=True,
+                      _band=False)["metrics"]["heliod_window"]["engine_damage_by_turn"]["10"]
+    real = gl.event_payoffs
+    monkeypatch.setattr(gl, "event_payoffs", lambda card: {
+        **real(card), "per_draw_damage": 0, "per_opponent_draw_damage": 0})
+    off = goldfish.run("heliod", branch="b3-v1", iterations=1500, seed=7, quiet=True,
+                       _band=False)["metrics"]["heliod_window"]["engine_damage_by_turn"]["10"]
+    assert on > off

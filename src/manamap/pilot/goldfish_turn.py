@@ -5858,15 +5858,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # A FRACTIONAL RATE IS SAMPLED (2026-11-23), as Rhystic Study's is: 1.264 is one
             # spell, and a second with probability 0.264.
             _fs = commander_flash_discount["fruition_spells"]
-            _spells = int(_fs) + (rng.random() < _fs - int(_fs))
-            _base = 1 + sum(c["window"]["static_extra"] for c in permanents_in_play) \
-                + sum(c["window"]["fruition"] for c in permanents_in_play) * _spells
+            _spells = [int(_fs) + (rng.random() < _fs - int(_fs)) for _ in range(GOLDFISH_OPPONENTS)]
+            _fruit = sum(c["window"]["fruition"] for c in permanents_in_play)
+            _nat = 1 + sum(c["window"]["static_extra"] for c in permanents_in_play)
             _w = {"m": pool + held_pool, "t": treasures + held_treasures,
-                  "seats": [_base] + [0] * (GOLDFISH_OPPONENTS - 1),
+                  "seats": [_nat] + [0] * (GOLDFISH_OPPONENTS - 1),
                   "spells": 0, "mv": 0, "saved": 0, "dmg": 0, "drawn0": drawn_extra}
             held_pool = held_treasures = 0
-            window_base_by_turn[turn - 1] = _base
-            window_reach_by_turn[turn - 1] = _base + _reachable_forced(_w["m"] + _w["t"], _base)
 
             def _disc():
                 return sum(_w["seats"])
@@ -5934,6 +5932,32 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         else:
                             continue
                         _w["t"] += _made * (_rec["n"] + treasure_bonus) * treasure_multiplier
+
+            def _other_seat_draws(n):
+                """`n` cards an opponent drew on THEIR OWN turn this cycle (Forced Fruition): no
+                discount here, but Tithe, Splendor and the opponent-draw payoffs pay (2026-11-23)."""
+                for _rec in treasure_engines:
+                    if _rec["trigger"] == "opponent_draw_tax":
+                        _w["t"] += sum(1 for _ in range(n) if rng.random() >= TITHE_PAY_RATE) \
+                            * (_rec["n"] + treasure_bonus) * treasure_multiplier
+                    elif _rec["trigger"] == "opponent_second_draw" and n:
+                        _w["t"] += (_rec["n"] + treasure_bonus) * treasure_multiplier
+                for _e in event_payoff_permanents:
+                    if _e["per_opponent_draw_our_draw"]:
+                        draw_n(_e["per_opponent_draw_our_draw"] * n)
+                    if _e["opponent_second_draw_our_draw"] and n:
+                        draw_n(_e["opponent_second_draw_our_draw"])
+
+            # FORCED FRUITION'S SEVENS (2026-11-23): the active opponent's are this turn's --
+            # they grow the discount and pay every payoff, Scrawling Crawler's life loss
+            # included; the other seats' came on their own turns this cycle and pay, nothing more.
+            if _fruit:
+                _they_draw(_fruit * _spells[0], [0])
+                for _s in range(1, GOLDFISH_OPPONENTS):
+                    _other_seat_draws(_fruit * _spells[_s])
+            _base = sum(_w["seats"])
+            window_base_by_turn[turn - 1] = _base
+            window_reach_by_turn[turn - 1] = _base + _reachable_forced(_w["m"] + _w["t"], _base)
 
             def _ap_index():
                 return next((i for i, c in enumerate(deck) if c["approach"]), None)
@@ -6053,6 +6077,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         _note_cast(_ts)
                         _they_draw(_left, [0])
 
+            # THE CRAWLER KILL FIRST (2026-11-23): with a per-draw damage payoff out (Psychosis
+            # Crawler), an X draw aimed at us that would take the tracked seat to 0 is cast
+            # before anything else -- the "massive draw into a massive payoff" line.
+            _per_draw = sum(_e["per_draw_damage"] for _e in event_payoff_permanents)
+            if _per_draw and kill_turn is None:
+                for _sd in sorted((c for c in hand if c["window"]["target_draw"] in ("x", "pow2")),
+                                  key=lambda c: c["window"]["target_draw"] != "pow2"):
+                    _p = len(_sd["pips"] or [])
+                    _spare = _w["m"] + _w["t"] - _p + _disc() \
+                        - (reduced_cost(_sd, reductions, chosen_type) - _p)
+                    _pow = _sd["window"]["target_draw"] == "pow2"
+                    _x = min(_spare // 2, 7) if _pow else min(_spare, len(deck))
+                    _cards = min(2 ** _x if _pow else _x, len(deck)) if _x > 0 else 0
+                    if _cards and _cards * _per_draw + _w["dmg"] >= opponent_life \
+                            and _wcast(_sd, 2 * _x if _pow else _x):
+                        _note_cast(_sd)
+                        window_engine["max_x"] = max(window_engine["max_x"], _x)
+                        draw_n(_cards)
+                        break
             if model_approach and kill_turn is None:
                 for _pass in range(2):
                     _find()

@@ -1056,6 +1056,17 @@ def aggregate(results, targets, max_turn, model_treasures=False,
                  if r.get("heliod_flip_turn") is not None and r["heliod_flip_turn"] <= t])
                 for t in turns}
                for key in ("spells", "mv", "saved", "drawn", "damage")},
+            # WHICH LIFE KILL WAS WHICH (2026-11-23): a game won on life is credited to the
+            # source that dealt the most by its kill turn -- combat (attacks and ETB damage),
+            # drain (the event payoffs read on our turn: the Crawlers off draws), or the window
+            # (their turn: Crawler drain off forced draws, Psychosis off our draws there).
+            "life_kill_source_by_turn_10": (lambda srcs: {k: _round(v / n) for k, v in srcs.items()})(
+                __import__("collections").Counter(
+                    max((("combat", sum(r["damage_by_turn"][:r["kill_turn"]])),
+                         ("drain", sum(r["event_damage_by_turn"][:r["kill_turn"]])),
+                         ("window", sum(v or 0 for v in r["window_engine"]["damage"][:r["kill_turn"]]))),
+                        key=lambda kv: kv[1])[0]
+                    for r in results if r["kill_by"] == "life" and r["kill_turn"] and r["kill_turn"] <= 10)),
             "engine_max_x": (lambda xs: {"median": xs[len(xs) // 2], "p90": xs[int(len(xs) * 0.9)],
                                          "max": xs[-1]} if xs else None)(sorted(
                 r["window_engine"]["max_x"] for r in results if r.get("heliod_flip_turn") is not None)),
