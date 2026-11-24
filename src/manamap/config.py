@@ -1512,6 +1512,12 @@ GOLDFISH_OPPONENTS = 3
 #: table, and nothing here can measure it. Half is the stated middle; `try` and
 #: MODEL_ASSUMPTIONS print it, so any figure resting on it says so.
 TITHE_PAY_RATE = 0.5
+#: FORCED FRUITION'S TABLE, AN AUTHORED ASSUMPTION (the pilot's choice, 2026-11-23): how many
+#: spells each opponent casts on their own turn once Forced Fruition is out ("whenever an
+#: opponent casts a spell, that player draws seven cards"). Nothing here plays an opponent's
+#: turn, so the number is stated, not measured; it sizes Heliod's discount on their turns
+#: (`model_commander_flash_discount`), and the window report names it.
+FRUITION_OPPONENT_SPELLS_PER_TURN = 1
 #: AUTHORED (2026-11-04). What share of an opponent's casts are noncreature spells, for "whenever
 #: an opponent casts a noncreature spell" (Mystic Remora). Nothing in the pod logs splits a cast by
 #: type yet, so it is the stated middle. `OPPONENT_CASTS_PER_TURN` below is the measured half.
@@ -2104,7 +2110,8 @@ ENGINE_EVENTS = {
              "replacements": [], "channel": None},
     "TURN_PHASE": {"triggers": ["Phase", "NewGame"], "effects": [], "replacements": ["BeginPhase"], "channel": None},
     # The goldfish plays one alternate win, Approach of the Second Sun (`model_approach`, 2026-11-23).
-    "ALT_WIN": {"triggers": [], "effects": ["WinsGame"], "replacements": [], "channel": "approach", "terminal": True},
+    "ALT_WIN": {"triggers": [], "effects": ["WinsGame"], "replacements": [],
+                "channel": ["approach", "flash_window"], "terminal": True},
     "GAME_LOSS": {"triggers": ["LosesGame"], "effects": ["LosesGame"], "replacements": ["GameLoss"], "channel": None},
 }
 #: Events that end the game when aimed at an opponent; a node that produces one is

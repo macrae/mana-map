@@ -37,6 +37,7 @@ from manamap.config import (
     GOLDFISH_OPPONENT_LIFE,
     GOLDFISH_POISON_TO_LOSE,
     GOLDFISH_SEED,
+    FRUITION_OPPONENT_SPELLS_PER_TURN,
 )
 from manamap.pilot import manabase
 from manamap.pilot.common import (
@@ -1614,6 +1615,25 @@ def run(slug, iterations=None, seed=None, max_turn=None,
         if not model_sacrifice and not quiet:
             print("  WARNING model_commander_recursion is set without model_sacrifice: with no "
                   "outlet the only deaths are discards, and the recursion returns those alone.")
+    # HELIOD, THE WARPED ECLIPSE (`model_commander_flash_discount`, 2026-11-23): the front face
+    # transforms for "{N}{U/P}" at sorcery speed; the back gives every spell flash and takes
+    # {1} off for each card the opponents have drawn this turn. Read from the commander's own
+    # faces and checked, as Meren's declaration is.
+    commander_flash_discount = None
+    if targets_doc.get("model_commander_flash_discount"):
+        _cmd_raw = next((c for c in doc["cards"] if c.get("is_commander")), None) or {}
+        _faces = _cmd_raw.get("card_faces") or [_cmd_raw]
+        _text = "\n".join(f.get("oracle_text") or "" for f in _faces)
+        _flip = re.search(r"\{(\d+)\}\{([WUBRG])/P\}: Transform", _text)
+        if not (_flip and re.search(r"cost \{1\} less to cast for each card your opponents have "
+                                    r"drawn this turn", _text, re.I)
+                and re.search(r"cast spells as though they had flash", _text, re.I)):
+            raise DeclarationError(
+                "model_commander_flash_discount is set but the commander is not Heliod, the "
+                "Warped Eclipse's shape (a {N}{U/P} transform, flash, a discount per card the "
+                "opponents drew this turn).")
+        commander_flash_discount = {"flip_generic": int(_flip.group(1)), "flip_pip": _flip.group(2),
+                                    "fruition_spells": FRUITION_OPPONENT_SPELLS_PER_TURN}
     creature_types = _corpus_creature_types()
     chosen_type = chosen_type_for(doc["cards"])
     command_zone_reduction = []
@@ -1781,7 +1801,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               commander_damage=commander_damage,
                               commander_recursion=commander_recursion,
                               combo_lines=combo_lines,
-                              model_approach=bool(targets_doc.get("model_approach"))))
+                              model_approach=bool(targets_doc.get("model_approach")),
+                              commander_flash_discount=commander_flash_discount))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,

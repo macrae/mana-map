@@ -1,0 +1,102 @@
+"""Heliod, the Warped Eclipse: the flip, the flash, the discount, and the window (2026-11-23).
+
+The pilot: "teach the goldfish Heliod's discount... play it at flash after forcing massive
+draw and discounting the generic mana cost... getting Heliod out and tutoring for it are
+critical." Under `model_commander_flash_discount` the commander flips for {3}{U/P}; then the
+main phase holds its mana while Approach is reachable, and the last opponent's end step is the
+window: find Approach, force each-player draws until it costs its {W}, cast it; after the first
+cast, Dig Through Time / Scroll Rack / Sensei's Top bring it back and it wins.
+"""
+
+import json
+
+import pytest
+
+from manamap.pilot import goldfish, model_coverage
+from manamap.pilot import goldfish_library as gl
+from manamap.pilot.common import deck_file
+from manamap.pilot.goldfish import DeclarationError
+from manamap.pilot.goldfish_profiles import window_profile
+
+from conftest import requires_deck
+
+
+def _c(name, text, type_line, cmc=1, mana_cost="{1}"):
+    return {"name": name, "oracle_text": text, "type_line": type_line, "cmc": cmc,
+            "mana_cost": mana_cost, "colors": [], "color_identity": [], "keywords": []}
+
+
+MINE = _c("Howling Mine", "At the beginning of each player's draw step, if this artifact is "
+          "untapped, that player draws an additional card.", "Artifact", 2, "{2}")
+FRUITION = _c("Forced Fruition", "Whenever an opponent casts a spell, that player draws seven "
+              "cards.", "Enchantment", 6, "{4}{U}{U}")
+FOLIO = _c("Folio of Fancies", "Players have no maximum hand size.\n{X}{X}, {T}: Each player "
+           "draws X cards.", "Artifact — Book", 2, "{1}{U}")
+SKEINS = _c("Vision Skeins", "Each player draws two cards.", "Instant", 2, "{1}{U}")
+RACK = _c("Scroll Rack", "{1}, {T}: Exile any number of cards from your hand face down. Put "
+          "that many cards from the top of your library into your hand. Then look at the "
+          "exiled cards and put them on top of your library in any order.", "Artifact", 2, "{2}")
+TOP = _c("Sensei's Divining Top", "{1}: Look at the top three cards of your library, then put "
+         "them back in any order.\n{T}: Draw a card, then put this artifact on top of its "
+         "owner's library.", "Artifact", 1, "{1}")
+DIG = _c("Dig Through Time", "Delve\nLook at the top seven cards of your library. Put two of "
+         "them into your hand and the rest on the bottom of your library in any order.",
+         "Instant", 8, "{6}{U}{U}")
+MYSTICAL = _c("Mystical Tutor", "Search your library for an instant or sorcery card, reveal "
+              "it, then shuffle and put that card on top.", "Instant", 1, "{U}")
+PLANS = _c("Long-Term Plans", "Search your library for a card, then shuffle and put that card "
+           "third from the top.", "Instant", 3, "{2}{U}")
+
+
+def test_every_window_shape_reads_from_the_text():
+    assert window_profile(MINE)["static_extra"] == 1
+    assert window_profile(FRUITION)["fruition"] == 7
+    assert window_profile(FOLIO)["folio"]
+    assert window_profile(SKEINS)["spell_each_draw"] == 2
+    assert window_profile(RACK)["scroll_rack"]
+    assert window_profile(TOP)["top"]
+    d = window_profile(DIG)
+    assert d["dig"] == 7 and d["delve"]
+    assert window_profile(MYSTICAL)["tutor_dest"] == "top"
+    assert window_profile(PLANS)["tutor_dest"] == "third"
+
+
+def test_a_spell_that_draws_only_for_us_is_not_a_table_draw():
+    brainstorm = _c("Brainstorm", "Draw three cards, then put two cards from your hand on top "
+                    "of your library in any order.", "Instant", 1, "{U}")
+    assert not window_profile(brainstorm)["spell_each_draw"]
+
+
+def test_the_window_cards_are_read_and_cast_only_where_heliod_is_declared():
+    flags_on = {"model_commander_flash_discount": True, "model_approach": True}
+    for card in (MINE, FRUITION, FOLIO, SKEINS, RACK, DIG):
+        prof = gl.classify(dict(card))
+        assert "flash_window" in model_coverage.channels_for(prof), card["name"]
+        assert model_coverage.never_cast(dict(prof), flags_on) is False, card["name"]
+    assert model_coverage.CHANNELS["flash_window"] == "model_commander_flash_discount"
+
+
+@requires_deck
+def test_the_declaration_refuses_a_commander_that_is_not_heliod():
+    t = json.loads(deck_file("meren-recursion", "goldfish_targets.json").read_text())
+    with pytest.raises(DeclarationError):
+        goldfish.run("meren-recursion", iterations=10, seed=7, quiet=True, _band=False,
+                     _targets_doc=dict(t, model_commander_flash_discount=True))
+
+
+@requires_deck
+def test_heliod_flips_and_wins_faster_in_the_window_than_without_it():
+    """PROVED BY SWITCHING IT OFF: with the declaration Heliod flips, nearly every Approach win
+    comes in the window, and the deck wins by turn ten more often than without it."""
+    t = json.loads(deck_file("heliod", "goldfish_targets.json").read_text())
+    base = dict(t, model_approach=True)
+    on = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False,
+                      with_results=True, _targets_doc=dict(base, model_commander_flash_discount=True))
+    off = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False,
+                       with_results=True, _targets_doc=dict(base, model_commander_flash_discount=False))
+    rows_on, rows_off = on["_results"], off["_results"]
+    assert sum(1 for r in rows_on if r["heliod_flip_turn"]) > len(rows_on) // 2
+    assert not any(r["heliod_flip_turn"] for r in rows_off)
+    assert any(r["approach_window_win"] for r in rows_on)
+    assert not any(r["approach_window_win"] for r in rows_off)
+    assert on["metrics"]["approach"]["win_by_turn"]["10"] > off["metrics"]["approach"]["win_by_turn"]["10"]

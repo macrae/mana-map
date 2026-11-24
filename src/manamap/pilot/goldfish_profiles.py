@@ -1760,6 +1760,62 @@ _APPROACH_WIN_RE = re.compile(r"\byou win the game\b", re.IGNORECASE)
 _APPROACH_SEVENTH_RE = re.compile(r"\binto its owner's library seventh from the top\b", re.IGNORECASE)
 
 
+#: HELIOD'S FLASH WINDOW (2026-11-23): what each card does in the opponents' turns, where the
+#: Warped Eclipse's flash and its discount (one per card the opponents drew THIS turn) live.
+#: Read from the text, applied only under `model_commander_flash_discount`:
+#:   static_extra     "at the beginning of each player's draw step ... that player draws N
+#:                    additional card(s)" (Howling Mine) -- the active opponent's extra draw
+#:   fruition         "whenever an opponent casts a spell, that player draws N cards" (Forced
+#:                    Fruition), sized by FRUITION_OPPONENT_SPELLS_PER_TURN
+#:   folio            "{X}{X}, {T}: Each player draws X cards" (Folio of Fancies)
+#:   spell_each_draw  an instant or sorcery whose sentence is "Each player draws N cards" (Vision
+#:                    Skeins); the X ones (Prosperity) are read by the draw channel
+#:   scroll_rack      "exile any number of cards from your hand ... put that many cards from the
+#:                    top of your library into your hand" -- a card as deep as the hand is big
+#:   top              Sensei's Divining Top: look at the top three, "{T}: Draw a card. Put ... on
+#:                    top of its owner's library"
+#:   dig              "Look at the top N cards of your library. Put two of them into your hand"
+#:                    (Dig Through Time), with delve
+#:   tutor_dest       where a tutor puts the card: "top", "third", "hand"
+_WIN_STATIC_EXTRA_RE = re.compile(
+    r"at the beginning of each player's draw step,[^.]*\bthat player draws (an|one|two|three) "
+    r"additional cards?", re.IGNORECASE)
+_WIN_FRUITION_RE = re.compile(
+    r"whenever an opponent casts a spell, that player draws (\w+) cards", re.IGNORECASE)
+_WIN_FOLIO_RE = re.compile(r"\{X\}\{X\}, \{T\}: each player draws X cards", re.IGNORECASE)
+_WIN_EACH_DRAW_RE = re.compile(r"(?:^|\n|\. )each player draws (\w+) cards\.", re.IGNORECASE)
+_WIN_SCROLL_RE = re.compile(
+    r"exile any number of cards from your hand face down\. put that many cards from the top of "
+    r"your library into your hand", re.IGNORECASE)
+_WIN_TOP_RE = re.compile(r"\{T\}: draw a card(?:,|\.) (?:then )?put [^.]* on top of its owner's library",
+                         re.IGNORECASE)
+_WIN_DIG_RE = re.compile(
+    r"look at the top (\w+) cards of your library\. put two of them into your hand", re.IGNORECASE)
+_WIN_NUM = {"an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+            "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+
+
+def window_profile(card):
+    """What this card does in Heliod's flash window (see above); every key falsy if nothing."""
+    text = card.get("oracle_text", "") or ""
+    tl = card.get("type_line", "") or ""
+    spell = "Instant" in tl or "Sorcery" in tl
+    m_ex, m_fr = _WIN_STATIC_EXTRA_RE.search(text), _WIN_FRUITION_RE.search(text)
+    m_each, m_dig = _WIN_EACH_DRAW_RE.search(text), _WIN_DIG_RE.search(text)
+    low = text.lower()
+    dest = ("third" if "third from the top" in low else "top" if re.search(
+        r"\bon top\b|on top of your library", low) else "hand" if "into your hand" in low else None)
+    return {"static_extra": _WIN_NUM.get(m_ex.group(1).lower(), 0) if m_ex else 0,
+            "fruition": _WIN_NUM.get(m_fr.group(1).lower(), 0) if m_fr else 0,
+            "folio": bool(_WIN_FOLIO_RE.search(text)),
+            "spell_each_draw": _WIN_NUM.get(m_each.group(1).lower(), 0) if (spell and m_each) else 0,
+            "scroll_rack": bool(_WIN_SCROLL_RE.search(text)),
+            "top": bool(_WIN_TOP_RE.search(text)),
+            "dig": _WIN_NUM.get(m_dig.group(1).lower(), 0) if (spell and m_dig) else 0,
+            "delve": bool(re.search(r"\bdelve\b", text, re.IGNORECASE)),
+            "tutor_dest": dest}
+
+
 def approach_profile(card):
     """True for an Approach-shaped alternate win: cast once (it goes seventh from the top),
     cast again from hand, win."""

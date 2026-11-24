@@ -116,7 +116,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None, model_hand_limit=False,
                   commander_copy=False, hold_until=None, keep_rule=None,
-                  commander_recursion=None, combo_lines=None, model_approach=False):
+                  commander_recursion=None, combo_lines=None, model_approach=False,
+                  commander_flash_discount=None):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -835,6 +836,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # (it went seventh from the top) and of the second (from hand: the game is won).
     approach_first_turn = None
     approach_win_turn = None
+    # HELIOD, THE WARPED ECLIPSE (`commander_flash_discount`, 2026-11-23): the turn he flipped,
+    # the mana held back for the opponents' turns, and the wins that came in that window.
+    heliod_flip_turn = None
+    held_pool = held_treasures = 0
+    window_wins = 0
     # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
@@ -2764,6 +2770,50 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # named: it is cast once, it stays, which is the same generous
             # direction the rest of this model takes.
             _commander_arrives(commander_combat, commander_event, commander_damage)
+
+        def _window_reaches_approach():
+            """Approach is in hand, or this cycle's window can reach it: a tutor that finds it,
+            or -- once it has been cast and sits seventh from the top -- Dig Through Time,
+            Scroll Rack or Sensei's Top."""
+            if any(c["approach"] for c in hand):
+                return True
+            if not any(c["approach"] for c in deck):
+                return False
+            if any(c["tutor"] and tutor_reaches(c["tutor_filter"], "Sorcery") for c in hand):
+                return True
+            return approach_first_turn is not None and (
+                any(c["window"]["dig"] for c in hand)
+                or any(c["window"]["scroll_rack"] or c["window"]["top"] for c in permanents_in_play))
+
+        # HELIOD TRANSFORMS (2026-11-23): "{3}{U/P}: Transform Heliod. Activate only as a sorcery",
+        # the moment he is out and the mana is there -- {U} when it can be paid, else 2 life
+        # (life is not tracked). From then on every spell has flash and costs {1} less for each
+        # card the opponents drew this turn.
+        if commander_flash_discount and commander_turn is not None and heliod_flip_turn is None:
+            _fd = commander_flash_discount
+            if spend(_fd["flip_generic"] + 1, [frozenset({_fd["flip_pip"]})]) \
+                    or spend(_fd["flip_generic"]):
+                heliod_flip_turn = turn
+        if commander_flash_discount:
+            # THE WINDOW'S PERMANENTS, cast when the mana pays (the casting predicate ships with
+            # the reading): Howling Mine, Forced Fruition, Folio of Fancies, Scroll Rack.
+            for card in [c for c in hand if (c["window"]["static_extra"] or c["window"]["fruition"]
+                                            or c["window"]["folio"] or c["window"]["scroll_rack"])
+                         and not c["is_land"]]:
+                if spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                    _note_cast(card)
+                    battlefield_pips.append(card["pips"])
+                    battlefield_types.append(card.get("type_line") or "")
+                    battlefield_mv.append(card["cmc"])
+                    battlefield_rooms.append(None)
+                    _register_statics(card)
+            # HOLD FOR THE WINDOW (the pilot's call, 2026-11-23): once Heliod is flipped and
+            # Approach is in hand or a line can reach it this cycle, the main phase casts nothing
+            # that costs mana; it waits for the last opponent's end step.
+            if heliod_flip_turn is not None and model_approach and kill_turn is None \
+                    and _window_reaches_approach():
+                held_pool, held_treasures = pool, treasures
+                pool = treasures = 0
 
         # THE PARTNER, cast on its own curve after the first commander and
         # arriving through the same door. Brallin, Skyshark Rider was never
@@ -5724,6 +5774,128 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # `sacrifices_by_turn: [0,0,0,0,0,0,0,0,0,0]`: the board went wide and
         # converted on turn ten, and the only field that could have shown it had
         # already been written (#34).
+        # ── HELIOD'S FLASH WINDOW: the last opponent's end step (2026-11-23) ──────────────
+        # Every spell has flash and costs {1} less per card the opponents drew THIS turn. The
+        # mana is what this turn left untapped plus what the main phase held. The discount
+        # starts at the active opponent's own draws (their draw step, Howling Mine-style extras,
+        # Forced Fruition at FRUITION_OPPONENT_SPELLS_PER_TURN) and grows by every card our
+        # each-player draws hand the table (x the opponents). The line, a stated policy: find
+        # Approach (a tutor, then Sensei's Top or Scroll Rack), force just enough draws to make
+        # it near free, cast it; after a first cast, Dig Through Time / Scroll Rack / Top bring
+        # it back from seventh down and it is cast again -- the win. Unopposed. NOT read here:
+        # colour requirements, Smothering Tithe's Treasure off these draws, Mathemagics.
+        if commander_flash_discount and heliod_flip_turn is not None and model_approach \
+                and kill_turn is None:
+            _w = {"m": pool + held_pool, "t": treasures + held_treasures,
+                  "d": 1 + sum(c["window"]["static_extra"] for c in permanents_in_play)
+                  + sum(c["window"]["fruition"] for c in permanents_in_play)
+                  * commander_flash_discount["fruition_spells"]}
+            held_pool = held_treasures = 0
+
+            def _wpay(n):
+                if _w["m"] + _w["t"] < n:
+                    return False
+                _take = min(n, _w["m"])
+                _w["m"] -= _take
+                _w["t"] -= n - _take
+                return True
+
+            def _wcost(card, x=0):
+                _pips = len(card["pips"] or [])
+                return max(0, int(card["cmc"]) - _pips + x - _w["d"]) + _pips
+
+            def _ap_index():
+                return next((i for i, c in enumerate(deck) if c["approach"]), None)
+
+            def _grab_from_top():
+                """Sensei's Top (the top three, then draw it) or Scroll Rack (as deep as the hand)."""
+                _i = _ap_index()
+                if _i is None:
+                    return False
+                for _p in list(permanents_in_play):
+                    if _p["window"]["top"] and _i <= 2 and _wpay(1):
+                        hand.append(deck.pop(_i))
+                        permanents_in_play.remove(_p)      # {T}: it goes on top of the library
+                        deck.insert(0, _p)
+                        return True
+                    if _p["window"]["scroll_rack"] and _i < len(hand) and _wpay(1):
+                        hand.append(deck.pop(_i))
+                        _back = next((c for c in hand if not c["approach"]), None)
+                        if _back is not None:
+                            hand.remove(_back)
+                            deck.insert(0, _back)
+                        return True
+                return False
+
+            def _find():
+                if any(c["approach"] for c in hand) or _ap_index() is None:
+                    return
+                if approach_first_turn is not None:      # seventh down: Dig sees it exactly
+                    for _dg in [c for c in hand if c["window"]["dig"]]:
+                        _i = _ap_index()
+                        _delve = min(int(_dg["cmc"]) - len(_dg["pips"] or []),
+                                     yard_spells + len(yard_creatures)) if _dg["window"]["delve"] else 0
+                        if _i is not None and _i < _dg["window"]["dig"] \
+                                and _wpay(max(0, _wcost(_dg) - _delve)):
+                            _note_cast(_dg)
+                            hand.append(deck.pop(_i))
+                            return
+                if _grab_from_top():
+                    return
+                for _tu in sorted((c for c in hand if c["tutor"]
+                                   and tutor_reaches(c["tutor_filter"], "Sorcery")),
+                                  key=lambda c: ({"hand": 0, "top": 1, "third": 2}.get(
+                                      c["window"]["tutor_dest"], 3), c["cmc"])):
+                    if not _wpay(_wcost(_tu)):
+                        continue
+                    _note_cast(_tu)
+                    _ap = deck.pop(_ap_index())
+                    _dest = _tu["window"]["tutor_dest"]
+                    if _dest == "hand":
+                        hand.append(_ap)
+                    else:
+                        deck.insert(0 if _dest == "top" else min(2, len(deck)), _ap)
+                        _grab_from_top()
+                    return
+
+            def _force_draws(need):
+                """Each-player draws, the cheapest first, until Approach costs only its {W}."""
+                for _vs in [c for c in hand if c["window"]["spell_each_draw"]]:
+                    if _w["d"] >= need:
+                        return
+                    if _wpay(_wcost(_vs)):
+                        _note_cast(_vs)
+                        _w["d"] += _vs["window"]["spell_each_draw"] * GOLDFISH_OPPONENTS
+                        draw_n(_vs["window"]["spell_each_draw"])
+                for _fo in [c for c in permanents_in_play if c["window"]["folio"]]:
+                    _x = max(0, -(-(need - _w["d"]) // GOLDFISH_OPPONENTS))
+                    if _x and _wpay(2 * _x):
+                        _w["d"] += _x * GOLDFISH_OPPONENTS
+                        draw_n(_x)
+                for _xs in [c for c in hand if c["draw"]["x_draw_each_player"]]:
+                    _x = max(0, -(-(need - _w["d"]) // GOLDFISH_OPPONENTS))
+                    if _x and _wpay(_wcost(_xs, _x)):
+                        _note_cast(_xs)
+                        _w["d"] += _x * GOLDFISH_OPPONENTS
+                        draw_n(_x)
+
+            for _pass in range(2):
+                _find()
+                _ap = next((c for c in hand if c["approach"]), None)
+                if _ap is None:
+                    break
+                _force_draws(int(_ap["cmc"]) - len(_ap["pips"] or []))
+                if not _wpay(_wcost(_ap)):
+                    break
+                _note_cast(_ap)
+                if approach_first_turn is not None:
+                    approach_win_turn = turn
+                    kill_turn, kill_by = turn, "approach"
+                    window_wins += 1
+                    break
+                approach_first_turn = turn
+                deck.insert(min(6, len(deck)), _ap)
+            treasures = _w["t"]
         sacrifices_by_turn.append(sacrifices)
         experience_by_turn.append(experience)
         # THE SAME FIX FOR THE DRAW SERIES (2026-10-19): it was appended before
@@ -5808,6 +5980,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "kill_by": kill_by,
         "combo_win": combo_win,
         "approach_first_turn": approach_first_turn,
+        "heliod_flip_turn": heliod_flip_turn,
+        "approach_window_win": bool(window_wins),
         "approach_win_turn": approach_win_turn,
         "drain_by_turn": drain_by_turn,
     }

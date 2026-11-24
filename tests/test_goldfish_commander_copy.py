@@ -507,9 +507,10 @@ def test_every_cast_site_goes_through_the_counter():
     src = inspect.getsource(goldfish_turn.simulate_once)
     bare = [ln.strip() for ln in src.splitlines() if "hand.remove(" in ln]
     # `_spare` is the discard that pays an activated proliferate (Yawgmoth, 2026-11-08): a
-    # discard, not a cast.
+    # discard, not a cast. `_back` is the card Scroll Rack puts back on top of the library in
+    # Heliod's window (2026-11-23): an exchange, not a cast.
     allowed = {"hand.remove(lands[-1])", "hand.remove(pick)", "hand.remove(card)",
-               "hand.remove(_spare)"}
+               "hand.remove(_spare)", "hand.remove(_back)"}
     assert all(b in allowed for b in bare), f"unexpected removal site: {bare}"
     # Exactly one bare `hand.remove(card)` survives: the helper's own body.
     assert sum(1 for b in bare if b == "hand.remove(card)") == 1, (

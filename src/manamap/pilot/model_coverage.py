@@ -73,6 +73,10 @@ CHANNELS = {
     # APPROACH OF THE SECOND SUN (2026-11-23): an alternate win the turn loop casts twice and
     # wins on, under the deck's `model_approach` declaration.
     "approach": "model_approach",
+    # HELIOD'S FLASH WINDOW (2026-11-23): Howling Mine, Forced Fruition, Folio, Vision Skeins,
+    # Scroll Rack, Sensei's Top and Dig Through Time, played in the opponents' turns under the
+    # commander's `model_commander_flash_discount` declaration.
+    "flash_window": "model_commander_flash_discount",
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -315,6 +319,9 @@ def channels_for(profile):
         found.add("recursion")
     if profile.get("approach"):
         found.add("approach")
+    if any((profile.get("window") or {}).get(k) for k in (
+            "static_extra", "fruition", "folio", "spell_each_draw", "scroll_rack", "top", "dig")):
+        found.add("flash_window")
     if profile.get("discover_n"):
         found.add("discover")
     if profile.get("cascade"):
@@ -346,7 +353,11 @@ def never_cast(profile, flags):
             or profile.get("ritual") \
             or profile.get("discover_n") \
             or profile.get("cascade") \
-            or (profile.get("approach") and flags.get("model_approach")):
+            or (profile.get("approach") and flags.get("model_approach")) \
+            or (flags.get("model_commander_flash_discount") and any(
+                (profile.get("window") or {}).get(k) for k in (
+                    "static_extra", "fruition", "folio", "scroll_rack", "top")
+                + (("spell_each_draw", "dig") if flags.get("model_approach") else ()))):
         # the discover / cascade loops cast it (2026-10-11); the Approach loop (2026-11-23)
         return False
     cb = profile.get("combat") or {}

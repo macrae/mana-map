@@ -76,6 +76,7 @@ from manamap.pilot.goldfish_profiles import (
     room_profile,
     own_death_profile,
     approach_profile,
+    window_profile,
     recurring_body_profile,
     graveyard_profile,
     experience_profile,
@@ -229,6 +230,8 @@ def classify(card, pool=None):
         "own_death": own_death_profile(card),
         # Approach of the Second Sun, played under `model_approach` (2026-11-23).
         "approach": approach_profile(card),
+        # Heliod's flash window (`model_commander_flash_discount`, 2026-11-23).
+        "window": window_profile(card),
         # Bodies it adds every turn or how it comes back (Meren's supply, 2026-11-07).
         "recurring": recurring_body_profile(card),
         # Into the graveyard, or back out of it (Meren's reanimator half, 2026-11-07).
