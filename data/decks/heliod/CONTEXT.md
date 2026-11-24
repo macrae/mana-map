@@ -70,7 +70,7 @@ Its soft spot is the commander. Lose [Heliod, the Radiant Dawn // Heliod, the Wa
 - **DeckCheck (external, dated):** 46/96 → bracket 4, as of 2026-10-18
 - **Recon (other people's lists, dated):** 8 finding(s) as of 2026-11-21
 - **Proven lines:** 2 of 2 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 48 of 85 distinct cards (10 DARK, 27 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 46 of 85 distinct cards (12 DARK, 27 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **88%**

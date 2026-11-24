@@ -60,6 +60,20 @@ def _differences(fresh, stored, prefix=""):
     return out
 
 
+#: A STAMP, NOT A FINDING (2026-11-23). The record carries the goldfish's model version
+#: because a card with no Forge script is read by the goldfish's readers; when those readers
+#: move, the CONTENT moves too and still differs. A newer model with an identical record is
+#: an older stamp -- a state, never a red gate (CLAUDE.md: "a model change stales the fleet's
+#: STAMP, and that is a state, not a rebuild"). It failed every deck's preflight after a
+#: Meren-only goldfish change touched no deck's engine.
+STAMP_ONLY = ("_meta.model_version differs",)
+
+
+def substantive(diffs):
+    """The differences that are the record's substance, the model stamp set aside."""
+    return [d for d in diffs if d not in STAMP_ONLY]
+
+
 def validate(slug, doc=None):
     """Returns `(errors, doc, placed)` — the same triple the v1 gate returned, so
     `deck_status.VALIDATED` and the callers that unpack it keep working."""
@@ -87,7 +101,7 @@ def validate(slug, doc=None):
         errors.append("cannot recompute: Forge is not installed here, and the record was read from "
                       "its scripts (`_meta.forge_digest`); nothing else is checked")
         return errors, doc, doc.get("placed") or {}
-    diffs = _differences(fresh_c, stored)
+    diffs = substantive(_differences(fresh_c, stored))
     if diffs:
         head = "; ".join(diffs[:6]) + (" …" if len(diffs) > 6 else "")
         why = ("the list moved" if stored.get("decklist_sha256") != fresh_c["decklist_sha256"]

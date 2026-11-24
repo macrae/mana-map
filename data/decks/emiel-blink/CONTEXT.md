@@ -69,7 +69,7 @@ Two colours, Selesnya, with plenty of fixing: [Branchloft Pathway](https://manam
 ## Numbers
 
 <!-- ctx:gen numbers -->
-- **The goldfish — one instrument.** It reads 33 of 88 distinct cards (49 DARK, 6 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 32 of 88 distinct cards (50 DARK, 6 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on V2, 2026-09-21. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **89%**
