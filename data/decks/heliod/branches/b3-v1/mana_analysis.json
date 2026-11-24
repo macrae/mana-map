@@ -1,29 +1,42 @@
 {
   "slug": "heliod",
-  "decklist_sha256": "7f98f26217b5cfca571700026b38171569f34f5498228aa10c9c9786ac4647ab",
+  "decklist_sha256": "31a9248dfb79e06ef365accf82815a01fa1d23c33d9531552c8f171c26cfaaef",
   "model_version": "d7c77f59579b",
   "lands": {
     "total": 35,
-    "entries": 20,
+    "entries": 23,
     "life": {
-      "recurring_per_tap_cycle": 2,
+      "recurring_per_tap_cycle": 3,
       "one_time_on_entry": 3
     },
-    "enters_tapped": 9,
-    "enters_tapped_always": 2,
+    "enters_tapped": 10,
+    "enters_tapped_always": 3,
     "classes": {
-      "basic": 17,
+      "basic": 14,
       "fetch": 1,
-      "fixing": 2,
-      "tapped": 9,
-      "untapped-dual": 5,
-      "utility": 7
+      "fixing": 4,
+      "tapped": 10,
+      "untapped-dual": 7,
+      "utility": 8
     },
     "list": [
       {
         "name": "Adarkar Wastes",
         "copies": 1,
         "classes": [
+          "untapped-dual",
+          "utility"
+        ],
+        "produces": [
+          "U",
+          "W"
+        ]
+      },
+      {
+        "name": "City of Brass",
+        "copies": 1,
+        "classes": [
+          "fixing",
           "untapped-dual",
           "utility"
         ],
@@ -62,6 +75,18 @@
           "utility"
         ],
         "produces": [
+          "W"
+        ]
+      },
+      {
+        "name": "Exotic Orchard",
+        "copies": 1,
+        "classes": [
+          "fixing",
+          "untapped-dual"
+        ],
+        "produces": [
+          "U",
           "W"
         ]
       },
@@ -124,7 +149,7 @@
       },
       {
         "name": "Island",
-        "copies": 13,
+        "copies": 10,
         "classes": [
           "basic"
         ],
@@ -180,6 +205,17 @@
           "basic"
         ],
         "produces": [
+          "W"
+        ]
+      },
+      {
+        "name": "Port Town",
+        "copies": 1,
+        "classes": [
+          "tapped"
+        ],
+        "produces": [
+          "U",
           "W"
         ]
       },
@@ -242,7 +278,7 @@
   },
   "sources": {
     "lands": {
-      "W": 19,
+      "W": 22,
       "U": 29,
       "B": 0,
       "R": 0,
@@ -256,7 +292,7 @@
       "G": 0
     },
     "total": {
-      "W": 23,
+      "W": 26,
       "U": 33,
       "B": 0,
       "R": 0,
@@ -316,28 +352,28 @@
   },
   "pips": {
     "U": {
-      "total_pips": 46.0,
+      "total_pips": 49.0,
       "max_pips": 3,
-      "cards": 31,
+      "cards": 34,
       "earliest_turn": 1,
       "effective_pips": 2
     },
     "W": {
-      "total_pips": 27.0,
+      "total_pips": 26.0,
       "max_pips": 2,
-      "cards": 22,
+      "cards": 21,
       "earliest_turn": 1,
       "effective_pips": 2
     }
   },
   "shares": {
     "U": {
-      "pip_share": 0.63,
-      "source_share": 0.604
+      "pip_share": 0.653,
+      "source_share": 0.569
     },
     "W": {
-      "pip_share": 0.37,
-      "source_share": 0.396
+      "pip_share": 0.347,
+      "source_share": 0.431
     }
   },
   "source_targets": {
@@ -346,20 +382,20 @@
   },
   "on_curve_probability": {
     "lands_only": {
-      "W": 0.548,
+      "W": 0.639,
       "U": 0.804
     },
     "with_rocks_and_dorks": {
-      "W": 0.667,
+      "W": 0.742,
       "U": 0.869
     },
     "lands_only_ungated": {
-      "W": 0.515,
+      "W": 0.61,
       "U": 0.785
     }
   },
   "ramp": {
-    "ramp:cost-reduction": 2,
+    "ramp:cost-reduction": 1,
     "ramp:rock": 5
   },
   "goldfish": {
@@ -396,6 +432,6 @@
   ],
   "notes": [
     "U: 29 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 33.",
-    "W: 19 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 23."
+    "W: 22 land sources against the 36 a 90% on-curve rate would take — the target is a yardstick, not a possibility, in a 35-land deck; rocks and dorks lift the count to 26."
   ]
 }
