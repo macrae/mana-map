@@ -417,9 +417,9 @@
       "verdict": {
         "state": "profile only",
         "word": "profile only",
-        "rose": 5,
+        "rose": 6,
         "fell": 3,
-        "no_call": 7
+        "no_call": 6
       },
       "measured": true,
       "blind_spots": [
@@ -455,7 +455,8 @@
           "killed by T6",
           "killed by T10",
           "missed drop by T5",
-          "mulliganed"
+          "mulliganed",
+          "extra cards by T8"
         ],
         "fell": [
           "damage @T10",
@@ -465,22 +466,22 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -2.841,
+            "delta": -2.5822,
             "ci95_diff": [
-              -3.1472,
-              -2.5348
+              -2.8965,
+              -2.2679
             ],
-            "mde": 0.4376,
+            "mde": 0.4492,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": 0.0723,
+            "delta": 0.0803,
             "ci95_diff": [
-              0.06,
-              0.0846
+              0.068,
+              0.0926
             ],
             "mde": 0.0176,
             "verdict": "better",
@@ -489,25 +490,25 @@
           },
           {
             "measure": "board power @T6",
-            "delta": -0.8626,
+            "delta": -0.8673,
             "ci95_diff": [
-              -0.9175,
-              -0.8077
+              -0.922,
+              -0.8126
             ],
-            "mde": 0.0785,
+            "mde": 0.0781,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": 0.1582,
+            "delta": 0.4852,
             "ci95_diff": [
-              -0.1134,
-              0.4298
+              0.2012,
+              0.7692
             ],
-            "mde": 0.3883,
-            "verdict": "noise",
+            "mde": 0.406,
+            "verdict": "better",
             "unit": "mean",
             "better_is": "higher"
           }
@@ -2983,76 +2984,76 @@
           "n": 10000
         },
         "5": {
-          "rate": 0.0031,
+          "rate": 0.0033,
           "ci95": [
-            0.0022,
-            0.0044
+            0.0024,
+            0.0046
           ],
           "n": 10000
         },
         "6": {
-          "rate": 0.0024,
+          "rate": 0.0026,
           "ci95": [
-            0.0016,
-            0.0036
+            0.0018,
+            0.0038
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0022,
+          "rate": 0.002,
           "ci95": [
-            0.0015,
-            0.0033
+            0.0013,
+            0.0031
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0017,
+          "rate": 0.0018,
           "ci95": [
             0.0011,
-            0.0027
+            0.0028
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0013,
+          "rate": 0.0014,
           "ci95": [
             0.0008,
-            0.0022
+            0.0023
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0011,
+          "rate": 0.001,
           "ci95": [
-            0.0006,
-            0.002
+            0.0005,
+            0.0018
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.0127,
+        "rate": 0.0128,
         "ci95": [
-          0.0107,
-          0.0151
+          0.0108,
+          0.0152
         ],
         "n": 10000
       },
       "fleet": "below the fleet median",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 994,
+        "stall_turns": 997,
         "hand_empty": 37,
-        "mana_short": 957
+        "mana_short": 960
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 63,
-        "hand_empty": 34,
+        "stall_turns": 62,
+        "hand_empty": 33,
         "mana_short": 29,
         "stall_rate": {
-          "rate": 0.0016,
+          "rate": 0.0015,
           "ci95": [
             0.0012,
             0.002
@@ -3061,49 +3062,49 @@
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.0024,
-          "diff": -0.0008,
+          "floor_rate": 0.0026,
+          "diff": -0.001,
           "ci95": [
-            -0.002,
-            0.0001
+            -0.0023,
+            -0.0001
           ],
-          "excludes_zero": false
+          "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 7.0223,
+            "rate": 7.0344,
             "ci95": [
-              6.9362,
-              7.1084
+              6.9471,
+              7.1217
             ],
-            "sd": 4.3904,
+            "sd": 4.454,
             "n": 10000
           },
           "8": {
-            "rate": 8.5193,
+            "rate": 8.5406,
             "ci95": [
-              8.3797,
-              8.6589
+              8.3977,
+              8.6835
             ],
-            "sd": 7.1213,
+            "sd": 7.2896,
             "n": 10000
           },
           "9": {
-            "rate": 11.0444,
+            "rate": 11.0676,
             "ci95": [
-              10.8284,
-              11.2604
+              10.8516,
+              11.2836
             ],
-            "sd": 11.0198,
+            "sd": 11.0229,
             "n": 10000
           },
           "10": {
-            "rate": 14.453,
+            "rate": 14.486,
             "ci95": [
-              14.1652,
-              14.7408
+              14.1974,
+              14.7746
             ],
-            "sd": 14.6825,
+            "sd": 14.7226,
             "n": 10000
           }
         },
@@ -3120,7 +3121,7 @@
         ],
         "n": 10000
       },
-      "missed_land_drop_rate": 0.2812,
+      "missed_land_drop_rate": 0.281,
       "mulliganed": {
         "rate": 0.2569,
         "ci95": [
@@ -3136,14 +3137,14 @@
         "4": 4.151,
         "5": 4.82,
         "6": 5.476,
-        "7": 6.168,
-        "8": 6.924,
-        "9": 7.778,
-        "10": 8.739
+        "7": 6.169,
+        "8": 6.926,
+        "9": 7.777,
+        "10": 8.743
       },
       "fleet": "above the fleet median",
       "correlated": "missed-drop-by-five, the all-turn drop rate and the mulligan rate move together across the fleet (r = +0.96 to +0.99): they are one measurement seen three ways, all driven by land count. Read them as one signal.",
-      "mana_stdev_turn_five": 1.1422
+      "mana_stdev_turn_five": 1.1423
     },
     "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad"
   },
@@ -3302,7 +3303,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)": {
-          "value": 30,
+          "value": 29,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)' by turn six",
@@ -3451,15 +3452,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 8.759,
+            "10": 8.765,
             "2": 2.133,
             "3": 3.28,
             "4": 4.168,
             "5": 4.833,
             "6": 5.477,
             "7": 6.178,
-            "8": 6.938,
-            "9": 7.783
+            "8": 6.94,
+            "9": 7.785
           },
           "tier": "data",
           "weight": "detail",
@@ -3470,15 +3471,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.998,
-            "10": 0.691,
+            "10": 0.692,
             "2": 0.991,
             "3": 0.866,
             "4": 0.722,
             "5": 0.599,
             "6": 0.533,
             "7": 0.548,
-            "8": 0.589,
-            "9": 0.648
+            "8": 0.592,
+            "9": 0.645
           },
           "tier": "data",
           "weight": "detail",
@@ -3489,15 +3490,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.22,
-            "10": 3.236,
+            "10": 3.234,
             "2": 0.326,
             "3": 0.466,
             "4": 0.567,
             "5": 0.747,
             "6": 1.1,
-            "7": 1.562,
-            "8": 2.058,
-            "9": 2.604
+            "7": 1.563,
+            "8": 2.061,
+            "9": 2.607
           },
           "tier": "data",
           "weight": "detail",
@@ -3523,12 +3524,12 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 2066,
+            "10": 2029,
             "5": 10,
-            "6": 86,
-            "7": 319,
-            "8": 968,
-            "9": 1656
+            "6": 89,
+            "7": 316,
+            "8": 976,
+            "9": 1673
           },
           "tier": "data",
           "weight": "detail",
@@ -3557,7 +3558,7 @@
       },
       {
         "label": "Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it)",
-        "by_turn_6_pct": 30
+        "by_turn_6_pct": 29
       },
       {
         "label": "Table draw engine plus a draw-triggered drain, both drawn",
@@ -3593,19 +3594,19 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 9.032,
+      "mean_kill_turn": 9.022,
       "median_kill_turn": 9,
       "kill_by_turn_6_pct": 1,
       "kill_by_turn_8_pct": 14,
       "max_turn": 10,
       "no_kill_by_max_turn_pct": 49,
       "kill_turn_histogram": {
-        "10": 2066,
+        "10": 2029,
         "5": 10,
-        "6": 86,
-        "7": 319,
-        "8": 968,
-        "9": 1656
+        "6": 89,
+        "7": 316,
+        "8": 976,
+        "9": 1673
       }
     }
   },

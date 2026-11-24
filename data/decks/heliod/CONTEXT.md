@@ -78,7 +78,7 @@ Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group 
 - mean turn the commander is first cast: **turn 4.374**
 - Table draw engine online (opponents are drawing): **83%**
 - Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W}): **57%**
-- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **30%**
+- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **29%**
 - Table draw engine plus a draw-triggered drain, both drawn: **23%**
 - Heliod down with an asymmetric card engine: **56%**
 - Free or cheap interaction held: **72%**

@@ -491,15 +491,15 @@
    },
    "heliod": {
     "1": 0.0,
-    "10": 0.51,
+    "10": 0.509,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.001,
     "6": 0.01,
     "7": 0.042,
-    "8": 0.138,
-    "9": 0.304
+    "8": 0.139,
+    "9": 0.306
    },
    "keen-engineering": {
     "1": 0.0,
@@ -613,15 +613,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 0.691,
+    "10": 0.692,
     "2": 0.991,
     "3": 0.866,
     "4": 0.722,
     "5": 0.599,
     "6": 0.533,
     "7": 0.548,
-    "8": 0.589,
-    "9": 0.648
+    "8": 0.592,
+    "9": 0.645
    },
    "keen-engineering": {
     "1": 1.0,
@@ -735,15 +735,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 8.759,
+    "10": 8.765,
     "2": 2.133,
     "3": 3.28,
     "4": 4.168,
     "5": 4.833,
     "6": 5.477,
     "7": 6.178,
-    "8": 6.938,
-    "9": 7.783
+    "8": 6.94,
+    "9": 7.785
    },
    "keen-engineering": {
     "1": 1.0,
@@ -2397,14 +2397,14 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.5002,
-      0.5198
+      0.4992,
+      0.5188
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.51
+     "value": 0.509
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -2421,14 +2421,14 @@
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1314,
-      0.1449
+      0.1324,
+      0.1459
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.138
+     "value": 0.139
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -2443,7 +2443,7 @@
      "n": 10000,
      "source": "benchmark.json#metrics.consistency.mana_stdev_turn_five",
      "stale": false,
-     "value": 1.1576
+     "value": 1.1578
     },
     "median_kill_turn": {
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
@@ -2479,14 +2479,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.4792,
-      0.4988
+      0.4812,
+      0.5008
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.489
+     "value": 0.491
     }
    },
    "bracket": {
@@ -2524,14 +2524,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.0107,
-      0.0151
+      0.0108,
+      0.0152
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.0127
+     "value": 0.0128
     }
    },
    "dti": {
@@ -2606,7 +2606,7 @@
      "model_draw": true,
      "model_treasures": true
     },
-    "model_version": "849fd3504203",
+    "model_version": "d7c77f59579b",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5459,7 +5459,7 @@
    "n": 7
   },
   "never_kills_rate": {
-   "max": 0.489,
+   "max": 0.491,
    "median": 0.148,
    "min": 0.004,
    "n": 7
@@ -5467,7 +5467,7 @@
   "stall_two_in_a_row": {
    "max": 0.2298,
    "median": 0.0906,
-   "min": 0.0127,
+   "min": 0.0128,
    "n": 7
   }
  },
@@ -5747,7 +5747,7 @@
    "gishath": "ac1f8a6f777f",
    "goblin-storm": "ac1f8a6f777f",
    "hapatra": "9ea49ecb247d",
-   "heliod": "849fd3504203",
+   "heliod": "d7c77f59579b",
    "ingris-infect": "61c2ffdcbefb",
    "keen-engineering": "ac1f8a6f777f",
    "meren-recursion": "7528c026dc32",
