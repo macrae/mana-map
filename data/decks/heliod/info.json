@@ -16,7 +16,11 @@
     "complete": 18,
     "of": 19,
     "stale": [],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [
       "CONTEXT.md"
     ],
@@ -44,8 +48,8 @@
       "proposal": null,
       "base_version": 12,
       "size": 100,
-      "add": 30,
-      "out": 30,
+      "add": 31,
+      "out": 31,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -200,10 +204,6 @@
           "is_new": false
         },
         {
-          "name": "Isochron Scepter",
-          "is_new": false
-        },
-        {
           "name": "Karametra's Blessing",
           "is_new": false
         },
@@ -280,6 +280,10 @@
           "is_new": false
         },
         {
+          "name": "Remand",
+          "is_new": true
+        },
+        {
           "name": "Rhystic Study",
           "is_new": false
         },
@@ -332,10 +336,6 @@
           "is_new": true
         },
         {
-          "name": "Sphere of Safety",
-          "is_new": true
-        },
-        {
           "name": "Stroke of Genius",
           "is_new": false
         },
@@ -368,6 +368,10 @@
           "is_new": false
         },
         {
+          "name": "Triskaidekaphile",
+          "is_new": true
+        },
+        {
           "name": "Venser, Shaper Savant",
           "is_new": true
         },
@@ -390,25 +394,21 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "003",
-        "question": "Card three on b3-v1: Words of Wisdom, Archive, Narset or another draw piece — or no change?",
+        "id": "005",
+        "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
         "branch": "b3-v1",
-        "file": "003-card-three-on-b3-v1-words-of-wisdom-archive-nars.json",
-        "decision": "no-change",
+        "file": "005-what-if-we-went-all-in-on-drain-on-my-draws-when.json",
+        "decision": "approve",
         "decided_by": [
           "pilot",
           "strategist",
-          "rules-question",
-          "data-analyst"
+          "card-scout"
         ],
-        "pilot_words": "yup... and a last pass to tighten up the mana please",
-        "decided_at": "2026-11-21",
-        "opened": "2026-11-21",
+        "pilot_words": "approve! [Windfall for Sapphire Medallion] / ok.. no monument, it's not a fit; also, this is not a wheels deck, per se / greater auramancy is protection on heliod, which is critical... I don't like this [Alhammarret's Archive declined] / heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time",
+        "decided_at": "2026-11-23",
+        "opened": "2026-11-23",
         "swap": null,
-        "goldfish_saw": [
-          2,
-          6
-        ]
+        "goldfish_saw": null
       },
       "summary": {
         "title": "Heliod to bracket three: Approach locked, the table's draws become the kill",
@@ -2757,14 +2757,31 @@
   ],
   "studies": [
     {
-      "id": "005",
-      "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
+      "id": "006",
+      "question": "heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time... the next line is making opponents draw big and translating that into value/damage via HUGE discounts.. I need game winning discounts, combos I can cast super cheap or free with enough generic mana discount, or loading up walking ballista with huge X spell cast... and if there are cards currently staged that don't fit the bill, we can remove pull and swap from them",
       "branch": "b3-v1",
-      "file": "005-what-if-we-went-all-in-on-drain-on-my-draws-when.json",
+      "file": "006-heliod-is-an-approach-deck-my-card-draw-is-for-f.json",
       "decision": "open",
       "decided_by": [],
       "pilot_words": "",
       "decided_at": null,
+      "opened": "2026-11-23",
+      "swap": null,
+      "goldfish_saw": null
+    },
+    {
+      "id": "005",
+      "question": "what if we went all in on drain on my draws... when they draw, I get discounts that help me draw, tutor, and cast appraoch of the second sun, and instead of combat, the second line is damage/value from my draws. I also draw a lot in this deck, and we can find value in symmetrical wheels that achieve both oppoinent and my card draw... but my card draw needs to be converted into drain/or draw/or something... and we can refactor the deck along those two lines... anything that makes the tithe infinites more likely is good too",
+      "branch": "b3-v1",
+      "file": "005-what-if-we-went-all-in-on-drain-on-my-draws-when.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "card-scout"
+      ],
+      "pilot_words": "approve! [Windfall for Sapphire Medallion] / ok.. no monument, it's not a fit; also, this is not a wheels deck, per se / greater auramancy is protection on heliod, which is critical... I don't like this [Alhammarret's Archive declined] / heliod is an approach deck... my card draw is for finding approach and quickly casting it a 2nd time",
+      "decided_at": "2026-11-23",
       "opened": "2026-11-23",
       "swap": null,
       "goldfish_saw": null
@@ -3916,9 +3933,10 @@
   },
   "next": [
     "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 24 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
-    "study 005 is open: what if we went all in on drain on my draws... when they draw, I get d — `manamap pilot study heliod call 005 …`, then `install`",
+    "branch `b3-v1`: 25 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "study 006 is open: heliod is an approach deck... my card draw is for finding approach and — `manamap pilot study heliod call 006 …`, then `install`",
     "study 004 is open: The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, o — `manamap pilot study heliod call 004 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"
