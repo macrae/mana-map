@@ -443,15 +443,15 @@
   "kill_curves": {
    "edgar-vampires": {
     "1": 0.0,
-    "10": 0.892,
+    "10": 0.896,
     "2": 0.0,
     "3": 0.0,
     "4": 0.0,
     "5": 0.016,
-    "6": 0.139,
-    "7": 0.408,
-    "8": 0.634,
-    "9": 0.783
+    "6": 0.143,
+    "7": 0.415,
+    "8": 0.642,
+    "9": 0.79
    },
    "emiel-blink": {
     "1": 0.0,
@@ -573,7 +573,7 @@
     "6": 0.605,
     "7": 0.586,
     "8": 0.594,
-    "9": 0.616
+    "9": 0.617
    },
    "emiel-blink": {
     "1": 0.999,
@@ -687,7 +687,7 @@
   "mana_curves": {
    "edgar-vampires": {
     "1": 0.999,
-    "10": 8.827,
+    "10": 8.828,
     "2": 2.142,
     "3": 3.475,
     "4": 4.396,
@@ -945,38 +945,38 @@
     "kill_by_turn_10": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.8858,
-      0.8979
+      0.8899,
+      0.9018
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_10",
      "stale": false,
-     "value": 0.892
+     "value": 0.896
     },
     "kill_by_turn_6": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1324,
-      0.1459
+      0.1363,
+      0.15
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_6",
      "stale": false,
-     "value": 0.139
+     "value": 0.143
     },
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.6245,
-      0.6434
+      0.6326,
+      0.6513
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.634
+     "value": 0.642
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -1027,14 +1027,14 @@
     "never_kills_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.1021,
-      0.1142
+      0.0982,
+      0.1101
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.never_kills_rate",
      "stale": false,
-     "value": 0.108
+     "value": 0.104
     }
    },
    "bracket": {
@@ -1072,14 +1072,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.1383,
-      0.1521
+      0.1376,
+      0.1514
      ],
      "decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.1451
+     "value": 0.1444
     }
    },
    "dti": {
@@ -1158,7 +1158,7 @@
      "model_sacrifice": true,
      "model_treasures": true
     },
-    "model_version": "3e815222f987",
+    "model_version": "0941a845ac3c",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5424,13 +5424,13 @@
   },
   "kill_by_turn_6": {
    "max": 0.253,
-   "median": 0.139,
+   "median": 0.143,
    "min": 0.0,
    "n": 7
   },
   "kill_by_turn_8": {
    "max": 0.958,
-   "median": 0.634,
+   "median": 0.642,
    "min": 0.055,
    "n": 7
   },
@@ -5460,7 +5460,7 @@
   },
   "never_kills_rate": {
    "max": 0.491,
-   "median": 0.108,
+   "median": 0.104,
    "min": 0.004,
    "n": 7
   },
@@ -5578,7 +5578,7 @@
     },
     "stall_two_in_a_row": {
      "max": 0.2298,
-     "median": 0.1451,
+     "median": 0.1444,
      "min": 0.0844,
      "n": 5
     }
@@ -5741,7 +5741,7 @@
   },
   "min_group": 3,
   "model_version": {
-   "edgar-vampires": "3e815222f987",
+   "edgar-vampires": "0941a845ac3c",
    "elves": null,
    "emiel-blink": "ac1f8a6f777f",
    "gishath": "ac1f8a6f777f",

@@ -128,7 +128,7 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group b
 
 - share of seeded games where the commander was CAST by turn six: **68%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 8**
-- mean turn the commander is first cast: **turn 5.92**
+- mean turn the commander is first cast: **turn 5.919**
 - A castable Vampire drawn — the eminence trigger every kill proof opens on: **83%**
 - A token multiplier or extra token-maker drawn: **36%**
 - A free sacrifice outlet drawn (bloodline's new engine): **55%**

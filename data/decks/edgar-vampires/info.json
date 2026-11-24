@@ -492,8 +492,8 @@
         "state": "profile only",
         "word": "profile only",
         "rose": 7,
-        "fell": 8,
-        "no_call": 3
+        "fell": 7,
+        "no_call": 4
       },
       "measured": true,
       "blind_spots": [
@@ -542,54 +542,53 @@
           "killed by T10",
           "stall, 2 in a row",
           "extra cards by T8",
-          "interaction affordable @T6",
           "cards in hand @T8"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -9.9366,
+            "delta": -9.9151,
             "ci95_diff": [
-              -10.7595,
-              -9.1137
+              -10.7493,
+              -9.0809
             ],
-            "mde": 1.1763,
+            "mde": 1.1924,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0434,
+            "delta": -0.0418,
             "ci95_diff": [
-              -0.0519,
-              -0.0349
+              -0.0501,
+              -0.0335
             ],
-            "mde": 0.0122,
+            "mde": 0.0119,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.0302,
+            "delta": -2.0085,
             "ci95_diff": [
-              -2.2096,
-              -1.8508
+              -2.1889,
+              -1.8281
             ],
-            "mde": 0.2564,
+            "mde": 0.2579,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.4087,
+            "delta": -0.4209,
             "ci95_diff": [
-              -0.4839,
-              -0.3335
+              -0.4959,
+              -0.3459
             ],
-            "mde": 0.1075,
+            "mde": 0.1072,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -10291,119 +10290,119 @@
           "n": 10000
         },
         "6": {
-          "rate": 0.0366,
+          "rate": 0.0363,
           "ci95": [
-            0.0331,
-            0.0405
+            0.0328,
+            0.0401
           ],
           "n": 10000
         },
         "7": {
-          "rate": 0.0522,
+          "rate": 0.0524,
           "ci95": [
-            0.048,
-            0.0567
+            0.0482,
+            0.0569
           ],
           "n": 10000
         },
         "8": {
-          "rate": 0.0633,
+          "rate": 0.0631,
           "ci95": [
-            0.0587,
-            0.0682
+            0.0585,
+            0.068
           ],
           "n": 10000
         },
         "9": {
-          "rate": 0.0805,
+          "rate": 0.0799,
           "ci95": [
-            0.0753,
-            0.086
+            0.0747,
+            0.0854
           ],
           "n": 10000
         },
         "10": {
-          "rate": 0.0695,
+          "rate": 0.0686,
           "ci95": [
-            0.0647,
-            0.0747
+            0.0638,
+            0.0737
           ],
           "n": 10000
         }
       },
       "two_in_a_row": {
-        "rate": 0.1451,
+        "rate": 0.1444,
         "ci95": [
-          0.1383,
-          0.1521
+          0.1376,
+          0.1514
         ],
         "n": 10000
       },
       "fleet": "worse than any tracked deck",
       "from_turn": 2,
       "cause": {
-        "stall_turns": 7574,
-        "hand_empty": 1769,
-        "mana_short": 5805
+        "stall_turns": 7556,
+        "hand_empty": 1760,
+        "mana_short": 5796
       },
       "late": {
         "from_turn": 7,
-        "stall_turns": 2655,
-        "hand_empty": 1660,
-        "mana_short": 995,
+        "stall_turns": 2640,
+        "hand_empty": 1652,
+        "mana_short": 988,
         "stall_rate": {
-          "rate": 0.0664,
+          "rate": 0.066,
           "ci95": [
-            0.064,
-            0.0689
+            0.0636,
+            0.0685
           ],
           "n": 40000
         },
         "vs_floor": {
           "from_turn": 6,
-          "floor_rate": 0.0366,
-          "diff": 0.0298,
+          "floor_rate": 0.0363,
+          "diff": 0.0297,
           "ci95": [
             0.0252,
-            0.0341
+            0.034
           ],
           "excludes_zero": true
         },
         "hand_size": {
           "7": {
-            "rate": 4.2603,
+            "rate": 4.2618,
             "ci95": [
-              4.2148,
-              4.3058
+              4.2163,
+              4.3073
             ],
             "sd": 2.3212,
             "n": 10000
           },
           "8": {
-            "rate": 4.2455,
+            "rate": 4.2497,
             "ci95": [
-              4.1944,
-              4.2966
+              4.1986,
+              4.3008
             ],
-            "sd": 2.6066,
+            "sd": 2.607,
             "n": 10000
           },
           "9": {
-            "rate": 4.0298,
+            "rate": 4.0368,
             "ci95": [
-              3.9757,
-              4.0839
+              3.9827,
+              4.0909
             ],
-            "sd": 2.7591,
+            "sd": 2.7621,
             "n": 10000
           },
           "10": {
-            "rate": 4.4174,
+            "rate": 4.4298,
             "ci95": [
-              4.3556,
-              4.4792
+              4.3679,
+              4.4917
             ],
-            "sd": 3.1554,
+            "sd": 3.1571,
             "n": 10000
           }
         },
@@ -10569,7 +10568,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 5.92,
+          "value": 5.919,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -10758,7 +10757,7 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 8.827,
+            "10": 8.828,
             "2": 2.142,
             "3": 3.475,
             "4": 4.396,
@@ -10785,7 +10784,7 @@
             "6": 0.605,
             "7": 0.586,
             "8": 0.594,
-            "9": 0.616
+            "9": 0.617
           },
           "tier": "data",
           "weight": "detail",
@@ -10796,15 +10795,15 @@
         "bodies_by_turn": {
           "value": {
             "1": 0.233,
-            "10": 11.165,
+            "10": 11.169,
             "2": 0.885,
             "3": 2.154,
             "4": 2.847,
             "5": 3.532,
             "6": 4.33,
             "7": 5.506,
-            "8": 6.899,
-            "9": 8.514
+            "8": 6.901,
+            "9": 8.515
           },
           "tier": "data",
           "weight": "detail",
@@ -10830,13 +10829,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1095,
+            "10": 1061,
             "4": 2,
-            "5": 160,
-            "6": 1228,
-            "7": 2692,
-            "8": 2260,
-            "9": 1485
+            "5": 162,
+            "6": 1268,
+            "7": 2718,
+            "8": 2269,
+            "9": 1478
           },
           "tier": "data",
           "weight": "detail",
@@ -10852,7 +10851,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 5.92,
+    "commander_mean_cast_turn": 5.919,
     "commander_cast_by_turn_6_pct": 68,
     "targets": [
       {
@@ -10913,20 +10912,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 7.78,
+      "mean_kill_turn": 7.76,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 14,
-      "kill_by_turn_8_pct": 63,
+      "kill_by_turn_8_pct": 64,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 11,
+      "no_kill_by_max_turn_pct": 10,
       "kill_turn_histogram": {
-        "10": 1095,
+        "10": 1061,
         "4": 2,
-        "5": 160,
-        "6": 1228,
-        "7": 2692,
-        "8": 2260,
-        "9": 1485
+        "5": 162,
+        "6": 1268,
+        "7": 2718,
+        "8": 2269,
+        "9": 1478
       }
     }
   },
