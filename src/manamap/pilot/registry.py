@@ -20,7 +20,20 @@ deck, its flags in add_pilot_parser, a line in docs/pilot.md, and — if it is
 read-only and should run warm — `serve.CLI_READONLY`.
 """
 
+import argparse
 import importlib
+
+
+class _OncePerCall(argparse.Action):
+    """A flag that may be given once (2026-11-23): `deck-branch stage --out A --in B --out C
+    --in D` kept only the LAST pair and staged one swap where the pilot asked for two, with no
+    word said. A second use is refused, so the swap stays the unit and nothing is dropped."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        if getattr(namespace, self.dest, None) is not None:
+            parser.error(f"{option_string} was given twice -- stage takes one swap a call; "
+                         f"run it once per swap")
+        setattr(namespace, self.dest, values)
 
 # (name, dotted module, description)
 PILOT_STEPS = [
@@ -971,9 +984,11 @@ def add_pilot_parser(subparsers):
             # says what it displaced, so `net-change` can name which swaps bought
             # the delta. `in` is a keyword, hence the dest.
             cmd.add_argument("--out", dest="swap_out", default=None, metavar="CARD",
-                             help="stage/unstage: the card leaving the list")
+                             action=_OncePerCall,
+                             help="stage/unstage: the card leaving the list (one swap a call)")
             cmd.add_argument("--in", dest="swap_in", default=None, metavar="CARD",
-                             help="stage/unstage: the card taking its place")
+                             action=_OncePerCall,
+                             help="stage/unstage: the card taking its place (one swap a call)")
             cmd.add_argument("--strength", type=float, default=None,
                              help="stage: the `upgrades` strength behind this swap, "
                                   "recorded as provenance and never as a claim")
