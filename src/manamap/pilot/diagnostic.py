@@ -741,6 +741,61 @@ def recursion(rows):
     }
 
 
+def _fodder_deck(rows):
+    return bool(rows) and "tokens_converted_by_turn" in rows[0]
+
+
+def _noncombat_life(r, turn):
+    from manamap.pilot.goldfish import noncombat_life
+    return noncombat_life(r, turn)
+
+
+def _noncombat_kill(r, turn):
+    """1 when the game was won by `turn` through anything but the attack (2026-11-24)."""
+    from manamap.pilot.goldfish import kill_source
+    if r.get("kill_turn") is None or r["kill_turn"] > turn:
+        return 0
+    return 0 if kill_source(r) == "combat" else 1
+
+
+def fodder(rows):
+    """TOKENS INTO VALUE (2026-11-24, Edgar: "the tokens are the fodder for the engine"):
+    tokens made, tokens that died to a payoff, and the mana a free outlet made off them.
+    Absent on a deck that does not declare `model_sacrifice` -- nothing is converted there."""
+    if not _fodder_deck(rows):
+        return None
+    T = range(len(rows[0]["tokens_converted_by_turn"]))
+    return {
+        **{key: {str(t + 1): _mean_cell([r[key][t] for r in rows]) for t in T}
+           for key in ("tokens_made_by_turn", "tokens_converted_by_turn", "sac_mana_by_turn")},
+        "basis": ("cumulative per game; converted = a creature token that died while a death "
+                  "payoff was out to pay on it, by any cause. Outlet mana is not spent."),
+    }
+
+
+def clock(rows):
+    """ACTION AT A DISTANCE (2026-11-24): the life the opponent lost to anything but the
+    attack, the games won that way, and the turn a combo line first had every piece out.
+    On a fodder deck only (`model_sacrifice`), so no other deck's family changes."""
+    if not _fodder_deck(rows):
+        return None
+    n = len(rows)
+    T = range(1, len(rows[0]["tokens_converted_by_turn"]) + 1)
+    return {
+        "noncombat_life_by_turn": {str(t): _mean_cell([_noncombat_life(r, t) for r in rows])
+                                   for t in T},
+        "noncombat_kill_by_turn": {str(t): _rate(sum(_noncombat_kill(r, t) for r in rows), n)
+                                   for t in T},
+        **({"combo_assembled_by_turn": {
+            str(t): _rate(sum(1 for r in rows if r["combo_assembled_turn"] is not None
+                              and r["combo_assembled_turn"] <= t), n) for t in T}}
+           if "combo_assembled_turn" in rows[0] else {}),
+        "basis": ("non-combat = every point of life lost that was not the attack: drains, "
+                  "death and arrival triggers, pings. A non-combat kill is a life kill where "
+                  "those out-dealt the attacks, or a combo. The attacks meet no blockers."),
+    }
+
+
 #: ONE VALUE PER GAME for each row `net_change.ROWS` reads, keyed by its
 #: (block, key, turn). With a seed per game (`goldfish.run`), game i of two lists
 #: deals the same shuffle, so the difference can be read GAME BY GAME — a paired
@@ -787,6 +842,15 @@ PER_GAME = {
     ("recursion", "fatty_via_meren_by_turn", str(EXPERIENCE_GOAL_TURN)):
         lambda r: None if "meren_returns" not in r else
         (1 if _first_meren_return(r, EXPERIENCE_GOAL) <= EXPERIENCE_GOAL_TURN else 0),
+    # Tokens into value (2026-11-24, Edgar). Absent on a deck without `model_sacrifice`.
+    ("fodder", "tokens_converted_by_turn", "8"): _at("tokens_converted_by_turn", 7),
+    ("clock", "noncombat_life_by_turn", "10"):
+        lambda r: None if "tokens_converted_by_turn" not in r else _noncombat_life(r, 10),
+    ("clock", "noncombat_kill_by_turn", "10"):
+        lambda r: None if "tokens_converted_by_turn" not in r else _noncombat_kill(r, 10),
+    ("clock", "combo_assembled_by_turn", "8"):
+        lambda r: None if "tokens_converted_by_turn" not in r or "combo_assembled_turn" not in r
+        else (1 if r["combo_assembled_turn"] is not None and r["combo_assembled_turn"] <= 8 else 0),
 }
 
 
@@ -887,6 +951,9 @@ def run_on(doc, slug, branch=None, iterations=None, seed=None, quiet=False,
         **({"wheels": _w} if (_w := wheels(rows, got)) else {}),
         # ABSENT unless the deck declares `model_commander_recursion` (Meren, 2026-11-07).
         **({"recursion": _r} if (_r := recursion(rows)) else {}),
+        # ABSENT unless the deck declares `model_sacrifice` (Edgar's thesis, 2026-11-24).
+        **({"fodder": _f} if (_f := fodder(rows)) else {}),
+        **({"clock": _k} if (_k := clock(rows)) else {}),
         "output": output(got),
         # Per-game values for paired comparison — only on request, so the
         # tracked diagnostic.json never carries ten thousand numbers per row.

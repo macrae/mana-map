@@ -1096,6 +1096,42 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "sac_cap_hit_rate": _round(
                 sum(1 for r in results if r.get("sac_cap_hits")) / n)}
            if model_sacrifice else {}),
+        # FODDER INTO VALUE (2026-11-24, Edgar): tokens made, tokens that died to a payoff,
+        # their share, and the mana a free outlet made off them (not spent: a floor).
+        **({"fodder": {
+            **{f"mean_{key}_by_turn": {
+                str(t): _round(sum(r[f"{key}_by_turn"][t - 1] for r in results) / n)
+                for t in turns}
+               for key in ("tokens_made", "tokens_converted", "sac_mana")},
+            "converted_share_by_turn": {str(t): (lambda made, conv: _round(conv / made)
+                                                 if made else None)(
+                sum(r["tokens_made_by_turn"][t - 1] for r in results),
+                sum(r["tokens_converted_by_turn"][t - 1] for r in results)) for t in turns},
+            "basis": ("cumulative per game. Converted: a creature token that died while a "
+                      "death payoff was out to pay on it -- our outlet, an edict, or the "
+                      "measured death rate (`model_deaths`). Outlet mana arrives after "
+                      "combat and is not spent here."),
+        }} if results and "tokens_converted_by_turn" in results[0] else {}),
+        # WHERE THE LIFE WENT AND WHAT ENDED THE GAME (2026-11-24, Edgar: "action at a
+        # distance"). Non-combat life is every point the opponent lost that was not the
+        # attack itself: drains, death and arrival triggers, pings, the window.
+        "clock": {
+            "mean_noncombat_life_by_turn": {
+                str(t): _round(sum(noncombat_life(r, t) for r in results) / n) for t in turns},
+            "kill_source_by_turn_10": (lambda srcs: {k: _round(v / n) for k, v in
+                                                     sorted(srcs.items())})(
+                __import__("collections").Counter(
+                    kill_source(r) for r in results
+                    if r["kill_turn"] is not None and r["kill_turn"] <= 10)),
+            **({"combo_assembled_by_turn": {str(t): _round(sum(
+                1 for r in results if r["combo_assembled_turn"] is not None
+                and r["combo_assembled_turn"] <= t) / n) for t in turns}}
+               if results and "combo_assembled_turn" in results[0] else {}),
+            "basis": ("shares of ALL games, summing to the kill rate by turn 10. A life kill "
+                      "is 'combat' when the attacks dealt at least as much as everything "
+                      "else by the kill turn, else 'noncombat'; combo, approach, trisk and "
+                      "poison are their own clocks. Combat here is into an empty board."),
+        },
         **({"drain": {
             "mean_drain_by_turn": {
                 str(i): _round(sum(r["drain_by_turn"][i - 1] for r in results) / n)
@@ -1324,6 +1360,28 @@ def _targets_sha(slug, branch=None):
     if not path.exists():
         return None
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def noncombat_life(r, t):
+    """Life the tracked opponent lost by the end of turn `t` that was NOT the attack itself
+    (2026-11-24): drains, death and arrival triggers, pings, and Heliod's window."""
+    total = sum((r.get("total_damage_by_turn") or [])[:t])
+    swing = sum((r.get("combat_only_by_turn") or [])[:t])
+    window = sum(v or 0 for v in ((r.get("window_engine") or {}).get("damage") or [])[:t])
+    return max(0, total - swing) + window
+
+
+def kill_source(r):
+    """What ended one game (2026-11-24): its own clock for combo, approach, trisk and
+    poison; for a life kill, 'combat' when the attacks dealt at least as much as everything
+    else by the kill turn, else 'noncombat'. None when the game was not won."""
+    if r.get("kill_turn") is None:
+        return None
+    if r["kill_by"] != "life":
+        return r["kill_by"]
+    k = r["kill_turn"]
+    swing = sum((r.get("combat_only_by_turn") or [])[:k])
+    return "combat" if swing >= noncombat_life(r, k) else "noncombat"
 
 
 def run(slug, iterations=None, seed=None, max_turn=None,

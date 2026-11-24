@@ -125,6 +125,12 @@ ROWS = (
     # THE PILOT'S GOAL (2026-11-23): a fatty back free through Meren by turn six.
     ("experience 5+ by T6", "recursion", "experience_goal_by_turn", "6", +1),
     ("a 5+ drop via Meren by T6", "recursion", "fatty_via_meren_by_turn", "6", +1),
+    # TOKENS INTO VALUE (2026-11-24, Edgar's thesis). Absent on every deck that does not
+    # declare `model_sacrifice`, so no other deck's family changes.
+    ("tokens converted by T8", "fodder", "tokens_converted_by_turn", "8", +1),
+    ("life lost outside combat @T10", "clock", "noncombat_life_by_turn", "10", +1),
+    ("killed outside combat by T10", "clock", "noncombat_kill_by_turn", "10", +1),
+    ("a combo line whole by T8", "clock", "combo_assembled_by_turn", "8", +1),
 )
 
 #: THE HEADLINE ROWS A READER SCANS A BRANCH BY (2026-10-20), in the order the
@@ -162,6 +168,42 @@ METRICS = {
                 "by Meren or tutored onto it.",
         "why": "The deck's payoff is its big bodies early. The pilot named it (2026-11-07): "
                "when the fatties arrive, against the turn they could be cast.",
+    },
+    "tokens converted by T8": {
+        "unit": "mean",
+        "scale": "tokens per game",
+        "what": "Creature tokens that died by the end of turn 8 while a death payoff was out "
+                "to pay on them -- a drain, a draw, a Treasure -- whatever killed them: our "
+                "sacrifice outlet, an edict, or the measured death rate. Cumulative per game.",
+        "why": "The pilot's thesis (2026-11-24): the tokens are the fodder for the engine. "
+               "A token that dies to nothing, or never dies, was not converted into value.",
+    },
+    "life lost outside combat @T10": {
+        "unit": "mean",
+        "scale": "life, one opponent at 40",
+        "what": "Life the tracked opponent lost by the end of turn 10 that was not the attack "
+                "itself: drains, death and arrival triggers, pings. Cumulative per game.",
+        "why": "Action at a distance (the pilot, 2026-11-11): damage that is not combat "
+               "damage. The goldfish's attacks meet no blockers, so this is the half of the "
+               "clock a table cannot simply block.",
+    },
+    "killed outside combat by T10": {
+        "unit": "rate",
+        "scale": "against the games themselves",
+        "what": "The share of games won by the end of turn 10 where the drains and triggers "
+                "out-dealt the attacks by the kill turn, or a combo line ended it.",
+        "why": "Which clock wins, not only how fast. A list that kills sooner by attacking an "
+               "empty board is not the deck the pilot is building.",
+    },
+    "a combo line whole by T8": {
+        "unit": "rate",
+        "scale": "against the games themselves",
+        "what": "The share of games in which every piece of a known combo line (Commander "
+                "Spellbook, `model_combos`) was on the battlefield by the end of turn 8, "
+                "whether or not its finisher was out.",
+        "why": "A sacrifice loop (a recursive body, an outlet that makes mana, a piece that "
+               "makes Treasure on a death) can be whole with no finisher out: how often it "
+               "comes together at all, apart from how often it ends the game.",
     },
     "experience 5+ by T6": {
         "unit": "rate",
@@ -2209,6 +2251,8 @@ ROW_GROUPS = (
                            "dead wheels in hand @T5")),
     ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7",
                     "experience 5+ by T6", "a 5+ drop via Meren by T6")),
+    ("Fodder into value", ("tokens converted by T8", "life lost outside combat @T10",
+                           "killed outside combat by T10", "a combo line whole by T8")),
 )
 
 ROW_KEY = ("No call: smaller than this run can resolve, which is not the same as no "

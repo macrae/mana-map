@@ -1680,6 +1680,28 @@ def sac_outlet_profile(card):
     return None
 
 
+#: THE MANA A FREE OUTLET MAKES PER CREATURE (2026-11-24, Edgar: "tokens into value").
+#: "Sacrifice a creature: Add {C}{C}" (Ashnod's Altar) is 2; "Add one mana of any color"
+#: (Phyrexian Altar) is 1. Read only off a FREE outlet's own ability -- a costed one has
+#: already been paid for, and a tap outlet is once a turn. 0 when the outlet makes no mana.
+_SAC_MANA_RE = re.compile(
+    r"(?:^|[.\n] )sacrifice (?:a|another) "
+    r"(?:creature|creature or artifact|artifact or creature)[^:.\n]{0,20}:\s*"
+    r"add ((?:\{[WUBRGC]\})+|one mana of any (?:one )?colou?r|two mana)",
+    re.IGNORECASE)
+
+
+def sac_mana_profile(card):
+    """Mana a free sacrifice outlet adds for each creature it eats, or 0."""
+    m = _SAC_MANA_RE.search(card.get("oracle_text", "") or "")
+    if not m:
+        return 0
+    got = m.group(1).lower()
+    if got.startswith("{"):
+        return got.count("{")
+    return 2 if got.startswith("two") else 1
+
+
 #: DEATHS A CARD CAUSES AMONG ITS OWN CONTROLLER'S CREATURES (2026-11-07), for Meren of
 #: Clan Nel Toth's experience: "whenever another creature you control dies" pays for every
 #: one, and until now the model let a creature die only through a free outlet. Three shapes,

@@ -333,6 +333,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     free_sac_outlet = False
     sacrifices = 0
     sacrifices_by_turn = []
+    # FODDER INTO VALUE (2026-11-24, Edgar: "the tokens are the fodder for the engine").
+    # Cumulative per game, appended beside `sacrifices_by_turn`: the creature tokens that
+    # entered, the tokens that died while a death payoff was out to pay on them (any cause:
+    # our outlet, an edict, the measured death rate), and the mana a free outlet made off
+    # what it ate (Ashnod's Altar: 2 a creature). The outlet's mana arrives after combat and
+    # is NOT spent by this model -- a reported figure, a floor on what the turn could do.
+    tokens_made = 0
+    tokens_made_by_turn = []
+    tokens_converted = 0
+    tokens_converted_by_turn = []
+    sac_mana_per = 0              # the best free outlet in play: mana per creature
+    sac_mana = 0
+    sac_mana_by_turn = []
     sac_cap_hits = 0
     draw_engines = []
     # THE WHEELS THAT ARE ALREADY ON THE TABLE. Held apart from `draw_engines`
@@ -832,6 +845,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     poison_by_turn = []
     kill_by = None
     combo_win = None              # the Spellbook line that ended the game (`model_combos`)
+    combo_assembled_turn = None   # the first turn any line had every piece out (2026-11-24)
     # APPROACH OF THE SECOND SUN (`model_approach`, 2026-11-23): the turn of the first cast
     # (it went seventh from the top) and of the second (from hand: the game is won).
     approach_first_turn = None
@@ -952,6 +966,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     creature_flying = []          # index-aligned with `battlefield`, like the types
     mass_animate_threshold = 0
     damage_by_turn = []
+    combat_only_by_turn = []      # the attack alone, index-aligned with `damage_by_turn`
     total_damage_by_turn = []
     board_power_by_turn = []
     target_turns = [None] * len(targets)
@@ -1099,7 +1114,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nontoken scope are honoured; a card registered under both flags
             fires once.
             """
-            nonlocal deaths_drained, deaths_damaged, treasures, experience
+            nonlocal deaths_drained, deaths_damaged, treasures, experience, tokens_converted
             # MEREN'S EXPERIENCE IS PAID HERE, for every death (2026-11-07): "whenever another
             # creature you control dies". It was counted only where the model's own outlets
             # sacrificed, so every other death -- an edict, a self-sacrifice, a clamp, the
@@ -1107,6 +1122,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if commander_recursion and commander_turn is not None:
                 _gain_experience(n_died)
             fired = set()
+            paid = False
             for eng in list(death_engines) + list(death_drains):
                 if id(eng) in fired:
                     continue
@@ -1120,12 +1136,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     reps = 1
                 else:
                     reps = n_died * death_trigger_mult
+                paid = True
                 deaths_drained += eng["death_drain"] * reps
                 deaths_damaged += eng["death_damage"] * reps
                 if eng["death_draw"] * reps:
                     draw_n(eng["death_draw"] * reps)
                 if model_treasures:
                     treasures += eng["death_treasure"] * reps
+            if is_token and paid:
+                tokens_converted += n_died
 
         def draw_n(n):
             """Take n off the top. The deck running out is a real outcome and
@@ -1298,7 +1317,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             reported, because a loop that terminates silently cannot be told
             from one that never ran.
             """
-            nonlocal etb_chain_hits
+            nonlocal etb_chain_hits, tokens_made
+            if is_token:
+                tokens_made += 1
             # The sixth field is the poison pair (infect, toxic). It rides IN
             # the entry rather than in a parallel list, because the sacrifice
             # site below rebuilds `battlefield` and a parallel list would not
@@ -2270,7 +2291,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             engines — Storm-Kiln Artist discovered is a Storm-Kiln Artist."""
             nonlocal attack_enabler_out, bodies_cum, creatures_entered_this_turn
             nonlocal enchantments_entered, etb_drained, etb_gained, extra_combat_free
-            nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem
+            nonlocal free_sac_outlet, lifelink_power, mass_animate_threshold, team_anthem, sac_mana_per
             nonlocal token_multiplier, treasure_bonus, first_right_card_turn, death_trigger_mult
             nonlocal life_loss_mult
             nonlocal treasure_multiplier, treasures
@@ -2473,6 +2494,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     death_engines.append(card["death"])
                 if card["sac_outlet"] == "free":
                     free_sac_outlet = True
+                    sac_mana_per = max(sac_mana_per, card["sac_mana"])
             own_deaths["route"] = "cast"
             _register_own_death(card, enters=True)
             own_deaths["route"] = "free"
@@ -3169,7 +3191,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal attack_enabler_out, bodies_cum, enchantments_entered
             nonlocal kill_turn, kill_by, approach_first_turn, approach_win_turn
             nonlocal etb_drained, etb_gained, extra_combat_free
-            nonlocal first_right_card_turn, free_sac_outlet, land_mana_bonus
+            nonlocal first_right_card_turn, free_sac_outlet, land_mana_bonus, sac_mana_per
             nonlocal lifelink_power, mass_animate_threshold, rock_production
             nonlocal team_anthem, treasure_bonus, treasure_multiplier
 
@@ -3916,6 +3938,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                             death_engines.append(card["death"])
                         if card["sac_outlet"] == "free":
                             free_sac_outlet = True
+                            sac_mana_per = max(sac_mana_per, card["sac_mana"])
                     _register_own_death(card, enters=False)
                     if model_deaths:
                         # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
@@ -5167,6 +5190,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 creature_flying[:] = [creature_flying[i] for i in kept_idx]
                 sacrifices += n_sac
                 own_deaths["sacs"] += n_sac
+                # Every token here died to a payoff (the sweep runs only with one out).
+                tokens_converted += n_sac
+                sac_mana += n_sac * sac_mana_per
                 if commander_recursion and commander_turn is not None:
                     _gain_experience(n_sac)
             # MEREN'S HALF OF THE OUTLET (2026-11-06): one non-token fodder creature, the
@@ -5444,10 +5470,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     recursion_to_hand += 1
                     hand.append(_pick)
                     seen.add(_pick["name"])
+            # THE SWING ALONE, KEPT APART (2026-11-24): `damage_by_turn` also carries what
+            # entered, died and pinged this turn (`etb_by`: the sacrifice sweep's drains
+            # included), so it could not say whether a kill came from attacking an empty board
+            # or from the drain the deck is built on. `combat_only_by_turn` is the attack.
+            _swing = dealt * _combat_mult() * life_loss_mult
             dealt = (dealt * _combat_mult() + sum(_n * _noncombat_mult(_kind)
                                                   for _kind, _n in etb_by.items())) * life_loss_mult
             opponent_life -= dealt
             damage_by_turn.append(dealt)
+            combat_only_by_turn.append(_swing)
             # A damage doubler doubles the damage a source deals, and infect
             # converts what is dealt, so the multiplier applies to counters too.
             poisoned *= _combat_mult()
@@ -5533,6 +5565,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 for _ln in combo_lines:
                     if not _ln["cards"] <= _on:
                         continue
+                    # WHOLE, WHETHER OR NOT IT FINISHES (2026-11-24): the turn a line first
+                    # had every piece on the battlefield. Edgar's loop is a line here
+                    # (Plunderer, Altar, Skeleton); a kill also needs its finisher out.
+                    if combo_assembled_turn is None:
+                        combo_assembled_turn = turn
                     if _combo_finishes(_ln):
                         kill_turn, kill_by, combo_win = turn, "combo", _ln["id"]
                         break
@@ -6227,6 +6264,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             window_disc_by_turn[turn - 1] = _disc()
             treasures = _w["t"]
         sacrifices_by_turn.append(sacrifices)
+        tokens_made_by_turn.append(tokens_made)
+        tokens_converted_by_turn.append(tokens_converted)
+        sac_mana_by_turn.append(sac_mana)
         experience_by_turn.append(experience)
         # THE SAME FIX FOR THE DRAW SERIES (2026-10-19): it was appended before
         # combat, so every draw made in the sacrifice sweep, on an attack or on
@@ -6288,6 +6328,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "dead_wheels_in_hand_by_turn": dead_wheels_in_hand_by_turn if model_discard else None,
         "keep_rule_pass": keep_rule_pass,
         "sacrifices_by_turn": sacrifices_by_turn,
+        # FODDER INTO VALUE (2026-11-24): present under the sacrifice channel only, so a
+        # deck that never declared it reads absent rather than a column of zeros.
+        **({"tokens_made_by_turn": tokens_made_by_turn,
+            "tokens_converted_by_turn": tokens_converted_by_turn,
+            "sac_mana_by_turn": sac_mana_by_turn} if model_sacrifice else {}),
+        "combat_only_by_turn": combat_only_by_turn,
+        # Declared and no line in the list is a ZERO, not an absence: the channel looked.
+        **({"combo_assembled_turn": combo_assembled_turn} if combo_lines is not None else {}),
         **({"experience_by_turn": experience_by_turn,
             # (mana value, turn, route) of the first arrival of each big body (2026-11-07)
             "big_arrivals": list(own_deaths["arrivals"].values()),
