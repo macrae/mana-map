@@ -69,7 +69,7 @@ def test_a_spell_that_draws_only_for_us_is_not_a_table_draw():
 
 def test_the_window_cards_are_read_and_cast_only_where_heliod_is_declared():
     flags_on = {"model_commander_flash_discount": True, "model_approach": True}
-    for card in (MINE, FRUITION, FOLIO, SKEINS, RACK, DIG):
+    for card in (MINE, FRUITION, FOLIO, SKEINS, RACK, DIG, MATH, STROKE, CHARM):
         prof = gl.classify(dict(card))
         assert "flash_window" in model_coverage.channels_for(prof), card["name"]
         assert model_coverage.never_cast(dict(prof), flags_on) is False, card["name"]
