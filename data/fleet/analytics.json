@@ -497,8 +497,8 @@
     "4": 0.0,
     "5": 0.001,
     "6": 0.009,
-    "7": 0.037,
-    "8": 0.103,
+    "7": 0.036,
+    "8": 0.105,
     "9": 0.235
    },
    "keen-engineering": {
@@ -618,10 +618,10 @@
     "3": 0.866,
     "4": 0.722,
     "5": 0.599,
-    "6": 0.526,
+    "6": 0.525,
     "7": 0.524,
-    "8": 0.554,
-    "9": 0.601
+    "8": 0.553,
+    "9": 0.602
    },
    "keen-engineering": {
     "1": 1.0,
@@ -735,15 +735,15 @@
    },
    "heliod": {
     "1": 0.998,
-    "10": 8.514,
+    "10": 8.518,
     "2": 2.133,
     "3": 3.28,
     "4": 4.168,
     "5": 4.832,
-    "6": 5.47,
+    "6": 5.469,
     "7": 6.145,
-    "8": 6.865,
-    "9": 7.645
+    "8": 6.864,
+    "9": 7.643
    },
    "keen-engineering": {
     "1": 1.0,
@@ -2421,14 +2421,14 @@
     "kill_by_turn_8": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
      "ci95": [
-      0.0972,
-      0.1091
+      0.0991,
+      0.1112
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.speed.kill_by_turn_8",
      "stale": false,
-     "value": 0.103
+     "value": 0.105
     },
     "mana_at_turn_five": {
      "basis": "a mean; no interval is stored",
@@ -2455,14 +2455,14 @@
     "missed_land_drop_rate": {
      "basis": "a per-turn rate over turns 2-6; Wilson from k = rate·n at n = 10000 is an approximation",
      "ci95": [
-      0.2507,
-      0.2679
+      0.2509,
+      0.2681
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "benchmark.json#metrics.mana_screw.missed_land_drop_rate",
      "stale": false,
-     "value": 0.2592
+     "value": 0.2594
     },
     "mulligan_rate": {
      "basis": "Wilson 95% from k = rate·n at n = 10000",
@@ -2524,14 +2524,14 @@
     },
     "stall_two_in_a_row": {
      "ci95": [
-      0.011,
-      0.0154
+      0.0109,
+      0.0153
      ],
      "decklist_sha256": "f7e21dc6a8bba6f179946d50e25c03ae6c360fecb19ec13d141103e85228ccad",
      "n": 10000,
      "source": "diagnostic.json#stall.two_in_a_row",
      "stale": false,
-     "value": 0.013
+     "value": 0.0129
     }
    },
    "dti": {
@@ -2606,7 +2606,7 @@
      "model_draw": true,
      "model_treasures": true
     },
-    "model_version": "a47454b275ee",
+    "model_version": "f00018ac3899",
     "why_not": "measured under the deck's own opt-in channels; see benchmark for the uniform figures"
    },
    "placements": {
@@ -5447,7 +5447,7 @@
    "n": 7
   },
   "missed_land_drop_rate": {
-   "max": 0.2592,
+   "max": 0.2594,
    "median": 0.219,
    "min": 0.1152,
    "n": 7
@@ -5467,7 +5467,7 @@
   "stall_two_in_a_row": {
    "max": 0.2298,
    "median": 0.0906,
-   "min": 0.013,
+   "min": 0.0129,
    "n": 7
   }
  },
@@ -5747,7 +5747,7 @@
    "gishath": "ac1f8a6f777f",
    "goblin-storm": "ac1f8a6f777f",
    "hapatra": "9ea49ecb247d",
-   "heliod": "a47454b275ee",
+   "heliod": "f00018ac3899",
    "ingris-infect": "61c2ffdcbefb",
    "keen-engineering": "ac1f8a6f777f",
    "meren-recursion": "7528c026dc32",
