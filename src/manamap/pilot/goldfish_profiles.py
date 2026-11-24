@@ -205,6 +205,11 @@ _DRAW_UNREAD_RE = re.compile(r"\bdraws? cards\b", re.I)
 _ETB_DRAW_PER_TYPE_RE = re.compile(
     r"when (?:this creature|this artifact|this enchantment|[A-Z][\w' ,-]{2,30}) "
     r"enters, draw a card for each (?:other )?([A-Z][a-z]+) you control", re.I)
+#: CHAMPION OF DUSK (2026-11-24): "When this creature enters, you draw X cards and you lose X
+#: life, where X is the number of Vampires you control" -- itself included (no "other").
+_ETB_DRAW_X_TYPE_RE = re.compile(
+    r"when (?:this creature|[A-Z][\w' ,-]{2,30}) enters, (?:you )?draw X cards[^.]*?"
+    r"where X is the number of ([A-Z][a-z]+?)s you control", re.I)
 #: `\.\s+`, NOT `\.\s` — AND THE PLUS IS LOAD-BEARING. `_REMINDER_RE` replaces
 #: a parenthetical with a SPACE, so a card whose reminder text sits between the
 #: period and the draw clause arrives here as ".  Draw a card" with two spaces,
@@ -1680,6 +1685,27 @@ def cast_token_profile(card):
             "scales": bool(_CAST_TOKEN_SCALES_RE.search(text))}
 
 
+#: BLACK MARKET CONNECTIONS (2026-11-24): "At the beginning of your first main phase, choose
+#: one or more -- a Treasure, a card, a 3/2 changeling" (life 1, 2, 3). A STATED POLICY: every
+#: mode, every turn, from the turn after it lands (its own first main phase has passed). The
+#: six life a turn is not tracked -- this model keeps no life total of ours.
+_FIRST_MAIN_MODES_RE = re.compile(
+    r"at the beginning of your first main phase, choose one or more", re.I)
+
+
+def first_main_modes_profile(card):
+    """{treasure, draw, token_power, token_toughness} or None."""
+    text = card.get("oracle_text", "") or ""
+    if not _FIRST_MAIN_MODES_RE.search(text):
+        return None
+    tail = text[_FIRST_MAIN_MODES_RE.search(text).end():]
+    tok = re.search(r"create an? (\d+)/(\d+)[^.]*?creature token", tail, re.I)
+    return {"treasure": 1 if re.search(r"create an? treasure token", tail, re.I) else 0,
+            "draw": 1 if re.search(r"\bdraw a card\b", tail, re.I) else 0,
+            "token_power": int(tok.group(1)) if tok else 0,
+            "token_toughness": int(tok.group(2)) if tok else 0}
+
+
 def sac_outlet_profile(card):
     """Is this a FREE repeatable sacrifice outlet, a costed one, or neither."""
     text = card.get("oracle_text", "") or ""
@@ -2624,6 +2650,7 @@ def draw_profile(card):
            # on their draws (Needlehead, Nekusar, Tithe) have the event.
            "recurring_each_player_draw": 0,
            "spell_draw_greatest_power": False, "etb_draw_per_type": None,
+           "etb_draw_per_type_self": False,
            "spell_draw_greatest_mv": False, "life_gain_paid_draw": False,
            "first_discard_draw": False,
            "arrival_draw": 0, "arrival_draw_once": False,
@@ -2806,6 +2833,10 @@ def draw_profile(card):
     per_type = _ETB_DRAW_PER_TYPE_RE.search(text)
     if per_type:
         out["etb_draw_per_type"] = per_type.group(1)
+    _xt = _ETB_DRAW_X_TYPE_RE.search(text)
+    if _xt and not out["etb_draw_per_type"]:
+        out["etb_draw_per_type"] = _xt.group(1)
+        out["etb_draw_per_type_self"] = True
     if (not _DRAW_RE.search(text) and not out["wheel_draws"]
             and not out["activated_wheel"]
             and not out["recurring_draw"] and not out["spell_draw_greatest_power"]
@@ -4773,6 +4804,7 @@ def combat_profile(card):
         # Who this card gives haste to; see _TEAM_HASTE_RE.
         "team_haste": team_haste_grant(text),
         "token_power": 0,
+        "token_type": None,      # the token's creature type, "a 1/1 black Vampire" (2026-11-24)
         "token_bodies": 0,
         # A TOKEN PER ENCHANTMENT ENTERING, which in a Zur deck is a token per
         # attack. Read as a ONE-OFF before this, so Archon of Sun's Grace — the
@@ -4950,6 +4982,11 @@ def combat_profile(card):
         count = int(word) if word.isdigit() else _NUMBER_WORDS.get(word, 1)
         profile["token_bodies"] += count
         profile["token_power"] += count * _stat(match.group(2))
+        # THE TOKEN'S CREATURE TYPE (2026-11-24): the last capitalised word before "creature"
+        # in "a 2/2 black Vampire creature token with flying", so a typed count sees it.
+        if profile["token_type"] is None:
+            _tw = re.findall(r"\b([A-Z][a-z]+)\b", (match.group(4) or "").split("creature")[0])
+            profile["token_type"] = _tw[-1] if _tw else None
 
     if is_creature:
         profile["infect"] = bool(_INFECT_KW_RE.search(text))
@@ -5673,6 +5710,11 @@ _NOT_A_CREATURE_TYPE = frozenset({
 #: cost reducer. Universal Automaton is a {1} Dragon that this deck casts for
 #: nothing; the model would have priced it at one.
 _CHANGELING_RE = re.compile(r"\bchangeling\b|is every creature type", re.IGNORECASE)
+#: THE CARD ITSELF IS A CHANGELING (2026-11-24). The phrase matched a TOKEN's changeling too:
+#: Black Market Connections ("a 3/2 colorless Shapeshifter creature token with changeling. (It
+#: is every creature type.)") read as every creature type, so it was a Vampire spell to Edgar's
+#: eminence. Corpus: 12 non-creature cards matched; a creature or kindred card keeps the read.
+_SELF_CHANGELING_TYPES = ("Creature", "Kindred", "Tribal")
 
 
 def subtypes_of(type_line, oracle_text=None):
@@ -5683,7 +5725,8 @@ def subtypes_of(type_line, oracle_text=None):
     literal type line when no corpus is loaded — a unit test with no data behind
     it still gets the printed types.
     """
-    if oracle_text and _CHANGELING_RE.search(oracle_text):
+    if oracle_text and _CHANGELING_RE.search(oracle_text) and any(
+            t in (type_line or "") for t in _SELF_CHANGELING_TYPES):
         every = _corpus_creature_types()
         if every:
             return frozenset(every)

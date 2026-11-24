@@ -265,3 +265,79 @@ def test_the_life_and_hand_rows_are_absent_off_a_fodder_deck():
                                model_drain=True)
     for key in (("clock", "life_gained_by_turn", "8"), ("clock", "hand_size_by_turn", "8")):
         assert diagnostic.PER_GAME[key](r) is None
+
+
+# ── item 6 (2026-11-24): the draw the goldfish could not read ─────────────────────────────
+
+from manamap.pilot.goldfish_profiles import first_main_modes_profile, subtypes_of
+from manamap.pilot.goldfish import draw_is_unread
+
+BMC = ("At the beginning of your first main phase, choose one or more —\n"
+       "• Sell Contraband — Create a Treasure token. You lose 1 life.\n"
+       "• Buy Information — Draw a card. You lose 2 life.\n"
+       "• Hire a Mercenary — Create a 3/2 colorless Shapeshifter creature token with changeling. "
+       "You lose 3 life. (It is every creature type.)")
+CHAMPION = ("When this creature enters, you draw X cards and you lose X life, where X is the "
+            "number of Vampires you control.")
+CLAMP = "Equipped creature gets +1/-1.\nWhenever equipped creature dies, draw two cards.\nEquip {1}"
+
+
+def test_a_card_that_makes_a_changeling_is_not_one():
+    assert subtypes_of("Enchantment", BMC) == frozenset()
+    shifter = subtypes_of("Creature — Shapeshifter", "Changeling (This card is every creature type.)")
+    assert "Shapeshifter" in shifter
+
+
+def test_black_market_connections_reads_its_three_modes():
+    assert first_main_modes_profile({"oracle_text": BMC}) == {
+        "treasure": 1, "draw": 1, "token_power": 3, "token_toughness": 2}
+
+
+def test_the_three_draws_are_read_and_say_so():
+    kw = dict(model_discard=False, model_combat=True, model_deaths=True)
+    for name, text, tl in (("BMC", BMC, "Enchantment"),
+                           ("Champion", CHAMPION, "Creature — Vampire Knight"),
+                           ("Clamp", CLAMP, "Artifact — Equipment")):
+        assert not draw_is_unread({"name": name, "oracle_text": text, "type_line": tl}, **kw), name
+
+
+def _modes_doc(with_bmc):
+    cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+             _c("BMC" if with_bmc else "Plain Enchantment", BMC if with_bmc else "", 3,
+                "Enchantment", quantity=10),
+             _c("Body", "", 2, "Creature — Human", quantity=30, power="2", toughness="2")]
+    cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+    return {"cards": cards}
+
+
+def _plain_games(doc, n=200, **kw):
+    library, _ = goldfish.build_library(doc)
+    rng = random.Random(9)
+    return [goldfish.simulate_once(rng, library, 3, [], 10, model_combat=True, model_draw=True,
+                                   model_treasures=True, model_sacrifice=True, **kw)
+            for _ in range(n)]
+
+
+def test_black_market_connections_draws_makes_treasure_and_a_body_every_turn():
+    on, off = _plain_games(_modes_doc(True)), _plain_games(_modes_doc(False))
+    extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
+    made = lambda rs: _mean(rs, lambda r: r["tokens_made_by_turn"][-1])
+    assert extra(on) > extra(off) + 1
+    assert made(on) > made(off) + 1
+
+
+def test_champion_of_dusk_draws_for_every_vampire_tokens_included():
+    """The bodies are Humans; only the TOKENS they make differ, so the gap is the tokens."""
+    def doc(token_type):
+        maker = f"When this creature enters, create two 1/1 black {token_type} creature tokens."
+        cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+                 _c("Champion", CHAMPION, 5, "Creature — Vampire Knight", quantity=10,
+                    power="4", toughness="4"),
+                 _c("Body", maker, 2, "Creature — Human", quantity=30, power="2",
+                    toughness="2")]
+        cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+        return {"cards": cards}
+    vamp, human = _plain_games(doc("Vampire")), _plain_games(doc("Human"))
+    extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
+    assert extra(human) > 0, "Champion counts itself"
+    assert extra(vamp) > extra(human) + 0.5

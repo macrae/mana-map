@@ -419,6 +419,13 @@ def draw_is_unread(card, *, model_discard, model_combat, model_deaths):
     # Magecraft draw (Archmage Emeritus), read by `_magecraft` since 2026-11-06.
     if spell_count_profile(card)["magecraft_draw"]:
         return False
+    # Skullclamp's draw is read on the death it causes (`own_death.clamp`, under the
+    # sacrifice channel), and Black Market Connections' on its first main phase (2026-11-24).
+    from manamap.pilot.goldfish_profiles import first_main_modes_profile, own_death_profile
+    if model_deaths and (own_death_profile(card).get("clamp") or {}).get("draw"):
+        return False
+    if (first_main_modes_profile(card) or {}).get("draw"):
+        return False
     return True
 
 

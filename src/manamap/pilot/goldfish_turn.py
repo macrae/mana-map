@@ -350,6 +350,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     sac_mana_by_turn = []
     sac_cap_hits = 0
     draw_engines = []
+    # BLACK MARKET CONNECTIONS (2026-11-24): its modes, fired at each first main phase.
+    first_main_engines = []
     # THE WHEELS THAT ARE ALREADY ON THE TABLE. Held apart from `draw_engines`
     # because this one needs the BODY as well as the profile: a cost that says
     # "Sacrifice this creature" takes the body with it, and a draw profile has
@@ -465,6 +467,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # THE ENGINES THAT WORK ON A CAST OR AN EQUIP, and the doubler that came in through a
         # door other than the body loop (2026-11-04). Mirrormade copies from this list.
         permanents_in_play.append(card)
+        if card["first_main_modes"]:
+            first_main_engines.append(card["first_main_modes"])
         if "Artifact" in (card.get("type_line") or ""):
             _refresh_gated_lands()    # Spire of Industry
         _eng = card["engine"]
@@ -1290,6 +1294,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # one-shot reserve and get their own series.
         mana_by_turn.append(pool)
         treasure_online_by_turn.append(bool(treasure_engines))
+        # THE FIRST MAIN PHASE'S MODES (2026-11-24, Black Market Connections): every mode, a
+        # stated policy -- the Treasure, the card, the 3/2 changeling (summoning-sick). Its
+        # life cost is not tracked. Snapshotted: one cast this turn waits for the next.
+        for _fm in list(first_main_engines):
+            if model_draw and _fm["draw"]:
+                draw_n(_fm["draw"])
+            if model_treasures and _fm["treasure"]:
+                treasures += _fm["treasure"]
+            if _fm["token_power"]:
+                for _ in range(token_multiplier):
+                    creature_entered(_fm["token_power"], turn, False, 1, is_token=True,
+                                     toughness=_fm["token_toughness"],
+                                     type_line="Token Creature — Shapeshifter")
         # CUMULATIVE UPKEEP (Mystic Remora, 2026-11-04): an age counter and that many times its
         # cost, out of this turn's mana, while the age is one a pilot keeps paying
         # (`CUMULATIVE_UPKEEP_MAX_AGE`, AUTHORED). Then it is sacrificed.
@@ -1758,6 +1775,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 deck.remove(_c)
                 yard_creatures.append(_c)
 
+        def _token_type_line(combat):
+            """A token's type line from its maker's text (2026-11-24): typed counts see it."""
+            return ("Token Creature — " + combat["token_type"]) if combat.get("token_type") else ""
+
         def _token_info(card):
             """A token that sacrifices itself (an Eldrazi Spawn or Scion) is its own outlet
             (2026-11-23): marked so Meren's sweep takes it with no altar out. None otherwise,
@@ -1872,10 +1893,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                      attack_gate=combat.get("attack_gate"),
                                      lord=combat.get("static_lord"),
                                      info=dict(_entry_info(card["name"], combat), card=card))
-            if combat["token_bodies"]:
+            if combat["token_bodies"] and not card["first_main_modes"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
                     creature_entered(each, turn, False, 1, is_token=True,
+                                     type_line=_token_type_line(combat),
                                      info=_token_info(card))
             if model_combat:
                 if combat["team_haste"]:
@@ -2339,9 +2361,15 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if model_draw:
                 draw_n(card["draw"]["etb_draw"])
                 if card["draw"]["etb_draw_per_type"]:
-                    # "for each OTHER Dinosaur": counted on the board it joins.
-                    draw_n(sum(1 for tl_ in battlefield_types
-                               if card["draw"]["etb_draw_per_type"] in tl_))
+                    # "for each OTHER Dinosaur": counted on the board it joins. TOKENS COUNT
+                    # (2026-11-24): the larger of the cast permanents and every creature, as
+                    # Malakir's count does; Champion of Dusk ("X is the number of Vampires you
+                    # control") counts itself too.
+                    _ty = card["draw"]["etb_draw_per_type"]
+                    draw_n(max(sum(1 for tl_ in battlefield_types if _ty in tl_),
+                               sum(1 for tl_ in creature_types if _ty in (tl_ or "")))
+                           + (1 if card["draw"]["etb_draw_per_type_self"]
+                              and _ty in (card.get("type_line") or "") else 0))
                 if (card["draw"]["recurring_draw"]
                         or card["draw"]["arrival_draw"]
                         or card["draw"]["cast_draw"]
@@ -2468,10 +2496,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 bodies_cum += minted
             # Creature tokens arrive with summoning sickness too, and they
             # arrive on the turn their maker resolved.
-            if arrivals_matter and combat["token_bodies"]:
+            if arrivals_matter and combat["token_bodies"] and not card["first_main_modes"]:
                 each = combat["token_power"] // max(combat["token_bodies"], 1)
                 for _ in range(combat["token_bodies"] * token_multiplier):
                     creature_entered(each, turn, False, 1, is_token=True,
+                                     type_line=_token_type_line(combat),
                                      info=_token_info(card))
             if model_combat:
                 _register_damage_scale(combat)

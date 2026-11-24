@@ -81,6 +81,7 @@ from manamap.pilot.goldfish_profiles import (
     graveyard_profile,
     experience_profile,
     sac_mana_profile,
+    first_main_modes_profile,
     sac_outlet_profile,
     subtypes_of,
     token_doubler,
@@ -229,6 +230,8 @@ def classify(card, pool=None):
         "sac_outlet": sac_outlet_profile(card),
         # What a free outlet adds per creature (Ashnod's Altar: 2), 2026-11-24.
         "sac_mana": sac_mana_profile(card),
+        # Black Market Connections' modes, every first main phase (2026-11-24).
+        "first_main_modes": first_main_modes_profile(card),
         # Deaths it causes among OUR creatures (Meren's experience, 2026-11-07).
         "own_death": own_death_profile(card),
         # Approach of the Second Sun, played under `model_approach` (2026-11-23).
