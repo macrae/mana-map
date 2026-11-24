@@ -341,3 +341,42 @@ def test_champion_of_dusk_draws_for_every_vampire_tokens_included():
     extra = lambda rs: _mean(rs, lambda r: r["drawn_extra_by_turn"][-1])
     assert extra(human) > 0, "Champion counts itself"
     assert extra(vamp) > extra(human) + 0.5
+
+
+# ── item 7 (2026-11-24): consolidation, Crossway's grant, the outlet anchor ───────────────
+
+from manamap.pilot.goldfish_profiles import drain_profile, sac_consolidate_profile, sac_outlet_profile
+
+VISH = ("Flying, lifelink\nSacrifice a creature: Put X +1/+1 counters on Vish Kal, where X is the "
+        "sacrificed creature's power.\nRemove all +1/+1 counters from Vish Kal: Target creature "
+        "gets -1/-1 until end of turn for each +1/+1 counter removed this way.")
+CROSSWAY = ("Attacking Vampires you control have deathtouch and lifelink.\nWhenever a Vampire you "
+            "control dies, you may pay 2 life. If you do, draw a card.")
+
+
+def test_an_outlet_on_its_own_line_is_an_outlet():
+    assert sac_outlet_profile({"oracle_text": VISH}) == "free"
+    assert sac_consolidate_profile({"oracle_text": VISH})
+    assert sac_outlet_profile({"oracle_text": "{T}, Sacrifice a creature: Add {B}{B}."}) != "free"
+
+
+def test_crossway_grants_lifelink_to_attacking_vampires_not_to_itself():
+    d = drain_profile({"name": "Crossway", "oracle_text": CROSSWAY})
+    assert d["grants_lifelink_to"] == "Vampire"
+    assert not d["lifelink"]
+
+
+def test_a_consolidator_grows_by_the_tokens_it_eats():
+    def doc(with_vish):
+        cards = [_c("Wastes", "({T}: Add {C}.)", 0, "Basic Land", quantity=40),
+                 _c("Vish" if with_vish else "Big Body", VISH if with_vish else "", 3,
+                    "Legendary Creature — Vampire", quantity=10, power="3", toughness="3"),
+                 _c("Maker", MAKER, 2, "Creature — Human", quantity=30, power="2",
+                    toughness="2")]
+        cards.append(_c("Filler", "", 1, "Sorcery", quantity=99 - sum(c["quantity"] for c in cards)))
+        return {"cards": cards}
+    vish, plain = _plain_games(doc(True)), _plain_games(doc(False))
+    grown = lambda rs: _mean(rs, lambda r: r["consolidated_by_turn"][-1])
+    assert grown(plain) == 0
+    assert grown(vish) > 1
+    assert _mean(vish, lambda r: r["tokens_converted_by_turn"][-1]) > 1

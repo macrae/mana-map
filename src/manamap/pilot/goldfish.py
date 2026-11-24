@@ -1109,15 +1109,16 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             **{f"mean_{key}_by_turn": {
                 str(t): _round(sum(r[f"{key}_by_turn"][t - 1] for r in results) / n)
                 for t in turns}
-               for key in ("tokens_made", "tokens_converted", "sac_mana")},
+               for key in ("tokens_made", "tokens_converted", "sac_mana", "consolidated")},
             "converted_share_by_turn": {str(t): (lambda made, conv: _round(conv / made)
                                                  if made else None)(
                 sum(r["tokens_made_by_turn"][t - 1] for r in results),
                 sum(r["tokens_converted_by_turn"][t - 1] for r in results)) for t in turns},
             "basis": ("cumulative per game. Converted: a creature token that died while a "
                       "death payoff was out to pay on it -- our outlet, an edict, or the "
-                      "measured death rate (`model_deaths`). Outlet mana arrives after "
-                      "combat and is not spent here."),
+                      "measured death rate (`model_deaths`) -- or one a consolidator ate "
+                      "(Vish Kal; `consolidated` is the counters it took). Outlet mana arrives "
+                      "after combat and is not spent here."),
         }} if results and "tokens_converted_by_turn" in results[0] else {}),
         # WHERE THE LIFE WENT AND WHAT ENDED THE GAME (2026-11-24, Edgar: "action at a
         # distance"). Non-combat life is every point the opponent lost that was not the

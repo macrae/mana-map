@@ -10,13 +10,21 @@
   "_model_combat_note": "Turned on 2026-08-28, deliberately, at the pilot's instruction and as the precondition for the `drain-engine` branch being falsifiable at all. Without it `diagnostic.output` reports `available: false` and the only objective axes this deck can be aimed at are `stall` and `land_drop` -- neither of which speaks to a token->damage->drain thesis. Six of the deck's ETB payoffs (Impact Tremors, Purphoros, Corpse Knight, Witty Roastmaster, Warleader's Call, Mirkwood Bats) are exactly the class `model_combat` reads, so the clock it unlocks is a reading of this deck's actual output rather than a proxy. This is a PER-DECK flag, not a change to goldfish.py: `meta.model_version` does not move and no other deck's figures change. It DOES restate this deck's own baseline -- `mean_bodies_by_turn` switches from `bodies` to `creature_bodies` -- so goldfish_metrics.json and mana_analysis.json are regenerated in the same commit, and any A/B measures both arms under it.",
   "targets": [
     {
-      "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
+      "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
       "need": [
         {
           "any_of": [
             "Blood Artist",
+            "Bloodghast",
+            "Bloodtithe Harvester",
+            "Charismatic Conqueror",
+            "Cordial Vampire",
             "Cruel Celebrant",
-            "Vein Ripper",
+            "Edgar, Ancient Bloodlord",
+            "Master of Dark Rites",
+            "Oathsworn Vampire",
+            "Tithe Drinker",
+            "Viscera Seer",
             "Vraan, Executioner Thane"
           ]
         }
@@ -28,34 +36,78 @@
         {
           "any_of": [
             "Anointed Procession",
+            "Black Market Connections",
+            "Bloodline Keeper // Lord of Lineage",
             "Elspeth, Storm Slayer"
           ]
         }
       ]
     },
     {
-      "label": "A Vampire lord or anthem drawn (the combat plan)",
+      "label": "A free sacrifice outlet drawn (bloodline's new engine)",
       "need": [
         {
           "any_of": [
-            "Captivating Vampire",
-            "Cordial Vampire",
-            "Sanctum Seeker"
+            "Ashnod's Altar",
+            "Phyrexian Tower",
+            "Skullclamp",
+            "Viscera Seer",
+            "Vish Kal, Blood Arbiter",
+            "Yahenni, Undying Partisan"
           ]
         }
       ]
     },
     {
-      "label": "Ramp or fixing drawn",
+      "label": "A drain that fires when a creature DIES (a reachable second line, not the kill's leg)",
       "need": [
         {
           "any_of": [
-            "Arcane Signet",
-            "Sol Ring",
-            "Talisman of Conviction",
-            "Talisman of Hierarchy",
-            "Talisman of Indulgence",
-            "Urza's Incubator"
+            "Bastion of Remembrance",
+            "Blood Artist",
+            "Cruel Celebrant",
+            "Elas il-Kor, Sadistic Pilgrim",
+            "The Meathook Massacre",
+            "Vein Ripper",
+            "Vraan, Executioner Thane",
+            "Zulaport Cutthroat"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A drain on an arrival or an attack — no death needed (Bloodwitch, Seeker, Wispdrinker)",
+      "need": [
+        {
+          "any_of": [
+            "Malakir Bloodwitch",
+            "Sanctum Seeker",
+            "Wispdrinker Vampire"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Lifelink across the swarm — Crossway Troublemakers, Teysa's tokens, Elas on every arrival",
+      "need": [
+        {
+          "any_of": [
+            "Crossway Troublemakers",
+            "Elas il-Kor, Sadistic Pilgrim",
+            "Teysa Karlov"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)",
+      "need": [
+        {
+          "any_of": [
+            "Enduring Tenacity",
+            "Marauding Blight-Priest",
+            "Sanguine Bond",
+            "Vito, Thorn of the Dusk Rose"
           ]
         }
       ]
@@ -65,36 +117,31 @@
       "need": [
         {
           "any_of": [
+            "Black Market Connections",
             "Caretaker's Talent",
+            "Champion of Dusk",
             "Clavileño, First of the Blessed",
-            "Crossway Troublemakers",
+            "Grim Haruspex",
             "Liliana, Dreadhorde General",
+            "Midnight Reaper",
             "Morbid Opportunist",
             "Preacher of the Schism",
+            "Skullclamp",
             "Welcoming Vampire"
           ]
         }
       ]
     },
     {
-      "label": "Protection held for the swarm",
+      "label": "Consolidate — fodder into one big threat (Vish Kal, Kalitas, Edgar, Elenda, Yahenni)",
       "need": [
         {
           "any_of": [
-            "Teferi's Protection",
-            "Flawless Maneuver",
-            "Akroma's Will",
-            "Deflecting Swat"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "An answer to a noncreature permanent drawn — Anguished Unmaking (Despark left on v2.1.0)",
-      "need": [
-        {
-          "any_of": [
-            "Anguished Unmaking"
+            "Edgar, Ancient Bloodlord",
+            "Elenda, the Dusk Rose",
+            "Kalitas, Traitor of Ghet",
+            "Vish Kal, Blood Arbiter",
+            "Yahenni, Undying Partisan"
           ]
         }
       ]
@@ -109,51 +156,89 @@
         },
         {
           "any_of": [
-            "Sanctum Seeker"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A castable Vampire drawn — the eminence trigger every kill proof opens on",
-      "need": [
-        {
-          "any_of": [
+            "Bastion of Remembrance",
             "Blood Artist",
-            "Bloodghast",
-            "Charismatic Conqueror",
-            "Cordial Vampire",
             "Cruel Celebrant",
-            "Master of Dark Rites",
-            "Tithe Drinker",
-            "Vraan, Executioner Thane"
+            "Elas il-Kor, Sadistic Pilgrim",
+            "Malakir Bloodwitch",
+            "Sanctum Seeker",
+            "The Meathook Massacre",
+            "Vein Ripper",
+            "Vraan, Executioner Thane",
+            "Wispdrinker Vampire",
+            "Zulaport Cutthroat"
           ]
         }
       ]
     },
     {
-      "label": "A free sacrifice outlet drawn (bloodline's new engine)",
+      "label": "THE LOOP (stack 013): Pitiless Plunderer + Ashnod's Altar + a recursive body",
       "need": [
         {
           "any_of": [
-            "Ashnod's Altar",
-            "Phyrexian Tower",
-            "Viscera Seer",
-            "Vish Kal, Blood Arbiter",
-            "Yahenni, Undying Partisan"
+            "Pitiless Plunderer"
+          ]
+        },
+        {
+          "any_of": [
+            "Ashnod's Altar"
+          ]
+        },
+        {
+          "any_of": [
+            "Oathsworn Vampire",
+            "Reassembling Skeleton"
           ]
         }
       ]
     },
     {
-      "label": "A life-gain-to-loss converter drawn (the bracket-3 win-con: every life you gain costs the table)",
+      "label": "Ramp or fixing drawn",
       "need": [
         {
           "any_of": [
-            "Vito, Thorn of the Dusk Rose",
-            "Sanguine Bond",
-            "Enduring Tenacity",
-            "Marauding Blight-Priest"
+            "Arcane Signet",
+            "Orzhov Signet",
+            "Rakdos Signet",
+            "Sol Ring",
+            "Talisman of Conviction",
+            "Talisman of Hierarchy",
+            "Talisman of Indulgence",
+            "Urza's Incubator"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Removal drawn — a creature, a permanent, or the board (read as drawn, never cast)",
+      "need": [
+        {
+          "any_of": [
+            "Anguished Unmaking",
+            "Crackling Doom",
+            "Lethal Scheme",
+            "Olivia's Wrath",
+            "Path to Exile",
+            "Swords to Plowshares",
+            "Toxic Deluge",
+            "Vanishing Verse"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Protection held for the swarm",
+      "need": [
+        {
+          "any_of": [
+            "Akroma's Will",
+            "Boros Charm",
+            "Clever Concealment",
+            "Deflecting Swat",
+            "Flawless Maneuver",
+            "Giver of Runes",
+            "Selfless Spirit",
+            "Teferi's Protection"
           ]
         }
       ]
@@ -170,5 +255,6 @@
   "model_treasures": true,
   "_model_treasures_note": "2026-11-11 (pilot: 'upgrade the goldfish as best you can'): on for both arms so Pitiless Plunderer's death Treasures, Anointed Procession / Elspeth Treasure doubling and any Treasure maker are read. Applies to V7 and every branch alike: one simulator, two lists.",
   "model_combos": true,
-  "_model_combos_note": "2026-11-11: Spellbook's infinite lines contained in the list end the game when assembled with a finisher (threat-v1: Oathsworn Vampire + Ashnod's Altar + Pitiless Plunderer + Blood Artist). V7 contains none, so V7's figures move only by model_treasures."
+  "_model_combos_note": "2026-11-11: Spellbook's infinite lines contained in the list end the game when assembled with a finisher (threat-v1: Oathsworn Vampire + Ashnod's Altar + Pitiless Plunderer + Blood Artist). V7 contains none, so V7's figures move only by model_treasures.",
+  "_v4_thesis_note": "RE-DECLARED 2026-11-24 around the pilot's thesis: \"tokens into value... the tokens are the fodder for the engine... life gain, life drain, card draw, removal, protection\", and \"Crossway Troublemakers giving all vampires deathtouch and ways to convert fodder vampires to consolidate into other creatures is also part of what this deck does\". Groups by job, by oracle text, across the sleeved list and the open threat-v1 (a name in an open branch is not stranded): fodder (castable Vampires, token makers), the converter (sacrifice outlets), value (drain on a death; drain on an arrival or attack; lifelink across the swarm; gain-to-loss; draw), CONSOLIDATE (new: Vish Kal, Kalitas, Edgar, Ancient Bloodlord, Elenda, Yahenni), the drain doubler widened from Sanctum Seeker alone to every drain source, THE LOOP (new, stack 013, four cards: bracket 3), and mana, removal and protection read as DRAWN only. RETIRED: 'A Vampire lord or anthem drawn (the combat plan)' -- Captivating Vampire left on threat-v1, Sanctum Seeker is a drain now, and the pilot's rule is that flat anthems are too slow. 'An answer to a noncreature permanent drawn' folded into the removal group. Labels kept verbatim where a group survives: generated files cite them by string. Crossway's DEATHTOUCH is invisible here (no blockers); its lifelink is read."
 }

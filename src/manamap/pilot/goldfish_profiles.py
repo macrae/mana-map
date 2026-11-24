@@ -1160,8 +1160,11 @@ def has_event_payoff(profile):
 # Sacrificing after `attackers` is snapshotted is what makes it a conversion of
 # a token that has ALREADY attacked rather than a trade against this turn's
 # swing.
+#: THE ANCHOR TAKES A BARE LINE BREAK (2026-11-24). It was `[.\n] `, a period OR a newline
+#: and then a space, so "Flying, lifelink\nSacrifice a creature: ..." (Vish Kal, Blood Arbiter)
+#: was no outlet at all; only a card whose outlet opened its text, or followed ". ", matched.
 _FREE_SAC_OUTLET_RE = re.compile(
-    r"(?:^|[.\n] )sacrifice (?:a|another) "
+    r"(?:^|\.\s|\n)sacrifice (?:a|another) "
     r"(?:creature|creature or artifact|artifact or creature)[^:.\n]{0,20}:",
     re.IGNORECASE)
 #: A COSTED OUTLET IS NOT A FREE ONE. 180 corpus cards put mana or a tap symbol
@@ -1721,10 +1724,23 @@ def sac_outlet_profile(card):
 #: (Phyrexian Altar) is 1. Read only off a FREE outlet's own ability -- a costed one has
 #: already been paid for, and a tap outlet is once a turn. 0 when the outlet makes no mana.
 _SAC_MANA_RE = re.compile(
-    r"(?:^|[.\n] )sacrifice (?:a|another) "
+    r"(?:^|\.\s|\n)sacrifice (?:a|another) "
     r"(?:creature|creature or artifact|artifact or creature)[^:.\n]{0,20}:\s*"
     r"add ((?:\{[WUBRGC]\})+|one mana of any (?:one )?colou?r|two mana)",
     re.IGNORECASE)
+
+
+#: CONSOLIDATION (2026-11-24, the pilot: "ways to convert fodder vampires to consolidate into
+#: other creatures"): "Sacrifice a creature: Put X +1/+1 counters on Vish Kal, where X is the
+#: sacrificed creature's power." A free outlet that grows its own body by what it eats.
+_SAC_CONSOLIDATE_RE = re.compile(
+    r"sacrifice (?:a|another) creature: put X \+1/\+1 counters on [^,.]{2,40}, where X is the "
+    r"sacrificed creature's power", re.I)
+
+
+def sac_consolidate_profile(card):
+    """True when a free outlet puts the eaten creature's power on itself as counters."""
+    return bool(_SAC_CONSOLIDATE_RE.search(card.get("oracle_text", "") or ""))
 
 
 def sac_mana_profile(card):
@@ -3902,8 +3918,15 @@ LIFELINK_TO_TOKENS = "<tokens>"
 #: A grant to tokens is not the card's own lifelink either (Teysa Karlov read as a 2/4
 #: lifelinker off "Creature tokens you control have vigilance and lifelink", 2026-11-11).
 _LIFELINK_NOT_SELF_RE = re.compile(
-    r"gains? lifelink|token[^.]*?with lifelink|creature tokens you control have [^.]*?lifelink",
+    r"gains? lifelink|token[^.]*?with lifelink|creature tokens you control have [^.]*?lifelink"
+    r"|attacking [A-Z][a-z]+s you control have [^.]*?lifelink",
     re.I)
+#: CROSSWAY TROUBLEMAKERS (2026-11-24): "Attacking Vampires you control have deathtouch and
+#: lifelink" -- a grant to a TYPE in the plural, which `_LIFELINK_GRANT_TYPE_RE` ("Vampire
+#: creatures you control") could not reach, so the card read as one lifelinker. Deathtouch is
+#: not read: the goldfish has no blockers for it to matter against.
+_LIFELINK_GRANT_PLURAL_RE = re.compile(
+    r"(?:attacking )?([A-Z][a-z]+?)s you control have (?:[^.]*?\b)?lifelink")
 _LIFELINK_RE = re.compile(r"\blifelink\b", re.I)
 
 #: Per-creature-arrival gain (Daxos).
@@ -4043,8 +4066,12 @@ def drain_profile(card):
         _LIFELINK_RE.search(_LIFELINK_NOT_SELF_RE.sub("", text)))
 
     m = _LIFELINK_GRANT_TYPE_RE.search(text)
+    _mp = _LIFELINK_GRANT_PLURAL_RE.search(text)
     if m:
         out["grants_lifelink_to"] = m.group(1).capitalize()
+    elif _mp and _mp.group(1) not in ("Creature", "Token"):
+        _ty = _mp.group(1)
+        out["grants_lifelink_to"] = _ty[:-2] + "y" if _ty.endswith("ie") else _ty   # Allies
     elif _LIFELINK_GRANT_TOKENS_RE.search(text):
         # Teysa Karlov (2026-11-11): every creature TOKEN, whatever its type. A sentinel the
         # turn loop reads off each body's token flag, not off its type line.

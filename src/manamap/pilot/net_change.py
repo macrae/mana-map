@@ -174,9 +174,10 @@ METRICS = {
     "tokens converted by T8": {
         "unit": "mean",
         "scale": "tokens per game",
-        "what": "Creature tokens that died by the end of turn 8 while a death payoff was out "
-                "to pay on them -- a drain, a draw, a Treasure -- whatever killed them: our "
-                "sacrifice outlet, an edict, or the measured death rate. Cumulative per game.",
+        "what": "Creature tokens that died by the end of turn 8 into value: while a death "
+                "payoff was out to pay on them (a drain, a draw, a Treasure), whatever killed "
+                "them, or eaten by an outlet that grows by what it eats. Cumulative per "
+                "game.",
         "why": "The pilot's thesis (2026-11-24): the tokens are the fodder for the engine. "
                "A token that dies to nothing, or never dies, was not converted into value.",
     },

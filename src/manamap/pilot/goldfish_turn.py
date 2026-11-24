@@ -346,8 +346,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     tokens_converted = 0
     tokens_converted_by_turn = []
     sac_mana_per = 0              # the best free outlet in play: mana per creature
+    consolidators = []            # names of free outlets that grow by what they eat (Vish Kal)
     sac_mana = 0
     sac_mana_by_turn = []
+    consolidated = 0              # +1/+1 counters a consolidator took off the fodder, cumulative
+    consolidated_by_turn = []
     sac_cap_hits = 0
     draw_engines = []
     # BLACK MARKET CONNECTIONS (2026-11-24): its modes, fired at each first main phase.
@@ -2536,6 +2539,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["sac_outlet"] == "free":
                     free_sac_outlet = True
                     sac_mana_per = max(sac_mana_per, card["sac_mana"])
+                    if card["sac_consolidate"]:
+                        consolidators.append(card["name"])
             own_deaths["route"] = "cast"
             _register_own_death(card, enters=True)
             own_deaths["route"] = "free"
@@ -3982,6 +3987,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         if card["sac_outlet"] == "free":
                             free_sac_outlet = True
                             sac_mana_per = max(sac_mana_per, card["sac_mana"])
+                            if card["sac_consolidate"]:
+                                consolidators.append(card["name"])
                     _register_own_death(card, enters=False)
                     if model_deaths:
                         # EVERY DEATH PAYOFF BELONGS HERE (2026-10-19) — see the
@@ -5208,7 +5215,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # SACRIFICE, AFTER THE SWING IS SNAPSHOTTED. `attackers` was taken
             # above, so a token converted here has already attacked — this is a
             # conversion, not a trade against this turn's combat.
-            if model_sacrifice and free_sac_outlet and death_engines:
+            # A CONSOLIDATOR IS A REASON TO SACRIFICE ON ITS OWN (2026-11-24): the tokens that
+            # already attacked go into Vish Kal as counters, a stated policy, whether or not a
+            # death payoff is out. Its body must be on the battlefield to grow.
+            _cons_at = next((i for i, e in enumerate(battlefield)
+                             if len(e) > 12 and e[12] and e[12].get("name") in consolidators),
+                            None) if consolidators else None
+            if model_sacrifice and free_sac_outlet and (death_engines or _cons_at is not None):
                 # THE GUARD IS ABOUT RE-ENTRANCY, NOT BOARD WIDTH (#34,
                 # 2026-09-13). It was `n_sac >= SAC_LIMIT_PER_TURN`, which
                 # STOPPED CONVERTING at twenty tokens — and twenty tokens is a
@@ -5230,6 +5243,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # thing it actually is rather than by a number somebody tuned.
                 board_before = len(battlefield)
                 kept, kept_idx, n_sac = [], [], 0
+                _eaten = []
                 for idx_, entry in enumerate(battlefield):
                     is_tok = entry[4]
                     if not is_tok:
@@ -5237,6 +5251,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         kept_idx.append(idx_)
                         continue
                     n_sac += 1
+                    _eaten.append(entry[0])
                     for eng in death_engines:
                         if eng.get("nontoken_only"):
                             continue  # a TOKEN died; "nontoken" payoffs do not see it
@@ -5256,6 +5271,14 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     # were sacrificing. That is the loop the guard is named for.
                     sac_cap_hits += 1
                 battlefield[:] = kept
+                if _cons_at is not None and _eaten:
+                    # Each sacrifice is its own counter event, through the replacements.
+                    _ci = kept_idx.index(_cons_at)
+                    _grow = sum(apply_counter_mod(p_, counter_plus, counter_times)
+                                for p_ in _eaten if p_ > 0)
+                    _e = battlefield[_ci]
+                    battlefield[_ci] = (_e[0] + _grow,) + _e[1:6] + (_e[6] + _grow,) + _e[7:]
+                    consolidated += _grow
                 # THE PARALLEL LISTS FOLLOW THE REBUILD. They did not until
                 # 2026-09-11, so after a sacrifice the typed lifelink grant
                 # read another creature's type line, and the haste grants
@@ -6373,6 +6396,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         tokens_made_by_turn.append(tokens_made)
         tokens_converted_by_turn.append(tokens_converted)
         sac_mana_by_turn.append(sac_mana)
+        consolidated_by_turn.append(consolidated)
         experience_by_turn.append(experience)
         # THE SAME FIX FOR THE DRAW SERIES (2026-10-19): it was appended before
         # combat, so every draw made in the sacrifice sweep, on an attack or on
@@ -6438,7 +6462,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # deck that never declared it reads absent rather than a column of zeros.
         **({"tokens_made_by_turn": tokens_made_by_turn,
             "tokens_converted_by_turn": tokens_converted_by_turn,
-            "sac_mana_by_turn": sac_mana_by_turn} if model_sacrifice else {}),
+            "sac_mana_by_turn": sac_mana_by_turn,
+            "consolidated_by_turn": consolidated_by_turn} if model_sacrifice else {}),
         **({"life_gained_by_turn": life_gained_by_turn} if model_drain else {}),
         "combat_only_by_turn": combat_only_by_turn,
         # Declared and no line in the list is a ZERO, not an absence: the channel looked.
