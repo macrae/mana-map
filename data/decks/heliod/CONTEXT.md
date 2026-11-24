@@ -70,23 +70,23 @@ Its soft spot is the commander. Lose [Heliod, the Radiant Dawn // Heliod, the Wa
 - **DeckCheck (external, dated):** 46/96 → bracket 4, as of 2026-10-18
 - **Recon (other people's lists, dated):** 8 finding(s) as of 2026-11-21
 - **Proven lines:** 2 of 2 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 49 of 85 distinct cards (12 DARK, 24 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 51 of 85 distinct cards (10 DARK, 24 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.4.0 (V12), 2026-09-20. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
-- share of seeded games where the commander was CAST by turn six: **87%**
+- share of seeded games where the commander was CAST by turn six: **88%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 9**
 - mean turn the commander is first cast: **turn 4.333**
 - Table draw engine online (opponents are drawing): **80%**
-- Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W}): **53%**
-- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **26%**
-- Table draw engine plus a draw-triggered drain, both drawn: **19%**
-- Heliod down with an asymmetric card engine: **54%**
+- Heliod plus the mana to flip him ({3}{U/P} on top of {2}{W}{W}): **54%**
+- Psychosis Crawler or Scrawling Crawler drawn (a body that scales with our own draw, and drains beside it): **27%**
+- Table draw engine plus a draw-triggered drain, both drawn: **20%**
+- Heliod down with an asymmetric card engine: **55%**
 - Free or cheap interaction held: **68%**
 - An X-spell finisher drawn (the mana sink the discount pays for): **66%**
-- Win condition access (Approach, or a tutor that can actually find a sorcery): **34%**
-- Heliod protected, or a flash grant that does not need him: **50%**
-- A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block): **50%**
-- A taxer down (attackers pay, flying or not): **34%**
+- Win condition access (Approach, or a tutor that can actually find a sorcery): **35%**
+- Heliod protected, or a flash grant that does not need him: **51%**
+- A body that can block the SEAT THAT KILLS US (giada-angels took 39 of heliod's 53 damage eliminations in run 996adb84; Kefnet needs seven cards in hand to block): **51%**
+- A taxer down (attackers pay, flying or not): **35%**
 - share of opening sevens the model would keep: **75%**
 - Colour on curve (lands + rocks): W 69%, U 76%
 - Forge (an optional probe, not a gate): last run 2026-09-10, 10/40 won (29% (95% CI 16%–45%)) on V10 — on an older list
