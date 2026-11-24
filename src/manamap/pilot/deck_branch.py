@@ -1190,7 +1190,11 @@ def _study_for(slug, branch, study_id):
     if not doc.get("decided_at"):
         raise SystemExit(f"study {study_id} is not installed — `manamap pilot study {slug} install {study_id}`")
     live = _sha_of_list(slug, branch)
-    if doc.get("decklist_sha256") != live:
+    # THE LIST THE CALL WAS MADE ON (2026-11-23): a study whose list moved while it ran is
+    # installed with `decided_on_decklist_sha256` -- the list the pilot decided on -- beside the
+    # one it opened on. Proposing reads the decided list; reading only the opening one refused a
+    # land pass decided on the exact list on disk.
+    if (doc.get("decided_on_decklist_sha256") or doc.get("decklist_sha256")) != live:
         raise SystemExit(
             f"study {study_id} studied a different list than the one on disk — the list moved after "
             f"the call. Recompute its facts and read them again before proposing:\n"
