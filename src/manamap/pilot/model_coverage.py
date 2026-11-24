@@ -70,6 +70,9 @@ CHANNELS = {
     # discover is: card selection with no authored rate, and a deck without
     # the keyword never reaches `_cascade`. Grants are not read.
     "cascade": None,
+    # APPROACH OF THE SECOND SUN (2026-11-23): an alternate win the turn loop casts twice and
+    # wins on, under the deck's `model_approach` declaration.
+    "approach": "model_approach",
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -310,6 +313,8 @@ def channels_for(profile):
             or rec.get("return_landfall")
             or _experience_read(profile)):
         found.add("recursion")
+    if profile.get("approach"):
+        found.add("approach")
     if profile.get("discover_n"):
         found.add("discover")
     if profile.get("cascade"):
@@ -340,7 +345,9 @@ def never_cast(profile, flags):
             or profile["tutor"] or profile["reduces"] \
             or profile.get("ritual") \
             or profile.get("discover_n") \
-            or profile.get("cascade"):           # the discover / cascade loops cast it (2026-10-11)
+            or profile.get("cascade") \
+            or (profile.get("approach") and flags.get("model_approach")):
+        # the discover / cascade loops cast it (2026-10-11); the Approach loop (2026-11-23)
         return False
     cb = profile.get("combat") or {}
     if flags.get("model_combat"):

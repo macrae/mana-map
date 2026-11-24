@@ -116,7 +116,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                   commander_event=None, commander_reveal=None,
                   commander_damage=None, model_hand_limit=False,
                   commander_copy=False, hold_until=None, keep_rule=None,
-                  commander_recursion=None, combo_lines=None):
+                  commander_recursion=None, combo_lines=None, model_approach=False):
     """One goldfish iteration. Returns a per-iteration result dict.
 
     `partner` is the second commander of a Partner pair as
@@ -831,6 +831,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     poison_by_turn = []
     kill_by = None
     combo_win = None              # the Spellbook line that ended the game (`model_combos`)
+    # APPROACH OF THE SECOND SUN (`model_approach`, 2026-11-23): the turn of the first cast
+    # (it went seventh from the top) and of the second (from hand: the game is won).
+    approach_first_turn = None
+    approach_win_turn = None
     # THE DRAIN PILLAR. `drain_permanents` is every profile on the battlefield
     # that gains life, drains, or pays off on gaining; `lifelink_power` is the
     # power of lifelink CREATURES, accumulated and never removed because nothing
@@ -2962,6 +2966,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             A combo piece one card from an infinite comes first (`_combo_wanted`)."""
             _next = lands_in_play * (1 + land_mana_bonus) + rock_production + treasures + 1
             hits = [c for c in deck if not c["is_land"] and tutor_reaches(filt, c.get("type_line"))]
+            # APPROACH FIRST (2026-11-23): it is the deck's kill, so a tutor that can reach it
+            # takes it whenever it is not already in hand -- to find it for the first cast, and
+            # once cast, to bring it back from seventh down for the second, which wins.
+            if model_approach and kill_turn is None and not any(c.get("approach") for c in hand):
+                _ap = [c for c in hits if c.get("approach")]
+                if _ap:
+                    return _ap[0]
             _cw = _combo_wanted()
             _pieces = [c for c in hits if c["name"] in _cw]
             if _pieces:
@@ -3034,6 +3045,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # `hold_until.wheel` still ANDs onto the gate, untouched, inside `_wheel_castable`.
         def _deploy():
             nonlocal attack_enabler_out, bodies_cum, enchantments_entered
+            nonlocal kill_turn, kill_by, approach_first_turn, approach_win_turn
             nonlocal etb_drained, etb_gained, extra_combat_free
             nonlocal first_right_card_turn, free_sac_outlet, land_mana_bonus
             nonlocal lifelink_power, mass_animate_threshold, rock_production
@@ -3886,6 +3898,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
 
             # Spend what's left on bodies, cheapest-first. Never a spell no mana may pay for
             # (Hogaak: convoke and delve, cast after combat below).
+            # APPROACH OF THE SECOND SUN, a stated policy (2026-11-23): cast the moment the mana
+            # pays for it, before any body -- the first cast puts it seventh from the top (its 7
+            # life is not tracked), the second, from hand, wins. Unopposed like every kill here:
+            # no counterspell, no discard, no "can't win" piece at the table.
+            if model_approach and kill_turn is None:
+                for card in [c for c in hand if c["approach"]]:
+                    if not spend(reduced_cost(card, reductions, chosen_type), card["pips"]):
+                        continue
+                    _note_cast(card)
+                    if approach_first_turn is not None:
+                        approach_win_turn = turn
+                        kill_turn, kill_by = turn, "approach"
+                        break
+                    approach_first_turn = turn
+                    deck.insert(min(6, len(deck)), card)
             # A body that dies as it enters is held until Meren is out (2026-11-23): before her,
             # its death pays nothing. Mirrored in `model_coverage.never_cast`'s note.
             for card in sorted((c for c in hand if c["bodies"] > 0
@@ -5780,5 +5807,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         "poison_by_turn": poison_by_turn,
         "kill_by": kill_by,
         "combo_win": combo_win,
+        "approach_first_turn": approach_first_turn,
+        "approach_win_turn": approach_win_turn,
         "drain_by_turn": drain_by_turn,
     }

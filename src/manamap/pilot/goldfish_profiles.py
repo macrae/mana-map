@@ -1751,6 +1751,22 @@ def team_pump_x(card):
             "x": "creatures" if "number of creatures" in m.group(2).lower() else "greatest_power"}
 
 
+#: AN ALTERNATE WIN THE GOLDFISH CAN PLAY (2026-11-23, Heliod b3-v1): Approach of the Second
+#: Sun -- "If this spell was cast from your hand and you've cast another spell named Approach of
+#: the Second Sun this game, you win the game. Otherwise, put Approach into its owner's library
+#: seventh from the top and you gain 7 life." Read from the text, so a reprint or a second card
+#: of the shape reads the same; the corpus holds one (sweep 2026-11-23).
+_APPROACH_WIN_RE = re.compile(r"\byou win the game\b", re.IGNORECASE)
+_APPROACH_SEVENTH_RE = re.compile(r"\binto its owner's library seventh from the top\b", re.IGNORECASE)
+
+
+def approach_profile(card):
+    """True for an Approach-shaped alternate win: cast once (it goes seventh from the top),
+    cast again from hand, win."""
+    text = card.get("oracle_text", "") or ""
+    return bool(_APPROACH_WIN_RE.search(text) and _APPROACH_SEVENTH_RE.search(text))
+
+
 def own_death_profile(card):
     """The deaths this card causes among its controller's own creatures (see above), and two
     neighbours read with them: a spell no mana may pay for, and a counter on every sacrifice."""

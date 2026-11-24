@@ -75,6 +75,7 @@ from manamap.pilot.goldfish_profiles import (
     net_produced_mana,
     room_profile,
     own_death_profile,
+    approach_profile,
     recurring_body_profile,
     graveyard_profile,
     experience_profile,
@@ -226,6 +227,8 @@ def classify(card, pool=None):
         "sac_outlet": sac_outlet_profile(card),
         # Deaths it causes among OUR creatures (Meren's experience, 2026-11-07).
         "own_death": own_death_profile(card),
+        # Approach of the Second Sun, played under `model_approach` (2026-11-23).
+        "approach": approach_profile(card),
         # Bodies it adds every turn or how it comes back (Meren's supply, 2026-11-07).
         "recurring": recurring_body_profile(card),
         # Into the graveyard, or back out of it (Meren's reanimator half, 2026-11-07).

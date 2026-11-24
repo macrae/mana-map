@@ -1007,6 +1007,27 @@ def aggregate(results, targets, max_turn, model_treasures=False,
         # HOW MANY TOKENS THE POLICY ATE. Reported so the reader can see the
         # size of the assumption rather than only its consequence: a run showing
         # 30 sacrifices by turn ten is a very different claim from one showing 3.
+        # APPROACH OF THE SECOND SUN (`model_approach`, 2026-11-23): the first cast and
+        # the win, unopposed. Absent unless the deck declares the channel and one was cast.
+        **({"kill_by_approach_rate": _round(
+            sum(1 for r in results if r["kill_by"] == "approach") / n),
+            "approach": {
+                "first_cast_by_turn": {str(t): _round(sum(
+                    1 for r in results if r.get("approach_first_turn") is not None
+                    and r["approach_first_turn"] <= t) / n) for t in turns},
+                "win_by_turn": {str(t): _round(sum(
+                    1 for r in results if r.get("approach_win_turn") is not None
+                    and r["approach_win_turn"] <= t) / n) for t in turns},
+                "median_win_turn": (lambda w: w[len(w) // 2] if w else None)(sorted(
+                    r["approach_win_turn"] for r in results
+                    if r.get("approach_win_turn") is not None)),
+                "basis": ("cast the moment the mana pays for it, before any body; the "
+                          "first cast goes seventh from the top, the second from hand "
+                          "wins; tutors fetch it first once it has been cast. Unopposed: "
+                          "no counterspell, no discard, no can't-win piece. Its 7 life "
+                          "is not tracked; Scroll Rack and the top-of-library tricks are "
+                          "read only where the draw channel reads them.")}}
+           if any(r.get("approach_first_turn") is not None for r in results) else {}),
         # MEREN'S ENGINE (2026-11-06), only where `model_commander_recursion` is declared.
         **({"commander_recursion": {
             "mean_experience_by_turn": {
@@ -1759,7 +1780,8 @@ def run(slug, iterations=None, seed=None, max_turn=None,
                               commander_event=commander_event,
                               commander_damage=commander_damage,
                               commander_recursion=commander_recursion,
-                              combo_lines=combo_lines))
+                              combo_lines=combo_lines,
+                              model_approach=bool(targets_doc.get("model_approach"))))
             t.advance()
 
     _metrics = aggregate(results, targets, max_turn, model_treasures,

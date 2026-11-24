@@ -2103,7 +2103,8 @@ ENGINE_EVENTS = {
     "COPY": {"triggers": ["SpellCopy"], "effects": ["CopyPermanent", "CopySpellAbility", "Clone"],
              "replacements": [], "channel": None},
     "TURN_PHASE": {"triggers": ["Phase", "NewGame"], "effects": [], "replacements": ["BeginPhase"], "channel": None},
-    "ALT_WIN": {"triggers": [], "effects": ["WinsGame"], "replacements": [], "channel": None, "terminal": True},
+    # The goldfish plays one alternate win, Approach of the Second Sun (`model_approach`, 2026-11-23).
+    "ALT_WIN": {"triggers": [], "effects": ["WinsGame"], "replacements": [], "channel": "approach", "terminal": True},
     "GAME_LOSS": {"triggers": ["LosesGame"], "effects": ["LosesGame"], "replacements": ["GameLoss"], "channel": None},
 }
 #: Events that end the game when aimed at an opponent; a node that produces one is
