@@ -141,3 +141,12 @@ def test_tithe_pays_treasure_off_the_window_s_forced_draws(monkeypatch):
     monkeypatch.setattr(goldfish_turn, "TITHE_PAY_RATE", 1.01)
     never = goldfish.run("heliod", iterations=1500, seed=7, quiet=True, _band=False)["metrics"]
     assert always["approach"]["win_by_turn"]["10"] > never["approach"]["win_by_turn"]["10"]
+
+
+@requires_deck
+def test_a_fractional_fruition_rate_is_sampled_not_a_crash(monkeypatch):
+    """OPPONENT_CASTS_PER_TURN is 1.264 (measured); a fractional Forced Fruition rate is one
+    spell plus a second at the fraction, as Rhystic Study's is -- never a float card count."""
+    monkeypatch.setattr(goldfish, "FRUITION_OPPONENT_SPELLS_PER_TURN", 1.264)
+    m = goldfish.run("heliod", branch="b3-v1", iterations=600, seed=7, quiet=True, _band=False)
+    assert m["metrics"]["approach"]["win_by_turn"]["10"] > 0

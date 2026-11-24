@@ -5848,9 +5848,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # and cast it -- the win. Unopposed. NOT read here: colour requirements, Mikokoro and
         # Loran's activations, the discount on our own turn's spells.
         if commander_flash_discount and heliod_flip_turn is not None:
+            # A FRACTIONAL RATE IS SAMPLED (2026-11-23), as Rhystic Study's is: 1.264 is one
+            # spell, and a second with probability 0.264.
+            _fs = commander_flash_discount["fruition_spells"]
+            _spells = int(_fs) + (rng.random() < _fs - int(_fs))
             _base = 1 + sum(c["window"]["static_extra"] for c in permanents_in_play) \
-                + sum(c["window"]["fruition"] for c in permanents_in_play) \
-                * commander_flash_discount["fruition_spells"]
+                + sum(c["window"]["fruition"] for c in permanents_in_play) * _spells
             _w = {"m": pool + held_pool, "t": treasures + held_treasures,
                   "seats": [_base] + [0] * (GOLDFISH_OPPONENTS - 1)}
             held_pool = held_treasures = 0
