@@ -1,0 +1,407 @@
+{
+  "id": "007",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a target of 22)",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Swamp",
+    "Dragonskull Summit"
+  ],
+  "swap": {
+    "out": "Swamp",
+    "in": "Dragonskull Summit"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 554.0,
+      "slice": "MODE prescribe on threat-v1 (2026-11-24): Bind 1 and opportunity #1, verbatim from .agent-out/deck-doctor-prescribe.md",
+      "text": "### Bind 1: the mana base after the rock cuts\n\nThe branch cut four rocks:\n- Talisman of Hierarchy\n- Talisman of Conviction\n- Talisman of Indulgence\n- Rakdos Signet\n\nIt also cut Midgar and Survivors' Encampment. In came Sacred Foundry and a Plains.\n\nThe deterministic mana block in `net_change.json`, V7 → threat-v1:\n\n| colour | sources | Karsten target | on-curve |\n|---|---|---|---|\n| B | 38 → **33** | 36 | 0.925 → **0.869** |\n| R | 22 → **19** | 22 | 0.907 → **0.866** |\n| W | 24 → 23 | 22 | 0.927 → 0.918 |\n\n- **Ramp is under target.** `ramp` is 8 copies against 10–12. Audit quote: \"36–38 lands, 10–12 ramp, 10 card draw, 10–12 targeted removal, 3–4 board wipes\" (`strategy:deckbuilding.ratios`).\n- **The goldfish backs it.** \"Stall, 2 in a row\" got worse: 14.5 → 16.1 per 100, [+0.8, +2.5].\n- **Black is under the most load.** Black is 48 of the 65 spells, with up to 3 pips each (`deck-facts` pip load).\n- **The curve is heavy at four.** There are sixteen 4-drops (`deck-facts` curve), and the commander costs 6.\n- **The log says the same.** Log 002 makes the structural point: \"my mana was spent casting vampires, so there was never open mana to hold up.\"\n\n**Scope of this bind.** The *total* is fine: `mana-sources` is 41 against a Burgess target of 40. The gap is **colour**, not count, so it can be closed with land-for-land swaps and no extra slot (opportunities 1 and 2).\n\n**A caveat on the interaction row.** \"Interaction affordable @T6\" fell 32 → 19 per 100. That row counts only commander-free spells as free. The model does not see Lethal Scheme or Clever Concealment (both convoke) at all (`coverage.invisible`). So the row overstates the drop, and it is not cited as evidence here.\n\n### #1: Swamp → Dragonskull Summit. Easy.\n\n- **Closes:** `colour-sources` (R).\n- **Why:**\n  - Red goes 19 → 20 against a target of 22, and black stays at 33. A basic becomes a dual at no slot cost, and the land count stays at **35**.\n  - The Summit enters untapped with a Swamp or Mountain in play. Besides the basics, the branch has five such lands: Blood Crypt, Smoldering Marsh, Sacred Foundry, Savai Triome and Godless Shrine. Five fetches find them.\n  - Red and black are each 3 below their targets on the branch. Crackling Doom, Boros Charm, Anje, Bloodtithe Harvester and Edgar himself all need red.\n- **Cost of cutting:** one Swamp. Three Swamps stay for fetches and Castle Locthwain. On turn 1 with no Swamp or Mountain, the Summit enters tapped.\n- **Orphans stack:** 011 and 013 use basic Swamps only as generic mana in their scenarios. Their lines do not rest on the basic.\n- **Evidence:** the `net_change.json` mana block. The goldfish cannot rank lands (`blind_spots`), so the mana block is the whole case.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.ratios"
+        ],
+        "rules": [
+          "100"
+        ]
+      },
+      "added_at": "2026-11-24T13:55:30-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-bind1.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 138.0,
+      "slice": "the pilot's deep-research question on Edgar (2026-11-24); verbatim",
+      "text": "**Answer.** Edgar closes a four-player game by turn 7-8 by compressing a few strong turns: fodder, a mana or sacrifice outlet, and each-opponent drain, all kept alive through a sweeper. Threat-v1 adds drain yield but gives up resilience and development. I would not merge it whole. That is argument throughout; the figures come from your brief and the branch's net_change.\n\n**What the companion says (argument)**\n- A four-player game trends long, so inevitability compounds. A turn-7 win means you are the beatdown and must compress the game before the late game arrives (strategy:whos-the-beatdown.metagame-clock; role is set per threat, strategy:whos-the-beatdown).\n- Production is not conversion. Diagnose a deck that doesn't close as units produced × the fraction a converter is live for × life per unit (strategy:conversion).\n- This bench measures Edgar at 9.64 of its own creatures dying a game, with death-drains firing 1.90 times, about a 20% conversion. Payoff density is not the lever: yawgmoth-swarm runs nine payoffs against Edgar's four and fires fewer times (strategy:conversion.payoff-density).\n- Yield matters. An each-opponent drain moves about 3 life per death in a pod against Blood Artist's 1. The rule is \"each-opponent for the race, targeted for the kill\" (strategy:aristocrats.drain-scope). V7's each-opponent drains are Cruel Celebrant and Vraan, and the pilot's win came off targeted Blood Artist.\n- The sweeper answer is a free outlet plus a death-draw body, so a wrath resolves against an empty table and a full hand. Midnight Reaper and Grim Haruspex are named as the post-wrath fix (strategy:aristocrats.wipe-insurance). Don't over-commit into a sweeper (strategy:resource-hedging.wrath-math).\n- Aim for 3-5 finishers; unsynergistic win conditions dilute a list (strategy:deckbuilding.threat-density).\n- The web added nothing usable. The EDHREC average-deck results were only snippets and I fetched none. The only external numbers are the companion's EDHREC counts: Blood Artist in 93% of 1,496 Edgar aristocrats decks, Celebrant 79%, Vito 72%.\n\n**What works (evidence: log 008, CONTEXT)**\n- The one win came from conversion, not combat. Tokens became Altar mana, which cast Crossway Troublemakers and Edgar. Blood Artist and Wispdrinker drained, and Charismatic Conqueror kept supplying fodder.\n- Cheap Vampires each add a body plus an Edgar token, and the swarm doesn't need Edgar cast.\n- V7 already holds outlets and death-draw bodies: Viscera Seer, Reaper, Haruspex, Clavileño, Opportunist. Wipes are 3 of the 8 endings, and the hand is empty by turns 8-10.\n\n**What's weak**\n- Edgar costs six and lands late, and protection sits in hand until he does. Converters are thin on the first three turns.\n- Targeted drain dominates, so total pod life (~120) is out of reach on the race half of the strategy:aristocrats.drain-scope rule.\n- Too little of the strategy:conversion product is live at once. The 20% conversion is the number to move.\n\n**Threat-v1 against that (goldfish read: one instrument, no wipes, no opponents)**\n- Gains: non-combat life lost by T10 rose 24.9 → 29.8. Tokens converted by T8 rose 2.31 → 2.77. Life gained by T8 rose 5.5 → 7.6. Kills outside combat went 4 → 10 per 100. These match the direction of aristocrats.drain-scope and conversion.\n- Costs: killed by T6 fell 14 → 11 per 100. Killed by T10 fell 89 → 84. Damage by T10 fell 44.0 → 33.9. Extra cards by T8 fell 2.93 → 2.46. Cards in hand by T8 fell 4.25 → 3.97. Interaction affordable by T6 fell 32 → 19 per 100. Colour sources went backwards (black gap +2 → -3, red +0 → -3).\n- It cuts Reaper, Haruspex, Clavileño and Olivia's Wrath, the pieces strategy:aristocrats.wipe-insurance names, for Skullclamp and Black Market Connections. The goldfish has no sweepers, so it cannot score that trade either way.\n- It cuts Talismans of Conviction, Hierarchy and Indulgence and Rakdos Signet, the ramp Edgar's six mana needs, for only a land swap.\n- The Plunderer/Altar loop is whole by T8 in about 0.1% of games. It is upside, not a plan.\n\n**Highest-leverage opportunities (argument)**\n1. Take each-opponent drain (Zulaport, Elas il-Kor, Bastion) for yield, funded from non-keeps rather than the death-draw core.\n2. Keep Reaper, Haruspex and a second outlet held for the rebuild. That answers the top failure.\n3. Hold the ramp. A T7 plan needs Edgar or Altar mana by T5-6.\n4. Keep the commander-free protection (Boros Charm, Selfless Spirit, Giver of Runes), since the pilot says the A team always needs protection.\n5. No flat anthems; cap finishers at 3-5.\n\n**Lightest test:** a `try` of a half-branch (drain adds only, death-draw and ramp kept) against V7, reading colour sources, killed by T6 and hand at T8. The wipe question needs table play or a sim-scenario.\n\nopen: (1) How much does a held outlet plus a death-draw body recover after a real wrath? That is a `/research-strategy` topic. (2) I found no source stating a typical turn-to-kill for Edgar aristocrats at B3.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:aristocrats.wipe-insurance",
+          "strategy:conversion",
+          "strategy:conversion.payoff-density",
+          "strategy:deckbuilding.threat-density",
+          "strategy:resource-hedging.wrath-math",
+          "strategy:whos-the-beatdown",
+          "strategy:whos-the-beatdown.metagame-clock"
+        ],
+        "rules": [
+          "120",
+          "496"
+        ]
+      },
+      "added_at": "2026-11-24T13:55:55-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strategist-edgar.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "approve, make the swap and push it; next please",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "card-one-the-land-pass-on-threat-v1-dragonskull",
+  "facts": [
+    {
+      "id": "S-fa8fc5c9-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-fa8fc5c9-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-fa8fc5c9-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-fa8fc5c9-04",
+      "kind": "oracle",
+      "text": "Basic Land — Swamp — ({T}: Add {B}.)",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Swamp"
+    },
+    {
+      "id": "S-fa8fc5c9-05",
+      "kind": "log",
+      "text": "log 005 (2026-09-15, loss): “Turn one Viserys Seer off a swamp (Edgar token trigger); used Seer's sac ability early.”",
+      "tier": "coach",
+      "source": "log.jsonl#005",
+      "card": "Swamp",
+      "as_of": "2026-09-15",
+      "game": "005"
+    },
+    {
+      "id": "S-fa8fc5c9-06",
+      "kind": "stack",
+      "text": "stack 011 — Mirkwood Bats and a doubled eminence trigger: one drain or two? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/011",
+      "card": "Swamp",
+      "stack": "011"
+    },
+    {
+      "id": "S-fa8fc5c9-07",
+      "kind": "stack",
+      "text": "stack 013 — Pitiless Plunderer + Ashnod's Altar + Reassembling Skeleton: is the loop mana-positive? (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/013",
+      "card": "Swamp",
+      "stack": "013"
+    },
+    {
+      "id": "S-fa8fc5c9-08",
+      "kind": "engine_stage",
+      "text": "engine stage mana: Mana",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Swamp",
+      "stage": "mana",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-fa8fc5c9-09",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Swamp",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "1df3a33540a6"
+    },
+    {
+      "id": "S-fa8fc5c9-10",
+      "kind": "engine_feeds",
+      "text": "feeds on ETB: Bloodghast",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Swamp",
+      "event": "ETB",
+      "cards": [
+        "Bloodghast"
+      ]
+    },
+    {
+      "id": "S-fa8fc5c9-11",
+      "kind": "context",
+      "text": "CONTEXT cards: The plain Swamp is there for colour, with no Game Changers among the lands.",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Swamp"
+    },
+    {
+      "id": "S-fa8fc5c9-12",
+      "kind": "context",
+      "text": "CONTEXT cards: Arid Mesa, Bloodstained Mire, Marsh Flats, Verdant Catacombs, Wooded Foothills, Blazemire Verge, Bleachbone Verge, Blood Crypt, Godless Shrine, Smoldering Marsh, Battlefield Forge, Caves of Koilos, Sulfurous Springs, …",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Swamp"
+    },
+    {
+      "id": "S-fa8fc5c9-13",
+      "kind": "decision",
+      "text": "decision 020 merge `bracket3-v1` (2026-11-10)",
+      "tier": "coach",
+      "source": "decisions.jsonl",
+      "card": "Swamp",
+      "as_of": "2026-11-10"
+    },
+    {
+      "id": "S-fa8fc5c9-14",
+      "kind": "price",
+      "text": "$0.15 NM ((ECL) 276) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Swamp",
+      "as_of": "2026-11-21",
+      "figure": 0.15
+    },
+    {
+      "id": "S-fa8fc5c9-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Bleachbone Verge (0.98), Blazemire Verge (0.98), Battlefield Forge (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Swamp",
+      "neighbours": [
+        {
+          "name": "Bleachbone Verge",
+          "score": 0.9832
+        },
+        {
+          "name": "Blazemire Verge",
+          "score": 0.9803
+        },
+        {
+          "name": "Battlefield Forge",
+          "score": 0.9619
+        }
+      ]
+    },
+    {
+      "id": "S-fa8fc5c9-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Swamp",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-fa8fc5c9-17",
+      "kind": "oracle",
+      "text": "Land — This land enters tapped unless you control a Swamp or a Mountain. {T}: Add {B} or {R}.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Dragonskull Summit"
+    },
+    {
+      "id": "S-fa8fc5c9-18",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Haunted Ridge (1.00), Concealed Courtyard (1.00), Shattered Sanctum (0.99)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Dragonskull Summit",
+      "neighbours": [
+        {
+          "name": "Haunted Ridge",
+          "score": 0.9963
+        },
+        {
+          "name": "Concealed Courtyard",
+          "score": 0.9957
+        },
+        {
+          "name": "Shattered Sanctum",
+          "score": 0.995
+        }
+      ]
+    },
+    {
+      "id": "S-fa8fc5c9-19",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Dragonskull Summit",
+      "state": "seen",
+      "channels": [
+        "mana"
+      ]
+    },
+    {
+      "id": "S-fa8fc5c9-20",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 8 rows better, 8 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-fa8fc5c9-21",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.00 -> 33.85, a change of -10.15 (-23%) [-10.8492, -9.4422] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -10.1457,
+      "ci95": [
+        -10.8492,
+        -9.4422
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-fa8fc5c9-22",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 84 in 100, a swing of 4 games per 100 [-0.0524, -0.037] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0447,
+      "ci95": [
+        -0.0524,
+        -0.037
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-fa8fc5c9-23",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.65 -> 9.58, a change of -2.07 (-18%) [-2.219, -1.9156] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0673,
+      "ci95": [
+        -2.219,
+        -1.9156
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-fa8fc5c9-24",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.93 -> 2.46, a change of -0.48 (-16%) [-0.5459, -0.4075] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4767,
+      "ci95": [
+        -0.5459,
+        -0.4075
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-fa8fc5c9-25",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.002 is smaller than the 0.011 this run can resolve [-0.0101, 0.0057] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": -0.0022,
+      "ci95": [
+        -0.0101,
+        0.0057
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-fa8fc5c9-26",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.001 is smaller than the 0.007 this run can resolve [-0.0063, 0.0039] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0012,
+      "ci95": [
+        -0.0063,
+        0.0039
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Swamp",
+      "Dragonskull Summit"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "0edaa06c3e022747fff962b57c7795f950bca46f7c8cbc36b0508f0d1f4b1540",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T13:57:57-08:00",
+    "facts": 26
+  }
+}

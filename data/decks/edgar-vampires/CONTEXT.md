@@ -184,6 +184,7 @@ The first six games were all on lists before v3.0.0 (the record block counts eve
 ## Studies
 
 <!-- ctx:gen studies -->
+- **007 approve** (pilot, deck-doctor, strategist) — Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a tar · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “approve, make the swap and push it; next please”
 - **006 approve** (pilot, deck-doctor) — Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it, commit, and move to Sharknado”
 - **005 approve** (pilot, strategist, deck-doctor, data-analyst) — Card five on threat-v1: the branch's only drain that converts board width — Sanctum Seeker for Falkenrath Noble? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it and go to card six”
 - **004 approve** (pilot, strategist, deck-doctor, data-analyst, rules-question) — Card four on threat-v1: removal is the thinnest axis left — Lethal Scheme for Olivia Voldaren? · on `threat-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approved! stage it and go to card five”

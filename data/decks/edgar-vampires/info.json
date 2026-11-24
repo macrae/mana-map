@@ -62,8 +62,8 @@
       "proposal": null,
       "base_version": 7,
       "size": 100,
-      "add": 23,
-      "out": 23,
+      "add": 24,
+      "out": 24,
       "cards": [
         {
           "name": "Anguished Unmaking",
@@ -196,6 +196,10 @@
         {
           "name": "Diabolic Intent",
           "is_new": false
+        },
+        {
+          "name": "Dragonskull Summit",
+          "is_new": true
         },
         {
           "name": "Drana and Linvala",
@@ -456,21 +460,22 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "006",
-        "question": "Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change?",
+        "id": "007",
+        "question": "Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a target of 22)",
         "branch": "threat-v1",
-        "file": "006-card-six-on-threat-v1-champion-of-dusk-for-preac.json",
+        "file": "007-card-one-the-land-pass-on-threat-v1-dragonskull.json",
         "decision": "approve",
         "decided_by": [
           "pilot",
-          "deck-doctor"
+          "deck-doctor",
+          "strategist"
         ],
-        "pilot_words": "approved! stage it, commit, and move to Sharknado",
-        "decided_at": "2026-11-20",
-        "opened": "2026-11-20",
+        "pilot_words": "approve, make the swap and push it; next please",
+        "decided_at": "2026-11-24",
+        "opened": "2026-11-24",
         "swap": {
-          "out": "Preacher of the Schism",
-          "in": "Champion of Dusk"
+          "out": "Swamp",
+          "in": "Dragonskull Summit"
         },
         "goldfish_saw": [
           2,
@@ -486,9 +491,9 @@
       "verdict": {
         "state": "profile only",
         "word": "profile only",
-        "rose": 8,
+        "rose": 7,
         "fell": 8,
-        "no_call": 2
+        "no_call": 3
       },
       "measured": true,
       "blind_spots": [
@@ -498,6 +503,7 @@
         "Clever Concealment",
         "Crackling Doom",
         "Deflecting Swat",
+        "Dragonskull Summit",
         "Flawless Maneuver",
         "Giver of Runes",
         "Lethal Scheme",
@@ -528,7 +534,6 @@
           "tokens converted by T8",
           "life lost outside combat @T10",
           "killed outside combat by T10",
-          "a combo line whole by T8",
           "life gained by T8"
         ],
         "fell": [
@@ -544,48 +549,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -10.1457,
+            "delta": -10.1108,
             "ci95_diff": [
-              -10.8492,
-              -9.4422
+              -10.9155,
+              -9.3061
             ],
-            "mde": 1.0056,
+            "mde": 1.1503,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0447,
+            "delta": -0.045,
             "ci95_diff": [
-              -0.0524,
-              -0.037
+              -0.0537,
+              -0.0363
             ],
-            "mde": 0.011,
+            "mde": 0.0124,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.0673,
+            "delta": -2.068,
             "ci95_diff": [
-              -2.219,
-              -1.9156
+              -2.2476,
+              -1.8884
             ],
-            "mde": 0.2169,
+            "mde": 0.2567,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.4767,
+            "delta": -0.4297,
             "ci95_diff": [
-              -0.5459,
-              -0.4075
+              -0.5047,
+              -0.3547
             ],
-            "mde": 0.0989,
+            "mde": 0.1072,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -9874,6 +9879,29 @@
     }
   ],
   "studies": [
+    {
+      "id": "007",
+      "question": "Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a target of 22)",
+      "branch": "threat-v1",
+      "file": "007-card-one-the-land-pass-on-threat-v1-dragonskull.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "approve, make the swap and push it; next please",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": "Swamp",
+        "in": "Dragonskull Summit"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
     {
       "id": "006",
       "question": "Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change?",
