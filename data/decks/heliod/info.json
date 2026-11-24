@@ -92,6 +92,10 @@
           "is_new": true
         },
         {
+          "name": "City of Brass",
+          "is_new": true
+        },
+        {
           "name": "Clever Concealment",
           "is_new": true
         },
@@ -126,6 +130,10 @@
         {
           "name": "Eiganjo, Seat of the Empire",
           "is_new": false
+        },
+        {
+          "name": "Exotic Orchard",
+          "is_new": true
         },
         {
           "name": "Faerie Mastermind",
@@ -262,6 +270,10 @@
         {
           "name": "Plains",
           "is_new": false
+        },
+        {
+          "name": "Port Town",
+          "is_new": true
         },
         {
           "name": "Prairie Stream",
@@ -424,7 +436,8 @@
         "fell": 4,
         "no_call": 3
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Austere Command",
         "Cathar Commando",
@@ -3944,7 +3957,7 @@
     "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status heliod` names them; fix before anything else reads them",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug heliod` re-reads them when you want, never on its own",
     "1 logged game(s) not yet debriefed (003) — `/debrief heliod`",
-    "branch `b3-v1`: 25 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `b3-v1`: 27 unproven add(s) under the current harness — `manamap pilot forge-cast-check heliod --branch b3-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "study 004 is open: The land pass on b3-v1: Island to Prismatic Vista, Island to Plains, o — `manamap pilot study heliod call 004 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck heliod`",
     "open questions routed: diagnose ×2, goldfish ×4, research-strategy ×3, resolve-stack ×9"
