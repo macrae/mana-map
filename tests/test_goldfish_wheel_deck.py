@@ -167,3 +167,17 @@ def test_the_cost_row_is_absent_where_no_wheel_is_modelled():
     assert all(g["opponent_cards_given_by_turn"] is None for g in games)
     from manamap.pilot import diagnostic
     assert diagnostic.PER_GAME[("wheels", "opponent_cards_given_by_turn", "8")](games[0]) is None
+
+
+def test_an_impulse_card_is_never_cycled_or_pitched():
+    """An exiled impulse card may be played, never cycled or pitched from hand. Cycling one
+    crashed net-change on jaws-v1 (`list.remove`: the card was set aside, not in hand). Put the
+    bug back -- cycle from `hand` rather than `_held()` -- and this raises."""
+    deck = _doc(_c("Inti", INTI_IMPULSE_ONLY, 2, "Legendary Creature — Human Knight", quantity=6,
+                   power="2", toughness="2"),
+                _c("Pinger", PING, 1, "Artifact", quantity=4),
+                _c("Wheel", WHEEL, 2, "Sorcery", quantity=8),
+                _c("Cycler", "Cycling {2} ({2}, Discard this card: Draw a card.)", 9,
+                   "Creature — Shark", quantity=30, power="5", toughness="5"))
+    games = _games(deck, iterations=300)
+    assert sum(g["discarded_by_turn"][9] for g in games) > 0

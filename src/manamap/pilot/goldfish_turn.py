@@ -1341,6 +1341,13 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if discarded > _before:
                 _impulse()
 
+        def _held():
+            """THE CARDS ACTUALLY IN HAND (2026-11-25): `hand` minus Inti's exiled impulse cards,
+            which may be played but not discarded, cycled or pitched -- a cost paid from the hand
+            picks from here. Cycling an exiled card crashed net-change on jaws-v1."""
+            _ids = {id(c) for c, _t in impulse_cards}
+            return [c for c in hand if id(c) not in _ids]
+
         def _impulse():
             """INTI'S SECOND HALF (2026-11-25): "Whenever you discard one or more cards, exile the
             top card of your library. You may play that card until your next end step." Once per
@@ -3556,7 +3563,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 for _dt in own_deaths["discard_tutors"]:
                     for _ in range(1 if _dt["taps"] else 3):
                         _cap = lands_in_play + 1
-                        _pitch = [c for c in hand if "Creature" in (c.get("type_line") or "")
+                        _pitch = [c for c in _held() if "Creature" in (c.get("type_line") or "")
                                   and c["cmc"] > _cap]
                         _lib = [c for c in deck if "Creature" in (c.get("type_line") or "")]
                         if not _pitch or not _lib:
@@ -4650,7 +4657,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             nonlocal bodies_cum, pool
             if not (model_draw and model_discard):
                 return
-            for card in sorted((c for c in hand if c["engine"]["cycling"]),
+            for card in sorted((c for c in _held() if c["engine"]["cycling"]),
                                key=lambda c: c["engine"]["cycling"]["cost"]):
                 if card not in hand:
                     continue
