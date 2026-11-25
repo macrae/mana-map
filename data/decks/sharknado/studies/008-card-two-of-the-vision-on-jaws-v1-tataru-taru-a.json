@@ -1,0 +1,237 @@
+{
+  "id": "008",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card two of the vision on jaws-v1: Tataru Taru (a tapped Treasure when an opponent draws off their turn, once a turn; draws on entry) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Tataru Taru"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Tataru Taru"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 240.0,
+      "slice": "MODE prescribe: Tataru's cut; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: what to cut for Tataru Taru on jaws-v1. Tataru is a 0/3 Dwarf, not a Human, so Shabraz cannot fly it; Scions' Secretary fires once per turn, so a wheel turn yields one tapped Treasure, not three. Its realistic output is its ETB (a draw plus a Treasure if the opponent takes the card), one Treasure per wheel turn or Willie Lumpkin hit, and one per Faerie Mastermind activation on an opponent's turn. It is the fifth card in the thinnest pillar (artifact-token makers: Big Score, Jaws, Prismari Command, Smothering Tithe; 82.5% measured), and ramp sits at 12 (top of 10-12), so a rock is the cut that costs least.\",\n  \"log_entries_read\": [\"003\", \"007\"],\n  \"axes_engaged\": [\n    {\"axis\": \"ramp\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"12\"}, \"reading\": \"At the top of the 10-12 band, so one rock out leaves 11, still in band; Tataru's tapped Treasure is not turn-2 ramp.\"},\n    {\"axis\": \"interaction\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"8\"}, \"reading\": \"Exactly at target; Collective Defiance is one of the eight, so cutting it puts the deck under.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Talisman of Conviction\", \"why\": \"The rock that overlaps most: W is 2 sources over target, and a sitting rock is never Jaws fodder, while a Treasure is.\", \"cost_of_cutting\": \"One turn-2 mana source; R falls 1 under target (try's colour check), and the turn-4 Shabraz slightly weaker on the 2-drop.\", \"difficulty\": \"contested\", \"orphans_stack\": []},\n    {\"card\": \"Collective Defiance\", \"why\": \"Study 006 filed it with the old ping plan; RR sorcery whose wheel hits one player.\", \"cost_of_cutting\": \"Interaction drops from 8 to 7, under target; the wheel count drops from 10 to 9 (try: finisher wheel by T8 79.8% -> 76.3%, [-3.9, -3.1]); a 4-damage creature answer is gone.\", \"difficulty\": \"painful\", \"orphans_stack\": []},\n    {\"card\": \"Fellwar Stone\", \"why\": \"The weakest rock (depends on opponents' lands), named in CONTEXT's mana plan.\", \"cost_of_cutting\": \"U and R each fall 1 under target (try); one turn-2 rock gone.\", \"difficulty\": \"contested\", \"orphans_stack\": []}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Tataru Taru\", \"closes\": \"An artifact token maker drawn\", \"source\": \"prompt\", \"why\": \"Fifth member of the thinnest pillar; ETB draw grows Shabraz; turns wheel turns into Jaws fodder.\", \"natural_cut\": \"Talisman of Conviction\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Do opponents at this table take Tataru's optional ETB card (which is what makes the Treasure)?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"If they decline, the ETB is a plain cantrip and the engine needs a wheel or Mastermind to fire at all.\"}\n  ],\n  \"gaps\": [\"No Forge record for Tataru; the goldfish has no opponents, so it cannot price the extra card each ETB or Willie hit hands an opponent.\", \"Sokka was screened and rejected as a cut: a Human that draws on attack is on-plan, which the goldfish cannot see.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T13:06:41-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-study008.json"
+    }
+  ],
+  "call": {
+    "decision": "decline",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no, I don't approve",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "card-two-of-the-vision-on-jaws-v1-tataru-taru-a",
+  "facts": [
+    {
+      "id": "S-e88266a2-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-e88266a2-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-e88266a2-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-e88266a2-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Dwarf Advisor · {1}{W} — When Tataru Taru enters, you draw a card and target opponent may draw a card. Scions' Secretary — Whenever an opponent draws a card, if it isn't that player's turn, create a tapped Treasure token. This ability triggers only once each turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Tataru Taru"
+    },
+    {
+      "id": "S-e88266a2-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Smothering Tithe (0.92), Prismari Command (0.90), Enduring Curiosity (0.80)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Tataru Taru",
+      "neighbours": [
+        {
+          "name": "Smothering Tithe",
+          "score": 0.9225
+        },
+        {
+          "name": "Prismari Command",
+          "score": 0.902
+        },
+        {
+          "name": "Enduring Curiosity",
+          "score": 0.7951
+        }
+      ]
+    },
+    {
+      "id": "S-e88266a2-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Tataru Taru",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "draw",
+        "treasure"
+      ]
+    },
+    {
+      "id": "S-e88266a2-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-e88266a2-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-e88266a2-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-e88266a2-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-e88266a2-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-e88266a2-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-e88266a2-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Tataru Taru"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "776c37ab69d3c0e6a5b0f2681361352d17cfa5dda736ab33bf6da5c0b49be718",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T13:14:12-08:00",
+    "facts": 13
+  }
+}
