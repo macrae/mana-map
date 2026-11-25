@@ -23,6 +23,16 @@ def _stack():
     return load_json(paths[0])
 
 
+def _branch_names():
+    """The branch's own list. The board may legitimately name a card the branch has
+    since cut (013 kept Reassembling Skeleton after study 016 and is withheld for
+    it), so the tests assert what the bug got wrong — a card the BRANCH runs
+    called outside the deck — never that the board names nothing outside it."""
+    cards = load_json(deck_dir(SLUG) / "branches" / "threat-v1" / "cards.json")
+    cards = cards.get("cards", cards) if isinstance(cards, dict) else cards
+    return {c["name"] for c in cards}
+
+
 @pytest.mark.regression
 @requires_deck
 def test_the_brief_counts_branch_creatures_as_bodies():
@@ -31,14 +41,19 @@ def test_the_brief_counts_branch_creatures_as_bodies():
     facts = scenario_facts.analyze(SLUG, SID, with_rulings=False)["stacks"][SID]
     assert facts["branch"] == "threat-v1"
     assert {"Pitiless Plunderer", "Zulaport Cutthroat"} <= set(facts["your_board"]["creature_bodies"])
-    assert facts["card_membership"]["NOT_IN_THE_DECK"] == []
+    flagged = set(facts["card_membership"]["NOT_IN_THE_DECK"])
+    assert not (flagged & _branch_names()), (
+        f"the brief called branch cards outside the deck: {sorted(flagged & _branch_names())}")
 
 
 @pytest.mark.regression
 @requires_deck
 def test_the_gate_does_not_call_branch_cards_outside_the_list():
     unknown, elsewhere = validate_stack.unknown_cards(_stack(), SLUG)
-    assert unknown == [] and elsewhere == []
+    assert unknown == []
+    called_out = {m.split("'")[1] for m in elsewhere}
+    assert not (called_out & _branch_names()), (
+        f"the gate called branch cards outside the list: {sorted(called_out & _branch_names())}")
 
 
 @pytest.mark.regression

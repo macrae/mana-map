@@ -14,14 +14,16 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 17,
+    "complete": 16,
     "of": 19,
     "stale": [
       "frame",
       "map"
     ],
     "older_model": [],
-    "invalid": [],
+    "invalid": [
+      "engine"
+    ],
     "verified": true,
     "missing": [],
     "todo": []
@@ -11455,6 +11457,7 @@
     ]
   },
   "next": [
+    "1 artifact(s) fail their own gate (engine) — `deck-status edgar-vampires` names them; fix before anything else reads them",
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
