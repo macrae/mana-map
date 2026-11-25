@@ -597,14 +597,19 @@ def test_a_flashback_wheel_is_read_by_the_wheel_path_not_recursion():
 def test_no_maximum_hand_size_is_read_cast_and_its_redirect_named():
     """Library of Leng read INVISIBLE on jaws-v1 while the draw loop cast it under
     `model_hand_limit`. Its channel is always read -- with the rule off no hand has a maximum,
-    so Reliquary Tower is not DARK there -- and its discard-to-top replacement, which nothing
-    reads, makes it PARTIAL. Re-introduce either drift (drop `hand_limit` from `channels_for`,
-    or the `never_cast` mirror) and the first assert fails."""
+    so Reliquary Tower is not DARK there. Its discard-to-top replacement is READ since
+    2026-11-25 (`discard_to_top`, the discard channel), so Leng is SEEN; a card whose redirect no
+    reader took would be PARTIAL with the sentence named. Re-introduce a drift (drop
+    `hand_limit` or `discard_to_top` from `channels_for`, or the `never_cast` mirror) and an
+    assert fails."""
     leng = _corpus_card("Library of Leng")
     row = mc.card_state(leng, _WHEELS)
-    assert row["state"] == "partial" and "hand_limit" in row["active"], row
-    assert "top of your library" in row["unread"]
+    assert row["state"] == "seen" and {"hand_limit", "discard"} <= set(row["active"]), row
     from manamap.pilot import goldfish
-    assert not mc.never_cast(goldfish.classify(leng), _WHEELS)
+    profile = goldfish.classify(leng)
+    assert not mc.never_cast(profile, _WHEELS)
+    assert not mc.never_cast(profile, {"model_discard": True, "model_draw": True})
+    unread = dict(profile, discard_to_top=False)
+    assert "top of your library" in mc.unread_replacement(leng, unread)
     tower = mc.card_state(_corpus_card("Reliquary Tower"), {"model_draw": True})
     assert tower["state"] != "dark", tower

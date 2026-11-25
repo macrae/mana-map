@@ -206,6 +206,8 @@ def channels_for(profile):
             "etb_damage_self_power", "etb_damage_count", "etb_damage_fixed",
             "etb_life_loss_fixed", "token_created_life_loss", "etb_token_bodies",
             "etb_copy", "power", "cast_token_bodies", *EQUIP_HIT_KEYS,
+            # Inti's discard on the swing (2026-11-25), with the reading.
+            "attack_discard_counter",
             # THE THIRD DRIFT OF THIS MIRROR. Mass animation (Starfield of Nyx,
             # Opalescence) is consumed under `model_combat` and had been since
             # 2026-09-03; the key was never listed here, so the one card that
@@ -290,7 +292,8 @@ def channels_for(profile):
             or any(v for k, v in (profile.get("artifact_sac") or {}).items()
                    if k != "unmodelled") \
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled") \
-            or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")):
+            or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")) \
+            or profile.get("discard_to_top"):     # Library of Leng's redirect (2026-11-25)
         found.add("discard")
     # A SACRIFICE THAT IS THE COST OF THE CARD'S OWN WHEEL (Magus of the Wheel) is paid by
     # `_fire_engine_wheels`, which takes the body with it under the discard channel; it is not a
@@ -460,6 +463,9 @@ def never_cast(profile, flags):
     # "Cast, or the limit it lifts is never lifted"); mirrored 2026-11-25, Library of Leng.
     if flags.get("model_hand_limit") and profile.get("no_max_hand"):
         return False
+    # ...and under model_discard for its redirect (the same draw loop's condition).
+    if flags.get("model_discard") and profile.get("discard_to_top"):
+        return False
     if flags.get("model_draw") and _nonzero(profile.get("draw"), (
             "spell_draw", "etb_draw", "recurring_draw", "arrival_draw", "cast_draw",
             "x_draw_multiplier",
@@ -616,7 +622,7 @@ def unread_replacement(card, profile):
     """The replacement sentence no reader consumed, or None."""
     text = re.sub(r"\([^)]*\)", " ", card.get("oracle_text") or "")
     redirect = _UNREAD_DISCARD_REDIRECT_RE.search(text)
-    if redirect:
+    if redirect and not profile.get("discard_to_top"):
         return redirect.group(0).strip()
     m = _UNREAD_REPLACEMENT_RE.search(text)
     if not m:

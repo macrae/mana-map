@@ -619,6 +619,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # THE CLEANUP STEP (CR 514.1), opt-in like every channel (`model_hand_limit`): a hand
     # over seven discards down at end of turn, unless something says no maximum hand size.
     hand_limit_off = False
+    # LIBRARY OF LENG (2026-11-25): with it out, a discard may go to the top of the library.
+    discard_to_top = False
+    # INTI'S IMPULSE (2026-11-25): (card, last turn it may be played), exiled -- not in hand.
+    impulse_cards = []
     first_discard_batch = 0
     # Well of Lost Dreams in play. Armed at the end of the turn both pieces are out.
     life_paid_draws = 0
@@ -1283,12 +1287,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             "drawn by", and it was. `which` names the card when the cost does:
             cycling discards the card that cycles."""
             nonlocal discarded, first_discard_batch
+            # AN IMPULSE CARD IS IN EXILE, NOT IN HAND (2026-11-25): set aside so no wheel, loot
+            # or cleanup discards it, and returned after.
+            _ids = {id(c) for c, _t in impulse_cards}
+            _exiled = [c for c in hand if id(c) in _ids]
+            hand[:] = [c for c in hand if id(c) not in _ids]
+            _before = discarded
             if everything:
                 if not shuffled:
                     discarded += len(hand)
                     first_discard_batch = first_discard_batch or len(hand)
-                    _to_yard(hand)
+                    if discard_to_top and hand:
+                        # LIBRARY OF LENG (2026-11-25): every card is still discarded -- Brallin
+                        # is paid -- and each MAY go to the top instead, so the wheel's draw takes
+                        # those back first. AUTHORED: the spells go on top; a land (what is left
+                        # after the turn's deploy is mostly spare lands, worse than a fresh card)
+                        # and a flashback card (Echo of Eons, worth more in the graveyard) go to
+                        # the graveyard. Putting the whole hand back measured FEWER bodies than
+                        # no Leng at all -- the pilot would never do it.
+                        _keep = [c for c in hand
+                                 if not c["is_land"] and not c["engine"]["flashback"]]
+                        _to_yard([c for c in hand if not any(c is k for k in _keep)])
+                        deck[0:0] = _keep
+                    else:
+                        _to_yard(hand)
                 hand.clear()
+                hand.extend(_exiled)
+                if discarded > _before:
+                    _impulse()
                 return
             _had = len(hand)
             for _ in range(int(n)):
@@ -1306,6 +1332,25 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     hand.remove(pick)
                 discarded += 1
             first_discard_batch = first_discard_batch or (_had - len(hand))
+            hand.extend(_exiled)
+            if discarded > _before:
+                _impulse()
+
+        def _impulse():
+            """INTI'S SECOND HALF (2026-11-25): "Whenever you discard one or more cards, exile the
+            top card of your library. You may play that card until your next end step." Once per
+            discard batch, per such permanent. NOT a draw: no doubler, no per-draw payoff, not
+            `drawn_extra`. It waits in hand, marked, and leaves at the end step after next."""
+            for _ in range(sum(_e.get("per_discard_impulse", 0)
+                               for _e in event_payoff_permanents)):
+                if not deck:
+                    return
+                # ITS OWN OBJECT: library copies share one dict (two Islands are one object), and
+                # the exiled card must be told apart from a copy in hand by identity.
+                _c = dict(deck.pop(0))
+                hand.append(_c)
+                seen.add(_c["name"])
+                impulse_cards.append((_c, turn + 1))
 
         def _put_back(n):
             """BRAINSTORM'S SECOND HALF (2026-11-06): n cards from the hand to the top of the
@@ -1639,7 +1684,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         cprof["attack_treasure"], cprof["attack_draw"],
                         cprof["attack_token_bodies"],
                         cprof["attack_ping_per_attacker"],
-                        cprof["attack_drain_typed"], cprof["attack_counters_typed"])):
+                        cprof["attack_drain_typed"], cprof["attack_counters_typed"],
+                        cprof.get("attack_discard_counter"))):
                     combat_engines.append(cprof)
                 if cprof["extra_combat_free"]:
                     extra_combat_free += 1
@@ -1726,10 +1772,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             that is the only thing that keeps it correct as the file grows.
             """
             nonlocal spells_cast_this_turn, spells_cast_total, hand_limit_off
-            nonlocal noncreature_casts_this_turn, yard_spells
+            nonlocal noncreature_casts_this_turn, yard_spells, discard_to_top
             hand.remove(card)
             if card.get("no_max_hand"):
                 hand_limit_off = True
+            if card.get("discard_to_top") and model_discard:
+                discard_to_top = True
             spells_cast_this_turn += 1
             spells_cast_total += 1
             tl = card.get("type_line") or ""
@@ -1962,7 +2010,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_draw"], combat["damage_scales_with_treasure"],
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"],
-                        combat["attack_drain_typed"], combat["attack_counters_typed"])):
+                        combat["attack_drain_typed"], combat["attack_counters_typed"],
+                        combat.get("attack_discard_counter"))):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -2563,7 +2612,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_draw"], combat["damage_scales_with_treasure"],
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"],
-                        combat["attack_drain_typed"], combat["attack_counters_typed"])):
+                        combat["attack_drain_typed"], combat["attack_counters_typed"],
+                        combat.get("attack_discard_counter"))):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -3646,6 +3696,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              c["draw"]["life_gain_paid_draw"],
                                              # Cast, or the limit it lifts is never lifted.
                                              model_hand_limit and c["no_max_hand"],
+                                             # Library of Leng's other half (2026-11-25).
+                                             model_discard and c.get("discard_to_top"),
                                              # A WHEEL IS A DRAW SPELL, cast under model_discard
                                              # only, since a wheel that draws seven and discards
                                              # nothing is the over-credit the flag exists to
@@ -5041,6 +5093,22 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         if _all or _ct["type"] in (_tl or ""):
                             _e = battlefield[_i]
                             battlefield[_i] = (_e[0] + _n,) + _e[1:6] + (_e[6] + _n,) + _e[7:]
+                # A DISCARD ON THE SWING FOR A COUNTER (2026-11-25, Inti, Seneschal of the Sun):
+                # "Whenever you attack, you may discard a card. When you do, put a +1/+1 counter on
+                # target attacking creature." AUTHORED: only a spare land is pitched -- the hand
+                # holds two or more -- and the counter goes on the biggest attacker. The discard
+                # pays Brallin at the next settlement, like Mask of Memory's; the trample is moot
+                # with no blockers.
+                if model_discard:
+                    for _eng in combat_engines:
+                        _adc = _eng.get("attack_discard_counter")
+                        if not _adc or sum(1 for c in hand if c["is_land"]) < 2:
+                            continue
+                        discard_n(1)
+                        _n = apply_counter_mod(_adc, counter_plus, counter_times)
+                        _i = max(_able, key=lambda i: battlefield[i][0])
+                        _e = battlefield[_i]
+                        battlefield[_i] = (_e[0] + _n,) + _e[1:6] + (_e[6] + _n,) + _e[7:]
             _lbs = _lord_bonuses()
             attackers = [(((battlefield[i][0] + team_anthem + _lbs[i] + turn_pump
                             + _eq_pow.get(_cmdr_of(i), 0)) * _power_mult)
@@ -6137,8 +6205,17 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # THE HAND LIMIT. After `discarded_by_turn` is taken, so these discards pay Brallin
         # and friends NEXT turn: a turn late against a table, a floor. `discard_n`'s stated
         # policy picks them, spare lands first and then the most expensive.
-        if model_hand_limit and not hand_limit_off and len(hand) > 7:
-            discard_n(len(hand) - 7)
+        # AN IMPULSE CARD NOT PLAYED BY THE END STEP AFTER NEXT LEAVES (2026-11-25, Inti); a
+        # played one already left the hand through `_note_cast`.
+        # By IDENTITY: two copies of a card are equal dicts, and only the exiled one leaves.
+        _in_hand = {id(c) for c in hand}
+        _gone = {id(c) for c, t in impulse_cards if t <= turn}
+        hand[:] = [c for c in hand if id(c) not in _gone]
+        impulse_cards[:] = [(c, t) for c, t in impulse_cards if id(c) in _in_hand and t > turn]
+        _exiled_ids = {id(c) for c, _t in impulse_cards}
+        _held = [c for c in hand if id(c) not in _exiled_ids]
+        if model_hand_limit and not hand_limit_off and len(_held) > 7:
+            discard_n(len(_held) - 7)
         hand_size_by_turn.append(len(hand))
         dead_wheels_in_hand_by_turn.append(_dead_wheels())
         # AT THE END OF THE TURN, which is what the row has always said (2026-11-04). This was

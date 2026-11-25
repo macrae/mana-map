@@ -182,6 +182,19 @@ _NO_MAX_HAND_RE = re.compile(r"(?:^|[.\n]\s*)((?:you|players) have no maximum ha
                              re.I)
 
 
+#: A DISCARD REDIRECTED TO THE TOP OF THE LIBRARY (2026-11-25, Library of Leng): "If an effect
+#: causes you to discard a card, discard it, but you may put it on top of your library instead
+#: of into your graveyard." The discard still happens -- Brallin is paid -- and a wheel's draw then
+#: takes the hand back first.
+_DISCARD_TO_TOP_RE = re.compile(
+    r"discard it, but you may put it on top of your library instead of into your graveyard", re.I)
+
+
+def discard_to_top(card):
+    """Does this permanent let a discarded card go to the top of the library instead?"""
+    return bool(_DISCARD_TO_TOP_RE.search(_REMINDER_RE.sub(" ", card.get("oracle_text") or "")))
+
+
 def no_max_hand(card):
     """Does having this card out switch the cleanup discard off for good? (CR 514.1)"""
     text = _REMINDER_RE.sub(" ", card.get("oracle_text") or "")
@@ -1032,7 +1045,12 @@ def event_payoffs(card):
            # DAMAGE ON THEIR TURN (Fevered Visions, Sulfuric Vortex): N a turn
            # against the one seat, when its hand meets `_hand_min` (0 = always).
            "per_opponent_turn_damage": 0, "per_opponent_turn_damage_hand_min": 0,
+           # IMPULSE ON A DISCARD (2026-11-25, Inti): the top card exiled, playable until the
+           # next end step -- not a draw, so no per-draw payoff sees it.
+           "per_discard_impulse": 0,
            "unmodelled": None}
+    if _DISCARD_IMPULSE_RE.search(text):
+        out["per_discard_impulse"] = 1
     _td, _tmin = _turn_damage(text)
     if _td:
         out["per_opponent_turn_damage"] = _td
@@ -3479,6 +3497,17 @@ _EXTRA_COMBAT_RE = re.compile(r"additional combat phase", re.IGNORECASE)
 _ATTACK_DRAIN_TYPED_RE = re.compile(
     r"whenever an? ([A-Z]\w+) you control attacks, each opponent loses (\d+) life"
     r"(?: and you gain (\d+) life)?", re.I)
+#: "Whenever you attack, you may discard a card. When you do, put a +1/+1 counter on target
+#: attacking creature" (2026-11-25, Inti, Seneschal of the Sun): a discard on every swing, paid
+#: with a counter on one attacker.
+_ATTACK_DISCARD_COUNTER_RE = re.compile(
+    r"whenever you attack, you may discard a card\. when you do, put (a|an|one|two|\d+) "
+    r"\+1/\+1 counters? on target attacking creature", re.I)
+#: "Whenever you discard one or more cards, exile the top card of your library. You may play
+#: that card until your next end step." (2026-11-25, Inti)
+_DISCARD_IMPULSE_RE = re.compile(
+    r"whenever you discard one or more cards, exile the top card of your library\. you may play "
+    r"that card (?:until your next end step|this turn)", re.I)
 _ATTACK_COUNTERS_TYPED_RE = re.compile(
     # A qualifier after "you control" ("that's a token or a Rabbit", Finneas) narrows the team:
     # not read rather than over-read.
@@ -5014,6 +5043,7 @@ def combat_profile(card):
         "attack_ping_per_attacker": 0,
         "attack_drain_typed": None,       # Sanctum Seeker, 2026-11-24
         "attack_counters_typed": None,    # Edgar Markov, 2026-11-24
+        "attack_discard_counter": 0,      # Inti, Seneschal of the Sun, 2026-11-25
         # The enters-the-battlefield family. Read for every card, acted on only
         # under model_combat, so a deck that does not opt in is byte-identical.
         "etb_damage_self_power": False,
@@ -5214,6 +5244,13 @@ def combat_profile(card):
             profile["attack_counters_typed"] = {
                 "type": _ac_.group(2), "n": _NUMBER_WORDS.get(_ac_.group(1).lower(), 1)
                 if not _ac_.group(1).isdigit() else int(_ac_.group(1))}
+        # A DISCARD ON EVERY SWING FOR A COUNTER (2026-11-25, Inti): read from the full text,
+        # since "you attack" is the trigger, not this creature attacking.
+        _adc = _ATTACK_DISCARD_COUNTER_RE.search(text)
+        if _adc:
+            _w = _adc.group(1).lower()
+            profile["attack_discard_counter"] = int(_w) if _w.isdigit() else \
+                _NUMBER_WORDS.get(_w, 1)
         if _ATTACK_TOKEN_SCALES_RE.search(window):
             profile["attack_token_bodies"] += 1
             profile["attack_token_scales"] = True
@@ -5228,6 +5265,7 @@ def combat_profile(card):
                     profile["attack_ping_per_attacker"],
                     profile.get("attack_drain_typed"),
                     profile.get("attack_counters_typed"),
+                    profile.get("attack_discard_counter"),
                     # Checked against the FULL text, not the window: Scourge of
                     # the Throne's reminder clause pushes "additional combat
                     # phase" past 220 characters, and flagging a card whose
