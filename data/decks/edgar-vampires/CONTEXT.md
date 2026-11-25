@@ -122,7 +122,7 @@ Mostly dual and tri colour so all three colours are ready. Fetches, shocks, pain
 <!-- ctx:gen numbers -->
 - **DeckCheck (external, dated):** 44/96 → bracket 3, as of 2026-11-11
 - **Recon (other people's lists, dated):** 10 finding(s) as of 2026-11-20
-- **Proven lines:** 14 of 14 stack scenario(s) checker-passed (✓)
+- **Proven lines:** 15 of 15 stack scenario(s) checker-passed (✓)
 - **The goldfish — one instrument.** It reads 87 of 97 distinct cards (4 DARK, 6 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v3.0.0 (V7), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
