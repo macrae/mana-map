@@ -92,7 +92,7 @@
       "TREASURE OFF THEIR DRAWS RESTS ON AN AUTHORED RATE. Smothering Tithe makes a Treasure per opponent draw unless that opponent pays {2}; how often a table pays is not measurable here, so TITHE_PAY_RATE (0.5, config.py) decides each draw. Every Tithe figure is conditional on it, and `try` says so when a list relies on it.",
       "DISCARD: A WHEEL THAT DRAWS 'CARDS EQUAL TO THE GREATEST NUMBER A PLAYER DISCARDED' IS A FLOOR HERE, AND THE FLOOR IS LOW. This model has no opponents holding cards, so Jace's Archivist and Windfall draw what OUR hand held -- and the gate only lets them fire when our hand is thin, which is exactly the board on which a real table pays them seven. The figure is not corrected, because the correction would be an authored opponent hand size driving a headline; read it as a lower bound and settle the question in Forge."
     ],
-    "model_version": "ac1f8a6f777f",
+    "model_version": "f4d3734a5933",
     "partner": "Brallin, Skyshark Rider",
     "pilot_policy": {
       "rules": [
@@ -109,6 +109,36 @@
     ]
   },
   "metrics": {
+    "clock": {
+      "basis": "shares of ALL games, summing to the kill rate by turn 10. A life kill is 'combat' when the attacks dealt at least as much as everything else by the kill turn, else 'noncombat'; combo, approach, trisk and poison are their own clocks. Combat here is into an empty board.",
+      "kill_source_by_turn_10": {
+        "combat": 0.996
+      },
+      "mean_life_gained_by_turn": {
+        "1": 0.0,
+        "10": 53.51,
+        "2": 0.0,
+        "3": 0.033,
+        "4": 0.579,
+        "5": 3.749,
+        "6": 9.345,
+        "7": 16.977,
+        "8": 27.164,
+        "9": 39.961
+      },
+      "mean_noncombat_life_by_turn": {
+        "1": 0.0,
+        "10": 18.512,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.015,
+        "5": 0.129,
+        "6": 0.371,
+        "7": 1.171,
+        "8": 3.426,
+        "9": 8.605
+      }
+    },
     "combat": {
       "kill_by_poison_rate": 0.0,
       "kill_by_turn_rate": {
@@ -283,6 +313,18 @@
       "mean_first_wheel_turn": {
         "mean": 6.438,
         "n": 9267
+      },
+      "mean_opponent_cards_given_by_turn": {
+        "1": 0.0,
+        "10": 16.881,
+        "2": 0.0,
+        "3": 0.011,
+        "4": 0.226,
+        "5": 1.63,
+        "6": 3.784,
+        "7": 6.207,
+        "8": 9.169,
+        "9": 12.789
       },
       "mean_total_damage_by_turn": {
         "1": 0.0,

@@ -20,11 +20,7 @@
     "stale": [
       "frame"
     ],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
-    ],
+    "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [],
@@ -547,11 +543,11 @@
         "at": "2026-11-21"
       },
       "verdict": {
-        "state": "no objective",
+        "state": "profile only",
         "word": "profile only",
-        "rose": 1,
-        "fell": 10,
-        "no_call": 5
+        "rose": 4,
+        "fell": 9,
+        "no_call": 4
       },
       "measured": true,
       "blind_spots": [
@@ -566,9 +562,12 @@
         "Voracious Greatshark"
       ],
       "impact": {
-        "state": "no objective",
+        "state": "profile only",
         "rose": [
-          "kept hand passes the pilot's keep rule"
+          "hoard @T10",
+          "stall, 2 in a row",
+          "kept hand passes the pilot's keep rule",
+          "cards handed to each opponent by T8"
         ],
         "fell": [
           "damage @T10",
@@ -579,28 +578,27 @@
           "extra cards by T8",
           "interaction affordable @T6",
           "finisher wheel by T8",
-          "wheels cast by T10",
-          "dead wheels in hand @T5"
+          "wheels cast by T10"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -132.4095,
+            "delta": -122.4818,
             "ci95_diff": [
-              -138.4768,
-              -126.3422
+              -128.677,
+              -116.2866
             ],
-            "mde": 8.6726,
+            "mde": 8.8553,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0033,
+            "delta": -0.0028,
             "ci95_diff": [
-              -0.005,
-              -0.0016
+              -0.0045,
+              -0.0011
             ],
             "mde": 0.0025,
             "verdict": "worse",
@@ -609,24 +607,24 @@
           },
           {
             "measure": "board power @T6",
-            "delta": -0.0974,
+            "delta": 0.0434,
             "ci95_diff": [
-              -0.2674,
-              0.0726
+              -0.1318,
+              0.2186
             ],
-            "mde": 0.243,
+            "mde": 0.2504,
             "verdict": "noise",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.7447,
+            "delta": -0.5026,
             "ci95_diff": [
-              -1.0436,
-              -0.4458
+              -0.8104,
+              -0.1948
             ],
-            "mde": 0.4273,
+            "mde": 0.4399,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -10150,7 +10148,6 @@
   },
   "next": [
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
