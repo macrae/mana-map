@@ -265,6 +265,10 @@
           "is_new": true
         },
         {
+          "name": "Irencrag Pyromancer",
+          "is_new": true
+        },
+        {
           "name": "Island",
           "is_new": false
         },
@@ -493,10 +497,6 @@
           "is_new": false
         },
         {
-          "name": "Voracious Greatshark",
-          "is_new": true
-        },
-        {
           "name": "Wheel of Fortune",
           "is_new": false
         },
@@ -519,21 +519,21 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "012",
-        "question": "Card six of the vision on jaws-v1: Monument to Endurance (on each discard, a mode not chosen this turn: draw, a Treasure, or each opponent loses 3) in -- the pilot: 'I think that's a clear add!!!!' -- and for what?",
+        "id": "014",
+        "question": "Card eight of the vision on jaws-v1: Irencrag Pyromancer (0/4 Human; 3 damage to any target whenever you draw your second card each turn, on any player's turn) back in -- the pilot: 'I love that' -- and for what?",
         "branch": "jaws-v1",
-        "file": "012-card-six-of-the-vision-on-jaws-v1-monument-to-en.json",
+        "file": "014-card-eight-of-the-vision-on-jaws-v1-irencrag-pyr.json",
         "decision": "approve",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "Monument for Esper Sentinel",
+        "pilot_words": "a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
         "swap": {
           "out": null,
-          "in": "Monument to Endurance"
+          "in": "Irencrag Pyromancer"
         },
         "goldfish_saw": [
           1,
@@ -8757,6 +8757,47 @@
   ],
   "studies": [
     {
+      "id": "014",
+      "question": "Card eight of the vision on jaws-v1: Irencrag Pyromancer (0/4 Human; 3 damage to any target whenever you draw your second card each turn, on any player's turn) back in -- the pilot: 'I love that' -- and for what?",
+      "branch": "jaws-v1",
+      "file": "014-card-eight-of-the-vision-on-jaws-v1-irencrag-pyr.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Irencrag Pyromancer"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "013",
+      "question": "Card seven of the vision on jaws-v1: Conspiracy Theorist (Human; on attack pay {1} and discard to draw; whenever you discard nonland cards, exile one from the graveyard and cast it this turn) in -- the pilot: 'the flashback on exiled spells is a way to return a wheel!!!! major advantage!' -- and for what?",
+      "branch": "jaws-v1",
+      "file": "013-card-seven-of-the-vision-on-jaws-v1-conspiracy-t.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Conspiracy Theorist"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "012",
       "question": "Card six of the vision on jaws-v1: Monument to Endurance (on each discard, a mode not chosen this turn: draw, a Treasure, or each opponent loses 3) in -- the pilot: 'I think that's a clear add!!!!' -- and for what?",
       "branch": "jaws-v1",
@@ -10336,6 +10377,7 @@
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "study 013 is open: Card seven of the vision on jaws-v1: Conspiracy Theorist (Human; on at — `manamap pilot study sharknado call 013 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",

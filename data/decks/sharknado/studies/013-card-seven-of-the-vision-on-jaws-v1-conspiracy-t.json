@@ -1,0 +1,245 @@
+{
+  "id": "013",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card seven of the vision on jaws-v1: Conspiracy Theorist (Human; on attack pay {1} and discard to draw; whenever you discard nonland cards, exile one from the graveyard and cast it this turn) in -- the pilot: 'the flashback on exiled spells is a way to return a wheel!!!! major advantage!' -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": null,
+  "cards": [
+    "Conspiracy Theorist"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Conspiracy Theorist"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 420.0,
+      "slice": "MODE prescribe: Theorist's cut; verbatim (it did not yet weigh a wheel cut, which the pilot opened mid-run)",
+      "text": "Conspiracy Theorist (013). Pick: in for Shark Typhoon (painful).\n- Coverage: the goldfish lists it \"seen\" but no pattern reads the exile-and-cast clause; it sees at most a 2/2 that attacks and loots. The reason the pilot wants it is unread, so no rows.\n- The wheel recast works on paper: Wheel of Fortune, Windfall, Reforge the Soul, Magus, Jace's Archivist and Collective Defiance discard; Echo of Eons, Time Reversal and Winds of Change shuffle instead. One card exiled per discard event, recast at full cost and normal timing (a sorcery wheel needs a main phase plus mana).\n- With Library of Leng the choice is per card: a card Leng puts on top was still discarded (Theorist triggers) but cannot be exiled; send the wheel to recast to the graveyard and the rest to the top. Open for resolve-stack: Leng and Theorist's own pay-and-discard; the Wheel-then-exile-Windfall line.\n- Combos: none of its Spellbook pieces is in the list; nothing live.\n- Cost of cutting Typhoon: an instant-speed cycle (a Shabraz counter and a flying Shark), log 006's tutor target, and verified stack 012, which the cut orphans. In its place a 2-drop Human permanent: MV<=2 creatures 8 to 9.\n- Second pick: Lizard Blades — orphans no stack, but the commander-damage group drops 4 to 3 and it is already an early permanent.\n- Not cut: Unsettled Mariner (a changeling 2-drop Human). No wheel cut made — needs the pilot's word.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T13:58:25-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-theorist.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 120.0,
+      "slice": "MODE prescribe re-run with wheels open; verbatim",
+      "text": "Re-run with every rule lifted and wheels open: the same two swaps.\n- Wheel screen, Winds of Change as the cut (goldfish, one instrument): finisher wheel by T8 -6.5 pts [-7.0, -6.0], damage @T10 -9.2 [-11.0, -7.4], wheels cast by T10 -0.38; better on dead wheels in hand (-0.022) and the keep rule (+2.7 pts) — partly backs \"too many wheels\", far outweighed. The Greatshark cut cost only 3.2 damage [-4.2, -2.1], no call on the finisher wheel.\n- Pyromancer: on a competitive bracket-3 table a 3-mana repeatable answer that kills X/3s is worth more than a 5-mana counter that only stops creature and artifact spells.\n- Theorist: Shark Typhoon is a 6-mana enchantment almost always cycled, in practice a spell; Theorist puts a 2-drop Human permanent in its place. Painful: an instant-speed draw that leaves a flying Shark, and stack 012 orphaned.\n- If a wheel goes anyway: Time Reversal, not Winds — it shuffles (Theorist can never recur it), wipes the graveyard Theorist feeds from, costs 5. Judgment only, unmeasured; any wheel cut costs real finisher rate.\n- Lizard Blades stays second choice for Theorist's slot; Unsettled Mariner stays.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T13:59:05-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-rerun.md"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "card-seven-of-the-vision-on-jaws-v1-conspiracy-t",
+  "facts": [
+    {
+      "id": "S-f0ba528b-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-f0ba528b-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-f0ba528b-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f0ba528b-04",
+      "kind": "oracle",
+      "text": "Creature — Human Shaman · {1}{R} — Whenever this creature attacks, you may pay {1} and discard a card. If you do, draw a card. Whenever you discard one or more nonland cards, you may exile one of them from your graveyard. If you do, you may cast it this turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Conspiracy Theorist"
+    },
+    {
+      "id": "S-f0ba528b-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Faerie Mastermind (0.87), Consecrated Sphinx (0.86), Esper Sentinel (0.85)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Conspiracy Theorist",
+      "neighbours": [
+        {
+          "name": "Faerie Mastermind",
+          "score": 0.8667
+        },
+        {
+          "name": "Consecrated Sphinx",
+          "score": 0.8605
+        },
+        {
+          "name": "Esper Sentinel",
+          "score": 0.8545
+        }
+      ]
+    },
+    {
+      "id": "S-f0ba528b-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Conspiracy Theorist",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-f0ba528b-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-f0ba528b-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f0ba528b-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f0ba528b-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-f0ba528b-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f0ba528b-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f0ba528b-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Conspiracy Theorist"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9fd67890a0cf7685f2f3da04bfc61741e4c2807258e6ffbaf637608bfe4b680b",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T13:51:55-08:00",
+    "facts": 13
+  }
+}
