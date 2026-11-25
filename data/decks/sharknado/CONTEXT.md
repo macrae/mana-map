@@ -279,6 +279,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **015 approve** (pilot, deck-doctor) — Irencrag Pyromancer back in on jaws-v1 -- the pilot: 'consider something else for Irencrag' -- for what? (Not Shark Typhoon, the deck's name · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Pyromancer for Time Reversal”
 - **014 approve** (pilot, deck-doctor) — Card eight of the vision on jaws-v1: Irencrag Pyromancer (0/4 Human; 3 damage to any target whenever you draw your second card each turn, on · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark”
 - **013 approve** (pilot, deck-doctor) — Card seven of the vision on jaws-v1: Conspiracy Theorist (Human; on attack pay {1} and discard to draw; whenever you discard nonland cards,  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no, shark typhoon stays! it's 6 mana, the hope is that I can get it in earlier with Treasure... I favor Conspiracy Theor”
 - **012 approve** (pilot, deck-doctor) — Card six of the vision on jaws-v1: Monument to Endurance (on each discard, a mode not chosen this turn: draw, a Treasure, or each opponent l · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “Monument for Esper Sentinel”
@@ -286,8 +287,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 - **010 approve** (pilot, deck-doctor) — Card four of the vision on jaws-v1: The Queen of Dale (a 2-mana Human; recruits -- loot, and a 1/1 Human Soldier on a nonland discard -- whe · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve”
 - **009 no-change** (pilot, deck-doctor) — Card three of the vision on jaws-v1: Leitmotif Composer (a Human Bard that draws on combat damage to a player; copies itself on a 5+ mana va · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Composer”
 - **008 decline** (pilot, deck-doctor) — Card two of the vision on jaws-v1: Tataru Taru (a tapped Treasure when an opponent draws off their turn, once a turn; draws on entry) in --  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no, I don't approve”
-- **007 approve** (pilot, deck-doctor, strategist) — Card one of the vision on jaws-v1: Big Score (instant, discard a card: draw two and make two Treasure) in for Gratuitous Violence (the old p · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve, Big Score for Torbran”
-- … 6 earlier: `manamap pilot study sharknado list`
+- … 7 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

@@ -1,0 +1,254 @@
+{
+  "id": "015",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Irencrag Pyromancer back in on jaws-v1 -- the pilot: 'consider something else for Irencrag' -- for what? (Not Shark Typhoon, the deck's namesake; not a rock.)",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Irencrag Pyromancer"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Irencrag Pyromancer"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Pyromancer's own cut, four wheel screens; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Study 015: which card leaves jaws-v1 so Irencrag Pyromancer comes in. The pilot's premise is too many wheels and too few permanents. Four wheels were screened, and Time Reversal is the cheapest one to lose: it has the smallest damage loss of the three pure wheels, it shuffles away the graveyard Conspiracy Theorist recurs from, and it costs five mana. Collective Defiance shows the smallest damage loss, but its removal and burn modes overlap Pyromancer's job.\",\n  \"log_entries_read\": [\"006\"],\n  \"cut_candidates\": [\n    {\"card\": \"Time Reversal\", \"why\": \"A 5-mana wheel that shuffles both graveyards into the libraries, so Theorist and flashback have nothing to work with. Goldfish (one instrument): damage @T10 -8.7 [-10.2,-7.3]; finisher wheel by T8 -3.0 pts [-3.4,-2.7]; cards handed to each opponent by T8 -0.75 (better).\", \"cost_of_cutting\": \"One of the deck's 7+ draw-sevens is gone. That means fewer Shabraz counters and Brallin discards, and wheels cast by T10 drops 2.90 -> 2.69.\", \"difficulty\": \"contested\", \"orphans_stack\": []},\n    {\"card\": \"Reforge the Soul\", \"why\": \"Five mana outside a miracle turn, and the deck has few ways to set one up. Goldfish: damage @T10 -10.4 [-11.9,-9.0]; finisher wheel -3.0 pts.\", \"cost_of_cutting\": \"A second draw-seven goes. Its damage cost is close to Windfall's, which has verified stacks 001 and 002 and stays.\", \"difficulty\": \"painful\", \"orphans_stack\": []}\n  ],\n  \"add_candidates\": [{\"card\": \"Irencrag Pyromancer\", \"closes\": \"interaction\", \"source\": \"prompt\", \"why\": \"A 3-mana permanent that deals 3 to any target on each second draw. It is repeatable removal and reach, and the goldfish cannot see its removal.\", \"natural_cut\": \"Time Reversal\"}],\n  \"open_questions\": [],\n  \"gaps\": [\"The goldfish reads Pyromancer's face damage only. Its creature removal is unread, so every row undercounts it.\", \"Torbran still appears in the try neighbour list but is not on the branch, so that index is stale.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T14:46:43-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-015.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "approve Pyromancer for Time Reversal",
+    "reading": "Irencrag Pyromancer in for Time Reversal: the pilot's 'too many wheels' and 'nothing is untouchable' override the old never-cut-a-draw-seven rule; the cheapest pure wheel to lose, and its shuffle undoes what Conspiracy Theorist recurs.",
+    "at": "2026-11-25"
+  },
+  "slug_name": "irencrag-pyromancer-back-in-on-jaws-v1-the-pilot",
+  "facts": [
+    {
+      "id": "S-4071de12-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-4071de12-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-4071de12-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-4071de12-04",
+      "kind": "oracle",
+      "text": "Creature — Human Wizard · {2}{R} — Whenever you draw your second card each turn, this creature deals 3 damage to any target.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Irencrag Pyromancer"
+    },
+    {
+      "id": "S-4071de12-05",
+      "kind": "staged",
+      "text": "staged 2026-11-25: Voracious Greatshark → Irencrag Pyromancer — pilot 2026-11-25 (study 014): 'a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark' -- 3 damage whenever you draw your second card each turn, a cheap Human",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Irencrag Pyromancer",
+      "as_of": "2026-11-25"
+    },
+    {
+      "id": "S-4071de12-06",
+      "kind": "staged",
+      "text": "staged 2026-11-25: Irencrag Pyromancer → Conspiracy Theorist — pilot 2026-11-25 (study 013): 'I favor Conspiracy Theorist over Irencrag and would rather swap that for Voracious Greatshark than Irencrag' -- the Greatshark slot goes to Theorist; Pyromancer waits for a cut of his own",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Irencrag Pyromancer",
+      "as_of": "2026-11-25"
+    },
+    {
+      "id": "S-4071de12-07",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Collective Defiance (0.89), Brallin, Skyshark Rider (0.85), Torbran, Thane of Red Fell (0.83)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Irencrag Pyromancer",
+      "neighbours": [
+        {
+          "name": "Collective Defiance",
+          "score": 0.8864
+        },
+        {
+          "name": "Brallin, Skyshark Rider",
+          "score": 0.8547
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.8286
+        }
+      ]
+    },
+    {
+      "id": "S-4071de12-08",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Irencrag Pyromancer",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "discard"
+      ]
+    },
+    {
+      "id": "S-4071de12-09",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-4071de12-10",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4071de12-11",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4071de12-12",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-4071de12-13",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4071de12-14",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-4071de12-15",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Irencrag Pyromancer"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "cc2800dff18e859d6ba9009eb83b995eeab3893a922db3e7362e7b1a81c70b91",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T15:14:02-08:00",
+    "facts": 15
+  }
+}
