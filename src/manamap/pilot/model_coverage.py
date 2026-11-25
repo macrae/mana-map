@@ -77,6 +77,14 @@ CHANNELS = {
     # Scroll Rack, Sensei's Top and Dig Through Time, played in the opponents' turns under the
     # commander's `model_commander_flash_discount` declaration.
     "flash_window": "model_commander_flash_discount",
+    # NO MAXIMUM HAND SIZE (2026-11-25): the cleanup step is a rule every deck has, but the one
+    # card class that ACTS on it -- Library of Leng, Reliquary Tower, Thought Vessel -- is cast by
+    # the draw loop only under `model_hand_limit` (goldfish_turn: "Cast, or the limit it lifts is
+    # never lifted"). No channel listed it, so Leng read INVISIBLE on a deck with the flag on.
+    # ALWAYS READ, NOT FLAGGED: with `model_hand_limit` off no hand in the model has a maximum, so
+    # the card's text is moot rather than unread -- flagging it turned Reliquary Tower and Thought
+    # Vessel DARK on three decks where nothing was missing (the fleet sweep, 2026-11-25).
+    "hand_limit": None,
 }
 
 #: `model_colors` defaults to TRUE where the other four default to False, so it
@@ -102,6 +110,7 @@ NOT_A_CHANNEL = {
     "model_deaths": "gates a game event, not a casting channel",
     # A RULE OF THE GAME (CR 514.1), not a card's channel: every deck has a cleanup step
     # whether or not it declares one. Opt-in so a deck keeps its figures until it is re-read.
+    # The cards that lift it are read by the always-on `hand_limit` channel above.
     "model_hand_limit": "the cleanup step, a rule rather than a casting channel",
     # SPELLBOOK'S INFINITE LINES (2026-11-09): a game-ending EVENT read off the board, not a
     # casting channel; the pieces are cast by the channels that already read them.
@@ -139,6 +148,15 @@ _MODELLED_TREASURE_TRIGGERS = frozenset({"upkeep", "landfall", "etb", "cast",
 #: drop); "cast" and "other" are read and not applied, and "activated" only when its cost is
 #: one the loop pays (`proliferate_cost` not None: mana, tap, discard). A test holds it to the loop.
 READ_PROLIFERATE = frozenset({"landfall", "etb", "activated"})
+
+
+#: AN EQUIPMENT'S HIT, ONE HOME (2026-11-25). `_engine_permanent` casts a bodiless combat
+#: trigger on any of these under model_combat, and `never_cast` mirrored them since 2026-11-06 --
+#: but `channels_for` did not, so Fireshrieker (double strike) and Mask of Memory (draw two on a
+#: hit) read INVISIBLE on sharknado while the turn loop cast and equipped both every game, and
+#: `try` withheld its rows on them. Both mirrors read this tuple now.
+EQUIP_HIT_KEYS = ("attack_draw", "attack_damage", "attack_mana", "attack_treasure",
+                  "equip_power", "equip_double_strike")
 
 
 def _experience_read(profile):
@@ -187,7 +205,7 @@ def channels_for(profile):
     if _nonzero(profile.get("combat"), (
             "etb_damage_self_power", "etb_damage_count", "etb_damage_fixed",
             "etb_life_loss_fixed", "token_created_life_loss", "etb_token_bodies",
-            "etb_copy", "attack_treasure", "power", "cast_token_bodies",
+            "etb_copy", "power", "cast_token_bodies", *EQUIP_HIT_KEYS,
             # THE THIRD DRIFT OF THIS MIRROR. Mass animation (Starfield of Nyx,
             # Opalescence) is consumed under `model_combat` and had been since
             # 2026-09-03; the key was never listed here, so the one card that
@@ -274,12 +292,17 @@ def channels_for(profile):
             or any(v for k, v in (profile.get("event") or {}).items() if k != "unmodelled") \
             or _nonzero(profile.get("engine"), ("cast_loot", "loyalty_loot", "cycling", "end_step_wheel")):
         found.add("discard")
-    if profile["sac_outlet"] or any((profile.get("own_death") or {}).get(k) for k in (
+    # A SACRIFICE THAT IS THE COST OF THE CARD'S OWN WHEEL (Magus of the Wheel) is paid by
+    # `_fire_engine_wheels`, which takes the body with it under the discard channel; it is not a
+    # death the sacrifice channel arranges (2026-11-25: Magus read DARK on sharknado for it).
+    _own = profile.get("own_death") or {}
+    _wheel_cost = (profile.get("draw") or {}).get("activated_wheel_sacs_self")
+    if profile["sac_outlet"] or (_own.get("self_sac") and not _wheel_cost) or any(_own.get(k) for k in (
             # the deaths a card causes among our own creatures (2026-11-07). The clamp joined
             # 2026-11-11, when the loop started clamping under `model_sacrifice` and not under
             # Meren's declaration alone; before that, crediting it here said goblin-storm's
             # Skullclamp was read when nothing killed with it.
-            "self_sac", "self_edict", "clamp")) or _nonzero(profile.get("death"), (
+            "self_edict", "clamp")) or _nonzero(profile.get("death"), (
             # `death_damage` listed WITH the field, not after somebody hits the
             # gap the expensive way. Pashalik Mons and Boggart Shenanigans read
             # as invisible while the deck's whole conversion was bodies dying.
@@ -306,8 +329,14 @@ def channels_for(profile):
         found.add("drain")
     yard, own, rec = (profile.get("yard") or {}), (profile.get("own_death") or {}), \
         (profile.get("recurring") or {})
+    # A FLASHBACK SPELL'S YARD CAST IS NOT RECURSION (2026-11-25). `cast_from_yard` matches
+    # flashback's reminder text ("You may cast this card from your graveyard for its flashback
+    # cost"), but the turn loop casts a flashback wheel or draw spell from `flashback_yard` under
+    # the discard and draw channels (`_fire_wheels`), never under Meren's declaration -- so Echo of
+    # Eons read DARK on sharknado while its flashback fired every game it was discarded.
+    _flashback = (profile.get("engine") or {}).get("flashback")
     if (yard.get("reanimate") or yard.get("to_yard") or yard.get("discard_tutor")
-            or own.get("no_mana") or own.get("cast_from_yard")
+            or own.get("no_mana") or (own.get("cast_from_yard") and not _flashback)
             or own.get("sac_team_counter") or own.get("team_pump_x")
             # the self-feeding bodies (2026-11-23, study 010): dies as it enters, exploit,
             # tokens that sacrifice themselves -- applied under Meren's declaration only
@@ -327,6 +356,8 @@ def channels_for(profile):
         found.add("discover")
     if profile.get("cascade"):
         found.add("cascade")
+    if profile.get("no_max_hand"):
+        found.add("hand_limit")
     return found
 
 
@@ -374,8 +405,7 @@ def never_cast(profile, flags):
                 cb.get("mass_animate_threshold"), cb.get("attack_ping_per_attacker"),
                 # a bodiless combat trigger (an Equipment's hit) is cast by
                 # `_engine_permanent` since 2026-11-06
-                cb.get("attack_draw"), cb.get("attack_damage"), cb.get("attack_mana"),
-                cb.get("attack_treasure"), cb.get("equip_power"), cb.get("equip_double_strike"),
+                *(cb.get(k) for k in EQUIP_HIT_KEYS),
                 # a haste enabler is cast by the combat-payoff loop
                 cb.get("team_haste"), cb.get("cast_damage"),
                 cb.get("spell_damage_greatest_power"),
@@ -425,6 +455,10 @@ def never_cast(profile, flags):
         return False
     if flags.get("model_treasures") and (profile["treasure_doubler"]
                                          or profile["treasure_bonus"]):
+        return False
+    # The draw loop casts a no-maximum-hand-size card under model_hand_limit (goldfish_turn:
+    # "Cast, or the limit it lifts is never lifted"); mirrored 2026-11-25, Library of Leng.
+    if flags.get("model_hand_limit") and profile.get("no_max_hand"):
         return False
     if flags.get("model_draw") and _nonzero(profile.get("draw"), (
             "spell_draw", "etb_draw", "recurring_draw", "arrival_draw", "cast_draw",
@@ -559,9 +593,31 @@ _UNREAD_REPLACEMENT_RE = re.compile(
     r"[^.\n]*\bwould\b[^.\n]*\binstead\b[^.\n]*", re.I)
 
 
+#: A DISCARD REDIRECTED OUT OF THE GRAVEYARD (2026-11-25): Library of Leng's "discard it, but you
+#: may put it on top of your library instead of into your graveyard". No reader consumes it -- a
+#: wheel under Leng is modelled as throwing the hand away -- so a Leng the hand-limit channel reads
+#: is PARTIAL, not seen, and `try` says what it missed.
+_UNREAD_DISCARD_REDIRECT_RE = re.compile(
+    r"[^.\n]*\bdiscard\b[^.\n]*\binstead of into (?:your|its owner's) graveyard\b[^.\n]*", re.I)
+
+
+def unread_flashback(profile):
+    """A flashback the turn loop never casts, or None. `_fire_wheels` casts from `flashback_yard`
+    only a wheel or a draw spell (2026-11-04); any other flashback card's second cast is unread --
+    Electroduplicate, Seize the Day -- so the card is PARTIAL, not seen (2026-11-25)."""
+    fb = (profile.get("engine") or {}).get("flashback")
+    draw = profile.get("draw") or {}
+    if fb and not (draw.get("wheel_draws") or draw.get("spell_draw")):
+        return "Flashback: the turn loop casts only a wheel or a draw spell from the graveyard"
+    return None
+
+
 def unread_replacement(card, profile):
     """The replacement sentence no reader consumed, or None."""
     text = re.sub(r"\([^)]*\)", " ", card.get("oracle_text") or "")
+    redirect = _UNREAD_DISCARD_REDIRECT_RE.search(text)
+    if redirect:
+        return redirect.group(0).strip()
     m = _UNREAD_REPLACEMENT_RE.search(text)
     if not m:
         return None
@@ -599,7 +655,7 @@ def card_state(card, flags, named=()):
     # ANYTHING about it is not being read, whatever else is.
     state = ("dark" if possible - active
              else "seen" if active else "invisible")
-    unread = unread_replacement(card, profile)
+    unread = unread_replacement(card, profile) or unread_flashback(profile)
     if state == "seen" and unread:
         state = "partial"
     return {

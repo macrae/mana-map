@@ -7,7 +7,7 @@
   "decklist_sha256": "f9e829330210bc77d9ffc7e68d3cdaed7902c024e461e154093ce8fc6d2bcf4d",
   "forge_digest": "8918393bf430edff",
   "ability_graph_version": "1",
-  "model_version": "75ea059969f2",
+  "model_version": "0941a845ac3c",
   "readers": {
    "forge": 79
   },
@@ -5145,7 +5145,7 @@
       "consumes": null,
       "produces": [],
       "scales": {
-       "event": "PUMP",
+       "event": "HAND_SIZE",
        "filters": [
         {
          "player": "you"
@@ -13041,14 +13041,15 @@
    },
    {
     "card": "Reliquary Tower",
-    "event": "COMBAT_DAMAGE",
-    "kind": "pump",
+    "event": "HAND_SIZE",
+    "kind": "static",
+    "actor": null,
+    "your_turn": false,
     "filters": [
      {
       "player": "you"
      }
-    ],
-    "keywords": []
+    ]
    },
    {
     "card": "Roaming Throne",
@@ -13321,7 +13322,6 @@
     "Goblin Chieftain",
     "Goblin Warchief",
     "Purphoros, God of the Forge",
-    "Reliquary Tower",
     "Roaming Throne",
     "Rundvelt Hordemaster",
     "Skullclamp",

@@ -519,3 +519,92 @@ def test_an_unread_replacement_on_a_counted_resource_is_partial():
     assert state("Lae'zel, Vlaakith's Champion")["state"] == "seen"
     # A redirect of a non-counted thing is not a gap in this model.
     assert state("Goblin Dark-Dwellers")["state"] == "seen"
+
+
+# ── the fifth drift: what the wheel deck's own cards were reported as (2026-11-25) ──────────
+
+def _corpus_card(name):
+    """One corpus card as `classify` reads it, from the frame `card_pool` owns."""
+    from manamap.pilot import card_pool
+    row = card_pool.load_frame().set_index("name").loc[name]
+    card = {"name": name, "oracle_text": card_pool.corpus_oracle()[name]}
+    for k in ("type_line", "mana_cost", "cmc", "power", "toughness", "colors",
+              "color_identity", "keywords", "produced_mana"):
+        if k not in row:
+            continue
+        v = row[k]
+        if hasattr(v, "tolist"):              # a numpy array or scalar
+            v = v.tolist()
+        if isinstance(v, tuple):
+            v = list(v)
+        if v is None or (isinstance(v, float) and v != v):
+            continue
+        card[k] = v
+    return card
+
+
+_WHEELS = {"model_combat": True, "model_draw": True, "model_discard": True,
+           "model_treasures": True, "model_drain": True, "model_hand_limit": True}
+
+
+@requires_data
+def test_an_equipment_hit_is_reported_as_read_where_it_is_cast():
+    """FIRESHRIEKER AND MASK OF MEMORY READ INVISIBLE on sharknado while `_engine_permanent`
+    cast and equipped both: `never_cast` listed the equipment keys (2026-11-06) and
+    `channels_for` never did, and `try` withheld its rows on them. Both mirrors read
+    `EQUIP_HIT_KEYS` now. Re-introduce the drift by dropping `*EQUIP_HIT_KEYS` from
+    `channels_for` and every assert here fails."""
+    for name in ("Fireshrieker", "Mask of Memory"):
+        row = mc.card_state(_corpus_card(name), _WHEELS)
+        assert row["state"] == "seen" and "combat" in row["active"], (name, row)
+    from manamap.pilot import goldfish
+    for key in mc.EQUIP_HIT_KEYS:
+        profile = goldfish.classify(_corpus_card("Fireshrieker"))
+        profile["combat"] = {k: v for k, v in profile["combat"].items()
+                             if k not in mc.EQUIP_HIT_KEYS}
+        profile["combat"][key] = 2
+        assert "combat" in mc.channels_for(profile), key
+        assert not mc.never_cast(profile, _WHEELS), key
+
+
+@requires_data
+def test_a_wheel_paid_for_with_its_own_body_is_not_dark_on_sacrifice():
+    """Magus of the Wheel read DARK on sharknado's sacrifice channel. Its "Sacrifice this
+    creature" is the cost of its own wheel, which `_fire_engine_wheels` pays and takes the
+    body with it under discard -- not a death the sacrifice channel arranges. Re-introduce it
+    by counting `self_sac` whatever its cost pays for, and the first assert fails. A body
+    that sacrifices itself for something else stays on the sacrifice channel."""
+    magus = mc.card_state(_corpus_card("Magus of the Wheel"), _WHEELS)
+    assert magus["state"] == "seen" and "sacrifice" not in magus["possible"], magus
+    spore = mc.card_state(_corpus_card("Sakura-Tribe Elder"), _WHEELS)
+    assert "sacrifice" in spore["possible"], spore
+
+
+@requires_data
+def test_a_flashback_wheel_is_read_by_the_wheel_path_not_recursion():
+    """Echo of Eons read DARK on recursion: flashback's reminder text matches the Hogaak
+    pattern "you may cast this card from your graveyard", but `_fire_wheels` casts a flashback
+    wheel or draw spell from `flashback_yard` under discard and draw. A flashback the loop does
+    NOT cast (Electroduplicate) is PARTIAL with the reason, not DARK and not seen. Re-introduce
+    it by dropping `and not _flashback` and Echo reads dark again."""
+    echo = mc.card_state(_corpus_card("Echo of Eons"), _WHEELS)
+    assert echo["state"] == "seen" and "recursion" not in echo["possible"], echo
+    dup = mc.card_state(_corpus_card("Electroduplicate"), _WHEELS)
+    assert dup["state"] == "partial" and "Flashback" in dup["unread"], dup
+
+
+@requires_data
+def test_no_maximum_hand_size_is_read_cast_and_its_redirect_named():
+    """Library of Leng read INVISIBLE on jaws-v1 while the draw loop cast it under
+    `model_hand_limit`. Its channel is always read -- with the rule off no hand has a maximum,
+    so Reliquary Tower is not DARK there -- and its discard-to-top replacement, which nothing
+    reads, makes it PARTIAL. Re-introduce either drift (drop `hand_limit` from `channels_for`,
+    or the `never_cast` mirror) and the first assert fails."""
+    leng = _corpus_card("Library of Leng")
+    row = mc.card_state(leng, _WHEELS)
+    assert row["state"] == "partial" and "hand_limit" in row["active"], row
+    assert "top of your library" in row["unread"]
+    from manamap.pilot import goldfish
+    assert not mc.never_cast(goldfish.classify(leng), _WHEELS)
+    tower = mc.card_state(_corpus_card("Reliquary Tower"), {"model_draw": True})
+    assert tower["state"] != "dark", tower

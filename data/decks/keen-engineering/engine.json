@@ -7,7 +7,7 @@
   "decklist_sha256": "63568a51718f441ab13d92eec6e8b4143b298b85dbd60a10f6bfe98fef8fe576",
   "forge_digest": "8918393bf430edff",
   "ability_graph_version": "1",
-  "model_version": "75ea059969f2",
+  "model_version": "0941a845ac3c",
   "readers": {
    "forge": 67
   },
@@ -4839,7 +4839,7 @@
       "consumes": null,
       "produces": [],
       "scales": {
-       "event": "PUMP",
+       "event": "HAND_SIZE",
        "filters": [
         {
          "player": "you"
@@ -10333,14 +10333,15 @@
    },
    {
     "card": "Thought Vessel",
-    "event": "COMBAT_DAMAGE",
-    "kind": "pump",
+    "event": "HAND_SIZE",
+    "kind": "static",
+    "actor": null,
+    "your_turn": false,
     "filters": [
      {
       "player": "you"
      }
-    ],
-    "keywords": []
+    ]
    }
   ],
   "protects": [
@@ -10593,8 +10594,7 @@
     "Master of Etherium",
     "Master of Etherium",
     "Nettlecyst",
-    "Psychosis Crawler",
-    "Thought Vessel"
+    "Psychosis Crawler"
    ],
    "redundancy": {
     "producers": 23,

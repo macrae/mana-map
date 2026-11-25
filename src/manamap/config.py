@@ -2104,6 +2104,12 @@ ENGINE_EVENTS = {
                "replacements": [], "channel": None},
     "COUNTERSPELL": {"triggers": ["Countered", "BecomesTarget"], "effects": ["Counter"],
                      "replacements": ["Counter"], "channel": None},
+    # NO MAXIMUM HAND SIZE (2026-11-25): Library of Leng, Reliquary Tower, Thought Vessel. The
+    # goldfish's draw loop casts it under `model_hand_limit`; `model_coverage`'s always-on
+    # `hand_limit` channel reports it, and this row is that channel's event in the one vocabulary.
+    "HAND_SIZE": {"triggers": [], "effects": [],
+                  "statics": [("Continuous", {"SetMaxHandSize": "Unlimited"})],
+                  "replacements": [], "channel": "hand_limit"},
     "PUMP": {"triggers": [], "effects": ["Pump", "PumpAll", "Animate", "AnimateAll"],
              "statics": ["Continuous"], "replacements": [], "channel": "combat"},
     "COPY": {"triggers": ["SpellCopy"], "effects": ["CopyPermanent", "CopySpellAbility", "Clone"],

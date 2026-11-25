@@ -103,7 +103,7 @@ Almost all Mountains, so red is never the problem. Several lands do extra work: 
 <!-- ctx:gen numbers -->
 - **DeckCheck (external, dated):** 39/96 → bracket 3, as of 2026-10-28 — an older list
 - **Proven lines:** 10 of 16 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 72 of 79 distinct cards (3 DARK, 4 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 73 of 79 distinct cards (1 DARK, 5 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.2.1 (V5), 2026-11-03. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **94%**

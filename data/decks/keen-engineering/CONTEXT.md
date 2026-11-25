@@ -65,7 +65,7 @@ Mostly Islands, plus a few colourless utility lands. [Island](https://manamap.se
 <!-- ctx:gen numbers -->
 - **DeckCheck (external, dated):** 30/96 → bracket 2, as of 2026-10-19
 - **Proven lines:** 3 of 3 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 55 of 67 distinct cards (0 DARK, 12 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 56 of 67 distinct cards (0 DARK, 11 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v1.0.0 (V1), 2026-10-19. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **100%**
