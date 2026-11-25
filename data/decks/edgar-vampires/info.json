@@ -282,6 +282,10 @@
           "is_new": false
         },
         {
+          "name": "Markov Purifier",
+          "is_new": true
+        },
+        {
           "name": "Marsh Flats",
           "is_new": false
         },
@@ -311,10 +315,6 @@
         },
         {
           "name": "Pitiless Plunderer",
-          "is_new": true
-        },
-        {
-          "name": "Reassembling Skeleton",
           "is_new": true
         },
         {
@@ -460,26 +460,26 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "014",
-        "question": "Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast it from exile, two Edgar tokens from one card — in, and for what?",
+        "id": "016",
+        "question": "Drana's Emissary on threat-v1 -- a Vampire that gains life every upkeep, so Oathsworn's graveyard cast is always on and Edgar gets a token -- and Markov Purifier alongside it in a similar vein (lifelink; pay {2} at end step to draw if you gained life): in, and for what?",
         "branch": "threat-v1",
-        "file": "014-susurian-voidborn-on-threat-v1-a-drain-on-every.json",
+        "file": "016-drana-s-emissary-on-threat-v1-a-vampire-that-gai.json",
         "decision": "approve",
         "decided_by": [
           "pilot",
           "deck-doctor",
-          "rules-question"
+          "strategist"
         ],
-        "pilot_words": "approve the change",
+        "pilot_words": "no change on emissary ... I understand the value of reassembling skeleton, I really do— but I want to approve, just to make the swap in favor of vampire theme ya know",
         "decided_at": "2026-11-24",
         "opened": "2026-11-24",
         "swap": {
           "out": null,
-          "in": "Susurian Voidborn"
+          "in": "Drana's Emissary"
         },
         "goldfish_saw": [
-          1,
-          1
+          2,
+          2
         ]
       },
       "summary": {
@@ -495,7 +495,8 @@
         "fell": 7,
         "no_call": 4
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Akroma's Will",
         "Anowon, the Ruin Sage",
@@ -620,7 +621,6 @@
           "checker": "pass",
           "names": [
             "Pitiless Plunderer",
-            "Reassembling Skeleton",
             "Zulaport Cutthroat"
           ]
         },
@@ -9869,6 +9869,52 @@
     }
   ],
   "studies": [
+    {
+      "id": "016",
+      "question": "Drana's Emissary on threat-v1 -- a Vampire that gains life every upkeep, so Oathsworn's graveyard cast is always on and Edgar gets a token -- and Markov Purifier alongside it in a similar vein (lifelink; pay {2} at end step to draw if you gained life): in, and for what?",
+      "branch": "threat-v1",
+      "file": "016-drana-s-emissary-on-threat-v1-a-vampire-that-gai.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "no change on emissary ... I understand the value of reassembling skeleton, I really do— but I want to approve, just to make the swap in favor of vampire theme ya know",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Drana's Emissary"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": "015",
+      "question": "Zagras, Thief of Heartbeats on threat-v1: other creatures we control have deathtouch (a deathtouch wall of Edgar tokens), a 4/4 flying deathtouch haste Vampire, cheaper per party member — in, and for what?",
+      "branch": "threat-v1",
+      "file": "015-zagras-thief-of-heartbeats-on-threat-v1-other-cr.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "ok... no change!",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Zagras, Thief of Heartbeats"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
     {
       "id": "014",
       "question": "Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast it from exile, two Edgar tokens from one card — in, and for what?",

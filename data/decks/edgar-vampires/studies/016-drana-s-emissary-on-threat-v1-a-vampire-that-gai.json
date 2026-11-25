@@ -1,0 +1,304 @@
+{
+  "id": "016",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Drana's Emissary on threat-v1 -- a Vampire that gains life every upkeep, so Oathsworn's graveyard cast is always on and Edgar gets a token -- and Markov Purifier alongside it in a similar vein (lifelink; pay {2} at end step to draw if you gained life): in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Drana's Emissary",
+    "Markov Purifier"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Drana's Emissary"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 210.0,
+      "slice": "MODE prescribe: a cut for each of Emissary and Purifier; verbatim (file note trimmed)",
+      "text": "Study 016, edgar-vampires on threat-v1: Drana's Emissary gets no change; Markov Purifier is worth it only for Reassembling Skeleton, and that is a contested call.\n\n**Colour.** `deck-audit --branch threat-v1` has no colour short: W 24 against a target of 22, B 38 against 36, R 22 against 22. `try`'s CHECKS line reads \"SHORT after: B -2, R -2\" both before and after every swap. The two instruments do not agree. White has 2 spare by both reads, so neither {1}{W}{B} card strains the mana.\n\n**Drana's Emissary — NO CHANGE.**\n- The Oathsworn angle is real but small. Over a dozen cards on the branch already gain life on the pilot's turn (Cruel Celebrant, Zulaport, Vraan, Voidborn, Elas il-Kor, Wispdrinker, Edgar Ancient Bloodlord, Blood Artist, Tithe Drinker, plus lifelink from Crossway, Conqueror and Teysa tokens, Vish Kal, Kalitas and Elenda). Emissary only matters on a board with none of these, and on that board recasting Oathsworn matters least.\n- The drain is flat: 1 per upkeep, 3 per cycle at a 4-pod. Its three nearest cards all scale instead: Wispdrinker (per arrival, credited in log 008), Celebrant (per death) and Seeker (per attacking Vampire). The pilot's rule is that an effect earns its slot by scaling.\n- Goldfish, one instrument, Emissary for Sanctum Seeker: life lost outside combat @T10 -3.0 [-3.2, -2.7]; damage @T10 -1.1 [-1.2, -0.9]; killed by T10 +0.5 points [+0.3, +0.7]. Not the reason.\n- If he wants it anyway: 1. Sanctum Seeker (painful; orphans stack 003). 2. Reassembling Skeleton (contested; DARK; touches stack 013's loop).\n\n**Markov Purifier — LEAN IN, for Reassembling Skeleton, contested. Not a clear, obvious upgrade.**\n- For it: draw is the pilot's required Edgar axis, and running dry by turns 8–10 recurs in the log (001, 002, 003, 006). card-advantage reads 7 against 10+, but the audit lists 9 possible uncounted draw cards, so \"short\" is softer than 7. Late in the game mana is spare, so {2} for a card is the right sink, and Purifier is a Vampire.\n- Against it: ramp reads 8 against 10–12, so early it competes for mana. Goldfish, Purifier for Seeker: extra cards by T8 -0.03 [-0.04, -0.02]; the model may never pay the {2}, so treat that zero as unproven.\n- Phyrexian Arena and Grim Haruspex are not on threat-v1 (the study's similar-card matches read the sleeved list).\n- Cuts: 1. Reassembling Skeleton (contested): a non-Vampire recursive body whose job Oathsworn now covers as a Vampire; one fewer body for the Plunderer + Altar loop; orphans stack 013 as written. Goldfish blind. 2. Bloodghast (contested), goldfish blind.\n- Not Sanctum Seeker: -3.8 [-4.1, -3.5] life lost outside combat @T10.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T23:00:12-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-emissary.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 38.0,
+      "slice": "Emissary and Purifier argued separately; verbatim (its premise that Arena and Haruspex are on threat-v1 is wrong: both were cut on the branch)",
+      "text": "**Lean: Drana's Emissary YES, Markov Purifier NO (or at most a \"which slot\" question, not a clear upgrade).** Both are 3-mana Vampires, so each is a body plus an Edgar token. Neither is in the 99 or in threat-v1. The goldfish can see both. No pilot words on either exist in the log.\n\n**1. Drana's Emissary**\n- Evidence: strategy:aristocrats.drain-scope separates each-opponent drains from targeted ones. The Emissary's trigger is each-opponent, and it needs no death to fire. The death drains (Zulaport, Celebrant, Bastion, Voidborn, Elas) all need creatures dying. It fires on its own on the pilot's upkeep.\n- Evidence: strategy:conversion.passive-tax says the shape measured carrying a total is \"cheap, each-opponent, PASSIVE — an upkeep trigger\". That text is about non-creature artifacts, so it only partly transfers. Taxing the whole table makes you everyone's problem (strategy:multiplayer.threat-deflection).\n- Argument: its real job is the pilot's own, a guaranteed life gain on his turn, which keeps the Oathsworn Vampire graveyard cast live. It also feeds the gain-to-drain payoffs (Vito, Sanguine Bond, Blight-Priest). A 2/2 flyer is a fragile source, and the wipes in the log hit it too. strategy:conversion.substitution: ask \"is this the best option for this slot\", not \"can it work\".\n\n**2. Markov Purifier**\n- Evidence: strategy:card-advantage.plan-draw puts draw gated on gain in the \"on-plan\" group; a typal or aristocrat midrange that empties its hand by turn 7 wants the draw slots split between steady and on-plan, not stacked. The deck already has steady draw (Arena) plus on-death draw (Haruspex, Reaper, Kalitas) and on-token draw (Caretaker's Talent). The Purifier is a third on-plan piece, not a missing shape.\n- Evidence: strategy:deckbuilding.curve: a turn spent off-curve costs three opponents' worth of development. The {2} each turn is that cost, in the turn 6-8 window.\n- Argument: the lifelink body gets the gain on its own, but it is a 2/3 that pays 2 mana for one card a turn, and Arena is the better rate. \"Modest\", so under the pilot's rule it is no change. It would flip only if the pilot's hands run empty with mana to spare at T7-8.\n\nopen: (a) Does the pilot have spare mana at T7-8 when the hand runs dry? That decides the Purifier.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:card-advantage.plan-draw",
+          "strategy:conversion.passive-tax",
+          "strategy:conversion.substitution",
+          "strategy:deckbuilding.curve",
+          "strategy:multiplayer.threat-deflection"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T23:00:12-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-emissary.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no change on emissary ... I understand the value of reassembling skeleton, I really do— but I want to approve, just to make the swap in favor of vampire theme ya know",
+    "reading": "Drana's Emissary: no change (the pilot). Markov Purifier in for Reassembling Skeleton: approved by the pilot for the Vampire theme; the doctor's contested lean, a steady draw source the branch lacks once Arena and Haruspex were cut; the proven sacrifice loop is written with Skeleton and would need re-proving with Oathsworn.",
+    "at": "2026-11-24"
+  },
+  "slug_name": "drana-s-emissary-on-threat-v1-a-vampire-that-gai",
+  "facts": [
+    {
+      "id": "S-2d4abc17-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-2d4abc17-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-2d4abc17-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-2d4abc17-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire Cleric Ally · {1}{W}{B} — Flying At the beginning of your upkeep, each opponent loses 1 life and you gain 1 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Drana's Emissary"
+    },
+    {
+      "id": "S-2d4abc17-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Wispdrinker Vampire (0.97), Sanctum Seeker (0.96), Cruel Celebrant (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Drana's Emissary",
+      "neighbours": [
+        {
+          "name": "Wispdrinker Vampire",
+          "score": 0.9703
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.9576
+        },
+        {
+          "name": "Cruel Celebrant",
+          "score": 0.9558
+        }
+      ]
+    },
+    {
+      "id": "S-2d4abc17-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Drana's Emissary",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "drain"
+      ]
+    },
+    {
+      "id": "S-2d4abc17-07",
+      "kind": "oracle",
+      "text": "Creature — Vampire Cleric · {1}{W}{B} — Lifelink At the beginning of your end step, if you gained life this turn, you may pay {2}. If you do, draw a card.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Markov Purifier"
+    },
+    {
+      "id": "S-2d4abc17-08",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Crossway Troublemakers (0.93), Grim Haruspex (0.91), Phyrexian Arena (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Markov Purifier",
+      "neighbours": [
+        {
+          "name": "Crossway Troublemakers",
+          "score": 0.9313
+        },
+        {
+          "name": "Grim Haruspex",
+          "score": 0.9124
+        },
+        {
+          "name": "Phyrexian Arena",
+          "score": 0.9055
+        }
+      ]
+    },
+    {
+      "id": "S-2d4abc17-09",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Markov Purifier",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "drain"
+      ]
+    },
+    {
+      "id": "S-2d4abc17-10",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-2d4abc17-11",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 36.59, a change of -8.12 (-18%) [-8.9647, -7.2801] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -8.1224,
+      "ci95": [
+        -8.9647,
+        -7.2801
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2d4abc17-12",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 86 in 100, a swing of 3 games per 100 [-0.0403, -0.0239] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0321,
+      "ci95": [
+        -0.0403,
+        -0.0239
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2d4abc17-13",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.86, a change of -1.84 (-16%) [-2.0197, -1.6599] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.8398,
+      "ci95": [
+        -2.0197,
+        -1.6599
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2d4abc17-14",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.54, a change of -0.39 (-13%) [-0.47, -0.3178] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.3939,
+      "ci95": [
+        -0.47,
+        -0.3178
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-2d4abc17-15",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.003 is smaller than the 0.015 this run can resolve [-0.0075, 0.0131] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0028,
+      "ci95": [
+        -0.0075,
+        0.0131
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-2d4abc17-16",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Drana's Emissary",
+      "Markov Purifier"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "90000b6c58779ec7cd240f2265b177fdfe8279d83add7a018a9b7c094c281777",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T22:25:26-08:00",
+    "facts": 16
+  },
+  "decided_on_decklist_sha256": "5b550a9d66877852d1141e55eba0bbc98db2238cdaae8bfdc39151bdc3a626e7"
+}
