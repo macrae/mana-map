@@ -1,0 +1,159 @@
+{
+  "id": "015",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Vile Entomber back in, keeping Vampiric Tutor — for something else: a tutor straight to the graveyard on a body Meren loops at four",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Vile Entomber"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Vile Entomber"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 214.0,
+      "slice": "MODE prescribe: Entomber in, the cut; verbatim (audit/sources lines trimmed)",
+      "text": "I'd cut Kokusho, the Evening Star for Vile Entomber. It's a painful cut. No card in the 99 is clearly worse than Entomber is good, so this pays for an add the pilot already approved rather than being an upgrade on its own.\n\n**What the goldfish reads of Entomber:** it shows as `seen`. `graveyard_profile` reads its ETB as \"put the biggest creature card into the graveyard\", the same way it reads Entomb and Buried Alive. It doesn't price the deathtouch body on defence, and it rarely re-buys Entomber, because Meren returns the highest mana-value creature first. So the pilot's re-buy argument is mostly unseen.\n\n**Ranked cuts.** Each was screened with `try`, 10,000 paired games, both cards `seen` unless noted. All rows are one instrument's read.\n1. **Kokusho, the Evening Star (painful).** It's a 6-drop out for a 4-drop in, which moves the curve left. Cost: one of 3 cards in the table-wide death-drain group; a 5-point drain and 5 life each time it dies; one of 7 finishers (target 3). Goldfish: experience 5+ by T6 goes 25.4% to 24.5% (-0.9 [-1.1, -0.7]); a 6+ drop out by T6 -1.1 [-1.3, -0.9]; stall 2 in a row is better, -0.5 [-0.6, -0.3].\n2. **Deadly Rollick (contested).** Interaction is at 17 against a target of 8. Cost: it's free, instant-speed exile whenever Meren is out, and an earlier study called it the deck's best answer. The goldfish can't see Rollick, so I ran no `try` on it.\n3. **Ozox, the Clattering King (contested).** It's 3 mana out for 4 in, so the curve goes right. A combo line whole by T8 drops from 1.9% to 1.4% (-0.4 [-0.6, -0.2]). Experience 5+ by T6 -0.9 [-1.1, -0.7].\n\n**Not recommended: Woe Strider.** It read worst by far: experience 5+ by T6 -3.3 [-3.7, -2.9]. It's one of 9 free sacrifice outlets.\n\n**Plainly:** every cut I screened reads worse on the experience rows. So this call rests on the pilot's argument, not on the instrument.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T18:24:32-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-entomber.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 59.0,
+      "slice": "Entomber back in; verbatim (condensed bullets, run list omitted)",
+      "text": "**Answer:** Vile Entomber is more a body than a fourth tutor, so it isn't over-commitment. Cut the weakest yard-filler or a top-end fatty that has no enter-and-die payoff. Don't cut ramp or interaction.\n\n- strategy:deckbuilding.redundancy-vs-tutors says tutors are \"essentially an additional copy of any card\", but they cost \"board impact and a turn of tempo\". Entomber breaks the usual tutor tax: it is a 2/2 deathtouch body, it is fodder, and Meren re-buys it.\n- Entomb and Buried Alive are one-shot spells. Entomber is a repeatable aimed tool at the experience-4 return. Vampiric Tutor stays as a flexible tutor, paired with Unshakable Tail's surveil or Nyx Weaver's mill.\n- The yard-filler role is the most over-supplied (at least nine pieces). strategy:deckbuilding.cutting says \"cut duplicated function before any uncovered class\". Ramp is already thin by the pilot's V21 cut; I would not cut ramp or interaction.\n- Graveyard hate: Entomber's tutor is the same dependency as Entomb, but its body works under hate. No net change.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.cutting",
+          "strategy:deckbuilding.redundancy-vs-tutors"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T18:24:32-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-entomber.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no change, park it",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "vile-entomber-back-in-keeping-vampiric-tutor-for",
+  "facts": [
+    {
+      "id": "S-7e522671-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-7e522671-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-7e522671-03",
+      "kind": "oracle",
+      "text": "Creature — Zombie Warlock · {2}{B}{B} — Deathtouch (Any amount of damage this deals to a creature is enough to destroy it.) When this creature enters, search your library for a card, put that card into your graveyard, then shuffle.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Vile Entomber"
+    },
+    {
+      "id": "S-7e522671-04",
+      "kind": "context",
+      "text": "CONTEXT pilot: Vampiric Tutor in for Vile Entomber.",
+      "tier": "coach",
+      "source": "CONTEXT.md#pilot",
+      "card": "Vile Entomber"
+    },
+    {
+      "id": "S-7e522671-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Formidable Speaker (0.97), Entomb (0.96), Buried Alive (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Vile Entomber",
+      "neighbours": [
+        {
+          "name": "Formidable Speaker",
+          "score": 0.9741
+        },
+        {
+          "name": "Entomb",
+          "score": 0.9626
+        },
+        {
+          "name": "Buried Alive",
+          "score": 0.9548
+        }
+      ]
+    },
+    {
+      "id": "S-7e522671-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Vile Entomber",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "recursion",
+        "target",
+        "tutor"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Vile Entomber"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Vile Entomber",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Vile Entomber",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T18:24:37-08:00",
+    "facts": 6
+  }
+}

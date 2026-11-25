@@ -64,10 +64,17 @@ sharknado `jaws-v1` (`deck-branch <slug> list`).
    reads and naming the rest as dark, never zero. Still blind to blockers, removal and
    how a table plays around it. `forge-cast-check gishath --card "Triple Triad"` answers
    "does the AI play it" today.
-5. **`study install` finishes its own job.** Installing a study leaves the Deck
-   Context's generated `studies` block and the deck's stamps stale, so the prepush
-   preflight fails until `context --refresh` and `restamp` run by hand. Install should do
-   both, with a guard test proved by reintroducing the gap.
+5. **Self-mill in the goldfish, for Meren (the pilot, 2026-11-24: "teach the goldfish
+   self-mill (add in plan), not yet").** The goldfish has no self-mill reader: Satyr
+   Wayfinder, Stitcher's Supplier, Six's mill, Nyx Weaver and Primal Witchstalker read as
+   their bodies alone (study 013), so a deck built to fill its graveyard is measured as if
+   it did not, and Meren's end-step return draws from a yard the model under-fills. Teach
+   it as the Edgar passes were taught: milled creature cards join `yard_creatures` (Meren's
+   and the reanimation spells' targets), milled lands are landfall fuel and Witchstalker's
+   land-back target, a card's mill read from its text with a corpus sweep, and a fill row
+   (creature cards in the graveyard by T4) for net-change; every reading's test proved red
+   with its bug put back. (`study install` refreshing the Context and the stamps is DONE,
+   2026-11-23/24.)
 6. **The goldfish test refactor** (deferred from the 2026-11-22 test overhaul, by the
    pilot's call). The goldfish's tests are about 43 files named by date or by card
    (`test_goldfish_audit_2026_11.py`, `test_pilot_goldfish_gishath.py`, …) rather than by

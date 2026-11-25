@@ -1,0 +1,148 @@
+{
+  "id": "012",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Puppeteer Clique: a solid 5 drop that gets at least two experience counters with a sac outlet (persist; steals a creature card from an opponent's graveyard with haste) — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Puppeteer Clique"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Puppeteer Clique"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 230.0,
+      "slice": "MODE prescribe: Clique in, the cut; verbatim (orchestrator notes omitted)",
+      "text": "**Puppeteer Clique for Meren: no change**\n\nClique is a good card for this deck, but it is not clearly better than any card it would replace. Every 5–6 drop is either on the pilot's keep list or one he has praised. His rule is clear upgrades only, so he would sit it next to Eyeless Watcher and Worldly Tutor, the other cards waiting for a slot.\n\n**What Clique gives**\n- **Experience counters.** Its own two deaths give two counters, provided a sac outlet is out (Clique has none of its own). The stolen creature adds a third only if an opponent's graveyard holds a creature card. Our own Bojuka Bog and Scavenging Ooze empty those graveyards.\n- **The Meren loop comes late.** Clique needs 5 experience to come back to the battlefield. The goldfish puts \"a 5+ drop via Meren by T6\" at 3.6%, so this is a turn 7–8 loop. Before that, Meren returns it to hand and you pay 5 to recast it.\n- **The curve.** It lands at 5, and the pilot wants the curve pushed left, so Clique has to replace one of the fatties already at the top.\n- **Experience compared with the cards it would replace:**\n  - Grave Titan: three bodies, up to three deaths.\n  - Cavalier of Night: sacrifices a creature on entering, dies itself, then returns a 3-drop. Two or three deaths.\n  - Kokusho: one death plus a 10-point drain swing.\n  - Clique is not ahead of any of these.\n- **Possible anti-synergy, not yet proven.** With Winding Constrictor out, persist should bring Clique back with two -1/-1 counters, which makes it a 0/0 that dies at once. That loses the 1/1 flyer, though the deaths still count. Settle it with a resolve-stack scenario before any add.\n\n**Ranked cuts, if he takes it anyway**\n1. **Kokusho, the Evening Star** (painful). It does the same job, dying for value, and the cut pulls the curve left by one. It costs a 5/5 flyer and a 10-point drain each time it dies. Goldfish: \"6+ drop out by T6\" goes 14.7% to 13.5%, change -1.1 [-1.4, -0.9].\n2. **Noxious Gearhulk** (painful). It costs a creature kill and life gain every time it enters. The pilot called it \"dope!\". Goldfish: same row -1.2 [-1.4, -1.0]; life gained by T8 -0.019.\n3. **Cavalier of Night** (painful). This is the straight 5-for-5 swap. It costs the sac-to-kill and the 3-drop it returns, and the pilot called it \"great!\". Goldfish: life gained by T8 goes 0.694 to 0.000, damage @T10 -0.1.\n\n**Off the list**\n- Gisa (\"critical\"), Hapatra (loved), Grave Titan (the best fodder maker), Massacre Wurm (one of only 2 sweepers), Archon (kept as a Reanimate target), and Six.\n\n**The goldfish's read**\nI ran three `try` screens; all four cards read `seen`. Every experience row came back \"no call\". The goldfish does not model the steal or persist, so its \"worse\" rows count only Clique's 2/2 body, and its read on Clique is a floor. My call rests on the pilot's quotes in CONTEXT.md, the curve, and the deaths counted above.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T17:13:31-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-clique.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 47.0,
+      "slice": "Clique in Meren; verbatim (run list omitted)",
+      "text": "Lean: a conditional include, not a clearly strong one. It is a good card only if it replaces a weaker 5-drop or a \"fatty\". Without a swap study naming the cut, I would hold it as a candidate.\n\nFor (the pilot's own words and rules, so evidence, not framework):\n- The pilot said it's \"a solid 5 drop, that gets at least two counters with a sac outlet... compelling\". This matches his V31 line that the focus is experience ramp to land a fatty by turn 6, 5 at the earliest, and that bodies with a built-in sac outlet solve early engine assembly.\n- The rules are settled: the two Clique deaths each give a counter, and the end-step exile gives none. A free outlet turns one 5-mana card into 2+ counters, a stolen body, and a Meren return target at MV 5. That is a real fit.\n\nAgainst (argument; strategy:deckbuilding.curve and strategy:deckbuilding):\n- The ETB depends on an opponent's graveyard, so it is weakest at T5, when counters matter most. strategy:deckbuilding says to prefer the fine card you cast in every game over the strong one you cast in a third of them. A Clique with no target still gives a 2/2 flier that dies and persists for 2 counters with an outlet, so the floor is a two-counter body, not a blank. I have not seen that floor measured.\n- strategy:deckbuilding.curve warns that a turn spent off-curve in a four-player pod costs three opponents' worth of development, and that games run 7-10 turns. The pilot said \"too many fatties\" and wants 5-6 drops only at the top end, so each 5-drop is a slot cut elsewhere (strategy:deckbuilding: \"every inclusion is a cut\").\n- It needs an outlet on the battlefield at the same time, which is the deck's early-assembly problem, so it has a similar dependency on the engine.\n- Its stolen creature does not feed Meren: it is exiled, not killed, unless you sacrifice it first, which costs the outlet activation. The steal is a bonus, not the engine.\n\nLightest test: a study naming the cut. The goldfish should be read only for counter timing, never as the decider.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding",
+          "strategy:deckbuilding.curve"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T17:13:32-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-clique.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "makes sense...",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "puppeteer-clique-a-solid-5-drop-that-gets-at-lea",
+  "facts": [
+    {
+      "id": "S-1ca6307f-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-1ca6307f-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-1ca6307f-03",
+      "kind": "oracle",
+      "text": "Creature — Faerie Wizard · {3}{B}{B} — Flying When this creature enters, put target creature card from an opponent's graveyard onto the battlefield under your control. It gains haste. At the beginning of your next end step, exile it. Persist (When this creature dies, if it had no -1/-1 counters on it, return it to the battlefield under i",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Puppeteer Clique"
+    },
+    {
+      "id": "S-1ca6307f-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Stitcher's Supplier (0.92), Toph, Earthbending Master (0.90), Satyr Wayfinder (0.89)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Puppeteer Clique",
+      "neighbours": [
+        {
+          "name": "Stitcher's Supplier",
+          "score": 0.9166
+        },
+        {
+          "name": "Toph, Earthbending Master",
+          "score": 0.8991
+        },
+        {
+          "name": "Satyr Wayfinder",
+          "score": 0.892
+        }
+      ]
+    },
+    {
+      "id": "S-1ca6307f-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Puppeteer Clique",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Puppeteer Clique"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Puppeteer Clique",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Puppeteer Clique",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T17:13:37-08:00",
+    "facts": 5
+  }
+}

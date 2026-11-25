@@ -1,0 +1,152 @@
+{
+  "id": "014",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Gulping Scraptrap: proliferate when it enters or dies, two to three experience a death and a loop at four — in, and for what (a top-end cut to push the curve left)?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Gulping Scraptrap"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Gulping Scraptrap"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 157.0,
+      "slice": "MODE prescribe: Scraptrap in, the cut; verbatim (orchestrator notes omitted)",
+      "text": "**Gulping Scraptrap for Meren: no change**\n\nI'm recommending no change. Scraptrap is a real fit, but it is not clearly better than either top-end card it could replace, and it does little for the turn-6 goal. Put it on the parked list.\n\n**Checking Jarvis's argument**\n- **Death ordering holds, pending the rules agent.** We control both triggers, so we choose their order. Put proliferate on the stack first so Meren's trigger resolves first. That gives 2 experience per death, or 4 with Winding Constrictor.\n- **The entry trigger** adds 1 only when we already have experience.\n- **Correction:** Scraptrap's mana value is 5, not 4. Meren puts it back on the battlefield only at 5 experience. Below that she returns it to hand and we pay {4}{B} again.\n- So \"about 3 experience a turn\" is a loop that only starts once the goal is already met. It does not get us there.\n- It has no sac outlet of its own. The 99 has 13 cards that can sacrifice a creature as a cost, so that weakness is small.\n\n**What the goldfish can see**\n- It reads Scraptrap's entry proliferate only. `experience_profile` returns `proliferate: 'etb'`, and the death proliferate is not modelled, so its experience rows are a floor.\n- With the Kokusho cut, \"experience 5+ by T6\" goes 25.4% to 25.6% (+0.3 [+0.1, +0.4]). \"A 5+ drop via Meren by T6\" is 3.6% and gets no call.\n- With the Sheoldred cut: 5+ by T6 +0.4 [+0.2, +0.5]. \"Turns saved on big bodies\" -0.105 [-0.116, -0.095]. \"A 6+ drop out by T6\" -0.8.\n\n**Ranked cuts, if he takes it anyway**\n1. **Kokusho, the Evening Star** (contested). This cut moves the curve one step left (6 to 5). It costs a flyer and a drain of 5 from each opponent on every death, which Meren repeats.\n2. **Sheoldred, Whispering One** (painful). She is never hard-cast, so the cut does not really move the curve. It costs the upkeep return lane that CONTEXT calls important, plus the opponents' upkeep edict.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T18:07:05-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-scrap.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "elapsed_s": 94.0,
+      "slice": "rules: Meren + Scraptrap death ordering",
+      "text": "Both triggers fire on Scraptrap's death and the controller orders them (CR 603.3b; the dies trigger looks back, CR 603.10a). Proliferate may choose a player with a counter, experience included (CR 701.34a, 122.1; Scraptrap ruling 2023-02-04). From 1 experience a death gives 3 either order; with Winding Constrictor, 1 + 2 + 2 = 5 (CR 614.1, 614.5; card text — no ruling names proliferate with Constrictor).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "122.1",
+          "603.10a",
+          "603.3b",
+          "614.1",
+          "614.5",
+          "701.34a"
+        ]
+      },
+      "added_at": "2026-11-24T18:07:05-08:00"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "rules-question"
+    ],
+    "pilot_words": "no change.. I agree.. too expensive.",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "gulping-scraptrap-proliferate-when-it-enters-or",
+  "facts": [
+    {
+      "id": "S-857ad998-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-857ad998-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-857ad998-03",
+      "kind": "oracle",
+      "text": "Creature — Phyrexian Horror · {4}{B} — When this creature enters or dies, proliferate. (Choose any number of permanents and/or players, then give each another counter of each kind already there.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Gulping Scraptrap"
+    },
+    {
+      "id": "S-857ad998-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Noxious Gearhulk (0.93), Stitcher's Supplier (0.92), Toph, Earthbending Master (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Gulping Scraptrap",
+      "neighbours": [
+        {
+          "name": "Noxious Gearhulk",
+          "score": 0.9321
+        },
+        {
+          "name": "Stitcher's Supplier",
+          "score": 0.9219
+        },
+        {
+          "name": "Toph, Earthbending Master",
+          "score": 0.903
+        }
+      ]
+    },
+    {
+      "id": "S-857ad998-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Gulping Scraptrap",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "recursion"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Gulping Scraptrap"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Gulping Scraptrap",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Gulping Scraptrap",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T18:07:10-08:00",
+    "facts": 5
+  }
+}

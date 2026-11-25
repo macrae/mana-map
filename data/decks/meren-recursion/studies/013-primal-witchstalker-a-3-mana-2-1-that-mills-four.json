@@ -1,0 +1,147 @@
+{
+  "id": "013",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Primal Witchstalker: a 3-mana 2/1 that mills four and returns a land from the graveyard — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Primal Witchstalker"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Primal Witchstalker"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 196.0,
+      "slice": "MODE prescribe: Witchstalker in, the cut; verbatim (cut enumeration compressed)",
+      "text": "**Primal Witchstalker for Meren (study 013): no change. It is a good card, but no card in the list is clearly worse.**\n\n1. **What it adds.** It mills four and returns a land tapped, on a 3-mana 2/1 menace body. Meren returns it at 3 counters, and each return mills and ramps again. The land return is landfall, so it gives an experience counter with Toph and an Insect with Scute Swarm. The odds that the mill itself hits a land are about 84% (my own hypergeometric estimate: 4 cards, about 32 lands in about 88). Seven fetchlands and Boseiju put more lands in the yard.\n2. **Where it is thin.** On the stated goal, experience 5+ by T6, it is one death and needs an outlet, like any body. Ozox gives two deaths a card. Sakura-Tribe Elder already does \"death + a land\" for 2 mana with its own sacrifice. The fill axis is crowded: Stitcher's Supplier, Satyr Wayfinder, Six, Nyx Weaver, Twilight Diviner, Unshakable Tail, Altar of Dementia, Fauna Shaman, Formidable Speaker. Ramp reads 8 against the audit's 10–12 target. But recon records the pilot's rule \"mana isn't the limit\", and V21 cut ramp on purpose.\n3. **Ranked cuts, if he takes it anyway:**\n   1. **Ozox, the Clattering King (contested).** It costs two deaths per card (Ozox plus Jumblebones), a self-return to hand, and the Ozox three-card altar/Pawn lines. Goldfish: \"a combo line whole by T8\" goes 1.9% → 1.1%, −0.8 pts [−0.9, −0.6].\n   2. **Satyr Wayfinder (contested).** This is the direct twin. Witchstalker mills four too and puts the land on the battlefield, not in hand. Wayfinder costs 2, Meren returns it at 2 counters, and its land-to-hand feeds Six's retrace discard. Cutting it pushes the curve right, against \"too many fatties\".\n   3. **Woe Strider (painful).** It is one of the nine cards CONTEXT lists as free or near-free outlets (75% drawn by T6) and makes a Goat.\n4. **The goldfish: one try, Ozox out.** Both cards read `seen`, but it reads only Witchstalker's 2/1 body. Its graveyard profile has to_yard 0, and the goldfish has no self-mill reader: Wayfinder, Supplier, Six and Nyx Weaver read the same. The land return is unread. Every experience row came back \"no call\": experience 5+ by T6 25.4% → 25.5%. Two of the card's three parts are invisible, so a null here is not evidence.\n5. **What decided it:** the pilot's goals and quotes in CONTEXT.md, the card text, and the audit's ramp and curve readings. Not the goldfish.\n\n**Pick: no change.** Park Witchstalker with Eyeless Watcher, Worldly Tutor and Puppeteer Clique.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T17:45:44-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-witch.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 41.0,
+      "slice": "Witchstalker in Meren; verbatim (evidence and run lists omitted)",
+      "text": "Primal Witchstalker is a playable include but not a strong one. It is an argued lean of \"no change unless a slot is open\", and I did no measurement.\n\n- **For it (argument):** it does two jobs. A 4-card mill feeds Meren, Jarad, Fiend Artisan and Unshakable Tail's investigate, which fires on creature cards milled. The land back is real ramp at 3 mana, so it fits a push toward early mana. Meren can return it cheaply (MV 3), and each return mills again, the same shape the Context praises in Wayfinder and Supplier.\n- **Land payoff (my arithmetic, not a goldfish figure):** with 35 lands in 99 cards, four milled cards hit at least one land roughly 80% of the time.\n- **Against it:** the pilot says \"too many fatties\" and wants the curve pushed left. At 3 mana, Witchstalker sits in the slot the Context gives to Unshakable Tail and Twilight Diviner. Neither Wayfinder (2 mana, mill about 3, land to hand) nor Supplier (mills on entering and dying) costs as much.\n- **Sacrifice shape:** it has no built-in sacrifice. Unlike Hangarback, Fell Stinger and Wriggling Grub, it doesn't solve the early engine-assembly problem the pilot named. It is fodder only if an outlet is already out.\n- **Deck-building frame:** the ratio templates treat ramp and theme slots as counted categories (strategy:deckbuilding.ratios). The Context says the pilot cut extra ramp in V21 and that \"the ramp that matters now is experience\". That makes the land-ramp half the weaker half.\n- **Lean:** no change. It is a decent 3-mana mill-plus-ramp body, but it is not clearly better than Wayfinder or Supplier.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.ratios"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T17:45:45-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-witch.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no change, and yes teach the goldfish self-mill (add in plan), not yet",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "primal-witchstalker-a-3-mana-2-1-that-mills-four",
+  "facts": [
+    {
+      "id": "S-2e088f5c-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-2e088f5c-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-2e088f5c-03",
+      "kind": "oracle",
+      "text": "Creature — Wolf · {1}{B}{G} — Menace (This creature can't be blocked except by two or more creatures.) When this creature enters, mill four cards. When you do, return target land card from your graveyard to the battlefield tapped. (To mill four cards, put the top four cards of your library into your graveyard.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Primal Witchstalker"
+    },
+    {
+      "id": "S-2e088f5c-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Sheoldred, Whispering One (0.91), Reassembling Skeleton (0.91), Six (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Primal Witchstalker",
+      "neighbours": [
+        {
+          "name": "Sheoldred, Whispering One",
+          "score": 0.9111
+        },
+        {
+          "name": "Reassembling Skeleton",
+          "score": 0.9053
+        },
+        {
+          "name": "Six",
+          "score": 0.8984
+        }
+      ]
+    },
+    {
+      "id": "S-2e088f5c-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Primal Witchstalker",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Primal Witchstalker"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Primal Witchstalker",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Primal Witchstalker",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T17:45:50-08:00",
+    "facts": 5
+  }
+}

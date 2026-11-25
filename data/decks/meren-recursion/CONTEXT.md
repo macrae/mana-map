@@ -235,15 +235,15 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
+- **015 no-change** (pilot, deck-doctor, strategist) — Vile Entomber back in, keeping Vampiric Tutor — for something else: a tutor straight to the graveyard on a body Meren loops at four · 2026-11-24 · goldfish saw 1/1 named cards · “no change, park it”
+- **014 no-change** (pilot, deck-doctor, rules-question) — Gulping Scraptrap: proliferate when it enters or dies, two to three experience a death and a loop at four — in, and for what (a top-end cut  · 2026-11-24 · goldfish saw 1/1 named cards · “no change.. I agree.. too expensive.”
+- **013 no-change** (pilot, deck-doctor, strategist) — Primal Witchstalker: a 3-mana 2/1 that mills four and returns a land from the graveyard — in, and for what? · 2026-11-24 · goldfish saw 1/1 named cards · “no change, and yes teach the goldfish self-mill (add in plan), not yet”
+- **012 no-change** (pilot, deck-doctor, strategist) — Puppeteer Clique: a solid 5 drop that gets at least two experience counters with a sac outlet (persist; steals a creature card from an oppon · 2026-11-24 · goldfish saw 1/1 named cards · “makes sense...”
 - **011 approve** (pilot, strategist, deck-doctor) — we have room for 2 game changers... with a surveil on the battlefield, worldy tutor in previous players end step to put it ontop, and then s · 2026-11-23 · goldfish saw 2/2 named cards · “approve, make the swap; next please [Vampiric Tutor for Vile Entomber] / no change on worldly, sIX IS A GREAT CARD! save”
 - **010 approve** (pilot, strategist, card-scout, deck-doctor, goldfish) — the focus is experience ramp, we need experience counter ramp to land a big fatty by turn 6, 5 at the earliest. what needs to be true for th · 2026-11-23 · “i like it [Hangarback Walker for Tergrid] / approve, make the swap; next please [Fell Stinger for Gray Merchant] / I lik”
 - **009 approve** (pilot, card-scout, deck-doctor) — Unshakable Tail in — surveil on entering and every upkeep, and it investigates whenever creature cards go from library to graveyard, turning · 2026-11-22 · goldfish saw 1/1 named cards · “approve, make the swap and save”
 - **008 approve** (pilot, deck-doctor) — Cauldron of Essence in — doubles creature recursion per turn (sorcery-speed sac-a-creature: reanimate to the battlefield, which Twilight Div · 2026-11-22 · goldfish saw 1/1 named cards · “yeah, man—I feel like Cauldron of Essence is an upgrade!??! yeah? — yes, make the swap and save”
-- **007 approve** (pilot, card-scout, deck-doctor) — artifact/enchantment removal back, in an optimal way after the Twilight Diviner swap — keep the power level, the synergies and the design, a · 2026-11-22 · “cankerbloom is amazing in this deck!!!! — approve, make the swap and save”
-- **006 approve** (pilot, deck-doctor) — Twilight Diviner in — copies a creature entering from the graveyard once each turn (Meren's end-step return, Reanimate, retrace), surveil 2  · 2026-11-22 · goldfish saw 1/1 named cards · “I approve... and let's open a search after for adding artifact/enchantment removal in an optimal way post-this update an”
-- **005 approve** (pilot, deck-doctor) — Hapatra, the Desert Fang in — repeatable one-sided removal (the pilot: 'toxic deluge on a repeatable stick in this deck'); which card comes  · 2026-11-22 · goldfish saw 1/1 named cards · “shriekmaw is not bad... but compare that to toxic deluge at 5, 6 or 8 and, with tutoring cards to the graveyard there's ”
-- **004 no-change** (pilot, strategist) — Orcish Bowmasters in as the third Game Changer — a flash ETB creature at mana value 2 that Meren re-buys: ping 1 and amass each return, the  · 2026-11-22 · goldfish saw 1/1 named cards · “eh... ok... forget it.. we only want clearly advantageous, obvious updates!”
-- … 3 earlier: `manamap pilot study meren-recursion list`
+- … 7 earlier: `manamap pilot study meren-recursion list`
 <!-- /ctx:gen studies -->
 
 ## Change history
