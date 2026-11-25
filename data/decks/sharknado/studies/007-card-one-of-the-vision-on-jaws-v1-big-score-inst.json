@@ -1,0 +1,408 @@
+{
+  "id": "007",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card one of the vision on jaws-v1: Big Score (instant, discard a card: draw two and make two Treasure) in for Gratuitous Violence (the old plan's red amplifier)?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Gratuitous Violence",
+    "Big Score"
+  ],
+  "swap": {
+    "out": "Gratuitous Violence",
+    "in": "Big Score"
+  },
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 47.0,
+      "slice": "Big Score vs GV; verbatim (run list trimmed). Note: on jaws-v1 Fiery is out (study 005) and Torbran does not touch Shabraz, so GV is the branch's last damage multiplier; GV's text doubles damage 'a creature you control' deals, which includes Jaws's ping",
+      "text": "Lean: yes, swap in Big Score, but as a call on the plan and not a measured upgrade. Hedge only if the pilot wants \"take a person out\" to mean a real finisher — by keeping one multiplier. (Argument, tier ★; no test run.)\n\n- For Big Score (argument): an instant that nets +1 card and two Treasure for 4 mana; two draws = two Shabraz triggers; the discard feeds Brallin and the wheel plan; the Treasures are artifacts for Jaws. strategy:card-advantage: engines that out-draw three players are \"the format's defining advantage\"; one-for-ones are net losses at four players. strategy:tempo: convert tempo into engines.\n- Against Gratuitous Violence (argument): RRR on a 3-colour base — strategy:deckbuilding.mana-base.color-sources: \"triple pips and three colours do not coexist.\" It does nothing alone; strategy:conversion.availability favours the commander as the payoff over a separate piece. Its turn-5 slot competes with Shabraz.\n- For keeping the multiplier (argument): strategy:life-as-resource.philosophy-of-fire — raw damage collapses against ~120 combined life, so reach must scale (each-opponent drains, commander damage, damage doublers); strategy:whos-the-beatdown makes \"one or two players\" a per-threat race, and a doubler shortens it. A doubled Shabraz in the air is a faster clock on one seat.\n- Evidence: stack 013 (checker pass) shows the doubler doubling a creature's triggered ping under Wheel of Fortune and Razorkin Needlehead. It does not show it doubling Jaws's artifact-sacrifice ping — treat as unverified.\n- Evidence on the mana: Q048 put the red-on-curve drop down to the pip-weight sizing rule, not GV's RRR itself.\n- Other doublers: Fiery Emancipation is its near-twin (0.95 embedding), and Torbran — the doubling job is covered, so cutting one copy costs less than it looks.\n- Goldfish: sees both, cannot settle board quality.\nopen: does the doubler double Jaws's ping? Does the pilot count Fiery plus Torbran as enough multiplier?",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage",
+          "strategy:conversion.availability",
+          "strategy:deckbuilding.mana-base.color-sources",
+          "strategy:life-as-resource.philosophy-of-fire",
+          "strategy:tempo",
+          "strategy:whos-the-beatdown"
+        ],
+        "rules": [
+          "120"
+        ]
+      },
+      "added_at": "2026-11-25T12:37:43-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-bigscore.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Big Score's cut; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: Big Score in for Gratuitous Violence on jaws-v1. Big Score serves three pillars at once (two draws = two Shabraz counters and 2 life; two Treasure = mana for the Human-flying grant and two Jaws pings when sacrificed; the discard pays Brallin), and the artifact-token pillar is the thinnest (Smothering Tithe and Prismari Command; log 004/006/009 show Tithe as the only Treasure that ever showed up). But Gratuitous Violence is the wrong cut: it is the one card here that multiplies Shabraz's commander damage and Jaws's pings. Torbran is the weaker card under the restated plan: Shabraz is W/U, so Torbran adds nothing to commander damage, only +2 on red sources (Brallin, Jaws, burn).\",\n  \"log_entries_read\": [\"004\", \"006\", \"009\"],\n  \"axes_engaged\": [],\n  \"cut_candidates\": [\n    {\"card\": \"Torbran, Thane of Red Fell\", \"why\": \"RRR four-drop that only touches red sources; Shabraz (W/U) is not red, so it never adds to the commander-damage kill the pilot named. A payoff for the old ping plan.\", \"cost_of_cutting\": \"Brallin's discard pings and Jaws's Blood/Treasure pings lose +2 each; stacks 005 and 011 lose Torbran, but both already rest on cards in neither list (Spider-Man; Razorkin Needlehead), and stack 007 already lacks Fiery Emancipation on the branch.\", \"difficulty\": \"contested\", \"orphans_stack\": [\"005\", \"007\", \"011\"]},\n    {\"card\": \"Gratuitous Violence\", \"why\": \"Considered and REJECTED as the cut: it doubles Shabraz's combat damage (a 6-power Shabraz deals 12 commander damage) and Jaws's noncreature pings, both on-plan.\", \"cost_of_cutting\": \"Halves the commander-damage clock once Shabraz connects. Goldfish (one instrument): damage @T10 167.7 -> 131.9, [-37.6, -34.1]; killed by T6 19.3% -> 17.7%, [-1.9, -1.3]. Stacks 007 and 013 lose it; 013 already rests on Needlehead, absent from both lists; 014 does not need it.\", \"difficulty\": \"painful\", \"orphans_stack\": [\"007\", \"013\"]}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Big Score\", \"closes\": \"artifact token maker (thinnest pillar)\", \"source\": \"prompt\", \"why\": \"Instant: two draws (Shabraz growth), two Treasure (grant mana, Jaws pings, fixing for a red-short mana base), discard feeds Brallin, counts toward storm. Forge cast-check: PLAYED.\", \"natural_cut\": \"Torbran, Thane of Red Fell\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Does Gratuitous Violence's doubling of Shabraz's combat damage show up as games won by commander damage at a table, rather than a goldfish damage row?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"The goldfish has no blockers; its 35-point damage row overstates how often Shabraz connects.\"}\n  ],\n  \"gaps\": [\"Torbran's 'weak in this deck now' is the pilot's word as carried in study 006, not a log entry.\", \"No log game has yet been played on jaws-v1 with Jaws or Big Score.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "131.9",
+          "167.7"
+        ]
+      },
+      "added_at": "2026-11-25T12:37:43-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-study007.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "approve, Big Score for Torbran",
+    "reading": "Big Score in on jaws-v1, and the cut moved from Gratuitous Violence to Torbran on the doctor's answer: Gratuitous Violence is the branch's only damage multiplier on Shabraz (Fiery Emancipation is already out) and Torbran adds nothing to a white-blue commander -- the pilot's own read that day ('I actually think Tobran is weak in this deck now').",
+    "at": "2026-11-25"
+  },
+  "slug_name": "card-one-of-the-vision-on-jaws-v1-big-score-inst",
+  "facts": [
+    {
+      "id": "S-c1900c19-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-c1900c19-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-c1900c19-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-c1900c19-04",
+      "kind": "oracle",
+      "text": "Enchantment · {2}{R}{R}{R} — If a creature you control would deal damage to a permanent or player, it deals double that damage instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Gratuitous Violence"
+    },
+    {
+      "id": "S-c1900c19-05",
+      "kind": "stack",
+      "text": "stack 007 — One Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation: the opponent orders the replacements (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Gratuitous Violence",
+      "stack": "007"
+    },
+    {
+      "id": "S-c1900c19-06",
+      "kind": "stack",
+      "text": "stack 013 — Wheel of Fortune under Razorkin Needlehead and Gratuitous Violence: does the doubler double a creature's triggered ping (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/013",
+      "card": "Gratuitous Violence",
+      "stack": "013"
+    },
+    {
+      "id": "S-c1900c19-07",
+      "kind": "stack",
+      "text": "stack 014 — One Wheel of Fortune under Brallin and Razorkin Needlehead: discard pings plus draw pings to each opponent (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/014",
+      "card": "Gratuitous Violence",
+      "stack": "014"
+    },
+    {
+      "id": "S-c1900c19-08",
+      "kind": "engine_stage",
+      "text": "engine stage output: Output",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Gratuitous Violence",
+      "stage": "output",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-c1900c19-09",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Gratuitous Violence",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-c1900c19-10",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Shark Typhoon, Valeria Richards, Precocious",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Gratuitous Violence",
+      "event": "CAST",
+      "cards": [
+        "Shark Typhoon",
+        "Valeria Richards, Precocious"
+      ]
+    },
+    {
+      "id": "S-c1900c19-11",
+      "kind": "context",
+      "text": "CONTEXT plays: Gratuitous Violence and Fiery Emancipation double and triple the damage.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Gratuitous Violence"
+    },
+    {
+      "id": "S-c1900c19-12",
+      "kind": "context",
+      "text": "CONTEXT cards: - Gratuitous Violence",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Gratuitous Violence"
+    },
+    {
+      "id": "S-c1900c19-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): FINISHERS: THE CROWD CLOSES WITH THE PING LOOP OR A DRAW-OUT, ALMOST NEVER WITH DOUBLE STRIKE AND NEVER WITH EXTRA COMBAT. On the pair page the finisher is the Brallin + Curiosity-class loop (Curiosity 2329/3974 = 59%; combo-tagged page 82/",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Gratuitous Violence",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-c1900c19-14",
+      "kind": "queue",
+      "text": "Q048 EXPIRED: The red-on-curve drop (lands-only 0.839 to 0.579 on the branch) is a mana-base problem, red sources, before it is an RRR-card problem. Fiery Emancipation (-89 d → refuted: Not a mana-base problem: v2.3.0 and shabraz-v1 run the same 31 red-producing lands (the branch added only Islands). The drop is the sizing rule: PIP_WEIGHT_QUOR",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Gratuitous Violence",
+      "as_of": "2026-11-06",
+      "queue_id": "Q048"
+    },
+    {
+      "id": "S-c1900c19-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Lizard Blades (0.96), Blade Historian (0.95), Fiery Emancipation (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Gratuitous Violence",
+      "neighbours": [
+        {
+          "name": "Lizard Blades",
+          "score": 0.9572
+        },
+        {
+          "name": "Blade Historian",
+          "score": 0.9549
+        },
+        {
+          "name": "Fiery Emancipation",
+          "score": 0.9495
+        }
+      ]
+    },
+    {
+      "id": "S-c1900c19-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Gratuitous Violence",
+      "state": "seen",
+      "channels": [
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-c1900c19-17",
+      "kind": "oracle",
+      "text": "Instant · {3}{R} — As an additional cost to cast this spell, discard a card. Draw two cards and create two Treasure tokens. (They're artifacts with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Big Score"
+    },
+    {
+      "id": "S-c1900c19-18",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Prismari Command (0.91), Smothering Tithe (0.84), Hengegate Pathway // Mistgate Pathway (0.83)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Big Score",
+      "neighbours": [
+        {
+          "name": "Prismari Command",
+          "score": 0.9127
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.8358
+        },
+        {
+          "name": "Hengegate Pathway // Mistgate Pathway",
+          "score": 0.83
+        }
+      ]
+    },
+    {
+      "id": "S-c1900c19-19",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Big Score",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "discard",
+        "draw"
+      ]
+    },
+    {
+      "id": "S-c1900c19-20",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-c1900c19-21",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c1900c19-22",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c1900c19-23",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-c1900c19-24",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c1900c19-25",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-c1900c19-26",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Gratuitous Violence",
+      "Big Score"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T12:33:50-08:00",
+    "facts": 26
+  },
+  "decided_on_decklist_sha256": "776c37ab69d3c0e6a5b0f2681361352d17cfa5dda736ab33bf6da5c0b49be718"
+}

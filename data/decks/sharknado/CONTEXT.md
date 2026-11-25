@@ -279,6 +279,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **007 approve** (pilot, deck-doctor, strategist) — Card one of the vision on jaws-v1: Big Score (instant, discard a card: draw two and make two Treasure) in for Gratuitous Violence (the old p · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve, Big Score for Torbran”
 - **006 open** (—) — Audit: things seem sideways. The strategy, in the pilot's words: land the shark, make it big through card draw, give humans flying (evasive  · on `jaws-v1` · open
 - **005 no-change** (pilot, strategist, deck-doctor) — Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Bloo · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga”
 - **004 decline** (pilot) — Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/3 named cards · “no change”
