@@ -519,21 +519,26 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "004",
-        "question": "Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity?",
+        "id": "005",
+        "question": "Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Blood on every hit, a ping per Blood or Treasure sacrificed) -- keep it, or go back to the tripler?",
         "branch": "jaws-v1",
-        "file": "004-card-four-on-jaws-v1-a-ninth-interaction-card-pa.json",
-        "decision": "decline",
+        "file": "005-is-jaws-v1-a-better-deck-the-swap-that-decides-i.json",
+        "decision": "no-change",
         "decided_by": [
-          "pilot"
+          "pilot",
+          "strategist",
+          "deck-doctor"
         ],
-        "pilot_words": "no change",
-        "decided_at": "2026-11-21",
-        "opened": "2026-11-21",
-        "swap": null,
+        "pilot_words": "but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga deck, so I like Jaws for the aesthetic reasons.. but the red source doublers and triplers aren't in our strategy as much anymore ... blood or treasure... just artifacts to sac... wheels to find jaws, maybe a tutor in there to get the big shark",
+        "decided_at": "2026-11-25",
+        "opened": "2026-11-25",
+        "swap": {
+          "out": "Fiery Emancipation",
+          "in": "Jaws, Relentless Predator"
+        },
         "goldfish_saw": [
-          1,
-          3
+          2,
+          2
         ]
       },
       "summary": {
@@ -8752,6 +8757,42 @@
   ],
   "studies": [
     {
+      "id": "006",
+      "question": "Audit: things seem sideways. The strategy, in the pilot's words: land the shark, make it big through card draw, give humans flying (evasive attackers/blockers), make treasure, wheel and do big damage with a flying shark, take a person or two out with commander damage. Which cards on V14 and jaws-v1 serve it, which serve the old ping plan, and what is missing?",
+      "branch": "jaws-v1",
+      "file": "006-audit-things-seem-sideways-the-strategy-in-the-p.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-25",
+      "swap": null,
+      "goldfish_saw": null
+    },
+    {
+      "id": "005",
+      "question": "Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Blood on every hit, a ping per Blood or Treasure sacrificed) -- keep it, or go back to the tripler?",
+      "branch": "jaws-v1",
+      "file": "005-is-jaws-v1-a-better-deck-the-swap-that-decides-i.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "strategist",
+        "deck-doctor"
+      ],
+      "pilot_words": "but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga deck, so I like Jaws for the aesthetic reasons.. but the red source doublers and triplers aren't in our strategy as much anymore ... blood or treasure... just artifacts to sac... wheels to find jaws, maybe a tutor in there to get the big shark",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": "Fiery Emancipation",
+        "in": "Jaws, Relentless Predator"
+      },
+      "goldfish_saw": [
+        2,
+        2
+      ]
+    },
+    {
       "id": "004",
       "question": "Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity?",
       "branch": "jaws-v1",
@@ -8986,7 +9027,7 @@
     "engine": {
       "available": true,
       "required": [
-        "A WHEEL drawn — the ignition; nothing else in the deck starts itself"
+        "A WHEEL drawn — the finisher that grows Shabraz seven cards at a time"
       ],
       "routes": [],
       "online_by_turn": {
@@ -9073,7 +9114,7 @@
       },
       "any_route_by_turn": null,
       "bottleneck": {
-        "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+        "label": "A WHEEL drawn — the finisher that grows Shabraz seven cards at a time",
         "by_turn_three": {
           "rate": 0.684,
           "ci95": [
@@ -9423,75 +9464,83 @@
           "unit": "turn",
           "source": "goldfish_metrics.json"
         },
-        "target:A WHEEL drawn — the ignition; nothing else in the deck starts itself": {
+        "target:A WHEEL drawn — the finisher that grows Shabraz seven cards at a time": {
           "value": 86,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A WHEEL drawn — the ignition; nothing else in the deck starts itself' by turn six",
+          "definition": "share of games assembling 'A WHEEL drawn — the finisher that grows Shabraz seven cards at a time' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)": {
-          "value": 86,
+        "target:Shabraz protected — protection drawn for the one card the plan runs through": {
+          "value": 90,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)' by turn six",
+          "definition": "share of games assembling 'Shabraz protected — protection drawn for the one card the plan runs through' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A discard converted to board or cards (the non-damage half of the tax)": {
-          "value": 22,
+        "target:A standing draw engine drawn — the steady growth between wheels": {
+          "value": 90,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A discard converted to board or cards (the non-damage half of the tax)' by turn six",
+          "definition": "share of games assembling 'A standing draw engine drawn — the steady growth between wheels' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A per-draw BOARD source drawn (the air force the commanders fly with)": {
-          "value": 22,
+        "target:An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table": {
+          "value": 39,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A per-draw BOARD source drawn (the air force the commanders fly with)' by turn six",
+          "definition": "share of games assembling 'An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading": {
-          "value": 91,
+        "target:Jaws drawn — every noncreature artifact sacrificed pings each opponent": {
+          "value": 0,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading' by turn six",
+          "definition": "share of games assembling 'Jaws drawn — every noncreature artifact sacrificed pings each opponent' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:Commander protection drawn — the whole engine is one 4-drop that dies to everything": {
-          "value": 87,
-          "tier": "data",
-          "weight": "body",
-          "definition": "share of games assembling 'Commander protection drawn — the whole engine is one 4-drop that dies to everything' by turn six",
-          "unit": "%",
-          "source": "goldfish_metrics.json"
-        },
-        "target:A real answer drawn — a counter, a sweeper or a tax": {
+        "target:A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes": {
           "value": 76,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A real answer drawn — a counter, a sweeper or a tax' by turn six",
+          "definition": "share of games assembling 'A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board": {
-          "value": 85,
+        "target:A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out": {
+          "value": 72,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board' by turn six",
+          "definition": "share of games assembling 'A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out' by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
-        "target:A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)": {
+        "target:Ramp drawn — Shabraz on turn four or five": {
+          "value": 91,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Ramp drawn — Shabraz on turn four or five' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:A real answer drawn — a counter, a removal spell or a sweeper": {
+          "value": 76,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'A real answer drawn — a counter, a removal spell or a sweeper' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
+        "target:Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it)": {
           "value": 54,
           "tier": "data",
           "weight": "body",
-          "definition": "share of games assembling 'A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)' by turn six",
+          "definition": "share of games assembling \"Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it)\" by turn six",
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
@@ -9670,39 +9719,43 @@
     "commander_cast_by_turn_6_pct": 96,
     "targets": [
       {
-        "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
+        "label": "A WHEEL drawn — the finisher that grows Shabraz seven cards at a time",
         "by_turn_6_pct": 86
       },
       {
-        "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
-        "by_turn_6_pct": 86
+        "label": "Shabraz protected — protection drawn for the one card the plan runs through",
+        "by_turn_6_pct": 90
       },
       {
-        "label": "A discard converted to board or cards (the non-damage half of the tax)",
-        "by_turn_6_pct": 22
+        "label": "A standing draw engine drawn — the steady growth between wheels",
+        "by_turn_6_pct": 90
       },
       {
-        "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
-        "by_turn_6_pct": 22
+        "label": "An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table",
+        "by_turn_6_pct": 39
       },
       {
-        "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
-        "by_turn_6_pct": 91
+        "label": "Jaws drawn — every noncreature artifact sacrificed pings each opponent",
+        "by_turn_6_pct": 0
       },
       {
-        "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-        "by_turn_6_pct": 87
-      },
-      {
-        "label": "A real answer drawn — a counter, a sweeper or a tax",
+        "label": "A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes",
         "by_turn_6_pct": 76
       },
       {
-        "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
-        "by_turn_6_pct": 85
+        "label": "A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out",
+        "by_turn_6_pct": 72
       },
       {
-        "label": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
+        "label": "Ramp drawn — Shabraz on turn four or five",
+        "by_turn_6_pct": 91
+      },
+      {
+        "label": "A real answer drawn — a counter, a removal spell or a sweeper",
+        "by_turn_6_pct": 76
+      },
+      {
+        "label": "Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it)",
         "by_turn_6_pct": 54
       }
     ],
@@ -10150,6 +10203,7 @@
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",
     "merge 012 (voltron-v1) has 1 run(s) of the merged list at olivers-table — `decisions sharknado outcome` records predicted vs realised"

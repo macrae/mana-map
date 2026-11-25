@@ -215,15 +215,16 @@ Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group 
 - share of seeded games where the commander was CAST by turn six: **96%**
 - MEDIAN turn the goldfish kills on, not the mean: **turn 7**
 - mean turn the commander is first cast: **turn 4.467**
-- A WHEEL drawn — the ignition; nothing else in the deck starts itself: **86%**
-- A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing): **86%**
-- A discard converted to board or cards (the non-damage half of the tax): **22%**
-- A per-draw BOARD source drawn (the air force the commanders fly with): **22%**
-- Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading: **91%**
-- Commander protection drawn — the whole engine is one 4-drop that dies to everything: **87%**
-- A real answer drawn — a counter, a sweeper or a tax: **76%**
-- A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board: **85%**
-- A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three): **54%**
+- A WHEEL drawn — the finisher that grows Shabraz seven cards at a time: **86%**
+- Shabraz protected — protection drawn for the one card the plan runs through: **90%**
+- A standing draw engine drawn — the steady growth between wheels: **90%**
+- An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table: **39%**
+- Jaws drawn — every noncreature artifact sacrificed pings each opponent: **0%**
+- A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes: **76%**
+- A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out: **72%**
+- Ramp drawn — Shabraz on turn four or five: **91%**
+- A real answer drawn — a counter, a removal spell or a sweeper: **76%**
+- Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it): **54%**
 - share of opening sevens the model would keep: **82%**
 - Engine online by turn 5: **80%** (95% CI 79%–80%) — exceptional
 - Colour on curve (lands + rocks): W 96%, U 91%, R 73%
@@ -278,6 +279,8 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **006 open** (—) — Audit: things seem sideways. The strategy, in the pilot's words: land the shark, make it big through card draw, give humans flying (evasive  · on `jaws-v1` · open
+- **005 no-change** (pilot, strategist, deck-doctor) — Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Bloo · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga”
 - **004 decline** (pilot) — Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/3 named cards · “no change”
 - **003 no-change** (pilot, strategist, rules-question, deck-doctor) — Card three on jaws-v1: Narset, Jeskai Waymaster for Mask of Memory, or no change? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/4 named cards · “continue”
 - **002 approve** (pilot, deck-doctor, data-analyst, rules-question) — Card two on jaws-v1: the one cut for Unsettled Mariner, or no change? · on `jaws-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approve! stage it and go to card three”

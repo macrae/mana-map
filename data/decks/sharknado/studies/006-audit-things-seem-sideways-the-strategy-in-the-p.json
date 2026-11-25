@@ -1,0 +1,206 @@
+{
+  "id": "006",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Audit: things seem sideways. The strategy, in the pilot's words: land the shark, make it big through card draw, give humans flying (evasive attackers/blockers), make treasure, wheel and do big damage with a flying shark, take a person or two out with commander damage. Which cards on V14 and jaws-v1 serve it, which serve the old ping plan, and what is missing?",
+  "opened": "2026-11-25",
+  "decided_at": null,
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 129.0,
+      "slice": "build theory for the pilot's restated strategy; verbatim (run list trimmed)",
+      "text": "**Answer.** Build Shabraz as one plan: \"draw -> grow -> evade -> 21\", with every non-draw slot serving one of those verbs. The deck feels sideways because Torbran, Gratuitous Violence and Fiery Emancipation are payoffs for the old red wheel/burn plan, traded away on 2026-11-10 per CONTEXT. All argument (tier ★), not evidence.\n\nFrame: pick the plan first (strategy:deckbuilding.archetype-selection); every slot must beat the card that does the same job (strategy:deckbuilding); templates count functions — 36-38 lands, 10-12 ramp, 10 draw (strategy:deckbuilding.ratios); the table's misread of a \"draw deck plus two creatures\" is a window that closes once Shabraz shows counters (strategy:multiplayer.commander-insurance).\n\nRatios, most to least:\n1. Protection: Boots down plus a held response on the pivot turn (strategy:multiplayer.commander-insurance); the list carries 8-9 pieces — how many are cheap or free with a commander out.\n2. Draw shape: split steady and on-plan (strategy:card-advantage.plan-draw); here any draw is growth; the risk is draw that fires only after the engine is out.\n3. Ramp: a rock or Treasure on turn 2-3 so he lands on 4-5 (strategy:deckbuilding.curve); Treasure is ramp only if early.\n4. Humans: the grant costs one W/U per Human — a mana sink, not a density target; value is Humans worth casting alone; roughly 8-12 (argument, unsourced); the typal 30+ floor (strategy:typal.density) does not apply.\n5. Wheels: a second draw engine, not a second plan; never cut a draw-seven.\n6. Treasure as the bridge: funds the grant, flying blockers, double strike; 009 shows hoarding it fails.\n\nWhat goes wrong (\"sideways\"): two plans half-built — payoff density is not the lever (strategy:conversion.payoff-density); payoffs left from a departed plan — Torbran adds no commander damage for non-red Shabraz, only Brallin; Gratuitous Violence and Fiery apply to Shabraz only when he connects, late finishers; theme slots that neither draw, protect nor grow are filler under the pilot's rule.\n\nOnline: EDHREC (fetched; 271 decks; newest item July 2026) top cards Swords, Counterspell, Brainstorm, Chasm Skulker, Teferi's Ageless Insight, Path, Windfall, Swiftfoot Boots; tags +1/+1 counters 13, card draw 12, wheels 10, lifegain 9, flying 7, voltron 6 — the crowd builds draw, wheels, counters; red damage doublers are not in its top cards. Revealed preference from a small sample, not proof.\n\nThree checks: (1) role count audit, nothing unassigned, flag old-plan cards; (2) landing odds — P(Shabraz on turn 4-5), P(protection in hand when he lands), ceilings; (3) Human audit — is each worth casting without the grant.\nopen: a voltron-draw hybrid's enabler/payoff ratio (a /research-strategy topic); is Brallin worth his command-zone slot beyond the fallback cast?",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:conversion.payoff-density",
+          "strategy:deckbuilding",
+          "strategy:deckbuilding.archetype-selection",
+          "strategy:deckbuilding.curve",
+          "strategy:deckbuilding.ratios",
+          "strategy:multiplayer.commander-insurance",
+          "strategy:typal.density"
+        ],
+        "rules": [
+          "271"
+        ]
+      },
+      "added_at": "2026-11-25T12:00:36-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-audit.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: every card in one pillar, the sideways five, what is thin, jaws-v1 card by card",
+      "text": "{\n  \"reading\": \"Asked: does V14 / jaws-v1 serve the restated plan (land Shabraz, grow him by draw, fly Humans, Treasure, wheel, kill by commander damage)? Draw (14) and wheels (10) are fully built; Treasure is one card (Smothering Tithe) and Humans-as-fliers is thin. The old ping plan survives in Torbran and the two red damage enchantments, and the deck's own goldfish_targets.json still declares the discard/damage-amplifier machine, so the goldfish's damage row measures the old plan.\",\n  \"log_entries_read\": [\"007\", \"008\", \"009\"],\n  \"axes_engaged\": [\n    {\"axis\": \"colour-sources\", \"verdict\": \"weakness\", \"measured\": {\"value\": \"-11\"}, \"reading\": \"Worst colour 11 sources short; the RRR cards (Torbran, Gratuitous Violence, Fiery Emancipation) are what red is short for.\"},\n    {\"axis\": \"interaction\", \"verdict\": \"weakness\", \"measured\": {\"value\": \"6\"}, \"reading\": \"Under 8 on V14; jaws-v1 adds Voracious Greatshark and Kozilek's Return.\"},\n    {\"axis\": \"sweepers\", \"verdict\": \"weakness\", \"measured\": {\"value\": \"0\"}, \"reading\": \"None on V14; Kozilek's Return on the branch, which also kills the deck's 1-2 toughness Humans.\"},\n    {\"axis\": \"ramp\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"13\"}, \"reading\": \"Over target; turn-5 Shabraz is not the binding problem (consistency 0.932).\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Fiery Emancipation\", \"why\": \"Six-mana RRR enchantment from the old red-amplifier plan; the pilot says the doublers/triplers are no longer the strategy.\", \"cost_of_cutting\": \"It does triple Shabraz's combat (commander) damage and Brallin's pings; losing it lowers the burst ceiling of an assembled double-strike Shabraz.\", \"difficulty\": \"easy\", \"orphans_stack\": []},\n    {\"card\": \"Gratuitous Violence\", \"why\": \"Five-mana RRR enchantment competing with Shabraz for the turn-5 slot, filed with the old amplifiers.\", \"cost_of_cutting\": \"It doubles Shabraz's combat damage, so it is a real commander-damage multiplier; cutting it lengthens the 21-damage clock.\", \"difficulty\": \"contested\", \"orphans_stack\": []}\n  ],\n  \"add_candidates\": [],\n  \"open_questions\": [\n    {\"question\": \"Torbran is on protected.json but the pilot said 2026-11-25 'there is no keep list' and 'Torbran is weak in this deck now'. Does he want Kitsa/Torbran removed from protected.json?\", \"settled_by\": \"research-strategy\", \"why_it_matters\": \"The validator refuses any cut of Torbran until the hand-written keep list changes.\"},\n    {\"question\": \"goldfish_targets.json still declares the discard/damage-amplifier machine; should its targets be re-authored to the Shabraz commander-damage plan?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"Study 006's damage @T10 row (-42%) prices the old ping plan, not the stated one.\"}\n  ],\n  \"gaps\": [\"Leitmotif Composer, named among his five Humans, is in neither list (watchlist only).\", \"No Treasure-maker scout run; adds go to the scout.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T12:00:37-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-study006.json"
+    }
+  ],
+  "call": {
+    "decision": "open",
+    "decided_by": [],
+    "pilot_words": "",
+    "reading": ""
+  },
+  "slug_name": "audit-things-seem-sideways-the-strategy-in-the-p",
+  "facts": [
+    {
+      "id": "S-5d3cfec1-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-5d3cfec1-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-5d3cfec1-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-5d3cfec1-04",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 0 of 0 named card(s) read: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "n": 10000
+    },
+    {
+      "id": "S-5d3cfec1-05",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-5d3cfec1-06",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-5d3cfec1-07",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-5d3cfec1-08",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-5d3cfec1-09",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-5d3cfec1-10",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T11:57:36-08:00",
+    "facts": 10
+  }
+}

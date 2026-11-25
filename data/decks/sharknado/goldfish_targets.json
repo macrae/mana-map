@@ -13,27 +13,8 @@
   "_required_note": "`required` marks what this deck cannot function without, and exactly ONE group carries it: a wheel. Every payoff here is a tax collector with nothing to tax until a hand empties and refills. `route` marks the two ways this deck closes, counted as a UNION rather than multiplied.",
   "targets": [
     {
-      "label": "A WHEEL drawn — the ignition; nothing else in the deck starts itself",
-      "need": [
-        {
-          "any_of": [
-            "Collective Defiance",
-            "Jace's Archivist",
-            "Magus of the Wheel",
-            "Reforge the Soul",
-            "Wheel of Fortune",
-            "Windfall",
-            "Echo of Eons",
-            "Time Reversal",
-            "Winds of Change",
-            "Will of the Jeskai"
-          ]
-        }
-      ],
-      "required": true
-    },
-    {
-      "label": "A DISCARD wheel drawn — the half that pays Brallin (six more shuffle or bottom and pay him nothing)",
+      "label": "A WHEEL drawn — the finisher that grows Shabraz seven cards at a time",
+      "required": true,
       "need": [
         {
           "any_of": [
@@ -52,27 +33,101 @@
       ]
     },
     {
-      "label": "A discard converted to board or cards (the non-damage half of the tax)",
+      "label": "Shabraz protected — protection drawn for the one card the plan runs through",
       "need": [
         {
           "any_of": [
-            "Shark Typhoon"
+            "Akroma's Will",
+            "Brotherhood Regalia",
+            "Deflecting Swat",
+            "Flawless Maneuver",
+            "Grand Abolisher",
+            "Loran's Escape",
+            "Shelter",
+            "Slip Out the Back",
+            "Swiftfoot Boots",
+            "Unsettled Mariner"
           ]
         }
       ]
     },
     {
-      "label": "A per-draw BOARD source drawn (the air force the commanders fly with)",
+      "label": "A standing draw engine drawn — the steady growth between wheels",
       "need": [
         {
           "any_of": [
-            "Lae'zel, Vlaakith's Champion"
+            "Archmage Emeritus",
+            "Consecrated Sphinx",
+            "Enduring Curiosity",
+            "Esper Sentinel",
+            "Faerie Mastermind",
+            "Kitsa, Otterball Elite",
+            "Mask of Memory",
+            "Rhystic Study",
+            "Shark Typhoon",
+            "Teferi, Master of Time",
+            "Valeria Richards, Precocious"
           ]
         }
       ]
     },
     {
-      "label": "Ramp drawn — an accelerant of any kind, five of the seven of them Treasure the model is not reading",
+      "label": "An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table",
+      "need": [
+        {
+          "any_of": [
+            "Jaws, Relentless Predator",
+            "Prismari Command",
+            "Smothering Tithe"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Jaws drawn — every noncreature artifact sacrificed pings each opponent",
+      "need": [
+        {
+          "any_of": [
+            "Jaws, Relentless Predator"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A Human on curve drawn (three mana or less) — the flying attackers and blockers Shabraz makes",
+      "need": [
+        {
+          "any_of": [
+            "Esper Sentinel",
+            "Grand Abolisher",
+            "Inti, Seneschal of the Sun",
+            "Magus of the Wheel",
+            "Prince Imrahil the Fair",
+            "Shang-Chi and the Ten Rings",
+            "Sokka, Lateral Strategist",
+            "Unsettled Mariner",
+            "Willie Lumpkin, Postman"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "A commander-damage enabler drawn — double strike or evasion on Shabraz, 21 to take a player out",
+      "need": [
+        {
+          "any_of": [
+            "Akroma's Will",
+            "Blade Historian",
+            "Brotherhood Regalia",
+            "Fireshrieker",
+            "Inti, Seneschal of the Sun",
+            "Lizard Blades"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Ramp drawn — Shabraz on turn four or five",
       "need": [
         {
           "any_of": [
@@ -92,63 +147,30 @@
       ]
     },
     {
-      "label": "Commander protection drawn — the whole engine is one 4-drop that dies to everything",
-      "need": [
-        {
-          "any_of": [
-            "Akroma's Will",
-            "Brotherhood Regalia",
-            "Deflecting Swat",
-            "Flawless Maneuver",
-            "Loran's Escape",
-            "Swiftfoot Boots",
-            "Shelter",
-            "Slip Out the Back"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A real answer drawn — a counter, a sweeper or a tax",
+      "label": "A real answer drawn — a counter, a removal spell or a sweeper",
       "need": [
         {
           "any_of": [
             "Chaos Warp",
             "Get Lost",
+            "Kozilek's Return",
             "Negate",
             "Prismari Command",
             "Stubborn Denial",
-            "Swords to Plowshares"
+            "Swords to Plowshares",
+            "Voracious Greatshark"
           ]
         }
       ]
     },
     {
-      "label": "A standing draw engine drawn — the refill between wheels, and what the stacks keep on the board",
+      "label": "Brallin's late road — a red amplifier drawn (the old ping plan, on the cut list; kept measured while proven stacks name it)",
       "need": [
         {
           "any_of": [
-            "Consecrated Sphinx",
-            "Faerie Mastermind",
-            "Kitsa, Otterball Elite",
-            "Rhystic Study",
-            "Teferi, Master of Time",
-            "Archmage Emeritus",
-            "Enduring Curiosity",
-            "Esper Sentinel",
-            "Valeria Richards, Precocious"
-          ]
-        }
-      ]
-    },
-    {
-      "label": "A damage amplifier drawn — Torbran, Gratuitous Violence or Fiery Emancipation multiplies every Brallin ping (stack 007: at least 8 per opponent per ping with all three)",
-      "need": [
-        {
-          "any_of": [
-            "Torbran, Thane of Red Fell",
+            "Fiery Emancipation",
             "Gratuitous Violence",
-            "Fiery Emancipation"
+            "Torbran, Thane of Red Fell"
           ]
         }
       ]
@@ -161,5 +183,6 @@
   "_answers_v1_jeska_note": "2026-10-26, on the pilot's word: Jeska's Will cut (a 4th Game Changer beside Consecrated Sphinx put the floor at 4) for Magmakin Artillerist, placed by oracle text (\"whenever you discard one or more cards, this creature deals that much damage to each opponent\") as a second per-discard damage source, in that group and in THE WHEEL KILL's damage half. Jeska's Will was in no group.",
   "_sharks_v1_note": "REPAIRED 2026-10-27 after sharks-v1 merged as v2.2.0, by oracle text: Ghostly Pilferer and Boros Charm removed from every group. Razorkin Needlehead ('whenever an opponent draws a card, this creature deals 1 damage to them') joins THE WHEEL KILL's damage half only — it pays per card on every wheel that makes opponents draw (rules-checked: seven triggers per opponent, each +2 under Torbran, CR 121.2/603.2c/614.5), but it is not a per-DISCARD source, so the second-discard-damage group is unchanged. Shark Typhoon (cycling is a discard that makes an X/X flying Shark) joins the discard-converted-to-board group. The two lands are in no group.",
   "_draw_engine_v1_note": "REPAIRED 2026-11-05 after draw-engine-v1 merged as v2.3.0, by oracle text: the nine cut names removed from every group (Magmakin Artillerist, Inti, Mary Read and Anne Bonny, March of Swirling Mist, Robe of Stars, Izzet Charm, Jeskai Ascendancy, Ledger Shredder, Mystic Remora). Borrowed Knowledge, Heartwarming Redemption and Shattered Perception (discard your hand, then draw) and Magus of the Wheel (each player discards, draws seven) join the wheel groups and THE WHEEL KILL's wheel half. Psychosis Crawler ('whenever you draw a card, each opponent loses 1 life') joins THE WHEEL KILL's damage half only, as Needlehead did: it pays per draw, not per discard. Mind Stone, Talisman of Progress and Thought Vessel join Ramp. Gleaming Splendor (an activated draw, and Treasure off opponents' second draw) joins the standing draw engines. In no group: Cathartic Reunion and Rush of Knowledge and Mind Spring (one-shot draw, no wheel), Prosperity (symmetric draw, no discard, so it pays Brallin nothing), Xorn (a Treasure multiplier), Mirrormade (a copy), Zirda (cost reduction). The protection and answer groups lost March, Robe and Izzet Charm and gained nothing: the branch traded them for draw.",
-  "_shabraz_v1_note": "2026-11-10, shabraz-v1 merged as v3.0.0: the cuts left every group; the three new draw-sevens and Will of the Jeskai (discard and draw five) joined the wheel groups; Boros Signet, Fellwar Stone and Talisman of Conviction joined ramp; Swiftfoot Boots, Shelter and Slip Out the Back joined protection; Archmage Emeritus, Enduring Curiosity, Esper Sentinel and Valeria Richards joined the draw engines. Two groups held only cut cards and are gone with the plan they measured: Glint-Horn Buccaneer alone, and the wheel-burn target's per-discard damage half (Glint-Horn, Psychosis Crawler, Razorkin Needlehead)."
+  "_shabraz_v1_note": "2026-11-10, shabraz-v1 merged as v3.0.0: the cuts left every group; the three new draw-sevens and Will of the Jeskai (discard and draw five) joined the wheel groups; Boros Signet, Fellwar Stone and Talisman of Conviction joined ramp; Swiftfoot Boots, Shelter and Slip Out the Back joined protection; Archmage Emeritus, Enduring Curiosity, Esper Sentinel and Valeria Richards joined the draw engines. Two groups held only cut cards and are gone with the plan they measured: Glint-Horn Buccaneer alone, and the wheel-burn target's per-discard damage half (Glint-Horn, Psychosis Crawler, Razorkin Needlehead).",
+  "_vision_v1_note": "2026-11-25, re-declared around the pilot's vision (study 006): 'land the shark, make it big through card draw, give humans flying, make treasure, wheel and do big damage with a flying shark, take a person or two out with commander damage' and 'blood or treasure... just artifacts to sac... wheels to find jaws'. Dropped: the damage-amplifier group (Torbran, Gratuitous Violence, Fiery Emancipation -- the old ping plan), the discard-converted and per-draw-board groups (one card each). New makers, Humans, Sharks and spells join their groups as they are staged."
 }

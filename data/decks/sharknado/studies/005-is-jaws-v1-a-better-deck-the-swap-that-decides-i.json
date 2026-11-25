@@ -1,0 +1,434 @@
+{
+  "id": "005",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Blood on every hit, a ping per Blood or Treasure sacrificed) -- keep it, or go back to the tripler?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Fiery Emancipation",
+    "Jaws, Relentless Predator"
+  ],
+  "swap": {
+    "out": "Fiery Emancipation",
+    "in": "Jaws, Relentless Predator"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 332.0,
+      "slice": "MODE prescribe: Fiery vs Jaws; verbatim (orchestrator notes trimmed). The same agent, on study 006's restated strategy, agreed with cutting Fiery.",
+      "text": "MY PICK: put Fiery Emancipation back and take Jaws out. Keep the rest of jaws-v1 as staged, including the two-drop Humans (Inti, Prince Imrahil) and Mariner.\n\n1. The deck wins with Shabraz's commander damage, and on the branch only one card multiplies it. The cards that change damage are Gratuitous Violence (x2), Torbran, and three double-strike cards (Akroma's Will, Blade Historian, Lizard Blades). Torbran adds nothing to Shabraz: Shabraz is {3}{W}{U}, not red. Fiery was the second multiplier. Jaws adds a red body, not a multiplier. The pilot's own rule (an effect earns its slot only if it multiplies) points at Fiery. Fiery triples Brallin's pings too (stack 007, checker pass).\n2. The red premise in the branch's why does not hold up. Red sources went DOWN, from 37 on V14 to 36 on the branch (deck-audit, both lists). The \"11 short\" went away because the target moved from 48 to 36, not because red was added (the sizing quorum, Q048). With Fiery back the audit will show red short by about 12 again; that comes from the target rule, not worse odds of red on curve than V14 had.\n3. Bracket: Fiery is not a Game Changer; the floor stays at 3.\n4. Jaws is a five-drop competing with Shabraz for the same turn. No flying, so its Blood depends on combat damage through a ground board (game 009 had two 6/6 dragons). Its best case is real: about 3 per Treasure with Torbran out, and game 009 banked 14 Treasure from Tithe — but that needs Jaws and the pile together, a single game, and Jaws was not in that list.\n\nThe log on the current list (008, 009) never saw either card. 008 was a piloting error; 009 a slow, creatureless start and a race — the log argues for keeping the cheap Humans, not for Jaws.\n\nGOLDFISH (one instrument, never the reason; both seen; 10,000 paired games), Fiery back on the branch:\n- For Jaws: killed by T6 19.3% -> 21.6%, +2.4 pts [+2.1, +2.7]; damage @T10 +96.3 [+91.7, +100.9]; board power @T6 -0.3; hoard @T10 -0.29 [-0.43, -0.16].\n- For Imrahil: killed by T6 +2.0 [+1.7, +2.4], board power -0.6.\n- For Inti: killed by T6 +2.1 [+1.7, +2.4], hoard -0.57.\nThe goldfish says the tripler is worth about 2 points of kill by T6 whatever leaves; it does not pick the cut.\n\nFor the pilot: swapping out V14's own multiplier for Jaws is not a clear upgrade. If he wants Jaws kept for the Treasure-ping line, the honest alternative is Fiery in for Prince Imrahil, contested. Trimming red sources should not be part of this swap.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "100.9"
+        ]
+      },
+      "added_at": "2026-11-25T12:10:27-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-jaws.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 37.0,
+      "slice": "Fiery vs Jaws argument; verbatim (run list trimmed)",
+      "text": "Lean: keep Jaws. Fiery Emancipation is a high-ceiling, low-median card in this deck, and the branch's recorded losses do not point at it. This is argument, not evidence.\n\n1. The Brallin math is real but needs a precondition. Brallin's pings are damage from a source you control, so stack 007 (checker pass) shows the tripler applies to them: one ping under Torbran, Gratuitous Violence and Fiery Emancipation (stack:007). It also needs Brallin on board, a wheel in hand, and the 6-mana RRR enchantment already resolved. CONTEXT says Brallin is cast late, \"his discard ping is no longer the plan. He is a pivot\", and that the wheels are the finishers. So the tripler multiplies a plan the pilot has moved off.\n2. strategy:deckbuilding.threat-density separates the ceiling build (\"one spectacular finisher, loses when it's answered\") from the median build (\"closes from any board\"). The tripler is the ceiling pole. It does nothing alone, so it is a \"naked all-in\" under strategy:critical-mass; three opponents' interaction punishes it.\n3. strategy:threat-assessment and strategy:multiplayer.threat-deflection: a 6-mana enchantment that sits there draws attention and spends your deflection budget without a board behind it.\n4. Redundancy: the dossier's nearest-by-function neighbour for Fiery Emancipation is Gratuitous Violence at 0.95. Torbran plus Gratuitous Violence already scale the pings; strategy:conversion.payoff-density says payoff density is not the lever.\n5. Cost: RRR in a WUR deck is a real tension (the pilot's 2026-11-14 note); Jaws is a single red pip. Q048 records the on-curve red figure as a sizing artifact, so not leaned on.\n6. The losses: 008 was a sequencing error (\"pilot error, not the list\"); 009 a thin keep, no blockers, held Treasure — a tripler does nothing against being attacked on turn 3; the 4 of 9 raced games want cheaper board presence or interaction; game 006 had Fiery Emancipation on board and lost with \"no wheel in the digging\".\n7. Jaws: a 5-mana haste trample body, a threat the turn it lands; Blood is the discard-and-draw loop that feeds Shabraz; it pings when artifacts are sacrificed; Torbran amplifies it. The tripler needs a board; Jaws is the board.\n\nCaveat: the one case where the tripler wins is wheel plus Brallin plus Torbran; no verified count of how often that happens. The goldfish cannot see opposing removal, so it cannot settle this.\nopen: (1) How often does a wheel line with Brallin on board happen in the pilot's games? (2) Is Jaws's Blood-sacrifice ping reachable on this list, which has few artifact-sacrifice outlets?",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:conversion.payoff-density",
+          "strategy:critical-mass",
+          "strategy:deckbuilding.threat-density",
+          "strategy:multiplayer.threat-deflection",
+          "strategy:threat-assessment"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-25T12:10:28-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-jaws.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "strategist",
+      "deck-doctor"
+    ],
+    "pilot_words": "but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga deck, so I like Jaws for the aesthetic reasons.. but the red source doublers and triplers aren't in our strategy as much anymore ... blood or treasure... just artifacts to sac... wheels to find jaws, maybe a tutor in there to get the big shark",
+    "reading": "Jaws stays on jaws-v1 and Fiery Emancipation stays out: the pilot made Jaws the centre of the deck (artifact tokens sacrificed for pings), and the red multipliers are no longer the plan.",
+    "at": "2026-11-25"
+  },
+  "slug_name": "is-jaws-v1-a-better-deck-the-swap-that-decides-i",
+  "facts": [
+    {
+      "id": "S-0ecf0be8-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-0ecf0be8-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-0ecf0be8-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0ecf0be8-04",
+      "kind": "oracle",
+      "text": "Enchantment · {3}{R}{R}{R} — If a source you control would deal damage to a permanent or player, it deals triple that damage to that permanent or player instead.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-0ecf0be8-05",
+      "kind": "log",
+      "text": "log 006 (2026-11-03, loss): “Fiery Emancipation — On board (triple damage)”",
+      "tier": "coach",
+      "source": "log.jsonl#006",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-03",
+      "game": "006"
+    },
+    {
+      "id": "S-0ecf0be8-06",
+      "kind": "stack",
+      "text": "stack 007 — One Brallin ping under Torbran, Gratuitous Violence and Fiery Emancipation: the opponent orders the replacements (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/007",
+      "card": "Fiery Emancipation",
+      "stack": "007"
+    },
+    {
+      "id": "S-0ecf0be8-07",
+      "kind": "engine_stage",
+      "text": "engine stage output: Output",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "stage": "output",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-0ecf0be8-08",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces nothing the registry names (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "consumes": [],
+      "produces": [],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-0ecf0be8-09",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Shark Typhoon, Valeria Richards, Precocious",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Fiery Emancipation",
+      "event": "CAST",
+      "cards": [
+        "Shark Typhoon",
+        "Valeria Richards, Precocious"
+      ]
+    },
+    {
+      "id": "S-0ecf0be8-10",
+      "kind": "context",
+      "text": "CONTEXT plays: Gratuitous Violence and Fiery Emancipation double and triple the damage.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-0ecf0be8-11",
+      "kind": "context",
+      "text": "CONTEXT cards: - Fiery Emancipation",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Fiery Emancipation"
+    },
+    {
+      "id": "S-0ecf0be8-12",
+      "kind": "recon",
+      "text": "recon (2026-11-20): FINISHERS: THE CROWD CLOSES WITH THE PING LOOP OR A DRAW-OUT, ALMOST NEVER WITH DOUBLE STRIKE AND NEVER WITH EXTRA COMBAT. On the pair page the finisher is the Brallin + Curiosity-class loop (Curiosity 2329/3974 = 59%; combo-tagged page 82/",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-0ecf0be8-13",
+      "kind": "queue",
+      "text": "Q020 DROPPED: In the games Sean loses, the opening seven he kept splits into enablers (rocks, lands, commanders), payoffs (discard payoffs, Fiery Emancipation, Embercleave, T",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-04",
+      "queue_id": "Q020"
+    },
+    {
+      "id": "S-0ecf0be8-14",
+      "kind": "queue",
+      "text": "Q024 KILLED: Sean's claim stands as a question the oracle text can answer: a red deck wants sweepers and face burn, and the deck has one sweeper (Incendiary Command, 2 to ea",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-12",
+      "queue_id": "Q024"
+    },
+    {
+      "id": "S-0ecf0be8-15",
+      "kind": "queue",
+      "text": "Q048 EXPIRED: The red-on-curve drop (lands-only 0.839 to 0.579 on the branch) is a mana-base problem, red sources, before it is an RRR-card problem. Fiery Emancipation (-89 d → refuted: Not a mana-base problem: v2.3.0 and shabraz-v1 run the same 31 red-producing lands (the branch added only Islands). The drop is the sizing rule: PIP_WEIGHT_QUOR",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-06",
+      "queue_id": "Q048"
+    },
+    {
+      "id": "S-0ecf0be8-16",
+      "kind": "staged",
+      "text": "staged 2026-11-14: Fiery Emancipation → Jaws, Relentless Predator — pilot 2026-11-14: the Shark that makes Blood on every hit and pings on every Blood or Treasure sacrificed; Fiery Emancipation's RRR was why red ran eleven sources short",
+      "tier": "coach",
+      "source": "branches/jaws-v1/branch.json",
+      "card": "Fiery Emancipation",
+      "as_of": "2026-11-14"
+    },
+    {
+      "id": "S-0ecf0be8-17",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Gratuitous Violence (0.95), Blade Historian (0.91), Lizard Blades (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Fiery Emancipation",
+      "neighbours": [
+        {
+          "name": "Gratuitous Violence",
+          "score": 0.9495
+        },
+        {
+          "name": "Blade Historian",
+          "score": 0.9127
+        },
+        {
+          "name": "Lizard Blades",
+          "score": 0.9054
+        }
+      ]
+    },
+    {
+      "id": "S-0ecf0be8-18",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Fiery Emancipation",
+      "state": "seen",
+      "channels": [
+        "combat",
+        "target"
+      ]
+    },
+    {
+      "id": "S-0ecf0be8-19",
+      "kind": "oracle",
+      "text": "Legendary Creature — Shark · {3}{R}{R} — Trample, haste | Whenever Jaws deals combat damage to a player, create that many Blood tokens. (They're artifacts with \"{1}, {T}, Discard a card, Sacrifice this token: Draw a card.\") | Whenever a noncreature artifact is sacrificed or destroyed, Jaws deals 1 damage to each opponent.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Jaws, Relentless Predator"
+    },
+    {
+      "id": "S-0ecf0be8-20",
+      "kind": "price",
+      "text": "$176.38 NM ((SLD) 2175) as of 2026-11-21",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Jaws, Relentless Predator",
+      "as_of": "2026-11-21",
+      "figure": 176.38
+    },
+    {
+      "id": "S-0ecf0be8-21",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Esper Sentinel (0.87), Faerie Mastermind (0.86), Willie Lumpkin, Postman (0.86)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Jaws, Relentless Predator",
+      "neighbours": [
+        {
+          "name": "Esper Sentinel",
+          "score": 0.8694
+        },
+        {
+          "name": "Faerie Mastermind",
+          "score": 0.865
+        },
+        {
+          "name": "Willie Lumpkin, Postman",
+          "score": 0.863
+        }
+      ]
+    },
+    {
+      "id": "S-0ecf0be8-22",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Jaws, Relentless Predator",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "discard"
+      ]
+    },
+    {
+      "id": "S-0ecf0be8-23",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-0ecf0be8-24",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0ecf0be8-25",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0ecf0be8-26",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-0ecf0be8-27",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0ecf0be8-28",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0ecf0be8-29",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Fiery Emancipation",
+      "Jaws, Relentless Predator"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "3e857208192d2b2a3aee172dc9784468c747bcc1e9b9c00d2e8db78def2ccccf",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T12:10:33-08:00",
+    "facts": 29
+  }
+}
