@@ -117,6 +117,8 @@ ROWS = (
     ("finisher wheel by T8", "wheels", "finisher_by_turn", "8", +1),
     ("wheels cast by T10", "wheels", "wheels_cast_by_turn", "10", +1),
     ("dead wheels in hand @T5", "wheels", "dead_in_hand_by_turn", "5", -1),
+    # THE WHEELS' COST (2026-11-25, sharknado): what a symmetric wheel hands the table.
+    ("cards handed to each opponent by T8", "wheels", "opponent_cards_given_by_turn", "8", -1),
     # MEREN'S CLOCK (2026-11-07). Absent on every deck that does not declare
     # `model_commander_recursion`, so no other deck's family changes.
     ("experience @T7", "recursion", "experience_by_turn", "7", +1),
@@ -205,6 +207,15 @@ METRICS = {
                 "the damage dealt, death and arrival triggers, attack triggers.",
         "why": "Half of the pilot's four words (2026-11-11): life gain, life drain. Gained life "
                "is what the gain-to-loss converters turn into the table's life loss.",
+    },
+    "cards handed to each opponent by T8": {
+        "unit": "mean",
+        "scale": "cards per opponent, cumulative",
+        "what": "Cards each opponent drew off our effects by the end of turn 8, beyond their own "
+                "draw step: a symmetric wheel's seven, an each-player draw, a draw we activate "
+                "for every player.",
+        "why": "The cost of a wheel that the other rows count only as a benefit. It is a cost, "
+               "not a verdict: whether the table can use those cards is not modelled.",
     },
     "cards in hand @T8": {
         "unit": "mean",
@@ -2267,7 +2278,8 @@ ROW_GROUPS = (
                         "kept hand passes the pilot's keep rule")),
     ("Cards and answers", ("extra cards by T8", "interaction affordable @T6",
                            "finisher wheel by T8", "wheels cast by T10",
-                           "dead wheels in hand @T5", "cards in hand @T8")),
+                           "dead wheels in hand @T5", "cards in hand @T8",
+                           "cards handed to each opponent by T8")),
     ("Big bodies", ("a 6+ drop out by T6", "turns saved on big bodies", "experience @T7",
                     "experience 5+ by T6", "a 5+ drop via Meren by T6")),
     ("Fodder into value", ("tokens converted by T8", "life lost outside combat @T10",

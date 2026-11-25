@@ -619,6 +619,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # THE CLEANUP STEP (CR 514.1), opt-in like every channel (`model_hand_limit`): a hand
     # over seven discards down at end of turn, unless something says no maximum hand size.
     hand_limit_off = False
+    # WHAT OUR DRAW EFFECTS HAND THE TABLE (2026-11-25): cards each opponent drew beyond their own
+    # draw step, cumulative -- a symmetric wheel's seven, an each-player draw, Faerie Mastermind's
+    # activation. `opponent_draws_this_turn` is per seat and resets to that one draw each turn.
+    opponent_cards_given = 0
+    opponent_cards_given_by_turn = []
     # LIBRARY OF LENG (2026-11-25): with it out, a discard may go to the top of the library.
     discard_to_top = False
     # INTI'S IMPULSE (2026-11-25): (card, last turn it may be played), exiled -- not in hand.
@@ -1776,7 +1781,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             hand.remove(card)
             if card.get("no_max_hand"):
                 hand_limit_off = True
-            if card.get("discard_to_top") and model_discard:
+            if card["discard_to_top"] and model_discard:
                 discard_to_top = True
             spells_cast_this_turn += 1
             spells_cast_total += 1
@@ -3697,7 +3702,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              # Cast, or the limit it lifts is never lifted.
                                              model_hand_limit and c["no_max_hand"],
                                              # Library of Leng's other half (2026-11-25).
-                                             model_discard and c.get("discard_to_top"),
+                                             model_discard and c["discard_to_top"],
                                              # A WHEEL IS A DRAW SPELL, cast under model_discard
                                              # only, since a wheel that draws seven and discards
                                              # nothing is the over-credit the flag exists to
@@ -6217,6 +6222,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         if model_hand_limit and not hand_limit_off and len(_held) > 7:
             discard_n(len(_held) - 7)
         hand_size_by_turn.append(len(hand))
+        opponent_cards_given += max(0, opponent_draws_this_turn - 1)
+        opponent_cards_given_by_turn.append(opponent_cards_given)
         dead_wheels_in_hand_by_turn.append(_dead_wheels())
         # AT THE END OF THE TURN, which is what the row has always said (2026-11-04). This was
         # recorded before the turn spent anything, so "hoard @T10" counted Treasure the same
@@ -6656,6 +6663,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # ABSENT (None) off the discard channel: no wheel is modelled there, and
         # a series of zeros would read as "never wheels".
         "wheels_cast_by_turn": wheels_cast_by_turn if model_discard else None,
+        # The wheels' cost to us, beside their count: absent where no wheel is modelled.
+        "opponent_cards_given_by_turn": opponent_cards_given_by_turn if model_discard else None,
         "wheels_with_payoff": wheels_with_payoff if model_discard else None,
         "first_wheel_turn": first_wheel_turn if model_discard else None,
         "finisher_wheel_turn": finisher_wheel_turn if model_discard else None,

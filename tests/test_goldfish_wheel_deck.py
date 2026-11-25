@@ -128,3 +128,42 @@ def test_inti_attack_pitches_a_spare_land_for_a_counter():
     plain = _games(_inti_deck("Vigilance"))
     assert _mean(attack, "discarded_by_turn") > _mean(plain, "discarded_by_turn") + 0.5
     assert _mean(attack, "total_damage_by_turn") > _mean(plain, "total_damage_by_turn")
+
+
+# ── what the wheels cost (item 4) ───────────────────────────────────────────
+
+ONE_SIDED = "Discard your hand, then draw seven cards."
+
+
+def _cost_deck(wheel_text):
+    return _doc(_c("Pinger", PING, 1, "Artifact", quantity=6),
+                _c("Wheel", wheel_text, 2, "Sorcery", quantity=10),
+                _c("Body", "", 3, "Creature — Shark", quantity=20, power="3", toughness="3"))
+
+
+def test_a_symmetric_wheel_hands_each_opponent_its_seven():
+    """The cost row (2026-11-25): cards each opponent drew off our effects, beyond their own
+    draw step. In a deck whose only such effect is a fixed draw-seven symmetric wheel, every
+    game reads exactly seven per wheel cast. Put the bug back -- never add to
+    `opponent_cards_given` -- and every game reads zero."""
+    games = _games(_cost_deck(WHEEL), iterations=200)
+    assert any(g["wheels_cast_by_turn"][7] for g in games)
+    for g in games:
+        assert g["opponent_cards_given_by_turn"][7] == 7 * g["wheels_cast_by_turn"][7], g
+
+
+def test_a_wheel_of_our_hand_alone_hands_nobody_anything():
+    """"Discard your hand, then draw seven" refills only us: the row stays at zero while
+    the wheels still fire. Count every wheel as symmetric and this fails."""
+    games = _games(_cost_deck(ONE_SIDED), iterations=200)
+    assert any(g["wheels_cast_by_turn"][7] for g in games)
+    assert all(g["opponent_cards_given_by_turn"][7] == 0 for g in games)
+
+
+def test_the_cost_row_is_absent_where_no_wheel_is_modelled():
+    """A deck without `model_discard` gets no series, so the net-change row is absent on both
+    arms rather than a column of zeros that reads as "hands nothing"."""
+    games = _games(_cost_deck(WHEEL), iterations=20, model_discard=False)
+    assert all(g["opponent_cards_given_by_turn"] is None for g in games)
+    from manamap.pilot import diagnostic
+    assert diagnostic.PER_GAME[("wheels", "opponent_cards_given_by_turn", "8")](games[0]) is None

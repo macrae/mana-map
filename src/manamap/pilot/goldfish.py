@@ -1239,6 +1239,11 @@ def aggregate(results, targets, max_turn, model_treasures=False,
             "mean_wheels_cast_by_turn": {
                 str(t): _round(sum(r["wheels_cast_by_turn"][t - 1] for r in results) / n)
                 for t in turns},
+            # WHAT THE WHEELS COST US (2026-11-25): cards each opponent drew off our effects
+            # beyond their own draw step, cumulative. A cost, never a verdict.
+            "mean_opponent_cards_given_by_turn": {
+                str(t): _round(sum(r["opponent_cards_given_by_turn"][t - 1] for r in results) / n)
+                for t in turns},
             "mean_first_wheel_turn": (lambda got: {
                 "mean": _round(sum(got) / len(got)) if got else None,
                 "n": len(got)})([r["first_wheel_turn"] for r in results
