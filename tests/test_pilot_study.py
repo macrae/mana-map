@@ -306,8 +306,12 @@ def test_installing_a_study_re_renders_the_deck_context_s_generated_blocks(deck,
     from manamap.pilot import deck_context
     seen = []
     monkeypatch.setattr(deck_context, "refresh", lambda slug: seen.append(slug) or True)
+    from manamap.pilot import restamp
+    stamped = []
+    monkeypatch.setattr(restamp, "run", lambda **kw: stamped.append(kw) or [])
     doc = st.new("x", "is the deck light on counters?", cards=["Haze of Rage"])
     st.set_call(doc, "approve", ["pilot"], "approve, make the swap")
     st.write("x", doc)
     st.install("x", doc["id"])
     assert seen == ["x"]
+    assert stamped, "install must restamp the composed status files (info.json, the index)"

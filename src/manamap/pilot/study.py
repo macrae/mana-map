@@ -378,6 +378,11 @@ def install(slug, study_id):
     # the generated blocks here, so an installed study and the Context never disagree.
     from manamap.pilot import deck_context
     deck_context.refresh(slug)
+    # AND THE COMPOSED STATUS FILES (2026-11-24): info.json and the deck index read the
+    # studies too, so an install left them behind and the push gate's restamp preflight
+    # stopped on it. The same root as the Context's block, one file over.
+    from manamap.pilot import restamp
+    restamp.run(quiet=True)
     return out, notes
 
 
