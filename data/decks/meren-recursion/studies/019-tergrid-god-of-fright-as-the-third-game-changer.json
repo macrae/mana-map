@@ -4,7 +4,7 @@
   "branch": null,
   "question": "Tergrid, God of Fright as the third Game Changer (the pilot: \"teregrid is the one\") — back in after study 010 cut it for Hangarback Walker; for what?",
   "opened": "2026-11-24",
-  "decided_at": null,
+  "decided_at": "2026-11-24",
   "cards": [
     "Tergrid, God of Fright // Tergrid's Lantern"
   ],
@@ -12,12 +12,30 @@
     "out": null,
     "in": "Tergrid, God of Fright // Tergrid's Lantern"
   },
-  "contributions": [],
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 255.0,
+      "slice": "MODE prescribe: Tergrid's cut, and what in the 99 makes opponents sacrifice or discard; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: the cut for Tergrid, God of Fright, which is decided. In the 99, Tergrid is fed by exactly two cards. Grave Pact makes opponents sacrifice a creature on every death of ours, and Archon of Cruelty makes one target opponent sacrifice a creature or planeswalker and discard. Tergrid's own Lantern adds a third route, and opponents' own fetchland and sacrifice outlets are a fourth. Noxious Gearhulk, Cavalier, Assassin's Trophy, Massacre Wurm, Meathook, Hapatra and Yawgmoth destroy or shrink, so they never trigger her. Gisa and Cavalier sacrifice our own creatures. No 5-6 drop outside the keep list exists: Hapatra, Gisa, Cavalier, Gearhulk, Wurm and Grave Titan are keeps and Kokusho is off the table. So the curve cannot stay level without bending a keep.\",\n  \"log_entries_read\": [],\n  \"axes_engaged\": [\n    {\"axis\": \"interaction\", \"verdict\": \"adequate\", \"measured\": {\"value\": 16},\n     \"reading\": \"Tergrid carries removal:edict, so cutting a removal spell leaves the count where it is. The removal component has 10 cards at 93.1%, the deck's most redundant.\"},\n    {\"axis\": \"protection\", \"verdict\": \"weakness\", \"measured\": {\"value\": 2},\n     \"reading\": \"Heroic Intervention and Tamiyo's Safekeeping are not candidates.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Deadly Rollick\",\n     \"why\": \"Removal is the most redundant component (10 cards, 93.1% in the audit). Tergrid swaps one removal card for another (removal:edict), and her steals come off Grave Pact edicts. The goldfish cannot read Rollick, so this pick is argued from the cards alone.\",\n     \"cost_of_cutting\": \"The deck's only creature exile, and its only free instant-speed creature kill while Meren is out. Indestructible or recursive threats then fall to edicts (Grave Pact, Archon, the Lantern) and -X effects. Assassin's Trophy, Yawgmoth and Blasting Station remain at instant speed.\",\n     \"orphans_stack\": [], \"difficulty\": \"contested\"},\n    {\"card\": \"Noxious Gearhulk\",\n     \"why\": \"The only cut that keeps the 5-6 band level (6 out, 5 in). It is the closest overlap: a menace body plus creature removal. Tergrid is a 4/5 menace that also steals.\",\n     \"cost_of_cutting\": \"It breaks a keep. Each Meren return or reanimation is a destroy plus life. It answers without Grave Pact. Tergrid's removal needs an edict to fire.\",\n     \"orphans_stack\": [], \"difficulty\": \"painful\"},\n    {\"card\": \"Grist, Voracious Larva // Grist, the Plague Swarm\",\n     \"why\": \"The goldfish row is near-neutral: experience @T7 +0.01 [-0.01, +0.02], no call. The other cheap free outlets cost about 0.45 there (Woe Strider -0.43, Altar of Dementia -0.45).\",\n     \"cost_of_cutting\": \"Its -2 destroys an artifact or enchantment, a fifth answer to Rest in Peace or Leyline that CONTEXT does not list. It is also fodder and a mill-two. The goldfish probably does not read the flip, so its null is weak. The curve gets heavier by four.\",\n     \"orphans_stack\": [], \"difficulty\": \"contested\"}\n  ],\n  \"add_candidates\": [],\n  \"open_questions\": [\n    {\"question\": \"Tergrid with Grave Pact and an outlet steals a creature from each opponent per death of ours. Does that line need a stack scenario?\",\n     \"settled_by\": \"resolve-stack\",\n     \"why_it_matters\": \"It is the whole case for Tergrid, and no checker-passed stack covers it.\"}\n  ],\n  \"gaps\": [\"No games are logged. Rollick is invisible to the goldfish. Tergrid's trigger cannot fire there because the goldfish has no opponents. No checker-passed stacks exist for this deck.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T20:42:20-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-study-019.json"
+    }
+  ],
   "call": {
-    "decision": "open",
-    "decided_by": [],
-    "pilot_words": "",
-    "reading": ""
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on tergrid, keep the slot open",
+    "reading": "",
+    "at": "2026-11-24"
   },
   "slug_name": "tergrid-god-of-fright-as-the-third-game-changer",
   "facts": [
@@ -107,7 +125,7 @@
   "base_decklist_sha256": null,
   "_meta": {
     "v": 1,
-    "built_at": "2026-11-24T20:26:27-08:00",
+    "built_at": "2026-11-24T20:42:25-08:00",
     "facts": 5
   }
 }

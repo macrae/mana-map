@@ -237,7 +237,7 @@ Earlier calls still standing: the pilot turned down Ancient Tomb (another Game C
 ## Studies
 
 <!-- ctx:gen studies -->
-- **019 open** (—) — Tergrid, God of Fright as the third Game Changer (the pilot: "teregrid is the one") — back in after study 010 cut it for Hangarback Walker;  · open · goldfish saw 1/1 named cards
+- **019 no-change** (pilot, deck-doctor) — Tergrid, God of Fright as the third Game Changer (the pilot: "teregrid is the one") — back in after study 010 cut it for Hangarback Walker;  · 2026-11-24 · goldfish saw 1/1 named cards · “no change on tergrid, keep the slot open”
 - **018 no-change** (pilot, deck-doctor, strategist) — Necropotence as the third Game Changer: life into cards whenever we want them, for the thinnest axis (draw, 3 counted against 10) — in, and  · 2026-11-24 · goldfish saw 0/1 named cards · “no change on necro”
 - **017 approve** (pilot, deck-doctor) — Bitterbloom Bearer: Bitterblossom on a 2-mana flash flyer — a Faerie every upkeep (a death a turn with an outlet), a body Meren returns at t · 2026-11-24 · goldfish saw 1/1 named cards · “approve, make the swap!!!!  Bitterbloom Bearer in for Sheoldred”
 - **016 no-change** (pilot, deck-doctor, rules-question) — Altar of the Wretched // Wretched Bonemass: sacrifice a nontoken creature to draw and mill its power; craft with one or more creatures (a sm · 2026-11-24 · goldfish saw 1/1 named cards · “no satyr wayfinder stays ... no change, park it”
