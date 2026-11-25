@@ -1,0 +1,235 @@
+{
+  "id": "016",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Longshot, Rebel Bowman (Human; noncreature spells cost one less; two damage to each opponent on every noncreature spell) in -- to cast Shark Typhoon earlier and discount the whole deck -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Longshot, Rebel Bowman"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Longshot, Rebel Bowman"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Longshot's cut; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"The question is whether Longshot, Rebel Bowman (3/3 reach, noncreature spells cost {1} less, 2 to each opponent per noncreature spell) earns a slot on jaws-v1 to bring Shark Typhoon and the wheels down a turn. The 99 holds 40 noncreature spells and 21 creatures, the log reads 'slow' in 003, 006 and 007 and records 4 of 9 games as raced, and the pilot wants fewer wheels and more permanents. Longshot is a permanent that speeds the wheels without being one. Pick: Longshot for Reforge the Soul.\",\n  \"log_entries_read\": [\"003\", \"004\", \"006\", \"007\"],\n  \"axes_engaged\": [\n    {\"axis\": \"curve\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"2\"}, \"reading\": \"Longshot (MV 4) replaces a MV 5 card. It joins 11 four-drops in a deck whose modal mana value is 2.\"},\n    {\"axis\": \"interaction\", \"verdict\": \"adequate\", \"measured\": {\"value\": \"8\"}, \"reading\": \"8 against a target of 8. That is why Collective Defiance, with its 4-to-a-creature mode, is the contested cut and not the pick.\"},\n    {\"axis\": \"sweepers\", \"verdict\": \"weakness\", \"measured\": {\"value\": \"0\"}, \"reading\": \"The audit counts 0 sweepers, but Kozilek's Return is in the 99. It deals 2 to each creature, so it leaves a 3/3 Longshot alive.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Reforge the Soul\", \"why\": \"Its hard cost is 5 mana, and its miracle {1}{R} needs it to be the first card drawn in a turn, which a wheel-and-cantrip deck cannot arrange. It is one of 9 cards in the wheel group, and the pilot said 'too many wheels, not enough permanent spells'.\", \"cost_of_cutting\": \"A wheel: 7 cards and Shabraz counters. The wheel group drops from 9 to 8. Its rare turn-one miracle for {1}{R} is the cheapest wheel in the deck. It appears only as a card discarded from hand in the scenario of stack 001, which was proven on an older list.\", \"orphans_stack\": [\"001\"], \"difficulty\": \"contested\"},\n    {\"card\": \"Collective Defiance\", \"why\": \"At 3 mana it is the cheapest wheel to cut, but its wheel mode targets one player and refills an opponent's hand.\", \"cost_of_cutting\": \"A flexible answer (4 to a creature) plus 3 to a player when the interaction count sits exactly on its target of 8. It is the only wheel with a removal mode.\", \"orphans_stack\": [], \"difficulty\": \"painful\"}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Longshot, Rebel Bowman\", \"closes\": \"A WHEEL drawn — the finisher that grows Shabraz seven cards at a time\", \"source\": \"prompt\", \"why\": \"With Valeria Richards it brings Shark Typhoon to {3}{U} and every wheel down by 1 or 2. It pings 2 per noncreature spell across 40 noncreature cards. It blocks fliers. With Gratuitous Violence each ping becomes 4, because Longshot is a creature dealing the damage. It survives Kozilek's Return.\", \"natural_cut\": \"Reforge the Soul\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Teach goldfish cost_reduction to read 'Noncreature spells you cast cost {N} less'. Today it returns None for both Longshot and Valeria Richards.\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"The reason the pilot asked for this card is invisible to the instrument. A try row would price only the ping.\"}\n  ],\n  \"gaps\": [\"No try rows: the reduction is DARK. Study 016's goldfish rows were read on an older list of this branch, and their -42% damage@T10 is not cited.\", \"No recon on Longshot inclusion in Shabraz/Brallin lists.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T15:18:23-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-study016.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "I agree, it's an expensive wheel, I'm ok to cut it",
+    "reading": "Longshot, Rebel Bowman in for Reforge the Soul: a permanent that discounts every noncreature spell (Shark Typhoon with Valeria) and pings each opponent per cast, for the deck's most expensive wheel outside a miracle.",
+    "at": "2026-11-25"
+  },
+  "slug_name": "longshot-rebel-bowman-human-noncreature-spells-c",
+  "facts": [
+    {
+      "id": "S-7e19e1ff-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-7e19e1ff-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-7e19e1ff-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-7e19e1ff-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Human Rebel Ally · {3}{R} — Reach (This creature can block creatures with flying.) Noncreature spells you cast cost {1} less to cast. Whenever you cast a noncreature spell, Longshot deals 2 damage to each opponent.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Longshot, Rebel Bowman"
+    },
+    {
+      "id": "S-7e19e1ff-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Valeria Richards, Precocious (0.91), Torbran, Thane of Red Fell (0.80), Deflecting Swat (0.79)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Longshot, Rebel Bowman",
+      "neighbours": [
+        {
+          "name": "Valeria Richards, Precocious",
+          "score": 0.9135
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.795
+        },
+        {
+          "name": "Deflecting Swat",
+          "score": 0.7899
+        }
+      ]
+    },
+    {
+      "id": "S-7e19e1ff-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Longshot, Rebel Bowman",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-7e19e1ff-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-7e19e1ff-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-7e19e1ff-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-7e19e1ff-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-7e19e1ff-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-7e19e1ff-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-7e19e1ff-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Longshot, Rebel Bowman"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "4d978955282b1d5d863066859a8060d5faccf1b9dba88f766c9a302892c73fb5",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T15:25:38-08:00",
+    "facts": 13
+  }
+}
