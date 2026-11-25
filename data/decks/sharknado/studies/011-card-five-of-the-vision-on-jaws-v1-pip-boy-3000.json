@@ -1,0 +1,235 @@
+{
+  "id": "011",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card five of the vision on jaws-v1: Pip-Boy 3000 (equipment; on attack: loot, a +1/+1 counter, or untap two lands) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Pip-Boy 3000"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Pip-Boy 3000"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Pip-Boy's cut; verbatim",
+      "text": "PIP-BOY 3000: NO CHANGE (the doctor, judging Pip-Boy and Monument separately; no shared cut).\n- For Mask of Memory, the goldfish reads Pip-Boy worse even as a ceiling (it counts a loot as a free draw): damage @T10 -3.6 [-5.1,-2.2], extra cards by T8 -0.8 [-0.9,-0.7], 13 of 17 rows no call. On the card, Mask is the stronger loot: equip {1}, not {2}; it draws two; Shabraz flies, so \"on damage\" is usually met.\n- For Swiftfoot Boots the goldfish reads 7 rows better (damage +6.6 [+5.1,+8.2], extra cards +1.1 [+1.0,+1.2]) — a ceiling that cannot see hexproof (no removal). Protection is for the A team: not a reason to cut Boots.\n- Lizard Blades not tested: it doubles commander damage; multipliers stay.\n- Pip-Boy's best mode overlaps Mask; the land-untap mode is a small edge. Not a clear, obvious upgrade over any of the three.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T13:46:19-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-pip.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on Pip-Boy",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "card-five-of-the-vision-on-jaws-v1-pip-boy-3000",
+  "facts": [
+    {
+      "id": "S-36b8d808-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-36b8d808-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-36b8d808-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-36b8d808-04",
+      "kind": "oracle",
+      "text": "Artifact — Equipment · {1} — Whenever equipped creature attacks, choose one — • Sort Inventory — Draw a card, then discard a card. • Pick a Perk — Put a +1/+1 counter on that creature. • Check Map — Untap up to two target lands. Equip {2}",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Pip-Boy 3000"
+    },
+    {
+      "id": "S-36b8d808-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Mask of Memory (0.94), Archmage Emeritus (0.88), Esper Sentinel (0.88)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Pip-Boy 3000",
+      "neighbours": [
+        {
+          "name": "Mask of Memory",
+          "score": 0.9363
+        },
+        {
+          "name": "Archmage Emeritus",
+          "score": 0.8841
+        },
+        {
+          "name": "Esper Sentinel",
+          "score": 0.8757
+        }
+      ]
+    },
+    {
+      "id": "S-36b8d808-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Pip-Boy 3000",
+      "state": "seen",
+      "channels": [
+        "combat"
+      ]
+    },
+    {
+      "id": "S-36b8d808-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-36b8d808-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-36b8d808-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-36b8d808-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-36b8d808-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-36b8d808-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-36b8d808-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Pip-Boy 3000"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "fa258793adc4407efa6981508476769f7b106eecce4c065023736176e459d815",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T13:49:38-08:00",
+    "facts": 13
+  }
+}
