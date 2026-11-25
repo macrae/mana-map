@@ -21,15 +21,15 @@
   "size": 100,
   "lands": 35,
   "status": {
-    "complete": 12,
+    "complete": 11,
     "of": 19,
-    "stale": [],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
+    "stale": [
+      "map"
     ],
-    "invalid": [],
+    "older_model": [],
+    "invalid": [
+      "CONTEXT.md"
+    ],
     "verified": true,
     "missing": [
       "frame",
@@ -120,8 +120,8 @@
       "proposal": null,
       "base_version": 24,
       "size": 100,
-      "add": 12,
-      "out": 12,
+      "add": 13,
+      "out": 13,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -389,7 +389,7 @@
         },
         {
           "name": "Sheoldred, Whispering One",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shriekmaw",
@@ -530,8 +530,8 @@
       "proposal": null,
       "base_version": null,
       "size": 100,
-      "add": 25,
-      "out": 25,
+      "add": 26,
+      "out": 26,
       "cards": [
         {
           "name": "Agadeem's Awakening // Agadeem, the Undercrypt",
@@ -815,7 +815,7 @@
         },
         {
           "name": "Sheoldred, Whispering One",
-          "is_new": false
+          "is_new": true
         },
         {
           "name": "Shriekmaw",
@@ -1440,6 +1440,70 @@
   ],
   "studies": [
     {
+      "id": "019",
+      "question": "Tergrid, God of Fright as the third Game Changer (the pilot: \"teregrid is the one\") — back in after study 010 cut it for Hangarback Walker; for what?",
+      "branch": null,
+      "file": "019-tergrid-god-of-fright-as-the-third-game-changer.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Tergrid, God of Fright // Tergrid's Lantern"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "018",
+      "question": "Necropotence as the third Game Changer: life into cards whenever we want them, for the thinnest axis (draw, 3 counted against 10) — in, and for what?",
+      "branch": null,
+      "file": "018-necropotence-as-the-third-game-changer-life-into.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "no change on necro",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Necropotence"
+      },
+      "goldfish_saw": [
+        0,
+        1
+      ]
+    },
+    {
+      "id": "017",
+      "question": "Bitterbloom Bearer: Bitterblossom on a 2-mana flash flyer — a Faerie every upkeep (a death a turn with an outlet), a body Meren returns at two — in, and for what?",
+      "branch": null,
+      "file": "017-bitterbloom-bearer-bitterblossom-on-a-2-mana-fla.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "approve, make the swap!!!!  Bitterbloom Bearer in for Sheoldred",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Bitterbloom Bearer"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "016",
       "question": "Altar of the Wretched // Wretched Bonemass: sacrifice a nontoken creature to draw and mill its power; craft with one or more creatures (a small one to make a body to sacrifice, a used fatty for an attacker or blocker), then return the Altar from the graveyard for {2}{B} — in, and for what?",
       "branch": null,
@@ -1785,8 +1849,8 @@
     }
   ],
   "handbook": {
-    "list_sha": "105b2fc28f73",
-    "list_version": 32,
+    "list_sha": "62503cb59767",
+    "list_version": null,
     "prose": null,
     "procedures": null,
     "tutors": null,
@@ -1955,7 +2019,7 @@
           "source": "goldfish_metrics.json"
         },
         "commander_mean_turn": {
-          "value": 4.276,
+          "value": 4.289,
           "tier": "data",
           "weight": "body",
           "definition": "mean turn the commander is first cast",
@@ -1971,7 +2035,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out": {
-          "value": 66,
+          "value": 65,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out' by turn six",
@@ -1979,7 +2043,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn": {
-          "value": 48,
+          "value": 47,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn' by turn six",
@@ -1987,7 +2051,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)": {
-          "value": 53,
+          "value": 54,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)' by turn six",
@@ -1995,7 +2059,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return": {
-          "value": 70,
+          "value": 71,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return' by turn six",
@@ -2003,7 +2067,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience": {
-          "value": 35,
+          "value": 34,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience' by turn six",
@@ -2011,7 +2075,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience": {
-          "value": 24,
+          "value": 23,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience' by turn six",
@@ -2019,7 +2083,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)": {
-          "value": 37,
+          "value": 39,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling \"A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)\" by turn six",
@@ -2027,7 +2091,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:A TUTOR drawn — finds the missing half of the experience engine": {
-          "value": 45,
+          "value": 44,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'A TUTOR drawn — finds the missing half of the experience engine' by turn six",
@@ -2043,7 +2107,7 @@
           "source": "goldfish_metrics.json"
         },
         "target:REMOVAL drawn — a spell or a returning body that answers a permanent": {
-          "value": 82,
+          "value": 83,
           "tier": "data",
           "weight": "body",
           "definition": "share of games assembling 'REMOVAL drawn — a spell or a returning body that answers a permanent' by turn six",
@@ -2117,7 +2181,7 @@
           "source": "goldfish_metrics.json"
         },
         "keepable_sevens": {
-          "value": 80,
+          "value": 81,
           "tier": "data",
           "weight": "body",
           "definition": "share of opening sevens the model would keep — two to five lands, up to two redraws",
@@ -2128,15 +2192,15 @@
         "mana_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 7.753,
-            "2": 2.195,
-            "3": 3.16,
-            "4": 3.988,
-            "5": 4.69,
-            "6": 5.355,
-            "7": 5.96,
-            "8": 6.554,
-            "9": 7.147
+            "10": 7.752,
+            "2": 2.191,
+            "3": 3.151,
+            "4": 3.978,
+            "5": 4.686,
+            "6": 5.342,
+            "7": 5.94,
+            "8": 6.535,
+            "9": 7.141
           },
           "tier": "data",
           "weight": "detail",
@@ -2147,15 +2211,15 @@
         "land_drops_by_turn": {
           "value": {
             "1": 0.999,
-            "10": 0.556,
-            "2": 0.997,
-            "3": 0.911,
-            "4": 0.788,
-            "5": 0.684,
-            "6": 0.606,
-            "7": 0.566,
+            "10": 0.557,
+            "2": 0.998,
+            "3": 0.91,
+            "4": 0.787,
+            "5": 0.692,
+            "6": 0.601,
+            "7": 0.56,
             "8": 0.552,
-            "9": 0.547
+            "9": 0.552
           },
           "tier": "data",
           "weight": "detail",
@@ -2165,16 +2229,16 @@
         },
         "bodies_by_turn": {
           "value": {
-            "1": 0.172,
-            "10": 16.927,
-            "2": 0.833,
-            "3": 1.536,
-            "4": 2.118,
-            "5": 3.825,
-            "6": 5.999,
-            "7": 8.397,
-            "8": 11.033,
-            "9": 13.868
+            "1": 0.176,
+            "10": 17.573,
+            "2": 0.875,
+            "3": 1.601,
+            "4": 2.193,
+            "5": 3.935,
+            "6": 6.19,
+            "7": 8.684,
+            "8": 11.407,
+            "9": 14.366
           },
           "tier": "data",
           "weight": "detail",
@@ -2184,13 +2248,13 @@
         },
         "opening_land_distribution": {
           "value": {
-            "0": 306,
-            "1": 1556,
-            "2": 2943,
-            "3": 2837,
-            "4": 1721,
-            "5": 537,
-            "6": 90,
+            "0": 333,
+            "1": 1454,
+            "2": 2890,
+            "3": 2986,
+            "4": 1675,
+            "5": 560,
+            "6": 92,
             "7": 10
           },
           "tier": "data",
@@ -2200,12 +2264,13 @@
         },
         "kill_distribution": {
           "value": {
-            "10": 1466,
-            "5": 4,
-            "6": 155,
-            "7": 1424,
-            "8": 3137,
-            "9": 3118
+            "10": 1331,
+            "4": 1,
+            "5": 12,
+            "6": 229,
+            "7": 1728,
+            "8": 3265,
+            "9": 2837
           },
           "tier": "data",
           "weight": "detail",
@@ -2221,7 +2286,7 @@
   "goldfish": {
     "seed": 42,
     "iterations": 10000,
-    "commander_mean_cast_turn": 4.276,
+    "commander_mean_cast_turn": 4.289,
     "commander_cast_by_turn_6_pct": 91,
     "targets": [
       {
@@ -2230,35 +2295,35 @@
       },
       {
         "label": "A REPEATABLE FODDER ENGINE drawn — a body every turn (or a body that returns itself); what the outlet eats while Meren is out",
-        "by_turn_6_pct": 66
+        "by_turn_6_pct": 65
       },
       {
         "label": "THE EXPERIENCE ENGINE drawn — a free outlet AND a repeatable fodder engine; the pair that puts a counter on Meren every turn",
-        "by_turn_6_pct": 48
+        "by_turn_6_pct": 47
       },
       {
         "label": "AN EXPERIENCE MULTIPLIER drawn — more counters per event or counters without a death (Constrictor, Toph, proliferate)",
-        "by_turn_6_pct": 53
+        "by_turn_6_pct": 54
       },
       {
         "label": "A YARD LOADER drawn — a fatty in the graveyard for Meren (or a reanimation spell) to return",
-        "by_turn_6_pct": 70
+        "by_turn_6_pct": 71
       },
       {
         "label": "CHEAP REANIMATION drawn — a fatty to the battlefield without waiting on experience",
-        "by_turn_6_pct": 35
+        "by_turn_6_pct": 34
       },
       {
         "label": "THE EARLY FATTY LINE drawn — a yard loader AND cheap reanimation; the turn-three-to-five fatty that does not use experience",
-        "by_turn_6_pct": 24
+        "by_turn_6_pct": 23
       },
       {
         "label": "A TABLE-WIDE DEATH DRAIN drawn — 'each opponent loses' on our deaths (Kokusho on its own)",
-        "by_turn_6_pct": 37
+        "by_turn_6_pct": 39
       },
       {
         "label": "A TUTOR drawn — finds the missing half of the experience engine",
-        "by_turn_6_pct": 45
+        "by_turn_6_pct": 44
       },
       {
         "label": "RAMP drawn — an accelerant of any kind",
@@ -2266,7 +2331,7 @@
       },
       {
         "label": "REMOVAL drawn — a spell or a returning body that answers a permanent",
-        "by_turn_6_pct": 82
+        "by_turn_6_pct": 83
       },
       {
         "label": "A SACRIFICE TAX drawn — Grave Pact, which turns our deaths into the table's",
@@ -2274,19 +2339,20 @@
       }
     ],
     "combat": {
-      "mean_kill_turn": 8.463,
+      "mean_kill_turn": 8.348,
       "median_kill_turn": 8,
       "kill_by_turn_6_pct": 2,
-      "kill_by_turn_8_pct": 47,
+      "kill_by_turn_8_pct": 52,
       "max_turn": 10,
-      "no_kill_by_max_turn_pct": 7,
+      "no_kill_by_max_turn_pct": 6,
       "kill_turn_histogram": {
-        "10": 1466,
-        "5": 4,
-        "6": 155,
-        "7": 1424,
-        "8": 3137,
-        "9": 3118
+        "10": 1331,
+        "4": 1,
+        "5": 12,
+        "6": 229,
+        "7": 1728,
+        "8": 3265,
+        "9": 2837
       }
     }
   },
@@ -2381,12 +2447,15 @@
     ]
   },
   "next": [
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug meren-recursion` re-reads them when you want, never on its own",
+    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status meren-recursion` names them; fix before anything else reads them",
+    "stale: map — regenerate against the current list (`/publish-deck` sequences it)",
+    "decklist.txt differs from every committed version — commit it so the log can stamp games against a version (`deck-version` will then show it)",
     "not marked as built in paper — if it is sleeved, `deck-version meren-recursion paper --note \"…\"` locks the list you hold (then drift is computed on every swap); if it is not, it is a build plan and the play suggestions below do not apply yet",
-    "DeckCheck copy is V1, the list is V32 — `manamap pilot deck-export meren-recursion --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link meren-recursion deckcheck <url>`",
+    "DeckCheck link carries no version stamp — commit the list, then re-link: `manamap pilot deck-link meren-recursion deckcheck https://deckcheck.co/app/builder/9J8nL50CvGoI`",
     "nothing in the captain's log — play it, then `deck-notes meren-recursion add \"…\" --result win|loss --opponents N`",
-    "branch `budget-v1`: 24 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `budget-v1`: 25 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch budget-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "branch `drain-density-v1`: 45 unproven add(s) under the current harness — `manamap pilot forge-cast-check meren-recursion --branch drain-density-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "study 019 is open: Tergrid, God of Fright as the third Game Changer (the pilot: \"teregrid — `manamap pilot study meren-recursion call 019 …`, then `install`",
     "diagnosis.json describes an older list — `/diagnose-deck meren-recursion`",
     "open questions routed: goldfish ×2, resolve-stack ×1"
   ],

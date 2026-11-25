@@ -1,0 +1,131 @@
+{
+  "id": "017",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Bitterbloom Bearer: Bitterblossom on a 2-mana flash flyer — a Faerie every upkeep (a death a turn with an outlet), a body Meren returns at two — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Bitterbloom Bearer"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Bitterbloom Bearer"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 281.0,
+      "slice": "MODE prescribe, fresh cut search under the strong-prior rule; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Bitterbloom Bearer is a 2-mana repeatable fodder engine: a body now and a flying body every upkeep. It joins the fodder-engine group (7 cards, 79.5% drawn by T6 per deck-audit) and pushes the curve left. The best cut is Sheoldred, Whispering One, the 7-drop at the top of the curve. Meren never returns her free before 7 experience, the cheap reanimation group has other targets at 5-6 mana, and threat-density reads 7 against a target of 3. Every cut below was screened with try (both cards seen); the rows are one instrument's read and are not the reason.\",\n  \"log_entries_read\": [],\n  \"axes_engaged\": [\n    {\"axis\": \"threat-density\", \"verdict\": \"strength\", \"measured\": {\"value\": 7}, \"reading\": \"Finishers are over-supplied, so Sheoldred's wincon:drain slot can go. 6 is still double the target.\"},\n    {\"axis\": \"interaction\", \"verdict\": \"strength\", \"measured\": {\"value\": 17}, \"reading\": \"Removal is the over-supplied role. Sheoldred and Grist are both in the 17, so either cut leaves 16.\"},\n    {\"axis\": \"card-advantage\", \"verdict\": \"weakness\", \"measured\": {\"value\": 3}, \"reading\": \"The thin axis. No cut here touches Dark Prophecy, Skullclamp or Fell Stinger.\"},\n    {\"axis\": \"protection\", \"verdict\": \"weakness\", \"measured\": {\"value\": 2}, \"reading\": \"Untouched by every cut ranked here.\"},\n    {\"axis\": \"ramp\", \"verdict\": \"weakness\", \"measured\": {\"value\": 8}, \"reading\": \"Untouched. Sakura-Tribe Elder was ruled out for that reason.\"}\n  ],\n  \"cut_candidates\": [\n    {\"card\": \"Sheoldred, Whispering One\",\n     \"why\": \"This is the curve's 7. She is not a Meren target before 7 experience, and the goldfish puts experience 5+ by T6 at 25.4%. Reanimate costs 7 life on her. Threat-density is 7 against 3, and the reanimation lanes have other targets (Archon at 8; Grave Titan, Kokusho, Noxious Gearhulk and Massacre Wurm at 6). Moving from 7 mana to 2 is the largest left shift any cut offers. She is not on the keep list and is in none of the five combo lines. try: experience 5+ by T6 25.4% -> 28.0% (+2.6 [+2.3, +3.0]); the only worse row is turns saved on big bodies, -0.082 [-0.096, -0.069].\",\n     \"cost_of_cutting\": \"The upkeep return lane (a creature from the yard each of our upkeeps, which CONTEXT names as a second return beside Cauldron), the opponents' upkeep edict, and swampwalk. Threat-density drops 7 -> 6 (target 3) and interaction 17 -> 16 (target 8). It leaves Archon as the one 7+ reanimation target.\",\n     \"difficulty\": \"painful\",\n     \"orphans_stack\": []},\n    {\"card\": \"Stitcher's Supplier\",\n     \"why\": \"It mills three on entering and dying, in the yard-loader group of 8 (83.0% drawn by T6), which is the most over-supplied engine group after outlets and removal. Bearer is the same one body as fodder, plus another every upkeep. try: experience 5+ by T6 +2.2 [+1.9, +2.5]; turns saved on big bodies +0.018. Its only worse row is a combo line whole by T8, -0.1 pts.\",\n     \"cost_of_cutting\": \"A turn-1 body, which pushes the curve right by one (1 -> 2). Six mills and a Meren return at 1 experience. The black pip load rises (B -> BB) with black sources already 2 short (34 vs 36). The yard-loader group drops 8 -> 7.\",\n     \"difficulty\": \"contested\",\n     \"orphans_stack\": []},\n    {\"card\": \"Grist, Voracious Larva // Grist, the Plague Swarm\",\n     \"why\": \"This is the like-for-like slot. Grist is in the fodder-engine group of 7 that Bearer joins, so the group stays at 7. Grist's own repeat needs a creature entering from or cast from the yard plus {G} to flip. Bearer's repeat needs nothing. try: experience 5+ by T6 +2.4 [+2.1, +2.8]; no experience or big-body row worse.\",\n     \"cost_of_cutting\": \"A 1-mana deathtouch blocker. A planeswalker that Meren returns and Reassembling Skeleton flip readily, which makes an Insect and mills two each turn. A -2 artifact/enchantment answer (one of several: Assassin's Trophy, Golgari Charm, Boseiju, Cankerbloom). The curve moves right (1 -> 2). Interaction drops 17 -> 16.\",\n     \"difficulty\": \"contested\",\n     \"orphans_stack\": []}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Bitterbloom Bearer\", \"closes\": \"A REPEATABLE FODDER ENGINE drawn\", \"source\": \"prompt\",\n     \"why\": \"A body every upkeep on a 2-drop flash flyer, which is the curve-left fodder the experience goal wants. Not a Game Changer, and it opens no combo line in deck-facts.\",\n     \"natural_cut\": \"Sheoldred, Whispering One\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Does Buried Alive outrank Stitcher's Supplier as the loader to cut?\", \"settled_by\": \"research-strategy\",\n     \"why_it_matters\": \"try put the cost of a Buried Alive cut at -3.8 pts on a 6+ drop by T6 and -0.281 on turns saved, and the pilot defended it against Unmarked Grave. So it is ranked below Supplier.\"}\n  ],\n  \"gaps\": [\n    \"No games logged. The Sheoldred upkeep lane's real value at the table is unmeasured.\",\n    \"The goldfish does not price Sheoldred's edict, the deathtouch on Grist or Bearer's flash, so try's rows are a partial read.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T19:41:48-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-study017.json"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "approve, make the swap!!!!  Bitterbloom Bearer in for Sheoldred",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "bitterbloom-bearer-bitterblossom-on-a-2-mana-fla",
+  "facts": [
+    {
+      "id": "S-17fe717e-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-17fe717e-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-17fe717e-03",
+      "kind": "oracle",
+      "text": "Creature — Faerie Rogue · {B}{B} — Flash Flying At the beginning of your upkeep, you lose 1 life and create a 1/1 blue and black Faerie creature token with flying.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Bitterbloom Bearer"
+    },
+    {
+      "id": "S-17fe717e-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Bitterblossom (0.97), Wriggling Grub (0.85), Ophiomancer (0.84)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Bitterbloom Bearer",
+      "neighbours": [
+        {
+          "name": "Bitterblossom",
+          "score": 0.9682
+        },
+        {
+          "name": "Wriggling Grub",
+          "score": 0.846
+        },
+        {
+          "name": "Ophiomancer",
+          "score": 0.8446
+        }
+      ]
+    },
+    {
+      "id": "S-17fe717e-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Bitterbloom Bearer",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "recursion"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Bitterbloom Bearer"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Bitterbloom Bearer",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Bitterbloom Bearer",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T19:41:53-08:00",
+    "facts": 5
+  }
+}

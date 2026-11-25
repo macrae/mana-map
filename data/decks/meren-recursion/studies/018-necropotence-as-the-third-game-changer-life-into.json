@@ -1,0 +1,147 @@
+{
+  "id": "018",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Necropotence as the third Game Changer: life into cards whenever we want them, for the thinnest axis (draw, 3 counted against 10) — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Necropotence"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Necropotence"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 126.0,
+      "slice": "MODE prescribe: Necropotence as the third Game Changer; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: is Necropotence clearly advantageous as the third Game Changer. No. The draw axis reads 3 because the taxonomy counts only Dark Prophecy, Fell Stinger and Skullclamp; the audit itself names five uncounted draw cards (Archon of Cruelty, Festering Thicket, Nurturing Peatland, Unshakable Tail, Yawgmoth) and Sylvan Library carries no role at all, before Meren's own end-step return. Necropotence also fights the deck: it switches Sylvan Library off outright (no draw step), exiles every discard from seven in-deck discard effects, and draws from the life total that Dark Prophecy, Yawgmoth, Bitterblossom and Bitterbloom Bearer already spend.\",\n  \"log_entries_read\": [],\n  \"axes_engaged\": [\n    {\"axis\": \"card-advantage\", \"verdict\": \"adequate\", \"measured\": {\"value\": 3},\n     \"reading\": \"A taxonomy floor, not a shortage: five draw cards the audit lists as possibly uncounted, plus Sylvan Library with no role, plus Meren. Sylvan Library is the one Necropotence turns off.\"},\n    {\"axis\": \"colour-sources\", \"verdict\": \"weakness\", \"measured\": {\"value\": -2},\n     \"reading\": \"Black is 34 sources against a target of 36. Necropotence would be the fifth BBB card, after Cavalier of Night, Dark Prophecy, Grave Pact and Massacre Wurm.\"},\n    {\"axis\": \"interaction\", \"verdict\": \"adequate\", \"measured\": {\"value\": 16},\n     \"reading\": \"The 16 counts Animate Dead, Altar of Dementia, Grave Pact, Jarad, Hapatra and Yawgmoth. The removal spells proper are fewer, so this axis is not a free source of cuts.\"}\n  ],\n  \"cut_candidates\": [],\n  \"add_candidates\": [],\n  \"open_questions\": [\n    {\"question\": \"If the pilot takes Necropotence anyway, is Sylvan Library the cut? It does nothing under Necropotence and fills the same job, life for cards.\",\n     \"settled_by\": \"research-strategy\",\n     \"why_it_matters\": \"It is the only cut that removes an anti-synergy rather than adding one. Its cost is selection every turn at {1}{G}, and its ability works without the third Game Changer slot.\"}\n  ],\n  \"gaps\": [\n    \"No games are logged, so nothing from play says draw runs out. The draw shortage rests on a taxonomy count only.\",\n    \"The goldfish cannot read Necropotence (invisible), and on the brief's instruction try was not run. The life-budget cost per turn is argued from oracle text, not measured.\",\n    \"The third Game Changer slot staying open is allowed: the pilot's standing rule is clear upgrades only.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T20:14:44-08:00",
+      "from": "data/decks/meren-recursion/.agent-out/deck-doctor-prescribe-study-018.json"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 130.0,
+      "slice": "Necropotence in Meren; verbatim (condensed paragraphs, run list omitted)",
+      "text": "Lean: Necropotence is not the right third Game Changer for this deck. Of the four, Gaea's Cradle is the best fit, and \"no change, leave the slot open\" is also defensible. All of this is argument. Nothing here is verified, and I ran no stack or goldfish.\n\n**Life as a resource (argument).** Paying life for cards is a normal rate. 40 life makes aggressive life payments \"price in at a discount\" (strategy:life-as-resource). But the same section says the total is attacked from three directions, so you track each opponent's clock separately. Meren is the slow, durable seat in a 4-player pod, and the deck already pays life elsewhere: Bitterblossom, Bearer, Dark Prophecy, Vampiric Tutor and the lands. Necro would add a large, uncapped drain on top. Refunds exist (Zulaport, Kokusho, drains), but they come on-plan, not on demand. The framework says to price life-costed draw against the drain that refunds it (strategy:card-advantage.plan-draw).\n\n**Draw shape (argument).** strategy:card-advantage.plan-draw says an aristocrat or typal deck that empties its hand by turn 7 wants steady draw and on-plan draw split, not stacked. Necro is steady draw. Against that: it skips your draw step, BBB is heavy in a two-colour deck with 35 lands, the cards arrive at the end step, and it exiles every card you discard — Fauna Shaman's discard, Six's retrace discards and hand-size discards. Necro also adds nothing to experience by turn 6: no deaths, no counters, no bodies.\n\n**The alternatives against that goal (argument).** Gaea's Cradle is a land, so it costs no spell slot; it turns bodies into mana, and Hangarback, tokens and Bitterblossom feed it; it is fragile after a wipe. Bolas's Citadel needs the same life budget as Necro. Tergrid was cut in V31 for Hangarback (\"i like it\", study 010); putting it back reverses a decision the pilot just approved.\n\n**Draw axis.** If draw is the real problem, a Game Changer slot is not the cheapest fix. No option here is clearly advantageous, so an open slot is fine.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:card-advantage.plan-draw",
+          "strategy:life-as-resource"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T20:14:45-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-necro.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no change on necro",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "necropotence-as-the-third-game-changer-life-into",
+  "facts": [
+    {
+      "id": "S-a29c9ac1-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-a29c9ac1-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-a29c9ac1-03",
+      "kind": "oracle",
+      "text": "Enchantment · {B}{B}{B} — Skip your draw step. Whenever you discard a card, exile that card from your graveyard. Pay 1 life: Exile the top card of your library face down. Put that card into your hand at the beginning of your next end step.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Necropotence",
+      "game_changer": true
+    },
+    {
+      "id": "S-a29c9ac1-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Grave Researcher // Reanimate (0.85), Nyx Weaver (0.85), Unshakable Tail (0.83)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Necropotence",
+      "neighbours": [
+        {
+          "name": "Grave Researcher // Reanimate",
+          "score": 0.8492
+        },
+        {
+          "name": "Nyx Weaver",
+          "score": 0.8466
+        },
+        {
+          "name": "Unshakable Tail",
+          "score": 0.833
+        }
+      ]
+    },
+    {
+      "id": "S-a29c9ac1-05",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Necropotence",
+      "state": "invisible",
+      "channels": []
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Necropotence"
+    ],
+    "unknown": [],
+    "share": 0.0
+  },
+  "absent": [
+    {
+      "card": "Necropotence",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Necropotence",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "62503cb59767d1dea517722bf3a80b7d578f687888c4a1e93fca82eefc045f8b",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T20:14:51-08:00",
+    "facts": 5
+  }
+}
