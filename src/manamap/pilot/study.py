@@ -382,7 +382,7 @@ def install(slug, study_id):
     # studies too, so an install left them behind and the push gate's restamp preflight
     # stopped on it. The same root as the Context's block, one file over.
     from manamap.pilot import restamp
-    restamp.run(quiet=True)
+    restamp.run(quiet=True, slug=slug)
     return out, notes
 
 

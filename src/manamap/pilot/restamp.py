@@ -63,16 +63,22 @@ def _rewrite(path, write):
     return before, after
 
 
-def run(check=False, quiet=False):
-    """Restamp everything; returns the paths that were (or, checking, would be) rewritten."""
+def run(check=False, quiet=False, slug=None):
+    """Restamp everything; returns the paths that were (or, checking, would be) rewritten.
+
+    `slug` SCOPES IT TO ONE DECK (2026-11-24): its versions and info files and the deck
+    index under `config.DECKS_DIR`, and never the fleet file, whose path is fixed to the
+    repository -- an unscoped run from `study install` under a test's temporary decks folder
+    rewrote the real `data/fleet/analytics.json` from a one-deck fleet."""
     from manamap.pilot import deck_info, deck_manifest, deck_versions, fleet_analytics
     jobs = []
     # THE RAP SHEET (2026-11-12): `versions.json` counts each version's logged games,
     # so logging a game stales it, and the freshness gate caught two decks fifteen
     # minutes in after the pod night. About a second a deck; first, since nothing
     # below reads it but it reads nothing composed either.
+    only = slug
     for slug, branch in targets("versions.json"):
-        if branch:
+        if branch or (only and slug != only):
             continue
         vargs = type("Args", (), {"slug": slug, "action": "list", "ref": None, "write": True,
                                   "as_json": False, "full": False, "at": None, "note": None,
@@ -80,10 +86,13 @@ def run(check=False, quiet=False):
         jobs.append((config.DECKS_DIR / slug / "versions.json",
                      lambda a=vargs: deck_versions.main(a)))
     for slug, branch in targets("info.json"):
+        if only and slug != only:
+            continue
         args = type("Args", (), {"slug": slug, "branch": branch, "write": True})()
         jobs.append((_info_path(slug, branch), lambda a=args: deck_info.main(a)))
-    # AFTER every info.json: both read it.
-    jobs.append((fleet_analytics.ARTIFACT, lambda: fleet_analytics.write()))
+    # AFTER every info.json: both read it. The fleet file only on an unscoped run.
+    if not only:
+        jobs.append((fleet_analytics.ARTIFACT, lambda: fleet_analytics.write()))
     jobs.append((config.DECKS_DIR / "index.json",
                  lambda: deck_manifest.write_manifest(deck_manifest.gather_entries())))
     changed, restore = [], []

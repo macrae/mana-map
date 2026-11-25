@@ -314,4 +314,16 @@ def test_installing_a_study_re_renders_the_deck_context_s_generated_blocks(deck,
     st.write("x", doc)
     st.install("x", doc["id"])
     assert seen == ["x"]
-    assert stamped, "install must restamp the composed status files (info.json, the index)"
+    assert stamped and stamped[0].get("slug") == "x", \
+        "install must restamp ITS deck's composed files, scoped -- never the fleet file"
+
+
+def test_a_scoped_restamp_never_writes_the_fleet_file(deck, monkeypatch):
+    """The fleet file's path is the repository's, not the test's decks folder: an unscoped
+    restamp from `study install` rewrote the real one from a one-deck fleet (2026-11-24)."""
+    from manamap.pilot import fleet_analytics, restamp
+    wrote = []
+    monkeypatch.setattr(fleet_analytics, "write", lambda *a, **k: wrote.append(1))
+    monkeypatch.setattr("manamap.pilot.deck_manifest.write_manifest", lambda *a, **k: None)
+    restamp.run(quiet=True, slug="x")
+    assert wrote == []
