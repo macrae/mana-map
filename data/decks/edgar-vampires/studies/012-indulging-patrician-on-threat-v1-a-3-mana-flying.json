@@ -1,0 +1,255 @@
+{
+  "id": "012",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Indulging Patrician on threat-v1: a 3-mana flying lifelink Vampire that drains each opponent 3 at our end step if we gained 3 life — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Indulging Patrician"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Indulging Patrician"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 211.0,
+      "slice": "MODE prescribe: Patrician's cut and the 3-life condition; the doctor's write-up as saved",
+      "text": "{\n \"reading\": \"Asked: should Indulging Patrician go into threat-v1, and for what. It is a 3-mana Vampire (an eminence token) and a 3-to-each-opponent end-step drain gated on gaining 3 life that turn. The goldfish's branch mean life gained climbs 1.521 (T5) -> 2.603 (T6) -> 4.477 (T7) -> 7.848 (T8), so the mean gained PER TURN is ~0.8, ~1.1, ~1.9, ~3.4 on T5-T8; by Markov's bound the gate can open on at most ~26% of T5 turns, ~36% of T6 turns and ~62% of T7 turns in the goldfish, and only reaches a mean of 3 on T8, after the deck's T7-8 kill window opens. Even read UNCONDITIONALLY (classify's drain_recurring: 3, a CEILING), the best slot moves killed-by-T10 only +1.7 pts and killed-by-T6 +1.0 pt. It closes no under-target axis (threat-density is already 20 against a floor of 3); the axes under target are card-advantage, ramp, mana-base, interaction-breadth and tutors. Recommendation: NO CHANGE. If the pilot wants it anyway, the cut ranking below prices the three slots it could take.\",\n \"log_entries_read\": [\n  \"007\",\n  \"008\"\n ],\n \"axes_engaged\": [\n  {\n   \"axis\": \"threat-density\",\n   \"verdict\": \"strength\",\n   \"measured\": {\n    \"value\": 20\n   },\n   \"reading\": \"Twenty drain/combat finishers against a floor of 3; Patrician would be the 21st, so it adds redundancy where the deck already has plenty.\"\n  },\n  {\n   \"axis\": \"card-advantage\",\n   \"verdict\": \"weakness\",\n   \"measured\": {\n    \"value\": 7\n   },\n   \"reading\": \"Under the 10 target (the audit lists uncounted draw on Anje, Black Market Connections, Champion of Dusk and others). Patrician draws nothing, and the first-ranked cut, Twilight Prophet, is a draw engine once it ascends.\"\n  }\n ],\n \"cut_candidates\": [\n  {\n   \"card\": \"Twilight Prophet\",\n   \"why\": \"The 4-mana flyer whose payoff waits on ascend (ten permanents). Patrician is a cheaper Vampire flyer that does the same drain-and-gain job, and the goldfish ceiling for this slot is +1.5 pts killed by T10 [+1.3, +1.8] and +0.8 pts killed by T6 [+0.6, +1.0], with extra cards by T8 -0.02 [-0.03, -0.01] and cards in hand @T8 -0.04.\",\n   \"cost_of_cutting\": \"A repeatable card-in-hand engine once the city's blessing arrives, on the axis the pilot calls required ('runs out of steam post T7/8'), and an upkeep life gain that would itself help open Patrician's gate. Card-advantage is already under target at 7.\",\n   \"orphans_stack\": [],\n   \"difficulty\": \"contested\"\n  },\n  {\n   \"card\": \"Wispdrinker Vampire\",\n   \"why\": \"Patrician's nearest in-deck neighbour by function (0.97): a 4-mana flying Vampire drain. Patrician does that job a mana cheaper, and this slot gives the best ceiling of the four screens: +1.7 pts killed by T10 [+1.4, +1.9] and +1.0 pt killed by T6 [+0.8, +1.2].\",\n   \"cost_of_cutting\": \"The pilot restored it on 2026-11-13, crediting it in log 008's win, though the debrief could not match the card he described to its text. It drains 1 each opponent per small creature entering with no gate, and each trigger gains 1, so it is one of the life-gain sources that would open Patrician's gate. Cutting it weakens the gate the add depends on.\",\n   \"orphans_stack\": [],\n   \"difficulty\": \"contested\"\n  },\n  {\n   \"card\": \"Marauding Blight-Priest\",\n   \"why\": \"The same slot shape: a 3-mana Vampire that turns life gain into drain. Ceiling screen: +0.8 pts killed by T10 [+0.6, +1.0], damage @T10 -0.4 [-0.5, -0.4], board power @T6 -0.21.\",\n   \"cost_of_cutting\": \"It orphans checker-passed stack 014 (the Teysa burst turn). It also scales better than Patrician on this deck's many 1-life triggers (Zulaport, Celebrant, Bastion, Elas, Seeker): it drains once per gain event, against Patrician's one trigger per turn. Listed to price it; not recommended.\",\n   \"orphans_stack\": [\n    \"014\"\n   ],\n   \"difficulty\": \"painful\"\n  }\n ],\n \"add_candidates\": [\n  {\n   \"card\": \"Indulging Patrician\",\n   \"closes\": \"threat-density\",\n   \"source\": \"prompt\",\n   \"why\": \"A cheap Vampire (eminence token) with an each-opponent drain of 3 per end step on turns the deck gains 3 or more. In a real four-player pod, Tithe Drinker's extort and Malakir Bloodwitch gain per opponent, which the one-seat goldfish undercounts, so the gate opens more often than the goldfish shows. The axis it closes is already at 20 against a floor of 3, though, so it is not a clear upgrade.\",\n   \"natural_cut\": \"Twilight Prophet\"\n  }\n ],\n \"open_questions\": [\n  {\n   \"question\": \"What fraction of T5-T8 turns does threat-v1 gain 3 or more life at a four-player table? The goldfish keeps only cumulative means, measured against one seat.\",\n   \"settled_by\": \"goldfish\",\n   \"why_it_matters\": \"It decides whether Patrician is a 9-a-turn drain or a 3-mana 1/4. classify's unconditional drain_recurring: 3 makes every Patrician row a ceiling until the gate is modelled.\"\n  }\n ],\n \"gaps\": [\n  \"No per-turn life-gained distribution exists, only cumulative means, so 'how often' is a Markov upper bound on the goldfish and not a measured rate.\",\n  \"The goldfish counts gain against one seat, so extort and Bloodwitch per-opponent gains are undercounted for a four-player table.\",\n  \"Bloodghast was screened and is BLIND to the goldfish, so it was not ranked as a cut.\",\n  \"deck-audit notes that mana_analysis.json is stale for this branch's list.\"\n ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T21:27:36-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-study-012.json"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 36.0,
+      "slice": "Patrician on threat-v1; verbatim (condensed, run list omitted)",
+      "text": "Lean: not a strong include; at best a decent 3-mana Vampire that is a marginal add to threat-v1. I'd call it no change unless a slot is already open (the pilot's rule: only clear upgrades).\n\n- Evidence (card-dossier): Patrician is not in the list or in threat-v1, and the goldfish can see it. Its nearest in-deck neighbours are Wispdrinker Vampire (0.97), Cruel Celebrant (0.96) and Tithe Drinker (0.95), so it duplicates a job the deck already covers.\n- Scope is right (argument). Each-opponent drain is the race half, 3 per opponent against a targeted drain's 1 (strategy:aristocrats.drain-scope). The 3 per fire is a 9 table swing.\n- Per-fire yield is the attraction: 3 life from each opponent per fire (strategy:conversion.yield).\n- The weakness is the trigger. It needs 3 or more life gained that turn, and it fires once per turn, on your own end step only. How often threat-v1 gains 3 or more on a given turn is untested.\n- Redundancy (argument): threat-v1 already runs always-on or per-event each-opponent drain: Zulaport, Elas, Falkenrath Noble, Bastion, Cruel Celebrant, Wispdrinker, Tithe Drinker and Meathook. Vito, Sanguine Bond, Enduring Tenacity and Blight-Priest convert every gain event, with no 3-life threshold and no once-a-turn cap (strategy:life-as-resource.lifegain-engine). Patrician stacks on turns the deck was already gaining; it does not make a gain happen.\n- Fit with the thesis: Patrician is a Vampire, so the eminence token comes with the cast; at 3 mana the body is merely fine.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats.drain-scope",
+          "strategy:conversion.yield",
+          "strategy:life-as-resource.lifegain-engine"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T21:27:36-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-patrician.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no change, on to vito",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "indulging-patrician-on-threat-v1-a-3-mana-flying",
+  "facts": [
+    {
+      "id": "S-b6511286-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-b6511286-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-b6511286-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-b6511286-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire Noble · {1}{W}{B} — Flying Lifelink (Damage dealt by this creature also causes you to gain that much life.) At the beginning of your end step, if you gained 3 or more life this turn, each opponent loses 3 life.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Indulging Patrician"
+    },
+    {
+      "id": "S-b6511286-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Wispdrinker Vampire (0.97), Cruel Celebrant (0.96), Tithe Drinker (0.95)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Indulging Patrician",
+      "neighbours": [
+        {
+          "name": "Wispdrinker Vampire",
+          "score": 0.9716
+        },
+        {
+          "name": "Cruel Celebrant",
+          "score": 0.9569
+        },
+        {
+          "name": "Tithe Drinker",
+          "score": 0.954
+        }
+      ]
+    },
+    {
+      "id": "S-b6511286-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Indulging Patrician",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "drain"
+      ]
+    },
+    {
+      "id": "S-b6511286-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-b6511286-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 34.80, a change of -9.92 (-22%) [-10.7493, -9.0809] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -9.9151,
+      "ci95": [
+        -10.7493,
+        -9.0809
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b6511286-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 85 in 100, a swing of 4 games per 100 [-0.0501, -0.0335] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0418,
+      "ci95": [
+        -0.0501,
+        -0.0335
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b6511286-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.70, a change of -2.01 (-17%) [-2.1889, -1.8281] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0085,
+      "ci95": [
+        -2.1889,
+        -1.8281
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b6511286-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.52, a change of -0.42 (-14%) [-0.4959, -0.3459] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4209,
+      "ci95": [
+        -0.4959,
+        -0.3459
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-b6511286-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.004 is smaller than the 0.015 this run can resolve [-0.0068, 0.0138] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0035,
+      "ci95": [
+        -0.0068,
+        0.0138
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-b6511286-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Indulging Patrician"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T21:27:43-08:00",
+    "facts": 13
+  }
+}

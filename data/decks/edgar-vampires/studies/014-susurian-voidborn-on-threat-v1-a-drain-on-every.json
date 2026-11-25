@@ -1,0 +1,264 @@
+{
+  "id": "014",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast it from exile, two Edgar tokens from one card — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Susurian Voidborn"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Susurian Voidborn"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 186.0,
+      "slice": "MODE prescribe: Voidborn's cut; verbatim (orchestrator note trimmed)",
+      "text": "MY PICK: Susurian Voidborn IN, Yahenni, Undying Partisan OUT. It is contested, not a clear upgrade. If the pilot holds to \"only clear, obvious upgrades\", the answer is NO CHANGE.\n\n**Why it fits.** Voidborn answers the pilot's ask better than studies 012 and 013 did. Warp is two Vampire casts from one card, so two Edgar eminence tokens: {B} early, then {2}{B} from exile later. Its drain also counts artifacts dying, which covers Treasure from Pitiless Plunderer and Black Market Connections, and Blood from Anje and Bloodtithe Harvester. Its gain on each death turns on Oathsworn's graveyard cast.\n\n**Overlap.** I read the oracle text of all seven death drains on threat-v1. Six drain each opponent: Zulaport, Cruel Celebrant, Elas, Bastion, Meathook and Vraan (once a turn). Only Blood Artist targets one player. Voidborn would be the second single-target one, so per death it pays a third of what Zulaport pays in a four-player pod. It is not a better drain slot than any of the six.\n\n**Goldfish rows (a floor: warp and artifact deaths are not modelled).**\n- Out Yahenni: 8 better, 2 worse. Killed by T10 +1.0 pts [+0.7, +1.2], damage @T10 +1.6 [+1.4, +1.8], life lost outside combat +1.3 [+1.1, +1.5].\n- Out Blood Artist: 6 worse, 1 better. Killed by T10 -1.1 pts [-1.3, -0.8], killed outside combat by T10 -2.2 pts [-2.5, -1.9].\n- Out Sanctum Seeker: 7 worse, 3 better. Life gained by T8 -0.85, damage @T10 -1.1.\n- Out Clever Concealment: no rows. The goldfish is blind to it.\n\n**Ranked cuts:**\n1. **Yahenni (contested).** It is a 3-mana Vampire whose counters only come from opponents' creatures dying, and this deck mostly kills its own. Cost: it is one of six cards in the free-outlet target (measured 76.0%), and the only outlet that turns itself indestructible against a wipe. It is in no stack.\n2. **Blood Artist (painful, not recommended).** Same shape at 2 mana, and it also counts opponents' creatures. The log credits it in games 002, 006 and 008, and the floor reads it worse.\n3. **Sanctum Seeker (painful, not recommended).** It is in checker-passed stacks 001, 003, 005 and 007, so those would be orphaned. With wide Vampire attacks it drains each opponent per attacker, and the floor reads it worse.\n\nVoidborn closes no under-target axis (card-advantage 7 vs 10, ramp 8 vs 10, mana-base, interaction-breadth, tutors).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T21:49:08-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-voidborn.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "elapsed_s": 120.0,
+      "slice": "rules: warp casts and eminence, early death, artifact tokens dying, Oathsworn's condition; verbatim (card text and run list omitted)",
+      "text": "Short answers: Q1 Yes (the warp cast and the later cast from exile each trigger eminence). Q2 Yes: Voidborn goes to the graveyard, its own drain triggers, and it loses the exile-cast permission. Q3 Yes. Q4 Yes, if the drain resolves with a legal target opponent and the gain happens.\n\nQ1. Yes, both casts.\n- The warp cast is still a cast: \"To cast a spell is to take it from where it is (usually the hand), put it on the stack, and pay its costs, so that it will eventually resolve and have its effect.\" (CR 601.2). Warp only changes the cost: \"You may cast this card from your hand by paying [cost] rather than its mana cost\" (CR 702.185a).\n- Voidborn is a Vampire spell. Edgar's eminence fires on \"you cast another Vampire spell\". Edgar must be in the command zone or on the battlefield at the cast and when the trigger resolves (Edgar ruling, 2025-01-24).\n- The later cast from exile is a new cast. CR 702.185a: \"Its owner may cast this card after the current turn has ended for as long as it remains exiled.\" That cast goes through CR 601.2 again, so eminence triggers again. (Reading: the exile cast is not a warp cast.)\n- Casting Oathsworn from the graveyard is also a Vampire spell cast, so eminence triggers there too.\n\nQ2. Yes, it dies and its drain triggers. It loses the exile permission.\n- \"The term dies means 'is put into a graveyard from the battlefield.'\" (CR 700.4). \"To sacrifice a permanent, its controller moves it from the battlefield directly to its owner's graveyard.\" (CR 701.21a).\n- Self-trigger: the 2025-07-25 ruling says that when it dies with other creatures or artifacts, \"its first ability will still trigger for itself and each of those creatures and artifacts.\" (CR 603.10a look-back).\n- The exile never happens: CR 603.7c — the delayed trigger won't affect an object no longer in the expected zone. A card in the graveyard is a new object (CR 400.7). The permission exists only \"for as long as it remains exiled\" (CR 702.185a).\n\nQ3. Yes.\n- Treasure (CR 111.10a) and Blood (CR 111.10g) are artifact tokens. Sacrificing moves it to the graveyard (CR 701.21a), which is \"dies\" (CR 700.4). CR 111.7: \"(Note that if a token changes zones, applicable triggered abilities will trigger before the token ceases to exist.)\" Also CR 603.6c.\n\nQ4. Yes, if Voidborn's drain resolves with a legal target opponent.\n- Oathsworn ruling 2018-01-19: \"Oathsworn Vampire's last ability cares only whether you gained life in the turn, even if Oathsworn Vampire wasn't in your graveyard when that happened.\" Life gain per CR 119.3; 0 life is no event (CR 119.9).\n- Caveat, Voidborn ruling 2025-07-25: \"If the target opponent is an illegal target as Susurian Voidborn's first ability tries to resolve, it won't resolve and none of its effects will happen. You won't gain life.\"\n\nNot settled: nothing material.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "111.10a",
+          "111.10g",
+          "111.7",
+          "119.3",
+          "119.9",
+          "400.7",
+          "601.2",
+          "603.10a",
+          "603.7c",
+          "700.4",
+          "701.21a",
+          "702.185a"
+        ]
+      },
+      "added_at": "2026-11-24T21:49:08-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/rules-voidborn.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "rules-question"
+    ],
+    "pilot_words": "approve the change",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "susurian-voidborn-on-threat-v1-a-drain-on-every",
+  "facts": [
+    {
+      "id": "S-ace6ddea-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-ace6ddea-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-ace6ddea-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-ace6ddea-04",
+      "kind": "oracle",
+      "text": "Creature — Vampire Soldier · {2}{B} — Whenever this creature or another creature or artifact you control dies, target opponent loses 1 life and you gain 1 life. Warp {B} (You may cast this card from your hand for its warp cost. Exile this creature at the beginning of the next end step, then you may cast it from exile on a later turn.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Susurian Voidborn"
+    },
+    {
+      "id": "S-ace6ddea-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Blood Artist (0.96), Sanctum Seeker (0.93), Vito, Thorn of the Dusk Rose (0.93)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Susurian Voidborn",
+      "neighbours": [
+        {
+          "name": "Blood Artist",
+          "score": 0.9584
+        },
+        {
+          "name": "Sanctum Seeker",
+          "score": 0.9315
+        },
+        {
+          "name": "Vito, Thorn of the Dusk Rose",
+          "score": 0.931
+        }
+      ]
+    },
+    {
+      "id": "S-ace6ddea-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Susurian Voidborn",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "sacrifice"
+      ]
+    },
+    {
+      "id": "S-ace6ddea-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-ace6ddea-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 34.80, a change of -9.92 (-22%) [-10.7493, -9.0809] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -9.9151,
+      "ci95": [
+        -10.7493,
+        -9.0809
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-ace6ddea-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 85 in 100, a swing of 4 games per 100 [-0.0501, -0.0335] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0418,
+      "ci95": [
+        -0.0501,
+        -0.0335
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-ace6ddea-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.70, a change of -2.01 (-17%) [-2.1889, -1.8281] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0085,
+      "ci95": [
+        -2.1889,
+        -1.8281
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-ace6ddea-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.52, a change of -0.42 (-14%) [-0.4959, -0.3459] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4209,
+      "ci95": [
+        -0.4959,
+        -0.3459
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-ace6ddea-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.004 is smaller than the 0.015 this run can resolve [-0.0068, 0.0138] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0035,
+      "ci95": [
+        -0.0068,
+        0.0138
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-ace6ddea-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Susurian Voidborn"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T21:49:15-08:00",
+    "facts": 13
+  }
+}

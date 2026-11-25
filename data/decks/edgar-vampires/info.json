@@ -62,8 +62,8 @@
       "proposal": null,
       "base_version": 7,
       "size": 100,
-      "add": 24,
-      "out": 24,
+      "add": 25,
+      "out": 25,
       "cards": [
         {
           "name": "Anguished Unmaking",
@@ -366,6 +366,10 @@
           "is_new": false
         },
         {
+          "name": "Susurian Voidborn",
+          "is_new": true
+        },
+        {
           "name": "Swamp",
           "is_new": false
         },
@@ -450,36 +454,32 @@
           "is_new": false
         },
         {
-          "name": "Yahenni, Undying Partisan",
-          "is_new": false
-        },
-        {
           "name": "Zulaport Cutthroat",
           "is_new": true
         }
       ],
       "has_cards": true,
       "study": {
-        "id": "011",
-        "question": "Card one of the worse-rows pass on threat-v1: Tocasia's Welcome for Anje, Maid of Dishonor — draw that survives a wipe, for the steam rows?",
+        "id": "014",
+        "question": "Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast it from exile, two Edgar tokens from one card — in, and for what?",
         "branch": "threat-v1",
-        "file": "011-card-one-of-the-worse-rows-pass-on-threat-v1-toc.json",
-        "decision": "no-change",
+        "file": "014-susurian-voidborn-on-threat-v1-a-drain-on-every.json",
+        "decision": "approve",
         "decided_by": [
           "pilot",
           "deck-doctor",
-          "strategist"
+          "rules-question"
         ],
-        "pilot_words": "no keep Anje",
+        "pilot_words": "approve the change",
         "decided_at": "2026-11-24",
         "opened": "2026-11-24",
         "swap": {
-          "out": "Anje, Maid of Dishonor",
-          "in": "Tocasia's Welcome"
+          "out": null,
+          "in": "Susurian Voidborn"
         },
         "goldfish_saw": [
-          2,
-          2
+          1,
+          1
         ]
       },
       "summary": {
@@ -522,7 +522,8 @@
         "The Meathook Massacre",
         "Toxic Deluge",
         "Vanishing Verse",
-        "Vein Ripper"
+        "Vein Ripper",
+        "Yahenni, Undying Partisan"
       ],
       "impact": {
         "state": "profile only",
@@ -547,48 +548,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -9.9151,
+            "delta": -8.1224,
             "ci95_diff": [
-              -10.7493,
-              -9.0809
+              -8.9647,
+              -7.2801
             ],
-            "mde": 1.1924,
+            "mde": 1.2039,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0418,
+            "delta": -0.0321,
             "ci95_diff": [
-              -0.0501,
-              -0.0335
+              -0.0403,
+              -0.0239
             ],
-            "mde": 0.0119,
+            "mde": 0.0117,
             "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.0085,
+            "delta": -1.8398,
             "ci95_diff": [
-              -2.1889,
-              -1.8281
+              -2.0197,
+              -1.6599
             ],
-            "mde": 0.2579,
+            "mde": 0.2571,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -0.4209,
+            "delta": -0.3939,
             "ci95_diff": [
-              -0.4959,
-              -0.3459
+              -0.47,
+              -0.3178
             ],
-            "mde": 0.1072,
+            "mde": 0.1087,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -9869,6 +9870,75 @@
   ],
   "studies": [
     {
+      "id": "014",
+      "question": "Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast it from exile, two Edgar tokens from one card — in, and for what?",
+      "branch": "threat-v1",
+      "file": "014-susurian-voidborn-on-threat-v1-a-drain-on-every.json",
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "rules-question"
+      ],
+      "pilot_words": "approve the change",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Susurian Voidborn"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "013",
+      "question": "Vito, Fanatic of Aclazotz on threat-v1: whenever we sacrifice another permanent — gain 2, then each opponent loses 2, then a 4/3 flying Vampire Demon, each turn — in, and for what?",
+      "branch": "threat-v1",
+      "file": "013-vito-fanatic-of-aclazotz-on-threat-v1-whenever-w.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "no, no... no none of these cards will work",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Vito, Fanatic of Aclazotz"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "012",
+      "question": "Indulging Patrician on threat-v1: a 3-mana flying lifelink Vampire that drains each opponent 3 at our end step if we gained 3 life — in, and for what?",
+      "branch": "threat-v1",
+      "file": "012-indulging-patrician-on-threat-v1-a-3-mana-flying.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor",
+        "strategist"
+      ],
+      "pilot_words": "no change, on to vito",
+      "decided_at": "2026-11-24",
+      "opened": "2026-11-24",
+      "swap": {
+        "out": null,
+        "in": "Indulging Patrician"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
       "id": "011",
       "question": "Card one of the worse-rows pass on threat-v1: Tocasia's Welcome for Anje, Maid of Dishonor — draw that survives a wipe, for the steam rows?",
       "branch": "threat-v1",
@@ -11343,7 +11413,7 @@
     "stale: frame, map — regenerate against the current list (`/publish-deck` sequences it)",
     "DeckCheck copy is V6, sleeved is V7 — `manamap pilot deck-export edgar-vampires --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link edgar-vampires deckcheck <url>`",
     "1 logged game(s) not yet debriefed (007) — `/debrief edgar-vampires`",
-    "branch `threat-v1`: 21 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
+    "branch `threat-v1`: 22 unproven add(s) under the current harness — `manamap pilot forge-cast-check edgar-vampires --branch threat-v1 --adds --write` — the Forge probe for cards the goldfish cannot see",
     "diagnosis.json describes an older list — `/diagnose-deck edgar-vampires`",
     "engine.json's reading was written for another list — `/engine-reading edgar-vampires` rewrites it over the computed graph",
     "open questions routed: diagnose ×11, goldfish ×4, research-strategy ×8, resolve-stack ×8"

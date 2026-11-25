@@ -1,0 +1,254 @@
+{
+  "id": "013",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Vito, Fanatic of Aclazotz on threat-v1: whenever we sacrifice another permanent — gain 2, then each opponent loses 2, then a 4/3 flying Vampire Demon, each turn — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Vito, Fanatic of Aclazotz"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Vito, Fanatic of Aclazotz"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 267.0,
+      "slice": "MODE prescribe: Vito Fanatic's cut and the sacrifice count; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: does Vito, Fanatic of Aclazotz earn a slot on threat-v1, and how often does it reach its third trigger (the 4/3 flyer). It is a good thesis fit: it pays on Treasure, Blood and fetchland sacrifices that nothing in the list pays on today, and it turns fodder into a flying threat. That answers the log's repeated 'rebuilds into blockers, not threats'. But its first two tiers repeat Vraan, Executioner Thane (2 mana, once a turn, drain 2 and gain 2 off any death), and it closes neither short axis (card-advantage 7 against 10, ramp 8 against 10). The goldfish floor against the best slot is small (+0.6 pts killed by T10). Recommendation: NO CHANGE. If the pilot wants it, Twilight Prophet is the slot.\",\n  \"log_entries_read\": [\"001\", \"002\", \"003\", \"006\", \"007\", \"008\"],\n  \"axes_engaged\": [\n    {\"axis\": \"card-advantage\", \"verdict\": \"weakness\", \"measured\": {\"value\": 7}, \"reading\": \"Under the target of 10. Vito draws nothing, and the cheapest slot by the goldfish (Twilight Prophet) is a draw engine.\"},\n    {\"axis\": \"ramp\", \"verdict\": \"weakness\", \"measured\": {\"value\": 8}, \"reading\": \"Under the target of 10. Vito does not touch it.\"},\n    {\"axis\": \"threat-density\", \"verdict\": \"strength\", \"measured\": {\"value\": 20}, \"reading\": \"Twenty against a floor of 3. Vito would be one more payoff on an axis that is already full.\"}\n  ],\n  \"sacrifice_count\": {\n    \"set\": \"every threat-v1 card whose text makes YOU sacrifice another permanent (oracle regex 'sacrific|Treasure|Blood token|Clue|Food', read card by card)\",\n    \"free_unbounded_outlets\": [\"Ashnod's Altar\", \"Viscera Seer\", \"Yahenni, Undying Partisan\", \"Vish Kal, Blood Arbiter\"],\n    \"once_per_turn_tap_outlets\": [\"Phyrexian Tower\", \"Master of Dark Rites\"],\n    \"mana_costed_repeatable\": [\"Edgar, Ancient Bloodlord ({2})\", \"Anje, Maid of Dishonor ({2}, creature or Blood)\", \"Erebos, Bleak-Hearted ({1}{B})\", \"Kalitas, Traitor of Ghet ({2}{B}, Vampire or Zombie only)\"],\n    \"one_shot\": [\"Selfless Spirit (itself)\", \"Bloodtithe Harvester (itself, sorcery speed)\", \"Diabolic Intent (cost)\", \"Liliana, Dreadhorde General -4 (you sacrifice two: two triggers)\"],\n    \"noncreature_fodder\": {\"treasure\": [\"Pitiless Plunderer (one per other creature death)\", \"Black Market Connections (one a turn)\"], \"blood\": [\"Anje, Maid of Dishonor (once a turn)\", \"Bloodtithe Harvester (on entry)\"], \"sac_lands\": [\"Arid Mesa\", \"Bloodstained Mire\", \"Marsh Flats\", \"Verdant Catacombs\", \"Wooded Foothills\", \"Silent Clearing ({1})\"], \"clues_food\": []},\n    \"not_sacrifice\": [\"Skullclamp (equip)\", \"Lethal Scheme and Clever Concealment (convoke taps)\", \"The Meathook Massacre and Toxic Deluge (-X/-X, not sacrifice)\", \"Crackling Doom (opponents sacrifice)\"],\n    \"per_turn\": \"With a free outlet and three bodies, three sacrifices is trivial on any turn. Ashnod's Altar is mana-positive, and Plunderer makes each body two sacrifices (body, then its Treasure). Without one, a turn reaches about one to two: Black Market Connections' Treasure, one Tower or Master tap, and a costed outlet at {2}. A third costs two to four more mana. The counter resets on every player's turn, so an instant-speed outlet gets the first-tier 2 life on each opponent's turn too.\",\n    \"how_often\": \"My hypergeometric over the 99 (not an artifact figure): at least one of the 4 free outlets in 12 cards is 41%, and 55% with Tower and Master of Dark Rites added. Vito himself must also be drawn and live. So the 4/3 is a most-turns event in the minority of games with an outlet and Vito both down, and rare otherwise. The goldfish's own count is lower still: cumulative mean sacrifices 0.551 by T6, 1.452 by T8, 3.368 by T10. It does not model Plunderer's or Black Market Connections' Treasure (goldfish_metrics.meta.treasure_sources_not_modelled).\"\n  },\n  \"cut_candidates\": [\n    {\"card\": \"Twilight Prophet\", \"why\": \"The cheapest slot by the goldfish: Vito for it reads 10 better, 0 worse. Killed by T10 +0.6 pts [+0.4, +0.7], damage @T10 +0.9 [+0.8, +1.0], extra cards by T8 +0.02 [+0.01, +0.02]. This is a FLOOR, because Vito's trigger is unmodelled.\", \"cost_of_cutting\": \"A draw and each-opponent drain engine every upkeep once the deck has ten permanents. Draw is the axis the pilot calls required ('runs out of steam post T7/8'), and card-advantage is already 7 against 10. The goldfish shows no draw loss, which more likely means it rarely reaches the blessing than that the draw is worthless.\", \"orphans_stack\": [], \"difficulty\": \"painful\"},\n    {\"card\": \"Malakir Bloodwitch\", \"why\": \"A 5-mana one-shot drain against a 4-mana repeatable one. The goldfish reads it as a trade, a floor: 4 better, 3 worse. Life lost outside combat @T10 -1.2 [-1.4, -1.1], killed outside combat by T10 -0.7 pts [-0.9, -0.5], life gained by T8 -0.34 [-0.39, -0.30].\", \"cost_of_cutting\": \"The branch's Vampire-count finisher, which the pilot approved on 2026-11-20 as 'the thesis in one card'. Cutting it reverses a four-day-old call, and the goldfish reads a loss on the drain rows.\", \"orphans_stack\": [], \"difficulty\": \"contested\"},\n    {\"card\": \"Bloodline Keeper\", \"why\": \"Another 4-mana Vampire flyer. The goldfish withheld its rows as BLIND because it does not read Keeper's tokens.\", \"cost_of_cutting\": \"A fodder engine: a 2/2 flying Vampire every turn, doubled by Anointed Procession or Elspeth, then a +2/+2 lord. Cutting the thing Vito eats to make room for Vito works against itself.\", \"orphans_stack\": [], \"difficulty\": \"painful\"}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Vito, Fanatic of Aclazotz\", \"closes\": \"threat-density\", \"source\": \"prompt\", \"why\": \"A fit, not a fix. It pays on 2 Treasure makers, 2 Blood makers and 6 sac-lands that no payoff in the list sees today. Its first-tier gain feeds Vito Thorn, Sanguine Bond, Enduring Tenacity, Blight-Priest and Oathsworn's recast. Its third tier answers 'rebuilds into blockers, not threats' (log 001/002/003/006). Its tiers cap at three a turn and it appears in 0 Commander Spellbook records, so it adds no infinite, two-card or otherwise. It is not a Game Changer.\", \"natural_cut\": \"Twilight Prophet\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"How often does a real threat-v1 game have a free outlet, Vito and three sacrifices on one turn?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"The 4/3 is the only part of Vito that Vraan does not already do. Until the goldfish models Vito's trigger and the Plunderer and Black Market Connections Treasure, every row is a floor.\"},\n    {\"question\": \"Does Twilight Prophet reach the city's blessing by T6 in threat-v1, and how much does it draw?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"The goldfish reads no draw loss from cutting it. That is either true or a sign the blessing is under-read, and it decides whether this cut is painful or easy.\"}\n  ],\n  \"gaps\": [\n    \"Vito's drain and token are unmodelled (classify reads drain: unmodelled), so every row above is a floor for Vito, not the reason.\",\n    \"The 41%/55% outlet odds are my hypergeometric over enumerated cards, not an artifact figure. The free-outlet group rate in CONTEXT (55% by T6) is for v3.0.0, not threat-v1.\",\n    \"Study 013's facts show a -9.92 damage @T10 row from the study's own null-out screen. That is not one of the three swaps above and was not used.\"\n  ]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T21:38:23-08:00",
+      "from": "data/decks/edgar-vampires/.agent-out/deck-doctor-prescribe-study013.json"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 42.0,
+      "slice": "Vito Fanatic on threat-v1; verbatim (evidence and open lists omitted)",
+      "text": "Lean: not a strong include. It is a fair-to-good 4-drop, but it doesn't clearly beat a slot the branch already uses. I'd say no change unless a cut is obviously weaker (pilot's standing \"only clear upgrades\" rule).\n\n- Scope: Vito's second trigger is \"each opponent loses 2\", the each-opponent shape worth 3x per fire in a 4-pod (strategy:aristocrats.drain-scope). It is only a one-off 6 per turn, and only on the second sacrifice.\n- The first trigger is a 2-life gain event for Vito Thorn, Sanguine Bond and Blight-Priest (strategy:conversion.yield). 2 is below that section's 3-life breakeven for targeted converters, so it is a modest bonus.\n- Compare Zulaport, Bastion and Elas: they fire on every death with no cap. Vito fires on sacrifices only and caps at three a turn. It also needs an outlet or sac-on-ETB source, so it competes for the engine slots, not just the payoff slots (strategy:aristocrats).\n- A full cycle needs three sacrifices in one turn. T4-6 is thin: plausible by T5-6 only if you also hold the outlet. That is an estimate, not a measured rate.\n- The 4/3 flyer on the third trigger is real value only when Vito survives and the third sacrifice is cheap. Against a wipe or single removal on the legendary Vito it is a 4-mana loss.\n- Plus: it is a Vampire (cast = Edgar token), it flies, and it's a 4-drop that does something on every turn. Minus: it does nothing alone (no outlet, no fodder), and it is legendary and singleton.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:aristocrats",
+          "strategy:aristocrats.drain-scope",
+          "strategy:conversion.yield"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T21:38:24-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-vito.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "no, no... no none of these cards will work",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "vito-fanatic-of-aclazotz-on-threat-v1-whenever-w",
+  "facts": [
+    {
+      "id": "S-43d1d9f0-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-43d1d9f0-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-43d1d9f0-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-43d1d9f0-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire Demon · {2}{W}{B} — Flying Whenever you sacrifice another permanent, you gain 2 life if this is the first time this ability has resolved this turn. If it's the second time, each opponent loses 2 life. If it's the third time, create a 4/3 white and black Vampire Demon creature token with flying.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Vito, Fanatic of Aclazotz"
+    },
+    {
+      "id": "S-43d1d9f0-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Anje, Maid of Dishonor (0.96), Kalitas, Traitor of Ghet (0.92), Edgar, Ancient Bloodlord (0.91)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Vito, Fanatic of Aclazotz",
+      "neighbours": [
+        {
+          "name": "Anje, Maid of Dishonor",
+          "score": 0.9587
+        },
+        {
+          "name": "Kalitas, Traitor of Ghet",
+          "score": 0.9201
+        },
+        {
+          "name": "Edgar, Ancient Bloodlord",
+          "score": 0.9126
+        }
+      ]
+    },
+    {
+      "id": "S-43d1d9f0-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Vito, Fanatic of Aclazotz",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-43d1d9f0-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-43d1d9f0-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 34.80, a change of -9.92 (-22%) [-10.7493, -9.0809] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -9.9151,
+      "ci95": [
+        -10.7493,
+        -9.0809
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-43d1d9f0-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 85 in 100, a swing of 4 games per 100 [-0.0501, -0.0335] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0418,
+      "ci95": [
+        -0.0501,
+        -0.0335
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-43d1d9f0-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.70, a change of -2.01 (-17%) [-2.1889, -1.8281] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0085,
+      "ci95": [
+        -2.1889,
+        -1.8281
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-43d1d9f0-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.52, a change of -0.42 (-14%) [-0.4959, -0.3459] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.4209,
+      "ci95": [
+        -0.4959,
+        -0.3459
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-43d1d9f0-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.004 is smaller than the 0.015 this run can resolve [-0.0068, 0.0138] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0035,
+      "ci95": [
+        -0.0068,
+        0.0138
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-43d1d9f0-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Vito, Fanatic of Aclazotz"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "9bb4ce96b148b0627d7c5fa6ffb7643a1a39c4e895e002f58912639200432804",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T21:38:31-08:00",
+    "facts": 13
+  }
+}

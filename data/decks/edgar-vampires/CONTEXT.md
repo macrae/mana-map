@@ -184,15 +184,15 @@ The first six games were all on lists before v3.0.0 (the record block counts eve
 ## Studies
 
 <!-- ctx:gen studies -->
+- **014 approve** (pilot, deck-doctor, rules-question) — Susurian Voidborn on threat-v1: a drain on every creature or artifact death (Treasure and Blood count), and warp — cast it for {B}, recast i · on `threat-v1` · 2026-11-24 · goldfish saw 1/1 named cards · “approve the change”
+- **013 no-change** (pilot, deck-doctor, strategist) — Vito, Fanatic of Aclazotz on threat-v1: whenever we sacrifice another permanent — gain 2, then each opponent loses 2, then a 4/3 flying Vamp · on `threat-v1` · 2026-11-24 · goldfish saw 1/1 named cards · “no, no... no none of these cards will work”
+- **012 no-change** (pilot, deck-doctor, strategist) — Indulging Patrician on threat-v1: a 3-mana flying lifelink Vampire that drains each opponent 3 at our end step if we gained 3 life — in, and · on `threat-v1` · 2026-11-24 · goldfish saw 1/1 named cards · “no change, on to vito”
 - **011 no-change** (pilot, deck-doctor, strategist) — Card one of the worse-rows pass on threat-v1: Tocasia's Welcome for Anje, Maid of Dishonor — draw that survives a wipe, for the steam rows? · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “no keep Anje”
 - **010 no-change** (pilot, deck-doctor, card-scout) — Card four on threat-v1: a token-arrival drain (Mirkwood Bats) for Drana and Linvala, the weakest fit for the thesis? · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “no change, keep Drana; next please”
 - **009 no-change** (pilot, strategist, deck-doctor) — Card three on threat-v1: Mirkwood Bats for Elenda, the Dusk Rose — a token-arrival drain (the pilot's 'tax the front end')? · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “no change, keep Elenda; next please”
 - **008 approve** (pilot, deck-doctor, strategist) — Card two, the land pass on threat-v1: Isolated Chapel for the basic Plains, to close the black-source gap the rock cuts left (33 against a t · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “approve, make the swap, but no need to push it; next please”
 - **007 approve** (pilot, deck-doctor, strategist) — Card one, the land pass on threat-v1: Dragonskull Summit for a basic Swamp, to close the red-source gap the rock cuts left (19 against a tar · on `threat-v1` · 2026-11-24 · goldfish saw 2/2 named cards · “approve, make the swap and push it; next please”
-- **006 approve** (pilot, deck-doctor) — Card six on threat-v1: Champion of Dusk for Preacher of the Schism, or no change? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it, commit, and move to Sharknado”
-- **005 approve** (pilot, strategist, deck-doctor, data-analyst) — Card five on threat-v1: the branch's only drain that converts board width — Sanctum Seeker for Falkenrath Noble? · on `threat-v1` · 2026-11-20 · goldfish saw 2/2 named cards · “approved! stage it and go to card six”
-- **004 approve** (pilot, strategist, deck-doctor, data-analyst, rules-question) — Card four on threat-v1: removal is the thinnest axis left — Lethal Scheme for Olivia Voldaren? · on `threat-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approved! stage it and go to card five”
-- … 3 earlier: `manamap pilot study edgar-vampires list`
+- … 6 earlier: `manamap pilot study edgar-vampires list`
 <!-- /ctx:gen studies -->
 
 ## Change history
