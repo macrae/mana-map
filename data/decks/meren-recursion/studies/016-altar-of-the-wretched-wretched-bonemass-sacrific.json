@@ -1,0 +1,158 @@
+{
+  "id": "016",
+  "slug": "meren-recursion",
+  "branch": null,
+  "question": "Altar of the Wretched // Wretched Bonemass: sacrifice a nontoken creature to draw and mill its power; craft with one or more creatures (a small one to make a body to sacrifice, a used fatty for an attacker or blocker), then return the Altar from the graveyard for {2}{B} — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Altar of the Wretched // Wretched Bonemass"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Altar of the Wretched // Wretched Bonemass"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 292.0,
+      "slice": "MODE prescribe: Altar in, the cut; verbatim (orchestrator notes trimmed)",
+      "text": "**Altar of the Wretched for Meren (study 016): cut Blasting Station.**\n\n**What the Altar fixes.** Card draw is the axis it fills. `deck-audit` counts 3 cards against a target of 10. That is a floor: Archon, Tail, Yawgmoth and others draw but are not counted, and the Altar itself is not tagged as draw. Sacrificing a fatty on entry for draw 6 / mill 6 is the burst draw the deck doesn't have.\n\n**What the goldfish reads.** Both cards read `seen`, but it reads the Altar weakly. \"Extra cards by T8\" moves only +0.03 [+0.01, +0.04] against Blasting Station. The power-sized draw, the craft and the {2}{B} return look unpriced, so every row below is a floor.\n\n**Ranked cuts:**\n1. **Blasting Station (contested).** A 3-mana artifact out for a 3-mana artifact in, so the curve doesn't move. It is one of nine sac outlets the Context lists as free or near-free. Interaction is 17 against a target of 8. It is in none of the five combo lines. Cost: the instant-speed ping that kills 1-toughness creatures, and the line that turns an infinite enters-and-dies loop into damage to any target. Goldfish: killed by T10 +0.5 [+0.3, +0.7]; experience @T7 -0.06 [-0.07, -0.04].\n2. **Satyr Wayfinder (contested).** The strategist called yard-filling the most over-supplied role, and the Altar mills X itself. Cost: a 2-drop body (the curve moves right), Meren's 2-counter return, and the land to hand for Six. Goldfish: killed by T10 -0.9 [-1.1, -0.7].\n3. **Golgari Charm (painful).** Surplus interaction, and the goldfish cannot see it. Cost: one of 2 sweepers, an enchantment answer, and the regenerate-all mode, wipe protection the audit doesn't count; the \"protection is for the A team\" rule argues against cutting it.\n\n**Ruled out by the goldfish.** Bitterblossom and Ophiomancer: experience 5+ by T6 -2.9 and -1.8 points.\n\n**Bracket and colour checks.** No Commander Spellbook combo includes the Altar; one return-and-recast costs 6 mana, so it looks finite (not proven; open for /resolve-stack). The Altar adds black load where black sources are already 2 short (34 of 36).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T18:55:12-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-altar.md"
+    },
+    {
+      "agent": "rules-question",
+      "model": "haiku",
+      "elapsed_s": 174.0,
+      "slice": "rules: the Altar's sacrifice, craft, Bonemass death and return; verbatim (run list omitted)",
+      "text": "Altar of the Wretched // Wretched Bonemass: rules answers (read-only; nothing written)\n\n1. Yes, the sacrifice is a \"dies\" for Meren, and X is the power as it last existed, counters included (with one caveat below).\n- Sacrifice moves the creature \"directly to its owner's graveyard\" (CR 701.21a), and \"The term dies means 'is put into a graveyard from the battlefield.'\" (CR 700.4). So Meren's \"whenever another creature you control dies\" sees it.\n- Meren's trigger is a look-back trigger: \"abilities that trigger when a player sacrifices a permanent\" (CR 603.10a), so it is checked against the creature as it was on the battlefield.\n- X: \"If the effect requires information from a specific object... if it's no longer in that zone... the effect uses the object's last known information.\" (CR 608.2h).\n- Counters: CR 704.8's example shows counters in last known information by illustration, not stated as a general rule for the Altar's X. Treat it as the answer, with that caveat.\n\n2. Yes, one creature card from your graveyard can be the craft material. A token you control can be too, but its power does not add to the Bonemass total. The exact P/T for that case is Not settled.\n- \"Exile [materials] from among permanents you control and/or cards in your graveyard\" (CR 702.167a). A card-type description \"refers to either a permanent on the battlefield that is that type... or a card in a graveyard\" (CR 702.167b).\n- Ruling 2023-11-10 on tokens: \"You may exile tokens you control as part of the materials required. However, because they aren't cards and won't stay in exile, any abilities that refer to what you 'used to craft' the back faces won't refer to anything.\"\n- A token that leaves the battlefield \"ceases to exist\" (CR 111.8).\n\n3. Yes, with a caveat about the death-trigger count.\n- Bonemass is a creature until it dies, so its death is \"another creature you control dies\" for Meren, and it is an experience counter.\n- In the graveyard the card has only front-face characteristics: \"While a double-faced card is outside the game or in a zone other than the battlefield or stack, it has only the characteristics of its front face.\" (CR 712.8a). So it is the Altar, an artifact.\n- The {2}{B} return functions from the graveyard (CR 113.6m).\n\n4. Yes, Meren cannot target it (CR 115.2: the Altar is not a creature card in the graveyard, CR 712.8a). The {2}{B} return is the only return ability the DB shows for this card; \"only\" is Not settled.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "111.8",
+          "113.6m",
+          "115.2",
+          "603.10a",
+          "608.2h",
+          "700.4",
+          "701.21a",
+          "702.167a",
+          "702.167b",
+          "704.8",
+          "712.8a"
+        ]
+      },
+      "added_at": "2026-11-24T18:55:12-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/rules-altar.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "rules-question"
+    ],
+    "pilot_words": "no satyr wayfinder stays ... no change, park it",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "altar-of-the-wretched-wretched-bonemass-sacrific",
+  "facts": [
+    {
+      "id": "S-141b1846-01",
+      "kind": "record",
+      "text": "no games logged",
+      "tier": "data",
+      "source": "log.jsonl"
+    },
+    {
+      "id": "S-141b1846-02",
+      "kind": "recon",
+      "text": "recon as of 2026-11-23: The aggregate bracket-3 list (EDHREC 'Upgraded', 2,710 decks) is a creature-dense sacrifice/reanimator deck: about 37 creatures and 35 lands. Its staples are cheap bodies whose value repeats on every Meren return. Those are ramp bodies (Sakura-Tribe Elder 89%)",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-23"
+    },
+    {
+      "id": "S-141b1846-03",
+      "kind": "oracle",
+      "text": "Artifact // Creature — Skeleton Horror · {2}{B} — When this artifact enters, you may sacrifice a nontoken creature. If you do, draw X cards, then mill X cards, where X is that creature's power. Craft with one or more creatures {2}{B}{B} {2}{B}: Return this card from your graveyard to your hand. // Wretched Bonemass's power and toughness are each eq",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Altar of the Wretched // Wretched Bonemass"
+    },
+    {
+      "id": "S-141b1846-04",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Unshakable Tail (0.90), Cauldron of Essence (0.90), Jarad, Golgari Lich Lord (0.90)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Altar of the Wretched // Wretched Bonemass",
+      "neighbours": [
+        {
+          "name": "Unshakable Tail",
+          "score": 0.9035
+        },
+        {
+          "name": "Cauldron of Essence",
+          "score": 0.9025
+        },
+        {
+          "name": "Jarad, Golgari Lich Lord",
+          "score": 0.8978
+        }
+      ]
+    },
+    {
+      "id": "S-141b1846-05",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Altar of the Wretched // Wretched Bonemass",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "drain"
+      ]
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Altar of the Wretched // Wretched Bonemass"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [
+    {
+      "card": "Altar of the Wretched // Wretched Bonemass",
+      "source": "log.jsonl",
+      "why": "no games logged"
+    },
+    {
+      "card": "Altar of the Wretched // Wretched Bonemass",
+      "source": "engine.json",
+      "why": "no engine model"
+    }
+  ],
+  "decklist_sha256": "105b2fc28f73336cec215c797ff25ef3789ab645daf88e8860abb0dab59821f5",
+  "base_decklist_sha256": null,
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T18:55:18-08:00",
+    "facts": 5
+  }
+}
