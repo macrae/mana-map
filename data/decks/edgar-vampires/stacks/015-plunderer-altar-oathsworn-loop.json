@@ -1,0 +1,499 @@
+{
+  "id": "015",
+  "slug": "plunderer-altar-oathsworn-loop",
+  "deck": "edgar-vampires",
+  "branch": "threat-v1",
+  "title": "Pitiless Plunderer + Ashnod's Altar + Oathsworn Vampire, the drain enabling the recast: is the loop mana-positive?",
+  "rules_version": "June 19, 2026",
+  "scenario": {
+    "board": {
+      "you": [
+        "Pitiless Plunderer",
+        "Ashnod's Altar",
+        "Zulaport Cutthroat",
+        "Oathsworn Vampire — already sacrificed to pay the cost of Ashnod's Altar's mana ability, now in your graveyard",
+        "Swamp x4 (tapped)",
+        "Plains x2 (tapped)"
+      ],
+      "command_zone": [
+        "Edgar Markov"
+      ],
+      "opponents": [
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        },
+        {
+          "life": 40,
+          "board": []
+        }
+      ]
+    },
+    "hand": [],
+    "graveyard": [
+      "Oathsworn Vampire"
+    ],
+    "mana_available": "{C}{C} in your mana pool from Ashnod's Altar; every land tapped",
+    "stack": [
+      {
+        "pos": 0,
+        "object": "Pitiless Plunderer triggered ability",
+        "controller": "you",
+        "note": "Oathsworn Vampire died; create a Treasure token"
+      },
+      {
+        "pos": 1,
+        "object": "Zulaport Cutthroat triggered ability",
+        "controller": "you",
+        "note": "Oathsworn Vampire died; each opponent loses 1 life and you gain 1 life"
+      }
+    ],
+    "extras": {
+      "note_for_the_resolver": "Branch threat-v1 of edgar-vampires (data/decks/edgar-vampires/branches/threat-v1/cards.json) runs Pitiless Plunderer, Oathsworn Vampire and Zulaport Cutthroat; the sleeved list does not yet run Plunderer. It is your precombat main phase, the stack holds only the two triggers above, and no opponent responds. You have not gained life earlier this turn. Edgar Markov is in the command zone. Ashnod's Altar's ability is a mana ability and does not use the stack.",
+      "assumptions": "No opponent interacts. Oathsworn Vampire is a 2/2 Vampire Knight costing {1}{B}."
+    },
+    "question": "Resolve both triggers, then: using the {C}{C} in your pool and the Treasure, can you cast Oathsworn Vampire from your graveyard for {1}{B} (its permission needs life gained this turn), and does casting it trigger Edgar Markov's eminence from the command zone? When it resolves, sacrifice it and the Vampire token to Ashnod's Altar: does each such cycle leave you with more mana than it started with, so it repeats within this main phase? State the net mana, the life each opponent loses and the Vampire tokens made per cycle, and whether Oathsworn entering tapped matters."
+  },
+  "resolution": {
+    "steps": [
+      {
+        "n": 1,
+        "action": "Starting position. Oathsworn Vampire was sacrificed to Ashnod's Altar ('Sacrifice a creature: Add {C}{C}.'). The Altar's ability has no target, adds mana and is not a loyalty ability, so it is a mana ability. It resolved immediately without using the stack. Oathsworn died, and that matched the trigger events of both Pitiless Plunderer ('Whenever another creature you control dies') and Zulaport Cutthroat ('Whenever this creature or another creature you control dies').",
+        "effect": "Pool {C}{C}. Oathsworn Vampire is in your graveyard. The board has two creature bodies: Plunderer and Zulaport. The stack holds the Plunderer trigger at pos 0 and the Zulaport trigger at pos 1 (top). Every land is tapped and your hand is empty. You have not gained life this turn.",
+        "citations": [
+          {
+            "rule": "605.1a",
+            "quote": "An activated ability is a mana ability if it meets all of the following criteria: it doesn’t require a target (see rule 115.6), it could add mana to a player’s mana pool when it resolves, and it’s not a loyalty ability."
+          },
+          {
+            "rule": "605.3b",
+            "quote": "An activated mana ability doesn’t go on the stack, so it can’t be targeted, countered, or otherwise responded to. Rather, it resolves immediately after it is activated."
+          },
+          {
+            "rule": "700.4",
+            "quote": "The term dies means “is put into a graveyard from the battlefield.”"
+          },
+          {
+            "rule": "603.2",
+            "quote": "Whenever a game event or game state matches a triggered ability’s trigger event, that ability automatically triggers."
+          }
+        ]
+      },
+      {
+        "n": 2,
+        "action": "All players pass. The top object, Zulaport Cutthroat's trigger, resolves.",
+        "effect": "Each opponent loses 1 life: 40 -> 39 at every seat, 3 across the pod. You gain 1 life, the first life you have gained this turn, so Oathsworn's graveyard permission is now on. The scenario does not give your starting life total. The {C}{C} stays in your pool because the main phase has not ended.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          },
+          {
+            "rule": "106.4",
+            "quote": "it can stay in the player’s mana pool as unspent mana. Each player’s mana pool empties at the end of each step and phase"
+          }
+        ]
+      },
+      {
+        "n": 3,
+        "action": "State-based actions are checked and you receive priority. Nobody is at 0 life. All players pass and Pitiless Plunderer's trigger resolves.",
+        "effect": "You create one Treasure token. It enters untapped and is not a creature, so summoning sickness does not apply to its {T} ability. The stack is empty. You hold {C}{C} in your pool and one untapped Treasure.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "Whenever a player would get priority (see rule 117, “Timing and Priority”), the game checks for any of the listed conditions for state-based actions"
+          },
+          {
+            "rule": "111.10a",
+            "quote": "A Treasure token is a colorless Treasure artifact token with “{T}, Sacrifice this token: Add one mana of any color.”"
+          }
+        ]
+      },
+      {
+        "n": 4,
+        "action": "Cycle begins: you cast Oathsworn Vampire from your graveyard for {1}{B}. Its ability 'You may cast this card from your graveyard if you gained life this turn' changes which zone the card can be cast from, so it works while the card is in the graveyard. You gained life in step 2, so the permission applies. Oathsworn is a creature spell and needs sorcery timing: it is your main phase, you have priority and the stack is empty. The official ruling says the card follows the normal rules for costs and timing. During payment you activate the Treasure's mana ability for {B}. You pay {1} with one {C} from the pool and {B} with the Treasure.",
+        "effect": "The cast is legal. Pool after payment: {C}, and the Treasure is gone. The Treasure is not a creature, so sacrificing it triggers neither Plunderer nor Zulaport. On this board the Treasure is the ONLY {B} source: the Altar makes only {C} and every land is tapped. So each cast needs a Treasure from an earlier Plunderer trigger, and that trigger must have resolved first because the stack has to be empty.",
+        "citations": [
+          {
+            "rule": "601.3",
+            "quote": "A player can begin to cast a spell only if a rule or effect allows that player to cast it and no rule or effect prohibits that player from casting it."
+          },
+          {
+            "rule": "113.6f",
+            "quote": "An object’s ability that restricts or modifies what zones that particular object can be played or cast from functions everywhere, even outside the game."
+          },
+          {
+            "rule": "117.1a",
+            "quote": "A player may cast a noninstant spell during their main phase any time they have priority and the stack is empty."
+          },
+          {
+            "rule": "601.2g",
+            "quote": "If the total cost includes a mana payment, the player then has a chance to activate mana abilities (see rule 605, “Mana Abilities”)."
+          },
+          {
+            "rule": "601.2h",
+            "quote": "Partial payments are not allowed. Unpayable costs can’t be paid."
+          }
+        ]
+      },
+      {
+        "n": 5,
+        "action": "Oathsworn Vampire becomes cast. It is a Vampire spell other than Edgar, so Edgar Markov's eminence triggers: 'Whenever you cast another Vampire spell, if Edgar is in the command zone or on the battlefield, create a 1/1 black Vampire creature token.' The ability names the zones it works in, and Edgar is in the command zone. The 'if' is an intervening-if clause, checked once when the ability triggers and again when it resolves. The trigger goes on the stack above the Oathsworn spell.",
+        "effect": "YES, casting Oathsworn from the graveyard triggers eminence. Where a spell is cast from does not matter to 'whenever you cast'. Stack, bottom to top: the Oathsworn Vampire spell, then the eminence trigger. The official ruling agrees that Edgar must be in the command zone or on the battlefield both at the cast and when the trigger resolves. Edgar stays in the command zone the whole time.",
+        "citations": [
+          {
+            "rule": "601.2i",
+            "quote": "Any abilities that trigger when a spell is cast or put onto the stack trigger at this time."
+          },
+          {
+            "rule": "113.6b",
+            "quote": "An ability that states which zones it functions in functions only from those zones."
+          },
+          {
+            "rule": "603.4",
+            "quote": "When the trigger event occurs, the ability checks whether the stated condition is true. The ability triggers only if it is; otherwise it does nothing. If the ability triggers, it checks the stated condition again as it resolves."
+          }
+        ]
+      },
+      {
+        "n": 6,
+        "action": "All players pass and the eminence trigger resolves. Edgar is still in the command zone. All players pass again and Oathsworn Vampire resolves.",
+        "effect": "You create one 1/1 black Vampire token. Oathsworn Vampire then enters the battlefield TAPPED ('This creature enters tapped.'). That instruction is a replacement effect: it changes how Oathsworn enters, not anything about sacrificing it later. Bodies are now Plunderer, Zulaport, Oathsworn and the token. Pool: {C}.",
+        "citations": [
+          {
+            "rule": "405.5",
+            "quote": "When all players pass in succession, the top (last-added) spell or ability on the stack resolves."
+          },
+          {
+            "rule": "608.3a",
+            "quote": "If the object that’s resolving has no targets, it becomes a permanent and enters the battlefield under the control of the spell’s controller."
+          },
+          {
+            "rule": "110.5b",
+            "quote": "Permanents enter the battlefield untapped, unflipped, face up, and phased in unless a spell or ability says otherwise."
+          },
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read “[This permanent] enters . . .” or “[Objects] enter [the battlefield] . . .” are replacement effects."
+          }
+        ]
+      },
+      {
+        "n": 7,
+        "action": "With priority, you activate Ashnod's Altar twice: first sacrificing the tapped Oathsworn Vampire, then the Vampire token.",
+        "effect": "Entering tapped does NOT matter. 'Enters tapped' is a replacement effect that only sets Oathsworn's status as it enters; sacrifice needs only that you control the permanent. Summoning sickness does not matter either: it restricts only a creature's OWN abilities with {T} or {Q} in the cost (and attacking). The Altar's ability belongs to the Altar, and its only cost is 'Sacrifice a creature', with no {T} symbol, so the Vampire token can be sacrificed the turn it is made. Each activation is a mana ability and resolves at once: pool {C} + {C}{C} + {C}{C} = {C}{C}{C}{C}{C}. Oathsworn goes to its owner's graveyard, ready to be cast again. The token goes to the graveyard and dies, so its dies-triggers still fire, and it then ceases to exist as a state-based action. Two deaths: Plunderer triggers twice and Zulaport triggers twice.",
+        "citations": [
+          {
+            "rule": "605.3a",
+            "quote": "A player may activate an activated mana ability whenever they have priority"
+          },
+          {
+            "rule": "701.21a",
+            "quote": "To sacrifice a permanent, its controller moves it from the battlefield directly to its owner’s graveyard."
+          },
+          {
+            "rule": "111.7",
+            "quote": "A token that’s in a zone other than the battlefield ceases to exist. This is a state-based action; see rule 704. (Note that if a token changes zones, applicable triggered abilities will trigger before the token ceases to exist.)"
+          },
+          {
+            "rule": "302.6",
+            "quote": "A creature’s activated ability with the tap symbol or the untap symbol in its activation cost can’t be activated unless the creature has been under its controller’s control continuously since their most recent turn began."
+          },
+          {
+            "rule": "614.1d",
+            "quote": "Continuous effects that read “[This permanent] enters . . .” or “[Objects] enter [the battlefield] . . .” are replacement effects."
+          }
+        ]
+      },
+      {
+        "n": 8,
+        "action": "The next time you would receive priority, state-based actions run and the token ceases to exist. Then you put the four triggers on the stack in any order. All players pass after each one and all four resolve. The order does not change the result.",
+        "effect": "Each opponent loses 2 life: 39 -> 37, 6 across the pod. You gain 2 life. You create two Treasures. End of cycle 1: pool {C}{C}{C}{C}{C} plus two untapped Treasures, Oathsworn in the graveyard, life already gained this turn. The cycle started with {C}{C} plus one Treasure. Net per cycle: +{C}{C}{C} and +1 Treasure, or +4 mana in total, of which one is any colour.",
+        "citations": [
+          {
+            "rule": "704.3",
+            "quote": "If any state-based actions are performed as a result of a check, the check is repeated; otherwise all triggered abilities that are waiting to be put on the stack are put on the stack"
+          },
+          {
+            "rule": "603.3b",
+            "quote": "puts each triggered ability they control with a trigger condition that isn’t another ability triggering on the stack in any order they choose."
+          },
+          {
+            "rule": "119.3",
+            "quote": "If an effect causes a player to gain life or lose life, that player’s life total is adjusted accordingly."
+          }
+        ]
+      },
+      {
+        "n": 9,
+        "action": "Repeat steps 4-8. Every action in the cycle is optional: casting Oathsworn and activating the Altar are your choices. So it is not a mandatory loop that draws the game, and you may propose a shortcut for a set number of iterations.",
+        "effect": "Each cycle needs one {C} and one Treasure, and returns four {C} and two Treasures, so the loop is self-sustaining and grows. Opponents start at 39 after step 2 and lose 2 per cycle. After 19 full cycles they are at 1. In cycle 20 the first death's Zulaport trigger puts all three at 0, and state-based actions make them lose the game together. The token sacrifice in cycle 20 is not needed. Total: 20 Oathsworn casts and 39 further deaths. Unspent {C} empties at the end of the main phase. Untapped Treasures stay.",
+        "citations": [
+          {
+            "rule": "104.4b",
+            "quote": "Loops that contain an optional action don’t result in a draw."
+          },
+          {
+            "rule": "732.2a",
+            "quote": "This sequence may be a non-repetitive series of choices, a loop that repeats a specified number of times, multiple loops, or nested loops"
+          },
+          {
+            "rule": "704.5a",
+            "quote": "If a player has 0 or less life, that player loses the game."
+          }
+        ]
+      }
+    ],
+    "final_state": {
+      "summary": "YES on every sub-question. (1) Zulaport's trigger resolves first and gains you 1 life, which turns on Oathsworn's graveyard permission. Plunderer's trigger then makes a Treasure, and {C} plus the Treasure's {B} pay {1}{B} legally once the stack is empty. (2) Casting Oathsworn from the graveyard triggers Edgar's eminence from the command zone: one 1/1 Vampire token per cast. (3) Sacrificing Oathsworn and the token to Ashnod's Altar gives {C}{C}{C}{C}, two Treasures and two Zulaport drains. A cycle that spends {C} plus one Treasure therefore nets +{C}{C}{C} and +1 Treasure (+4 mana). It drains 2 from EACH opponent (6 across the pod) and gains you 2. It makes 1 Vampire token, which is sacrificed in the same cycle. (4) Oathsworn entering tapped does not matter (a replacement effect on how it enters), and neither does the token's summoning sickness, because the Altar's cost has no {T}. Every cycle needs a Treasure for {B}, since nothing else on the board makes black, and Treasures grow by one per cycle. From 40/40/40, the pending Zulaport trigger plus 20 cycles (the last one partial) take every opponent to 0, and they lose to state-based actions.",
+      "you": {
+        "mana_pool": "{C} x (2 + 3N) after N cycles, plus (1 + N) untapped Treasures; the {C} empties at the end of the main phase",
+        "life": "+1 from the pending trigger, then +2 per cycle (starting life not given)",
+        "battlefield": [
+          "Pitiless Plunderer",
+          "Ashnod's Altar",
+          "Zulaport Cutthroat",
+          "Treasure token x(1+N)",
+          "Swamp x4 (tapped)",
+          "Plains x2 (tapped)"
+        ],
+        "graveyard": [
+          "Oathsworn Vampire (between cycles)"
+        ],
+        "command_zone": [
+          "Edgar Markov"
+        ]
+      },
+      "opponents": [
+        {
+          "seat": "opponent_1",
+          "life": "39 - 2N; 0 during cycle 20"
+        },
+        {
+          "seat": "opponent_2",
+          "life": "39 - 2N; 0 during cycle 20"
+        },
+        {
+          "seat": "opponent_3",
+          "life": "39 - 2N; 0 during cycle 20"
+        }
+      ],
+      "per_cycle": {
+        "spent": "{C} + one Treasure (as {B})",
+        "produced": "{C}{C}{C}{C} + two Treasures",
+        "net_mana": "+{C}{C}{C} and +1 Treasure (+4 mana total)",
+        "life_per_opponent": -2,
+        "life_pod_total": -6,
+        "your_life": 2,
+        "vampire_tokens_made": 1,
+        "oathsworn_tapped_matters": false
+      }
+    }
+  },
+  "checker": {
+    "verdict": "pass",
+    "findings": [
+      {
+        "step": 1,
+        "rule": "605.1a",
+        "status": "supported",
+        "note": "Ashnod's Altar ('Sacrifice a creature: Add {C}{C}.', branch cards.json) has no target, adds mana and is not a loyalty ability."
+      },
+      {
+        "step": 1,
+        "rule": "605.3b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "700.4",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 1,
+        "rule": "603.2",
+        "status": "supported",
+        "note": "Both trigger events match the death (branch threat-v1 cards.json). The two bodies, Plunderer and Zulaport, match scenario-facts your_board.creature_bodies, and Oathsworn is correctly listed under spent_paying_a_cost."
+      },
+      {
+        "step": 2,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 2,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "40 -> 39 at each seat and 3 across the pod. The per-seat and pod figures are stated separately and agree with scenario-facts drain_arithmetic (3 opponents)."
+      },
+      {
+        "step": 2,
+        "rule": "106.4",
+        "status": "supported",
+        "note": "The quote starts mid-sentence, but the full rule says the same thing."
+      },
+      {
+        "step": 3,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 3,
+        "rule": "111.10a",
+        "status": "supported",
+        "note": "The aside that summoning sickness does not apply to the Treasure is now backed by 302.6, cited in step 7, which restricts creatures only."
+      },
+      {
+        "step": 4,
+        "rule": "601.3",
+        "status": "supported",
+        "note": "Consistent with the Oathsworn Vampire ruling (2018-01-19): 'Casting Oathsworn Vampire from your graveyard follows the normal rules for casting that card. You must pay its costs, and you must follow all applicable timing rules.'"
+      },
+      {
+        "step": 4,
+        "rule": "113.6f",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "117.1a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "601.2g",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 4,
+        "rule": "601.2h",
+        "status": "supported",
+        "note": "{1} is paid from {C} and {B} from the Treasure. On this board the Treasure is the only {B} source."
+      },
+      {
+        "step": 5,
+        "rule": "601.2i",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 5,
+        "rule": "113.6b",
+        "status": "supported",
+        "note": "Agrees with the Edgar Markov ruling (2025-01-24): the eminence trigger works from the command zone."
+      },
+      {
+        "step": 5,
+        "rule": "603.4",
+        "status": "supported",
+        "note": "Agrees with the Edgar Markov ruling (2025-01-24): 'Edgar must be on the battlefield or in the command zone when you cast another Vampire spell and also as the triggered ability resolves.' Oathsworn is a Vampire Knight (cards.json)."
+      },
+      {
+        "step": 6,
+        "rule": "405.5",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "608.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 6,
+        "rule": "110.5b",
+        "status": "supported",
+        "note": "'unless a spell or ability says otherwise' covers 'This creature enters tapped.'"
+      },
+      {
+        "step": 6,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "ROUND-1 FIX VERIFIED. The quote matches lookup-rule 614.1d word for word. 'This creature enters tapped.' is a '[This permanent] enters . . .' continuous effect, so it is a replacement effect. That establishes the step's framing."
+      },
+      {
+        "step": 7,
+        "rule": "605.3a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 7,
+        "rule": "701.21a",
+        "status": "supported",
+        "note": "Sacrifice needs only control of the permanent, so a tapped Oathsworn can be sacrificed."
+      },
+      {
+        "step": 7,
+        "rule": "111.7",
+        "status": "supported",
+        "note": "The parenthetical establishes that the token's dies-triggers fire before it ceases to exist."
+      },
+      {
+        "step": 7,
+        "rule": "302.6",
+        "status": "supported",
+        "note": "ROUND-1 FIX VERIFIED. The quote is the first sentence of 302.6, verbatim. Read in full, the rule restricts only a creature's own activated abilities with {T}/{Q} in the cost, plus attacking. Ashnod's Altar's ability belongs to the Altar and costs 'Sacrifice a creature' with no {T}, so the eminence token can be sacrificed the turn it is made. The step's paraphrase, '(and attacking)', matches the rule's second sentence."
+      },
+      {
+        "step": 7,
+        "rule": "614.1d",
+        "status": "supported",
+        "note": "ROUND-1 FIX VERIFIED. Citing it here supports the claim that entering tapped governs only how Oathsworn enters. Together with 701.21a, this settles that being tapped does not matter."
+      },
+      {
+        "step": 8,
+        "rule": "704.3",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 8,
+        "rule": "603.3b",
+        "status": "supported",
+        "note": "Four triggers: 2 Plunderer and 2 Zulaport. None depends on another, so their order does not matter."
+      },
+      {
+        "step": 8,
+        "rule": "119.3",
+        "status": "supported",
+        "note": "Arithmetic re-verified. A cycle starts with {C}{C} + 1 Treasure. Paying {C} + the Treasure leaves {C} and no Treasures. Two Altar activations bring the pool to {C}x5, and two Plunderer triggers make 2 Treasures. Net: +{C}{C}{C} and +1 Treasure (+4 mana). Each opponent loses 2 (6 across the pod) and you gain 2. One token is made and sacrificed. After N cycles you hold (2+3N) {C} and (1+N) Treasures, matching final_state."
+      },
+      {
+        "step": 9,
+        "rule": "104.4b",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "732.2a",
+        "status": "supported",
+        "note": ""
+      },
+      {
+        "step": 9,
+        "rule": "704.5a",
+        "status": "supported",
+        "note": "Lethal count re-verified. Opponents are at 39 after step 2 and 39-2N after N cycles, so 1 after 19 cycles. In cycle 20 the Zulaport trigger from sacrificing Oathsworn takes all three to 0. That is 20 casts and 39 further deaths (19x2 + 1). Mana never binds."
+      }
+    ],
+    "iterations": 2
+  }
+}
