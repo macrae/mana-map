@@ -279,13 +279,15 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **010 approve** (pilot, deck-doctor) — Card four of the vision on jaws-v1: The Queen of Dale (a 2-mana Human; recruits -- loot, and a 1/1 Human Soldier on a nonland discard -- whe · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve”
+- **009 no-change** (pilot, deck-doctor) — Card three of the vision on jaws-v1: Leitmotif Composer (a Human Bard that draws on combat damage to a player; copies itself on a 5+ mana va · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Composer”
+- **008 decline** (pilot, deck-doctor) — Card two of the vision on jaws-v1: Tataru Taru (a tapped Treasure when an opponent draws off their turn, once a turn; draws on entry) in --  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no, I don't approve”
 - **007 approve** (pilot, deck-doctor, strategist) — Card one of the vision on jaws-v1: Big Score (instant, discard a card: draw two and make two Treasure) in for Gratuitous Violence (the old p · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve, Big Score for Torbran”
 - **006 open** (—) — Audit: things seem sideways. The strategy, in the pilot's words: land the shark, make it big through card draw, give humans flying (evasive  · on `jaws-v1` · open
 - **005 no-change** (pilot, strategist, deck-doctor) — Is jaws-v1 a better deck? The swap that decides it: Fiery Emancipation (triples all our damage, RRR) out for Jaws, Relentless Predator (Bloo · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “but Jaws can ping off of Treasure too... not only blood, that's the value with Jaws.. Sharknado is a bit of a theme/gaga”
 - **004 decline** (pilot) — Card four on jaws-v1: a ninth interaction card — Path to Exile for Talisman of Creativity? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/3 named cards · “no change”
 - **003 no-change** (pilot, strategist, rules-question, deck-doctor) — Card three on jaws-v1: Narset, Jeskai Waymaster for Mask of Memory, or no change? · on `jaws-v1` · 2026-11-21 · goldfish saw 1/4 named cards · “continue”
-- **002 approve** (pilot, deck-doctor, data-analyst, rules-question) — Card two on jaws-v1: the one cut for Unsettled Mariner, or no change? · on `jaws-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approve! stage it and go to card three”
-- **001 approve** (pilot, deck-doctor, data-analyst, rules-question) — The pool for jaws-v1: which of the pasted cards goes in first, and what comes out — Library of Leng for Ceremonial Knife? · on `jaws-v1` · 2026-11-20 · goldfish saw 1/2 named cards · “approve!”
+- … 2 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

@@ -1,0 +1,249 @@
+{
+  "id": "009",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Card three of the vision on jaws-v1: Leitmotif Composer (a Human Bard that draws on combat damage to a player; copies itself on a 5+ mana value instant or sorcery) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Leitmotif Composer"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Leitmotif Composer"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: Composer's cut; the doctor's write-up as saved",
+      "text": "{\n  \"reading\": \"Asked: does Leitmotif Composer earn a slot on jaws-v1, and for which card. Answer: NO CHANGE. Composer is a 2/2 Human for {2}{U} that draws one card per connecting hit, but only after a {W/U} Shabraz grant (or {2}{U} unblockable) each turn; Enduring Curiosity, already in the list, does the same job for every connecting creature, and Q046 (2026-11-06) cut Composer for exactly that reason. Its copy clause has three triggers in the 99 (Echo of Eons MV6, Reforge the Soul MV5, Time Reversal MV5; Shark Typhoon cycling and Kitsa copies are not casts), so it is a one-copy card in most games. No slot it could take is clearly worse on the pilot's vision.\",\n  \"log_entries_read\": [\"009\"],\n  \"cut_candidates\": [\n    {\"card\": \"Gratuitous Violence\", \"why\": \"Five-mana RRR enchantment from the departed red-amplifier plan, competing with Shabraz for the turn-5 slot (study 006).\", \"cost_of_cutting\": \"It doubles every damage source we control, Shabraz's commander damage included, so cutting it lengthens the 21-damage clock; goldfish (one instrument) reads damage @T10 173.4 -> 134.5 [-40.6, -37.0] and killed by T6 -1.7 pts [-2.0, -1.4], while extra cards by T8 +1.2 [+1.1, +1.3].\", \"orphans_stack\": [\"007\", \"013\"], \"difficulty\": \"contested\"},\n    {\"card\": \"Collective Defiance\", \"why\": \"Audit (study 006) flags it as old-plan; its wheel hits one player and its burn is incidental.\", \"cost_of_cutting\": \"It is a three-mana self-wheel plus a 4-damage creature answer on a weak interaction axis; goldfish (one instrument) reads finisher wheel by T8 79.8% -> 76.0% [-4.1, -3.3] and wheels cast by T10 -0.22 [-0.23, -0.20]. Cutting it costs a wheel and an answer for a 2/2.\", \"orphans_stack\": [], \"difficulty\": \"painful\"},\n    {\"card\": \"Faerie Mastermind\", \"why\": \"Non-Human 2/1 flyer; the only cheap creature slot Composer could fill without touching a wheel or an answer.\", \"cost_of_cutting\": \"Log 009 read it as-expected ('kept everybody drawing'); it flies without a grant and has flash. Goldfish (one instrument) reads extra cards by T8 -0.4 [-0.5, -0.3]. Not recommended.\", \"orphans_stack\": [], \"difficulty\": \"painful\"}\n  ],\n  \"add_candidates\": [],\n  \"open_questions\": [\n    {\"question\": \"Is the MV<=3 creature gap real or game 009's draw? The branch already holds nine Humans at MV<=3 (Esper Sentinel, Grand Abolisher, Inti, Prince Imrahil, Willie Lumpkin, Magus of the Wheel, Shang-Chi, Sokka, Unsettled Mariner as changeling).\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"If nine is enough, Composer closes no gap and the case for it is the pilot's affection alone.\"}\n  ],\n  \"gaps\": [\"Game 009 is a single entry (anecdote) for the curve gap.\", \"Goldfish damage rows still price the old ping plan (goldfish_targets.json not re-authored), so Gratuitous Violence's -38.8 overstates its value to the Shabraz plan only partly: it does double commander damage.\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "134.5",
+          "173.4"
+        ]
+      },
+      "added_at": "2026-11-25T13:24:43-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-study009.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on Composer",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "card-three-of-the-vision-on-jaws-v1-leitmotif-co",
+  "facts": [
+    {
+      "id": "S-9825914e-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-9825914e-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-9825914e-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-9825914e-04",
+      "kind": "oracle",
+      "text": "Creature — Human Bard · {2}{U} — Whenever this creature deals combat damage to a player, draw a card. Whenever you cast an instant or sorcery spell with mana value 5 or greater, create a token that's a copy of this creature. {2}{U}: Creatures named Leitmotif Composer can't be blocked this turn.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Leitmotif Composer"
+    },
+    {
+      "id": "S-9825914e-05",
+      "kind": "queue",
+      "text": "Q046 DECIDED: Leitmotif Composer is the weakest slot for Shabraz's plan and its slot is better spent on one of Arjun, the Shifting Flame, Enduring Curiosity, Teferi's Puzzle  → supported: Leitmotif's slot is best spent on Enduring Curiosity: same job (a card on a combat hit) but for EVERY creature that connects, Shabraz and the flying Humans incl",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Leitmotif Composer",
+      "as_of": "2026-11-06",
+      "queue_id": "Q046"
+    },
+    {
+      "id": "S-9825914e-06",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Willie Lumpkin, Postman (0.92), Gratuitous Violence (0.88), Lizard Blades (0.88)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Leitmotif Composer",
+      "neighbours": [
+        {
+          "name": "Willie Lumpkin, Postman",
+          "score": 0.9224
+        },
+        {
+          "name": "Gratuitous Violence",
+          "score": 0.8817
+        },
+        {
+          "name": "Lizard Blades",
+          "score": 0.8789
+        }
+      ]
+    },
+    {
+      "id": "S-9825914e-07",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Leitmotif Composer",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-9825914e-08",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-9825914e-09",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-9825914e-10",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-9825914e-11",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-9825914e-12",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-9825914e-13",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-9825914e-14",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Leitmotif Composer"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "776c37ab69d3c0e6a5b0f2681361352d17cfa5dda736ab33bf6da5c0b49be718",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T13:28:28-08:00",
+    "facts": 14
+  }
+}
