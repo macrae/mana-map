@@ -1,0 +1,257 @@
+{
+  "id": "015",
+  "slug": "edgar-vampires",
+  "branch": "threat-v1",
+  "question": "Zagras, Thief of Heartbeats on threat-v1: other creatures we control have deathtouch (a deathtouch wall of Edgar tokens), a 4/4 flying deathtouch haste Vampire, cheaper per party member — in, and for what?",
+  "opened": "2026-11-24",
+  "decided_at": "2026-11-24",
+  "cards": [
+    "Zagras, Thief of Heartbeats"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Zagras, Thief of Heartbeats"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 160.0,
+      "slice": "MODE prescribe: Zagras's cut; verbatim (Kalitas's token corrected to a Zombie, orchestrator note trimmed)",
+      "text": "**My pick is NO CHANGE on Zagras for threat-v1.** It's a good card that answers a problem this deck's log doesn't show, and no slot is clearly worse.\n\n1. **The axes it doesn't touch.** `deck-audit --branch threat-v1` has five axes under target: mana-base 35 (target 36-38), ramp 8 (10-12), card-advantage 7 (>=10), interaction-breadth 3 classes (>=5) and tutors 3 (4-8). Zagras closes none of them.\n2. **What the log says.** Study 015 counts 1W 5L, with endings: wipe 3, combo 1, raced 1, stalled 1, won 1. The \"raced\" game (004) was Purphoros pinging the pilot out, not combat. No game in the log was lost to a creature board attacking him, and a six-drop dies to the wipes that lost three games like everything else.\n3. **The case for it, honestly.** Game 008's turn against Magda's dragons is real evidence that deathtouch matters at this table. But Crossway Troublemakers, a keep, already did that job. What Zagras adds is deathtouch on defence, a Vampire cast for Edgar's eminence, and a Kalitas interaction: a deathtouch block kills their nontoken creature, which Kalitas exiles to make a Zombie. All real, but this deck wins on drain, and defence is the second job.\n4. **The cost.** It's realistically a 4-5 mana card. Wizard is Viscera Seer alone and Warrior is Kalitas or Skeleton, so a four-member party is uncommon. That slots it into a crowded 4-5 band.\n\n**Cuts if he wants it anyway**, ranked. None is easy.\n1. **Bastion of Remembrance** (painful). One of 8 cards in the death-drain group (measured 86.1%). The cost: an enchantment that drains through creature wipes, the deck's top loss cause; log 002 calls a wipe with drainers out \"the pilot's best turn of the night.\" Goldfish floor: 7 better, 5 worse: damage @T10 +1.3 [+1.1, +1.4], life lost outside combat −1.2 [−1.4, −0.9].\n2. **Oathsworn Vampire** (contested). The loop's recursive Vampire (stack 013); Reassembling Skeleton would carry the loop alone. The goldfish can't read it, so no rows.\n3. None. Sanctum Seeker is one of only 3 cards in the \"drain on an arrival or an attack\" component; Teysa Karlov is in checker-passed stack 014.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-24T22:02:12-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-zagras.md"
+    },
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 44.0,
+      "slice": "Zagras vs Crossway; verbatim (open list and run list omitted)",
+      "text": "Lean: no change (a marginal add at best). Zagras is a sound card, but it mostly duplicates the one thing Crossway already does and adds a 4-6 mana body to a deck that wants to convert tokens, not fight with them.\n\n**What the card adds (argument, not evidence)**\n- Crossway gives deathtouch and lifelink to attacking Vampires only. Zagras gives deathtouch to all your other creatures at all times, so it also covers blocking. The two overlap on the attack and differ on defence.\n- Offence: the game-008 line is tokens with Crossway's deathtouch killing a dragon player's big blockers. Zagras would make that line work without Crossway. That is real, but the deck already holds the answer in a keep.\n- Defence: a team that kills anything it blocks is a deterrent (strategy:threat-assessment, strategy:multiplayer.politics). A board of deathtouch chump-blockers lowers the odds that anyone attacks you.\n- Zagras itself is a legendary 4/4 flying haste deathtouch body, and it kills planeswalkers. It is also a Vampire, so it feeds Edgar's eminence.\n\n**Why I lean no**\n- Role: the deck is the beatdown through drain, not combat. Combat is a taxed channel (strategy:conversion.combat-channel). The roles are assigned per threat (strategy:whos-the-beatdown), and this deck's inevitability comes from the drain engine, not the board.\n- The \"buys time\" case is weaker than it looks. Zagras is a creature, so a sweeper eats it along with the tokens. A body that lifts the team is a removal magnet (strategy:resource-hedging.wrath-math, strategy:deckbuilding.typal-density.lord-exposure).\n- Pilot's standing rule: a card earns its slot by multiplying or scaling. Deathtouch is a multiplier only when tokens attack or block into big things. Nothing recorded names a gap that \"blocks that kill anything\" fills.\n- The dossier's nearest in-deck neighbours (Urza's Incubator 0.84, Deflecting Swat 0.78, Ingris Stingerquill 0.78) are weak functional matches, so there is no clean cut to name.\n\n**Evidence status:** the goldfish has no blockers or opposing creatures; it cannot settle the deterrence or trade-up question.",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:conversion.combat-channel",
+          "strategy:deckbuilding.typal-density.lord-exposure",
+          "strategy:multiplayer.politics",
+          "strategy:resource-hedging.wrath-math",
+          "strategy:threat-assessment",
+          "strategy:whos-the-beatdown"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-24T22:02:13-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-zagras.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist"
+    ],
+    "pilot_words": "ok... no change!",
+    "reading": "",
+    "at": "2026-11-24"
+  },
+  "slug_name": "zagras-thief-of-heartbeats-on-threat-v1-other-cr",
+  "facts": [
+    {
+      "id": "S-6beb1a0f-01",
+      "kind": "record",
+      "text": "8 game(s): 1W 5L; how they ended: wipe 3, combo 1, raced 1, stalled 1, won 1; not yet debriefed: 007",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 8,
+      "figure": {
+        "win": 1,
+        "loss": 5
+      }
+    },
+    {
+      "id": "S-6beb1a0f-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 44/96 as of 2026-11-11",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-11-11",
+      "figure": 44
+    },
+    {
+      "id": "S-6beb1a0f-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Bracket-3 Edgar in late 2026 is a lord-dense Vampire swarm that wins by combat with a drain rider, not a drain deck with Vampires as fuel. EDHREC's 'Upgraded' (bracket 3) filter holds 5,876 self-tagged decks, averages 35 lands and 34 creatures, and its top ten",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-6beb1a0f-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Vampire Rogue · {4}{B}{R} — This spell costs {1} less to cast for each creature in your party. Flying, deathtouch, haste Other creatures you control have deathtouch. Whenever a creature you control deals combat damage to a planeswalker, destroy that planeswalker.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Zagras, Thief of Heartbeats"
+    },
+    {
+      "id": "S-6beb1a0f-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Urza's Incubator (0.84), Deflecting Swat (0.78), Ingris Stingerquill (0.78)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Zagras, Thief of Heartbeats",
+      "neighbours": [
+        {
+          "name": "Urza's Incubator",
+          "score": 0.8388
+        },
+        {
+          "name": "Deflecting Swat",
+          "score": 0.7815
+        },
+        {
+          "name": "Ingris Stingerquill",
+          "score": 0.7758
+        }
+      ]
+    },
+    {
+      "id": "S-6beb1a0f-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Zagras, Thief of Heartbeats",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-6beb1a0f-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 7 rows better, 7 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-6beb1a0f-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 44.71 -> 36.59, a change of -8.12 (-18%) [-8.9647, -7.2801] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -8.1224,
+      "ci95": [
+        -8.9647,
+        -7.2801
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6beb1a0f-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 89 games in 100 -> 86 in 100, a swing of 3 games per 100 [-0.0403, -0.0239] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0321,
+      "ci95": [
+        -0.0403,
+        -0.0239
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6beb1a0f-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 11.70 -> 9.86, a change of -1.84 (-16%) [-2.0197, -1.6599] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -1.8398,
+      "ci95": [
+        -2.0197,
+        -1.6599
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6beb1a0f-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 2.94 -> 2.54, a change of -0.39 (-13%) [-0.47, -0.3178] — worse",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.3939,
+      "ci95": [
+        -0.47,
+        -0.3178
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-6beb1a0f-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: no call — the gap of 0.003 is smaller than the 0.015 this run can resolve [-0.0075, 0.0131] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0028,
+      "ci95": [
+        -0.0075,
+        0.0131
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-6beb1a0f-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: no call — the gap of 0.003 is smaller than the 0.011 this run can resolve [-0.01, 0.0048] — noise",
+      "tier": "data",
+      "source": "branches/threat-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": -0.0026,
+      "ci95": [
+        -0.01,
+        0.0048
+      ],
+      "measure": "mulliganed",
+      "verdict": "noise"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Zagras, Thief of Heartbeats"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "90000b6c58779ec7cd240f2265b177fdfe8279d83add7a018a9b7c094c281777",
+  "base_decklist_sha256": "1df3a33540a6148a34c9476182cba433c2574ae4f8895c42471b5008d5c4df82",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-24T22:02:20-08:00",
+    "facts": 13
+  }
+}
