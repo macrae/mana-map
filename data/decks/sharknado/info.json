@@ -20,11 +20,7 @@
     "stale": [
       "frame"
     ],
-    "older_model": [
-      "goldfish",
-      "mana",
-      "benchmark"
-    ],
+    "older_model": [],
     "invalid": [],
     "verified": true,
     "missing": [],
@@ -523,25 +519,22 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "023",
-        "question": "Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Irencrag Pyromancer) in -- the pilot: 'this bad boys gotta make the cut' -- and for what?",
+        "id": "024",
+        "question": "A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer, and Consecrated Sphinx, Smothering Tithe and Rhystic Study are 'sooo money'; or a non-Game-Changer tutor -- still targeting a first kill by turn six",
         "branch": "jaws-v1",
-        "file": "023-krang-the-all-powerful-a-draw-caused-trigger-of.json",
-        "decision": "approve",
+        "file": "024-a-tutor-that-finds-krang-an-artifact-creature-or.json",
+        "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "approve Krang for Archmage Emeritus",
+        "pilot_words": "yeah I'm not sure long term plans for enduring curiosity is worth it",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
-        "swap": {
-          "out": null,
-          "in": "Krang, the All-Powerful"
-        },
+        "swap": null,
         "goldfish_saw": [
-          1,
-          1
+          4,
+          4
         ]
       },
       "summary": {
@@ -553,12 +546,11 @@
       "verdict": {
         "state": "profile only",
         "word": "profile only",
-        "rose": 5,
-        "fell": 8,
-        "no_call": 4
+        "rose": 6,
+        "fell": 10,
+        "no_call": 2
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Banishing Light",
         "Brotherhood Regalia",
@@ -580,6 +572,7 @@
       "impact": {
         "state": "profile only",
         "rose": [
+          "hoard @T10",
           "hoard @T6",
           "stall, 2 in a row",
           "kept hand passes the pilot's keep rule",
@@ -590,57 +583,59 @@
           "damage @T10",
           "board power @T6",
           "killed by T6",
+          "killed by T10",
           "missed drop by T5",
           "mulliganed",
           "extra cards by T8",
           "finisher wheel by T8",
-          "wheels cast by T10"
+          "wheels cast by T10",
+          "cards seen by T5"
         ],
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -148.4868,
+            "delta": -138.6704,
             "ci95_diff": [
-              -155.5975,
-              -141.3761
+              -145.8507,
+              -131.4901
             ],
-            "mde": 10.1639,
+            "mde": 10.2635,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0024,
+            "delta": -0.0027,
             "ci95_diff": [
-              -0.0041,
-              -0.0007
+              -0.0045,
+              -0.0009
             ],
-            "mde": 0.0024,
-            "verdict": "noise",
+            "mde": 0.0026,
+            "verdict": "worse",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.0801,
+            "delta": -1.9903,
             "ci95_diff": [
-              -2.2967,
-              -1.8635
+              -2.2076,
+              -1.773
             ],
-            "mde": 0.3095,
+            "mde": 0.3106,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -6.9242,
+            "delta": -6.6487,
             "ci95_diff": [
-              -7.2863,
-              -6.5621
+              -7.0197,
+              -6.2777
             ],
-            "mde": 0.5176,
+            "mde": 0.5303,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
@@ -8768,6 +8763,25 @@
   ],
   "studies": [
     {
+      "id": "024",
+      "question": "A tutor that finds Krang (an artifact creature) or Smothering Tithe (an enchantment) inside bracket 3 -- Enlightened Tutor is a Game Changer, and Consecrated Sphinx, Smothering Tithe and Rhystic Study are 'sooo money'; or a non-Game-Changer tutor -- still targeting a first kill by turn six",
+      "branch": "jaws-v1",
+      "file": "024-a-tutor-that-finds-krang-an-artifact-creature-or.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "yeah I'm not sure long term plans for enduring curiosity is worth it",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": null,
+      "goldfish_saw": [
+        4,
+        4
+      ]
+    },
+    {
       "id": "023",
       "question": "Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Irencrag Pyromancer) in -- the pilot: 'this bad boys gotta make the cut' -- and for what?",
       "branch": "jaws-v1",
@@ -9878,6 +9892,14 @@
           "unit": "%",
           "source": "goldfish_metrics.json"
         },
+        "target:Krang drawn — the doubler the wheels dig for (the pilot: find him fast)": {
+          "value": 0,
+          "tier": "data",
+          "weight": "body",
+          "definition": "share of games assembling 'Krang drawn — the doubler the wheels dig for (the pilot: find him fast)' by turn six",
+          "unit": "%",
+          "source": "goldfish_metrics.json"
+        },
         "target:Jaws drawn — every noncreature artifact sacrificed pings each opponent": {
           "value": 0,
           "tier": "data",
@@ -10115,6 +10137,10 @@
       {
         "label": "An artifact token maker drawn — the Treasure and Blood Jaws sacrifices into the table",
         "by_turn_6_pct": 39
+      },
+      {
+        "label": "Krang drawn — the doubler the wheels dig for (the pilot: find him fast)",
+        "by_turn_6_pct": 0
       },
       {
         "label": "Jaws drawn — every noncreature artifact sacrificed pings each opponent",
@@ -10583,7 +10609,6 @@
   },
   "next": [
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
-    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
