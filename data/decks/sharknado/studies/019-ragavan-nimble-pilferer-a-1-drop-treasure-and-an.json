@@ -1,0 +1,392 @@
+{
+  "id": "019",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) -- from the ranked list of the weakest cards left?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Magus of the Wheel",
+    "Ragavan, Nimble Pilferer"
+  ],
+  "swap": {
+    "out": "Magus of the Wheel",
+    "in": "Ragavan, Nimble Pilferer"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: the weakest cards left, ranked; item 1 verbatim",
+      "text": "Magus of the Wheel -> Ragavan, Nimble Pilferer (contested; the doctor's best swap of the seven weakest cards ranked). At a turn-four table Magus is 3 mana plus 2 more and a turn's wait for a wheel everyone sees coming, and that wheel refills the Krenko and Purphoros hands. Ragavan is a turn-one permanent that makes Treasure for Jaws pings and has dash for haste. Goldfish (one instrument, 10,000 games per list, no blockers, no removal, no opponents): killed by T6 12.7% -> 15.5% [+2.4, +3.1]; hoard @T6 0.288 -> 0.552; finisher wheel by T8 58.5% -> 53.8% [-5.2, -4.2]; wheels cast by T10 -0.18. Caveats: Ragavan is not a Human (no flying from Shabraz), and a 2/1 runs into goblin tokens the goldfish does not have. Ivora is the fallback for this slot. Not a Game Changer (3 of 3 stays).",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T17:42:46-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-ragavan.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "approve Ragavan for Magus",
+    "reading": "Ragavan, Nimble Pilferer in for Magus of the Wheel: a turn-one permanent that makes Treasure for Jaws and an impulse card on each hit, for a slow creature wheel that refills the table's hands.",
+    "at": "2026-11-25"
+  },
+  "slug_name": "ragavan-nimble-pilferer-a-1-drop-treasure-and-an",
+  "facts": [
+    {
+      "id": "S-51e251ec-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-51e251ec-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-51e251ec-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-51e251ec-04",
+      "kind": "oracle",
+      "text": "Creature — Human Wizard · {2}{R} — {1}{R}, {T}, Sacrifice this creature: Each player discards their hand, then draws seven cards.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Magus of the Wheel"
+    },
+    {
+      "id": "S-51e251ec-05",
+      "kind": "engine_stage",
+      "text": "engine stage ignition: Ignition",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Magus of the Wheel",
+      "stage": "ignition",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-51e251ec-06",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces DISCARD, DRAW (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Magus of the Wheel",
+      "consumes": [],
+      "produces": [
+        "DISCARD",
+        "DRAW"
+      ],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-51e251ec-07",
+      "kind": "engine_feeds",
+      "text": "feeds on COMBAT_DAMAGE: Enduring Curiosity, Mask of Memory (unproven)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Magus of the Wheel",
+      "event": "COMBAT_DAMAGE",
+      "cards": [
+        "Enduring Curiosity",
+        "Mask of Memory (unproven)"
+      ]
+    },
+    {
+      "id": "S-51e251ec-08",
+      "kind": "engine_feeds",
+      "text": "feeds on DISCARD: Brallin, Skyshark Rider",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Magus of the Wheel",
+      "event": "DISCARD",
+      "cards": [
+        "Brallin, Skyshark Rider"
+      ]
+    },
+    {
+      "id": "S-51e251ec-09",
+      "kind": "engine_feeds",
+      "text": "feeds on DRAW: Shabraz, the Skyshark, Shang-Chi and the Ten Rings",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Magus of the Wheel",
+      "event": "DRAW",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Shang-Chi and the Ten Rings"
+      ]
+    },
+    {
+      "id": "S-51e251ec-10",
+      "kind": "context",
+      "text": "CONTEXT plays: Magus of the Wheel and Jace's Archivist are wheels on a body.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Magus of the Wheel"
+    },
+    {
+      "id": "S-51e251ec-11",
+      "kind": "context",
+      "text": "CONTEXT cards: - Magus of the Wheel",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Magus of the Wheel"
+    },
+    {
+      "id": "S-51e251ec-12",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE 'VOLTRON' FILTER IS THE WHEEL DECK WEARING BOOTS. Voltron-tagged pair decks (42) run Windfall 32/42, Faithless Looting 30/42, Frantic Search 28/42, Magus of the Wheel 27/42, Glint-Horn 24/42, Curiosity 22/42, Captain Howler 20/41; the p",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Magus of the Wheel",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-51e251ec-13",
+      "kind": "recon",
+      "text": "recon (2026-11-20): HUMAN TYPAL SUPPORT DOES NOT EXIST IN ANY LIST; SHARK TYPAL IS EIGHT TO NINE NAMED SHARKS. The Humans theme on the pair is 8 of 3,974 decks and its own top-synergy cards are Sharks (Captain Howler 5/5 +0.99, Marauding Mako 5/5 +0.99, Thunde",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Magus of the Wheel",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-51e251ec-14",
+      "kind": "price",
+      "text": "$1.03 NM ((CMM) 241) as of 2026-11-25",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Magus of the Wheel",
+      "as_of": "2026-11-25",
+      "figure": 1.03
+    },
+    {
+      "id": "S-51e251ec-15",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Windfall (0.96), Wheel of Fortune (0.96), Jace's Archivist (0.96)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Magus of the Wheel",
+      "neighbours": [
+        {
+          "name": "Windfall",
+          "score": 0.9617
+        },
+        {
+          "name": "Wheel of Fortune",
+          "score": 0.958
+        },
+        {
+          "name": "Jace's Archivist",
+          "score": 0.957
+        }
+      ]
+    },
+    {
+      "id": "S-51e251ec-16",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Magus of the Wheel",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat",
+        "discard",
+        "target"
+      ]
+    },
+    {
+      "id": "S-51e251ec-17",
+      "kind": "oracle",
+      "text": "Legendary Creature — Monkey Pirate · {R} — Whenever Ragavan deals combat damage to a player, create a Treasure token and exile the top card of that player's library. Until end of turn, you may cast that card. Dash {1}{R} (You may cast this spell for its dash cost. If you do, it gains haste, and it's returned from the battlefield to its owner",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Ragavan, Nimble Pilferer"
+    },
+    {
+      "id": "S-51e251ec-18",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Prismari Command (0.86), Smothering Tithe (0.85), Winds of Change (0.76)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Ragavan, Nimble Pilferer",
+      "neighbours": [
+        {
+          "name": "Prismari Command",
+          "score": 0.8574
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.8549
+        },
+        {
+          "name": "Winds of Change",
+          "score": 0.7634
+        }
+      ]
+    },
+    {
+      "id": "S-51e251ec-19",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Ragavan, Nimble Pilferer",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "combat"
+      ]
+    },
+    {
+      "id": "S-51e251ec-20",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 2 of 2 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-51e251ec-21",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-51e251ec-22",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-51e251ec-23",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-51e251ec-24",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-51e251ec-25",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-51e251ec-26",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Magus of the Wheel",
+      "Ragavan, Nimble Pilferer"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "db5bbd4895ad051eda240ea9e725bf36ada91ee9d0b4da1c41d3e8140e6443ed",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T18:22:56-08:00",
+    "facts": 26
+  }
+}
