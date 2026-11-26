@@ -25,9 +25,7 @@
       "mana",
       "benchmark"
     ],
-    "invalid": [
-      "CONTEXT.md"
-    ],
+    "invalid": [],
     "verified": true,
     "missing": [],
     "todo": []
@@ -525,21 +523,21 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "042",
-        "question": "and this 2 drop human is dope!!!",
+        "id": "043",
+        "question": "a big piece of this deck is builyt around treasures, blood tokens, and a big piece of that is Jaws... ways to find and cast Jaws sooner!?!?!?? I need them!",
         "branch": "jaws-v1",
-        "file": "042-and-this-2-drop-human-is-dope.json",
+        "file": "043-a-big-piece-of-this-deck-is-builyt-around-treasu.json",
         "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "hold these cards for later consideration.",
+        "pilot_words": "hold search for glory, keep jaws-first, push it...",
         "decided_at": "2026-11-26",
         "opened": "2026-11-26",
         "swap": {
           "out": null,
-          "in": "Professor Zei, Anthropologist"
+          "in": "Search for Glory"
         },
         "goldfish_saw": [
           1,
@@ -8775,10 +8773,13 @@
       "question": "a big piece of this deck is builyt around treasures, blood tokens, and a big piece of that is Jaws... ways to find and cast Jaws sooner!?!?!?? I need them!",
       "branch": "jaws-v1",
       "file": "043-a-big-piece-of-this-deck-is-builyt-around-treasu.json",
-      "decision": "open",
-      "decided_by": [],
-      "pilot_words": "",
-      "decided_at": null,
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "hold search for glory, keep jaws-first, push it...",
+      "decided_at": "2026-11-26",
       "opened": "2026-11-26",
       "swap": {
         "out": null,
@@ -11028,12 +11029,10 @@
     ]
   },
   "next": [
-    "1 artifact(s) fail their own gate (CONTEXT.md) — `deck-status sharknado` names them; fix before anything else reads them",
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "study 043 is open: a big piece of this deck is builyt around treasures, blood tokens, and — `manamap pilot study sharknado call 043 …`, then `install`",
     "study 030 is open: Flare of Duplication (copy target instant or sorcery; free by sacrific — `manamap pilot study sharknado call 030 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
