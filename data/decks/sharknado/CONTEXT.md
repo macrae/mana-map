@@ -209,7 +209,7 @@ Three colours from four fetches, shocks, pathways, a Triome and the untapped dua
 - **DeckCheck (external, dated):** 39/96 → bracket 3, as of 2026-10-28 — an older list
 - **Recon (other people's lists, dated):** 9 finding(s) as of 2026-11-20
 - **Proven lines:** 14 of 14 stack scenario(s) checker-passed (✓)
-- **The goldfish — one instrument.** It reads 88 of 99 distinct cards (2 DARK, 9 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
+- **The goldfish — one instrument.** It reads 89 of 99 distinct cards (2 DARK, 8 invisible); no blockers, no removal, no opponents. Its figures below are inputs to a study, never the call.
 Goldfish, 10,000 seeded games, measured on v3.0.0 (V14), 2026-11-10. Each group below is the share of games that have DRAWN it by turn six. No blockers and no removal: read board quality with care.
 
 - share of seeded games where the commander was CAST by turn six: **96%**
@@ -279,15 +279,15 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **022 open** (—) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **021 no-change** (pilot, deck-doctor) — Violent Eruption in for Windfall -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no, no windfall is an amazing card in this deck jfc”
+- **020 no-change** (pilot, deck-doctor) — Council's Judgment in for Teferi's Ageless Insight -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no--as fun as Council's Judgement is, Teferi's Ageless Insight is doing WORK!!!! for shabraz!!!”
 - **019 approve** (pilot, deck-doctor) — Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) · on `jaws-v1` · 2026-11-25 · goldfish saw 2/2 named cards · “approve Ragavan for Magus”
 - **018 no-change** (pilot, deck-doctor) — Thraben Inspector (a W 1/1 Human; investigate on entry -- the Clue is a draw for Shabraz and a sacrificed artifact for Jaws) in -- the deck' · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change, keep Bard; keep exploring”
 - **017 approve** (pilot, deck-doctor, strategist, data-analyst) — The A-table pool (beyond single swaps): fill the interaction gaps the audit found -- a counter that hits creature spells, exile for any nonl · on `jaws-v1` · 2026-11-25 · “approve the smaller five, then work card by card after that”
 - **016 approve** (pilot, deck-doctor) — Longshot, Rebel Bowman (Human; noncreature spells cost one less; two damage to each opponent on every noncreature spell) in -- to cast Shark · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “I agree, it's an expensive wheel, I'm ok to cut it”
 - **015 approve** (pilot, deck-doctor) — Irencrag Pyromancer back in on jaws-v1 -- the pilot: 'consider something else for Irencrag' -- for what? (Not Shark Typhoon, the deck's name · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Pyromancer for Time Reversal”
-- **014 approve** (pilot, deck-doctor) — Card eight of the vision on jaws-v1: Irencrag Pyromancer (0/4 Human; 3 damage to any target whenever you draw your second card each turn, on · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark”
-- **013 approve** (pilot, deck-doctor) — Card seven of the vision on jaws-v1: Conspiracy Theorist (Human; on attack pay {1} and discard to draw; whenever you discard nonland cards,  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no, shark typhoon stays! it's 6 mana, the hope is that I can get it in earlier with Treasure... I favor Conspiracy Theor”
-- **012 approve** (pilot, deck-doctor) — Card six of the vision on jaws-v1: Monument to Endurance (on each discard, a mode not chosen this turn: draw, a Treasure, or each opponent l · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “Monument for Esper Sentinel”
-- … 11 earlier: `manamap pilot study sharknado list`
+- … 14 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

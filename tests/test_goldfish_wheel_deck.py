@@ -181,3 +181,89 @@ def test_an_impulse_card_is_never_cycled_or_pitched():
                    "Creature — Shark", quantity=30, power="5", toughness="5"))
     games = _games(deck, iterations=300)
     assert sum(g["discarded_by_turn"][9] for g in games) > 0
+
+
+# ── the noncreature discount, Valeria's draw, Will of the Jeskai (2026-11-25) ───────────────
+
+VALERIA = ("Noncreature spells you cast cost {1} less to cast. Whenever you cast your first "
+           "noncreature spell each turn, draw a card.")
+VALERIA_DISCOUNT = VALERIA.split(". ")[0] + "."
+VALERIA_DRAW = VALERIA.split(". ")[1]
+WILL = ("Choose one. If you control a commander as you cast this spell, you may choose both "
+        "instead. • Each player may discard their hand and draw five cards. • Each "
+        "instant and sorcery card in your graveyard gains flashback until end of turn. The "
+        "flashback cost is equal to its mana cost.")
+
+
+def test_a_noncreature_discount_is_read_and_spares_creatures():
+    """Valeria Richards and Longshot, Rebel Bowman read as nothing: the reduction reader refused
+    "Noncreature" as not a creature type. Read directly off the production functions."""
+    from manamap.pilot.goldfish_profiles import cost_reduction, reduced_cost
+    red = cost_reduction({"oracle_text": VALERIA})
+    assert red == (1, ("noncreature",), False)
+    spell = {"cmc": 6.0, "pips": [frozenset({"U"})], "is_creature": False,
+             "type_line": "Enchantment", "subtypes": []}
+    body = dict(spell, is_creature=True, type_line="Creature — Shark")
+    assert reduced_cost(spell, [red]) == 5 and reduced_cost(body, [red]) == 6
+
+
+def test_the_noncreature_discount_casts_expensive_spells_sooner():
+    """With the discount out, six-mana wheels come down sooner and more often: +0.125 wheels by
+    turn ten measured. Put the bug back -- drop the "noncreature" branch from `reduced_cost` --
+    and the two arms read the same (0.00)."""
+    def deck(text):
+        return _doc(_c("Valeria", text, 3, "Creature — Human", quantity=6, power="2",
+                       toughness="2"),
+                    _c("Pinger", PING, 1, "Artifact", quantity=4),
+                    _c("Big Wheel", WHEEL, 6, "Sorcery", quantity=10))
+    assert _mean(_games(deck(VALERIA_DISCOUNT)), "wheels_cast_by_turn") \
+        > _mean(_games(deck("Vigilance")), "wheels_cast_by_turn") + 0.06
+
+
+def test_valeria_draws_on_the_first_noncreature_spell_each_turn_only():
+    """Once a turn, not once a spell: +3.05 cards by turn eight on a deck of cantrips; firing on
+    every noncreature cast (the bug, put back) read +12.9."""
+    def deck(text):
+        return _doc(_c("Valeria", text, 2, "Creature — Human", quantity=8, power="2",
+                       toughness="2"),
+                    _c("Cantrip", "Draw a card.", 1, "Sorcery", quantity=30))
+    diff = _mean(_games(deck(VALERIA_DRAW)), "drawn_extra_by_turn", 7) \
+        - _mean(_games(deck("Vigilance")), "drawn_extra_by_turn", 7)
+    assert 1.0 < diff < 6.0, diff
+
+
+def test_will_of_the_jeskai_is_a_wheel_and_grants_flashback_with_a_commander_out():
+    """Will read as nothing: the wheel pattern wanted "discards ..., then draws" and Will says
+    "may discard ... and draw". It is a symmetric five-card wheel, and with a commander out the
+    wheels it discards can be cast again from the graveyard this turn: +0.61 wheels cast against
+    the same card without the grant. Put the bug back -- never grant -- and the arms match."""
+    from manamap.pilot.goldfish_profiles import draw_profile
+    d = draw_profile({"name": "Will of the Jeskai", "oracle_text": WILL, "type_line": "Sorcery",
+                      "mana_cost": "{3}{R}", "cmc": 4.0})
+    assert d["wheel_draws"] == 5 and d["wheel_symmetric"] and d["grant_flashback"] == "commander"
+
+    def deck(text):
+        return _doc(_c("Will", text, 4, "Sorcery", quantity=6),
+                    _c("Pinger", PING, 1, "Artifact", quantity=4),
+                    _c("Wheel", WHEEL, 3, "Sorcery", quantity=10))
+    plain = "Each player may discard their hand and draw five cards."
+    assert _mean(_games(deck(WILL)), "wheels_cast_by_turn") \
+        > _mean(_games(deck(plain)), "wheels_cast_by_turn") + 0.3
+
+
+def test_the_widened_wheel_reader_refuses_the_wheels_it_must_not_read():
+    """A die roll, an energy-sized draw and a vote the opponents carry are not plain wheels; the
+    corpus sweep that widened the pattern found them (2026-11-25)."""
+    from manamap.pilot.goldfish_profiles import _WHEEL_EXCLUDED
+    assert {"Strategy, Schmategy", "Wheel of Potential", "Sail into the West"} <= _WHEEL_EXCLUDED
+
+
+def test_a_class_level_reduction_is_not_the_card_s_until_paid():
+    """Artist's Talent's "Noncreature spells you cast cost {1} less" sits behind "{2}{R}: Level 2":
+    the widened reader applied it from the cast. Only text before the first level counts. Put the
+    bug back -- drop the level cut in `cost_reduction` -- and this reads a reduction."""
+    from manamap.pilot.goldfish_profiles import cost_reduction
+    talent = ("(Gain the next level as a sorcery to add its ability.) Whenever you cast a "
+              "noncreature spell, you may discard a card. If you do, draw a card. {2}{R}: Level 2 "
+              "Noncreature spells you cast cost {1} less to cast.")
+    assert cost_reduction({"oracle_text": talent}) is None

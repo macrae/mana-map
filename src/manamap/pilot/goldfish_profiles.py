@@ -305,6 +305,12 @@ _CAST_DRAW_RE = re.compile(
     r"(?:you may )?draw (a|one|two|three) cards?", re.I)
 #: gate -> the substring that must appear in the CAST card's type line.
 SPELL_CAST_GATE = "instant or sorcery"
+#: VALERIA RICHARDS (2026-11-25): "Whenever you cast your first noncreature spell each turn, draw a
+#: card." Like SPELL_CAST_GATE, no type line contains it, so only `_note_cast` fires it -- once a
+#: turn, on the first noncreature cast.
+FIRST_NONCREATURE_GATE = "first noncreature"
+_FIRST_NONCREATURE_DRAW_RE = re.compile(
+    r"whenever you cast your first noncreature spell each turn, draw (a|one|two) cards?", re.I)
 _CAST_DRAW_GATES = {"enchantment": "Enchantment", "creature": "Creature",
                     "artifact": "Artifact", "aura": "Aura",
                     # ARCHMAGE OF RUNES (2026-11-06). Not a type-line substring on purpose: no
@@ -383,13 +389,20 @@ _EACH_DRAWS_THEN_DISCARDS_RE = re.compile(
 #: hits is read from the start of the match (`wheel_symmetric`).
 _WHEEL_RE = re.compile(
     r"(?:each player |you |target player |each friend |^|\. |\u2022 )"
-    r"(discards?|shuffles?|exiles?) (?:all the cards in |all the cards from |all cards from |the cards from )?(?:their|your) hand"
-    r"(?: and graveyard)?(?: into (?:their|your) librar(?:y|ies))?, then draws? "
+    r"(?:may )?(discards?|shuffles?|exiles?) (?:all the cards in |all the cards from |all cards from |the cards from )?(?:their|your) hand"
+    r"(?: and graveyard)?(?: into (?:their|your) librar(?:y|ies))?(?:, then| and) draws? "
     r"(seven|six|five|four|three|two|a|one|X|that many|cards equal to the greatest number)",
     re.I)
 #: A ONE-SIDED WHEEL THAT COUNTS AN OPPONENT'S HAND (2026-11-04): Borrowed Knowledge, whose other mode
 #: counts your own. "Cards equal to" never matched `_WHEEL_RE`, so it read as nothing at all. The
 #: pilot takes the bigger of the two, which `wheel_greatest` already says; only the caster draws.
+#: A WHEEL'S FLASHBACK GRANT (2026-11-25, Will of the Jeskai): "Each instant and sorcery card in
+#: your graveyard gains flashback until end of turn", with both modes only "if you control a
+#: commander as you cast this spell".
+_GRANT_FLASHBACK_RE = re.compile(
+    r"each instant and sorcery card in your graveyard gains flashback until end of turn", re.I)
+_BOTH_WITH_COMMANDER_RE = re.compile(
+    r"if you control a commander as you cast this spell, you may choose both", re.I)
 _WHEEL_OPP_HAND_RE = re.compile(
     r"discard your hand, then draw cards equal to the number of cards in target opponent's hand", re.I)
 #: The LOOT rider on a spell's own draw: "Draw two cards, then discard two
@@ -539,7 +552,11 @@ _EVENT_THAT_MUCH_RE = re.compile(r"deals that much damage to (?:each opponent|an
 _EVENT_DRAW_RE = re.compile(r"\bdraw (a|two) cards?", re.I)
 _EVENT_TOKEN_RE = re.compile(r"create an? (\d+)/(\d+) [^.]*?creature token", re.I)
 #: Conditional and self-damaging: the lowest chooser does not wheel at all.
-_WHEEL_EXCLUDED = frozenset({"Wheel of Misfortune"})
+#: Wheels the widened "may discard ... and draw" reading (2026-11-25) must NOT read as plain wheels:
+#: a die roll (Strategy, Schmategy), a draw sized by energy paid (Wheel of Potential), and a vote
+#: the opponents can carry (Sail into the West). The sweep found them; each would be an over-credit.
+_WHEEL_EXCLUDED = frozenset({"Wheel of Misfortune", "Strategy, Schmategy", "Wheel of Potential",
+                             "Sail into the West"})
 #: A wheel is cast only when the hand is this thin (nonland cards) or a discard
 #: payoff is already on the battlefield. AUTHORED: without it the draw loop,
 #: cheapest first, wheels away six good cards on turn three.
@@ -2850,6 +2867,9 @@ def draw_profile(card):
            "spell_gain_hand": False,
            # Brainstorm, Brainsurge: cards put back on top after the draw (2026-11-06).
            "spell_put_back": 0,
+           # Will of the Jeskai: the wheel also grants flashback -- "commander" when both modes
+           # need a commander out, "always" when the grant rides on the wheel unconditionally.
+           "grant_flashback": None,
            "unmodelled": None}
     _dd = _DRAW_DOUBLER_RE.search(text)
     if _dd:
@@ -2873,6 +2893,8 @@ def draw_profile(card):
         # player" is symmetric; "you", "target player" (us), "each friend" (us)
         # and a bare imperative are ours alone.
         out["wheel_symmetric"] = _w.group(0).lstrip(". \u2022").lower().startswith("each player")
+        if _GRANT_FLASHBACK_RE.search(text):
+            out["grant_flashback"] = "commander" if _BOTH_WITH_COMMANDER_RE.search(text) else "always"
         # Khorvath's Fury: "draws that many cards plus one".
         out["wheel_plus"] = 1 if re.match(r" cards? plus one", text[_w.end():], re.I) else 0
     elif _WHEEL_OPP_HAND_RE.search(text) and ("Instant" in type_line or "Sorcery" in type_line):
@@ -3016,6 +3038,10 @@ def draw_profile(card):
         mv = _DRAW_MV_MAX_RE.search(m.group(2) or "")
         out["arrival_mv_max"] = int(mv.group(1)) if mv else None
 
+    _fn = _FIRST_NONCREATURE_DRAW_RE.search(text)
+    if _fn:
+        out["cast_draw"] = _DRAW_WORDS[_fn.group(1).lower()]
+        out["cast_draw_gate"] = FIRST_NONCREATURE_GATE
     cast = _CAST_DRAW_RE.search(text)
     if cast:
         gate = _CAST_DRAW_GATES.get((cast.group(1) or "").strip().lower())
@@ -5776,6 +5802,9 @@ _ALL_SPELLS_REDUCTION_RE = re.compile(r"(?:^|\n|\. )spells (?:you cast )?cost \{
                                       re.IGNORECASE)
 
 
+_CLASS_LEVEL_RE = re.compile(r"\{[^}]*\}(?:\{[^}]*\})*: Level \d")
+
+
 def cost_reduction(card, creature_types=None):
     """`(amount, applies_to, excludes_self)` for a static reducer, else None.
 
@@ -5785,6 +5814,12 @@ def cost_reduction(card, creature_types=None):
     zero.
     """
     text = card.get("oracle_text") or ""
+    # A CLASS'S LEVELS ARE PAID FOR (2026-11-25, Artist's Talent): "{2}{R}: Level 2 / Noncreature
+    # spells you cast cost {1} less" is not a reduction the card has when it lands. Only the text
+    # before the first level is the card's from the start.
+    _lvl = _CLASS_LEVEL_RE.search(text)
+    if _lvl:
+        text = text[:_lvl.start()]
     _is = _INSTANT_SORCERY_REDUCTION_RE.search(text)
     if _is and not _SCALING_REDUCTION_RE.match(text[_is.end():]):
         return (int(_is.group("amount")), ("types", ("Instant", "Sorcery")), False)
@@ -5797,6 +5832,13 @@ def cost_reduction(card, creature_types=None):
     if _SCALING_REDUCTION_RE.match(text[got.end():]):
         return None
     what = got.group("what")
+    # A CARD-TYPE REDUCTION (2026-11-25, Valeria Richards and Longshot, Rebel Bowman: "Noncreature
+    # spells you cast cost {1} less"). The type check below refused the word as not a creature type,
+    # so the discount was read as nothing while it cut every wheel, counter and Shark Typhoon.
+    if what == "Noncreature" and not got.group("chosen"):
+        return (int(got.group("amount")), ("noncreature",), bool(got.group("other")))
+    if what in ("Artifact", "Enchantment") and not got.group("chosen"):
+        return (int(got.group("amount")), ("types", (what,)), bool(got.group("other")))
     if what in _COLOUR_WORDS and not got.group("chosen"):
         return (int(got.group("amount")), ("color", _COLOUR_WORDS[what]), bool(got.group("other")))
     if got.group("chosen"):
@@ -5859,6 +5901,7 @@ def reduced_cost(card, reductions, chosen=None):
         elif isinstance(applies, tuple):
             # a colour ("Blue spells"), a pair of card types, or every spell (2026-11-23)
             if applies[0] == "any" \
+                    or applies[0] == "noncreature" and not card["is_creature"] \
                     or applies[0] == "color" and any(applies[1] in p for p in card["pips"]) \
                     or applies[0] == "types" and any(t in (card.get("type_line") or "")
                                                     for t in applies[1]):

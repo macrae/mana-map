@@ -82,6 +82,7 @@ from manamap.pilot.common import (
 
 from manamap.pilot.goldfish_profiles import (
     SPELL_CAST_GATE,
+    FIRST_NONCREATURE_GATE,
     lord_applies,
     ETB_CHAIN_LIMIT,
     FREE_CAST_DEPTH_LIMIT,
@@ -739,6 +740,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # WHAT THE GRAVEYARD HOLDS THAT ANYTHING READS (2026-11-04): instants and sorceries for
     # Rielle's power, and the flashback cards that can be cast again.
     yard_spells = 0
+    # THE INSTANT AND SORCERY CARDS THEMSELVES (2026-11-25), beside the count Rielle reads: a
+    # flashback grant (Will of the Jeskai) needs to know WHICH spells are there to cast again.
+    yard_spell_cards = []
+    granted_flashback = []        # (granted copy, the card in the yard), expire at end of turn
     flashback_yard = []
     noncreature_casts_this_turn = 0
     first_noncreature_turn = None
@@ -1277,6 +1282,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                     yard_creatures.append(c)
                 if "Instant" in tl or "Sorcery" in tl:
                     yard_spells += 1
+                    yard_spell_cards.append(c)
                     if c["engine"]["flashback"]:
                         flashback_yard.append(c)
                 if model_treasures:
@@ -1821,9 +1827,16 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 # flashback reads. A card cast from there is exiled instead.
                 if not from_yard:
                     yard_spells += 1
+                    yard_spell_cards.append(card)
                     if card["engine"]["flashback"]:
                         flashback_yard.append(card)
             if not is_creature:
+                # VALERIA RICHARDS (2026-11-25): the FIRST noncreature cast each turn draws -- read
+                # before the counter moves, so it fires once a turn and on this cast only.
+                if model_draw and noncreature_casts_this_turn == 0:
+                    for _eng in draw_engines:
+                        if _eng["cast_draw"] and _eng["cast_draw_gate"] == FIRST_NONCREATURE_GATE:
+                            draw_n(_eng["cast_draw"])
                 noncreature_casts_this_turn += 1
                 _fire_cast_engines(card, is_spell)
             # CASCADE TRIGGERS ON THE CAST, so it lives here and nowhere else:
@@ -2112,6 +2125,21 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["draw"]["wheel_symmetric"]:
                     opponent_draws_this_turn += _theirs
                     _tax_opponent_draws()
+                # WILL OF THE JESKAI'S OTHER MODE (2026-11-25): with a commander out, both modes --
+                # every instant and sorcery in the graveyard gains flashback until end of turn, at
+                # its own mana cost. Only a wheel or a draw spell is cast from there (`_fire_wheels`'s
+                # flashback pass, below); the wheels this one just discarded are the line.
+                _gf = card["draw"]["grant_flashback"]
+                if _gf and (_gf == "always" or _cmd_out()):
+                    for _y in list(yard_spell_cards):
+                        if _y is card or _y["engine"]["flashback"] \
+                                or not (_y["draw"]["wheel_draws"] or _y["draw"]["spell_draw"]):
+                            continue
+                        _g = dict(_y)
+                        _g["engine"] = dict(_y["engine"], flashback={"cost": int(_y["cmc"]),
+                                                                     "pips": _y["pips"]})
+                        flashback_yard.append(_g)
+                        granted_flashback.append((_g, _y))
                 # Heartwarming Redemption's life, on the hand it just drew: one gain event.
                 if card["draw"]["spell_gain_hand"] and hand:
                     event_gain_events += 1
@@ -4400,6 +4428,10 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                              card["engine"]["flashback"]["pips"]):
                     continue
                 flashback_yard.remove(card)
+                # IT LEAVES THE GRAVEYARD (exiled): the card itself, or the one a grant copied.
+                _orig = next((y for g, y in granted_flashback if g is card), card)
+                if any(y is _orig for y in yard_spell_cards):
+                    yard_spell_cards[:] = [y for y in yard_spell_cards if y is not _orig]
                 hand.append(card)
                 _note_cast(card, from_yard=True)
                 _resolve_draw(card)
@@ -6219,6 +6251,11 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
         # policy picks them, spare lands first and then the most expensive.
         # AN IMPULSE CARD NOT PLAYED BY THE END STEP AFTER NEXT LEAVES (2026-11-25, Inti); a
         # played one already left the hand through `_note_cast`.
+        # A FLASHBACK GRANT LASTS UNTIL END OF TURN (Will of the Jeskai): an uncast copy leaves.
+        if granted_flashback:
+            _gids = {id(g) for g, _y in granted_flashback}
+            flashback_yard[:] = [c for c in flashback_yard if id(c) not in _gids]
+            granted_flashback.clear()
         # By IDENTITY: two copies of a card are equal dicts, and only the exiled one leaves.
         _in_hand = {id(c) for c in hand}
         _gone = {id(c) for c, t in impulse_cards if t <= turn}

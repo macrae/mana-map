@@ -63,18 +63,26 @@ def test_a_scaling_reduction_is_refused_rather_than_counted_flat(text):
     assert goldfish.cost_reduction({"oracle_text": text}) is None
 
 
-@pytest.mark.parametrize("word", [
-    "Noncreature", "Artifact", "Equipment", "Enchantment", "Aura", "Colorless", "Legendary",
-])
+@pytest.mark.parametrize("word", ["Equipment", "Aura", "Colorless", "Legendary"])
 def test_a_word_that_is_not_a_creature_type_is_refused_not_silently_ignored(word):
-    """The sweep found the regex capturing `Noncreature` on 7 cards, `Artifact`
-    on 7, `Equipment` on 5, `Enchantment` on 4 and six colour words on 14. None
-    is a creature subtype, so all of them would match no card and reduce
-    nothing — a silent half-working matcher, which this repo has paid for once
-    already at 65% of the fleet's mana rocks. Artifact and noncreature cost
-    reduction is real and simply not modelled; refusing says so."""
+    """The sweep found the regex capturing words that are not creature subtypes, which would
+    match no card and reduce nothing — a silent half-working matcher, which this repo has paid
+    for once already at 65% of the fleet's mana rocks. The words still not modelled are refused."""
     text = f"{word} spells you cast cost {{1}} less to cast."
     assert goldfish.cost_reduction({"oracle_text": text}) is None
+
+
+@pytest.mark.parametrize("word,applies", [
+    ("Noncreature", ("noncreature",)),
+    ("Artifact", ("types", ("Artifact",))),
+    ("Enchantment", ("types", ("Enchantment",))),
+])
+def test_a_card_type_reduction_is_read_by_type_never_as_a_creature_subtype(word, applies):
+    """MODELLED SINCE 2026-11-25 (Valeria Richards, Longshot, Rebel Bowman): Noncreature,
+    Artifact and Enchantment reductions apply by card type, the way the colour and instant/
+    sorcery forms already did. Never as a creature subtype, which would reduce no card."""
+    text = f"{word} spells you cast cost {{1}} less to cast."
+    assert goldfish.cost_reduction({"oracle_text": text}) == (1, applies, False)
 
 
 @pytest.mark.parametrize("word,colour", [
@@ -239,9 +247,9 @@ def test_a_deck_with_no_reducer_is_byte_identical():
     """The widening rule every optional model in this file follows: a deck that
     does not opt in must measure exactly as it did before."""
     from manamap.pilot.common import load_deck_cards
-    # sharknado, not heliod (2026-11-23): Heliod's Pearl and Sapphire Medallion read as
-    # colour reducers now, so it stopped being an example of a deck with none.
-    doc = load_deck_cards("sharknado")
+    # meren-recursion (2026-11-25), as sharknado was for heliod on 2026-11-23: Valeria Richards'
+    # "Noncreature spells cost {1} less" reads as a reducer now, so sharknado has one.
+    doc = load_deck_cards("meren-recursion")
     lib, cmds = goldfish.build_library(doc)
     assert not any(c["reduces"] for c in lib)
     assert not any(goldfish.cost_reduction(c, goldfish._corpus_creature_types())

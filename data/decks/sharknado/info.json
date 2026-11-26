@@ -20,7 +20,11 @@
     "stale": [
       "frame"
     ],
-    "older_model": [],
+    "older_model": [
+      "goldfish",
+      "mana",
+      "benchmark"
+    ],
     "invalid": [],
     "verified": true,
     "missing": [],
@@ -519,24 +523,24 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "019",
-        "question": "Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) -- from the ranked list of the weakest cards left?",
+        "id": "021",
+        "question": "Violent Eruption in for Windfall -- from the ranked list of the weakest cards left?",
         "branch": "jaws-v1",
-        "file": "019-ragavan-nimble-pilferer-a-1-drop-treasure-and-an.json",
-        "decision": "approve",
+        "file": "021-violent-eruption-in-for-windfall-from-the-ranked.json",
+        "decision": "no-change",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "approve Ragavan for Magus",
+        "pilot_words": "no, no windfall is an amazing card in this deck jfc",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
         "swap": {
-          "out": "Magus of the Wheel",
-          "in": "Ragavan, Nimble Pilferer"
+          "out": "Windfall",
+          "in": "Violent Eruption"
         },
         "goldfish_saw": [
-          2,
+          1,
           2
         ]
       },
@@ -8757,6 +8761,69 @@
   ],
   "studies": [
     {
+      "id": "022",
+      "question": "Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Treasure; grows per artifact they control) in -- the pilot: 'it's super strong' -- and for what?",
+      "branch": "jaws-v1",
+      "file": "022-killmonger-ruthless-usurper-a-3-mana-human-with.json",
+      "decision": "open",
+      "decided_by": [],
+      "pilot_words": "",
+      "decided_at": null,
+      "opened": "2026-11-25",
+      "swap": {
+        "out": null,
+        "in": "Killmonger, Ruthless Usurper"
+      },
+      "goldfish_saw": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": "021",
+      "question": "Violent Eruption in for Windfall -- from the ranked list of the weakest cards left?",
+      "branch": "jaws-v1",
+      "file": "021-violent-eruption-in-for-windfall-from-the-ranked.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "no, no windfall is an amazing card in this deck jfc",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": "Windfall",
+        "in": "Violent Eruption"
+      },
+      "goldfish_saw": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "020",
+      "question": "Council's Judgment in for Teferi's Ageless Insight -- from the ranked list of the weakest cards left?",
+      "branch": "jaws-v1",
+      "file": "020-council-s-judgment-in-for-teferi-s-ageless-insig.json",
+      "decision": "no-change",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "no--as fun as Council's Judgement is, Teferi's Ageless Insight is doing WORK!!!! for shabraz!!!",
+      "decided_at": "2026-11-25",
+      "opened": "2026-11-25",
+      "swap": {
+        "out": "Teferi's Ageless Insight",
+        "in": "Council's Judgment"
+      },
+      "goldfish_saw": [
+        1,
+        2
+      ]
+    },
+    {
       "id": "019",
       "question": "Ragavan, Nimble Pilferer (a 1-drop: Treasure and an impulse card on combat damage; dash) in for Magus of the Wheel (a 3-drop creature wheel) -- from the ranked list of the weakest cards left?",
       "branch": "jaws-v1",
@@ -10484,8 +10551,10 @@
   },
   "next": [
     "stale: frame — regenerate against the current list (`/publish-deck` sequences it)",
+    "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
+    "study 022 is open: Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit — `manamap pilot study sharknado call 022 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",
