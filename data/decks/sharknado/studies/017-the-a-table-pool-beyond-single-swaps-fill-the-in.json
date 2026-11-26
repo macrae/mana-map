@@ -1,0 +1,226 @@
+{
+  "id": "017",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "The A-table pool (beyond single swaps): fill the interaction gaps the audit found -- a counter that hits creature spells, exile for any nonland permanent, a go-wide sweeper or flexible red removal, graveyard hate, and early plays -- from a pool the pilot brings, judged as a SET against a pool of cuts, to win consistently at an optimized turn-four bracket-3 table.",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [],
+  "swap": null,
+  "contributions": [
+    {
+      "agent": "strategist",
+      "model": "sonnet",
+      "elapsed_s": 120.0,
+      "slice": "the pool as a set; verbatim (cuts paragraph and run list trimmed). Note: 'Mystic Trickster' is Imoen, which needs the initiative the deck never takes; Venser bounces, not tucks",
+      "text": "Answer: take 8 from the pool, weighted to instant-speed and exile or bounce answers; leave the symmetric sweepers and the clunky sorcery answers. Argument unless marked evidence.\n1. Role: be the control deck until you stabilise, then flip to Shabraz (strategy:whos-the-beatdown; strategy:pivot-point). The package is a bridge to the pivot; in a 4-pod one-for-ones lose value (strategy:multiplayer) — few, cheap, flexible answers aimed at the two engines.\n2. Evidence (opponent notes): Krenko's window is the turn he lands; Purphoros comes at turn two off a Sol Ring and is indestructible — only exile, bounce or tuck. Counterspells hit both on the stack.\n3. Timing mix: instant counters (Counterspell, Mana Drain, UU) answer the commander the turn it lands; Venser answers at instant speed and leaves a body; hold mana, tap out only when the table is tapped (strategy:tempo.sequencing). Banishing Light / Oblivion Ring answer after the fact at sorcery speed but exile an indestructible Purphoros; choose one. Council's Judgment: sorcery, WW, the 4-pod vote is a risk; rank below Banishing Light.\n4. Sweepers: leave the symmetric ones out — our board is wide Humans (strategy:deckbuilding.typal-density.lord-exposure); Purphoros pings players, so a sweeper doesn't touch it. Delayed Blast Fireball is the exception: one-sided and instant. Gearhulk and Eternal Wanderer are 5-6 mana tap-outs that don't answer Purphoros. Keep removal near the 8-10 floor (strategy:deckbuilding.interaction-suite).\n5. Mana: red is the splash; prefer UU and single-W pips (strategy:deckbuilding.mana-base.color-sources).\n6. Leave out: graveyard hate (doesn't stop a turn-four clock); the one-drops except Thraben Inspector (filler).\nRanked package (8): Counterspell, Mana Drain, Venser, Banishing Light, Delayed Blast Fireball, Council's Judgment (or Oblivion Ring), Mystic Trickster, Thraben Inspector.\nopen: Council's Judgment's vote in practice; one-sided sweepers in a wide-Human deck (a /research-strategy topic).",
+      "cites": {
+        "facts": [],
+        "strategy": [
+          "strategy:deckbuilding.interaction-suite",
+          "strategy:deckbuilding.mana-base.color-sources",
+          "strategy:deckbuilding.typal-density.lord-exposure",
+          "strategy:multiplayer",
+          "strategy:pivot-point",
+          "strategy:tempo.sequencing",
+          "strategy:whos-the-beatdown"
+        ],
+        "rules": []
+      },
+      "added_at": "2026-11-25T16:35:14-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/strat-pool.md"
+    },
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: the pool as a set, eight adds for eight cuts; verbatim",
+      "text": "Sharknado jaws-v1 at the A table: 8 adds for 8 cuts (the deck doctor). What loses here is no answer the turn a threat lands; card advantage is 28; the audit's UNDER axes are sweepers (0) and interaction-breadth (3 classes). Logs: 008 a Krenko that stayed, 005 Purphoros, 006 an infinite, 009 no creature before turn 4.\n1. Counterspell for Negate (easy): counters a creature spell for the same UU.\n2. Council's Judgment for Teferi's Ageless Insight (contested): does not target, gets past hexproof and indestructible Purphoros; costs Insight's doubled draws (game 006).\n3. Delayed Blast Fireball for Kozilek's Return (easy): one-sided — 2 to each opponent's creature clears goblins, pingers, Blood Artist; Return kills our own Queen of Dale, Mastermind, Abolisher, Inti, Mariner, Lizard Blades. Catch: 2 does not kill a 3/3 Krenko.\n4. Mana Drain for Stubborn Denial (easy): same job as Counterspell; its mana pays for Shabraz next turn.\n5. Venser, Shaper Savant for Winds of Change (easy): flash, bounces a spell or permanent, a Human Shabraz can fly; Winds discards nothing.\n6. Banishing Light for Echo of Eons (painful): loses a draw-seven with flashback — the \"too many wheels, not enough permanents\" trade.\n7. Thraben Inspector for Gratuitous Violence (contested): GV doubles commander damage but costs RRR at 5; the pilot called the red amplifiers off-plan.\n8. Charming Scoundrel for Collective Defiance (painful): loses a 3-mana Krenko kill and a hand-wheel mode.\ntry on swaps 7 and 8 (goldfish, one instrument): missed land drop by T5 33.7% -> 33.1% [-0.8,-0.4]; keep rule 86.3% -> 89.2% [+2.5,+3.2]; hand can act by T3 97.3% -> 97.8%; damage @T10 158.2 -> 121.8 [-38.3,-34.4] (mostly GV's doubling); killed by T6 15.9% -> 14.3% [-2.0,-1.2]; finisher wheel by T8 72.7% -> 67.9% [-5.3,-4.2]. On the full package try withheld its rows: it reads none of the counters or removal, nor Venser.\nNot taken: Oblivion Ring (one of the two is enough), Slagstorm (kills every Human we run), Tragic Arrogance (we sacrifice our own rocks, Tithe, Rhystic), Cataclysmic Gearhulk (Tom keeps Purphoros, Oliver keeps Krenko), The Eternal Wanderer (6 mana; -4 kills our Humans), Relic (exiles our graveyard; no Jaws ping), Soul-Guide Lantern (the Teval/Altar loop runs through a mana ability — inference, needs a stack scenario), Ragavan (not a Human), Ivora (a Vampire), Orvar and Imoen (bodies). Sokka kept. Next if more: Fiery Confluence, Novice Inspector, Violent Eruption — each would need a protection cut.\nCounts (98-card library): 1-drop creatures 0 -> 1; 2-drops 9 -> 10; P(MV<=2 creature by T2, play) 0.551 -> 0.629; counters that stop a creature spell 0 -> 3; Krenko answers 4 -> 8, P by T3 (10 cards) 0.354 -> 0.592; Purphoros answers 2 -> 7, P within 12 cards 0.231 -> 0.612; sweepers 1 symmetric -> 1 one-sided; graveyard hate 0; lands 37; protection 8. Purphoros answers only buy turns (he returns from the command zone for 2 more).\nPips: white is the constraint — +4 W pips; 19 white land sources against 22; P(WW by T3, lands only) 0.618, helped by Azorius Signet, the W Talismans, Arcane Signet — a W land swap is worth a mana-fit. Blue: P(two U lands by T2) 0.828 from 30 U sources. Red lighter without GV's RRR.\nBracket: none of the adds is a Game Changer (3 of 3); no combo line fully contained; deck-combos after staging settles it.\nFor the pilot: cutting Echo and Winds leaves five hard wheels (Wheel of Fortune, Windfall, Will of the Jeskai, Magus, Archivist) — it costs finisher-wheel odds; and the extra white load.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": [
+          "121.8",
+          "158.2"
+        ]
+      },
+      "added_at": "2026-11-25T16:39:38-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-pool.md"
+    },
+    {
+      "agent": "data-analyst",
+      "model": "haiku",
+      "elapsed_s": 197.0,
+      "slice": "hard numbers per swap and for the package; verbatim figures (per-swap class lines condensed)",
+      "text": "Per-swap hard numbers (the data analyst; deterministic; library N=98; class counts by a regex over oracle text in classes.py, not a pilot definition; P = hypergeometric P(>=1) in 9 cards (on the play by T3) / 12 cards).\nCard facts: Counterspell 2 {UU} instant | Mana Drain 2 {UU} instant | Venser 4 {2}{UU} flash creature | Delayed Blast Fireball 3 {1}{RR} instant | Council's Judgment 3 {1}{WW} sorcery | Banishing Light 3 {2}{W} enchantment | Thraben Inspector 1 {W} creature | Charming Scoundrel 2 {1}{R} creature. OUT: Negate 2 {1}{U} | Stubborn Denial 1 {U} | Winds of Change 1 {R} | Kozilek's Return 3 {2}{R} | Teferi's Ageless Insight 4 {2}{UU} | Echo of Eons 6 {4}{UU} | Gratuitous Violence 5 {2}{RRR} | Collective Defiance 3 {1}{RR}.\nPackage (all eight), before -> after, P9 / P12: counter-creature 0->2: 0.176 / 0.231; Krenko answer 3->5: 0.389 / 0.487 (before 0.253 / 0.327); Purphoros answer 3->5: 0.389 / 0.487 (before 0.253 / 0.327); one-sided sweeper 0->1: 0.092 / 0.122; wheel 7->5: 0.389 / 0.487 (before 0.502 / 0.612); MV<=2 creatures 9->11: 0.674 / 0.782 (before 0.596 / 0.708); nonland permanents MV<=3 27->30; noncreature spells 39->36; artifact-token makers 6->8.\nMana (lands only; W 19, U 30, R 31 of 37): Counterspell UU by T2 0.768 | Mana Drain 0.768 | Venser 0.874 | Delayed Blast RR by T3 0.844 | Council's WW by T3 0.554 | Banishing Light 0.869 | Thraben 0.790 | Scoundrel 0.959. OUT: Negate 0.953 | Stubborn Denial 0.930 | Winds 0.937 | Kozilek's Return 0.973 | Teferi's 0.874 | Echo 0.934 | Gratuitous RRR by T5 0.742 | Collective Defiance 0.844.\nGoldfish (try, one instrument): swaps 1-6 WITHHELD (it cannot read Counterspell, Negate, Mana Drain, Stubborn Denial, Venser, Delayed Blast Fireball, Kozilek's Return, Council's Judgment, Banishing Light). Swap 7 (Thraben for GV): killed by T6 -1.7 pts [-2.0, -1.4]; damage @T10 -38.2 [-39.9, -36.4]; board power @T6 +0.4 [+0.3, +0.4]; extra cards by T8 +0.4 [+0.3, +0.5]; keep rule +0.7 [+0.5, +0.9]. Swap 8 (Scoundrel for Collective Defiance): damage @T10 +3.2 [+1.8, +4.7]; hoard @T10 +0.24 [+0.11, +0.37]; keep rule +2.2 [+1.9, +2.5]; interaction affordable @T6 +2.4 [+0.9, +4.0]; finisher wheel by T8 -4.9 [-5.3, -4.4]; wheels cast by T10 -0.19 [-0.21, -0.18]. Package: withheld, blind.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T17:04:10-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/analyst-pool.md"
+    }
+  ],
+  "call": {
+    "decision": "approve",
+    "decided_by": [
+      "pilot",
+      "deck-doctor",
+      "strategist",
+      "data-analyst"
+    ],
+    "pilot_words": "approve the smaller five, then work card by card after that",
+    "reading": "The smaller five of the pool package: Counterspell for Negate, Mana Drain for Stubborn Denial, Venser, Shaper Savant for Winds of Change, Delayed Blast Fireball for Kozilek's Return, Banishing Light for Echo of Eons. Kept for now: Teferi's Ageless Insight, Gratuitous Violence, Collective Defiance -- Council's Judgment, Thraben Inspector and Charming Scoundrel go card by card.",
+    "at": "2026-11-25"
+  },
+  "slug_name": "the-a-table-pool-beyond-single-swaps-fill-the-in",
+  "facts": [
+    {
+      "id": "S-0dbb72d5-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-0dbb72d5-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-0dbb72d5-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-0dbb72d5-04",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 0 of 0 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "n": 10000
+    },
+    {
+      "id": "S-0dbb72d5-05",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dbb72d5-06",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dbb72d5-07",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-0dbb72d5-08",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dbb72d5-09",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-0dbb72d5-10",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 0,
+    "seen": [],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": null
+  },
+  "absent": [],
+  "decklist_sha256": "48c998b6b2536036215d1cd2a45fc1f901dedcff52cb59c82fc79192d60fc3f1",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T17:04:16-08:00",
+    "facts": 10
+  }
+}

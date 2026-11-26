@@ -279,6 +279,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
+- **017 approve** (pilot, deck-doctor, strategist, data-analyst) — The A-table pool (beyond single swaps): fill the interaction gaps the audit found -- a counter that hits creature spells, exile for any nonl · on `jaws-v1` · 2026-11-25 · “approve the smaller five, then work card by card after that”
 - **016 approve** (pilot, deck-doctor) — Longshot, Rebel Bowman (Human; noncreature spells cost one less; two damage to each opponent on every noncreature spell) in -- to cast Shark · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “I agree, it's an expensive wheel, I'm ok to cut it”
 - **015 approve** (pilot, deck-doctor) — Irencrag Pyromancer back in on jaws-v1 -- the pilot: 'consider something else for Irencrag' -- for what? (Not Shark Typhoon, the deck's name · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Pyromancer for Time Reversal”
 - **014 approve** (pilot, deck-doctor) — Card eight of the vision on jaws-v1: Irencrag Pyromancer (0/4 Human; 3 damage to any target whenever you draw your second card each turn, on · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “a counter target spell on a 5 CMC 5/5 body... it's bad... the only reason it's in is because it's a shark”
@@ -286,8 +287,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 - **012 approve** (pilot, deck-doctor) — Card six of the vision on jaws-v1: Monument to Endurance (on each discard, a mode not chosen this turn: draw, a Treasure, or each opponent l · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “Monument for Esper Sentinel”
 - **011 no-change** (pilot, deck-doctor) — Card five of the vision on jaws-v1: Pip-Boy 3000 (equipment; on attack: loot, a +1/+1 counter, or untap two lands) in -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Pip-Boy”
 - **010 approve** (pilot, deck-doctor) — Card four of the vision on jaws-v1: The Queen of Dale (a 2-mana Human; recruits -- loot, and a 1/1 Human Soldier on a nonland discard -- whe · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve”
-- **009 no-change** (pilot, deck-doctor) — Card three of the vision on jaws-v1: Leitmotif Composer (a Human Bard that draws on combat damage to a player; copies itself on a 5+ mana va · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Composer”
-- … 8 earlier: `manamap pilot study sharknado list`
+- … 9 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history
