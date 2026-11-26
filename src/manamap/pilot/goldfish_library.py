@@ -41,6 +41,7 @@ from manamap.pilot.goldfish_profiles import (
     tutor_filter,
     tutor_reaches,
     cascade_n,
+    treasure_cascade_grant,
     copy_fodder,
     discover_n,
     spell_count_profile,
@@ -330,6 +331,8 @@ def classify(card, pool=None):
         # Always read, like discover: it fires in `_note_cast` only when a
         # card carries it, so a deck without one stays bit-identical.
         "cascade": cascade_n(card),
+        # Rain of Riches: the turn's first spell paid with a Treasure has cascade.
+        "treasure_cascade": treasure_cascade_grant(card),
         # THE SPELL-COUNT CHANNELS: storm, per-cast damage, magecraft.
         "spell_count": spell_count_profile(card),
         # THE PIPS MUST COME FROM THE DOOR THE COST CAME FROM. `front_field`

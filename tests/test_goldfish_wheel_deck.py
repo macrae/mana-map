@@ -366,3 +366,24 @@ def test_qala_pumps_the_other_attackers_by_her_own_counters():
     flat = _mean(_games(deck("Whenever you gain" + no_pump), model_drain=True, iterations=1000),
                  "damage_by_turn", 7)
     assert pump > flat + 5, (pump, flat)
+
+
+def test_rain_of_riches_cascades_the_first_treasure_paid_spell():
+    """Rain of Riches gives the turn's first Treasure-paid spell cascade, and a pilot spends a
+    Treasure on purpose to get it: about 1.4 cascades a game against none with the grant struck
+    (2026-11-25). Put the bug back -- never walk the cascade on a Treasure-paid cast -- and the
+    count reads zero."""
+    from manamap.pilot import card_pool
+    rain = card_pool.corpus_oracle()["Rain of Riches"]
+    maker = "When this creature enters, create two Treasure tokens."
+
+    def deck(text):
+        return _doc(_c("Rain", text, 5, "Enchantment", quantity=6),
+                    _c("Maker", maker, 2, "Creature — Human", quantity=10, power="1",
+                       toughness="1"),
+                    _c("Bear", "", 3, "Creature — Bear", quantity=20, power="3", toughness="3"))
+    with_grant = _games(deck(rain), model_treasures=True, iterations=600)
+    without = _games(deck("When this enchantment enters, create two Treasure tokens."),
+                     model_treasures=True, iterations=600)
+    assert sum(g["cascades"] for g in with_grant) / len(with_grant) > 0.5
+    assert sum(g["cascades"] for g in without) == 0

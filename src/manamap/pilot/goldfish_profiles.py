@@ -2790,8 +2790,8 @@ def discover_n(card):
 #: 38 carry the keyword themselves and are read here (Bloodbraid Elf, Shardless
 #: Agent, Violent Outburst, Maelstrom Wanderer x2, Apex Devastator x4, ...; the
 #: list is pinned in tests/test_goldfish_free_cast.py). NAMED AND OUT OF SCOPE:
-#:   GRANTS (14) — Abaddon the Despoiler, Bigger on the Inside, Dark Apostle,
-#:   Flamekin Herald, Maelstrom Nexus, Rain of Riches, Sloppity Bilepiper,
+#:   GRANTS (13) — Abaddon the Despoiler, Bigger on the Inside, Dark Apostle,
+#:   Flamekin Herald, Maelstrom Nexus, Sloppity Bilepiper,
 #:   Smoldering Stagecoach, TARDIS, Wild-Magic Sorcerer, Wildsear, Yidris,
 #:   Zhulodok, and the grant halves of Imoti / Quandrix / The First Sliver
 #:   (their own cascade IS read);
@@ -2802,6 +2802,18 @@ _CASCADE_WORD_RE = re.compile(r"\bcascade\b", re.I)
 _CASCADE_BOUNDARY_RE = re.compile(r"[.:;\n—]")
 _CASCADE_GRANT_RE = re.compile(r"\b(?:have|has|gains?|with|you|your)\b", re.I)
 _CASCADE_CONTINUES_RE = re.compile(r"\s*[a-z]")
+
+
+#: RAIN OF RICHES (2026-11-25), the one grant read: "The first spell you cast each turn that mana
+#: from a Treasure was spent to cast has cascade."
+_TREASURE_CASCADE_RE = re.compile(
+    r"the first spell you cast each turn that mana from a treasure was spent to cast has cascade",
+    re.I)
+
+
+def treasure_cascade_grant(card):
+    """1 if this permanent gives the turn's first Treasure-paid spell cascade (Rain of Riches)."""
+    return 1 if _TREASURE_CASCADE_RE.search(str(card.get("oracle_text", "") or "")) else 0
 
 
 def cascade_n(card):

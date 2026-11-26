@@ -760,6 +760,12 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     granted_flashback = []        # (granted copy, the card in the yard), expire at end of turn
     flashback_yard = []
     noncreature_casts_this_turn = 0
+    # RAIN OF RICHES (2026-11-25): grants in play, Treasures ever spent, the count at the last
+    # cast, and whether this turn's Treasure-paid cascade has been used.
+    treasure_cascade_grants = 0
+    treasures_spent = 0
+    treasure_mark = 0
+    treasure_cascade_used = False
     first_noncreature_turn = None
     treasure_engines = []         # one record per modelled source in play
 
@@ -1082,6 +1088,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             _rec["seen"] = _rec["seats"] = _rec["one_seen"] = 0
         artifact_sacs_this_turn = 0
         noncreature_casts_this_turn = 0
+        treasure_cascade_used = False
         treasures += tapped_treasures      # Mary Read's, tapped since last turn
         tapped_treasures = 0
         # TRISKAIDEKAPHILE, at the beginning of our upkeep -- before the draw (2026-11-23).
@@ -1629,15 +1636,24 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             here is the whole point: it is the turn the deck has the mana and
             not the colour, which every figure in this model used to ignore.
             """
-            nonlocal pool, treasures
+            nonlocal pool, treasures, treasures_spent
             if pool + treasures < cost:
                 return False
             if model_colors and pips and not can_pay(pips, sources, treasures):
                 return False
+            # RAIN OF RICHES: with a grant unused this turn, a pilot pays ONE of the cost with a
+            # Treasure on purpose, so the spell cascades. The lands' mana stays in the pool.
+            if (treasure_cascade_grants and not treasure_cascade_used and treasures and cost
+                    and cost - 1 <= pool):
+                treasures -= 1
+                treasures_spent += 1
+                pool -= cost - 1
+                return True
             if cost <= pool:
                 pool -= cost
             else:
                 treasures -= cost - pool
+                treasures_spent += cost - pool
                 pool = 0
             return True
 
@@ -1815,6 +1831,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             """
             nonlocal spells_cast_this_turn, spells_cast_total, hand_limit_off
             nonlocal noncreature_casts_this_turn, yard_spells, discard_to_top, krang_turn
+            nonlocal treasure_cascade_grants, treasure_mark, treasure_cascade_used
             hand.remove(card)
             if card.get("no_max_hand"):
                 hand_limit_off = True
@@ -1873,6 +1890,20 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # instance; mana value strictly falls, so a chain ends.
             for _ in range(card["cascade"]):
                 _cascade(card["cmc"])
+            # RAIN OF RICHES (2026-11-25): the turn's FIRST spell paid with a Treasure has cascade,
+            # once per grant. Every paid cast comes through `spend` just before this hook, so a
+            # Treasure spent since the last cast is this spell's. AUTHORED: Treasures are spent
+            # only when the pool runs short -- a pilot would spend one on purpose for the cascade
+            # -- so this is a floor. The grant is registered AFTER the check: Rain does not
+            # cascade itself.
+            _paid_tr = treasures_spent > treasure_mark
+            treasure_mark = treasures_spent
+            if treasure_cascade_grants and _paid_tr and not treasure_cascade_used:
+                treasure_cascade_used = True
+                for _ in range(treasure_cascade_grants):
+                    _cascade(card["cmc"])
+            if card["treasure_cascade"]:
+                treasure_cascade_grants += 1
 
         def _is_fodder(card):
             """WHAT A MEREN PILOT FEEDS THE OUTLET (2026-11-06): a creature card that is not
