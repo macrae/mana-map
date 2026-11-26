@@ -428,3 +428,30 @@ def test_iron_man_aims_his_draw_counters_at_the_commander():
     aimed = lethal_by_7(iron)
     selfish = lethal_by_7(iron.replace("on target creature", "on this creature"))
     assert aimed > selfish + 0.02, (aimed, selfish)
+
+
+def test_living_laser_copies_itself_per_card_discarded_this_turn():
+    """Living Laser: on attack, a hasty copy per card discarded THIS turn, tapped and attacking.
+    Six of them in sharknado's branch read damage by turn ten 251 against 190 for a plain hasty
+    4/4 (2026-11-25). Put the bug back -- count the turn's discards from the entry already
+    appended for this turn, which reads zero by combat -- and the arms match."""
+    import copy
+    from manamap.pilot import card_pool, common
+    laser = card_pool.corpus_oracle()["Living Laser"]
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+
+    def damage_by_10(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Laser {hit}", "oracle_text": text, "cmc": 5.0,
+                          "type_line": "Creature — Elemental Villain", "mana_cost": "{4}{R}",
+                          "power": "4", "toughness": "4"})
+        assert hit == len(swap)
+        return goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                            _band=False)["metrics"]["combat"]["mean_damage_by_turn"]["10"]
+    assert damage_by_10(laser) > damage_by_10("Haste") + 20

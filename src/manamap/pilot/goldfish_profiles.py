@@ -3566,6 +3566,9 @@ _ATTACK_DRAIN_TYPED_RE = re.compile(
 #: "Whenever you attack, you may discard a card. When you do, put a +1/+1 counter on target
 #: attacking creature" (2026-11-25, Inti, Seneschal of the Sun): a discard on every swing, paid
 #: with a counter on one attacker.
+_ATTACK_COPIES_PER_DISCARD_RE = re.compile(
+    r"whenever [^.]{1,40} attacks, for each card you've discarded this turn, create a token "
+    r"that's a copy of", re.I)
 _ATTACK_DISCARD_COUNTER_RE = re.compile(
     r"whenever you attack, you may discard a card\. when you do, put (a|an|one|two|\d+) "
     r"\+1/\+1 counters? on target attacking creature", re.I)
@@ -5118,6 +5121,10 @@ def combat_profile(card):
         "attack_drain_typed": None,       # Sanctum Seeker, 2026-11-24
         "attack_counters_typed": None,    # Edgar Markov, 2026-11-24
         "attack_discard_counter": 0,      # Inti, Seneschal of the Sun, 2026-11-25
+        # Living Laser (2026-11-25): on attack, a hasty copy of it per card discarded this turn,
+        # tapped and attacking, exiled at end step -- its power, and its name to find it by.
+        "attack_copies_per_discard": 0,
+        "attack_copies_name": None,
         # The enters-the-battlefield family. Read for every card, acted on only
         # under model_combat, so a deck that does not opt in is byte-identical.
         "etb_damage_self_power": False,
@@ -5325,6 +5332,9 @@ def combat_profile(card):
             _w = _adc.group(1).lower()
             profile["attack_discard_counter"] = int(_w) if _w.isdigit() else \
                 _NUMBER_WORDS.get(_w, 1)
+        if _ATTACK_COPIES_PER_DISCARD_RE.search(text):
+            profile["attack_copies_per_discard"] = profile["power"]
+            profile["attack_copies_name"] = card.get("name")
         if _ATTACK_TOKEN_SCALES_RE.search(window):
             profile["attack_token_bodies"] += 1
             profile["attack_token_scales"] = True
@@ -5340,6 +5350,7 @@ def combat_profile(card):
                     profile.get("attack_drain_typed"),
                     profile.get("attack_counters_typed"),
                     profile.get("attack_discard_counter"),
+                    profile["attack_copies_per_discard"],
                     # Checked against the FULL text, not the window: Scourge of
                     # the Throne's reminder clause pushes "additional combat
                     # phase" past 220 characters, and flagging a card whose

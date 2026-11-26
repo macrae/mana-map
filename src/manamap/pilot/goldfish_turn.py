@@ -1743,7 +1743,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         cprof["attack_token_bodies"],
                         cprof["attack_ping_per_attacker"],
                         cprof["attack_drain_typed"], cprof["attack_counters_typed"],
-                        cprof.get("attack_discard_counter"))):
+                        cprof.get("attack_discard_counter"),
+                        cprof.get("attack_copies_per_discard"))):
                     combat_engines.append(cprof)
                 if cprof["extra_combat_free"]:
                     extra_combat_free += 1
@@ -2093,7 +2094,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"],
                         combat["attack_drain_typed"], combat["attack_counters_typed"],
-                        combat.get("attack_discard_counter"))):
+                        combat.get("attack_discard_counter"),
+                        combat.get("attack_copies_per_discard"))):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -2715,7 +2717,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                         combat["attack_damage"], combat["attack_token_bodies"],
                         combat["attack_ping_per_attacker"],
                         combat["attack_drain_typed"], combat["attack_counters_typed"],
-                        combat.get("attack_discard_counter"))):
+                        combat.get("attack_discard_counter"),
+                        combat.get("attack_copies_per_discard"))):
                     combat_engines.append(combat)
                 # AN EQUIPMENT CREATURE (Lizard Blades, reconfigure) is Equipment too
                 # (2026-11-06). Its body stays on the battlefield after it attaches -- a
@@ -5246,6 +5249,19 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             # QALA'S PUMP (2026-11-25): when she attacks, every OTHER attacker gets +X power, X her
             # own counters -- the commander's hit below included. A floor: her counters from this
             # turn's gains land after combat, like every life-gain counter here.
+            # LIVING LASER (2026-11-25): on attack, one hasty copy per card discarded THIS turn,
+            # tapped and attacking, exiled at the end step -- power on this swing only, with the
+            # team's anthem and pumps. The copies are not the commander and leave no body.
+            # From the START of the turn: `discarded_by_turn` is appended for this turn before combat,
+            # so the previous turn's entry is the baseline.
+            _disc_now = discarded - (discarded_by_turn[turn - 2] if turn >= 2 else 0)
+            if _disc_now > 0:
+                for _eng in combat_engines:
+                    _lp = _eng["attack_copies_per_discard"]
+                    if _lp and any(len(battlefield[i]) > 12 and battlefield[i][12]
+                                   and battlefield[i][12].get("name")
+                                   == _eng["attack_copies_name"] for i in _able):
+                        swing += _disc_now * (_lp + team_anthem + turn_pump) * _power_mult
             qala_pump = 0
             for _qn, _qd in own_counter_pumps:
                 _x = own_counters.get(id(_qd), 0)
