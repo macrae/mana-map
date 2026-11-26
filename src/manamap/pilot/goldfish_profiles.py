@@ -414,6 +414,12 @@ _WHEEL_RE = re.compile(
 #: A {T} COPY OF A SPELL WHOSE PRICE IS ITS MANA VALUE (2026-11-26, League Guildmage): "{X}{R},
 #: {T}: Copy target instant or sorcery spell you control with mana value X." Group 1 is the
 #: coloured part of the cost.
+#: A SACRIFICE THAT REGROWS A SPELL (2026-11-26, Professor Zei; also Scribe of the Mindful,
+#: Pillardrop Warden, Spellkeeper Weird): "{1}, {T}, Sacrifice ~: Return target instant or sorcery
+#: card from your graveyard to your hand." Group 1 is the generic cost.
+_SAC_REGROW_SPELL_RE = re.compile(
+    r"\{(\d+)\},\s*\{t\},\s*sacrifice [^:.]+:\s*return target instant or sorcery card from your "
+    r"graveyard to your hand", re.I)
 _SPELL_COPY_X_RE = re.compile(
     r"\{x\}((?:\{[wubrg]\})*),\s*\{t\}:\s*copy target instant or sorcery spell you control "
     r"with mana value x", re.I)
@@ -2917,9 +2923,14 @@ def draw_profile(card):
            # League Guildmage: {X}+these pips, {T}: copy an instant or sorcery of mana value X.
            # None when the card has no such ability; a (possibly empty) list of pips when it does.
            "spell_copy_x_pips": None,
+           # Professor Zei: {N}, {T}, sacrifice it: an instant or sorcery back to hand. N, or None.
+           "sac_regrow_spell": None,
            "unmodelled": None}
     if _END_STEP_OPP_TWO_DRAWS_RE.search(text):
         out["end_step_opp_two_draws"] = 1
+    _srg = _SAC_REGROW_SPELL_RE.search(text)
+    if _srg:
+        out["sac_regrow_spell"] = int(_srg.group(1))
     _scx = _SPELL_COPY_X_RE.search(text)
     if _scx:
         out["spell_copy_x_pips"] = cast_pips(_scx.group(1)) if _scx.group(1) else []

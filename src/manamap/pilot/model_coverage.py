@@ -261,7 +261,7 @@ def channels_for(profile):
             # Smuggler's Share (2026-11-25), with the reading.
             "end_step_opp_two_draws",
             # League Guildmage's wheel copy (2026-11-26), with the reading.
-            "spell_copy_x_pips",
+            "spell_copy_x_pips", "sac_regrow_spell",
             # THE FOURTH DRIFT OF THIS MIRROR, and the file predicted it two
             # channels up. `activated_draw` and `draw_multiplier` shipped on
             # 2026-09-14 and were taught to `never_cast` — which asks whether a
@@ -476,7 +476,7 @@ def never_cast(profile, flags):
             "x_draw_multiplier",
             "spell_draw_greatest_power", "etb_draw_per_type",
             "spell_draw_greatest_mv", "life_gain_paid_draw", "end_step_opp_two_draws",
-            "spell_copy_x_pips")):
+            "spell_copy_x_pips", "sac_regrow_spell")):
         return False
     # A wheel is selected by the draw loop under model_discard; a payoff
     # permanent by the engine loop.

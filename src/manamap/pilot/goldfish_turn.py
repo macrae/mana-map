@@ -390,6 +390,9 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
     # LEAGUE GUILDMAGE (2026-11-26): permanents with "{X}{R}, {T}: Copy target instant or sorcery
     # spell you control with mana value X". Each entry is the card's name and the pips.
     spell_copiers = []
+    # PROFESSOR ZEI (2026-11-26): permanents that sacrifice themselves to return an instant or
+    # sorcery from the graveyard to hand, with the generic cost.
+    spell_regrowers = []
     blood = 0
     blood_by_turn = []
     # Permanents that pay when an artifact you control is sacrificed, and the
@@ -553,6 +556,8 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 "colors": card["colors"],
                 "is_land": card["is_land"],
                 "is_creature": card["combat"]["is_creature"]})
+        if card["draw"]["sac_regrow_spell"] is not None:
+            spell_regrowers.append({"name": card["name"], "cost": card["draw"]["sac_regrow_spell"]})
         if card["draw"]["spell_copy_x_pips"] is not None:
             spell_copiers.append({"name": card["name"], "pips": card["draw"]["spell_copy_x_pips"]})
         if not card["draw"]["activated_wheel"]:
@@ -3826,6 +3831,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                                              c["draw"]["end_step_opp_two_draws"],
                                              # League Guildmage: cast, or it copies nothing.
                                              c["draw"]["spell_copy_x_pips"] is not None,
+                                             c["draw"]["sac_regrow_spell"] is not None,
                                              # Cast, or the limit it lifts is never lifted.
                                              model_hand_limit and c["no_max_hand"],
                                              # Library of Leng's other half (2026-11-25).
@@ -4495,6 +4501,7 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
             if not (model_discard and model_draw) or _hand_is_next_turns():
                 return
             _fire_engine_wheels()
+            _regrow_wheel()
             for card in sorted((c for c in hand if not c["is_land"] and c["draw"]["wheel_draws"]),
                                key=lambda c: reduced_cost(c, reductions, chosen_type)):
                 if card not in hand:
@@ -4530,6 +4537,34 @@ def simulate_once(rng, library, commander_cmc, targets, max_turn,
                 if card["draw"]["wheel_draws"]:
                     _copy_spell(card)
                 _resolve_draw(card)
+
+        def _regrow_wheel():
+            """PROFESSOR ZEI (2026-11-26): "{1}, {T}, Sacrifice ~: Return target instant or sorcery
+            card from your graveyard to your hand. Activate only during your turn." POLICY,
+            AUTHORED: with no wheel in hand and one in the graveyard, a pilot sacrifices a copier
+            that can tap to bring back the cheapest wheel, and only when the mana left after the
+            activation still casts it this turn. Any other spell regrown is not modelled: a floor."""
+            if not spell_regrowers or any(c["draw"]["wheel_draws"] for c in hand):
+                return
+            _yw = [y for y in yard_spell_cards if y["draw"]["wheel_draws"]]
+            if not _yw:
+                return
+            _w = min(_yw, key=lambda c: reduced_cost(c, reductions, chosen_type))
+            for _rg in list(spell_regrowers):
+                if _can_tap(_rg["name"]) is None:
+                    continue
+                if pool + treasures < _rg["cost"] + reduced_cost(_w, reductions, chosen_type):
+                    return
+                if not spend(_rg["cost"]):
+                    return
+                spell_regrowers.remove(_rg)
+                _pop_own_row(_rg["name"])
+                # Its other abilities leave with it (Zei's loot).
+                bought_draws[:] = [b for b in bought_draws if b["name"] != _rg["name"]]
+                yard_spell_cards[:] = [y for y in yard_spell_cards if y is not _w]
+                flashback_yard[:] = [f for f in flashback_yard if f is not _w]
+                hand.append(dict(_w))
+                return
 
         def _copy_spell(card):
             """LEAGUE GUILDMAGE (2026-11-26): "{X}{R}, {T}: Copy target instant or sorcery spell you

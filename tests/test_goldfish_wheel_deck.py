@@ -566,3 +566,43 @@ def test_league_guildmage_copies_a_wheel_so_it_resolves_twice():
         assert found, "wheels cast not reported"
         return found[0]
     assert wheels_by_10(gm) > wheels_by_10(draw_only) + 0.05
+
+
+def test_professor_zei_sacrifices_to_bring_back_a_wheel():
+    """Professor Zei: "{1}, {T}, Sacrifice Professor Zei: Return target instant or sorcery card
+    from your graveyard to your hand." Six Zeis on sharknado's branch cast more wheels by turn ten
+    than six Zeis with only the loot (2026-11-26). Put the bug back -- never register the regrower
+    -- and the arms match."""
+    import copy
+    from manamap.pilot import card_pool, common
+    zei = card_pool.corpus_oracle()["Professor Zei, Anthropologist"]
+    loot_only = zei.split(" {1}, {T}, Sacrifice")[0]
+    assert loot_only != zei
+    base = common.load_deck_cards("sharknado", branch="jaws-v1")
+    swap = {"Willie Lumpkin, Postman", "Brainstorm", "Shelter", "Loran's Escape",
+            "Slip Out the Back", "Get Lost"}
+
+    def wheels_by_10(text):
+        d = copy.deepcopy(base)
+        hit = 0
+        for c in d["cards"]:
+            if c["name"] in swap:
+                hit += 1
+                c.update({"name": f"Zei {hit}", "oracle_text": text, "cmc": 2.0,
+                          "type_line": "Creature — Human Advisor Ally", "mana_cost": "{U/R}{U/R}",
+                          "power": "0", "toughness": "3"})
+        assert hit == 6
+        m = goldfish.run("sharknado", doc=d, iterations=1500, seed=7, quiet=True,
+                         _band=False)["metrics"]
+        found = []
+
+        def walk(x):
+            if isinstance(x, dict):
+                for k, v in x.items():
+                    if k == "mean_wheels_cast_by_turn":
+                        found.append(v["10"])
+                    walk(v)
+        walk(m)
+        assert found, "wheels cast not reported"
+        return found[0]
+    assert wheels_by_10(zei) > wheels_by_10(loot_only) + 0.05
