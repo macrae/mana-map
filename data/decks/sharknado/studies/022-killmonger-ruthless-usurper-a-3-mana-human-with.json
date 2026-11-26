@@ -4,7 +4,7 @@
   "branch": "jaws-v1",
   "question": "Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Treasure; grows per artifact they control) in -- the pilot: 'it's super strong' -- and for what?",
   "opened": "2026-11-25",
-  "decided_at": null,
+  "decided_at": "2026-11-25",
   "cards": [
     "Killmonger, Ruthless Usurper"
   ],
@@ -28,10 +28,14 @@
     }
   ],
   "call": {
-    "decision": "open",
-    "decided_by": [],
-    "pilot_words": "",
-    "reading": ""
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "you are right.. sokka is probably better than killmonger lolol",
+    "reading": "",
+    "at": "2026-11-25"
   },
   "slug_name": "killmonger-ruthless-usurper-a-3-mana-human-with",
   "facts": [
@@ -110,25 +114,25 @@
     {
       "id": "S-c4c44642-07",
       "kind": "goldfish_profile",
-      "text": "goldfish, 1 of 1 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "text": "goldfish, 1 of 1 named card(s) read: 5 rows better, 8 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json",
       "instrument": "goldfish",
-      "current": false,
+      "current": true,
       "coverage_share": 1.0,
       "n": 10000
     },
     {
       "id": "S-c4c44642-08",
       "kind": "goldfish_row",
-      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "text": "damage @T10: 309.97 -> 161.48, a change of -148.49 (-48%) [-155.5975, -141.3761] — worse",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#damage @T10",
       "instrument": "goldfish",
-      "figure": -122.4818,
+      "figure": -148.4868,
       "ci95": [
-        -128.677,
-        -116.2866
+        -155.5975,
+        -141.3761
       ],
       "measure": "damage @T10",
       "verdict": "worse"
@@ -136,44 +140,44 @@
     {
       "id": "S-c4c44642-09",
       "kind": "goldfish_row",
-      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "text": "killed by T10: no call — the gap of 0.002 is smaller than the 0.002 this run can resolve [-0.0041, -0.0007] — noise",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#killed by T10",
       "instrument": "goldfish",
-      "figure": -0.0028,
+      "figure": -0.0024,
       "ci95": [
-        -0.0045,
-        -0.0011
+        -0.0041,
+        -0.0007
       ],
       "measure": "killed by T10",
-      "verdict": "worse"
+      "verdict": "noise"
     },
     {
       "id": "S-c4c44642-10",
       "kind": "goldfish_row",
-      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "text": "board power @T6: 17.17 -> 15.09, a change of -2.08 (-12%) [-2.2967, -1.8635] — worse",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#board power @T6",
       "instrument": "goldfish",
-      "figure": 0.0434,
+      "figure": -2.0801,
       "ci95": [
-        -0.1318,
-        0.2186
+        -2.2967,
+        -1.8635
       ],
       "measure": "board power @T6",
-      "verdict": "noise"
+      "verdict": "worse"
     },
     {
       "id": "S-c4c44642-11",
       "kind": "goldfish_row",
-      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "text": "extra cards by T8: 26.95 -> 20.03, a change of -6.92 (-26%) [-7.2863, -6.5621] — worse",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#extra cards by T8",
       "instrument": "goldfish",
-      "figure": -0.5026,
+      "figure": -6.9242,
       "ci95": [
-        -0.8104,
-        -0.1948
+        -7.2863,
+        -6.5621
       ],
       "measure": "extra cards by T8",
       "verdict": "worse"
@@ -181,14 +185,14 @@
     {
       "id": "S-c4c44642-12",
       "kind": "goldfish_row",
-      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.0237, 0.0377] — worse",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#missed drop by T5",
       "instrument": "goldfish",
-      "figure": 0.023,
+      "figure": 0.0307,
       "ci95": [
-        0.0152,
-        0.0308
+        0.0237,
+        0.0377
       ],
       "measure": "missed drop by T5",
       "verdict": "worse"
@@ -196,14 +200,14 @@
     {
       "id": "S-c4c44642-13",
       "kind": "goldfish_row",
-      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0054, 0.014] — worse",
       "tier": "data",
       "source": "branches/jaws-v1/net_change.json#mulliganed",
       "instrument": "goldfish",
-      "figure": 0.0119,
+      "figure": 0.0097,
       "ci95": [
-        0.0065,
-        0.0173
+        0.0054,
+        0.014
       ],
       "measure": "mulliganed",
       "verdict": "worse"
@@ -225,7 +229,7 @@
   "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
   "_meta": {
     "v": 1,
-    "built_at": "2026-11-25T18:35:44-08:00",
+    "built_at": "2026-11-25T19:27:07-08:00",
     "facts": 13
   }
 }
