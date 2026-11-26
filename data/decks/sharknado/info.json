@@ -121,8 +121,8 @@
       "proposal": null,
       "base_version": 14,
       "size": 100,
-      "add": 18,
-      "out": 18,
+      "add": 19,
+      "out": 19,
       "cards": [
         {
           "name": "Adarkar Wastes",
@@ -134,10 +134,6 @@
         },
         {
           "name": "Arcane Signet",
-          "is_new": false
-        },
-        {
-          "name": "Archmage Emeritus",
           "is_new": false
         },
         {
@@ -303,6 +299,10 @@
         {
           "name": "Kitsa, Otterball Elite",
           "is_new": false
+        },
+        {
+          "name": "Krang, the All-Powerful",
+          "is_new": true
         },
         {
           "name": "Library of Leng",
@@ -523,21 +523,21 @@
       ],
       "has_cards": true,
       "study": {
-        "id": "022",
-        "question": "Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Treasure; grows per artifact they control) in -- the pilot: 'it's super strong' -- and for what?",
+        "id": "023",
+        "question": "Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Irencrag Pyromancer) in -- the pilot: 'this bad boys gotta make the cut' -- and for what?",
         "branch": "jaws-v1",
-        "file": "022-killmonger-ruthless-usurper-a-3-mana-human-with.json",
-        "decision": "no-change",
+        "file": "023-krang-the-all-powerful-a-draw-caused-trigger-of.json",
+        "decision": "approve",
         "decided_by": [
           "pilot",
           "deck-doctor"
         ],
-        "pilot_words": "you are right.. sokka is probably better than killmonger lolol",
+        "pilot_words": "approve Krang for Archmage Emeritus",
         "decided_at": "2026-11-25",
         "opened": "2026-11-25",
         "swap": {
           "out": null,
-          "in": "Killmonger, Ruthless Usurper"
+          "in": "Krang, the All-Powerful"
         },
         "goldfish_saw": [
           1,
@@ -557,7 +557,8 @@
         "fell": 8,
         "no_call": 4
       },
-      "measured": true,
+      "measured": false,
+      "measured_why": "net_change.json describes an older list of this branch",
       "blind_spots": [
         "Banishing Light",
         "Brotherhood Regalia",
@@ -8771,10 +8772,13 @@
       "question": "Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering Tithe, Consecrated Sphinx, Faerie Mastermind, Irencrag Pyromancer) in -- the pilot: 'this bad boys gotta make the cut' -- and for what?",
       "branch": "jaws-v1",
       "file": "023-krang-the-all-powerful-a-draw-caused-trigger-of.json",
-      "decision": "open",
-      "decided_by": [],
-      "pilot_words": "",
-      "decided_at": null,
+      "decision": "approve",
+      "decided_by": [
+        "pilot",
+        "deck-doctor"
+      ],
+      "pilot_words": "approve Krang for Archmage Emeritus",
+      "decided_at": "2026-11-25",
       "opened": "2026-11-25",
       "swap": {
         "out": null,
@@ -10582,7 +10586,6 @@
     "measured under an older simulator: goldfish, mana, benchmark — the figures were right when taken; `manamap pilot regen --slug sharknado` re-reads them when you want, never on its own",
     "DeckCheck copy is V12, sleeved is V14 — `manamap pilot deck-export sharknado --format moxfield`, paste it on DeckCheck, then `manamap pilot deck-link sharknado deckcheck <url>`",
     "DTI (2026-10-28) describes an older list — scan on DeckCheck, then `manamap pilot deckcheck sharknado --write`",
-    "study 023 is open: Krang, the All-Powerful (a draw-caused trigger of ours triggers an add — `manamap pilot study sharknado call 023 …`, then `install`",
     "study 006 is open: Audit: things seem sideways. The strategy, in the pilot's words: land  — `manamap pilot study sharknado call 006 …`, then `install`",
     "engine.json's reading was written for another list — `/engine-reading sharknado` rewrites it over the computed graph",
     "open questions routed: diagnose ×9, goldfish ×7, research-strategy ×5, resolve-stack ×5",

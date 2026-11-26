@@ -279,7 +279,7 @@ Standing rules from Sean for this deck: never cut a draw-seven, keep Kitsa and T
 ## Studies
 
 <!-- ctx:gen studies -->
-- **023 open** (—) — Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering T · on `jaws-v1` · open · goldfish saw 1/1 named cards
+- **023 approve** (pilot, deck-doctor) — Krang, the All-Powerful (a draw-caused trigger of ours triggers an additional time: Shabraz two counters and two life per card, Smothering T · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “approve Krang for Archmage Emeritus”
 - **022 no-change** (pilot, deck-doctor) — Killmonger, Ruthless Usurper (a 3-mana Human with trample; on each hit the player sacrifices an artifact -- a Jaws ping -- and we make a Tre · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “you are right.. sokka is probably better than killmonger lolol”
 - **021 no-change** (pilot, deck-doctor) — Violent Eruption in for Windfall -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no, no windfall is an amazing card in this deck jfc”
 - **020 no-change** (pilot, deck-doctor) — Council's Judgment in for Teferi's Ageless Insight -- from the ranked list of the weakest cards left? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/2 named cards · “no--as fun as Council's Judgement is, Teferi's Ageless Insight is doing WORK!!!! for shabraz!!!”
