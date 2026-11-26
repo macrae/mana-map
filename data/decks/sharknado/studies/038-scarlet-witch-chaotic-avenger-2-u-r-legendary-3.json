@@ -1,0 +1,235 @@
+{
+  "id": "038",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Scarlet Witch, Chaotic Avenger ({2}{U}{R} legendary 3/3 flier: on combat damage to a player, exile the top two and cast a Hero or noncreature spell among them free) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-26",
+  "cards": [
+    "Scarlet Witch, Chaotic Avenger"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Scarlet Witch, Chaotic Avenger"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 420.0,
+      "slice": "MODE prescribe; verbatim, condensed",
+      "text": "The deck doctor on study 038 (NO CHANGE; her trigger is unread, so the screens are a floor: only the 3/3 flier is modelled).\n- out Willie Lumpkin: damage @T10 -11.5 [-14.7, -8.4]; 0 better, 8 worse.\n- out Brainstorm: damage -11.2 [-14.8, -7.6].\n- out Valeria Richards: damage -10.4 [-12.3, -8.5]; hoard @T10 -0.47.\n- out Faerie Mastermind: damage -8.1 [-11.2, -5.0].\nA hit: 40 of 98 library cards are castable (38 noncreature, 2 Hero creatures); the top two hold at least one about 65% of the time (hand-computed). Many whiff off a combat trigger: Counterspell and Mana Drain have no target, the protection instants do little after damage, Shark Typhoon free is X=0, the rocks are small. Real hits, by count 19 (the wheels, Big Score, Fiery Emancipation, Rhystic, Tithe, Ageless Insight, Teferi, Delayed Blast Fireball cast from exile, Collective Defiance, Prismari, Monument, Banishing Light, Swords, Get Lost, Chaos Warp, Shang-Chi, Valeria): about 35% of connections. Misses stay exiled for later triggers. All of it rides on a 4-mana 3/3 connecting at a table that races the deck: the Rain of Riches pattern, a conditional free spell, and roughly one good free spell per three connections does not clearly beat the floor.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T23:36:52-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-038.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no change on both, push it; update the reports, etc...",
+    "reading": "",
+    "at": "2026-11-26"
+  },
+  "slug_name": "scarlet-witch-chaotic-avenger-2-u-r-legendary-3",
+  "facts": [
+    {
+      "id": "S-d5d2241e-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-d5d2241e-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-d5d2241e-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-d5d2241e-04",
+      "kind": "oracle",
+      "text": "Legendary Creature — Mutant Warlock Hero · {2}{U}{R} — Flying Whenever Scarlet Witch deals combat damage to a player, look at the top two cards of your library, then exile them face down. Then you may cast a Hero or noncreature spell from among cards exiled with Scarlet Witch without paying its mana cost.",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Scarlet Witch, Chaotic Avenger"
+    },
+    {
+      "id": "S-d5d2241e-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Shark Typhoon (0.80), Shabraz, the Skyshark (0.78), Torbran, Thane of Red Fell (0.78)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Scarlet Witch, Chaotic Avenger",
+      "neighbours": [
+        {
+          "name": "Shark Typhoon",
+          "score": 0.7991
+        },
+        {
+          "name": "Shabraz, the Skyshark",
+          "score": 0.7839
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.7811
+        }
+      ]
+    },
+    {
+      "id": "S-d5d2241e-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Scarlet Witch, Chaotic Avenger",
+      "state": "seen",
+      "channels": [
+        "bodies"
+      ]
+    },
+    {
+      "id": "S-d5d2241e-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-d5d2241e-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 212.71, a change of -97.26 (-31%) [-105.4391, -89.0829] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -97.261,
+      "ci95": [
+        -105.4391,
+        -89.0829
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-d5d2241e-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0047, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0029,
+      "ci95": [
+        -0.0047,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-d5d2241e-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.17, a change of -2.00 (-12%) [-2.2181, -1.7867] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0024,
+      "ci95": [
+        -2.2181,
+        -1.7867
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-d5d2241e-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.13, a change of -6.82 (-25%) [-7.1886, -6.4492] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.8189,
+      "ci95": [
+        -7.1886,
+        -6.4492
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-d5d2241e-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.021, 0.0352] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0281,
+      "ci95": [
+        0.021,
+        0.0352
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-d5d2241e-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Scarlet Witch, Chaotic Avenger"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "fc21cffb7f931f86f64470e0b8457bf33d4724a22d75a868d6a34b7c0353641f",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-26T08:25:34-08:00",
+    "facts": 13
+  }
+}
