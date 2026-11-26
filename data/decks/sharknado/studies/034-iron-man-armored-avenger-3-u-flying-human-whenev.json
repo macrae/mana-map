@@ -1,0 +1,236 @@
+{
+  "id": "034",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Iron Man, Armored Avenger ({3}{U} flying Human: whenever you draw a card, a +1/+1 counter on target creature -- aimed at Shabraz, every draw grows him twice, and Krang doubles both triggers; attacking modified creatures gain flying) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Iron Man, Armored Avenger"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Iron Man, Armored Avenger"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 400.0,
+      "slice": "MODE prescribe; the answer file verbatim",
+      "text": "{\n  \"reading\": \"Iron Man is a second Shabraz trigger aimed at Shabraz; with Krang it is the 28-counter wheel, but that needs a 4-, 5- and 5-drop all resolved and alive, a T8+ board, while the deck's gap is the T6 kill (18.2%; T10 already 99.3%). Four goldfish screens find no cut where he is a clear upgrade: none improves killed by T6, and the cleanest (Willie Lumpkin) is flat on speed and damage and worse on early hands. Under the 'only clear, obvious upgrades' bar this is NO CHANGE; if the pilot wants him on his own word, the cut is Willie Lumpkin.\",\n  \"log_entries_read\": [],\n  \"cut_candidates\": [\n    {\"card\": \"Willie Lumpkin, Postman\", \"why\": \"The only screened cut where Iron Man reads flat on killed by T6 (+0.0 pts [-0.2,+0.3]) and damage @T10 (+1.8 [-1.9,+5.5]).\", \"cost_of_cutting\": \"A 2-mana unblockable draw engine that feeds Shabraz on curve, and its 'can't attack you' rider the goldfish cannot see (no opponents); goldfish: stall +1.3 pts, hand can act by T3 -0.4 pts, extra cards by T8 -1.2.\", \"difficulty\": \"contested\", \"orphans_stack\": []}\n  ],\n  \"add_candidates\": [\n    {\"card\": \"Iron Man, Armored Avenger\", \"closes\": \"threat-density\", \"source\": \"prompt\", \"why\": \"Pilot named it; doubles Shabraz's per-draw growth and gives counter-bearing attackers (Jaws) flying.\", \"natural_cut\": \"Willie Lumpkin, Postman\"}\n  ],\n  \"open_questions\": [\n    {\"question\": \"Does the goldfish land the Iron Man + Krang + Shabraz wheel turn on the commander-damage clock (no commander-lethal row printed)?\", \"settled_by\": \"goldfish\", \"why_it_matters\": \"The card's case is that ceiling; the screens show no speed gain.\"}\n  ],\n  \"gaps\": [\"No commander-damage row in try's report\", \"No log entry on any screened card except Jace's Archivist (009)\", \"Goldfish cannot price removal on Shabraz concentrating the counters, nor Willie's political rider\"]\n}",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T22:57:21-08:00",
+      "from": "data/decks/sharknado/.agent-out/deck-doctor-prescribe-034.json"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "damn ok... no Iron Man.. looks much better than it is, that's why we have a framework for evals.",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "iron-man-armored-avenger-3-u-flying-human-whenev",
+  "facts": [
+    {
+      "id": "S-76d6f76c-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-76d6f76c-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-76d6f76c-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-76d6f76c-04",
+      "kind": "oracle",
+      "text": "Legendary Artifact Creature — Human Hero · {3}{U} — Flying Whenever you draw a card, put a +1/+1 counter on target creature. Whenever Iron Man attacks, other attacking modified creatures gain flying until end of turn. (Equipment, Auras you control, and counters are modifications.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Iron Man, Armored Avenger"
+    },
+    {
+      "id": "S-76d6f76c-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Shabraz, the Skyshark (0.94), Shang-Chi and the Ten Rings (0.90), Archmage Emeritus (0.88)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Iron Man, Armored Avenger",
+      "neighbours": [
+        {
+          "name": "Shabraz, the Skyshark",
+          "score": 0.9446
+        },
+        {
+          "name": "Shang-Chi and the Ten Rings",
+          "score": 0.9002
+        },
+        {
+          "name": "Archmage Emeritus",
+          "score": 0.8789
+        }
+      ]
+    },
+    {
+      "id": "S-76d6f76c-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Iron Man, Armored Avenger",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "discard"
+      ]
+    },
+    {
+      "id": "S-76d6f76c-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-76d6f76c-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 212.71, a change of -97.26 (-31%) [-105.4391, -89.0829] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -97.261,
+      "ci95": [
+        -105.4391,
+        -89.0829
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-76d6f76c-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0047, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0029,
+      "ci95": [
+        -0.0047,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-76d6f76c-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.17, a change of -2.00 (-12%) [-2.2181, -1.7867] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0024,
+      "ci95": [
+        -2.2181,
+        -1.7867
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-76d6f76c-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.13, a change of -6.82 (-25%) [-7.1886, -6.4492] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.8189,
+      "ci95": [
+        -7.1886,
+        -6.4492
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-76d6f76c-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.021, 0.0352] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0281,
+      "ci95": [
+        0.021,
+        0.0352
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-76d6f76c-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Iron Man, Armored Avenger"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "fc21cffb7f931f86f64470e0b8457bf33d4724a22d75a868d6a34b7c0353641f",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T22:59:48-08:00",
+    "facts": 13
+  }
+}

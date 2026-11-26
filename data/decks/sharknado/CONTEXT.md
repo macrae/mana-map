@@ -282,15 +282,15 @@ One line each for the older games: 001 (2026-10-06, no result): Sol Ring fast st
 ## Studies
 
 <!-- ctx:gen studies -->
+- **035 no-change** (pilot, deck-doctor) — Seize the Spoils ({2}{R} sorcery: discard a card as a cost, draw two, make a Treasure -- Big Score's three-mana sorcery twin) in -- and for  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “makes sense. no on seize the spoils”
+- **034 no-change** (pilot, deck-doctor) — Iron Man, Armored Avenger ({3}{U} flying Human: whenever you draw a card, a +1/+1 counter on target creature -- aimed at Shabraz, every draw · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “damn ok... no Iron Man.. looks much better than it is, that's why we have a framework for evals.”
+- **033 no-change** (pilot, deck-doctor) — Rain of Riches (two Treasure on entry; the first spell each turn paid with Treasure mana has cascade) in -- a free spell every turn off the  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “that makes sense, free spell is often a dud is right!”
 - **032 approve** (pilot, deck-doctor) — Fiery Emancipation back in (red sources deal triple damage) -- the pilot: layer in red damage if it accelerates us -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Torbran, then swap Gratuitoous Violence for Fiery Emancipation! seems like a no-brainer!!!”
 - **031 no-change** (pilot, deck-doctor) — Torbran, Thane of Red Fell back in (+2 to every red source's damage to each opponent: Brallin's pings, Jaws, Longshot, Irencrag, combat) --  · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “no change on Torbran, then swap Gratuitoous Violence for Fiery Emancipation! seems like a no-brainer!!!”
 - **030 open** (—) — Flare of Duplication (copy target instant or sorcery; free by sacrificing a nontoken red creature) in -- a copied wheel doubles our payoffs; · on `jaws-v1` · open · goldfish saw 0/2 named cards
 - **029 no-change** (pilot, deck-doctor) — Qala, Ajani's Pridemate (a counter for every life gained -- every Shabraz draw is a life gain -- and when she attacks the other attackers ge · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok, no change on these then that's fine... keep em on a shortlist and noted somewhere”
 - **028 no-change** (pilot, deck-doctor) — Smuggler's Share (each end step: draw a card for each opponent who drew two or more cards this turn; a Treasure for each who had two or more · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok, no change on these then that's fine... keep em on a shortlist and noted somewhere”
-- **027 no-change** (pilot, deck-doctor) — Violent Eruption (instant, 4 damage divided; madness {1}{R}{R} off the deck's discards) in -- and for what? · on `jaws-v1` · 2026-11-25 · goldfish saw 0/1 named cards · “ok... pass on these three cards :)”
-- **026 no-change** (pilot, deck-doctor) — Fiery Confluence (choose three, repeats allowed: 1 to each creature, 2 to each opponent, or destroy an artifact) in -- goblin and zombie tok · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
-- **025 no-change** (pilot, deck-doctor) — Zndrsplt, Eye of Wisdom (flip coins at combat until you lose; any player's won flip draws us a card -- each a Shabraz counter, doubled by Kr · on `jaws-v1` · 2026-11-25 · goldfish saw 1/1 named cards · “ok... pass on these three cards :)”
-- … 24 earlier: `manamap pilot study sharknado list`
+- … 27 earlier: `manamap pilot study sharknado list`
 <!-- /ctx:gen studies -->
 
 ## Change history

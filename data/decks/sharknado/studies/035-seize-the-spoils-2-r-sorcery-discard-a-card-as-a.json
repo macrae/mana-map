@@ -1,0 +1,237 @@
+{
+  "id": "035",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Seize the Spoils ({2}{R} sorcery: discard a card as a cost, draw two, make a Treasure -- Big Score's three-mana sorcery twin) in -- and for what?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Seize the Spoils"
+  ],
+  "swap": {
+    "out": null,
+    "in": "Seize the Spoils"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe; verbatim, condensed",
+      "text": "The deck doctor on study 035 (NO CHANGE; try only, one instrument, 10,000 paired games).\nA worse Big Score: one mana less, one Treasure instead of two, and a sorcery, so no end-step cast with Counterspell/Mana Drain/Swat mana held up. Per cast: one discard (Brallin), two draws (Shabraz, doubled by Krang), one Treasure. Another non-permanent where the pilot wants more permanents; filler that copies Big Score, not a new axis.\n- out Wheel of Fortune: 4 better, 9 worse; damage @T10 -14.7 [-18.1, -11.2]; killed by T6 -1.8 pts [-2.1, -1.5]; finisher wheel by T8 -8.0 pts [-8.5, -7.4]; Wheel carries stacks 009-011.\n- out Willie Lumpkin: 2 better, 7 worse; damage @T10 -7.2 [-10.3, -4.1]; stall +0.9 pts [+0.7, +1.1].\n- out Brainstorm: 1 better, 6 worse; killed by T6 -0.4 pts [-0.7, -0.1]; damage -3.2 [-6.6, +0.3] no call.\n- out Shelter: 8 better, 3 worse; damage @T10 +5.9 [+2.1, +9.8]; killed by T6 +0.4 pts [+0.1, +0.6]. Not a reason: the goldfish prices Shelter's protection at zero (no removal, no opponents), so the row is only its cantrip against a draw-two and a Treasure; protection is for the A team.\nNo screen clears the bar except one resting on a blind spot. Leave the slot alone.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T23:02:59-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-035.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "makes sense. no on seize the spoils",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "seize-the-spoils-2-r-sorcery-discard-a-card-as-a",
+  "facts": [
+    {
+      "id": "S-f926b57f-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-f926b57f-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-f926b57f-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-f926b57f-04",
+      "kind": "oracle",
+      "text": "Sorcery · {2}{R} — As an additional cost to cast this spell, discard a card. Draw two cards and create a Treasure token. (It's an artifact with \"{T}, Sacrifice this token: Add one mana of any color.\")",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Seize the Spoils"
+    },
+    {
+      "id": "S-f926b57f-05",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Prismari Command (0.91), Smothering Tithe (0.85), Hengegate Pathway // Mistgate Pathway (0.84)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Seize the Spoils",
+      "neighbours": [
+        {
+          "name": "Prismari Command",
+          "score": 0.9114
+        },
+        {
+          "name": "Smothering Tithe",
+          "score": 0.8451
+        },
+        {
+          "name": "Hengegate Pathway // Mistgate Pathway",
+          "score": 0.8406
+        }
+      ]
+    },
+    {
+      "id": "S-f926b57f-06",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Seize the Spoils",
+      "state": "seen",
+      "channels": [
+        "bodies",
+        "discard",
+        "draw"
+      ]
+    },
+    {
+      "id": "S-f926b57f-07",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 1 named card(s) read: 6 rows better, 10 worse, 2 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": true,
+      "coverage_share": 1.0,
+      "n": 10000
+    },
+    {
+      "id": "S-f926b57f-08",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 309.97 -> 212.71, a change of -97.26 (-31%) [-105.4391, -89.0829] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -97.261,
+      "ci95": [
+        -105.4391,
+        -89.0829
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f926b57f-09",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0047, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0029,
+      "ci95": [
+        -0.0047,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f926b57f-10",
+      "kind": "goldfish_row",
+      "text": "board power @T6: 17.17 -> 15.17, a change of -2.00 (-12%) [-2.2181, -1.7867] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": -2.0024,
+      "ci95": [
+        -2.2181,
+        -1.7867
+      ],
+      "measure": "board power @T6",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f926b57f-11",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 26.95 -> 20.13, a change of -6.82 (-25%) [-7.1886, -6.4492] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -6.8189,
+      "ci95": [
+        -7.1886,
+        -6.4492
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f926b57f-12",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 34 in 100, a swing of 3 games per 100 [0.021, 0.0352] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.0281,
+      "ci95": [
+        0.021,
+        0.0352
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-f926b57f-13",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0071, 0.0155] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0113,
+      "ci95": [
+        0.0071,
+        0.0155
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 1,
+    "seen": [
+      "Seize the Spoils"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [],
+    "unknown": [],
+    "share": 1.0
+  },
+  "absent": [],
+  "decklist_sha256": "fc21cffb7f931f86f64470e0b8457bf33d4724a22d75a868d6a34b7c0353641f",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T23:03:48-08:00",
+    "facts": 13
+  }
+}
