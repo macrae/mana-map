@@ -550,11 +550,10 @@
         "state": "profile only",
         "word": "profile only",
         "rose": 6,
-        "fell": 10,
-        "no_call": 2
+        "fell": 9,
+        "no_call": 3
       },
-      "measured": false,
-      "measured_why": "net_change.json describes an older list of this branch",
+      "measured": true,
       "blind_spots": [
         "Banishing Light",
         "Brotherhood Regalia",
@@ -587,7 +586,6 @@
           "damage @T10",
           "board power @T6",
           "killed by T6",
-          "killed by T10",
           "missed drop by T5",
           "mulliganed",
           "extra cards by T8",
@@ -598,48 +596,48 @@
         "headline": [
           {
             "measure": "damage @T10",
-            "delta": -97.261,
+            "delta": -100.4739,
             "ci95_diff": [
-              -105.4391,
-              -89.0829
+              -108.3652,
+              -92.5826
             ],
-            "mde": 11.6896,
+            "mde": 11.2798,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "killed by T10",
-            "delta": -0.0029,
+            "delta": -0.0011,
             "ci95_diff": [
-              -0.0047,
-              -0.0011
+              -0.0029,
+              0.0007
             ],
-            "mde": 0.0026,
-            "verdict": "worse",
+            "mde": 0.0025,
+            "verdict": "noise",
             "unit": "rate",
             "better_is": "higher"
           },
           {
             "measure": "board power @T6",
-            "delta": -2.0024,
+            "delta": -1.6741,
             "ci95_diff": [
-              -2.2181,
-              -1.7867
+              -1.9283,
+              -1.4199
             ],
-            "mde": 0.3083,
+            "mde": 0.3634,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
           },
           {
             "measure": "extra cards by T8",
-            "delta": -6.8189,
+            "delta": -5.9675,
             "ci95_diff": [
-              -7.1886,
-              -6.4492
+              -6.3341,
+              -5.6009
             ],
-            "mde": 0.5285,
+            "mde": 0.5241,
             "verdict": "worse",
             "unit": "mean",
             "better_is": "higher"
