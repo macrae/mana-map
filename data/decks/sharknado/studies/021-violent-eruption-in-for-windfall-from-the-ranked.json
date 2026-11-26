@@ -1,0 +1,504 @@
+{
+  "id": "021",
+  "slug": "sharknado",
+  "branch": "jaws-v1",
+  "question": "Violent Eruption in for Windfall -- from the ranked list of the weakest cards left?",
+  "opened": "2026-11-25",
+  "decided_at": "2026-11-25",
+  "cards": [
+    "Windfall",
+    "Violent Eruption"
+  ],
+  "swap": {
+    "out": "Windfall",
+    "in": "Violent Eruption"
+  },
+  "contributions": [
+    {
+      "agent": "deck-doctor",
+      "elapsed_s": 300.0,
+      "slice": "MODE prescribe: the weakest cards left, ranked; item 3 verbatim",
+      "text": "Windfall -> Violent Eruption (contested). Windfall is the second 3-mana symmetric wheel, and he said \"too many wheels\". Eruption is an instant that splits 4 damage, which kills Krenko plus tokens or the pingers; its madness cost of {1}{R}{R} comes cheap off Big Score, Kitsa, Theorist, Inti and the Blood tokens. It cannot hurt Purphoros itself. The goldfish cannot read Eruption, so its rows were withheld. Charming Scoundrel is the permanent-spell alternative for this slot; not screened.",
+      "cites": {
+        "facts": [],
+        "strategy": [],
+        "rules": []
+      },
+      "added_at": "2026-11-25T18:29:30-08:00",
+      "from": "/private/tmp/claude-501/-Users-michellemacrae-mana-map/6a45df4c-e7d8-4f53-9cb9-a4ea8b688d55/scratchpad/doc-eruption.md"
+    }
+  ],
+  "call": {
+    "decision": "no-change",
+    "decided_by": [
+      "pilot",
+      "deck-doctor"
+    ],
+    "pilot_words": "no, no windfall is an amazing card in this deck jfc",
+    "reading": "",
+    "at": "2026-11-25"
+  },
+  "slug_name": "violent-eruption-in-for-windfall-from-the-ranked",
+  "facts": [
+    {
+      "id": "S-78addc51-01",
+      "kind": "record",
+      "text": "9 game(s): 0W 6L; how they ended: raced 4, combo 3, stalled 1, won 1",
+      "tier": "data",
+      "source": "log.jsonl + log_causes.json",
+      "as_of": "2026-11-12",
+      "n": 9,
+      "figure": {
+        "win": 0,
+        "loss": 6
+      }
+    },
+    {
+      "id": "S-78addc51-02",
+      "kind": "deckcheck",
+      "text": "DeckCheck bracket 3 score 39/96 as of 2026-10-28 (an older list)",
+      "tier": "data",
+      "source": "deckcheck.json",
+      "as_of": "2026-10-28",
+      "figure": 39
+    },
+    {
+      "id": "S-78addc51-03",
+      "kind": "recon",
+      "text": "recon as of 2026-11-20: Nobody builds Shabraz-first at scale on the PAIR. EDHREC's 3,974 Brallin//Shabraz decks are a wheel/discard deck in every filter the brief asked for: the Upgraded (bracket 3, 339 decks) page's top non-mana cards are Windfall 74%, Faithless Looting 70%, Frantic",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "as_of": "2026-11-20"
+    },
+    {
+      "id": "S-78addc51-04",
+      "kind": "oracle",
+      "text": "Sorcery · {2}{U} — Each player discards their hand, then draws cards equal to the greatest number of cards a player discarded this way.",
+      "tier": "data",
+      "source": "cards.json",
+      "card": "Windfall"
+    },
+    {
+      "id": "S-78addc51-05",
+      "kind": "log",
+      "text": "log 006 (2026-11-03, loss): “Wheel (Windfall or similar) — Never drawn”",
+      "tier": "coach",
+      "source": "log.jsonl#006",
+      "card": "Windfall",
+      "as_of": "2026-11-03",
+      "game": "006"
+    },
+    {
+      "id": "S-78addc51-06",
+      "kind": "card_read",
+      "text": "log 006: read missed — 'Wheel (Windfall or similar) — Never drawn'; after the game 'the first wheel ... was deep'",
+      "tier": "coach",
+      "source": "log_annotations.json#006",
+      "card": "Windfall",
+      "read": "missed",
+      "game": "006"
+    },
+    {
+      "id": "S-78addc51-07",
+      "kind": "stack",
+      "text": "stack 001 — Windfall with both commanders out: seven discards, seven triggers, and when they stack (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/001",
+      "card": "Windfall",
+      "stack": "001"
+    },
+    {
+      "id": "S-78addc51-08",
+      "kind": "stack",
+      "text": "stack 002 — Windfall under Library of Leng: a discard redirected to the top of the library is still a discard (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/002",
+      "card": "Windfall",
+      "stack": "002"
+    },
+    {
+      "id": "S-78addc51-09",
+      "kind": "stack",
+      "text": "stack 004 — Artist's Talent at level 3: plus 2 on each Brallin ping, plus 2 once on Magmakin's single blast (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/004",
+      "card": "Windfall",
+      "stack": "004"
+    },
+    {
+      "id": "S-78addc51-10",
+      "kind": "stack",
+      "text": "stack 005 — Windfall for seven with Torbran out: plus 2 on each of Brallin's seven pings, plus 2 once on Spider-Man's single blast — 21 to each opponent and 30 to one, NOT a kill from 40 (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/005",
+      "card": "Windfall",
+      "stack": "005"
+    },
+    {
+      "id": "S-78addc51-11",
+      "kind": "stack",
+      "text": "stack 008 — Windfall with Lae'zel out: two counters per discard on Brallin, two per draw on Shabraz (checker: pass)",
+      "tier": "verified",
+      "source": "stacks/008",
+      "card": "Windfall",
+      "stack": "008"
+    },
+    {
+      "id": "S-78addc51-12",
+      "kind": "engine_stage",
+      "text": "engine stage ignition: Ignition",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Windfall",
+      "stage": "ignition",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-78addc51-13",
+      "kind": "engine_events",
+      "text": "consumes nothing; produces DISCARD, DRAW (read by forge)",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Windfall",
+      "consumes": [],
+      "produces": [
+        "DISCARD",
+        "DRAW"
+      ],
+      "reader": "forge",
+      "as_of": "55ebf09cf33f"
+    },
+    {
+      "id": "S-78addc51-14",
+      "kind": "engine_feeds",
+      "text": "feeds on CAST: Archmage Emeritus, Shark Typhoon, Valeria Richards, Precocious",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Windfall",
+      "event": "CAST",
+      "cards": [
+        "Archmage Emeritus",
+        "Shark Typhoon",
+        "Valeria Richards, Precocious"
+      ]
+    },
+    {
+      "id": "S-78addc51-15",
+      "kind": "engine_feeds",
+      "text": "feeds on DISCARD: Brallin, Skyshark Rider",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Windfall",
+      "event": "DISCARD",
+      "cards": [
+        "Brallin, Skyshark Rider"
+      ]
+    },
+    {
+      "id": "S-78addc51-16",
+      "kind": "engine_feeds",
+      "text": "feeds on DRAW: Shabraz, the Skyshark, Shang-Chi and the Ten Rings",
+      "tier": "data",
+      "source": "engine.json",
+      "card": "Windfall",
+      "event": "DRAW",
+      "cards": [
+        "Shabraz, the Skyshark",
+        "Shang-Chi and the Ten Rings"
+      ]
+    },
+    {
+      "id": "S-78addc51-17",
+      "kind": "context",
+      "text": "CONTEXT plays: **Draw-sevens.** The one-shot wheels are Wheel of Fortune, Windfall, Time Reversal, Echo of Eons (flashback too), Reforge the Soul and Winds of Change.",
+      "tier": "coach",
+      "source": "CONTEXT.md#plays",
+      "card": "Windfall"
+    },
+    {
+      "id": "S-78addc51-18",
+      "kind": "context",
+      "text": "CONTEXT cards: - Windfall",
+      "tier": "coach",
+      "source": "CONTEXT.md#cards",
+      "card": "Windfall"
+    },
+    {
+      "id": "S-78addc51-19",
+      "kind": "recon",
+      "text": "recon (2026-11-20): THE 'VOLTRON' FILTER IS THE WHEEL DECK WEARING BOOTS. Voltron-tagged pair decks (42) run Windfall 32/42, Faithless Looting 30/42, Frantic Search 28/42, Magus of the Wheel 27/42, Glint-Horn 24/42, Curiosity 22/42, Captain Howler 20/41; the p",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Windfall",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-78addc51-20",
+      "kind": "recon",
+      "text": "recon (2026-11-20): SOLO SHABRAZ (274 DECKS) IS THE SHABRAZ-FIRST ARCHETYPE, AND ITS SPINE IS PARALLEL GROWERS PLUS NO-MAXIMUM-HAND-SIZE. The solo page's top synergy cards are all draw-matters bodies and engines: Chasm Skulker 151/274 (55%, +0.49), Teferi's Ag",
+      "tier": "coach",
+      "source": "deck_recon.json",
+      "card": "Windfall",
+      "as_of": "2026-11-20",
+      "confidence": "widely agreed"
+    },
+    {
+      "id": "S-78addc51-21",
+      "kind": "queue",
+      "text": "Q019 KILLED: For every wheel Sean draws in the next two or three games (Wheel of Fortune, Windfall, Jace's Archivist, Reforge the Soul, Tolarian Winds, and the modal wheels ",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Windfall",
+      "as_of": "2026-11-12",
+      "queue_id": "Q019"
+    },
+    {
+      "id": "S-78addc51-22",
+      "kind": "queue",
+      "text": "Q021 KILLED: Supply is only half-answered, not settled: of the 8 cards the Numbers count as a wheel (Collective Defiance, Fateful Showdown, Incendiary Command, Jace's Archiv",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Windfall",
+      "as_of": "2026-11-12",
+      "queue_id": "Q021"
+    },
+    {
+      "id": "S-78addc51-23",
+      "kind": "queue",
+      "text": "Q031 DECIDED: With no commander out, Will of the Jeskai is a mode-one-only optional wheel that is the weakest state of the card; with a commander out he chooses both modes, m → refuted: Refuted as written. Holds: Wheel of Fortune beats Will per mana in every hand state (plain 2.33 v 1.25 cards per mana; with Rielle at H=5 4.00 v 2.50), and mode",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Windfall",
+      "as_of": "2026-11-04",
+      "queue_id": "Q031"
+    },
+    {
+      "id": "S-78addc51-24",
+      "kind": "queue",
+      "text": "Q032 DECIDED: With a commander out, Will of the Jeskai with both modes has a 6-mana floor (Will plus Tolarian Winds or Cathartic Reunion), so turn 6 is the earliest typical t → supported: Rules: modes resolve in printed order, so cards discarded by mode one gain flashback from mode two (CR 608.2c, 404.1); Will itself does not (608.2n); the set lo",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Windfall",
+      "as_of": "2026-11-04",
+      "queue_id": "Q032"
+    },
+    {
+      "id": "S-78addc51-25",
+      "kind": "queue",
+      "text": "Q046 DECIDED: Leitmotif Composer is the weakest slot for Shabraz's plan and its slot is better spent on one of Arjun, the Shifting Flame, Enduring Curiosity, Teferi's Puzzle  → supported: Leitmotif's slot is best spent on Enduring Curiosity: same job (a card on a combat hit) but for EVERY creature that connects, Shabraz and the flying Humans incl",
+      "tier": "coach",
+      "source": "queue.jsonl",
+      "card": "Windfall",
+      "as_of": "2026-11-06",
+      "queue_id": "Q046"
+    },
+    {
+      "id": "S-78addc51-26",
+      "kind": "price",
+      "text": "$5.21 NM ((OTC) 123) as of 2026-11-25",
+      "tier": "data",
+      "source": "prices.json",
+      "card": "Windfall",
+      "as_of": "2026-11-25",
+      "figure": 5.21
+    },
+    {
+      "id": "S-78addc51-27",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Wheel of Fortune (0.98), Reforge the Soul (0.97), Jace's Archivist (0.97)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Windfall",
+      "neighbours": [
+        {
+          "name": "Wheel of Fortune",
+          "score": 0.9765
+        },
+        {
+          "name": "Reforge the Soul",
+          "score": 0.9748
+        },
+        {
+          "name": "Jace's Archivist",
+          "score": 0.9651
+        }
+      ]
+    },
+    {
+      "id": "S-78addc51-28",
+      "kind": "coverage",
+      "text": "goldfish: seen",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Windfall",
+      "state": "seen",
+      "channels": [
+        "discard",
+        "target"
+      ]
+    },
+    {
+      "id": "S-78addc51-29",
+      "kind": "oracle",
+      "text": "Instant · {1}{R}{R}{R} — Violent Eruption deals 4 damage divided as you choose among any number of targets. Madness {1}{R}{R} (If you discard this card, discard it into exile. When you do, cast it for its madness cost or put it into your graveyard.)",
+      "tier": "data",
+      "source": "cards.csv",
+      "card": "Violent Eruption"
+    },
+    {
+      "id": "S-78addc51-30",
+      "kind": "neighbours",
+      "text": "nearest in-deck by function: Collective Defiance (0.92), Torbran, Thane of Red Fell (0.86), Brallin, Skyshark Rider (0.84)",
+      "tier": "data",
+      "source": "similar-cards (embeddings_ability.npy, within the deck)",
+      "card": "Violent Eruption",
+      "neighbours": [
+        {
+          "name": "Collective Defiance",
+          "score": 0.9193
+        },
+        {
+          "name": "Torbran, Thane of Red Fell",
+          "score": 0.8627
+        },
+        {
+          "name": "Brallin, Skyshark Rider",
+          "score": 0.8384
+        }
+      ]
+    },
+    {
+      "id": "S-78addc51-31",
+      "kind": "coverage",
+      "text": "goldfish: invisible — no channel reads it",
+      "tier": "data",
+      "source": "model_coverage.card_state",
+      "card": "Violent Eruption",
+      "state": "invisible",
+      "channels": []
+    },
+    {
+      "id": "S-78addc51-32",
+      "kind": "goldfish_profile",
+      "text": "goldfish, 1 of 2 named card(s) read; an OLDER list of this branch: 4 rows better, 9 worse, 4 no call over 10000 paired games. No blockers, no removal, no opponents: the rows are one input, never the call.",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json",
+      "instrument": "goldfish",
+      "current": false,
+      "coverage_share": 0.5,
+      "n": 10000
+    },
+    {
+      "id": "S-78addc51-33",
+      "kind": "goldfish_row",
+      "text": "damage @T10: 291.78 -> 169.30, a change of -122.48 (-42%) [-128.677, -116.2866] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#damage @T10",
+      "instrument": "goldfish",
+      "figure": -122.4818,
+      "ci95": [
+        -128.677,
+        -116.2866
+      ],
+      "measure": "damage @T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-78addc51-34",
+      "kind": "goldfish_row",
+      "text": "killed by T10: 99 games in 100 -> 99 in 100, a swing of 0 games per 100 [-0.0045, -0.0011] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#killed by T10",
+      "instrument": "goldfish",
+      "figure": -0.0028,
+      "ci95": [
+        -0.0045,
+        -0.0011
+      ],
+      "measure": "killed by T10",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-78addc51-35",
+      "kind": "goldfish_row",
+      "text": "board power @T6: no call — the gap of 0.043 is smaller than the 0.250 this run can resolve [-0.1318, 0.2186] — noise",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#board power @T6",
+      "instrument": "goldfish",
+      "figure": 0.0434,
+      "ci95": [
+        -0.1318,
+        0.2186
+      ],
+      "measure": "board power @T6",
+      "verdict": "noise"
+    },
+    {
+      "id": "S-78addc51-36",
+      "kind": "goldfish_row",
+      "text": "extra cards by T8: 25.42 -> 24.92, a change of -0.50 (-2%) [-0.8104, -0.1948] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#extra cards by T8",
+      "instrument": "goldfish",
+      "figure": -0.5026,
+      "ci95": [
+        -0.8104,
+        -0.1948
+      ],
+      "measure": "extra cards by T8",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-78addc51-37",
+      "kind": "goldfish_row",
+      "text": "missed drop by T5: 31 games in 100 -> 33 in 100, a swing of 2 games per 100 [0.0152, 0.0308] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#missed drop by T5",
+      "instrument": "goldfish",
+      "figure": 0.023,
+      "ci95": [
+        0.0152,
+        0.0308
+      ],
+      "measure": "missed drop by T5",
+      "verdict": "worse"
+    },
+    {
+      "id": "S-78addc51-38",
+      "kind": "goldfish_row",
+      "text": "mulliganed: 18 games in 100 -> 19 in 100, a swing of 1 games per 100 [0.0065, 0.0173] — worse",
+      "tier": "data",
+      "source": "branches/jaws-v1/net_change.json#mulliganed",
+      "instrument": "goldfish",
+      "figure": 0.0119,
+      "ci95": [
+        0.0065,
+        0.0173
+      ],
+      "measure": "mulliganed",
+      "verdict": "worse"
+    }
+  ],
+  "goldfish_coverage": {
+    "named": 2,
+    "seen": [
+      "Windfall"
+    ],
+    "partial": [],
+    "dark": [],
+    "invisible": [
+      "Violent Eruption"
+    ],
+    "unknown": [],
+    "share": 0.5
+  },
+  "absent": [],
+  "decklist_sha256": "325df7c03a544ee947b111dccef3faf779f17e189614b6c07c06345f8243a5e1",
+  "base_decklist_sha256": "55ebf09cf33fe6ea4303b8f4d0fec52a3237bb8b3e7cf90901f1ad3df5539969",
+  "_meta": {
+    "v": 1,
+    "built_at": "2026-11-25T18:29:35-08:00",
+    "facts": 38
+  }
+}
